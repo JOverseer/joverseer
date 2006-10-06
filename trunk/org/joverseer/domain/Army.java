@@ -9,4 +9,5 @@ package org.joverseer.domain;
  */
 public class Army {
     
+    
 }

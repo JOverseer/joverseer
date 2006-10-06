@@ -18,18 +18,16 @@ package org.joverseer.ui;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
-import org.springframework.binding.convert.support.DefaultConversionService;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.xml.TurnXmlReader;
-import org.joverseer.ui.support.EnumToStringConverter;
-import org.joverseer.ui.support.EnumFromStringConverter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
 
 /**
  * Custom application lifecycle implementation that configures the sample app at
@@ -54,10 +52,10 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
      */
     public void onPreWindowOpen( ApplicationWindowConfigurer configurer ) {
 
+        BasicConfigurator.configure();
         // If you override this method, it is critical to allow the superclass
         // implementation to run as well.
         super.onPreWindowOpen(configurer);
-
 
         GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
         gm.load();
@@ -67,17 +65,17 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
 
         try {
             TurnXmlReader r = new TurnXmlReader();
-            r.readFile("c:/middleearth/game8/t0/g008n11t000.xml");
+            r.readFile("c:/middleearth/g26/t0/g026n07t000.xml");
             r.updateGame(game);
             r = new TurnXmlReader();
-            r.readFile("c:/middleearth/game8/t1/g008n11t001.xml");
+            r.readFile("c:/middleearth/g26/t1/g026n07t001.xml");
             r.updateGame(game);
         }
         catch (Exception exc) {
             // do nothing
+            int a = 1;
         }
-        BasicConfigurator.configure();
-
+        Logger.getRootLogger().setLevel(Level.WARN);
 
         // Uncomment to hide the menubar, toolbar, or alter window size...
         // configurer.setShowMenuBar(false);

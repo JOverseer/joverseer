@@ -12,6 +12,10 @@ import org.joverseer.support.Container;
 public class TurnInfo {
     Container popCentres;
     Container characters;
+    Container armies;
+
+    NationInfoWrapper nationInfoWrapper;
+    EconomyWrapper economy;
 
     int gameNo;
     int turnNo;
@@ -32,6 +36,14 @@ public class TurnInfo {
 
     public void setPopCentres(Container popCentres) {
         this.popCentres = popCentres;
+    }
+
+    public Container getArmies() {
+        return armies;
+    }
+
+    public void setArmies(Container armies) {
+        this.armies = armies;
     }
 
     public int getGameNo() {
@@ -64,5 +76,21 @@ public class TurnInfo {
 
     public void setTurnNo(int turnNo) {
         this.turnNo = turnNo;
+    }
+
+    public NationInfoWrapper getNationInfoWrapper() {
+        return nationInfoWrapper;
+    }
+
+    public void setNationInfoWrapper(NationInfoWrapper nationInfoWrapper) {
+        this.nationInfoWrapper = nationInfoWrapper;
+    }
+
+    public EconomyWrapper getEconomy() {
+        return economy;
+    }
+
+    public void setEconomy(EconomyWrapper economy) {
+        this.economy = economy;
     }
 }

@@ -78,6 +78,7 @@ public class JOverseerClient {
             new ApplicationLauncher(startupContextPath, new String[] { richclientApplicationContextPath });
 
         } catch( Exception e ) {
+            System.out.println(e);
             System.exit(1);
         }
     }

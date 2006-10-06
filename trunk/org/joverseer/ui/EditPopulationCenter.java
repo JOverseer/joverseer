@@ -11,16 +11,11 @@ package org.joverseer.ui;
 import javax.swing.*;
 
 import org.springframework.binding.form.FormModel;
-import org.springframework.binding.value.ValueModel;
-import org.springframework.binding.value.support.ValueHolder;
 import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
-import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
-import org.springframework.richclient.form.binding.BindingFactory;
-import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import org.springframework.richclient.factory.DefaultComponentFactory;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.ui.viewers.PopulationCenterViewer;
 
 
 public class EditPopulationCenter extends AbstractForm {
@@ -36,15 +31,10 @@ public class EditPopulationCenter extends AbstractForm {
         formBuilder.row();
         formBuilder.add("nationNo");
         formBuilder.row();
-        //SwingBindingFactory dbf = new SwingBindingFactory(getFormModel());
-        //formBuilder.add(dbf.createBoundComboBox("size"));
-//        ComboBoxBinding b = new ComboBoxBinding(getFormModel(), "size");
-//        Object[] vals = PopulationCenterSizeEnum.values();
-//        b.setSelectableItems(vals);
         JComboBox cmb = new JComboBox(PopulationCenterSizeEnum.values());
         formBuilder.add("size", cmb);
         formBuilder.row();
-        //formBuilder.add("fortification", new JComboBox());
+        formBuilder.add("fortification", new JComboBox());
         formBuilder.row();
         formBuilder.add("loyalty");
         formBuilder.row();

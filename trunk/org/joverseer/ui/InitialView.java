@@ -15,22 +15,14 @@
  */
 package org.joverseer.ui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.event.*;
-import java.util.ArrayList;
+import javax.swing.*;
 
 import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.form.*;
-import org.springframework.richclient.dialog.*;
-import org.springframework.binding.form.*;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.events.SelectedHexChangedListener;
+import org.joverseer.ui.events.SelectedHexChangedEvent;
+import org.joverseer.ui.viewers.PopulationCenterViewer;
 
 
 /**
@@ -41,8 +33,10 @@ import org.springframework.binding.form.*;
  * @author Larry Streepy
  * 
  */
-public class InitialView extends AbstractView  implements ActionListener {
+public class InitialView extends AbstractView  implements SelectedHexChangedListener {
 
+    MapPanel mapPanel;
+    PopulationCenterViewer pcViewer;
     /**
      * Create the actual UI control for this view. It will be placed into the window
      * according to the layout of the page holding this view.
@@ -50,55 +44,38 @@ public class InitialView extends AbstractView  implements ActionListener {
     protected JComponent createControl() {
         // In this view, we're just going to use standard Swing to place a
         // few controls.
+        GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 
-
-        JLabel lblMessage = getComponentFactory().createLabel("initialView.message");
-        lblMessage.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-        
-        JButton btnTest = getComponentFactory().createButton("Test");
-        btnTest.setBorder(BorderFactory.createBevelBorder(5, Color.LIGHT_GRAY, Color.DARK_GRAY));
-        btnTest.addActionListener(this);
-        
-        
-        JPanel panel = getComponentFactory().createPanel(new BorderLayout());
-        panel.add(lblMessage);
-        panel.add(btnTest);
-
-        return panel;
+        JPanel panel;
+//        JScrollPane scp = new JScrollPane(mapPanel = new MapPanel());
+//        mapPanel.setPreferredSize(new Dimension(2000, 2000));
+//        mapPanel.addSelectedHexChangedEventListener(this);
+//        glb.append(scp, 1, 1, 8, 8);
+//        glb.append(new JScrollPane(panel = new JPanel()), 1, 1, 2, 8);
+        //pcViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()));
+        //panel.add(pcViewer.getControl());
+        //panel.setBorder(BorderFactory.createLineBorder(Color.black));
+        glb.nextLine();
+        glb.append(new JScrollPane(new JPanel()), 2, 1, 10, 2);
+        return glb.getPanel();
     }
-    
-    public void actionPerformed(ActionEvent e) {
-        ArrayList customers = new ArrayList();
-        customers.add(new Customer("marios", "s"));
-        customers.add(new Customer("f", "p"));
 
-        final FormModel model = FormModelHelper.createFormModel(customers);
-//        EditPopulationCenter form = new EditPopulationCenter(model);
-//
-//        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(new FormBackedDialogPage(form), getWindowControl()) {
-//            protected void onAboutToShow() {
-//            }
-//
-//            protected boolean onFinish() {
-//                model.commit();
-//                return true;
-//            }
-//        };
-//        dialog.showDialog();
-
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(new FormBackedDialogPage(new CustomerTableView(model)), getWindowControl()) {
-            protected void onAboutToShow() {
-            }
-
-            protected boolean onFinish() {
-                int a = 1;
-                return true;
-            }
-        };
-        dialog.showDialog();
-        int a = 1;
-
-        
+    public void eventOccured(SelectedHexChangedEvent ev) {
+//        Point p = mapPanel.getSelectedHex();
+//        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+//        Turn t = g.getTurn();
+//        org.joverseer.support.Container c = t.getContainer(TurnElementsEnum.PopulationCenter);
+//        PopulationCenter pc = (PopulationCenter)c.findFirstByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
+//        if (pc != null) {
+//            pcViewer.setFormObject(pc);
+//            pcViewer.getControl().setVisible(true);
+//            //pcViewerHolder.setVisible(true);
+//        } else {
+//            pcViewer.getControl().setVisible(false);
+//            //pcViewerHolder.setVisible(false);
+//            //pcViewerHolder.add(pcViewer.getControl());
+//        }
     }
-    
+
+
 }

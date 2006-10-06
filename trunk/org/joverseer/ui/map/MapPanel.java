@@ -1,15 +1,21 @@
 package org.joverseer.ui.map;
 
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.events.SelectedHexChangedEvent;
+import org.joverseer.ui.events.SelectedHexChangedListener;
+import org.joverseer.ui.SimpleLifecycleAdvisor;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
-import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.Army;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +33,11 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class MapPanel extends JPanel implements MouseListener {
+    protected javax.swing.event.EventListenerList listenerList =
+            new javax.swing.event.EventListenerList();
+
+    private static Logger logger = Logger.getLogger(MapPanel.class);
+    private static MapPanel _instance = null;
 
     Polygon hex = new Polygon();
     int[] xPoints = new int[6];
@@ -42,6 +53,11 @@ public class MapPanel extends JPanel implements MouseListener {
 
     public MapPanel() {
         addMouseListener(this);
+        _instance = this;
+    }
+
+    public static MapPanel instance() {
+        return _instance;
     }
 
     private void setHexLocation(int x, int y) {
@@ -129,19 +145,75 @@ public class MapPanel extends JPanel implements MouseListener {
         }
         g.drawImage(map, 0, 0, this);
 
-        ArrayList pcs = game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
-        for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs) {
-            for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
-                if (r.appliesTo(pc)) {
-                    setHexLocation(pc.getX(), pc.getY());
-                    r.render(pc, g, location.x, location.y);
+        try {
+            ArrayList pcs = game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
+            for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(pc)) {
+                        setHexLocation(pc.getX(), pc.getY());
+                        try {
+                            r.render(pc, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error pc " + pc.getName() + " " + exc.getMessage());
+                        }
+
+                    }
                 }
             }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering pop centers " + exc.getMessage());
+        }
+
+        try {
+            ArrayList characters = game.getTurn().getContainer(TurnElementsEnum.Character).getItems();
+            for (Character c : (ArrayList<Character>)characters) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(c)) {
+                        setHexLocation(c.getX(), c.getY());
+                        try {
+                            r.render(c, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error rendering character " + c.getName() + " " + exc.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering pop centers " + exc.getMessage());
+        }
+
+        try {
+            ArrayList armies = game.getTurn().getContainer(TurnElementsEnum.Army).getItems();
+            for (Army army : (ArrayList<Army>)armies) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(army)) {
+                        setHexLocation(army.getX(), army.getY());
+                        try {
+                            r.render(army, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error rendering army " + army.getCommanderName() + " " + exc.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering pop centers " + exc.getMessage());
         }
     }
 
     public void invalidate() {
         mapItems = null;
+    }
+
+    public void invalidateAll() {
+        mapItems = null;
+        map = null;
     }
 
     /**
@@ -180,7 +252,12 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     public void setSelectedHex(Point selectedHex) {
-        this.selectedHex = selectedHex;
+        if (this.selectedHex == null || selectedHex.x != this.selectedHex.x || selectedHex.y != this.selectedHex.y) {
+            this.selectedHex = selectedHex;
+            //fireMyEvent(new SelectedHexChangedEvent(this));
+            Application.instance().getApplicationContext().publishEvent(
+                    new LifecycleApplicationEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex));
+        }
     }
 
     /**
@@ -228,6 +305,22 @@ public class MapPanel extends JPanel implements MouseListener {
 
     public void mouseExited(MouseEvent e)
     {
+    }
+
+    // This methods allows classes to register for MyEvents
+    public void addSelectedHexChangedEventListener(SelectedHexChangedListener listener) {
+        listenerList.add(SelectedHexChangedListener.class, listener);
+    }
+
+    void fireMyEvent(SelectedHexChangedEvent evt) {
+        Object[] listeners = listenerList.getListenerList();
+        // Each listener occupies two elements - the first is the listener class
+        // and the second is the listener instance
+        for (int i=0; i<listeners.length; i+=2) {
+            if (listeners[i]==SelectedHexChangedListener.class) {
+                ((SelectedHexChangedListener)listeners[i+1]).eventOccured(evt);
+            }
+        }
     }
 
 }

@@ -25,7 +25,8 @@ public class TurnInitializer {
                 newPcs.addItem(newPc);
             }
         }
-
+        newTurn.getContainers().put(TurnElementsEnum.Character, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.Army, new Container());
 
     }
 }

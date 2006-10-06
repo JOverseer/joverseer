@@ -3,6 +3,7 @@ package org.joverseer.game;
 import org.joverseer.support.Container;
 
 import java.util.Hashtable;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +12,7 @@ import java.util.Hashtable;
  * Time: 7:44:43 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Turn {
+public class Turn implements Serializable {
     int turnNo;
 
     Hashtable<TurnElementsEnum, Container> containers = new Hashtable<TurnElementsEnum, Container>();

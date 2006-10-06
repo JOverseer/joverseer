@@ -3,6 +3,7 @@ package org.joverseer.support.readers.xml;
 import java.util.ArrayList;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
+import org.joverseer.domain.InformationSourceEnum;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,7 +15,7 @@ import org.joverseer.domain.SpellProficiency;
 public class CharacterWrapper {
     String id;
     String name;
-    int location;
+    int location = -1;
     int nation;
     int command;
     int totalCommand;
@@ -236,13 +237,28 @@ public class CharacterWrapper {
         ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
         for (String spell : (ArrayList<String>)getSpells()) {
             int i = spell.indexOf(' ');
-            spellId = spell.substring(1, i - 1);
-            proficiency = spell.substring(spell.length() - 4, 2);
+            spellId = spell.substring(1, i);
+            proficiency = spell.substring(spell.length() - 3, spell.length() - 1);
             spells.add(new SpellProficiency(Integer.parseInt(spellId), Integer.parseInt(proficiency)));
         }
         character.setSpells(spells);
-        //todo set informationSource
-
+        switch (getInformationSource()) {
+            case 0:
+                character.setInformationSource(InformationSourceEnum.exhaustive);
+                break;
+            case 1:
+                character.setInformationSource(InformationSourceEnum.detailed);
+                break;
+            case 2:
+                character.setInformationSource(InformationSourceEnum.some);
+                break;
+            case 3:
+                character.setInformationSource(InformationSourceEnum.some);
+                break;
+            case 4:
+                character.setInformationSource(InformationSourceEnum.limited);
+                break;
+        }
         return character;
     }
 }

@@ -1,5 +1,7 @@
 package org.joverseer.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,9 +9,19 @@ package org.joverseer.domain;
  * Time: 8:34:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum InformationSourceEnum {
-    exhaustive,
-    detailed,
-    some,
-    limited
+public enum InformationSourceEnum implements Serializable {
+    exhaustive (4),
+    detailed (3),
+    some (1),
+    limited (0);
+
+    int value;
+
+    InformationSourceEnum(int value) {
+       this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

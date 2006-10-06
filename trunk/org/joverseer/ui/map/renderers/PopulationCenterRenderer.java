@@ -4,8 +4,10 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.ColorPicker;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.application.Application;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.image.*;
@@ -21,6 +23,8 @@ import java.util.HashMap;
 public class PopulationCenterRenderer implements Renderer {
     HashMap images = new HashMap();
     MapMetadata mapMetadata = null;
+
+    static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
     public boolean appliesTo(Object obj) {
         return PopulationCenter.class.isInstance(obj);
@@ -42,22 +46,33 @@ public class PopulationCenterRenderer implements Renderer {
             fortImage = getImage(popCenter.getFortification());
         }
 
-        BufferedImage pcImage = getImage(popCenter.getSize());
 
         Point hexCenter = new Point(x + mapMetadata.getHexSize() / 2 * mapMetadata.getGridCellWidth(),
                                     y + mapMetadata.getHexSize() / 2 * mapMetadata.getGridCellHeight());
 
 
-        BufferedImage img = copyImage(pcImage);
+        BufferedImage pcImage = null;
+        if (popCenter.getSize() != PopulationCenterSizeEnum.ruins)
+        {
+            pcImage = getImage(popCenter.getSize());
 
-        //changeColor(img, Color.black, Color.green);
-        //changeColor(img, Color.red, Color.black);
-        //makeHidden(img, Color.black, Color.green);
-
-        if (fortImage != null) {
-            g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2, null);
+            BufferedImage img = copyImage(pcImage);
+            Color color1 = ColorPicker.getInstance().getColor1(popCenter.getNationNo());
+            Color color2 = ColorPicker.getInstance().getColor2(popCenter.getNationNo());
+            changeColor(img, Color.red, color1);
+            changeColor(img, Color.black, color2);
+            if (popCenter.getHidden()) {
+                makeHidden(img, color1, color2);
+            }
+            if (fortImage != null) {
+                g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2, null);
+            }
+            g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2, null);
+        } else {
+            if (fortImage != null) {
+                g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + 8 / 2, null);
+            }
         }
-        g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2, null);
 
     }
 
@@ -74,15 +89,21 @@ public class PopulationCenterRenderer implements Renderer {
 
     private BufferedImage getImage(Enum item) {
         if (!images.containsKey(item)) {
-            ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-            Image img = imgSource.getImage(item.toString() + ".image");
-            BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-            Graphics g = bimg.getGraphics();
-            g.drawImage(img, 0, 0, null);
-            g.dispose();
-            //img = makeColorTransparent(img, Color.white);
-            images.put(item, bimg);
-            return bimg;
+            String imgName = item.toString() + ".image";
+            try {
+                ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+                Image img = imgSource.getImage(imgName);
+                BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                Graphics g = bimg.getGraphics();
+                g.drawImage(img, 0, 0, null);
+                g.dispose();
+                //img = makeColorTransparent(img, Color.white);
+                images.put(item, bimg);
+                return bimg;
+            }
+            catch (Exception exc) {
+                logger.error(String.format("Error %s loading image %s.", exc.getMessage(), imgName));
+            }
         }
         return (BufferedImage)images.get(item);
     }

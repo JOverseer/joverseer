@@ -131,9 +131,12 @@ public class PopCenterWrapper {
             case 5:
                 pc.setFortification(FortificationSizeEnum.citadel);
                 break;
+            default:
+                throw new RuntimeException("Illegal fortification level " + getFortificationLevel());
+
         }
         switch (getSize()) {
-            case 0:
+            case 6:
                 pc.setSize(PopulationCenterSizeEnum.ruins);
                 break;
             case 1:
@@ -151,6 +154,8 @@ public class PopCenterWrapper {
             case 5:
                 pc.setSize(PopulationCenterSizeEnum.city);
                 break;
+            default:
+                throw new RuntimeException("Illegal size " + getSize());
         }
         switch (getDock()) {
             case 0:
@@ -170,6 +175,9 @@ public class PopCenterWrapper {
                 break;
             case 1:
                 pc.setInformationSource(InformationSourceEnum.detailed);
+                break;
+            case 2:
+                pc.setInformationSource(InformationSourceEnum.some);
                 break;
             case 3:
                 pc.setInformationSource(InformationSourceEnum.some);

@@ -3,6 +3,9 @@ package org.joverseer.game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -10,12 +13,14 @@ import org.joverseer.support.Container;
  * Time: 7:43:53 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Game {
+public class Game implements Serializable {
     GameMetadata metadata;
 
     Container turns = new Container();
 
     int maxTurn = -1;
+
+    int currentTurn = -1;
 
     public GameMetadata getMetadata() {
         return metadata;
@@ -42,8 +47,10 @@ public class Game {
     }
 
     public Turn getTurn(int turnNo) {
-        if (turns.size() > turnNo) {
-            return (Turn)turns.findFirstByProperty("turnNo", turnNo);
+        for (Turn t : (ArrayList<Turn>)getTurns().getItems()) {
+            if (t.getTurnNo() == turnNo) {
+                return t;
+            }
         }
         return null;
     }
@@ -58,5 +65,13 @@ public class Game {
         }
         turns.addItem(turn);
         setMaxTurn(turn.getTurnNo());
+    }
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(int currentTurn) {
+        this.currentTurn = currentTurn;
     }
 }

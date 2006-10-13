@@ -1,5 +1,7 @@
 package org.joverseer.support.infoSources;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.support.infoSources;
  * Time: 8:58:11 PM
  * To change this template use File | Settings | File Templates.
  */
-public class InfoSource {
+public class InfoSource implements Serializable {
     int turnNo;
 
     public int getTurnNo() {

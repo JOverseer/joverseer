@@ -1,5 +1,7 @@
 package org.joverseer.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.domain;
  * Time: 9:08:33 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SpellProficiency {
+public class SpellProficiency implements Serializable {
     int spellId;
     int proficiency;
 

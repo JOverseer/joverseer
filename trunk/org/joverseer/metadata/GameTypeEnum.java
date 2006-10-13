@@ -7,7 +7,9 @@
  */
 package org.joverseer.metadata;
 
-public class GameTypeEnum {
+import java.io.Serializable;
+
+public class GameTypeEnum implements Serializable {
     public static final GameTypeEnum game1650 = new GameTypeEnum("1650");
     public static final GameTypeEnum game2950 = new GameTypeEnum("2950");
 

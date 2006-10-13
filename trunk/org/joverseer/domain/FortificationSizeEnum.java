@@ -1,5 +1,7 @@
 package org.joverseer.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.domain;
  * Time: 6:35:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum FortificationSizeEnum {
+public enum FortificationSizeEnum implements Serializable {
     none (0),
     tower (1),
     fort (2),

@@ -17,12 +17,12 @@ public class SamplePerspectiveFactory implements PerspectiveFactory {
         LayoutSequence sequence = perspective.getInitialSequence(true);
 
 
-        DefaultDockingPort dp = new DefaultDockingPort();
-        dp.setPreferredSize(new Dimension(1000,800));
-        sequence.apply(dp);
-        sequence.add("turnSelectorView");
-        sequence.add("mapView", "turnSelectorView", DockingConstants.WEST_REGION, .3f);
-        sequence.add("currentHexDataViewer", "mapView", DockingConstants.SOUTH_REGION, .3f);
+//        DefaultDockingPort dp = new DefaultDockingPort();
+//        dp.setPreferredSize(new Dimension(1000,800));
+//        sequence.apply(dp);
+        sequence.add("mapView");
+        //sequence.add("turnSelectorView", "mapView", DockingConstants.EAST_REGION, .01f);
+        sequence.add("currentHexDataViewer", "mapView", DockingConstants.EAST_REGION, .1f);
         return perspective;
     }
 }

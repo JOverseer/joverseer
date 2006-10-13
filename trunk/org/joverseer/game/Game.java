@@ -4,6 +4,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 
 import java.io.Serializable;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -74,4 +75,6 @@ public class Game implements Serializable {
     public void setCurrentTurn(int currentTurn) {
         this.currentTurn = currentTurn;
     }
+
+   
 }

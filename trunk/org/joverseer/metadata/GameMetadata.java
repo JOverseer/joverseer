@@ -3,6 +3,8 @@ package org.joverseer.metadata;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.io.Serializable;
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,11 +16,11 @@ import java.util.Collection;
  * 1. the game type and other game instance stuff
  * 2. information that depends on the game type, such as the hexes, the artifacts, etc 
  */
-public class GameMetadata {
+public class GameMetadata implements Serializable {
     GameTypeEnum gameType;
     int gameNo;
 
-    Collection hexes = new ArrayList();
+    ArrayList hexes = new ArrayList();
 
     ArrayList readers = new ArrayList();
 
@@ -35,7 +37,7 @@ public class GameMetadata {
     }
 
     public void setHexes(Collection hexes) {
-        this.hexes = hexes;
+        this.hexes.addAll(hexes);
     }
 
     public void load() {
@@ -58,5 +60,17 @@ public class GameMetadata {
 
     public void setGameNo(int gameNo) {
         this.gameNo = gameNo;
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(getHexes());
+        out.writeObject(getGameType());
+        out.writeObject(getGameNo());
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        hexes = (ArrayList)in.readObject();
+        setGameType((GameTypeEnum)in.readObject());
+        setGameNo((Integer)in.readObject());
     }
 }

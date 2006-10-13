@@ -35,13 +35,18 @@ public class ArmyViewer extends AbstractForm {
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
         glb.append(commanderName = new JTextField());
+        commanderName.setPreferredSize(new Dimension(160, 12));
         glb.append(nation = new JTextField());
+        nation.setPreferredSize(new Dimension(60, 12));
         glb.nextLine();
         glb.append(armyMorale = new JTextField());
+        armyMorale.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
         glb.append(extraInfo = new JTextField());
+        extraInfo.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
         glb.append(food = new JTextField());
+        food.setPreferredSize(new Dimension(100, 12));
 
         commanderName.setBorder(null);
         commanderName.setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));

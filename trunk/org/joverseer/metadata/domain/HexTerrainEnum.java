@@ -1,5 +1,7 @@
 package org.joverseer.metadata.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.metadata.domain;
  * Time: 6:41:42 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum HexTerrainEnum {
+public enum HexTerrainEnum implements Serializable {
     plains(1),
     shore(2),
     forest (3),

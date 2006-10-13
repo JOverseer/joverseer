@@ -106,7 +106,14 @@ public class MapPanel extends JPanel implements MouseListener {
      *
      */
     private void createMap() {
-        MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        MapMetadata metadata;
+        try {
+            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        }
+        catch (Exception exc) {
+            // application is not ready
+            return;
+        }
 
         GameMetadata gm = game.getMetadata();
 
@@ -132,7 +139,15 @@ public class MapPanel extends JPanel implements MouseListener {
      * todo update with renderers
      */
     private void createMapItems() {
-        MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        MapMetadata metadata;
+        try {
+            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        }
+        catch (Exception exc) {
+            // application is not ready
+            return;
+        }
+
         int width = metadata.getMapColumns() * metadata.getHexSize() * metadata.getGridCellWidth();
         int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
         mapItems = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -208,12 +223,12 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     public void invalidate() {
-        mapItems = null;
     }
 
     public void invalidateAll() {
-        mapItems = null;
         map = null;
+        mapItems = null;
+        game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
     }
 
     /**

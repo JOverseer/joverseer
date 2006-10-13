@@ -34,8 +34,7 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
         JScrollPane scp = new JScrollPane(mapPanel = new MapPanel());
         mapPanel.setPreferredSize(new Dimension(2000, 2000));
         mapPanel.addSelectedHexChangedEventListener(this);
-        JPanel p = new JPanel();
-        p.add(scp);
+        scp.setPreferredSize(new Dimension(800, 500));
         return scp;
     }
 

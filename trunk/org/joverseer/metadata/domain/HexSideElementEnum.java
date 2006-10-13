@@ -1,5 +1,7 @@
 package org.joverseer.metadata.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.metadata.domain;
  * Time: 8:39:38 AM
  * To change this template use File | Settings | File Templates.
  */
-public enum HexSideElementEnum {
+public enum HexSideElementEnum implements Serializable {
     MajorRiver (3),
     MinorRiver (4),
     Road (5),

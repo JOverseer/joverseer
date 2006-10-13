@@ -12,6 +12,7 @@ import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,7 +21,7 @@ import java.util.Iterator;
  * Time: 1:35:30 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Container {
+public class Container implements Serializable {
     public ArrayList items = new ArrayList();
 
     public void addItem(Object obj) {

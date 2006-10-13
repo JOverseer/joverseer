@@ -1,5 +1,7 @@
 package org.joverseer.metadata.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.metadata.domain;
  * Time: 11:29:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Nation {
+public class Nation implements Serializable {
     int number;
     String name;
     NationAllegianceEnum allegiance;

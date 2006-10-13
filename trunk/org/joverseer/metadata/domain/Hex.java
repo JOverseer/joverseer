@@ -3,6 +3,7 @@ package org.joverseer.metadata.domain;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +18,7 @@ import java.util.Collection;
  * - roads/fords
  * todo rivers and traffic
  */
-public class Hex {
+public class Hex implements Serializable {
     int column;
     int row;
 

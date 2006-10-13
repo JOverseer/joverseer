@@ -3,6 +3,8 @@ package org.joverseer.domain;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -10,7 +12,7 @@ import org.joverseer.support.infoSources.InfoSource;
  * Time: 8:02:59 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PopulationCenter implements IBelongsToNation {
+public class PopulationCenter implements IBelongsToNation, Serializable {
     String name;
     int x;
     int y;

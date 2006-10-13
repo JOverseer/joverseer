@@ -48,14 +48,14 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()));
         popCenterPanel = new JPanel();
         popCenterPanel.add(popCenterViewer.getControl());
-        tlb.separator("Population Center");
+        tlb.separator(" Population Center ");
         tlb.row();
         tlb.cell(popCenterPanel, "align=left");
         tlb.row();
         popCenterPanel.setVisible(false);
         popCenterPanel.setBackground(Color.white);
 
-        tlb.separator("Armies");
+        tlb.separator(" Armies ");
         tlb.row();
         for (int i=0; i<20; i++) {
             ArmyViewer va = new ArmyViewer(FormModelHelper.createFormModel(new Army()));
@@ -69,7 +69,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             cp.setVisible(false);
         }
 
-        tlb.separator("Characters");
+        tlb.separator(" Characters ");
         tlb.row();
         for (int i=0; i<20; i++) {
             CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()));
@@ -85,8 +85,9 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
         panel = tlb.getPanel();
         panel.setBackground(Color.white);
-        panel.setPreferredSize(new Dimension(200, 1000));
+        panel.setPreferredSize(new Dimension(240, 1000));
         JScrollPane scp = new JScrollPane(panel);
+        scp.setPreferredSize(new Dimension(240, 1000));
         return scp;
     }
 

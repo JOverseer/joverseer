@@ -36,6 +36,7 @@ public class PopulationCenterViewer extends AbstractForm {
         JComponent c;
 
         glb.append(c = new JTextField());
+        c.setPreferredSize(new Dimension(100, 12));
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setBorder(null);
         bf.bindControl(c, "name");

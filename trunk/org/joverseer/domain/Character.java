@@ -3,6 +3,7 @@ package org.joverseer.domain;
 import org.joverseer.support.infoSources.InfoSource;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * Time: 9:01:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Character implements IBelongsToNation {
+public class Character implements IBelongsToNation, Serializable {
     String id;
     String name;
     String title;

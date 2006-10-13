@@ -2,6 +2,9 @@ package org.joverseer.ui;
 
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.ApplicationPage;
+import org.springframework.richclient.application.flexdock.FlexDockApplicationPageFactory;
+import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.form.AbstractForm;
@@ -14,9 +17,12 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.events.GameChangedListener;
 import org.joverseer.ui.events.GameChangedEvent;
+import org.flexdock.docking.DockingManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,7 +31,7 @@ import java.awt.*;
  * Time: 3:09:50 μμ
  * To change this template use File | Settings | File Templates.
  */
-public class TurnSelectorView extends AbstractView implements ApplicationListener {
+public class TurnSelectorView extends AbstractView implements ApplicationListener, ActionListener {
     JComboBox cmbTurns;
 
     protected JComponent createControl() {
@@ -33,6 +39,11 @@ public class TurnSelectorView extends AbstractView implements ApplicationListene
         tlb.cell(new JLabel("Turn : "));
         tlb.cell(cmbTurns = new JComboBox());
         resetGame();
+        tlb.row();
+        JButton btn;
+        tlb.cell(btn = new JButton());
+        btn.setText("test");
+        btn.addActionListener(this);
 
         JPanel panel = tlb.getPanel();
         panel.setPreferredSize(new Dimension(150, 150));
@@ -58,5 +69,11 @@ public class TurnSelectorView extends AbstractView implements ApplicationListene
                 resetGame();
             }
         }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        //FlexDockApplicationPageFactory fdapf = (FlexDockApplicationPageFactory)Application.instance().getApplicationContext().getBean("FlexDockApplicationPageFactory");
+        FlexDockApplicationPage page = (FlexDockApplicationPage)Application.instance().getActiveWindow().getPage();
+        page.loadLayout();
     }
 }

@@ -63,15 +63,17 @@ public class CharacterViewer extends AbstractForm {
         glb.append(c = new JTextField());
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
+        c.setPreferredSize(new Dimension(100, 12));
         bf.bindControl(c, "name");
         glb.append(c = new JTextField());
         c.setBorder(null);
         bf.bindControl(c, "nationNo");
-
+        c.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
 
         glb.append(statsTextBox = new JTextField(), 2, 1);
         statsTextBox.setBorder(null);
+        statsTextBox.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
         JPanel panel = glb.getPanel();
         panel.setBackground(Color.white);

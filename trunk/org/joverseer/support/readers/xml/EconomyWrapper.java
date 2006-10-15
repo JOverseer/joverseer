@@ -1,5 +1,7 @@
 package org.joverseer.support.readers.xml;
 
+import org.joverseer.domain.NationEconomy;
+
 import java.util.ArrayList;
 
 /**
@@ -104,5 +106,18 @@ public class EconomyWrapper {
 
     public void addProduct(ProductWrapper product) {
         products.add(product);
+    }
+
+    public NationEconomy getNationEconomy() {
+        NationEconomy ne = new NationEconomy();
+        ne.setArmyMaintenance(getArmyMaint());
+        ne.setPopMaintenance(getPopMaint());
+        ne.setCharMaintenance(getCharMaint());
+        ne.setTotalMaintenance(getTotalMaint());
+        ne.setTaxRate(getTaxRate());
+        ne.setRevenue(getRevenue());
+        ne.setReserve(getReserve());
+        ne.setSurplus(getSurplus());
+        return ne;
     }
 }

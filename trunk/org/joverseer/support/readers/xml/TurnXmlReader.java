@@ -12,10 +12,8 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.game.Turn;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
-import org.joverseer.domain.Army;
 
 import java.util.ArrayList;
 
@@ -298,6 +296,15 @@ public class TurnXmlReader {
                     throw exc;
                 }
             }
+
+            Container nationEconomies = turn.getContainer(TurnElementsEnum.NationEconomy);
+            NationEconomy oldNe = (NationEconomy)nationEconomies.findFirstByProperty("nationNo", turnInfo.getNationNo());
+            if (oldNe != null) {
+                nationEconomies.removeItem(oldNe);
+            }
+            NationEconomy ne = turnInfo.getEconomy().getNationEconomy();
+            ne.setNationNo(turnInfo.getNationNo());
+            nationEconomies.addItem(ne);
         }
         catch (Exception exc) {
             throw new Exception("Error updating game from Xml file.", exc);

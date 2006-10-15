@@ -9,6 +9,6 @@ package org.joverseer.ui;
  */
 public enum LifecycleEventsEnum {
     GameChangedEvent,
-    SelectedHexChangedEvent
-
+    SelectedHexChangedEvent,
+    SelectedTurnChangedEvent
 }

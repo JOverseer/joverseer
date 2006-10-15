@@ -15,6 +15,7 @@ import org.joverseer.ui.events.SelectedHexChangedEvent;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.SimpleLifecycleAdvisor;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.game.Turn;
 import org.joverseer.game.Game;
@@ -168,8 +169,8 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        if (applicationEvent instanceof LifecycleApplicationEvent) {
-            LifecycleApplicationEvent e = (LifecycleApplicationEvent)applicationEvent;
+        if (applicationEvent instanceof JOverseerEvent) {
+            JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 Point p = (Point)e.getObject();
                 refresh(p);

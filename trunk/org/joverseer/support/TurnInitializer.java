@@ -27,6 +27,6 @@ public class TurnInitializer {
         }
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container());
         newTurn.getContainers().put(TurnElementsEnum.Army, new Container());
-
+        newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
     }
 }

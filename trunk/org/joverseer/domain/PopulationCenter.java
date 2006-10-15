@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Time: 8:02:59 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PopulationCenter implements IBelongsToNation, Serializable {
+public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Serializable {
     String name;
     int x;
     int y;
@@ -135,6 +135,16 @@ public class PopulationCenter implements IBelongsToNation, Serializable {
 
     public void setInfoSource(InfoSource infoSource) {
         this.infoSource = infoSource;
+    }
+
+    public String getHexNo() {
+        return String.valueOf(getX() * 100 + getY());
+    }
+
+    public void setHexNo(String hexNo) {
+        int hexN = Integer.parseInt(hexNo);
+        setX(hexN / 100);
+        setY(hexN % 100);
     }
 
     public PopulationCenter clone() {

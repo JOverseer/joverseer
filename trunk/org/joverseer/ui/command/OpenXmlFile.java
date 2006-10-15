@@ -14,6 +14,7 @@ import org.joverseer.ui.events.SelectedHexChangedListener;
 import org.joverseer.ui.events.GameChangedEvent;
 import org.joverseer.ui.SimpleLifecycleAdvisor;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
 
 import java.io.File;
 import java.util.EventListener;
@@ -41,7 +42,7 @@ public class OpenXmlFile extends ActionCommand {
             r.updateGame(gh.getGame());
 
             Application.instance().getApplicationContext().publishEvent(
-                    new LifecycleApplicationEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame()));
+                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
 
         }
         catch (Exception exc) {

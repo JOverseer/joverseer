@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Time: 9:01:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Character implements IBelongsToNation, Serializable {
+public class Character implements IBelongsToNation, IHasMapLocation, Serializable {
     String id;
     String name;
     String title;
@@ -215,5 +215,15 @@ public class Character implements IBelongsToNation, Serializable {
 
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
+    }
+
+    public String getHexNo() {
+        return String.valueOf(getX() * 100 + getY());
+    }
+
+    public void setHexNo(String hexNo) {
+        int hexN = Integer.parseInt(hexNo);
+        setX(hexN / 100);
+        setY(hexN % 100);
     }
 }

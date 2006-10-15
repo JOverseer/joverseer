@@ -8,6 +8,7 @@ import org.joverseer.ui.events.SelectedHexChangedListener;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.events.SelectedHexChangedEvent;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
+import org.joverseer.ui.support.JOverseerEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
 
     MapPanel mapPanel;
     PopulationCenterViewer pcViewer;
+    JScrollPane scp;
     /**
      * Create the actual UI control for this view. It will be placed into the window
      * according to the layout of the page holding this view.
@@ -31,7 +33,7 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
         // In this view, we're just going to use standard Swing to place a
         // few controls.
 
-        JScrollPane scp = new JScrollPane(mapPanel = new MapPanel());
+        scp = new JScrollPane(mapPanel = new MapPanel());
         mapPanel.setPreferredSize(new Dimension(2000, 2000));
         mapPanel.addSelectedHexChangedEventListener(this);
         scp.setPreferredSize(new Dimension(800, 500));
@@ -43,13 +45,30 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        if (applicationEvent instanceof LifecycleApplicationEvent) {
-            LifecycleApplicationEvent e = (LifecycleApplicationEvent)applicationEvent;
+        if (applicationEvent instanceof JOverseerEvent) {
+            JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 mapPanel.invalidateAll();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
-                Point p = (Point)e.getObject();
-                mapPanel.setSelectedHex(p);
+                if (e.getSender() != mapPanel) {
+                    Point p = (Point)e.getObject();
+                    mapPanel.setSelectedHex(p);
+                    Rectangle shr = mapPanel.getSelectedHexRectangle();
+                    mapPanel.updateUI();
+                    // expand shr
+                    Rectangle vr = mapPanel.getVisibleRect();
+                    int w = (int)(vr.getWidth() - shr.getWidth());
+                    int h = (int)(vr.getHeight() - shr.getHeight());
+                    Rectangle nr = new Rectangle(shr.x - w / 2,
+                                                 shr.y - h / 2,
+                                                 (int)shr.getWidth() + w / 2,
+                                                (int)shr.getHeight() + h);
+                    if (!scp.getViewportBorderBounds().contains(nr)) {
+                        mapPanel.scrollRectToVisible(nr);
+                    }
+                }
+            } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+                mapPanel.invalidateAll();
             }
         }
     }

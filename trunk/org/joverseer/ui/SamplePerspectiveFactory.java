@@ -23,6 +23,9 @@ public class SamplePerspectiveFactory implements PerspectiveFactory {
         sequence.add("mapView");
         //sequence.add("turnSelectorView", "mapView", DockingConstants.EAST_REGION, .01f);
         sequence.add("currentHexDataViewer", "mapView", DockingConstants.EAST_REGION, .1f);
+        sequence.add("characterListView", "currentHexDataViewer", DockingConstants.EAST_REGION, .1f);
+        sequence.add("turnSelectorView", "currentHexDataViewer", DockingConstants.SOUTH_REGION, .1f);
+        sequence.add("populationCenterListView", "currentHexDataViewer", DockingConstants.SOUTH_REGION, .1f);
         return perspective;
     }
 }

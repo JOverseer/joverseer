@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Time: 7:31:07 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Army implements IBelongsToNation, Serializable {
+public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
     int nationNo;
     int x;

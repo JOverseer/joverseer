@@ -2,11 +2,14 @@ package org.joverseer.ui.map;
 
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ApplicationEvent;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.events.SelectedHexChangedEvent;
 import org.joverseer.ui.events.SelectedHexChangedListener;
 import org.joverseer.ui.SimpleLifecycleAdvisor;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.domain.PopulationCenter;
@@ -271,8 +274,21 @@ public class MapPanel extends JPanel implements MouseListener {
             this.selectedHex = selectedHex;
             //fireMyEvent(new SelectedHexChangedEvent(this));
             Application.instance().getApplicationContext().publishEvent(
-                    new LifecycleApplicationEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex));
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
         }
+    }
+
+    public Rectangle getSelectedHexRectangle() {
+        setHexLocation(getSelectedHex().x,  getSelectedHex().y);
+        MapMetadata metadata;
+        try {
+            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+            return new Rectangle(location.x, location.y, metadata.getHexSize() * metadata.getGridCellWidth(), metadata.getHexSize() * metadata.getGridCellHeight());
+        }
+        catch (Exception exc) {
+            // application is not ready
+        }
+        return new Rectangle(location.x, location.y, 1, 1);
     }
 
     /**

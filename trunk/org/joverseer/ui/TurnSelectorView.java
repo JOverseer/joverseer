@@ -17,6 +17,7 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.events.GameChangedListener;
 import org.joverseer.ui.events.GameChangedEvent;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.flexdock.docking.DockingManager;
 
 import javax.swing.*;
@@ -54,17 +55,17 @@ public class TurnSelectorView extends AbstractView implements ApplicationListene
         cmbTurns.removeAllItems();
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g != null) {
-            for (int i=0; i<g.getMaxTurn(); i++) {
+            for (int i=0; i<=g.getMaxTurn(); i++) {
                 if (g.getTurn(i) != null) {
-                    cmbTurns.addItem(i);
+                    cmbTurns.addItem(g.getTurn(i).getTurnNo());
                 }
             }
         }
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        if (applicationEvent instanceof LifecycleApplicationEvent) {
-            LifecycleApplicationEvent e = (LifecycleApplicationEvent)applicationEvent;
+        if (applicationEvent instanceof JOverseerEvent) {
+            JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 resetGame();
             }
@@ -72,8 +73,14 @@ public class TurnSelectorView extends AbstractView implements ApplicationListene
     }
 
     public void actionPerformed(ActionEvent e) {
-        //FlexDockApplicationPageFactory fdapf = (FlexDockApplicationPageFactory)Application.instance().getApplicationContext().getBean("FlexDockApplicationPageFactory");
-        FlexDockApplicationPage page = (FlexDockApplicationPage)Application.instance().getActiveWindow().getPage();
-        page.loadLayout();
+        Object obj = cmbTurns.getSelectedItem();
+        int turnNo = (Integer)obj;
+
+        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        g.setCurrentTurn(turnNo);
+
+        Application.instance().getApplicationContext().publishEvent(
+                new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+
     }
 }

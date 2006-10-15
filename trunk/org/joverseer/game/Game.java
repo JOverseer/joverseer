@@ -57,7 +57,10 @@ public class Game implements Serializable {
     }
 
     public Turn getTurn() {
-        return getTurn(getMaxTurn());
+        if (getCurrentTurn() == -1) {
+            return getTurn(getMaxTurn());
+        }
+        return getTurn(getCurrentTurn());
     }
 
     public void addTurn(Turn turn) throws Exception {
@@ -66,6 +69,7 @@ public class Game implements Serializable {
         }
         turns.addItem(turn);
         setMaxTurn(turn.getTurnNo());
+        setCurrentTurn(turn.getTurnNo());
     }
 
     public int getCurrentTurn() {

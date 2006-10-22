@@ -14,6 +14,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
+import org.joverseer.metadata.domain.NationInfoWrapper;
 
 import java.util.ArrayList;
 

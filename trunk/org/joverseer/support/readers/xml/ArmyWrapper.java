@@ -1,8 +1,6 @@
 package org.joverseer.support.readers.xml;
 
-import org.joverseer.domain.Army;
-import org.joverseer.domain.ArmySizeEnum;
-import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.domain.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -122,6 +120,29 @@ public class ArmyWrapper {
         a.setNavy(getNavy() == 1);
         a.setNationNo(getNation());
 
+        if (getExtraInfo() != null && !getExtraInfo().equals("")) {
+            // parse
+            String[] regiments = getExtraInfo().split(" ");
+            for (int i=0; i<regiments.length; i++) {
+                String type = regiments[i].substring(regiments[i].length() - 2, regiments[i].length());
+                String number = regiments[i].substring(0, regiments[i].length() - 2);
+                int no = Integer.parseInt(number);
+                if (type.equals("HC")) {
+                    a.getElements().add(new ArmyElement(ArmyElementType.HeavyCavalry, no));
+                } else if (type.equals("LC")) {
+                    a.getElements().add(new ArmyElement(ArmyElementType.LightCavalry, no));
+                } else if (type.equals("HI")) {
+                    a.getElements().add(new ArmyElement(ArmyElementType.HeavyInfantry, no));
+                } else if (type.equals("LI")) {
+                    a.getElements().add(new ArmyElement(ArmyElementType.LightInfantry, no));
+                } else if (type.equals("AR")) {
+                    a.getElements().add(new ArmyElement(ArmyElementType.Archers, no));
+                } else if (type.equals("MA")) {
+                    a.getElements().add(new ArmyElement(ArmyElementType.MenAtArms, no));
+                }
+            }
+        }
+
         switch (getSize()) {
             case 0:
                 a.setSize(ArmySizeEnum.unknown);
@@ -132,10 +153,10 @@ public class ArmyWrapper {
                 a.setSize(ArmySizeEnum.army);
                 break;
             case 4:
-                a.setSize(ArmySizeEnum.largeArmy);
+                a.setSize(ArmySizeEnum.large);
                 break;
             case 5:
-                a.setSize(ArmySizeEnum.hugeArmy);
+                a.setSize(ArmySizeEnum.huge);
                 break;
             default:
                 throw new RuntimeException("Invalid army size " + getSize());

@@ -3,8 +3,11 @@ package org.joverseer.ui.viewers;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.application.Application;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
+import org.joverseer.metadata.GameMetadata;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,8 +42,10 @@ public class ArmyViewer extends AbstractForm {
         glb.append(nation = new JTextField());
         nation.setPreferredSize(new Dimension(60, 12));
         glb.nextLine();
+        glb.append(armySize = new JTextField());
+        armySize.setPreferredSize(new Dimension(100, 12));
         glb.append(armyMorale = new JTextField());
-        armyMorale.setPreferredSize(new Dimension(100, 12));
+        armyMorale.setPreferredSize(new Dimension(60, 12));
         glb.nextLine();
         glb.append(extraInfo = new JTextField());
         extraInfo.setPreferredSize(new Dimension(100, 12));
@@ -51,6 +56,7 @@ public class ArmyViewer extends AbstractForm {
         commanderName.setBorder(null);
         commanderName.setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
         nation.setBorder(null);
+        armySize.setBorder(null);
         armyMorale.setBorder(null);
         extraInfo.setBorder(null);
         food.setBorder(null);
@@ -65,12 +71,24 @@ public class ArmyViewer extends AbstractForm {
 
         Army army = (Army)object;
         commanderName.setText(army.getCommanderTitle() + " " + army.getCommanderName());
-        nation.setText(String.valueOf(army.getNationNo()));
-        //todo fix these
-        armyMorale.setVisible(false);
-        extraInfo.setVisible(false);
+
+        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
+
+        armySize.setText("Size: " + army.getSize().toString());
+        armyMorale.setText("M:");
+        if (army.getElements().size() > 0) {
+            extraInfo.setText("");
+            extraInfo.setVisible(true);
+            for (ArmyElement element : army.getElements()) {
+                extraInfo.setText(extraInfo.getText() +
+                        (extraInfo.getText().equals("") ? "" : " ") +
+                        element.getDescription());
+            }
+        } else {
+            extraInfo.setVisible(false);
+        }
         food.setVisible(false);
         //armyMorale.setText("M: 0");
-        //extraInfo.setText(army.get);
     }
 }

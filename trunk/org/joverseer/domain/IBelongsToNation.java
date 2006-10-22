@@ -1,7 +1,5 @@
 package org.joverseer.domain;
 
-import org.joverseer.metadata.domain.Nation;
-
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak

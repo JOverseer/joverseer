@@ -1,5 +1,7 @@
 package org.joverseer.metadata;
 
+import org.joverseer.metadata.domain.Nation;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +23,11 @@ public class GameMetadata implements Serializable {
     int gameNo;
 
     ArrayList hexes = new ArrayList();
+    ArrayList nations = new ArrayList();
 
     ArrayList readers = new ArrayList();
+
+
 
     public GameTypeEnum getGameType() {
         return gameType;
@@ -38,6 +43,14 @@ public class GameMetadata implements Serializable {
 
     public void setHexes(Collection hexes) {
         this.hexes.addAll(hexes);
+    }
+
+    public ArrayList getNations() {
+        return nations;
+    }
+
+    public void setNations(Collection nations) {
+        this.nations.addAll(nations);
     }
 
     public void load() {
@@ -64,13 +77,24 @@ public class GameMetadata implements Serializable {
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.writeObject(getHexes());
+        out.writeObject(getNations());
         out.writeObject(getGameType());
         out.writeObject(getGameNo());
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         hexes = (ArrayList)in.readObject();
+        nations = (ArrayList)in.readObject();
         setGameType((GameTypeEnum)in.readObject());
         setGameNo((Integer)in.readObject());
+    }
+
+    public Nation getNationByNum(int number) {
+        for (Nation n : (ArrayList<Nation>)getNations()) {
+            if (n.getNumber() == number) {
+                return n;
+            }
+        }
+        return null;
     }
 }

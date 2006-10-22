@@ -1,6 +1,7 @@
 package org.joverseer.ui.viewers;
 
 import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.form.AbstractForm;
@@ -9,6 +10,7 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.metadata.GameMetadata;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +25,21 @@ import java.awt.*;
 public class PopulationCenterViewer extends AbstractForm {
     public static final String FORM_PAGE = "PopulationCenterViewer";
 
+    JTextField nation;
+    JTextField sizeFort;
+
     public PopulationCenterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+
+    public void setFormObject(Object object) {
+        super.setFormObject(object);
+
+        PopulationCenter pc = (PopulationCenter)object;
+        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        nation.setText(gm.getNationByNum(pc.getNationNo()).getShortName());
+
+        sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
     }
 
     protected JComponent createFormControl() {
@@ -41,11 +56,17 @@ public class PopulationCenterViewer extends AbstractForm {
         c.setBorder(null);
         bf.bindControl(c, "name");
 
+        glb.append(sizeFort = new JTextField());
+        c = sizeFort;
+        c.setPreferredSize(new Dimension(100, 12));
+        c.setBorder(null);
+
         glb.nextLine();
 
-        glb.append(c = new JTextField());
+        glb.append(nation = new JTextField());
+        c = nation;
         c.setBorder(null);
-        bf.bindControl(c, "nationNo");
+        //bf.bindControl(c, "nationNo");
 
         glb.nextLine();
 

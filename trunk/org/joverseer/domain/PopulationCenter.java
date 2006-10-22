@@ -1,7 +1,7 @@
 package org.joverseer.domain;
 
-import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.metadata.domain.Nation;
 
 import java.io.Serializable;
 

@@ -13,8 +13,8 @@ public enum ArmySizeEnum implements Serializable {
     unknown(0),
     small (1),
     army (2),
-    largeArmy (3),
-    hugeArmy (4);
+    large (3),
+    huge (4);
 
     int size;
 

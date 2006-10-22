@@ -1,5 +1,7 @@
 package org.joverseer.metadata.domain;
 
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+
 import java.io.Serializable;
 
 /**
@@ -12,20 +14,20 @@ import java.io.Serializable;
 public class Nation implements Serializable {
     int number;
     String name;
-    NationAllegianceEnum allegiance;
+    String shortName;
 
-    public Nation(int number, String name, NationAllegianceEnum allegiance) {
+    public Nation(int number, String name, String shortName) {
         this.name = name;
         this.number = number;
-        this.allegiance = allegiance;
+        this.shortName = shortName;
     }
 
-    public NationAllegianceEnum getAllegiance() {
-        return allegiance;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setAllegiance(NationAllegianceEnum allegiance) {
-        this.allegiance = allegiance;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getName() {

@@ -25,6 +25,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.xml.TurnXmlReader;
@@ -58,6 +59,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         super.onPreWindowOpen(configurer);
 
         GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        gm.setGameType(GameTypeEnum.game2950);
         gm.load();
         Game game = new Game();
         game.setMetadata(gm);

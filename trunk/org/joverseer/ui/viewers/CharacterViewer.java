@@ -4,8 +4,10 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.application.Application;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Character;
+import org.joverseer.metadata.GameMetadata;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +23,7 @@ public class CharacterViewer extends AbstractForm {
     public static final String FORM_PAGE = "CharacterViewer";
 
     JTextField statsTextBox;
+    JTextField nationTextBox;
 
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -40,8 +43,10 @@ public class CharacterViewer extends AbstractForm {
             txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
             txt += getStatText("H", c.getHealth(), c.getHealth());
             statsTextBox.setText(txt);
-        }
 
+            GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+            nationTextBox.setText(gm.getNationByNum(c.getNationNo()).getShortName());
+        }
 
     }
 
@@ -67,7 +72,8 @@ public class CharacterViewer extends AbstractForm {
         bf.bindControl(c, "name");
         glb.append(c = new JTextField());
         c.setBorder(null);
-        bf.bindControl(c, "nationNo");
+        nationTextBox = (JTextField)c;
+        //bf.bindControl(c, "nationNo");
         c.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
 

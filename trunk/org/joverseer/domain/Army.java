@@ -1,7 +1,7 @@
 package org.joverseer.domain;
 
-import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     ArmySizeEnum size;
     int troopCount;
     boolean navy;
+
+    ArrayList<ArmyElement> elements = new ArrayList<ArmyElement>();
 
     ArrayList characters = new ArrayList();
 
@@ -127,5 +129,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
     public void setCommanderTitle(String commanderTitle) {
         this.commanderTitle = commanderTitle;
+    }
+
+    public ArrayList<ArmyElement> getElements() {
+        return elements;
     }
 }

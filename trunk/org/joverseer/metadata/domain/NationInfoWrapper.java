@@ -1,4 +1,4 @@
-package org.joverseer.support.readers.xml;
+package org.joverseer.metadata.domain;
 
 import java.util.ArrayList;
 

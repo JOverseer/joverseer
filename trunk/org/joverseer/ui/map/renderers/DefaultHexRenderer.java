@@ -24,13 +24,13 @@ import java.util.Locale;
 public class DefaultHexRenderer implements Renderer{
     HashMap terrainColors = new HashMap();
 
-    int[] xPoints = new int[6];
-    int[] yPoints = new int[6];
+    protected int[] xPoints = new int[6];
+    protected int[] yPoints = new int[6];
 
     Point hexCenter;
 
-    Polygon polygon;
-    MapMetadata metadata = null;
+    protected Polygon polygon;
+    protected MapMetadata metadata = null;
 
     Color majorRiverColor;
     Color minorRiverColor;
@@ -40,7 +40,7 @@ public class DefaultHexRenderer implements Renderer{
     public DefaultHexRenderer() {
     }
 
-    private void init() {
+    protected void init() {
         metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
         xPoints[0] = metadata.getHexSize() / 2 * metadata.getGridCellWidth();
         xPoints[1] = metadata.getHexSize() * metadata.getGridCellWidth();

@@ -15,6 +15,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.HexInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
@@ -164,6 +165,21 @@ public class MapPanel extends JPanel implements MouseListener {
         g.drawImage(map, 0, 0, this);
 
         try {
+            ArrayList hexInfo = game.getTurn().getContainer(TurnElementsEnum.HexInfo).getItems();
+            for (HexInfo hi : (ArrayList<HexInfo>)hexInfo) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(hi)) {
+                        setHexLocation(hi.getX(), hi.getY());
+                        try {
+                            r.render(hi, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error hi " + hi.getHexNo() + " " + exc.getMessage());
+                        }
+                    }
+                }
+            }
+
             ArrayList pcs = game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs) {
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {

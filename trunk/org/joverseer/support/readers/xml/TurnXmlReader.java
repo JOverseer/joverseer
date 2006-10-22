@@ -306,6 +306,18 @@ public class TurnXmlReader {
             NationEconomy ne = turnInfo.getEconomy().getNationEconomy();
             ne.setNationNo(turnInfo.getNationNo());
             nationEconomies.addItem(ne);
+
+            Container hexInfos = turn.getContainer(TurnElementsEnum.HexInfo);
+            
+            ArrayList newHexInfos = turnInfo.getNationInfoWrapper().getHexInfos(turnInfo.getNationNo());
+            for (HexInfo hi : (ArrayList<HexInfo>)newHexInfos) {
+                HexInfo oldHi = (HexInfo)hexInfos.findFirstByProperty("hexNo", hi.getHexNo());
+                if (oldHi == null) {
+                    hexInfos.addItem(hi);
+                } else {
+                    oldHi.merge(hi);
+                }
+            }
         }
         catch (Exception exc) {
             throw new Exception("Error updating game from Xml file.", exc);

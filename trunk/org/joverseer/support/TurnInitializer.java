@@ -3,8 +3,13 @@ package org.joverseer.support;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.HexInfo;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Hex;
+import org.springframework.richclient.application.Application;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,5 +33,15 @@ public class TurnInitializer {
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container());
         newTurn.getContainers().put(TurnElementsEnum.Army, new Container());
         newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
+        Container hexInfo = new Container();
+        GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+        for (Hex h : (Collection <Hex>)gm.getHexes()) {
+            HexInfo hi = new HexInfo();
+            hi.setVisible(false);
+            hi.setX(h.getColumn());
+            hi.setY(h.getRow());
+            hexInfo.addItem(hi);
+        }
+        newTurn.getContainers().put(TurnElementsEnum.HexInfo, hexInfo);
     }
 }

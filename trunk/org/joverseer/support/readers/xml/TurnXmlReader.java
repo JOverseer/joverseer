@@ -14,7 +14,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
-import org.joverseer.metadata.domain.NationInfoWrapper;
 
 import java.util.ArrayList;
 
@@ -317,6 +316,17 @@ public class TurnXmlReader {
                 } else {
                     oldHi.merge(hi);
                 }
+            }
+
+            Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
+            nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
+
+            ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+            for (String msg : (ArrayList<String>)nationMsgs) {
+                NationMessage nm = new NationMessage();
+                nm.setMessage(msg);
+                nm.setNationNo(turnInfo.getNationNo());
+                nationMessages.addItem(nm);
             }
         }
         catch (Exception exc) {

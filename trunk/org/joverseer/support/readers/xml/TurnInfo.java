@@ -1,7 +1,6 @@
 package org.joverseer.support.readers.xml;
 
 import org.joverseer.support.Container;
-import org.joverseer.metadata.domain.NationInfoWrapper;
 
 /**
  * Created by IntelliJ IDEA.
@@ -94,4 +93,5 @@ public class TurnInfo {
     public void setEconomy(EconomyWrapper economy) {
         this.economy = economy;
     }
+
 }

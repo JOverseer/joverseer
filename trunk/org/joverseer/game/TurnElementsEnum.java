@@ -13,7 +13,7 @@ public enum TurnElementsEnum implements Serializable {
     Army,
     PopulationCenter,
     Character,
-    Rumor,
+    NationMessage,
     NationEconomy,
     NationProduction,
     NationStores,

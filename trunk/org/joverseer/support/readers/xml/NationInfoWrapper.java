@@ -1,4 +1,4 @@
-package org.joverseer.metadata.domain;
+package org.joverseer.support.readers.xml;
 
 import org.joverseer.domain.HexInfo;
 

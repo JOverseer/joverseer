@@ -74,7 +74,16 @@ public class Container implements Serializable {
         return findAllByProperties(new String[]{property}, new Object[]{value});
     }
 
+    public void removeAllByProperties(String[] property, Object[] values) {
+        ArrayList objects = findAllByProperties(property, values);
+        for (Object obj : objects) {
+            removeItem(obj);
+        }
+    }
 
+    public void removeAllByProperties(String property, Object value) {
+        removeAllByProperties(new String[]{property}, new Object[]{value});
+    }
 
 
 }

@@ -43,5 +43,6 @@ public class TurnInitializer {
             hexInfo.addItem(hi);
         }
         newTurn.getContainers().put(TurnElementsEnum.HexInfo, hexInfo);
+        newTurn.getContainers().put(TurnElementsEnum.NationMessage, new Container());
     }
 }

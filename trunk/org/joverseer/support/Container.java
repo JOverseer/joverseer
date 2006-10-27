@@ -34,6 +34,10 @@ public class Container implements Serializable {
         }
     }
 
+    public void removeAll(Collection col) {
+        items.removeAll(col);
+    }
+
     public int size() {
         return items.size();
     }

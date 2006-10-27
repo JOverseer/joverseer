@@ -1,6 +1,7 @@
 package org.joverseer.metadata;
 
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.support.Container;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -26,9 +27,9 @@ public class GameMetadata implements Serializable {
     ArrayList nations = new ArrayList();
     HashMap artifacts = new HashMap();
 
+    Container populationCenters = new Container();
+
     ArrayList readers = new ArrayList();
-
-
 
     public GameTypeEnum getGameType() {
         return gameType;
@@ -105,5 +106,13 @@ public class GameMetadata implements Serializable {
 
     public void setArtifacts(HashMap artifacts) {
         this.artifacts = artifacts;
+    }
+
+    public Container getPopulationCenters() {
+        return populationCenters;
+    }
+
+    public void setPopulationCenters(Container populationCenters) {
+        this.populationCenters = populationCenters;
     }
 }

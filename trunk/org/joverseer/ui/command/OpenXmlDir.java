@@ -41,6 +41,7 @@ public class OpenXmlDir extends ActionCommand {
                         r.updateGame(gh.getGame());
                     }
                     catch (Exception exc) {
+                        int a = 1;
                         // do nothing
                         // todo fix
                     }

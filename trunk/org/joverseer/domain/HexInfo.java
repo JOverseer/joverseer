@@ -75,8 +75,11 @@ public class HexInfo implements Serializable {
             if (hi.getVisible() != getVisible())
                 throw new RuntimeException("incompatible HexInfos due to visible");
 
-            if (hi.getHasPopulationCenter() != getHasPopulationCenter())
-                throw new RuntimeException("incompatible HexInfos due to pop center existence");
+            if (hi.getHasPopulationCenter() != getHasPopulationCenter()) {
+                // either one is true, make true
+                // (prolly talking about a hidden pc here)
+                setHasPopulationCenter(true);
+            }
         } else {
             setVisible(hi.getVisible());
             setHasPopulationCenter(hi.getHasPopulationCenter());

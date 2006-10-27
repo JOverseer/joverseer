@@ -29,6 +29,14 @@ public class TurnInitializer {
                 PopulationCenter newPc = pc.clone();
                 newPcs.addItem(newPc);
             }
+        } else {
+            // get pcs from metadata
+            GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+            Container gmPCs = gm.getPopulationCenters();
+            for (PopulationCenter pc : (ArrayList<PopulationCenter>)gmPCs.items) {
+                PopulationCenter newPc = pc.clone();
+                newPcs.addItem(newPc);
+            }
         }
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container());
         newTurn.getContainers().put(TurnElementsEnum.Army, new Container());

@@ -9,6 +9,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.game.Turn;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -197,11 +198,14 @@ public class TurnXmlReader {
                     } else {
                         logger.debug("Pop Centre found in turn.");
                         // distinguish cases
-                        if (newPc.getInformationSource().getValue() > oldPc.getInformationSource().getValue()) {
+                        if (newPc.getInformationSource().getValue() >= oldPc.getInformationSource().getValue()) {
                             pcs.removeItem(oldPc);
                             pcs.addItem(newPc);
-                        } else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
-                            if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue()) {
+                        } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
+                            // do nothing
+                        }
+                        else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
+                            if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
                                 newPc.setName(oldPc.getName());
                                 newPc.setNationNo(oldPc.getNationNo());
                             }
@@ -317,6 +321,19 @@ public class TurnXmlReader {
                     oldHi.merge(hi);
                 }
             }
+
+            // remove PCs if HexInfo shows empty hex
+            ArrayList toRemove = new ArrayList();
+            for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
+                if (pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
+                if (!MetadataSource.class.isInstance(pc.getInfoSource())) continue;
+                if (pc.getSize() == PopulationCenterSizeEnum.ruins) continue;
+                HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+                if (hi.getVisible() && !hi.getHasPopulationCenter()) {
+                    toRemove.add(pc);
+                }
+            }
+            pcs.removeAll(toRemove);
 
             Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
             nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());

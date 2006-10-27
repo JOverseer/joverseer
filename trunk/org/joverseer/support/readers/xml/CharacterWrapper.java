@@ -227,7 +227,7 @@ public class CharacterWrapper {
         ArrayList<Integer> artifacts = new ArrayList<Integer>();
         for (String artifact : (ArrayList<String>)getArtifacts()) {
             int i = artifact.indexOf(' ');
-            artifactId = artifact.substring(1, i - 1);
+            artifactId = artifact.substring(1, i);
             artifacts.add(Integer.parseInt(artifactId));
         }
         character.setArtifacts(artifacts);

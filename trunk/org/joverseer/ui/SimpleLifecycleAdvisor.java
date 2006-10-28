@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.joverseer.metadata.GameMetadata;
@@ -29,6 +30,8 @@ import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.xml.TurnXmlReader;
+
+import java.awt.*;
 
 /**
  * Custom application lifecycle implementation that configures the sample app at
@@ -57,6 +60,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         // If you override this method, it is critical to allow the superclass
         // implementation to run as well.
         super.onPreWindowOpen(configurer);
+        configurer.setInitialSize(new Dimension(900,680));
 
         GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
         gm.setGameType(GameTypeEnum.game2950);
@@ -69,9 +73,9 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
             TurnXmlReader r = new TurnXmlReader();
             r.readFile("c:/middleearth/g26/t0/g026n07t000.xml");
             r.updateGame(game);
-            r = new TurnXmlReader();
-            r.readFile("c:/middleearth/g26/t1/g026n07t001.xml");
-            r.updateGame(game);
+//            r = new TurnXmlReader();
+//            r.readFile("c:/middleearth/g26/t1/g026n07t001.xml");
+//            r.updateGame(game);
         }
         catch (Exception exc) {
             // do nothing

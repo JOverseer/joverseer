@@ -2,15 +2,21 @@ package org.joverseer.ui.viewers;
 
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.binding.BindingFactory;
-import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.SpellProficiency;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Artifact;
+import org.joverseer.ui.listviews.ArtifactTableModel;
+import org.joverseer.ui.listviews.ItemTableModel;
+import org.joverseer.ui.support.TableUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,6 +30,9 @@ public class CharacterViewer extends AbstractForm {
 
     JTextField statsTextBox;
     JTextField nationTextBox;
+
+    JTable artifactsTable;
+    JTable spellsTable;
 
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -46,6 +55,20 @@ public class CharacterViewer extends AbstractForm {
 
             GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
             nationTextBox.setText(gm.getNationByNum(c.getNationNo()).getShortName());
+
+            ArrayList artis = new ArrayList();
+            for (Integer no : c.getArtifacts()) {
+                Artifact arti = (Artifact)gm.getArtifacts().findFirstByProperty("no", no);
+                if (arti == null) {
+                    arti = new Artifact();
+                    arti.setNo(no);
+                    arti.setName("---");
+                }
+                artis.add(arti);
+            }
+            ((BeanTableModel)artifactsTable.getModel()).setRows(artis);
+
+            ((BeanTableModel)spellsTable.getModel()).setRows(c.getSpells());
         }
 
     }
@@ -81,8 +104,47 @@ public class CharacterViewer extends AbstractForm {
         statsTextBox.setBorder(null);
         statsTextBox.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
+
+        glb.append(artifactsTable = new JTable(), 2, 1);
+        artifactsTable.setPreferredSize(new Dimension(150, 20));
+        ArtifactTableModel tableModel =
+            new ArtifactTableModel(this.getMessageSource()) {
+                protected String[] createColumnPropertyNames() {
+                    return new String[]{"no", "name"};
+                }
+
+                protected Class[] createColumnClasses() {
+                    return new Class[]{String.class, String.class};
+                }
+            };
+        tableModel.setRowNumbers(false);
+        artifactsTable.setModel(tableModel);
+        // todo think about this
+        TableUtils.setTableColumnWidths(artifactsTable, new int[]{30, 120});
+        artifactsTable.setBorder(null);
+
+        glb.nextLine();
+
+        glb.append(spellsTable = new JTable(), 2, 1);
+        spellsTable.setPreferredSize(new Dimension(150, 20));
+        ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
+            protected String[] createColumnPropertyNames() {
+                return new String[]{"spellId", "name", "proficiency"};
+            }
+
+            protected Class[] createColumnClasses() {
+                return new Class[]{Integer.class, String.class, String.class};
+            }
+        };
+        spellModel.setRowNumbers(false);
+        spellsTable.setModel(spellModel);
+        TableUtils.setTableColumnWidths(spellsTable, new int[]{30, 90, 30});
+        spellsTable.setBorder(null);
+        glb.nextLine();
+
         JPanel panel = glb.getPanel();
         panel.setBackground(Color.white);
         return panel;
     }
 }
+

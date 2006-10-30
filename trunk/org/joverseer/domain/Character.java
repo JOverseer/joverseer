@@ -57,11 +57,11 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.agentTotal = agentTotal;
     }
 
-    public ArrayList getArtifacts() {
+    public ArrayList<Integer> getArtifacts() {
         return artifacts;
     }
 
-    public void setArtifacts(ArrayList artifacts) {
+    public void setArtifacts(ArrayList<Integer> artifacts) {
         this.artifacts = artifacts;
     }
 

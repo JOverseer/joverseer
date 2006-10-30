@@ -56,4 +56,18 @@ public class Artifact implements Serializable {
     public void setPowers(ArrayList powers) {
         this.powers = powers;
     }
+
+    public String getPower1() {
+        if (powers.size() == 0) {
+            return "";
+        }
+        return powers.get(0).toString();
+    }
+
+    public String getPower2() {
+        if (powers.size() < 2) {
+            return "";
+        }
+        return powers.get(1).toString(); 
+    }
 }

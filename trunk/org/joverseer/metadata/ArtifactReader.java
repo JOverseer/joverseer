@@ -1,6 +1,7 @@
 package org.joverseer.metadata;
 
 import org.joverseer.metadata.domain.Artifact;
+import org.joverseer.support.Container;
 
 import java.util.HashMap;
 import java.io.BufferedReader;
@@ -29,8 +30,8 @@ public class ArtifactReader implements MetadataReader {
         gm.setArtifacts(loadArtifacts());
     }
 
-    private HashMap loadArtifacts() {
-        HashMap artifacts = new HashMap();
+    private Container loadArtifacts() {
+        Container artifacts = new Container();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(getArtifactFilename()));
@@ -54,7 +55,7 @@ public class ArtifactReader implements MetadataReader {
                 if (!power2.equals("")) {
                     artifact.getPowers().add(power2);
                 }
-                artifacts.put(artifact.getNo(), artifact);
+                artifacts.addItem(artifact);
             }
         }
         catch (IOException exc) {

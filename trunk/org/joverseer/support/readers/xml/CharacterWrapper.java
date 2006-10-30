@@ -234,12 +234,14 @@ public class CharacterWrapper {
 
         String spellId;
         String proficiency;
+        String name;
         ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
         for (String spell : (ArrayList<String>)getSpells()) {
             int i = spell.indexOf(' ');
             spellId = spell.substring(1, i);
             proficiency = spell.substring(spell.length() - 3, spell.length() - 1);
-            spells.add(new SpellProficiency(Integer.parseInt(spellId), Integer.parseInt(proficiency)));
+            name = spell.substring(i+1, spell.length() - 4);
+            spells.add(new SpellProficiency(Integer.parseInt(spellId), Integer.parseInt(proficiency), name));
         }
         character.setSpells(spells);
         switch (getInformationSource()) {

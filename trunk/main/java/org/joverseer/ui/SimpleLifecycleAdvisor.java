@@ -25,11 +25,17 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
+import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.binding.form.FormModel;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.xml.TurnXmlReader;
+import org.joverseer.domain.Order;
+import org.joverseer.ui.orders.OrderEditorForm;
 
 import java.awt.*;
 
@@ -70,7 +76,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).setGame(game);
 
         try {
-            TurnXmlReader r = new TurnXmlReader();
+            TurnXmlReader r = new TurnXmlReader(game, "c:/middleearth/g26/t0/g026n07t000.xml");
             r.readFile("c:/middleearth/g26/t0/g026n07t000.xml");
             r.updateGame(game);
 //            r = new TurnXmlReader();
@@ -149,6 +155,9 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         if( _logger.isInfoEnabled() ) {
             _logger.info("onPostStartup()");
         }
+
+
+
     }
 
 }

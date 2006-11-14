@@ -94,7 +94,6 @@
         <property name="imageSourceId"><idref bean="imageSource"/></property>
         <property name="formComponentInterceptorFactoryId"><idref bean="formComponentInterceptorFactory"/></property>
         <property name="applicationObjectConfigurerId"><idref bean="applicationObjectConfigurer" /></property>
-        <property name="rulesSourceId"><idref bean="rulesSource"/></property>
         <property name="applicationPageFactoryId"><idref bean="joverseerApplicationPageFactory"/></property>
         <property name="binderSelectionStrategyId"><idref bean="binderSelectionStrategy"/></property>
         <property name="conversionServiceId"><idref bean="conversionService"/></property>
@@ -354,10 +353,6 @@
          <property name="hasTitleBar"><value>false</value></property>
     </bean>
 
-        <bean id="rulesSource"
-		class="org.joverseer.ui.RulesSource"/>
-
-
     <bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
         <property name="mapColumns">
             <value>44</value>
@@ -416,6 +411,11 @@
                 <bean class="org.joverseer.metadata.PopulationCenterReader">
                     <property name="populationCenterFilename">
                         <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/2950/2950.pcs</value>
+                    </property>
+                </bean>
+                <bean class="org.joverseer.metadata.OrderReader">
+                    <property name="orderFilename">
+                        <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/orders.csv</value>
                     </property>
                 </bean>
             </list>

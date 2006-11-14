@@ -43,6 +43,8 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     InformationSourceEnum informationSource;
     InfoSource infoSource;
 
+    Order[] orders = new Order[]{new Order(this), new Order(this)};
+
     public int getAgent() {
         return agent;
     }
@@ -227,6 +229,14 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         int hexN = Integer.parseInt(hexNo);
         setX(hexN / 100);
         setY(hexN % 100);
+    }
+
+    public Order[] getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Order[] orders) {
+        this.orders = orders;
     }
 
     public static String getIdFromName(String name) {

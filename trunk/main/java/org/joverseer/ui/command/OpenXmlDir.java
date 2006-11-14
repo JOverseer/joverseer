@@ -38,7 +38,7 @@ public class OpenXmlDir extends ActionCommand {
             for (File f : files) {
                 if (f.getAbsolutePath().endsWith(".xml")) {
                     try {
-                        TurnXmlReader r = new TurnXmlReader();
+                        TurnXmlReader r = new TurnXmlReader(gh.getGame(), f.getAbsolutePath());
                         r.readFile(f.getAbsolutePath());
                         r.updateGame(gh.getGame());
                         Application.instance().getApplicationContext().publishEvent(

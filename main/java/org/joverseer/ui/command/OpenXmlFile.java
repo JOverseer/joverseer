@@ -35,10 +35,10 @@ public class OpenXmlFile extends ActionCommand {
     protected void doExecuteCommand() {
         File file = FileChooserUtils.showFileChooser(Application.instance().getActiveWindow().getControl(), ".xml", "Select", "Xml Turn File");
         try {
-            TurnXmlReader r = new TurnXmlReader();
+            GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
+            TurnXmlReader r = new TurnXmlReader(gh.getGame(), file.getAbsolutePath());
             r.readFile(file.getAbsolutePath());
 
-            GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
             r.updateGame(gh.getGame());
 
             Application.instance().getApplicationContext().publishEvent(

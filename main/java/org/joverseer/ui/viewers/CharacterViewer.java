@@ -1,14 +1,17 @@
 package org.joverseer.ui.viewers;
 
 import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
+import org.joverseer.domain.Order;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Artifact;
 import org.joverseer.ui.listviews.ArtifactTableModel;
@@ -39,6 +42,12 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
 
     JToggleButton btnArtifacts;
     JToggleButton btnSpells;
+    JToggleButton btnOrders;
+
+    JComponent order1comp;
+    JComponent order2comp;
+    OrderViewer order1;
+    OrderViewer order2;
 
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -48,6 +57,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         if (object != getFormObject()) {
             btnArtifacts.getModel().setSelected(false);
             btnSpells.getModel().setSelected(false);
+            btnOrders.getModel().setSelected(false);
         }
         super.setFormObject(object);
         if (statsTextBox != null) {
@@ -89,6 +99,16 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
             }
             ((BeanTableModel)spellsTable.getModel()).setRows(spells);
             spellsTable.setPreferredSize(new Dimension(spellsTable.getWidth(), 16 * spells.size()));
+
+            order1.setFormObject(c.getOrders()[0]);
+            order2.setFormObject(c.getOrders()[1]);
+            if (btnOrders.getModel().isSelected()) {
+                order1comp.setVisible(true);
+                order2comp.setVisible(true);
+            } else {
+                order1comp.setVisible(false);
+                order2comp.setVisible(false);
+            }
         }
         
     }
@@ -135,14 +155,21 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         btnSpells .addActionListener(this);
         glb.append(btnSpells);
 
+        btnOrders = new JToggleButton();
+        ico = new ImageIcon(imgSource.getImage("order.image"));
+        btnOrders.setIcon(ico);
+        btnOrders.setPreferredSize(new Dimension(16,16));
+        btnOrders.addActionListener(this);
+        glb.append(btnOrders);
+
         glb.nextLine();
 
-        glb.append(statsTextBox = new JTextField(), 4, 1);
+        glb.append(statsTextBox = new JTextField(), 5, 1);
         statsTextBox.setBorder(null);
         statsTextBox.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
 
-        glb.append(artifactsTable = new JTable(), 4, 1);
+        glb.append(artifactsTable = new JTable(), 5, 1);
         artifactsTable.setPreferredSize(new Dimension(150, 20));
         ArtifactTableModel tableModel =
             new ArtifactTableModel(this.getMessageSource()) {
@@ -162,7 +189,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
 
         glb.nextLine();
 
-        glb.append(spellsTable = new JTable(), 2, 1);
+        glb.append(spellsTable = new JTable(), 5, 1);
         spellsTable.setPreferredSize(new Dimension(150, 12));
         ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
             protected String[] createColumnPropertyNames() {
@@ -177,6 +204,13 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         spellsTable.setModel(spellModel);
         TableUtils.setTableColumnWidths(spellsTable, new int[]{30, 90, 30});
         spellsTable.setBorder(null);
+        glb.nextLine();
+
+        order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+        glb.append(order1comp = order1.createFormControl(), 4, 1);
+        glb.nextLine();
+        order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+        glb.append(order2comp = order2.createFormControl(), 4, 1);
         glb.nextLine();
 
         JPanel panel = glb.getPanel();

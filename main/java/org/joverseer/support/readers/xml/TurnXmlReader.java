@@ -7,6 +7,7 @@ import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.log4j.Logger;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
+import org.joverseer.support.AbstractTask;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -28,14 +29,26 @@ import java.util.regex.Matcher;
  * Time: 8:46:17 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TurnXmlReader {
+public class TurnXmlReader extends AbstractTask {
     static Logger logger = Logger.getLogger(TurnXmlReader.class);
 
     TurnInfo turnInfo = null;
+    Digester digester = null;
+    Turn turn = null;
+    InfoSource infoSource = null;
+
+    Game game;
+    String filename;
+
+    public TurnXmlReader(Game game, String filename) {
+        this.game = game;
+        this.filename = filename;
+    }
+
 
     public void readFile(String fileName) throws Exception {
         try {
-            Digester digester = new Digester();
+            digester = new Digester();
             digester.setValidating(false);
             digester.setRules(new RegexRules(new SimpleRegexMatcher()));
             // parse turn info
@@ -155,11 +168,24 @@ public class TurnXmlReader {
                             new String[]{"BuyPrice", "SellPrice", "MarketAvail", "NationStores", "NationProduction"},
                             new String[]{"buyPrice", "sellPrice", "marketAvail", "nationStores", "nationProduction"}));
             snpr.setAllowUnknownChildElements(true);
+            setProgress(10);
+            setMessage("Parsing file...");
             turnInfo = (TurnInfo) digester.parse(fileName);
+            setProgress(30);
         }
         catch (Exception exc) {
             //todo fix
             throw new Exception("Error parsing Xml Turn file.", exc);
+        }
+    }
+
+    public void run() {
+        try {
+            readFile(filename);
+            updateGame(game);
+        }
+        catch (Exception exc) {
+            // do nothing
         }
     }
 
@@ -169,10 +195,11 @@ public class TurnXmlReader {
             throw new Exception("Cannot import past turns.");
         }
         try {
-            Turn turn = null;
+            turn = null;
             if (turnInfo.getTurnNo() == game.getMaxTurn()) {
                 turn = game.getTurn();
             } else {
+                setMessage("Initilizing turn...");
                 turn = new Turn();
                 turn.setTurnNo(turnInfo.getTurnNo());
                 TurnInitializer ti = new TurnInitializer();
@@ -180,208 +207,219 @@ public class TurnXmlReader {
                 ti.initializeTurnWith(turn, lastTurn);
                 game.addTurn(turn);
             }
-
-            InfoSource infoSource = new XmlTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
-
-            Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
-            for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) turnInfo.getPopCentres().getItems()) {
-                PopulationCenter newPc = null;
-                try {
-                    newPc = pcw.getPopulationCenter();
-                    logger.debug(String.format("Handling Pop Centre at {0},{1} with information source {2}",
-                            String.valueOf(newPc.getX()),
-                            String.valueOf(newPc.getY()),
-                            newPc.getInformationSource().toString()));
-                    newPc.setInfoSource(infoSource);
-                    PopulationCenter oldPc = (PopulationCenter) pcs.findFirstByProperties(new String[]{"x", "y"}, new Object[]{newPc.getX(), newPc.getY()});
-                    if (oldPc == null) {
-                        // no pc found - add newPc
-                        logger.debug("No Pop Centre found in turn, add.");
-                        pcs.addItem(newPc);
-                    } else {
-                        logger.debug("Pop Centre found in turn.");
-                        // distinguish cases
-                        if (newPc.getInformationSource().getValue() >= oldPc.getInformationSource().getValue()) {
-                            pcs.removeItem(oldPc);
-                            pcs.addItem(newPc);
-                        } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
-                            // do nothing
-                        }
-                        else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
-                            if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
-                                newPc.setName(oldPc.getName());
-                                newPc.setNationNo(oldPc.getNationNo());
-                            }
-                            pcs.removeItem(oldPc);
-                            pcs.addItem(newPc);
-                        }
-
-//                        if (newPc.getInformationSource() == InformationSourceEnum.exhaustive ||
-//                                newPc.getInformationSource() == InformationSourceEnum.detailed) {
-//                            logger.debug("Replace.");
-//                            pcs.removeItem(oldPc);
-//                            pcs.addItem(newPc);
-//                        } else if (newPc.getInformationSource() == InformationSourceEnum.some) {
-//                            logger.debug("Replace.");
-//                            pcs.removeItem(oldPc);
-//                            pcs.addItem(newPc);
-//                        } else if (newPc.getInformationSource() == InformationSourceEnum.limited) {
-//                            logger.debug("Replace.");
-//                            pcs.removeItem(oldPc);
-//                            pcs.addItem(newPc);
-//                        }
-                    }
-                }
-                catch (Exception exc) {
-                    throw exc;
-                }
-
-            }
-
-            Container chars = turn.getContainer(TurnElementsEnum.Character);
-            for (CharacterWrapper cw : (ArrayList<CharacterWrapper>) turnInfo.getCharacters().getItems()) {
-                Character newCharacter = null;
-                Character oldCharacter = null;
-                try {
-                    newCharacter = cw.getCharacter();
-                    oldCharacter = (Character) chars.findFirstByProperties(new String[]{"id"}, new Object[]{newCharacter.getId()});
-                    newCharacter.setInfoSource(infoSource);
-                    logger.debug(String.format("Handling Character {3} at {0},{1} with information source {2}",
-                            String.valueOf(newCharacter.getX()),
-                            String.valueOf(newCharacter.getY()),
-                            newCharacter.getInformationSource().toString(),
-                            newCharacter.getId()));
-                    if (oldCharacter == null) {
-                        // no char found - add
-                        logger.debug("No Character found in turn, add.");
-                        chars.addItem(newCharacter);
-                    } else {
-                        // char found
-                        logger.debug("Character found in turn.");
-                        if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
-                                (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue()))
-                        {
-                            logger.debug("Replace.");
-                            chars.removeItem(oldCharacter);
-                            chars.addItem(newCharacter);
-                        }
-                    }
-                }
-                catch (Exception exc) {
-                    throw exc;
-                }
-            }
-
-            Container armies = turn.getContainer(TurnElementsEnum.Army);
-            for (ArmyWrapper aw : (ArrayList<ArmyWrapper>) turnInfo.getArmies().getItems()) {
-                Army newArmy = null;
-                Army oldArmy = null;
-                try {
-                    newArmy = aw.getArmy();
-                    oldArmy = (Army) armies.findFirstByProperties(new String[]{"commanderName"}, new Object[]{newArmy.getCommanderName()});
-                    newArmy.setInfoSource(infoSource);
-                    logger.debug(String.format("Handling Army {3} at {0},{1} with information source {2}",
-                            String.valueOf(newArmy.getX()),
-                            String.valueOf(newArmy.getY()),
-                            newArmy.getInformationSource().toString(),
-                            newArmy.getCommanderName()));
-                    if (oldArmy== null) {
-                        // no char found - add
-                        logger.debug("No Army found in turn, add.");
-                        armies.addItem(newArmy);
-                    } else {
-                        // char found
-                        logger.debug("Army found in turn.");
-                        if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue())
-                        {
-                            logger.debug("Replace.");
-                            armies.removeItem(oldArmy);
-                            armies.addItem(newArmy);
-                        }
-                    }
-
-                    // look for commander
-                    String commanderName = newArmy.getCommanderName();
-                    String commanderId = Character.getIdFromName(commanderName);
-                    Character ch = (Character)chars.findFirstByProperty("id", commanderId);
-                    if (ch == null) {
-                        // no found, add
-                        Character cmd = new Character();
-                        cmd.setName(commanderName);
-                        cmd.setId(commanderId);
-                        cmd.setNationNo(newArmy.getNationNo());
-                        cmd.setX(newArmy.getX());
-                        cmd.setY(newArmy.getY());
-                        DerivedFromArmyInfoSource is = new DerivedFromArmyInfoSource();
-                        InformationSourceEnum ise = InformationSourceEnum.some;
-                        cmd.setInformationSource(ise);
-                        cmd.setInfoSource(is);
-                        chars.addItem(cmd);
-                    }
-                }
-                catch (Exception exc) {
-                    throw exc;
-                }
-            }
-
-            Container nationEconomies = turn.getContainer(TurnElementsEnum.NationEconomy);
-            NationEconomy oldNe = (NationEconomy)nationEconomies.findFirstByProperty("nationNo", turnInfo.getNationNo());
-            if (oldNe != null) {
-                nationEconomies.removeItem(oldNe);
-            }
-            NationEconomy ne = turnInfo.getEconomy().getNationEconomy();
-            ne.setNationNo(turnInfo.getNationNo());
-            nationEconomies.addItem(ne);
-
-            Container hexInfos = turn.getContainer(TurnElementsEnum.HexInfo);
-
-            ArrayList newHexInfos = turnInfo.getNationInfoWrapper().getHexInfos(turnInfo.getNationNo());
-            for (HexInfo hi : (ArrayList<HexInfo>)newHexInfos) {
-                HexInfo oldHi = (HexInfo)hexInfos.findFirstByProperty("hexNo", hi.getHexNo());
-                if (oldHi == null) {
-                    hexInfos.addItem(hi);
-                } else {
-                    oldHi.merge(hi);
-                }
-            }
-
-            // remove PCs if HexInfo shows empty hex
-            ArrayList toRemove = new ArrayList();
-            for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
-                if (pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
-                if (!MetadataSource.class.isInstance(pc.getInfoSource())) continue;
-                if (pc.getSize() == PopulationCenterSizeEnum.ruins) continue;
-                HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
-                if (hi.getVisible() && !hi.getHasPopulationCenter()) {
-                    toRemove.add(pc);
-                }
-            }
-            pcs.removeAll(toRemove);
-
-            Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
-            nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
-
-            ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
-            Pattern hexLoc = Pattern.compile("\\d\\d\\d\\d");
-            for (String msg : (ArrayList<String>)nationMsgs) {
-                NationMessage nm = new NationMessage();
-                nm.setMessage(msg);
-                nm.setNationNo(turnInfo.getNationNo());
-                Matcher m = hexLoc.matcher(msg);
-                if (m.find()) {
-                    String hexStr = m.group();
-                    int hexNo = Integer.parseInt(hexStr);
-                    int x = hexNo / 100;
-                    int y = hexNo % 100;
-                    nm.setX(x);
-                    nm.setY(y);
-                }
-                nationMessages.addItem(nm);
-            }
+            infoSource = new XmlTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+            setProgress(50);
+            setMessage("Updating PCs...");
+            updatePCs();
+            setProgress(60);
+            setMessage("Updating Chars...");
+            updateChars();
+            setProgress(70);
+            setMessage("Updating Armies...");
+            updateArmies();
+            setProgress(80);
+            setMessage("Updating Nation Info...");
+            updateNationInfo();
+            setProgress(90);
+            setMessage("Updating Nation Messages...");
+            updateNationMessages();
+            setProgress(100);
+            setMessage("Completed.");
         }
         catch (Exception exc) {
+            setMessage("Unexpected error: " + exc.getMessage() + ".");
             throw new Exception("Error updating game from Xml file.", exc);
         }
+    }
 
+    private void updatePCs() throws Exception {
+        Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
+        for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) turnInfo.getPopCentres().getItems()) {
+            PopulationCenter newPc;
+            try {
+                newPc = pcw.getPopulationCenter();
+                logger.debug(String.format("Handling Pop Centre at {0},{1} with information source {2}",
+                        String.valueOf(newPc.getX()),
+                        String.valueOf(newPc.getY()),
+                        newPc.getInformationSource().toString()));
+                newPc.setInfoSource(infoSource);
+                PopulationCenter oldPc = (PopulationCenter) pcs.findFirstByProperties(new String[]{"x", "y"}, new Object[]{newPc.getX(), newPc.getY()});
+                if (oldPc == null) {
+                    // no pc found - add newPc
+                    logger.debug("No Pop Centre found in turn, add.");
+                    pcs.addItem(newPc);
+                } else {
+                    logger.debug("Pop Centre found in turn.");
+                    // distinguish cases
+                    if (newPc.getInformationSource().getValue() >= oldPc.getInformationSource().getValue()) {
+                        pcs.removeItem(oldPc);
+                        pcs.addItem(newPc);
+                    } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
+                        // do nothing
+                    }
+                    else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
+                        if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
+                            newPc.setName(oldPc.getName());
+                            newPc.setNationNo(oldPc.getNationNo());
+                        }
+                        pcs.removeItem(oldPc);
+                        pcs.addItem(newPc);
+                    }
+                }
+            }
+            catch (Exception exc) {
+                throw exc;
+            }
+
+        }
+    }
+    private void updateChars() throws Exception {
+        Container chars = turn.getContainer(TurnElementsEnum.Character);
+        for (CharacterWrapper cw : (ArrayList<CharacterWrapper>) turnInfo.getCharacters().getItems()) {
+            Character newCharacter;
+            Character oldCharacter;
+            try {
+                newCharacter = cw.getCharacter();
+                oldCharacter = (Character) chars.findFirstByProperties(new String[]{"id"}, new Object[]{newCharacter.getId()});
+                newCharacter.setInfoSource(infoSource);
+                logger.debug(String.format("Handling Character {3} at {0},{1} with information source {2}",
+                        String.valueOf(newCharacter.getX()),
+                        String.valueOf(newCharacter.getY()),
+                        newCharacter.getInformationSource().toString(),
+                        newCharacter.getId()));
+                if (oldCharacter == null) {
+                    // no char found - add
+                    logger.debug("No Character found in turn, add.");
+                    chars.addItem(newCharacter);
+                } else {
+                    // char found
+                    logger.debug("Character found in turn.");
+                    if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
+                            (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue()))
+                    {
+                        logger.debug("Replace.");
+                        chars.removeItem(oldCharacter);
+                        chars.addItem(newCharacter);
+                    }
+                }
+            }
+            catch (Exception exc) {
+                throw exc;
+            }
+        }
+    }
+
+    private void updateArmies() throws Exception {
+        Container chars = turn.getContainer(TurnElementsEnum.Character);
+        Container armies = turn.getContainer(TurnElementsEnum.Army);
+        for (ArmyWrapper aw : (ArrayList<ArmyWrapper>) turnInfo.getArmies().getItems()) {
+            Army newArmy;
+            Army oldArmy;
+            try {
+                newArmy = aw.getArmy();
+                oldArmy = (Army) armies.findFirstByProperties(new String[]{"commanderName"}, new Object[]{newArmy.getCommanderName()});
+                newArmy.setInfoSource(infoSource);
+                logger.debug(String.format("Handling Army {3} at {0},{1} with information source {2}",
+                        String.valueOf(newArmy.getX()),
+                        String.valueOf(newArmy.getY()),
+                        newArmy.getInformationSource().toString(),
+                        newArmy.getCommanderName()));
+                if (oldArmy== null) {
+                    // no char found - add
+                    logger.debug("No Army found in turn, add.");
+                    armies.addItem(newArmy);
+                } else {
+                    // char found
+                    logger.debug("Army found in turn.");
+                    if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue())
+                    {
+                        logger.debug("Replace.");
+                        armies.removeItem(oldArmy);
+                        armies.addItem(newArmy);
+                    }
+                }
+
+                // look for commander
+                String commanderName = newArmy.getCommanderName();
+                String commanderId = Character.getIdFromName(commanderName);
+                Character ch = (Character)chars.findFirstByProperty("id", commanderId);
+                if (ch == null) {
+                    // no found, add
+                    Character cmd = new Character();
+                    cmd.setName(commanderName);
+                    cmd.setId(commanderId);
+                    cmd.setNationNo(newArmy.getNationNo());
+                    cmd.setX(newArmy.getX());
+                    cmd.setY(newArmy.getY());
+                    DerivedFromArmyInfoSource is = new DerivedFromArmyInfoSource();
+                    InformationSourceEnum ise = InformationSourceEnum.some;
+                    cmd.setInformationSource(ise);
+                    cmd.setInfoSource(is);
+                    chars.addItem(cmd);
+                }
+            }
+            catch (Exception exc) {
+                throw exc;
+            }
+        }
+    }
+
+    private void updateNationInfo() {
+        Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
+        Container nationEconomies = turn.getContainer(TurnElementsEnum.NationEconomy);
+        NationEconomy oldNe = (NationEconomy)nationEconomies.findFirstByProperty("nationNo", turnInfo.getNationNo());
+        if (oldNe != null) {
+            nationEconomies.removeItem(oldNe);
+        }
+        NationEconomy ne = turnInfo.getEconomy().getNationEconomy();
+        ne.setNationNo(turnInfo.getNationNo());
+        nationEconomies.addItem(ne);
+
+        Container hexInfos = turn.getContainer(TurnElementsEnum.HexInfo);
+
+        ArrayList newHexInfos = turnInfo.getNationInfoWrapper().getHexInfos(turnInfo.getNationNo());
+        for (HexInfo hi : (ArrayList<HexInfo>)newHexInfos) {
+            HexInfo oldHi = (HexInfo)hexInfos.findFirstByProperty("hexNo", hi.getHexNo());
+            if (oldHi == null) {
+                hexInfos.addItem(hi);
+            } else {
+                oldHi.merge(hi);
+            }
+        }
+        // remove PCs if HexInfo shows empty hex
+        ArrayList toRemove = new ArrayList();
+        for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
+            if (pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
+            if (!MetadataSource.class.isInstance(pc.getInfoSource())) continue;
+            if (pc.getSize() == PopulationCenterSizeEnum.ruins) continue;
+            HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+            if (hi.getVisible() && !hi.getHasPopulationCenter()) {
+                toRemove.add(pc);
+            }
+        }
+        pcs.removeAll(toRemove);
+    }
+
+    private void updateNationMessages() {
+        Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
+        nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
+
+        ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+        Pattern hexLoc = Pattern.compile("\\d\\d\\d\\d");
+        for (String msg : (ArrayList<String>)nationMsgs) {
+            NationMessage nm = new NationMessage();
+            nm.setMessage(msg);
+            nm.setNationNo(turnInfo.getNationNo());
+            Matcher m = hexLoc.matcher(msg);
+            if (m.find()) {
+                String hexStr = m.group();
+                int hexNo = Integer.parseInt(hexStr);
+                int x = hexNo / 100;
+                int y = hexNo % 100;
+                nm.setX(x);
+                nm.setY(y);
+            }
+            nationMessages.addItem(nm);
+        }
     }
 }

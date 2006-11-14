@@ -1,5 +1,7 @@
 package org.joverseer.metadata.orders;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -7,7 +9,7 @@ package org.joverseer.metadata.orders;
  * Time: 12:54:23 μμ
  * To change this template use File | Settings | File Templates.
  */
-public enum OrderTypeEnum {
+public enum OrderTypeEnum implements Serializable {
     Command,
     CommandMisc,
     Emmisary,

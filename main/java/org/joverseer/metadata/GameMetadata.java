@@ -26,6 +26,7 @@ public class GameMetadata implements Serializable {
     ArrayList hexes = new ArrayList();
     ArrayList nations = new ArrayList();
     Container artifacts = new Container();
+    Container orders = new Container();
 
     Container populationCenters = new Container();
 
@@ -114,5 +115,13 @@ public class GameMetadata implements Serializable {
 
     public void setPopulationCenters(Container populationCenters) {
         this.populationCenters = populationCenters;
+    }
+
+    public Container getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Container orders) {
+        this.orders = orders;
     }
 }

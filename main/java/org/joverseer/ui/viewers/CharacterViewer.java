@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class CharacterViewer extends AbstractForm implements ActionListener {
     public static final String FORM_PAGE = "CharacterViewer";
 
+    JTextField characterName;
     JTextField statsTextBox;
     JTextField nationTextBox;
 
@@ -61,6 +62,8 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         }
         super.setFormObject(object);
         if (statsTextBox != null) {
+            characterName.setCaretPosition(0);
+
             Character c = (Character)object;
             String txt = "";
             txt += getStatText("C", c.getCommand(), c.getCommandTotal());
@@ -129,6 +132,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         JComponent c;
 
         glb.append(c = new JTextField());
+        characterName = (JTextField)c;
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setPreferredSize(new Dimension(100, 12));

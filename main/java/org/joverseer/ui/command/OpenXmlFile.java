@@ -4,9 +4,10 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.filechooser.FileChooserUtils;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
-import org.springframework.richclient.dialog.ApplicationDialog;
-import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.dialog.*;
 import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.binding.form.FormModel;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.events.GameChangedListener;
@@ -14,10 +15,14 @@ import org.joverseer.ui.events.SelectedHexChangedListener;
 import org.joverseer.ui.events.GameChangedEvent;
 import org.joverseer.ui.SimpleLifecycleAdvisor;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.JOverseerClientProgressMonitor;
+import org.joverseer.ui.orders.OrderEditorForm;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.domain.Order;
 
 import java.io.File;
 import java.util.EventListener;
+import java.awt.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,10 +41,29 @@ public class OpenXmlFile extends ActionCommand {
         File file = FileChooserUtils.showFileChooser(Application.instance().getActiveWindow().getControl(), ".xml", "Select", "Xml Turn File");
         try {
             GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
-            TurnXmlReader r = new TurnXmlReader(gh.getGame(), file.getAbsolutePath());
-            r.readFile(file.getAbsolutePath());
+            final TurnXmlReader r = new TurnXmlReader(gh.getGame(), file.getAbsolutePath());
+            FormModel formModel = FormModelHelper.createFormModel(r);
+            final JOverseerClientProgressMonitor monitor = new JOverseerClientProgressMonitor(formModel);
+            FormBackedDialogPage page = new FormBackedDialogPage(monitor);
+            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                protected void onAboutToShow() {
+                    monitor.taskStarted("Import XML Turn.", 100);
+                    r.setMonitor(monitor);
+                    Thread t = new Thread(r);
+                    t.start();
+                }
 
-            r.updateGame(gh.getGame());
+                protected boolean onFinish() {
+                    return true;
+                }
+
+                protected ActionCommand getCancelCommand() {
+                    return null;
+                }
+            };
+
+            //dialog.setTitle();
+            dialog.showDialog();
 
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));

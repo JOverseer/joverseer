@@ -1,6 +1,11 @@
 package org.joverseer.support.readers.xml;
 
 import org.joverseer.domain.*;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.GameHolder;
+import org.springframework.richclient.application.Application;
 
 /**
  * Created by IntelliJ IDEA.
@@ -146,6 +151,10 @@ public class ArmyWrapper {
         switch (getSize()) {
             case 0:
                 a.setSize(ArmySizeEnum.unknown);
+                break;
+            case 1:
+                a.setSize(ArmySizeEnum.tiny);
+                break;
             case 2:
                 a.setSize(ArmySizeEnum.small);
                 break;
@@ -174,6 +183,24 @@ public class ArmyWrapper {
                 break;
             case 4:
                 a.setInformationSource(InformationSourceEnum.limited);
+                break;
+        }
+
+        GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+
+        switch (getNationAllegience()) {
+            case 0:
+//                Nation nation = gm.getNationByNum(getNation());
+//                if (nation != null) {
+//                    a.setNationAllegiance(nation.getAllegiance());
+//                }
+                a.setNationAllegiance(NationAllegianceEnum.DarkServants);
+                break;
+            case 1:
+                a.setNationAllegiance(NationAllegianceEnum.FreePeople);
+                break;
+            case 2:
+                a.setNationAllegiance(NationAllegianceEnum.Neutral);
                 break;
         }
 

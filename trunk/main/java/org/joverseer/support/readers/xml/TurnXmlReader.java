@@ -7,7 +7,6 @@ import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.log4j.Logger;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
-import org.joverseer.support.AbstractTask;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -17,6 +16,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
+import org.springframework.richclient.progress.ProgressMonitor;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -29,7 +29,7 @@ import java.util.regex.Matcher;
  * Time: 8:46:17 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TurnXmlReader extends AbstractTask {
+public class TurnXmlReader implements Runnable{
     static Logger logger = Logger.getLogger(TurnXmlReader.class);
 
     TurnInfo turnInfo = null;
@@ -40,9 +40,19 @@ public class TurnXmlReader extends AbstractTask {
     Game game;
     String filename;
 
+    ProgressMonitor monitor;
+
     public TurnXmlReader(Game game, String filename) {
         this.game = game;
         this.filename = filename;
+    }
+
+    public ProgressMonitor getMonitor() {
+        return monitor;
+    }
+
+    public void setMonitor(ProgressMonitor monitor) {
+        this.monitor = monitor;
     }
 
 
@@ -168,10 +178,11 @@ public class TurnXmlReader extends AbstractTask {
                             new String[]{"BuyPrice", "SellPrice", "MarketAvail", "NationStores", "NationProduction"},
                             new String[]{"buyPrice", "sellPrice", "marketAvail", "nationStores", "nationProduction"}));
             snpr.setAllowUnknownChildElements(true);
-            setProgress(10);
-            setMessage("Parsing file...");
+            if (getMonitor() != null) {
+                getMonitor().subTaskStarted(String.format("Parsing file %s...", new String[]{fileName}));
+                getMonitor().worked(5);
+            }
             turnInfo = (TurnInfo) digester.parse(fileName);
-            setProgress(30);
         }
         catch (Exception exc) {
             //todo fix
@@ -199,7 +210,6 @@ public class TurnXmlReader extends AbstractTask {
             if (turnInfo.getTurnNo() == game.getMaxTurn()) {
                 turn = game.getTurn();
             } else {
-                setMessage("Initilizing turn...");
                 turn = new Turn();
                 turn.setTurnNo(turnInfo.getTurnNo());
                 TurnInitializer ti = new TurnInitializer();
@@ -208,26 +218,40 @@ public class TurnXmlReader extends AbstractTask {
                 game.addTurn(turn);
             }
             infoSource = new XmlTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
-            setProgress(50);
-            setMessage("Updating PCs...");
+            if (getMonitor() != null) {
+                getMonitor().worked(50);
+                getMonitor().subTaskStarted("Updating PCs...");
+            }
             updatePCs();
-            setProgress(60);
-            setMessage("Updating Chars...");
+            if (getMonitor() != null) {
+                getMonitor().worked(60);
+                getMonitor().subTaskStarted("Updating Chars...");
+            }
             updateChars();
-            setProgress(70);
-            setMessage("Updating Armies...");
+            if (getMonitor() != null) {
+                getMonitor().worked(70);
+                getMonitor().subTaskStarted("Updating Armies...");
+            }
             updateArmies();
-            setProgress(80);
-            setMessage("Updating Nation Info...");
+            if (getMonitor() != null) {
+                getMonitor().worked(80);
+                getMonitor().subTaskStarted("Updating Nation Info...");
+            }
             updateNationInfo();
-            setProgress(90);
-            setMessage("Updating Nation Messages...");
+            if (getMonitor() != null) {
+                getMonitor().worked(90);
+                getMonitor().subTaskStarted("Updating Nation Messages...");
+            }
             updateNationMessages();
-            setProgress(100);
-            setMessage("Completed.");
+            if (getMonitor() != null) {
+                getMonitor().worked(100);
+            }
         }
         catch (Exception exc) {
-            setMessage("Unexpected error: " + exc.getMessage() + ".");
+            if (getMonitor() != null) {
+                getMonitor().worked(100);
+                getMonitor().subTaskStarted("Unexpected error : '" + exc.getMessage() + "'.");
+            }
             throw new Exception("Error updating game from Xml file.", exc);
         }
     }
@@ -362,6 +386,7 @@ public class TurnXmlReader extends AbstractTask {
                 throw exc;
             }
         }
+        
     }
 
     private void updateNationInfo() {

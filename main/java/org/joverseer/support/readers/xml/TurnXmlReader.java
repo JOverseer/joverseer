@@ -275,7 +275,11 @@ public class TurnXmlReader implements Runnable{
                 } else {
                     logger.debug("Pop Centre found in turn.");
                     // distinguish cases
-                    if (newPc.getInformationSource().getValue() >= oldPc.getInformationSource().getValue()) {
+                    if (newPc.getInformationSource().getValue() > oldPc.getInformationSource().getValue() ||
+                            // added to handle issue with Unknown map icons overwritting pcs derived from previous turn
+                            (newPc.getInformationSource().getValue() == oldPc.getInformationSource().getValue() &&
+                              newPc.getInfoSource().getTurnNo() > oldPc.getInfoSource().getTurnNo()))
+                    {
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
                     } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
@@ -349,9 +353,34 @@ public class TurnXmlReader implements Runnable{
                         newArmy.getInformationSource().toString(),
                         newArmy.getCommanderName()));
                 if (oldArmy== null) {
+                    // look for "Unknown map icon" army at same hex with same allegiance
+                    ArrayList oldArmies = armies.findAllByProperties(new String[]{"x", "y"}, new Object[]{newArmy.getX(), newArmy.getY()});
+
                     // no char found - add
                     logger.debug("No Army found in turn, add.");
-                    armies.addItem(newArmy);
+                    if (newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) {
+                        // new army is Unknown
+                        // check that there is not already an army of the same allegiance that is known
+                        boolean bFound = false;
+                        for (Army oa : (ArrayList<Army>)oldArmies) {
+                            if (!oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") ||
+                                    oa.getNationAllegiance() != newArmy.getNationAllegiance()) {
+                                bFound = true;
+                            }
+                        }
+                        if (!bFound) { // if no known army, add
+                            armies.addItem(newArmy);
+                        }
+                    } else {
+                        for (Army oa : (ArrayList<Army>)oldArmies) {
+                            if (oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") &&
+                                    oa.getNationAllegiance() == newArmy.getNationAllegiance()) {
+                                armies.removeItem(oa);
+                            }
+                        }
+                        armies.addItem(newArmy);
+                    }
+
                 } else {
                     // char found
                     logger.debug("Army found in turn.");
@@ -365,28 +394,31 @@ public class TurnXmlReader implements Runnable{
 
                 // look for commander
                 String commanderName = newArmy.getCommanderName();
-                String commanderId = Character.getIdFromName(commanderName);
-                Character ch = (Character)chars.findFirstByProperty("id", commanderId);
-                if (ch == null) {
-                    // no found, add
-                    Character cmd = new Character();
-                    cmd.setName(commanderName);
-                    cmd.setId(commanderId);
-                    cmd.setNationNo(newArmy.getNationNo());
-                    cmd.setX(newArmy.getX());
-                    cmd.setY(newArmy.getY());
-                    DerivedFromArmyInfoSource is = new DerivedFromArmyInfoSource();
-                    InformationSourceEnum ise = InformationSourceEnum.some;
-                    cmd.setInformationSource(ise);
-                    cmd.setInfoSource(is);
-                    chars.addItem(cmd);
+                // do not generate character for unknown armies
+                if (!commanderName.toUpperCase().startsWith("UNKNOWN ")) {
+                    String commanderId = Character.getIdFromName(commanderName);
+                    Character ch = (Character)chars.findFirstByProperty("id", commanderId);
+                    if (ch == null) {
+                        // no found, add
+                        Character cmd = new Character();
+                        cmd.setName(commanderName);
+                        cmd.setId(commanderId);
+                        cmd.setNationNo(newArmy.getNationNo());
+                        cmd.setX(newArmy.getX());
+                        cmd.setY(newArmy.getY());
+                        DerivedFromArmyInfoSource is = new DerivedFromArmyInfoSource();
+                        InformationSourceEnum ise = InformationSourceEnum.some;
+                        cmd.setInformationSource(ise);
+                        cmd.setInfoSource(is);
+                        chars.addItem(cmd);
+                    }
                 }
             }
             catch (Exception exc) {
                 throw exc;
             }
         }
-        
+
     }
 
     private void updateNationInfo() {

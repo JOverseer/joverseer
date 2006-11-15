@@ -15,6 +15,7 @@ public class Nation implements Serializable {
     int number;
     String name;
     String shortName;
+    NationAllegianceEnum allegiance;
 
     public Nation(int number, String name, String shortName) {
         this.name = name;
@@ -44,5 +45,13 @@ public class Nation implements Serializable {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public NationAllegianceEnum getAllegiance() {
+        return allegiance;
+    }
+
+    public void setAllegiance(NationAllegianceEnum allegiance) {
+        this.allegiance = allegiance;
     }
 }

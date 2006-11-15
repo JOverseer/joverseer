@@ -11,6 +11,7 @@ import java.io.Serializable;
  */
 public enum ArmySizeEnum implements Serializable {
     unknown(0),
+    tiny (5),
     small (1),
     army (2),
     large (3),

@@ -79,6 +79,8 @@ public class GameMetadata implements Serializable {
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(getArtifacts());
+        out.writeObject(getOrders());
         out.writeObject(getHexes());
         out.writeObject(getNations());
         out.writeObject(getGameType());
@@ -86,6 +88,8 @@ public class GameMetadata implements Serializable {
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        artifacts = (Container)in.readObject();
+        orders = (Container)in.readObject();
         hexes = (ArrayList)in.readObject();
         nations = (ArrayList)in.readObject();
         setGameType((GameTypeEnum)in.readObject());

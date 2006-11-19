@@ -1,13 +1,9 @@
 package org.joverseer.ui.map;
 
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.event.LifecycleApplicationEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ApplicationEvent;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.events.SelectedHexChangedEvent;
 import org.joverseer.ui.events.SelectedHexChangedListener;
-import org.joverseer.ui.SimpleLifecycleAdvisor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.metadata.domain.Hex;
@@ -51,7 +47,7 @@ public class MapPanel extends JPanel implements MouseListener {
 
     Point selectedHex = null;
 
-    Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+    private Game game = null;
 
     public MapPanel() {
         addMouseListener(this);
@@ -117,6 +113,9 @@ public class MapPanel extends JPanel implements MouseListener {
             return;
         }
 
+        Game game = getGame();
+        if (!Game.isInitialized(game)) return;
+
         GameMetadata gm = game.getMetadata();
 
         int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
@@ -149,6 +148,8 @@ public class MapPanel extends JPanel implements MouseListener {
             // application is not ready
             return;
         }
+        Game game = getGame();
+        if (!Game.isInitialized(game)) return;
 
         int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
         int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
@@ -163,7 +164,7 @@ public class MapPanel extends JPanel implements MouseListener {
         g.drawImage(map, 0, 0, this);
 
         try {
-            ArrayList hexInfo = game.getTurn().getContainer(TurnElementsEnum.HexInfo).getItems();
+            ArrayList hexInfo = getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).getItems();
             for (HexInfo hi : (ArrayList<HexInfo>)hexInfo) {
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
                     if (r.appliesTo(hi)) {
@@ -178,7 +179,7 @@ public class MapPanel extends JPanel implements MouseListener {
                 }
             }
 
-            ArrayList pcs = game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
+            ArrayList pcs = getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs) {
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
                     if (r.appliesTo(pc)) {
@@ -199,7 +200,7 @@ public class MapPanel extends JPanel implements MouseListener {
         }
 
         try {
-            ArrayList characters = game.getTurn().getContainer(TurnElementsEnum.Character).getItems();
+            ArrayList characters = getGame().getTurn().getContainer(TurnElementsEnum.Character).getItems();
             for (Character c : (ArrayList<Character>)characters) {
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
                     if (r.appliesTo(c)) {
@@ -219,7 +220,7 @@ public class MapPanel extends JPanel implements MouseListener {
         }
 
         try {
-            ArrayList armies = game.getTurn().getContainer(TurnElementsEnum.Army).getItems();
+            ArrayList armies = getGame().getTurn().getContainer(TurnElementsEnum.Army).getItems();
             for (Army army : (ArrayList<Army>)armies) {
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
                     if (r.appliesTo(army)) {
@@ -239,7 +240,7 @@ public class MapPanel extends JPanel implements MouseListener {
         }
 
         try {
-            ArrayList nationMessages = game.getTurn().getContainer(TurnElementsEnum.NationMessage).getItems();
+            ArrayList nationMessages = getGame().getTurn().getContainer(TurnElementsEnum.NationMessage).getItems();
             for (NationMessage nm : (ArrayList<NationMessage>)nationMessages) {
                 if (nm.getX() <= 0 || nm.getY() <= 0) continue;
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
@@ -266,7 +267,7 @@ public class MapPanel extends JPanel implements MouseListener {
     public void invalidateAll() {
         map = null;
         mapItems = null;
-        game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        setGame(((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame());
     }
 
     /**
@@ -284,6 +285,11 @@ public class MapPanel extends JPanel implements MouseListener {
         if (mapItems == null) {
             createMapItems();
         }
+        if (mapItems == null) {
+            // application is not ready
+            return;
+        }
+
         //g.drawImage(map, 0, 0, this);
         g.drawImage(mapItems, 0, 0, this);
 
@@ -332,6 +338,7 @@ public class MapPanel extends JPanel implements MouseListener {
     public void mousePressed(MouseEvent e)
     {
         if (e.getButton() == MouseEvent.BUTTON1) {
+            if (!GameHolder.hasInitializedGame()) return;
             Point p = e.getPoint();
 //            MessageDialog dlg = new MessageDialog("test", p.x + "," + p.y);
 //            dlg.getDialog().show();
@@ -387,6 +394,17 @@ public class MapPanel extends JPanel implements MouseListener {
                 ((SelectedHexChangedListener)listeners[i+1]).eventOccured(evt);
             }
         }
+    }
+
+    public Game getGame() {
+        if (game == null) {
+            game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        }
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
 }

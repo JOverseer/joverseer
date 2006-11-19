@@ -8,6 +8,8 @@ import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +74,9 @@ public class ArmyViewer extends AbstractForm {
         Army army = (Army)object;
         commanderName.setText(army.getCommanderTitle() + " " + army.getCommanderName());
 
-        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (game == null) return;
+        GameMetadata gm = game.getMetadata(); 
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
 
         armySize.setText("Size: " + army.getSize().toString());

@@ -11,6 +11,8 @@ import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +38,9 @@ public class PopulationCenterViewer extends AbstractForm {
         super.setFormObject(object);
 
         PopulationCenter pc = (PopulationCenter)object;
-        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (game == null) return;
+        GameMetadata gm = game.getMetadata();
         nation.setText(gm.getNationByNum(pc.getNationNo()).getShortName());
 
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());

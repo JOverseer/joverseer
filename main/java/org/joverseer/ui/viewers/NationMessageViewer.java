@@ -9,6 +9,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +58,9 @@ public class NationMessageViewer extends AbstractForm {
 
     public void setFormObject(Object obj) {
         NationMessage nm = (NationMessage)obj;
-        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (game == null) return;
+        GameMetadata gm = game.getMetadata();
         String nationName = gm.getNationByNum(nm.getNationNo()).getShortName();
         rumor.setText(nm.getMessage() + " [" + nationName + "]");
         rumor.setCaretPosition(0);

@@ -59,23 +59,27 @@ public class ItemListView extends AbstractView implements ApplicationListener, M
     private void setItems() {
         if (this.turnElementType != null) {
             Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            if (!Game.isInitialized(g)) return;
             Container items = g.getTurn().getContainer(turnElementType);
             tableModel.setRows(items.getItems());
         } else {
-            GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+            Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            if (!Game.isInitialized(g)) return;
+            GameMetadata gm = g.getMetadata();
             try {
                 Container items = (Container) PropertyUtils.getProperty(gm, metadataProperty);
                 tableModel.setRows(items.getItems());
             }
             catch (Exception exc) {
                 // todo fix
+                int a = 1;
             }
         }
     }
 
     protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
         pageComponentContext.register("selectHexCommand", selectHexCommandExecutor);
-        selectHexCommandExecutor.setEnabled(true);
+        selectHexCommandExecutor.setEnabled(GameHolder.hasInitializedGame());
     }
 
     protected JComponent createControl() {

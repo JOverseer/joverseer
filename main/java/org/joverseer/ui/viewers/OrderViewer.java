@@ -61,6 +61,7 @@ public class OrderViewer extends AbstractForm implements ActionListener {
         btn.addActionListener(this);
         btn.setPreferredSize(new Dimension(16, 16));
         glb.append(btn);
+
         glb.nextLine();
         JPanel p = glb.getPanel();
         //p.setPreferredSize(new Dimension(166, 16));

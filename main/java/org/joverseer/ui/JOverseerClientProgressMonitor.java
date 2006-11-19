@@ -57,8 +57,12 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         return panel;
     }
 
+    private JButton getOkButton() {
+        return this.getDefaultButton();
+    }
+
     public void done() {
-        // todo
+        getOkButton().setEnabled(true);
     }
 
     public boolean isCanceled() {
@@ -78,6 +82,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
     }
 
     public void taskStarted(String string, int i) {
+        getOkButton().setEnabled(false);
         taskProgress.setMaximum(i);
         taskName.setText(string);
         panel.updateUI();

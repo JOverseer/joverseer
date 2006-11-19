@@ -48,7 +48,7 @@ public class JOverseerClient {
      * 
      * @param args
      */
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws Exception {
         try {
             _logger.info("JOverseer Client starting up");
 
@@ -79,7 +79,8 @@ public class JOverseerClient {
 
         } catch( Exception e ) {
             System.out.println(e);
-            System.exit(1);
+            throw e;
+            //System.exit(1);
         }
     }
 

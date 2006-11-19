@@ -17,6 +17,8 @@ import org.joverseer.metadata.domain.Artifact;
 import org.joverseer.ui.listviews.ArtifactTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.support.TableUtils;
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +78,9 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
             statsTextBox.setText(txt);
             statsTextBox.setCaretPosition(0);
 
-            GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+            Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            if (game == null) return;
+            GameMetadata gm = game.getMetadata();
             nationTextBox.setText(gm.getNationByNum(c.getNationNo()).getShortName());
 
             ArrayList artis = new ArrayList();

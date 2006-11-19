@@ -80,5 +80,9 @@ public class Game implements Serializable {
         this.currentTurn = currentTurn;
     }
 
+    public static boolean isInitialized(Game g) {
+        return (g != null && g.getTurn() != null);
+    }
+
    
 }

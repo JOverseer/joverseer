@@ -68,25 +68,25 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         super.onPreWindowOpen(configurer);
         configurer.setInitialSize(new Dimension(900,680));
 
-        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
-        gm.setGameType(GameTypeEnum.game2950);
-        gm.load();
-        Game game = new Game();
-        game.setMetadata(gm);
-        ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).setGame(game);
-
-        try {
-            TurnXmlReader r = new TurnXmlReader(game, "c:/middleearth/g26/t0/g026n07t000.xml");
-            r.readFile("c:/middleearth/g26/t0/g026n07t000.xml");
-            r.updateGame(game);
-//            r = new TurnXmlReader();
-//            r.readFile("c:/middleearth/g26/t1/g026n07t001.xml");
+//        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+//        gm.setGameType(GameTypeEnum.game2950);
+//        gm.load();
+//        Game game = new Game();
+//        game.setMetadata(gm);
+//        ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).setGame(game);
+//
+//        try {
+//            TurnXmlReader r = new TurnXmlReader(game, "c:/middleearth/g26/t0/g026n07t000.xml");
+//            r.readFile("c:/middleearth/g26/t0/g026n07t000.xml");
 //            r.updateGame(game);
-        }
-        catch (Exception exc) {
-            // do nothing
-            int a = 1;
-        }
+////            r = new TurnXmlReader();
+////            r.readFile("c:/middleearth/g26/t1/g026n07t001.xml");
+////            r.updateGame(game);
+//        }
+//        catch (Exception exc) {
+//            // do nothing
+//            int a = 1;
+//        }
         Logger.getRootLogger().setLevel(Level.WARN);
 
         // Uncomment to hide the menubar, toolbar, or alter window size...

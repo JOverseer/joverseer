@@ -181,6 +181,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
     private void refresh(Point p) {
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (g == null) return;
         Turn t = g.getTurn();
         org.joverseer.support.Container c = t.getContainer(TurnElementsEnum.PopulationCenter);
         PopulationCenter pc = (PopulationCenter)c.findFirstByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});

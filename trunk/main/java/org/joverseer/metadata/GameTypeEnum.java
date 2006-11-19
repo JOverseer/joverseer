@@ -9,9 +9,9 @@ package org.joverseer.metadata;
 
 import java.io.Serializable;
 
-public class GameTypeEnum implements Serializable {
-    public static final GameTypeEnum game1650 = new GameTypeEnum("1650");
-    public static final GameTypeEnum game2950 = new GameTypeEnum("2950");
+public enum GameTypeEnum {
+    game1650("1650"),
+    game2950("2950");
 
     private final String myName; // for debug only
 
@@ -22,4 +22,5 @@ public class GameTypeEnum implements Serializable {
     public String toString() {
         return myName;
     }
+
 }

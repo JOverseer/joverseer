@@ -324,6 +324,15 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
 
+    <bean id="orderListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.OrderListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+
     <bean id="turnSelectorView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
@@ -389,35 +398,16 @@
     </bean>
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
+        <property name="basePath">
+            <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
+        </property>
         <property name="readers">
             <list>
                 <bean class="org.joverseer.metadata.NationReader"/>
-
-                <bean class="org.joverseer.metadata.HexReader">
-                    <property name="terrainFilename">
-                        <!-- todo get rid of absolute path -->
-                        <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/2950/2950.terrain</value>
-                    </property>
-                    <property name="trafficFilename">
-                        <!-- todo get rid of absolute path -->
-                        <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/2950/2950.traffic</value>
-                    </property>
-                </bean>
-                <bean class="org.joverseer.metadata.ArtifactReader">
-                    <property name="artifactFilename">
-                        <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/2950/2950.arties.csv</value>
-                    </property>
-                </bean>
-                <bean class="org.joverseer.metadata.PopulationCenterReader">
-                    <property name="populationCenterFilename">
-                        <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/2950/2950.pcs</value>
-                    </property>
-                </bean>
-                <bean class="org.joverseer.metadata.OrderReader">
-                    <property name="orderFilename">
-                        <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/orders.csv</value>
-                    </property>
-                </bean>
+                <bean class="org.joverseer.metadata.HexReader"/>
+                <bean class="org.joverseer.metadata.ArtifactReader"/>
+                <bean class="org.joverseer.metadata.PopulationCenterReader"/>
+                <bean class="org.joverseer.metadata.OrderReader"/>
             </list>
         </property>
     </bean>
@@ -425,5 +415,6 @@
     <bean id="gameHolder" class="org.joverseer.support.GameHolder">
     </bean>
 
-
+    <bean id="orderVisualizationData" class="org.joverseer.ui.orders.OrderVisualizationData">
+    </bean>
 </beans>

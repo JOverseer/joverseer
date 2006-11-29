@@ -69,6 +69,7 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
                 }
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 mapPanel.invalidateAll();
+                mapPanel.updateUI();
             }
         }
     }

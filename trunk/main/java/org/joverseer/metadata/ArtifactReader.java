@@ -2,11 +2,11 @@ package org.joverseer.metadata;
 
 import org.joverseer.metadata.domain.Artifact;
 import org.joverseer.support.Container;
+import org.springframework.richclient.application.Application;
+import org.springframework.core.io.Resource;
 
 import java.util.HashMap;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,25 +16,24 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class ArtifactReader implements MetadataReader {
-    String artifactFilename;
+    String artifactFilename = "arties.csv";
 
-    public String getArtifactFilename() {
-        return artifactFilename;
-    }
-
-    public void setArtifactFilename(String artifactFilename) {
-        this.artifactFilename = artifactFilename;
+    public String getArtifactFilename(GameMetadata gm) {
+        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + artifactFilename;
     }
 
     public void load(GameMetadata gm) {
-        gm.setArtifacts(loadArtifacts());
+        gm.setArtifacts(loadArtifacts(gm));
     }
 
-    private Container loadArtifacts() {
+    private Container loadArtifacts(GameMetadata gm) {
         Container artifacts = new Container();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(getArtifactFilename()));
+            Resource resource = Application.instance().getApplicationContext().getResource(getArtifactFilename(gm));
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(";");

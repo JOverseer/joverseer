@@ -13,4 +13,12 @@ public class CharacterListView extends ItemListView {
     public CharacterListView() {
         super(TurnElementsEnum.Character, CharacterTableModel.class);
     }
+
+    protected int[] columnWidths() {
+        return new int[]{32, 40, 120,
+                        32, 32, 32, 32,
+                        32, 32, 32, 32,
+                        32, 32, 32, 32, 32};
+    }
+    
 }

@@ -32,6 +32,8 @@ public class GameMetadata implements Serializable {
 
     ArrayList readers = new ArrayList();
 
+    String basePath;
+
     public GameTypeEnum getGameType() {
         return gameType;
     }
@@ -127,5 +129,13 @@ public class GameMetadata implements Serializable {
 
     public void setOrders(Container orders) {
         this.orders = orders;
+    }
+
+    public String getBasePath() {
+        return basePath;
+    }
+
+    public void setBasePath(String basePath) {
+        this.basePath = basePath;
     }
 }

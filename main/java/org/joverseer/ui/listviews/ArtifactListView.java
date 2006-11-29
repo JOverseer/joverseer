@@ -11,4 +11,9 @@ public class ArtifactListView extends ItemListView {
     public ArtifactListView() {
         super("artifacts", ArtifactTableModel.class);
     }
+
+    protected int[] columnWidths() {
+        return new int[]{32, 32, 96,
+                        96, 96};
+    }
 }

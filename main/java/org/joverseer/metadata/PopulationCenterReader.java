@@ -5,11 +5,14 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.domain.*;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 
 import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,20 +22,18 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class PopulationCenterReader implements MetadataReader {
-    String populationCenterFilename;
+    String populationCenterFilename = "pcs";
 
-    public String getPopulationCenterFilename() {
-        return populationCenterFilename;
-    }
-
-    public void setPopulationCenterFilename(String populationCenterFilename) {
-        this.populationCenterFilename = populationCenterFilename;
+    public String getPopulationCenterFilename(GameMetadata gm) {
+        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + populationCenterFilename;
     }
 
     public void load(GameMetadata gm) {
         Container populationCenters = new Container();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(populationCenterFilename));
+            Resource resource = Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(",");

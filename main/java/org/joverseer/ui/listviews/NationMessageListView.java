@@ -13,4 +13,8 @@ public class NationMessageListView extends ItemListView {
     public NationMessageListView() {
         super(TurnElementsEnum.NationMessage, NationMessageTableModel.class);
     }
+
+    protected int[] columnWidths() {
+        return new int[]{32, 96, 400};
+    }
 }

@@ -215,10 +215,10 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         glb.nextLine();
 
         order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        glb.append(order1comp = order1.createFormControl(), 4, 1);
+        glb.append(order1comp = order1.createFormControl(), 5, 1);
         glb.nextLine();
         order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        glb.append(order2comp = order2.createFormControl(), 4, 1);
+        glb.append(order2comp = order2.createFormControl(), 5, 1);
         glb.nextLine();
 
         JPanel panel = glb.getPanel();

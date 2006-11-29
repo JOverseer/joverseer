@@ -14,5 +14,9 @@ public class PopulationCenterListView extends ItemListView {
         super(TurnElementsEnum.PopulationCenter, PopulationCenterTableModel.class);
     }
 
+    protected int[] columnWidths() {
+        return new int[]{32, 40, 96,
+                        64, 64, 64, 40};
+    }
 
 }

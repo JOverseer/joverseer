@@ -60,6 +60,7 @@ public class TurnSelectorView extends AbstractView implements ApplicationListene
                     cmbTurns.addItem(g.getTurn(i).getTurnNo());
                 }
             }
+            cmbTurns.setSelectedItem(g.getCurrentTurn());
         }
     }
 

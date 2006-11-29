@@ -36,7 +36,7 @@ import sun.management.MethodInfo;
  * Time: 9:24:42 μμ
  * To change this template use File | Settings | File Templates.
  */
-public class ItemListView extends AbstractView implements ApplicationListener, MouseListener {
+public abstract class ItemListView extends AbstractView implements ApplicationListener, MouseListener {
     BeanTableModel tableModel;
     TurnElementsEnum turnElementType = null;
     String metadataProperty;
@@ -56,7 +56,7 @@ public class ItemListView extends AbstractView implements ApplicationListener, M
         this.turnElementType = null;
     }
 
-    private void setItems() {
+    protected void setItems() {
         if (this.turnElementType != null) {
             Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             if (!Game.isInitialized(g)) return;
@@ -76,6 +76,8 @@ public class ItemListView extends AbstractView implements ApplicationListener, M
             }
         }
     }
+
+    protected abstract int[] columnWidths();
 
     protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
         pageComponentContext.register("selectHexCommand", selectHexCommandExecutor);
@@ -104,11 +106,7 @@ public class ItemListView extends AbstractView implements ApplicationListener, M
 
         // create the JTable instance
         table = TableUtils.createStandardSortableTable(tableModel);
-        org.joverseer.ui.support.TableUtils.setTableColumnWidths(table,
-                new int[]{32, 40, 120,
-                        32, 32, 32, 32,
-                        32, 32, 32, 32,
-                        32, 32, 32, 32, 32});
+        org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
 
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);

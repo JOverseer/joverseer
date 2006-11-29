@@ -106,4 +106,8 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         // do nothing
         // simple placeholder so that it form code can work with Order
     }
+
+    public boolean isBlank() {
+        return orderNo <= 0;
+    }
 }

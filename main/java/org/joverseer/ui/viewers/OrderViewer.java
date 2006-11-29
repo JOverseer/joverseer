@@ -11,6 +11,7 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Order;
 import org.joverseer.ui.orders.OrderEditorForm;
+import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.LifecycleEventsEnum;
 
@@ -55,12 +56,32 @@ public class OrderViewer extends AbstractForm implements ActionListener {
         orderText.setPreferredSize(new Dimension(170, 12));
         orderText.setText("N/A");
 
+        GridBagLayoutBuilder glb1 = new GridBagLayoutBuilder();
+        glb1.setDefaultInsets(new Insets(0, 0, 0, 5));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("edit.image"));
         JButton btn = new JButton(ico);
         btn.addActionListener(this);
         btn.setPreferredSize(new Dimension(16, 16));
-        glb.append(btn);
+        glb1.append(btn);
+
+        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
+        btn = new JButton(ico);
+        ActionListener al = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+                ovd.clear();
+                ovd.addOrder((Order)getFormObject());
+                Application.instance().getApplicationContext().publishEvent(
+                                    new JOverseerEvent(LifecycleEventsEnum.DrawOrderEvent.toString(), getFormObject(), this));
+            }
+        };
+        btn.addActionListener(al);
+        btn.setPreferredSize(new Dimension(16, 16));
+        glb1.append(btn);
+
+        glb.append(glb1.getPanel());
 
         glb.nextLine();
         JPanel p = glb.getPanel();
@@ -87,6 +108,10 @@ public class OrderViewer extends AbstractForm implements ActionListener {
                 Point selHex = new Point(order.getX(), order.getY());
                 Application.instance().getApplicationContext().publishEvent(
                                     new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selHex, this));
+
+                // throw an order changed event
+                Application.instance().getApplicationContext().publishEvent(
+                                    new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
 
                 return true;
             }

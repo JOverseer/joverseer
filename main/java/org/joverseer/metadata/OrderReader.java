@@ -3,10 +3,13 @@ package org.joverseer.metadata;
 import org.joverseer.support.Container;
 import org.joverseer.metadata.domain.Artifact;
 import org.joverseer.metadata.orders.OrderMetadata;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,21 +19,19 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class OrderReader implements MetadataReader {
-    String orderFilename;
+    String orderFilename = "orders.csv";
 
-    public String getOrderFilename() {
-        return orderFilename;
-    }
-
-    public void setOrderFilename(String orderFilename) {
-        this.orderFilename = orderFilename;
+    public String getOrderFilename(GameMetadata gm) {
+        return "file:///" + gm.getBasePath() + orderFilename;
     }
 
     public void load(GameMetadata gm) {
         Container orders = new Container();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(getOrderFilename()));
+            Resource resource = Application.instance().getApplicationContext().getResource(getOrderFilename(gm));
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(";");

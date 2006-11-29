@@ -4,12 +4,15 @@ import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,37 +23,30 @@ import java.io.BufferedReader;
  * Loads hex information from the given files
  */
 public class HexReader implements MetadataReader {
-    String terrainFilename;
-    String trafficFilename;
+    String terrainFilename = "terrain";
+    String trafficFilename = "traffic";
 
-    public String getTerrainFilename() {
-        return terrainFilename;
+    public String getTerrainFilename(GameMetadata gm) {
+        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + terrainFilename;
     }
 
-    public void setTerrainFilename(String terrainFilename) {
-        this.terrainFilename = terrainFilename;
-    }
-
-    public String getTrafficFilename() {
-        return trafficFilename;
-    }
-
-    public void setTrafficFilename(String trafficFilename) {
-        this.trafficFilename = trafficFilename;
+    public String getTrafficFilename(GameMetadata gm) {
+        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + trafficFilename;
     }
 
     public void load(GameMetadata gm) {
-        HashMap hexes = loadHexes();
+        HashMap hexes = loadHexes(gm);
 
-        loadTraffic(hexes);
+        loadTraffic(hexes, gm);
 
         gm.setHexes(hexes.values());
     }
 
-    private HashMap loadHexes() {
+    private HashMap loadHexes(GameMetadata gm) {
         HashMap hexes = new HashMap();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(terrainFilename));
+            Resource resource = Application.instance().getApplicationContext().getResource(getTerrainFilename(gm));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(",");
@@ -74,9 +70,10 @@ public class HexReader implements MetadataReader {
         return hexes;
     }
 
-    private void loadTraffic(HashMap hexes) {
+    private void loadTraffic(HashMap hexes, GameMetadata gm) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(getTrafficFilename()));
+            Resource resource = Application.instance().getApplicationContext().getResource(getTrafficFilename(gm));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(",");

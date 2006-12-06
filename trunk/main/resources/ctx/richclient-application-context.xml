@@ -370,10 +370,10 @@
             <value>39</value>
         </property>
         <property name="gridCellHeight">
-            <value>12</value>
+            <value>13</value>
         </property>
         <property name="gridCellWidth">
-            <value>12</value>
+            <value>13</value>
         </property>
         <property name="renderers">
             <list>
@@ -384,15 +384,13 @@
                     <property name="fontStyle"><value>1</value></property>
                 </bean>
                 <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.CharacterRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.ArmyRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
-
-                <!--
                 <bean class="org.joverseer.ui.map.renderers.HexInfoRenderer">
                     <property name="densityFactor"><value>4</value></property>
                 </bean>
-                -->
+                <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
             </list>
         </property>
     </bean>

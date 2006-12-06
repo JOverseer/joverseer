@@ -7,6 +7,7 @@ import org.joverseer.domain.Character;
 import org.springframework.richclient.application.Application;
 
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,16 +33,21 @@ public class NationMessageRenderer implements Renderer {
         NationMessage nm = (NationMessage)obj;
 
 
-        int w = mapMetadata.getGridCellWidth() / 2;
-        int h = mapMetadata.getGridCellHeight() / 2;
+        int w = mapMetadata.getGridCellWidth() / 3;
+        int h = mapMetadata.getGridCellHeight() / 3;
         int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1/2 - w/2;
-        int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 4 / 5;
+        int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 8 / 9;
 
         Color color1 = ColorPicker.getInstance().getColor("rumorFG");
         Color color2 = ColorPicker.getInstance().getColor("rumorBorder");
         g.setColor(color1);
-        g.fillRect(x + dx, y + dy, w, h);
+
+        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx, y + dy, w, h, w/5*2, h/5*2);
+        g.fill(e);
+        //g.fillRect(x + dx, y + dy, w, h);
         g.setColor(color2);
-        g.drawRect(x + dx, y + dy, w, h);
+
+        g.draw(e);
+        //g.drawRect(x + dx, y + dy, w, h);
     }
 }

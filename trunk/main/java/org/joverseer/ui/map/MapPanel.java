@@ -59,6 +59,23 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     private void setHexLocation(int x, int y) {
+        location = getHexLocation(x, y);
+    }
+
+    public Point getHexCenter(int hexNo) {
+        Point p = getHexLocation(hexNo);
+        MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        p.translate(metadata.getHexSize() * metadata.getGridCellWidth() / 2,
+                    metadata.getHexSize() * metadata.getGridCellHeight() / 2);
+        return p;
+    }
+
+    public Point getHexLocation(int hexNo) {
+        return getHexLocation(hexNo / 100, hexNo % 100);
+    }
+
+    public Point getHexLocation(int x, int y) {
+        Point location = new Point();
         x--;
         y--;
         MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
@@ -69,6 +86,7 @@ public class MapPanel extends JPanel implements MouseListener {
             location.setLocation((x + .5) * metadata.getHexSize() * metadata.getGridCellWidth(),
                     metadata.getHexSize() * 3 / 4 * y * metadata.getGridCellHeight());
         }
+        return location;
     }
 
     private void setPoints(int x, int y) {
@@ -257,9 +275,32 @@ public class MapPanel extends JPanel implements MouseListener {
             }
         }
         catch (Exception exc) {
-            logger.error("Error rendering pop centers " + exc.getMessage());
+            logger.error("Error rendering nation " + exc.getMessage());
+        }
+
+        try {
+            ArrayList characters = getGame().getTurn().getContainer(TurnElementsEnum.Character).getItems();
+            for (Character c : (ArrayList<Character>)characters) {
+                for (Order o : c.getOrders()) {
+                    for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                        if (r.appliesTo(o)) {
+                            setHexLocation(c.getX(), c.getY());
+                            try {
+                                r.render(o, g, location.x, location.y);
+                            }
+                            catch (Exception exc) {
+                                logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering orders " + exc.getMessage());
         }
     }
+
 
     public void invalidate() {
     }

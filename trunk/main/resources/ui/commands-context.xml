@@ -83,6 +83,8 @@
                             <bean class="org.joverseer.ui.command.LoadGame"/>
                             <bean class="org.joverseer.ui.command.SaveGame"/>
                             <bean class="org.springframework.richclient.command.support.ShowViewMenu"/>
+                <value>separator</value>
+                            <bean class="org.joverseer.ui.command.EditRelations"/>
                             <value>separator</value>
                             <bean class="org.springframework.richclient.command.support.ExitCommand"/>
 			</list>

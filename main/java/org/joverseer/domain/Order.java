@@ -110,4 +110,12 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     public boolean isBlank() {
         return orderNo <= 0;
     }
+
+    public String getParameter(int i) {
+        String[] params = getParameters().split(" ");
+        if (params.length > i) {
+            return params[i];
+        }
+        return null;
+    }
 }

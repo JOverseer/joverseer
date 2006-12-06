@@ -4,8 +4,11 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.HexInfo;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.springframework.richclient.application.Application;
 
 import java.util.ArrayList;
@@ -22,12 +25,21 @@ public class TurnInitializer {
     public void initializeTurnWith(Turn newTurn, Turn previousTurn) {
         newTurn.getContainers().put(TurnElementsEnum.PopulationCenter, new Container());
         Container newPcs = newTurn.getContainer(TurnElementsEnum.PopulationCenter);
+
+        newTurn.getContainers().put(TurnElementsEnum.NationRelation, new Container());
+        Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
+
         if (previousTurn != null) {
             // copy pcs
             Container oldPcs = previousTurn.getContainer(TurnElementsEnum.PopulationCenter);
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)oldPcs.items) {
                 PopulationCenter newPc = pc.clone();
                 newPcs.addItem(newPc);
+            }
+            Container oldRelations = previousTurn.getContainer(TurnElementsEnum.NationRelation);
+            for (NationRelations nr : (ArrayList<NationRelations>)oldRelations.items) {
+                NationRelations newNr = nr.clone();
+                newRelations.addItem(newNr);
             }
         } else {
             // get pcs from metadata
@@ -36,6 +48,31 @@ public class TurnInitializer {
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)gmPCs.items) {
                 PopulationCenter newPc = pc.clone();
                 newPcs.addItem(newPc);
+            }
+
+            // init relations as default
+            for (int i=1; i<26; i++) {
+                NationRelations nr = new NationRelations();
+                nr.setNationNo(i);
+                if (i < 11) {
+                    nr.setAllegiance(NationAllegianceEnum.FreePeople);
+                } else if (i < 21) {
+                    nr.setAllegiance(NationAllegianceEnum.DarkServants);
+                } else {
+                    nr.setAllegiance(NationAllegianceEnum.Neutral);
+                }
+                for (int j=1; j<26; j++) {
+                    if (i < 10 && j < 10) {
+                        nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
+                    } else if (i > 10 && i < 21 && j > 10 && j < 21) {
+                        nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
+                    } else if (i > 20 || j > 20) {
+                        nr.setRelationsFor(j, NationRelationsEnum.Neutral);
+                    } else {
+                        nr.setRelationsFor(j, NationRelationsEnum.Disliked);
+                    }
+                }
+                newRelations.addItem(nr);
             }
         }
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container());

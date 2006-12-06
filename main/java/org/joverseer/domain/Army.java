@@ -162,4 +162,15 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         // returning null if fed cannot be computed
         return null;
     }
+
+    public String getHexNo() {
+        return String.valueOf(getX() * 100 + getY());
+    }
+
+    public void setHexNo(String hexNo) {
+        int hexN = Integer.parseInt(hexNo);
+        setX(hexN / 100);
+        setY(hexN % 100);
+    }
+
 }

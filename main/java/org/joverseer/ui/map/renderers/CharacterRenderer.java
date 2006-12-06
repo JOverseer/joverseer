@@ -6,6 +6,9 @@ import org.joverseer.domain.Character;
 import org.springframework.richclient.application.Application;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,13 +18,13 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CharacterRenderer implements Renderer {
-    MapMetadata mapMetadata = null;
+    protected MapMetadata mapMetadata = null;
 
     public boolean appliesTo(Object obj) {
         return Character.class.isInstance(obj);
     }
 
-    private void init() {
+    protected void init() {
         mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
@@ -31,10 +34,10 @@ public class CharacterRenderer implements Renderer {
         Character c = (Character)obj;
 
 
-        int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 2 / 5;
+        int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 3 / 7;
         int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 3 / 5;
-        int w = mapMetadata.getGridCellWidth() / 2;
-        int h = mapMetadata.getGridCellHeight() / 2;
+        int w = mapMetadata.getGridCellWidth() / 3;
+        int h = mapMetadata.getGridCellHeight() / 3;
 
         //todo make decision based on allegiance, not nation no
         if (c.getNationNo() > 10) {
@@ -45,8 +48,14 @@ public class CharacterRenderer implements Renderer {
         Color color1 = ColorPicker.getInstance().getColor1(c.getNationNo());
         Color color2 = ColorPicker.getInstance().getColor2(c.getNationNo());
         g.setColor(color1);
-        g.fillRect(x + dx, y + dy, w, h);
+        //g.fillRect(x + dx, y + dy, w, h);
+
+
+        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx, y + dy, w, h, w/5*2, h/5*2);
+        g.fill(e);
+
         g.setColor(color2);
-        g.drawRect(x + dx, y + dy, w, h);
+        //g.drawRect(x + dx, y + dy, w, h);
+        g.draw(e);
     }
 }

@@ -18,5 +18,6 @@ public enum TurnElementsEnum implements Serializable {
     NationProduction,
     NationStores,
     HexInfo,
-    Combat
+    Combat,
+    NationRelation
 }

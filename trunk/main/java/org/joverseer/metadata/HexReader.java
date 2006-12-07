@@ -27,11 +27,11 @@ public class HexReader implements MetadataReader {
     String trafficFilename = "traffic";
 
     public String getTerrainFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + terrainFilename;
+        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + terrainFilename;
     }
 
     public String getTrafficFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + trafficFilename;
+        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + trafficFilename;
     }
 
     public void load(GameMetadata gm) {

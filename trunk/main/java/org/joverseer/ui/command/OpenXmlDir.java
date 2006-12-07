@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Locale;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 
@@ -76,10 +77,18 @@ public class OpenXmlDir extends ActionCommand implements Runnable {
             md.showDialog();
             return;
         }
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
+        String lastDir = prefs.get("importDir", null);
+        if (lastDir != null) {
+            fileChooser.setCurrentDirectory(new File(lastDir));
+        }
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             final File file = fileChooser.getSelectedFile();
+            prefs.put("importDir", file.getAbsolutePath());
             final Runnable thisObj = this;
             class XmlFileFilter implements FilenameFilter {
                 public boolean accept(File dir, String name) {

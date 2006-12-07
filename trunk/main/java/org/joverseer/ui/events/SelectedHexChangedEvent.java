@@ -10,6 +10,8 @@ import java.util.EventObject;
  * To change this template use File | Settings | File Templates.
  */
 public class SelectedHexChangedEvent extends EventObject {
+	private static final long serialVersionUID = 1L;
+	
     public SelectedHexChangedEvent(Object source) {
         super(source);
     }

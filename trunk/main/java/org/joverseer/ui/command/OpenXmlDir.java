@@ -1,29 +1,25 @@
 package org.joverseer.ui.command;
 
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.filechooser.FileChooserUtils;
-import org.springframework.richclient.filechooser.DefaultFileFilter;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
-import org.joverseer.support.readers.xml.TurnXmlReader;
-import org.joverseer.support.GameHolder;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.JOverseerClientProgressMonitor;
-import org.joverseer.game.Game;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.GameTypeEnum;
-
-import javax.swing.*;
-import java.io.FileFilter;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Locale;
+
+import javax.swing.JFileChooser;
+
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
+import org.joverseer.support.readers.xml.TurnXmlReader;
+import org.joverseer.ui.JOverseerClientProgressMonitor;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
+import org.springframework.richclient.form.FormModelHelper;
 
 /**
  * Created by IntelliJ IDEA.
@@ -50,9 +46,9 @@ public class OpenXmlDir extends ActionCommand implements Runnable {
         for (File f : files) {
             if (f.getAbsolutePath().endsWith(".xml")) {
                 try {
-                    monitor.subTaskStarted(String.format("Imporing file '%s'.", new String[]{f.getAbsolutePath()}));
+                    monitor.subTaskStarted(String.format("Imporing file '%s'.", new Object[]{f.getAbsolutePath()}));
 
-                    final TurnXmlReader r = new TurnXmlReader(game, f.getAbsolutePath());
+                    final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
                     r.setMonitor(monitor);
                     r.run();
                 }
@@ -96,7 +92,7 @@ public class OpenXmlDir extends ActionCommand implements Runnable {
             FormBackedDialogPage page = new FormBackedDialogPage(monitor);
             TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
                 protected void onAboutToShow() {
-                    monitor.taskStarted(String.format("Importing Directory '%s'.", new String[]{file.getAbsolutePath()}), 100 * files.length);
+                    monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[]{file.getAbsolutePath()}), 100 * files.length);
                     Thread t = new Thread(thisObj);
                     t.start();
                 }

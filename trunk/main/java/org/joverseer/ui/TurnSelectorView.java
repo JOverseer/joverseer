@@ -1,29 +1,23 @@
 package org.joverseer.ui;
 
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.ApplicationPage;
-import org.springframework.richclient.application.flexdock.FlexDockApplicationPageFactory;
-import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
-import org.springframework.richclient.application.event.LifecycleApplicationEvent;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.builder.TableFormBuilder;
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.command.CommandGroup;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ApplicationEvent;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.events.GameChangedListener;
-import org.joverseer.ui.events.GameChangedEvent;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.flexdock.docking.DockingManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Created by IntelliJ IDEA.

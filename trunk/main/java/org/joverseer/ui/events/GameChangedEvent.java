@@ -10,6 +10,7 @@ import java.util.EventObject;
  * To change this template use File | Settings | File Templates.
  */
 public class GameChangedEvent extends EventObject {
+	private static final long serialVersionUID = 1L;
     public GameChangedEvent(Object source) {
         super(source);
     }

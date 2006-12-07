@@ -1,20 +1,20 @@
 package org.joverseer.ui.command;
 
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.event.LifecycleApplicationEvent;
-import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.ConfirmationDialog;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.MessageSource;
-import org.joverseer.support.GameHolder;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.Locale;
+
+import javax.swing.JFileChooser;
+
 import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
-
-import javax.swing.*;
-import java.io.*;
-import java.util.Locale;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 
 /**
  * Created by IntelliJ IDEA.

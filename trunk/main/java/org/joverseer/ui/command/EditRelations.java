@@ -1,14 +1,6 @@
 package org.joverseer.ui.command;
 
 import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.application.Application;
-import org.springframework.binding.form.FormModel;
-import org.joverseer.game.Turn;
-import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
 
 /**
  * Created by IntelliJ IDEA.

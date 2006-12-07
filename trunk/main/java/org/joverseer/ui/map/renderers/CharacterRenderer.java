@@ -1,13 +1,13 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.map.ColorPicker;
-import org.joverseer.domain.Character;
-import org.springframework.richclient.application.Application;
-
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
+
+import org.joverseer.domain.Character;
+import org.joverseer.ui.map.ColorPicker;
+import org.joverseer.ui.map.MapMetadata;
+import org.springframework.richclient.application.Application;
 
 
 /**

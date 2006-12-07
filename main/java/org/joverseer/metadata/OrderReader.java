@@ -22,7 +22,7 @@ public class OrderReader implements MetadataReader {
     String orderFilename = "orders.csv";
 
     public String getOrderFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + orderFilename;
+        return "file:///" + gm.getBasePath() + "/" + orderFilename;
     }
 
     public void load(GameMetadata gm) {

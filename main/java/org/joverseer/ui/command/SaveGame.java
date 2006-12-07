@@ -5,12 +5,14 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.context.MessageSource;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.JOverseerClient;
 
 import javax.swing.*;
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.util.Locale;
+import java.util.prefs.Preferences;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,6 +45,8 @@ public class SaveGame extends ActionCommand {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
                 out.writeObject(gh.getGame());
+                Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+                prefs.put("saveDir", f.getParent());
             }
             catch (Exception exc) {
                 int a = 1;

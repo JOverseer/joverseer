@@ -19,7 +19,7 @@ public class ArtifactReader implements MetadataReader {
     String artifactFilename = "arties.csv";
 
     public String getArtifactFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + artifactFilename;
+        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + artifactFilename;
     }
 
     public void load(GameMetadata gm) {

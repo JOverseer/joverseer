@@ -397,7 +397,10 @@
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
+            <!--
             <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
+            -->
+            <value>target/classes/metadata/</value>
         </property>
         <property name="readers">
             <list>

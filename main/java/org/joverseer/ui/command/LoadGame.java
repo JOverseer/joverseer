@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.Locale;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -50,6 +52,11 @@ public class LoadGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setApproveButtonText("Load");
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        String saveDir = prefs.get("saveDir", null);
+        if (saveDir != null) {
+            fileChooser.setCurrentDirectory(new File(saveDir));
+        }
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");

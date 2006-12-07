@@ -25,7 +25,7 @@ public class PopulationCenterReader implements MetadataReader {
     String populationCenterFilename = "pcs";
 
     public String getPopulationCenterFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + gm.getGameType().toString() + "." + populationCenterFilename;
+        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + populationCenterFilename;
     }
 
     public void load(GameMetadata gm) {

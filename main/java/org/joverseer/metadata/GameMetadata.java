@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.io.Serializable;
 import java.io.IOException;
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -132,7 +133,16 @@ public class GameMetadata implements Serializable {
     }
 
     public String getBasePath() {
-        return basePath;
+        File f = new File(basePath);
+        try {
+            if (f.exists()) return f.getCanonicalPath();
+            File cd = new File(".");
+            String p = cd.getCanonicalPath() + "/" + basePath;
+            return p;
+        }
+        catch (IOException exc) {
+            return basePath;
+        }
     }
 
     public void setBasePath(String basePath) {

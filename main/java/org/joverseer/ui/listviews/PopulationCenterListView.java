@@ -15,7 +15,7 @@ public class PopulationCenterListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 40, 96,
+        return new int[]{40, 96,
                         64, 64, 64, 40};
     }
 

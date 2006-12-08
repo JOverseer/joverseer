@@ -2,8 +2,6 @@ package org.joverseer.ui.map;
 
 import org.springframework.richclient.application.Application;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.events.SelectedHexChangedEvent;
-import org.joverseer.ui.events.SelectedHexChangedListener;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.metadata.domain.Hex;
@@ -421,23 +419,7 @@ public class MapPanel extends JPanel implements MouseListener {
     {
     }
 
-    // This methods allows classes to register for MyEvents
-    public void addSelectedHexChangedEventListener(SelectedHexChangedListener listener) {
-        listenerList.add(SelectedHexChangedListener.class, listener);
-    }
-
-    void fireMyEvent(SelectedHexChangedEvent evt) {
-        Object[] listeners = listenerList.getListenerList();
-        // Each listener occupies two elements - the first is the listener class
-        // and the second is the listener instance
-        for (int i=0; i<listeners.length; i+=2) {
-            if (listeners[i]==SelectedHexChangedListener.class) {
-                ((SelectedHexChangedListener)listeners[i+1]).eventOccured(evt);
-            }
-        }
-    }
-
-    public Game getGame() {
+        public Game getGame() {
         if (game == null) {
             game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         }

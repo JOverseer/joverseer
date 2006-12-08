@@ -15,7 +15,7 @@ public class CharacterListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 40, 120,
+        return new int[]{40, 120,
                         32, 32, 32, 32,
                         32, 32, 32, 32,
                         32, 32, 32, 32, 32};

@@ -18,6 +18,7 @@ import org.joverseer.support.GameHolder;
 public abstract class ItemTableModel extends BeanTableModel {
     public ItemTableModel(Class aClass, MessageSource messageSource) {
         super(aClass, messageSource);
+        setRowNumbers(false);
     }
 
     protected Object getValueAtInternal(Object object, int i) {
@@ -34,4 +35,7 @@ public abstract class ItemTableModel extends BeanTableModel {
     protected boolean isCellEditableInternal(Object object, int i) {
         return false;
     }
+    
+    
+
 }

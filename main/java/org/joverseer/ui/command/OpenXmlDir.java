@@ -114,6 +114,8 @@ public class OpenXmlDir extends ActionCommand implements Runnable {
                     return null;
                 }
             };
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[]{}, Locale.getDefault()));
             dialog.showDialog();
         }
     }

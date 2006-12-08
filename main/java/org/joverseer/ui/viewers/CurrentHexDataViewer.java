@@ -11,8 +11,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.NationMessage;
-import org.joverseer.ui.events.SelectedHexChangedListener;
-import org.joverseer.ui.events.SelectedHexChangedEvent;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.SimpleLifecycleAdvisor;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -172,11 +170,6 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             armyPanels.get(i).setVisible(false);
         }
 
-    }
-
-    public void eventOccured(SelectedHexChangedEvent ev) {
-        Point p = ((MapPanel)ev.getSource()).getSelectedHex();
-        refresh(p);
     }
 
     private void refresh(Point p) {

@@ -10,12 +10,12 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public enum HexSideEnum implements Serializable {
-    TopLeft (1),
-    TopRight (2),
-    Right (3),
-    BottomRight (4),
-    BottomLeft (5),
-    Left (6);
+    TopLeft (6),
+    TopRight (1),
+    Right (2),
+    BottomRight (3),
+    BottomLeft (4),
+    Left (5);
 
     private final int side;
 

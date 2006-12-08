@@ -80,7 +80,7 @@ public class DefaultHexRenderer implements Renderer{
 
     private Polygon getSidePolygon(HexSideEnum side) {
         int i = side.getSide();
-        Polygon p = new Polygon(new int[]{xPoints[i-1], xPoints[i % 6]}, new int[]{yPoints[i-1], yPoints[i % 6]}, 2);
+        Polygon p = new Polygon(new int[]{xPoints[i-1 % 6], xPoints[i % 6]}, new int[]{yPoints[i-1 % 6], yPoints[i % 6]}, 2);
         return p;
     }
 

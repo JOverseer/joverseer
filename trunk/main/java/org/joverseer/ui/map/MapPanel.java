@@ -1,8 +1,8 @@
 package org.joverseer.ui.map;
 
 import org.springframework.richclient.application.Application;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.GameMetadata;
@@ -11,7 +11,9 @@ import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.Container;
 import org.apache.log4j.Logger;
+import org.joverseer.ui.map.renderers.Renderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -329,9 +331,28 @@ public class MapPanel extends JPanel implements MouseListener {
             return;
         }
 
+        MapMetadata metadata;
+        try {
+            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        }
+        catch (Exception exc) {
+            // application is not ready
+            return;
+        }
+
+
         //g.drawImage(map, 0, 0, this);
         g.drawImage(mapItems, 0, 0, this);
 
+        Container mapItemsC = (Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+        for (AbstractMapItem mi : (ArrayList<AbstractMapItem>)mapItemsC.items) {
+            for (Renderer r : (Collection<Renderer>)metadata.getRenderers()) {
+                if (r.appliesTo(mi)) {
+                    r.render(mi, (Graphics2D)g, 0, 0);
+                }
+            }
+        }
+        
         if (getSelectedHex() != null)
         {
             Stroke s = ((Graphics2D)g).getStroke();

@@ -103,7 +103,11 @@ public class GameMetadata implements Serializable {
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         artifacts = (Container)in.readObject();
         orders = (Container)in.readObject();
-        hexes = (Container)in.readObject();
+        ArrayList hexesAr = (ArrayList)in.readObject();
+        hexes = new Container();
+        for (Object h : hexesAr) {
+            hexes.addItem(h);
+        }
         nations = (ArrayList)in.readObject();
         setGameType((GameTypeEnum)in.readObject());
         setGameNo((Integer)in.readObject());

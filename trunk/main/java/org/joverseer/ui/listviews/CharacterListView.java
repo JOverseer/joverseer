@@ -2,6 +2,9 @@ package org.joverseer.ui.listviews;
 
 import org.joverseer.game.TurnElementsEnum;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
@@ -20,5 +23,5 @@ public class CharacterListView extends ItemListView {
                         32, 32, 32, 32,
                         32, 32, 32, 32, 32};
     }
-    
+
 }

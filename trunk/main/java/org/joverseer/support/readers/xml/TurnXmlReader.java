@@ -462,14 +462,14 @@ public class TurnXmlReader implements Runnable{
         nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
 
         ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
-        Pattern hexLoc = Pattern.compile("\\d\\d\\d\\d");
+        Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)");
         for (String msg : (ArrayList<String>)nationMsgs) {
             NationMessage nm = new NationMessage();
             nm.setMessage(msg);
             nm.setNationNo(turnInfo.getNationNo());
             Matcher m = hexLoc.matcher(msg);
             if (m.find()) {
-                String hexStr = m.group();
+                String hexStr = m.group(1);
                 int hexNo = Integer.parseInt(hexStr);
                 int x = hexNo / 100;
                 int y = hexNo % 100;

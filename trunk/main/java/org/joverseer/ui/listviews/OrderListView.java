@@ -26,7 +26,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 64, 64, 64, 150};
+        return new int[]{64, 64, 64, 150};
     }
 
     protected void setItems() {

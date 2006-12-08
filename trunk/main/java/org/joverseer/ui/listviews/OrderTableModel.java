@@ -24,5 +24,6 @@ public class OrderTableModel extends ItemTableModel {
         return new Class[]{String.class, String.class, String.class, String.class};  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+	
 
 }

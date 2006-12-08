@@ -1,5 +1,6 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.domain.PopulationCenter;
 import org.springframework.context.MessageSource;
 
 /**
@@ -11,7 +12,7 @@ import org.springframework.context.MessageSource;
  */
 public class PopulationCenterTableModel extends ItemTableModel {
     public PopulationCenterTableModel(MessageSource messageSource) {
-        super(Character.class, messageSource);
+        super(PopulationCenter.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {

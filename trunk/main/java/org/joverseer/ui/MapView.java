@@ -4,9 +4,7 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
-import org.joverseer.ui.events.SelectedHexChangedListener;
 import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.events.SelectedHexChangedEvent;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
 import org.joverseer.ui.support.JOverseerEvent;
 
@@ -20,7 +18,7 @@ import java.awt.*;
  * Time: 10:22:12 μμ
  * To change this template use File | Settings | File Templates.
  */
-public class MapView extends AbstractView  implements SelectedHexChangedListener, ApplicationListener {
+public class MapView extends AbstractView  implements ApplicationListener {
 
     MapPanel mapPanel;
     PopulationCenterViewer pcViewer;
@@ -35,7 +33,6 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
 
         scp = new JScrollPane(mapPanel = new MapPanel());
         mapPanel.setPreferredSize(new Dimension(2500, 1800));
-        mapPanel.addSelectedHexChangedEventListener(this);
         scp.setPreferredSize(new Dimension(800, 500));
         return scp;
     }
@@ -73,23 +70,5 @@ public class MapView extends AbstractView  implements SelectedHexChangedListener
             }
         }
     }
-
-    public void eventOccured(SelectedHexChangedEvent ev) {
-//        Point p = mapPanel.getSelectedHex();
-//        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-//        Turn t = g.getTurn();
-//        org.joverseer.support.Container c = t.getContainer(TurnElementsEnum.PopulationCenter);
-//        PopulationCenter pc = (PopulationCenter)c.findFirstByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
-//        if (pc != null) {
-//            pcViewer.setFormObject(pc);
-//            pcViewer.getControl().setVisible(true);
-//            //pcViewerHolder.setVisible(true);
-//        } else {
-//            pcViewer.getControl().setVisible(false);
-//            //pcViewerHolder.setVisible(false);
-//            //pcViewerHolder.add(pcViewer.getControl());
-//        }
-    }
-
 
 }

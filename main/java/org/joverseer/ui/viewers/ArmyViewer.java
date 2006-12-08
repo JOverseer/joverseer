@@ -4,15 +4,23 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.image.ImageSource;
 import org.springframework.binding.form.FormModel;
-import org.joverseer.domain.Army;
-import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.*;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
+import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.map.MapPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,6 +51,25 @@ public class ArmyViewer extends AbstractForm {
         commanderName.setPreferredSize(new Dimension(160, 12));
         glb.append(nation = new JTextField());
         nation.setPreferredSize(new Dimension(60, 12));
+
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        JButton btnRange = new JButton();
+        Icon ico = new ImageIcon(imgSource.getImage("artifact.image"));
+        btnRange.setIcon(ico);
+        glb.append(btnRange);
+        ActionListener al = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ArmyRangeMapItem armi = new ArmyRangeMapItem((org.joverseer.domain.Army)getFormObject());
+                org.joverseer.support.Container mic = (org.joverseer.support.Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+                mic.removeAll(mic.items);
+                AbstractMapItem.add(armi);
+
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+            }
+        };
+        btnRange.addActionListener(al);
+
         glb.nextLine();
         glb.append(armySize = new JTextField());
         armySize.setPreferredSize(new Dimension(100, 12));
@@ -76,7 +103,7 @@ public class ArmyViewer extends AbstractForm {
 
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (game == null) return;
-        GameMetadata gm = game.getMetadata(); 
+        GameMetadata gm = game.getMetadata();
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
 
         armySize.setText("Size: " + army.getSize().toString());

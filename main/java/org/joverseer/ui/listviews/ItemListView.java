@@ -85,6 +85,9 @@ public abstract class ItemListView extends AbstractView implements ApplicationLi
     }
 
     protected JComponent createControl() {
+        return createControlImpl();
+    }
+    protected JComponent createControlImpl() {
 
         // fetch the messageSource instance from the application context
         MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");

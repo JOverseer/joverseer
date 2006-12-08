@@ -86,7 +86,13 @@ public class HexReader implements MetadataReader {
                 int iside = Integer.parseInt(parts[2]);
                 int itype = Integer.parseInt(parts[3]);
 
-                HexSideEnum side = HexSideEnum.fromValue(iside);
+                HexSideEnum side = null;
+                if (iside == 1) side = HexSideEnum.TopRight;
+                if (iside == 2) side = HexSideEnum.Right;
+                if (iside == 3) side = HexSideEnum.BottomRight;
+                if (iside == 4) side = HexSideEnum.BottomLeft;
+                if (iside == 5) side = HexSideEnum.Left;
+                if (iside == 6) side = HexSideEnum.TopLeft;
                 HexSideElementEnum element = HexSideElementEnum.fromValue(itype);
 
                 hex.addHexSideElement(side, element);

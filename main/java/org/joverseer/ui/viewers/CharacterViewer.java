@@ -9,6 +9,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.ApplicationEvent;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.domain.Order;
@@ -17,6 +18,11 @@ import org.joverseer.metadata.domain.Artifact;
 import org.joverseer.ui.listviews.ArtifactTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.support.TableUtils;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
+import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.map.MapPanel;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 
@@ -46,6 +52,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
     JToggleButton btnArtifacts;
     JToggleButton btnSpells;
     JToggleButton btnOrders;
+    JButton btnDistance;
 
     JComponent order1comp;
     JComponent order2comp;
@@ -169,6 +176,24 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         btnOrders.setPreferredSize(new Dimension(16,16));
         btnOrders.addActionListener(this);
         glb.append(btnOrders);
+
+        btnDistance = new JButton();
+        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
+        btnDistance.setIcon(ico);
+        btnDistance.setPreferredSize(new Dimension(16,16));
+        ActionListener al = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character)getFormObject());
+                org.joverseer.support.Container mic = (org.joverseer.support.Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+                mic.removeAll(mic.items);
+                AbstractMapItem.add(crmi);
+
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+            }
+        };
+        btnDistance.addActionListener(al);
+        glb.append(btnDistance);
 
         glb.nextLine();
 

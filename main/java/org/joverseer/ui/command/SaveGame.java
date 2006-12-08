@@ -49,7 +49,8 @@ public class SaveGame extends ActionCommand {
                 prefs.put("saveDir", f.getParent());
             }
             catch (Exception exc) {
-                int a = 1;
+                MessageDialog d = new MessageDialog("Error", exc.getMessage());
+                d.showDialog();
                 // do nothing
                 // todo fix
             }

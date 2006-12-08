@@ -17,6 +17,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
+import org.springframework.richclient.dialog.MessageDialog;
 
 /**
  * Created by IntelliJ IDEA.
@@ -68,7 +69,8 @@ public class LoadGame extends ActionCommand {
 
             }
             catch (Exception exc) {
-                int a = 1;
+                MessageDialog d = new MessageDialog("Error", exc.getMessage());
+                d.showDialog();
                 // do nothing
                 // todo fix
             }

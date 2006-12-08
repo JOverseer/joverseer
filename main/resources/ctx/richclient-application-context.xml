@@ -391,15 +391,13 @@
                     <property name="densityFactor"><value>4</value></property>
                 </bean>
                 <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
             </list>
         </property>
     </bean>
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
-<<<<<<< .mine
-            <value>D:/java-development/personal/joverseer/bin/metadata/</value>
-=======
             <!--
             <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
 >>>>>>> .r34

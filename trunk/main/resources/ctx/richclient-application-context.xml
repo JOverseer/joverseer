@@ -194,8 +194,8 @@
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>ui.messages</value>
 				<value>org.springframework.richclient.application.messages</value>
+				<value>ui.messages</value>
 			</list>
 		</property>
 	</bean>
@@ -397,8 +397,12 @@
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
+<<<<<<< .mine
+            <value>D:/java-development/personal/joverseer/bin/metadata/</value>
+=======
             <!--
             <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
+>>>>>>> .r34
             -->
             <value>target/classes/metadata/</value>
         </property>
@@ -418,4 +422,7 @@
 
     <bean id="orderVisualizationData" class="org.joverseer.ui.orders.OrderVisualizationData">
     </bean>
+    
+    <bean id="mapItemContainer" class="org.joverseer.support.Container"/>
+    
 </beans>

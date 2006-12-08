@@ -1,5 +1,6 @@
 package org.joverseer.metadata;
 
+import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 
@@ -24,7 +25,7 @@ public class GameMetadata implements Serializable {
     GameTypeEnum gameType;
     int gameNo;
 
-    ArrayList hexes = new ArrayList();
+    Container hexes = new Container();
     ArrayList nations = new ArrayList();
     Container artifacts = new Container();
     Container orders = new Container();
@@ -44,11 +45,20 @@ public class GameMetadata implements Serializable {
     }
 
     public Collection getHexes() {
-        return hexes;
+        return hexes.getItems();
+    }
+    
+    public Hex getHex(int hexNo) {
+    	int row = hexNo % 100;
+    	int col = hexNo / 100;
+    	Hex h = (Hex)hexes.findFirstByProperties(new String[]{"row", "column"}, new Object[]{row, col});
+    	return h;
     }
 
     public void setHexes(Collection hexes) {
-        this.hexes.addAll(hexes);
+    	for (Object h : hexes) {
+    		this.hexes.addItem(h);
+    	}
     }
 
     public ArrayList getNations() {
@@ -93,7 +103,7 @@ public class GameMetadata implements Serializable {
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         artifacts = (Container)in.readObject();
         orders = (Container)in.readObject();
-        hexes = (ArrayList)in.readObject();
+        hexes = (Container)in.readObject();
         nations = (ArrayList)in.readObject();
         setGameType((GameTypeEnum)in.readObject());
         setGameNo((Integer)in.readObject());

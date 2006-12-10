@@ -37,6 +37,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
     Integer food = null; // null when food not set
     Boolean fed = null; // null when fed not set
+    Boolean cavalry = null; // null when cavalry not set
 
     public ArrayList getCharacters() {
         return characters;
@@ -171,6 +172,23 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         int hexN = Integer.parseInt(hexNo);
         setX(hexN / 100);
         setY(hexN % 100);
+    }
+
+    public Boolean computeCavalry() {
+        if (isCavalry() != null) {
+            return isCavalry();
+        }
+        // todo compute cavalry with respect to troop synthesis
+        // returning null if fed cannot be computed
+        return null;
+    }
+
+    public Boolean isCavalry() {
+        return cavalry;
+    }
+
+    public void setCavalry(Boolean cavalry) {
+        this.cavalry = cavalry;
     }
 
 }

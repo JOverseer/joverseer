@@ -70,7 +70,10 @@ public class MovementUtils {
             side = HexSideEnum.TopRight;
         }
         Hex dest = gm.getHex(getHexNoAtDir(startHexNo, md));
-
+        if (dest == null) {
+            // out of map
+            return -1;
+        }
         boolean roadExists = start.getHexSideElements(side).contains(HexSideElementEnum.Road);
         boolean bridgeOrFord = start.getHexSideElements(side).contains(HexSideElementEnum.Bridge) ||
                 start.getHexSideElements(side).contains(HexSideElementEnum.Ford);

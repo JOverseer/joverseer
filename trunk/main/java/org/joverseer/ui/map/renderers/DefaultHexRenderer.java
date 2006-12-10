@@ -102,7 +102,7 @@ public class DefaultHexRenderer implements Renderer{
 
     public void renderRoad(Graphics2D g, HexSideEnum side, int x, int y) {
         Stroke s = g.getStroke();
-        Stroke r = new BasicStroke(3);
+        Stroke r = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         Point sideCenter = getSideCenter(side);
         Point center = new Point(hexCenter);
         sideCenter.translate(x, y);
@@ -116,7 +116,7 @@ public class DefaultHexRenderer implements Renderer{
 
     public void renderMajorRiver(Graphics2D g, HexSideEnum side, int x, int y) {
         Stroke s = g.getStroke();
-        Stroke r = new BasicStroke(3);
+        Stroke r = new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         Polygon sp = getSidePolygon(side);
         sp.translate(x, y);
         g.setColor(getMajorRiverColor());
@@ -127,7 +127,7 @@ public class DefaultHexRenderer implements Renderer{
 
     public void renderMinorRiver(Graphics2D g, HexSideEnum side, int x, int y) {
         Stroke s = g.getStroke();
-        Stroke r = new BasicStroke(2);
+        Stroke r = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
         Polygon sp = getSidePolygon(side);
         sp.translate(x, y);
         g.setColor(getMinorRiverColor());
@@ -138,7 +138,7 @@ public class DefaultHexRenderer implements Renderer{
 
     public void renderBridgeOrFord(Graphics2D g, HexSideEnum side, int x, int y) {
         Stroke s = g.getStroke();
-        Stroke r = new BasicStroke(4);
+        Stroke r = new BasicStroke(6);
         Point sideCenter = getSideCenter(side);
         Point center = new Point(hexCenter);
         Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);

@@ -190,17 +190,16 @@ public class ArmyWrapper {
 
         switch (getNationAllegience()) {
             case 0:
-//                Nation nation = gm.getNationByNum(getNation());
-//                if (nation != null) {
-//                    a.setNationAllegiance(nation.getAllegiance());
-//                }
-                a.setNationAllegiance(NationAllegianceEnum.DarkServants);
+                Nation nation = gm.getNationByNum(getNation());
+                if (nation != null) {
+                    a.setNationAllegiance(nation.getAllegiance());
+                }
                 break;
             case 1:
                 a.setNationAllegiance(NationAllegianceEnum.FreePeople);
                 break;
             case 2:
-                a.setNationAllegiance(NationAllegianceEnum.Neutral);
+                a.setNationAllegiance(NationAllegianceEnum.DarkServants);
                 break;
         }
 

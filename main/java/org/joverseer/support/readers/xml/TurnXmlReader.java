@@ -338,6 +338,7 @@ public class TurnXmlReader implements Runnable{
     }
 
     private void updateArmies() throws Exception {
+        String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
         Container chars = turn.getContainer(TurnElementsEnum.Character);
         Container armies = turn.getContainer(TurnElementsEnum.Army);
         for (ArmyWrapper aw : (ArrayList<ArmyWrapper>) turnInfo.getArmies().getItems()) {
@@ -345,7 +346,30 @@ public class TurnXmlReader implements Runnable{
             Army oldArmy;
             try {
                 newArmy = aw.getArmy();
-                oldArmy = (Army) armies.findFirstByProperties(new String[]{"commanderName"}, new Object[]{newArmy.getCommanderName()});
+                if (!aw.getCommander().startsWith(UNKNOWN_MAP_ICON)) {
+                    // known army, try to find army with same commander name
+                    oldArmy = (Army) armies.findFirstByProperties(new String[]{"commanderName"}, new Object[]{newArmy.getCommanderName()});
+                    if (oldArmy == null) {
+                        // try to find unknown army with same allegience in same hex
+                        oldArmy = (Army) armies.findFirstByProperties(
+                                new String[]{"commanderName", "hexNo", "nationAllegiance"},
+                                new Object[]{UNKNOWN_MAP_ICON, newArmy.getHexNo(), newArmy.getNationAllegiance()});
+                        if (oldArmy != null) {
+                            int a = 1;
+                        }
+                    }
+                } else {
+                    // try to find unknown army of same allegiance in hex
+                    oldArmy = (Army) armies.findFirstByProperties(
+                            new String[]{"commanderName", "hexNo", "nationAllegiance"},
+                            new Object[]{newArmy.getCommanderName(), newArmy.getHexNo(), newArmy.getNationAllegiance()});
+                    if (oldArmy == null) {
+                        // try to find known army of same allegiance in hex
+                        oldArmy = (Army) armies.findFirstByProperties(
+                            new String[]{"hexNo", "nationAllegiance"},
+                            new Object[]{newArmy.getHexNo(), newArmy.getNationAllegiance()});
+                    }
+                }
                 newArmy.setInfoSource(infoSource);
                 logger.debug(String.format("Handling Army {3} at {0},{1} with information source {2}",
                         String.valueOf(newArmy.getX()),

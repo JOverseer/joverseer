@@ -54,7 +54,8 @@ public class ArmyViewer extends AbstractForm {
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         JButton btnRange = new JButton();
-        Icon ico = new ImageIcon(imgSource.getImage("artifact.image"));
+        Icon ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
+        btnRange.setPreferredSize(new Dimension(16, 16));
         btnRange.setIcon(ico);
         glb.append(btnRange);
         ActionListener al = new ActionListener() {

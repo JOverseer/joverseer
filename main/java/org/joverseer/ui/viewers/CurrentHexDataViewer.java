@@ -22,10 +22,15 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.game.Turn;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.GameMetadata;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.awt.*;
 
 /**
@@ -40,6 +45,8 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     JPanel mainPanel;
     JPanel popCenterPanel;
     PopulationCenterViewer popCenterViewer;
+    JPanel hexInfoPanel;
+    HexInfoViewer hexInfoViewer;
     ArrayList<CharacterViewer> characterViewers = new ArrayList<CharacterViewer>();
     ArrayList<JPanel> characterPanels = new ArrayList<JPanel>();
     ArrayList<ArmyViewer> armyViewers = new ArrayList<ArmyViewer>();
@@ -102,6 +109,16 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             cp.setVisible(false);
         }
 
+        hexInfoViewer = new HexInfoViewer(FormModelHelper.createFormModel(new Hex()));
+        hexInfoPanel = new JPanel();
+        hexInfoPanel.add(hexInfoViewer.getControl());
+        tlb.separator(" Hex Info ");
+        tlb.row();
+        tlb.cell(hexInfoPanel, "align=left");
+        tlb.row();
+        hexInfoPanel.setVisible(false);
+        hexInfoPanel.setBackground(Color.white);
+
         panel = tlb.getPanel();
         panel.setBackground(Color.white);
         panel.setPreferredSize(new Dimension(240, 1000));
@@ -119,6 +136,15 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
     private void hidePopCenter() {
         popCenterPanel.setVisible(false);
+    }
+
+    private void showHexInfo(Hex h) {
+        hexInfoViewer.setFormObject(h);
+        hexInfoPanel.setVisible(true);
+    }
+
+    private void hideHexInfo() {
+        hexInfoPanel.setVisible(false);
     }
 
     private void showCharacter(Character c) {
@@ -175,6 +201,13 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     private void refresh(Point p) {
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null) return;
+        GameMetadata gm = g.getMetadata();
+        Hex h = gm.getHex(p.x * 100 + p.y);
+        if (h != null) {
+            showHexInfo(h);
+        } else {
+            hideHexInfo();
+        }
         Turn t = g.getTurn();
         org.joverseer.support.Container c = t.getContainer(TurnElementsEnum.PopulationCenter);
         PopulationCenter pc = (PopulationCenter)c.findFirstByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
@@ -186,14 +219,20 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
         hideAllCharacterViewers();
         c = t.getContainer(TurnElementsEnum.Character);
-        Collection chars = c.findAllByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
+        ArrayList chars = c.findAllByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
+        BeanComparator comp = new BeanComparator("name");
+        Collections.sort(chars, comp);
+
         for (Character ch : (Collection<Character>)chars) {
             showCharacter(ch);
         }
 
         hideAllArmyViewers();
         c = t.getContainer(TurnElementsEnum.Army);
-        Collection armies = c.findAllByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
+        ArrayList armies = c.findAllByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
+        comp = new BeanComparator("nationAllegiance");
+        Collections.sort(armies, comp);
+
         for (Army a : (Collection<Army>)armies) {
             showArmy(a);
         }

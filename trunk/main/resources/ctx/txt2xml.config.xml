@@ -1,0 +1,6 @@
+<txt2xml>
+    <processor type="RepeatRegexMatch">
+        <element>test</element>
+        <regex>(.*)\s+Location\s:\s@\s(\d{4})\sin\s([\w\s]+)\s+Climate\sis\s(\w+)\s+Size</regex>
+    </processor>
+</txt2xml>

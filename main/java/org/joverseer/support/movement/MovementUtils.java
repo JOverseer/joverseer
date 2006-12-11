@@ -9,7 +9,6 @@ import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
 
 import java.util.HashMap;
-import java.util.Queue;
 import java.util.LinkedList;
 
 public class MovementUtils {
@@ -49,7 +48,6 @@ public class MovementUtils {
     public static int calculateMovementCostForArmy(int startHexNo, String direction, boolean isCavalry, boolean isFed) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         GameMetadata gm = g.getMetadata();
-        //retrieve hexes
         Hex start = gm.getHex(startHexNo);
 
         MovementDirection md = MovementDirection.getDirectionFromString(direction);
@@ -142,8 +140,8 @@ public class MovementUtils {
     }
 
     public static HashMap calculateArmyRangeHexes(int startHexNo, boolean isCavalry, boolean isFed) {
-        HashMap rangeHexes = new HashMap();
-        LinkedList hexesToProcess = new LinkedList();
+        HashMap<Integer, Integer> rangeHexes = new HashMap<Integer, Integer>();
+        LinkedList<Integer> hexesToProcess = new LinkedList<Integer>();
         hexesToProcess.add(startHexNo);
         int prevCost = 0;
         while (hexesToProcess.size() > 0) {

@@ -379,7 +379,7 @@
             <list>
                 <bean class="org.joverseer.ui.map.renderers.DefaultHexRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.HexNumberRenderer">
-                    <property name="fontName"><value>Helvetica</value></property>
+                    <property name="fontName"><value>Microsoft Sans Serif</value></property>
                     <property name="fontSize"><value>8</value></property>
                     <property name="fontStyle"><value>1</value></property>
                 </bean>
@@ -402,7 +402,7 @@
             <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
 >>>>>>> .r34
             -->
-            <value>target/classes/metadata/</value>
+            <value>bin/metadata/</value>
         </property>
         <property name="readers">
             <list>

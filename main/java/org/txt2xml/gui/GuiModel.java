@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
@@ -154,7 +155,7 @@ public class GuiModel extends BasicModel {
             outStream.close();
             
             // Put the result into dest text
-            setDestText(outStream.toString());
+            setDestText(outStream.toString("UTF-8"));
             if (LOG.isLoggable(Level.FINER)) LOG.finer("Done processing");
         } catch(Exception e) {
             setErrorMessage(e.getLocalizedMessage());
@@ -190,11 +191,15 @@ public class GuiModel extends BasicModel {
      */
     private String loadTextFromFile(File file) throws IOException {
         FileInputStream stream = new FileInputStream(file);
+        InputStreamReader isr = new InputStreamReader(stream, "UTF-8");
         int length = (int)file.length();
-        byte[] content = new byte[length];
-        stream.read(content);
+        //byte[] content = new byte[length];
+        char[] contentC = new char[length];
+        //stream.read(content);
+        isr.read(contentC);
+        isr.close();
         stream.close();
-        return new String(content);
+        return new String(contentC);
     }
     
     // --------------------------- Saving to files.

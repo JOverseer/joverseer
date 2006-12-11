@@ -55,6 +55,7 @@ public abstract class AbstractRegexProcessor extends Processor {
     protected String regex;
     protected Pattern pattern;
     protected Matcher matcher;
+    protected int multiline = 1;
     
     protected void resetMatching() {
 	    assert (chars != null); // : "No chars but asked to resetMatching!";
@@ -74,6 +75,25 @@ public abstract class AbstractRegexProcessor extends Processor {
             throw new IllegalArgumentException("Can't set a null regex pattern");
         }
         this.regex = regex;
-        pattern = Pattern.compile(regex);
+        compileRegex();
+    }
+    
+    private void compileRegex() {
+    	if (multiline == 1) {
+    		pattern = Pattern.compile(regex, Pattern.MULTILINE);
+    	} else {
+    		pattern = Pattern.compile(regex);
+    	}
+    }
+    
+    public int getMultiline() {
+    	return multiline;
+    }
+    
+    public void setMultiline(int m) {
+    	this.multiline = m;
+    	if (regex != null) {
+    		compileRegex();
+    	}
     }
 }

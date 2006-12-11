@@ -75,7 +75,6 @@ public class OrderRenderer implements Renderer {
                 g.setStroke(GraphicUtils.getDashStroke(3, 6));
                 g.setColor(Color.black);
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
-                currentHexNo = nextHexNo;
 
                 if (i == params.length - 2) {
                     // last segment
@@ -99,6 +98,8 @@ public class OrderRenderer implements Renderer {
                     // middle segment
                     drawString(g, order.getCharacter().getName(), p1, p2);
                 }
+                
+                currentHexNo = nextHexNo;
             }
             // draw last distance
             drawString(g, String.valueOf(cost), p2, p2);

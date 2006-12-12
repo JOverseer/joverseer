@@ -7,6 +7,9 @@ import org.joverseer.ui.support.Arrow;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.support.movement.MovementDirection;
 import org.springframework.richclient.application.Application;
@@ -60,13 +63,21 @@ public class OrderRenderer implements Renderer {
             return;
         }
         try {
-            // TODO use data for isCav and isFed from army
             int currentHexNo = Integer.parseInt(order.getCharacter().getHexNo());
             String[] params = order.getParameters().split(" ");
             Point p1;
             Point p2 = null;
             int cost = 0;
-            for (int i=0; i<params.length - 1; i++) {
+            
+            Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            
+            Army army = (Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", order.getCharacter().getName());
+            Boolean cav = army.computeCavalry();
+            Boolean fed = army.computeFed();
+            if (cav == null) cav = false;
+            if (fed == null) fed = false;
+            
+            for (int i=1; i<params.length; i++) {
                 String dir = params[i];
                 MovementDirection md = MovementDirection.getDirectionFromString(dir);
                 int nextHexNo = MovementUtils.getHexNoAtDir(currentHexNo, md);
@@ -87,7 +98,7 @@ public class OrderRenderer implements Renderer {
                     drawString(g, String.valueOf(cost), p1, p1);
                 }
 
-                int curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, false, true);
+                int curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed);
                 if (curCost == -1) {
                     cost = -1;
                 } else {

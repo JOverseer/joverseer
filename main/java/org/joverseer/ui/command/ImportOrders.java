@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.readers.orders.OrderFileReader;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -26,44 +27,36 @@ import org.springframework.richclient.dialog.MessageDialog;
  * Time: 6:54:07 μμ
  * To change this template use File | Settings | File Templates.
  */
-public class LoadGame extends ActionCommand {
-    public LoadGame() {
-        super("LoadGameCommand");
+public class ImportOrders extends ActionCommand {
+    public ImportOrders() {
+        super("ImportOrdersCommand");
     }
 
     protected void doExecuteCommand() {
-        if (GameHolder.hasInitializedGame()) {
-            // show warning
+    	if (!GameHolder.hasInitializedGame()) {
+            // show error, cannot import when game not initialized
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            ConfirmationDialog md = new ConfirmationDialog(
-                    ms.getMessage("confirmLoadGameDialog.title", new String[]{}, Locale.getDefault()),
-                    ms.getMessage("confirmLoadGameDialog.message", new String[]{}, Locale.getDefault()))
-            {
-                protected void onConfirm() {
-                    loadGame();
-                }
-            };
+            MessageDialog md = new MessageDialog(
+                    ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
+                    ms.getMessage("errorImportingTurns", new String[]{}, Locale.getDefault()));
             md.showDialog();
-        } else {
-            loadGame();
+            return;
         }
+    	loadOrders();
     }
 
-    private void loadGame() {
+    private void loadOrders() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setApproveButtonText("Load");
-        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
-        String saveDir = prefs.get("saveDir", null);
-        if (saveDir != null) {
-            fileChooser.setCurrentDirectory(new File(saveDir));
-        }
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
             try {
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-                gh.setGame((Game)in.readObject());
+                OrderFileReader orderFileReader = new OrderFileReader();
+                orderFileReader.setGame(gh.getGame());
+                orderFileReader.setOrderFile("file:///" + f.getAbsolutePath());
+                orderFileReader.readOrders();
                 Application.instance().getApplicationContext().publishEvent(
                                     new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
 

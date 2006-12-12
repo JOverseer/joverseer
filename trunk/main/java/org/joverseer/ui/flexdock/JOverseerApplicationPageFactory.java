@@ -15,7 +15,7 @@ import org.joverseer.ui.flexdock.JOverseerApplicationPage;
  * Time: 9:08:27 μμ
  * To change this template use File | Settings | File Templates.
  */
-public class JOversserApplicationPageFactory extends FlexDockApplicationPageFactory {
+public class JOverseerApplicationPageFactory extends FlexDockApplicationPageFactory {
     public ApplicationPage createApplicationPage( ApplicationWindow window, PageDescriptor descriptor ) {
            final JOverseerApplicationPage page = new JOverseerApplicationPage();
            page.setApplicationWindow( window );

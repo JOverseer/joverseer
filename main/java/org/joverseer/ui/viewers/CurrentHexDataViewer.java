@@ -141,6 +141,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     private void showHexInfo(Hex h) {
         hexInfoViewer.setFormObject(h);
         hexInfoPanel.setVisible(true);
+        
     }
 
     private void hideHexInfo() {

@@ -379,8 +379,8 @@
             <list>
                 <bean class="org.joverseer.ui.map.renderers.DefaultHexRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.HexNumberRenderer">
-                    <property name="fontName"><value>Microsoft Sans Serif</value></property>
-                    <property name="fontSize"><value>8</value></property>
+                    <property name="fontName"><value>MS Sans Serif</value></property>
+                    <property name="fontSize"><value>9</value></property>
                     <property name="fontStyle"><value>1</value></property>
                 </bean>
                 <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer"/>

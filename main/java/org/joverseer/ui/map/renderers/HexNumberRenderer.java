@@ -14,7 +14,7 @@ import java.awt.*;
  * To change this template use File | Settings | File Templates.
  */
 public class HexNumberRenderer implements Renderer{
-    String fontName = "Helvetica";
+    String fontName = "Microsoft Sans Serif";
     int fontSize = 8;
     int fontStyle = Font.PLAIN;
     MapMetadata mapMetadata;

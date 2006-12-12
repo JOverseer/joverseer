@@ -50,7 +50,7 @@ public class ArmyViewer extends AbstractForm {
         glb.append(commanderName = new JTextField());
         commanderName.setPreferredSize(new Dimension(160, 12));
         glb.append(nation = new JTextField());
-        nation.setPreferredSize(new Dimension(60, 12));
+        nation.setPreferredSize(new Dimension(30, 12));
 
         // button to show range of army on map
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -93,7 +93,7 @@ public class ArmyViewer extends AbstractForm {
         glb.append(armySize = new JTextField());
         armySize.setPreferredSize(new Dimension(100, 12));
         glb.append(armyMorale = new JTextField());
-        armyMorale.setPreferredSize(new Dimension(60, 12));
+        armyMorale.setPreferredSize(new Dimension(30, 12));
         glb.nextLine();
         glb.append(extraInfo = new JTextField());
         extraInfo.setPreferredSize(new Dimension(100, 12));

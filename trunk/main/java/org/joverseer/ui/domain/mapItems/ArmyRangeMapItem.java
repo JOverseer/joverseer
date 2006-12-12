@@ -18,7 +18,11 @@ public class ArmyRangeMapItem extends AbstractMapItem {
     public ArmyRangeMapItem(Army a) {
         army = a;
         int hexNo = Integer.parseInt(army.getHexNo());
-        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, false, true);
+        Boolean cav = a.computeCavalry();
+        if (cav == null) cav = false;
+        Boolean fed = a.computeFed();
+        if (fed == null) fed = false;
+        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed);
     }
 
     public Army getArmy() {

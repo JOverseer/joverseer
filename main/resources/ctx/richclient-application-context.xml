@@ -119,7 +119,7 @@
     </bean>
 
     <bean id="joverseerApplicationPageFactory" depends-on="serviceLocator"
-        class="org.joverseer.ui.flexdock.JOversserApplicationPageFactory" lazy-init="false">
+        class="org.joverseer.ui.flexdock.JOverseerApplicationPageFactory" lazy-init="false">
          <property name="floatingEnabled"><value>true</value></property>
          <property name="perspectiveFactory">
              <bean class="org.joverseer.ui.flexdock.JOverseerPerspectiveFactory"></bean>

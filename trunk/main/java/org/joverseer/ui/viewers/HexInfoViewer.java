@@ -28,6 +28,8 @@ public class HexInfoViewer extends AbstractForm {
     HashMap infCosts = new HashMap();
     HashMap cavCosts = new HashMap();
 
+    JTextField hexNo;
+
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -35,6 +37,13 @@ public class HexInfoViewer extends AbstractForm {
     protected JComponent createFormControl() {
         GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
         JLabel l;
+        lb.append(l = new JLabel("Hex No :"), 2, 1);
+        lb.append(hexNo = new JTextField(), 3, 1);
+        hexNo.setBorder(null);
+        lb.nextLine();
+        lb.append(new JSeparator(), 5, 1);
+        lb.nextLine();
+
         lb.append(l = new JLabel("Inf"), 2, 1);
         Font f = new Font(l.getFont().getName(), Font.BOLD, l.getFont().getSize());
         l.setFont(f);
@@ -72,6 +81,16 @@ public class HexInfoViewer extends AbstractForm {
         super.setFormObject(object);
         if (object != null) {
             Hex h = (Hex)object;
+            String hexNoStr = String.valueOf(h.getColumn());
+            if (h.getColumn() < 10) {
+                hexNoStr = "0" + hexNoStr;
+            }
+            if (h.getRow() < 10) {
+                hexNoStr = hexNoStr + "0";
+            }
+            hexNoStr += String.valueOf(h.getRow());
+            hexNo.setText(hexNoStr);
+
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {
                 for (MovementDirection md : MovementDirection.values()) {

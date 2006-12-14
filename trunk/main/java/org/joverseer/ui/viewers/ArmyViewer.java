@@ -1,19 +1,20 @@
 package org.joverseer.ui.viewers;
 
 import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.*;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 
@@ -39,6 +40,9 @@ public class ArmyViewer extends AbstractForm {
     JTextField extraInfo;
     JTextField food;
 
+    ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
+    ActionCommand toggleFedAction = new ToggleFedAction();
+
     public ArmyViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -59,32 +63,22 @@ public class ArmyViewer extends AbstractForm {
         btnRange.setPreferredSize(new Dimension(16, 16));
         btnRange.setIcon(ico);
         glb.append(btnRange);
-        ActionListener al = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ArmyRangeMapItem armi = new ArmyRangeMapItem((org.joverseer.domain.Army)getFormObject());
-                org.joverseer.support.Container mic = (org.joverseer.support.Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
-                mic.removeAll(mic.items);
-                AbstractMapItem.add(armi);
-
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+        btnRange.addActionListener(new PopupMenuActionListener()
+        {
+            public JPopupMenu getPopupMenu() {
+                return createArmyPopupContextMenu();
             }
-        };
-        btnRange.addActionListener(al);
-        
+        });
+
         // button to toggle the value of the fed flag
         JButton btnToggleFood = new JButton();
         ico = new ImageIcon(imgSource.getImage("food.image"));
         btnToggleFood.setPreferredSize(new Dimension(16, 16));
         btnToggleFood.setIcon(ico);
         glb.append(btnToggleFood);
-        al = new ActionListener() {
+        ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Army a = (org.joverseer.domain.Army)getFormObject();
-                Boolean fed = a.computeFed();
-                a.setFed(fed != null && fed != true ? true : false);
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+                toggleFedAction.execute();
             }
         };
         btnToggleFood.addActionListener(al);
@@ -117,10 +111,10 @@ public class ArmyViewer extends AbstractForm {
     public void setFormObject(Object object) {
         super.setFormObject(object);
 
-        Army army = (Army)object;
+        Army army = (Army) object;
         commanderName.setText(army.getCommanderTitle() + " " + army.getCommanderName());
 
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (game == null) return;
         GameMetadata gm = game.getMetadata();
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
@@ -140,12 +134,50 @@ public class ArmyViewer extends AbstractForm {
         }
         String foodStr = "";
         if (army.getFood() != null) {
-        	foodStr = army.getFood().toString() + " ";
+            foodStr = army.getFood().toString() + " ";
         }
         Boolean fed = army.computeFed();
-        
+
         foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
         food.setText(foodStr);
         //armyMorale.setText("M: 0");
+    }
+
+    private JPopupMenu createArmyPopupContextMenu() {
+        // rename, separator, delete, addPet separator, properties
+        CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+                "armyCommandGroup",
+                new Object[]{showArmyMovementRangeAction, toggleFedAction});
+        return group.createPopupMenu();
+    }
+
+    private class ShowArmyMovementRangeAction extends ActionCommand {
+        public ShowArmyMovementRangeAction() {
+            super("showArmyMovementRangeAction");
+        }
+
+        protected void doExecuteCommand() {
+            ArmyRangeMapItem armi = new ArmyRangeMapItem((org.joverseer.domain.Army) getFormObject());
+            org.joverseer.support.Container mic = (org.joverseer.support.Container) Application.instance().getApplicationContext().getBean("mapItemContainer");
+            mic.removeAll(mic.items);
+            AbstractMapItem.add(armi);
+
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+        }
+    }
+
+    private class ToggleFedAction extends ActionCommand {
+        public ToggleFedAction() {
+            super("toggleFedAction");
+        }
+
+        protected void doExecuteCommand() {
+            Army a = (org.joverseer.domain.Army) getFormObject();
+            Boolean fed = a.computeFed();
+            a.setFed(fed != null && fed != true ? true : false);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+        }
     }
 }

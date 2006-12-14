@@ -3,9 +3,37 @@
         <element>Turn</element>
         <startString>MEPBM GAMES</startString>
         <endString>TURNSHEET</endString>
-        
         <processor type="StringEnclosedMatch">
-        `	<!--  Get the region for the population centers -->
+        	<element>Diplomacy</element>
+        	<startString>MEPBM GAMES</startString>
+        	<endString>CENTERS</endString>
+        	
+        	<processor type="RegexMatch">
+        		<element>Allegiance</element>
+        		<regex>\(A (Free People)\)</regex>
+        	</processor>
+        	
+        	 <processor type="StringEnclosedMatch">
+	        	<element>NationRelations</element>
+	        	<startString>RELATIONS WITH</startString>
+    	    	<endString>POPULATION</endString>
+		        	<processor type="RepeatRegexMatch">
+		        		<element>NationRelation</element>
+		        		<regex>(\p{L}+(?:[\s\-]\p{L}+)*\s+:\s+\w+)</regex>
+		        		
+		        		<processor type="RegexMatch">
+		        			<element>Nation</element>
+		        			<regex>(\p{L}+(?:[\s\-]\p{L}+)*)</regex>
+		        		</processor>
+		        		<processor type="RegexMatch">
+		        			<element>Relation</element>
+		        			<regex>(\w+)</regex>
+		        		</processor>
+		        	</processor>
+        	</processor>
+        </processor>
+        <processor type="StringEnclosedMatch">
+        	<!--  Get the region for the population centers -->
         	<element>PopulationCentres</element>
         	<startString>POPULATION CENTERS</startString>
         	<endString>ARMIES AND NAVIES</endString>
@@ -99,6 +127,69 @@
         		</processor>
        		</processor>
    		</processor>
+   		
+   		<processor type="StringEnclosedMatch">
+   			<!--  get the region for the companies -->
+        	<element>Companies</element>
+        	<startString>COMPANY COMMANDERS :</startString>
+        	<endString>MARKET PRICES</endString>
+   		
+   			<processor type="RepeatRegexMatch">
+   				<element>Company</element>
+   				<regex>(\w+\s\p{L}+(?:[\s-]\p{L}+)*\s+Location\s:\s@\s\d{4}\s+Traveling with \w+ are : (?:\p{L}+(?:[\s-]\p{L}+)*(?:\s\-\s)?)+\.)</regex>
+   				
+   				<processor type="RegexMatch">
+   					<element>Commander</element>
+   					<regex>\w+\s(\p{L}+(?:[\s-]\p{L}+)*)\s+Location</regex>
+   				</processor>
+
+   				<processor type="RegexMatch">
+   					<element>Hex</element>
+   					<regex>(\d{4})</regex>
+   				</processor>
+   				
+   				<processor type="RegexMatch">
+   					<element>Member</element>
+   					<regex> are : (\p{L}+(?:[\s-]\p{L}+)*)(?:\s\-\s)?</regex>
+   				</processor>
+
+   				<processor type="RepeatRegexMatch">
+   					<element>Member</element>
+   					<regex>(\p{L}+(?:[\s-]\p{L}+)*)(?:,)?</regex>
+   				</processor>
+   				
+	   		</processor>
+   		</processor>
+   		<processor type="StringEnclosedMatch">
+   			<!--  get the region for the character order results -->
+        	<element>Encounters</element>
+        	<startString>ENCOUNTER MESSAGES</startString>
+        	<endString>COMBAT MESSAGES</endString>
+        	
+        	<processor type="RepeatRegexMatch">
+        		<element>Encounter</element>
+        		<multiline>1</multiline>
+        		<regex>(Encounter for \p{L}+(?:[\s-]\p{L}+)* at \d{4}(?:.|\s)+)</regex>
+        		
+        		<processor type="RegexMatch">
+        			<element>Character</element>
+        			<regex>Encounter for (\p{L}+(?:[\s-]\p{L}+)*) at </regex>
+        		</processor>
+
+        		<processor type="RegexMatch">
+        			<element>Hex</element>
+        			<regex>(\d{4})</regex>
+        		</processor>
+
+        		<processor type="RegexMatch">
+        			<element>Text</element>
+        			<multiline>1</multiline>
+        			<regex>((.|\s)+)</regex>
+        		</processor>
+        		
+        	</processor>
+        </processor>
+        
    		<processor type="StringEnclosedMatch">
    			<!--  get the region for the character order results -->
         	<element>Orders</element>
@@ -106,19 +197,24 @@
         	<endString>MEPBM GAMES</endString>
         	<processor type="RepeatRegexMatch">
         		<element>Character</element>
-        		<regex>(\p{L}+(?:[\s-]\p{L}+)?\s+was located in [.\p{L}\d\-\.\s/?#]+\.)</regex>
+        		<regex>(\p{L}+(?:[\s-]\p{L}+)?\s+was located in [.\p{L}\d\-\.\s/?#&amp;]+\.)</regex>
         		<processor type="RegexMatch">
         			<element>Name</element>
         			<regex>(\p{L}+(?:[\s-]\p{L}+)?)\s+was located in</regex>
         		</processor>
         		<processor type="RegexMatch">
         			<element>HexID</element>
-        			<regex>(\d{4})</regex>
+        			<regex>(\d{4})\.</regex>
         		</processor>
+        		
+        		<processor type="Copy">
+        			<element>CharacterOrders</element>
+        		</processor>
+        		
         		<processor type="RegexMatch">
         			<!--  Parse LA result with owner -->
         			<element>LocateArtifact</element>
-        			<regex>(was ordered to cast a lore spell. Locate Artifact \- \p{L}+(?:\s\p{L}+)* #\d{1,3} is\s+possessed by\s[\p{L}?]+(?:\s\p{L}+) at or near \d{4})</regex>
+        			<regex>(was ordered to cast a lore spell. Locate Artifact \- \p{L}+(?:\s\p{L}+)* #\d{1,3} is\s+possessed by\s[\p{L}?]+(?:[\s\-]\p{L}+)? at or near \d{4})</regex>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
         				<regex>\- (\p{L}+(?:\s\p{L}+)*)</regex>
@@ -129,12 +225,53 @@
         			</processor>
         			<processor type="RegexMatch">
         				<element>Owner</element>
-        				<regex>possessed by\s([\p{L}?]+(?:\s\p{L}+))</regex>
+        				<regex>possessed by\s([\p{L}?]+(?:\s\p{L}+)*) at</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>Hex</element>
         				<regex>at or near (\d{4})</regex>
         			</processor>
+        		</processor>
+        		
+        		<processor type="RegexMatch">
+        			<!--  Parse LAT result with owner -->
+        			<element>LocateArtifactTrue</element>
+        			<regex>(was ordered to cast a lore spell. Locate Artifact True \- \p{L}+(?:\s\p{L}+)* #\d{1,3} is\s+possessed by\s[\p{L}?]+(?:[\s\-]\p{L}+)* in the \p{L}+(?:[\p{L}\s\-&amp;]+)* at \d{4})</regex>
+        			<processor type="RegexMatch">
+        				<element>ArtifactName</element>
+        				<regex>\- (\p{L}+(?:\s\p{L}+)*)</regex>
+        			</processor>
+        			<processor type="RegexMatch">
+        				<element>ArtifactId</element>
+        				<regex>#(\d{1,3})</regex>
+        			</processor>
+        			<processor type="RegexMatch">
+        				<element>Owner</element>
+        				<regex>possessed by\s([\p{L}?]+(?:\s\p{L}+)*) in</regex>
+        			</processor>
+        			<processor type="RegexMatch">
+        				<element>Hex</element>
+        				<regex>at (\d{4})</regex>
+        			</processor>
+        		</processor>
+        		
+        		<processor type="RegexMatch">
+        			<!--  Parse RC result with owner -->
+        			<element>RevealCharacter</element>
+        			<regex>(was ordered to cast a lore spell. Reveal Character \- [\p{L}?]+(?:[\s\-]\p{L}+)* is located at or near\s+\d{4})</regex>
+        			<processor type="RegexMatch">
+        				<element>Character</element>
+        				<regex>([\p{L}?]+(?:\s\p{L}+)*) is located</regex>
+        			</processor>
+        			<processor type="RegexMatch">
+        				<element>Hex</element>
+        				<regex>at or near\s+(\d{4})</regex>
+        			</processor>
+        		</processor>
+        		
+        		<processor type="RegexMatch">
+        			<element>Assassinated</element>
+        			<regex>()\p{L}+(?:[\s-]\p{L}+)?\s+was assassinated\.</regex>
         		</processor>
         		<processor type="RegexMatch">
         			<element>SecondOrder</element>

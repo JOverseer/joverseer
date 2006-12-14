@@ -8,6 +8,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.command.ActionCommand;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.ApplicationEvent;
 import org.joverseer.domain.Character;

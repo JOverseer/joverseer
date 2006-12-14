@@ -4,6 +4,8 @@ import org.pdfbox.ExtractText;
 import org.pdfbox.util.PDFTextStripper;
 import org.pdfbox.pdmodel.PDDocument;
 
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
@@ -31,8 +33,7 @@ public class TurnPdfReader {
             }
 
             if (encoding != null) {
-                output = new OutputStreamWriter(
-                        new FileOutputStream(textFile), encoding);
+                output = new OutputStreamWriter(new FileOutputStream(textFile), encoding); 
             }
 
             PDFTextStripper stripper = null;

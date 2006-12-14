@@ -25,10 +25,14 @@ public class StringEnclosedMatchProcessor extends Processor {
 	protected boolean findMatch() {
 		assert (chars != null);// : "Null text but asked to findMatch!";
 		String str = chars.toString();
+		int currentStart = matchStart;
 		matchStart = str.indexOf(startString, matchEnd);
 		if (matchStart == -1) return false;
-		matchEnd = str.indexOf(endString, matchStart);
-		if (matchEnd == -1) return false;
+		matchEnd = str.indexOf(endString, matchStart + startString.length());
+		if (matchEnd == -1) {
+			matchEnd = currentStart;
+			return false;
+		}
 		return true;
 	}
 

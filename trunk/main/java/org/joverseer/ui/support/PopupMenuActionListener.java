@@ -17,6 +17,6 @@ public abstract class PopupMenuActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JPopupMenu pm = getPopupMenu();
         JComponent cmp = (JComponent)e.getSource();
-        pm.show(cmp, cmp.getLocation().x, cmp.getLocation().y + cmp.getHeight());
+        pm.show(cmp, 0, cmp.getHeight());
     }
 }

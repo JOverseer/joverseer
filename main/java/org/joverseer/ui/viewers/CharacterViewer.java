@@ -4,13 +4,12 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
-import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.ApplicationEvent;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.domain.Order;
@@ -20,6 +19,7 @@ import org.joverseer.ui.listviews.ArtifactTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.support.TableUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * Time: 11:45:02 μμ
  * To change this template use File | Settings | File Templates.
  */
-public class CharacterViewer extends AbstractForm implements ActionListener {
+public class CharacterViewer extends AbstractForm {
     public static final String FORM_PAGE = "CharacterViewer";
 
     JTextField characterName;
@@ -50,15 +50,22 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
     JTable artifactsTable;
     JTable spellsTable;
 
-    JToggleButton btnArtifacts;
-    JToggleButton btnSpells;
-    JToggleButton btnOrders;
-    JButton btnDistance;
+    JButton btnMenu;
 
     JComponent order1comp;
     JComponent order2comp;
     OrderViewer order1;
     OrderViewer order2;
+
+    boolean showArtifacts = false;
+    boolean showSpells = false;
+    boolean showOrders = false;
+
+    ActionCommand showArtifactsCommand = new ShowArtifactsCommand();
+    ActionCommand showSpellsCommand = new ShowSpellsCommand();
+    ActionCommand showOrdersCommand = new ShowOrdersCommand();
+    ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterRangeOnMapCommand();
+
 
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -66,9 +73,9 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
 
     public void setFormObject(Object object) {
         if (object != getFormObject()) {
-            btnArtifacts.getModel().setSelected(false);
-            btnSpells.getModel().setSelected(false);
-            btnOrders.getModel().setSelected(false);
+            showArtifacts = false;
+            showOrders = false;
+            showSpells = false;
         }
         super.setFormObject(object);
         if (statsTextBox != null) {
@@ -92,8 +99,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
             nationTextBox.setText(gm.getNationByNum(c.getNationNo()).getShortName());
 
             ArrayList artis = new ArrayList();
-            btnArtifacts.setEnabled(c.getArtifacts().size() > 0);
-            if (btnArtifacts.getModel().isSelected()) {
+            if (showArtifacts) {
                 for (Integer no : c.getArtifacts()) {
                     Artifact arti = (Artifact)gm.getArtifacts().findFirstByProperty("no", no);
                     if (arti == null) {
@@ -108,8 +114,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
             artifactsTable.setPreferredSize(new Dimension(artifactsTable.getWidth(), 16 * artis.size()));
 
             ArrayList spells = new ArrayList();
-            btnSpells.setEnabled(c.getSpells().size() > 0);
-            if (btnSpells.getModel().isSelected()) {
+            if (showSpells) {
                 spells.addAll(c.getSpells());
             }
             ((BeanTableModel)spellsTable.getModel()).setRows(spells);
@@ -117,7 +122,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
 
             order1.setFormObject(c.getOrders()[0]);
             order2.setFormObject(c.getOrders()[1]);
-            if (btnOrders.getModel().isSelected()) {
+            if (showOrders) {
                 order1comp.setVisible(true);
                 order2comp.setVisible(true);
             } else {
@@ -147,7 +152,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         characterName = (JTextField)c;
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
-        c.setPreferredSize(new Dimension(100, 12));
+        c.setPreferredSize(new Dimension(160, 12));
         bf.bindControl(c, "name");
         glb.append(c = new JTextField());
         c.setBorder(null);
@@ -157,53 +162,26 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 
-        btnArtifacts = new JToggleButton();
-        Icon ico = new ImageIcon(imgSource.getImage("artifact.image"));
-        btnArtifacts.setIcon(ico);
-        btnArtifacts.setPreferredSize(new Dimension(16,16));
-        btnArtifacts.addActionListener(this);
-        glb.append(btnArtifacts);
-
-        btnSpells = new JToggleButton();
-        ico = new ImageIcon(imgSource.getImage("spell.image"));
-        btnSpells.setIcon(ico);
-        btnSpells .setPreferredSize(new Dimension(16,16));
-        btnSpells .addActionListener(this);
-        glb.append(btnSpells);
-
-        btnOrders = new JToggleButton();
-        ico = new ImageIcon(imgSource.getImage("order.image"));
-        btnOrders.setIcon(ico);
-        btnOrders.setPreferredSize(new Dimension(16,16));
-        btnOrders.addActionListener(this);
-        glb.append(btnOrders);
-
-        btnDistance = new JButton();
-        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
-        btnDistance.setIcon(ico);
-        btnDistance.setPreferredSize(new Dimension(16,16));
-        ActionListener al = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character)getFormObject());
-                org.joverseer.support.Container mic = (org.joverseer.support.Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
-                mic.removeAll(mic.items);
-                AbstractMapItem.add(crmi);
-
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+        btnMenu = new JButton();
+        Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+        btnMenu.setIcon(ico);
+        btnMenu.setPreferredSize(new Dimension(16,16));
+        glb.append(btnMenu);
+        btnMenu.addActionListener(new PopupMenuActionListener()
+        {
+            public JPopupMenu getPopupMenu() {
+                return createCharacterPopupContextMenu();
             }
-        };
-        btnDistance.addActionListener(al);
-        glb.append(btnDistance);
+        });
 
         glb.nextLine();
 
-        glb.append(statsTextBox = new JTextField(), 5, 1);
+        glb.append(statsTextBox = new JTextField(), 2, 1);
         statsTextBox.setBorder(null);
         statsTextBox.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
 
-        glb.append(artifactsTable = new JTable(), 5, 1);
+        glb.append(artifactsTable = new JTable(), 2, 1);
         artifactsTable.setPreferredSize(new Dimension(150, 20));
         ArtifactTableModel tableModel =
             new ArtifactTableModel(this.getMessageSource()) {
@@ -223,7 +201,7 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
 
         glb.nextLine();
 
-        glb.append(spellsTable = new JTable(), 5, 1);
+        glb.append(spellsTable = new JTable(), 2, 1);
         spellsTable.setPreferredSize(new Dimension(150, 12));
         ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
             protected String[] createColumnPropertyNames() {
@@ -241,10 +219,10 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         glb.nextLine();
 
         order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        glb.append(order1comp = order1.createFormControl(), 5, 1);
+        glb.append(order1comp = order1.createFormControl(), 2, 1);
         glb.nextLine();
         order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        glb.append(order2comp = order2.createFormControl(), 5, 1);
+        glb.append(order2comp = order2.createFormControl(), 2, 1);
         glb.nextLine();
 
         JPanel panel = glb.getPanel();
@@ -252,8 +230,51 @@ public class CharacterViewer extends AbstractForm implements ActionListener {
         return panel;
     }
 
-    public void actionPerformed(ActionEvent e) {
+    private void refresh() {
         setFormObject(getFormObject());
+    }
+
+    private class ShowArtifactsCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            showArtifacts = !showArtifacts;
+            refresh();
+        }
+    }
+
+    private class ShowSpellsCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            showSpells = !showSpells;
+            refresh();
+        }
+    }
+
+    private class ShowOrdersCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            showOrders = !showOrders;
+            refresh();
+        }
+    }
+
+    private class ShowCharacterRangeOnMapCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character)getFormObject());
+            org.joverseer.support.Container mic = (org.joverseer.support.Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+            mic.removeAll(mic.items);
+            AbstractMapItem.add(crmi);
+
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+        }
+    }
+
+    private JPopupMenu createCharacterPopupContextMenu() {
+        Character c = (Character)getFormObject();
+        showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);
+        showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
+        CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+                "armyCommandGroup",
+                new Object[]{showArtifactsCommand, showSpellsCommand, showOrdersCommand, "separator", showCharacterRangeOnMapCommand});
+        return group.createPopupMenu();
     }
 }
 

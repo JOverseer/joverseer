@@ -58,30 +58,17 @@ public class ArmyViewer extends AbstractForm {
 
         // button to show range of army on map
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        JButton btnRange = new JButton();
-        Icon ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
-        btnRange.setPreferredSize(new Dimension(16, 16));
-        btnRange.setIcon(ico);
-        glb.append(btnRange);
-        btnRange.addActionListener(new PopupMenuActionListener()
+        JButton btnMenu = new JButton();
+        Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+        btnMenu.setPreferredSize(new Dimension(16, 16));
+        btnMenu.setIcon(ico);
+        glb.append(btnMenu);
+        btnMenu.addActionListener(new PopupMenuActionListener()
         {
             public JPopupMenu getPopupMenu() {
                 return createArmyPopupContextMenu();
             }
         });
-
-        // button to toggle the value of the fed flag
-        JButton btnToggleFood = new JButton();
-        ico = new ImageIcon(imgSource.getImage("food.image"));
-        btnToggleFood.setPreferredSize(new Dimension(16, 16));
-        btnToggleFood.setIcon(ico);
-        glb.append(btnToggleFood);
-        ActionListener al = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                toggleFedAction.execute();
-            }
-        };
-        btnToggleFood.addActionListener(al);
 
         glb.nextLine();
         glb.append(armySize = new JTextField());
@@ -144,7 +131,6 @@ public class ArmyViewer extends AbstractForm {
     }
 
     private JPopupMenu createArmyPopupContextMenu() {
-        // rename, separator, delete, addPet separator, properties
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
                 new Object[]{showArmyMovementRangeAction, toggleFedAction});

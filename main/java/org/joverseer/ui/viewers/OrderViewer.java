@@ -50,14 +50,14 @@ public class OrderViewer extends AbstractForm implements ActionListener {
 
     protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-        glb.setDefaultInsets(new Insets(0, 0, 0, 5));
+        glb.setDefaultInsets(new Insets(0, 0, 0, 3));
         glb.append(orderText = new JTextField());
         orderText.setBorder(null);
         orderText.setPreferredSize(new Dimension(170, 12));
         orderText.setText("N/A");
 
         GridBagLayoutBuilder glb1 = new GridBagLayoutBuilder();
-        glb1.setDefaultInsets(new Insets(0, 0, 0, 5));
+        glb1.setDefaultInsets(new Insets(0, 0, 0, 3));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("edit.image"));
         JButton btn = new JButton(ico);

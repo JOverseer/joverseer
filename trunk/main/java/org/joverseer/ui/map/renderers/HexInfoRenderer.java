@@ -2,6 +2,9 @@ package org.joverseer.ui.map.renderers;
 
 import org.joverseer.domain.HexInfo;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
+import org.springframework.richclient.application.Application;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -15,6 +18,7 @@ import java.awt.geom.Line2D;
  */
 public class HexInfoRenderer extends DefaultHexRenderer {
     int densityFactor = 4;
+    Renderer hexNumberRenderer = null;
 
     public int getDensityFactor() {
         return densityFactor;
@@ -59,6 +63,19 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             g.setColor(Color.black);
             g.drawPolygon(polygon);
             g.setClip(null);
+            if (getHexNumberRenderer() != null) {
+                Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                Hex hex = game.getMetadata().getHex(hexInfo.getHexNo());
+                getHexNumberRenderer().render(hex, g, x, y);
+            }
         }
+    }
+
+    public Renderer getHexNumberRenderer() {
+        return hexNumberRenderer;
+    }
+
+    public void setHexNumberRenderer(Renderer hexNumberRendererId) {
+        this.hexNumberRenderer = hexNumberRendererId;
     }
 }

@@ -26,10 +26,11 @@ public class NewGameForm extends AbstractForm {
         TableFormBuilder tlb = new TableFormBuilder(getBindingFactory());
         JComboBox cmb;
         tlb.add("gameType", cmb = new JComboBox(GameTypeEnum.values()));
-        tlb.row();
-        tlb.add("number");
+        cmb.setEditable(false);
         tlb.row();
         tlb.add("nationNo");
+        tlb.row();
+        tlb.add("number");
         return tlb.getForm();
     }
 }

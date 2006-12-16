@@ -39,9 +39,12 @@ public class SaveGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save");
-        if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+
+        GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+        String fname = String.format("game%s.jov", gh.getGame().getMetadata().getGameNo());
+        fileChooser.setSelectedFile(new File(fname));
+        if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
-            GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
                 out.writeObject(gh.getGame());

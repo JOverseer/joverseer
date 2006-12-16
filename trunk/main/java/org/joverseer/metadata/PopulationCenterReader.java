@@ -46,7 +46,7 @@ public class PopulationCenterReader implements MetadataReader {
                 String harbor = parts[6];
                 String nation = parts[4];
                 String name = parts[7].replaceAll("\"", "");
-
+                boolean capital = parts[9].equals("True");
                 PopulationCenterSizeEnum pcSize = PopulationCenterSizeEnum.ruins;
                 if (size.equals("1")) {
                     pcSize = PopulationCenterSizeEnum.camp;
@@ -90,6 +90,7 @@ public class PopulationCenterReader implements MetadataReader {
                 pc.setHarbor(harborSize);
                 pc.setX(x);
                 pc.setY(y);
+                pc.setCapital(capital);
 
                 pc.setInformationSource(InformationSourceEnum.detailed);
                 pc.setInfoSource(new MetadataSource());

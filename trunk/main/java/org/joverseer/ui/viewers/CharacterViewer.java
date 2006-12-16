@@ -26,6 +26,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.Container;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,24 +73,35 @@ public class CharacterViewer extends AbstractForm {
     }
 
     public void setFormObject(Object object) {
+        boolean showStartingInfo = false;
+        Character startingChar = null;
         if (object != getFormObject()) {
             showArtifacts = false;
             showOrders = false;
             showSpells = false;
         }
         super.setFormObject(object);
+        if (object == null) return;
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
 
             Character c = (Character)object;
-            String txt = "";
-            txt += getStatText("C", c.getCommand(), c.getCommandTotal());
-            txt += getStatText("A", c.getAgent(), c.getAgentTotal());
-            txt += getStatText("E", c.getEmmisary(), c.getEmmisaryTotal());
-            txt += getStatText("M", c.getMage(), c.getMageTotal());
-            txt += getStatText("S", c.getStealth(), c.getStealthTotal());
-            txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
-            txt += getStatText("H", c.getHealth(), c.getHealth());
+            String txt = getStatLine(c);
+
+            if (txt.equals("")) {
+                // character is enemy
+                // retrieve starting info
+                Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                GameMetadata gm = game.getMetadata();
+                Container startChars = gm.getCharacters();
+                if (startChars != null) {
+                    startingChar = (Character)startChars.findFirstByProperty("id", c.getId());
+                    showStartingInfo = true;
+                    if (startingChar != null) {
+                        txt = getStatLine(startingChar) + "(start info)";
+                    }
+                }
+            }
             statsTextBox.setText(txt);
             statsTextBox.setCaretPosition(0);
 
@@ -100,14 +112,17 @@ public class CharacterViewer extends AbstractForm {
 
             ArrayList artis = new ArrayList();
             if (showArtifacts) {
-                for (Integer no : c.getArtifacts()) {
-                    Artifact arti = (Artifact)gm.getArtifacts().findFirstByProperty("no", no);
-                    if (arti == null) {
-                        arti = new Artifact();
-                        arti.setNo(no);
-                        arti.setName("---");
+                ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
+                if (artifacts != null) {
+                    for (Integer no : artifacts) {
+                        Artifact arti = (Artifact)gm.getArtifacts().findFirstByProperty("no", no);
+                        if (arti == null) {
+                            arti = new Artifact();
+                            arti.setNo(no);
+                            arti.setName("---");
+                        }
+                        artis.add(arti);
                     }
-                    artis.add(arti);
                 }
             }
             ((BeanTableModel)artifactsTable.getModel()).setRows(artis);
@@ -133,9 +148,21 @@ public class CharacterViewer extends AbstractForm {
         
     }
 
+    private String getStatLine(Character c) {
+        String txt = "";
+        txt += getStatText("C", c.getCommand(), c.getCommandTotal());
+        txt += getStatText("A", c.getAgent(), c.getAgentTotal());
+        txt += getStatText("E", c.getEmmisary(), c.getEmmisaryTotal());
+        txt += getStatText("M", c.getMage(), c.getMageTotal());
+        txt += getStatText("S", c.getStealth(), c.getStealthTotal());
+        txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
+        txt += getStatText("H", c.getHealth(), c.getHealth());
+        return txt;
+    }
+
     private String getStatText(String prefix, int skill, int skillTotal) {
-        if (skillTotal == 0) return "";
-        return prefix + skill + (skillTotal != skill ? "(" + skillTotal + ")" : "") + " ";
+        if (skillTotal == 0 && skill == 0) return "";
+        return prefix + skill + (skillTotal > skill ? "(" + skillTotal + ")" : "") + " ";
     }
 
 

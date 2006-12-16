@@ -18,6 +18,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.filechooser.DefaultFileFilter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -58,6 +59,8 @@ public class LoadGame extends ActionCommand {
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));
         }
+        fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file"));
+
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
             GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");

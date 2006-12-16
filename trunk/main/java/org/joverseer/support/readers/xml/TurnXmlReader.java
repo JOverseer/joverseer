@@ -380,7 +380,7 @@ public class TurnXmlReader implements Runnable{
                     // look for "Unknown map icon" army at same hex with same allegiance
                     ArrayList oldArmies = armies.findAllByProperties(new String[]{"x", "y"}, new Object[]{newArmy.getX(), newArmy.getY()});
 
-                    // no char found - add
+                    // no army found - add
                     logger.debug("No Army found in turn, add.");
                     if (newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) {
                         // new army is Unknown
@@ -406,7 +406,7 @@ public class TurnXmlReader implements Runnable{
                     }
 
                 } else {
-                    // char found
+                    // army found
                     logger.debug("Army found in turn.");
                     if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue())
                     {

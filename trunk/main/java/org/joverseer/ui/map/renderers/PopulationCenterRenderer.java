@@ -5,13 +5,11 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.ColorPicker;
-import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.application.Application;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.image.*;
-import java.util.HashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,7 +51,8 @@ public class PopulationCenterRenderer extends ImageRenderer {
         BufferedImage pcImage = null;
         if (popCenter.getSize() != PopulationCenterSizeEnum.ruins)
         {
-            pcImage = getImage(popCenter.getSize().toString() + ".image");
+            String capital = popCenter.getCapital() ? ".capital" : "";
+            pcImage = getImage(popCenter.getSize().toString() + capital + ".image");
 
             BufferedImage img = copyImage(pcImage);
             Color color1 = ColorPicker.getInstance().getColor1(popCenter.getNationNo());
@@ -64,9 +63,9 @@ public class PopulationCenterRenderer extends ImageRenderer {
                 makeHidden(img, color1, color2);
             }
             if (fortImage != null) {
-                g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2, null);
+                g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2 , null);
             }
-            g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2, null);
+            g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2 , null);
         } else {
             if (fortImage != null) {
                 g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + 8 / 2, null);

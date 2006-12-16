@@ -24,12 +24,13 @@ import java.io.File;
 public class GameMetadata implements Serializable {
     GameTypeEnum gameType;
     int gameNo;
+    int nationNo;
 
     Container hexes = new Container();
     ArrayList nations = new ArrayList();
     Container artifacts = new Container();
     Container orders = new Container();
-
+    Container characters = new Container();
     Container populationCenters = new Container();
 
     ArrayList readers = new ArrayList();
@@ -92,15 +93,18 @@ public class GameMetadata implements Serializable {
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(getCharacters());
         out.writeObject(getArtifacts());
         out.writeObject(getOrders());
         out.writeObject(getHexes());
         out.writeObject(getNations());
         out.writeObject(getGameType());
         out.writeObject(getGameNo());
+        out.writeObject(getNationNo());
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        characters = (Container)in.readObject();
         artifacts = (Container)in.readObject();
         orders = (Container)in.readObject();
         ArrayList hexesAr = (ArrayList)in.readObject();
@@ -111,6 +115,7 @@ public class GameMetadata implements Serializable {
         nations = (ArrayList)in.readObject();
         setGameType((GameTypeEnum)in.readObject());
         setGameNo((Integer)in.readObject());
+        setNationNo((Integer)in.readObject());
     }
 
     public Nation getNationByNum(int number) {
@@ -161,5 +166,21 @@ public class GameMetadata implements Serializable {
 
     public void setBasePath(String basePath) {
         this.basePath = basePath;
+    }
+
+    public Container getCharacters() {
+        return characters;
+    }
+
+    public void setCharacters(Container characters) {
+        this.characters = characters;
+    }
+
+    public int getNationNo() {
+        return nationNo;
+    }
+
+    public void setNationNo(int nationNo) {
+        this.nationNo = nationNo;
     }
 }

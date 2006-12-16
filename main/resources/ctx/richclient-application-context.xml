@@ -362,6 +362,12 @@
          <property name="hasTitleBar"><value>false</value></property>
     </bean>
 
+    <bean id="hexNumberRenderer" class="org.joverseer.ui.map.renderers.HexNumberRenderer">
+        <property name="fontName"><value>MS Sans Serif</value></property>
+        <property name="fontSize"><value>9</value></property>
+        <property name="fontStyle"><value>1</value></property>
+    </bean>
+
     <bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
         <property name="mapColumns">
             <value>44</value>
@@ -378,17 +384,14 @@
         <property name="renderers">
             <list>
                 <bean class="org.joverseer.ui.map.renderers.DefaultHexRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.HexNumberRenderer">
-                    <property name="fontName"><value>MS Sans Serif</value></property>
-                    <property name="fontSize"><value>9</value></property>
-                    <property name="fontStyle"><value>1</value></property>
-                </bean>
+                <ref bean="hexNumberRenderer"></ref>
                 <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.HexInfoRenderer">
                     <property name="densityFactor"><value>4</value></property>
+                    <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
                 </bean>
                 <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
@@ -398,11 +401,10 @@
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
-            <!--
             <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
->>>>>>> .r34
-            -->
+            <!--
             <value>bin/metadata/</value>
+            -->
         </property>
         <property name="readers">
             <list>
@@ -411,6 +413,7 @@
                 <bean class="org.joverseer.metadata.ArtifactReader"/>
                 <bean class="org.joverseer.metadata.PopulationCenterReader"/>
                 <bean class="org.joverseer.metadata.OrderReader"/>
+                <bean class="org.joverseer.metadata.CharacterReader"/>
             </list>
         </property>
     </bean>
@@ -422,5 +425,6 @@
     </bean>
     
     <bean id="mapItemContainer" class="org.joverseer.support.Container"/>
-    
+
+    <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>
 </beans>

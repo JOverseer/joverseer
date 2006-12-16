@@ -43,10 +43,10 @@ public class CreateGame extends ActionCommand {
 
             protected boolean onFinish() {
                 form.commit();
-                // throw a selected hex changed event for current hex
-                // first we need to find the current hex
                 Game game = new Game();
                 GameMetadata gm = (GameMetadata)Application.instance().getApplicationContext().getBean("gameMetadata");
+                gm.setGameNo(ng.getNumber());
+                gm.setNationNo(ng.getNationNo());
                 gm.setGameType(ng.getGameType());
                 gm.load();
                 game.setMetadata(gm);

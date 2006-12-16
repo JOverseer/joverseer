@@ -1,6 +1,7 @@
 package org.joverseer.ui.map;
 
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.progress.BusyIndicator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -169,6 +170,7 @@ public class MapPanel extends JPanel implements MouseListener {
         Game game = getGame();
         if (!Game.isInitialized(game)) return;
 
+        BusyIndicator.showAt(this);
         int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
         int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
         mapItems = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -299,6 +301,7 @@ public class MapPanel extends JPanel implements MouseListener {
         catch (Exception exc) {
             logger.error("Error rendering orders " + exc.getMessage());
         }
+        BusyIndicator.clearAt(this);
     }
 
 

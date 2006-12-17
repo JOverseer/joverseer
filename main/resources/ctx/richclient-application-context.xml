@@ -333,7 +333,7 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
 
-    <bean id="turnSelectorView"
+    <bean id="mapOptionsView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
             <value>org.joverseer.ui.MapOptionsView</value>

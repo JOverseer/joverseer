@@ -226,6 +226,8 @@ public class CharacterViewer extends AbstractForm {
                 protected Class[] createColumnClasses() {
                     return new Class[]{String.class, String.class};
                 }
+
+                
             };
         tableModel.setRowNumbers(false);
         artifactsTable.setModel(tableModel);

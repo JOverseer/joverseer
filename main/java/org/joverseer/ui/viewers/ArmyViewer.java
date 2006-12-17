@@ -161,7 +161,7 @@ public class ArmyViewer extends AbstractForm {
         protected void doExecuteCommand() {
             Army a = (org.joverseer.domain.Army) getFormObject();
             Boolean fed = a.computeFed();
-            a.setFed(fed != null && fed != true ? true : false);
+            a.setFed(fed == null || fed != true ? true : false);
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
         }

@@ -7,12 +7,12 @@
         	<element>Diplomacy</element>
         	<startString>MEPBM GAMES</startString>
         	<endString>CENTERS</endString>
-        	
+
         	<processor type="RegexMatch">
         		<element>Allegiance</element>
         		<regex>\(A (Free People)\)</regex>
         	</processor>
-        	
+
         	 <processor type="StringEnclosedMatch">
 	        	<element>NationRelations</element>
 	        	<startString>RELATIONS WITH</startString>
@@ -20,7 +20,7 @@
 		        	<processor type="RepeatRegexMatch">
 		        		<element>NationRelation</element>
 		        		<regex>(\p{L}+(?:[\s\-]\p{L}+)*\s+:\s+\w+)</regex>
-		        		
+
 		        		<processor type="RegexMatch">
 		        			<element>Nation</element>
 		        			<regex>(\p{L}+(?:[\s\-]\p{L}+)*)</regex>
@@ -37,13 +37,13 @@
         	<element>PopulationCentres</element>
         	<startString>POPULATION CENTERS</startString>
         	<endString>ARMIES AND NAVIES</endString>
-        	
+
         	<processor type="RepeatRegexMatch">
         		<element>PopCentre</element>
-        		<regex>(\p{L}+(?:[\s-]\p{L}+)?\s+Location : @ \d{4} in [\p{L}\d\s:&amp;?.\-]+)</regex>
-        		<processor type="RegexMatch">
-        			<element>Name</element>
-        			<regex>(\p{L}+(?:[\s\-]\p{L}+)?)\s+Location : @ </regex>
+                <regex>(\p{L}+(?:[\s-]\p{L}+)*\s+(?:\(Capital\))?\s+Location : @ \d{4} in [\p{L}\d\s:&amp;?.\-]+\d)</regex>
+                <processor type="RegexMatch">
+                    <element>Name</element>
+                    <regex>(\p{L}+(?:[\s\-]\p{L}+)*)\s+(?:\(Capital\))?\s+Location : @ </regex>
         		</processor>
         		<processor type="RegexMatch">
         			<element>Hex</element>
@@ -127,17 +127,17 @@
         		</processor>
        		</processor>
    		</processor>
-   		
+
    		<processor type="StringEnclosedMatch">
    			<!--  get the region for the companies -->
         	<element>Companies</element>
         	<startString>COMPANY COMMANDERS :</startString>
         	<endString>MARKET PRICES</endString>
-   		
+
    			<processor type="RepeatRegexMatch">
    				<element>Company</element>
    				<regex>(\w+\s\p{L}+(?:[\s-]\p{L}+)*\s+Location\s:\s@\s\d{4}\s+Traveling with \w+ are : (?:\p{L}+(?:[\s-]\p{L}+)*(?:\s\-\s)?)+\.)</regex>
-   				
+
    				<processor type="RegexMatch">
    					<element>Commander</element>
    					<regex>\w+\s(\p{L}+(?:[\s-]\p{L}+)*)\s+Location</regex>
@@ -147,7 +147,7 @@
    					<element>Hex</element>
    					<regex>(\d{4})</regex>
    				</processor>
-   				
+
    				<processor type="RegexMatch">
    					<element>Member</element>
    					<regex> are : (\p{L}+(?:[\s-]\p{L}+)*)(?:\s\-\s)?</regex>
@@ -157,20 +157,20 @@
    					<element>Member</element>
    					<regex>(\p{L}+(?:[\s-]\p{L}+)*)(?:,)?</regex>
    				</processor>
-   				
+
 	   		</processor>
    		</processor>
    		<processor type="StringEnclosedMatch">
-   			<!--  get the region for the character order results -->
+   			<!--  get the region for the encounters -->
         	<element>Encounters</element>
         	<startString>ENCOUNTER MESSAGES</startString>
         	<endString>COMBAT MESSAGES</endString>
-        	
+
         	<processor type="RepeatRegexMatch">
         		<element>Encounter</element>
         		<multiline>1</multiline>
         		<regex>(Encounter for \p{L}+(?:[\s-]\p{L}+)* at \d{4}(?:.|\s)+)</regex>
-        		
+
         		<processor type="RegexMatch">
         			<element>Character</element>
         			<regex>Encounter for (\p{L}+(?:[\s-]\p{L}+)*) at </regex>
@@ -186,11 +186,31 @@
         			<multiline>1</multiline>
         			<regex>((.|\s)+)</regex>
         		</processor>
-        		
+
         	</processor>
         </processor>
-        
-   		<processor type="StringEnclosedMatch">
+        <processor type="StringEnclosedMatch">
+   			<!--  get the region for the combat results -->
+        	<element>Combats</element>
+        	<startString>COMBAT MESSAGES</startString>
+        	<endString>CIAL MESSAGES</endString>
+            <processor type="StringEnclosedMatch">
+                <element>Combat</element>
+                <startString>Battle at</startString>
+                <endString>Battle at|SPE</endString>
+                <processor type="RegexMatch">
+                    <element>HexNo</element>
+                    <regex>(\d{4})</regex>
+                </processor>
+                <processor type="StringEnclosedMatch">
+                    <element>Army</element>
+                    <startString>At the head</startString>
+                    <endString>At the head|The Camp|The Village|The Town|The Major Town|The City|Report from</endString>
+                </processor>
+            </processor>
+        </processor>
+
+       <processor type="StringEnclosedMatch">
    			<!--  get the region for the character order results -->
         	<element>Orders</element>
         	<startString>ORDERS GIVEN</startString>
@@ -206,11 +226,11 @@
         			<element>HexID</element>
         			<regex>(\d{4})\.</regex>
         		</processor>
-        		
+
         		<processor type="Copy">
         			<element>CharacterOrders</element>
         		</processor>
-        		
+
         		<processor type="RegexMatch">
         			<!--  Parse LA result with owner -->
         			<element>LocateArtifact</element>
@@ -232,7 +252,7 @@
         				<regex>at or near (\d{4})</regex>
         			</processor>
         		</processor>
-        		
+
         		<processor type="RegexMatch">
         			<!--  Parse LAT result with owner -->
         			<element>LocateArtifactTrue</element>
@@ -254,7 +274,7 @@
         				<regex>at (\d{4})</regex>
         			</processor>
         		</processor>
-        		
+
         		<processor type="RegexMatch">
         			<!--  Parse RC result with owner -->
         			<element>RevealCharacter</element>
@@ -268,7 +288,7 @@
         				<regex>at or near\s+(\d{4})</regex>
         			</processor>
         		</processor>
-        		
+
         		<processor type="RegexMatch">
         			<element>Assassinated</element>
         			<regex>()\p{L}+(?:[\s-]\p{L}+)?\s+was assassinated\.</regex>

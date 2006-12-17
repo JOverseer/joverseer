@@ -2,6 +2,7 @@ package org.joverseer.support;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
@@ -12,7 +13,7 @@ import org.apache.commons.beanutils.PropertyUtils;
  * Time: 11:36:22 рм
  * To change this template use File | Settings | File Templates.
  */
-public class ContainerCache {
+public class ContainerCache implements Serializable {
     String propertyName;
     HashMap<Object, ArrayList> cache;
 

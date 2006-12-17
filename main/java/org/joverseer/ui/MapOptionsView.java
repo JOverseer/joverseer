@@ -12,6 +12,8 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.springframework.context.ApplicationEvent;
@@ -56,11 +58,12 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 }
             }
         });
-        cmbTurns.setPreferredSize(new Dimension(50, 16));
+        cmbTurns.setPreferredSize(new Dimension(100, 16));
         lb.nextLine();
 
         lb.append(label = new JLabel("Map : "));
         lb.append(cmbMaps = new JComboBox());
+        cmbMaps.setPreferredSize(new Dimension(120, 16));
         cmbMaps.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Object obj = cmbMaps.getSelectedItem();
@@ -69,16 +72,16 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 String str = obj.toString();
                 if (str.equals("None")) {
-                    mapOptions.put("nationMap", null);
+                    mapOptions.put(MapOptionsEnum.NationMap, null);
                 } else if (str.equals("Dark Servants")) {
-                    mapOptions.put("nationMap", "Dark Servants");
+                    mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapDarkServants);
                 } else if (str.equals("Free People")) {
-                    mapOptions.put("nationMap", "Free People");
+                    mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapFreePeople);
                 } else if (str.equals("Neutrals")) {
-                    mapOptions.put("nationMap", "Neutrals");
+                    mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNeutrals);
                 } else {
                     int nationNo = g.getMetadata().getNationByName(str).getNumber();
-                    mapOptions.put("nationMap", String.valueOf(nationNo));
+                    mapOptions.put(MapOptionsEnum.NationMap, String.valueOf(nationNo));
                 }
                 int turnNo = g.getCurrentTurn();
                 Application.instance().getApplicationContext().publishEvent(
@@ -99,10 +102,17 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         cmbMaps.removeAllItems();
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g != null) {
+            ActionListener[] als = cmbTurns.getActionListeners();
+            for (ActionListener al : als) {
+                cmbTurns.removeActionListener(al);
+            }
             for (int i = 0; i <= g.getMaxTurn(); i++) {
                 if (g.getTurn(i) != null) {
                     cmbTurns.addItem(g.getTurn(i).getTurnNo());
                 }
+            }
+            for (ActionListener al : als) {
+                cmbTurns.addActionListener(al);
             }
             cmbTurns.setSelectedItem(g.getCurrentTurn());
             cmbMaps.addItem("None");

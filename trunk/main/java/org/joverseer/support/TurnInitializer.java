@@ -76,7 +76,7 @@ public class TurnInitializer {
             }
         }
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name"}));
-        newTurn.getContainers().put(TurnElementsEnum.Army, new Container(new String[]{"hexNo"}));
+        newTurn.getContainers().put(TurnElementsEnum.Army, new Container());
         newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
         Container hexInfo = new Container(new String[]{"hexNo"});
         GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();

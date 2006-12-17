@@ -93,13 +93,15 @@ public class Container implements Serializable {
             si = 1;
         }
         BeanPropertyValueEqualsPredicate[] ps = new BeanPropertyValueEqualsPredicate[properties.length - si];
-        for (int i=si; i<ps.length; i++) {
-            ps[i] = new BeanPropertyValueEqualsPredicate(properties[i], values[i]);
+        for (int i=si; i<properties.length; i++) {
+            ps[i-si] = new BeanPropertyValueEqualsPredicate(properties[i], values[i]);
         }
         AllPredicate p = new AllPredicate(ps);
         ArrayList res = new ArrayList();
         res.addAll(ret);
-        CollectionUtils.filter(res, p);
+        if (ps.length > 0) {
+            CollectionUtils.filter(res, p);
+        }
         return res;
     }
 

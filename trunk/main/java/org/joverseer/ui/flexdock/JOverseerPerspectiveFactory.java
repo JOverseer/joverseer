@@ -66,7 +66,7 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(.3f);
         dss.add(ds);
 
-        ds = new DockingState("turnSelectorView");
+        ds = new DockingState("mapOptionsView");
         ds.setRegion(DockingConstants.EAST_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(.01f);

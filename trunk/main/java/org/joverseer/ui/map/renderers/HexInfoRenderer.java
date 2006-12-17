@@ -10,6 +10,8 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.springframework.richclient.application.Application;
 
 import java.awt.*;
@@ -90,23 +92,24 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         }
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
-        String map = (String)mapOptions.get("nationMap");
+        Object map = mapOptions.get(MapOptionsEnum.NationMap);
         boolean visible = false;
         Hex hex = (Hex)obj;
         if (map == null) {
             HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());
             visible = hexInfo.getVisible();
-        } else if (map.equals("Dark Servants")) {
+            int a = 1;
+        } else if (map == MapOptionValuesEnum.NationMapDarkServants) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.DarkServants);
-        } else if (map.equals("Free People")) {
+        } else if (map == MapOptionValuesEnum.NationMapFreePeople) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.FreePeople);
-        } else if (map.equals("Neutrals")) {
+        } else if (map == MapOptionValuesEnum.NationMapNeutrals) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.Neutral);
         } else {
-            int nationNo = Integer.parseInt(map);
+            int nationNo = Integer.parseInt((String)map);
             NationMapRange nmr = (NationMapRange)game.getMetadata().getNationMapRanges().findFirstByProperty("nationNo", nationNo);
             visible = nmr.getRectangle().contains(hex.getColumn(), hex.getRow());
-            int a = 1;
+
         }
         if (!visible) {
             Image img = getImage();

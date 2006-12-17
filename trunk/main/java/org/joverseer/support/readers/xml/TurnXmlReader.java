@@ -194,6 +194,7 @@ public class TurnXmlReader implements Runnable{
         try {
             readFile(filename);
             updateGame(game);
+            game.setCurrentTurn(game.getMaxTurn());
         }
         catch (Exception exc) {
             // do nothing
@@ -208,7 +209,7 @@ public class TurnXmlReader implements Runnable{
         try {
             turn = null;
             if (turnInfo.getTurnNo() == game.getMaxTurn()) {
-                turn = game.getTurn();
+                turn = game.getTurn(game.getMaxTurn());
             } else {
                 turn = new Turn();
                 turn.setTurnNo(turnInfo.getTurnNo());

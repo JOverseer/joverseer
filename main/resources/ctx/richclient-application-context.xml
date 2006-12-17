@@ -336,7 +336,7 @@
     <bean id="turnSelectorView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
-            <value>org.joverseer.ui.TurnSelectorView</value>
+            <value>org.joverseer.ui.MapOptionsView</value>
         </property>
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>
@@ -389,10 +389,12 @@
                 <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
+
                 <bean class="org.joverseer.ui.map.renderers.HexInfoRenderer">
                     <property name="densityFactor"><value>4</value></property>
                     <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
                 </bean>
+
                 <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
             </list>
@@ -401,7 +403,7 @@
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
-            <value>c:/users/mscoon/joverseer-ui/org-joverseer-ui/target/classes/metadata/</value>
+            <value>target/classes/metadata/</value>
             <!--
             <value>bin/metadata/</value>
             -->
@@ -414,6 +416,7 @@
                 <bean class="org.joverseer.metadata.PopulationCenterReader"/>
                 <bean class="org.joverseer.metadata.OrderReader"/>
                 <bean class="org.joverseer.metadata.CharacterReader"/>
+                <bean class="org.joverseer.metadata.NationMapRangeReader"/>
             </list>
         </property>
     </bean>
@@ -425,6 +428,8 @@
     </bean>
     
     <bean id="mapItemContainer" class="org.joverseer.support.Container"/>
+
+    <bean id="mapOptions" class="java.util.HashMap"/>
 
     <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>
 </beans>

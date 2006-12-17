@@ -26,12 +26,13 @@ public class GameMetadata implements Serializable {
     int gameNo;
     int nationNo;
 
-    Container hexes = new Container();
     ArrayList nations = new ArrayList();
-    Container artifacts = new Container();
-    Container orders = new Container();
-    Container characters = new Container();
-    Container populationCenters = new Container();
+    Container hexes = new Container(new String[]{"hexNo"});
+    Container artifacts = new Container(new String[]{"no"});
+    Container orders = new Container(new String[]{"number"});
+    Container characters = new Container(new String[]{"id", "name"});
+    Container populationCenters = new Container(new String[]{"hexNo"});
+    Container nationMapRanges = new Container(new String[]{"nationNo"});
 
     ArrayList readers = new ArrayList();
 
@@ -50,9 +51,7 @@ public class GameMetadata implements Serializable {
     }
     
     public Hex getHex(int hexNo) {
-    	int row = hexNo % 100;
-    	int col = hexNo / 100;
-    	Hex h = (Hex)hexes.findFirstByProperties(new String[]{"row", "column"}, new Object[]{row, col});
+    	Hex h = (Hex)hexes.findFirstByProperties(new String[]{"hexNo"}, new Object[]{hexNo});
     	return h;
     }
 
@@ -96,8 +95,9 @@ public class GameMetadata implements Serializable {
         out.writeObject(getCharacters());
         out.writeObject(getArtifacts());
         out.writeObject(getOrders());
-        out.writeObject(getHexes());
+        out.writeObject(hexes);
         out.writeObject(getNations());
+        out.writeObject(getNationMapRanges());
         out.writeObject(getGameType());
         out.writeObject(getGameNo());
         out.writeObject(getNationNo());
@@ -107,12 +107,9 @@ public class GameMetadata implements Serializable {
         characters = (Container)in.readObject();
         artifacts = (Container)in.readObject();
         orders = (Container)in.readObject();
-        ArrayList hexesAr = (ArrayList)in.readObject();
-        hexes = new Container();
-        for (Object h : hexesAr) {
-            hexes.addItem(h);
-        }
+        hexes = (Container)in.readObject();
         nations = (ArrayList)in.readObject();
+        nationMapRanges = (Container)in.readObject();
         setGameType((GameTypeEnum)in.readObject());
         setGameNo((Integer)in.readObject());
         setNationNo((Integer)in.readObject());
@@ -121,6 +118,15 @@ public class GameMetadata implements Serializable {
     public Nation getNationByNum(int number) {
         for (Nation n : (ArrayList<Nation>)getNations()) {
             if (n.getNumber() == number) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    public Nation getNationByName(String name) {
+       for (Nation n : (ArrayList<Nation>)getNations()) {
+            if (n.getName().equals(name)) {
                 return n;
             }
         }
@@ -182,5 +188,15 @@ public class GameMetadata implements Serializable {
 
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
+    }
+
+
+
+    public Container getNationMapRanges() {
+        return nationMapRanges;
+    }
+
+    public void setNationMapRanges(Container nationMapRanges) {
+        this.nationMapRanges = nationMapRanges;
     }
 }

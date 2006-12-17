@@ -2,9 +2,11 @@ package org.joverseer.ui;
 
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
+import org.springframework.richclient.application.Application;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
 import org.joverseer.ui.support.JOverseerEvent;
 
@@ -34,6 +36,9 @@ public class MapView extends AbstractView  implements ApplicationListener {
         scp = new JScrollPane(mapPanel = new MapPanel());
         mapPanel.setPreferredSize(new Dimension(2500, 1800));
         scp.setPreferredSize(new Dimension(800, 500));
+        MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize());
+        scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize());
         return scp;
     }
 

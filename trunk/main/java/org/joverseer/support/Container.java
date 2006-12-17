@@ -12,6 +12,7 @@ import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.HashMap;
 import java.io.Serializable;
 
 /**
@@ -23,19 +24,42 @@ import java.io.Serializable;
  */
 public class Container implements Serializable {
     public ArrayList items = new ArrayList();
+    public HashMap<String, ContainerCache> caches = new HashMap<String, ContainerCache>();
+
+    public Container() {}
+
+    public Container(String[] cacheProperties) {
+        for (String cacheProperty : cacheProperties) {
+            addCache(cacheProperty);
+        }
+    }
+
+    public void addCache(String propertyName) {
+        assert(items.size() == 0);
+        caches.put(propertyName, new ContainerCache(propertyName));
+    }
 
     public void addItem(Object obj) {
         items.add(obj);
+        for (ContainerCache cc : caches.values()) {
+            cc.addItem(obj);
+        }
     }
 
     public void removeItem(Object obj) {
         if (items.contains(obj)) {
             items.remove(obj);
+            for (ContainerCache cc : caches.values()) {
+                cc.removeItem(obj);
+            }
         }
     }
 
     public void removeAll(Collection col) {
         items.removeAll(col);
+        for (ContainerCache cc : caches.values()) {
+            cc.clear();
+        }
     }
 
     public int size() {
@@ -50,14 +74,31 @@ public class Container implements Serializable {
         return items;
     }
 
+    private ArrayList findByCache(String propertyName, Object value) {
+        ContainerCache cache = caches.get(propertyName);
+        if (cache == null) return null;
+        ArrayList ret = cache.retrieveItems(value);
+        if (ret == null) return new ArrayList();
+        return ret;
+    }
+
     public ArrayList findAllByProperties(String[] properties, Object[] values) {
-        BeanPropertyValueEqualsPredicate[] ps = new BeanPropertyValueEqualsPredicate[properties.length];
-        for (int i=0; i<ps.length; i++) {
+        ArrayList ret = findByCache(properties[0], values[0]);
+        if (ret != null && ret.size() == 0) return ret;
+        int si;
+        if (ret == null) {
+            si = 0;
+            ret = items;
+        } else {
+            si = 1;
+        }
+        BeanPropertyValueEqualsPredicate[] ps = new BeanPropertyValueEqualsPredicate[properties.length - si];
+        for (int i=si; i<ps.length; i++) {
             ps[i] = new BeanPropertyValueEqualsPredicate(properties[i], values[i]);
         }
         AllPredicate p = new AllPredicate(ps);
         ArrayList res = new ArrayList();
-        res.addAll(items);
+        res.addAll(ret);
         CollectionUtils.filter(res, p);
         return res;
     }

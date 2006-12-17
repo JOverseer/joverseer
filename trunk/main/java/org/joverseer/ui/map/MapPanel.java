@@ -45,6 +45,8 @@ public class MapPanel extends JPanel implements MouseListener {
 
     BufferedImage map = null;
     BufferedImage mapItems = null;
+    BufferedImage mapBack = null;
+    BufferedImage mapItemsBack = null;
 
     Point selectedHex = null;
 
@@ -137,9 +139,12 @@ public class MapPanel extends JPanel implements MouseListener {
 
         GameMetadata gm = game.getMetadata();
 
-        int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
-        int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
-        map = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        if (mapBack == null) {
+            int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
+            int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
+            mapBack = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        }
+        map = mapBack;
 
         Graphics2D g = map.createGraphics();
 
@@ -171,10 +176,12 @@ public class MapPanel extends JPanel implements MouseListener {
         if (!Game.isInitialized(game)) return;
 
         BusyIndicator.showAt(this);
-        int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
-        int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
-        mapItems = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
+        if (mapItemsBack == null) {
+            int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
+            int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
+            mapItemsBack = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        }
+        mapItems = mapItemsBack;
 
         Graphics2D g = mapItems.createGraphics();
 
@@ -184,21 +191,6 @@ public class MapPanel extends JPanel implements MouseListener {
         g.drawImage(map, 0, 0, this);
 
         try {
-            ArrayList hexInfo = getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).getItems();
-            for (HexInfo hi : (ArrayList<HexInfo>)hexInfo) {
-                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
-                    if (r.appliesTo(hi)) {
-                        setHexLocation(hi.getX(), hi.getY());
-                        try {
-                            r.render(hi, g, location.x, location.y);
-                        }
-                        catch (Exception exc) {
-                            logger.error("Error hi " + hi.getHexNo() + " " + exc.getMessage());
-                        }
-                    }
-                }
-            }
-
             ArrayList pcs = getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs) {
                 for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {

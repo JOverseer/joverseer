@@ -48,6 +48,15 @@ public class Hex implements Serializable {
         this.row = row;
     }
 
+    public int getHexNo() {
+        return this.column * 100 + this.row;
+    }
+
+    public void setHexNo(int hexNo) {
+        column = hexNo / 100;
+        row = hexNo % 100;
+    }
+
     public HexTerrainEnum getTerrain() {
         return terrain;
     }

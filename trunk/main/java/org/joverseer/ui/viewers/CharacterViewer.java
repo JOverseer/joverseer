@@ -20,6 +20,7 @@ import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.support.TableUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -104,6 +105,12 @@ public class CharacterViewer extends AbstractForm {
             }
             statsTextBox.setText(txt);
             statsTextBox.setCaretPosition(0);
+
+            Font f = GraphicUtils.getFont(
+                            statsTextBox.getFont().getName(),
+                            (showStartingInfo ? Font.ITALIC : Font.PLAIN),
+                            statsTextBox.getFont().getSize());
+            statsTextBox.setFont(f);
 
             Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             if (game == null) return;

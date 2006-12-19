@@ -44,6 +44,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     InfoSource infoSource;
 
     Order[] orders = new Order[]{new Order(this), new Order(this)};
+    
+    String orderResults;
+    String encounter;
 
     public int getAgent() {
         return agent;
@@ -244,4 +247,26 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         id = Normalizer.normalize(id, Normalizer.DECOMP, 0);
         return id.replaceAll("[^\\p{ASCII}]", "");
     }
+
+    
+    public String getEncounter() {
+        return encounter;
+    }
+
+    
+    public void setEncounter(String encounter) {
+        this.encounter = encounter;
+    }
+
+    
+    public String getOrderResults() {
+        return orderResults;
+    }
+
+    
+    public void setOrderResults(String orderResults) {
+        this.orderResults = orderResults;
+    }
+    
+    
 }

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
- * Date: 20 Ïêô 2006
- * Time: 11:33:58 ìì
+ * Date: 20 ÎŸÎºÏ„ 2006
+ * Time: 11:33:58 Î¼Î¼
  * To change this template use File | Settings | File Templates.
  */
 public class NationReader implements MetadataReader {
@@ -19,7 +19,7 @@ public class NationReader implements MetadataReader {
                     {"Woodmen", "Wm"},
                     {"Northmen", "Nm"},
                     {"Riders of Rohan", "RoR"},
-                    {"Dunadan Rangers", "DR"},
+                    {"DÃºnadan Rangers", "DR"},
                     {"Silvan Elves", "Sil"},
                     {"Northern Gondor", "NG"},
                     {"Southern Gondor", "SG"},
@@ -37,10 +37,10 @@ public class NationReader implements MetadataReader {
                     {"Long Rider", "LR"},
                     {"Dark Lieutenants", "DkL"},
                     {"Corsairs", "Co"},
-                    {"Rhun Easterlings", "Ea"},
+                    {"RhÃ»n Easterlings", "Ea"},
                     {"Dunlendings", "Du"},
                     {"White Wizard", "WW"},
-                    {"Khand Eastelings", "Kh"},
+                    {"Khand Easterlings", "Kh"},
             };
 
     public void load(GameMetadata gm) {

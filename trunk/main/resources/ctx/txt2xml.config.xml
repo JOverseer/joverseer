@@ -40,7 +40,7 @@
 
         	<processor type="RepeatRegexMatch">
         		<element>PopCentre</element>
-                <regex>(\p{L}+(?:[\s-]\p{L}+)*\s+(?:\(Capital\))?\s+Location : @ \d{4} in [\p{L}\d\s:&amp;?.\-]+\d)</regex>
+                <regex>(\p{L}+(?:[\s-]\p{L}+)*\s+(?:\(Capital\))?\s+Location : @ \d{4} in [\p{L}\d\s:&amp;?.\-/]+[\d\-]&#13;)</regex>
                 <processor type="RegexMatch">
                     <element>Name</element>
                     <regex>(\p{L}+(?:[\s\-]\p{L}+)*)\s+(?:\(Capital\))?\s+Location : @ </regex>
@@ -160,8 +160,9 @@
 
 	   		</processor>
    		</processor>
+		<!--  get the region for the encounters -->
+ 		<!--  
    		<processor type="StringEnclosedMatch">
-   			<!--  get the region for the encounters -->
         	<element>Encounters</element>
         	<startString>ENCOUNTER MESSAGES</startString>
         	<endString>COMBAT MESSAGES</endString>
@@ -189,8 +190,10 @@
 
         	</processor>
         </processor>
+        -->
+        <!-- 
         <processor type="StringEnclosedMatch">
-   			<!--  get the region for the combat results -->
+   			
         	<element>Combats</element>
         	<startString>COMBAT MESSAGES</startString>
         	<endString>CIAL MESSAGES</endString>
@@ -209,7 +212,7 @@
                 </processor>
             </processor>
         </processor>
-
+ -->
        <processor type="StringEnclosedMatch">
    			<!--  get the region for the character order results -->
         	<element>Orders</element>
@@ -249,7 +252,7 @@
         			</processor>
         			<processor type="RegexMatch">
         				<element>Hex</element>
-        				<regex>at or near (\d{4})</regex>
+        				<regex>or near (\d{4})</regex>
         			</processor>
         		</processor>
 

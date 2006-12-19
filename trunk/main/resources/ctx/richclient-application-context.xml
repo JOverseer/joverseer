@@ -403,10 +403,12 @@
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
+            <!-- 
             <value>target/classes/metadata/</value>
-            <!--
+             -->
+            <!-- -->
             <value>bin/metadata/</value>
-            -->
+            <!-- -->
         </property>
         <property name="readers">
             <list>

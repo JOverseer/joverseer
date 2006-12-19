@@ -9,6 +9,7 @@ import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.binding.form.FormModel;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
@@ -38,8 +39,8 @@ import java.util.ArrayList;
 /**
  * Created by IntelliJ IDEA.
  * User: mskounak
- * Date: 19 Óåð 2006
- * Time: 11:45:02 ìì
+ * Date: 19 ï¿½ï¿½ï¿½ 2006
+ * Time: 11:45:02 ï¿½ï¿½
  * To change this template use File | Settings | File Templates.
  */
 public class CharacterViewer extends AbstractForm {
@@ -66,6 +67,7 @@ public class CharacterViewer extends AbstractForm {
     ActionCommand showArtifactsCommand = new ShowArtifactsCommand();
     ActionCommand showSpellsCommand = new ShowSpellsCommand();
     ActionCommand showOrdersCommand = new ShowOrdersCommand();
+    ActionCommand showResultsCommand = new ShowResultsCommand();
     ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterRangeOnMapCommand();
 
 
@@ -291,6 +293,18 @@ public class CharacterViewer extends AbstractForm {
         }
     }
 
+    private class ShowResultsCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            Character c = (Character)getFormObject();
+            String result = c.getName() + "\n" + c.getOrderResults().replaceAll("\n", "");
+            result = result.replaceAll(" He was ordered", "\nHe was ordered");
+            result = result.replaceAll(" She was ordered", "\nShe was ordered");
+            
+            MessageDialog msg = new MessageDialog("Order results", result);
+            msg.showDialog();
+        }
+    }
+
     private class ShowCharacterRangeOnMapCommand extends ActionCommand {
         protected void doExecuteCommand() {
             CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character)getFormObject());
@@ -307,9 +321,10 @@ public class CharacterViewer extends AbstractForm {
         Character c = (Character)getFormObject();
         showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);
         showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
+        showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
-                new Object[]{showArtifactsCommand, showSpellsCommand, showOrdersCommand, "separator", showCharacterRangeOnMapCommand});
+                new Object[]{showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", showCharacterRangeOnMapCommand});
         return group.createPopupMenu();
     }
 }

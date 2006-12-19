@@ -80,6 +80,7 @@
                             <bean class="org.joverseer.ui.command.CreateGame"/>
                             <bean class="org.joverseer.ui.command.OpenXmlFile"/>
                             <bean class="org.joverseer.ui.command.OpenXmlDir"/>
+                            <bean class="org.joverseer.ui.command.OpenPdfDir"/>                            
                             <bean class="org.joverseer.ui.command.LoadGame"/>
                             <bean class="org.joverseer.ui.command.SaveGame"/>
                             <bean class="org.springframework.richclient.command.support.ShowViewMenu"/>

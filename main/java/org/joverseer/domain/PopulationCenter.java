@@ -4,6 +4,7 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.metadata.domain.Nation;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,7 +33,17 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     InformationSourceEnum informationSource;
 
     InfoSource infoSource;
+    
+    HashMap<ProductEnum, Integer> production = new HashMap<ProductEnum, Integer>();
+    HashMap<ProductEnum, Integer> stores = new HashMap<ProductEnum, Integer>();
 
+    public PopulationCenter() {
+        for (ProductEnum p : ProductEnum.values()) {
+            production.put(p, null);
+            stores.put(p, null);
+        }
+    }
+    
     public String getName() {
         return name;
     }
@@ -145,6 +156,22 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
         setX(hexNo / 100);
         setY(hexNo % 100);
     }
+    
+    public Integer getProduction(ProductEnum p) {
+        return production.get(p);
+    }
+
+    public Integer getStores(ProductEnum p) {
+        return stores.get(p);
+    }
+    
+    public void setProduction(ProductEnum p, Integer amount) {
+        production.put(p, amount);
+    }
+
+    public void setStores(ProductEnum p, Integer amount) {
+        stores.put(p, amount);
+    }
 
     public PopulationCenter clone() {
         PopulationCenter newPc = new PopulationCenter();
@@ -162,6 +189,10 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
         newPc.setInfoSource(getInfoSource());
         newPc.setInformationSource(getInformationSource());
 
+        for (ProductEnum p : ProductEnum.values()) {
+            newPc.setProduction(p, getProduction(p));
+            newPc.setStores(p, getStores(p));
+        }
         return newPc;
     }
 }

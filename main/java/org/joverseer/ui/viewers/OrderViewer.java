@@ -1,33 +1,34 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
-import org.springframework.richclient.image.ImageSource;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.binding.form.FormModel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import org.joverseer.domain.Order;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderEditorForm;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.LifecycleEventsEnum;
+import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
+import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.*;
-import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 12 Íןו 2006
- * Time: 11:27:45 לל
- * To change this template use File | Settings | File Templates.
- */
 public class OrderViewer extends AbstractForm implements ActionListener {
     public static final String FORM_PAGE = "OrderViewer";
 

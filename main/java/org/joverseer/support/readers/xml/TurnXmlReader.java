@@ -22,13 +22,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 16, 2006
- * Time: 8:46:17 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class TurnXmlReader implements Runnable{
     static Logger logger = Logger.getLogger(TurnXmlReader.class);
 
@@ -179,7 +173,7 @@ public class TurnXmlReader implements Runnable{
                             new String[]{"buyPrice", "sellPrice", "marketAvail", "nationStores", "nationProduction"}));
             snpr.setAllowUnknownChildElements(true);
             if (getMonitor() != null) {
-                getMonitor().subTaskStarted(String.format("Parsing file %s...", new String[]{fileName}));
+                getMonitor().subTaskStarted(String.format("Parsing file %s...", new Object[]{fileName}));
                 getMonitor().worked(5);
             }
             turnInfo = (TurnInfo) digester.parse(fileName);

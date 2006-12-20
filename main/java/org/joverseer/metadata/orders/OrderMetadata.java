@@ -2,13 +2,7 @@ package org.joverseer.metadata.orders;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 10 Íןו 2006
- * Time: 10:39:03 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class OrderMetadata implements Serializable {
     String name;
     String code;

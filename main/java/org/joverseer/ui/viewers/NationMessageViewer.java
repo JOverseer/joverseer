@@ -15,13 +15,7 @@ import org.joverseer.support.GameHolder;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 5 Íןו 2006
- * Time: 1:04:10 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationMessageViewer extends AbstractForm {
     public static final String FORM_PAGE = "NationMessageViewer";
 

@@ -1,5 +1,16 @@
 package org.joverseer.ui.orders;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
@@ -9,23 +20,10 @@ import org.springframework.binding.value.support.ListListModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
+import org.springframework.richclient.list.SortedListModel;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Vector;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 10 Íןו 2006
- * Time: 10:12:57 לל
- * To change this template use File | Settings | File Templates.
- */
 public class OrderEditorForm extends AbstractForm implements ActionListener {
     public static final String FORM_PAGE = "orderEditorForm";
     GameMetadata gm;

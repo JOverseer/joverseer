@@ -3,14 +3,8 @@ package org.joverseer.metadata.domain;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 24 Οκτ 2006
- * Time: 11:33:16 μμ
- * To change this template use File | Settings | File Templates.
- */
-public class Artifact implements Serializable {
+
+public class ArtifactInfo implements Serializable {
     String name;
     int no;
     ArrayList powers = new ArrayList();

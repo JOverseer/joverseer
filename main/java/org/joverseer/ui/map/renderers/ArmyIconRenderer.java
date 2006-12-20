@@ -13,13 +13,7 @@ import org.springframework.richclient.application.Application;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Δεκ 2006
- * Time: 8:28:15 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class ArmyIconRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

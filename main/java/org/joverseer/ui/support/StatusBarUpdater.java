@@ -8,13 +8,7 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.metadata.GameMetadata;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 16 Δεκ 2006
- * Time: 10:04:03 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class StatusBarUpdater implements ApplicationListener {
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {

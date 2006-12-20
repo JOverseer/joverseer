@@ -8,13 +8,7 @@ import java.util.HashMap;
 import java.awt.image.*;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Δεκ 2006
- * Time: 8:28:35 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public abstract class ImageRenderer implements Renderer {
     protected HashMap images = new HashMap();
 

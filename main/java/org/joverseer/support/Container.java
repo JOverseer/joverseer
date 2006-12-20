@@ -1,27 +1,16 @@
 package org.joverseer.support;
 
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.PredicateUtils;
-import org.apache.commons.collections.functors.EqualPredicate;
-import org.apache.commons.collections.functors.AndPredicate;
-import org.apache.commons.collections.functors.AllPredicate;
-import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.HashMap;
-import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 16, 2006
- * Time: 1:35:30 PM
- * To change this template use File | Settings | File Templates.
- */
+import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.functors.AllPredicate;
+
+
 public class Container implements Serializable {
     public ArrayList items = new ArrayList();
     public HashMap<String, ContainerCache> caches = new HashMap<String, ContainerCache>();

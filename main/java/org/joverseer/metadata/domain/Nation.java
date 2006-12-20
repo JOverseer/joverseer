@@ -4,13 +4,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 11:29:47 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Nation implements Serializable {
     int number;
     String name;

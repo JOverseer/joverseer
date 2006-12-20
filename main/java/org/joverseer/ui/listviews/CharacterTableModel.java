@@ -2,13 +2,7 @@ package org.joverseer.ui.listviews;
 
 import org.springframework.context.MessageSource;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 13 Οκτ 2006
- * Time: 9:27:10 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class CharacterTableModel extends ItemTableModel {
     public CharacterTableModel(MessageSource messageSource) {
         super(Character.class, messageSource);

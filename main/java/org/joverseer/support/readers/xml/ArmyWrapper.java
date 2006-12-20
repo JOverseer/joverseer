@@ -7,13 +7,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 30 Σεπ 2006
- * Time: 11:14:18 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class ArmyWrapper {
     int hexID;
     int nation;

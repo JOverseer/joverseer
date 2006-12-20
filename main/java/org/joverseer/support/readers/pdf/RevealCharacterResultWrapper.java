@@ -1,7 +1,16 @@
 package org.joverseer.support.readers.pdf;
 
+import org.joverseer.domain.Character;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.Container;
+import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.TurnInfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
-public class RevealCharacterResultWrapper {
+
+public class RevealCharacterResultWrapper implements OrderResult {
     String characterName;
     int hexNo;
     
@@ -21,5 +30,31 @@ public class RevealCharacterResultWrapper {
         this.hexNo = hexNo;
     }
     
-    
+    public void updateGame(Turn turn, int nationNo, String casterName) {
+        Container chars = turn.getContainer(TurnElementsEnum.Character);
+        Character c = (Character)chars.findFirstByProperty("name", getCharacterName());
+        DerivedFromRevealCharacterInfoSource is1 = new DerivedFromRevealCharacterInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
+        if (c == null) {
+            // character not found, add
+            c = new Character();
+            c.setName(getCharacterName());
+            c.setId(Character.getIdFromName(getCharacterName()));
+            c.setHexNo((getHexNo()< 1000 ? "0" : "") + String.valueOf(getHexNo()));
+            c.setInfoSource(is1);
+            chars.addItem(c);
+        } else {
+            // character found
+            // examine info source
+            InfoSource is = c.getInfoSource();
+            if (TurnInfoSource.class.isInstance(is)) {
+                // turn import, do nothing
+                return;
+            } else if (DerivedFromSpellInfoSource.class.isInstance(is)) {
+                // spell
+                // add info source...
+                ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+            } 
+        }
+        
+    }
 }

@@ -10,13 +10,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 16 Δεκ 2006
- * Time: 8:46:29 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class CharacterReader  implements MetadataReader {
     String characterFilename = "chars.csv";
 

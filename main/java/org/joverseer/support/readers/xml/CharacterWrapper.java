@@ -5,13 +5,7 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.domain.InformationSourceEnum;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 16, 2006
- * Time: 9:34:05 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class CharacterWrapper {
     String id;
     String name;

@@ -1,36 +1,40 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.image.ImageSource;
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.command.CommandGroup;
-import org.springframework.binding.form.FormModel;
-import org.joverseer.domain.*;
-import org.joverseer.metadata.GameMetadata;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
+import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.map.MapPanel;
+import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Οκτ 2006
- * Time: 10:41:27 μμ
- * To change this template use File | Settings | File Templates.
- */
 public class ArmyViewer extends AbstractForm {
+
     public static final String FORM_PAGE = "ArmyViewer";
 
     JTextField commanderName;
@@ -63,8 +67,8 @@ public class ArmyViewer extends AbstractForm {
         btnMenu.setPreferredSize(new Dimension(16, 16));
         btnMenu.setIcon(ico);
         glb.append(btnMenu);
-        btnMenu.addActionListener(new PopupMenuActionListener()
-        {
+        btnMenu.addActionListener(new PopupMenuActionListener() {
+
             public JPopupMenu getPopupMenu() {
                 return createArmyPopupContextMenu();
             }
@@ -83,7 +87,8 @@ public class ArmyViewer extends AbstractForm {
         food.setPreferredSize(new Dimension(100, 12));
 
         commanderName.setBorder(null);
-        commanderName.setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
+        commanderName
+                .setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
         nation.setBorder(null);
         armySize.setBorder(null);
         armyMorale.setBorder(null);
@@ -102,7 +107,8 @@ public class ArmyViewer extends AbstractForm {
         commanderName.setText(army.getCommanderTitle() + " " + army.getCommanderName());
 
         Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (game == null) return;
+        if (game == null)
+            return;
         GameMetadata gm = game.getMetadata();
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
 
@@ -112,9 +118,8 @@ public class ArmyViewer extends AbstractForm {
             extraInfo.setText("");
             extraInfo.setVisible(true);
             for (ArmyElement element : army.getElements()) {
-                extraInfo.setText(extraInfo.getText() +
-                        (extraInfo.getText().equals("") ? "" : " ") +
-                        element.getDescription());
+                extraInfo.setText(extraInfo.getText() + (extraInfo.getText().equals("") ? "" : " ")
+                        + element.getDescription());
             }
         } else {
             extraInfo.setVisible(false);
@@ -127,33 +132,36 @@ public class ArmyViewer extends AbstractForm {
 
         foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
         food.setText(foodStr);
-        //armyMorale.setText("M: 0");
+        // armyMorale.setText("M: 0");
     }
 
     private JPopupMenu createArmyPopupContextMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "armyCommandGroup",
-                new Object[]{showArmyMovementRangeAction, toggleFedAction});
+                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, toggleFedAction});
         return group.createPopupMenu();
     }
 
     private class ShowArmyMovementRangeAction extends ActionCommand {
+
         public ShowArmyMovementRangeAction() {
             super("showArmyMovementRangeAction");
         }
 
         protected void doExecuteCommand() {
             ArmyRangeMapItem armi = new ArmyRangeMapItem((org.joverseer.domain.Army) getFormObject());
-            org.joverseer.support.Container mic = (org.joverseer.support.Container) Application.instance().getApplicationContext().getBean("mapItemContainer");
+            org.joverseer.support.Container mic = (org.joverseer.support.Container) Application.instance()
+                    .getApplicationContext().getBean("mapItemContainer");
             mic.removeAll(mic.items);
             AbstractMapItem.add(armi);
 
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
         }
     }
 
     private class ToggleFedAction extends ActionCommand {
+
         public ToggleFedAction() {
             super("toggleFedAction");
         }
@@ -163,7 +171,8 @@ public class ArmyViewer extends AbstractForm {
             Boolean fed = a.computeFed();
             a.setFed(fed == null || fed != true ? true : false);
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
         }
     }
 }

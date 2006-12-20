@@ -2,13 +2,7 @@ package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 11:23:20 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public enum HexSideEnum implements Serializable {
     TopLeft (6),
     TopRight (1),

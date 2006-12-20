@@ -13,13 +13,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 24 Σεπ 2006
- * Time: 2:21:39 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class MainView extends AbstractView {
     MapPanel mapPanel;
 

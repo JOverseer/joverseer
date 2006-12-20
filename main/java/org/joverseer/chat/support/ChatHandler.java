@@ -5,13 +5,7 @@ import java.io.*;
 import java.util.Vector;
 import java.util.Enumeration;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 1 Δεκ 2006
- * Time: 11:37:36 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class ChatHandler extends Thread {
     protected static Vector handlers = new Vector();
 

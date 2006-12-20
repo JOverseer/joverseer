@@ -3,13 +3,7 @@ package org.joverseer.domain;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 22 Οκτ 2006
- * Time: 11:22:28 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class HexInfo implements Serializable {
     int x;
     int y;

@@ -2,13 +2,7 @@ package org.joverseer.ui.support;
 
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 10 Δεκ 2006
- * Time: 9:02:03 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class GraphicUtils {
     public static Font getFont(String name, int style, int size) {
         return new Font(name, style, size);

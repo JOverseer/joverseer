@@ -1,6 +1,5 @@
 package org.joverseer.support.readers.pdf;
 
-import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
 
 public class TurnInfo {
@@ -11,6 +10,7 @@ public class TurnInfo {
     Container populationCenters;
     Container characters;
     Container companies;
+    Container combats;
 
     public String getAllegiance() {
         return allegiance;
@@ -72,6 +72,16 @@ public class TurnInfo {
     
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
+    }
+
+    
+    public Container getCombats() {
+        return combats;
+    }
+
+    
+    public void setCombats(Container combats) {
+        this.combats = combats;
     }
 
     

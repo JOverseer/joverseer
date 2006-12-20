@@ -1,27 +1,20 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.domain.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
+
 import org.joverseer.domain.Character;
-import org.joverseer.ui.map.ColorPicker;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.map.ColorPicker;
+import org.joverseer.ui.map.MapMetadata;
 import org.springframework.richclient.application.Application;
 
-import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
-import java.util.Collections;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Δεκ 2006
- * Time: 10:43:07 μμ
- * To change this template use File | Settings | File Templates.
- */
 public class MultiCharacterRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 

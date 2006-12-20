@@ -2,13 +2,7 @@ package org.joverseer.ui.command;
 
 import org.springframework.richclient.command.ActionCommand;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Δεκ 2006
- * Time: 10:06:37 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class EditRelations extends ActionCommand {
     public EditRelations() {
         super("editRelationsCommand");

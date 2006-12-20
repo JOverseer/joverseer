@@ -23,13 +23,7 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 30 Σεπ 2006
- * Time: 3:09:50 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class MapOptionsView extends AbstractView implements ApplicationListener {
     JComboBox cmbTurns;
     JComboBox cmbMaps;

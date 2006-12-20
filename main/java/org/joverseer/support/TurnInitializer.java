@@ -14,13 +14,7 @@ import org.springframework.richclient.application.Application;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 17, 2006
- * Time: 10:13:39 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class TurnInitializer {
     public void initializeTurnWith(Turn newTurn, Turn previousTurn) {
         newTurn.getContainers().put(TurnElementsEnum.PopulationCenter, new Container());
@@ -78,6 +72,7 @@ public class TurnInitializer {
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name"}));
         newTurn.getContainers().put(TurnElementsEnum.Army, new Container());
         newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.Artifact, new Container(new String[]{"number", "hexNo"}));
         Container hexInfo = new Container(new String[]{"hexNo"});
         GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
         for (Hex h : (Collection <Hex>)gm.getHexes()) {
@@ -88,6 +83,8 @@ public class TurnInitializer {
             hexInfo.addItem(hi);
         }
         newTurn.getContainers().put(TurnElementsEnum.HexInfo, hexInfo);
-        newTurn.getContainers().put(TurnElementsEnum.NationMessage, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.NationMessage, new Container(new String[]{"hexNo"}));
+        newTurn.getContainers().put(TurnElementsEnum.Company, new Container(new String[]{"hexNo", "commander"}));
+        newTurn.getContainers().put(TurnElementsEnum.Combat, new Container(new String[]{"hexNo"}));
     }
 }

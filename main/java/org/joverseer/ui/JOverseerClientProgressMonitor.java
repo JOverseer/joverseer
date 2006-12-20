@@ -10,13 +10,7 @@ import org.springframework.binding.form.FormModel;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 15 Ќпе 2006
- * Time: 9:39:37 рм
- * To change this template use File | Settings | File Templates.
- */
+
 public class JOverseerClientProgressMonitor extends AbstractForm implements ProgressMonitor {
     public static final String FORM_PAGE = "jOverseerClientProgressMonitor";
     JLabel taskName;

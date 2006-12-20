@@ -13,13 +13,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 24 Σεπ 2006
- * Time: 10:22:12 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class MapView extends AbstractView  implements ApplicationListener {
 
     MapPanel mapPanel;

@@ -1,32 +1,31 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
-import org.springframework.binding.form.FormModel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.Collection;
+import java.util.HashMap;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+
+import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
-import org.joverseer.metadata.domain.Hex;
+import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 9 Δεκ 2006
- * Time: 8:05:33 μμ
- * To change this template use File | Settings | File Templates.
- */
 public class HexInfoViewer extends AbstractForm {
+
     public static final String FORM_PAGE = "HexInfoViewer";
 
-    HashMap infCosts = new HashMap();
-    HashMap cavCosts = new HashMap();
+    HashMap<MovementDirection, JTextField> infCosts = new HashMap<MovementDirection, JTextField>();
+    HashMap<MovementDirection, JTextField> cavCosts = new HashMap<MovementDirection, JTextField>();
 
     JTextField hexNo;
 
@@ -80,7 +79,7 @@ public class HexInfoViewer extends AbstractForm {
     public void setFormObject(Object object) {
         super.setFormObject(object);
         if (object != null) {
-            Hex h = (Hex)object;
+            Hex h = (Hex) object;
             String hexNoStr = String.valueOf(h.getColumn());
             if (h.getColumn() < 10) {
                 hexNoStr = "0" + hexNoStr;
@@ -95,21 +94,21 @@ public class HexInfoViewer extends AbstractForm {
             if (startHexNo > 0) {
                 for (MovementDirection md : MovementDirection.values()) {
                     int cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), false, true);
-                    JTextField tf = (JTextField)infCosts.get(md);
+                    JTextField tf = (JTextField) infCosts.get(md);
                     String costStr = (cost > 0 ? String.valueOf(cost) : "-");
                     tf.setText(String.valueOf(costStr));
 
                     cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), true, true);
-                    tf = (JTextField)cavCosts.get(md);
+                    tf = (JTextField) cavCosts.get(md);
                     costStr = (cost > 0 ? String.valueOf(cost) : "-");
                     tf.setText(String.valueOf(costStr));
                 }
                 return;
             }
-            for (JTextField tf : (Collection<JTextField>)infCosts.values()) {
+            for (JTextField tf : (Collection<JTextField>) infCosts.values()) {
                 tf.setText("");
             }
-            for (JTextField tf : (Collection<JTextField>)cavCosts.values()) {
+            for (JTextField tf : (Collection<JTextField>) cavCosts.values()) {
                 tf.setText("");
             }
         }

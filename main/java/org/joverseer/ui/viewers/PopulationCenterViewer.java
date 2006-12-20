@@ -20,13 +20,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 18, 2006
- * Time: 8:57:07 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class PopulationCenterViewer extends AbstractForm {
     public static final String FORM_PAGE = "PopulationCenterViewer";
 

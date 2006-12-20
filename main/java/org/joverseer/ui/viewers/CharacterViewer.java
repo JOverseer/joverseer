@@ -1,54 +1,66 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.form.binding.BindingFactory;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.util.ArrayList;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+import org.joverseer.domain.Character;
+import org.joverseer.domain.Company;
+import org.joverseer.domain.Order;
+import org.joverseer.domain.SpellProficiency;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
+import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
+import org.joverseer.ui.listviews.ArtifactInfoTableModel;
+import org.joverseer.ui.listviews.ItemTableModel;
+import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.support.TableUtils;
+import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.binding.form.FormModel;
-import org.joverseer.domain.Character;
-import org.joverseer.domain.SpellProficiency;
-import org.joverseer.domain.Order;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.domain.Artifact;
-import org.joverseer.ui.listviews.ArtifactTableModel;
-import org.joverseer.ui.listviews.ItemTableModel;
-import org.joverseer.ui.support.TableUtils;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.PopupMenuActionListener;
-import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.domain.mapItems.AbstractMapItem;
-import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.map.MapPanel;
-import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
-import org.joverseer.support.Container;
+import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.form.binding.BindingFactory;
+import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.table.BeanTableModel;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 19 ��� 2006
- * Time: 11:45:02 ��
- * To change this template use File | Settings | File Templates.
- */
 public class CharacterViewer extends AbstractForm {
+
     public static final String FORM_PAGE = "CharacterViewer";
 
     JTextField characterName;
     JTextField statsTextBox;
+    JTextField infoSourcesTextBox;
     JTextField nationTextBox;
+    JTextField companyMembersTextBox;
 
     JTable artifactsTable;
     JTable spellsTable;
@@ -84,21 +96,23 @@ public class CharacterViewer extends AbstractForm {
             showSpells = false;
         }
         super.setFormObject(object);
-        if (object == null) return;
+        if (object == null)
+            return;
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
 
-            Character c = (Character)object;
+            Character c = (Character) object;
             String txt = getStatLine(c);
 
             if (txt.equals("")) {
                 // character is enemy
                 // retrieve starting info
-                Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"))
+                        .getGame();
                 GameMetadata gm = game.getMetadata();
                 Container startChars = gm.getCharacters();
                 if (startChars != null) {
-                    startingChar = (Character)startChars.findFirstByProperty("id", c.getId());
+                    startingChar = (Character) startChars.findFirstByProperty("id", c.getId());
                     showStartingInfo = true;
                     if (startingChar != null) {
                         txt = getStatLine(startingChar) + "(start info)";
@@ -107,26 +121,43 @@ public class CharacterViewer extends AbstractForm {
             }
             statsTextBox.setText(txt);
             statsTextBox.setCaretPosition(0);
+            
+            // show info sources, if needed
+            InfoSource is = c.getInfoSource();
+            if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) ||
+                    DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
+                DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource)is;
+                String infoSourcesStr = sis.getSpell() + " at " + sis.getHexNo();
+                infoSourcesTextBox.setVisible(true);
+                for (InfoSource dsis : sis.getOtherInfoSources()) {
+                    if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
+                        infoSourcesStr += ", " + ((DerivedFromSpellInfoSource)dsis).getSpell() + " at " + ((DerivedFromSpellInfoSource)dsis).getHexNo();
+                    }
+                }
+                infoSourcesTextBox.setText(infoSourcesStr);
+            } else {
+                infoSourcesTextBox.setVisible(false);
+            }
 
-            Font f = GraphicUtils.getFont(
-                            statsTextBox.getFont().getName(),
-                            (showStartingInfo ? Font.ITALIC : Font.PLAIN),
-                            statsTextBox.getFont().getSize());
+            Font f = GraphicUtils.getFont(statsTextBox.getFont().getName(), (showStartingInfo ? Font.ITALIC
+                    : Font.PLAIN), statsTextBox.getFont().getSize());
             statsTextBox.setFont(f);
 
-            Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-            if (game == null) return;
+            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            if (game == null)
+                return;
             GameMetadata gm = game.getMetadata();
             nationTextBox.setText(gm.getNationByNum(c.getNationNo()).getShortName());
 
             ArrayList artis = new ArrayList();
             if (showArtifacts) {
-                ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
+                ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts()
+                        : startingChar != null ? startingChar.getArtifacts() : null);
                 if (artifacts != null) {
                     for (Integer no : artifacts) {
-                        Artifact arti = (Artifact)gm.getArtifacts().findFirstByProperty("no", no);
+                        ArtifactInfo arti = (ArtifactInfo) gm.getArtifacts().findFirstByProperty("no", no);
                         if (arti == null) {
-                            arti = new Artifact();
+                            arti = new ArtifactInfo();
                             arti.setNo(no);
                             arti.setName("---");
                         }
@@ -134,16 +165,27 @@ public class CharacterViewer extends AbstractForm {
                     }
                 }
             }
-            ((BeanTableModel)artifactsTable.getModel()).setRows(artis);
+            ((BeanTableModel) artifactsTable.getModel()).setRows(artis);
             artifactsTable.setPreferredSize(new Dimension(artifactsTable.getWidth(), 16 * artis.size()));
 
             ArrayList spells = new ArrayList();
             if (showSpells) {
                 spells.addAll(c.getSpells());
             }
-            ((BeanTableModel)spellsTable.getModel()).setRows(spells);
+            ((BeanTableModel) spellsTable.getModel()).setRows(spells);
             spellsTable.setPreferredSize(new Dimension(spellsTable.getWidth(), 16 * spells.size()));
 
+            Container companies = game.getTurn().getContainer(TurnElementsEnum.Company);
+            Company company = (Company)companies.findFirstByProperty("commander", c.getName());
+            if (company != null) {
+                String members = company.getMemberStr();
+                
+                companyMembersTextBox.setText("Company: " + members);
+                companyMembersTextBox.setVisible(true);
+            } else {
+                companyMembersTextBox.setVisible(false);
+            }
+            
             order1.setFormObject(c.getOrders()[0]);
             order2.setFormObject(c.getOrders()[1]);
             if (showOrders) {
@@ -154,7 +196,7 @@ public class CharacterViewer extends AbstractForm {
                 order2comp.setVisible(false);
             }
         }
-        
+
     }
 
     private String getStatLine(Character c) {
@@ -170,10 +212,10 @@ public class CharacterViewer extends AbstractForm {
     }
 
     private String getStatText(String prefix, int skill, int skillTotal) {
-        if (skillTotal == 0 && skill == 0) return "";
+        if (skillTotal == 0 && skill == 0)
+            return "";
         return prefix + skill + (skillTotal > skill ? "(" + skillTotal + ")" : "") + " ";
     }
-
 
 
     protected JComponent createFormControl() {
@@ -185,15 +227,15 @@ public class CharacterViewer extends AbstractForm {
         JComponent c;
 
         glb.append(c = new JTextField());
-        characterName = (JTextField)c;
+        characterName = (JTextField) c;
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setPreferredSize(new Dimension(160, 12));
         bf.bindControl(c, "name");
         glb.append(c = new JTextField());
         c.setBorder(null);
-        nationTextBox = (JTextField)c;
-        //bf.bindControl(c, "nationNo");
+        nationTextBox = (JTextField) c;
+        // bf.bindControl(c, "nationNo");
         c.setPreferredSize(new Dimension(50, 12));
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -201,10 +243,10 @@ public class CharacterViewer extends AbstractForm {
         btnMenu = new JButton();
         Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
         btnMenu.setIcon(ico);
-        btnMenu.setPreferredSize(new Dimension(16,16));
+        btnMenu.setPreferredSize(new Dimension(16, 16));
         glb.append(btnMenu);
-        btnMenu.addActionListener(new PopupMenuActionListener()
-        {
+        btnMenu.addActionListener(new PopupMenuActionListener() {
+
             public JPopupMenu getPopupMenu() {
                 return createCharacterPopupContextMenu();
             }
@@ -216,25 +258,35 @@ public class CharacterViewer extends AbstractForm {
         statsTextBox.setBorder(null);
         statsTextBox.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
+        
+        glb.append(companyMembersTextBox = new JTextField(), 2, 1);
+        companyMembersTextBox.setBorder(null);
+        companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
+        glb.nextLine();
+        
+        glb.append(infoSourcesTextBox = new JTextField(), 2, 1);
+        infoSourcesTextBox.setBorder(null);
+        infoSourcesTextBox.setPreferredSize(new Dimension(100, 12));
+        glb.nextLine();
 
         glb.append(artifactsTable = new JTable(), 2, 1);
         artifactsTable.setPreferredSize(new Dimension(150, 20));
-        ArtifactTableModel tableModel =
-            new ArtifactTableModel(this.getMessageSource()) {
-                protected String[] createColumnPropertyNames() {
-                    return new String[]{"no", "name"};
-                }
+        ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
 
-                protected Class[] createColumnClasses() {
-                    return new Class[]{String.class, String.class};
-                }
+            protected String[] createColumnPropertyNames() {
+                return new String[] {"no", "name"};
+            }
 
-                
-            };
+            protected Class[] createColumnClasses() {
+                return new Class[] {String.class, String.class};
+            }
+
+
+        };
         tableModel.setRowNumbers(false);
         artifactsTable.setModel(tableModel);
         // todo think about this
-        TableUtils.setTableColumnWidths(artifactsTable, new int[]{30, 120});
+        TableUtils.setTableColumnWidths(artifactsTable, new int[] {30, 120});
         artifactsTable.setBorder(null);
 
         glb.nextLine();
@@ -242,17 +294,18 @@ public class CharacterViewer extends AbstractForm {
         glb.append(spellsTable = new JTable(), 2, 1);
         spellsTable.setPreferredSize(new Dimension(150, 12));
         ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
+
             protected String[] createColumnPropertyNames() {
-                return new String[]{"spellId", "name", "proficiency"};
+                return new String[] {"spellId", "name", "proficiency"};
             }
 
             protected Class[] createColumnClasses() {
-                return new Class[]{Integer.class, String.class, String.class};
+                return new Class[] {Integer.class, String.class, String.class};
             }
         };
         spellModel.setRowNumbers(false);
         spellsTable.setModel(spellModel);
-        TableUtils.setTableColumnWidths(spellsTable, new int[]{30, 90, 30});
+        TableUtils.setTableColumnWidths(spellsTable, new int[] {30, 90, 30});
         spellsTable.setBorder(null);
         glb.nextLine();
 
@@ -273,6 +326,7 @@ public class CharacterViewer extends AbstractForm {
     }
 
     private class ShowArtifactsCommand extends ActionCommand {
+
         protected void doExecuteCommand() {
             showArtifacts = !showArtifacts;
             refresh();
@@ -280,6 +334,7 @@ public class CharacterViewer extends AbstractForm {
     }
 
     private class ShowSpellsCommand extends ActionCommand {
+
         protected void doExecuteCommand() {
             showSpells = !showSpells;
             refresh();
@@ -287,6 +342,7 @@ public class CharacterViewer extends AbstractForm {
     }
 
     private class ShowOrdersCommand extends ActionCommand {
+
         protected void doExecuteCommand() {
             showOrders = !showOrders;
             refresh();
@@ -294,38 +350,42 @@ public class CharacterViewer extends AbstractForm {
     }
 
     private class ShowResultsCommand extends ActionCommand {
+
         protected void doExecuteCommand() {
-            Character c = (Character)getFormObject();
+            Character c = (Character) getFormObject();
             String result = c.getName() + "\n" + c.getOrderResults().replaceAll("\n", "");
             result = result.replaceAll(" He was ordered", "\nHe was ordered");
             result = result.replaceAll(" She was ordered", "\nShe was ordered");
-            
+
             MessageDialog msg = new MessageDialog("Order results", result);
             msg.showDialog();
         }
     }
 
     private class ShowCharacterRangeOnMapCommand extends ActionCommand {
+
         protected void doExecuteCommand() {
-            CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character)getFormObject());
-            org.joverseer.support.Container mic = (org.joverseer.support.Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+            CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character) getFormObject());
+            org.joverseer.support.Container mic = (org.joverseer.support.Container) Application.instance()
+                    .getApplicationContext().getBean("mapItemContainer");
             mic.removeAll(mic.items);
             AbstractMapItem.add(crmi);
 
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
         }
     }
 
     private JPopupMenu createCharacterPopupContextMenu() {
-        Character c = (Character)getFormObject();
+        Character c = (Character) getFormObject();
         showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);
         showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
         showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
-                new Object[]{showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", showCharacterRangeOnMapCommand});
+                new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
+                        "separator", showCharacterRangeOnMapCommand});
         return group.createPopupMenu();
     }
 }
-

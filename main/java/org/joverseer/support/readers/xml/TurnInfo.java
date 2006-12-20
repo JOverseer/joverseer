@@ -2,13 +2,7 @@ package org.joverseer.support.readers.xml;
 
 import org.joverseer.support.Container;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 16, 2006
- * Time: 9:47:18 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class TurnInfo {
     Container popCentres;
     Container characters;

@@ -16,13 +16,7 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.filechooser.FileChooserUtils;
 import org.springframework.richclient.form.FormModelHelper;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 22 Σεπ 2006
- * Time: 10:41:02 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class OpenXmlFile extends ActionCommand {
 
     public OpenXmlFile() {

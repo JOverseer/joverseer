@@ -1,13 +1,12 @@
 package org.joverseer.support.infoSources;
 
 
-public class PdfTurnInfoSource extends InfoSource {
-    int turnNo;
+public class PdfTurnInfoSource extends TurnInfoSource {
     int nationNo;
 
     public PdfTurnInfoSource(int turnNo, int nationNo) {
         this.nationNo = nationNo;
-        this.turnNo = turnNo;
+        setTurnNo(turnNo);
     }
 
     public int getNationNo() {
@@ -16,14 +15,6 @@ public class PdfTurnInfoSource extends InfoSource {
 
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
-    }
-
-    public int getTurnNo() {
-        return turnNo;
-    }
-
-    public void setTurnNo(int turnNo) {
-        this.turnNo = turnNo;
     }
 
 }

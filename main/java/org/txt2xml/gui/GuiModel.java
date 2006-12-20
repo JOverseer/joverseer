@@ -37,8 +37,6 @@
 
 package org.txt2xml.gui;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,16 +45,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URL;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.scopemvc.core.ModelChangeEvent;
-import org.scopemvc.core.PropertyManager;
 import org.scopemvc.core.Selector;
 import org.scopemvc.model.basic.BasicModel;
-import org.txt2xml.config.ConfigException;
 import org.txt2xml.config.ProcessorFactory;
 import org.txt2xml.core.Processor;
 import org.txt2xml.driver.StreamDriver;

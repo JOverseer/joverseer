@@ -4,13 +4,7 @@ import junit.framework.TestCase;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.game.Game;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 16, 2006
- * Time: 8:52:37 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class TurnXmlReaderTest extends TestCase {
     public void testTurnXmlReader() throws Exception {
         Game g = new Game();

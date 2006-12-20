@@ -1,26 +1,20 @@
 package org.joverseer.metadata;
 
-import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.support.Container;
-import org.joverseer.support.infoSources.MetadataSource;
-import org.joverseer.domain.*;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.application.Application;
-
-import java.util.HashMap;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 27 Οκτ 2006
- * Time: 8:57:34 μμ
- * To change this template use File | Settings | File Templates.
- */
+import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.HarborSizeEnum;
+import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.support.Container;
+import org.joverseer.support.infoSources.MetadataSource;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
+
+
 public class PopulationCenterReader implements MetadataReader {
     String populationCenterFilename = "pcs";
 

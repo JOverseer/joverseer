@@ -18,13 +18,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 29 Íןו 2006
- * Time: 10:01:28 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class OrderRenderer implements Renderer {
     MapMetadata mapMetadata = null;
     OrderVisualizationData orderVisualizationData = null;

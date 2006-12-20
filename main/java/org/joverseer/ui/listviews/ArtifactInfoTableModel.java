@@ -1,18 +1,12 @@
 package org.joverseer.ui.listviews;
 
 import org.springframework.context.MessageSource;
-import org.joverseer.metadata.domain.Artifact;
+import org.joverseer.metadata.domain.ArtifactInfo;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 29 Οκτ 2006
- * Time: 7:33:29 μμ
- * To change this template use File | Settings | File Templates.
- */
-public class ArtifactTableModel extends ItemTableModel {
-    public ArtifactTableModel(MessageSource messageSource) {
-        super(Artifact.class, messageSource);
+
+public class ArtifactInfoTableModel extends ItemTableModel {
+    public ArtifactInfoTableModel(MessageSource messageSource) {
+        super(ArtifactInfo.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {

@@ -39,8 +39,6 @@ package org.txt2xml.core;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Matches sections of text specified by groups in a 

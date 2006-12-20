@@ -8,13 +8,7 @@ import org.springframework.rules.factory.Constraints;
 import org.springframework.rules.constraint.property.PropertyConstraint;
 import org.springframework.core.closure.Constraint;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 19 Íןו 2006
- * Time: 10:39:55 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class NewGame implements PropertyConstraintProvider {
     GameTypeEnum gameType;
     Integer number = null;

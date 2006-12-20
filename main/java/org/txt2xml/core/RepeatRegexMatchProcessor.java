@@ -1,12 +1,6 @@
 package org.txt2xml.core;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 3 Δεκ 2006
- * Time: 2:54:15 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class RepeatRegexMatchProcessor extends RegexDelimitedProcessor {
     protected boolean findMatch() {
         assert (chars != null);// : "Null text but asked to findMatch!";

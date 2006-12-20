@@ -1,20 +1,15 @@
 package org.joverseer.metadata;
 
-import org.joverseer.metadata.domain.Artifact;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.Container;
-import org.springframework.richclient.application.Application;
 import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 
-import java.util.HashMap;
-import java.io.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 24 Οκτ 2006
- * Time: 11:34:51 μμ
- * To change this template use File | Settings | File Templates.
- */
 public class ArtifactReader implements MetadataReader {
     String artifactFilename = "arties.csv";
 
@@ -45,7 +40,7 @@ public class ArtifactReader implements MetadataReader {
                 String owner = (parts.length == 7 ? parts[6] : "");
                 String alignment = parts[2];
                 String power2 = (parts.length >= 6 ? parts[5] : "");
-                Artifact artifact = new Artifact();
+                ArtifactInfo artifact = new ArtifactInfo();
                 artifact.setNo(no);
                 artifact.setName(name);
                 artifact.setOwner(owner);

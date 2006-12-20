@@ -1,32 +1,20 @@
 package org.joverseer.ui.command;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.Locale;
-import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 
-import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderFileReader;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 13 Οκτ 2006
- * Time: 6:54:07 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class ImportOrders extends ActionCommand {
     public ImportOrders() {
         super("ImportOrdersCommand");

@@ -1,41 +1,35 @@
 package org.joverseer.ui.listviews;
 
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.PageComponentContext;
-import org.springframework.richclient.table.TableUtils;
-import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.SortableTableModel;
-import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
-import org.springframework.context.ApplicationEvent;
-import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
-import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
-
-import javax.swing.*;
-import java.awt.event.MouseListener;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.*;
+import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 
-import org.joverseer.domain.IHasMapLocation;
-import org.joverseer.metadata.GameMetadata;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
-import sun.management.MethodInfo;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 13 Οκτ 2006
- * Time: 9:24:42 μμ
- * To change this template use File | Settings | File Templates.
- */
+import org.apache.commons.beanutils.PropertyUtils;
+import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.PageComponentContext;
+import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
+import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.SortableTableModel;
+import org.springframework.richclient.table.TableUtils;
+
+
 public abstract class ItemListView extends AbstractView implements ApplicationListener, MouseListener {
     BeanTableModel tableModel;
     TurnElementsEnum turnElementType = null;
@@ -75,6 +69,7 @@ public abstract class ItemListView extends AbstractView implements ApplicationLi
                 int a = 1;
             }
         }
+        tableModel.fireTableDataChanged();
     }
 
     protected abstract int[] columnWidths();
@@ -157,12 +152,19 @@ public abstract class ItemListView extends AbstractView implements ApplicationLi
         public void execute() {
             int row = table.getSelectedRow();
             if (row >= 0) {
-                Object obj = tableModel.getRow(((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row));
-                if (!IHasMapLocation.class.isInstance(obj)) return;
-                IHasMapLocation selectedItem = (IHasMapLocation)obj;
-                Point selectedHex = new Point(selectedItem.getX(), selectedItem.getY());
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+                int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= tableModel.getRowCount()) return;
+                try {
+                    Object obj = tableModel.getRow(idx);
+                    if (!IHasMapLocation.class.isInstance(obj)) return;
+                    IHasMapLocation selectedItem = (IHasMapLocation)obj;
+                    Point selectedHex = new Point(selectedItem.getX(), selectedItem.getY());
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+                }
+                catch (Exception exc) {
+                    // do nothing
+                }
             }
         }
     }

@@ -7,13 +7,7 @@ import java.io.Serializable;
 
 import sun.text.Normalizer;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 17, 2006
- * Time: 9:01:45 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Character implements IBelongsToNation, IHasMapLocation, Serializable {
     String id;
     String name;

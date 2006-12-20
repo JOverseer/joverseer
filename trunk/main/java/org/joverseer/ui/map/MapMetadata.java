@@ -1,16 +1,9 @@
 package org.joverseer.ui.map;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 6:21:00 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class MapMetadata {
     int gridCellWidth;
     int gridCellHeight;

@@ -10,7 +10,7 @@ public class CharacterWrapper {
 	String orders;
 	int hexNo;
 	
-	ArrayList orderResults = new ArrayList();
+	ArrayList<OrderResult> orderResults = new ArrayList<OrderResult>();
 
 	public String getName() {
 		return name;
@@ -20,12 +20,12 @@ public class CharacterWrapper {
 		this.name = name;
 	}
 
-	public ArrayList getOrderResults() {
+	public ArrayList<OrderResult> getOrderResults() {
 		return orderResults;
 	}
 
 	public void setOrderResults(ArrayList orderResults) {
-		this.orderResults = orderResults;
+		this.orderResults = (ArrayList<OrderResult>)orderResults;
 	}
 
 	public String getOrders() {
@@ -36,7 +36,7 @@ public class CharacterWrapper {
 		this.orders = orders;
 	}
 	
-	public void addOrderResult(Object result) {
+	public void addOrderResult(OrderResult result) {
 		orderResults.add(result);
 	}
 

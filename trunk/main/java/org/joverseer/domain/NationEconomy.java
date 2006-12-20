@@ -2,13 +2,7 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 14 Οκτ 2006
- * Time: 5:40:56 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationEconomy implements IBelongsToNation, Serializable {
     int nationNo;
 

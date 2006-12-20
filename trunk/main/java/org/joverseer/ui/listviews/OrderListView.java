@@ -13,13 +13,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 29 Íןו 2006
- * Time: 10:02:33 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class OrderListView extends ItemListView {
     public OrderListView() {
         super(TurnElementsEnum.Character, OrderTableModel.class);

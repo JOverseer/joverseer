@@ -22,13 +22,7 @@ import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 22 Σεπ 2006
- * Time: 11:10:47 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class OpenXmlDir extends ActionCommand implements Runnable {
     File[] files;
     JOverseerClientProgressMonitor monitor;

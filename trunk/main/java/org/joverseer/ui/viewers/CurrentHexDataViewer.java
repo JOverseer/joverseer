@@ -1,45 +1,39 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.event.LifecycleApplicationEvent;
-import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ApplicationEvent;
-import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.Character;
-import org.joverseer.domain.Army;
-import org.joverseer.domain.NationMessage;
-import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.SimpleLifecycleAdvisor;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.viewers.PopulationCenterViewer;
-import org.joverseer.ui.viewers.CharacterViewer;
-import org.joverseer.ui.viewers.ArmyViewer;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.game.Turn;
-import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
-import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.GameMetadata;
-import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.CollectionUtils;
-
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 27 Σεπ 2006
- * Time: 10:02:19 μμ
- * To change this template use File | Settings | File Templates.
- */
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.apache.commons.beanutils.BeanComparator;
+import org.joverseer.domain.Army;
+import org.joverseer.domain.Artifact;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.Combat;
+import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Hex;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.layout.TableLayoutBuilder;
+
+
 public class CurrentHexDataViewer extends AbstractView implements ApplicationListener {
     JPanel panel;
     JPanel mainPanel;
@@ -53,6 +47,10 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     ArrayList<JPanel> armyPanels = new ArrayList<JPanel>();
     ArrayList<NationMessageViewer> nationMessageViewers = new ArrayList<NationMessageViewer>();
     ArrayList<JPanel> nationMessagePanels = new ArrayList<JPanel>();
+    ArrayList<JPanel> artifactPanels = new ArrayList<JPanel>();
+    ArrayList<ArtifactViewer> artifactViewers = new ArrayList<ArtifactViewer>();
+    ArrayList<CombatViewer> combatViewers = new ArrayList<CombatViewer>();
+    ArrayList<JPanel> combatPanels = new ArrayList<JPanel>();
     JScrollPane scp;
 
     protected JComponent createControl() {
@@ -94,6 +92,21 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             tlb.row();
             cp.setVisible(false);
         }
+        
+        tlb.separator(" Artifacts ");
+        tlb.row();
+        for (int i=0; i<20; i++) {
+            ArtifactViewer av = new ArtifactViewer(FormModelHelper.createFormModel(new Artifact()));
+            JPanel ap = new JPanel();
+            artifactViewers.add(av);
+            artifactPanels.add(ap);
+            ap.add(av.getControl());
+            ap.setBackground(Color.white);
+            tlb.cell(ap, "align=left");
+            tlb.row();
+            ap.setVisible(false);
+        }
+
 
         tlb.separator(" Nation Messages ");
         tlb.row();
@@ -108,7 +121,21 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             tlb.row();
             cp.setVisible(false);
         }
-
+        
+        tlb.separator(" Combats ");
+        tlb.row();
+        for (int i=0; i<20; i++) {
+            CombatViewer cv = new CombatViewer(FormModelHelper.createFormModel(new Combat()));
+            combatViewers.add(cv);
+            JPanel cp = new JPanel();
+            cp.add(cv.getControl());
+            cp.setBackground(Color.white);
+            combatPanels.add(cp);
+            tlb.cell(cp, "align=left");
+            tlb.row();
+            cp.setVisible(false);
+        }
+        
         hexInfoViewer = new HexInfoViewer(FormModelHelper.createFormModel(new Hex()));
         hexInfoPanel = new JPanel();
         hexInfoPanel.add(hexInfoViewer.getControl());
@@ -143,6 +170,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         hexInfoPanel.setVisible(true);
         
     }
+    
 
     private void hideHexInfo() {
         hexInfoPanel.setVisible(false);
@@ -177,12 +205,46 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             }
         }
     }
+    
+    private void showArtifact(Artifact a) {
+        for (int i=0; i<artifactPanels.size(); i++) {
+            if (!artifactPanels.get(i).isVisible()) {
+                artifactViewers.get(i).setFormObject(a);
+                artifactPanels.get(i).setVisible(true);
+                return;
+            }
+        }
+    }
+    
+    public void showCombat(Combat c) {
+        for (int i=0; i<combatPanels.size(); i++) {
+            if (!combatPanels.get(i).isVisible()) {
+                combatViewers.get(i).setFormObject(c);
+                combatPanels.get(i).setVisible(true);
+                return;
+            }
+        }
+    }
 
     private void hideAllCharacterViewers() {
         for (int i=0; i<characterViewers.size(); i++) {
             characterPanels.get(i).setVisible(false);
         }
 
+    }
+    
+    private void hideAllCombatViewers() {
+        for (int i=0; i<combatViewers.size(); i++) {
+            combatPanels.get(i).setVisible(false);
+        }
+    }
+    
+    
+    
+    private void hideAllArtifactViewers() {
+        for (int i=0; i<artifactPanels.size(); i++) {
+            artifactPanels.get(i).setVisible(false);
+        }
     }
 
     private void hideAllNationMessageViewers() {
@@ -244,7 +306,20 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         for (NationMessage obj : (Collection<NationMessage>)items) {
             showNationMessage(obj);
         }
-
+        
+        hideAllArtifactViewers();
+        c = t.getContainer(TurnElementsEnum.Artifact);
+        Collection artifacts = c.findAllByProperties(new String[]{"hexNo"}, new Object[]{h.getHexNo()});
+        for (Artifact obj : (Collection<Artifact>)artifacts) {
+            showArtifact(obj);
+        }
+        
+        hideAllCombatViewers();
+        c = t.getContainer(TurnElementsEnum.Combat);
+        Collection combats = c.findAllByProperties(new String[]{"hexNo"}, new Object[]{h.getHexNo()});
+        for (Combat obj : (Collection<Combat>)combats) {
+            showCombat(obj);
+        }
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {

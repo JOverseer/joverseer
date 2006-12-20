@@ -5,13 +5,7 @@ import org.joverseer.support.Container;
 import java.util.Hashtable;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 13, 2006
- * Time: 7:44:43 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class Turn implements Serializable {
     int turnNo;
 

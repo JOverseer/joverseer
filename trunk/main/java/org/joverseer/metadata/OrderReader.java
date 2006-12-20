@@ -1,23 +1,15 @@
 package org.joverseer.metadata;
 
-import org.joverseer.support.Container;
-import org.joverseer.metadata.domain.Artifact;
-import org.joverseer.metadata.orders.OrderMetadata;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.application.Application;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 10 Íןו 2006
- * Time: 10:40:05 לל
- * To change this template use File | Settings | File Templates.
- */
+import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.support.Container;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
+
+
 public class OrderReader implements MetadataReader {
     String orderFilename = "orders.csv";
 

@@ -16,13 +16,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 8 Δεκ 2006
- * Time: 8:32:52 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class RangeMapItemRenderer implements Renderer {
     public boolean appliesTo(Object obj) {
         return CharacterRangeMapItem.class.isInstance(obj) ||

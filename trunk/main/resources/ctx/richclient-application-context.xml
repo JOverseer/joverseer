@@ -296,6 +296,15 @@
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>
     </bean>
+    
+    <bean id="companyListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.CompanyListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
 
     <bean id="nationEconomyListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
@@ -315,6 +324,15 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
 
+    <bean id="artifactInfoListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.ArtifactInfoListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+    
     <bean id="artifactListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
@@ -397,6 +415,8 @@
 
                 <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
             </list>
         </property>
     </bean>

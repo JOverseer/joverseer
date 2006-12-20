@@ -6,13 +6,7 @@ import org.springframework.richclient.application.Application;
 
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 8:03:51 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class HexNumberRenderer implements Renderer{
     String fontName = "Microsoft Sans Serif";
     int fontSize = 8;

@@ -1,17 +1,16 @@
 package org.joverseer.chat.support;
 
-import java.awt.*;
-import java.io.*;
-import java.net.Socket;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 2 Дек 2006
- * Time: 12:05:29 рм
- * To change this template use File | Settings | File Templates.
- */
+
 public class ChatClient implements Runnable {
+
     protected DataInputStream i;
     protected DataOutputStream o;
 
@@ -48,7 +47,7 @@ public class ChatClient implements Runnable {
             o.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
-            listener.stop ();
+            listener.stop();
         }
     }
 

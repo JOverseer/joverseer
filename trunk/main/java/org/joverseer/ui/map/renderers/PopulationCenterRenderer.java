@@ -11,13 +11,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 import java.awt.image.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 8:02:15 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class PopulationCenterRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

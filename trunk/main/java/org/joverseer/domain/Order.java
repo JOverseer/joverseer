@@ -11,13 +11,7 @@ import org.springframework.richclient.application.Application;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 5 Íןו 2006
- * Time: 12:52:55 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     int nationNo;
 

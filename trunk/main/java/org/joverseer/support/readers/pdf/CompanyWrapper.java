@@ -2,6 +2,8 @@ package org.joverseer.support.readers.pdf;
 
 import java.util.ArrayList;
 
+import org.joverseer.domain.Company;
+
 
 public class CompanyWrapper {
     String commanderName;
@@ -38,7 +40,15 @@ public class CompanyWrapper {
         this.members = members;
     }
     
-    
+    public Company getCompany() {
+        Company c = new Company();
+        c.setHexNo(hexNo);
+        c.setCommander(getCommanderName());
+        for (String m : getMembers()) {
+            c.addMember(m);
+        }
+        return c;
+    }
     
     
     

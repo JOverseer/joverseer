@@ -6,13 +6,7 @@ import org.joverseer.metadata.domain.Nation;
 import java.io.Serializable;
 import java.util.HashMap;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 8:02:59 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Serializable {
     String name;
     int x;

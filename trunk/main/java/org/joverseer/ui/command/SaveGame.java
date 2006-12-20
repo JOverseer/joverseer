@@ -14,13 +14,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 24 ”ер 2006
- * Time: 11:03:59 рм
- * To change this template use File | Settings | File Templates.
- */
+
 public class SaveGame extends ActionCommand {
     public SaveGame() {
         super("SaveGameCommand");

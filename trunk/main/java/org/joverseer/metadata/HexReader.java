@@ -1,18 +1,16 @@
 package org.joverseer.metadata;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+
 import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.joverseer.metadata.domain.HexSideEnum;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,8 +77,6 @@ public class HexReader implements MetadataReader {
                 String[] parts = ln.split(",");
                 parts[0] = parts[0].replaceAll("\"", "");
                 int no = Integer.parseInt(parts[0]);
-                int x = no / 100;
-                int y = no % 100;
                 Hex hex = (Hex)hexes.get(no);
 
                 int iside = Integer.parseInt(parts[2]);

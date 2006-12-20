@@ -20,13 +20,7 @@ import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.filechooser.DefaultFileFilter;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 13 Οκτ 2006
- * Time: 6:54:07 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class LoadGame extends ActionCommand {
     public LoadGame() {
         super("LoadGameCommand");

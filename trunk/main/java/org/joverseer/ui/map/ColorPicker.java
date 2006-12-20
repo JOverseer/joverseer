@@ -8,13 +8,7 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Οκτ 2006
- * Time: 9:50:55 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class ColorPicker {
     Hashtable color1 = new Hashtable();
     Hashtable color2 = new Hashtable();

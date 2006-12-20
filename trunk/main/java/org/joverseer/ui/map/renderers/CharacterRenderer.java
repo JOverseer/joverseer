@@ -10,13 +10,7 @@ import org.joverseer.ui.map.MapMetadata;
 import org.springframework.richclient.application.Application;
 
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 18, 2006
- * Time: 8:09:53 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class CharacterRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 

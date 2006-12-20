@@ -1,18 +1,12 @@
 package org.joverseer.domain;
 
-import org.joverseer.metadata.domain.NationAllegianceEnum;
-
-import java.util.HashMap;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Δεκ 2006
- * Time: 9:28:54 μμ
- * To change this template use File | Settings | File Templates.
- */
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+
+
 public class NationRelations implements IBelongsToNation, Serializable {
+
     int nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];
     NationAllegianceEnum allegiance;
@@ -45,7 +39,7 @@ public class NationRelations implements IBelongsToNation, Serializable {
         NationRelations c = new NationRelations();
         c.setNationNo(getNationNo());
         c.setAllegiance(getAllegiance());
-        for (int i=0; i<26; i++) {
+        for (int i = 0; i < 26; i++) {
             c.setRelationsFor(i, getRelationsFor(i));
         }
         return c;

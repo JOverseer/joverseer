@@ -1,22 +1,16 @@
 package org.joverseer.metadata;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.io.Serializable;
-import java.io.IOException;
-import java.io.File;
-
 /**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 10:00:02 PM
- *
  * Holds metadata about the game such as
  * 1. the game type and other game instance stuff
  * 2. information that depends on the game type, such as the hexes, the artifacts, etc 

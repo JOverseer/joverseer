@@ -1,7 +1,7 @@
 package org.joverseer.metadata;
 
 import org.joverseer.support.Container;
-import org.joverseer.metadata.domain.Artifact;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.springframework.richclient.application.Application;
 import org.springframework.core.io.Resource;
@@ -10,13 +10,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 17 Δεκ 2006
- * Time: 6:42:42 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationMapRangeReader implements MetadataReader {
     String nationMapFilename = "maps.csv";
 

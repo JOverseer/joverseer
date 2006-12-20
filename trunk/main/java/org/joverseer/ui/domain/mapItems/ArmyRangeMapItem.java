@@ -5,13 +5,7 @@ import org.joverseer.support.movement.MovementUtils;
 
 import java.util.HashMap;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 8 Δεκ 2006
- * Time: 10:12:46 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class ArmyRangeMapItem extends AbstractMapItem {
     Army army;
     HashMap rangeHexes;

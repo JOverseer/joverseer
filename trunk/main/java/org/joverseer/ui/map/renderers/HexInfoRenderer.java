@@ -20,13 +20,7 @@ import java.awt.geom.Line2D;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 22 Οκτ 2006
- * Time: 11:35:24 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class HexInfoRenderer extends DefaultHexRenderer {
     int densityFactor = 4;
     Renderer hexNumberRenderer = null;

@@ -15,13 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 6 Δεκ 2006
- * Time: 10:55:11 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class MultiArmyRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

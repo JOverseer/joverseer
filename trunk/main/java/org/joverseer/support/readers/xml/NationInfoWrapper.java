@@ -4,13 +4,7 @@ import org.joverseer.domain.HexInfo;
 
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 30 Σεπ 2006
- * Time: 11:43:41 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationInfoWrapper {
     String emptyPopHexes;
     String popHexes;

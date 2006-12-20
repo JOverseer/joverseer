@@ -8,13 +8,7 @@ import org.flexdock.docking.DockingManager;
 import org.flexdock.perspective.PerspectiveManager;
 import org.joverseer.ui.flexdock.JOverseerApplicationPage;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 28 Οκτ 2006
- * Time: 9:08:27 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class JOverseerApplicationPageFactory extends FlexDockApplicationPageFactory {
     public ApplicationPage createApplicationPage( ApplicationWindow window, PageDescriptor descriptor ) {
            final JOverseerApplicationPage page = new JOverseerApplicationPage();

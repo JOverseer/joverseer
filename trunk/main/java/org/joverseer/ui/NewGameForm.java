@@ -8,13 +8,7 @@ import org.joverseer.metadata.GameTypeEnum;
 
 import javax.swing.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 19 Íןו 2006
- * Time: 10:41:00 לל
- * To change this template use File | Settings | File Templates.
- */
+
 public class NewGameForm extends AbstractForm {
      public static final String FORM_PAGE = "newGameForm";
 

@@ -14,13 +14,7 @@ import java.util.HashMap;
 import java.util.Collection;
 import java.util.Locale;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 6:16:39 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class DefaultHexRenderer implements Renderer{
     HashMap terrainColors = new HashMap();
 

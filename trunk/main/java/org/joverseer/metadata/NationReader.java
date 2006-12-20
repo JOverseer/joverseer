@@ -5,13 +5,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 20 Οκτ 2006
- * Time: 11:33:58 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationReader implements MetadataReader {
     String[][] nations_2950 =
             new String[][]{

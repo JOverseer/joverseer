@@ -2,13 +2,7 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 24 Οκτ 2006
- * Time: 9:37:18 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationMessage implements Serializable, IBelongsToNation, IHasMapLocation {
     int x = -1;
     int y = -1;

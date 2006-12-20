@@ -3,13 +3,7 @@ package org.joverseer.metadata.domain;
 import java.io.Serializable;
 import java.awt.*;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 17 Δεκ 2006
- * Time: 6:40:20 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class NationMapRange implements Serializable {
     int nationNo;
     int tlX;

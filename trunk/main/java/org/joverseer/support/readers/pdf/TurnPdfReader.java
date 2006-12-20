@@ -1,47 +1,41 @@
 package org.joverseer.support.readers.pdf;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.Combat;
+import org.joverseer.domain.Company;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
-import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
-import org.joverseer.support.infoSources.XmlTurnInfoSource;
-import org.pdfbox.ExtractText;
-import org.pdfbox.util.PDFTextStripper;
 import org.pdfbox.pdmodel.PDDocument;
-import org.txt2xml.core.Processor;
-import org.txt2xml.config.ProcessorFactory;
-import org.txt2xml.driver.StreamDriver;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.application.Application;
+import org.pdfbox.util.PDFTextStripper;
 import org.springframework.richclient.progress.ProgressMonitor;
-import org.joverseer.domain.Character;
+import org.txt2xml.config.ProcessorFactory;
+import org.txt2xml.core.Processor;
+import org.txt2xml.driver.StreamDriver;
 
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 10 ��� 2006
- * Time: 9:59:31 ��
- * To change this template use File | Settings | File Templates.
- */
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
     TurnInfo turnInfo;
@@ -50,6 +44,7 @@ public class TurnPdfReader implements Runnable {
     ProgressMonitor monitor;
     Game game;
     String filename;
+    int nationNo;
 
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
@@ -60,6 +55,7 @@ public class TurnPdfReader implements Runnable {
         String encoding = DEFAULT_ENCODING;
         int startPage = 1;
         int endPage = Integer.MAX_VALUE;
+        String ret = null;
         Writer output = null;
         PDDocument document = null;
         ByteArrayOutputStream outs = null;
@@ -76,6 +72,10 @@ public class TurnPdfReader implements Runnable {
             stripper.setStartPage(startPage);
             stripper.setEndPage(endPage);
             stripper.writeText(document, output);
+            ret = new String(outs.toByteArray(), "UTF-8");
+            FileWriter out = new FileWriter(pdfFile + ".txt");
+            out.write(ret);
+            out.close();
         }
         catch (Exception exc) {
         	int a = 1;
@@ -88,7 +88,7 @@ public class TurnPdfReader implements Runnable {
                 document.close();
             }
         }
-        return new String(outs.toByteArray(), "UTF-8");
+        return ret;
     }
 
     public void pdf2xml(String pdfFile) throws Exception {
@@ -219,11 +219,24 @@ public class TurnPdfReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
             // parse company members
             digester.addCallMethod("txt2xml/Turn/Companies/Company/Member", "addMember", 0);
+            // create container for combats
+            digester.addObjectCreate("txt2xml/Turn/Combats", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/Combats", "setCombats");
+            // create Combat wrapper
+            digester.addObjectCreate("txt2xml/Turn/Combats/Combat", "org.joverseer.support.readers.pdf.CombatWrapper");
+            // add company wrapper
+            digester.addSetNext("txt2xml/Turn/Combats/Combat", "addItem", "org.joverseer.support.readers.pdf.CombatWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Combats/Combat",
+                    snpr = new SetNestedPropertiesRule(new String[]{"HexNo", "Narration"},
+                            new String[]{"hexNo", "narration"}));
+            snpr.setAllowUnknownChildElements(true);
             turnInfo = (TurnInfo)digester.parse(xmlFile);
             Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
             Matcher m = p.matcher(xmlFile);
             m.matches();
-            int nationNo = Integer.parseInt(m.group(1));
+            nationNo = Integer.parseInt(m.group(1));
             int turnNo = Integer.parseInt(m.group(2));
             turnInfo.setNationNo(nationNo);
             turnInfo.setTurnNo(turnNo);
@@ -259,20 +272,35 @@ public class TurnPdfReader implements Runnable {
             turn = game.getTurn(game.getMaxTurn());
             infoSource = new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
             if (getMonitor() != null) {
-                getMonitor().worked(70);
+                getMonitor().worked(60);
                 getMonitor().subTaskStarted("Updating nation relations...");
             }
             updateNationRelations(game);
             if (getMonitor() != null) {
-                getMonitor().worked(80);
+                getMonitor().worked(70);
                 getMonitor().subTaskStarted("Updating population centers...");
             }
-            updatePcs(game);
+            try {
+                updatePcs(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
             if (getMonitor() != null) {
-                getMonitor().worked(100);
-                getMonitor().subTaskStarted("Updating population centers...");
+                getMonitor().worked(80);
+                getMonitor().subTaskStarted("Updating characters...");
             }
             updateCharacters(game);
+            if (getMonitor() != null) {
+                getMonitor().worked(90);
+                getMonitor().subTaskStarted("Updating companies...");
+            }
+            updateCompanies(game);
+            if (getMonitor() != null) {
+                getMonitor().worked(100);
+                getMonitor().subTaskStarted("Updating combats...");
+            }
+            updateCombats(game);
         }
         catch (Exception exc) {
             if (getMonitor() != null) {
@@ -280,6 +308,22 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Unexpected error : '" + exc.getMessage() + "'.");
             }
             throw new Exception("Error updating game from Xml file.", exc);
+        }
+    }
+    
+    public void updateCombats(Game game) {
+        Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);
+        Container cws = turnInfo.getCombats();
+        for (CombatWrapper cw : (ArrayList<CombatWrapper>)cws.getItems()) {
+            Combat c = (Combat)combats.findFirstByProperty("hexNo", cw.getHexNo());
+            if (c == null) {
+                c = new Combat();
+                c.setHexNo(cw.getHexNo());
+                c.addNarration(nationNo, cw.getNarration());
+                combats.addItem(c);
+            } else {
+                c.addNarration(nationNo, cw.getNarration());
+            }
         }
     }
 
@@ -318,7 +362,9 @@ public class TurnPdfReader implements Runnable {
         Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
             PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("name", pcw.getName());
-            if (pc == null) throw new Exception("Population center " + pcw.getName() + " not found in turn.");
+            if (pc == null) {
+                throw new Exception("Population center " + pcw.getName() + " not found in turn.");
+            }
             pcw.updatePopCenter(pc);
         }
     }
@@ -335,7 +381,23 @@ public class TurnPdfReader implements Runnable {
             } else {
                 cw.updateCharacter(c);
             }
-            
+            for (OrderResult orderResult : cw.getOrderResults()) {
+                orderResult.updateGame(turn, nationNo, cw.getName());
+            }
+        }
+    }
+    
+    public void updateCompanies(Game game) throws Exception {
+        Container cws = turnInfo.getCompanies();
+        Container cs = turn.getContainer(TurnElementsEnum.Company);
+        for (CompanyWrapper cw : (ArrayList<CompanyWrapper>)cws.getItems()) {
+            Company newC = cw.getCompany();
+            newC.setInfoSource(infoSource);
+            Company oldC = (Company)cs.findFirstByProperty("commander", newC.getCommander());
+            if (oldC != null) {
+                cs.removeItem(oldC);
+            }
+            cs.addItem(newC);
         }
     }
     

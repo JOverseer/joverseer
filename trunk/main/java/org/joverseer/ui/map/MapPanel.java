@@ -24,13 +24,7 @@ import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 4:28:26 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class MapPanel extends JPanel implements MouseListener {
     protected javax.swing.event.EventListenerList listenerList =
             new javax.swing.event.EventListenerList();
@@ -285,6 +279,46 @@ public class MapPanel extends JPanel implements MouseListener {
                             catch (Exception exc) {
                                 logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage());
                             }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering orders " + exc.getMessage());
+        }
+        
+        try {
+            ArrayList artifacts = getGame().getTurn().getContainer(TurnElementsEnum.Artifact).getItems();
+            for (Artifact a : (ArrayList<Artifact>)artifacts) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(a)) {
+                        setHexLocation(a.getX(), a.getY());
+                        try {
+                            r.render(a, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error rendering artifact " + a.getNumber() + " " + a.getName() + " " + exc.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering orders " + exc.getMessage());
+        }
+        
+        try {
+            ArrayList combats = getGame().getTurn().getContainer(TurnElementsEnum.Combat).getItems();
+            for (Combat a : (ArrayList<Combat>)combats) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(a)) {
+                        setHexLocation(a.getX(), a.getY());
+                        try {
+                            r.render(a, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error rendering combat " + a.getHexNo() + " " + exc.getMessage());
                         }
                     }
                 }

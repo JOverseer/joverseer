@@ -1,19 +1,12 @@
 package org.joverseer.game;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 
-import java.io.Serializable;
-import java.io.IOException;
-import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 13, 2006
- * Time: 7:43:53 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Game implements Serializable {
     GameMetadata metadata;
 

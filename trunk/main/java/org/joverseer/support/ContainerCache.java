@@ -6,13 +6,7 @@ import java.io.Serializable;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 17 Дек 2006
- * Time: 11:36:22 рм
- * To change this template use File | Settings | File Templates.
- */
+
 public class ContainerCache implements Serializable {
     String propertyName;
     HashMap<Object, ArrayList> cache;

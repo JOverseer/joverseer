@@ -4,13 +4,7 @@ import org.springframework.core.enums.LabeledEnum;
 
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 11:28:06 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public enum PopulationCenterSizeEnum implements Serializable {
     ruins (0),
     camp (1),

@@ -12,13 +12,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 28 Οκτ 2006
- * Time: 9:05:42 μμ
- * To change this template use File | Settings | File Templates.
- */
+
 public class JOverseerApplicationPage extends FlexDockApplicationPage {
     private PropertyChangeListener activeHandler = new PropertyChangeListener() {
         public void propertyChange( PropertyChangeEvent evt ) {

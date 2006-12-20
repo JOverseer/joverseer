@@ -1,12 +1,6 @@
 package org.joverseer.support.readers.xml;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 1 Ïêô 2006
- * Time: 12:03:39 ðì
- * To change this template use File | Settings | File Templates.
- */
+
 public class ProductWrapper {
     String type;
     int buyPrice;

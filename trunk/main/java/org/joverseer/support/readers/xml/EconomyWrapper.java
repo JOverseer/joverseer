@@ -4,13 +4,7 @@ import org.joverseer.domain.NationEconomy;
 
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: 1 Ïêô 2006
- * Time: 12:02:52 ðì
- * To change this template use File | Settings | File Templates.
- */
+
 public class EconomyWrapper {
     int armyMaint;
     int popMaint;

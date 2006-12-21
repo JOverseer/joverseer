@@ -3,6 +3,7 @@ package org.joverseer.ui.viewers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -17,19 +18,27 @@ import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.CombatNarrationForm;
+import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.junit.runner.Description;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
+
+import sun.security.action.GetLongAction;
 
 
 public class CombatViewer extends AbstractForm {
@@ -38,7 +47,7 @@ public class CombatViewer extends AbstractForm {
     
     JTextField description;
     
-    ActionCommand showCombatAction = new ShowCombatAction();
+    ActionCommand showCombatAction;
     
     public CombatViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -73,8 +82,14 @@ public class CombatViewer extends AbstractForm {
     }
     
     private JPopupMenu createCombatPopupContextMenu() {
+        Combat c = (Combat)getFormObject();
+        Object[] narrationActions =  new Object[c.getNarrations().size()];
+        int i = 0;
+        for (Integer nationNo : c.getNarrations().keySet()) {
+            narrationActions[i] = new ShowCombatAction(nationNo);
+        }
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "combatCommandGroup", new Object[] {showCombatAction});
+                "combatCommandGroup", narrationActions);
         return group.createPopupMenu();
     }
     
@@ -92,18 +107,38 @@ public class CombatViewer extends AbstractForm {
     }
     
     private class ShowCombatAction extends ActionCommand {
-        public ShowCombatAction() {
+        int nationNo;
+        public ShowCombatAction(int nationNo) {
             super("showCombatAction");
+            this.nationNo = nationNo;
+            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            Nation n = game.getMetadata().getNationByNum(nationNo);
+            setLabel(n.getName() + " Narration");
         }
 
         protected void doExecuteCommand() {
             Combat c = (org.joverseer.domain.Combat) getFormObject();
-            String title = "Combat at " + c.getHexNo();
-            String descr = (String)c.getNarrations().values().toArray()[0];
-            descr = descr.replaceAll("\r\n\r\n", "\n");
-            descr = descr.replaceAll("\r\n", "\n");
-            MessageDialog dlg = new MessageDialog(title, descr);
-            dlg.showDialog();
+            final String descr = c.getNarrationForNation(nationNo);
+            FormModel formModel = FormModelHelper.createFormModel(descr);
+            final CombatNarrationForm form = new CombatNarrationForm(formModel);
+            FormBackedDialogPage page = new FormBackedDialogPage(form);
+            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                protected void onAboutToShow() {
+                    form.setFormObject(descr);
+                }
+
+                protected boolean onFinish() {
+                    return true;
+                }
+
+            };
+            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            Nation n = game.getMetadata().getNationByNum(nationNo);
+            
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            dialog.setTitle(ms.getMessage("combatNarrationDialog.title", new Object[]{String.valueOf(c.getHexNo()), String.valueOf(n.getName())}, Locale.getDefault()));
+            dialog.showDialog();
         }
+        
     }
 }

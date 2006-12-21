@@ -75,7 +75,7 @@ public class OrderViewer extends AbstractForm implements ActionListener {
                 ovd.clear();
                 ovd.addOrder((Order)getFormObject());
                 Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.DrawOrderEvent.toString(), getFormObject(), this));
+                                    new JOverseerEvent(LifecycleEventsEnum.RefreshOrders.toString(), getFormObject(), this));
             }
         };
         btn.addActionListener(al);

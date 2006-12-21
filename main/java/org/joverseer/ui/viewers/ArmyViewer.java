@@ -155,7 +155,7 @@ public class ArmyViewer extends AbstractForm {
             AbstractMapItem.add(armi);
 
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
         }
     }

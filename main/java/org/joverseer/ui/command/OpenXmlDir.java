@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Locale;
 import java.util.prefs.Preferences;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 
@@ -86,7 +87,7 @@ public class OpenXmlDir extends ActionCommand implements Runnable {
             final Runnable thisObj = this;
             class XmlFileFilter implements FilenameFilter {
                 public boolean accept(File dir, String name) {
-                    return name.endsWith(".xml");
+                    return Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", name);
                 }
             }
             files = file.listFiles(new XmlFileFilter());

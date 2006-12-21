@@ -6,5 +6,6 @@ public enum LifecycleEventsEnum {
     SelectedHexChangedEvent,
     SelectedTurnChangedEvent,
     OrderChangedEvent,
-    DrawOrderEvent
+    RefreshOrders,
+    RefreshMapItems
 }

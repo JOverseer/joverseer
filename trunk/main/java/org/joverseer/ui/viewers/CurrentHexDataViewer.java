@@ -265,6 +265,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null) return;
         GameMetadata gm = g.getMetadata();
+        
         Hex h = gm.getHex(p.x * 100 + p.y);
         if (h != null) {
             showHexInfo(h);

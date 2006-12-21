@@ -1,0 +1,45 @@
+package org.joverseer.ui;
+
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import org.joverseer.ui.support.GraphicUtils;
+import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.layout.TableLayoutBuilder;
+
+
+public class CombatNarrationForm extends AbstractForm {
+    
+    public static final String FORM_PAGE = "combatNarrationForm";
+
+    JTextArea textArea;
+    
+    public CombatNarrationForm(FormModel formModel) {
+        super(formModel, FORM_PAGE);
+    }
+
+    protected JComponent createFormControl() {
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
+        textArea = new JTextArea();
+        textArea.setLineWrap(false);
+        textArea.setEditable(false);
+        textArea.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
+        tlb.cell(textArea);
+        JScrollPane scp = new JScrollPane(textArea);
+        scp.setPreferredSize(new Dimension(750, 450));
+        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        return scp;
+    }
+    
+    public void setFormObject(Object obj) {
+        super.setFormObject(obj);
+        textArea.setText((String)obj);
+        textArea.setCaretPosition(0);
+    }
+}

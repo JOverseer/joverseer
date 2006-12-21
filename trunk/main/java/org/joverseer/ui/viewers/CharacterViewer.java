@@ -372,7 +372,7 @@ public class CharacterViewer extends AbstractForm {
             AbstractMapItem.add(crmi);
 
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
         }
     }

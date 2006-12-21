@@ -31,7 +31,7 @@ public class CombatNarrationForm extends AbstractForm {
         textArea.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
         tlb.cell(textArea);
         JScrollPane scp = new JScrollPane(textArea);
-        scp.setPreferredSize(new Dimension(750, 450));
+        scp.setPreferredSize(new Dimension(780, 450));
         scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         return scp;

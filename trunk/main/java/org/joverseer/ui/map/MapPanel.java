@@ -38,10 +38,13 @@ public class MapPanel extends JPanel implements MouseListener {
     Point location = new Point();
 
     BufferedImage map = null;
+    BufferedImage mapBaseItems = null;
     BufferedImage mapItems = null;
     BufferedImage mapBack = null;
+    BufferedImage mapBaseItemsBack = null;
     BufferedImage mapItemsBack = null;
-
+    
+    
     Point selectedHex = null;
 
     private Game game = null;
@@ -151,12 +154,7 @@ public class MapPanel extends JPanel implements MouseListener {
             }
         }
     }
-
-    /**
-     * Draws the items on the map, i.e. everything that is in front
-     * of the background (terrain)
-     * todo update with renderers
-     */
+    
     private void createMapItems() {
         MapMetadata metadata;
         try {
@@ -178,6 +176,49 @@ public class MapPanel extends JPanel implements MouseListener {
         mapItems = mapItemsBack;
 
         Graphics2D g = mapItems.createGraphics();
+
+        if (mapBaseItems == null) {
+            createMapBaseItems();
+        }
+        g.drawImage(mapBaseItems, 0, 0, this);
+        Container mapItemsC = (Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+        for (AbstractMapItem mi : (ArrayList<AbstractMapItem>)mapItemsC.items) {
+            for (Renderer r : (Collection<Renderer>)metadata.getRenderers()) {
+                if (r.appliesTo(mi)) {
+                    r.render(mi, (Graphics2D)g, 0, 0);
+                }
+            }
+        }
+        
+        BusyIndicator.clearAt(this);
+    }
+
+    /**
+     * Draws the items on the map, i.e. everything that is in front
+     * of the background (terrain)
+     * todo update with renderers
+     */
+    private void createMapBaseItems() {
+        MapMetadata metadata;
+        try {
+            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        }
+        catch (Exception exc) {
+            // application is not ready
+            return;
+        }
+        Game game = getGame();
+        if (!Game.isInitialized(game)) return;
+
+        BusyIndicator.showAt(this);
+        if (mapBaseItemsBack == null) {
+            int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
+            int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
+            mapBaseItemsBack = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        }
+        mapBaseItems = mapBaseItemsBack;
+
+        Graphics2D g = mapBaseItems.createGraphics();
 
         if (map == null) {
             createMap();
@@ -336,8 +377,13 @@ public class MapPanel extends JPanel implements MouseListener {
 
     public void invalidateAll() {
         map = null;
+        mapBaseItems = null;
         mapItems = null;
         setGame(((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame());
+    }
+    
+    public void invalidateMapItems() {
+        mapItems = null;
     }
 
     /**
@@ -373,15 +419,6 @@ public class MapPanel extends JPanel implements MouseListener {
         //g.drawImage(map, 0, 0, this);
         g.drawImage(mapItems, 0, 0, this);
 
-        Container mapItemsC = (Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
-        for (AbstractMapItem mi : (ArrayList<AbstractMapItem>)mapItemsC.items) {
-            for (Renderer r : (Collection<Renderer>)metadata.getRenderers()) {
-                if (r.appliesTo(mi)) {
-                    r.render(mi, (Graphics2D)g, 0, 0);
-                }
-            }
-        }
-        
         if (getSelectedHex() != null)
         {
             Stroke s = ((Graphics2D)g).getStroke();

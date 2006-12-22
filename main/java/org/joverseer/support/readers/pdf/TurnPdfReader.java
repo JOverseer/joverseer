@@ -315,6 +315,7 @@ public class TurnPdfReader implements Runnable {
         Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);
         Container cws = turnInfo.getCombats();
         for (CombatWrapper cw : (ArrayList<CombatWrapper>)cws.getItems()) {
+            cw.parse();
             Combat c = (Combat)combats.findFirstByProperty("hexNo", cw.getHexNo());
             if (c == null) {
                 c = new Combat();
@@ -402,7 +403,8 @@ public class TurnPdfReader implements Runnable {
     }
     
     public static void main(String[] args) throws Exception {
-        
+        TurnPdfReader r = new TurnPdfReader(null, args[0]);
+        r.parsePdf(args[0]);
     }
 
     

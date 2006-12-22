@@ -333,10 +333,29 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
     
+     <bean id="spellInfoListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.SpellInfoListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+     
+    
     <bean id="artifactListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
             <value>org.joverseer.ui.listviews.ArtifactListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+    
+    <bean id="locateArtifactResultListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.LocateArtifactResultListView</value>
         </property>
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>
@@ -359,6 +378,9 @@
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>
     </bean>
+    
+   
+    
 
     <bean id="currentHexDataViewer"
          class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
@@ -417,6 +439,10 @@
                 <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
+                <bean class="org.joverseer.ui.map.renderers.HighlightedHexRenderer">                
+                	<property name="width"><value>2</value></property>
+                	<property name="highlightColor"><value>#ff3300</value></property>
+               	</bean>
             </list>
         </property>
     </bean>
@@ -439,6 +465,7 @@
                 <bean class="org.joverseer.metadata.OrderReader"/>
                 <bean class="org.joverseer.metadata.CharacterReader"/>
                 <bean class="org.joverseer.metadata.NationMapRangeReader"/>
+                <bean class="org.joverseer.metadata.SpellReader"/>
             </list>
         </property>
     </bean>

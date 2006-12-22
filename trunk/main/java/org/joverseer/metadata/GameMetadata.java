@@ -27,7 +27,9 @@ public class GameMetadata implements Serializable {
     Container characters = new Container(new String[]{"id", "name"});
     Container populationCenters = new Container(new String[]{"hexNo"});
     Container nationMapRanges = new Container(new String[]{"nationNo"});
-
+    Container spells = new Container(new String[]{"no"});
+    
+    
     ArrayList readers = new ArrayList();
 
     String basePath;
@@ -88,6 +90,7 @@ public class GameMetadata implements Serializable {
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.writeObject(getCharacters());
         out.writeObject(getArtifacts());
+        out.writeObject(getSpells());
         out.writeObject(getOrders());
         out.writeObject(hexes);
         out.writeObject(getNations());
@@ -100,6 +103,7 @@ public class GameMetadata implements Serializable {
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         characters = (Container)in.readObject();
         artifacts = (Container)in.readObject();
+        spells = (Container)in.readObject();
         orders = (Container)in.readObject();
         hexes = (Container)in.readObject();
         nations = (ArrayList)in.readObject();
@@ -193,4 +197,16 @@ public class GameMetadata implements Serializable {
     public void setNationMapRanges(Container nationMapRanges) {
         this.nationMapRanges = nationMapRanges;
     }
+
+    
+    public Container getSpells() {
+        return spells;
+    }
+
+    
+    public void setSpells(Container spells) {
+        this.spells = spells;
+    }
+    
+    
 }

@@ -36,6 +36,7 @@
 		<property name="members">
 			<list>
 				<ref bean="fileMenu"/>
+				<ref bean="utilMenu"/>
                 <ref bean="windowMenu"/>
                 <ref bean="helpMenu"/>
 			</list>
@@ -82,6 +83,7 @@
                             <bean class="org.joverseer.ui.command.OpenXmlDir"/>
                             <bean class="org.joverseer.ui.command.OpenPdfFile"/>                            
                             <bean class="org.joverseer.ui.command.OpenPdfDir"/>                            
+                            <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
                             <bean class="org.joverseer.ui.command.LoadGame"/>
                             <bean class="org.joverseer.ui.command.SaveGame"/>
                             <bean class="org.springframework.richclient.command.support.ShowViewMenu"/>
@@ -133,5 +135,16 @@
         </property>
       </bean>
 
-		
+	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+        <property name="members">
+            <list>	
+            	<bean class="org.joverseer.ui.command.HighlightDegradeCandidates"/>
+            	<bean class="org.joverseer.ui.command.HighlightLocatedArtifacts"/>
+            	<bean class="org.joverseer.ui.command.HighlightCombats"/>
+            	<bean class="org.joverseer.ui.command.HighlightCharacters"/>
+            	<value>separator</value>
+            	<bean class="org.joverseer.ui.command.ClearMapItems"/>
+           	</list>
+       	</property>
+   	</bean>
 </beans>

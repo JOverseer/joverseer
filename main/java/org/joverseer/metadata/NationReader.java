@@ -37,6 +37,8 @@ public class NationReader implements MetadataReader {
                     {"Khand Easterlings", "Kh"},
             };
 
+    //TODO 1650 nations
+    
     public void load(GameMetadata gm) {
         ArrayList nations = new ArrayList();
         if (gm.getGameType() == GameTypeEnum.game2950) {

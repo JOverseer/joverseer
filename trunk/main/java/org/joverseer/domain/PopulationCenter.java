@@ -1,5 +1,6 @@
 package org.joverseer.domain;
 
+import org.joverseer.support.NationMap;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.metadata.domain.Nation;
 
@@ -16,8 +17,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     FortificationSizeEnum fortification;
     HarborSizeEnum harbor;
 
-    int nationNo;
-    Nation nation;
+    Integer nationNo;
 
     boolean capital;
     boolean hidden;
@@ -79,18 +79,18 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     }
 
     public Nation getNation() {
-        return nation;
+        return NationMap.getNationFromNo(getNationNo());
     }
 
     public void setNation(Nation nation) {
-        this.nation = nation;
+        setNationNo(nation.getNumber());
     }
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 

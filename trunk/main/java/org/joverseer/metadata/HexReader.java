@@ -32,15 +32,13 @@ public class HexReader implements MetadataReader {
         return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + trafficFilename;
     }
 
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = loadHexes(gm);
-
         loadTraffic(hexes, gm);
-
         gm.setHexes(hexes.values());
     }
 
-    private HashMap loadHexes(GameMetadata gm) {
+    private HashMap loadHexes(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = new HashMap();
         try {
             Resource resource = Application.instance().getApplicationContext().getResource(getTerrainFilename(gm));
@@ -61,14 +59,15 @@ public class HexReader implements MetadataReader {
             }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
+            throw exc;
+        }
+        catch (Exception exc) {
+            throw new MetadataReaderException("Error reading hex metadata.", exc);
         }
         return hexes;
     }
 
-    private void loadTraffic(HashMap hexes, GameMetadata gm) {
+    private void loadTraffic(HashMap hexes, GameMetadata gm) throws IOException, MetadataReaderException {
         try {
             Resource resource = Application.instance().getApplicationContext().getResource(getTrafficFilename(gm));
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
@@ -95,9 +94,10 @@ public class HexReader implements MetadataReader {
             }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
+            throw exc;
+        }
+        catch (Exception exc) {
+            throw new MetadataReaderException("Error reading traffic metadata.", exc);
         }
     }
 }

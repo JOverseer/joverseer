@@ -128,6 +128,31 @@
        		</processor>
    		</processor>
 
+		<processor type="StringEnclosedMatch">
+        	<!--  Get the region for the population centers -->
+        	<element>Armies</element>
+        	<startString>ARMIES AND NAVIES</startString>
+        	<endString>PANY COMMANDERS :</endString>
+
+        	<processor type="StringEnclosedMatch">
+        		<element>Army</element>
+        		<startString>Army Comm|Navy Comm</startString>
+        		<endString>Army Comm|Navy Comm|COM</endString>
+        		<includeStart>true</includeStart>
+        		<processor type="RegexMatch">
+        			<element>Type</element>
+        			<regex>(Navy|Army) Comm</regex>
+        		</processor>
+        		<processor type="RegexMatch">
+        			<element>Commander</element>
+        			<regex>ander : \p{L}+ (\p{L}+(?:[\s\-']+\p{L}+)*)\s+Location</regex>
+        		</processor>
+        		<processor type="RegexMatch">
+        			<element>Food</element>
+        			<regex>Food\s+(\d+)</regex>
+        		</processor>
+       		</processor>
+   		</processor>
    		<processor type="StringEnclosedMatch">
    			<!--  get the region for the companies -->
         	<element>Companies</element>

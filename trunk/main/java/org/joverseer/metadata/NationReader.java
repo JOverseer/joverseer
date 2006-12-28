@@ -3,6 +3,7 @@ package org.joverseer.metadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -39,7 +40,7 @@ public class NationReader implements MetadataReader {
 
     //TODO 1650 nations
     
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         ArrayList nations = new ArrayList();
         if (gm.getGameType() == GameTypeEnum.game2950) {
             for (int i=0; i<26; i++) {

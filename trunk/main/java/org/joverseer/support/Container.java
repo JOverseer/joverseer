@@ -47,8 +47,12 @@ public class Container implements Serializable {
     public void removeAll(Collection col) {
         items.removeAll(col);
         for (ContainerCache cc : caches.values()) {
-            cc.clear();
+            cc.removeAll(col);
         }
+    }
+    
+    public void clear() {
+        removeAll(getItems());
     }
 
     public int size() {

@@ -18,7 +18,7 @@ public class SpellReader  implements MetadataReader {
         return "file:///" + gm.getBasePath() + "/" + spellFilename;
     }
 
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         Container spells = new Container();
 
         try {
@@ -40,10 +40,11 @@ public class SpellReader  implements MetadataReader {
             }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
-        }
+            throw exc;
+         }
+         catch (Exception exc) {
+             throw new MetadataReaderException("Error reading spell metadata.", exc);
+         }
         gm.setSpells(spells);
     }
 }

@@ -7,15 +7,15 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 public class NationRelations implements IBelongsToNation, Serializable {
 
-    int nationNo;
+    Integer nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];
     NationAllegianceEnum allegiance;
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 

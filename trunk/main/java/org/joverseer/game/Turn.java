@@ -28,6 +28,13 @@ public class Turn implements Serializable {
     }
 
     public Container getContainer(TurnElementsEnum turnElement) {
-        return getContainers().get(turnElement);
+        Container c = getContainers().get(turnElement);
+        if (c == null) {
+            c = new Container();
+            getContainers().put(turnElement, c);
+        }
+        return c;
     }
+    
+    
 }

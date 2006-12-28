@@ -366,9 +366,6 @@ public class CharacterViewer extends AbstractForm {
 
         protected void doExecuteCommand() {
             CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character) getFormObject());
-            org.joverseer.support.Container mic = (org.joverseer.support.Container) Application.instance()
-                    .getApplicationContext().getBean("mapItemContainer");
-            mic.removeAll(mic.items);
             AbstractMapItem.add(crmi);
 
             Application.instance().getApplicationContext().publishEvent(

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
-    int nationNo;
+    Integer nationNo;
     int x;
     int y;
 
@@ -73,11 +73,11 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         this.nationAllegiance = nationAllegiance;
     }
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
@@ -185,4 +185,11 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         this.cavalry = cavalry;
     }
 
+    public int computeNumberOfMen() {
+        int ret = 0;
+        for (ArmyElement ae : getElements()) {
+            ret += ae.getNumber();
+        }
+        return ret;
+    }
 }

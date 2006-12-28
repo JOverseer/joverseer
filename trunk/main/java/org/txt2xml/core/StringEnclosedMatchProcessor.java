@@ -30,15 +30,25 @@ public class StringEnclosedMatchProcessor extends Processor {
     public String[] getEndStrings() {
         return endString.split("\\|");
     }
+    
+    public String[] getStartStrings() {
+        return startString.split("\\|");
+    }
 
 
     protected boolean findMatch() {
         assert (chars != null);// : "Null text but asked to findMatch!";
         String str = chars.toString();
         int currentStart = matchStart;
-        matchStart = str.indexOf(startString, matchEnd);
-        if (matchStart == -1)
+        String[] startStrings = getStartStrings();
+        for (String startString : startStrings) {
+            matchStart = str.indexOf(startString, matchEnd);
+            if (matchStart > -1)
+                break;
+        }
+        if (matchStart == -1) {
             return false;
+        }
         String[] endStrings = getEndStrings();
         for (String endString : endStrings) {
             if (endString.equals("$")) {

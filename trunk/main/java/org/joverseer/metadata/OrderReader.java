@@ -17,7 +17,7 @@ public class OrderReader implements MetadataReader {
         return "file:///" + gm.getBasePath() + "/" + orderFilename;
     }
 
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         Container orders = new Container();
 
         try {
@@ -38,10 +38,11 @@ public class OrderReader implements MetadataReader {
             }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
-        }
+            throw exc;
+         }
+         catch (Exception exc) {
+             throw new MetadataReaderException("Error reading order metadata.", exc);
+         }
         gm.setOrders(orders);
     }
 }

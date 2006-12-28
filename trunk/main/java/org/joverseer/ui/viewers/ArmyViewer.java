@@ -149,9 +149,6 @@ public class ArmyViewer extends AbstractForm {
 
         protected void doExecuteCommand() {
             ArmyRangeMapItem armi = new ArmyRangeMapItem((org.joverseer.domain.Army) getFormObject());
-            org.joverseer.support.Container mic = (org.joverseer.support.Container) Application.instance()
-                    .getApplicationContext().getBean("mapItemContainer");
-            mic.removeAll(mic.items);
             AbstractMapItem.add(armi);
 
             Application.instance().getApplicationContext().publishEvent(

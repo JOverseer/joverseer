@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 
 public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
-    int nationNo;
+    Integer nationNo;
 
     int orderNo = -1;
     String parameters = "";
@@ -24,11 +24,11 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         character = c;
     }
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 

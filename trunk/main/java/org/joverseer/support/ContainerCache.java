@@ -1,5 +1,6 @@
 package org.joverseer.support;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.io.Serializable;
@@ -47,6 +48,12 @@ public class ContainerCache implements Serializable {
             return;
         }
         objects.remove(obj);
+    }
+    
+    public void removeAll(Collection col) {
+        for (Object obj : col) {
+            removeItem(obj);
+        }
     }
 
     public ArrayList retrieveItems(Object value) {

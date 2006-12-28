@@ -360,6 +360,15 @@
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>
     </bean>
+    
+    <bean id="armySizeEstimatesListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.ArmySizeEstimatesListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
 
     <bean id="orderListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
@@ -476,8 +485,6 @@
     <bean id="orderVisualizationData" class="org.joverseer.ui.orders.OrderVisualizationData">
     </bean>
     
-    <bean id="mapItemContainer" class="org.joverseer.support.Container"/>
-
     <bean id="mapOptions" class="java.util.HashMap"/>
 
     <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>

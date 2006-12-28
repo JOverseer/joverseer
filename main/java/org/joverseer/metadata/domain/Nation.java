@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 
 public class Nation implements Serializable {
-    int number;
+    Integer number;
     String name;
     String shortName;
     NationAllegianceEnum allegiance;
@@ -33,11 +33,11 @@ public class Nation implements Serializable {
         this.name = name;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 

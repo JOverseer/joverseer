@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 public class NationEconomy implements IBelongsToNation, Serializable {
-    int nationNo;
+    Integer nationNo;
 
     int armyMaintenance;
     int popMaintenance;
@@ -32,11 +32,11 @@ public class NationEconomy implements IBelongsToNation, Serializable {
         this.charMaintenance = charMaintenance;
     }
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 

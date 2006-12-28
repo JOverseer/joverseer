@@ -17,11 +17,11 @@ public class ArtifactReader implements MetadataReader {
         return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + artifactFilename;
     }
 
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         gm.setArtifacts(loadArtifacts(gm));
     }
 
-    private Container loadArtifacts(GameMetadata gm) {
+    private Container loadArtifacts(GameMetadata gm) throws IOException, MetadataReaderException {
         Container artifacts = new Container();
 
         try {
@@ -53,9 +53,10 @@ public class ArtifactReader implements MetadataReader {
             }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
+            throw exc;
+        }
+        catch (Exception exc) {
+            throw new MetadataReaderException("Error reading artifact metadata.", exc);
         }
         return artifacts;
     }

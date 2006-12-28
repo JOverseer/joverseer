@@ -16,4 +16,5 @@ public enum TurnElementsEnum implements Serializable {
     NationRelation,
     Artifact,
     Company,
+    MapItem
 }

@@ -10,6 +10,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.Container;
@@ -181,7 +182,8 @@ public class MapPanel extends JPanel implements MouseListener {
             createMapBaseItems();
         }
         g.drawImage(mapBaseItems, 0, 0, this);
-        Container mapItemsC = (Container)Application.instance().getApplicationContext().getBean("mapItemContainer");
+        Turn t = game.getTurn();
+        Container mapItemsC = t.getContainer(TurnElementsEnum.MapItem);
         for (AbstractMapItem mi : (ArrayList<AbstractMapItem>)mapItemsC.items) {
             for (Renderer r : (Collection<Renderer>)metadata.getRenderers()) {
                 if (r.appliesTo(mi)) {

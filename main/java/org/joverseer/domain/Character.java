@@ -13,7 +13,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     String name;
     String title;
 
-    int nationNo;
+    Integer nationNo;
 
     int command;
     int commandTotal;
@@ -210,11 +210,11 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.informationSource = informationSource;
     }
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 

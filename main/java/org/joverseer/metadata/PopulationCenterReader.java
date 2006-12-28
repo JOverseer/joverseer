@@ -22,7 +22,7 @@ public class PopulationCenterReader implements MetadataReader {
         return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + populationCenterFilename;
     }
 
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         Container populationCenters = new Container();
         try {
             Resource resource = Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
@@ -94,9 +94,10 @@ public class PopulationCenterReader implements MetadataReader {
             gm.setPopulationCenters(populationCenters);
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
-        }
+            throw exc;
+         }
+         catch (Exception exc) {
+             throw new MetadataReaderException("Error reading population center metadata.", exc);
+         }
     }
 }

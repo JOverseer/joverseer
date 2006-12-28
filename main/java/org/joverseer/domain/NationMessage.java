@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class NationMessage implements Serializable, IBelongsToNation, IHasMapLocation {
     int x = -1;
     int y = -1;
-    int nationNo;
+    Integer nationNo;
 
     int x2;
     int y2;
@@ -21,11 +21,11 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
         this.message = message;
     }
 
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
 
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 

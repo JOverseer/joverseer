@@ -65,7 +65,7 @@ public class GameMetadata implements Serializable {
         this.nations.addAll(nations);
     }
 
-    public void load() {
+    public void load() throws IOException, MetadataReaderException {
         for (MetadataReader r : (Collection<MetadataReader>)getReaders()) {
             r.load(this);
         }

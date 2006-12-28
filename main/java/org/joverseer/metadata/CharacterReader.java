@@ -18,11 +18,11 @@ public class CharacterReader  implements MetadataReader {
         return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + characterFilename;
     }
 
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         gm.setCharacters(loadCharacters(gm));
     }
 
-    private Container loadCharacters(GameMetadata gm) {
+    private Container loadCharacters(GameMetadata gm) throws IOException, MetadataReaderException {
         Container characters = new Container();
 
         MetadataSource ms = new MetadataSource();
@@ -59,9 +59,10 @@ public class CharacterReader  implements MetadataReader {
             }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
+           throw exc;
+        }
+        catch (Exception exc) {
+            throw new MetadataReaderException("Error reading character metadata.", exc);
         }
         return characters;
     }

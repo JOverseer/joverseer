@@ -17,7 +17,7 @@ public class NationMapRangeReader implements MetadataReader {
     public String getNationMapFilename(GameMetadata gm) {
         return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + nationMapFilename;
     }
-    public void load(GameMetadata gm) {
+    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         Container mapRanges = new Container();
 
         try {
@@ -43,10 +43,11 @@ public class NationMapRangeReader implements MetadataReader {
            }
         }
         catch (IOException exc) {
-            // todo see
-            // do nothing
-            int a = 1;
-        }
+            throw exc;
+         }
+         catch (Exception exc) {
+             throw new MetadataReaderException("Error reading nation map metadata.", exc);
+         }
         gm.setNationMapRanges(mapRanges);
     }
 }

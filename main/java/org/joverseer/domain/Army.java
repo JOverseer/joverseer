@@ -132,6 +132,33 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     public ArrayList<ArmyElement> getElements() {
         return elements;
     }
+    
+    public void removeElement(ArmyElementType type) {
+        ArmyElement e = null;
+        for (ArmyElement ae : getElements()) {
+            if (ae.getArmyElementType() == type) {
+                e = ae;
+                break;
+            }
+        }
+        if (e != null) {
+            getElements().remove(e);
+        }
+    }
+    
+    public void setElement(ArmyElementType type, int count) {
+        if (count == 0) {
+            removeElement(type);
+            return;
+        }
+        for (ArmyElement ae : getElements()) {
+            if (ae.getArmyElementType() == type) {
+                ae.setNumber(count);
+                return;
+            }
+        }
+        getElements().add(new ArmyElement(type, count));
+    }
 
     public Boolean isFed() {
         return fed;
@@ -153,9 +180,20 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         if (isFed() != null) {
             return isFed();
         }
-        // todo compute fed with respect to food and consumption
-        // returning null if fed cannot be computed
+        Integer foodConsumption = computeFoodConsumption();
+        if (foodConsumption != null) {
+            return getFood() >= computeFoodConsumption();
+        }
         return null;
+    }
+    
+    public Integer computeFoodConsumption() {
+        if (getElements().size() == 0) return null;
+        int ret = 0;
+        for (ArmyElement ae : getElements()) {
+            ret += ae.getNumber() * ae.getArmyElementType().foodConsumption();
+        }
+        return ret;
     }
 
     public String getHexNo() {

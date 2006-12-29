@@ -2,6 +2,8 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+import org.joverseer.support.ProductContainer;
+
 
 public class NationEconomy implements IBelongsToNation, Serializable {
     Integer nationNo;
@@ -16,6 +18,9 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     int reserve;
     int taxBase;
 
+    ProductContainer production = new ProductContainer();
+    ProductContainer stores = new ProductContainer();
+    
     public int getArmyMaintenance() {
         return armyMaintenance;
     }
@@ -94,5 +99,29 @@ public class NationEconomy implements IBelongsToNation, Serializable {
 
     public void setTotalMaintenance(int totalMaintenance) {
         this.totalMaintenance = totalMaintenance;
+    }
+    
+    public Integer getProduction(ProductEnum p) {
+        return production.getProduct(p);
+    }
+
+    public Integer getStores(ProductEnum p) {
+        return stores.getProduct(p);
+    }
+    
+    public void setProduction(ProductEnum p, Integer amount) {
+        production.setProduct(p, amount);
+    }
+
+    public void setStores(ProductEnum p, Integer amount) {
+        stores.setProduct(p, amount);
+    }
+    
+    public ProductContainer getProduction() {
+        return production;
+    }
+    
+    public ProductContainer getStores() {
+        return stores;
     }
 }

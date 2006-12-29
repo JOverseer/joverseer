@@ -23,4 +23,10 @@ public enum ArmyElementType implements Serializable {
     public String getType() {
         return type;
     }
+    
+    public int foodConsumption() {
+        if (type.equals("HC") || type.equals("LC")) return 2;
+        if (type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA")) return 1;
+        return 0;
+    }
 }

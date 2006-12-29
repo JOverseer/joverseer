@@ -315,6 +315,15 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
 
+    <bean id="nationProductionListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.NationProductionListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+
     <bean id="nationMessageListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">

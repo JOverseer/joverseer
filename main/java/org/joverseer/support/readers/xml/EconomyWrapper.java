@@ -1,6 +1,9 @@
 package org.joverseer.support.readers.xml;
 
 import org.joverseer.domain.NationEconomy;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.Container;
 
 import java.util.ArrayList;
 
@@ -112,6 +115,17 @@ public class EconomyWrapper {
         ne.setRevenue(getRevenue());
         ne.setReserve(getReserve());
         ne.setSurplus(getSurplus());
+        
+        for (ProductWrapper pw : (ArrayList<ProductWrapper>)products) {
+            pw.updateNationEconomy(ne);
+        }
         return ne;
+    }
+    
+    public void updateProductPrices(Turn t) {
+        Container prices = t.getContainer(TurnElementsEnum.ProductPrice);
+        for (ProductWrapper pw : (ArrayList<ProductWrapper>)products) {
+            pw.updateProductPrice(prices);
+        }
     }
 }

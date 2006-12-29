@@ -13,43 +13,31 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import org.joverseer.domain.Army;
-import org.joverseer.domain.Combat;
-import org.joverseer.game.Game;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
+import org.joverseer.domain.Encounter;
 import org.joverseer.ui.NarrationForm;
-import org.joverseer.ui.JOverseerClientProgressMonitor;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
-import org.junit.runner.Description;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-import sun.security.action.GetLongAction;
 
+public class EncounterViewer extends AbstractForm {
 
-public class CombatViewer extends AbstractForm {
-
-    public static final String FORM_PAGE = "CombatViewer";
+    public static final String FORM_PAGE = "encounterViewer";
     
     JTextField description;
     
-    ActionCommand showDescriptionCommand;
+    ActionCommand showDescriptionCommand = new ShowDescriptionCommand();
     
-    public CombatViewer(FormModel formModel) {
+    public EncounterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
 
@@ -70,7 +58,7 @@ public class CombatViewer extends AbstractForm {
         btnMenu.addActionListener(new PopupMenuActionListener() {
 
             public JPopupMenu getPopupMenu() {
-                return createCombatPopupContextMenu();
+                return createEncounterPopupContextMenu();
             }
         });
 
@@ -81,44 +69,23 @@ public class CombatViewer extends AbstractForm {
         return p;
     }
     
-    private JPopupMenu createCombatPopupContextMenu() {
-        Combat c = (Combat)getFormObject();
-        Object[] narrationActions =  new Object[c.getNarrations().size()];
-        int i = 0;
-        for (Integer nationNo : c.getNarrations().keySet()) {
-            narrationActions[i] = new ShowDescriptionCommand(nationNo);
-        }
+    private JPopupMenu createEncounterPopupContextMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "combatCommandGroup", narrationActions);
+                "encounterCommandGroup", new Object[]{showDescriptionCommand});
         return group.createPopupMenu();
     }
     
     public void setFormObject(Object obj) {
         super.setFormObject(obj);
-        Combat c = (Combat)obj;
-        Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-
-        String d = "";
-        for (Integer nationNo : c.getNarrations().keySet()) {
-            Nation n = game.getMetadata().getNationByNum(nationNo);
-            d += (!d.equals("") ? ", " : "") + n.getName();
-        }
-        description.setText("Combat: " + d);
+        Encounter e = (Encounter)obj;
+        String d = "Encounter: " + e.getCharacter();
+        description.setText(d);
     }
     
     private class ShowDescriptionCommand extends ActionCommand {
-        int nationNo;
-        public ShowDescriptionCommand(int nationNo) {
-            super("showDescriptionCommand");
-            this.nationNo = nationNo;
-            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-            Nation n = game.getMetadata().getNationByNum(nationNo);
-            setLabel(n.getName() + " Narration");
-        }
-
         protected void doExecuteCommand() {
-            Combat c = (org.joverseer.domain.Combat) getFormObject();
-            final String descr = c.getNarrationForNation(nationNo);
+            Encounter e = (Encounter)getFormObject();
+            final String descr = e.getDescription();
             FormModel formModel = FormModelHelper.createFormModel(descr);
             final NarrationForm form = new NarrationForm(formModel);
             FormBackedDialogPage page = new FormBackedDialogPage(form);
@@ -132,11 +99,8 @@ public class CombatViewer extends AbstractForm {
                 }
 
             };
-            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-            Nation n = game.getMetadata().getNationByNum(nationNo);
-            
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            dialog.setTitle(ms.getMessage("combatNarrationDialog.title", new Object[]{String.valueOf(c.getHexNo()), String.valueOf(n.getName())}, Locale.getDefault()));
+            dialog.setTitle(ms.getMessage("encounterDialog.title", new Object[]{e.getCharacter(), String.valueOf(e.getHexNo())}, Locale.getDefault()));
             dialog.showDialog();
         }
         

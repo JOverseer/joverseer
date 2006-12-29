@@ -15,11 +15,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.ArtifactInfo;
@@ -81,6 +83,7 @@ public class CharacterViewer extends AbstractForm {
     ActionCommand showOrdersCommand = new ShowOrdersCommand();
     ActionCommand showResultsCommand = new ShowResultsCommand();
     ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterRangeOnMapCommand();
+    ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
 
 
     public CharacterViewer(FormModel formModel) {
@@ -90,9 +93,10 @@ public class CharacterViewer extends AbstractForm {
     public void setFormObject(Object object) {
         boolean showStartingInfo = false;
         Character startingChar = null;
+        Character c = (Character) object;
         if (object != getFormObject()) {
             showArtifacts = false;
-            showOrders = false;
+            showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank();
             showSpells = false;
         }
         super.setFormObject(object);
@@ -101,7 +105,6 @@ public class CharacterViewer extends AbstractForm {
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
 
-            Character c = (Character) object;
             String txt = getStatLine(c);
 
             if (txt.equals("")) {
@@ -373,6 +376,26 @@ public class CharacterViewer extends AbstractForm {
                             .getSelectedHex(), this));
         }
     }
+    
+    private class DeleteCharacterCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            Character c = (Character)getFormObject();
+            Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            Turn t = g.getTurn();
+            Container armies = t.getContainer(TurnElementsEnum.Army);
+            Army a = (Army)armies.findFirstByProperty("commanderName", c.getName());
+            if (a != null) {
+                MessageDialog dlg = new MessageDialog("Error", "The character commands an army and cannot be deleted.\nDelete the army first if you want to delete the character.");
+                dlg.showDialog();
+                return;
+            }
+            Container characters = t.getContainer(TurnElementsEnum.Character);
+            characters.removeItem(c);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
+    }
 
     private JPopupMenu createCharacterPopupContextMenu() {
         Character c = (Character) getFormObject();
@@ -382,7 +405,7 @@ public class CharacterViewer extends AbstractForm {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
                 new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
-                        "separator", showCharacterRangeOnMapCommand});
+                        "separator", showCharacterRangeOnMapCommand, "separator", deleteCharacterCommand});
         return group.createPopupMenu();
     }
 }

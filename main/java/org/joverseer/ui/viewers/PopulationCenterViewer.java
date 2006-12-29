@@ -5,6 +5,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -15,11 +16,15 @@ import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
+import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.EditPopulationCenterForm;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -49,6 +54,7 @@ public class PopulationCenterViewer extends AbstractForm {
     HashMap stores = new HashMap();
 
     ActionCommand editPopulationCenterCommand = new EditPopulationCenterCommand();
+    ActionCommand deletePopulationCenterCommand = new DeletePopulationCenterCommand();
     
     public PopulationCenterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -173,8 +179,21 @@ public class PopulationCenterViewer extends AbstractForm {
         PopulationCenter pc = (PopulationCenter) getFormObject();
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "populationCenterCommandGroup",
-                new Object[] {editPopulationCenterCommand});
+                new Object[] {editPopulationCenterCommand, "separator", deletePopulationCenterCommand});
         return group.createPopupMenu();
+    }
+    
+    private class DeletePopulationCenterCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            PopulationCenter pc = (PopulationCenter)getFormObject();
+            Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            Turn t = g.getTurn();
+            Container pcs = t.getContainer(TurnElementsEnum.PopulationCenter);
+            pcs.removeItem(pc);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
     }
     
     private class EditPopulationCenterCommand extends ActionCommand {

@@ -26,6 +26,7 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
                 c.setId(Character.getIdFromName(getOwner()));
                 c.setHexNo(hexNo);
                 c.setInfoSource(is1);
+                c.setNationNo(0);
                 chars.addItem(c);
             } else {
                 // character found

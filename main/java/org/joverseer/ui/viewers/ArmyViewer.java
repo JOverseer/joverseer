@@ -15,8 +15,12 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
@@ -28,6 +32,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -40,12 +45,13 @@ public class ArmyViewer extends AbstractForm {
     JTextField commanderName;
     JTextField nation;
     JTextField armySize;
-    JTextField armyMorale;
+    JTextField armyType;
     JTextField extraInfo;
     JTextField food;
 
     ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
     ActionCommand toggleFedAction = new ToggleFedAction();
+    ActionCommand deleteArmyCommand = new DeleteArmyCommand();
 
     public ArmyViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -77,8 +83,8 @@ public class ArmyViewer extends AbstractForm {
         glb.nextLine();
         glb.append(armySize = new JTextField());
         armySize.setPreferredSize(new Dimension(100, 12));
-        glb.append(armyMorale = new JTextField());
-        armyMorale.setPreferredSize(new Dimension(30, 12));
+        glb.append(armyType = new JTextField());
+        armyType.setPreferredSize(new Dimension(50, 12));
         glb.nextLine();
         glb.append(extraInfo = new JTextField());
         extraInfo.setPreferredSize(new Dimension(100, 12));
@@ -91,7 +97,7 @@ public class ArmyViewer extends AbstractForm {
                 .setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
         nation.setBorder(null);
         armySize.setBorder(null);
-        armyMorale.setBorder(null);
+        armyType.setBorder(null);
         extraInfo.setBorder(null);
         food.setBorder(null);
 
@@ -113,7 +119,7 @@ public class ArmyViewer extends AbstractForm {
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
 
         armySize.setText("Size: " + army.getSize().toString());
-        armyMorale.setText("M:");
+        armyType.setText(army.isNavy() ? "Navy" : "Army");
         if (army.getElements().size() > 0) {
             extraInfo.setText("");
             extraInfo.setVisible(true);
@@ -137,7 +143,7 @@ public class ArmyViewer extends AbstractForm {
 
     private JPopupMenu createArmyPopupContextMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, toggleFedAction});
+                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, toggleFedAction, "separator", deleteArmyCommand});
         return group.createPopupMenu();
     }
 
@@ -169,6 +175,19 @@ public class ArmyViewer extends AbstractForm {
             a.setFed(fed == null || fed != true ? true : false);
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
+    }
+    
+    private class DeleteArmyCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            Army a = (Army)getFormObject();
+            Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            Turn t = g.getTurn();
+            Container armies = t.getContainer(TurnElementsEnum.Army);
+            armies.removeItem(a);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
         }
     }

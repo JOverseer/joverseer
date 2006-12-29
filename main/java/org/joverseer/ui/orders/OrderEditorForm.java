@@ -79,7 +79,7 @@ public class OrderEditorForm extends AbstractForm implements ActionListener {
             Container orderMetadata = gm.getOrders();
 
             OrderMetadata om = (OrderMetadata)orderMetadata.findFirstByProperty("number", no);
-            txt = om.getName() + ", " + om.getDifficulty() + ", " + om.getRequirement();
+            txt = om.getName() + ", " + om.getDifficulty() + ", " + om.getRequirement() + "\n" + om.getParameters();
         }
         catch (Exception exc) {
             // do nothing

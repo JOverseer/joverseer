@@ -1,6 +1,7 @@
 package org.joverseer.domain;
 
 import org.joverseer.support.NationMap;
+import org.joverseer.support.ProductContainer;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.metadata.domain.Nation;
 
@@ -28,14 +29,10 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
 
     InfoSource infoSource;
     
-    HashMap<ProductEnum, Integer> production = new HashMap<ProductEnum, Integer>();
-    HashMap<ProductEnum, Integer> stores = new HashMap<ProductEnum, Integer>();
+    ProductContainer production = new ProductContainer();
+    ProductContainer stores = new ProductContainer();
 
     public PopulationCenter() {
-        for (ProductEnum p : ProductEnum.values()) {
-            production.put(p, null);
-            stores.put(p, null);
-        }
     }
     
     public String getName() {
@@ -152,19 +149,19 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     }
     
     public Integer getProduction(ProductEnum p) {
-        return production.get(p);
+        return production.getProduct(p);
     }
 
     public Integer getStores(ProductEnum p) {
-        return stores.get(p);
+        return stores.getProduct(p);
     }
     
     public void setProduction(ProductEnum p, Integer amount) {
-        production.put(p, amount);
+        production.setProduct(p, amount);
     }
 
     public void setStores(ProductEnum p, Integer amount) {
-        stores.put(p, amount);
+        stores.setProduct(p, amount);
     }
 
     public PopulationCenter clone() {

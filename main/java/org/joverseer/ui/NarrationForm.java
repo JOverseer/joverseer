@@ -13,13 +13,13 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
-public class CombatNarrationForm extends AbstractForm {
+public class NarrationForm extends AbstractForm {
     
-    public static final String FORM_PAGE = "combatNarrationForm";
+    public static final String FORM_PAGE = "narrationForm";
 
     JTextArea textArea;
     
-    public CombatNarrationForm(FormModel formModel) {
+    public NarrationForm(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
 

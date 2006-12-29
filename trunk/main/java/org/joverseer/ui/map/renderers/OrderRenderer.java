@@ -66,8 +66,8 @@ public class OrderRenderer implements Renderer {
             Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             
             Army army = (Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", order.getCharacter().getName());
-            Boolean cav = army.computeCavalry();
-            Boolean fed = army.computeFed();
+            Boolean cav = army == null || army.computeCavalry();
+            Boolean fed = army == null || army.computeFed();
             if (cav == null) cav = false;
             if (fed == null) fed = false;
             

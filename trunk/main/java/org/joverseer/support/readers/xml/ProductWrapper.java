@@ -1,5 +1,10 @@
 package org.joverseer.support.readers.xml;
 
+import org.joverseer.domain.NationEconomy;
+import org.joverseer.domain.ProductEnum;
+import org.joverseer.domain.ProductPrice;
+import org.joverseer.support.Container;
+
 
 public class ProductWrapper {
     String type;
@@ -55,5 +60,23 @@ public class ProductWrapper {
 
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public void updateNationEconomy(NationEconomy ne) {
+        ProductEnum pe = ProductEnum.getFromCode(getType());
+        ne.setProduction(pe, getNationProduction());
+        ne.setStores(pe, getNationStores());
+    }
+    
+    public void updateProductPrice(Container prices) {
+        ProductEnum pe = ProductEnum.getFromCode(getType());
+        ProductPrice pp = (ProductPrice)prices.findFirstByProperty("product", pe);
+        if (pp == null) {
+            pp = new ProductPrice();
+            pp.setProduct(pe);
+            prices.addItem(pp);
+        }
+        pp.setBuyPrice(getBuyPrice());
+        pp.setSellPrice(getSellPrice());
     }
 }

@@ -275,10 +275,22 @@ public class TurnXmlReader implements Runnable{
                             (newPc.getInformationSource().getValue() == oldPc.getInformationSource().getValue() &&
                               newPc.getInfoSource().getTurnNo() > oldPc.getInfoSource().getTurnNo()))
                     {
+                        if (newPc.getName().equals("Unknown (Map Icon)")) {
+                            newPc.setName(oldPc.getName());
+                        }
+                        if (newPc.getNationNo() == 0) {
+                            newPc.setNationNo(oldPc.getNationNo());
+                        }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
                     } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
-                        // do nothing
+                        // replace and keep name and nation if unknown
+                        if (newPc.getName().equals("Unknown (Map Icon)")) {
+                            newPc.setName(oldPc.getName());
+                            newPc.setNationNo(oldPc.getNationNo());
+                        }
+                        pcs.removeItem(oldPc);
+                        pcs.addItem(newPc);
                     }
                     else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
                         if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
@@ -450,6 +462,8 @@ public class TurnXmlReader implements Runnable{
         NationEconomy ne = turnInfo.getEconomy().getNationEconomy();
         ne.setNationNo(turnInfo.getNationNo());
         nationEconomies.addItem(ne);
+        
+        turnInfo.getEconomy().updateProductPrices(turn);
 
         Container hexInfos = turn.getContainer(TurnElementsEnum.HexInfo);
 

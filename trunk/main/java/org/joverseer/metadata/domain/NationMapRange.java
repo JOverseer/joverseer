@@ -44,7 +44,7 @@ public class NationMapRange implements Serializable {
     }
 
     public Rectangle getRectangle() {
-        return new Rectangle(getTlX(), getTlY(), getBrX() - getTlX(), getBrY() - getTlY());
+        return new Rectangle(getTlX(), getTlY(), getBrX() - getTlX() + 1, getBrY() - getTlY() + 1);
     }
 
     public int getNationNo() {

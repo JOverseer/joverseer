@@ -21,7 +21,8 @@ public abstract class ItemTableModel extends BeanTableModel {
             if (game == null) return "";
             if (IBelongsToNation.class.isInstance(object) && getColumnPropertyNames()[i].equals("nationNo")) {
                 GameMetadata gm = game.getMetadata();
-                int nationNo = ((IBelongsToNation)object).getNationNo();
+                Integer nationNo = ((IBelongsToNation)object).getNationNo();
+                if (nationNo == null) return "";
                 return gm.getNationByNum(nationNo).getShortName();
             }
             return super.getValueAtInternal(object, i);

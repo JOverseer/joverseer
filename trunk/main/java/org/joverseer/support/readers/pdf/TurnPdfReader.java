@@ -14,9 +14,11 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
+import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -225,12 +227,38 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/Combats", "setCombats");
             // create Combat wrapper
             digester.addObjectCreate("txt2xml/Turn/Combats/Combat", "org.joverseer.support.readers.pdf.CombatWrapper");
-            // add company wrapper
+            // add combat wrapper
             digester.addSetNext("txt2xml/Turn/Combats/Combat", "addItem", "org.joverseer.support.readers.pdf.CombatWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/Combats/Combat",
                     snpr = new SetNestedPropertiesRule(new String[]{"HexNo", "Narration"},
                             new String[]{"hexNo", "narration"}));
+            snpr.setAllowUnknownChildElements(true);
+            // create container for armies
+            digester.addObjectCreate("txt2xml/Turn/Armies", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/Armies", "setArmies");
+            // create army wrapper
+            digester.addObjectCreate("txt2xml/Turn/Armies/Army", "org.joverseer.support.readers.pdf.ArmyWrapper");
+            // add army wrapper
+            digester.addSetNext("txt2xml/Turn/Armies/Army", "addItem", "org.joverseer.support.readers.pdf.ArmyWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Armies/Army",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Type", "Food", "Warships", "Transports", "WarMachines"},
+                            new String[]{"commander", "type", "food", "warships", "transports", "warMachines"}));
+            snpr.setAllowUnknownChildElements(true);
+            // create container for encounters
+            digester.addObjectCreate("txt2xml/Turn/Encounters", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/Encounters", "setEncounters");
+            // create encounter wrapper
+            digester.addObjectCreate("txt2xml/Turn/Encounters/Encounter", "org.joverseer.support.readers.pdf.EncounterWrapper");
+            // add army wrapper
+            digester.addSetNext("txt2xml/Turn/Encounters/Encounter", "addItem", "org.joverseer.support.readers.pdf.EncounterWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Encounters/Encounter",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Text"},
+                            new String[]{"character", "hexNo", "description"}));
             snpr.setAllowUnknownChildElements(true);
             turnInfo = (TurnInfo)digester.parse(xmlFile);
             Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
@@ -272,12 +300,12 @@ public class TurnPdfReader implements Runnable {
             turn = game.getTurn(game.getMaxTurn());
             infoSource = new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
             if (getMonitor() != null) {
-                getMonitor().worked(60);
+                getMonitor().worked(50);
                 getMonitor().subTaskStarted("Updating nation relations...");
             }
             updateNationRelations(game);
             if (getMonitor() != null) {
-                getMonitor().worked(70);
+                getMonitor().worked(60);
                 getMonitor().subTaskStarted("Updating population centers...");
             }
             try {
@@ -287,10 +315,15 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
-                getMonitor().worked(80);
+                getMonitor().worked(70);
                 getMonitor().subTaskStarted("Updating characters...");
             }
             updateCharacters(game);
+            if (getMonitor() != null) {
+                getMonitor().worked(80);
+                getMonitor().subTaskStarted("Updating armies...");
+            }
+            updateArmies(game);
             if (getMonitor() != null) {
                 getMonitor().worked(90);
                 getMonitor().subTaskStarted("Updating companies...");
@@ -298,9 +331,10 @@ public class TurnPdfReader implements Runnable {
             updateCompanies(game);
             if (getMonitor() != null) {
                 getMonitor().worked(100);
-                getMonitor().subTaskStarted("Updating combats...");
+                getMonitor().subTaskStarted("Updating combats, encounters, challenges...");
             }
             updateCombats(game);
+            updateEncounters(game);
         }
         catch (Exception exc) {
             if (getMonitor() != null) {
@@ -311,9 +345,35 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
+    private void updateEncounters(Game game) {
+        Container ews = turnInfo.getEncounters();
+        if (ews == null) return;
+        Container encounters = game.getTurn().getContainer(TurnElementsEnum.Encounter);
+        for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
+            Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{ew.getCharacter(), ew.getHexNo()});
+            if (e != null) {
+                encounters.removeItem(e);
+            }
+            encounters.addItem(ew.getEncounter());
+        }
+    }
+    
+    private void updateArmies(Game game) {
+        Container armies = game.getTurn().getContainer(TurnElementsEnum.Army);
+        Container aws = turnInfo.getArmies();
+        if (aws == null) return;
+        for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
+            Army a = (Army)armies.findFirstByProperty("commanderName", aw.getCommander());
+            if (a != null) {
+                aw.updateArmy(a);
+            }
+        }
+    }
+    
     public void updateCombats(Game game) {
         Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);
         Container cws = turnInfo.getCombats();
+        if (cws == null) return;
         for (CombatWrapper cw : (ArrayList<CombatWrapper>)cws.getItems()) {
             cw.parse();
             Combat c = (Combat)combats.findFirstByProperty("hexNo", cw.getHexNo());
@@ -390,6 +450,7 @@ public class TurnPdfReader implements Runnable {
     
     public void updateCompanies(Game game) throws Exception {
         Container cws = turnInfo.getCompanies();
+        if (cws == null) return;
         Container cs = turn.getContainer(TurnElementsEnum.Company);
         for (CompanyWrapper cw : (ArrayList<CompanyWrapper>)cws.getItems()) {
             Company newC = cw.getCompany();

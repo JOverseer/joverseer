@@ -40,6 +40,7 @@ public class RevealCharacterResultWrapper implements OrderResult {
             c.setName(getCharacterName());
             c.setId(Character.getIdFromName(getCharacterName()));
             c.setHexNo((getHexNo()< 1000 ? "0" : "") + String.valueOf(getHexNo()));
+            c.setNationNo(0);
             c.setInfoSource(is1);
             chars.addItem(c);
         } else {

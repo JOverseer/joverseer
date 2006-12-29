@@ -16,6 +16,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
+import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
@@ -25,6 +26,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -51,6 +53,8 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     ArrayList<ArtifactViewer> artifactViewers = new ArrayList<ArtifactViewer>();
     ArrayList<CombatViewer> combatViewers = new ArrayList<CombatViewer>();
     ArrayList<JPanel> combatPanels = new ArrayList<JPanel>();
+    ArrayList<EncounterViewer> encounterViewers = new ArrayList<EncounterViewer>();
+    ArrayList<JPanel> encounterPanels = new ArrayList<JPanel>();
     JScrollPane scp;
 
     protected JComponent createControl() {
@@ -122,15 +126,26 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             cp.setVisible(false);
         }
         
-        tlb.separator(" Combats ");
+        tlb.separator(" Combats / Challenges / Encounters ");
         tlb.row();
-        for (int i=0; i<20; i++) {
+        for (int i=0; i<5; i++) {
             CombatViewer cv = new CombatViewer(FormModelHelper.createFormModel(new Combat()));
             combatViewers.add(cv);
             JPanel cp = new JPanel();
             cp.add(cv.getControl());
             cp.setBackground(Color.white);
             combatPanels.add(cp);
+            tlb.cell(cp, "align=left");
+            tlb.row();
+            cp.setVisible(false);
+        }
+        for (int i=0; i<5; i++) {
+            EncounterViewer cv = new EncounterViewer(FormModelHelper.createFormModel(new Encounter()));
+            encounterViewers.add(cv);
+            JPanel cp = new JPanel();
+            cp.add(cv.getControl());
+            cp.setBackground(Color.white);
+            encounterPanels.add(cp);
             tlb.cell(cp, "align=left");
             tlb.row();
             cp.setVisible(false);
@@ -225,6 +240,16 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             }
         }
     }
+    
+    public void showEncounter(Encounter c) {
+        for (int i=0; i<encounterPanels.size(); i++) {
+            if (!encounterPanels.get(i).isVisible()) {
+                encounterViewers.get(i).setFormObject(c);
+                encounterPanels.get(i).setVisible(true);
+                return;
+            }
+        }
+    }
 
     private void hideAllCharacterViewers() {
         for (int i=0; i<characterViewers.size(); i++) {
@@ -239,7 +264,11 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         }
     }
     
-    
+    private void hideAllEncounterViewers() {
+        for (int i=0; i<encounterViewers.size(); i++) {
+            encounterPanels.get(i).setVisible(false);
+        }
+    }
     
     private void hideAllArtifactViewers() {
         for (int i=0; i<artifactPanels.size(); i++) {
@@ -265,7 +294,16 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null) return;
         GameMetadata gm = g.getMetadata();
-        
+        if (p == null) {
+            hideHexInfo();
+            hidePopCenter();
+            hideAllArmyViewers();
+            hideAllArtifactViewers();
+            hideAllCharacterViewers();
+            hideAllCombatViewers();
+            hideAllNationMessageViewers();
+            return;
+        }
         Hex h = gm.getHex(p.x * 100 + p.y);
         if (h != null) {
             showHexInfo(h);
@@ -321,6 +359,13 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         for (Combat obj : (Collection<Combat>)combats) {
             showCombat(obj);
         }
+        
+        hideAllEncounterViewers();
+        c = t.getContainer(TurnElementsEnum.Encounter);
+        Collection encounters = c.findAllByProperties(new String[]{"hexNo"}, new Object[]{h.getHexNo()});
+        for (Encounter obj : (Collection<Encounter>)encounters) {
+            showEncounter(obj);
+        }
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -328,6 +373,10 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 Point p = (Point)e.getObject();
+                refresh(p);
+            }
+            if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+                Point p = MapPanel.instance().getSelectedHex();
                 refresh(p);
             }
         }

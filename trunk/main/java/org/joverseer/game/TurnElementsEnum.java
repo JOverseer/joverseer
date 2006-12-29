@@ -9,12 +9,13 @@ public enum TurnElementsEnum implements Serializable {
     Character,
     NationMessage,
     NationEconomy,
-    NationProduction,
-    NationStores,
+    ProductPrice,
     HexInfo,
     Combat,
     NationRelation,
     Artifact,
     Company,
-    MapItem
+    MapItem,
+    Encounter,
+    Challenge
 }

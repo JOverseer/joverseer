@@ -188,7 +188,6 @@ public class CharacterViewer extends AbstractForm {
             } else {
                 companyMembersTextBox.setVisible(false);
             }
-            
             order1.setFormObject(c.getOrders()[0]);
             order2.setFormObject(c.getOrders()[1]);
             if (showOrders) {

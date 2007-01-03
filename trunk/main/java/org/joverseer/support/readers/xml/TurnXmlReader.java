@@ -126,8 +126,8 @@ public class TurnXmlReader implements Runnable{
             // set nested properties
             digester.addRule("METurn/Armies/Army",
                     snpr = new SetNestedPropertiesRule(
-                            new String[]{"Nation", "NationAllegience", "Size", "TroopCount", "Commander", "CommanderTitle", "ExtraInfo", "Navy", "InformationSource", "CharsTravellingWith "},
-                            new String[]{"nation", "nationAllegience", "size", "troopCount", "commander", "commanderTitle", "extraInfo", "navy", "informationSource", "charsTravellingWith "}));
+                            new String[]{"Nation", "NationAllegience", "Size", "TroopCount", "Commander", "CommanderTitle", "ExtraInfo", "Navy", "InformationSource", "CharsTravellingWith"},
+                            new String[]{"nation", "nationAllegience", "size", "troopCount", "commander", "commanderTitle", "extraInfo", "navy", "informationSource", "charsTravellingWith"}));
             snpr.setAllowUnknownChildElements(true);
             // add army to container
             digester.addSetNext("METurn/Armies/Army", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper");

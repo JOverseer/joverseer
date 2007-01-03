@@ -34,7 +34,6 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
                 InfoSource is = c.getInfoSource();
                 if (TurnInfoSource.class.isInstance(is)) {
                     // turn import, do nothing
-                    return;
                 } else if (DerivedFromSpellInfoSource.class.isInstance(is)) {
                     // spell
                     // check if it is LA or RC

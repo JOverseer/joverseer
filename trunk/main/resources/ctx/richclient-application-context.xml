@@ -288,6 +288,15 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
 
+    <bean id="ownedArtifactsListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.OwnedArtifactsListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+
     <bean id="populationCenterListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">

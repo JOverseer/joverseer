@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -48,6 +49,7 @@ public class ArmyViewer extends AbstractForm {
     JTextField armyType;
     JTextField extraInfo;
     JTextField food;
+    JTextField travellingWith;
 
     ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
     ActionCommand toggleFedAction = new ToggleFedAction();
@@ -91,7 +93,11 @@ public class ArmyViewer extends AbstractForm {
         glb.nextLine();
         glb.append(food = new JTextField());
         food.setPreferredSize(new Dimension(100, 12));
+        glb.nextLine();
+        glb.append(travellingWith = new JTextField(), 2, 1);
+        travellingWith.setPreferredSize(new Dimension(150, 12));
 
+        
         commanderName.setBorder(null);
         commanderName
                 .setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
@@ -100,6 +106,7 @@ public class ArmyViewer extends AbstractForm {
         armyType.setBorder(null);
         extraInfo.setBorder(null);
         food.setBorder(null);
+        travellingWith.setBorder(null);
 
         JPanel panel = glb.getPanel();
         panel.setBackground(Color.white);
@@ -139,6 +146,17 @@ public class ArmyViewer extends AbstractForm {
         foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
         food.setText(foodStr);
         // armyMorale.setText("M: 0");
+        
+        if (army.getCharacters().size() > 0) {
+            travellingWith.setVisible(true);
+            String txt = "";
+            for (String cn : (ArrayList<String>)army.getCharacters()) {
+                txt += (txt.equals("") ? "" : ",") + cn;
+            }
+            travellingWith.setText("With army: " + txt);
+        } else {
+            travellingWith.setVisible(false);
+        }
     }
 
     private JPopupMenu createArmyPopupContextMenu() {

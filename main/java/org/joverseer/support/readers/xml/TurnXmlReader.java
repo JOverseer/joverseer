@@ -420,6 +420,9 @@ public class TurnXmlReader implements Runnable{
                         logger.debug("Replace.");
                         armies.removeItem(oldArmy);
                         armies.addItem(newArmy);
+                        if (newArmy.getSize() == ArmySizeEnum.unknown) {
+                            newArmy.setSize(oldArmy.getSize());
+                        }
                     }
                 }
 

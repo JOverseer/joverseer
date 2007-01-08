@@ -33,11 +33,11 @@ public class Encounter implements IHasMapLocation, Serializable {
     }
 
     public int getX() {
-        return getHexNo() % 100;
+        return getHexNo() / 100;
     }
 
     public int getY() {
-        return getHexNo() / 100;
+        return getHexNo() % 100;
     }
     
     

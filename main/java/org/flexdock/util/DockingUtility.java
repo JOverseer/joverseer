@@ -568,7 +568,10 @@ public class DockingUtility implements DockingConstants {
 		Component comp = dockable.getComponent();
 		Container parent = comp.getParent();
 		if(parent instanceof JTabbedPane) {
-			parent = parent.getParent();
+		        // edited by mscoon - return added, commented out original code
+                        // if the component resides within a JTabbedPane we don't want any resizing to happen
+                        return;
+			//parent = parent.getParent();
 		}
 		if(!(parent instanceof DockingPort))
 			return;

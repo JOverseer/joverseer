@@ -132,7 +132,7 @@
         	<!--  Get the region for the population centers -->
         	<element>Armies</element>
         	<startString>ARMIES AND NAVIES</startString>
-        	<endString>PANY COMMANDERS :</endString>
+        	<endString>PANY COMMA</endString>
 
         	<processor type="StringEnclosedMatch">
         		<element>Army</element>
@@ -168,7 +168,7 @@
    		<processor type="StringEnclosedMatch">
    			<!--  get the region for the companies -->
         	<element>Companies</element>
-        	<startString>COMPANY COMMANDERS :</startString>
+        	<startString>NDERS :</startString>
         	<endString>MARKET PRICES</endString>
 
    			<processor type="RepeatRegexMatch">

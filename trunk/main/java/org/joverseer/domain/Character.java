@@ -154,7 +154,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.name = name;
     }
 
-    public ArrayList getSpells() {
+    public ArrayList<SpellProficiency> getSpells() {
         return spells;
     }
 

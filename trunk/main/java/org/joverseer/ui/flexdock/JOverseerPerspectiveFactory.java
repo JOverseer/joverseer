@@ -95,7 +95,25 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(1f);
         dss.add(ds);
         
+        ds = new DockingState("encounterListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
         ds = new DockingState("armySizeEstimatesListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        ds = new DockingState("relationsListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+
+        ds = new DockingState("spellcasterListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
@@ -106,11 +124,11 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setRelativeParentId("mapView");
         ds.setSplitRatio(.3f);
         dss.add(ds);
-
+        
         ds = new DockingState("mapOptionsView");
         ds.setRegion(DockingConstants.EAST_REGION);
         ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(.01f);
+        ds.setSplitRatio(.3f);
         dss.add(ds);
 
         //

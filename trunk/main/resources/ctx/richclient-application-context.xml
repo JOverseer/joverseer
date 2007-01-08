@@ -288,6 +288,24 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
 
+    <bean id="spellcasterListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.SpellcasterListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+
+    <bean id="relationsListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.RelationsListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+
     <bean id="ownedArtifactsListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
@@ -392,6 +410,15 @@
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">
             <value>org.joverseer.ui.listviews.OrderListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+    
+    <bean id="encounterListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.EncounterListView</value>
         </property>
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>

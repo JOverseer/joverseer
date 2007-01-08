@@ -390,6 +390,8 @@ public class TurnPdfReader implements Runnable {
 
     private void updateNationRelations(Game game) {
         Nation nation = game.getMetadata().getNationByNum(turnInfo.getNationNo());
+        Container nrs = turn.getContainer(TurnElementsEnum.NationRelation);
+        NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", turnInfo.getNationNo());
         if (turnInfo.getAllegiance().equals("Free People")) {
             nation.setAllegiance(NationAllegianceEnum.FreePeople);
         } else if (turnInfo.getAllegiance().equals("Dark Servants")) {
@@ -397,9 +399,9 @@ public class TurnPdfReader implements Runnable {
         } else if (turnInfo.getAllegiance().equals("Neutral")) {
             nation.setAllegiance(NationAllegianceEnum.Neutral);
         } 
+        nr.setAllegiance(nation.getAllegiance());
+        
         Container nrws = turnInfo.getNationRelations();
-        Container nrs = turn.getContainer(TurnElementsEnum.NationRelation);
-        NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", turnInfo.getNationNo());
         for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)nrws.getItems()) {
             int natNo = game.getMetadata().getNationByName(nrw.getNation()).getNumber();
             NationRelationsEnum relation = NationRelationsEnum.Tolerated;
@@ -421,12 +423,17 @@ public class TurnPdfReader implements Runnable {
     public void updatePcs(Game game) throws Exception {
         Container pcws = turnInfo.getPopulationCenters();
         Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
+        String pcsNotFound = "";
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
             PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("name", pcw.getName());
             if (pc == null) {
-                throw new Exception("Population center " + pcw.getName() + " not found in turn.");
+                pcsNotFound += (pcsNotFound.equals("") ? "" : ",") + pcw.getName();
+            } else {
+                pcw.updatePopCenter(pc);
             }
-            pcw.updatePopCenter(pc);
+        }
+        if (!pcsNotFound.equals("")) {
+            throw new Exception("Population centers " + pcsNotFound + " not found in turn.");
         }
     }
     

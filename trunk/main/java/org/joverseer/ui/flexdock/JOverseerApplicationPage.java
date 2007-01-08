@@ -3,6 +3,7 @@ package org.joverseer.ui.flexdock;
 import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.ViewDescriptor;
+import org.flexdock.docking.DockingManager;
 import org.flexdock.view.View;
 import org.flexdock.view.ViewProps;
 

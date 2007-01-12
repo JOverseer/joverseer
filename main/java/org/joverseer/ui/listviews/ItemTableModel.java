@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import javax.swing.JPopupMenu;
+
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.context.MessageSource;
@@ -36,7 +38,6 @@ public abstract class ItemTableModel extends BeanTableModel {
     protected boolean isCellEditableInternal(Object object, int i) {
         return false;
     }
-    
     
 
 }

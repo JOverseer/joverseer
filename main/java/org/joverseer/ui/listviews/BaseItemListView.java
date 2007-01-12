@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -112,10 +113,24 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             }
         }
     }
+    
+    public void showContextMenu() {
+        JPopupMenu pm = getPopupMenu();
+        if (pm == null) return;
+        JComponent cmp = (JComponent)table;
+        pm.show(cmp, 0, cmp.getHeight());
+    };
+    
+    public JPopupMenu getPopupMenu() {
+        return null;
+    }
 
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2 && e.getButton() == 1) {
             selectHexCommandExecutor.execute();
+        }
+        if (e.getClickCount() == 1 && e.getButton() == 3) {
+            showContextMenu();
         }
     }
 

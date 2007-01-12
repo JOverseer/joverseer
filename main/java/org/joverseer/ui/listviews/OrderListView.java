@@ -6,6 +6,10 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.Container;
 import org.joverseer.domain.Order;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.context.ApplicationEvent;
 import org.joverseer.domain.Character;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -13,8 +17,12 @@ import org.joverseer.ui.LifecycleEventsEnum;
 
 import java.util.ArrayList;
 
+import javax.swing.JPopupMenu;
+
 
 public class OrderListView extends ItemListView {
+    ActionCommand deleteOrderAction = new DeleteOrderAction();
+    
     public OrderListView() {
         super(TurnElementsEnum.Character, OrderTableModel.class);
     }
@@ -50,5 +58,31 @@ public class OrderListView extends ItemListView {
                 setItems();
             }
         }
+    }
+    
+    public JPopupMenu getPopupMenu() {
+        CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+                "orderCommandGroup", new Object[] {deleteOrderAction});
+        return group.createPopupMenu();
+    }
+    
+    private class DeleteOrderAction extends ActionCommand {
+        protected void doExecuteCommand() {
+            int row =  table.getSelectedRow();
+            if (row >= 0) {
+                int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= tableModel.getRowCount()) return;
+                try {
+                    Object obj = tableModel.getRow(idx);
+                    Order order = (Order)obj;
+                    order.clear();
+                    ((BeanTableModel)table.getModel()).fireTableDataChanged();
+                }
+                catch (Exception exc) {
+                    
+                }
+            }
+        }
+        
     }
 }

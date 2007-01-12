@@ -112,4 +112,10 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         }
         return null;
     }
+    
+    public void clear() {
+        orderNo = -1;
+        parameters = "";
+        
+    }
 }

@@ -201,7 +201,7 @@
    		<processor type="StringEnclosedMatch">
         	<element>Encounters</element>
         	<startString>ENCOUNTER MESSAGES</startString>
-        	<endString>BAT MESSAGES</endString>
+        	<endString>COM</endString>
 
         	<processor type="StringEnclosedMatch">
         		<element>Encounter</element>
@@ -227,7 +227,7 @@
         <processor type="StringEnclosedMatch">
    			
         	<element>Combats</element>
-        	<startString>COMBAT MESSAGES</startString>
+        	<startString>BAT MESSAGES</startString>
         	<endString>CIAL MESSAGES</endString>
             <processor type="StringEnclosedMatch">
                 <element>Combat</element>

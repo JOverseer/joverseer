@@ -14,6 +14,7 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
+import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
@@ -40,6 +41,7 @@ import org.txt2xml.driver.StreamDriver;
 
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
+    static Logger logger = Logger.getLogger(TurnPdfReader.class);
     TurnInfo turnInfo;
     Turn turn;
     InfoSource infoSource;
@@ -53,7 +55,7 @@ public class TurnPdfReader implements Runnable {
         this.filename = filename;
     }
     
-    public String parsePdf(String pdfFile) throws Exception {
+    public String parsePdf(String pdfFile) throws Throwable {
         String encoding = DEFAULT_ENCODING;
         int startPage = 1;
         int endPage = Integer.MAX_VALUE;
@@ -79,8 +81,10 @@ public class TurnPdfReader implements Runnable {
             out.write(ret);
             out.close();
         }
-        catch (Exception exc) {
-        	int a = 1;
+        catch (Throwable exc) {
+                logger.error(exc);
+                exc.printStackTrace();
+        	throw exc;
         }
         finally {
             if (output != null) {
@@ -93,7 +97,7 @@ public class TurnPdfReader implements Runnable {
         return ret;
     }
 
-    public void pdf2xml(String pdfFile) throws Exception {
+    public void pdf2xml(String pdfFile) throws Throwable {
         String xmlFile = null;
         if (xmlFile == null && pdfFile.length() > 4) {
             xmlFile = pdfFile + ".xml";
@@ -108,8 +112,10 @@ public class TurnPdfReader implements Runnable {
             outStream.close();
 
         }
-        catch (Exception exc) {
+        catch (Throwable exc) {
             // TODO
+            logger.error(exc.getCause());
+            exc.printStackTrace();
             throw exc;
         }
 
@@ -271,7 +277,7 @@ public class TurnPdfReader implements Runnable {
     	}
     	catch (Exception exc) {
 			//todo fix
-			throw new Exception("Error parsing Xml Turn file.", exc);
+			throw new Exception("Error parsing Pdf Turn file.", exc);
     	}
     }
     
@@ -286,7 +292,12 @@ public class TurnPdfReader implements Runnable {
             updateGame(game);
             game.setCurrentTurn(game.getMaxTurn());
         }
-        catch (Exception exc) {
+        catch (Throwable exc) {
+            if (getMonitor() != null) {
+                getMonitor().subTaskStarted(exc.getMessage());
+            }
+            logger.error(exc);
+            exc.printStackTrace();
             // do nothing
         }
     }
@@ -470,7 +481,7 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Throwable {
         TurnPdfReader r = new TurnPdfReader(null, args[0]);
         r.parsePdf(args[0]);
     }

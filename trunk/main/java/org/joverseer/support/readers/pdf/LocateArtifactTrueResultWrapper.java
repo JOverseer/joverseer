@@ -8,13 +8,14 @@ import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.TurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactTrueInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
 public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper {
     public void updateGame(Turn turn, int nationNo, String casterName) {
         String hexNo = (getHexNo()< 1000 ? "0" : "") + String.valueOf(getHexNo());
-        DerivedFromLocateArtifactInfoSource is1 = new DerivedFromLocateArtifactInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
+        DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
 
         if (getOwner() != null && !getOwner().equals("")) {
             Container chars = turn.getContainer(TurnElementsEnum.Character);

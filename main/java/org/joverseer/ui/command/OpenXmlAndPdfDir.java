@@ -43,7 +43,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         for (File f : files) {
             if (f.getAbsolutePath().endsWith(".xml")) {
                 try {
-                    monitor.subTaskStarted(String.format("Imporing file '%s'.", new Object[]{f.getAbsolutePath()}));
+                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
 
                     final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
                     r.setMonitor(monitor);
@@ -51,6 +51,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                 }
                 catch (Exception exc) {
                     int a = 1;
+                    monitor.subTaskStarted(exc.getMessage());
                     // do nothing
                     // todo fix
                 }
@@ -60,7 +61,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         for (File f : files) {
             if (f.getAbsolutePath().endsWith(".pdf")) {
                 try {
-                    monitor.subTaskStarted(String.format("Imporing file '%s'.", new Object[]{f.getAbsolutePath()}));
+                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
 
                     final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
                     r.setMonitor(monitor);
@@ -68,6 +69,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                 }
                 catch (Exception exc) {
                     int a = 1;
+                    monitor.subTaskStarted(exc.getMessage());
                     // do nothing
                     // todo fix
                 }

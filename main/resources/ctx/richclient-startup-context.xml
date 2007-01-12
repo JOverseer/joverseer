@@ -10,7 +10,7 @@
 		class="org.springframework.richclient.application.SplashScreen" 
 		singleton="false">
 		<property name="imageResourcePath">
-			<value>/images/splash-screen.jpg</value>
+			<value>images/splashscreen.jpg</value>
 		</property>
 	</bean>
 </beans>

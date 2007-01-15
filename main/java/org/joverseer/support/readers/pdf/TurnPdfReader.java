@@ -1,6 +1,7 @@
 package org.joverseer.support.readers.pdf;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -49,13 +50,15 @@ public class TurnPdfReader implements Runnable {
     Game game;
     String filename;
     int nationNo;
-
+    File pdfTextFile;
+    File xmlFile;
+    
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
         this.filename = filename;
     }
     
-    public String parsePdf(String pdfFile) throws Throwable {
+    public String parsePdf() throws Throwable {
         String encoding = DEFAULT_ENCODING;
         int startPage = 1;
         int endPage = Integer.MAX_VALUE;
@@ -64,7 +67,7 @@ public class TurnPdfReader implements Runnable {
         PDDocument document = null;
         ByteArrayOutputStream outs = null;
         try {
-            document = PDDocument.load(pdfFile);
+            document = PDDocument.load(filename);
 
 
             if (encoding != null) {
@@ -77,7 +80,9 @@ public class TurnPdfReader implements Runnable {
             stripper.setEndPage(endPage);
             stripper.writeText(document, output);
             ret = new String(outs.toByteArray(), "UTF-8");
-            FileWriter out = new FileWriter(pdfFile + ".txt");
+            
+            //tempPdfTextFile = new File(pdfFile + ".txt");
+            FileWriter out = new FileWriter(pdfTextFile.getCanonicalPath());
             out.write(ret);
             out.close();
         }
@@ -97,15 +102,11 @@ public class TurnPdfReader implements Runnable {
         return ret;
     }
 
-    public void pdf2xml(String pdfFile) throws Throwable {
-        String xmlFile = null;
-        if (xmlFile == null && pdfFile.length() > 4) {
-            xmlFile = pdfFile + ".xml";
-        }
+    public void pdf2xml() throws Throwable {
         try {
+            String pdfContents = parsePdf();
             Processor processor = ProcessorFactory.getInstance().createProcessor(new FileReader("bin/ctx/txt2xml.config.xml"));
-            String pdfContents = parsePdf(pdfFile);
-            FileOutputStream outStream = new FileOutputStream(xmlFile);
+            FileOutputStream outStream = new FileOutputStream(xmlFile.getAbsolutePath());
             StreamDriver driver = new StreamDriver(processor);
             driver.useDebugOutputProperties();
             driver.generateXmlDocument(pdfContents, outStream);
@@ -122,7 +123,7 @@ public class TurnPdfReader implements Runnable {
     }
    
     
-    public void readFile(String xmlFile) throws Exception {
+    public void readFile() throws Exception {
     	try {
     	    SetNestedPropertiesRule snpr;
             Digester digester = new Digester();
@@ -266,9 +267,9 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Text"},
                             new String[]{"character", "hexNo", "description"}));
             snpr.setAllowUnknownChildElements(true);
-            turnInfo = (TurnInfo)digester.parse(xmlFile);
+            turnInfo = (TurnInfo)digester.parse("file:///" + xmlFile.getCanonicalPath());
             Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
-            Matcher m = p.matcher(xmlFile);
+            Matcher m = p.matcher(xmlFile.getCanonicalPath());
             m.matches();
             nationNo = Integer.parseInt(m.group(1));
             int turnNo = Integer.parseInt(m.group(2));
@@ -283,12 +284,15 @@ public class TurnPdfReader implements Runnable {
     
     public void run() {
         try {
-            pdf2xml(filename);
+            File f = new File(filename);
+            pdfTextFile = File.createTempFile(f.getName(), ".pdf.txt");
+            xmlFile = File.createTempFile(f.getName(), ".pdf.txt.xml");
+            pdf2xml();
             if (getMonitor() != null) {
                 getMonitor().worked(50);
                 getMonitor().subTaskStarted("Parsing Pdf file...");
             }
-            readFile("file:///" + filename + ".xml");
+            readFile();
             updateGame(game);
             game.setCurrentTurn(game.getMaxTurn());
         }
@@ -483,7 +487,7 @@ public class TurnPdfReader implements Runnable {
     
     public static void main(String[] args) throws Throwable {
         TurnPdfReader r = new TurnPdfReader(null, args[0]);
-        r.parsePdf(args[0]);
+        r.parsePdf();
     }
 
     

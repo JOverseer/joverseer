@@ -27,6 +27,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
@@ -138,6 +139,10 @@ public class CharacterViewer extends AbstractForm {
                     }
                 }
                 infoSourcesTextBox.setText(infoSourcesStr);
+            } else if (DoubleAgentInfoSource.class.isInstance(is)) {
+                infoSourcesTextBox.setVisible(true);
+                //TODO show nation name
+                infoSourcesTextBox.setText("Double agent for nation " + ((DoubleAgentInfoSource)is).getNationNo());
             } else {
                 infoSourcesTextBox.setVisible(false);
             }

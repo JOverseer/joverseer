@@ -79,16 +79,9 @@
 		<property name="members">
 			<list>
                             <bean class="org.joverseer.ui.command.CreateGame"/>
-                            <bean class="org.joverseer.ui.command.OpenXmlFile"/>
-                            <bean class="org.joverseer.ui.command.OpenXmlDir"/>
-                            <bean class="org.joverseer.ui.command.OpenPdfFile"/>                            
-                            <bean class="org.joverseer.ui.command.OpenPdfDir"/>                            
                             <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
                             <bean class="org.joverseer.ui.command.LoadGame"/>
                             <bean class="org.joverseer.ui.command.SaveGame"/>
-                            <bean class="org.springframework.richclient.command.support.ShowViewMenu"/>
-			                <value>separator</value>
-                            <bean class="org.joverseer.ui.command.EditRelations"/>
 			                <value>separator</value>
                             <bean class="org.joverseer.ui.command.ImportOrders"/>
                             <value>separator</value>

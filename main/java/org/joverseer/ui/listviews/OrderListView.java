@@ -2,14 +2,19 @@ package org.joverseer.ui.listviews;
 
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.Container;
 import org.joverseer.domain.Order;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.list.ComboBoxListModelAdapter;
+import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
+import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.joverseer.domain.Character;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -17,7 +22,12 @@ import org.joverseer.ui.LifecycleEventsEnum;
 
 import java.util.ArrayList;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 
 
 public class OrderListView extends ItemListView {
@@ -28,7 +38,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{64, 64, 64, 150};
+        return new int[]{64, 64, 96, 170};
     }
 
     protected void setItems() {
@@ -44,6 +54,8 @@ public class OrderListView extends ItemListView {
         }
         tableModel.setRows(orders);
     }
+    
+    
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
@@ -53,6 +65,20 @@ public class OrderListView extends ItemListView {
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+                TableColumn noAndCodeColumn = table.getColumnModel().getColumn(2);
+                Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                ListListModel orders = new ListListModel();
+                if (Game.isInitialized(g)) {
+                    GameMetadata gm = g.getMetadata();
+                    Container orderMetadata = gm.getOrders();
+                    for (OrderMetadata om : (ArrayList<OrderMetadata>)orderMetadata.getItems()) {
+                        orders.add(om.getNumber() + " " + om.getCode());
+                    }
+                }
+                SortedListModel slm = new SortedListModel(orders);
+
+                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
+                noAndCodeColumn.setCellEditor(new DefaultCellEditor(comboBox));
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 setItems();
@@ -85,4 +111,6 @@ public class OrderListView extends ItemListView {
         }
         
     }
+    
+    
 }

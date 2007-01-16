@@ -197,6 +197,23 @@
 
 	   		</processor>
    		</processor>
+   		<processor type="StringEnclosedMatch">
+   			<element>DoubleAgents</element>
+   			<startString>the following double agents:</startString>
+   			<endString>You have</endString>
+   			<processor type="RepeatRegexMatch">
+   				<element>DoubleAgent</element>
+   				<regex>(\p{L}+(?:[\s-]\p{L}+)* of the \p{L}+(?:[\s\-]\p{L}+)* @ \d{4})</regex>
+   				<processor type="RegexMatch">
+   					<element>Character</element>
+   					<regex>(\p{L}+(?:[\s-]\p{L}+)*) of the</regex>
+   				</processor>
+   				<processor type="RegexMatch">
+   					<element>Hex</element>
+   					<regex>(\d{4})</regex>
+   				</processor>
+   			</processor>
+		</processor>
 		<!--  get the region for the encounters -->
    		<processor type="StringEnclosedMatch">
         	<element>Encounters</element>

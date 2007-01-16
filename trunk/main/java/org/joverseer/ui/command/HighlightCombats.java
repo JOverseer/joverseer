@@ -1,6 +1,7 @@
 package org.joverseer.ui.command;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
@@ -11,8 +12,10 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.MessageDialog;
 
 
 public class HighlightCombats extends ActionCommand {
@@ -21,6 +24,16 @@ public class HighlightCombats extends ActionCommand {
     }
     
     protected void doExecuteCommand() {
+        if (!GameHolder.hasInitializedGame()) {
+            // show error, cannot import when game not initialized
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            MessageDialog md = new MessageDialog(
+                    ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
+                    ms.getMessage("errorImportingTurns", new String[]{}, Locale.getDefault()));
+            md.showDialog();
+            return;
+        }
+
         HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
         Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);

@@ -13,6 +13,7 @@ public class TurnInfo {
     Container combats;
     Container armies;
     Container encounters;
+    Container doubleAgents;
 
     public String getAllegiance() {
         return allegiance;
@@ -104,6 +105,16 @@ public class TurnInfo {
     
     public void setEncounters(Container encounters) {
         this.encounters = encounters;
+    }
+
+    
+    public Container getDoubleAgents() {
+        return doubleAgents;
+    }
+
+    
+    public void setDoubleAgents(Container doubleAgents) {
+        this.doubleAgents = doubleAgents;
     }
 
     

@@ -30,6 +30,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
+import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.pdfbox.pdmodel.PDDocument;
@@ -267,6 +268,19 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Text"},
                             new String[]{"character", "hexNo", "description"}));
             snpr.setAllowUnknownChildElements(true);
+//          create container for double agents
+            digester.addObjectCreate("txt2xml/Turn/DoubleAgents", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/DoubleAgents", "setDoubleAgents");
+            // create DoubleAgent wrapper
+            digester.addObjectCreate("txt2xml/Turn/DoubleAgents/DoubleAgent", "org.joverseer.support.readers.pdf.DoubleAgentWrapper");
+            // add army wrapper
+            digester.addSetNext("txt2xml/Turn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.pdf.DoubleAgentWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/DoubleAgents/DoubleAgent",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex"},
+                            new String[]{"name", "hexNo"}));
+            snpr.setAllowUnknownChildElements(true);
             turnInfo = (TurnInfo)digester.parse("file:///" + xmlFile.getCanonicalPath());
             Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
             Matcher m = p.matcher(xmlFile.getCanonicalPath());
@@ -334,6 +348,7 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating characters...");
             }
             updateCharacters(game);
+            updateDoubleAgents(game);
             if (getMonitor() != null) {
                 getMonitor().worked(80);
                 getMonitor().subTaskStarted("Updating armies...");
@@ -468,6 +483,22 @@ public class TurnPdfReader implements Runnable {
                 orderResult.updateGame(turn, nationNo, cw.getName());
             }
         }
+    }
+    
+    public void updateDoubleAgents(Game game) throws Exception {
+        DoubleAgentInfoSource dais = new DoubleAgentInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+        Container daws = turnInfo.getDoubleAgents();
+        Container cs = turn.getContainer(TurnElementsEnum.Character);
+        for (DoubleAgentWrapper daw : (ArrayList<DoubleAgentWrapper>)daws.getItems()) {
+            Character c = (Character)cs.findFirstByProperty("name", daw.getCharacter());
+            if (c == null) {
+                // add character
+                c = daw.getCharacter();
+                c.setInfoSource(dais);
+                cs.addItem(c);
+            }
+        }
+                
     }
     
     public void updateCompanies(Game game) throws Exception {

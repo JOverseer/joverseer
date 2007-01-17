@@ -85,9 +85,11 @@ public class MarketTableModel extends AbstractTableModel {
             return rowHeaders[rowIndex];
         if (!Game.isInitialized(getGame()))
             return "";
+        if (getGame().getTurn() == null) return "";
         String productCode = columnHeaders[columnIndex];
         ProductEnum product = ProductEnum.getFromCode(productCode);
         NationEconomy ne = getNationEconomy();
+        if (ne == null) return "";
         if (rowIndex == 0) {
             return ne.getStores(product);
         }

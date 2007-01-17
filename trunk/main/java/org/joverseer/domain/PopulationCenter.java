@@ -31,6 +31,8 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     
     ProductContainer production = new ProductContainer();
     ProductContainer stores = new ProductContainer();
+    
+    boolean lostThisTurn = false;
 
     public PopulationCenter() {
     }
@@ -162,6 +164,18 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
 
     public void setStores(ProductEnum p, Integer amount) {
         stores.setProduct(p, amount);
+    }
+    
+    
+
+    
+    public boolean getLostThisTurn() {
+        return lostThisTurn;
+    }
+
+    
+    public void setLostThisTurn(boolean lostThisTurn) {
+        this.lostThisTurn = lostThisTurn;
     }
 
     public PopulationCenter clone() {

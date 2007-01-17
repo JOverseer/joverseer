@@ -50,10 +50,12 @@ public class PopulationCenterViewer extends AbstractForm {
 
     JTextField nation;
     JTextField sizeFort;
+    JTextField lostThisTurn;
     HashMap production = new HashMap();
     HashMap stores = new HashMap();
 
     ActionCommand editPopulationCenterCommand = new EditPopulationCenterCommand();
+    ActionCommand toggleLostThisTurnCommand = new ToggleLostThisTurnCommand();
     ActionCommand deletePopulationCenterCommand = new DeletePopulationCenterCommand();
     
     public PopulationCenterViewer(FormModel formModel) {
@@ -91,6 +93,13 @@ public class PopulationCenterViewer extends AbstractForm {
             }
             tf.setText(amtStr);
 
+        }
+        
+        if (pc.getLostThisTurn()) {
+            lostThisTurn.setText("Exp. to be lost this turn.");
+            lostThisTurn.setVisible(true);
+        } else {
+            lostThisTurn.setVisible(false);
         }
     }
 
@@ -166,6 +175,12 @@ public class PopulationCenterViewer extends AbstractForm {
             stores.put(p, tf);
         }
         tlb.row();
+        
+        tlb.cell(lostThisTurn = new JTextField());
+        lostThisTurn.setBorder(null);
+        lostThisTurn.setFont(GraphicUtils.getFont(lostThisTurn.getFont().getName(), Font.ITALIC, lostThisTurn.getFont().getSize()));
+        lostThisTurn.setPreferredSize(new Dimension(100, 12));
+        
         JPanel pnl = tlb.getPanel();
         pnl.setBackground(Color.white);
         glb.append(pnl, 2, 1);
@@ -179,7 +194,7 @@ public class PopulationCenterViewer extends AbstractForm {
         PopulationCenter pc = (PopulationCenter) getFormObject();
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "populationCenterCommandGroup",
-                new Object[] {editPopulationCenterCommand, "separator", deletePopulationCenterCommand});
+                new Object[] {toggleLostThisTurnCommand, "separator", editPopulationCenterCommand, "separator", deletePopulationCenterCommand});
         return group.createPopupMenu();
     }
     
@@ -190,6 +205,16 @@ public class PopulationCenterViewer extends AbstractForm {
             Turn t = g.getTurn();
             Container pcs = t.getContainer(TurnElementsEnum.PopulationCenter);
             pcs.removeItem(pc);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
+    }
+    
+    private class ToggleLostThisTurnCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            PopulationCenter pc = (PopulationCenter)getFormObject();
+            pc.setLostThisTurn(!pc.getLostThisTurn());
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
                             .getSelectedHex(), this));

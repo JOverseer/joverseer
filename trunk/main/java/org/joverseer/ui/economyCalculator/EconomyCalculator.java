@@ -38,7 +38,7 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
         
-        lb.cell(nationCombo = new JComboBox());
+        lb.cell(nationCombo = new JComboBox(), "align=left");
         nationCombo.setPreferredSize(new Dimension(200, 24));
         lb.row();
         
@@ -50,9 +50,13 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
         }
         marketTable.setDefaultRenderer(Integer.class, new ColorRenderer());
         JScrollPane scp = new JScrollPane(marketTable);
-        scp.setPreferredSize(new Dimension(400, 400));
+        scp.setPreferredSize(new Dimension(600, 400));
         
-        lb.cell(scp);
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
+        tlb.cell(scp, "align=left");
+        JPanel panel = tlb.getPanel();
+        panel.setPreferredSize(new Dimension(600, 400));
+        lb.cell(panel);
         
         lb.row();
         

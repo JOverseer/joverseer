@@ -13,6 +13,7 @@ import java.io.Serializable;
 
 
 public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
+    public static String NA = "N/A";
     Integer nationNo;
 
     int orderNo = -1;
@@ -71,6 +72,10 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     }
 
     public void setNoAndCode(String noAndDescr) {
+        if (noAndDescr.equals(NA)) {
+            setOrderNo(-1);
+            return;
+        }
         int i = noAndDescr.indexOf(' ');
         String no = noAndDescr.substring(0, i);
         setOrderNo(Integer.parseInt(no));
@@ -78,9 +83,9 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     }
 
     public String getNoAndCode() {
-        if (getOrderNo() <= 0) return "N/A";
+        if (getOrderNo() <= 0) return NA;
         OrderMetadata om = getMetadata();
-        if (om == null) return "N/A";
+        if (om == null) return NA;
         return om.getNumber() + " " + om.getCode();
     }
 

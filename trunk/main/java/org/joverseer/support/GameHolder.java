@@ -19,4 +19,8 @@ public class GameHolder {
         GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
         return Game.isInitialized(gh.getGame());
     }
+    
+    public static GameHolder instance() {
+        return (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+    }
 }

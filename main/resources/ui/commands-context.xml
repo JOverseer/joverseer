@@ -37,7 +37,6 @@
 			<list>
 				<ref bean="fileMenu"/>
 				<ref bean="utilMenu"/>
-                <ref bean="windowMenu"/>
                 <ref bean="helpMenu"/>
 			</list>
 		</property>
@@ -85,6 +84,8 @@
 			                <value>separator</value>
                             <bean class="org.joverseer.ui.command.ImportOrders"/>
                             <value>separator</value>
+			                <bean class="org.springframework.richclient.command.support.ShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
+                            <value>separator</value>
                             <bean class="org.springframework.richclient.command.support.ExitCommand"/>
 			</list>
 		</property>
@@ -121,9 +122,6 @@
     <bean id="windowMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
         <property name="members">
             <list>
-                <bean class="org.springframework.richclient.command.support.NewWindowCommand" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
-                <value>separator</value>
-                <bean class="org.springframework.richclient.command.support.ShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
             </list>
         </property>
       </bean>

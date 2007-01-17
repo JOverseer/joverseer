@@ -20,6 +20,12 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
 
         DockingState ds = new DockingState("mapView");
         dss.add(ds);
+        
+        ds = new DockingState("economyCalculatorView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("mapView");
+        ds.setSplitRatio(.3f);
+        dss.add(ds);
 
         ds = new DockingState("characterListView");
         ds.setRegion(DockingConstants.SOUTH_REGION);
@@ -130,6 +136,8 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(.3f);
         dss.add(ds);
+        
+        
 
         //
         // // DefaultDockingPort dp = new DefaultDockingPort();

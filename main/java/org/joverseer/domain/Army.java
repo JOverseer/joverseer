@@ -210,9 +210,11 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         if (isCavalry() != null) {
             return isCavalry();
         }
-        // todo compute cavalry with respect to troop synthesis
-        // returning null if fed cannot be computed
-        return null;
+        // compute cavalry with respect to troop synthesis
+        for (ArmyElement ae : getElements()) {
+            if (!ae.getArmyElementType().isCavalry()) return false;
+        }
+        return true;
     }
 
     public Boolean isCavalry() {

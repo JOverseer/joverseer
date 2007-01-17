@@ -29,4 +29,8 @@ public enum ArmyElementType implements Serializable {
         if (type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA")) return 1;
         return 0;
     }
+    
+    public boolean isCavalry() {
+        return type.equals("HC") || type.equals("LC");
+    }
 }

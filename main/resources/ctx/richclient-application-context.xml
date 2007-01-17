@@ -455,6 +455,16 @@
          <property name="pinnable"><value>false</value></property>
          <property name="hasTitleBar"><value>false</value></property>
     </bean>
+    
+    <bean id="economyCalculatorView"
+         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+         <property name="viewClass">
+             <value>org.joverseer.ui.economyCalculator.EconomyCalculator</value>
+         </property>
+         <property name="closable"><value>false</value></property>
+         <property name="pinnable"><value>false</value></property>
+         <property name="hasTitleBar"><value>false</value></property>
+    </bean>
 
     <bean id="hexNumberRenderer" class="org.joverseer.ui.map.renderers.HexNumberRenderer">
         <property name="fontName"><value>MS Sans Serif</value></property>

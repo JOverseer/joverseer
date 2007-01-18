@@ -1,7 +1,5 @@
 package org.joverseer.domain;
 
-import org.springframework.core.enums.LabeledEnum;
-
 import java.io.Serializable;
 
 

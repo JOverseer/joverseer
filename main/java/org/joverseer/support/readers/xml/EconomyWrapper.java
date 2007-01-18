@@ -112,6 +112,7 @@ public class EconomyWrapper {
         ne.setCharMaintenance(getCharMaint());
         ne.setTotalMaintenance(getTotalMaint());
         ne.setTaxRate(getTaxRate());
+        ne.setTaxBase(getTaxBase());
         ne.setRevenue(getRevenue());
         ne.setReserve(getReserve());
         ne.setSurplus(getSurplus());

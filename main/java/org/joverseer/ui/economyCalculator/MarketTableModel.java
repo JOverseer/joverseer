@@ -10,6 +10,7 @@ import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
@@ -19,11 +20,15 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.application.Application;
 
 
-public class MarketTableModel extends AbstractTableModel {
+public class MarketTableModel extends BaseEconomyTableModel {
 
-    Game game = null;
     String[] columnHeaders = new String[] {"", "le", "br", "st", "mi", "fo", "ti", "mo"};
     String[] rowHeaders = new String[] {"stores", "production", "available to sell", "profit if all were sold",
             "sell price", "units you wish to sell", "percent you wish to sell", "available on market",
@@ -31,24 +36,29 @@ public class MarketTableModel extends AbstractTableModel {
 
     int[] columnWidths = new int[] {170, 64, 64, 64, 64, 64, 64, 64};
 
-    ProductContainer sellUnits = new ProductContainer();
-    ProductContainer sellPct = new ProductContainer();
-    ProductContainer buyUnits = new ProductContainer();
+    
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
         String productCode = columnHeaders[columnIndex];
         ProductEnum product = ProductEnum.getFromCode(productCode);
         if (rowIndex == 5) {
-            sellUnits.setProduct(product, (Integer) aValue);
+            ecd.setSellUnits(product, (Integer) aValue);
             fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
         }
         if (rowIndex == 6) {
-            sellPct.setProduct(product, (Integer) aValue);
+            ecd.setSellPct(product, (Integer) aValue);
             fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
         }
         if (rowIndex == 9) {
-            buyUnits.setProduct(product, (Integer) aValue);
+            ecd.setBuyUnits(product, (Integer) aValue);
             fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
         }
     }
 
@@ -90,73 +100,41 @@ public class MarketTableModel extends AbstractTableModel {
         ProductEnum product = ProductEnum.getFromCode(productCode);
         NationEconomy ne = getNationEconomy();
         if (ne == null) return "";
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return "";
         if (rowIndex == 0) {
-            return ne.getStores(product);
+            return ecd.getStores(product);
         }
         if (rowIndex == 1) {
-            return ne.getProduction(product);
+            return ecd.getProduction(product);
         }
         if (rowIndex == 2) {
-            return ne.getStores(product) + ne.getProduction(product);
+            return ecd.getTotal(product);
         }
         if (rowIndex == 3) {
             // TODO include sell bonus
-            return (ne.getStores(product) + ne.getProduction(product)) * getProductPrice(product).getSellPrice();
+            return ecd.getTotal(product) * ecd.getSellPrice(product);
         }
         if (rowIndex == 4) {
-            return getProductPrice(product).getSellPrice();
+            return ecd.getSellPrice(product);
         }
         if (rowIndex == 5) {
-            return sellUnits.getProduct(product);
+            return ecd.getSellUnits(product);
         }
         if (rowIndex == 6) {
-            return sellPct.getProduct(product);
+            return ecd.getSellPct(product);
         }
         if (rowIndex == 8) {
-            return getProductPrice(product).getBuyPrice();
+            return ecd.getBuyPrice(product);
         }
         if (rowIndex == 9) {
-            return buyUnits.getProduct(product);
+            return ecd.getBuyUnits(product);
         }
         if (rowIndex == 10) {
-            ProductPrice pp = getProductPrice(product);
-            int gain1 = getProductAmount(sellUnits, product) * pp.getSellPrice();
-            int gain2 = getProductAmount(sellPct, product) * pp.getSellPrice()
-                    * (ne.getStores(product) + ne.getProduction(product)) / 100;
-            int loss = getProductAmount(buyUnits, product) * pp.getBuyPrice();
-            return gain1 + gain2 - loss;
+            return ecd.getMarketProfits(product);
         }
         return "";
     }
-
-    private int getProductAmount(ProductContainer pc, ProductEnum p) {
-        return (pc.getProduct(p) == null ? 0 : pc.getProduct(p));
-    }
-
-    private ProductPrice getProductPrice(ProductEnum p) {
-        Turn t = game.getTurn();
-        Container pps = t.getContainer(TurnElementsEnum.ProductPrice);
-        return (ProductPrice) pps.findFirstByProperty("product", p);
-    }
-
-    private Integer getSelectedNationNo() {
-        return 7;
-    }
-
-    private NationEconomy getNationEconomy() {
-        Turn t = game.getTurn();
-        Container nes = t.getContainer(TurnElementsEnum.NationEconomy);
-        NationEconomy ne = (NationEconomy) nes.findFirstByProperty("nationNo", getSelectedNationNo());
-        return ne;
-    }
-
-    private Game getGame() {
-        if (game == null) {
-            game = GameHolder.instance().getGame();
-        }
-        return game;
-    }
-
 
     
 

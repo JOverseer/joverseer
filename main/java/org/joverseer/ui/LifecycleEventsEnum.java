@@ -7,5 +7,6 @@ public enum LifecycleEventsEnum {
     SelectedTurnChangedEvent,
     OrderChangedEvent,
     RefreshOrders,
-    RefreshMapItems
+    RefreshMapItems,
+    EconomyCalculatorUpdate
 }

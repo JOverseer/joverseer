@@ -8,6 +8,14 @@
         	<startString>MEPBM GAMES</startString>
         	<endString>CENTERS</endString>
 
+	        <processor type="RegexMatch">
+	        	<element>Nation</element>
+	        	<regex>Player #\s+:\s+(\d+)</regex>
+	       	</processor>
+	        <processor type="RegexMatch">
+	        	<element>TurnNumber</element>
+	        	<regex>Turn #\s+:\s+(\d+)</regex>
+	       	</processor>
         	<processor type="RegexMatch">
         		<element>Allegiance</element>
         		<regex>\(A (Free People)\)</regex>

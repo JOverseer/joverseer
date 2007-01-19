@@ -8,8 +8,6 @@ import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
@@ -133,8 +131,8 @@ public class TurnPdfReader implements Runnable {
             // parse turn info
             digester.addObjectCreate("txt2xml/Turn", TurnInfo.class);
             digester.addRule("txt2xml/Turn/Diplomacy",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Allegiance"},
-                            new String[]{"allegiance"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Allegiance", "Nation", "TurnNumber"},
+                            new String[]{"allegiance", "nationNo", "turnNo"}));
             snpr.setAllowUnknownChildElements(true);
             // create container for nation relations
             digester.addObjectCreate("txt2xml/Turn/Diplomacy/NationRelations", "org.joverseer.support.Container");
@@ -282,13 +280,13 @@ public class TurnPdfReader implements Runnable {
                             new String[]{"name", "hexNo"}));
             snpr.setAllowUnknownChildElements(true);
             turnInfo = (TurnInfo)digester.parse("file:///" + xmlFile.getCanonicalPath());
-            Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
-            Matcher m = p.matcher(xmlFile.getCanonicalPath());
-            m.matches();
-            nationNo = Integer.parseInt(m.group(1));
-            int turnNo = Integer.parseInt(m.group(2));
-            turnInfo.setNationNo(nationNo);
-            turnInfo.setTurnNo(turnNo);
+//            Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
+//            Matcher m = p.matcher(xmlFile.getCanonicalPath());
+//            m.matches();
+//            nationNo = Integer.parseInt(m.group(1));
+//            int turnNo = Integer.parseInt(m.group(2));
+//            turnInfo.setNationNo(nationNo);
+//            turnInfo.setTurnNo(turnNo);
     	}
     	catch (Exception exc) {
 			//todo fix

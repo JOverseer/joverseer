@@ -65,7 +65,9 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
             if (ne == null) continue;
             nationCombo.addItem(n.getName());
         }
-        nationCombo.setSelectedIndex(0);
+        if (nationCombo.getItemCount() > 0) {
+            nationCombo.setSelectedIndex(0);
+        }
     }
     
     protected JComponent createControl() {

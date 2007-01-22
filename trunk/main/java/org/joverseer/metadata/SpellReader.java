@@ -22,7 +22,8 @@ public class SpellReader  implements MetadataReader {
         Container spells = new Container();
 
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getSpellFilename(gm));
+            //Resource resource = Application.instance().getApplicationContext().getResource(getSpellFilename(gm));
+            Resource resource = gm.getResource(spellFilename);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;

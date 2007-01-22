@@ -27,6 +27,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 public class MapOptionsView extends AbstractView implements ApplicationListener {
     JComboBox cmbTurns;
     JComboBox cmbMaps;
+    JCheckBox drawOrders;
 
     protected JComponent createControl() {
         GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
@@ -82,6 +83,29 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                         new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
             }
 
+        });
+        lb.nextLine();
+        
+        lb.append(label = new JLabel("Draw orders : "));
+        label.setPreferredSize(new Dimension(100, 16));
+        lb.append(drawOrders = new JCheckBox());
+        drawOrders.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+                if (drawOrders.getModel().isSelected()) {
+                    mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
+                } else {
+                    mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOff);
+                }
+                Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                if (!Game.isInitialized(g)) return;
+                int turnNo = g.getCurrentTurn();
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+                
+            }
+            
         });
 
         resetGame();

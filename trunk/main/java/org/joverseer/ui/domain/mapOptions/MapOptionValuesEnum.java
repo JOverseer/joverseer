@@ -4,5 +4,7 @@ package org.joverseer.ui.domain.mapOptions;
 public enum MapOptionValuesEnum {
     NationMapFreePeople,
     NationMapDarkServants,
-    NationMapNeutrals
+    NationMapNeutrals,
+    DrawOrdersOn,
+    DrawOrdersOff
 }

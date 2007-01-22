@@ -517,7 +517,7 @@
             <value>target/classes/metadata/</value>
              -->
             <!-- -->
-            <value>bin/metadata/</value>
+            <value>metadata\</value>
             <!-- -->
         </property>
         <property name="readers">

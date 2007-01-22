@@ -25,7 +25,9 @@ public class PopulationCenterReader implements MetadataReader {
     public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         Container populationCenters = new Container();
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
+            //Resource resource = Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
+            Resource resource = gm.getResource(gm.getGameType().toString() + "." + populationCenterFilename);
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
             String ln;

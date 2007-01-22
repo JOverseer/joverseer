@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
@@ -79,6 +80,7 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
 
             public void actionPerformed(ActionEvent e) {
                 Game g = GameHolder.instance().getGame();
+                if (nationCombo.getSelectedItem() == null) return;
                 Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
                 ((MarketTableModel)marketTable.getModel()).setSelectedNationNo(n.getNumber());
                 ((EconomyTotalsTableModel)totalsTable.getModel()).setSelectedNationNo(n.getNumber());
@@ -151,7 +153,7 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
         Game g = GameHolder.instance().getGame();
         if (Game.isInitialized(g) && g.getTurn() != null) { 
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
-                if (pc.getNationNo() == nationNo) {
+                if (pc.getNationNo() == nationNo && pc.getSize() != PopulationCenterSizeEnum.ruins) {
                     items.add(pc);
                 }
             }

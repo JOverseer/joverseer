@@ -295,7 +295,7 @@ public class TurnXmlReader implements Runnable{
                     else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
                         if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
                             newPc.setName(oldPc.getName());
-                            newPc.setNationNo(oldPc.getNationNo());
+                            //newPc.setNationNo(oldPc.getNationNo());
                         }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);

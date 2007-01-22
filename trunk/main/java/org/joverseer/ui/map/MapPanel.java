@@ -489,6 +489,8 @@ public class MapPanel extends JPanel implements MouseListener {
         } else {
             x = (p.x - metadata.getHexSize() / 2 * metadata.getGridCellWidth()) / (metadata.getHexSize() * metadata.getGridCellWidth()) + 1;
         }
+        if (x > metadata.getMapColumns()) x = metadata.getMapColumns();
+        if (y > metadata.getMapRows()) y = metadata.getMapRows();
         return new Point(x, y);
     }
 

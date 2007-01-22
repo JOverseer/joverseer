@@ -28,7 +28,8 @@ public class CharacterReader  implements MetadataReader {
         MetadataSource ms = new MetadataSource();
 
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
+            //Resource resource = Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
+            Resource resource = gm.getResource(gm.getGameType().toString() + "." + characterFilename);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 

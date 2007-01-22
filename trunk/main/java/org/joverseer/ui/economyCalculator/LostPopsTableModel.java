@@ -26,11 +26,13 @@ public class LostPopsTableModel extends BeanTableModel {
                 "name", 
                 "hexNo",
                 "size",
+                "loyalty",
+                "fortification",
                 "lostThisTurn"};
     }
     
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, Boolean.class};
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class};
     }
 
     

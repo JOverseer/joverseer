@@ -70,6 +70,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             Nation n = game.getMetadata().getNationByNum(nmr.getNationNo());
             if (n.getAllegiance() != allegiance) continue;
             if (nmr.getRectangle().contains(hex.getColumn(), hex.getRow())) {
+                if (nmr.getRectangle().getX() + nmr.getRectangle().getWidth() == hex.getColumn() + 1) {
+                    return hex.getRow() % 2 == 1;
+                }
                 return true;
             }
         }
@@ -102,7 +105,14 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         } else {
             int nationNo = Integer.parseInt((String)map);
             NationMapRange nmr = (NationMapRange)game.getMetadata().getNationMapRanges().findFirstByProperty("nationNo", nationNo);
-            visible = nmr.getRectangle().contains(hex.getColumn(), hex.getRow());
+            visible = false;
+            if (nmr.getRectangle().contains(hex.getColumn(), hex.getRow())) {
+                if (nmr.getRectangle().getX() + nmr.getRectangle().getWidth() == hex.getColumn() + 1) {
+                    visible = hex.getRow() % 2 == 1;
+                } else {
+                    visible = true;
+                }
+            }
 
         }
         if (!visible) {

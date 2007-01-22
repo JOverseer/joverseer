@@ -21,7 +21,8 @@ public class NationMapRangeReader implements MetadataReader {
         Container mapRanges = new Container();
 
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getNationMapFilename(gm));
+            //Resource resource = Application.instance().getApplicationContext().getResource(getNationMapFilename(gm));
+            Resource resource = gm.getResource(gm.getGameType().toString() + "." + nationMapFilename);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 

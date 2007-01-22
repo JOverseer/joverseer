@@ -21,7 +21,8 @@ public class OrderReader implements MetadataReader {
         Container orders = new Container();
 
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getOrderFilename(gm));
+            //Resource resource = Application.instance().getApplicationContext().getResource(getOrderFilename(gm));
+            Resource resource = gm.getResource(orderFilename);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;

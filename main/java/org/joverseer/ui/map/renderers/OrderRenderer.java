@@ -1,5 +1,7 @@
 package org.joverseer.ui.map.renderers;
 
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
@@ -17,6 +19,7 @@ import org.springframework.richclient.application.Application;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.HashMap;
 
 
 public class OrderRenderer implements Renderer {
@@ -29,9 +32,20 @@ public class OrderRenderer implements Renderer {
         }
         return orderVisualizationData;
     }
+    
+    private boolean drawOrders() {
+        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        Object obj = mapOptions.get(MapOptionsEnum.DrawOrders);
+        if (obj == null) return true;
+        if (obj == MapOptionValuesEnum.DrawOrdersOn) {
+            return true;
+        }
+        return false;
+    }
 
     public boolean appliesTo(Object obj) {
-        return Order.class.isInstance(obj) && !((Order)obj).isBlank();// && orderVisualizationData.contains((Order)obj);
+        return Order.class.isInstance(obj) && !((Order)obj).isBlank() && drawOrders();// && orderVisualizationData.contains((Order)obj);
     }
 
     private void init() {

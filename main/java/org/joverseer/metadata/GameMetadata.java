@@ -2,6 +2,7 @@ package org.joverseer.metadata;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,8 @@ import java.util.Collection;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 
 /**
  * Holds metadata about the game such as
@@ -208,5 +211,23 @@ public class GameMetadata implements Serializable {
         this.spells = spells;
     }
     
-    
+    public Resource getResource(String resourceName) {
+        try {
+            Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
+            new InputStreamReader(r.getInputStream());
+            return r;
+        }
+        catch (Exception exc) {
+            try {
+                System.out.println(exc.getMessage());
+                Resource r = Application.instance().getApplicationContext().getResource("classpath:" + basePath + resourceName);
+                new InputStreamReader(r.getInputStream());
+                return r;
+            }
+            catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                return null;
+            }
+        }
+    }
 }

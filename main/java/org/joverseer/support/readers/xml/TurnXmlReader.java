@@ -279,7 +279,7 @@ public class TurnXmlReader implements Runnable{
                             newPc.setName(oldPc.getName());
                         }
                         if (newPc.getNationNo() == 0) {
-                            newPc.setNationNo(oldPc.getNationNo());
+                            //newPc.setNationNo(oldPc.getNationNo());
                         }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
@@ -299,7 +299,7 @@ public class TurnXmlReader implements Runnable{
                         }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
-                    }
+                    } 
                 }
             }
             catch (Exception exc) {
@@ -482,8 +482,7 @@ public class TurnXmlReader implements Runnable{
         // remove PCs if HexInfo shows empty hex
         ArrayList toRemove = new ArrayList();
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
-            if (pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
-            if (!MetadataSource.class.isInstance(pc.getInfoSource())) continue;
+            if (pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue() && !MetadataSource.class.isInstance(pc.getInfoSource())) continue;
             if (pc.getSize() == PopulationCenterSizeEnum.ruins) continue;
             HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
             if (hi.getVisible() && !hi.getHasPopulationCenter()) {

@@ -44,7 +44,7 @@ public class ArmyViewer extends AbstractForm {
 
     public static final String FORM_PAGE = "ArmyViewer";
 
-    boolean showColor = false;
+    boolean showColor = true;
     
     JTextField commanderName;
     JTextField nation;

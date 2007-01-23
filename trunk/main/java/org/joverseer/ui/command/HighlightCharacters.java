@@ -6,15 +6,17 @@ import java.util.Locale;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
+import org.joverseer.domain.Character;
 import org.joverseer.domain.NationRelations;
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.SpellProficiency;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.EditPopulationCenterForm;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
@@ -29,10 +31,6 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import org.joverseer.domain.Character;
-import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 
 
 public class HighlightCharacters extends ActionCommand {

@@ -174,7 +174,7 @@
 		class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
 		<property name="popupDropShadowEnabled" value="false" />
 		<property name="theme">
-			<bean class="com.jgoodies.looks.plastic.theme.ExperienceBlue"/>
+			<bean class="com.jgoodies.looks.plastic.theme.Silver"/>
 		</property>
     </bean>
 

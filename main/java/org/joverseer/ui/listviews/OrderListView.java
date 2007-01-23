@@ -31,6 +31,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
@@ -45,7 +46,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {64, 64, 96, 170};
+        return new int[] {64, 64, 96, 170, 30};
     }
 
     protected void setItems() {
@@ -111,6 +112,7 @@ public class OrderListView extends ItemListView {
                 setItems();
             }
         });
+        table.setDefaultRenderer(Boolean.class, (new JTable().getDefaultRenderer(Boolean.class)));
         tlb.row();
         tlb.cell(tableComp);
         tlb.row();

@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
@@ -25,6 +26,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
@@ -38,6 +40,7 @@ import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
@@ -59,6 +62,8 @@ public class CharacterViewer extends AbstractForm {
 
     public static final String FORM_PAGE = "CharacterViewer";
 
+    boolean showColor = true;
+    
     JTextField characterName;
     JTextField statsTextBox;
     JTextField infoSourcesTextBox;
@@ -108,6 +113,20 @@ public class CharacterViewer extends AbstractForm {
 
             String txt = getStatLine(c);
 
+            if (getShowColor()) {
+                Game g = GameHolder.instance().getGame();
+                Turn t = g.getTurn();
+                NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c.getNationNo());
+                Color col;
+                if (nr == null) {
+                    col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
+                } else {
+                    col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
+                }
+                characterName.setForeground(col);
+            }
+
+            
             if (txt.equals("")) {
                 // character is enemy
                 // retrieve starting info
@@ -238,6 +257,7 @@ public class CharacterViewer extends AbstractForm {
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setPreferredSize(new Dimension(160, 12));
+        
         bf.bindControl(c, "name");
         glb.append(c = new JTextField());
         c.setBorder(null);
@@ -412,4 +432,15 @@ public class CharacterViewer extends AbstractForm {
                         "separator", showCharacterRangeOnMapCommand, "separator", deleteCharacterCommand});
         return group.createPopupMenu();
     }
+    
+    public boolean getShowColor() {
+        return showColor;
+    }
+
+    
+    public void setShowColor(boolean showColor) {
+        this.showColor = showColor;
+    }
+    
+
 }

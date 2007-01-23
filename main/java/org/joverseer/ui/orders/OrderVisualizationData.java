@@ -19,4 +19,8 @@ public class OrderVisualizationData {
     public boolean contains(Order o) {
         return orders.contains(o);
     }
+    
+    public void removeOrder(Order o) {
+        orders.remove(o);
+    }
 }

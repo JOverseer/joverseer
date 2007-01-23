@@ -27,6 +27,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
@@ -43,6 +44,8 @@ public class ArmyViewer extends AbstractForm {
 
     public static final String FORM_PAGE = "ArmyViewer";
 
+    boolean showColor = false;
+    
     JTextField commanderName;
     JTextField nation;
     JTextField armySize;
@@ -119,6 +122,11 @@ public class ArmyViewer extends AbstractForm {
         Army army = (Army) object;
         commanderName.setText(army.getCommanderTitle() + " " + army.getCommanderName());
 
+        if (getShowColor()) {
+            Color c = ColorPicker.getInstance().getColor(army.getNationAllegiance().toString());
+            commanderName.setForeground(c);
+        }
+        
         Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (game == null)
             return;
@@ -209,4 +217,16 @@ public class ArmyViewer extends AbstractForm {
                             .getSelectedHex(), this));
         }
     }
+
+    
+    public boolean getShowColor() {
+        return showColor;
+    }
+
+    
+    public void setShowColor(boolean showColor) {
+        this.showColor = showColor;
+    }
+    
+    
 }

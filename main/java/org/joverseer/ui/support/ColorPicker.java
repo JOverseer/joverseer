@@ -1,4 +1,4 @@
-package org.joverseer.ui.map;
+package org.joverseer.ui.support;
 
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;

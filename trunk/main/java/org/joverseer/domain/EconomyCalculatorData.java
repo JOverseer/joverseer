@@ -17,6 +17,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     ProductContainer sellPct = new ProductContainer();
     ProductContainer buyUnits = new ProductContainer();
     
+    boolean sellBonus;
     int ordersCost;
     int productionFactor = 100;
     
@@ -127,17 +128,37 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         
         for (ProductEnum p : ProductEnum.values()) {
             if (p == ProductEnum.Gold) continue;
-            int productProfit = getSellUnits(p) * getSellPrice(p) +
-                                getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) -
-                                getBuyUnits(p) * getBuyPrice(p);
+            int productProfit = getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 +
+                                getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 -
+                                getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100;
             profits += productProfit;
         }
         return profits;
     }
     
-    public int getMarketProfits(ProductEnum p) {
-        return getSellUnits(p) * getSellPrice(p) +
-                getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) -
-                getBuyUnits(p) * getBuyPrice(p);
+    private int getSellBonusFactor() {
+        return getSellBonus() ? 120 : 100;
     }
+
+    private int getBuyBonusFactor() {
+        return getSellBonus() ? 80 : 100;
+    }
+
+    public int getMarketProfits(ProductEnum p) {
+        return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 +
+                getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 -
+                getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100;
+    }
+
+    
+    public boolean getSellBonus() {
+        return sellBonus;
+    }
+
+    
+    public void setSellBonus(boolean sellBonus) {
+        this.sellBonus = sellBonus;
+    }
+    
+    
 }

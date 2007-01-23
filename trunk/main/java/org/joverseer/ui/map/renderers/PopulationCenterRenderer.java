@@ -4,7 +4,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.map.ColorPicker;
+import org.joverseer.ui.support.ColorPicker;
 import org.springframework.richclient.application.Application;
 import org.apache.log4j.Logger;
 

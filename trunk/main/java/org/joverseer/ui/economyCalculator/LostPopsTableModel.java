@@ -26,8 +26,8 @@ public class LostPopsTableModel extends BeanTableModel {
                 "name", 
                 "hexNo",
                 "size",
-                "loyalty",
                 "fortification",
+                "loyalty",
                 "lostThisTurn"};
     }
     

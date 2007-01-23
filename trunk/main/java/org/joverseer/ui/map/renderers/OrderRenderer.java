@@ -37,7 +37,7 @@ public class OrderRenderer implements Renderer {
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
         Object obj = mapOptions.get(MapOptionsEnum.DrawOrders);
-        if (obj == null) return true;
+        if (obj == null) return false;
         if (obj == MapOptionValuesEnum.DrawOrdersOn) {
             return true;
         }
@@ -45,7 +45,7 @@ public class OrderRenderer implements Renderer {
     }
 
     public boolean appliesTo(Object obj) {
-        return Order.class.isInstance(obj) && !((Order)obj).isBlank() && drawOrders();// && orderVisualizationData.contains((Order)obj);
+        return Order.class.isInstance(obj) && !((Order)obj).isBlank() && drawOrders() && getOrderVisualizationData().contains((Order)obj);
     }
 
     private void init() {

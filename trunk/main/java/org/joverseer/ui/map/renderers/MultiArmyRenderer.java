@@ -3,7 +3,7 @@ package org.joverseer.ui.map.renderers;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.domain.*;
 import org.joverseer.game.Game;
-import org.joverseer.ui.map.ColorPicker;
+import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;

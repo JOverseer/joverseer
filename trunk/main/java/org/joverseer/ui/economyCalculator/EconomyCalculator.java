@@ -3,11 +3,13 @@ package org.joverseer.ui.economyCalculator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -17,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
@@ -25,6 +28,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -33,11 +37,14 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
 
 public class EconomyCalculator  extends AbstractView implements ApplicationListener {
     JTable marketTable;
     JTable totalsTable;
     JTable pcTable;
+    JCheckBox sellBonus;
     JComboBox nationCombo;
     BeanTableModel lostPopsTableModel;
     
@@ -73,6 +80,12 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
     
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
+
+        lb.relatedGapRow();
+        
+        lb.separator("Nation");
+        lb.row();
+        lb.relatedGapRow();
         
         lb.cell(nationCombo = new JComboBox(), "align=left");
         nationCombo.setPreferredSize(new Dimension(200, 24));
@@ -87,11 +100,34 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshPcs(n.getNumber());
+                sellBonus.setSelected(((EconomyTotalsTableModel)totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
             }
             
         });
         lb.row();
         
+        lb.cell(sellBonus = new JCheckBox(), "align=left");
+        sellBonus.setText("sell bonus: ");
+        sellBonus.setHorizontalTextPosition(JCheckBox.LEFT);
+        sellBonus.setBackground(Color.white);
+        sellBonus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Game g = GameHolder.instance().getGame();
+                if (!Game.isInitialized(g)) return;
+                if (nationCombo.getSelectedItem() == null) return;
+                ((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData().setSellBonus(sellBonus.isSelected());
+                ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
+                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+            }
+        });
+        lb.row();
+
+        lb.relatedGapRow();
+
+        lb.separator("Market");
+        lb.row();
+        lb.relatedGapRow();
+
         MarketTableModel mtm = new MarketTableModel();
         marketTable = new JTable(mtm);
         marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
@@ -99,7 +135,8 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
         for (int i=0; i<mtm.getColumnCount(); i++) {
             marketTable.getColumnModel().getColumn(i).setPreferredWidth(mtm.getColumnWidth(i));
         }
-        marketTable.setDefaultRenderer(Integer.class, new ColorRenderer());
+        marketTable.setDefaultRenderer(Integer.class, new MarketRenderer());
+        marketTable.setDefaultRenderer(String.class, new MarketRenderer());
         marketTable.setBackground(Color.white);
         JScrollPane scp = new JScrollPane(marketTable);
         scp.setPreferredSize(new Dimension(600, 200));
@@ -108,6 +145,11 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
         lb.cell(scp);
         
         lb.row();
+        lb.relatedGapRow();
+        
+        lb.separator("Totals");
+        lb.row();
+        lb.relatedGapRow();
         
         EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
         totalsTable = new JTable(ettm);
@@ -116,6 +158,8 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
             totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));
         }
         totalsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        totalsTable.setDefaultRenderer(String.class, new TotalsRenderer());
+        totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
         totalsTable.setBackground(Color.white);
         scp = new JScrollPane(totalsTable);
         scp.setPreferredSize(new Dimension(600, 100));
@@ -125,11 +169,17 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
         
         lb.row();
         
+        lb.relatedGapRow();
+        lb.separator("Pop Centers expected to be lost this turn");
+        lb.row();
+        lb.relatedGapRow();
+        
         lostPopsTableModel = new LostPopsTableModel();
         //pcTable = new JTable(lostPopsTableModel);
         pcTable = TableUtils.createStandardSortableTable(lostPopsTableModel);
         pcTable.setBackground(Color.white);
         pcTable.setDefaultRenderer(Boolean.class, totalsTable.getDefaultRenderer(Boolean.class));
+        org.joverseer.ui.support.TableUtils.setTableColumnWidths(pcTable, getLostPCColumWidths());
         scp = new JScrollPane(pcTable);
         scp.setPreferredSize(new Dimension(600, 120));
         scp.getViewport().setBackground(Color.white);
@@ -164,7 +214,7 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
 
 
     
-    public class ColorRenderer extends DefaultTableCellRenderer {
+    public class MarketRenderer extends DefaultTableCellRenderer {
         Color[] rowColors = new Color[] {
                 Color.decode("#99FF99"), 
                 Color.decode("#99FF99"), 
@@ -182,14 +232,40 @@ public class EconomyCalculator  extends AbstractView implements ApplicationListe
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                 boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (!isSelected) {
+            if (!isSelected && column>0) {
                 c.setBackground(rowColors[row]);
             }
-            ((JLabel)c).setHorizontalAlignment(JLabel.RIGHT);
-            return this;
+            JLabel lbl = ((JLabel)c);
+            lbl.setHorizontalAlignment(JLabel.RIGHT);
+            return c;
+        }
+    }
+    
+    public class TotalsRenderer extends DefaultTableCellRenderer {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            JLabel lbl = ((JLabel)c);
+            lbl.setHorizontalAlignment(JLabel.RIGHT);
+            if (row == 3 && column == 5 || row == 0 && column == 5) { // final gold or orders cost
+                lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
+            } else {
+                lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.PLAIN, lbl.getFont().getSize()));
+            }
+            if (!isSelected) {
+                if (row == 0 && column == 5) { // orders cost
+                    lbl.setBackground(Color.decode("#99FF99"));
+                } else {
+                    lbl.setBackground(Color.white);
+                }
+            }
+            return c;
         }
     }
 
 
+    public int[] getLostPCColumWidths() {
+        return new int[]{140, 64, 64, 64, 65, 96};
+    }
+    
 }
 

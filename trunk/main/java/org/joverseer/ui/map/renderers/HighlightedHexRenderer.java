@@ -8,8 +8,8 @@ import java.awt.Stroke;
 
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
-import org.joverseer.ui.map.ColorPicker;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 
 

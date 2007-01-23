@@ -25,6 +25,8 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.ArmyAllegianceNameComparator;
+import org.joverseer.tools.CharacterAllegianceNameComparator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -322,8 +324,11 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         hideAllCharacterViewers();
         c = t.getContainer(TurnElementsEnum.Character);
         ArrayList chars = c.findAllByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
-        BeanComparator comp = new BeanComparator("name");
-        Collections.sort(chars, comp);
+        BeanComparator comp;
+        
+        //BeanComparator comp = new BeanComparator("name");
+        //Collections.sort(chars, comp);
+        Collections.sort(chars, new CharacterAllegianceNameComparator());
 
         for (Character ch : (Collection<Character>)chars) {
             showCharacter(ch);
@@ -332,8 +337,9 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         hideAllArmyViewers();
         c = t.getContainer(TurnElementsEnum.Army);
         ArrayList armies = c.findAllByProperties(new String[]{"x", "y"}, new Object[]{p.x, p.y});
-        comp = new BeanComparator("nationAllegiance");
-        Collections.sort(armies, comp);
+        //comp = new BeanComparator("nationAllegiance");
+        //Collections.sort(armies, comp);
+        Collections.sort(armies, new ArmyAllegianceNameComparator());
 
         for (Army a : (Collection<Army>)armies) {
             showArmy(a);

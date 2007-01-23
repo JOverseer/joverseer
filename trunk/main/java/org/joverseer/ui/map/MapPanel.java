@@ -192,6 +192,28 @@ public class MapPanel extends JPanel implements MouseListener {
             }
         }
         
+        try {
+            ArrayList characters = getGame().getTurn().getContainer(TurnElementsEnum.Character).getItems();
+            for (Character c : (ArrayList<Character>)characters) {
+                for (Order o : c.getOrders()) {
+                    for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                        if (r.appliesTo(o)) {
+                            setHexLocation(c.getX(), c.getY());
+                            try {
+                                r.render(o, g, location.x, location.y);
+                            }
+                            catch (Exception exc) {
+                                logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering orders " + exc.getMessage());
+        }
+        
         BusyIndicator.clearAt(this);
     }
 
@@ -309,27 +331,7 @@ public class MapPanel extends JPanel implements MouseListener {
             logger.error("Error rendering nation " + exc.getMessage());
         }
 
-        try {
-            ArrayList characters = getGame().getTurn().getContainer(TurnElementsEnum.Character).getItems();
-            for (Character c : (ArrayList<Character>)characters) {
-                for (Order o : c.getOrders()) {
-                    for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
-                        if (r.appliesTo(o)) {
-                            setHexLocation(c.getX(), c.getY());
-                            try {
-                                r.render(o, g, location.x, location.y);
-                            }
-                            catch (Exception exc) {
-                                logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception exc) {
-            logger.error("Error rendering orders " + exc.getMessage());
-        }
+        
         
         try {
             ArrayList artifacts = getGame().getTurn().getContainer(TurnElementsEnum.Artifact).getItems();

@@ -102,7 +102,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 if (!Game.isInitialized(g)) return;
                 int turnNo = g.getCurrentTurn();
                 Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
                 
             }
             

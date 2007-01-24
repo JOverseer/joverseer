@@ -2,6 +2,9 @@ package org.joverseer.ui.command;
 
 import java.io.File;
 
+import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
+import org.flexdock.docking.DockingManager;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
@@ -24,6 +27,15 @@ public class OpenXmlFile extends ActionCommand {
     }
 
     protected void doExecuteCommand() {
+        Dockable newView = DockingManager.getDockable("spellcasterListView");
+        Dockable parentView = DockingManager.getDockable("characterListView");
+        if (parentView.getDockingPort() != null) {
+            DockingManager.dock(newView, parentView, DockingConstants.CENTER_REGION);
+        } else {
+            DockingManager.display(newView);
+        }
+        
+        
         File file = FileChooserUtils.showFileChooser(Application.instance().getActiveWindow().getControl(), ".xml", "Select", "Xml Turn File");
         try {
             GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");

@@ -2,16 +2,19 @@ package org.joverseer.ui.flexdock;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingConstants;
+import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.state.DockingState;
 import org.flexdock.perspective.LayoutSequence;
 import org.flexdock.perspective.Perspective;
 import org.flexdock.perspective.PerspectiveFactory;
 
 public class JOverseerPerspectiveFactory implements PerspectiveFactory {
-
+    
     public Perspective getPerspective(String persistentId) {
         // Perspective perspective = new Perspective(persistentId, "test");
         // LayoutSequence sequence = perspective.getInitialSequence(true);

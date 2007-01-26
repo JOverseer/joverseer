@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.progress.ProgressMonitor;
 import org.txt2xml.config.ProcessorFactory;
 import org.txt2xml.core.Processor;
@@ -104,7 +107,9 @@ public class TurnPdfReader implements Runnable {
     public void pdf2xml() throws Throwable {
         try {
             String pdfContents = parsePdf();
-            Processor processor = ProcessorFactory.getInstance().createProcessor(new FileReader("bin/ctx/txt2xml.config.xml"));
+            Resource r = Application.instance().getApplicationContext().getResource("classpath:ctx/txt2xml.config.xml");
+            //Processor processor = ProcessorFactory.getInstance().createProcessor(new FileReader("bin/ctx/txt2xml.config.xml"));
+            Processor processor = ProcessorFactory.getInstance().createProcessor(new InputStreamReader(r.getInputStream()));
             FileOutputStream outStream = new FileOutputStream(xmlFile.getAbsolutePath());
             StreamDriver driver = new StreamDriver(processor);
             driver.useDebugOutputProperties();
@@ -222,11 +227,9 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/Companies/Company", "addItem", "org.joverseer.support.readers.pdf.CompanyWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/Companies/Company",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Hex"},
-                            new String[]{"commanderName", "hexNo"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Hex", "Members"},
+                            new String[]{"commanderName", "hexNo", "members"}));
             snpr.setAllowUnknownChildElements(true);
-            // parse company members
-            digester.addCallMethod("txt2xml/Turn/Companies/Company/Member", "addMember", 0);
             // create container for combats
             digester.addObjectCreate("txt2xml/Turn/Combats", "org.joverseer.support.Container");
             // add container to turn info
@@ -488,7 +491,7 @@ public class TurnPdfReader implements Runnable {
         Container daws = turnInfo.getDoubleAgents();
         Container cs = turn.getContainer(TurnElementsEnum.Character);
         for (DoubleAgentWrapper daw : (ArrayList<DoubleAgentWrapper>)daws.getItems()) {
-            Character c = (Character)cs.findFirstByProperty("name", daw.getCharacter());
+            Character c = (Character)cs.findFirstByProperty("name", daw.getName());
             if (c == null) {
                 // add character
                 c = daw.getCharacter();

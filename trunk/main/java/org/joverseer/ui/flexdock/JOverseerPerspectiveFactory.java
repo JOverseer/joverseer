@@ -121,6 +121,12 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
         dss.add(ds);
+        
+        ds = new DockingState("enemyAgentListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
 
         ds = new DockingState("spellcasterListView");
         ds.setRegion(DockingConstants.CENTER_REGION);

@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,6 +30,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
@@ -35,6 +39,7 @@ import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSou
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.NarrationForm;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
@@ -46,10 +51,13 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.support.TableUtils;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.BindingFactory;
@@ -113,18 +121,7 @@ public class CharacterViewer extends AbstractForm {
 
             String txt = getStatLine(c);
 
-            if (getShowColor()) {
-                Game g = GameHolder.instance().getGame();
-                Turn t = g.getTurn();
-                NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c.getNationNo());
-                Color col;
-                if (nr == null) {
-                    col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
-                } else {
-                    col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
-                }
-                characterName.setForeground(col);
-            }
+            
 
             
             if (txt.equals("")) {
@@ -174,8 +171,9 @@ public class CharacterViewer extends AbstractForm {
             if (game == null)
                 return;
             GameMetadata gm = game.getMetadata();
-            nationTextBox.setText(gm.getNationByNum(c.getNationNo()).getShortName());
-
+            int nationNo = (showStartingInfo && startingChar != null ? startingChar.getNationNo() : c.getNationNo());
+            nationTextBox.setText(gm.getNationByNum(nationNo).getShortName());
+            
             ArrayList artis = new ArrayList();
             if (showArtifacts) {
                 ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts()
@@ -208,6 +206,7 @@ public class CharacterViewer extends AbstractForm {
                 String members = company.getMemberStr();
                 
                 companyMembersTextBox.setText("Company: " + members);
+                companyMembersTextBox.setCaretPosition(0);
                 companyMembersTextBox.setVisible(true);
             } else {
                 companyMembersTextBox.setVisible(false);
@@ -220,6 +219,20 @@ public class CharacterViewer extends AbstractForm {
             } else {
                 order1comp.setVisible(false);
                 order2comp.setVisible(false);
+            }
+            
+            if (getShowColor()) {
+                Game g = GameHolder.instance().getGame();
+                Turn t = g.getTurn();
+                
+                NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+                Color col;
+                if (nr == null) {
+                    col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
+                } else {
+                    col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
+                }
+                characterName.setForeground(col);
             }
         }
 
@@ -286,7 +299,7 @@ public class CharacterViewer extends AbstractForm {
         statsTextBox.setPreferredSize(new Dimension(100, 12));
         glb.nextLine();
         
-        glb.append(companyMembersTextBox = new JTextField(), 2, 1);
+        glb.append(companyMembersTextBox = new JTextField(), 3, 1);
         companyMembersTextBox.setBorder(null);
         companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
         glb.nextLine();
@@ -298,7 +311,7 @@ public class CharacterViewer extends AbstractForm {
 
         glb.append(artifactsTable = new JTable(), 2, 1);
         artifactsTable.setPreferredSize(new Dimension(150, 20));
-        ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
+        final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
 
             protected String[] createColumnPropertyNames() {
                 return new String[] {"no", "name"};
@@ -307,9 +320,33 @@ public class CharacterViewer extends AbstractForm {
             protected Class[] createColumnClasses() {
                 return new Class[] {String.class, String.class};
             }
-
-
         };
+        
+        artifactsTable.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
+                    ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
+                    if (a == null) return;
+                    final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" +
+                                    a.getPower1() + ", " + a.getPower2(); 
+                    MessageDialog dlg = new MessageDialog("Artifact Info", descr);
+                    dlg.showDialog();
+                }
+            }
+
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            public void mouseExited(MouseEvent e) {
+            }
+
+            public void mousePressed(MouseEvent e) {
+            }
+
+            public void mouseReleased(MouseEvent e) {
+            }
+        });
+        
         tableModel.setRowNumbers(false);
         artifactsTable.setModel(tableModel);
         // todo think about this
@@ -320,7 +357,7 @@ public class CharacterViewer extends AbstractForm {
 
         glb.append(spellsTable = new JTable(), 2, 1);
         spellsTable.setPreferredSize(new Dimension(150, 12));
-        ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
+        final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
 
             protected String[] createColumnPropertyNames() {
                 return new String[] {"spellId", "name", "proficiency"};
@@ -334,6 +371,40 @@ public class CharacterViewer extends AbstractForm {
         spellsTable.setModel(spellModel);
         TableUtils.setTableColumnWidths(spellsTable, new int[] {30, 90, 30});
         spellsTable.setBorder(null);
+        
+        spellsTable.addMouseListener(new MouseListener() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
+                    SpellProficiency sp = (SpellProficiency)spellModel.getRow(spellsTable.getSelectedRow());
+                    if (sp == null) return;
+                    
+                    Game g = GameHolder.instance().getGame();
+                    SpellInfo si = (SpellInfo)g.getMetadata().getSpells().findFirstByProperty("number", sp.getSpellId());
+                    
+                    String descr = si.getNumber() + " - " + si.getName() + "\n" +
+                                    "Description: " + si.getDescription() + "\n" +
+                                    "Difficulty: " + si.getDifficulty() + "\n" +
+                                    "Required Info: " + si.getRequiredInfo() + "\n" +
+                                    "Requirements: " + si.getRequirements();
+                    
+                    MessageDialog dlg = new MessageDialog("Spell Info", descr);
+                    dlg.showDialog();
+                }
+            }
+
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            public void mouseExited(MouseEvent e) {
+            }
+
+            public void mousePressed(MouseEvent e) {
+            }
+
+            public void mouseReleased(MouseEvent e) {
+            }
+        });
+        
         glb.nextLine();
 
         order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));

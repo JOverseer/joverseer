@@ -1,6 +1,7 @@
 package org.joverseer.support.readers.pdf;
 
 import org.joverseer.domain.Character;
+import org.joverseer.domain.InformationSourceEnum;
 
 public class DoubleAgentWrapper {
     String name;
@@ -30,6 +31,7 @@ public class DoubleAgentWrapper {
         c.setId(Character.getIdFromName(getName()));
         c.setHexNo(String.valueOf(getHexNo()));
         c.setNationNo(0);
+        c.setInformationSource(InformationSourceEnum.limited);
         return c;
     }
 }

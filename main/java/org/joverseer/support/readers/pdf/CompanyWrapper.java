@@ -8,7 +8,7 @@ import org.joverseer.domain.Company;
 public class CompanyWrapper {
     String commanderName;
     int hexNo;
-    ArrayList<String> members = new ArrayList<String>();
+    String members = new String();
     
     public String getCommanderName() {
         return commanderName;
@@ -26,17 +26,13 @@ public class CompanyWrapper {
         this.hexNo = hexNo;
     }
     
-    public void addMember(String member) {
-        members.add(member);
-    }
-
     
-    public ArrayList<String> getMembers() {
+    public String getMembers() {
         return members;
     }
 
     
-    public void setMembers(ArrayList<String> members) {
+    public void setMembers(String members) {
         this.members = members;
     }
     
@@ -44,8 +40,9 @@ public class CompanyWrapper {
         Company c = new Company();
         c.setHexNo(hexNo);
         c.setCommander(getCommanderName());
-        for (String m : getMembers()) {
-            c.addMember(m);
+        String[] members = getMembers().split("-");
+        for (String m : members) {
+            c.addMember(m.trim().replace("&#13;", ""));
         }
         return c;
     }

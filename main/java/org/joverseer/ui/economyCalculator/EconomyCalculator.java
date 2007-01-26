@@ -40,7 +40,7 @@ import org.springframework.richclient.table.TableUtils;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 
-public class EconomyCalculator  extends AbstractView implements ApplicationListener {
+public class EconomyCalculator extends AbstractView implements ApplicationListener {
     JTable marketTable;
     JTable totalsTable;
     JTable pcTable;

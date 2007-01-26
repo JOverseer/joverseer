@@ -324,6 +324,15 @@
         <property name="pinnable"><value>true</value></property>
     </bean>
     
+    <bean id="enemyAgentListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.EnemyAgentListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
+    
     <bean id="companyListView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
         <property name="viewClass">

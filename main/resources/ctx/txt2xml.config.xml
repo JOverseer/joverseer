@@ -179,10 +179,16 @@
         	<startString>NDERS :</startString>
         	<endString>MARKET PRICES</endString>
 
+			<processor type="StringEnclosedMatch">
+				<element>Company</element>
+				<startString>Veteran|Hero|Commander|Captain|Lord|Regent|Warlord|General|Marshal|Lord Marshal</startString>
+				<endString>.</endString>
+
+<!-- 
    			<processor type="RepeatRegexMatch">
    				<element>Company</element>
    				<regex>(\w+\s\p{L}+(?:[\s-]\p{L}+)*\s+Location\s:\s@\s\d{4}\s+Traveling with \w+ are : (?:\p{L}+(?:[\s-]\p{L}+)*(?:\s\-\s)?)+\.)</regex>
-
+ -->				
    				<processor type="RegexMatch">
    					<element>Commander</element>
    					<regex>\w+\s(\p{L}+(?:[\s-]\p{L}+)*)\s+Location</regex>
@@ -193,14 +199,12 @@
    					<regex>(\d{4})</regex>
    				</processor>
 
-   				<processor type="RegexMatch">
-   					<element>Member</element>
-   					<regex> are : (\p{L}+(?:[\s-]\p{L}+)*)(?:\s\-\s)?</regex>
-   				</processor>
+
 
    				<processor type="RepeatRegexMatch">
-   					<element>Member</element>
-   					<regex>(\p{L}+(?:[\s-]\p{L}+)*)(?:,)?</regex>
+   					<element>Members</element>
+   					<multiline>1</multiline>
+   					<regex>(\p{L}+(?:[\s-&#13;]+\p{L}+)*)(?:\s\-\s)?</regex>
    				</processor>
 
 	   		</processor>
@@ -292,6 +296,11 @@
         		<processor type="Copy">
         			<element>CharacterOrders</element>
         		</processor>
+        		
+        		<processor type="RegexMatch">
+					<element>FailedLocateArtifact</element>
+					<regex>was ordered to cast a lore spell. Locate Artifact \- Not able to</regex>
+				</processor>
 
         		<processor type="RegexMatch">
         			<!--  Parse LA result with owner -->
@@ -332,6 +341,12 @@
         				<regex>or near (\d{4})</regex>
         			</processor>
         		</processor>
+        		
+    			<processor type="RegexMatch">
+					<element>FailedLocateArtifact</element>
+					<regex>was ordered to cast a lore spell. Locate Artifact True \- Not able to</regex>
+				</processor>
+        		
         		
         		<processor type="RegexMatch">
         			<!--  Parse LAT result with owner -->

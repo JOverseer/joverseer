@@ -385,7 +385,8 @@ public class CharacterViewer extends AbstractForm {
                                     "Description: " + si.getDescription() + "\n" +
                                     "Difficulty: " + si.getDifficulty() + "\n" +
                                     "Required Info: " + si.getRequiredInfo() + "\n" +
-                                    "Requirements: " + si.getRequirements();
+                                    "Requirements: " + si.getRequirements() + "\n" +
+                                    "Order: " + si.getOrderNumber();
                     
                     MessageDialog dlg = new MessageDialog("Spell Info", descr);
                     dlg.showDialog();

@@ -166,7 +166,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         panel = tlb.getPanel();
         panel.setBackground(Color.white);
         panel.setPreferredSize(new Dimension(240, 1000));
-        JScrollPane scp = new JScrollPane(panel);
+        scp = new JScrollPane(panel);
         scp.setPreferredSize(new Dimension(240, 1000));
         scp.getVerticalScrollBar().setUnitIncrement(32);
         return scp;
@@ -369,10 +369,15 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         
         hideAllEncounterViewers();
         c = t.getContainer(TurnElementsEnum.Encounter);
-        Collection encounters = c.findAllByProperties(new String[]{"hexNo"}, new Object[]{h.getHexNo()});
+        Collection encounters = new ArrayList();
+        encounters.addAll(c.findAllByProperties(new String[]{"hexNo"}, new Object[]{h.getHexNo()}));
+        c = t.getContainer(TurnElementsEnum.Challenge);
+        encounters.addAll(c.findAllByProperties(new String[]{"hexNo"}, new Object[]{h.getHexNo()}));
         for (Encounter obj : (Collection<Encounter>)encounters) {
             showEncounter(obj);
         }
+        
+        scp.getVerticalScrollBar().setValue(0);
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {

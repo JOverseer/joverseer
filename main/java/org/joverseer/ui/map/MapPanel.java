@@ -370,8 +370,31 @@ public class MapPanel extends JPanel implements MouseListener {
             }
         }
         catch (Exception exc) {
-            logger.error("Error rendering orders " + exc.getMessage());
+            logger.error("Error rendering combats " + exc.getMessage());
         }
+        
+        try {
+            ArrayList encounters = new ArrayList();
+            encounters.addAll(getGame().getTurn().getContainer(TurnElementsEnum.Encounter).getItems());
+            encounters.addAll(getGame().getTurn().getContainer(TurnElementsEnum.Challenge).getItems());
+            for (Encounter a : (ArrayList<Encounter>)encounters) {
+                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(a)) {
+                        setHexLocation(a.getX(), a.getY());
+                        try {
+                            r.render(a, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error rendering encounter " + a.getHexNo() + " " + exc.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception exc) {
+            logger.error("Error rendering encounters " + exc.getMessage());
+        }
+
         BusyIndicator.clearAt(this);
     }
 

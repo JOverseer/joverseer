@@ -16,6 +16,7 @@ import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
@@ -243,6 +244,15 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"HexNo", "Narration"},
                             new String[]{"hexNo", "narration"}));
             snpr.setAllowUnknownChildElements(true);
+            // create challenge wrapper
+            digester.addObjectCreate("txt2xml/Turn/Combats/Challenge", "org.joverseer.support.readers.pdf.ChallengeWrapper");
+            // add challenge wrapper
+            digester.addSetNext("txt2xml/Turn/Combats/Challenge", "addItem", "org.joverseer.support.readers.pdf.ChallengeWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Combats/Challenge",
+                    snpr = new SetNestedPropertiesRule(new String[]{"HexNo", "Text", "Character"},
+                            new String[]{"hexNo", "narration", "character"}));
+            snpr.setAllowUnknownChildElements(true);
             // create container for armies
             digester.addObjectCreate("txt2xml/Turn/Armies", "org.joverseer.support.Container");
             // add container to turn info
@@ -389,7 +399,7 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    private void updateArmies(Game game) {
+      private void updateArmies(Game game) {
         Container armies = game.getTurn().getContainer(TurnElementsEnum.Army);
         Container aws = turnInfo.getArmies();
         if (aws == null) return;
@@ -403,18 +413,27 @@ public class TurnPdfReader implements Runnable {
     
     public void updateCombats(Game game) {
         Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);
+        Container challenges = game.getTurn().getContainer(TurnElementsEnum.Challenge);
         Container cws = turnInfo.getCombats();
         if (cws == null) return;
         for (CombatWrapper cw : (ArrayList<CombatWrapper>)cws.getItems()) {
-            cw.parse();
-            Combat c = (Combat)combats.findFirstByProperty("hexNo", cw.getHexNo());
-            if (c == null) {
-                c = new Combat();
-                c.setHexNo(cw.getHexNo());
-                c.addNarration(nationNo, cw.getNarration());
-                combats.addItem(c);
+            if (ChallengeWrapper.class.isInstance(cw)) {
+                Challenge c = (Challenge)challenges.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{((ChallengeWrapper)cw).getCharacter(), cw.getHexNo()});
+                if (c != null) {
+                    challenges.removeItem(c);
+                }
+                challenges.addItem(((ChallengeWrapper)cw).getChallenge());
             } else {
-                c.addNarration(nationNo, cw.getNarration());
+                cw.parse();
+                Combat c = (Combat)combats.findFirstByProperty("hexNo", cw.getHexNo());
+                if (c == null) {
+                    c = new Combat();
+                    c.setHexNo(cw.getHexNo());
+                    c.addNarration(nationNo, cw.getNarration());
+                    combats.addItem(c);
+                } else {
+                    c.addNarration(nationNo, cw.getNarration());
+                }
             }
         }
     }

@@ -233,8 +233,10 @@ public class CharacterWrapper {
         for (String spell : (ArrayList<String>)getSpells()) {
             int i = spell.indexOf(' ');
             spellId = spell.substring(1, i);
-            proficiency = spell.substring(spell.length() - 3, spell.length() - 1);
-            name = spell.substring(i+1, spell.length() - 4);
+            int idx1 = spell.indexOf("(");
+            int idx2 = spell.indexOf(")");
+            proficiency = spell.substring(idx1+1, idx2);
+            name = spell.substring(i+1, idx1);
             spells.add(new SpellProficiency(Integer.parseInt(spellId), Integer.parseInt(proficiency), name));
         }
         character.setSpells(spells);

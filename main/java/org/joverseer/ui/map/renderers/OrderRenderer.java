@@ -9,6 +9,7 @@ import org.joverseer.ui.support.Arrow;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
+import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
@@ -63,6 +64,10 @@ public class OrderRenderer implements Renderer {
             renderCharacterMovementOrder(order, g);
         } else if (order.getOrderNo() == 850 || order.getOrderNo() == 860) {
             renderArmyMovementOrder(order, g);
+        } else if (order.getOrderNo() == 947) {
+            renderNatTranOrder(order, g);
+        } else if (order.getOrderNo() == 948) {
+            renderTranCarOrder(order, g);
         }
     }
 
@@ -179,6 +184,82 @@ public class OrderRenderer implements Renderer {
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
             drawString(g, order.getCharacter().getName(), p1, p2);
+        }
+        catch (Exception exc) {
+            // parse or some other error, return
+            return;
+        }
+    }
+    
+    private void renderNatTranOrder(Order order, Graphics2D g) {
+        if (order.getParameter(0) == null) {
+            return;
+        }
+        try {
+            String hexNoStr = order.getParameter(0);
+            int hexNo = Integer.parseInt(hexNoStr);
+            Point p1 = MapPanel.instance().getHexCenter(hexNo);
+            int hexNo2 = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.Northwest);
+            Point p2 = MapPanel.instance().getHexCenter(hexNo2);
+            
+            ProductEnum product = ProductEnum.getFromCode(order.getParameter(1));
+            String pctStr = order.getParameter(2);
+            int pct = Integer.parseInt(pctStr);
+            
+//          draw arrowhead
+            double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
+            g.setStroke(new BasicStroke(1));
+            g.setColor(Color.BLACK);
+            Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
+            g.fill(arrowHead);
+
+            Stroke s = GraphicUtils.getDashStroke(3, 6);
+            g.setStroke(s);
+            g.setColor(Color.BLACK);
+            // draw line
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+            String descr = product.getCode() + " " + pctStr + "%";
+            drawString(g, descr, p2, p2);
+            
+        }
+        catch (Exception exc) {
+            // parse or some other error, return
+            return;
+        }
+    }
+    
+    private void renderTranCarOrder(Order order, Graphics2D g) {
+        if (order.getParameter(0) == null) {
+            return;
+        }
+        try {
+            String hexNoStr = order.getParameter(0);
+            int hexNo = Integer.parseInt(hexNoStr);
+            Point p2 = MapPanel.instance().getHexCenter(hexNo);
+            String hexNoStr2 = order.getParameter(1);
+            int hexNo2 = Integer.parseInt(hexNoStr2);
+            Point p1 = MapPanel.instance().getHexCenter(hexNo2);
+            
+            ProductEnum product = ProductEnum.getFromCode(order.getParameter(2));
+            String unitsStr = order.getParameter(3);
+            
+//          draw arrowhead
+            double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
+            g.setStroke(new BasicStroke(1));
+            g.setColor(Color.BLACK);
+            Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
+            g.fill(arrowHead);
+
+            Stroke s = GraphicUtils.getDashStroke(3, 6);
+            g.setStroke(s);
+            g.setColor(Color.BLACK);
+            // draw line
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+            String descr = product.getCode() + " " + unitsStr;
+            drawString(g, descr, p1, p2);
+            
         }
         catch (Exception exc) {
             // parse or some other error, return

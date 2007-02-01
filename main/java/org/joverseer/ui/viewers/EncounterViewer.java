@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
 import org.joverseer.ui.NarrationForm;
 import org.joverseer.ui.support.PopupMenuActionListener;
@@ -78,7 +79,11 @@ public class EncounterViewer extends AbstractForm {
     public void setFormObject(Object obj) {
         super.setFormObject(obj);
         Encounter e = (Encounter)obj;
-        String d = "Encounter: " + e.getCharacter();
+        String type = "Encounter: ";
+        if (Challenge.class.isInstance(obj)) {
+            type = "Challenge: ";
+        }
+        String d = type + e.getCharacter();
         description.setText(d);
     }
     

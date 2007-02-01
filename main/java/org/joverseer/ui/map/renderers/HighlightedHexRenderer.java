@@ -14,7 +14,7 @@ import org.joverseer.ui.support.GraphicUtils;
 
 
 public class HighlightedHexRenderer extends DefaultHexRenderer {
-    String highlightColor = "lightBlue";
+    String highlightColor = "#ff3300";
     int width = 2;
     
     public boolean appliesTo(Object obj) {

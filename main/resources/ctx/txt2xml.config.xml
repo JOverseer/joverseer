@@ -235,11 +235,10 @@
         	<processor type="StringEnclosedMatch">
         		<element>Encounter</element>
         		<startString>Encounter for</startString>
-        		<endString>Encounter for|COM</endString>
-        		<includeStart>true</includeStart>
+        		<endString>Encounter for|$</endString>
         		<processor type="RegexMatch">
         			<element>Character</element>
-        			<regex>Encounter for (\p{L}+(?:[\s-]\p{L}+)*) at </regex>
+        			<regex>Encounter for (?:Veteran |Hero |Commander |Captain |Lord |Regent |Warlord |General |Marshal |Lord Mashal )?(\p{L}+(?:[\s-]\p{L}+)*) at </regex>
         		</processor>
 
         		<processor type="RegexMatch">
@@ -258,6 +257,22 @@
         	<element>Combats</element>
         	<startString>BAT MESSAGES</startString>
         	<endString>CIAL MESSAGES</endString>
+        	<processor type="StringEnclosedMatch">
+	        		<element>Challenge</element>
+	        		<startString>Challenge from</startString>
+	        		<endString>Challenge from|Battle at|SPE</endString>
+	        		<processor type="Copy">
+	        			<element>Text</element>
+	        		</processor>
+	        		<processor type="RegexMatch">
+	        			<element>Character</element>
+	        			<regex>Challenge from (\p{L}+(?:[\s\-]\p{L})*) at </regex>
+	        		</processor>
+	        		<processor type="RegexMatch">
+	        			<element>HexNo</element>
+	        			<regex>(\d{4})</regex>
+	        		</processor>
+	        	</processor>
             <processor type="StringEnclosedMatch">
                 <element>Combat</element>
                 <startString>Battle at</startString>

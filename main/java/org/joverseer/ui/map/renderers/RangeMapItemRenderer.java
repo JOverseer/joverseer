@@ -2,11 +2,14 @@ package org.joverseer.ui.map.renderers;
 
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
+import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Army;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementUtils;
 import org.springframework.richclient.application.Application;
 
@@ -17,7 +20,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class RangeMapItemRenderer implements Renderer {
+public class RangeMapItemRenderer extends DefaultHexRenderer {
+    String highlightColor = "#ff3300";
+    int width = 2;
+    
     public boolean appliesTo(Object obj) {
         return CharacterRangeMapItem.class.isInstance(obj) ||
                 ArmyRangeMapItem.class.isInstance(obj);
@@ -61,20 +67,51 @@ public class RangeMapItemRenderer implements Renderer {
         CharacterRangeMapItem crmi = (CharacterRangeMapItem)obj;
         Character c = crmi.getCharacter();
         int hexNo = Integer.parseInt(c.getHexNo());
-
+        if (metadata == null) {
+            init();
+        }
+        Color color = Color.decode(getHighlightColor());
+        
+        Stroke currentStroke = g.getStroke();
+        g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
         // find all hexes within 12 distance from hexNo
-        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
         ArrayList<Hex> hexes = (ArrayList<Hex>)gm.getHexes();
         for (Hex h : hexes) {
             int hn = h.getColumn() * 100 + h.getRow();
             int d;
             if ((d = MovementUtils.distance(hexNo, hn)) == 12) {
                 // draw each hex in range with special color
-                Point p = MapPanel.instance().getHexCenter(hn);
-                Ellipse2D.Float e = new Ellipse2D.Float(p.x - 3, p.y - 3, 6, 6);
-                g.setColor(Color.RED);
-                g.fill(e);
+                Point p = MapPanel.instance().getHexLocation(hn);
+                Polygon polygon = new Polygon(xPoints, yPoints, 6);
+                polygon.translate(p.x, p.y);
+                g.setColor(color);
+                g.drawPolygon(polygon);
+//                Point p = MapPanel.instance().getHexCenter(hn);
+//                Ellipse2D.Float e = new Ellipse2D.Float(p.x - 3, p.y - 3, 6, 6);
+//                g.setColor(Color.RED);
+//                g.fill(e);
             }
         }
+        g.setStroke(currentStroke);
+    }
+    
+    public String getHighlightColor() {
+        return highlightColor;
+    }
+
+    
+    public void setHighlightColor(String highlightColor) {
+        this.highlightColor = highlightColor;
+    }
+
+    
+    public int getWidth() {
+        return width;
+    }
+
+    
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

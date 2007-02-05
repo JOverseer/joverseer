@@ -46,7 +46,7 @@ public class LostPopsTableModel extends BeanTableModel {
     }
 
     protected boolean isCellEditableInternal(Object arg0, int arg1) {
-        return arg1 == 3;
+        return arg1 == 5;
     }
 
     protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {

@@ -14,7 +14,10 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.Container;
+import org.joverseer.support.movement.MovementDirection;
+import org.joverseer.support.movement.MovementUtils;
 import org.apache.log4j.Logger;
+import org.joverseer.ui.map.renderers.DefaultHexRenderer;
 import org.joverseer.ui.map.renderers.Renderer;
 
 import javax.swing.*;

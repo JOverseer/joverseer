@@ -11,6 +11,7 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
+import org.joverseer.tools.NationMessageParser;
 import org.joverseer.game.Turn;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -496,6 +497,8 @@ public class TurnXmlReader implements Runnable{
         Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
         nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
 
+        NationMessageParser nmp = new NationMessageParser();
+        
         ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
         Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)");
         for (String msg : (ArrayList<String>)nationMsgs) {
@@ -510,6 +513,11 @@ public class TurnXmlReader implements Runnable{
                 int y = hexNo % 100;
                 nm.setX(x);
                 nm.setY(y);
+            }
+            int hexNo = nmp.getHexNo(nm.getMessage()); 
+            if (hexNo > 0) {
+                nm.setX(hexNo / 100);
+                nm.setY(hexNo % 100);
             }
             nationMessages.addItem(nm);
         }

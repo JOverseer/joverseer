@@ -30,6 +30,7 @@ public class NationProductionListView extends BaseItemListView {
         if (!Game.isInitialized(g))
             return;
         Container nes = g.getTurn().getContainer(TurnElementsEnum.NationEconomy);
+        ProductContainer totalProdContainer = new ProductContainer();
         for (NationEconomy ne : (ArrayList<NationEconomy>) nes.getItems()) {
             ProductLineWrapper prod = new ProductLineWrapper(ne.getProduction());
             prod.setNationNo(ne.getNationNo());
@@ -47,10 +48,15 @@ public class NationProductionListView extends BaseItemListView {
             total.setNationNo(ne.getNationNo());
             total.setDescr("Total");
             items.add(total);
+            
+            totalProdContainer.add(ne.getProduction());
         }
+        ProductLineWrapper totalProduction = new ProductLineWrapper(totalProdContainer);
+        totalProduction.setDescr("Total Production");
         Container prices = g.getTurn().getContainer(TurnElementsEnum.ProductPrice);
         ProductLineWrapper sellPrices = new ProductLineWrapper();
         ProductLineWrapper buyPrices = new ProductLineWrapper();
+        
         sellPrices.setDescr("Sell Price");
         buyPrices.setDescr("Buy Price");
         
@@ -104,7 +110,7 @@ public class NationProductionListView extends BaseItemListView {
 
         items.add(sellPrices);
         items.add(buyPrices);
-        
+        items.add(totalProduction);
         tableModel.setRows(items);
         tableModel.fireTableDataChanged();
     }

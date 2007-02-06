@@ -29,6 +29,7 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.binding.form.FormModel;
+import org.flexdock.docking.DockingManager;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.game.Game;
@@ -155,9 +156,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         if( _logger.isInfoEnabled() ) {
             _logger.info("onPostStartup()");
         }
-
-
-
+        DockingManager.display(DockingManager.getDockable("mapView"));
     }
 
 }

@@ -18,5 +18,6 @@ public enum TurnElementsEnum implements Serializable {
     MapItem,
     Encounter,
     Challenge,
-    EconomyCalucatorData
+    EconomyCalucatorData,
+    PdfText
 }

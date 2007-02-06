@@ -21,12 +21,18 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
 
         List<DockingState> dss = new ArrayList<DockingState>();
 
-        DockingState ds = new DockingState("economyCalculatorView");
+        DockingState ds = new DockingState("mapView");
         dss.add(ds);
         
-        ds = new DockingState("mapView");
+        ds = new DockingState("economyCalculatorView");
         ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("economyCalculatorView");
+        ds.setRelativeParentId("mapView");
+        ds.setSplitRatio(.3f);
+        dss.add(ds);
+        
+        ds = new DockingState("pdfFileView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("mapView");
         ds.setSplitRatio(.3f);
         dss.add(ds);
 

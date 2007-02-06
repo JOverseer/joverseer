@@ -23,6 +23,7 @@ import org.joverseer.domain.Company;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.domain.PdfTurnText;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -55,6 +56,8 @@ public class TurnPdfReader implements Runnable {
     int nationNo;
     File pdfTextFile;
     File xmlFile;
+    String contents;
+    PDDocument document;
     
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
@@ -67,7 +70,6 @@ public class TurnPdfReader implements Runnable {
         int endPage = Integer.MAX_VALUE;
         String ret = null;
         Writer output = null;
-        PDDocument document = null;
         ByteArrayOutputStream outs = null;
         try {
             document = PDDocument.load(filename);
@@ -83,6 +85,7 @@ public class TurnPdfReader implements Runnable {
             stripper.setEndPage(endPage);
             stripper.writeText(document, output);
             ret = new String(outs.toByteArray(), "UTF-8");
+            contents = ret;
             
             //tempPdfTextFile = new File(pdfFile + ".txt");
             FileWriter out = new FileWriter(pdfTextFile.getCanonicalPath());
@@ -339,6 +342,17 @@ public class TurnPdfReader implements Runnable {
         try {
             turn = game.getTurn(game.getMaxTurn());
             infoSource = new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+            
+            // add text
+            PdfTurnText ptt = (PdfTurnText)turn.getContainer(TurnElementsEnum.PdfText).findFirstByProperty("nationNo", turnInfo.getNationNo());
+            if (ptt != null) {
+                turn.getContainer(TurnElementsEnum.PdfText).removeItem(ptt);
+            }
+            ptt = new PdfTurnText();
+            ptt.setNationNo(turnInfo.getNationNo());
+            ptt.setText(contents);
+            turn.getContainer(TurnElementsEnum.PdfText).addItem(ptt);
+            
             if (getMonitor() != null) {
                 getMonitor().worked(50);
                 getMonitor().subTaskStarted("Updating nation relations...");

@@ -8,6 +8,7 @@ import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.springframework.richclient.application.Application;
 
@@ -44,17 +45,13 @@ public class TurnInitializer {
                 newPcs.addItem(newPc);
             }
 
-            // init relations as default
+            // init relations from metadata
             for (int i=1; i<26; i++) {
                 NationRelations nr = new NationRelations();
                 nr.setNationNo(i);
-                if (i < 11) {
-                    nr.setAllegiance(NationAllegianceEnum.FreePeople);
-                } else if (i < 21) {
-                    nr.setAllegiance(NationAllegianceEnum.DarkServants);
-                } else {
-                    nr.setAllegiance(NationAllegianceEnum.Neutral);
-                }
+                
+                Nation n = gm.getNationByNum(i);
+                nr.setAllegiance(n.getAllegiance());
                 for (int j=1; j<26; j++) {
                     if (i < 10 && j < 10) {
                         nr.setRelationsFor(j, NationRelationsEnum.Tolerated);

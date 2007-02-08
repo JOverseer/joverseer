@@ -43,29 +43,23 @@ public class PopulationCenterRenderer extends ImageRenderer {
 
 
         BufferedImage pcImage = null;
-        if (popCenter.getSize() != PopulationCenterSizeEnum.ruins)
-        {
-            String capital = popCenter.getCapital() ? ".capital" : "";
-            pcImage = getImage(popCenter.getSize().toString() + capital + ".image");
+        
+        String capital = popCenter.getCapital() ? ".capital" : "";
+        pcImage = getImage(popCenter.getSize().toString() + capital + ".image");
 
-            BufferedImage img = copyImage(pcImage);
-            Color color1 = ColorPicker.getInstance().getColor1(popCenter.getNationNo());
-            Color color2 = ColorPicker.getInstance().getColor2(popCenter.getNationNo());
-            changeColor(img, Color.red, color1);
-            changeColor(img, Color.black, color2);
-            if (popCenter.getHidden()) {
-                makeHidden(img, color1, color2);
-            }
-            if (fortImage != null) {
-                g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2 , null);
-            }
-            g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2 , null);
-        } else {
-            if (fortImage != null) {
-                g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + 8 / 2, null);
-            }
+        BufferedImage img = copyImage(pcImage);
+        Color color1 = ColorPicker.getInstance().getColor1(popCenter.getNationNo());
+        Color color2 = ColorPicker.getInstance().getColor2(popCenter.getNationNo());
+        changeColor(img, Color.red, color1);
+        changeColor(img, Color.black, color2);
+        if (popCenter.getHidden()) {
+            makeHidden(img, color1, color2);
         }
-
+        if (fortImage != null) {
+            g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2 , null);
+        }
+        g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2 , null);
+        
     }
 
 }

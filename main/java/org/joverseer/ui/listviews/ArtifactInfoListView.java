@@ -7,7 +7,7 @@ public class ArtifactInfoListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 96,
+        return new int[]{32, 96, 96,
                         96, 96};
     }
 }

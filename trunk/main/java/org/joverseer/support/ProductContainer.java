@@ -37,4 +37,14 @@ public class ProductContainer implements Serializable {
             setProduct(p, amount);
         }
     }
+    
+    public boolean hasData() {
+        for (ProductEnum p : ProductEnum.values()) {
+            Integer amount = getProduct(p);
+            if (amount != null && amount > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

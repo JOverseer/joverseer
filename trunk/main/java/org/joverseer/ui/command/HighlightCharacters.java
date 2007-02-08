@@ -17,6 +17,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
@@ -105,6 +106,8 @@ public class HighlightCharacters extends ActionCommand {
             fb.add("nationNo");
             fb.row();
             fb.add("allegiance", new JComboBox(NationAllegianceEnum.values()));
+            fb.row();
+            fb.add("withinRangeOfHex");
             
             fb.row();
             fb.add("freeText");
@@ -124,6 +127,7 @@ public class HighlightCharacters extends ActionCommand {
         Integer nationNo = null;
         NationAllegianceEnum allegiance = null;
         String freeText = null;
+        Integer withinRangeOfHex = null;
         
         public NationAllegianceEnum getAllegiance() {
             return allegiance;
@@ -133,6 +137,16 @@ public class HighlightCharacters extends ActionCommand {
             this.allegiance = allegiance;
         }
         
+        
+        public Integer getWithinRangeOfHex() {
+            return withinRangeOfHex;
+        }
+
+        
+        public void setWithinRangeOfHex(Integer withinRangeOfHex) {
+            this.withinRangeOfHex = withinRangeOfHex;
+        }
+
         public String getFreeText() {
             return freeText;
         }
@@ -197,6 +211,8 @@ public class HighlightCharacters extends ActionCommand {
             this.nationNo = nationNo;
         }
         
+        
+        
         public boolean acceptCharacter(Character c) {
             if (getMinCommandRank() != null && c.getCommandTotal() < getMinCommandRank()) {
                 return false;
@@ -213,7 +229,10 @@ public class HighlightCharacters extends ActionCommand {
             if (getMinStealthRank() != null && c.getStealthTotal() < getMinStealthRank()) {
                 return false;
             }
-            if (getNationNo() != null && c.getNationNo() != getNationNo()) {
+            if (getNationNo() != null && !c.getNationNo().equals(getNationNo())) {
+                return false;
+            }
+            if (getWithinRangeOfHex() != null && MovementUtils.distance(Integer.parseInt(c.getHexNo()), getWithinRangeOfHex()) > 12) {
                 return false;
             }
             

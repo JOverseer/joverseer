@@ -20,8 +20,8 @@ public class NationMessageParser {
             new NationMessagePattern(String.format("^There are rumors of a theft attempt involving %s at (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC),    
             new NationMessagePattern(String.format("^There are rumors of a kidnap attempt involving (%s) and %s.$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
             new NationMessagePattern(String.format("^There are rumors of a kidnap attempt involving %s and (%s).$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
-            new NationMessagePattern(String.format("^There are rumors of a assassination attempt involving (%s) and %s.$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
-            new NationMessagePattern(String.format("^There are rumors of a assassination attempt involving %s and (%s).$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
+            new NationMessagePattern(String.format("^There are rumors of an assassination attempt involving (%s) and %s.$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
+            new NationMessagePattern(String.format("^There are rumors of an assassination attempt involving %s and (%s).$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
             new NationMessagePattern(String.format(".*Gold was stolen at (%s)\\.$", name), NationMessagePattern.NAMED_ELEMENT_PC),
             new NationMessagePattern(String.format("^The loyalty was influenced from the efforts or presence of %s at (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC)
     };

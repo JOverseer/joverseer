@@ -10,10 +10,10 @@ public class ArtifactInfoTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"no", "name", "power1", "power2", "owner"};
+        return new String[]{"no", "name", "alignment", "power1", "power2", "owner"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class};
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class};
     }
 }

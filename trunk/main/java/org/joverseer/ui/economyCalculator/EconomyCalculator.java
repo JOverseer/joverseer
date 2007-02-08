@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -41,11 +42,13 @@ import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 
 public class EconomyCalculator extends AbstractView implements ApplicationListener {
+    
     JTable marketTable;
     JTable totalsTable;
     JTable pcTable;
     JCheckBox sellBonus;
     JComboBox nationCombo;
+    JLabel marketLimitWarning;
     BeanTableModel lostPopsTableModel;
     
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -55,10 +58,25 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                     e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                refreshMarketLimitWarning();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 loadNationCombo();
             }
 
+        }
+    }
+    
+    public int getMarketLimitWarningThreshhold() {
+        return 20000;
+    }
+    
+    private void refreshMarketLimitWarning() {
+        int marketProfits = ((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
+        if (marketProfits >= getMarketLimitWarningThreshhold()) {
+            marketLimitWarning.setText("Market limit warning!");
+            marketLimitWarning.setVisible(true);
+        } else {
+            marketLimitWarning.setVisible(false);
         }
     }
     
@@ -100,6 +118,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshPcs(n.getNumber());
+                refreshMarketLimitWarning();
                 sellBonus.setSelected(((EconomyTotalsTableModel)totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
             }
             
@@ -166,8 +185,14 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
         lb.cell(scp);
-        
         lb.row();
+        
+        marketLimitWarning = new JLabel("Market limit warning!");
+        marketLimitWarning.setFont(GraphicUtils.getFont(marketLimitWarning.getFont().getName(), Font.BOLD, marketLimitWarning.getFont().getSize()));
+        marketLimitWarning.setForeground(Color.red);
+        lb.cell(marketLimitWarning);
+        lb.row();
+        
         
         lb.relatedGapRow();
         lb.separator("Pop Centers expected to be lost this turn");
@@ -251,6 +276,15 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
             } else {
                 lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.PLAIN, lbl.getFont().getSize()));
+            }
+            if (row == 3 && column == 3 && !value.toString().equals("")) {
+                int amount = Integer.parseInt(value.toString());
+                if (amount >= getMarketLimitWarningThreshhold()) {
+                    if (!isSelected) {
+                        lbl.setBackground(Color.red);
+                        return c;
+                    }
+                }
             }
             if (!isSelected) {
                 if (row == 0 && column == 5) { // orders cost

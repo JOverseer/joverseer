@@ -20,6 +20,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -51,6 +52,7 @@ public class PopulationCenterViewer extends AbstractForm {
     JTextField nation;
     JTextField sizeFort;
     JTextField lostThisTurn;
+    JTextField productionDescription;
     HashMap production = new HashMap();
     HashMap stores = new HashMap();
 
@@ -73,9 +75,41 @@ public class PopulationCenterViewer extends AbstractForm {
 
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
         
+        // show production
+        // if the pop center is a ruin, search in past turns and find the first
+        // turn where the pop center was not a ruin and report that production
+        PopulationCenter pcForProduction = pc;
+        Turn productionTurn = null;
+        if (pcForProduction.getSize() == PopulationCenterSizeEnum.ruins) {
+            for (int i=game.getMaxTurn()-1; i>=0; i--) {
+                productionTurn = game.getTurn(i);
+                if (productionTurn == null) continue;
+                PopulationCenter pop = (PopulationCenter)productionTurn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
+                if (pop == null) continue;
+                if (pop.getSize() != PopulationCenterSizeEnum.ruins) {
+                    boolean hasProduction = false;
+                    for (ProductEnum p : ProductEnum.values()) {
+                        if (pop.getProduction(p) != null && pop.getProduction(p) > 0) {
+                            hasProduction = true;
+                        }
+                    }
+                    if (hasProduction) {
+                        pcForProduction = pop;
+                        break;
+                    }
+                }
+            }
+        }
+        if (pcForProduction != pc) {
+            productionDescription.setText(String.format("Production from turn %s (%s).", productionTurn.getTurnNo(), pcForProduction.getSize()));
+            productionDescription.setVisible(true);
+        } else {
+            productionDescription.setVisible(false);
+        }
+        
         for (ProductEnum p : ProductEnum.values()) {
             JTextField tf = (JTextField)production.get(p);
-            Integer amt = pc.getProduction(p);
+            Integer amt = pcForProduction.getProduction(p);
             String amtStr;
             if (amt == null || amt == 0) {
                 amtStr = "  -";
@@ -85,7 +119,7 @@ public class PopulationCenterViewer extends AbstractForm {
             tf.setText(amtStr);
 
             tf = (JTextField)stores.get(p);
-            amt = pc.getStores(p);
+            amt = pcForProduction.getStores(p);
             if (amt == null || amt == 0) {
                 amtStr = "  -";
             } else {
@@ -147,7 +181,12 @@ public class PopulationCenterViewer extends AbstractForm {
         bf.bindControl(c, "loyalty");
         glb.nextLine();
         
-        Font f = GraphicUtils.getFont("Arial", Font.PLAIN, 9);
+        glb.append(productionDescription = new JTextField(), 2, 1);
+        productionDescription.setBorder(null);
+        Font f = GraphicUtils.getFont(productionDescription.getFont().getName(), Font.ITALIC, productionDescription.getFont().getSize());
+        productionDescription.setFont(f);
+        glb.nextLine();
+        f = GraphicUtils.getFont("Arial", Font.PLAIN, 9);
         
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         for (ProductEnum p : ProductEnum.values()) {

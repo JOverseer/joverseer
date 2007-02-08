@@ -29,16 +29,27 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.binding.form.FormModel;
+import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
+import org.flexdock.view.View;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.domain.Order;
+import org.joverseer.ui.flexdock.JOverseerViewDescriptor;
 import org.joverseer.ui.orders.OrderEditorForm;
 
 import java.awt.*;
+
+import javax.print.attribute.standard.JobHoldUntil;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
 
 /**
  * Custom application lifecycle implementation that configures the sample app at
@@ -120,6 +131,20 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         if( _logger.isInfoEnabled() ) {
             _logger.info("onWindowCreated( windowNumber=" + window.getNumber() + " )");
         }
+        JFrame frame = Application.instance().getActiveWindow().getControl();
+        JToolBar toolbar = null;
+        for (Component c : frame.getContentPane().getComponents()) {
+            if (JToolBar.class.isInstance(c)) {
+                toolbar = (JToolBar)c;
+            }
+        }
+        
+        if (toolbar != null) {
+            toolbar.addSeparator();
+            
+            MapOptionsView view = (MapOptionsView)Application.instance().getApplicationContext().getBean("mapOptsView");
+            toolbar.add(view.getControl());            
+        }
     }
 
     /**
@@ -157,6 +182,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
             _logger.info("onPostStartup()");
         }
         DockingManager.display(DockingManager.getDockable("mapView"));
+        
     }
 
 }

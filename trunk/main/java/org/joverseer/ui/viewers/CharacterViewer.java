@@ -328,6 +328,7 @@ public class CharacterViewer extends AbstractForm {
                     ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
                     if (a == null) return;
                     final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" +
+                                    a.getAlignment() + "\n" +
                                     a.getPower1() + ", " + a.getPower2(); 
                     MessageDialog dlg = new MessageDialog("Artifact Info", descr);
                     dlg.showDialog();

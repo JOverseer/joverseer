@@ -28,21 +28,26 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox cmbTurns;
     JComboBox cmbMaps;
     JCheckBox drawOrders;
+    
+    boolean fireEvents = true;
 
     protected JComponent createControl() {
         GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
+        lb.setDefaultInsets(new Insets(5, 0, 5, 0));
         JLabel label;
         lb.append(label = new JLabel("Turn : "));
-        label.setPreferredSize(new Dimension(50, 16));
+        //label.setPreferredSize(new Dimension(50, 16));
         lb.append(cmbTurns = new JComboBox());
 
         cmbTurns.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (!fireEvents) return;
                 Object obj = cmbTurns.getSelectedItem();
                 if (obj == null) return;
                 int turnNo = (Integer) obj;
 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                if (g.getCurrentTurn() == turnNo) return;
                 g.setCurrentTurn(turnNo);
 
                 Application.instance().getApplicationContext().publishEvent(
@@ -53,14 +58,16 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 }
             }
         });
-        cmbTurns.setPreferredSize(new Dimension(100, 16));
-        lb.nextLine();
+        cmbTurns.setPreferredSize(new Dimension(60, 16));
+        //lb.nextLine();
 
+        lb.append(new JLabel("  "));
         lb.append(label = new JLabel("Map : "));
         lb.append(cmbMaps = new JComboBox());
-        cmbMaps.setPreferredSize(new Dimension(120, 16));
+        cmbMaps.setPreferredSize(new Dimension(100, 16));
         cmbMaps.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (!fireEvents) return;
                 Object obj = cmbMaps.getSelectedItem();
                 if (obj == null) return;
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
@@ -84,10 +91,11 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
 
         });
-        lb.nextLine();
+        //lb.nextLine();
         
+        lb.append(new JLabel("  "));
         lb.append(label = new JLabel("Draw orders : "));
-        label.setPreferredSize(new Dimension(100, 16));
+        //label.setPreferredSize(new Dimension(100, 16));
         lb.append(drawOrders = new JCheckBox());
         drawOrders.addActionListener(new ActionListener() {
 
@@ -116,6 +124,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     }
 
     public void resetGame() {
+        fireEvents = false;
         cmbTurns.removeAllItems();
         cmbMaps.removeAllItems();
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
@@ -142,13 +151,26 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 cmbMaps.addItem(n.getName());
             }
         }
+        fireEvents = true;
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+                fireEvents = false;
                 resetGame();
+                fireEvents = true;
+            }
+            if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+                fireEvents = false;
+                Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                if (Game.isInitialized(g)) {
+                    if (!cmbTurns.getSelectedItem().equals(g.getCurrentTurn())) {
+                        cmbTurns.setSelectedItem(g.getCurrentTurn());
+                    }
+                }
+                fireEvents = true;
             }
         }
     }

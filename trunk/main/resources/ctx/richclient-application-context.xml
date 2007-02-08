@@ -432,6 +432,15 @@
         <property name="closable"><value>true</value></property>
         <property name="pinnable"><value>true</value></property>
     </bean>
+    
+    <bean id="trackCharacterListView"
+        class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+        <property name="viewClass">
+            <value>org.joverseer.ui.listviews.TrackCharacterListView</value>
+        </property>
+        <property name="closable"><value>true</value></property>
+        <property name="pinnable"><value>true</value></property>
+    </bean>
 
     <bean id="mapOptionsView"
         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
@@ -556,6 +565,8 @@
 
     <bean id="gameHolder" class="org.joverseer.support.GameHolder">
     </bean>
+    
+    <bean id="mapOptsView" class="org.joverseer.ui.MapOptionsView"/>
 
     <bean id="orderVisualizationData" class="org.joverseer.ui.orders.OrderVisualizationData">
     </bean>

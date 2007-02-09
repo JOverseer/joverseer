@@ -82,7 +82,7 @@ public class NationMessageParser {
                 setElementName(m.group(1));
                 Game g = GameHolder.instance().getGame();
                 if (!Game.isInitialized(g)) return -1;
-                Turn t = g.getTurn(g.getMaxTurn()-1);
+                Turn t = g.getTurn(g.getMaxTurn());
                 if (t == null) return -1;
                 if (getNamedElementType().equals(NAMED_ELEMENT_PC)) {
                     PopulationCenter pc = (PopulationCenter)t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", getElementName());

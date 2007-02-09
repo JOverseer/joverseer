@@ -287,7 +287,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 }
             }
             if (!isSelected) {
-                if (row == 0 && column == 5) { // orders cost
+                if (row == 0 && column == 5 || row == 2 && column == 3) { // orders cost , gold production
                     lbl.setBackground(Color.decode("#99FF99"));
                 } else {
                     lbl.setBackground(Color.white);

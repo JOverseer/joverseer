@@ -215,7 +215,9 @@ public class CharacterWrapper {
         character.setStealth(getStealth());
         character.setStealthTotal(getTotalStealth());
         character.setChallenge(getChallenge());
-        character.setHealth(getHealth());
+        if (getHealth() > 0) {
+            character.setHealth(getHealth());
+        }
 
         String artifactId;
         ArrayList<Integer> artifacts = new ArrayList<Integer>();

@@ -1,11 +1,11 @@
 <txt2xml>
     <processor type="StringEnclosedMatch">
         <element>Turn</element>
-        <startString>MEPBM GAMES</startString>
+        <startString>MEPBM Games</startString>
         <endString>TURNSHEET</endString>
         <processor type="StringEnclosedMatch">
         	<element>Diplomacy</element>
-        	<startString>MEPBM GAMES</startString>
+        	<startString>MEPBM GAMES|MEPBM Games</startString>
         	<endString>CENTERS</endString>
 
 	        <processor type="RegexMatch">
@@ -18,12 +18,13 @@
 	       	</processor>
         	<processor type="RegexMatch">
         		<element>Allegiance</element>
-        		<regex>\(A (Free People)\)</regex>
+        		<regex>\(A (Free People|Dark Servant|Neutral)\)</regex>
         	</processor>
 
         	 <processor type="StringEnclosedMatch">
 	        	<element>NationRelations</element>
-	        	<startString>RELATIONS WITH</startString>
+	        	<startString>RELATIONS WITH OTHER NATIONS</startString>
+	        	<includeStart>0</includeStart>
     	    	<endString>POPULATION</endString>
 		        	<processor type="RepeatRegexMatch">
 		        		<element>NationRelation</element>
@@ -295,7 +296,8 @@
    			<!--  get the region for the character order results -->
         	<element>Orders</element>
         	<startString>ORDERS GIVEN</startString>
-        	<endString>MEPBM GAMES</endString>
+        	<endString>MEPBM GAMES|MEPBM Games</endString>
+        	
         	<processor type="RepeatRegexMatch">
         		<element>Character</element>
         		<regex>(\p{L}+(?:[\s-]\p{L}+)*\s+was located in [.\p{L}\d\-\.\s/?#&amp;&#13;:()]+\.)</regex>
@@ -317,13 +319,12 @@
 					<regex>was ordered to cast a lore spell. Locate Artifact \- Not able to</regex>
 				</processor>
 
-        		<processor type="RegexMatch">
+        		<processor type="LA">
         			<!--  Parse LA result with owner -->
         			<element>LocateArtifact</element>
-        			<regex>(was ordered to cast a lore spell. Locate Artifact \- \p{L}+(?:[\s\p{L}']+)* #\d{1,3}\s+is\s+possessed\sby\s[\p{L}?]+(?:[\s\-]\p{L}+)?\sat\sor\snear\s\d{4})</regex>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>\- (\p{L}+(?:[\s\p{L}']+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\p{L}']+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>
@@ -339,13 +340,12 @@
         			</processor>
         		</processor>
         		
-        		<processor type="RegexMatch">
+        		<processor type="LA">
         			<!--  Parse LA result without owner -->
         			<element>LocateArtifact</element>
-        			<regex>(was ordered to cast a lore spell. Locate Artifact \- \p{L}+(?:[\s\p{L}']+)* #\d{1,3}\s+is\s+located\sat\sor\snear\s\d{4})</regex>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>\- (\p{L}+(?:[\s\p{L}']+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\p{L}']+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>
@@ -363,13 +363,12 @@
 				</processor>
         		
         		
-        		<processor type="RegexMatch">
+        		<processor type="LAT">
         			<!--  Parse LAT result with owner -->
         			<element>LocateArtifactTrue</element>
-        			<regex>(was ordered to cast a lore spell. Locate Artifact True \- \p{L}+(?:[\s\p{L}']+)* #\d{1,3}\s+is\s+possessed\s+by\s+\p{L}+(?:[\s\-]\p{L}+)*\sin\sthe\s\p{L}+(?:[\p{L}\s\-&amp;/]+)*\sat\s\d{4})</regex>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>\- (\p{L}+(?:[\s\-']\p{L}+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\-']\p{L}+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>
@@ -385,13 +384,12 @@
         			</processor>
         		</processor>
         		
-        		<processor type="RegexMatch">
+        		<processor type="LAT">
         			<!--  Parse LAT result without owner -->
         			<element>LocateArtifactTrue</element>
-        			<regex>(was ordered to cast a lore spell. Locate Artifact True \- \p{L}+(?:[\s\p{L}']+)* #\d{1,3}\s+is\s+located\sin\sthe\s\p{L}+(?:[\p{L}\s\-&amp;/]+)*\sat\s\d{4})</regex>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>\- (\p{L}+(?:[\s\p{L}']+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\p{L}']+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>
@@ -418,9 +416,20 @@
         		</processor>
 
         		<processor type="RegexMatch">
+        			<element>Cursed</element>
+					<regex>()was killed due to a mysterious and deadly curse.</regex> 
+				</processor>
+
+        		<processor type="RegexMatch">
         			<element>Assassinated</element>
         			<regex>()\p{L}+(?:[\s-]\p{L}+)?\s+was assassinated\.</regex>
         		</processor>
+        		
+        		<processor type="RegexMatch">
+        			<element>Executed</element>
+        			<regex>()\p{L}+(?:[\s-]\p{L}+)?\s+was executed\.</regex>
+        		</processor>
+        		
         		<processor type="RegexMatch">
         			<element>SecondOrder</element>
         			<regex>((?:He|She) was ordered [.\p{L}\d\-\.\s/]+\.\r)</regex>

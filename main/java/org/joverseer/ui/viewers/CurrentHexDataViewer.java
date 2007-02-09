@@ -26,7 +26,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ArmyAllegianceNameComparator;
-import org.joverseer.tools.CharacterAllegianceNameComparator;
+import org.joverseer.tools.CharacterDeathAllegianceNameComparator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -329,7 +329,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         
         //BeanComparator comp = new BeanComparator("name");
         //Collections.sort(chars, comp);
-        Collections.sort(chars, new CharacterAllegianceNameComparator());
+        Collections.sort(chars, new CharacterDeathAllegianceNameComparator());
 
         for (Character ch : (Collection<Character>)chars) {
             showCharacter(ch);

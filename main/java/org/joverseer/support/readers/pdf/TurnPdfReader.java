@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Encounter;
@@ -221,6 +222,11 @@ public class TurnPdfReader implements Runnable {
             digester.addRule("txt2xml/Turn/Orders/Character/RevealCharacter",
                     snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex"},
                             new String[]{"characterName", "hexNo"}));
+            // handle assassinated, cursed, executed chars
+            digester.addCallMethod("txt2xml/Turn/Orders/Character/Assassinated", "setAssassinatedOn");
+            digester.addCallMethod("txt2xml/Turn/Orders/Character/Cursed", "setCursedOn");
+            digester.addCallMethod("txt2xml/Turn/Orders/Character/Executed", "setExecutedOn");
+            
             // create container for companies
             digester.addObjectCreate("txt2xml/Turn/Companies", "org.joverseer.support.Container");
             // add container to turn info
@@ -507,10 +513,44 @@ public class TurnPdfReader implements Runnable {
         for (CharacterWrapper cw : (ArrayList<CharacterWrapper>)cws.getItems()) {
             Character c = (Character)cs.findFirstByProperty("name", cw.getName());
             if (c == null) {
-                // missing character
-                // maybe assassinated?
-                // TODO
-            } else {
+                CharacterDeathReasonEnum deathReason = null;
+                
+                if (cw.getAssassinated()) {
+                    deathReason = CharacterDeathReasonEnum.Assassinated; 
+                } else if (cw.getCursed()) {
+                    deathReason = CharacterDeathReasonEnum.Cursed; 
+                    
+                } else if (cw.getExecuted()) {
+                    deathReason = CharacterDeathReasonEnum.Executed; 
+                }
+                
+                if (deathReason == null) {
+                    // check last turn
+                    // if charname existed, we can add him as dead
+                    Turn t = game.getTurn(turnInfo.getTurnNo() - 1);
+                    if (t != null) {
+                        c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", cw.getName());
+                        if (c != null) {
+                            deathReason = CharacterDeathReasonEnum.Dead;
+                        }
+                    }
+                }
+                
+                if (deathReason != null) {
+                    // assassinated
+                    // add char
+                    c = new Character();
+                    c.setName(cw.getName());
+                    c.setId(Character.getIdFromName(cw.getName()));
+                    c.setNationNo(turnInfo.getNationNo());
+                    c.setHealth(0);
+                    c.setDeathReason(deathReason);
+                    c.setHexNo(String.valueOf(cw.getHexNo()));
+                    c.setInfoSource(infoSource);
+                    cs.addItem(c);
+                }
+            };
+            if (c != null) {
                 cw.updateCharacter(c);
             }
             for (OrderResult orderResult : cw.getOrderResults()) {

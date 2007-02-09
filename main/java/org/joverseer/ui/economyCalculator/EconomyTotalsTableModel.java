@@ -105,9 +105,9 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                 case 0:
                     return ne.getTaxRate();
                 case 1:
-                    return ne.getTaxBase() * 2500 * ne.getTaxRate() / 100;
+                    return getTaxRevenue();
                 case 2:
-                    return ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100;
+                    return getGoldProduction();
                 case 3:
                     // Market profits
                     return getMarketProfits();
@@ -125,16 +125,22 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                     return ne.getReserve();
                 case 3:
                     // final gold
-                    return getSurplus() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
+                    return getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
             }
             return "";
         }
         return "";
     }
     
+    public int getTaxRevenue() {
+        NationEconomy ne = getNationEconomy();
+        return ne.getTaxBase() * 2500 * ne.getTaxRate() / 100;
+    }
+    
     
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 5 && rowIndex == 0;
+        return (columnIndex == 5 && rowIndex == 0) ||
+                (columnIndex == 3 && rowIndex == 2);
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -142,11 +148,15 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();
         }
+        if (columnIndex == 3 && rowIndex == 2) {
+            setGoldProduction((Integer)aValue);
+            fireTableDataChanged();
+        }
     }
 
     public int getSurplus() {
         NationEconomy ne = getNationEconomy();
-        return ne.getRevenue() - ne.getTotalMaintenance() + getMarketProfits();
+        return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance() + getMarketProfits();
     }
 
     
@@ -154,6 +164,21 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return null;
         return ecd.getMarketProfits();
+    }
+    
+    public Integer getGoldProduction() {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null || ecd.getGoldProduction() == null) {
+            NationEconomy ne = getNationEconomy();
+            return ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100; 
+        }
+        return ecd.getGoldProduction();
+    }
+    
+    public void setGoldProduction(Integer goldProduction) {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return;
+        ecd.setGoldProduction(goldProduction);
     }
     
     public Integer getOrdersCost() {

@@ -26,7 +26,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     int stealth;
     int stealthTotal;
     int challenge;
-    int health;
+    Integer health;
 
     int x;
     int y;
@@ -41,6 +41,8 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     
     String orderResults;
     String encounter;
+    
+    CharacterDeathReasonEnum deathReason = CharacterDeathReasonEnum.NotDead;
 
     public int getAgent() {
         return agent;
@@ -106,11 +108,11 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.emmisaryTotal = emmisaryTotal;
     }
 
-    public int getHealth() {
+    public Integer getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(Integer health) {
         this.health = health;
     }
 
@@ -261,6 +263,17 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     public void setOrderResults(String orderResults) {
         this.orderResults = orderResults;
     }
+
+    
+    public CharacterDeathReasonEnum getDeathReason() {
+        return deathReason;
+    }
+
+    
+    public void setDeathReason(CharacterDeathReasonEnum deathReason) {
+        this.deathReason = deathReason;
+    }
+    
     
     
 }

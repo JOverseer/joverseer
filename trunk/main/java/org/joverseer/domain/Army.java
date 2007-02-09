@@ -181,7 +181,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
             return isFed();
         }
         Integer foodConsumption = computeFoodConsumption();
-        if (foodConsumption != null) {
+        if (foodConsumption != null && getFood() != null) {
             return getFood() >= computeFoodConsumption();
         }
         return null;

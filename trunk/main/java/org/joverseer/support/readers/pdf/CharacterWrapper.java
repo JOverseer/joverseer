@@ -9,6 +9,9 @@ public class CharacterWrapper {
 	String name;
 	String orders;
 	int hexNo;
+        boolean assassinated;
+        boolean cursed;
+        boolean executed;
 	
 	ArrayList<OrderResult> orderResults = new ArrayList<OrderResult>();
 
@@ -51,5 +54,33 @@ public class CharacterWrapper {
 	public void updateCharacter(Character c) {
             c.setOrderResults(getOrders());
         }
-	
+
+    
+        public boolean getAssassinated() {
+            return assassinated;
+        }
+    
+        
+        public void setAssassinatedOn() {
+            this.assassinated = true;
+        }
+        
+        public boolean getCursed() {
+            return cursed;
+        }
+    
+        
+        public void setCursedOn() {
+            this.cursed = true;
+        }
+
+        public boolean getExecuted() {
+            return executed;
+        }
+    
+        
+        public void setExecutedOn() {
+            this.executed = true;
+        }
+
 }

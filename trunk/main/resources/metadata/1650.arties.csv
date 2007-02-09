@@ -1,0 +1,190 @@
+001;Ring of Wind;None;Agent;+40;;
+002;Ring of Stargazing;None;Mage;+30;;Dog Lord
+003;Ring of Iron Magic;Evil;Mage;+30;;Dark Lts.
+004;Ring of Impersonation;None;Agent;+25;;S.Gondor
+005;Ring of Barahir;Good;Command;+35;Bonus vs Dragons/Fell Beasts;Arthedain
+006;Ring of Axardil;None;Command;+10;Access to Teleport;N.Gondor
+007;Nazguaga;Evil;Mage;+30;Access to Dark Summons;
+008;Lorglin;None;Mage;+15;;Noldo
+009;Elenya;None;Stealth;+15;;
+010;Dwarven Ring of Power;None;Command;+40;;Dwarves
+011;Vilya;None;Mage;+50;;Noldo
+012;Nenya;None;Mage;+50;;Galadriel
+013;Narya;None;Mage;+50;;Gandalf
+014;The One Ring;None;Stealth;+40;;
+015;Tinculin;None;Mage;+40;Access to Spirit Mastery;
+016;Mothras;None;Combat;+500;;
+017;Horn of Fear;None;Combat;+500;Access to Conjure Mounts;Dwarves
+018;Tablets of Dark Knowledge;Evil;Mage;+15;Access to random lost list;
+019;Staff of Storms;None;Open Seas;-;Access to Dark Summons;
+020;Staff of the Serpents;None;Mage;+10;;Ice King
+021;Staff of Earth Mastery;None;Mage;+20;Access to Conjuring Ways;
+022;Rauzgnagli;Evil;Combat;+1750;;
+023;Nedelhach;None;Combat;+750;;
+024;Ghostbane;None;Combat;+750;;Dunlendings
+025;Staff of Bronze;None;Mage;+20;;Ice King
+026;Mallorn Staff;None;Mage;+25;;Noldo
+027;Palantir of Osgiliath;None;Scrying;-;;N.Gondor
+028;Palantir of Minas Ithil;None;Scrying;-;;N.Gondor
+029;Palantir of Minas Arnor;None;Scrying;-;;N.Gondor
+030;Palantir of Orthanc;None;Scrying;-;;N.Gondor
+031;Palantir of Annumin;None;Scrying;-;;Arthedain
+032;Palantir of Elostir;None;Scrying;-;;Noldo
+033;Palantir of Amon Sul;None;Scrying;-;;Arthedain
+034;Orb of Dark Seeing;Evil;Mage;+20;;Dragon Lord
+035;Orb of Seeing;None;Mage;+30;;Sinda
+036;Suimbalmynas;None;Mage;+20;Access to Conjuring Ways;
+037;Voice of the Dark Tower;Evil;Emissary;+20;;Dark Lts.
+038;Silver Rod of Aduni;Good;Command;+25;;Arthedain
+039;Miramarth;Evil;Agent;+15;;
+040;Gaergil;None;Open Seas;-;;Noldo
+041;Mantle of Doriath;Good;Hide Pop-Center;-;;Noldo
+042;Collar of Might;None;Mage;+30;;
+043;Cloak of the Heavens;None;Agent;+15;;Dog Lord
+044;Collohwesta;None;Stealth;+25;;
+045;Cloak of the Abyss;None;Stealth;+40;;Dark Lts.
+046;Robe of the Orc Priest;Evil;Command;+15;;Dark Lts.
+047;Belt of Durin;None;Command;+20;;Witch-King
+048;Thologaer Ciry;None;Mage;+30;;Witch-King
+049;Shield of Anarion;None;Command;+20;;N.Gondor
+050;Ovir Crown;None;Mage;+20;;Ice King
+051;Ossanna;None;Mage;+10;;Noldo
+052;Morgul Plate;Evil;Command;+10;;Witch-King
+053;Listening Helm;None;Agent;+10;;Long Rider
+054;Helm of Sen Jey;None;Command;+10;;Fire King
+055;Helm of Shadow;None;Stealth;+10;;Sinda
+056;Helm of the Mumak-Kill;None;Command;+25;Aid recruiting/fighting Mumak;Cloud Lord
+057;Helm of Isildur;None;Command;+20;;N.Gondor
+058;Helm of the Dark;Evil;Command;+15;;Dark Lts.
+059;Gaerennon;None;Command;+20;;Noldo
+060;Durin's Armor and Shield;None;Command;+15;;Dwarves
+061;Dragon Helm of Dor-Lomin;None;Command;+15;;
+062;Dragon Helm and Armour;Evil;Mage;+30;;Dragon Lord
+063;Cu-Saggha-Brath;None;Command;+10;;Rhudaur
+064;Bracers of the Mist;None;Stealth;+30;;Sinda
+065;Angbor;None;Command;+10;;
+066;Bracers of Chennacatt;None;Command;+10;;Blind Sorc
+067;Ulukai;Evil;Command;+30;;Witch-King
+068;Thrakurghash;Evil;Combat;+500;;Witch-King
+069;Erchmar;None;Combat;+750;;Dwarves
+070;Ring of Binding;Evil;Agent;+30;;Long Rider
+071;Talisman of Absorption;Evil;Mage;+20;;Long Rider
+072;Cloak of Duvorn;None;Agent;+20;;Long Rider
+073;Yellow Hammer;None;Combat;+500;;Blind S.
+074;War-dancer;None;Combat;+750;;Dog Lord
+075;Vasamacil;Evil;Combat;+750;;Witch-King
+076;Usriev;None;Combat;+750;;Easterlings
+077;Ungolrist;Good;Combat;+750;Bonus to fighting spiders;
+078;Sword of Soul Reaving;Evil;Combat;+500;;Quiet Avenger
+079;Stormless Bow;None;Combat;+500;;Long Rider
+080;Snow Hammer;None;Combat;+500;;Ice King
+081;Sil-Maegil;Good;Combat;+750;Bonus fighting evil creatures;
+082;Romoquenaro;None;Combat;+750;;Witch-King
+083;Orcrist;Good;Combat;+2250;;
+084;Ongrum;Evil;Combat;+500;;Fire King
+085;Navron;None;Combat;+500;;N.Gondor
+086;Nallagurth;Evil;Combat;+750;Access to Spirit Mastery;Witch-King
+087;Morlhach;Evil;Combat;+500;;Dark Lts.
+088;Macirille;None;Combat;+750;;
+089;Macilromen;None;Combat;+1000;;Noldo
+090;Helkaluin;None;Combat;+1250;;Noldo
+091;Gordur;Good;Combat;+500;;Noldo
+092;Horse-Tamer;None;Combat;+500;;Long Rider
+093;Gurthdur;Good;Combat;+500;;Noldo
+094;Glamdring;Good;Combat;+750;;
+095;Gildagor;None;Combat;+500;;N.Gondor
+096;Fohnrad;None;Combat;+500;;
+097;Fire's Edge;Evil;Combat;+750;;Quiet Avenger
+098;Elhach;None;Combat;+1000;;
+099;Elfhewer;Evil;Combat;+500;;Dragon Lord
+100;Elfbane;Evil;Combat;+500;;Witch-King
+101;E Voronwe;Good;Combat;+500;Access to Teleport;
+102;Durin's Axe;None;Combat;+750;Access to Conjuring Ways;Dwarves
+103;Durcrist;Good;Combat;+500;;
+104;Dawnsword;Evil;Combat;+750;;Cloud Lord
+105;Culok;None;Combat;+500;;
+106;Cubragol;None;Combat;+500;;Noldo
+107;Curaran;None;Combat;+500;;Noldo
+108;Craig-olf-ti;None;Combat;+500;;
+109;Cloud Bow;None;Combat;+750;;Cloud Lord
+110;Cirmegil;None;Combat;+500;;
+111;Believer's Bane;None;Combat;+500;;Fire King
+112;Burning Blade;Evil;Combat;+500;;Fire King
+113;Ar-Sil;Good;Combat;+750;;
+114;Angian;Good;Combat;+500;;S.Gondor
+115;Fire Mace;None;Combat;+750;;Witch-King
+116;Blood Spike;None;Combat;+750;;Witch-King
+117;Hatred Curse;None;Combat;+750;;Dark Lts.
+118;Skull Flail;None;Combat;+1000;;Dark Lts.
+119;Moon-Axe;None;Combat;+750;;Dark Lts.
+120;Hammer of the;None;Combat;+1000;;Dwarves
+121;Troll Slayer;Good;Combat;+750;;Sinda
+122;Orc Slayer;Good;Combat;+750;;Sinda
+123;Amulet of Communing;None;Mage;+15;;B Sorcerer
+124;Herufea;None;Command;+10;;Rhudaur
+125;Aeglin;Good;Combat;+750;;
+126;Anarmacil;Good;Combat;+750;;
+127;Aranruth;Good;Combat;+1750;Bonus fighting evil creatures;
+128;Aratocam;None;Combat;+1000;;
+129;Bow of Thunder;None;Combat;+500;;
+130;Brodic Spear;None;Combat;+500;;
+131;Caranlhach;None;Combat;+1750;;
+132;Daeron's Rapier;None;Combat;+1000;;
+133;Dagger of Green;None;Combat;+500;Access to Conjuring Ways;
+134;Dagnirdraug;Good;Combat;+750;Bonus vs Wolves;
+135;Elenruth;None;Combat;+750;Access to Spirit Mastery;
+136;Foamcleaver;None;Combat;+1500;;
+137;Bloodrunner;None;Combat;+750;;Dunlendings
+138;Air-cleaver;None;Combat;+500;;Dog Lord
+139;Gersebroc;Good;Combat;+750;Bonus vs Dragons/Fell Beasts;
+140;Hammer of Returning;None;Combat;+750;;Dwarves
+141;Hue Changer;None;Combat;+500;;Ice King
+142;Kirrauko;Good;Combat;+1250;;
+143;Night Piercer;None;Combat;+500;;Quiet Avenger
+144;Orcring;Good;Combat;+2250;;
+145;Orcruin;Good;Combat;+2250;;
+146;Horse-slayer;None;Combat;+500;;Easterlings
+147;Ringil;Good;Combat;+2000;;
+148;Sickle of the;None;Combat;+1000;;Dog Lord
+149;Sting;Good;Combat;+500;;
+150;Stinging Tongue;Evil;Combat;+500;;Dragon Lord
+151;Troll-Cleaver;Good;Combat;+2000;;
+152;Turantir;Good;Combat;+500;Access to Teleport;
+153;Water-skimmer;None;Combat;+750;;Dragon Lord
+154;Ring of Bleeding;Evil;Mage;+30;;Dragon Lord
+155;Taurin;None;Combat;+2000;;Dragon Lord
+156;Maranya;None;Mage;+30;;Dragon Lord
+157;Pectoral;None;Emissary;+30;;Witch-King
+158;Thunder's Edge;Evil;Combat;+1250;;Dog Lord
+159;Skull Helm;Evil;Command;+15;;Dog Lord
+160;Collar of Command;None;Command;+30;;Dog Lord
+161;Erivagil;None;Combat;+1500;;Radagast
+162;Glosovagil;None;Combat;+1500;;Saruman
+163;Mirror of Galadriel;Good;Mage;+40;Scrying - Scout Area;Galadriel
+164;Tintelpe;Good;Combat;+1750;;
+165;Cuiviegurth;Evil;Combat;+750;;
+166;Calris;Evil;Combat;+750;;
+167;Aedring;Good;Combat;+1000;;
+168;Ancaruin;Good;Combat;+2250;Access to Teleport;
+169;Gurthang;Evil;Combat;+2250;Access to Spirit Mastery;
+170;Anguirel;None;Combat;+2250;Access to Dark Summons;
+171;Aracu;Good;Combat;+1500;;
+172;Axe of Braogha;None;Combat;+750;;
+173;Hammer of Balli;Good;Combat;+750;;
+174;Belthronding;Good;Combat;+2250;;
+175;Ring of Curufin;None;Agent;+30;;
+176;Spear of Blador;None;Combat;+1250;;
+177;Calninque;Good;Combat;+1500;;
+178;Cubeleg;None;Combat;+750;;
+179;Durcarak;Evil;Combat;+1250;;
+180;Fuinrako;Evil;Combat;+2000;Access to Teleport;
+181;Herugrim;Good;Combat;+1000;;Eothraim
+182;Morgurth;None;Combat;+1000;;
+183;Silmaruth;None;Combat;+2000;;
+184;Stone Mace;Good;Combat;+500;Bonus vs. Undead;
+185;Headband of Sla;None;Mage;+10;Access to Conjuring Ways;
+186;Sceptre of Hent;Good;Combat;+750;Bonus vs. Wolves;
+187;The Black Book;None;Mage;+10;Access to Teleport;
+188;E Mere Vardo;Good;Mage;+10;Access to Spirit Mastery;
+189;The Blue Ring;Evil;Mage;+10;Access to Spirit Mastery;
+190;Staff of the Wander;Good;Mage;+15;Access to Teleport;

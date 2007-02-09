@@ -38,7 +38,35 @@ public class NationReader implements MetadataReader {
                     {"Khand Easterlings", "Kh"},
             };
 
-    //TODO 1650 nations
+    String[][] nations_1650 =
+        new String[][]{
+                {"Unknown", "Un"},
+                {"Woodmen", "Wm"},
+                {"Northmen", "Nm"},
+                {"Éothraim", "Eo"},
+                {"Arthedain", "Ar"},
+                {"Cardolan", "Ca"},
+                {"Northern Gondor", "NG"},
+                {"Southern Gondor", "SG"},
+                {"Dwarves", "Dwa"},
+                {"Sinda Elves", "Sin"},
+                {"Noldo Elves", "No"},
+                {"Witch-king", "WK"},
+                {"Dragon Lord", "DL"},
+                {"Dog Lord", "DoL"},
+                {"Cloud Lord", "CL"},
+                {"Blind Sorcerer", "BS"},
+                {"Ice King", "IK"},
+                {"Quiet Avenger", "QA"},
+                {"Fire King", "FK"},
+                {"Long Rider", "LR"},
+                {"Dark Lieutenants", "DkL"},
+                {"Corsairs", "Co"},
+                {"Haradwaith", "Ha"},
+                {"Dunlendings", "Du"},
+                {"Rhudaur", "Ru"},
+                {"Easterlings", "Ea"},
+        };
     
     public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         ArrayList nations = new ArrayList();
@@ -46,6 +74,20 @@ public class NationReader implements MetadataReader {
             for (int i=0; i<26; i++) {
                 String shortName = nations_2950[i][1];
                 String name = nations_2950[i][0];
+                Nation n = new Nation(i, name, shortName);
+                if (n.getNumber() <= 10) {
+                    n.setAllegiance(NationAllegianceEnum.FreePeople);
+                } else if (n.getNumber() <= 20) {
+                    n.setAllegiance(NationAllegianceEnum.DarkServants);
+                } else {
+                    n.setAllegiance(NationAllegianceEnum.Neutral);
+                }
+                nations.add(n);
+            }
+        } else if (gm.getGameType() == GameTypeEnum.game1650) {
+            for (int i=0; i<26; i++) {
+                String shortName = nations_1650[i][1];
+                String name = nations_1650[i][0];
                 Nation n = new Nation(i, name, shortName);
                 if (n.getNumber() <= 10) {
                     n.setAllegiance(NationAllegianceEnum.FreePeople);

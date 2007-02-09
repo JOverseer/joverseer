@@ -20,6 +20,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     boolean sellBonus;
     int ordersCost;
     int productionFactor = 100;
+    Integer goldProduction;
     
     public int getBuyUnits(ProductEnum p) {
         return buyUnits.getProduct(p) == null ? 0 : buyUnits.getProduct(p);
@@ -158,6 +159,16 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     
     public void setSellBonus(boolean sellBonus) {
         this.sellBonus = sellBonus;
+    }
+
+    
+    public Integer getGoldProduction() {
+        return goldProduction;
+    }
+
+    
+    public void setGoldProduction(Integer goldProduction) {
+        this.goldProduction = goldProduction;
     }
     
     

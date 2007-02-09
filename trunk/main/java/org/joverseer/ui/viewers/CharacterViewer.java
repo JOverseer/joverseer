@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Order;
@@ -120,9 +121,6 @@ public class CharacterViewer extends AbstractForm {
             characterName.setCaretPosition(0);
 
             String txt = getStatLine(c);
-
-            
-
             
             if (txt.equals("")) {
                 // character is enemy
@@ -246,7 +244,10 @@ public class CharacterViewer extends AbstractForm {
         txt += getStatText("M", c.getMage(), c.getMageTotal());
         txt += getStatText("S", c.getStealth(), c.getStealthTotal());
         txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
-        txt += getStatText("H", c.getHealth(), c.getHealth());
+        txt += (c.getHealth() == null ? "" : "H" + c.getHealth());
+        if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+            txt += " (" + c.getDeathReason().toString() + ")";
+        }
         return txt;
     }
 

@@ -84,6 +84,8 @@ public class ProcessorFactory {
         defaults.put("RepeatRegexMatch", "org.txt2xml.core.RepeatRegexMatchProcessor");
         defaults.put("StringEnclosedMatch", "org.txt2xml.core.StringEnclosedMatchProcessor");
         defaults.put("Copy", "org.txt2xml.core.CopyProcessor");
+        defaults.put("LA", "org.txt2xml.core.LocateArtifactResultProcessor");
+        defaults.put("LAT", "org.txt2xml.core.LocateArtifactTrueResultProcessor");
 
         typeMap = new Properties(defaults);
 

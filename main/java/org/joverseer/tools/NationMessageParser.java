@@ -13,6 +13,7 @@ import org.joverseer.support.GameHolder;
 
 public class NationMessageParser {
     String name = "\\p{L}+(?:[\\s\\-]\\p{L}+)*";
+    int turnNo;
     
     NationMessagePattern[] patterns = new NationMessagePattern[]{
             new NationMessagePattern(String.format("(%s) is no longer under our control.$", name), NationMessagePattern.NAMED_ELEMENT_PC), 
@@ -26,6 +27,13 @@ public class NationMessageParser {
             new NationMessagePattern(String.format("^The loyalty was influenced from the efforts or presence of %s at (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC)
     };
     
+    
+    
+    public NationMessageParser(int turnNo) {
+        super();
+        this.turnNo = turnNo;
+    }
+
     public int getHexNo(String message) {
         for (NationMessagePattern p : patterns) {
             int hexNo = p.getHexNo(message);
@@ -82,7 +90,7 @@ public class NationMessageParser {
                 setElementName(m.group(1));
                 Game g = GameHolder.instance().getGame();
                 if (!Game.isInitialized(g)) return -1;
-                Turn t = g.getTurn(g.getMaxTurn());
+                Turn t = g.getTurn(turnNo - 1);
                 if (t == null) return -1;
                 if (getNamedElementType().equals(NAMED_ELEMENT_PC)) {
                     PopulationCenter pc = (PopulationCenter)t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", getElementName());

@@ -52,6 +52,11 @@ public class MovementUtils {
 
         MovementDirection md = MovementDirection.getDirectionFromString(direction);
 
+        if (md == MovementDirection.Home) {
+            // for home, return immediatelly
+            return 1;
+        }
+
         // decide if road exists
         HexSideEnum side = null;
         if (md == MovementDirection.East) {
@@ -66,18 +71,24 @@ public class MovementUtils {
             side = HexSideEnum.TopLeft;
         } else if (md == MovementDirection.NorthEast) {
             side = HexSideEnum.TopRight;
-        }
+        } 
         Hex dest = gm.getHex(getHexNoAtDir(startHexNo, md));
         if (dest == null) {
             // out of map
             return -1;
         }
-        boolean roadExists = start.getHexSideElements(side).contains(HexSideElementEnum.Road);
-        boolean bridgeOrFord = start.getHexSideElements(side).contains(HexSideElementEnum.Bridge) ||
-                start.getHexSideElements(side).contains(HexSideElementEnum.Ford);
-        boolean minorRiver = start.getHexSideElements(side).contains(HexSideElementEnum.MinorRiver);
-        boolean majorRiver = start.getHexSideElements(side).contains(HexSideElementEnum.MajorRiver);
-
+        boolean roadExists = false;
+        boolean bridgeOrFord = false;
+        boolean minorRiver = false;
+        boolean majorRiver = false;
+        if (side != null) {
+            roadExists = start.getHexSideElements(side).contains(HexSideElementEnum.Road);
+            bridgeOrFord = start.getHexSideElements(side).contains(HexSideElementEnum.Bridge) ||
+                    start.getHexSideElements(side).contains(HexSideElementEnum.Ford);
+            minorRiver = start.getHexSideElements(side).contains(HexSideElementEnum.MinorRiver);
+            majorRiver = start.getHexSideElements(side).contains(HexSideElementEnum.MajorRiver);
+        }
+            
         // find appropriate cost matrix
         int[] movementCosts;
         if (!isCavalry) {
@@ -135,6 +146,8 @@ public class MovementUtils {
             if ((startHexNo % 100) % 2 == 1 ) {
                 destHexNo -= 100;
             }
+        } else if (dir == MovementDirection.Home) {
+            destHexNo = startHexNo;
         }
         return destHexNo;
     }

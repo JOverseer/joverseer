@@ -6,7 +6,8 @@ public enum MovementDirection {
 	East ("e"),
 	SouthEast("se"),
 	SouthWest("sw"),
-	West("w");
+	West("w"),
+        Home("h");
 	
 	private String dir;
 	

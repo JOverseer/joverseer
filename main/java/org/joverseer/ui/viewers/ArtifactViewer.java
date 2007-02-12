@@ -35,6 +35,7 @@ public class ArtifactViewer extends AbstractForm {
 
         Artifact a = (Artifact)obj;
         artifactName.setText("#" + String.valueOf(a.getNumber()) + " " + a.getName());
+        artifactName.setCaretPosition(0);
         owner.setText(a.getOwner() != null ? a.getOwner() : "unclaimed");
         // show info sources, if needed
         InfoSource is = a.getInfoSource();

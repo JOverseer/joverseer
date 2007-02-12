@@ -474,6 +474,8 @@
          <property name="hasTitleBar"><value>false</value></property>
     </bean>
     
+    
+    
     <bean id="economyCalculatorView"
          class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
          <property name="viewClass">
@@ -574,4 +576,6 @@
     <bean id="mapOptions" class="java.util.HashMap"/>
 
     <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>
+    
+    <bean id="orderEditorForm" class="org.joverseer.ui.orders.OrderEditorForm"/>
 </beans>

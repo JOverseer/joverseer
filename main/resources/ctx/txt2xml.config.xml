@@ -1,7 +1,7 @@
 <txt2xml>
     <processor type="StringEnclosedMatch">
         <element>Turn</element>
-        <startString>MEPBM Games</startString>
+        <startString>MEPBM GAMES|MEPBM Games</startString>
         <endString>TURNSHEET</endString>
         <processor type="StringEnclosedMatch">
         	<element>Diplomacy</element>

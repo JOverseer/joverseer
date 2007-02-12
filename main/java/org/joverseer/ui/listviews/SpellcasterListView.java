@@ -28,7 +28,7 @@ public class SpellcasterListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{96, 32, 32, 32, 48, 48, 48, 48, 48, 48, 48, 48};
+        return new int[]{96, 32, 32, 32, 32, 48, 48, 48, 48, 48, 48, 48, 48};
     }
     
     protected ArrayList createSpellLists() {
@@ -73,6 +73,7 @@ public class SpellcasterListView extends BaseItemListView {
             sw.setHexNo(Integer.parseInt(c.getHexNo()));
             sw.setArtifactBonus(c.getMageTotal() - c.getMage());
             sw.setNationNo(c.getNationNo());
+            sw.setMageRank(c.getMage());
             for (int i=0; i<spells.size(); i++) {
                 for (SpellProficiency sp : c.getSpells()) {
                     if (sp.getSpellId() == spells.get(i)) {

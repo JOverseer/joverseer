@@ -94,6 +94,7 @@ public class OrderRenderer implements Renderer {
                 String dir = params[i];
                 MovementDirection md = MovementDirection.getDirectionFromString(dir);
                 int nextHexNo = MovementUtils.getHexNoAtDir(currentHexNo, md);
+                if (nextHexNo == currentHexNo) continue;
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
                 p2 = MapPanel.instance().getHexCenter(nextHexNo);
                 g.setStroke(GraphicUtils.getDashStroke(3, 6));

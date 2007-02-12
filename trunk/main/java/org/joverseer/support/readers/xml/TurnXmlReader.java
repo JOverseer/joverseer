@@ -483,7 +483,7 @@ public class TurnXmlReader implements Runnable{
         // remove PCs if HexInfo shows empty hex
         ArrayList toRemove = new ArrayList();
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
-            if (pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue() && !MetadataSource.class.isInstance(pc.getInfoSource())) continue;
+            if (pc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() && pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue() && !MetadataSource.class.isInstance(pc.getInfoSource())) continue;
             if (pc.getSize() == PopulationCenterSizeEnum.ruins) continue;
             HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
             if (hi.getVisible() && !hi.getHasPopulationCenter()) {
@@ -497,7 +497,7 @@ public class TurnXmlReader implements Runnable{
         Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
         nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
 
-        NationMessageParser nmp = new NationMessageParser();
+        NationMessageParser nmp = new NationMessageParser(turnInfo.getTurnNo());
         
         ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
         Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)");

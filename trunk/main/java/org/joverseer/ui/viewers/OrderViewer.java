@@ -93,8 +93,8 @@ public class OrderViewer extends AbstractForm implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        FormModel formModel = FormModelHelper.createFormModel(getFormObject());
-        final OrderEditorForm form = new OrderEditorForm(formModel);
+        final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
+        form.setFormObject(getFormObject());
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {

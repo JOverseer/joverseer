@@ -157,8 +157,6 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(.3f);
         dss.add(ds);
         
-        
-
         //
         // // DefaultDockingPort dp = new DefaultDockingPort();
         // // dp.setPreferredSize(new Dimension(1000,800));

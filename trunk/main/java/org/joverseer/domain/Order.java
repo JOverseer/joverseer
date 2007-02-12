@@ -2,6 +2,7 @@ package org.joverseer.domain;
 
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.GameHolder;
@@ -90,7 +91,10 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     }
 
     public OrderMetadata getMetadata() {
-        GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (g == null) return null;
+        GameMetadata gm = g.getMetadata();
+        if (gm == null) return null;
         OrderMetadata om = (OrderMetadata)gm.getOrders().findFirstByProperty("number", getOrderNo());
         return om;
     }

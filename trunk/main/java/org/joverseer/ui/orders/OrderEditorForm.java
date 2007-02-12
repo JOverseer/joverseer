@@ -11,6 +11,8 @@ import javax.swing.JComponent;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Order;
+import org.joverseer.domain.Character;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
@@ -19,6 +21,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.list.SortedListModel;
@@ -30,9 +33,20 @@ public class OrderEditorForm extends AbstractForm implements ActionListener {
     JTextArea orderDescription;
     JComboBox orderCombo;
 
+    public OrderEditorForm() {
+        super(FormModelHelper.createFormModel(new Order(new Character())), FORM_PAGE);
+    }
+    
     public OrderEditorForm(FormModel formModel) {
         super(formModel, FORM_PAGE);
-        gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+    }
+    
+    private GameMetadata getGameMetadata() {
+        if (gm == null) {
+            gm =((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+        }
+        return gm;
+        
     }
 
     protected JComponent createFormControl() {
@@ -40,7 +54,7 @@ public class OrderEditorForm extends AbstractForm implements ActionListener {
         TableFormBuilder formBuilder = new TableFormBuilder(getBindingFactory());
 
         //todo
-        Container orderMetadata = gm.getOrders();
+        Container orderMetadata = getGameMetadata().getOrders();
         ListListModel orders = new ListListModel();
         for (OrderMetadata om : (ArrayList<OrderMetadata>)orderMetadata.getItems()) {
             orders.add(om.getNumber() + " " + om.getCode());
@@ -76,7 +90,7 @@ public class OrderEditorForm extends AbstractForm implements ActionListener {
             String selOrder = (String)orderCombo.getSelectedItem();
             int i = selOrder.indexOf(' ');
             int no = Integer.parseInt(selOrder.substring(0, i));
-            Container orderMetadata = gm.getOrders();
+            Container orderMetadata = getGameMetadata().getOrders();
 
             OrderMetadata om = (OrderMetadata)orderMetadata.findFirstByProperty("number", no);
             txt = om.getName() + ", " + om.getDifficulty() + ", " + om.getRequirement() + "\n" + om.getParameters();

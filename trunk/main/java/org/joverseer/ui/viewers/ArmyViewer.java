@@ -23,6 +23,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.CombatUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
@@ -142,6 +143,7 @@ public class ArmyViewer extends AbstractForm {
                 extraInfo.setText(extraInfo.getText() + (extraInfo.getText().equals("") ? "" : " ")
                         + element.getDescription());
             }
+            extraInfo.setText(extraInfo.getText() + " (" + CombatUtils.getNakedHeavyInfantryEquivalent(army) + "enHI)");
         } else {
             extraInfo.setVisible(false);
         }

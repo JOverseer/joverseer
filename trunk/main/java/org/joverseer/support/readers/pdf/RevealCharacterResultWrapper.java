@@ -53,7 +53,9 @@ public class RevealCharacterResultWrapper implements OrderResult {
             } else if (DerivedFromSpellInfoSource.class.isInstance(is)) {
                 // spell
                 // add info source...
-                ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                if (!((DerivedFromSpellInfoSource)is).contains(is1)) {
+                    ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                }
             } 
         }
         

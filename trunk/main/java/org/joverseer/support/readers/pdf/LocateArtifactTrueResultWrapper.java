@@ -15,9 +15,9 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper {
     public void updateGame(Turn turn, int nationNo, String casterName) {
         String hexNo = (getHexNo()< 1000 ? "0" : "") + String.valueOf(getHexNo());
-        DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
 
         if (getOwner() != null && !getOwner().equals("")) {
+            DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
             Container chars = turn.getContainer(TurnElementsEnum.Character);
             Character c = (Character)chars.findFirstByProperty("name", getOwner());
             if (c == null) {
@@ -46,12 +46,15 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
                     } else {
                         // info source is LAT or RCT
                         // add
-                        ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                        if (!((DerivedFromSpellInfoSource)is).contains(is1)) {
+                            ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                        }
                     }
                 } 
             }
         }
         
+        DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
         Container artis = turn.getContainer(TurnElementsEnum.Artifact);
         Artifact a = (Artifact)artis.findFirstByProperty("number", getArtifactNo());
         if (a == null) {
@@ -77,9 +80,9 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
                     // replace info source and hexNo
                     a.setHexNo(getHexNo());
                     a.setInfoSource(is1);
-                } else {
-                    // info source is LAT or RCT
-                    // add
+                } 
+                // add
+                if (!((DerivedFromSpellInfoSource)is).contains(is1)) {
                     ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
                 }
             } 

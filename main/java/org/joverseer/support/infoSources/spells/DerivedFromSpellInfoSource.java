@@ -49,4 +49,20 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     public String getSpell() {
         return null;
     }
+    
+    public boolean equals(Object obj) {
+        if (this.getClass().isInstance(obj)) {
+            DerivedFromSpellInfoSource is = (DerivedFromSpellInfoSource)obj;
+            return is.getNationNo() == getNationNo() && is.getCasterName().equals(getCasterName()) && is.getHexNo() == getHexNo();
+        }
+        return super.equals(obj);
+    }
+    
+    public boolean contains(Object obj) {
+        if (this.equals(obj)) return true;
+        for (Object ois : getOtherInfoSources()) {
+            if (ois.equals(obj)) return true;
+        }
+        return false;
+    }
 }

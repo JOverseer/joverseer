@@ -41,10 +41,13 @@ public class StringEnclosedMatchProcessor extends Processor {
         String str = chars.toString();
         int currentStart = matchStart;
         String[] startStrings = getStartStrings();
+        String foundStartString = null;
         for (String startString : startStrings) {
             matchStart = str.indexOf(startString, matchEnd);
-            if (matchStart > -1)
+            if (matchStart > -1) {
+                foundStartString = startString;
                 break;
+            }
         }
         if (matchStart == -1) {
             return false;
@@ -54,7 +57,7 @@ public class StringEnclosedMatchProcessor extends Processor {
             if (endString.equals("$")) {
                 matchEnd = str.length() - 1;
             } else {
-                matchEnd = str.indexOf(endString, matchStart + startString.length());
+                matchEnd = str.indexOf(endString, matchStart + foundStartString.length());
             }
             currentEndString = endString;
             if (matchEnd > -1) {

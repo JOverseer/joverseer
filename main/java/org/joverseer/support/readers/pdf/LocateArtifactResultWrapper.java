@@ -43,8 +43,9 @@ public class LocateArtifactResultWrapper implements OrderResult {
 	}
 	
 	public void updateGame(Turn turn, int nationNo, String casterName) {
-            DerivedFromLocateArtifactInfoSource is1 = new DerivedFromLocateArtifactInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
             if (getOwner() != null && !getOwner().equals("")) {
+                DerivedFromLocateArtifactInfoSource is1 = new DerivedFromLocateArtifactInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
+
                 Container chars = turn.getContainer(TurnElementsEnum.Character);
                 Character c = (Character)chars.findFirstByProperty("name", getOwner());
                 if (c == null) {
@@ -66,10 +67,14 @@ public class LocateArtifactResultWrapper implements OrderResult {
                     } else if (DerivedFromSpellInfoSource.class.isInstance(is)) {
                         // spell
                         // add info source...
-                        ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                        if (!((DerivedFromSpellInfoSource)is).contains(is1)) {
+                            ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                        }
                     } 
                 }
             }
+            DerivedFromLocateArtifactInfoSource is1 = new DerivedFromLocateArtifactInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
+
             Container artis = turn.getContainer(TurnElementsEnum.Artifact);
             Artifact a = (Artifact)artis.findFirstByProperty("number", getArtifactNo());
             if (a == null) {
@@ -90,7 +95,9 @@ public class LocateArtifactResultWrapper implements OrderResult {
                 } else if (DerivedFromSpellInfoSource.class.isInstance(is)) {
                     // spell
                     // add info source...
-                    ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                    if (!((DerivedFromSpellInfoSource)is).contains(is1)) {
+                        ((DerivedFromSpellInfoSource)is).addInfoSource(is1);
+                    }
                 } 
             }
 

@@ -88,8 +88,8 @@ public class Artifact implements Serializable, IHasMapLocation {
         if (DerivedFromSpellInfoSource.class.isInstance(infoSource)) {
             txt = ((DerivedFromSpellInfoSource)infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)infoSource).getCasterName();
             for (InfoSource is : ((DerivedFromSpellInfoSource)infoSource).getOtherInfoSources()) {
-                if (DerivedFromSpellInfoSource.class.isInstance(infoSource)) {
-                    txt += ", " + ((DerivedFromSpellInfoSource)infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)infoSource).getCasterName();
+                if (DerivedFromSpellInfoSource.class.isInstance(is)) {
+                    txt += ", " + ((DerivedFromSpellInfoSource)is).getSpell() + " - " + ((DerivedFromSpellInfoSource)infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)is).getCasterName();
                 }
             }
         }

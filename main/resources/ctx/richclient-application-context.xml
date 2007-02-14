@@ -568,8 +568,6 @@
     <bean id="gameHolder" class="org.joverseer.support.GameHolder">
     </bean>
     
-    <bean id="mapOptsView" class="org.joverseer.ui.MapOptionsView"/>
-
     <bean id="orderVisualizationData" class="org.joverseer.ui.orders.OrderVisualizationData">
     </bean>
     
@@ -578,4 +576,27 @@
     <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>
     
     <bean id="orderEditorForm" class="org.joverseer.ui.orders.OrderEditorForm"/>
+    
+    <!-- Healing Turn Phase Processor -->
+    <bean id="HealingProcessor" class="org.joverseer.orders.me.HealingTurnPhaseProcessor">
+	    <constructor-arg index="0" value="Healing"/>
+    </bean>
+    
+    <!-- Healing Spells Turn Phase Processor -->
+    <bean id="HealingSpellsProcessor" class="org.joverseer.orders.TurnOrderPhaseProcessor">
+	    <constructor-arg index="0" value="Healing Spells"/>
+	    <constructor-arg index="1" value="120"/>
+    </bean>
+    
+    <bean id="TurnProcessor" class="org.joverseer.orders.BaseTurnProcessor">
+    	<property name="phases">
+	    	<map>            	
+	    		<entry>
+            		<key><value>1</value></key>
+		    		<ref bean="HealingProcessor"/>
+	    		</entry>
+    		</map>
+    	</property>	
+   	</bean>
+    
 </beans>

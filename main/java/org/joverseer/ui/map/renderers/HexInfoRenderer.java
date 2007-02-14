@@ -9,6 +9,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
@@ -16,6 +17,7 @@ import org.springframework.richclient.application.Application;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -90,6 +92,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
         Object map = mapOptions.get(MapOptionsEnum.NationMap);
+        boolean showClimate = mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate) == MapOptionValuesEnum.ShowClimateOn;
         boolean visible = false;
         Hex hex = (Hex)obj;
         if (map == null) {
@@ -115,10 +118,28 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             }
 
         }
+        boolean repaintNumber = false;
+        if (showClimate) {
+            HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());
+            if (hexInfo.getClimate() != null) {
+                Color climateColor = ColorPicker.getInstance().getColor("climate." + hexInfo.getClimate().toString());
+                Color transClimateColor = new Color(climateColor.getRed(), climateColor.getBlue(), climateColor.getGreen(), 100);
+                int radius = metadata.getGridCellWidth() * 2;
+                int cx = x + metadata.getGridCellWidth() * metadata.getHexSize() / 2;
+                int cy = y + metadata.getGridCellHeight() * metadata.getHexSize() / 2;
+                Ellipse2D.Float el = new Ellipse2D.Float(cx - radius / 2, cy - radius / 2, radius, radius);
+                g.setColor(transClimateColor);
+                g.fill(el);
+                repaintNumber = true;
+            }
+        }
         if (!visible) {
             Image img = getImage();
             g.drawImage(img, x, y, null);
-
+            repaintNumber = true;
+        }
+        
+        if (repaintNumber) {
             if (getHexNumberRenderer() != null) {
                 getHexNumberRenderer().render(hex, g, x, y);
             }

@@ -25,7 +25,7 @@
 	        	<element>NationRelations</element>
 	        	<startString>RELATIONS WITH OTHER NATIONS</startString>
 	        	<includeStart>0</includeStart>
-    	    	<endString>POPULATION</endString>
+    	    	<endString>POPULAT</endString>
 		        	<processor type="RepeatRegexMatch">
 		        		<element>NationRelation</element>
 		        		<regex>(\p{L}+(?:[\s\-]\p{L}+)*\s+:\s+\w+)</regex>
@@ -44,7 +44,7 @@
         <processor type="StringEnclosedMatch">
         	<!--  Get the region for the population centers -->
         	<element>PopulationCentres</element>
-        	<startString>POPULATION CENTERS</startString>
+        	<startString>CENTERS</startString>
         	<endString>ARMIES AND NAVIES</endString>
 
         	<processor type="RepeatRegexMatch">
@@ -58,6 +58,10 @@
         			<element>Hex</element>
         			<regex>(\d{4})</regex>
         		</processor>
+        		<processor type="RegexMatch">
+        			<element>Climate</element>
+        			<regex>Climate is (\p{L}+)</regex>
+       			</processor>
         		<processor type="RegexMatch">
         			<element>Docks</element>
         			<regex>Docks : (\w+)</regex>
@@ -157,6 +161,18 @@
         			<regex>ander : \p{L}+ (\p{L}+(?:[\s\-']+\p{L}+)*)\s+Location</regex>
         		</processor>
         		<processor type="RegexMatch">
+        			<element>Hex</element>
+        			<regex>(\d{4})</regex>
+        		</processor>
+        		<processor type="RegexMatch">
+        			<element>Climate</element>
+        			<regex>Climate is (\p{L}+)</regex>
+        		</processor>
+        		<processor type="RegexMatch">
+        			<element>Morale</element>
+        			<regex>Army morale\s+:\s+(\d+)</regex>
+        		</processor>
+        		<processor type="RegexMatch">
         			<element>Warships</element>
         			<regex>Warships\s+:\s+(\d+)</regex>
         		</processor>
@@ -164,6 +180,36 @@
         			<element>Transports</element>
         			<regex>Transports\s+:\s+(\d+)</regex>
         		</processor>
+        		<processor type="StringEnclosedMatch">
+        			<element>Elements</element>
+        			<startString>Troop Type</startString>
+        			<endString>Baggage Train</endString>
+        			<includeStart>0</includeStart>
+	        		<processor type="RepeatRegexMatch">
+	        			<element>Element</element>
+	        			<regex>([\p{L}\s+/\-]+\d+\s+\d+\s+\d+\s+\d+\s+[\w\s]+$)</regex>
+	        			<processor type="RegexMatch">
+	        				<element>Training</element>
+	        				<regex>(\d+)</regex>
+	        			</processor>
+	        			<processor type="RegexMatch">
+	        				<element>Weapons</element>
+	        				<regex>(\d+)</regex>
+	        			</processor>
+	        			<processor type="RegexMatch">
+	        				<element>Armor</element>
+	        				<regex>(\d+)</regex>
+	        			</processor>
+	        			<processor type="RegexMatch">
+	        				<element>Number</element>
+	        				<regex>(\d+)</regex>
+	        			</processor>
+	        			<processor type="RegexMatch">
+	        				<element>Type</element>
+	        				<regex>([\s\w]+)</regex>
+	        			</processor>
+	        		</processor>	
+        		</processor>	
         		<processor type="RegexMatch">
         			<element>Food</element>
         			<regex>Food\s+(\d+)</regex>

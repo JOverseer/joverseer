@@ -6,5 +6,7 @@ public enum MapOptionValuesEnum {
     NationMapDarkServants,
     NationMapNeutrals,
     DrawOrdersOn,
-    DrawOrdersOff
+    DrawOrdersOff,
+    ShowClimateOn,
+    ShowClimateOff
 }

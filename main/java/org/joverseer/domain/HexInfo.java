@@ -9,6 +9,7 @@ public class HexInfo implements Serializable {
     int y;
     boolean visible;
     boolean hasPopulationCenter;
+    ClimateEnum climate;
 
     ArrayList nationSources = new ArrayList();
 
@@ -59,6 +60,18 @@ public class HexInfo implements Serializable {
 
     public int getHexNo() {
         return getX()*100 + getY();
+    }
+    
+    
+
+    
+    public ClimateEnum getClimate() {
+        return climate;
+    }
+
+    
+    public void setClimate(ClimateEnum climate) {
+        this.climate = climate;
     }
 
     public void merge(HexInfo hi) {

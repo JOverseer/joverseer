@@ -28,6 +28,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox cmbTurns;
     JComboBox cmbMaps;
     JCheckBox drawOrders;
+    JCheckBox showClimate;
     
     boolean fireEvents = true;
 
@@ -59,9 +60,9 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
         });
         cmbTurns.setPreferredSize(new Dimension(60, 16));
-        //lb.nextLine();
+        lb.nextLine();
 
-        lb.append(new JLabel("  "));
+        //lb.append(new JLabel("  "));
         lb.append(label = new JLabel("Map : "));
         lb.append(cmbMaps = new JComboBox());
         cmbMaps.setPreferredSize(new Dimension(100, 16));
@@ -91,9 +92,9 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
 
         });
-        //lb.nextLine();
+        lb.nextLine();
         
-        lb.append(new JLabel("  "));
+        //lb.append(new JLabel("  "));
         lb.append(label = new JLabel("Draw orders : "));
         //label.setPreferredSize(new Dimension(100, 16));
         lb.append(drawOrders = new JCheckBox());
@@ -111,6 +112,29 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 int turnNo = g.getCurrentTurn();
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
+                
+            }
+            
+        });
+        lb.nextLine();
+        //lb.append(new JLabel("  "));
+        lb.append(label = new JLabel("Show climate : "));
+        //label.setPreferredSize(new Dimension(100, 16));
+        lb.append(showClimate = new JCheckBox());
+        showClimate.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+                if (showClimate.getModel().isSelected()) {
+                    mapOptions.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
+                } else {
+                    mapOptions.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOff);
+                }
+                Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                if (!Game.isInitialized(g)) return;
+                int turnNo = g.getCurrentTurn();
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
                 
             }
             

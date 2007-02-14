@@ -12,7 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.HexInfo;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.springframework.binding.form.FormModel;
@@ -28,6 +32,7 @@ public class HexInfoViewer extends AbstractForm {
     HashMap<MovementDirection, JTextField> cavCosts = new HashMap<MovementDirection, JTextField>();
 
     JTextField hexNo;
+    JTextField climate;
 
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -37,8 +42,11 @@ public class HexInfoViewer extends AbstractForm {
         GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
         JLabel l;
         lb.append(l = new JLabel("Hex No :"), 2, 1);
-        lb.append(hexNo = new JTextField(), 3, 1);
+        lb.append(hexNo = new JTextField(), 2, 1);
         hexNo.setBorder(null);
+        lb.append(climate = new JTextField(), 2, 1);
+        climate.setPreferredSize(new Dimension(50, 12));
+        climate.setBorder(null);
         lb.nextLine();
         lb.append(new JSeparator(), 5, 1);
         lb.nextLine();
@@ -89,6 +97,10 @@ public class HexInfoViewer extends AbstractForm {
             }
             hexNoStr += String.valueOf(h.getRow());
             hexNo.setText(hexNoStr);
+            
+            Game g = GameHolder.instance().getGame();
+            HexInfo hi = (HexInfo)g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
+            climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
 
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {

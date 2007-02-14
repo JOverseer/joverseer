@@ -1,7 +1,11 @@
 package org.joverseer.support.readers.pdf;
 
+import java.util.ArrayList;
+
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.support.Container;
 
 
 public class ArmyWrapper {
@@ -11,6 +15,10 @@ public class ArmyWrapper {
     int warships;
     int transports;
     int warMachines;
+    String morale;
+    String climate;
+    int hexNo;
+    Container elements = new Container();
     
     public String getCommander() {
         return commander;
@@ -39,6 +47,36 @@ public class ArmyWrapper {
     
     
     
+    
+    public String getClimate() {
+        return climate;
+    }
+
+    
+    public void setClimate(String climate) {
+        this.climate = climate;
+    }
+
+    
+    public int getHexNo() {
+        return hexNo;
+    }
+
+    
+    public void setHexNo(int hexNo) {
+        this.hexNo = hexNo;
+    }
+
+    
+    public String getMorale() {
+        return morale;
+    }
+
+    
+    public void setMorale(String morale) {
+        this.morale = morale;
+    }
+
     public int getTransports() {
         return transports;
     }
@@ -74,5 +112,38 @@ public class ArmyWrapper {
         army.setElement(ArmyElementType.Warships, getWarships());
         army.setElement(ArmyElementType.Transports, getTransports());
         army.setElement(ArmyElementType.WarMachimes, getWarMachines());
+        for (ArmyElementWrapper aew : (ArrayList<ArmyElementWrapper>)getArmyElements().getItems()) {
+            ArmyElementType t = getArmyElementType(aew.getType());
+            for (ArmyElement ae : army.getElements()) {
+                if (ae.getArmyElementType() == t) {
+                    ae.setTraining(aew.getTraining());
+                    ae.setWeapons(aew.getWeapons());
+                    ae.setArmor(aew.getNumber());
+                }
+            }
+        }
     }
+    
+    private ArmyElementType getArmyElementType(String type) {
+        type = type.trim();
+        if (type.equals("Heavy Cavalry")) return ArmyElementType.HeavyCavalry;
+        if (type.equals("Light Cavalry")) return ArmyElementType.LightCavalry;
+        if (type.equals("Heavy Infantry")) return ArmyElementType.HeavyInfantry;
+        if (type.equals("Light Infantry")) return ArmyElementType.LightInfantry;
+        if (type.equals("Archers")) return ArmyElementType.Archers;
+        if (type.equals("Men at Arms")) return ArmyElementType.MenAtArms;
+        return null;
+    }
+
+    
+    public Container getArmyElements() {
+        return elements;
+    }
+
+    
+    public void setArmyElements(Container elements) {
+        this.elements = elements;
+    }
+    
+    
 }

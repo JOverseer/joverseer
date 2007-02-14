@@ -9,6 +9,7 @@ public class PopCenterWrapper {
 	String docks;
 	ProductAmountWrapper production;
 	ProductAmountWrapper stores;
+        String climate;
 	
 	public String getDocks() {
 		return docks;
@@ -40,8 +41,16 @@ public class PopCenterWrapper {
 	public void setStores(ProductAmountWrapper stores) {
 		this.stores = stores;
 	}
-	
-	public void updatePopCenter(PopulationCenter pc) {
+        
+        public String getClimate() {
+            return climate;
+        }
+        
+        public void setClimate(String climate) {
+            this.climate = climate;
+        }
+        
+    public void updatePopCenter(PopulationCenter pc) {
             pc.setProduction(ProductEnum.Leather, Integer.parseInt(getProduction().getLeather()));
             pc.setProduction(ProductEnum.Bronze, Integer.parseInt(getProduction().getBronze()));
             pc.setProduction(ProductEnum.Steel, Integer.parseInt(getProduction().getSteel()));

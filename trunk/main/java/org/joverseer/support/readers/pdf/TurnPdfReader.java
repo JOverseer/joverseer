@@ -19,9 +19,11 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Encounter;
+import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PdfTurnText;
@@ -164,8 +166,8 @@ public class TurnPdfReader implements Runnable {
             digester.addObjectCreate("txt2xml/Turn/PopulationCentres/PopCentre", "org.joverseer.support.readers.pdf.PopCenterWrapper");
             // set nested properties
             digester.addRule("txt2xml/Turn/PopulationCentres/PopCentre",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex"},
-                            new String[]{"name", "hexNo"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex", "Climate"},
+                            new String[]{"name", "hexNo", "climate"}));
             snpr.setAllowUnknownChildElements(true);
             // add pop center wrapper
             digester.addSetNext("txt2xml/Turn/PopulationCentres/PopCentre", "addItem", "org.joverseer.support.readers.pdf.PopCenterWrapper");
@@ -272,9 +274,23 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/Armies/Army", "addItem", "org.joverseer.support.readers.pdf.ArmyWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/Armies/Army",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Type", "Food", "Warships", "Transports", "WarMachines"},
-                            new String[]{"commander", "type", "food", "warships", "transports", "warMachines"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Type", "Food", "Warships", "Transports", "WarMachines", "Climate", "Hex"},
+                            new String[]{"commander", "type", "food", "warships", "transports", "warMachines", "climate", "hexNo"}));
             snpr.setAllowUnknownChildElements(true);
+            // create container for army elements
+            digester.addObjectCreate("txt2xml/Turn/Armies/Army/Elements", "org.joverseer.support.Container");
+            // add container to army
+            digester.addSetNext("txt2xml/Turn/Armies/Army/Elements", "setArmyElements");
+            // create element wrapper
+            digester.addObjectCreate("txt2xml/Turn/Armies/Army/Elements/Element", "org.joverseer.support.readers.pdf.ArmyElementWrapper");
+            // add element to container
+            digester.addSetNext("txt2xml/Turn/Armies/Army/Elements/Element", "addItem", "org.joverseer.support.readers.pdf.ArmyElementWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Armies/Army/Elements/Element",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Type", "Number", "Weapons", "Armor", "Training"},
+                            new String[]{"type", "number", "weapons", "armor", "training"}));
+            snpr.setAllowUnknownChildElements(true);
+            
             // create container for encounters
             digester.addObjectCreate("txt2xml/Turn/Encounters", "org.joverseer.support.Container");
             // add container to turn info
@@ -396,6 +412,7 @@ public class TurnPdfReader implements Runnable {
             }
             updateCombats(game);
             updateEncounters(game);
+            updateClimates(game);
         }
         catch (Exception exc) {
             if (getMonitor() != null) {
@@ -504,6 +521,39 @@ public class TurnPdfReader implements Runnable {
         }
         if (!pcsNotFound.equals("")) {
             throw new Exception("Population centers " + pcsNotFound + " not found in turn.");
+        }
+    }
+    
+    private ClimateEnum translateClimate(String climate) {
+        if (climate == null) return null;
+        if (climate.equals("Polar")) return ClimateEnum.Polar;
+        if (climate.equals("Severe")) return ClimateEnum.Severe;
+        if (climate.equals("Cold")) return ClimateEnum.Cold;
+        if (climate.equals("Cool")) return ClimateEnum.Cool;
+        if (climate.equals("Mild")) return ClimateEnum.Mild;
+        if (climate.equals("Warm")) return ClimateEnum.Warm;
+        if (climate.equals("Hot")) return ClimateEnum.Hot;
+        return null;
+    }
+    
+    public void updateClimates(Game game) throws Exception {
+        Container pcws = turnInfo.getPopulationCenters();
+        Container his = turn.getContainer(TurnElementsEnum.HexInfo);
+        for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
+            HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", pcw.getHexNo());
+            ClimateEnum climate = translateClimate(pcw.getClimate());
+            if (climate != null) {
+                hi.setClimate(climate);
+            }
+        }
+        
+        Container aws = turnInfo.getArmies();
+        for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
+            HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", aw.getHexNo());
+            ClimateEnum climate = translateClimate(aw.getClimate());
+            if (climate != null) {
+                hi.setClimate(climate);
+            }
         }
     }
     

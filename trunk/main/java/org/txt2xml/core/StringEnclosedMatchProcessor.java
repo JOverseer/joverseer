@@ -104,6 +104,14 @@ public class StringEnclosedMatchProcessor extends Processor {
         this.includeStart = includeStart;
     }
 
+    protected void resetMatching() {
+        super.resetMatching();
+        matchStart = 0;
+        matchEnd = 0;
+    }
+
+    
+
 
     
 }

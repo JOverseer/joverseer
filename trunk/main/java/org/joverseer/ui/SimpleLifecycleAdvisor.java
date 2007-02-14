@@ -139,12 +139,12 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
             }
         }
         
-        if (toolbar != null) {
-            toolbar.addSeparator();
-            
-            MapOptionsView view = (MapOptionsView)Application.instance().getApplicationContext().getBean("mapOptsView");
-            toolbar.add(view.getControl());            
-        }
+//        if (toolbar != null) {
+//            toolbar.addSeparator();
+//            
+//            MapOptionsView view = (MapOptionsView)Application.instance().getApplicationContext().getBean("mapOptsView");
+//            toolbar.add(view.getControl());            
+//        }
     }
 
     /**

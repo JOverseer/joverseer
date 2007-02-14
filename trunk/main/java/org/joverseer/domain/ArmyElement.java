@@ -6,6 +6,9 @@ import java.io.Serializable;
 public class ArmyElement implements Serializable {
     ArmyElementType armyElementType;
     int number;
+    int training;
+    int weapons;
+    int armor;
 
     public ArmyElement(ArmyElementType armyElementType, int number) {
         this.armyElementType = armyElementType;
@@ -35,4 +38,35 @@ public class ArmyElement implements Serializable {
         return String.valueOf(getNumber()) + getArmyElementType().getType();
     }
 
+    
+    public int getArmor() {
+        return armor;
+    }
+
+    
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+
+    
+    public int getTraining() {
+        return training;
+    }
+
+    
+    public void setTraining(int training) {
+        this.training = training;
+    }
+
+    
+    public int getWeapons() {
+        return weapons;
+    }
+
+    
+    public void setWeapons(int weapons) {
+        this.weapons = weapons;
+    }
+
+    
 }

@@ -586,14 +586,29 @@
     <bean id="HealingSpellsProcessor" class="org.joverseer.orders.TurnOrderPhaseProcessor">
 	    <constructor-arg index="0" value="Healing Spells"/>
 	    <constructor-arg index="1" value="120"/>
+	    <property name="orderScheduler">	
+	    	<bean class="org.joverseer.orders.BaseOrderScheduler"/>
+	    </property>
+    </bean>
+    
+    <bean id="ProductionRevenueProcessor" class="org.joverseer.orders.me.ProductionRevenuePhaseProcessor">
+	    <constructor-arg index="0" value="Production-Revenue"/>
     </bean>
     
     <bean id="TurnProcessor" class="org.joverseer.orders.BaseTurnProcessor">
     	<property name="phases">
 	    	<map>            	
 	    		<entry>
-            		<key><value>1</value></key>
+            		<key><value>100</value></key>
 		    		<ref bean="HealingProcessor"/>
+	    		</entry>
+	    		<entry>
+            		<key><value>101</value></key>
+		    		<ref bean="HealingSpellsProcessor"/>
+	    		</entry>
+	    		<entry>
+            		<key><value>400</value></key>
+		    		<ref bean="ProductionRevenueProcessor"/>
 	    		</entry>
     		</map>
     	</property>	

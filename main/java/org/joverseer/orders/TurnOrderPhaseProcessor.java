@@ -9,7 +9,7 @@ import org.joverseer.game.TurnElementsEnum;
 
 public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
 
-    AbstractOrderScheduler orderScheduler;
+    BaseOrderScheduler orderScheduler;
     Integer[] phaseOrderNumbers;
     
     public TurnOrderPhaseProcessor(String name) {
@@ -53,7 +53,7 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
         ArrayList<OrderExecutionWrapper> scheduledOrders = getOrderScheduler().getScheduledOrders();
         for (OrderExecutionWrapper oew : scheduledOrders) {
             for (AbstractOrderProcessor processor : AbstractOrderProcessor.processorRegistry) {
-                if (processor.appliesTo(t, oew.getCharacter(), oew.getOrderNo())) {
+                if (processor.appliesTo(oew.getCharacter(), oew.getOrderNo())) {
                     processor.processOrder(t, oew.getCharacter(), oew.getOrderNo());
                 }
             }
@@ -61,12 +61,12 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
     }
 
     
-    public AbstractOrderScheduler getOrderScheduler() {
+    public BaseOrderScheduler getOrderScheduler() {
         return orderScheduler;
     }
 
     
-    public void setOrderScheduler(AbstractOrderScheduler orderScheduler) {
+    public void setOrderScheduler(BaseOrderScheduler orderScheduler) {
         this.orderScheduler = orderScheduler;
     }
     

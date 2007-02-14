@@ -3,10 +3,13 @@ package org.joverseer.orders;
 import java.util.ArrayList;
 
 
-public abstract class AbstractOrderScheduler {
+public class BaseOrderScheduler {
     ArrayList<OrderExecutionWrapper> scheduledOrders = new ArrayList<OrderExecutionWrapper>();
     
-    public abstract void scheduleOrders(ArrayList<OrderExecutionWrapper> orders);
+    public void scheduleOrders(ArrayList<OrderExecutionWrapper> orders) {
+        scheduledOrders.clear();
+        scheduledOrders.addAll(orders);
+    }
     
     public ArrayList<OrderExecutionWrapper> getScheduledOrders() {
         return scheduledOrders;

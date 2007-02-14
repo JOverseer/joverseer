@@ -26,7 +26,7 @@ public class HealingTurnPhaseProcessor extends AbstractTurnPhaseProcessor {
 
     public void processPhase(Turn t) {
         for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
-            if (c.getHealth() < 100) {
+            if (c.getHealth() != null && c.getHealth() > 0 && c.getHealth() < 100) {
                 
                 int healAmt = Math.min(100 - c.getHealth(), getHealthRecoveryPerTurn());
                 c.setHealth(healAmt + c.getHealth());

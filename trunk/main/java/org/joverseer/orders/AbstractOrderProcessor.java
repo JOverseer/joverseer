@@ -29,7 +29,7 @@ public abstract class AbstractOrderProcessor {
         if (!checkOrder(c, orderNo)) {
             return;
         }
-        processOrderImpl(c, orderNo);
+        processOrderImpl(t, c, orderNo);
     }
 
     public boolean checkOrder(Character c, int orderNo) {

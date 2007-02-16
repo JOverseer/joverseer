@@ -24,6 +24,10 @@ public class HealingSpellOrderProcessor extends AbstractSpellOrderProcessor {
     public boolean appliesTo(Character c, int orderNo) {
         return getOrder(c, orderNo).getOrderNo() == 120;
     }
+    
+    public boolean spellCastOutcome(Character c, int spellNo) {
+        
+    }
 
     public void processOrderImpl(Turn t, Character c, int orderNo) {
         Order o = getOrder(c, orderNo);

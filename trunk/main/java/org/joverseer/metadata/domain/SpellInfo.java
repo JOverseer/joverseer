@@ -68,5 +68,10 @@ public class SpellInfo implements Serializable {
         this.requirements = requirements;
     }
     
-    
+    public SpellDifficultyEnum getDifficultyLevel() {
+        if (getDifficulty().equals("E")) return SpellDifficultyEnum.Easy;
+        if (getDifficulty().equals("A")) return SpellDifficultyEnum.Average;
+        if (getDifficulty().equals("H")) return SpellDifficultyEnum.Hard;
+        return null;
+    }
 }

@@ -106,7 +106,7 @@ public class MovementUtils {
         }
         int cost = movementCosts[dest.getTerrain().getTerrain() - 1];
         if (!isFed) {
-            cost = cost + (new Double(Math.ceil(new Double(cost) / 2))).intValue();
+            cost = cost + (new Double(Math.ceil(new Double(cost) / 3))).intValue();
         }
         if (majorRiver) {
             cost += 1;

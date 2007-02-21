@@ -61,6 +61,7 @@ public class TurnPdfReader implements Runnable {
     File xmlFile;
     String contents;
     PDDocument document;
+    boolean deleteFilesWhenFinished = true;
     
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
@@ -109,6 +110,12 @@ public class TurnPdfReader implements Runnable {
             }
         }
         return ret;
+    }
+    
+    private void cleanup() {
+        if (!deleteFilesWhenFinished) return;
+        pdfTextFile.delete();
+        xmlFile.delete();
     }
 
     public void pdf2xml() throws Throwable {
@@ -325,6 +332,7 @@ public class TurnPdfReader implements Runnable {
 //            int turnNo = Integer.parseInt(m.group(2));
 //            turnInfo.setNationNo(nationNo);
 //            turnInfo.setTurnNo(turnNo);
+            cleanup();
     	}
     	catch (Exception exc) {
 			//todo fix

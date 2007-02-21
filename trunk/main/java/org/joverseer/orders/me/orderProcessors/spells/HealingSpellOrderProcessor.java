@@ -5,6 +5,7 @@ import org.joverseer.domain.Order;
 import org.joverseer.game.Turn;
 import org.joverseer.orders.OrderUtils;
 import org.joverseer.orders.checks.CharacterExistsCheck;
+import org.joverseer.orders.checks.CharacterHasSpellCheck;
 import org.joverseer.orders.checks.CharacterInSameHexCheck;
 import org.joverseer.orders.checks.RequiredParameterNumberCheck;
 import org.joverseer.orders.checks.RequiresSkillCheck;
@@ -18,6 +19,7 @@ public class HealingSpellOrderProcessor extends AbstractSpellOrderProcessor {
         addCheck(new RequiresSkillCheck(RequiresSkillCheck.MAGE_SKILL));
         addCheck(new ValidSpellCheck(0, "2, 4, 6, 8"));
         addCheck(new CharacterExistsCheck(1));
+        addCheck(new CharacterHasSpellCheck(0, 1));
         addCheck(new CharacterInSameHexCheck(1));
     }
     
@@ -25,9 +27,7 @@ public class HealingSpellOrderProcessor extends AbstractSpellOrderProcessor {
         return getOrder(c, orderNo).getOrderNo() == 120;
     }
     
-    public boolean spellCastOutcome(Character c, int spellNo) {
-        
-    }
+    
 
     public void processOrderImpl(Turn t, Character c, int orderNo) {
         Order o = getOrder(c, orderNo);

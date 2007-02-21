@@ -134,6 +134,7 @@ public class ArmyViewer extends AbstractForm {
         GameMetadata gm = game.getMetadata();
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
 
+        
         armySize.setText("Size: " + army.getSize().toString());
         armyType.setText(army.isNavy() ? "Navy" : "Army");
         if (army.getElements().size() > 0) {
@@ -144,6 +145,9 @@ public class ArmyViewer extends AbstractForm {
                         + element.getDescription());
             }
             extraInfo.setText(extraInfo.getText() + " (" + CombatUtils.getNakedHeavyInfantryEquivalent(army) + "enHI)");
+        } else if (army.getTroopCount() > 0) {
+            extraInfo.setVisible(true);
+            extraInfo.setText("~ " + army.getTroopCount() + " men");
         } else {
             extraInfo.setVisible(false);
         }

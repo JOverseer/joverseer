@@ -53,6 +53,7 @@ public class PopulationCenterViewer extends AbstractForm {
     JTextField sizeFort;
     JTextField lostThisTurn;
     JTextField productionDescription;
+    JTextField turnInfo;
     HashMap production = new HashMap();
     HashMap stores = new HashMap();
 
@@ -134,6 +135,12 @@ public class PopulationCenterViewer extends AbstractForm {
             lostThisTurn.setVisible(true);
         } else {
             lostThisTurn.setVisible(false);
+        }
+        if (pc.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
+            turnInfo.setVisible(true);
+            turnInfo.setText("Info from turn " + Math.min(pc.getInfoSource().getTurnNo(), 0));
+        } else {
+            turnInfo.setVisible(false);
         }
     }
 
@@ -219,6 +226,13 @@ public class PopulationCenterViewer extends AbstractForm {
         lostThisTurn.setBorder(null);
         lostThisTurn.setFont(GraphicUtils.getFont(lostThisTurn.getFont().getName(), Font.ITALIC, lostThisTurn.getFont().getSize()));
         lostThisTurn.setPreferredSize(new Dimension(100, 12));
+        
+        tlb.row();
+        tlb.cell(turnInfo = new JTextField());
+        turnInfo.setBorder(null);
+        turnInfo.setFont(GraphicUtils.getFont(lostThisTurn.getFont().getName(), Font.ITALIC, lostThisTurn.getFont().getSize()));
+        turnInfo.setPreferredSize(new Dimension(100, 12));
+        
         
         JPanel pnl = tlb.getPanel();
         pnl.setBackground(Color.white);

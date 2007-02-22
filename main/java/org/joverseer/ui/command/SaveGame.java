@@ -13,7 +13,7 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.util.Locale;
 import java.util.prefs.Preferences;
-
+import java.util.zip.*;
 
 public class SaveGame extends ActionCommand {
     public SaveGame() {
@@ -39,11 +39,14 @@ public class SaveGame extends ActionCommand {
         fileChooser.setSelectedFile(new File(fname));
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
+            GZIPOutputStream zos;
             try {
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(f));
+                ObjectOutputStream out = new ObjectOutputStream(zos = new GZIPOutputStream(new FileOutputStream(f)));
                 out.writeObject(gh.getGame());
                 Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
                 prefs.put("saveDir", f.getParent());
+                zos.finish();
+                out.close();
             }
             catch (Exception exc) {
                 MessageDialog d = new MessageDialog("Error", exc.getMessage());

@@ -57,8 +57,13 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
-                <value>selectHexCommand</value>
-                <value>propertiesCommand</value>
+                <bean class="org.joverseer.ui.command.CreateGame"/>
+                <bean class="org.joverseer.ui.command.LoadGame"/>
+                <bean class="org.joverseer.ui.command.SaveGame"/>
+                <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
+                <bean class="org.joverseer.ui.command.ImportOrders"/>
+                <value>separator</value>
+            	<bean class="org.joverseer.ui.command.ClearMapItems"/>
 			</list>
 		</property>
 	</bean>

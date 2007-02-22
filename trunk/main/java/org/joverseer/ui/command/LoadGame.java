@@ -19,7 +19,7 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.filechooser.DefaultFileFilter;
-
+import java.util.zip.*;
 
 public class LoadGame extends ActionCommand {
     public LoadGame() {
@@ -59,8 +59,15 @@ public class LoadGame extends ActionCommand {
             File f = fileChooser.getSelectedFile();
             GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
             try {
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-                gh.setGame((Game)in.readObject());
+                try {
+                    ObjectInputStream in = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
+                    gh.setGame((Game)in.readObject());
+                }
+                catch (Exception exc) {
+                    // try to read unzipped file
+                    ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
+                    gh.setGame((Game)in.readObject());
+                }
                 Application.instance().getApplicationContext().publishEvent(
                                     new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
 

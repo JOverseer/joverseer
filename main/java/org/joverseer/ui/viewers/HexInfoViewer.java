@@ -27,6 +27,9 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
+import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
+import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
@@ -61,6 +64,11 @@ public class HexInfoViewer extends AbstractForm {
     AddBridgeCommand addBridgeSW = new AddBridgeSW();
     AddBridgeCommand addBridgeW = new AddBridgeW();
     AddBridgeCommand addBridgeNW = new AddBridgeNW();
+    
+    ShowFedInfantryArmyRangeCommand showFedInfantryArmyRangeCommand = new ShowFedInfantryArmyRangeCommand();
+    ShowUnfedInfantryArmyRangeCommand showUnfedInfantryArmyRangeCommand = new ShowUnfedInfantryArmyRangeCommand();
+    ShowFedCavalryArmyRangeCommand showFedCavalryArmyRangeCommand = new ShowFedCavalryArmyRangeCommand();
+    ShowUnfedCavalryArmyRangeCommand showUnfedCavalryArmyRangeCommand = new ShowUnfedCavalryArmyRangeCommand();
 
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -173,7 +181,12 @@ public class HexInfoViewer extends AbstractForm {
                 "hexInfoCommandGroup",
                 new Object[] {addBridgeNE, addBridgeE, addBridgeSE, addBridgeSW, addBridgeW, addBridgeNW, 
                         "separator",
-                        removeBridgeNE, removeBridgeE, removeBridgeSE, removeBridgeSW, removeBridgeW, removeBridgeNW
+                        removeBridgeNE, removeBridgeE, removeBridgeSE, removeBridgeSW, removeBridgeW, removeBridgeNW,
+                        "separator",
+                        showFedInfantryArmyRangeCommand,
+                        showUnfedInfantryArmyRangeCommand,
+                        showFedCavalryArmyRangeCommand,
+                        showUnfedCavalryArmyRangeCommand,
                         });
         return group.createPopupMenu();
     }
@@ -306,6 +319,51 @@ public class HexInfoViewer extends AbstractForm {
             hex.addHexSideElement(side, HexSideElementEnum.Bridge);
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+        }
+    }
+    
+    public class ShowArmyRangeCommand extends ActionCommand {
+        boolean cav;
+        boolean fed;
+        
+        public ShowArmyRangeCommand(String arg0, boolean cav, boolean fed) {
+            super(arg0);
+            this.cav = cav;
+            this.fed = fed;
+        }
+
+        protected void doExecuteCommand() {
+            Hex hex = (Hex)getFormObject();
+            ArmyRangeMapItem armi = new ArmyRangeMapItem(hex.getHexNo(), cav, fed);
+            AbstractMapItem.add(armi);
+
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
+    }
+    
+    public class ShowFedInfantryArmyRangeCommand extends ShowArmyRangeCommand {
+        public ShowFedInfantryArmyRangeCommand() {
+            super("showFedInfantryArmyRangeCommand", false, true);
+        }
+    }
+
+    public class ShowUnfedInfantryArmyRangeCommand extends ShowArmyRangeCommand {
+        public ShowUnfedInfantryArmyRangeCommand() {
+            super("showUnfedInfantryArmyRangeCommand", false, false);
+        }
+    }
+
+    public class ShowFedCavalryArmyRangeCommand extends ShowArmyRangeCommand {
+        public ShowFedCavalryArmyRangeCommand() {
+            super("showFedCavalryArmyRangeCommand", true, true);
+        }
+    }
+
+    public class ShowUnfedCavalryArmyRangeCommand extends ShowArmyRangeCommand {
+        public ShowUnfedCavalryArmyRangeCommand() {
+            super("showUnfedCavalryArmyRangeCommand", true, false);
         }
     }
 

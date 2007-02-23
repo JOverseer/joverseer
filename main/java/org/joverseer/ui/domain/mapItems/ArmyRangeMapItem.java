@@ -9,6 +9,11 @@ import java.util.HashMap;
 public class ArmyRangeMapItem extends AbstractMapItem {
     Army army;
     HashMap rangeHexes;
+    
+    public ArmyRangeMapItem(int hexNo, boolean cav, boolean fed) {
+        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed);
+    }
+    
     public ArmyRangeMapItem(Army a) {
         army = a;
         int hexNo = Integer.parseInt(army.getHexNo());

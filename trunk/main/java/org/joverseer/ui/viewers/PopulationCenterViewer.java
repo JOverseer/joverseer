@@ -57,7 +57,7 @@ public class PopulationCenterViewer extends AbstractForm {
     HashMap production = new HashMap();
     HashMap stores = new HashMap();
 
-    ActionCommand editPopulationCenterCommand = new EditPopulationCenterCommand();
+    ActionCommand editPopulationCenter = new EditPopulationCenterCommand();
     ActionCommand toggleLostThisTurnCommand = new ToggleLostThisTurnCommand();
     ActionCommand deletePopulationCenterCommand = new DeletePopulationCenterCommand();
     
@@ -247,7 +247,7 @@ public class PopulationCenterViewer extends AbstractForm {
         PopulationCenter pc = (PopulationCenter) getFormObject();
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "populationCenterCommandGroup",
-                new Object[] {toggleLostThisTurnCommand, "separator", editPopulationCenterCommand, "separator", deletePopulationCenterCommand});
+                new Object[] {toggleLostThisTurnCommand, "separator", editPopulationCenter, "separator", deletePopulationCenterCommand});
         return group.createPopupMenu();
     }
     

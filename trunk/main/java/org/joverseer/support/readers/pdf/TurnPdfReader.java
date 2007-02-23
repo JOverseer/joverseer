@@ -61,7 +61,7 @@ public class TurnPdfReader implements Runnable {
     File xmlFile;
     String contents;
     PDDocument document;
-    boolean deleteFilesWhenFinished = true;
+    boolean deleteFilesWhenFinished = false;
     
     public TurnPdfReader(Game game, String filename) {
         this.game = game;

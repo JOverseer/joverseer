@@ -344,9 +344,10 @@
         	<startString>ORDERS GIVEN</startString>
         	<endString>MEPBM GAMES|MEPBM Games</endString>
         	
-        	<processor type="RepeatRegexMatch">
+        	<processor type="CharOrders">
         		<element>Character</element>
-        		<regex>(\p{L}+(?:[\s-]\p{L}+)*\s+was located in [.\p{L}\d\-\.\s/?#&amp;&#13;:()]+\.)</regex>
+<!--         		<regex>(\p{L}+(?:[\s-]\p{L}+)*\s+was located in [.\p{L}\d\-\.\s/?#&amp;&#13;:()]+\.)</regex>
+ -->
         		<processor type="RegexMatch">
         			<element>Name</element>
         			<regex>(\p{L}+(?:[\s-]\p{L}+)*)\s+was located in</regex>
@@ -365,12 +366,12 @@
 					<regex>was ordered to cast a lore spell. Locate Artifact \- Not able to</regex>
 				</processor>
 
-        		<processor type="LA">
+        		<processor type="LAOwner">
         			<!--  Parse LA result with owner -->
         			<element>LocateArtifact</element>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>(\p{L}+(?:[\s\p{L}']+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\-\p{L}']+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>
@@ -391,7 +392,7 @@
         			<element>LocateArtifact</element>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>(\p{L}+(?:[\s\p{L}']+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\-\p{L}']+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>
@@ -409,7 +410,7 @@
 				</processor>
         		
         		
-        		<processor type="LAT">
+        		<processor type="LATOwner">
         			<!--  Parse LAT result with owner -->
         			<element>LocateArtifactTrue</element>
         			<processor type="RegexMatch">
@@ -435,7 +436,7 @@
         			<element>LocateArtifactTrue</element>
         			<processor type="RegexMatch">
         				<element>ArtifactName</element>
-        				<regex>(\p{L}+(?:[\s\p{L}']+)*)</regex>
+        				<regex>(\p{L}+(?:[\s\-\p{L}']+)*)</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>ArtifactId</element>

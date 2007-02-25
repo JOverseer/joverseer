@@ -43,7 +43,7 @@ public class NationReader implements MetadataReader {
                 {"Unknown", "Un"},
                 {"Woodmen", "Wm"},
                 {"Northmen", "Nm"},
-                {"Éothraim", "Eo"},
+                {"Γ‰othraim", "Eo"},
                 {"Arthedain", "Ar"},
                 {"Cardolan", "Ca"},
                 {"Northern Gondor", "NG"},

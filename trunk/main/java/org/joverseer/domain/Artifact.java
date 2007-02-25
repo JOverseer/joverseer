@@ -1,7 +1,6 @@
 package org.joverseer.domain;
 
 import java.io.Serializable;
-
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 

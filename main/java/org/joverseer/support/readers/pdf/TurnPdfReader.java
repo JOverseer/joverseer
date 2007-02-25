@@ -427,7 +427,7 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Unexpected error : '" + exc.getMessage() + "'.");
             }
-            throw new Exception("Error updating game from Xml file.", exc);
+            throw new Exception("Error updating game from Pdf file.", exc);
         }
     }
     

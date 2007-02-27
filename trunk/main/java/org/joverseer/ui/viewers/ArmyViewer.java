@@ -41,7 +41,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class ArmyViewer extends AbstractForm {
+public class ArmyViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "ArmyViewer";
 
@@ -61,6 +61,10 @@ public class ArmyViewer extends AbstractForm {
 
     public ArmyViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return Army.class.isInstance(obj);
     }
 
     protected JComponent createFormControl() {

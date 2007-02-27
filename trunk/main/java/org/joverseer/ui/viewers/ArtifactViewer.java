@@ -18,7 +18,7 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class ArtifactViewer extends AbstractForm {
+public class ArtifactViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "ArtifactViewer";
 
@@ -28,6 +28,10 @@ public class ArtifactViewer extends AbstractForm {
     
     public ArtifactViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return Artifact.class.isInstance(obj);
     }
     
     public void setFormObject(Object obj) {

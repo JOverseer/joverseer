@@ -16,7 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class NationMessageViewer extends AbstractForm {
+public class NationMessageViewer extends ObjectViewer {
     public static final String FORM_PAGE = "NationMessageViewer";
 
     JTextArea rumor;
@@ -24,6 +24,10 @@ public class NationMessageViewer extends AbstractForm {
 
     public NationMessageViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return NationMessage.class.isInstance(obj);
     }
 
     protected JComponent createFormControl() {

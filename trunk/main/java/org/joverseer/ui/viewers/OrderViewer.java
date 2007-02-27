@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.Order;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderEditorForm;
@@ -29,13 +30,17 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class OrderViewer extends AbstractForm implements ActionListener {
+public class OrderViewer extends ObjectViewer implements ActionListener {
     public static final String FORM_PAGE = "OrderViewer";
 
     JTextField orderText;
 
     public OrderViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return Order.class.isInstance(obj);
     }
 
     public void setFormObject(Object object) {

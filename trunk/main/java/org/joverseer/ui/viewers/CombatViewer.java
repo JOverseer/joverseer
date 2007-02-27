@@ -32,7 +32,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class CombatViewer extends AbstractForm {
+public class CombatViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "CombatViewer";
     
@@ -42,6 +42,10 @@ public class CombatViewer extends AbstractForm {
     
     public CombatViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return Combat.class.isInstance(obj);
     }
 
     protected JComponent createFormControl() {

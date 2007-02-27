@@ -12,6 +12,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -27,15 +28,7 @@ public class HighlightDegradeCandidates extends ActionCommand {
     }
 
     protected void doExecuteCommand() {
-        if (!GameHolder.hasInitializedGame()) {
-            // show error, cannot import when game not initialized
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            MessageDialog md = new MessageDialog(
-                    ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
-                    ms.getMessage("errorImportingTurns", new String[]{}, Locale.getDefault()));
-            md.showDialog();
-            return;
-        }
+        if (!ActiveGameChecker.checkActiveGameExists()) return;
 
         HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
         Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();

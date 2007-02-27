@@ -262,6 +262,33 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"HexNo", "Narration"},
                             new String[]{"hexNo", "narration"}));
             snpr.setAllowUnknownChildElements(true);
+            // create army container
+            digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies", "org.joverseer.support.Container");
+            // add container to combat
+            digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies", "setArmies");
+            // create CombatArmy
+            digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army", "org.joverseer.support.readers.pdf.CombatArmy");
+            // add to container
+            digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies/Army", "addItem", "org.joverseer.support.readers.pdf.CombatArmy");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Combats/Armies/Army",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander"},
+                            new String[]{"commanderName"}));
+            snpr.setAllowUnknownChildElements(true);
+            // create regiment container
+            digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments", "org.joverseer.support.Container");
+            // add container to army
+            digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments", "setRegiments");
+            // create CombatArmyRegiment
+            digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments/Regiment", "org.joverseer.support.readers.pdf.CombatArmyRegiment");
+            // add to container
+            digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments/Regiment", "addItem", "org.joverseer.support.readers.pdf.CombatArmyRegiment");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Combats/Armies/Army/Regiments/Regiment",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Description"},
+                            new String[]{"description"}));
+            snpr.setAllowUnknownChildElements(true);
+            
             // create challenge wrapper
             digester.addObjectCreate("txt2xml/Turn/Combats/Challenge", "org.joverseer.support.readers.pdf.ChallengeWrapper");
             // add challenge wrapper

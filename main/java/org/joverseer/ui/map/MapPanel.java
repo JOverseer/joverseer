@@ -151,22 +151,22 @@ public class MapPanel extends JPanel implements MouseListener {
 
         Graphics2D g = map.createGraphics();
 
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        Image img = imgSource.getImage("memap");
-        try {
-        	wait(1000);
-        }
-        catch (Exception exc) {};
-        g.drawImage(img, 0, 0, this);
-        
-//        for (Hex h : (Collection<Hex>)gm.getHexes()) {
-//            setHexLocation(h.getColumn(), h.getRow());
-//            for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
-//                if (r.appliesTo(h)) {
-//                    r.render(h, g, location.x, location.y);
-//                }
-//            }
+//        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+//        Image img = imgSource.getImage("memap");
+//        try {
+//        	wait(1000);
 //        }
+//        catch (Exception exc) {};
+//        g.drawImage(img, 0, 0, this);
+        
+        for (Hex h : (Collection<Hex>)gm.getHexes()) {
+            setHexLocation(h.getColumn(), h.getRow());
+            for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                if (r.appliesTo(h)) {
+                    r.render(h, g, location.x, location.y);
+                }
+            }
+        }
     }
     
     private void createMapItems() {

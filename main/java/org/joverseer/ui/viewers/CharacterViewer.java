@@ -67,7 +67,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 
 
-public class CharacterViewer extends AbstractForm {
+public class CharacterViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "CharacterViewer";
 
@@ -103,6 +103,10 @@ public class CharacterViewer extends AbstractForm {
 
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return Character.class.isInstance(obj);
     }
 
     public void setFormObject(Object object) {

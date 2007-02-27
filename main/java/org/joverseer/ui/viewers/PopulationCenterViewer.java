@@ -18,6 +18,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
@@ -46,7 +47,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 
-public class PopulationCenterViewer extends AbstractForm {
+public class PopulationCenterViewer extends ObjectViewer {
     public static final String FORM_PAGE = "PopulationCenterViewer";
 
     JTextField nation;
@@ -63,6 +64,10 @@ public class PopulationCenterViewer extends AbstractForm {
     
     public PopulationCenterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return PopulationCenter.class.isInstance(obj);
     }
 
     public void setFormObject(Object object) {

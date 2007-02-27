@@ -16,6 +16,7 @@ import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -41,15 +42,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
     }
 
     protected void doExecuteCommand() {
-        if (!GameHolder.hasInitializedGame()) {
-            // show error, cannot import when game not initialized
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            MessageDialog md = new MessageDialog(
-                    ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
-                    ms.getMessage("errorImportingTurns", new String[]{}, Locale.getDefault()));
-            md.showDialog();
-            return;
-        }
+        if (!ActiveGameChecker.checkActiveGameExists()) return;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 

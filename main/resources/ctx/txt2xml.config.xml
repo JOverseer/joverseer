@@ -331,11 +331,30 @@
                     <element>HexNo</element>
                     <regex>(\d{4})</regex>
                 </processor>
-                <processor type="StringEnclosedMatch">
-                    <element>Army</element>
-                    <startString>At the head</startString>
-                    <endString>At the head|The Camp|The Village|The Town|The Major Town|The City|Report from</endString>
-                </processor>
+                <processor type="Copy">
+                	<element>Armies</element>
+	                <processor type="StringEnclosedMatch">
+	                    <element>Army</element>
+	                    <startString>At the head</startString>
+	                    <endString>At the head|The Camp|The Village|The Town|The Major Town|The City|Report from</endString>
+	                    <processor type="StringEnclosedMatch">
+	                    	<element>Commander</element>
+	                    	<startString>rode </startString>
+	                    	<endString> of the nation</endString>
+	                    	<includeStart>0</includeStart>
+	                    </processor>
+	                    <processor type="Copy">
+	                    	<element>Regiments</element>
+		                    <processor type="RepeatRegexMatch">
+		                    	<element>Regiment</element>
+		                    	<regex>(\d+ [\p{L}/ ]+)$</regex>
+		                    	<processor type="Copy">
+		                    		<element>Description</element>
+			                    </processor>
+		                    </processor>
+		                </processor>
+	                </processor>
+	            </processor>
             </processor>
         </processor>
        <processor type="StringEnclosedMatch">

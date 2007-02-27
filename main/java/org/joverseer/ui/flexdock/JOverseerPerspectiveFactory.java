@@ -36,37 +36,7 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(.3f);
         dss.add(ds);
 
-        ds = new DockingState("characterListView");
-        ds.setRegion(DockingConstants.SOUTH_REGION);
-        ds.setRelativeParentId("mapView");
-        ds.setSplitRatio(.3f);
-        dss.add(ds);
-
-        ds = new DockingState("populationCenterListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-
-        ds = new DockingState("nationEconomyListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-        
-        ds = new DockingState("nationProductionListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-
-        ds = new DockingState("nationMessageListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-
-        ds = new DockingState("artifactListView");
+        ds = new DockingState("armySizeEstimatesListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
@@ -78,38 +48,25 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(1f);
         dss.add(ds);
         
-        ds = new DockingState("ownedArtifactsListView");
+        ds = new DockingState("artifactListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
         dss.add(ds);
         
-        ds = new DockingState("locateArtifactResultListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-        
-        ds = new DockingState("spellInfoListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-
-        ds = new DockingState("trackCharacterListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
-
-
-        ds = new DockingState("orderListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
+        ds = new DockingState("characterListView");
+        ds.setRegion(DockingConstants.SOUTH_REGION);
+        ds.setRelativeParentId("mapView");
+        ds.setSplitRatio(.3f);
         dss.add(ds);
         
         ds = new DockingState("companyListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        ds = new DockingState("nationEconomyListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
@@ -121,7 +78,44 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(1f);
         dss.add(ds);
         
-        ds = new DockingState("armySizeEstimatesListView");
+        ds = new DockingState("enemyAgentListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        ds = new DockingState("locateArtifactResultListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+
+                ds = new DockingState("nationMessageListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        
+        ds = new DockingState("orderListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        ds = new DockingState("ownedArtifactsListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        ds = new DockingState("populationCenterListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+        ds = new DockingState("nationProductionListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
@@ -132,18 +126,26 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
         dss.add(ds);
-        
-        ds = new DockingState("enemyAgentListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
-        dss.add(ds);
 
         ds = new DockingState("spellcasterListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);
         dss.add(ds);
+
+        ds = new DockingState("spellInfoListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+
+        ds = new DockingState("trackCharacterListView");
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("characterListView");
+        ds.setSplitRatio(1f);
+        dss.add(ds);
+        
+       
 
         ds = new DockingState("currentHexDataViewer");
         ds.setRegion(DockingConstants.EAST_REGION);

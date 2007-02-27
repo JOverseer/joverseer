@@ -5,6 +5,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.orders.BaseTurnProcessor;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
@@ -18,6 +19,7 @@ public class RunOrders extends ActionCommand {
     }
 
     protected void doExecuteCommand() {
+        if (!ActiveGameChecker.checkActiveGameExists()) return;
         Game g = GameHolder.instance().getGame();
         BaseTurnProcessor btp = (BaseTurnProcessor)Application.instance().getApplicationContext().getBean("TurnProcessor");
         Turn newTurn = btp.copyTurn(g.getTurn());

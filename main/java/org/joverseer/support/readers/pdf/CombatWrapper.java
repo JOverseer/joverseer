@@ -2,11 +2,13 @@ package org.joverseer.support.readers.pdf;
 
 import java.util.ArrayList;
 
+import org.joverseer.support.Container;
+
 
 public class CombatWrapper {
     String narration;
     int hexNo;
-    ArrayList<CombatArmy> armies = new ArrayList<CombatArmy>(); 
+    Container armies = new Container(); 
     
     
     public int getHexNo() {
@@ -25,6 +27,18 @@ public class CombatWrapper {
         this.narration = narration;
     }
     
+    
+    
+    
+    public Container getArmies() {
+        return armies;
+    }
+
+    
+    public void setArmies(Container armies) {
+        this.armies = armies;
+    }
+
     public void parse() {
     }
     
@@ -42,44 +56,7 @@ public class CombatWrapper {
         return string.substring(idx1, idx2).trim();
     }
 
-    private class CombatArmy {
-        String nation;
-        String commanderName;
-        String losses;
-        boolean survived;
-        
-        public String getCommanderName() {
-            return commanderName;
-        }
-        
-        public void setCommanderName(String commanderName) {
-            this.commanderName = commanderName;
-        }
-        
-        public String getLosses() {
-            return losses;
-        }
-        
-        public void setLosses(String losses) {
-            this.losses = losses;
-        }
-        
-        public String getNation() {
-            return nation;
-        }
-        
-        public void setNation(String nation) {
-            this.nation = nation;
-        }
-        
-        public boolean isSurvived() {
-            return survived;
-        }
-        
-        public void setSurvived(boolean survived) {
-            this.survived = survived;
-        }
-        
-        
-    }
+    
+    
+    
 }

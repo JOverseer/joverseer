@@ -2,6 +2,7 @@ package org.joverseer.ui.viewers;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
 import java.util.Locale;
 
@@ -11,11 +12,17 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.font.*;
 
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
 import org.joverseer.ui.NarrationForm;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -30,7 +37,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class EncounterViewer extends AbstractForm {
+public class EncounterViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "encounterViewer";
     
@@ -40,6 +47,10 @@ public class EncounterViewer extends AbstractForm {
     
     public EncounterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
+    }
+    
+    public boolean appliesTo(Object obj) {
+        return Encounter.class.isInstance(obj) || Challenge.class.isInstance(obj);
     }
 
     protected JComponent createFormControl() {
@@ -62,6 +73,7 @@ public class EncounterViewer extends AbstractForm {
                 return createEncounterPopupContextMenu();
             }
         });
+        
 
         glb.nextLine();
         

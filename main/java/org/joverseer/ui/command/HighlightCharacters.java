@@ -21,6 +21,7 @@ import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
+import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -40,15 +41,7 @@ public class HighlightCharacters extends ActionCommand {
     }
     
     protected void doExecuteCommand() {
-        if (!GameHolder.hasInitializedGame()) {
-            // show error, cannot import when game not initialized
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            MessageDialog md = new MessageDialog(
-                    ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
-                    ms.getMessage("errorImportingTurns", new String[]{}, Locale.getDefault()));
-            md.showDialog();
-            return;
-        }
+        if (!ActiveGameChecker.checkActiveGameExists()) return;
         
         FormModel formModel = FormModelHelper.createFormModel(new HighlightOptions());
         final HighlightOptionsForm form = new HighlightOptionsForm(formModel);

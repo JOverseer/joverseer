@@ -1,10 +1,18 @@
 package org.joverseer.game;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
 
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.richclient.application.Application;
 
 
 public class Game implements Serializable {
@@ -77,5 +85,18 @@ public class Game implements Serializable {
         return (g != null && g.getTurn() != null);
     }
 
-   
+    public static Game loadGame(File f) throws Exception {
+        Game g = null;
+        try {
+            ObjectInputStream in = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
+            g = (Game)in.readObject();
+            return g;
+        }
+        catch (Exception exc) {
+            // try to read unzipped file
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
+            g = (Game)in.readObject();
+        }
+        return g;
+    }
 }

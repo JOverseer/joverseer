@@ -270,11 +270,6 @@ public class TurnPdfReader implements Runnable {
             digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army", "org.joverseer.support.readers.pdf.CombatArmy");
             // add to container
             digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies/Army", "addItem", "org.joverseer.support.readers.pdf.CombatArmy");
-            // parse properties
-            digester.addRule("txt2xml/Turn/Combats/Armies/Army",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Commander"},
-                            new String[]{"commanderName"}));
-            snpr.setAllowUnknownChildElements(true);
             // create regiment container
             digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments", "org.joverseer.support.Container");
             // add container to army
@@ -284,9 +279,14 @@ public class TurnPdfReader implements Runnable {
             // add to container
             digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments/Regiment", "addItem", "org.joverseer.support.readers.pdf.CombatArmyRegiment");
             // parse properties
-            digester.addRule("txt2xml/Turn/Combats/Armies/Army/Regiments/Regiment",
+            digester.addRule("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments/Regiment",
                     snpr = new SetNestedPropertiesRule(new String[]{"Description"},
                             new String[]{"description"}));
+            snpr.setAllowUnknownChildElements(true);
+            // parse Army properties
+            digester.addRule("txt2xml/Turn/Combats/Armies/Army",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander"},
+                            new String[]{"commanderName"}));
             snpr.setAllowUnknownChildElements(true);
             
             // create challenge wrapper

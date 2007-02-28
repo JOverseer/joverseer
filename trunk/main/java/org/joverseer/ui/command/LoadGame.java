@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
@@ -19,6 +20,9 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.filechooser.DefaultFileFilter;
+import org.springframework.richclient.progress.BusyIndicator;
+import org.springframework.richclient.util.SwingWorker;
+
 import java.util.zip.*;
 
 public class LoadGame extends ActionCommand {
@@ -43,7 +47,7 @@ public class LoadGame extends ActionCommand {
             loadGame();
         }
     }
-
+    
     private void loadGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -56,27 +60,23 @@ public class LoadGame extends ActionCommand {
         fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file"));
 
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
             File f = fileChooser.getSelectedFile();
-            GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
             try {
-                try {
-                    ObjectInputStream in = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
-                    gh.setGame((Game)in.readObject());
-                }
-                catch (Exception exc) {
-                    // try to read unzipped file
-                    ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-                    gh.setGame((Game)in.readObject());
-                }
+                GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+                Game g = Game.loadGame(f);
+                gh.setGame(g);
                 Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
-
+                        new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, g));
             }
             catch (Exception exc) {
                 MessageDialog d = new MessageDialog("Error", exc.getMessage());
                 d.showDialog();
                 // do nothing
                 // todo fix
+            }
+            finally {
+                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
             }
         }
     }

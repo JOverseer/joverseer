@@ -29,7 +29,7 @@ public class DoubleAgentWrapper {
         Character c = new Character();
         c.setName(getName());
         c.setId(Character.getIdFromName(getName()));
-        c.setHexNo(String.valueOf(getHexNo()));
+        c.setHexNo(getHexNo());
         c.setNationNo(0);
         c.setInformationSource(InformationSourceEnum.limited);
         return c;

@@ -66,7 +66,7 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
     private void renderCharacterRangeMapItem (Object obj, Graphics2D g, int x, int y) {
         CharacterRangeMapItem crmi = (CharacterRangeMapItem)obj;
         Character c = crmi.getCharacter();
-        int hexNo = Integer.parseInt(c.getHexNo());
+        int hexNo = c.getHexNo();
         if (metadata == null) {
             init();
         }

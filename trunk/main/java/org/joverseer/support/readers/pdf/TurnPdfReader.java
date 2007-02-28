@@ -630,7 +630,7 @@ public class TurnPdfReader implements Runnable {
                     c.setNationNo(turnInfo.getNationNo());
                     c.setHealth(0);
                     c.setDeathReason(deathReason);
-                    c.setHexNo(String.valueOf(cw.getHexNo()));
+                    c.setHexNo(cw.getHexNo());
                     c.setInfoSource(infoSource);
                     cs.addItem(c);
                 }

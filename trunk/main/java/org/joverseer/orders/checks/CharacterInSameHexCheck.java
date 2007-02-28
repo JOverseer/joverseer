@@ -8,7 +8,7 @@ import org.joverseer.orders.OrderUtils;
 public class CharacterInSameHexCheck extends AbstractCheck {
     public boolean check(Order o) {
         Character c = (Character)OrderUtils.getCharacterFromId(o.getParameter(getParamNo()));
-        return (c.getHexNo().equals(o.getCharacter().getHexNo()));
+        return (c.getHexNo() == o.getCharacter().getHexNo());
     }
 
     public String getMessage() {

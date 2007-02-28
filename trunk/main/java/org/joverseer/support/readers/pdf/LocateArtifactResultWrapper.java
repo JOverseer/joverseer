@@ -53,7 +53,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
                     c = new Character();
                     c.setName(getOwner());
                     c.setId(Character.getIdFromName(getOwner()));
-                    c.setHexNo((getHexNo()< 1000 ? "0" : "") + String.valueOf(getHexNo()));
+                    c.setHexNo(getHexNo());
                     c.setInfoSource(is1);
                     c.setNationNo(0);
                     chars.addItem(c);

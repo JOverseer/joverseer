@@ -70,13 +70,13 @@ public class TrackCharacterListView extends BaseItemListView {
                 TrackCharacterInfo tci = new TrackCharacterInfo();
                 tci.setTurnNo(t.getTurnNo());
                 tci.setInfo(String.format("Character was located at %s.", c.getHexNo()));
-                tci.setHexNo(Integer.parseInt(c.getHexNo()));
+                tci.setHexNo(c.getHexNo());
                 items.add(tci);
                 if (c.getOrderResults() != null && !c.getOrderResults().equals("")) {
                     tci = new TrackCharacterInfo();
                     tci.setTurnNo(t.getTurnNo());
                     tci.setInfo(c.getOrderResults());
-                    tci.setHexNo(Integer.parseInt(c.getHexNo()));
+                    tci.setHexNo(c.getHexNo());
                     items.add(tci);
                 }
             }

@@ -34,7 +34,7 @@ public class OwnedArtifactsListView extends ItemListView {
                 a.setName(ai.getName());
                 a.setNumber(ai.getNo());
                 a.setOwner(c.getName());
-                a.setHexNo(Integer.parseInt(c.getHexNo()));
+                a.setHexNo(c.getHexNo());
                 artis.add(a);
             }
         }

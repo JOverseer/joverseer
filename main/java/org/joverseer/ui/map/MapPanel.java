@@ -558,5 +558,9 @@ public class MapPanel extends JPanel implements MouseListener {
     public void setGame(Game game) {
         this.game = game;
     }
+    
+    public BufferedImage getMapImage() {
+        return mapItems;
+    }
 
 }

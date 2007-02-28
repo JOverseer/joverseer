@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.context.MessageSource;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerClient;
@@ -38,6 +39,7 @@ public class SaveGame extends ActionCommand {
         String fname = String.format("game%s.jov", gh.getGame().getMetadata().getGameNo());
         fileChooser.setSelectedFile(new File(fname));
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+            BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
             File f = fileChooser.getSelectedFile();
             GZIPOutputStream zos;
             try {
@@ -53,6 +55,9 @@ public class SaveGame extends ActionCommand {
                 d.showDialog();
                 // do nothing
                 // todo fix
+            }
+            finally {
+                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
             }
         }
     }

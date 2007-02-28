@@ -20,7 +20,7 @@ public class ImprovePopulationCenterHandler extends BaseOrderHandler {
     public OrderResult getOrderResult(Character c, int orderNo) {
         Game g = getGame();
         if (g == null) return null;
-        PopulationCenter pc = (PopulationCenter)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", Integer.parseInt(c.getHexNo()));
+        PopulationCenter pc = (PopulationCenter)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", c.getHexNo());
         OrderResult res = new OrderResult();
         if (pc == null) {
             res.addMessage(new Message(MessageTypeEnum.Error, String.format("No population center exists at hex %s.", c.getHexNo())));

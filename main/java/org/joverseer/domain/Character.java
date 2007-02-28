@@ -220,14 +220,13 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.nationNo = nationNo;
     }
 
-    public String getHexNo() {
-        return String.valueOf(getX() * 100 + getY());
+    public int getHexNo() {
+        return getX() * 100 + getY();
     }
 
-    public void setHexNo(String hexNo) {
-        int hexN = Integer.parseInt(hexNo);
-        setX(hexN / 100);
-        setY(hexN % 100);
+    public void setHexNo(int hexNo) {
+        setX(hexNo / 100);
+        setY(hexNo % 100);
     }
 
     public Order[] getOrders() {

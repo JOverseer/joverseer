@@ -71,7 +71,7 @@ public class SpellcasterListView extends BaseItemListView {
         for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
             SpellcasterWrapper sw = new SpellcasterWrapper();
             sw.setCharacter(c.getName());
-            sw.setHexNo(Integer.parseInt(c.getHexNo()));
+            sw.setHexNo(c.getHexNo());
             sw.setArtifactBonus(c.getMageTotal() - c.getMage());
             sw.setNationNo(c.getNationNo());
             sw.setMageRank(c.getMage());

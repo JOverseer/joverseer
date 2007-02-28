@@ -76,7 +76,7 @@ public class OrderRenderer implements Renderer {
             return;
         }
         try {
-            int currentHexNo = Integer.parseInt(order.getCharacter().getHexNo());
+            int currentHexNo = order.getCharacter().getHexNo();
             String[] params = order.getParameters().split(" ");
             Point p1;
             Point p2 = null;
@@ -169,7 +169,7 @@ public class OrderRenderer implements Renderer {
             String hexNoStr = order.getParameter(0);
             int hexNo = Integer.parseInt(hexNoStr);
             Point p1 = MapPanel.instance().getHexCenter(hexNo);
-            Point p2 = MapPanel.instance().getHexCenter(Integer.parseInt(order.getCharacter().getHexNo()));
+            Point p2 = MapPanel.instance().getHexCenter(order.getCharacter().getHexNo());
 
             // draw arrowhead
             double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));

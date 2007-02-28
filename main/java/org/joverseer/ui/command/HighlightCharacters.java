@@ -60,7 +60,7 @@ public class HighlightCharacters extends ActionCommand {
                 HighlightOptions opts = (HighlightOptions)form.getFormObject();
                 for (Character c : (ArrayList<Character>)chars.getItems()) {
                     if (opts.acceptCharacter(c)) {
-                        hhmi.addHex(Integer.parseInt(c.getHexNo()));
+                        hhmi.addHex(c.getHexNo());
                     }
                 }
                 AbstractMapItem.add(hhmi);
@@ -225,7 +225,7 @@ public class HighlightCharacters extends ActionCommand {
             if (getNationNo() != null && !c.getNationNo().equals(getNationNo())) {
                 return false;
             }
-            if (getWithinRangeOfHex() != null && MovementUtils.distance(Integer.parseInt(c.getHexNo()), getWithinRangeOfHex()) > 12) {
+            if (getWithinRangeOfHex() != null && MovementUtils.distance(c.getHexNo(), getWithinRangeOfHex()) > 12) {
                 return false;
             }
             

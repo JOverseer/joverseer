@@ -14,7 +14,7 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
 public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper {
     public void updateGame(Turn turn, int nationNo, String casterName) {
-        String hexNo = (getHexNo()< 1000 ? "0" : "") + String.valueOf(getHexNo());
+        int hexNo = getHexNo();
 
         if (getOwner() != null && !getOwner().equals("")) {
             DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());

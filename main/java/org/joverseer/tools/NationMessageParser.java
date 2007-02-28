@@ -100,7 +100,7 @@ public class NationMessageParser {
                 } else if (getNamedElementType().equals(NAMED_ELEMENT_CHAR)) {
                     Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", getElementName());
                     if (c != null) {
-                        return Integer.parseInt(c.getHexNo());
+                        return c.getHexNo();
                     }
                 }
             }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
@@ -51,6 +53,7 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.support.TableUtils;
+import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -272,6 +275,13 @@ public class CharacterViewer extends ObjectViewer {
 
         glb.append(c = new JTextField());
         characterName = (JTextField) c;
+        characterName.setTransferHandler(new CharIdTransferHandler("text"));
+        characterName.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                TransferHandler handler = characterName.getTransferHandler();
+                handler.exportAsDrag(characterName, e, TransferHandler.COPY);
+            }
+        });
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setPreferredSize(new Dimension(160, 12));

@@ -474,8 +474,6 @@
          <property name="hasTitleBar"><value>false</value></property>
     </bean>
     
-    
-    
     <bean id="economyCalculatorView"
          class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
          <property name="viewClass">
@@ -501,6 +499,18 @@
         <property name="fontSize"><value>9</value></property>
         <property name="fontStyle"><value>1</value></property>
     </bean>
+    
+    <bean id="orderEditorView"
+         class="org.joverseer.ui.flexdock.JOverseerViewDescriptor">
+         <property name="viewClass">
+             <value>org.joverseer.ui.orderEditor.OrderEditorView</value>
+         </property>
+         <property name="closable"><value>false</value></property>
+         <property name="pinnable"><value>false</value></property>
+         <property name="hasTitleBar"><value>false</value></property>
+    </bean>
+    
+    
 
     <bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
         <property name="mapColumns">
@@ -576,6 +586,8 @@
     <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>
     
     <bean id="orderEditorForm" class="org.joverseer.ui.orders.OrderEditorForm"/>
+    
+    <bean id="orderEditor" class="org.joverseer.ui.orderEditor.OrderEditor"/>
     
     <!-- Healing Turn Phase Processor -->
     <bean id="HealingProcessor" class="org.joverseer.orders.me.HealingTurnPhaseProcessor">

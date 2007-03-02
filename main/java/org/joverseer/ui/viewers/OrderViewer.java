@@ -80,7 +80,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 ovd.clear();
                 ovd.addOrder((Order)getFormObject());
                 Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.RefreshOrders.toString(), getFormObject(), this));
+                                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
             }
         };
         btn.addActionListener(al);
@@ -98,32 +98,35 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
-        form.setFormObject(getFormObject());
-        FormBackedDialogPage page = new FormBackedDialogPage(form);
-
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
-            }
-
-            protected boolean onFinish() {
-                form.commit();
-                // throw a selected hex changed event for current hex
-                // first we need to find the current hex
-                Order order = (Order)getFormObject();
-                Point selHex = new Point(order.getX(), order.getY());
-                Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selHex, this));
-
-                // throw an order changed event
-                Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
-
-                return true;
-            }
-        };
-        dialog.setTitle(getMessage("editOrderDialog.title"));
-        dialog.showDialog();
+          Order order = (Order)getFormObject();
+          Application.instance().getApplicationContext().publishEvent(
+              new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
+//        final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
+//        form.setFormObject(getFormObject());
+//        FormBackedDialogPage page = new FormBackedDialogPage(form);
+//
+//        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+//            protected void onAboutToShow() {
+//            }
+//
+//            protected boolean onFinish() {
+//                form.commit();
+//                // throw a selected hex changed event for current hex
+//                // first we need to find the current hex
+//                Order order = (Order)getFormObject();
+//                Point selHex = new Point(order.getX(), order.getY());
+//                Application.instance().getApplicationContext().publishEvent(
+//                                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selHex, this));
+//
+//                // throw an order changed event
+//                Application.instance().getApplicationContext().publishEvent(
+//                                    new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
+//
+//                return true;
+//            }
+//        };
+//        dialog.setTitle(getMessage("editOrderDialog.title"));
+//        dialog.showDialog();
     }
 
 }

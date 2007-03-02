@@ -87,16 +87,15 @@ public class Game implements Serializable {
 
     public static Game loadGame(File f) throws Exception {
         Game g = null;
+        ObjectInputStream in = null;
         try {
-            ObjectInputStream in = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
-            g = (Game)in.readObject();
-            return g;
+            in = new ObjectInputStream(new GZIPInputStream(new FileInputStream(f)));
         }
         catch (Exception exc) {
             // try to read unzipped file
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-            g = (Game)in.readObject();
+            in = new ObjectInputStream(new FileInputStream(f));
         }
+        g = (Game)in.readObject();
         return g;
     }
 }

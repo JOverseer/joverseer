@@ -6,6 +6,7 @@ import org.springframework.richclient.progress.BusyIndicator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.domain.*;
@@ -23,6 +24,8 @@ import org.joverseer.ui.map.renderers.Renderer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragSourceListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -57,6 +60,7 @@ public class MapPanel extends JPanel implements MouseListener {
 
     public MapPanel() {
         addMouseListener(this);
+        this.setTransferHandler(new HexNoTransferHandler("hex"));
         _instance = this;
     }
 
@@ -511,6 +515,8 @@ public class MapPanel extends JPanel implements MouseListener {
             Point hex = getHexFromPoint(p);
             setSelectedHex(hex);
             this.updateUI();
+            TransferHandler handler = this.getTransferHandler();
+            handler.exportAsDrag(this, e, TransferHandler.COPY);
         }
     }
 
@@ -562,5 +568,12 @@ public class MapPanel extends JPanel implements MouseListener {
     public BufferedImage getMapImage() {
         return mapItems;
     }
+    
+    public String getHex() {
+        return "1111";
+    }
+    
+    public void setHex(String hex) {};
+    
 
 }

@@ -53,7 +53,7 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.support.TableUtils;
-import org.joverseer.ui.support.transferHandlers.ArtifactIdTransferHandler;
+import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -342,7 +342,7 @@ public class CharacterViewer extends ObjectViewer {
             public void mousePressed(MouseEvent e) {
                 ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
                 if (a == null) return;
-                TransferHandler handler = new ArtifactIdTransferHandler(a.getNo());
+                TransferHandler handler = new ParamTransferHandler(a.getNo());
                 artifactsTable.setTransferHandler(handler);
                 handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
             }
@@ -399,6 +399,16 @@ public class CharacterViewer extends ObjectViewer {
         TableUtils.setTableColumnWidths(spellsTable, new int[] {30, 90, 30});
         spellsTable.setBorder(null);
         
+        
+//        spellsTable.addMouseListener(new MouseAdapter() {
+//            public void mousePressed(MouseEvent e) {
+//                SpellProficiency sp = (SpellProficiency)tableModel.getRow(spellsTable.getSelectedRow());
+//                if (sp == null) return;
+//                TransferHandler handler = new ParamTransferHandler(sp.getSpellId());
+//                spellsTable.setTransferHandler(handler);
+//                handler.exportAsDrag(spellsTable, e, TransferHandler.COPY);
+//            }
+//        });
         spellsTable.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {

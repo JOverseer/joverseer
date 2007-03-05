@@ -3,10 +3,10 @@ package org.joverseer.ui.support.transferHandlers;
 import javax.swing.JComponent;
 
 
-public class ArtifactIdTransferHandler extends StringTransferHandler {
+public class ParamTransferHandler extends StringTransferHandler {
     int artiNo;
     
-    public ArtifactIdTransferHandler(int artiNo) {
+    public ParamTransferHandler(int artiNo) {
         super("");
         this.artiNo = artiNo;
     }

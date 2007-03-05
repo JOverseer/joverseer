@@ -2,6 +2,7 @@ package org.joverseer.ui.orderEditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -11,6 +12,8 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Order;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+
+import sun.security.krb5.internal.util.o;
 
 
 public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
@@ -22,25 +25,15 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.paramName = paramName;
     }
     
-    public void setFormObject(Object obj) {
-        super.setFormObject(obj);
-        Order o = (Order)obj;
-        parameter.setText(o.getParameter(0));
-    }
-    
-    public void updateEditor() {
-        getEditor().setParameters(parameter.getText());
+    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        tlb.cell(new JLabel(paramName));
+        tlb.cell(parameter = new JTextField(o.getParameter(paramNo)));
+        parameter.setPreferredSize(new Dimension(60, 18));
+        attachAutoUpdateDocumentListener(parameter);
+        components.add(parameter);
+        GraphicUtils.addOverwriteDropListener(parameter);
+        tlb.row();
     }
 
-    protected JComponent createFormControl() {
-        TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(new JLabel(paramName));
-        tlb.cell(parameter = new JTextField());
-        parameter.setPreferredSize(new Dimension(60, 20));
-        attachAutoUpdateDocumentListener(parameter);
-        GraphicUtils.addOverwriteDropListener(parameter);
-        JPanel p = tlb.getPanel();
-        p.setBackground(Color.white);
-        return p;
-    }
+        
 }

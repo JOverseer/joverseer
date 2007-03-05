@@ -1,27 +1,5 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.game.Game;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.orders.OrderMetadata;
-import org.joverseer.support.GameHolder;
-import org.joverseer.support.Container;
-import org.joverseer.domain.Character;
-import org.joverseer.domain.Order;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.list.ComboBoxListModelAdapter;
-import org.springframework.richclient.list.SortedListModel;
-import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.SortableTableModel;
-import org.springframework.binding.value.support.ListListModel;
-import org.springframework.context.ApplicationEvent;
-import org.joverseer.domain.Character;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.LifecycleEventsEnum;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,8 +10,29 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
+
+import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Order;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.binding.value.support.ListListModel;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.layout.TableLayoutBuilder;
+import org.springframework.richclient.list.ComboBoxListModelAdapter;
+import org.springframework.richclient.list.SortedListModel;
+import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.SortableTableModel;
 
 
 public class OrderListView extends ItemListView {
@@ -71,7 +70,7 @@ public class OrderListView extends ItemListView {
         ArrayList<OrderFilter> filterList = new ArrayList<OrderFilter>();
         OrderFilter f = new OrderFilter("All characters with orders") {
             public boolean acceptCharacter(Character c) {
-                return c.getX() > 0 && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank());
+                return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank());
             }
         };
         filterList.add(f);
@@ -85,7 +84,7 @@ public class OrderListView extends ItemListView {
                     public boolean acceptCharacter(Character c) {
                         Game g = GameHolder.instance().getGame();
                         GameMetadata gm = g.getMetadata();
-                        return c.getX() > 0 && gm.getNationByNum(c.getNationNo()).getName().equals(getDescription());
+                        return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm.getNationByNum(c.getNationNo()).getName().equals(getDescription());
                     }
                 };
                 filterList.add(f);

@@ -53,6 +53,7 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.support.TableUtils;
+import org.joverseer.ui.support.transferHandlers.ArtifactIdTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -336,6 +337,16 @@ public class CharacterViewer extends ObjectViewer {
                 return new Class[] {String.class, String.class};
             }
         };
+        
+        artifactsTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
+                if (a == null) return;
+                TransferHandler handler = new ArtifactIdTransferHandler(a.getNo());
+                artifactsTable.setTransferHandler(handler);
+                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
+            }
+        });
         
         artifactsTable.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {

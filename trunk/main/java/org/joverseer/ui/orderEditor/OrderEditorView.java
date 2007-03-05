@@ -25,7 +25,7 @@ public class OrderEditorView extends AbstractView {
         JPanel p = tlb.getPanel();
         p.setBackground(Color.white);
         JScrollPane scp = new JScrollPane(p);
-        scp.setPreferredSize(new Dimension(240, 1000));
+        scp.setPreferredSize(new Dimension(800, 1000));
         scp.getVerticalScrollBar().setUnitIncrement(32);
         return scp;
     }

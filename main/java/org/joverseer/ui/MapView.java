@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationEvent;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 
 import javax.swing.*;

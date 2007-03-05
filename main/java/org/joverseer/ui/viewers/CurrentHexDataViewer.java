@@ -29,6 +29,7 @@ import org.joverseer.tools.ArmyAllegianceNameComparator;
 import org.joverseer.tools.CharacterDeathAllegianceNameComparator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;

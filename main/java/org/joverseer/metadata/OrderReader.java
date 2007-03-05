@@ -35,6 +35,7 @@ public class OrderReader implements MetadataReader {
                 om.setParameters(parts[3]);
                 om.setDifficulty(parts[4]);
                 om.setRequirement(parts[5]);
+                om.setSkillRequirement(parts[6]);
                 orders.addItem(om);
             }
         }

@@ -1,6 +1,7 @@
 package org.joverseer.metadata.orders;
 
 import java.io.Serializable;
+import org.joverseer.domain.Character;
 
 
 public class OrderMetadata implements Serializable {
@@ -10,6 +11,7 @@ public class OrderMetadata implements Serializable {
     String difficulty;
     String requirement;
     String parameters;
+    String skillRequirement;
 
     public String getCode() {
         return code;
@@ -57,6 +59,40 @@ public class OrderMetadata implements Serializable {
 
     public void setRequirement(String requirement) {
         this.requirement = requirement;
+    }
+
+    
+    public String getSkillRequirement() {
+        return skillRequirement;
+    }
+
+    
+    public void setSkillRequirement(String skillRequirement) {
+        this.skillRequirement = skillRequirement;
+    }
+    
+    public boolean charHasRequiredSkill(Character c) {
+        if (getSkillRequirement().equals("M") ||
+                getSkillRequirement().equals("Move")) {
+            return true;
+        }
+        if (getSkillRequirement().equals("CM") ||
+                getSkillRequirement().equals("CS")) {
+            return c.getCommand() > 0;
+        }
+        if (getSkillRequirement().equals("AM") ||
+                getSkillRequirement().equals("AS")) {
+            return c.getAgent() > 0;
+        }
+        if (getSkillRequirement().equals("EM") ||
+                getSkillRequirement().equals("ES")) {
+            return c.getEmmisary() > 0;
+        }
+        if (getSkillRequirement().equals("MM") ||
+                getSkillRequirement().equals("MS")) {
+            return c.getMage() > 0;
+        }
+        return false;
     }
 
 }

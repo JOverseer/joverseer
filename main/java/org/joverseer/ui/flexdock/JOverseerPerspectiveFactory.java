@@ -37,27 +37,27 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         dss.add(ds);
 
         ds = new DockingState("armySizeEstimatesListView");
-        ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
-        ds.setSplitRatio(1f);
+        ds.setRegion(DockingConstants.SOUTH_REGION);
+        ds.setRelativeParentId("mapView");
+        ds.setSplitRatio(.3f);
         dss.add(ds);
         
         ds = new DockingState("artifactInfoListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
+        ds.setRelativeParentId("armySizeEstimatesListView");
         ds.setSplitRatio(1f);
         dss.add(ds);
         
         ds = new DockingState("artifactListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
-        ds.setRelativeParentId("characterListView");
+        ds.setRelativeParentId("armySizeEstimatesListView");
         ds.setSplitRatio(1f);
         dss.add(ds);
         
         ds = new DockingState("characterListView");
-        ds.setRegion(DockingConstants.SOUTH_REGION);
-        ds.setRelativeParentId("mapView");
-        ds.setSplitRatio(.3f);
+        ds.setRegion(DockingConstants.CENTER_REGION);
+        ds.setRelativeParentId("armySizeEstimatesListView");
+        ds.setSplitRatio(1f);
         dss.add(ds);
         
         ds = new DockingState("companyListView");
@@ -90,7 +90,7 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         ds.setSplitRatio(1f);
         dss.add(ds);
 
-                ds = new DockingState("nationMessageListView");
+        ds = new DockingState("nationMessageListView");
         ds.setRegion(DockingConstants.CENTER_REGION);
         ds.setRelativeParentId("characterListView");
         ds.setSplitRatio(1f);

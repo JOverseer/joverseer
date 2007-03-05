@@ -11,6 +11,8 @@ import java.awt.dnd.DropTargetListener;
 import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
 
+import org.flexdock.docking.DockingManager;
+
 
 public class GraphicUtils {
     public static Font getFont(String name, int style, int size) {
@@ -51,4 +53,6 @@ public class GraphicUtils {
             }
         }));
     }
+    
+    
 }       

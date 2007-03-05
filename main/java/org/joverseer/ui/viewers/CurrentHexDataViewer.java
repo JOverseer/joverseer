@@ -166,9 +166,9 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
         panel = tlb.getPanel();
         panel.setBackground(Color.white);
-        panel.setPreferredSize(new Dimension(240, 1000));
+        panel.setPreferredSize(new Dimension(240, 1500));
         scp = new JScrollPane(panel);
-        scp.setPreferredSize(new Dimension(240, 1000));
+        scp.setPreferredSize(new Dimension(240, 1500));
         scp.getVerticalScrollBar().setUnitIncrement(32);
         return scp;
     }

@@ -274,6 +274,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new SingleParameterOrderSubeditor("Dir : ", o);
                         } else if (paramType.equals("nat")) {
                             sub = new NationParameterOrderSubeditor("Nation : ", o);
+                        } else if (paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spz") || paramType.equals("spm") || paramType.equals("spl")) {
+                            sub = new SpellNumberParameterOrderSubeditor("Spell : ", o, oed.getOrderNo());
                         }
                         if (sub != null) {
                             sub.addComponents(tlb, subeditorComponents, o, paramNo);

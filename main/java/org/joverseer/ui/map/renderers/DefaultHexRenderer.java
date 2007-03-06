@@ -10,12 +10,13 @@ import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.Locale;
 
 
-public class DefaultHexRenderer implements Renderer{
+public class DefaultHexRenderer extends ImageRenderer {
     HashMap terrainColors = new HashMap();
 
     protected int[] xPoints = new int[6];
@@ -154,12 +155,21 @@ public class DefaultHexRenderer implements Renderer{
         }
 
         Hex hex = (Hex)obj;
-        Polygon polygon = new Polygon(xPoints, yPoints, 6);
-        polygon.translate(x, y);
-        g.setColor(getColor(hex));
-        g.fillPolygon(polygon);
-        g.setColor(Color.black);
-        g.drawPolygon(polygon);
+        if (hex.getTerrain() != HexTerrainEnum.plains) {
+            Polygon polygon = new Polygon(xPoints, yPoints, 6);
+            polygon.translate(x, y);
+            g.setColor(getColor(hex));
+            g.fillPolygon(polygon);
+            g.setColor(Color.black);
+            g.drawPolygon(polygon);
+        } else {
+            BufferedImage img = getImage("grass.terrain");
+            g.drawImage(img, x+1, y+1, null);
+            Polygon polygon = new Polygon(xPoints, yPoints, 6);
+            polygon.translate(x, y);
+            g.setColor(Color.black);
+            g.drawPolygon(polygon);
+        }
 
         for (HexSideEnum side : HexSideEnum.values()) {
             Collection elements = hex.getHexSideElements(side);

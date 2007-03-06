@@ -5,7 +5,7 @@
 
 JOverseer is a program that assists players of the Middle Earth PBM game (www.middleearthgames.com) view and process their turn results. It is written in Java and is designed to be cross-platform.
 
-JOverseer is tailored to grudge game, as it has many tools that manipulate the information gathered from the team's turn files. It can, however, be used for regular games as well.
+JOverseer is tailored to grudge games, as it has many tools that manipulate the information gathered from the team's turn files. It can, however, be used for regular games as well.
 
 = Main Features =
 
@@ -62,5 +62,4 @@ JOverseer is in beta version. It has received limited testing from a few players
 Currently it only supports 1650 and 2950 games but there are plans to support the other game types as well.
 
 JOverseer is being developed by Marios Skounakis. 
-
 

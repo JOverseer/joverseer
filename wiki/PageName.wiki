@@ -12,4 +12,4 @@ Add your content here.  Format your content with:
   * Headings, paragraphs, and lists
   * Automatic links to other wiki pages
 
-http://joverseer.googlecode.com/svn/trunk/main/resources/images/splashscree.jpg
+http://joverseer.googlecode.com/svn/trunk/main/resources/images/splashscreen.jpg

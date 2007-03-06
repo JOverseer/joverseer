@@ -1,19 +1,10 @@
 package org.joverseer.ui.command;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
-import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.EditNationAllegiancesForm;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.domain.mapItems.AbstractMapItem;
-import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;

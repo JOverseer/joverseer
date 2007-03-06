@@ -414,7 +414,12 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().worked(50);
                 getMonitor().subTaskStarted("Updating nation relations...");
             }
-            updateNationRelations(game);
+            try {
+                updateNationRelations(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
             if (getMonitor() != null) {
                 getMonitor().worked(60);
                 getMonitor().subTaskStarted("Updating population centers...");
@@ -429,25 +434,60 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().worked(70);
                 getMonitor().subTaskStarted("Updating characters...");
             }
-            updateCharacters(game);
-            updateDoubleAgents(game);
+            try {
+                updateCharacters(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            try {
+                updateDoubleAgents(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
             if (getMonitor() != null) {
                 getMonitor().worked(80);
                 getMonitor().subTaskStarted("Updating armies...");
             }
-            updateArmies(game);
+            try {
+                updateArmies(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
             if (getMonitor() != null) {
                 getMonitor().worked(90);
                 getMonitor().subTaskStarted("Updating companies...");
             }
-            updateCompanies(game);
+            try {
+                updateCompanies(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
             if (getMonitor() != null) {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Updating combats, encounters, challenges...");
             }
-            updateCombats(game);
-            updateEncounters(game);
-            updateClimates(game);
+            try {
+                updateCombats(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            try {
+                updateEncounters(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            try {
+                updateClimates(game);
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
         }
         catch (Exception exc) {
             if (getMonitor() != null) {

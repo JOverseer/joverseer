@@ -39,7 +39,7 @@ JOverseer automatically parses the information retrieved from the turn files, co
   * The relevant hex is extracted from nation messages and the messages are shown on the map, along with the rest of the information about the hex.
   * Similar to nation messages, the results of LA, LAT, RC and RCT spells are shown on the map.
   * Whenever an enemy character is reported in a hex, his starting skills are automatically shown to the player for reference.
-  * Hexes for which the player (or the players team) does not have any information (either from their map or from intelligence actions (such as recons) are clearly marked on the map.
+  * Hexes for which the player (or the players team) does not have any information (either from their map or from intelligence actions such as recons) are clearly marked on the map.
   * Using the nation messages, a list of enemy agents is automatically compiled and maintained.
   * Using the LA and LAT spell results, a list of artifacts, their locations and their owner, is automatically compiled and maintained.
 
@@ -62,6 +62,5 @@ JOverseer is in beta version. It has received limited testing from a few players
 Currently it only supports 1650 and 2950 games but there are plans to support the other game types as well.
 
 JOverseer is being developed by Marios Skounakis. 
-
 
 

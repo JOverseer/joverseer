@@ -30,7 +30,7 @@ The information the game manages is:
   * Character order results
   * Results of LA, LAT, RC and RCT spells,
   * Challenges, Combats and Encounters,
-  * Companies
+  * Companies,
   * Double Agents
 
 ==Advanced Display==
@@ -50,6 +50,7 @@ JOverseer offers several other advanced features to help the player.
   * Players can import order files produced with Automagic.
   * Some orders can be visualized on the map (e.g. character and army movement, product transfers).
   * There are tools to automatically display on the map the range of a character or an army (i.e. the hexes that can be reached).
+  * With the Track Character tool the player can receive a report of all the available information for a given character (friendly or enemy) from all the available turns.
   * Lots of other cool stuff.
 
 ==Current Status==

@@ -43,7 +43,7 @@ JOverseer automatically parses the information retrieved from the turn files, co
   * Using the nation messages, a list of enemy agents is automatically compiled and maintained.
   * Using the LA and LAT spell results, a list of artifacts, their locations and their owner, is automatically compiled and maintained.
 
-Click [ here] to view a screen shot of the program's display.
+Click [http://joverseer.googlecode.com/svn/wiki/images/joverseer-sshot1.jpg here] to view a screen shot of the program's display.
 
 ==Other Features==
 JOverseer offers several other advanced features to help the player.

@@ -1,0 +1,27 @@
+#summary This page describes the facilities for entering orders in JOverseer
+#labels Draft
+
+==Introduction==
+
+JOverseer aims to provide facilities so that players can enter their orders with minimal typing. Typing should be used  only when necessary, like when giving the name for a new camp or character. 
+
+The tool that facilitates order entry is called the Order Editor. It is located on the bottom right of the screen and shares the same are with the Map Options.
+
+
+==Entering Orders==
+
+Entering orders for a certain character starts by locating said character and selecting the respective hex on the map. 
+
+Then, you should bring up the orders for the character by clicking the character menu button and selecting "Show Orders".
+
+[http://joverseer.googlecode.com/svn/wiki/images/jov-ss-order-entry-1.jpg]
+
+This will show the character's orders below the character's stats. Note that if the character's orders have already been entered, they will be automatically shown when you select the character (i.e. you won't need to use the "Show Orders" option).
+
+[http://joverseer.googlecode.com/svn/wiki/images/jov.ss.order-entry.2.jpg]
+
+
+
+
+
+

@@ -34,6 +34,10 @@ Note that Drag & Drop also works for:
   * Dragging the character name into an order field - the character id is automatically supplied.
   * Dragging an artifact (from the character artifacts list) into an order field - the artifact id is automatically supplied.
 
+The Order Editor has two read only fields, in addition to those mentioned above:
+  * The parameters field, where all the order parameters are shown (separated with spaces) as they are entered in the fields below by the player.
+  * The description field which shows some information about the order (e.g. requirements, restrictions, etc).
+
 To "Save" the order, click on the Save button on the top right of the Order Editor. This updates the character with the order from the Order Editor, as shown below.
 
 [http://joverseer.googlecode.com/svn/wiki/images/jov.ss.order-entry.5.jpg]
@@ -51,7 +55,6 @@ Then you should bring up the desired character and click on the little "Map" but
 Note that you can also control which orders will be visualized and which won't from the Order view, by using the "Draw" column, as shown below.
 
 [http://joverseer.googlecode.com/svn/wiki/images/jov.ss.order-entry.8.jpg]
-
 
 
 

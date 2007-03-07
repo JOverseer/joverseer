@@ -26,9 +26,13 @@ To edit an order, click on the "Pencil" icon next to the order. This activates t
 
 By using the drop down menu you can select the desired order. Note that as the selected order changes, the bottom part of the Order Editor is updated with different controls that correspond to the order's parameters.
 
-For instance, the image below shows the case of order 810 MovChar. When the order is selected, the "Hex" field is automatically displayed. You can either type in a destination or Drag & Drop the desired hex from the map (put the mouse over the desired hex of the map, hold the left key down, and drag to the "Hex" field).
+For instance, the image below shows the case of order 810. When the order is selected, the "Hex" field is automatically displayed. You can either type in a destination or Drag & Drop the desired hex from the map (put the mouse over the desired hex of the map, hold the left key down, and drag to the "Hex" field). 
 
 [http://joverseer.googlecode.com/svn/wiki/images/jov.ss.order-entry.4.jpg]
+
+Note that Drag & Drop also works for:
+  * Dragging the character name into an order field - the character id is automatically supplied.
+  * Dragging an artifact (from the character artifacts list) into an order field - the artifact id is automatically supplied.
 
 To "Save" the order, click on the Save button on the top right of the Order Editor. This updates the character with the order from the Order Editor, as shown below.
 
@@ -47,7 +51,6 @@ Then you should bring up the desired character and click on the little "Map" but
 Note that you can also control which orders will be visualized and which won't from the Order view, by using the "Draw" column, as shown below.
 
 [http://joverseer.googlecode.com/svn/wiki/images/jov.ss.order-entry.8.jpg]
-
 
 
 

@@ -1,5 +1,6 @@
 package org.joverseer.ui.orderEditor;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(parameter = new JComboBox());
         GameMetadata gm = GameHolder.instance().getGame().getMetadata();
         parameter.addItem("");
+        parameter.setPreferredSize(new Dimension(60, 18));
         tlb.row();
         tlb.cell(nationNo = new JTextField());
         nationNo.setVisible(false);

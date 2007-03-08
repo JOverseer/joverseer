@@ -46,6 +46,7 @@ import org.springframework.richclient.list.SortedListModel;
 
 
 public class OrderEditor extends AbstractForm implements ApplicationListener {
+    public static final String FORM_PAGE = "orderEditorForm";
     JComboBox orderCombo;
     JTextField parameters;
     JTextField character;
@@ -60,7 +61,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     GameMetadata gm;
     
     public OrderEditor() {
-        super(FormModelHelper.createFormModel(new Order(new Character())));
+        super(FormModelHelper.createFormModel(new Order(new Character())), FORM_PAGE);
+    }
+    
+    public String getParameters() {
+        return parameters.getText();
     }
     
     private Container getOrderEditorData() {
@@ -166,6 +171,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         orderCombo.setPreferredSize(new Dimension(70, 18));
         orderCombo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                refreshOrder();
                 refreshDescription();
                 refreshSubeditor();
             }
@@ -206,6 +212,14 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         return myPanel;
     }
     
+    private void refreshOrder() {
+        Order o = (Order)getFormObject();
+        if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) {
+            o.setParameters("");
+            parameters.setText(o.getParameters());
+        }
+    }
+    
     private String getSelectedOrderNo() {
         String noAndCode = orderCombo.getSelectedItem().toString();
         int i = noAndCode.indexOf(" ");
@@ -239,25 +253,27 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                         } else if (paramType.equals("cid") || paramType.equals("xid")) {
                             sub = new SingleParameterOrderSubeditor("Char : ", o);
                         } else if (paramType.equals("tac")) {
-                            sub = new DropDownParameterOrderSubeditor("Tactic : ", o, new String[]{"ch", "fl", "st", "su", "hr", "am"});
+                            sub = new DropDownParameterOrderSubeditor("Tactic : ", o, new String[]{"ch", "fl", "st", "su", "hr", "am"}, new String[]{"Charge", "Flank", "Standard", "Surround", "Hit and Run", "Ambush"});
                         } else if (paramType.equals("prd")) {
-                            sub = new DropDownParameterOrderSubeditor("Product : ", o, new String[]{"le", "br", "st", "mi", "fo", "ti", "mo"});
+                            sub = new DropDownParameterOrderSubeditor("Product : ", o, new String[]{"le", "br", "st", "mi", "fo", "ti", "mo"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts"});
                         } else if (paramType.equals("pro")) {
-                            sub = new DropDownParameterOrderSubeditor("Product : ", o, new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"});
+                            sub = new DropDownParameterOrderSubeditor("Product : ", o, new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold"});
                         } else if (paramType.equals("%")) {
                             sub = new NumberParameterOrderSubeditor("Percent : ", o);
                         } else if (paramType.equals("g")) {
                             sub = new NumberParameterOrderSubeditor("No : ", o);
                         } else if (paramType.equals("yn")) {
-                            sub = new DropDownParameterOrderSubeditor("Yes/No : ", o, new String[]{"y", "n"});
+                            sub = new DropDownParameterOrderSubeditor("Yes/No : ", o, new String[]{"y", "n"}, new String[]{"Yes", "No"});
                         } else if (paramType.equals("wep")) {
-                            sub = new DropDownParameterOrderSubeditor("Weapon : ", o, new String[]{"wo", "br", "st", "mi"});
+                            sub = new DropDownParameterOrderSubeditor("Weapon : ", o, new String[]{"wo", "br", "st", "mi"}, new String[]{"Wooden", "Bronze", "Steel", "Mithril"});
                         } else if (paramType.equals("arm")) {
-                            sub = new DropDownParameterOrderSubeditor("Armor : ", o, new String[]{"no", "le", "br", "st", "mi"});
+                            sub = new DropDownParameterOrderSubeditor("Armor : ", o, new String[]{"no", "le", "br", "st", "mi"}, new String[]{"None", "Leather", "Bronze", "Steel", "Mithril"});
                         } else if (paramType.equals("trp")) {
-                            sub = new DropDownParameterOrderSubeditor("Troop Type : ", o, new String[]{"hc", "lc", "hi", "li", "ar", "ma"});
+                            sub = new DropDownParameterOrderSubeditor("Troop Type : ", o, new String[]{"hc", "lc", "hi", "li", "ar", "ma"}, new String[]{"Heavy Cavalry", "Light Cavalry", "Heavy Infantry", "Light Infantry", "Archers", "Men at Arms"});
                         } else if (paramType.equals("gen")) {
-                            sub = new DropDownParameterOrderSubeditor("Gender : ", o, new String[]{"m", "f"});
+                            sub = new DropDownParameterOrderSubeditor("Gender : ", o, new String[]{"m", "f"}, new String[]{"Male", "Female"});
+                        } else if (paramType.equals("alg")) {
+                            sub = new DropDownParameterOrderSubeditor("Allegiance : ", o, new String[]{"g", "e"}, new String[]{"Good", "Evil"});
                         } else if (paramType.equals("nam")) {
                             sub = new SingleParameterOrderSubeditor("Name : ", o);
                         } else if (paramType.equals("rsp")) {

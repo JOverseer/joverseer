@@ -1,5 +1,6 @@
 package org.joverseer.ui.map.renderers;
 
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.FortificationSizeEnum;
@@ -41,6 +42,11 @@ public class PopulationCenterRenderer extends ImageRenderer {
         Point hexCenter = new Point(x + mapMetadata.getHexSize() / 2 * mapMetadata.getGridCellWidth(),
                                     y + mapMetadata.getHexSize() / 2 * mapMetadata.getGridCellHeight());
 
+        // docks
+        if (popCenter.getHarbor() != HarborSizeEnum.none) {
+            BufferedImage dockImage = getImage(popCenter.getHarbor().toString() + ".icon");
+            g.drawImage(dockImage, x + 5, hexCenter.y, null); 
+        }
 
         BufferedImage pcImage = null;
         

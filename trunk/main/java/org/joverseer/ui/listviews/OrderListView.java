@@ -1,15 +1,19 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import org.joverseer.domain.Character;
@@ -22,6 +26,7 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -199,4 +204,6 @@ public class OrderListView extends ItemListView {
             return getDescription();
         }
     }
+    
+    
 }

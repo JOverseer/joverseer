@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.Order;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.orders.OrderEditorForm;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -101,12 +102,13 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
           Order order = (Order)getFormObject();
           Application.instance().getApplicationContext().publishEvent(
               new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
-//        final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
-//        form.setFormObject(getFormObject());
+        //final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
+//        final OrderEditor form = new OrderEditor();
 //        FormBackedDialogPage page = new FormBackedDialogPage(form);
 //
 //        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
 //            protected void onAboutToShow() {
+//                form.setFormObject(getFormObject());
 //            }
 //
 //            protected boolean onFinish() {
@@ -126,6 +128,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 //            }
 //        };
 //        dialog.setTitle(getMessage("editOrderDialog.title"));
+//        dialog.setModal(false);
 //        dialog.showDialog();
     }
 

@@ -24,7 +24,7 @@ public class GraphicUtils {
     }
 
     public static Stroke getDashStroke(int width, int dashSize) {
-        return new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10, new float[]{dashSize, dashSize}, 2);
+        return new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 10, new float[]{dashSize, dashSize}, 2);
     }
     
     public static void addOverwriteDropListener(JTextComponent c) {

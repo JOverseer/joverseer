@@ -115,6 +115,7 @@ public class DefaultHexRenderer extends ImageRenderer {
         Polygon sp = getSidePolygon(side);
         sp.translate(x, y);
         g.setColor(getMajorRiverColor());
+
         g.setStroke(r);
         g.drawPolygon(sp);
         g.setStroke(s);
@@ -155,22 +156,21 @@ public class DefaultHexRenderer extends ImageRenderer {
         }
 
         Hex hex = (Hex)obj;
-        if (hex.getTerrain() != HexTerrainEnum.plains) {
+        BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain");
+        if (img!= null) {
+            g.drawImage(img, x+1, y+1, null);
+            Polygon polygon = new Polygon(xPoints, yPoints, 6);
+            polygon.translate(x, y);
+            g.setColor(Color.black);
+            g.drawPolygon(polygon);
+        } else {
             Polygon polygon = new Polygon(xPoints, yPoints, 6);
             polygon.translate(x, y);
             g.setColor(getColor(hex));
             g.fillPolygon(polygon);
             g.setColor(Color.black);
             g.drawPolygon(polygon);
-        } else {
-            BufferedImage img = getImage("grass.terrain");
-            g.drawImage(img, x+1, y+1, null);
-            Polygon polygon = new Polygon(xPoints, yPoints, 6);
-            polygon.translate(x, y);
-            g.setColor(Color.black);
-            g.drawPolygon(polygon);
-        }
-
+        } 
         for (HexSideEnum side : HexSideEnum.values()) {
             Collection elements = hex.getHexSideElements(side);
             if (elements.size() > 0) {

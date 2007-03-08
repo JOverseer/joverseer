@@ -19,6 +19,8 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 
     int orderNo = -1;
     String parameters = "";
+    
+    String notes;
 
     Character character;
 
@@ -122,9 +124,21 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         return null;
     }
     
+    
+    
+    
+    public String getNotes() {
+        return notes;
+    }
+
+    
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public void clear() {
         orderNo = -1;
         parameters = "";
-        
+        notes = "";
     }
 }

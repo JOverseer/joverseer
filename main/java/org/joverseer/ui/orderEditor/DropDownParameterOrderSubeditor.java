@@ -15,31 +15,55 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
 public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
-    JComboBox parameter;
+    JComboBox combo;
+    JTextField parameter;
     String paramName;
     String[] values;
+    String[] descriptions;
     
-    public DropDownParameterOrderSubeditor(String paramName, Order o, String[] values) {
+    public DropDownParameterOrderSubeditor(String paramName, Order o, String[] values, String descriptions[]) {
         super(o);
         this.paramName = paramName;
         this.values = values;
+        this.descriptions = descriptions;
     }
     
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(paramName));
-        tlb.cell(parameter = new JComboBox());
-        parameter.setPreferredSize(new Dimension(50, 18));
-        components.add(parameter);
-        parameter.addItem("");
-        for (String v : values) {
-            parameter.addItem(v);
+        tlb.cell(combo = new JComboBox());
+        combo.setPreferredSize(new Dimension(50, 18));
+        combo.addItem("");
+        for (String v : descriptions) {
+            combo.addItem(v);
         }
-        parameter.setSelectedItem(o.getParameter(paramNo));
-        parameter.addActionListener(new ActionListener() {
+        
+        tlb.row();
+        tlb.cell(parameter = new JTextField());
+        parameter.setVisible(false);
+        String val = o.getParameter(paramNo);
+        parameter.setText(val);
+        for (int i=0; i<descriptions.length; i++) {
+            if (values[i].equals(val)) {
+                combo.setSelectedItem(descriptions[i]);
+                break;
+            }
+        }
+        combo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                String v = combo.getSelectedItem().toString();
+                if (v == null || v.equals("")) {
+                    parameter.setText("");
+                } else {
+                    for (int i=0; i<descriptions.length; i++) {
+                        if (descriptions[i].equals(v)) {
+                            parameter.setText(values[i]);
+                        }
+                    }
+                }
                 updateEditor();
             }
         });
+        components.add(parameter);
         tlb.row();
     }
 

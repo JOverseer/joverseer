@@ -18,6 +18,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
@@ -52,6 +53,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
     JTextField nation;
     JTextField sizeFort;
+    JTextField port;
     JTextField lostThisTurn;
     JTextField productionDescription;
     JTextField turnInfo;
@@ -80,6 +82,13 @@ public class PopulationCenterViewer extends ObjectViewer {
         nation.setText(gm.getNationByNum(pc.getNationNo()).getShortName());
 
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
+        
+        if (pc.getHarbor() != HarborSizeEnum.none) {
+            port.setVisible(true);
+            port.setText(pc.getHarbor().toString());
+        } else {
+            port.setVisible(false);
+        }
         
         // show production
         // if the pop center is a ruin, search in past turns and find the first
@@ -191,6 +200,10 @@ public class PopulationCenterViewer extends ObjectViewer {
         glb.append(c = new JTextField());
         c.setBorder(null);
         bf.bindControl(c, "loyalty");
+        glb.nextLine();
+        
+        glb.append(port = new JTextField());
+        port.setBorder(null);
         glb.nextLine();
         
         glb.append(productionDescription = new JTextField(), 2, 1);

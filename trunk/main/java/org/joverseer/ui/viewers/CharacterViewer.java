@@ -125,6 +125,8 @@ public class CharacterViewer extends ObjectViewer {
         super.setFormObject(object);
         if (object == null)
             return;
+        
+        characterName.setText(GraphicUtils.parseName(c.getName()));
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
 
@@ -287,7 +289,6 @@ public class CharacterViewer extends ObjectViewer {
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setPreferredSize(new Dimension(160, 12));
         
-        bf.bindControl(c, "name");
         glb.append(c = new JTextField());
         c.setBorder(null);
         nationTextBox = (JTextField) c;

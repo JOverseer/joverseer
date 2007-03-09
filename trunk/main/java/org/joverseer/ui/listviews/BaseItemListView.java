@@ -1,10 +1,15 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -21,6 +26,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
@@ -30,6 +36,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected BeanTableModel tableModel;
 
     protected JTable table;
+    protected JComboBox filters;
     protected Class tableModelClass;
     protected SelectHexCommandExecutor selectHexCommandExecutor = new SelectHexCommandExecutor();
 
@@ -70,6 +77,16 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected JComponent createControl() {
         return createControlImpl();
     }
+    
+    protected AbstractListViewFilter[] getFilters() {
+        return null;
+    }
+    
+    protected AbstractListViewFilter getActiveFilter() {
+        if (filters == null) return null;
+        return (AbstractListViewFilter)filters.getSelectedItem();
+    }
+    
     protected JComponent createControlImpl() {
 
         // fetch the messageSource instance from the application context
@@ -88,8 +105,24 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        setItems();
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
+        
+        // create the filter combo
+        AbstractListViewFilter[] filterList = getFilters();
+        if (filterList != null) {
+            filters = new JComboBox(filterList);
+            filters.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    setItems();
+                }
+            });
+            filters.setPreferredSize(new Dimension(200, 20));
+            tlb.cell(filters, "align=left");
+            tlb.row();
+        }
 
+        setItems();
+        
         // create the JTable instance
         table = TableUtils.createStandardSortableTable(tableModel);
         org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
@@ -98,7 +131,8 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         JScrollPane scrollPane = new JScrollPane(table);
         //scrollPane.getViewport().setOpaque(true);
         //scrollPane.getViewport().setBackground(table.getBackground());
-        return scrollPane;
+        tlb.cell(scrollPane);
+        return tlb.getPanel();
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -109,6 +143,14 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+                if (filters != null) {
+                    AbstractListViewFilter[] filterList = getFilters();
+                    filters.removeAllItems();
+                    for (AbstractListViewFilter f : filterList) {
+                        filters.addItem(f);
+                    }
+                    filters.updateUI();
+                }
                 setItems();
             }
         }

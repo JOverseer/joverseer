@@ -1,12 +1,10 @@
 package org.joverseer.ui.command;
 
-import java.io.IOException;
 import java.util.Locale;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.MetadataReaderException;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.ui.LifecycleEventsEnum;

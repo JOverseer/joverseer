@@ -29,7 +29,8 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
     File[] files;
     JOverseerClientProgressMonitor monitor;
     GameHolder gh;
-
+    TitledPageApplicationDialog dialog;
+    
     public OpenXmlAndPdfDir() {
         super("openXmlAndPdfDirCommand");
         gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
@@ -78,7 +79,9 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         }
         Application.instance().getApplicationContext().publishEvent(
                                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
+        
         monitor.done();
+        dialog.setDescription("Processing finished.");
 
     }
 
@@ -114,7 +117,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             FormModel formModel = FormModelHelper.createFormModel(this);
             monitor = new JOverseerClientProgressMonitor(formModel);
             FormBackedDialogPage page = new FormBackedDialogPage(monitor);
-            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+            dialog = new TitledPageApplicationDialog(page) {
                 protected void onAboutToShow() {
                     monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[]{file.getAbsolutePath()}), 100 * files.length);
                     Thread t = new Thread(thisObj);

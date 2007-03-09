@@ -27,4 +27,6 @@ public class NewGameForm extends AbstractForm {
         tlb.add("number");
         return tlb.getForm();
     }
+    
+    
 }

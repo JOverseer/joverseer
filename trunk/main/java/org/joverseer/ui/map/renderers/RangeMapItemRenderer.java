@@ -16,6 +16,7 @@ import org.springframework.richclient.application.Application;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,13 +53,20 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
         for (Object hno : rangeHexes.keySet()) {
             int hexNo = (Integer)hno;
             int cost = (Integer)rangeHexes.get(hexNo);
+            String strCost = String.valueOf(cost);
+            Rectangle2D r = g.getFontMetrics().getStringBounds(strCost, g);
+            int w = new Double(r.getWidth()).intValue();
+            int h = new Double(r.getHeight()).intValue();
+            int w1 = Math.max(w, h);
+            int h1 = w1;
             Point p = MapPanel.instance().getHexCenter(hexNo);
-            Rectangle2D.Float e = new Rectangle2D.Float(p.x - 5, p.y - 5, 10, 10);
+            Rectangle2D.Float e = new Rectangle2D.Float(p.x - w1 / 2 - 2, p.y - h1 / 2 - 2, w1 + 4, h1 + 4);
             g.setColor(Color.RED);
             g.fill(e);
             g.setColor(Color.WHITE);
+            g.draw(e);
             g.setFont(f);
-            g.drawString(String.valueOf(cost), p.x - 4, p.y + 4);
+            g.drawString(strCost, p.x - w / 2, p.y + h / 2);
         }
     }
 

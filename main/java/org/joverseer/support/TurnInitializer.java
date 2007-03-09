@@ -24,6 +24,8 @@ public class TurnInitializer {
         newTurn.getContainers().put(TurnElementsEnum.NationRelation, new Container());
         Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
 
+        Container newPlayerInfo = newTurn.getContainer(TurnElementsEnum.PlayerInfo);
+        
         if (previousTurn != null) {
             // copy pcs
             Container oldPcs = previousTurn.getContainer(TurnElementsEnum.PopulationCenter);
@@ -31,6 +33,7 @@ public class TurnInitializer {
                 PopulationCenter newPc = pc.clone();
                 newPcs.addItem(newPc);
             }
+            // copy relations
             Container oldRelations = previousTurn.getContainer(TurnElementsEnum.NationRelation);
             for (NationRelations nr : (ArrayList<NationRelations>)oldRelations.items) {
                 NationRelations newNr = nr.clone();

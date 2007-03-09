@@ -12,13 +12,31 @@ import org.flexdock.docking.state.DockingState;
 import org.flexdock.perspective.LayoutSequence;
 import org.flexdock.perspective.Perspective;
 import org.flexdock.perspective.PerspectiveFactory;
+import org.flexdock.perspective.PerspectiveManager;
+import org.flexdock.perspective.persist.FilePersistenceHandler;
+import org.flexdock.perspective.persist.PersistenceHandler;
 
 public class JOverseerPerspectiveFactory implements PerspectiveFactory {
+    
+    public Perspective loadPerspective(String persistentId) {
+        try {
+            PersistenceHandler persister = FilePersistenceHandler.createDefault("test-flexdock.xml");
+            PerspectiveManager.setPersistenceHandler( persister );
+            PerspectiveManager.setRestoreFloatingOnLoad(true);
+            return persister.load(persistentId).getPerspectives()[0];
+        }
+        catch (Exception exc) {
+            return null;
+        }
+    }
     
     public Perspective getPerspective(String persistentId) {
         // Perspective perspective = new Perspective(persistentId, "test");
         // LayoutSequence sequence = perspective.getInitialSequence(true);
 
+        Perspective p = loadPerspective("joverseer");
+        if (p != null) return p;
+        
         List<DockingState> dss = new ArrayList<DockingState>();
 
         DockingState ds = new DockingState("mapView");

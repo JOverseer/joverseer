@@ -11,8 +11,8 @@ import org.springframework.core.closure.Constraint;
 
 public class NewGame implements PropertyConstraintProvider {
     GameTypeEnum gameType;
-    Integer number = null;
-    Integer nationNo = null;
+    Integer number;
+    Integer nationNo;
     Rules rules = null;
 
     public GameTypeEnum getGameType() {

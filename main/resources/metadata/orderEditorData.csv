@@ -132,6 +132,6 @@
 940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;d;;;;;;M;M
 945;UsHiArt;Misc;Artifact ID #;b;;;;;;;;
 947;NatTran;Misc;4-Digit Destination Hex + Product (mi,st,br,le,ti,mo,fo) + % transferred (1-100);hex;prd;%;;;;;;
-948;TranCar;Misc;4-Digit Origin Hex + Destination Hex + Product (go,mi,st,br,le,ti,mo,fo) + # of units transported;hex;hex;pro;c;;;;;
+948;TranCar;Misc;4-Digit Origin Hex + Destination Hex + Product (go,mi,st,br,le,ti,mo,fo) + # of units transported;hex;hex;pro;d;;;;;
 949;TrOwner;Emis;Other Character ID (5 lowercase letters/spaces);cid;;;;;;;E;E
 950;ReloCap;Comm;New Capital 4-Digit Hex Location;hex;;;;;;;C;C

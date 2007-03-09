@@ -90,6 +90,7 @@
                             <bean class="org.joverseer.ui.command.SaveGame"/>
 			                <value>separator</value>
                             <bean class="org.joverseer.ui.command.ImportOrders"/>
+                            <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
                             <bean class="org.joverseer.ui.command.RunOrders"/>
                             <value>separator</value>
 			                <bean class="org.springframework.richclient.command.support.ShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />

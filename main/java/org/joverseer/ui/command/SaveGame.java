@@ -34,7 +34,11 @@ public class SaveGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save");
-
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        String saveDir = prefs.get("saveDir", null);
+        if (saveDir != null) {
+            fileChooser.setCurrentDirectory(new File(saveDir));
+        }
         GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
         String fname = String.format("game%s.jov", gh.getGame().getMetadata().getGameNo());
         fileChooser.setSelectedFile(new File(fname));
@@ -45,7 +49,6 @@ public class SaveGame extends ActionCommand {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(zos = new GZIPOutputStream(new FileOutputStream(f)));
                 out.writeObject(gh.getGame());
-                Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
                 prefs.put("saveDir", f.getParent());
                 zos.finish();
                 out.close();

@@ -15,6 +15,10 @@ public class TurnInfo {
     int turnNo;
     int nationNo;
     String gameType;
+    String playerName;
+    String accountNo;
+    String securityCode;
+    String dueDate;
 
     public Container getCharacters() {
         return characters;
@@ -87,5 +91,47 @@ public class TurnInfo {
     public void setEconomy(EconomyWrapper economy) {
         this.economy = economy;
     }
+
+    
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    
+    public void setSecurityCode(String secutiryCode) {
+        this.securityCode = secutiryCode;
+    }
+    
+    
 
 }

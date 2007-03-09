@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -50,7 +51,12 @@ public abstract class ItemListView extends BaseItemListView {
             Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             if (!Game.isInitialized(g)) return;
             Container items = g.getTurn().getContainer(turnElementType);
-            tableModel.setRows(items.getItems());
+            ArrayList filteredItems = new ArrayList();
+            AbstractListViewFilter filter = getActiveFilter();
+            for (Object o : items.getItems()) {
+                if (filter == null || filter.accept(o)) filteredItems.add(o);
+            };
+            tableModel.setRows(filteredItems);
         } else {
             Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             if (!Game.isInitialized(g)) return;

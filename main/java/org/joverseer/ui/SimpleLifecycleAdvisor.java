@@ -25,12 +25,18 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
 import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
+import org.flexdock.docking.state.DockingState;
+import org.flexdock.perspective.Perspective;
+import org.flexdock.perspective.PerspectiveManager;
+import org.flexdock.perspective.persist.PerspectiveModel;
 import org.flexdock.view.View;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
@@ -42,6 +48,8 @@ import org.joverseer.ui.flexdock.JOverseerViewDescriptor;
 import org.joverseer.ui.orders.OrderEditorForm;
 
 import java.awt.*;
+import java.util.Locale;
+import java.util.prefs.Preferences;
 
 import javax.print.attribute.standard.JobHoldUntil;
 import javax.swing.JComboBox;
@@ -60,7 +68,7 @@ import javax.swing.JToolBar;
 public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
 
     private final Log _logger = LogFactory.getLog(getClass());
-
+    boolean canCloseWindow = true;
 
     /**
      * This method is called prior to the opening of an application window. Note
@@ -139,6 +147,8 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
             }
         }
         
+        
+        
 //        if (toolbar != null) {
 //            toolbar.addSeparator();
 //            
@@ -156,6 +166,7 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         if( _logger.isInfoEnabled() ) {
             _logger.info("onWindowOpened( windowNumber=" + window.getNumber() + " )");
         }
+        
     }
 
     /**
@@ -170,7 +181,31 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
         if( _logger.isInfoEnabled() ) {
             _logger.info("onPreWindowClose( windowNumber=" + window.getNumber() + " )");
         }
-        return true;
+        canCloseWindow = true;
+        if (GameHolder.hasInitializedGame()) {
+            canCloseWindow = false;
+            // show warning
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            ConfirmationDialog md = new ConfirmationDialog(
+                    ms.getMessage("confirmCloseAppDialog.title", new String[]{}, Locale.getDefault()),
+                    ms.getMessage("confirmCloseAppDialog.message", new String[]{}, Locale.getDefault()))
+            {
+                protected void onConfirm() {
+                    canCloseWindow = true;
+                }
+            };
+            md.showDialog();
+        }
+        if (canCloseWindow) {
+            Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+            prefs.put("windowSize", String.valueOf(
+                                        window.getControl().getState() + "," +
+                                        window.getControl().getX() + "," +
+                                        window.getControl().getY() + "," +
+                                        window.getControl().getWidth() + "," +
+                                        window.getControl().getHeight()));
+        }
+        return canCloseWindow;
     }
 
     /**
@@ -182,7 +217,24 @@ public class SimpleLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
             _logger.info("onPostStartup()");
         }
         DockingManager.display(DockingManager.getDockable("mapView"));
-        
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        String winSize = prefs.get("windowSize", null);
+        if (winSize != null) {
+            ApplicationWindow window = Application.instance().getActiveWindow();
+            String parts[] = winSize.split(",");
+            if (parts.length == 5) {
+                int state = Integer.parseInt(parts[0]);
+                window.getControl().setState(state);
+                if (state == JFrame.NORMAL) {
+                    int x = Integer.parseInt(parts[1]);
+                    int y = Integer.parseInt(parts[2]);
+                    int w = Integer.parseInt(parts[3]);
+                    int h = Integer.parseInt(parts[4]);
+                    window.getControl().setLocation(new Point(x, y));
+                    window.getControl().setSize(new Dimension(w, h));
+                }
+            }
+        }
     }
 
 }

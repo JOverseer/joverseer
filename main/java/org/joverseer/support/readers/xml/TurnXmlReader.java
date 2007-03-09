@@ -60,8 +60,8 @@ public class TurnXmlReader implements Runnable{
             digester.addObjectCreate("METurn", TurnInfo.class);
             // parse turn info attributes
             SetNestedPropertiesRule snpr = new SetNestedPropertiesRule();
-            snpr = new SetNestedPropertiesRule(new String[]{"GameNo", "TurnNo", "NationNo", "GameType"},
-                    new String[]{"gameNo", "turnNo", "nationNo", "gameType"});
+            snpr = new SetNestedPropertiesRule(new String[]{"GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account"},
+                    new String[]{"gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo"});
             snpr.setAllowUnknownChildElements(true);
             digester.addRule("METurn/TurnInfo", snpr);
 
@@ -213,6 +213,19 @@ public class TurnXmlReader implements Runnable{
                 ti.initializeTurnWith(turn, lastTurn);
                 game.addTurn(turn);
             }
+            // update player info
+            PlayerInfo pi = (PlayerInfo)turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", turnInfo.getNationNo());
+            if (pi != null) {
+                turn.getContainer(TurnElementsEnum.PlayerInfo).removeItem(pi);
+            }
+            pi = new PlayerInfo();
+            pi.setNationNo(turnInfo.getNationNo());
+            pi.setPlayerName(turnInfo.getPlayerName());
+            pi.setDueDate(turnInfo.getDueDate());
+            pi.setSecret(turnInfo.getSecurityCode());
+            pi.setAccountNo(turnInfo.getAccountNo());
+            turn.getContainer(TurnElementsEnum.PlayerInfo).addItem(pi);
+            
             infoSource = new XmlTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
             if (getMonitor() != null) {
                 getMonitor().worked(50);

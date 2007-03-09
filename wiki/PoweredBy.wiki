@@ -1,4 +1,5 @@
 #summary Libraries and Third Party Tools that power JOverseer
+#labels Featured
 
 == JOverseer is powered by: ==
 

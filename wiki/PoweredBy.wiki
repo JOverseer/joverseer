@@ -3,7 +3,11 @@
 = JOverseer is powered by =
 
   * *JIDE* (http://www.jidesoft.com)
+
   * *Spring Rich Client Project* (www.springframework.org/spring-rcp)
+
   * *PDFBox* (http://www.pdfbox.org)
+
   * *Apache Digester*
+
   * *txt2xml* (txt2xml.sourceforge.net)

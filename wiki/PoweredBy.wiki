@@ -9,6 +9,6 @@
 
   * *PDFBox* (http://www.pdfbox.org)
 
-  * *Apache Digester*
-
   * *txt2xml* (http://txt2xml.sourceforge.net)
+
+  * *Apache Digester*

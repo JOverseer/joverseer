@@ -4,10 +4,10 @@
 
   * *JIDE* (http://www.jidesoft.com)
 
-  * *Spring Rich Client Project* (www.springframework.org/spring-rcp)
+  * *Spring Rich Client Project* (http://www.springframework.org/spring-rcp)
 
   * *PDFBox* (http://www.pdfbox.org)
 
   * *Apache Digester*
 
-  * *txt2xml* (txt2xml.sourceforge.net)
+  * *txt2xml* (http://txt2xml.sourceforge.net)

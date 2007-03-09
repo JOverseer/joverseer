@@ -1,6 +1,6 @@
 #summary Libraries and Third Party Tools that power JOverseer
 
-= JOverseer is powered by =
+== JOverseer is powered by: ==
 
   * *JIDE* (http://www.jidesoft.com)
 

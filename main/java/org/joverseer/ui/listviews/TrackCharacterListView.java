@@ -49,6 +49,7 @@ public class TrackCharacterListView extends BaseItemListView {
         tlb.cell(character = new JTextField(), "align=left");
         character.setPreferredSize(new Dimension(200, 24));
         character.setDragEnabled(true);
+        character.setOpaque(true);
         character.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setItems();

@@ -38,7 +38,7 @@ public class JOverseerPerspectiveFactory implements PerspectiveFactory {
         if (p != null) return p;
         
         List<DockingState> dss = new ArrayList<DockingState>();
-
+        
         DockingState ds = new DockingState("mapView");
         dss.add(ds);
         

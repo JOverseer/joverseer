@@ -47,6 +47,7 @@ public class SpellcasterListView extends BaseItemListView {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         tlb.cell(combo = new JComboBox(createSpellLists().toArray()), "align=left");
         combo.setPreferredSize(new Dimension(200, 24));
+        combo.setOpaque(true);
         combo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setItems();

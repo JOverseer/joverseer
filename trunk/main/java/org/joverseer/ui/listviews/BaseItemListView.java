@@ -1,5 +1,6 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -117,6 +119,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
                 }
             });
             filters.setPreferredSize(new Dimension(200, 20));
+            filters.setOpaque(true);
             tlb.cell(filters, "align=left");
             tlb.row();
         }
@@ -127,12 +130,15 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         table = TableUtils.createStandardSortableTable(tableModel);
         org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
 
+        table.getTableHeader().setBackground(Color.WHITE);
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
-        //scrollPane.getViewport().setOpaque(true);
-        //scrollPane.getViewport().setBackground(table.getBackground());
+        scrollPane.getViewport().setOpaque(true);
+        scrollPane.getViewport().setBackground(table.getBackground());
         tlb.cell(scrollPane);
-        return tlb.getPanel();
+        JPanel p = tlb.getPanel();
+        p.setBackground(Color.WHITE);
+        return p;
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {

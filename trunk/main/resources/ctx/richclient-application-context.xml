@@ -507,7 +507,6 @@
          </property>
          <property name="closable"><value>false</value></property>
          <property name="pinnable"><value>false</value></property>
-         <property name="hasTitleBar"><value>false</value></property>
     </bean>
     
     

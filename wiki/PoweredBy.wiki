@@ -1,13 +1,9 @@
-#summary One-sentence summary of this page.
+#summary Libraries and Third Party Tools that power JOverseer
 
-= Introduction =
+= JOverseer is powered by =
 
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * *JIDE* (http://www.jidesoft.com)
+  * *Spring Rich Client Project* (www.springframework.org/spring-rcp)
+  * *PDFBox* (http://www.pdfbox.org)
+  * *Apache Digester*
+  * *txt2xml* (txt2xml.sourceforge.net)

@@ -3,9 +3,9 @@
 
 == JOverseer is powered by: ==
 
-  * *JIDE* (http://www.jidesoft.com)
-
   * *Spring Rich Client Project* (http://www.springframework.org/spring-rcp)
+
+  * *JIDE* (http://www.jidesoft.com)
 
   * *PDFBox* (http://www.pdfbox.org)
 

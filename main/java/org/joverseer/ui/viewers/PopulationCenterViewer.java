@@ -20,10 +20,12 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -36,6 +38,7 @@ import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
@@ -51,6 +54,9 @@ import java.util.Locale;
 public class PopulationCenterViewer extends ObjectViewer {
     public static final String FORM_PAGE = "PopulationCenterViewer";
 
+    boolean showColor = true;
+    
+    JTextField name;
     JTextField nation;
     JTextField sizeFort;
     JTextField port;
@@ -78,8 +84,14 @@ public class PopulationCenterViewer extends ObjectViewer {
         PopulationCenter pc = (PopulationCenter)object;
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (game == null) return;
+        
+        name.setText(GraphicUtils.parseName(pc.getName()));
+        
         GameMetadata gm = game.getMetadata();
-        nation.setText(gm.getNationByNum(pc.getNationNo()).getShortName());
+
+        int nationNo = pc.getNationNo();
+
+        nation.setText(gm.getNationByNum(nationNo).getShortName());
 
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
         
@@ -156,6 +168,20 @@ public class PopulationCenterViewer extends ObjectViewer {
         } else {
             turnInfo.setVisible(false);
         }
+        
+        if (getShowColor()) {
+            Game g = GameHolder.instance().getGame();
+            Turn t = g.getTurn();
+            
+            NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+            Color col;
+            if (nr == null) {
+                col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
+            } else {
+                col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
+            }
+            name.setForeground(col);
+        }
     }
 
     protected JComponent createFormControl() {
@@ -166,11 +192,11 @@ public class PopulationCenterViewer extends ObjectViewer {
 
         JComponent c;
 
-        glb.append(c = new JTextField());
+        glb.append(name = new JTextField());
+        c = name;
         c.setPreferredSize(new Dimension(100, 12));
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
         c.setBorder(null);
-        bf.bindControl(c, "name");
 
         glb.append(sizeFort = new JTextField());
         c = sizeFort;
@@ -315,6 +341,16 @@ public class PopulationCenterViewer extends ObjectViewer {
             dialog.setTitle(ms.getMessage("editPopulationCenterDialog.title", new Object[]{String.valueOf(pc.getHexNo())}, Locale.getDefault()));
             dialog.showDialog();
         }
+    }
+
+    
+    public boolean getShowColor() {
+        return showColor;
+    }
+
+    
+    public void setShowColor(boolean showColor) {
+        this.showColor = showColor;
     }
     
 }

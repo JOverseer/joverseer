@@ -29,6 +29,7 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
@@ -125,7 +126,7 @@ public class ArmyViewer extends ObjectViewer {
         super.setFormObject(object);
 
         Army army = (Army) object;
-        commanderName.setText(army.getCommanderTitle() + " " + army.getCommanderName());
+        commanderName.setText((army.getCommanderTitle() + " " + GraphicUtils.parseName(army.getCommanderName())).trim());
 
         if (getShowColor()) {
             Color c = ColorPicker.getInstance().getColor(army.getNationAllegiance().toString());

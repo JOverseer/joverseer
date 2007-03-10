@@ -1,5 +1,5 @@
 #summary This page describes the facilities for entering orders in JOverseer
-#labels Draft
+#labels Featured
 
 ==Introduction==
 
@@ -55,6 +55,5 @@ Then you should bring up the desired character and click on the little "Map" but
 Note that you can also control which orders will be visualized and which won't from the Order view, by using the "Draw" column, as shown below.
 
 [http://joverseer.googlecode.com/svn/wiki/images/jov.ss.order-entry.8.jpg]
-
 
 

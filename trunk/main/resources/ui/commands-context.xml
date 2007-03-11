@@ -37,6 +37,7 @@
 			<list>
 				<ref bean="fileMenu"/>
 				<ref bean="utilMenu"/>
+				<ref bean="windowMenu"/>
                 <ref bean="helpMenu"/>
 			</list>
 		</property>
@@ -93,14 +94,27 @@
                             <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
                             <bean class="org.joverseer.ui.command.RunOrders"/>
                             <value>separator</value>
-			                <bean class="org.springframework.richclient.command.support.ShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
-                            <value>separator</value>
                             <bean class="org.springframework.richclient.command.support.ExitCommand"/>
 			</list>
 		</property>
 	</bean>
 	
-        
+    <bean id="windowMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+                <bean class="org.springframework.richclient.command.support.ShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
+                <bean class="org.joverseer.ui.command.RestoreDefaultLayoutCommand"/>
+			</list>
+		</property>
+	</bean>                
+               
+    <bean id="lookAndFeelMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list> 
+			</list>
+		</property>
+	</bean> 
     <!-- 
         Bean: helpMenu
         Type: user named
@@ -127,13 +141,6 @@
 	<bean id="aboutCommand" 
 		class="org.springframework.richclient.command.support.AboutCommand">
 	</bean>
-
-    <bean id="windowMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-        <property name="members">
-            <list>
-            </list>
-        </property>
-      </bean>
 
 	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
         <property name="members">

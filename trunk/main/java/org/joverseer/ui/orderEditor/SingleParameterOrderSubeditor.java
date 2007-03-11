@@ -13,8 +13,6 @@ import org.joverseer.domain.Order;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-import sun.security.krb5.internal.util.o;
-
 
 public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField parameter;

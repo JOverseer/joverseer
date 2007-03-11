@@ -32,13 +32,12 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     
     boolean fireEvents = true;
 
-    protected JComponent createControl() {
-        GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
-        lb.setDefaultInsets(new Insets(5, 0, 5, 0));
+	protected JComponent createControl() {
+        TableLayoutBuilder lb = new TableLayoutBuilder();
         JLabel label;
-        lb.append(label = new JLabel("Turn : "));
-        //label.setPreferredSize(new Dimension(50, 16));
-        lb.append(cmbTurns = new JComboBox());
+        lb.cell(label = new JLabel("Turn : "), "align=left");
+        label.setPreferredSize(new Dimension(100, 16));
+        lb.cell(cmbTurns = new JComboBox(), "align=left");
 
         cmbTurns.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,11 +59,11 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
         });
         cmbTurns.setPreferredSize(new Dimension(60, 16));
-        lb.nextLine();
+        lb.row();
 
         //lb.append(new JLabel("  "));
-        lb.append(label = new JLabel("Map : "));
-        lb.append(cmbMaps = new JComboBox());
+        lb.cell(label = new JLabel("Map : "), "align=left");
+        lb.cell(cmbMaps = new JComboBox(), "align=left");
         cmbMaps.setPreferredSize(new Dimension(100, 16));
         cmbMaps.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -92,12 +91,12 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
 
         });
-        lb.nextLine();
+        lb.row();
         
         //lb.append(new JLabel("  "));
-        lb.append(label = new JLabel("Draw orders : "));
+        lb.cell(label = new JLabel("Draw orders : "), "align=left");
         //label.setPreferredSize(new Dimension(100, 16));
-        lb.append(drawOrders = new JCheckBox());
+        lb.cell(drawOrders = new JCheckBox(), "align=left");
         drawOrders.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -116,11 +115,11 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
             
         });
-        lb.nextLine();
+        lb.row();
         //lb.append(new JLabel("  "));
-        lb.append(label = new JLabel("Show climate : "));
+        lb.cell(label = new JLabel("Show climate : "), "align=left");
         //label.setPreferredSize(new Dimension(100, 16));
-        lb.append(showClimate = new JCheckBox());
+        lb.cell(showClimate = new JCheckBox(), "align=left");
         showClimate.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -142,9 +141,12 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 
         resetGame();
         JPanel panel = lb.getPanel();
-        TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(panel, "align=left");
-        return tlb.getPanel();
+        panel.setPreferredSize(new Dimension(130, 200));
+        return new JScrollPane(panel);
+//        TableLayoutBuilder tlb = new TableLayoutBuilder();
+//        tlb.cell(panel, "align=left");
+//        tlb.gapCol();
+//        return panel;
     }
 
     public void resetGame() {

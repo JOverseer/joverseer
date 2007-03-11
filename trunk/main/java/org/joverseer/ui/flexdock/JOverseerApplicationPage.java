@@ -1,11 +1,15 @@
 package org.joverseer.ui.flexdock;
 
 import org.springframework.richclient.application.flexdock.FlexDockApplicationPage;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.ViewDescriptor;
+import org.springframework.richclient.image.ImageSource;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.view.View;
 import org.flexdock.view.ViewProps;
+
+import com.sun.media.codec.video.cinepak.CineStore;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -55,6 +59,17 @@ public class JOverseerApplicationPage extends FlexDockApplicationPage {
 
         if (!hasTitle) {
             view.setTitlebar(null);
+        }
+        
+        // get the icon from the image source
+        try {
+	        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+	        Icon icon = new ImageIcon(imgSource.getImage(component.getId() + ".icon"));
+	        view.setIcon(icon);
+	        view.setTabIcon(icon);
+        }
+        catch (Exception exc) {
+        	// do nothing if icon was not found
         }
         
         if( closable && hasTitle) {

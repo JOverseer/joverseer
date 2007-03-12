@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
@@ -29,6 +30,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 public class MapOptionsView extends AbstractView implements ApplicationListener {
     JComboBox cmbTurns;
     JComboBox cmbMaps;
+    JComboBox zoom;
     JCheckBox drawOrders;
     JCheckBox showClimate;
     
@@ -140,6 +142,28 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
             
         });
+        lb.row();
+        lb.cell(label = new JLabel("Zoom level : "));
+        ZoomOption[] zoomOptions = new ZoomOption[]{
+                new ZoomOption("1", 13, 13),
+                new ZoomOption("2", 15, 15),
+                new ZoomOption("3", 17, 17),
+                new ZoomOption("4", 19, 19),
+        };
+        lb.cell(zoom = new JComboBox(zoomOptions), "align=left");
+        zoom.setPreferredSize(new Dimension(100, 16));
+        zoom.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                ZoomOption opt = (ZoomOption)zoom.getSelectedItem();
+                if (opt == null) return;
+                MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+                metadata.setGridCellHeight(opt.getHeight());
+                metadata.setGridCellWidth(opt.getWidth());
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+            }
+        });
 
         resetGame();
         JPanel panel = lb.getPanel();
@@ -205,5 +229,36 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         }
     }
 
+    class ZoomOption {
+        String description;
+        int width;
+        int height;
+        public ZoomOption(String description, int width, int height) {
+            super();
+            this.description = description;
+            this.width = width;
+            this.height = height;
+        }
+        
+        public String toString() {
+            return description;
+        }
 
+        
+        public String getDescription() {
+            return description;
+        }
+
+        
+        public int getHeight() {
+            return height;
+        }
+
+        
+        public int getWidth() {
+            return width;
+        }
+        
+        
+    }
 }

@@ -9,5 +9,6 @@ public enum LifecycleEventsEnum {
     RefreshOrders,
     RefreshMapItems,
     EconomyCalculatorUpdate,
-    EditOrderEvent
+    EditOrderEvent,
+    MapMetadataChangedEvent
 }

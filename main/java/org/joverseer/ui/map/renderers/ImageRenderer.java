@@ -44,6 +44,37 @@ public abstract class ImageRenderer implements Renderer {
         }
         return (BufferedImage) images.get(imgName);
     }
+    
+    protected BufferedImage getImage(String imgName, int desiredWidth, int desiredHeight) {
+        if (!images.containsKey(imgName)) {
+            try {
+                ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+                Image img = imgSource.getImage(imgName);
+                
+               
+                BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                Graphics g = bimg.getGraphics();
+                g.drawImage(img, 0, 0, null);
+                g.dispose();
+                
+                int w = desiredWidth;
+                int h = desiredHeight;
+                BufferedImage bufimg2 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = (Graphics2D) bufimg2.getGraphics();
+                g2d.scale((double) w / bimg.getWidth(), (double) h / bimg.getHeight());
+                g2d.drawImage(img,0,0,null);
+                bimg = bufimg2; 
+                
+                //img = makeColorTransparent(img, Color.white);
+                images.put(imgName, bimg);
+                return bimg;
+            }
+            catch (Exception exc) {
+                logger.error(String.format("Error %s loading image %s.", exc.getMessage(), imgName));
+            }
+        }
+        return (BufferedImage) images.get(imgName);
+    }
 
     public static Image makeColorTransparent(Image im, final Color color) {
         ImageFilter filter = new RGBImageFilter() {

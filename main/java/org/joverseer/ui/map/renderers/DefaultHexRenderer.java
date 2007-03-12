@@ -1,9 +1,13 @@
 package org.joverseer.ui.map.renderers;
 
 import org.springframework.richclient.application.Application;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.beans.factory.config.ResourceFactoryBean;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
@@ -11,12 +15,14 @@ import org.joverseer.metadata.domain.HexSideElementEnum;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ReplicateScaleFilter;
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.Locale;
 
 
-public class DefaultHexRenderer extends ImageRenderer {
+public class DefaultHexRenderer extends ImageRenderer implements ApplicationListener {
     HashMap terrainColors = new HashMap();
 
     protected int[] xPoints = new int[6];
@@ -71,6 +77,7 @@ public class DefaultHexRenderer extends ImageRenderer {
         colorStr = colorSource.getMessage("bridge.color", null, Locale.getDefault());
         setBridgeFordColor(Color.decode(colorStr));
 
+        images.clear();
     }
 
     private Polygon getSidePolygon(HexSideEnum side) {
@@ -156,9 +163,11 @@ public class DefaultHexRenderer extends ImageRenderer {
         }
 
         Hex hex = (Hex)obj;
-        BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain");
+        BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", 
+                metadata.getGridCellWidth() * metadata.getHexSize(), 
+                metadata.getGridCellHeight() * metadata.getHexSize());
         if (img!= null) {
-            g.drawImage(img, x+1, y+1, null);
+            g.drawImage(img, x, y, null);
             Polygon polygon = new Polygon(xPoints, yPoints, 6);
             polygon.translate(x, y);
             g.setColor(Color.black);
@@ -234,6 +243,15 @@ public class DefaultHexRenderer extends ImageRenderer {
 
     public void setRoadColor(Color roadColor) {
         this.roadColor = roadColor;
+    }
+
+    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        if (applicationEvent instanceof JOverseerEvent) {
+            JOverseerEvent e = (JOverseerEvent)applicationEvent;
+            if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
+                init();
+            }
+        }
     }
 
 }

@@ -174,6 +174,11 @@
         <property name="fontStyle"><value>1</value></property>
     </bean>
     
+	<bean id="defaultHexRenderer" class="org.joverseer.ui.map.renderers.DefaultHexRenderer"/>
+	<bean id="hexInfoRenderer" class="org.joverseer.ui.map.renderers.HexInfoRenderer">
+		<property name="densityFactor"><value>4</value></property>
+	    <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
+    </bean>
 	
 	
 	<bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
@@ -191,18 +196,13 @@
         </property>
         <property name="renderers">
             <list>
-                <bean class="org.joverseer.ui.map.renderers.DefaultHexRenderer"/>
+                <ref bean="defaultHexRenderer"/>
                 <ref bean="hexNumberRenderer"></ref>
                 <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
-
-                <bean class="org.joverseer.ui.map.renderers.HexInfoRenderer">
-                    <property name="densityFactor"><value>4</value></property>
-                    <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
-                </bean>
-
+                <ref bean="hexInfoRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>

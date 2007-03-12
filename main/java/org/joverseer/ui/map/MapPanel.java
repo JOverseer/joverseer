@@ -154,6 +154,8 @@ public class MapPanel extends JPanel implements MouseListener {
         map = mapBack;
 
         Graphics2D g = map.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, map.getWidth(), map.getHeight());
 
 //        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 //        Image img = imgSource.getImage("memap");
@@ -420,6 +422,7 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     public void invalidateAll() {
+        mapBack = null;
         map = null;
         mapBaseItems = null;
         mapItems = null;

@@ -18,6 +18,8 @@ package org.joverseer.ui.command;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 
 import com.jidesoft.docking.DockingManager;
@@ -45,7 +47,12 @@ public class RestoreDefaultLayoutCommand extends ApplicationWindowAwareCommand{
 		log.debug("Execute command");
 		DockingManager manager = 
 			((JideApplicationWindow)getApplicationWindow()).getDockingManager(); 
-		//manager.resetToDefault();
-		manager.loadLayoutDataFromFile("default.layout");
+                Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
+                try {
+                    manager.loadLayoutFrom(r.getInputStream());
+                }
+                catch (Exception exc) {
+                    log.error("Failed to load original layout from layout file " + exc.getMessage());
+                }
 	}
 }

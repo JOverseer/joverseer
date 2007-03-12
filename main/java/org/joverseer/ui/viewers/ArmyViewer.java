@@ -92,7 +92,7 @@ public class ArmyViewer extends ObjectViewer {
         });
 
         glb.nextLine();
-        glb.append(armySize = new JTextField());
+        glb.append(armySize = new JTextField(), 1, 1);
         armySize.setPreferredSize(new Dimension(100, 12));
         glb.append(armyType = new JTextField());
         armyType.setPreferredSize(new Dimension(50, 12));
@@ -141,6 +141,7 @@ public class ArmyViewer extends ObjectViewer {
 
         
         armySize.setText("Size: " + army.getSize().toString());
+        armySize.setCaretPosition(0);
         armyType.setText(army.isNavy() ? "Navy" : "Army");
         if (army.getElements().size() > 0) {
             extraInfo.setText("");

@@ -24,8 +24,8 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     }
     
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName));
-        tlb.cell(parameter = new JTextField(o.getParameter(paramNo)));
+        tlb.cell(new JLabel(paramName), "colspec=left:70px");
+        tlb.cell(parameter = new JTextField(o.getParameter(paramNo)), "colspec=left:100px");
         parameter.setPreferredSize(new Dimension(60, 18));
         attachAutoUpdateDocumentListener(parameter);
         components.add(parameter);

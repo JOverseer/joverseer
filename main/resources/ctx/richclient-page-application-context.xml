@@ -62,6 +62,7 @@
 		<property name="preferredHeight">
 			<value>600</value>
 		</property>
+		
 	</bean>
 	
 	<bean id="economyCalculatorView" 

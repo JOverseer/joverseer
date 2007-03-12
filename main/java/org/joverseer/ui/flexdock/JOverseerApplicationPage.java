@@ -9,8 +9,6 @@ import org.flexdock.docking.DockingManager;
 import org.flexdock.view.View;
 import org.flexdock.view.ViewProps;
 
-import com.sun.media.codec.video.cinepak.CineStore;
-
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

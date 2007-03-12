@@ -31,9 +31,9 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName));
-        tlb.cell(parameter = new JComboBox());
-        parameter.setPreferredSize(new Dimension(70, 18));
+        tlb.cell(new JLabel(paramName), "colspec=left:70px");
+        tlb.cell(parameter = new JComboBox(), "colspec=left:180px");
+        parameter.setPreferredSize(new Dimension(180, 18));
         tlb.row();
         tlb.cell(spellNo = new JTextField());
         spellNo.setVisible(false);

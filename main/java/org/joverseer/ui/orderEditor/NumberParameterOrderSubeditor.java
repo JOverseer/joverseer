@@ -22,11 +22,11 @@ public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     }
     
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName));
+        tlb.cell(new JLabel(paramName), "colspec=left:70px");
         try {
             DecimalFormat f = new DecimalFormat();
             f.setDecimalSeparatorAlwaysShown(false);
-            tlb.cell(parameter = new JFormattedTextField(f));
+            tlb.cell(parameter = new JFormattedTextField(f), "colspec=left:100px");
             parameter.setText(o.getParameter(paramNo));
             parameter.setPreferredSize(new Dimension(50, 18));
             

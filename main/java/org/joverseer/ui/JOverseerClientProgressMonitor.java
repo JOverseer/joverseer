@@ -45,9 +45,10 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         taskSubtasks.setModel(llm = new ListListModel());
         taskSubtasks.setPreferredSize(new Dimension(300, 300));
         JScrollPane scp = new JScrollPane(taskSubtasks);
-        scp.setPreferredSize(new Dimension(300, 200));
+        scp.setPreferredSize(new Dimension(320, 250));
         tlb.cell(scp);
         panel = tlb.getPanel();
+        panel.setPreferredSize(new Dimension(350, 300));
         return panel;
     }
 

@@ -97,7 +97,7 @@ public class OrderRenderer implements Renderer {
                 if (nextHexNo == currentHexNo) continue;
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
                 p2 = MapPanel.instance().getHexCenter(nextHexNo);
-                g.setStroke(GraphicUtils.getDashStroke(3, 6));
+                g.setStroke(GraphicUtils.getDashStroke(3, 8));
                 g.setColor(Color.black);
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
@@ -178,7 +178,7 @@ public class OrderRenderer implements Renderer {
             Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
             g.fill(arrowHead);
 
-            Stroke s = GraphicUtils.getDashStroke(3, 6);
+            Stroke s = GraphicUtils.getDashStroke(3, 8);
             g.setStroke(s);
             g.setColor(Color.BLACK);
             // draw line

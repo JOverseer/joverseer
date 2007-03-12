@@ -46,6 +46,7 @@ public class MapView extends AbstractView  implements ApplicationListener {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 mapPanel.invalidateAll();
+                mapPanel.updateUI();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 if (e.getSender() != mapPanel) {
                     Point p = (Point)e.getObject();

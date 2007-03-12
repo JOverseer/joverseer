@@ -271,6 +271,7 @@
 	    <constructor-arg index="0" value="Production-Revenue"/>
     </bean>
     
+    <!-- 
     <bean id="TurnProcessor" class="org.joverseer.orders.BaseTurnProcessor">
     	<property name="phases">
 	    	<map>            	
@@ -289,6 +290,6 @@
     		</map>
     	</property>	
    	</bean>
-   	
+   	-->
    	
 </beans>

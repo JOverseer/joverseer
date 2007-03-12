@@ -1,8 +1,5 @@
 package org.joverseer.ui.jide;
 
-import org.flexdock.docking.DockingConstants;
-import org.flexdock.docking.state.DockingState;
-
 import com.jidesoft.docking.DockContext;
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.perspective.Perspective;

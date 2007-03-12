@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.flexdock.docking.DockingManager;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -192,12 +191,12 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         l.setVerticalAlignment(JLabel.NORTH);
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
-        description.setPreferredSize(new Dimension(300, 50));
+        description.setPreferredSize(new Dimension(200, 50));
         description.setEditable(false);
         description.setBorder(parameters.getBorder());
         Font f = new Font(description.getFont().getName(),
                             Font.ITALIC,
-                            description.getFont().getSize());
+                            description.getFont().getSize()-1);
         description.setFont(f);
         
         glb.nextLine();
@@ -371,7 +370,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             } else if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
                 setFormObject(e.getObject());
                 //OrderEditorView oev = (OrderEditorView)Application.instance().getApplicationContext().getBean("orderEditorView");
-                DockingManager.display(DockingManager.getDockable("orderEditorView"));
+                // mscoon
+                //DockingManager.display(DockingManager.getDockable("orderEditorView"));
             }
         }
     }

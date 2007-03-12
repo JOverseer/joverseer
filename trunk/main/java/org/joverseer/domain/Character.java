@@ -1,9 +1,11 @@
 package org.joverseer.domain;
 
+import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.infoSources.InfoSource;
 
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 
 import sun.text.Normalizer;
 
@@ -239,8 +241,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
 
     public static String getIdFromName(String name) {
         String id = name.toLowerCase().substring(0, Math.min(5, name.length()));
-        id = Normalizer.normalize(id, Normalizer.DECOMP, 0);
-        return id.replaceAll("[^\\p{ASCII}]", "");
+        return AsciiUtils.convertNonAscii(id);
     }
 
     
@@ -273,6 +274,8 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.deathReason = deathReason;
     }
     
-    
+    public static void main(String[] args) {
+        System.out.println(Character.getIdFromName("Michèle"));
+    }
     
 }

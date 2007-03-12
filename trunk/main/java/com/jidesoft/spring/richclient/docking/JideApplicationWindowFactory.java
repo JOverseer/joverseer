@@ -37,7 +37,7 @@ import com.jidesoft.utils.Lm;
  */
 public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 
-	private Short layoutVersion = null;
+	private Short layoutVersion = 1;
 	private String profileKey = "profileKey";
 	
 	private boolean saveLayoutOnClose = true;
@@ -173,7 +173,9 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	}
 
 	private static class DefaultCustomizer implements DockingManager.TabbedPaneCustomizer{
-		public void customize(JideTabbedPane tabbedPane) {
-		}
+	        
+        	public void customize(JideTabbedPane tabbedPane) {
+                    
+        	}
 	}
 }

@@ -15,12 +15,13 @@
  */
 package com.jidesoft.spring.richclient.docking;
 
+import java.text.MessageFormat;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.perspective.Perspective;
-
-import java.text.MessageFormat;
 
 /**
  * A simple manager of JIDE layouts that has the ability to save and restore
@@ -33,7 +34,7 @@ import java.text.MessageFormat;
 public class LayoutManager {
 	private static final Log logger = LogFactory.getLog(LayoutManager.class);
 
-	private static final String PAGE_LAYOUT = "page_{0}_layout_{1}";
+	private static final String PAGE_LAYOUT = "page_{0}_layout_{1}.layout";
 	
 	public static boolean isValidLayout(DockingManager manager, String pageId, Perspective perspective){
 
@@ -54,22 +55,26 @@ public class LayoutManager {
 	public static boolean loadPageLayoutData(DockingManager manager, String pageId, Perspective perspective){
 		manager.beginLoadLayoutData();
 		try{
-			if(isValidLayout(manager, pageId, perspective)){
+			//if(isValidLayout(manager, pageId, perspective)){
+                   try {
 				String pageLayout = MessageFormat.format(PAGE_LAYOUT, new Object[]{pageId, perspective.getId()});
-				manager.setLayoutDirectory(".");
+				//manager.setLayoutDirectory(".");
 				manager.setUsePref(false);
-				manager.loadLayoutDataFrom(pageLayout);
-				logger.debug("Used exisiting layout");
+				manager.loadLayoutDataFromFile(pageLayout);
+				logger.info("Used existing layout");
 				return true;
-			}
-			else{
-				logger.debug("Using default layout");
+                   }
+                   catch (Exception exc)
+			//}
+//                        else{
+                   {
+				logger.info("Using default layout");
 				manager.loadLayoutData();
 				return false;
 			}
 		}
 		catch(Exception e){
-			logger.debug("Using default layout");
+			logger.info("Using default layout");
 			manager.loadLayoutData();
 			return false;
 		}
@@ -82,10 +87,10 @@ public class LayoutManager {
 	 * @param pageId The page to saved the layout for
 	 */
 	public static void savePageLayoutData(DockingManager manager, String pageId, String perspectiveId){
-		logger.debug("Saving layout for page "+pageId);
-		manager.setLayoutDirectory(".");
+		logger.info("Saving layout for page "+pageId);
+		//manager.setLayoutDirectory(".");
 		manager.setUsePref(false);
-		manager.saveLayoutDataAs(MessageFormat.format(PAGE_LAYOUT, 
+		manager.saveLayoutDataToFile(MessageFormat.format(PAGE_LAYOUT, 
 				new Object[]{pageId, perspectiveId}));
 	}
 }

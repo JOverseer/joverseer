@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
@@ -35,9 +37,9 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 	protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
         JLabel label;
-        lb.cell(label = new JLabel("Turn : "), "align=left");
+        lb.cell(label = new JLabel("Turn : "), "colspec=left:100px");
         label.setPreferredSize(new Dimension(100, 16));
-        lb.cell(cmbTurns = new JComboBox(), "align=left");
+        lb.cell(cmbTurns = new JComboBox(), "colspec=left:100px");
 
         cmbTurns.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -58,11 +60,11 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 }
             }
         });
-        cmbTurns.setPreferredSize(new Dimension(60, 16));
+        cmbTurns.setPreferredSize(new Dimension(100, 16));
         lb.row();
 
         //lb.append(new JLabel("  "));
-        lb.cell(label = new JLabel("Map : "), "align=left");
+        lb.cell(label = new JLabel("Map : "));
         lb.cell(cmbMaps = new JComboBox(), "align=left");
         cmbMaps.setPreferredSize(new Dimension(100, 16));
         cmbMaps.addActionListener(new ActionListener() {
@@ -94,7 +96,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.row();
         
         //lb.append(new JLabel("  "));
-        lb.cell(label = new JLabel("Draw orders : "), "align=left");
+        lb.cell(label = new JLabel("Draw orders : "));
         //label.setPreferredSize(new Dimension(100, 16));
         lb.cell(drawOrders = new JCheckBox(), "align=left");
         drawOrders.addActionListener(new ActionListener() {
@@ -117,7 +119,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         });
         lb.row();
         //lb.append(new JLabel("  "));
-        lb.cell(label = new JLabel("Show climate : "), "align=left");
+        lb.cell(label = new JLabel("Show climate : "));
         //label.setPreferredSize(new Dimension(100, 16));
         lb.cell(showClimate = new JCheckBox(), "align=left");
         showClimate.addActionListener(new ActionListener() {
@@ -142,6 +144,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         resetGame();
         JPanel panel = lb.getPanel();
         panel.setPreferredSize(new Dimension(130, 200));
+        panel.setBorder(new EmptyBorder(5,5,5,5));
+        
         return new JScrollPane(panel);
 //        TableLayoutBuilder tlb = new TableLayoutBuilder();
 //        tlb.cell(panel, "align=left");

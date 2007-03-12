@@ -1,12 +1,12 @@
 package org.joverseer.ui;
 
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
+import org.joverseer.metadata.GameTypeEnum;
+import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.builder.TableFormBuilder;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.binding.form.FormModel;
-import org.joverseer.metadata.GameTypeEnum;
-
-import javax.swing.*;
 
 
 public class NewGameForm extends AbstractForm {

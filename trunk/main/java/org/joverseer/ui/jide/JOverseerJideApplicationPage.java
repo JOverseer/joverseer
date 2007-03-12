@@ -4,15 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.Icon;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.PageDescriptor;
-import org.springframework.richclient.image.IconSource;
 
 import com.jidesoft.docking.DockContext;
 import com.jidesoft.docking.DockableFrame;
@@ -42,7 +39,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 		} else {
 			dockableFrame = new DockableFrame(pageComponent.getId(), icon);
 		}
-		
+                
 		dockableFrame.setTitle(pageComponent.getDisplayName());
 		dockableFrame.setTabTitle(pageComponent.getDisplayName());
 		dockableFrame.setFrameIcon(icon);

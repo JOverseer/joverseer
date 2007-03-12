@@ -24,6 +24,12 @@ import java.util.ArrayList;
 
 
 public class HexInfoRenderer extends DefaultHexRenderer {
+    @Override
+    protected void init() {
+        super.init();
+        img = null;
+    }
+
     int densityFactor = 4;
     Renderer hexNumberRenderer = null;
     BufferedImage img = null;

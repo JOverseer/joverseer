@@ -74,7 +74,11 @@ public class MapView extends AbstractView  implements ApplicationListener {
             } else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 mapPanel.invalidateMapItems();
                 mapPanel.updateUI();
+            } else if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
+                mapPanel.invalidateAll();
+                mapPanel.updateUI();
             }
+            
         }
     }
 

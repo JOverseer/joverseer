@@ -32,8 +32,10 @@ public class CreateGame extends ActionCommand {
         final NewGameForm form = new NewGameForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+        final MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+        final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
             protected void onAboutToShow() {
+                setDescription(ms.getMessage(form.getId() + ".description", null, Locale.getDefault()));
             }
 
             protected boolean onFinish() {
@@ -72,7 +74,6 @@ public class CreateGame extends ActionCommand {
                 return true;
             }
         };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         dialog.setTitle(ms.getMessage("newGameDialog.title", new Object[]{}, Locale.getDefault()));
         dialog.showDialog();
 

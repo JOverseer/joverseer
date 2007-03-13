@@ -1,0 +1,474 @@
+"# OrderChecker, version 2.4"
+#
+# Any line in this file that starts with a # character is a comment.
+#
+# The rule set is defined with each component of the rule residing in a different cell.
+# The file can then be saved out to CSV format (comma separated variables) and imported into the Order Checker.
+#
+# List of information NOT available via XML turn input:
+# Warships / Transports in army/shore
+# Commodities available in a population center.
+# Company commander status.
+# Siege status for a PC.
+#
+# Checks NOT performed since Automagic/MEOW does them
+# Capital check
+# 2 Orders from same skill
+# Comm/Em/Agent/Mage skill requirement for an order.,,
+#,,
+# Rule Format,,
+# The first column is always the order that the rule applies to.,,
+# The second column is always the rule being enforced.,,
+# The third and all other columns are the parameters that belong to the rule.,,
+#,,
+# Note: param # refers to the parameter number in the actual order file and is 1 based,,
+#,,
+# Rule Descriptions (an order can have more than one rule applied to it),,
+# ARMYMOVE,Force,"Force = 1 if forced march, otherwise 0.  Checks the army movement and how many points it requires.   Also reports theoretical final destination and total movement points.  Assumes direction list starts at order parameter #2.  Parameter #1 is the type (evasive or normal)."
+# ARMYORPC,Type,"Type 0 = army CO, 1 = with army.  Checks that the character is with an army or that an owned PC is at the character's location."
+# ARMYSCOUT,"Char, Distance",Char = param # of army CO.  Distance = max distance to army.  Checks that the army to be scouted isn't too far away.
+# ARTIFACT,Artifact,Artifact = param #.  Checks to see if the character has the specified artifact.
+# ARTYFIND,Artifact,Artifact  = 0 or param #.  Does some checking on the artifact search.
+# ARTYLIST,"Type, Artifacts","Type 1 = pass to parm #, 2 = drop, 3 = find. Artifacts = param # (up to 6).  Used for manipulating multiple artifacts on a character."
+# ARTYNAME,Artifact,Artifact = param #.  Just reports the name of the artifact.
+# CHARACTER,"Char, Location, Status","Char = 0 or param # for character name, Location = 0 or param #.  Status  0 = owned, 1 = don't care, 2 = not owned, 3 = owned by friendly nation, 4 = not owned, adjacent hex, 5 = owned or dual friendly relations, 6 = owned or us friendly.  Checks to see if a character is at a location. "
+# CHARMOVE,"Location, Distance, Type","Location = param #. Distance = # hexes. Type 0 = normal check, 1 = distance only, 2 = join army, 3 = leave army, 4 = to capital, 5 = join army only (current hex).  Checks the maximum character movement for the specified target."
+# COMMANDER,"Char, Location, Status, Type","Char = 0 or param #.  Location = 0 or param #.  Status is 0 - 6.  Type = 0 for army CO, 1 for navy CO, 2 for army or navy CO, 3 commander with army/navy (including CO), 4 = company, 5 any, 6 = with army, 7 = army CO or navy CO on land.  Checks to see if the character is a commander or at least with an army/navy.  "
+# COMMANDERNOT,"Char, Location, Status, Type","Char = 0 or param #.  Location = 0 or param #. Status is 0 - 6. Type = 2 for army/navy CO, 4 for company commander, 5 for either, 6 with army, not CO. Checks to make sure the character the order is for is not a commander.  "
+# COMMANDXFER,Char,Char = param #. Indicates character is transfering their army/navy or company to someone else.
+# DOCK,Type,"Type = 0 for harbor, 1 for port,  2 = harbor/port/shore, 3 = no harbor or port.  Checks to see if a harbor or port is present at the hex.  "
+# ENEMYARMY,"Location, Logic","Location = 0 or param #.  Logic = 1 for army present, 0 = not present. Checks to see if an enemy army or navy is present.  "
+# FEATURE,"Location, Direction, Type, Logic","Location = 0 or param #.  Direction = 0 for any or param #. Type = 1 (ford), 2 (bridge), 3 (deep river), 9 (deep river then road), 10 deep river or adjacent water.  Logic = 0 for exist, 1 for not.  Checks to see if the specified feature is or is not present."
+# FORT,Type,"Type: 0 = any, 1 = less than citadel.  Checks to see if fortifications are present in the PC in the current hex.  "
+# HOSTAGE,"Char, Type","Char = 0 or param #.  Type = 0 for not hostage/NPC, 1 for hostage.  Checks the specified character to see if they are a hostage or not."
+# IMPROVEPC,,Checks to see if the character can improve the population center. Em + Loyalty > 70/90/110/130 for village/town/MT/City
+# LAND,Location,"Checks to make sure the order takes place on land.  Location = 0 for current character's location, otherwise order param # for location (1 based)."
+# MAGEAMT,"Param, Amount, Type","Param = amount #.  Amount = max # / natural mage rank, Type 0 = mounts, 1 = food, 2 = Troops.  Checks that the maximum commodity is not exceeded."
+# NATION,"Type, Param","Type = 0 for friendly/neutral, 1 for enemy/neutral, 2 for display name only. Param = param #.  Checks to see that the specified nation is valid.  "
+# NAVYMOVE,,Checks the navy movement and how many points it requires.  Also reports theoretical final destination and total movement points.  Assumes direction list starts at order parameter #2.  Parameter #1 is the type (evasive or normal).
+# NEWCHAR,"Param, Type","Param = param # for rank(s).  Type = 0 command, 1 = agent, 2 = emissary, 3 = mage, 4 = combo.   Checks new character creation and reports extra info."
+# NONE,,Simply indicates this order has no rule checking that can take place.
+# ONERING,,Checks the victory conditions for issuing the one ring order.
+# PC,"Location, Type","Location = 0 or param #.  Type = 0 if owned, 1 owned or not hidden, 2 not owned and not hidden, 3 enemy and not hidden, 4 none, 7 = owned, not hidden, not capital, 8 = capital, 9 = any PC, 10 = owned or not hidden and friendly relations.  Checks to see if a PC is at a location."
+# PCSIZE,"Location, Type","Location = 0 or param #.  Type = 1 = C, 2 = V, 3 = T, 4 = MT, 5 =CY, 8 = T/MT/CY, 9 = MT/CY, 10 = not C.  Checks the size of the city at the given location."
+# PCSTATE,"Location, State","Location = 0 or param #.  State = 0 possibly destroyed, 1 = possibly captured, 2 = possibly influenced away.  Sets PC state information."
+# PRODUCTINFO,"Type, Loc, Prod, Amt, Units","Type 0 = transport, 1 = sell, 2 = buy.  Location = 0 (not used) or param #.  Product = param #.  Amount = param #.  Units = 0 for #, 1 = %.  Gives additional product transfer information."
+# RANK,"Char, Rank, Min, Type","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage.  Min = minimum rank required. Type 0 = normal, 1 = new PC.  Checks that the specified character has a rank greater than the minimum."
+# SETCOMMAND,"Char, Type, Status","Char = 0 or param #.  Type  0 = army CO, 1 = company CO.  Status = 0 to lose it, 1 to gain it.  Indicates a change in command status."
+# SHIPS,"Location, War, Tran, With","Location = 0 or param #.  War = param # for warships.  Tran = param # for transports.  With = 0 in hex, 1 with army/navy.  Checks that the required ships are present."
+# SIEGENOT,"Location, Type","Location = 0 or parm #.  Type 0 = normal, 1 = capital.  Checks to see if the PC at the location is not under siege.  "
+# SPELLREQ,Spell,Spell = param # .  Checks to make sure the character has the pre-requisite spell.  
+# SPELL,Spell,Spell = param #.  Checks to make sure the character has the spell and processes its parameters. 
+# SPELLIST,Spells,Spells = param # (up to 6).  Checks the character has the specified spells.
+# STATUS,Char,Char = param #.  Checks to make sure that the character is the same command status as the specified character.
+# THREATENPC,,Checks to see what the chance is of the army threatening the PC.  Information message only.
+# TROOPAMT,"Command, Retire, Troop x 6","Command = 0 for CO, 1 for with army. Retire 0 = no, 1 = yes. Troops x 6 are param #.  Checks to make sure the character's army has the specified # of troops.",,,,,,,,,
+# TROOPRECRUIT,"Amount, Param, Type, Food",Amount = param #. Param = param # or use Type if 0.  Type = troop type.  Food = 0 or param #.  Checks to see if the PC at the character's location can support hiring the specified amount of troops.  ,,,,,,,,,
+# TROOPTYPE,"Char, Type",Char = 0 or param # for army CO.  Type = param # for troop type.  Checks that the character's army has the specified troop type.,,,,,,,,,
+# TROOPXFER,"Command, Char, Troop x 6","Command = 0 for CO, 1 for with army. Char is param #. Troops x 6 are param #.  Checks to make sure both starting and ending armies have at least 100 troops and that the starting army has all of the stated amount for each type. ",,,,,,,,,
+#,,,,,,,,,,,
+BEGINRULES,,,,,,,,,,,
+2,Spell,NONE,,,,,,,,,
+4,Spell,NONE,,,,`,,,,,
+8,Spell,NONE,,,,,,,,,
+102,Spell,NONE,,,,,,,,,
+104,Spell,NONE,,,,,,,,,
+106,Spell,NONE,,,,,,,,,
+108,Spell,NONE,,,,,,,,,
+110,Spell,NONE,,,,,,,,,
+112,Spell,NONE,,,,,,,,,
+114,Spell,NONE,,,,,,,,,
+116,Spell,NONE,,,,,,,,,
+120,CstHlSp,SPELL,1,,,,,,,,
+120,,CHARACTER,2,0,1,,,,,,
+180,UpStNat,NATION,0,1,,,,,,,
+185,DnStNat,NATION,1,1,,,,,,,
+202,Spell,NONE,,,,,,,,,
+204,Spell,NONE,,,,,,,,,
+205,UsCbArt,ARTIFACT,1,,,,,,,,
+206,Spell,NONE,,,,,,,,,
+208,Spell,NONE,,,,,,,,,
+210,IssPers,CHARACTER,1,0,2,,,,,,
+210,,STATUS,1,,,,,,,,
+210,Spell,NONE,,,,,,,,,
+212,Spell,NONE,,,,,,,,,
+214,Spell,NONE,,,,,,,,,
+215,RfsPers,NONE,,,,,,,,,
+216,Spell,NONE,,,,
+218,Spell,NONE,,,,
+220,Spell,NONE,,,,
+222,Spell,NONE,,,,
+224,Spell,NONE,,,,
+225,CstCbSp,SPELL,1,,,
+225,,COMMANDER,0,0,0,6
+226,Spell,NONE,,,,
+228,Spell,NONE,,,,
+230,AttEnmy,COMMANDER,0,0,0,2
+230,,ENEMYARMY,0,1,,
+230,Spell,NONE,,,,
+232,Spell,NONE,,,,
+234,Spell,NONE,,,,
+235,AttNat,COMMANDER,0,0,0,2
+235,,NATION,1,1,,
+235,,ENEMYARMY,0,1,,
+236,Spell,NONE,,,,
+238,Spell,NONE,,,,
+240,Defend,COMMANDER,0,0,0,2
+240,,ENEMYARMY,0,1,,
+240,Spell,NONE,,,,
+242,Spell,NONE,,,,
+244,Spell,NONE,,,,
+246,Spell,NONE,,,,
+248,Spell,NONE,,,,
+250,DstPop,COMMANDER,0,0,0,2
+250,,PCSTATE,0,0,,
+250,,PC,0,3,,
+255,CptrPop,COMMANDER,0,0,0,2
+255,,PCSTATE,0,1,,
+255,,PC,0,3,,
+260,SiegPop,COMMANDER,0,0,0,0
+260,,PC,0,3,,
+270,DstShp,COMMANDER,0,0,0,1
+270,,ENEMYARMY,0,0,,
+275,ScttShp,COMMANDER,0,0,0,2
+275,,SHIPS,0,1,2,1
+280,AbanShp,SHIPS,1,2,3,0
+285,ReacEnc,NONE,,,,
+290,InvEnc,NONE,,,,
+300,ChTaxRt,NONE,,,,
+302,Spell,CHARMOVE,2,14,0,
+302,Spell,LAND,0,,,
+302,Spell,LAND,2,,,
+304,Spell,CHARMOVE,2,16,0,
+304,Spell,LAND,0,,,
+304,Spell,LAND,2,,,
+306,Spell,CHARMOVE,2,19,0,,
+306,Spell,LAND,0,,,,
+306,Spell,LAND,2,,,,
+308,Spell,PC,2,8,,,
+308,Spell,LAND,0,,,,
+308,Spell,CHARMOVE,0,0,4,,
+310,BidCar,PC,0,0,,,
+310,,SIEGENOT,0,0,,,
+310,,PRODUCTINFO,2,0,1,2,0
+310,Spell,PC,2,0,,,
+310,Spell,PCSIZE,2,9,,,
+310,Spell,LAND,0,,,,
+310,Spell,CHARMOVE,2,0,0,,
+312,Spell,PC,0,0,,,
+312,Spell,LAND,0,,,,
+312,Spell,CHARMOVE,2,0,0,,
+314,Spell,LAND,0,,,,
+314,Spell,LAND,2,,,,
+314,Spell,CHARMOVE,2,0,0,,
+315,PrchCar,PC,0,0,,,
+315,,SIEGENOT,0,0,,,
+315,,PRODUCTINFO,2,0,1,2,0
+320,SellCar,PC,0,0,,,
+320,,SIEGENOT,0,0,,,
+320,,PRODUCTINFO,1,0,1,2,0
+325,NatSell,PRODUCTINFO,1,0,1,2,1
+330,CstCjSp,SPELL,1,,,,
+340,TrPo2Ar,COMMANDER,0,0,0,3,
+340,,SIEGENOT,0,0,,,
+340,,PC,0,10,,,
+345,TrAr2Po,COMMANDER,0,0,0,3,
+345,,SIEGENOT,0,0,,,
+345,,PC,0,10,,,,,,
+347,TrFood,COMMANDER,0,0,0,3,,,,
+347,,COMMANDER,1,0,6,2,,,,
+349,TrWarMa,COMMANDER,0,0,0,3,,,,
+349,,COMMANDER,1,0,6,2,,,,
+351,TrWpns,COMMANDER,0,0,0,3,,,,
+351,,COMMANDER,1,0,6,2,,,,
+353,TrArmr,COMMANDER,0,0,0,3,,,,
+353,,COMMANDER,1,0,6,2,,,,
+355,TrTrps,COMMANDER,0,0,0,3,,,,
+355,,COMMANDER,1,0,0,2,,,,
+355,,TROOPXFER,1,1,2,3,4,5,6,7
+357,TrShp,COMMANDER,0,0,0,3,,,,
+357,,COMMANDER,1,0,6,2,,,,
+357,,SHIPS,0,2,3,1,,,,
+360,TrArt,CHARACTER,1,0,1,,,,,
+360,,HOSTAGE,1,0,,,,,,
+360,,ARTYLIST,1,2,,,,,,
+363,TrHost,CHARACTER,1,0,1,,,,,
+363,,HOSTAGE,1,0,,,,,,
+370,UpWpns,COMMANDER,0,0,0,3,,,,
+370,,TROOPAMT,1,0,2,3,4,5,6,7
+375,UpArmr,COMMANDER,0,0,0,3,,,,
+375,,TROOPAMT,1,0,2,3,4,5,6,7
+400,HvCvlry,COMMANDER,0,0,0,3,,,,
+400,,PC,0,0,,,,,,
+400,,SIEGENOT,0,0,,,,,,
+400,,TROOPRECRUIT,1,0,0,0,,,,
+402,Spell,NONE,,,,,,,,
+404,LtCvlry,COMMANDER,0,0,0,3,,,,
+404,,PC,0,0,,,,,,
+404,,SIEGENOT,0,0,,,,,,
+404,,TROOPRECRUIT,1,0,1,0
+404,Spell,NATION,2,2,,
+406,Spell,NONE,,,,
+408,HvInfan,COMMANDER,0,0,0,3
+408,,PC,0,0,,
+408,,SIEGENOT,0,0,,
+408,,TROOPRECRUIT,1,0,2,0
+408,Spell,NONE,,,,
+410,Spell,NONE,,,,
+412,LtInfan,COMMANDER,0,0,0,3
+412,,PC,0,0,,
+412,,SIEGENOT,0,0,,
+412,,TROOPRECRUIT,1,0,3,0
+412,Spell,ARTYNAME,2,,,
+413,Spell,PC,2,9,,
+413,Spell,CHARMOVE,2,12,1,
+414,Spell,CHARMOVE,2,12,1,
+415,Spell,CHARMOVE,2,12,1,
+416,Archers,COMMANDER,0,0,0,3
+416,,PC,0,0,,
+416,,SIEGENOT,0,0,,
+416,,TROOPRECRUIT,1,0,4,0
+416,Spell,NONE,,,,
+417,Spell,NONE,,,,
+418,Spell,ARTYNAME,2,,,
+419,Spell,NATION,2,2,,
+420,MenAtAr,COMMANDER,0,0,0,3
+420,,PC,0,0,,
+420,,SIEGENOT,0,0,,
+420,,TROOPRECRUIT,1,0,5,0
+420,Spell,NONE,,,,
+422,Spell,NONE,,,,
+424,Spell,NONE,,,,,,,,
+425,RtrTrps,COMMANDER,0,0,0,3,,,,
+425,,TROOPAMT,1,1,1,2,3,4,5,6
+425,,LAND,0,,,,,,,
+426,Spell,NONE,,,,,,,,
+428,Spell,ARTYNAME,2,,,,,,,
+430,TrpsMan,COMMANDER,0,0,0,3,,,,
+430,,TROOPTYPE,0,1,,,,,,
+430,,LAND,0,,,,,,,
+430,Spell,NONE,,,,,,,,
+432,Spell,NATION,2,2,,,,,,
+434,Spell,NONE,,,,,,,,
+435,ArmyMan,COMMANDER,0,0,0,2,,,,
+435,,LAND,0,,,,,,,
+436,Spell,NONE,,,,,,,,
+440,MakWrMa,COMMANDER,0,0,0,3,,,,
+440,,PC,0,10,,
+440,,SIEGENOT,0,0,,
+444,MakArmr,COMMANDER,0,0,0,3
+444,,PC,0,10,,
+444,,SIEGENOT,0,0,,
+448,MakWpns,COMMANDER,0,0,0,3
+448,,PC,0,10,,
+448,,SIEGENOT,0,0,,
+452,MakWShp,COMMANDER,0,0,0,3
+452,,PC,0,10,,
+452,,SIEGENOT,0,0,,
+452,,DOCK,1,,,
+456,MakTShp,COMMANDER,0,0,0,3
+456,,PC,0,10,,
+456,,SIEGENOT,0,0,,
+456,,DOCK,1,,,
+460,RmvHar,PC,0,0,,
+460,,DOCK,0,,,
+465,RmvPort,PC,0,0,,
+465,,DOCK,1,,,
+470,DstStor,PC,0,0,,
+475,DstBrdg,FEATURE,0,1,2,0
+475,,ARMYORPC,0,,,
+480,RmvFort,PC,0,0,,
+480,,FORT,0,,,
+490,BldBrdg,PC,0,0,,
+490,,SIEGENOT,0,0,,
+490,,FEATURE,0,1,1,1
+490,,FEATURE,0,1,2,1
+490,,FEATURE,0,1,9,0
+494,FortPop,PC,0,0,,
+494,,FORT,1,,,
+498,Threat,COMMANDER,0,0,0,2
+498,,PC,0,3,,
+498,,ENEMYARMY,0,0,,
+498,,THREATENPC,,,,
+500,Double,CHARACTER,1,0,1,
+500,,HOSTAGE,1,0,,
+502,Spell,CHARACTER,2,0,2,
+504,Spell,CHARACTER,2,0,2,
+505,Bribe,CHARACTER,1,0,1,
+505,,HOSTAGE,1,0,,
+506,Spell,CHARACTER,2,0,4,
+508,Spell,PC,0,0,,
+508,Spell,MAGEAMT,2,5,0,
+510,Spell,ARMYORPC,1,,,
+510,Spell,MAGEAMT,2,25,1,
+512,Spell,COMMANDER,0,0,0,6
+512,Spell,MAGEAMT,2,5,2,
+520,InfYour,PC,0,0,,
+525,InfOthr,PCSTATE,0,2,,
+525,,ENEMYARMY,0,0,,
+525,,PC,0,2,,
+530,Har2Por,PC,0,0,,
+530,,PCSIZE,0,9,,
+530,,DOCK,0,,,
+530,,ENEMYARMY,0,0,,
+535,AddHar,PC,0,0,,
+535,,DOCK,3,,,
+535,,PCSIZE,0,8,,
+535,,ENEMYARMY,0,0,,
+535,,FEATURE,0,0,10,0
+550,ImprPop,PC,0,0,,
+550,,IMPROVEPC,,,,
+550,,ENEMYARMY,0,0,,
+552,PosCmp,COMMANDER,0,0,0,2
+552,,PC,0,4,,
+552,,ENEMYARMY,0,0,,
+552,,LAND,0,,,
+552,,RANK,0,0,30,1
+555,CreCmp,PC,0,4,,
+555,,LAND,0,,,
+555,,ENEMYARMY,0,0,,
+555,,RANK,0,2,30,1
+560,AbanCmp,PC,0,0,,
+560,,PCSIZE,0,1,,
+565,ReduPop,PC,0,0,,
+565,,PCSIZE,0,10,,
+580,SprdRum,NONE,,,,
+585,Uncover,NONE,,,,
+600,CntrEsp,NONE,,,
+605,GrdLoc,PC,0,1,
+610,GrdChar,CHARACTER,1,0,1
+615,Assass,CHARACTER,1,0,2
+615,,HOSTAGE,1,0,
+620,Kidnap,CHARACTER,1,0,2
+620,,HOSTAGE,1,0,
+625,Release,CHARACTER,1,0,1
+625,,HOSTAGE,1,1,
+630,Rescue,CHARACTER,1,0,1
+630,,HOSTAGE,1,1,
+630,,LAND,0,,
+635,Interr,CHARACTER,1,0,1
+635,,HOSTAGE,1,1,
+640,Custody,CHARACTER,1,0,1
+640,,HOSTAGE,1,1,
+645,Imprsn,PC,0,0,,
+645,,CHARACTER,1,0,1,
+645,,HOSTAGE,1,1,,
+650,Execute,CHARACTER,1,0,1,
+650,,HOSTAGE,1,1,,
+655,RansDmd,CHARACTER,1,0,1,
+655,,HOSTAGE,1,1,,
+660,RansOff,HOSTAGE,1,1,,
+665,SabBrdg,FEATURE,0,1,2,0
+670,SabFort,PC,0,2,,
+670,,FORT,0,,,
+675,SabPort,PC,0,2,,
+675,,DOCK,4,,,
+680,SabStor,PC,0,2,,
+685,StlArt,ARTYNAME,1,,,
+690,StlGold,PC,0,2,,
+700,ForgtSp,SPELLLIST,1,,,
+705,RsrchSp,SPELLREQ,1,,,
+705,,PC,0,0,,
+710,PrenMgy,PC,0,0,,
+725,NamChar,NEWCHAR,3,4,,
+728,NamComm,NEWCHAR,0,0,,
+731,NamAgen,NEWCHAR,0,1,,
+734,NamEmis,NEWCHAR,0,2,,
+737,NamMag,NEWCHAR,0,3,,
+740,RtrChar,HOSTAGE,0,0,,
+745,CreCmpy,COMMANDERNOT,0,0,0,5
+745,,LAND,0,,,
+745,,SETCOMMAND,0,1,1,
+750,DsbCmpy,COMMANDER,0,0,0,4
+750,,SETCOMMAND,0,1,0,
+755,JnCmpy,COMMANDER,1,0,5,4
+755,,COMMANDERNOT,0,0,0,5,,,,
+760,LvCmpy,COMMANDERNOT,0,0,0,4,,,,
+765,SplArmy,COMMANDER,0,0,0,2,,,,
+765,,COMMANDERNOT,1,0,0,5,,,,
+765,,LAND,0,,,,,,,
+765,,TROOPXFER,0,1,2,3,4,5,6,7
+770,HrArmy,COMMANDERNOT,0,0,0,5,,,,
+770,,PC,0,0,,,,,,
+770,,SIEGENOT,0,0,,,,,,
+770,,TROOPRECRUIT,1,2,0,5,,,,
+775,DsbArmy,COMMANDER,0,0,0,2,,,,
+775,,SETCOMMAND,0,0,0,,,,,
+775,,LAND,0,,,,,,,
+780,TrComm,COMMANDER,0,0,0,5,,,,
+780,,COMMANDERNOT,1,0,0,4,,,,
+780,,COMMANDXFER,1,,,,,,,
+785,JnArmy,COMMANDER,1,0,0,2
+785,,COMMANDERNOT,0,0,0,5
+785,,CHARMOVE,0,0,5,
+790,LvArmy,LAND,0,,,
+790,,COMMANDERNOT,0,0,0,6
+790,,CHARMOVE,0,0,3,
+792,DropArt,ARTYLIST,2,1,,
+794,AnchShp,COMMANDER,0,0,0,1
+794,,DOCK,2,,,
+796,PickArt,ARTYLIST,3,1,,
+798,PickShp,COMMANDER,0,0,0,2
+798,,SHIPS,0,1,2,0
+805,UsMvArt,ARTIFACT,1,,,
+810,MovChar,COMMANDERNOT,0,0,0,5
+810,,LAND,0,,,
+810,,LAND,1,,,
+810,,CHARMOVE,1,12,0,
+820,MovCmpy,COMMANDER,0,0,0,4
+820,,LAND,0,,,
+820,,LAND,1,,,
+820,,CHARMOVE,1,12,0,
+825,CstMvSp,COMMANDERNOT,0,0,0,5
+825,,SPELL,1,,,
+825,,LAND,0,,,
+825,,LAND,2,,,
+830,MovNavy,COMMANDER,0,0,0,1
+830,,NAVYMOVE,,,,
+840,Stand,COMMANDER,0,0,0,0
+850,MovArmy,COMMANDER,0,0,0,7
+850,,ARMYMOVE,0,,,
+860,ForcMar,COMMANDER,0,0,0,7
+860,,ARMYMOVE,1,,,
+870,MovJoin,COMMANDER,2,1,0,2
+870,,COMMANDERNOT,0,0,0,5
+870,,CHARMOVE,1,12,2,
+870,,LAND,0,,,
+870,,LAND,1,,,
+900,FindArt,ARTYFIND,1,,,
+905,ScoArmy,LAND,0,,,
+905,,ARMYSCOUT,1,2,,
+910,ScoArea,LAND,0,,,
+915,ScoHex,LAND,0,,,
+920,ScoPop,PC,0,1,,
+925,Recon,LAND,0,,,
+930,ScoChar,LAND,0,,,
+935,UsScArt,ARTIFACT,1,,,
+940,CstLoSp,SPELL,1,,,
+945,UsHiArt,ARTIFACT,1,,,
+945,,PC,0,9,,,
+947,NatTran,SIEGENOT,0,1,,,
+947,,SIEGENOT,1,0,,,
+947,,PC,0,0,,,
+947,,PC,1,0,,,
+947,,PRODUCTINFO,0,1,2,3,1
+948,TranCar,SIEGENOT,0,1,,,
+948,,SIEGENOT,1,0,,,
+948,,SIEGENOT,2,0,,,
+948,,PC,0,0,,,
+948,,PC,1,0,,,
+948,,PC,2,1,,,
+948,,PRODUCTINFO,0,2,3,4,0
+949,TrOwner,PC,0,7,,,
+949,,CHARACTER,1,0,3,,
+949,,HOSTAGE,1,0,,,
+949,,RANK,1,2,0,0
+949,,RANK,0,2,0,0
+950,ReloCap,SIEGENOT,0,1,,
+950,,SIEGENOT,1,0,,
+950,,PC,0,0,,
+950,,PC,1,0,,
+950,,PCSIZE,1,9,,
+990,OneRing,COMMANDERNOT,0,0,0,5
+990,,ONERING,,,,
+ENDRULES,,,,,,

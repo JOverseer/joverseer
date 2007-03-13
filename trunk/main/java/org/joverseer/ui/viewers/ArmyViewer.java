@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
-import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -36,8 +35,6 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
@@ -157,6 +154,7 @@ public class ArmyViewer extends ObjectViewer {
         } else {
             extraInfo.setVisible(false);
         }
+        extraInfo.setCaretPosition(0);
         String foodStr = "";
         if (army.getFood() != null) {
             foodStr = army.getFood().toString() + " ";

@@ -420,9 +420,15 @@ public class MapPanel extends JPanel implements MouseListener {
 
     public void invalidate() {
     }
+    
+    public void invalidateAndReset() {
+        mapBack = null;
+        mapItemsBack = null;
+        mapBaseItemsBack = null;
+        invalidateAll();
+    }
 
     public void invalidateAll() {
-        mapBack = null;
         map = null;
         mapBaseItems = null;
         mapItems = null;

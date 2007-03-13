@@ -75,8 +75,14 @@ public class MapView extends AbstractView  implements ApplicationListener {
                 mapPanel.invalidateMapItems();
                 mapPanel.updateUI();
             } else if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
-                mapPanel.invalidateAll();
+                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+                mapPanel.setPreferredSize(new Dimension(
+                            mm.getGridCellWidth() * mm.getHexSize() * (mm.getMapColumns() + 1),
+                            mm.getGridCellHeight() * mm.getHexSize() * mm.getMapRows()
+                        ));
+                mapPanel.invalidateAndReset();
                 mapPanel.updateUI();
+                scp.updateUI();
             }
             
         }

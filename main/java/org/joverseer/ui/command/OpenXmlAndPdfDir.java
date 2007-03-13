@@ -18,6 +18,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -128,8 +129,10 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                     return true;
                 }
 
-                protected ActionCommand getCancelCommand() {
-                    return null;
+                protected Object[] getCommandGroupMembers() {
+                    return new AbstractCommand[] {
+                            getFinishCommand()
+                    };
                 }
             };
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);

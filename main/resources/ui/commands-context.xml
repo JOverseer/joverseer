@@ -92,6 +92,7 @@
 			                <value>separator</value>
                             <bean class="org.joverseer.ui.command.ImportOrders"/>
                             <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
+                            <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
                             <!-- 
                             <bean class="org.joverseer.ui.command.RunOrders"/>
                             -->
@@ -121,6 +122,7 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
+				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
 				<ref bean="aboutCommand"/>
 			</list>
 		</property>

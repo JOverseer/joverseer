@@ -27,6 +27,7 @@ import org.joverseer.ui.support.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -114,7 +115,12 @@ public class EncounterViewer extends ObjectViewer {
                 protected boolean onFinish() {
                     return true;
                 }
-
+                
+                protected Object[] getCommandGroupMembers() {
+                    return new AbstractCommand[] {
+                            getFinishCommand()
+                    };
+                }
             };
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
             dialog.setTitle(ms.getMessage("encounterDialog.title", new Object[]{e.getCharacter(), String.valueOf(e.getHexNo())}, Locale.getDefault()));

@@ -15,5 +15,12 @@ public enum FortificationSizeEnum implements Serializable {
 
     FortificationSizeEnum(int size) {
         this.size = size;
-   }
+    }
+
+    
+    public int getSize() {
+        return size;
+    }
+    
+    
 }

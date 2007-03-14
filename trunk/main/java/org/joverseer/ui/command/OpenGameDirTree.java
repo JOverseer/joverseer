@@ -57,26 +57,36 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
             
             final Runnable thisObj = this;
             
-            InputApplicationDialog dlg = new InputApplicationDialog();
-            dlg.setInputField(new JTextField());
-            dlg.setTitle("Enter turn folder pattern.");
-            dlg.setInputLabelMessage("Pattern :");
-            dlg.showDialog();
-            turnFolderPattern = ((JTextField)dlg.getInputField()).getText();
+            String[] turnFolderPatterns = new String[]{
+                    "t%s",
+                    "t%02d",
+                    "t%03d",
+                    "turn%s",
+                    "turn%02d",
+                    "turn%03d"
+            };
             
-            
+//            InputApplicationDialog dlg = new InputApplicationDialog();
+//            dlg.setInputField(new JTextField());
+//            dlg.setTitle("Enter turn folder pattern.");
+//            dlg.setInputLabelMessage("Pattern :");
+//            dlg.showDialog();
+//            turnFolderPattern = ((JTextField)dlg.getInputField()).getText();
 
             // find turn folders
             ArrayList<File> allFiles = new ArrayList<File>();
             int turnFolderCount = 0;
             int fileCount = 0;
             for (int i=0; i<100; i++) {
-                String tfp = file.getAbsolutePath() + "/" + String.format(turnFolderPattern, i);
-                File tf = new File(tfp);
-                if (tf.exists()) {
-                    turnFolders.add(tf);
-                    files = tf.listFiles(new XmlAndPdfFileFilter());
-                    fileCount += files.length;
+                for (String turnFolderPattern : turnFolderPatterns) {
+                    String tfp = file.getAbsolutePath() + "/" + String.format(turnFolderPattern, i);
+                    File tf = new File(tfp);
+                    if (tf.exists()) {
+                        turnFolders.add(tf);
+                        files = tf.listFiles(new XmlAndPdfFileFilter());
+                        fileCount += files.length;
+                        break;
+                    }
                 }
             }
             final int fileCountFinal = fileCount;

@@ -61,7 +61,7 @@ public class TurnPdfReader implements Runnable {
     File xmlFile;
     String contents;
     PDDocument document;
-    boolean deleteFilesWhenFinished = false;
+    boolean deleteFilesWhenFinished = true;
     
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
@@ -127,6 +127,10 @@ public class TurnPdfReader implements Runnable {
             FileOutputStream outStream = new FileOutputStream(xmlFile.getAbsolutePath());
             StreamDriver driver = new StreamDriver(processor);
             driver.useDebugOutputProperties();
+            
+            // pdf document - fix hack characters
+            pdfContents = pdfContents.replace("Î","ë");
+            // TODO some problem with the Numea Noldo pop
             driver.generateXmlDocument(pdfContents, outStream);
             outStream.close();
 
@@ -380,6 +384,7 @@ public class TurnPdfReader implements Runnable {
             readFile();
             updateGame(game);
             game.setCurrentTurn(game.getMaxTurn());
+            Thread.sleep(100);
         }
         catch (Throwable exc) {
             if (getMonitor() != null) {
@@ -492,7 +497,7 @@ public class TurnPdfReader implements Runnable {
         catch (Exception exc) {
             if (getMonitor() != null) {
                 getMonitor().worked(100);
-                getMonitor().subTaskStarted("Unexpected error : '" + exc.getMessage() + "'.");
+                getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
             }
             throw new Exception("Error updating game from Pdf file.", exc);
         }

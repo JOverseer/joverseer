@@ -13,6 +13,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.image.ImageSource;
+
 public class OCTreeNode extends DefaultMutableTreeNode
 {
 
@@ -123,24 +126,24 @@ public class OCTreeNode extends DefaultMutableTreeNode
         switch(nodeType)
         {
         case 1: // '\001'
-            return charIcon;
+            return getCharIcon();
 
         case 0: // '\0'
-            return orderIcon;
+            return getOrderIcon();
 
         case 2: // '\002'
             int type = getResultType();
             switch(type)
             {
             case 4: // '\004'
-                return redIcon;
+                return getRedIcon();
 
             case 3: // '\003'
-                return yellowIcon;
+                return getYellowIcon();
 
             case 1: // '\001'
             case 2: // '\002'
-                return greenIcon;
+                return getGreenIcon();
 
             case 0: // '\0'
             default:
@@ -148,6 +151,31 @@ public class OCTreeNode extends DefaultMutableTreeNode
             }
         }
         return null;
+    }
+    
+    public ImageIcon getRedIcon() {
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        return new ImageIcon(imgSource.getImage("orderchecker.red.image"));
+    }
+
+    public ImageIcon getYellowIcon() {
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        return new ImageIcon(imgSource.getImage("orderchecker.yellow.image"));
+    }
+
+    public ImageIcon getGreenIcon() {
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        return new ImageIcon(imgSource.getImage("orderchecker.green.image"));
+    }
+
+    public ImageIcon getOrderIcon() {
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        return new ImageIcon(imgSource.getImage("orderchecker.order.image"));
+    }
+
+    public ImageIcon getCharIcon() {
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        return new ImageIcon(imgSource.getImage("orderchecker.character.image"));
     }
 
     private static final ImageIcon redIcon = new ImageIcon("images/red.gif");

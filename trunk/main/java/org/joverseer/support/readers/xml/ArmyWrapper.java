@@ -146,9 +146,9 @@ public class ArmyWrapper {
             case 0:
                 a.setSize(ArmySizeEnum.unknown);
                 break;
-//            case 1:
-//                a.setSize(ArmySizeEnum.tiny);
-//                break;
+            case 1:
+                a.setSize(ArmySizeEnum.unknown);
+                break;
             case 2:
                 a.setSize(ArmySizeEnum.small);
                 break;

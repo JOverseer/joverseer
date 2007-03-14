@@ -8,6 +8,7 @@ import org.springframework.binding.value.support.ListListModel;
 import org.springframework.binding.form.FormModel;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 
@@ -21,7 +22,8 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
     int progressMax = 100;
     int workBuffer;
     int lastWork = 0;
-
+    JScrollPane scp; 
+    
     public JOverseerClientProgressMonitor(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -43,9 +45,10 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         tlb.row();
         taskSubtasks = new JList();
         taskSubtasks.setModel(llm = new ListListModel());
-        taskSubtasks.setPreferredSize(new Dimension(300, 300));
-        JScrollPane scp = new JScrollPane(taskSubtasks);
+        taskSubtasks.setCellRenderer(new ProgressItemRenderer());
+        scp = new JScrollPane(taskSubtasks);
         scp.setPreferredSize(new Dimension(320, 250));
+        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         tlb.cell(scp);
         panel = tlb.getPanel();
         panel.setPreferredSize(new Dimension(350, 300));
@@ -95,5 +98,21 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         }
         taskProgress.setValue(workBuffer);
         panel.updateUI();
+    }
+    
+    public class ProgressItemRenderer extends DefaultListCellRenderer implements ListCellRenderer {
+
+        public Component getListCellRendererComponent(JList list,
+                Object value,
+                int index,
+                boolean isSelected,
+                boolean cellHasFocus) {
+            JLabel lbl = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, hasFocus());
+            if (value.toString().startsWith("Error")) {
+                lbl.setForeground(Color.RED);
+            }
+            return lbl;
+        }
+        
     }
 }

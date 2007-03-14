@@ -497,7 +497,7 @@ public class OCDialog extends JPanel
     private void processError(JLabel result, String msg)
     {
         result.setIcon(stopIcon);
-        splitPane.resetToPreferredSizes();
+        //splitPane.resetToPreferredSizes();
         Main.displayErrorMessage(msg);
     }
     
@@ -589,28 +589,27 @@ public class OCDialog extends JPanel
             return;
         }
         turnResult.setIcon(goIcon);
-        data.setTurnResultsPath(turnPath.getText());
-        ImportOrdersCsv orders = new ImportOrdersCsv(ordersPath.getText(), Main.main.getNation());
-        result = orders.getOrders();
-        if(!result)
-        {
-            orders.closeFile();
-            processError(ordersResult, "Your orders file could not be opened!");
-            return;
-        }
-        String error = orders.parseOrders();
-        orders.closeFile();
-        if(error != null)
-        {
-            error = error + "\n\nOrder checking cancelled.";
-            processError(ordersResult, error);
-            return;
-        }
-        ordersResult.setIcon(goIcon);
-        data.setOrdersPath(ordersPath.getText());
+        //data.setTurnResultsPath(turnPath.getText());
+        String error;
+//        ImportOrdersCsv orders = new ImportOrdersCsv(ordersPath.getText(), Main.main.getNation());
+//        result = orders.getOrders();
+//        if(!result)
+//        {
+//            orders.closeFile();
+//            processError(ordersResult, "Your orders file could not be opened!");
+//            return;
+//        }
+//        error = orders.parseOrders();
+//        orders.closeFile();
+//        if(error != null)
+//        {
+//            error = error + "\n\nOrder checking cancelled.";
+//            processError(ordersResult, error);
+//            return;
+//        }
+//        ordersResult.setIcon(goIcon);
+//        data.setOrdersPath(ordersPath.getText());
         //data.setGameType((String)gameTypes.getSelectedItem());
-        //TODO mscoon fix
-        data.setGameType("2950");
         
         Main.main.setRuleSet(new Ruleset());
         ImportRulesCsv rules = new ImportRulesCsv(data.getRulesPath(), Main.main.getRuleSet());

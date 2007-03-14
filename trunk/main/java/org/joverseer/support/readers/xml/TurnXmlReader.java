@@ -190,6 +190,7 @@ public class TurnXmlReader implements Runnable{
             readFile(filename);
             updateGame(game);
             game.setCurrentTurn(game.getMaxTurn());
+            Thread.sleep(100);
         }
         catch (Exception exc) {
             // do nothing
@@ -259,7 +260,7 @@ public class TurnXmlReader implements Runnable{
         catch (Exception exc) {
             if (getMonitor() != null) {
                 getMonitor().worked(100);
-                getMonitor().subTaskStarted("Unexpected error : '" + exc.getMessage() + "'.");
+                getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
             }
             throw new Exception("Error updating game from Xml file.", exc);
         }

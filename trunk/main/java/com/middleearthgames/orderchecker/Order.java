@@ -325,4 +325,26 @@ public class Order
         }
         return true;
     }
+
+    
+    public Vector getErrorResults() {
+        return errorResults;
+    }
+
+    
+    public Vector getHelpResults() {
+        return helpResults;
+    }
+
+    
+    public Vector getInfoResults() {
+        return infoResults;
+    }
+
+    
+    public Vector getWarnResults() {
+        return warnResults;
+    }
+    
+    
 }

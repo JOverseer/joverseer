@@ -11,11 +11,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.Order;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.orders.OrderEditorForm;
@@ -35,6 +38,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     public static final String FORM_PAGE = "OrderViewer";
 
     JTextField orderText;
+    JLabel orderResultIcon;
 
     public OrderViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -53,6 +57,22 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             orderText.setText(o.getNoAndCode() + " " + o.getParameters());
             orderText.setCaretPosition(0);
         }
+        OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
+        OrderResultTypeEnum orderResultType = container.getResultTypeForOrder(o);
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        Icon ico = null;
+        if (orderResultType == null) {
+            ico = null;
+        } else if (orderResultType == OrderResultTypeEnum.Info) {
+            ico = new ImageIcon(imgSource.getImage("orderresult.info.icon"));
+        } else if (orderResultType == OrderResultTypeEnum.Help) {
+            ico = new ImageIcon(imgSource.getImage("orderresult.help.icon"));
+        } else if (orderResultType == OrderResultTypeEnum.Warn) {
+            ico = new ImageIcon(imgSource.getImage("orderresult.warn.icon"));
+        } else if (orderResultType == OrderResultTypeEnum.Error) {
+            ico = new ImageIcon(imgSource.getImage("orderresult.error.icon"));
+        }
+        orderResultIcon.setIcon(ico);
     }
 
     protected JComponent createFormControl() {
@@ -63,6 +83,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         orderText.setPreferredSize(new Dimension(170, 12));
         orderText.setText("N/A");
 
+        orderResultIcon = new JLabel("");
+        orderResultIcon.setPreferredSize(new Dimension(16, 16));
+        glb.append(orderResultIcon);
+        
         GridBagLayoutBuilder glb1 = new GridBagLayoutBuilder();
         glb1.setDefaultInsets(new Insets(0, 0, 0, 3));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");

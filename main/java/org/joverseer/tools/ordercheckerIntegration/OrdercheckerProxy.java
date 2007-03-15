@@ -1,0 +1,408 @@
+package org.joverseer.tools.ordercheckerIntegration;
+
+import java.awt.Component;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Vector;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.JTree;
+
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.PlayerInfo;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.SpellProficiency;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.GameHolder;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.image.ImageSource;
+
+import com.middleearthgames.orderchecker.Main;
+import com.middleearthgames.orderchecker.Map;
+import com.middleearthgames.orderchecker.Nation;
+import com.middleearthgames.orderchecker.Order;
+import com.middleearthgames.orderchecker.PopCenter;
+import com.middleearthgames.orderchecker.Ruleset;
+import com.middleearthgames.orderchecker.gui.ExtraInfoDlg;
+import com.middleearthgames.orderchecker.gui.OCTreeNode;
+import com.middleearthgames.orderchecker.io.Data;
+import com.middleearthgames.orderchecker.io.ImportRulesCsv;
+import com.middleearthgames.orderchecker.io.ImportTerrainCsv;
+
+public class OrdercheckerProxy {
+    HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> orderMap =
+        new HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order>();
+
+    
+    public void runOrderchecker() {
+        Data data = Main.main.getData();
+        Main.main.setRuleSet(new Ruleset());
+        ImportRulesCsv rules = new ImportRulesCsv("bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
+        boolean result = rules.getRules();
+        if(!result)
+        {
+            rules.closeFile();
+            Main.displayErrorMessage("The rules file (" + data.getRulesPath() + ") could not be opened!");
+            return;
+        }
+        String error = rules.parseRules();
+        rules.closeFile();
+        if(error != null)
+        {
+            error = error + "\n\nOrder checking cancelled.";
+            Main.displayErrorMessage(error);
+            return;
+        }
+        if(!Main.main.getRuleSet().isRuleSetComplete())
+        {
+            Main.displayErrorMessage("The rules file was processed but appears to be missing data!");
+            return;
+        }
+        Main.main.setMap(new Map());
+        ImportTerrainCsv terrain = new ImportTerrainCsv("bin/metadata/orderchecker/2950.game", Main.main.getMap());
+        result = terrain.getMapInformation();
+        if(!result)
+        {
+            terrain.closeFile();
+            Main.displayErrorMessage("The terrain file (" + data.getTerrainPath() + ") could not be opened!");
+            return;
+        }
+        error = terrain.parseTerrain();
+        terrain.closeFile();
+        if(error != null)
+        {
+            error = error + "\n\nOrder checking cancelled.";
+            Main.displayErrorMessage(error);
+            return;
+        }
+        if(!Main.main.getMap().isMapComplete())
+        {
+            Main.displayErrorMessage("The map file was processed but appears to be missing data!");
+            return;
+        } else
+        {
+            //splitPane.resetToPreferredSizes();
+            //Main.main.processOrders();
+            try {
+                processOrders(Main.main);
+            }
+            catch (Exception exc) {
+                exc.printStackTrace();
+            }
+            return;
+        }
+    }
+    
+    protected void processOrders(Main main) throws Exception {
+        final ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+
+        final DefaultMutableTreeNode root = ((DefaultMutableTreeNode)ReflectionUtils.retrieveField(main.getWindow(), "root"));
+        JTree tree = (JTree)ReflectionUtils.retrieveField(main.getWindow(), "tree");
+        tree.setCellRenderer(new DefaultTreeCellRenderer() {
+            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
+            {
+                try {
+                    super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+                    if(value != root)
+                    {
+                        OCTreeNode node = (OCTreeNode)value;
+                        setFont(node.getActiveFont());
+                        if(node.getNodeType() == 2)
+                        {
+                            String currentText = getText();
+                            if(currentText.length() > 3)
+                            {
+                                currentText = currentText.substring(4);
+                                setText(currentText);
+                            }
+                        }
+                        ImageIcon icon = null;
+                        switch((Integer)ReflectionUtils.retrieveField(value, "nodeType"))
+                        {
+                        case 1: // '\001'
+                            icon = new ImageIcon(imgSource.getImage("orderchecker.character.image"));
+                            break;
+                        case 0: // '\0'
+                            icon = new ImageIcon(imgSource.getImage("orderchecker.order.image"));
+                            break;
+                        case 2: // '\002'
+                            int type = (Integer)ReflectionUtils.invokeMethod(value, "getResultType", new Object[]{});
+                            switch(type)
+                            {
+                            case 4: // '\004'
+                                icon = new ImageIcon(imgSource.getImage("orderchecker.red.image"));
+                                break;
+                            case 3: // '\003'
+                                icon = new ImageIcon(imgSource.getImage("orderchecker.yellow.image"));
+                                break;
+                            case 1: // '\001'
+                            case 2: // '\002'
+                                icon = new ImageIcon(imgSource.getImage("orderchecker.green.image"));
+                                break;
+                            case 0: // '\0'
+                            default:
+                                return null;
+                            }
+                        }
+                        if(icon != null)
+                            setIcon(icon);
+                    }
+                    return this;
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                    return this;
+                }
+            }
+        });
+        String error = (String)ReflectionUtils.invokeMethod(main.getNation(), "implementPhase", new Object[]{1, main});
+        if(error != null)
+        {
+            Main.displayErrorMessage(error);
+            return;
+        }
+        boolean done;
+        int safety;
+        Vector requests = (Vector)ReflectionUtils.invokeMethod(main.getNation(), "getArmyRequests", new Object[]{});
+        new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
+        ReflectionUtils.invokeMethod(main.getNation(), "processArmyRequests", new Object[]{requests});
+        done = false;
+        safety = 0;
+        do {
+            if(done || safety >= 20)
+            {
+                break;
+            }
+            safety++;
+            error = (String)ReflectionUtils.invokeMethod(main.getNation(), "implementPhase", new Object[]{2, main});
+            if(error != null)
+            {
+                Main.displayErrorMessage(error);
+                return;
+            }
+            requests = (Vector)ReflectionUtils.invokeMethod(main.getNation(), "getInfoRequests", new Object[]{});
+            if(requests.size() > 0)
+            {
+                new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
+            }
+            done = (Boolean)ReflectionUtils.invokeMethod(main.getNation(), "isProcessingDone", new Object[]{});
+        } while (true);
+        if(safety == 20)
+        {
+            throw new RuntimeException("Maximum state iterations reached.");
+        }
+        try {
+            main.getWindow().createResultsTree();
+//            root.removeAllChildren();
+//            Main.main.getNation().addTreeNodes(tree, root);
+//            ((DefaultTreeModel)tree.getModel()).nodeStructureChanged(root);
+//            javax.swing.tree.TreeNode path[];
+//            for(Enumeration allNodes = root.depthFirstEnumeration(); allNodes.hasMoreElements(); tree.expandPath(new TreePath(path)))
+//            {
+//                DefaultMutableTreeNode node = (DefaultMutableTreeNode)allNodes.nextElement();
+//                OCTreeNode n = (OCTreeNode)node;
+//                int result = (Integer)ReflectionUtils.invokeMethod(n, "getResultType", new Object[]{});
+//                if (result == 1) {
+//                    
+//                    n.setIcon(new ImageIcon(imgSource.getImage("orderchecker.green.image")));
+//                }
+//                path = node.getPath();
+//            }
+        }
+        catch (Exception ex) {
+            StringBuffer desc = new StringBuffer();
+            desc.append(Main.getVersionString() + ", " + Main.getVersionDate() + "\n\n");
+            desc.append("Critical error encountered...please send the  contents\nof this message plus your XML and order file to: bernout1@adelphia.net\n\n");
+            String message = ex.getMessage();
+            desc.append(message + "\n");
+            StackTraceElement trace[] = ex.getStackTrace();
+            for(int i = 0; i < trace.length && i < 10; i++)
+            {
+                desc.append(trace[i] + "\n");
+            }
+    
+            Main.displayErrorMessage(desc.toString());
+        }
+    }
+    
+    public void updateOrdercheckerGameData(int nationNo) throws Exception {
+        Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
+        ObjectInputStream ois = new ObjectInputStream(res.getInputStream());
+        Data data = new Data();
+        data.readObject(ois);
+        ois.close();
+
+        Main.mainFrame = new JFrame();
+        final Main main = new Main();
+        Main.main = main;
+
+        Game g = GameHolder.instance().getGame();
+        Turn t = g.getTurn();
+        
+        PlayerInfo pi = (PlayerInfo)t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+        
+        Nation nation = new Nation();
+        nation.SetNation(nationNo);
+        nation.setGame(g.getMetadata().getGameNo());
+        //TODO fix
+        ReflectionUtils.assignField(data, "", nation.getGame());
+        nation.setTurn(t.getTurnNo());
+        //TODO fix
+        nation.setGameType("2950");
+        nation.setSecret(Integer.parseInt(pi.getSecret()));
+        nation.setPlayer(pi.getPlayerName());
+        nation.setDueDate(pi.getDueDate());
+        for (org.joverseer.metadata.domain.Nation n : (ArrayList<org.joverseer.metadata.domain.Nation>)g.getMetadata().getNations()) {
+            nation.addNation(n.getName());
+        }
+        
+        for (PopulationCenter popCenter : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+            PopCenter pc = new PopCenter(popCenter.getHexNo());
+            pc.setCapital(popCenter.getCapital() ? 1 : 0);
+            pc.setDock(popCenter.getHarbor().getSize());
+            pc.setName(popCenter.getName());
+            pc.setFortification(popCenter.getFortification().getSize());
+            pc.setSize(popCenter.getSize().getCode());
+            pc.setNation(popCenter.getNationNo());
+            pc.setHidden(popCenter.getHidden() ? 1 : 0);
+            pc.setLoyalty(popCenter.getLoyalty());
+            nation.addPopulationCenter(pc);
+            
+            if (popCenter.getCapital() && popCenter.getNationNo() == nationNo) {
+                nation.setCapital(popCenter.getHexNo());
+            }
+        }
+        
+        for (Character ch : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
+            if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead) continue;
+            com.middleearthgames.orderchecker.Character mc = new com.middleearthgames.orderchecker.Character(ch.getId());
+            mc.setNation(ch.getNationNo());
+            mc.setName(ch.getName());
+            mc.setAgentRank(ch.getAgent());
+            mc.setTotalAgentRank(ch.getAgentTotal());
+            mc.setCommandRank(ch.getCommand());
+            mc.setTotalCommandRank(ch.getCommandTotal());
+            mc.setMageRank(ch.getMage());
+            mc.setTotalMageRank(ch.getMageTotal());
+            mc.setEmissaryRank(ch.getEmmisary());
+            mc.setTotalEmissaryRank(ch.getEmmisaryTotal());
+            mc.setChallenge(ch.getChallenge());
+            mc.setHealth(ch.getHealth() == null ? 0 : ch.getHealth());
+            mc.setStealth(ch.getStealth());
+            mc.setTotalStealth(ch.getStealthTotal());
+            mc.setLocation(ch.getHexNo());
+            //TODO double check
+            for (Integer artiNo : ch.getArtifacts()) {
+                ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
+                mc.addArtifact(ai.getNo(), ai.getName());
+            }
+            
+            //TODO double check
+            for (SpellProficiency sp : ch.getSpells()) {
+                mc.addSpell(sp.getSpellId(), sp.getName());
+            }
+            nation.addCharacter(mc);
+            
+            for (org.joverseer.domain.Order o : ch.getOrders()) {
+                com.middleearthgames.orderchecker.Order mo = new com.middleearthgames.orderchecker.Order(mc, o.getOrderNo());
+                ArrayList<String> params = new ArrayList<String>();
+                int lastParam = -1;
+                for (int i=0; i<17; i++) {
+                    if (o.getParameter(i) == null || o.getParameter(i).equals("--")) {
+                        params.add(o.getParameter(i));
+                    } else {
+                        params.add(o.getParameter(i));
+                        lastParam = i;
+                    }
+                }
+                for (int i=0; i<=lastParam; i++) {
+                    mo.addParameter(params.get(i));
+                }
+                orderMap.put(mo, o);
+                mc.addOrder(mo);
+            }
+        }
+        
+        for (Army army : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
+            com.middleearthgames.orderchecker.Army a = new com.middleearthgames.orderchecker.Army(Integer.parseInt(army.getHexNo()));
+            a.setCommander(army.getCommanderName());
+            a.setNation(army.getNationNo());
+            a.setTroopAmount(army.getTroopCount());
+            String extraInfo = "";
+            for (ArmyElement element : army.getElements()) {
+                extraInfo = extraInfo + (extraInfo.equals("") ? "" : " ")
+                        + element.getDescription();
+            }
+            a.setExtraInfo(extraInfo);
+            nation.addArmy(a);
+        }
+        
+        for (NationRelations nr : (ArrayList<NationRelations>)t.getContainer(TurnElementsEnum.NationRelation).getItems()) {
+            
+            data.setNationAlignment(nr.getNationNo(), -1, nation);
+            if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {
+                data.setNationAlignment(nr.getNationNo(), 1, nation);
+            } else if (nr.getAllegiance() == NationAllegianceEnum.DarkServants) {
+                data.setNationAlignment(nr.getNationNo(), 2, nation);
+            } else if (nr.getAllegiance() == NationAllegianceEnum.Neutral) {
+                data.setNationAlignment(nr.getNationNo(), 0, nation);
+            } 
+        }
+        
+        
+        Main.main.setNation(nation);
+    }
+
+    
+    
+    
+    public HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> getOrderMap() {
+        return orderMap;
+    }
+
+    
+    public void setOrderMap(HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> orderMap) {
+        this.orderMap = orderMap;
+    }
+
+    public static void main(String[] args) {
+    }
+    
+    public Vector<com.middleearthgames.orderchecker.Order> getCharacterOrders(com.middleearthgames.orderchecker.Character ch) throws Exception {
+        return (Vector<com.middleearthgames.orderchecker.Order>)ReflectionUtils.retrieveField(ch, "orders");
+    }
+    
+    public Vector<String> getOrderInfoResults(Order o) throws Exception {
+        return (Vector<String>)ReflectionUtils.retrieveField(o, "infoResults");
+    }
+
+    public Vector<String> getOrderWarnResults(Order o) throws Exception {
+        return (Vector<String>)ReflectionUtils.retrieveField(o, "warnResults");
+    }
+
+    public Vector<String> getOrderHelpResults(Order o) throws Exception {
+        return (Vector<String>)ReflectionUtils.retrieveField(o, "helpResults");
+    }
+
+    public Vector<String> getOrderErrorResults(Order o) throws Exception {
+        return (Vector<String>)ReflectionUtils.retrieveField(o, "errorResults");
+    }
+
+    
+}

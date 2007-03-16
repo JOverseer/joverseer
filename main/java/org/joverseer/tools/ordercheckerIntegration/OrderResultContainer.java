@@ -5,9 +5,14 @@ import java.util.List;
 
 import org.joverseer.domain.Order;
 import org.joverseer.support.Container;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
 
-public class OrderResultContainer {
+
+public class OrderResultContainer implements ApplicationListener {
     Container results = new Container(new String[]{"order"});
     
     public void addResult(OrderResult res) {
@@ -38,6 +43,16 @@ public class OrderResultContainer {
         ArrayList<OrderResult> ors = getResultsForOrder(o);
         for (OrderResult r : ors) {
             results.removeItem(r);
+        }
+    }
+
+    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        if (applicationEvent instanceof JOverseerEvent) {
+            JOverseerEvent e = (JOverseerEvent) applicationEvent;
+            if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+                Order o = (Order)e.getData();
+                removeResultsForOrder(o);
+            }
         }
     }
 }

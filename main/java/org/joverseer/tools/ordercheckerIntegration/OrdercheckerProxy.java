@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -180,6 +181,7 @@ public class OrdercheckerProxy {
         boolean done;
         int safety;
         Vector requests = (Vector)ReflectionUtils.invokeMethod(main.getNation(), "getArmyRequests", new Object[]{});
+        parseInfoRequests(requests);
         new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
         ReflectionUtils.invokeMethod(main.getNation(), "processArmyRequests", new Object[]{requests});
         done = false;
@@ -197,6 +199,7 @@ public class OrdercheckerProxy {
                 return;
             }
             requests = (Vector)ReflectionUtils.invokeMethod(main.getNation(), "getInfoRequests", new Object[]{});
+            parseInfoRequests(requests);
             if(requests.size() > 0)
             {
                 new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
@@ -242,15 +245,15 @@ public class OrdercheckerProxy {
     }
     
     public void updateOrdercheckerGameData(int nationNo) throws Exception {
-        Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
-        ObjectInputStream ois = new ObjectInputStream(res.getInputStream());
-        Data data = new Data();
-        data.readObject(ois);
-        ois.close();
-
         Main.mainFrame = new JFrame();
         final Main main = new Main();
         Main.main = main;
+
+        Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
+        ObjectInputStream ois = new ObjectInputStream(res.getInputStream());
+        Data data = Main.main.getData();
+        data.readObject(ois);
+        ois.close();
 
         Game g = GameHolder.instance().getGame();
         Turn t = g.getTurn();
@@ -260,8 +263,6 @@ public class OrdercheckerProxy {
         Nation nation = new Nation();
         nation.SetNation(nationNo);
         nation.setGame(g.getMetadata().getGameNo());
-        //TODO fix
-        ReflectionUtils.assignField(data, "", nation.getGame());
         nation.setTurn(t.getTurnNo());
         //TODO fix
         nation.setGameType("2950");
@@ -320,6 +321,7 @@ public class OrdercheckerProxy {
             nation.addCharacter(mc);
             
             for (org.joverseer.domain.Order o : ch.getOrders()) {
+                if (o.isBlank()) continue;
                 com.middleearthgames.orderchecker.Order mo = new com.middleearthgames.orderchecker.Order(mc, o.getOrderNo());
                 ArrayList<String> params = new ArrayList<String>();
                 int lastParam = -1;
@@ -353,6 +355,8 @@ public class OrdercheckerProxy {
             nation.addArmy(a);
         }
         
+        ReflectionUtils.invokeMethod(data, "findGame", new Object[]{nation});
+        
         for (NationRelations nr : (ArrayList<NationRelations>)t.getContainer(TurnElementsEnum.NationRelation).getItems()) {
             
             data.setNationAlignment(nr.getNationNo(), -1, nation);
@@ -367,6 +371,46 @@ public class OrdercheckerProxy {
         
         
         Main.main.setNation(nation);
+    }
+    
+    private String extractString(String source, String start, String end) {
+        int i = source.indexOf(start);
+        int j = source.indexOf(end);
+        if (i > -1 && j > -1) {
+            return source.substring(i + start.length(), j);
+        }
+        return "";
+    }
+    
+    public void parseInfoRequests(Vector<JCheckBox> requests) {
+        Game g = GameHolder.instance().getGame();
+        Turn t = g.getTurn();
+        for (JCheckBox request : requests) {
+            // extract prefix from request
+            String reqText = request.getText();
+            String prefix = reqText;
+            int i = prefix.indexOf(":");
+            prefix = prefix.substring(0, i);
+            if (prefix.equals("FOOD")) {
+                String commander = extractString(reqText, "Will ", "'s army be considered");
+                Army army = (Army)t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", commander);
+                if (army != null) {
+                    if (army.isFed() != null) {
+                        request.setSelected(army.isFed());
+                    }
+                }
+            } else if (prefix.equals("COMPANYCO")) {
+                //TODO continue
+            }
+            
+        }
+        try {
+            Object gameData = ReflectionUtils.invokeMethod(Main.main.getData(), "findGame", new Object[]{Main.main.getNation()});
+            ReflectionUtils.assignField(gameData, "checkBoxes", (Vector)requests.clone());
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+        }
     }
 
     

@@ -162,11 +162,11 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         }
     }
     
-    public void showContextMenu() {
+    public void showContextMenu(MouseEvent e) {
         JPopupMenu pm = getPopupMenu();
         if (pm == null) return;
-        JComponent cmp = (JComponent)table;
-        pm.show(cmp, 0, cmp.getHeight());
+        if (table.getSelectedRowCount() == 0) return;
+        pm.show(table, e.getX(), e.getY());
     };
     
     public JPopupMenu getPopupMenu() {
@@ -178,7 +178,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             selectHexCommandExecutor.execute();
         }
         if (e.getClickCount() == 1 && e.getButton() == 3) {
-            showContextMenu();
+            showContextMenu(e);
         }
     }
 

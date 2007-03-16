@@ -25,7 +25,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         
         tlb.cell(new JLabel("Style : "), "colspec=left:70px");
-        tlb.cell(movementStyle = new JComboBox(), "colspec=left:100px");
+        tlb.cell(movementStyle = new JComboBox(), "colspec=left:130px");
         movementStyle.setPreferredSize(new Dimension(60, 18));
         movementStyle.addItem("");
         movementStyle.addItem("no");

@@ -8,11 +8,15 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
@@ -25,6 +29,9 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.ordercheckerIntegration.OrderResult;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -33,6 +40,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.list.SortedListModel;
@@ -43,6 +51,7 @@ import org.springframework.richclient.table.SortableTableModel;
 public class OrderListView extends ItemListView {
 
     ActionCommand deleteOrderAction = new DeleteOrderAction();
+    ActionCommand editOrderAction = new EditOrderAction();
     JComboBox combo;
 
     public OrderListView() {
@@ -50,7 +59,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {64, 64, 96, 170, 30};
+        return new int[] {64, 64, 96, 170, 30, 120};
     }
 
     protected void setItems() {
@@ -117,6 +126,31 @@ public class OrderListView extends ItemListView {
             }
         });
         table.setDefaultRenderer(Boolean.class, (new JTable().getDefaultRenderer(Boolean.class)));
+        // specialized renderer for the icon returned by the orderResultType virtual field
+        table.setDefaultRenderer(ImageIcon.class, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                ImageIcon ico = (ImageIcon)value;
+                JLabel lbl = new JLabel();
+                lbl.setIcon(ico);
+                if (ico != null) {
+                    OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
+                    int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+                    Object obj = tableModel.getRow(idx);
+                    Order o = (Order)obj;
+                    String txt = "";
+                    for (OrderResult result : container.getResultsForOrder(o)) {
+                        txt += (txt.equals("") ? "" : "") + "<li>" + result.getType().toString() + ": " + result.getMessage() + "</li>";
+                    }
+                    txt = "<html><body><lu>" + txt + "</lu></body></html>";
+                    lbl.setToolTipText(txt);
+                } else {
+                    lbl.setToolTipText(null);
+                }
+                lbl.setHorizontalAlignment(JLabel.CENTER);
+                return lbl;
+            }
+            
+        });
         tlb.row();
         tlb.cell(tableComp);
         tlb.row();
@@ -150,6 +184,10 @@ public class OrderListView extends ItemListView {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 setItems();
+            } else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems.toString())) {
+                setItems();
+            } else if (e.getEventType().equals(LifecycleEventsEnum.RefreshOrders.toString())) {
+                setItems();
             }
         }
     }
@@ -157,8 +195,27 @@ public class OrderListView extends ItemListView {
 
     public JPopupMenu getPopupMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "orderCommandGroup", new Object[] {deleteOrderAction});
+                "orderCommandGroup", new Object[] {editOrderAction, deleteOrderAction});
         return group.createPopupMenu();
+    }
+    
+    private class EditOrderAction extends ActionCommand {
+        protected void doExecuteCommand() {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= tableModel.getRowCount())
+                    return;
+                try {
+                    Object obj = tableModel.getRow(idx);
+                    Order order = (Order) obj;
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
+                } catch (Exception exc) {
+
+                }
+            }
+        }
     }
 
     private class DeleteOrderAction extends ActionCommand {

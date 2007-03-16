@@ -12,3 +12,5 @@
   * *txt2xml* (http://txt2xml.sourceforge.net)
 
   * *Apache Digester*
+
+  * the *Eclipse icon set* (http://www.eclipse.org)

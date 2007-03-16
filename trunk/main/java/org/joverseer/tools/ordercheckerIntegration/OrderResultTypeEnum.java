@@ -2,9 +2,10 @@ package org.joverseer.tools.ordercheckerIntegration;
 
 
 public enum OrderResultTypeEnum {
+    Okay(-1),
     Info(0),
     Help(1),
-    Warn(2),
+    Warning(2),
     Error(3);
     
     int value;

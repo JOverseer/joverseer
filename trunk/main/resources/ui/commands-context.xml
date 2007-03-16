@@ -62,7 +62,10 @@
                 <bean class="org.joverseer.ui.command.LoadGame"/>
                 <bean class="org.joverseer.ui.command.SaveGame"/>
                 <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
+                <value>separator</value>
                 <bean class="org.joverseer.ui.command.ImportOrders"/>
+                <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
+                <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
 			</list>

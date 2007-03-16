@@ -116,7 +116,7 @@ public class TrackCharacterListView extends BaseItemListView {
             selectRowCommandExecutor.execute();
         }
         if (e.getClickCount() == 1 && e.getButton() == 3) {
-            showContextMenu();
+            showContextMenu(e);
         }
     }
     

@@ -6,10 +6,13 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +20,7 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.Order;
+import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -39,7 +43,8 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
     JTextField orderText;
     JLabel orderResultIcon;
-
+    JCheckBox draw;
+    
     public OrderViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -67,12 +72,33 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             ico = new ImageIcon(imgSource.getImage("orderresult.info.icon"));
         } else if (orderResultType == OrderResultTypeEnum.Help) {
             ico = new ImageIcon(imgSource.getImage("orderresult.help.icon"));
-        } else if (orderResultType == OrderResultTypeEnum.Warn) {
+        } else if (orderResultType == OrderResultTypeEnum.Warning) {
             ico = new ImageIcon(imgSource.getImage("orderresult.warn.icon"));
         } else if (orderResultType == OrderResultTypeEnum.Error) {
             ico = new ImageIcon(imgSource.getImage("orderresult.error.icon"));
-        }
+        } else if (orderResultType == OrderResultTypeEnum.Okay) {
+            ico = new ImageIcon(imgSource.getImage("orderresult.okay.icon"));
+        } 
         orderResultIcon.setIcon(ico);
+        if (ico != null) {
+            String txt = "";
+            for (OrderResult result : container.getResultsForOrder(o)) {
+                String resText = null;
+                resText = result.getType().toString();
+                txt += (txt.equals("") ? "" : "") + "<li>" + resText + ": " + result.getMessage() + "</li>";
+            }
+            if (!txt.equals("")) {
+                txt = "<html><body><lu>" + txt + "</lu></body></html>";
+            } else {
+                txt = null;
+            }
+            orderResultIcon.setToolTipText(txt);
+        } else {
+            orderResultIcon.setToolTipText(null);
+        }
+        
+        OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+        draw.setSelected(ovd.contains(o));
     }
 
     protected JComponent createFormControl() {
@@ -91,31 +117,48 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         glb1.setDefaultInsets(new Insets(0, 0, 0, 3));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("edit.image"));
-        JButton btn = new JButton(ico);
-        btn.addActionListener(this);
+        JLabel btn = new JLabel(ico);
+        btn.setToolTipText("Edit order");
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent arg0) {
+                Order order = (Order)getFormObject();
+                Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
+            }
+        });
         btn.setPreferredSize(new Dimension(16, 16));
+        btn.setOpaque(true);
+        btn.setBackground(Color.white);
         glb1.append(btn);
 
-        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
-        btn = new JButton(ico);
-        ActionListener al = new ActionListener() {
+//        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+//        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
+        draw = new JCheckBox();
+        draw.setToolTipText("Draw order");
+        draw.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
-                ovd.clear();
-                ovd.addOrder((Order)getFormObject());
+                if (draw.isSelected()) {
+                    ovd.addOrder((Order)getFormObject());
+                } else {
+                    ovd.removeOrder((Order)getFormObject());
+                }
                 Application.instance().getApplicationContext().publishEvent(
                                     new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
             }
-        };
-        btn.addActionListener(al);
-        btn.setPreferredSize(new Dimension(16, 16));
-        glb1.append(btn);
+        });
+        draw.setPreferredSize(new Dimension(16, 16));
+        draw.setOpaque(true);
+        draw.setBackground(Color.white);
+        glb1.append(draw);
 
-        glb.append(glb1.getPanel());
+        JPanel p = glb1.getPanel();
+        p.setOpaque(true);
+        p.setBackground(Color.white);
+        glb.append(p);
 
         glb.nextLine();
-        JPanel p = glb.getPanel();
+        p = glb.getPanel();
         //p.setPreferredSize(new Dimension(166, 16));
         p.setBackground(Color.white);
         p.setBorder(null);

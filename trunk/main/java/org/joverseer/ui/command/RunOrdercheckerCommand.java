@@ -25,6 +25,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
 import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.EditNationAllegiancesForm;
+import org.joverseer.ui.support.ActiveGameChecker;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
@@ -66,7 +67,7 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
     
     protected void doExecuteCommand() {
         try {
-            
+            if (!ActiveGameChecker.checkActiveGameExists()) return;
             proxy = new OrdercheckerProxy();
             proxy.updateOrdercheckerGameData(7);
             final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
@@ -90,21 +91,30 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
                             com.middleearthgames.orderchecker.Character mc = Main.main.getNation().findCharacterById(c.getId());
                             for (com.middleearthgames.orderchecker.Order mo : proxy.getCharacterOrders(mc)) {
                                 Order order = proxy.getOrderMap().get(mo);
+                                boolean resultFound = false;
                                 cont.removeResultsForOrder(order);
                                 for (String msg : proxy.getOrderInfoResults(mo)) {
                                     OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Info);
                                     resultList.add(or);
+                                    resultFound = true;
                                 }
                                 for (String msg : proxy.getOrderErrorResults(mo)) {
                                     OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Error);
                                     resultList.add(or);
+                                    resultFound = true;
                                 }
                                 for (String msg : proxy.getOrderHelpResults(mo)) {
                                     OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Help);
                                     resultList.add(or);
+                                    resultFound = true;
                                 }
                                 for (String msg : proxy.getOrderWarnResults(mo)) {
-                                    OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Warn);
+                                    OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Warning);
+                                    resultList.add(or);
+                                    resultFound = true;
+                                }
+                                if (!resultFound) {
+                                    OrderResult or = new OrderResult(order, "Checked okay.", OrderResultTypeEnum.Okay);
                                     resultList.add(or);
                                 }
                             }

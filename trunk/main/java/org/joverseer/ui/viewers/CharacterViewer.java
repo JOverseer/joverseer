@@ -1,6 +1,7 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -14,6 +15,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -42,7 +44,6 @@ import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSou
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.NarrationForm;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
@@ -55,9 +56,12 @@ import org.joverseer.ui.support.PopupMenuActionListener;
 import org.joverseer.ui.support.TableUtils;
 import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
+import org.joverseer.ui.viewsForms.NarrationForm;
+import org.joverseer.ui.viewsForms.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -68,6 +72,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 
 
@@ -85,6 +90,8 @@ public class CharacterViewer extends ObjectViewer {
 
     JTable artifactsTable;
     JTable spellsTable;
+    
+    JLabel swapOrdersIconCmd;
 
     JButton btnMenu;
 
@@ -92,6 +99,7 @@ public class CharacterViewer extends ObjectViewer {
     JComponent order2comp;
     OrderViewer order1;
     OrderViewer order2;
+    JPanel orderPanel;
 
     boolean showArtifacts = false;
     boolean showSpells = false;
@@ -222,11 +230,11 @@ public class CharacterViewer extends ObjectViewer {
             order1.setFormObject(c.getOrders()[0]);
             order2.setFormObject(c.getOrders()[1]);
             if (showOrders) {
-                order1comp.setVisible(true);
-                order2comp.setVisible(true);
+            	orderPanel.setVisible(true);
+            	swapOrdersIconCmd.setVisible(true);
             } else {
-                order1comp.setVisible(false);
-                order2comp.setVisible(false);
+            	orderPanel.setVisible(false);
+            	swapOrdersIconCmd.setVisible(false);
             }
             
             if (getShowColor()) {
@@ -341,17 +349,13 @@ public class CharacterViewer extends ObjectViewer {
         
         artifactsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
-                if (a == null) return;
-                TransferHandler handler = new ParamTransferHandler(a.getNo());
-                artifactsTable.setTransferHandler(handler);
-                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
-            }
-        });
-        
-        artifactsTable.addMouseListener(new MouseListener() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
+            	if (e.getClickCount() == 1) {
+	                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
+	                if (a == null) return;
+	                TransferHandler handler = new ParamTransferHandler(a.getNo());
+	                artifactsTable.setTransferHandler(handler);
+	                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
+            	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
                     ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
                     if (a == null) return;
                     final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" +
@@ -362,17 +366,7 @@ public class CharacterViewer extends ObjectViewer {
                 }
             }
 
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            public void mouseExited(MouseEvent e) {
-            }
-
-            public void mousePressed(MouseEvent e) {
-            }
-
-            public void mouseReleased(MouseEvent e) {
-            }
+			
         });
         
         tableModel.setRowNumbers(false);
@@ -446,11 +440,28 @@ public class CharacterViewer extends ObjectViewer {
         
         glb.nextLine();
 
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
         order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        glb.append(order1comp = order1.createFormControl(), 2, 1);
-        glb.nextLine();
+        tlb.cell(order1comp = order1.createFormControl());
+        tlb.row();
         order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        glb.append(order2comp = order2.createFormControl(), 2, 1);
+        tlb.cell(order2comp = order2.createFormControl());
+        tlb.row();
+        orderPanel = tlb.getPanel();
+        orderPanel.setBackground(Color.white);
+        glb.append(orderPanel, 2, 1);
+        glb.append(swapOrdersIconCmd = new JLabel(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
+        swapOrdersIconCmd.setToolTipText("Swap orders");
+        
+        swapOrdersIconCmd.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				Character c = (Character)getFormObject();
+				c.setOrders(new Order[]{c.getOrders()[1], c.getOrders()[0]});
+		          Application.instance().getApplicationContext().publishEvent(
+		                  new JOverseerEvent(LifecycleEventsEnum.RefreshHexItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			}
+        });
+        
         glb.nextLine();
 
         JPanel panel = glb.getPanel();
@@ -489,13 +500,30 @@ public class CharacterViewer extends ObjectViewer {
     private class ShowResultsCommand extends ActionCommand {
 
         protected void doExecuteCommand() {
-            Character c = (Character) getFormObject();
-            String result = c.getName() + "\n" + c.getOrderResults().replaceAll("\n", "");
-            result = result.replaceAll(" He was ordered", "\nHe was ordered");
-            result = result.replaceAll(" She was ordered", "\nShe was ordered");
+        	final OrderResultsForm f = new OrderResultsForm(FormModelHelper.createFormModel(getFormObject()));
+        	FormBackedDialogPage pg = new FormBackedDialogPage(f);
+        	TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+				protected boolean onFinish() {
+					return true;
+				}
 
-            MessageDialog msg = new MessageDialog("Order results", result);
-            msg.showDialog();
+				@Override
+				protected void onAboutToShow() {
+					super.onAboutToShow();
+					f.setFormObject(getFormObject());
+				}
+				
+				protected Object[] getCommandGroupMembers() {
+                    return new AbstractCommand[] {
+                            getFinishCommand()
+                    };
+                }
+
+        	};
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            dlg.setTitle(ms.getMessage("orderResultsDialog.title", new Object[]{}, Locale.getDefault()));
+        	dlg.showDialog();
+        	
         }
     }
 
@@ -526,7 +554,7 @@ public class CharacterViewer extends ObjectViewer {
             Container characters = t.getContainer(TurnElementsEnum.Character);
             characters.removeItem(c);
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
         }
     }

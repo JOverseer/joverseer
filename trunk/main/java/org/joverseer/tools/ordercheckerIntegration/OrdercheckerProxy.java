@@ -352,6 +352,11 @@ public class OrdercheckerProxy {
                         + element.getDescription();
             }
             a.setExtraInfo(extraInfo);
+            String charsWith = "";
+            for (String ch : (ArrayList<String>)army.getCharacters()) {
+            	charsWith += (charsWith.equals("") ? "" :",") + ch;
+            }
+            a.setCharactersWith(charsWith);
             nation.addArmy(a);
         }
         

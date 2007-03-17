@@ -42,6 +42,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.cell(label = new JLabel("Turn : "), "colspec=left:100px");
         label.setPreferredSize(new Dimension(100, 16));
         lb.cell(cmbTurns = new JComboBox(), "colspec=left:100px");
+        lb.relatedGapRow();
 
         cmbTurns.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -68,6 +69,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         //lb.append(new JLabel("  "));
         lb.cell(label = new JLabel("Map : "));
         lb.cell(cmbMaps = new JComboBox(), "align=left");
+        lb.relatedGapRow();
         cmbMaps.setPreferredSize(new Dimension(100, 16));
         cmbMaps.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -101,6 +103,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.cell(label = new JLabel("Draw orders : "));
         //label.setPreferredSize(new Dimension(100, 16));
         lb.cell(drawOrders = new JCheckBox(), "align=left");
+        lb.relatedGapRow();
         drawOrders.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -124,6 +127,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.cell(label = new JLabel("Show climate : "));
         //label.setPreferredSize(new Dimension(100, 16));
         lb.cell(showClimate = new JCheckBox(), "align=left");
+        lb.relatedGapRow();
         showClimate.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
@@ -151,6 +155,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 new ZoomOption("4", 19, 19),
         };
         lb.cell(zoom = new JComboBox(zoomOptions), "align=left");
+        lb.relatedGapRow();
         zoom.setPreferredSize(new Dimension(100, 16));
         zoom.addActionListener(new ActionListener() {
 

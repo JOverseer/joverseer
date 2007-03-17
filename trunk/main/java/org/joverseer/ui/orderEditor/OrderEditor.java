@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     JTextField parameters;
     JTextField character;
     JTextArea description;
+    JLabel descriptionLabel;
     JPanel subeditorPanel;
     JPanel myPanel;
     
@@ -147,19 +150,33 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         
         glb.append(character = new JTextField());
         character.setEditable(false);
-        character.setPreferredSize(new Dimension(70, 18));
+        character.setPreferredSize(new Dimension(200, 18));
 
-        JButton btnSave = new JButton();
+        JLabel btnSave = new JLabel();
         btnSave.setPreferredSize(new Dimension(18, 18));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon"));
         btnSave.setIcon(ico);
         glb.append(btnSave);
-        btnSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+        btnSave.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent arg0) {
                 saveOrder();
             }
         });
+        btnSave.setToolTipText("Save order");
+        
+        btnSave = new JLabel();
+        btnSave.setPreferredSize(new Dimension(18, 18));
+        ico = new ImageIcon(imgSource.getImage("ShowHideOrderDescription.icon"));
+        btnSave.setIcon(ico);
+        glb.append(btnSave);
+        btnSave.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent arg0) {
+            	descriptionLabel.setVisible(!descriptionLabel.isVisible());
+            	description.setVisible(!description.isVisible());
+            }
+        });
+        btnSave.setToolTipText("Show / hide description");
 
         glb.nextLine();
         
@@ -185,10 +202,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         parameters.setPreferredSize(new Dimension(70, 18));
         glb.nextLine();
         
-        JLabel l;
-        glb.append(l = new JLabel("Description :"));
+        glb.append(descriptionLabel = new JLabel("Description :"));
         glb.append(description = new JTextArea());
-        l.setVerticalAlignment(JLabel.NORTH);
+        descriptionLabel.setVerticalAlignment(JLabel.NORTH);
+        descriptionLabel.setVisible(false);
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
         description.setPreferredSize(new Dimension(200, 50));
@@ -198,6 +215,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             Font.ITALIC,
                             description.getFont().getSize()-1);
         description.setFont(f);
+        description.setVisible(false);
         
         glb.nextLine();
         glb.append(subeditorPanel = new JPanel(), 2, 1);
@@ -336,6 +354,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     }
     
     private void saveOrder() {
+    	updateParameters();
         Order o = (Order)getFormObject();
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
         o.setParameters(parameters.getText());

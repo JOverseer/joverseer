@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import org.joverseer.domain.Order;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -17,6 +18,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox movementStyle;
     ArrayList<String> dirs = new ArrayList<String>();
+    JTextField directionParams;
     
     public MoveArmyOrderSubeditor(Order o) {
         super(o);
@@ -37,10 +39,16 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
         
+        directionParams = new JTextField();
+        directionParams.setVisible(false);
+
+        String txt = "";
         for (int i=1; i<20; i++) {
             if (o.getParameter(i) == null) break;
             dirs.add(o.getParameter(i));
+            txt += (txt.equals("") ? "" : " ") + o.getParameter(i);
         }
+        directionParams.setText(txt);
         
         tlb.row();
         TableLayoutBuilder stlb = new TableLayoutBuilder();
@@ -123,19 +131,17 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(new JLabel(" "));
         tlb.cell(stlb.getPanel());
         
-        
+        components.add(movementStyle);
+        components.add(directionParams);
     }
 
     public void updateEditor() {
         String text = "";
         String val = "-";
-        if (movementStyle.getSelectedItem() != null && !movementStyle.getSelectedItem().equals("")) {
-            val = movementStyle.getSelectedItem().toString();
-        } 
-        text += (text.equals("") ? "" : " ") + val;
         for (String dir : dirs) {
             text += (text.equals("") ? "" : " ") + dir;
         }
-        getEditor().parameters.setText(text);
+        directionParams.setText(text);
+        getEditor().updateParameters();
     }
 }

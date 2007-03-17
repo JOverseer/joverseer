@@ -1,4 +1,4 @@
-package org.joverseer.ui;
+package org.joverseer.ui.viewsForms;
 
 import java.awt.Dimension;
 import java.awt.Font;

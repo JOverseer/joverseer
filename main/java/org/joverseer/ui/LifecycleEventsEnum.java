@@ -10,5 +10,6 @@ public enum LifecycleEventsEnum {
     RefreshMapItems,
     EconomyCalculatorUpdate,
     EditOrderEvent,
-    MapMetadataChangedEvent
+    MapMetadataChangedEvent,
+    RefreshHexItems
 }

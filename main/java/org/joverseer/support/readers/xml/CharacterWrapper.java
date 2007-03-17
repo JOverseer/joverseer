@@ -198,7 +198,7 @@ public class CharacterWrapper {
 
     public Character getCharacter() {
         Character character = new Character();
-        character.setId(getId());
+        character.setId(Character.getIdFromName(getName()));
         character.setName(getName());
         character.setNationNo(getNation());
         character.setX(getLocation() / 100);

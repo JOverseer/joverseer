@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
 	"http://www.springframework.org/dtd/spring-beans.dtd">
-<!-- $Id: jideApplicationContext.xml,v 1.1 2006/10/03 01:58:28 jwray Exp $ -->
 <beans>
 	
 	
@@ -14,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="0.2"/>
-		<property name="buildId" value="2006-10"/>
+		<property name="version" value="0.9"/>
+		<property name="buildId" value="2007-03-18"/>
 	</bean>
 	
 	<!--

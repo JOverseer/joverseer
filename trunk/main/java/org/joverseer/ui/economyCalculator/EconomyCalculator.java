@@ -54,8 +54,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString()) ||
-                    e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+            if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString())) {
+                ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
+                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                refreshMarketLimitWarning();
+            } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 loadNationCombo();
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();

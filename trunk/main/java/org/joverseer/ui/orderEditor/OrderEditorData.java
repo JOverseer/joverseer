@@ -9,6 +9,7 @@ public class OrderEditorData {
     String orderType;
     String parameterDescription;
     ArrayList<String> paramTypes = new ArrayList<String>();
+    ArrayList<String> paramDescriptions = new ArrayList<String>();
     String majorSkill;
     String skill;
     
@@ -67,6 +68,14 @@ public class OrderEditorData {
     public void setSkill(String skill) {
         this.skill = skill;
     }
+
+	protected ArrayList<String> getParamDescriptions() {
+		return paramDescriptions;
+	}
+
+	protected void setParamDescriptions(ArrayList<String> paramDescriptions) {
+		this.paramDescriptions = paramDescriptions;
+	}
     
     
 }

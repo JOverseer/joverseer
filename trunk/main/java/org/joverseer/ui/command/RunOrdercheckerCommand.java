@@ -24,8 +24,9 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
 import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
-import org.joverseer.ui.EditNationAllegiancesForm;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.views.EditNationAllegiancesForm;
+import org.joverseer.ui.views.SelectOrderchekerNationForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
@@ -60,6 +61,7 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
     private static final String ID = "runOrdercheckerCommand"; 
 
     OrdercheckerProxy proxy = null;
+    int selectedNation = -1;
     
     public RunOrdercheckerCommand(){
             super(ID);
@@ -68,8 +70,22 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
     protected void doExecuteCommand() {
         try {
             if (!ActiveGameChecker.checkActiveGameExists()) return;
+            
+            final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));
+            FormBackedDialogPage pg = new FormBackedDialogPage(frm);
+            TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+				protected boolean onFinish() {
+					selectedNation = ((org.joverseer.metadata.domain.Nation)frm.getFormObject()).getNumber();
+					return true;
+				}
+            };
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            dlg.setTitle(ms.getMessage("selectOrdercheckerNation.title", new Object[]{}, Locale.getDefault()));
+            dlg.showDialog();
+            if (selectedNation == -1) return;
+            
             proxy = new OrdercheckerProxy();
-            proxy.updateOrdercheckerGameData(7);
+            proxy.updateOrdercheckerGameData(selectedNation);
             final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             final OrdercheckerForm form = new OrdercheckerForm(Main.main);
             FormBackedDialogPage page = new FormBackedDialogPage(form);
@@ -137,7 +153,7 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
                     };
                 }
             };
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            ms = (MessageSource)Application.services().getService(MessageSource.class);
             dialog.setTitle(ms.getMessage("checkOrdersDialog.title", new Object[]{}, Locale.getDefault()));
             dialog.showDialog();
         }

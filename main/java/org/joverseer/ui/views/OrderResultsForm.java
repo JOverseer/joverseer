@@ -1,4 +1,4 @@
-package org.joverseer.ui.viewsForms;
+package org.joverseer.ui.views;
 
 import java.awt.Dimension;
 

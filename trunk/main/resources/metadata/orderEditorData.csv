@@ -1,137 +1,274 @@
 120;CstHlSp;MagH;Spell ID # + Target Character ID (5 lowercase letters/spaces) ;sph;xid;;;;;;M;M
+;;;;Spell;Char;;;;;;;
 175;ChAlleg;Comm;New allegiance (g,e);alg;;;;;;;C;C
+;;;;Allegiance;;;;;;;;
 180;UpStNat;Comm;Target Nation # (1-25);nat;;;;;;;C;C
+;;;;Nation;;;;;;;;
 185;DnStNat;Comm;Target Nation # (1-25);nat;;;;;;;C;C
+;;;;Nation;;;;;;;;
 205;UsCbArt;Misc;Artifact ID #;b;;;;;;;;
+;;;;Artifact id;;;;;;;;
 210;IssPers;Misc;Target Character ID (5 lowercase letters/spaces) ;cid;;;;;;;;
+;;;;Char;;;;;;;;
 215;RfsPers;Misc;;;;;;;;;;
+
 225;CstCbSp;MagC;Spell ID #;spc;;;;;;;M;M
+;;;;Spell;;;;;;;;
 230;AttEnmy;Comm;Combat Tactic (ch,fl,st,su,hr,am);tac;;;;;;;C;C
+;;;;Tactic;;;;;;;;
 235;AttNat;Comm;Target Nation # (1-25) + Combat Tactic (ch,fl,st,su,hr,am);nat;tac;;;;;;C;C
+;;;;Nation;Tactic;;;;;;;
 240;Defend;Comm;Combat Tactic (ch,fl,st,su,hr,am);tac;;;;;;;C;C
+;;;;Tactic;;;;;;;;
 250;DstPop;Comm;Combat Tactic (ch,fl,st,su,hr,am);tac;;;;;;;C;C
+;;;;Tactic;;;;;;;;
 255;CptrPop;Comm;Combat Tactic (ch,fl,st,su,hr,am);tac;;;;;;;C;C
+
 260;SiegPop;Comm;;;;;;;;;C;C
+
 270;DstShp;Misc;;;;;;;;;;C
+
 275;ScttShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
+;;;;Number of warships;Number of transports;;;;;;;
 280;AbanShp;Misc;4-Digit Hex Location + # of Warships + # of Transports;hex;a;a;;;;;;C
+;;;;Hex;Number of warships;Number of transports;;;;;;
 285;ReacEnc;Misc;Response (<20 letters) - 1st Letter CAPITALIZED. All others lower case.;rsp;;;;;;;;
+;;;;Response;;;;;;;;
 290;InvEnc;Misc;;;;;;;;;;
+
 300;ChTaxRt;Comm;New tax rate % (1-100);%;;;;;;;C;C
+;;;;New tax rate;;;;;;;;
 310;BidCar;Misc;Product (mi,st,br,le,ti,mo,fo) + # of units to purchase + Amount bid (per unit, not total);prd;d;b;;;;;;
+;;;;Product;Amount;Bid (per unit);;;;;;
 315;PrchCar;Misc;Product (mi,st,br,le,ti,mo,fo) + # of units to purchase;prd;d;;;;;;;
+;;;;Product;Amount;;;;;;;
 320;SellCar;Misc;Product (mi,st,br,le,ti,mo,fo) + # of units to sell;prd;d;;;;;;;
+;;;;Product;Amount;;;;;;;
 325;NatSell;Misc;Product (mi,st,br,le,ti,mo,fo) + % of Product to be sold (1-100);prd;%;;;;;;;
+;;;;Product;Percentage;;;;;;;
 330;CstCjSp;MagX;Spell ID # + [See spell for requirements];spx;d;;;;;;M;M
+;;;;Spell;Target;;;;;;;
 340;TrPo2Ar;Misc;# of Food units transferred;d;;;;;;;;C
+;;;;Number of food units;;;;;;;;
 345;TrAr2Po;Misc;# of Food units transferred;d;;;;;;;;C
+;;;;Number of food units;;;;;;;;
 347;TrFood;Misc;Other Commander Char ID (5 lowercase letters/spaces) +  # of Food units transferred;cid;d;;;;;;;C
+;;;;Commander;Number of food units;;;;;;;
 349;TrWarMa;Misc;Other Commander Char ID (5 lowercase letters/spaces) + # of War Machines transferred;cid;b;;;;;;;C
+;;;;Commander;Number of war machines;;;;;;;
 351;TrWpns;Misc;Other Commander ID (5 lowercase letters/spaces) + # of br/st/mi weapons, each in a diff. cell;cid;d;d;d;;;;;C
+;;;;Commander;Bronze weapons;Steel weapons;Mithril weapons;;;;;
 353;TrArmr;Misc;Other Commander ID (5 lowercase letters/spaces) + # of le/br/st/mi armor, each in a diff. cell;cid;d;d;d;d;;;;C
+;;;;Commander;Leather armor;Bronze Armor;Steel armor;Mithril armor;;;;
 355;TrTrps;Misc;Other Commander ID (5 lowercase letters/spaces) + # of each troop type, each in different cell.;cid;d;d;d;d;d;d;;C
+;;;;Commander;HC;LC;HI;LI;AR;MA;;
 357;TrShp;Misc;Other Commander ID (5 lowercase letters/spaces) + # of Warships + # of Transports transferred.;cid;a;a;;;;;;C
+;;;;Commander;Number of warships;Number of transports;;;;;;
 360;TrArt;Misc;Other Character ID (5 lowercase letters/spaces) + 1-6 Artifact ID #’s (1 per cell);cid;b;e;e;e;e;e;;
+;;;;Character;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;
 363;TrHost;Misc;Other Character ID (5 lowercase letters/spaces) + 1-3 Hostage Character ID’s (1 per cell);cid;cid;xid;xid;;;;;
+;;;;Character;Hostage;Hostage;Hostage;;;;;
 370;UpWpns;Misc;New Weapon type (mi,st,br) + # of each Troop type upgraded, each in a different cell.;wep;d;d;d;d;d;d;;C
+;;;;New weapon type;HC;LC;HI;LI;AR;MA;;
 375;UpArmr;Misc;New Armor type (mi,st,br,le) + # of each Troop type upgraded, each in a different cell.;arm;d;d;d;d;d;d;;C
+;;;;New armor type;HC;LC;HI;LI;AR;MA;;
 400;HvCvlry;Comm;# Recruited + Weapon type (mi,st,br,wo) + Armor type (mi,st,br,le,no);b;wep;arm;;;;;C;C
+;;;;Number of troops;Weapon type;Armor type;;;;;;
 404;LtCvlry;Comm;# Recruited + Weapon type (mi,st,br,wo) + Armor type (mi,st,br,le,no);b;wep;arm;;;;;C;C
+;;;;Number of troops;Weapon type;Armor type;;;;;;
 408;HvInfan;Comm;# Recruited + Weapon type (mi,st,br,wo) + Armor type (mi,st,br,le,no);b;wep;arm;;;;;C;C
+;;;;Number of troops;Weapon type;Armor type;;;;;;
 412;LtInfan;Comm;# Recruited + Weapon type (mi,st,br,wo) + Armor type (mi,st,br,le,no);b;wep;arm;;;;;C;C
+;;;;Number of troops;Weapon type;Armor type;;;;;;
 416;Archers;Comm;# Recruited;b;;;;;;;C;C
+;;;;Number of troops;Weapon type;Armor type;;;;;;
 420;MenAtAr;Comm;# Recruited;b;;;;;;;C;C
+;;;;Number of troops;Weapon type;Armor type;;;;;;
 425;RtrTrps;Misc;# of each Troop type retired, each in a different cell. (# ONLY);d;d;d;d;d;d;;;C
+;;;;HC;LC;HI;LI;AR;MA;;;
 430;TrpsMan;Comm;Troop type (hc,lc,hi,li,ar,ma);trp;;;;;;;C;C
+;;;;Troop type;;;;;;;;
 435;ArmyMan;Comm;;;;;;;;;C;C
+
 440;MakWrMa;Misc;# of War Machines built;b;;;;;;;;C
+;;;;Number of war machines;;;;;;;;
 444;MakArmr;Misc;# of Armor made + Armor type (mi,st,br,le);d;arm;;;;;;;C
+;;;;Number of units;Armor type;;;;;;;
 448;MakWpns;Misc;# of Weapons made + Weapon type (mi,st,br);d;wep;;;;;;;C
+;;;;Number of units;Weapon type;;;;;;;
 452;MakWShp;Misc;# of Warships made;a;;;;;;;;C
+;;;;Number of warships;;;;;;;;
 456;MakTShp;Misc;# of Transports made;a;;;;;;;;C
+;;;;Number of transports;;;;;;;;
 460;RmvHar;Comm;;;;;;;;;C;C
+
 465;RmvPort;Comm;;;;;;;;;C;C
+
 470;DstStor;Comm;;;;;;;;;C;C
+
 475;DstBrdg;Comm;Direction Hexside of Bridge. (ne,nw,w,se,sw,e);dir;;;;;;;C;C
+;;;;Direction;;;;;;;;
 480;RmvFort;Comm;;;;;;;;;C;C
+
 490;BldBrdg;Comm;Direction Hexside of Bridge. (ne,nw,w,se,sw,e);dir;;;;;;;C;C
+;;;;Direction;;;;;;;;
 494;FortPop;Comm;;;;;;;;;C;C
+
 498;Threat;Comm;;;;;;;;;C;C
+
 500;Double;Emis;Target Character ID (5 lowercase letters/spaces) ;cid;;;;;;;E;E
+;;;;Char;;;;;;;;
 505;Bribe;Emis;Target Character ID (5 lowercase letters/spaces) + Amount of GOLD for bribe (>=500);cid;d;;;;;;E;E
+;;;;Char;Gold;;;;;;;
 520;InfYour;Emis;;;;;;;;;E;E
+
 525;InfOthr;Emis;;;;;;;;;E;E
+
 530;Har2Por;Emis;;;;;;;;;E;E
+
 535;AddHar;Emis;;;;;;;;;E;E
+
 550;ImprPop;Emis;;;;;;;;;E;E
+
 552;PosCmp;Comm;Name of Camp (5-17 letters - 1st letter CAPITALIZED);nam;;;;;;;C;C
+;;;;Name;;;;;;;;
 555;CreCmp;Emis;Name of Camp (5-17 letters - 1st letter CAPITALIZED);nam;;;;;;;E;E
+;;;;Name;;;;;;;;
 560;AbanCmp;Emis;;;;;;;;;E;E
+
 565;ReduPop;Emis;;;;;;;;;E;E
+
 580;SprdRum;Misc;;;;;;;;;;E
+
 585;Uncover;Misc;;;;;;;;;;E
+
 600;CntrEsp;Agen;;;;;;;;;A;A
+
 605;GrdLoc;Agen;;;;;;;;;A;A
+
 610;GrdChar;Agen;Guarded Character ID (5 lowercase letters/spaces);cid;;;;;;;A;A
+;;;;Char;;;;;;;;
 615;Assass;Agen;Target Character ID (5 lowercase letters/spaces);cid;;;;;;;A;A
+;;;;Char;;;;;;;;
 620;Kidnap;Agen;Target Character ID (5 lowercase letters/spaces) ;cid;;;;;;;A;A
+;;;;Char;;;;;;;;
 625;Release;Misc;Hostage Character ID (5 lowercase letters/spaces) ;cid;;;;;;;;A
+;;;;Char;;;;;;;;
 630;Rescue;Agen;Hostage Character ID (5 lowercase letters/spaces) + Release? (y,n);cid;yn;;;;;;A;A
+;;;;Char;Release;;;;;;;
 635;Interr;Agen;Hostage Character ID (5 lowercase letters/spaces) ;cid;;;;;;;A;A
+;;;;Char;;;;;;;;
 640;Custody;Misc;Hostage Character ID (5 lowercase letters/spaces) ;cid;;;;;;;;A
+;;;;Char;;;;;;;;
 645;Imprsn;Misc;Hostage Character ID (5 lowercase letters/spaces) ;cid;;;;;;;;A
+;;;;Char;;;;;;;;
 650;Execute;Misc;Hostage Character ID (5 lowercase letters/spaces) ;cid;;;;;;;;A
+;;;;Char;;;;;;;;
 655;RansDmd;Misc;Hostage Character ID (5 lowercase letters/spaces) + Amount of GOLD desired for ransom;cid;d;;;;;;;A
+;;;;Char;Gold desired;;;;;;;
 660;RansOff;Misc;Hostage Character ID (5 lowercase letters/spaces) + Amount of GOLD offered + Release? (y,n);cid;d;yn;;;;;;C
+;;;;Char;Gold offered;Release;;;;;;
 665;SabBrdg;Agen;Direction Hexside of Bridge (ne,nw,w,se,sw,e);dir;;;;;;;A;A
+;;;;Direction;;;;;;;;
 670;SabFort;Agen;;;;;;;;;A;A
+
 675;SabPort;Agen;;;;;;;;;A;A
+
 680;SabStor;Agen;Stores Type (mi,st,br,le,ti,mo,fo);prd;;;;;;;A;A
+;;;;Product;;;;;;;;
 685;StlArt;Agen;Artifact ID #;b;;;;;;;A;A
+;;;;Artifact id;;;;;;;;
 690;StlGold;Agen;;;;;;;;;A;A
+
 700;ForgtSp;Misc;1-6 Spell ID #’s to be forgotten (1 per cell);b;e;e;e;e;e;;;M
+;;;;Spell;Spell;Spell;Spell;Spell;Spell;;;
 705;RsrchSp;Misc;Spell ID #;spz;;;;;;;;M
+;;;;Spell;;;;;;;;
 710;PrenMgy;Mage;;;;;;;;;M;M
+
 725;NamChar;Comm;Name (5-17 letters, 1st CAPITALIZED) + Gender (m,f) + Comm + Agent + Emiss + Mage skill points.;nam;gen;a;a;a;a;;C;C
+;;;;Name;Gender;Command;Agent;Emissary;Mage;;;
 728;NamComm;Comm;Name (5-17 letters - 1st letter CAPITALIZED) + Gender (m,f);nam;gen;;;;;;C;C
+;;;;Name;Gender;;;;;;;
 731;NamAgen;Agen;Name (5-17 letters - 1st letter CAPITALIZED) + Gender (m,f);nam;gen;;;;;;A;A
+;;;;Name;Gender;;;;;;;
 734;NamEmis;Emis;Name (5-17 letters - 1st letter CAPITALIZED) + Gender (m,f);nam;gen;;;;;;E;E
+;;;;Name;Gender;;;;;;;
 737;NamMage;Mage;Name (5-17 letters - 1st letter CAPITALIZED) + Gender (m,f);nam;gen;;;;;;M;M
+;;;;Name;Gender;;;;;;;
 740;RtrChar;Misc;;;;;;;;;;
+
 745;CreCmpy;Comm;;;;;;;;;C;C
+
 750;DsbCmpy;Comm;;;;;;;;;C;C
+
 755;JnCmpy;Misc;Company Commander ID;cid;;;;;;;;
+;;;;Char;;;;;;;;
 760;LvCmpy;Misc;;;;;;;;;;
+
 765;SplArmy;Misc;New Commander ID + # of each Troop Type, each in a different cell.;cid;d;d;d;d;d;d;;C
+;;;;New commander;HC;LC;HI;LI;AR;MA;;
 770;HrArmy;Comm;# of Troops + Type (hc,lc,hi,li,ar,ma) + Weap  (mi,st,br,wo) + Armor (mi,st,br,le,no) + Food;b;trp;wep;arm;d;;;C;C
+;;;;Number of troops;Troop type;Weapon type;Armor type;Food units;;;;
 775;DsbArmy;Misc;;;;;;;;;;C
+
 780;TrComm;Comm;New Commander ID (5 lowercase letters/spaces) + Join Army (y,n);cid;yn;;;;;;C;C
+;;;;New commander;Join army;;;;;;;
 785;JnArmy;Misc;Army Commander ID (5 lowercase letters/spaces)  to be joined;cid;;;;;;;;
+;;;;Commander;;;;;;;;
 790;LvArmy;Misc;;;;;;;;;;
+
 792;DropArt;Misc;1-6 Artifact ID #’s to be dropped (1 per cell);b;e;e;e;e;e;;;
+;;;;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;;
 794;AnchShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
+;;;;Number of warships;Number of transports;;;;;;;
 796;PickArt;Misc;1-6 Artifact ID #’s to be picked up (1 per cell);b;e;e;e;e;e;;;
+;;;;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;;
 798;PickShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
+;;;;Number of warships;Number of transports;;;;;;;
 805;UsMvArt;Misc;Artifact ID #;b;;;;;;;;
+;;;;Artifact id;;;;;;;;
 810;MovChar;Move;4-Digit Destination Hex (within 12 Hexes);hex;;;;;;;;
+;;;;Destination;;;;;;;;
 820;MovCmpy;Move;4-Digit Destination Hex (within 12 Hexes);hex;;;;;;;;C
+;;;;Destination;;;;;;;;
 825;CstMvSp;MagM;Spell ID # + 4-Digit Destination Hex (See spell for ranges);spm;hex;;;;;;M;M
+;;;;Spell;Destination;;;;;;;
 830;MovNavy;Move;Directions for each Hex sailed (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);dir;dir;dirx;dirx;dirx;dirx;dirx;;C
+;;;;Direction;Direction;Direction;Direction;Direction;Direction;Direction;;
 840;Stand;Move;Direction Hexside (ne,nw,w,se,sw,e);dir;;;;;;;;C
+;;;;Direction;;;;;;;;
 850;MovArmy;Move;Directions for each Hex moved (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);dir;dir;dirx;dirx;dirx;dirx;dirx;;C
+;;;;Direction;Direction;Direction;Direction;Direction;Direction;Direction;;
 860;ForcMar;Move;Directions for each Hex moved (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);dir;dir;dirx;dirx;dirx;dirx;dirx;;C
+;;;;Direction;Direction;Direction;Direction;Direction;Direction;Direction;;
 870;MovJoin;Move;4-Digit Destination Hex (within 12 Hexes) + Army Commander ID (5 lowercase letters/spaces) ;hex;cid;;;;;;;
+;;;;Destination;Commander;;;;;;;
 900;FindArt;Misc;Artifact ID # (0 if unknown);i;;;;;;;;
+;;;;Artifact id;;;;;;;;
 905;ScoArmy;Agen;Army Commander ID (5 lowercase letters/spaces) + Follow army? (y,n);cid;yn;;;;;;A;A
+;;;;Commander;Follow army;;;;;;;
 910;ScoArea;Agen;;;;;;;;;A;A
+
 915;ScoHex;Misc;;;;;;;;;;A
+
 920;ScoPop;Misc;;;;;;;;;;A
+
 925;Recon;Misc;;;;;;;;;;C
+
 930;ScoChar;Agen;;;;;;;;;A;A
+
 935;UsScArt;Misc;Artifact ID # + Chosen 4-Digit Hex;b;hex;;;;;;;
+;;;;Artifact id;Hex;;;;;;;
 940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;d;;;;;;M;M
+;;;;Spell;Target;;;;;;;
 945;UsHiArt;Misc;Artifact ID #;b;;;;;;;;
+;;;;Artifact id;;;;;;;;
 947;NatTran;Misc;4-Digit Destination Hex + Product (mi,st,br,le,ti,mo,fo) + % transferred (1-100);hex;prd;%;;;;;;
+;;;;Destination;Product;Percentage;;;;;;
 948;TranCar;Misc;4-Digit Origin Hex + Destination Hex + Product (go,mi,st,br,le,ti,mo,fo) + # of units transported;hex;hex;pro;d;;;;;
+;;;;Origin;Destination;Product;Number of units;;;;;
 949;TrOwner;Emis;Other Character ID (5 lowercase letters/spaces);cid;;;;;;;E;E
+;;;;Character;;;;;;;;
 950;ReloCap;Comm;New Capital 4-Digit Hex Location;hex;;;;;;;C;C
+;;;;New capital hex;;;;;;;;

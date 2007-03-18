@@ -35,7 +35,7 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
-				<ref bean="fileMenu"/>
+				<ref bean="gameMenu"/>
 				<ref bean="utilMenu"/>
 				<ref bean="windowMenu"/>
                 <ref bean="helpMenu"/>
@@ -82,12 +82,14 @@
             to shared (predefined) commands by name, directly including a bean (the
             ExitCommand), and including a sub-menu (newMenu).
     -->
-	<bean id="fileMenu" 
+	<bean id="gameMenu" 
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
                             <bean class="org.joverseer.ui.command.CreateGame"/>
                             <bean class="org.joverseer.ui.command.ChangeNationAllegiances"/>
+							<bean class="org.joverseer.ui.command.EditNationNamesCommand"/>
+			                <value>separator</value>
                             <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
                             <bean class="org.joverseer.ui.command.OpenGameDirTree"/>
                             <bean class="org.joverseer.ui.command.LoadGame"/>

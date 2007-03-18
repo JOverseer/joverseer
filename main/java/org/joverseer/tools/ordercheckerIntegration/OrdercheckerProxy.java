@@ -27,6 +27,7 @@ import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
@@ -264,8 +265,13 @@ public class OrdercheckerProxy {
         nation.SetNation(nationNo);
         nation.setGame(g.getMetadata().getGameNo());
         nation.setTurn(t.getTurnNo());
-        //TODO fix
-        nation.setGameType("2950");
+        //TODO complete
+        if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
+        	nation.setGameType("1650");        	
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
+        	nation.setGameType("2950");
+        } 
+        
         nation.setSecret(Integer.parseInt(pi.getSecret()));
         nation.setPlayer(pi.getPlayerName());
         nation.setDueDate(pi.getDueDate());

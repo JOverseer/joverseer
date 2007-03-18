@@ -19,6 +19,8 @@ import java.text.MessageFormat;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
 
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.perspective.Perspective;
@@ -69,12 +71,14 @@ public class LayoutManager {
 //                        else{
                    {
 				logger.info("Using default layout");
-				manager.loadLayoutData();
+                Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
+                manager.loadLayoutFrom(r.getInputStream());
 				return false;
 			}
 		}
 		catch(Exception e){
 			logger.info("Using default layout");
+			manager.setUsePref(true);
 			manager.loadLayoutData();
 			return false;
 		}

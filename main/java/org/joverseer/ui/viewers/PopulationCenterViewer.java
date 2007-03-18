@@ -31,9 +31,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.EditPopulationCenterForm;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.NewGameForm;
 import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
@@ -42,6 +40,8 @@ import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.views.EditPopulationCenterForm;
+import org.joverseer.ui.views.NewGameForm;
 import org.joverseer.domain.ProductEnum;
 
 import javax.swing.*;
@@ -59,7 +59,6 @@ public class PopulationCenterViewer extends ObjectViewer {
     JTextField name;
     JTextField nation;
     JTextField sizeFort;
-    JTextField port;
     JTextField lostThisTurn;
     JTextField productionDescription;
     JTextField turnInfo;
@@ -96,11 +95,8 @@ public class PopulationCenterViewer extends ObjectViewer {
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
         
         if (pc.getHarbor() != HarborSizeEnum.none) {
-            port.setVisible(true);
-            port.setText(pc.getHarbor().toString());
-        } else {
-            port.setVisible(false);
-        }
+        	sizeFort.setText(sizeFort.getText() + " - " + pc.getHarbor().toString());
+        } 
         
         // show production
         // if the pop center is a ruin, search in past turns and find the first
@@ -226,10 +222,6 @@ public class PopulationCenterViewer extends ObjectViewer {
         glb.append(c = new JTextField());
         c.setBorder(null);
         bf.bindControl(c, "loyalty");
-        glb.nextLine();
-        
-        glb.append(port = new JTextField());
-        port.setBorder(null);
         glb.nextLine();
         
         glb.append(productionDescription = new JTextField(), 2, 1);

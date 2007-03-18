@@ -4,7 +4,8 @@ import java.util.Locale;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.EditNationAllegiancesForm;
+import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.views.EditNationAllegiancesForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -21,6 +22,7 @@ public class ChangeNationAllegiances extends ActionCommand {
     }
 
     protected void doExecuteCommand() {
+    	if (!ActiveGameChecker.checkActiveGameExists()) return;
         final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         FormModel formModel = FormModelHelper.createFormModel(g.getMetadata());
         final EditNationAllegiancesForm form = new EditNationAllegiancesForm(formModel);

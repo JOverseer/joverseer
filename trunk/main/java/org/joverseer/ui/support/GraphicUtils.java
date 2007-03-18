@@ -64,6 +64,7 @@ public class GraphicUtils {
     
     public static String parseName(String name) {
         if (name.equals("Unknown (Map Icon)")) return "Unknown";
+        if (name.equals("")) return "Unknown";
         return name;
     }
     

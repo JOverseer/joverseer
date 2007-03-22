@@ -30,6 +30,9 @@ public class StatusBarUpdater implements ApplicationListener {
             GameMetadata gm = game.getMetadata();
             msg = "Game %s (%s), %s, Turn %s";
             msg = String.format(msg, gm.getGameNo(), gm.getGameType().toString(), gm.getNationByNum(gm.getNationNo()).getName(), game.getCurrentTurn());
+            if (game.getTurn() != null && game.getTurn().getSeason() != null) {
+                msg = String.format("%1$s, %2$s, %3$td %3$tb %3$tY", msg, game.getTurn().getSeason(), game.getTurn().getTurnDate());
+            }
         }
         //Application.instance().getActiveWindow().getStatusBar().setMessage(msg);
         Application.instance().getActiveWindow().getControl().setTitle("JOverseer - " + msg);

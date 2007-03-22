@@ -1,5 +1,7 @@
 package org.joverseer.support.readers.pdf;
 
+import java.util.Date;
+
 import org.joverseer.support.Container;
 
 public class TurnInfo {
@@ -15,6 +17,8 @@ public class TurnInfo {
     Container encounters;
     Container doubleAgents;
     Container challenges;
+    String date;
+    String season;
 
     public String getAllegiance() {
         return allegiance;
@@ -128,7 +132,20 @@ public class TurnInfo {
         this.challenges = challenges;
     }
 
- 
     
+    public String getDate() {
+        return date;
+    }
     
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
+    public String getSeason() {
+        return season;
+    }
+    
+    public void setSeason(String season) {
+        this.season = season;
+    }
 }

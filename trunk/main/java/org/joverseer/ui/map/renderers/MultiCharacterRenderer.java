@@ -35,6 +35,9 @@ public class MultiCharacterRenderer implements Renderer {
         ArrayList<Character> charsInHex = turn.getContainer(TurnElementsEnum.Character).findAllByProperty("hexNo", c.getHexNo());
         int i = charsInHex.indexOf(c);
 
+        int ii = i % 12;
+        int jj = i / 12;
+        
         int dx = mapMetadata.getGridCellWidth() * 1 / 4;
         int dy = mapMetadata.getGridCellHeight();
         int w = mapMetadata.getGridCellWidth() / 3;
@@ -52,7 +55,7 @@ public class MultiCharacterRenderer implements Renderer {
         //g.fillRect(x + dx, y + dy, w, h);
 
 
-        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx + (w * i), y + dy, w, h, w/5*2, h/5*2);
+        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx + (w * ii), y + dy + ((h+1) * jj), w, h, w/5*2, h/5*2);
         g.fill(e);
 
         g.setColor(color2);

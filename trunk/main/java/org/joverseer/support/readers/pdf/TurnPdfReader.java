@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -28,6 +29,7 @@ import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PdfTurnText;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.SeasonEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -129,8 +131,8 @@ public class TurnPdfReader implements Runnable {
             driver.useDebugOutputProperties();
             
             // pdf document - fix hack characters
-            pdfContents = pdfContents.replace("Î","ë");
-            // TODO some problem with the Numea Noldo pop
+            pdfContents = pdfContents.replace("Î","ë").replace("˙", "ú");
+            
             driver.generateXmlDocument(pdfContents, outStream);
             outStream.close();
 
@@ -153,22 +155,22 @@ public class TurnPdfReader implements Runnable {
             digester.setRules(new RegexRules(new SimpleRegexMatcher()));
             // parse turn info
             digester.addObjectCreate("txt2xml/Turn", TurnInfo.class);
-            digester.addRule("txt2xml/Turn/Diplomacy",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Allegiance", "Nation", "TurnNumber"},
-                            new String[]{"allegiance", "nationNo", "turnNo"}));
+            digester.addRule("txt2xml/Turn/General",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Allegiance", "Nation", "TurnNumber", "Season", "Date"},
+                            new String[]{"allegiance", "nationNo", "turnNo", "season", "date"}));
             snpr.setAllowUnknownChildElements(true);
             // create container for nation relations
-            digester.addObjectCreate("txt2xml/Turn/Diplomacy/NationRelations", "org.joverseer.support.Container");
+            digester.addObjectCreate("txt2xml/Turn/General/NationRelations", "org.joverseer.support.Container");
             // add container to turn info
-            digester.addSetNext("txt2xml/Turn/Diplomacy/NationRelations", "setNationRelations");
+            digester.addSetNext("txt2xml/Turn/General/NationRelations", "setNationRelations");
         	// create nation relation wrapper
-            digester.addObjectCreate("txt2xml/Turn/Diplomacy/NationRelations/NationRelation", "org.joverseer.support.readers.pdf.NationRelationWrapper");
+            digester.addObjectCreate("txt2xml/Turn/General/NationRelations/NationRelation", "org.joverseer.support.readers.pdf.NationRelationWrapper");
         	// set nested properties
-            digester.addRule("txt2xml/Turn/Diplomacy/NationRelations/NationRelation",
+            digester.addRule("txt2xml/Turn/General/NationRelations/NationRelation",
                     snpr = new SetNestedPropertiesRule(new String[]{"Nation", "Relation"},
                             new String[]{"nation", "relation"}));
             // add to container
-            digester.addSetNext("txt2xml/Turn/Diplomacy/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.pdf.NationRelationWrapper");
+            digester.addSetNext("txt2xml/Turn/General/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.pdf.NationRelationWrapper");
             // create container for pcs
             digester.addObjectCreate("txt2xml/Turn/PopulationCentres", "org.joverseer.support.Container");
             // add container to turn info
@@ -403,6 +405,14 @@ public class TurnPdfReader implements Runnable {
         }
         try {
             turn = game.getTurn(game.getMaxTurn());
+            
+            try {
+                updateTurnData();
+            }
+            catch (Exception exc) {
+                getMonitor().subTaskStarted("Error updating turn data : '" + exc.getMessage() + "'.");
+            }
+            
             infoSource = new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
             
             // add text
@@ -500,6 +510,25 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
             }
             throw new Exception("Error updating game from Pdf file.", exc);
+        }
+    }
+    
+    private void updateTurnData() throws Exception {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("m/d/yyyy");
+            turn.setTurnDate(sdf.parse(turnInfo.getDate()));
+            if (turnInfo.getSeason().equals("Spring")) {
+                turn.setSeason(SeasonEnum.Spring);
+            } else if (turnInfo.getSeason().equals("Summer")) {
+                turn.setSeason(SeasonEnum.Summer);
+            } else if (turnInfo.getSeason().equals("Fall")) {
+                turn.setSeason(SeasonEnum.Fall);
+            } else if (turnInfo.getSeason().equals("Winter")) {
+                turn.setSeason(SeasonEnum.Winter);
+            }
+        }
+        catch (Exception exc) {
+            throw exc;
         }
     }
     

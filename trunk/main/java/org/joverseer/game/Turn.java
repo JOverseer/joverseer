@@ -1,13 +1,17 @@
 package org.joverseer.game;
 
+import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Container;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.io.Serializable;
 
 
 public class Turn implements Serializable {
     int turnNo;
+    Date turnDate;
+    SeasonEnum season;
 
     Hashtable<TurnElementsEnum, Container> containers = new Hashtable<TurnElementsEnum, Container>();
 
@@ -34,6 +38,26 @@ public class Turn implements Serializable {
             getContainers().put(turnElement, c);
         }
         return c;
+    }
+
+    
+    public SeasonEnum getSeason() {
+        return season;
+    }
+
+    
+    public void setSeason(SeasonEnum season) {
+        this.season = season;
+    }
+
+    
+    public Date getTurnDate() {
+        return turnDate;
+    }
+
+    
+    public void setTurnDate(Date turnDate) {
+        this.turnDate = turnDate;
     }
     
     

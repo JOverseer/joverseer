@@ -88,7 +88,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
         tlb.separator(" Characters ");
         tlb.row();
-        for (int i=0; i<20; i++) {
+        for (int i=0; i<30; i++) {
             CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()));
             characterViewers.add(vc);
             JPanel cp = new JPanel();
@@ -166,7 +166,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
         panel = tlb.getPanel();
         panel.setBackground(Color.white);
-        panel.setPreferredSize(new Dimension(240, 1500));
+        panel.setPreferredSize(new Dimension(240, 3000));
         scp = new JScrollPane(panel);
         scp.setPreferredSize(new Dimension(240, 1500));
         scp.getVerticalScrollBar().setUnitIncrement(32);

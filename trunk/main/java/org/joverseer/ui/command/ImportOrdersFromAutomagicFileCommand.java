@@ -16,9 +16,9 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.MessageDialog;
 
 
-public class ImportOrders extends ActionCommand {
-    public ImportOrders() {
-        super("ImportOrdersCommand");
+public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
+    public ImportOrdersFromAutomagicFileCommand() {
+        super("importOrdersFromAutomagicFileCommand");
     }
 
     protected void doExecuteCommand() {

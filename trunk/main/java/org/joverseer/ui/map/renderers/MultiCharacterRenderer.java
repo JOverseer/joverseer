@@ -55,7 +55,7 @@ public class MultiCharacterRenderer implements Renderer {
         //g.fillRect(x + dx, y + dy, w, h);
 
 
-        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx + (w * ii), y + dy + ((h+1) * jj), w, h, w/5*2, h/5*2);
+        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx + (w * ii), y + dy + (h * jj), w, h, w/5*2, h/5*2);
         g.fill(e);
 
         g.setColor(color2);

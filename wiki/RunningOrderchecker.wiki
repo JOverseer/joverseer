@@ -38,3 +38,7 @@ Editing an order will result in the Orderchecker result being removed for this o
 Also, the results are shown in the Order list-view (bottom panel).
 
 [http://joverseer.googlecode.com/svn/wiki/images/orderchecker.order-listview.jpg]
+
+= Orderchecker =
+
+Orderchecker is a program developed by Bernie Geiger. It is available for download from the Middle Earth Games web site.

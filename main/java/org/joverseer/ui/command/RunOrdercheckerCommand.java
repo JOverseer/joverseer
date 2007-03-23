@@ -101,7 +101,7 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
                         OrderResultContainer cont = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
                         
                         ArrayList<OrderResult> resultList = new ArrayList<OrderResult>();
-                        ArrayList<Character> chars = (ArrayList<Character>)g.getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", 7);
+                        ArrayList<Character> chars = (ArrayList<Character>)g.getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", Main.main.getNation().getNation());
                         for (Character c : chars) {
                             if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) continue;
                             com.middleearthgames.orderchecker.Character mc = Main.main.getNation().findCharacterById(c.getId());

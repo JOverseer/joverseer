@@ -123,6 +123,13 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         ProductPrice pp = (ProductPrice) pps.findFirstByProperty("product", p);
         return pp.getBuyPrice();
     }
+    
+    public int getMarketTotal(ProductEnum p) {
+        Turn t = GameHolder.instance().getGame().getTurn();
+        Container pps = t.getContainer(TurnElementsEnum.ProductPrice);
+        ProductPrice pp = (ProductPrice) pps.findFirstByProperty("product", p);
+        return pp.getMarketTotal();
+    }
 
     public int getMarketProfits() {
         int profits = 0;

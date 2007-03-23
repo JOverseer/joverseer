@@ -184,7 +184,11 @@ public class OrderRenderer implements Renderer {
             // draw line
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
-            drawString(g, order.getCharacter().getName(), p1, p2);
+            String name = order.getCharacter().getName();
+            if (order.getOrderNo() == 820) {
+                name += " & co";
+            }
+            drawString(g, name, p1, p2);
         }
         catch (Exception exc) {
             // parse or some other error, return

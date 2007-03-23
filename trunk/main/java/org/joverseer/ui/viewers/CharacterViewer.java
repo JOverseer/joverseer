@@ -75,6 +75,8 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 
+import sun.awt.geom.AreaOp.AddOp;
+
 
 public class CharacterViewer extends ObjectViewer {
 
@@ -111,7 +113,7 @@ public class CharacterViewer extends ObjectViewer {
     ActionCommand showResultsCommand = new ShowResultsCommand();
     ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterRangeOnMapCommand();
     ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
-
+    ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
 
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -539,6 +541,76 @@ public class CharacterViewer extends ObjectViewer {
         }
     }
     
+    private class AddRefuseChallengeCommand extends AddOrderCommand {
+        public AddRefuseChallengeCommand() {
+            super(215, "");
+        }
+    }
+    
+    private class AddCreateCampCommand extends AddOrderCommand {
+        public AddCreateCampCommand() {
+            super(555, "");
+        }
+    }
+    
+    private class AddInfYourCommand extends AddOrderCommand {
+        public AddInfYourCommand() {
+            super(520, "");
+        }
+    }
+    
+    private class AddInfOtherCommand extends AddOrderCommand {
+        public AddInfOtherCommand() {
+            super(525, "");
+        }
+    }
+    
+    private class AddPrenticeCommand extends AddOrderCommand {
+        public AddPrenticeCommand() {
+            super(710, "");
+        }
+    }
+    
+    private class AddReconCommand extends AddOrderCommand {
+        public AddReconCommand() {
+            super(925, "");
+        }
+    }
+    
+    private class AddImprovePopCommand extends AddOrderCommand {
+        public AddImprovePopCommand() {
+            super(550, "");
+        }
+    }
+    
+    
+    private class AddOrderCommand extends ActionCommand {
+        int orderNo;
+        String params;
+        
+        public AddOrderCommand(int orderNo, String params) {
+            super();
+            this.orderNo = orderNo;
+            this.params = params;
+        }
+
+        protected void doExecuteCommand() {
+            Character c = (Character)getFormObject();
+            for (int i=0; i<2; i++) {
+                if (c.getOrders()[i].isBlank()) {
+                    c.getOrders()[i].setOrderNo(orderNo);
+                    c.getOrders()[i].setParameters(params);
+                    setFormObject(getFormObject());
+                    showOrders = true;
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), c.getOrders()[i], this));
+                    return;
+                }
+            }
+        }
+        
+    }
+    
     private class DeleteCharacterCommand extends ActionCommand {
         protected void doExecuteCommand() {
             Character c = (Character)getFormObject();
@@ -564,10 +636,26 @@ public class CharacterViewer extends ObjectViewer {
         showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);
         showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
         showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
+        
+        CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup",
+                new Object[]{
+                new AddRefuseChallengeCommand(),
+                "separator",
+                new AddReconCommand(),
+                "separator",
+                new AddCreateCampCommand(),
+                new AddInfYourCommand(),
+                new AddInfOtherCommand(),
+                new AddImprovePopCommand(),
+                "separator",
+                new AddPrenticeCommand()
+        });
+        
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
                 new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
-                        "separator", showCharacterRangeOnMapCommand, "separator", deleteCharacterCommand});
+                        "separator", showCharacterRangeOnMapCommand, "separator", deleteCharacterCommand,
+                        "separator", quickOrders});
         return group.createPopupMenu();
     }
     

@@ -384,9 +384,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         // throw an order changed event
         Application.instance().getApplicationContext().publishEvent(
                             new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
-        Point selectedHex = new Point(o.getCharacter().getX(), o.getCharacter().getY());
-        Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+//        Point selectedHex = new Point(o.getCharacter().getX(), o.getCharacter().getY());
+//        Application.instance().getApplicationContext().publishEvent(
+//                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
         
     }
     

@@ -1,4 +1,5 @@
 #summary Describes how orders can be checked with the Orderchecker program offered by Middle Earth.
+#labels Featured
 
 = Introduction =
 
@@ -22,7 +23,7 @@ When the user has completed answering the questions, the Orderchecker results fo
 
 [http://joverseer.googlecode.com/svn/wiki/images/orderchecker.results-form.jpg]
 
-= Orderchecker Results =
+= Orderchecker results =
 
 Moreover, the results from Orderchecker are automatically stored with each order and displayed in the Character view (on the right hand panel). For each order, an icon is shown that represents the type of result (e.g. information, warning, error, etc).
 

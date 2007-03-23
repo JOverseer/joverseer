@@ -34,6 +34,8 @@ To import such text, you must use the "Import Orders from Text" menu option. Thi
 
 You should copy & paste the text that contains the orders in the left panel. Then you should click the "Parse" button. This button parses the text and populates the right panel with messages explaining whether JOverseer was able to parse the text. For instance, in the figure above, JOverseer identified 3 characters and 6 orders, and also will ignore several lines, including those with comments. However, it was not able to verify the character names because the orders are from a different game. As a result no orders will be imported. In a normal case, the orders will be imported successfully.
 
+After viewing the parse results, if you are satisfied, click the "OK" button to actually import the orders.
+
 = Importing from an Automagic file =
 
 To Do

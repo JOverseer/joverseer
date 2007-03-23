@@ -97,7 +97,6 @@ public class ExportOrdersForm extends AbstractForm {
         orders = new JTextArea();
         orders.setWrapStyleWord(false);
         orders.setLineWrap(false);
-        orders.setPreferredSize(new Dimension(450, 700));
         JScrollPane scp = new JScrollPane(orders);
         scp.setPreferredSize(new Dimension(500, 400));
         glb.append(scp, 2, 1);

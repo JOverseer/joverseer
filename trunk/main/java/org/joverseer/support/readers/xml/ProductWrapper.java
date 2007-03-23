@@ -78,5 +78,6 @@ public class ProductWrapper {
         }
         pp.setBuyPrice(getBuyPrice());
         pp.setSellPrice(getSellPrice());
+        pp.setMarketTotal(getMarketAvail());
     }
 }

@@ -124,6 +124,9 @@ public class MarketTableModel extends BaseEconomyTableModel {
         if (rowIndex == 6) {
             return ecd.getSellPct(product);
         }
+        if (rowIndex == 7) {
+            return ecd.getMarketTotal(product);
+        }
         if (rowIndex == 8) {
             return ecd.getBuyPrice(product);
         }

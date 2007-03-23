@@ -7,7 +7,18 @@ public class ProductPrice implements Serializable{
     ProductEnum product;
     int sellPrice;
     int buyPrice;
+    int marketTotal;
     
+    
+    public int getMarketTotal() {
+        return marketTotal;
+    }
+
+    
+    public void setMarketTotal(int marketTotal) {
+        this.marketTotal = marketTotal;
+    }
+
     public int getBuyPrice() {
         return buyPrice;
     }

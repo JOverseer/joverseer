@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
 import org.springframework.core.io.Resource;
@@ -19,6 +20,8 @@ public class OrderFileReader {
 	
 	Game game;
 
+        int charsRead = 0;
+        
 	public Game getGame() {
 		return game;
 	}
@@ -47,11 +50,15 @@ public class OrderFileReader {
 			
 			while ((line = reader.readLine()) != null) {
 				if (line.startsWith("ENDMEAUTOINPUT")) break;
-				if (line.startsWith("BEGINMEAUTOINPUT")) continue;
+				if (line.startsWith("BEGINMEAUTOINPUT")) {
+				    continue;
+                                };
 				Matcher m = turnFileInfo.matcher(line);
 				if (m.matches()) {
 					int gameNo = Integer.parseInt(m.group(1));
-					//TODO verify game number
+                                        if (gameNo != GameHolder.instance().getGame().getMetadata().getGameNo()) {
+                                            throw new Exception("Invalid game number. Possibly the order file is from a different game.");
+                                        }
 					continue;
 				}
 				if (!line.equals("")) {
@@ -75,9 +82,12 @@ public class OrderFileReader {
 						}
 					}
 					Character c = (Character)getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charName);
-					Order[] orders = c.getOrders();
-					orders[orderI].setOrderNo(orderNo);
-					orders[orderI].setParameters(parameters);
+                                        if (c != null) {
+        					Order[] orders = c.getOrders();
+        					orders[orderI].setOrderNo(orderNo);
+        					orders[orderI].setParameters(parameters);
+                                                charsRead++;
+                                        }
 				}
 				i++;
 			}
@@ -88,5 +98,15 @@ public class OrderFileReader {
 		}
 
 	}
+
+    
+    public int getCharsRead() {
+        return charsRead;
+    }
+
+    
+    public void setCharsRead(int charsRead) {
+        this.charsRead = charsRead;
+    }
 	
 }

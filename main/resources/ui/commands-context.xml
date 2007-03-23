@@ -98,6 +98,7 @@
                             <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
                             <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
                             <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
+							<bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
                             <!-- 
                             <bean class="org.joverseer.ui.command.RunOrders"/>
                             -->

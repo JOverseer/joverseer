@@ -1,0 +1,45 @@
+#summary Explains the information shown on the map
+#labels Featured
+
+= Map Information =
+
+The map displays various kinds of information. More specifically, each hex displays:
+
+  * The terrain, using the background color of the hex
+
+  * The hex features, such as rivers, bridges and roads
+
+  * The population center size, fortifications and owner, if one exists
+
+  * Hidden population centers are shown with dashed lines, as below
+
+[http://joverseer.googlecode.com/svn/wiki/images/jov.map.hidden-pop.jpg]
+
+  * Whether the population center is a capital.
+
+  * Ruins are also shown as below
+
+[http://joverseer.googlecode.com/svn/wiki/images/jov.map.ruins.jpg]
+
+  * The hex number
+
+  * The characters located in the hex (with colored, according to nation, dots right below the hex number)
+
+  * The armies located in the hex
+
+  * A red dot is shown in the bottom part of the hex to represent a rumor that concerns the hex
+
+  * A purple dot is shown on the top part of the hex to show that a combat took place there last turn
+
+  * A white dot is shown on the top part of the hex to show that a character has an encounter there
+
+  * A blue dot on the left side of the hex shows the existence of an artifact (LA'ed or LAT'ed there)
+
+The following figure shows some of this information:
+
+[http://joverseer.googlecode.com/svn/wiki/images/jov.map.hex-display.jpg]
+
+
+
+
+

@@ -288,9 +288,9 @@ public class CharacterViewer extends ObjectViewer {
 
         glb.append(c = new JTextField());
         characterName = (JTextField) c;
-        characterName.setTransferHandler(new CharIdTransferHandler("text"));
         characterName.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
+                characterName.setTransferHandler(new CharIdTransferHandler("text"));
                 TransferHandler handler = characterName.getTransferHandler();
                 handler.exportAsDrag(characterName, e, TransferHandler.COPY);
             }

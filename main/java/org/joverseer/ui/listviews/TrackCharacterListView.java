@@ -7,7 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
@@ -45,16 +47,24 @@ public class TrackCharacterListView extends BaseItemListView {
     protected JComponent createControlImpl() {
         JComponent tableComp = super.createControlImpl();
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(character = new JTextField(), "align=left");
-        character.setPreferredSize(new Dimension(200, 24));
+        tlb.cell(new JLabel("Character : "), "colspec=left:80px");
+        tlb.gapCol();
+        tlb.cell(character = new JTextField(), "colspec=left:150px");
+        character.setPreferredSize(new Dimension(200, 20));
         character.setDragEnabled(true);
         character.setOpaque(true);
-        character.addActionListener(new ActionListener() {
+        
+        JButton btn = new JButton("Track");
+        btn.setPreferredSize(new Dimension(70, 20));
+        tlb.gapCol();
+        tlb.cell(btn, "align=left");
+        btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setItems();
             }
         });
         tlb.row();
+        tlb.relatedGapRow();
         tlb.cell(tableComp);
         tlb.row();
         return tlb.getPanel();
@@ -65,57 +75,59 @@ public class TrackCharacterListView extends BaseItemListView {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null || !Game.isInitialized(g)) return;
         String charName = character.getText();
-        for (Turn t : (ArrayList<Turn>)g.getTurns().getItems()) {
-            // find in characters
-            Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", charName);
-            if (c != null) {
-                TrackCharacterInfo tci = new TrackCharacterInfo();
-                tci.setTurnNo(t.getTurnNo());
-                tci.setInfo(String.format("Character was located at %s.", c.getHexNo()));
-                tci.setHexNo(c.getHexNo());
-                items.add(tci);
-                if (c.getOrderResults() != null && !c.getOrderResults().equals("")) {
-                    tci = new TrackCharacterInfo();
-                    tci.setTurnNo(t.getTurnNo());
-                    tci.setInfo(c.getOrderResults());
-                    tci.setHexNo(c.getHexNo());
-                    items.add(tci);
-                }
-            }
-            // find in armies
-            Army a = (Army)t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", charName);
-            if (a != null) {
-                TrackCharacterInfo tci = new TrackCharacterInfo();
-                tci.setTurnNo(t.getTurnNo());
-                tci.setInfo(String.format("Character was leading an army at %s.", a.getHexNo()));
-                tci.setHexNo(Integer.parseInt(a.getHexNo()));
-                items.add(tci);
-            }
-            // find in rumors
-            for (NationMessage nm : (ArrayList<NationMessage>)t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
-                if (nm.getMessage().indexOf(charName) >= 0) {
-                    TrackCharacterInfo tci = new TrackCharacterInfo();
-                    tci.setTurnNo(t.getTurnNo());
-                    tci.setInfo(nm.getMessage());
-                    if (nm.getX() > 0) {
-                        tci.setHexNo(nm.getX() * 100 + nm.getY());
-                    } else {
-                        tci.setHexNo(0);
-                    }
-                    items.add(tci);
-                }
-            }
-            // find in LA/LAT results
-            Container artis = t.getContainer(TurnElementsEnum.Artifact);
-            for (Artifact arti : (ArrayList<Artifact>)artis.getItems()) {
-            	if (arti.getOwner().indexOf(charName) >= 0) {
-            		TrackCharacterInfo tci = new TrackCharacterInfo();
-                    tci.setTurnNo(t.getTurnNo());
-                    tci.setInfo(arti.getOwner() + " possesses #" + arti.getNumber() + " " + arti.getName());
-                    tci.setHexNo(arti.getHexNo());
-                    items.add(tci);
-            	}
-            }
+        if (!charName.equals("")) {
+	        for (Turn t : (ArrayList<Turn>)g.getTurns().getItems()) {
+	            // find in characters
+	            Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", charName);
+	            if (c != null) {
+	                TrackCharacterInfo tci = new TrackCharacterInfo();
+	                tci.setTurnNo(t.getTurnNo());
+	                tci.setInfo(String.format("Character was located at %s.", c.getHexNo()));
+	                tci.setHexNo(c.getHexNo());
+	                items.add(tci);
+	                if (c.getOrderResults() != null && !c.getOrderResults().equals("")) {
+	                    tci = new TrackCharacterInfo();
+	                    tci.setTurnNo(t.getTurnNo());
+	                    tci.setInfo(c.getOrderResults());
+	                    tci.setHexNo(c.getHexNo());
+	                    items.add(tci);
+	                }
+	            }
+	            // find in armies
+	            Army a = (Army)t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", charName);
+	            if (a != null) {
+	                TrackCharacterInfo tci = new TrackCharacterInfo();
+	                tci.setTurnNo(t.getTurnNo());
+	                tci.setInfo(String.format("Character was leading an army at %s.", a.getHexNo()));
+	                tci.setHexNo(Integer.parseInt(a.getHexNo()));
+	                items.add(tci);
+	            }
+	            // find in rumors
+	            for (NationMessage nm : (ArrayList<NationMessage>)t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
+	                if (nm.getMessage().indexOf(charName) >= 0) {
+	                    TrackCharacterInfo tci = new TrackCharacterInfo();
+	                    tci.setTurnNo(t.getTurnNo());
+	                    tci.setInfo(nm.getMessage());
+	                    if (nm.getX() > 0) {
+	                        tci.setHexNo(nm.getX() * 100 + nm.getY());
+	                    } else {
+	                        tci.setHexNo(0);
+	                    }
+	                    items.add(tci);
+	                }
+	            }
+	            // find in LA/LAT results
+	            Container artis = t.getContainer(TurnElementsEnum.Artifact);
+	            for (Artifact arti : (ArrayList<Artifact>)artis.getItems()) {
+	            	if (arti.getOwner().indexOf(charName) >= 0) {
+	            		TrackCharacterInfo tci = new TrackCharacterInfo();
+	                    tci.setTurnNo(t.getTurnNo());
+	                    tci.setInfo(arti.getOwner() + " possesses #" + arti.getNumber() + " " + arti.getName());
+	                    tci.setHexNo(arti.getHexNo());
+	                    items.add(tci);
+	            	}
+	            }
+	        }
             tableModel.setRows(items);
             tableModel.fireTableDataChanged();
         }

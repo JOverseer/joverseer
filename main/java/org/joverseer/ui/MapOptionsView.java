@@ -3,8 +3,10 @@ package org.joverseer.ui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -31,6 +33,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox cmbTurns;
     JComboBox cmbMaps;
     JComboBox zoom;
+    JComboBox hexGraphics;
     JCheckBox drawOrders;
     JCheckBox showClimate;
     
@@ -169,6 +172,35 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                         new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
             }
         });
+        
+        lb.row();
+        lb.cell(label = new JLabel("Terrain graphics : "));
+        lb.cell(hexGraphics = new JComboBox(new String[]{"Simple", "Texture"}), "align=left");
+        hexGraphics.setSelectedIndex(1);
+        lb.relatedGapRow();
+        hexGraphics.setPreferredSize(new Dimension(100, 16));
+        final Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        hexGraphics.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                String opt = (String)hexGraphics.getSelectedItem();
+                if (opt == null) return;
+                prefs.put("hexGraphics", opt);
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+                if (opt.equals("Simple")) {
+                	mapOptions.put(MapOptionsEnum.HexGraphics, MapOptionValuesEnum.HexGraphicsSimple);                	
+                } else if (opt.equals("Texture")) {
+                	mapOptions.put(MapOptionsEnum.HexGraphics, MapOptionValuesEnum.HexGraphicsTexture);                	
+                };
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+            }
+        });
+        
+        String hexGraphicsOpt = prefs.get("hexGraphics", null);
+        if (hexGraphicsOpt != null) {
+            hexGraphics.setSelectedItem(hexGraphicsOpt);
+        }
 
         resetGame();
         JPanel panel = lb.getPanel();

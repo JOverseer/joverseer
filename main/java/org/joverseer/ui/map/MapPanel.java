@@ -526,6 +526,7 @@ public class MapPanel extends JPanel implements MouseListener {
             this.updateUI();
             TransferHandler handler = this.getTransferHandler();
             handler.exportAsDrag(this, e, TransferHandler.COPY);
+            requestFocusInWindow();
         }
     }
 

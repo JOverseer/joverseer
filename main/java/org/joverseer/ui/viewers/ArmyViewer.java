@@ -94,8 +94,8 @@ public class ArmyViewer extends ObjectViewer {
         glb.append(armyType = new JTextField());
         armyType.setPreferredSize(new Dimension(50, 12));
         glb.nextLine();
-        glb.append(extraInfo = new JTextField());
-        extraInfo.setPreferredSize(new Dimension(100, 12));
+        glb.append(extraInfo = new JTextField(), 2, 1);
+        extraInfo.setPreferredSize(new Dimension(150, 12));
         glb.nextLine();
         glb.append(food = new JTextField());
         food.setPreferredSize(new Dimension(100, 12));

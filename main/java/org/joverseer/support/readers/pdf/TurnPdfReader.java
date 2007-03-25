@@ -64,6 +64,7 @@ public class TurnPdfReader implements Runnable {
     String contents;
     PDDocument document;
     boolean deleteFilesWhenFinished = true;
+    boolean errorOccurred = false;
     
     public TurnPdfReader(Game game, String filename) {
         this.game = game;
@@ -410,6 +411,7 @@ public class TurnPdfReader implements Runnable {
                 updateTurnData();
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error updating turn data : '" + exc.getMessage() + "'.");
             }
             
@@ -433,6 +435,7 @@ public class TurnPdfReader implements Runnable {
                 updateNationRelations(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -443,6 +446,7 @@ public class TurnPdfReader implements Runnable {
                 updatePcs(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -453,12 +457,14 @@ public class TurnPdfReader implements Runnable {
                 updateCharacters(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
                 updateDoubleAgents(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -469,6 +475,7 @@ public class TurnPdfReader implements Runnable {
                 updateArmies(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -479,6 +486,7 @@ public class TurnPdfReader implements Runnable {
                 updateCompanies(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -489,18 +497,21 @@ public class TurnPdfReader implements Runnable {
                 updateCombats(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
                 updateEncounters(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
                 updateClimates(game);
             }
             catch (Exception exc) {
+            	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
         }
@@ -509,6 +520,7 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
             }
+        	errorOccurred = true;
             throw new Exception("Error updating game from Pdf file.", exc);
         }
     }
@@ -584,8 +596,11 @@ public class TurnPdfReader implements Runnable {
         }
     }
 
-    private void updateNationRelations(Game game) {
+    private void updateNationRelations(Game game) throws Exception {
         Nation nation = game.getMetadata().getNationByNum(turnInfo.getNationNo());
+        if (nation == null) {
+        	throw new Exception("Failed to find nation with number " + turnInfo.getNationNo());
+        }
         Container nrs = turn.getContainer(TurnElementsEnum.NationRelation);
         NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", turnInfo.getNationNo());
         if (turnInfo.getAllegiance().equals("Free People")) {
@@ -595,24 +610,36 @@ public class TurnPdfReader implements Runnable {
         } else if (turnInfo.getAllegiance().equals("Neutral")) {
             nation.setAllegiance(NationAllegianceEnum.Neutral);
         } 
+        if (nr == null) {
+        	throw new Exception("Failed to retrieve NationRelations object for nation " + turnInfo.getNationNo());
+        }
         nr.setAllegiance(nation.getAllegiance());
         
         Container nrws = turnInfo.getNationRelations();
+        String problematicNations = "";
         for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)nrws.getItems()) {
-            int natNo = game.getMetadata().getNationByName(nrw.getNation()).getNumber();
-            NationRelationsEnum relation = NationRelationsEnum.Tolerated;
-            if (nrw.getRelation().equals("Friendly")) {
-                relation = NationRelationsEnum.Friendly;
-            } else if (nrw.getRelation().equals("Tolerated")) {
-                relation = NationRelationsEnum.Tolerated;
-            } else if (nrw.getRelation().equals("Neutral")) {
-                relation = NationRelationsEnum.Neutral;
-            } else if (nrw.getRelation().equals("Disliked")) {
-                relation = NationRelationsEnum.Disliked;
-            } else if (nrw.getRelation().equals("Hated")) {
-                relation = NationRelationsEnum.Hated;
-            }  
-            nr.setRelationsFor(natNo, relation);
+        	Nation n = game.getMetadata().getNationByName(nrw.getNation());
+        	if (n == null) {
+        		problematicNations += (problematicNations.equals("") ? "" : ", ") + nrw.getNation();
+        	} else {
+	            int natNo = n.getNumber();
+	            NationRelationsEnum relation = NationRelationsEnum.Tolerated;
+	            if (nrw.getRelation().equals("Friendly")) {
+	                relation = NationRelationsEnum.Friendly;
+	            } else if (nrw.getRelation().equals("Tolerated")) {
+	                relation = NationRelationsEnum.Tolerated;
+	            } else if (nrw.getRelation().equals("Neutral")) {
+	                relation = NationRelationsEnum.Neutral;
+	            } else if (nrw.getRelation().equals("Disliked")) {
+	                relation = NationRelationsEnum.Disliked;
+	            } else if (nrw.getRelation().equals("Hated")) {
+	                relation = NationRelationsEnum.Hated;
+	            }  
+	            nr.setRelationsFor(natNo, relation);
+        	}
+        }
+        if (!problematicNations.equals("")) {
+        	throw new Exception("Failed to update relations with nations " + problematicNations + " because the nation names were invalid.");
         }
     }
     
@@ -763,6 +790,14 @@ public class TurnPdfReader implements Runnable {
     public void setMonitor(ProgressMonitor monitor) {
         this.monitor = monitor;
     }
+
+	public boolean getErrorOccurred() {
+		return errorOccurred;
+	}
+
+	public void setErrorOccurred(boolean errorOccurred) {
+		this.errorOccurred = errorOccurred;
+	}
     
     
 }

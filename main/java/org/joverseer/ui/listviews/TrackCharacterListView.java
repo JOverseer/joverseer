@@ -2,23 +2,22 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
-import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.TrackCharacterInfo;
@@ -105,6 +104,17 @@ public class TrackCharacterListView extends BaseItemListView {
                     }
                     items.add(tci);
                 }
+            }
+            // find in LA/LAT results
+            Container artis = t.getContainer(TurnElementsEnum.Artifact);
+            for (Artifact arti : (ArrayList<Artifact>)artis.getItems()) {
+            	if (arti.getOwner().indexOf(charName) >= 0) {
+            		TrackCharacterInfo tci = new TrackCharacterInfo();
+                    tci.setTurnNo(t.getTurnNo());
+                    tci.setInfo(arti.getOwner() + " possesses #" + arti.getNumber() + " " + arti.getName());
+                    tci.setHexNo(arti.getHexNo());
+                    items.add(tci);
+            	}
             }
             tableModel.setRows(items);
             tableModel.fireTableDataChanged();

@@ -22,7 +22,8 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
     int progressMax = 100;
     int workBuffer;
     int lastWork = 0;
-    JScrollPane scp; 
+    JScrollPane scp;
+    JTextArea globalMessage;
     
     public JOverseerClientProgressMonitor(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -32,26 +33,33 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         // todo fix layout
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         tlb.cell(taskName = new JLabel());
-        taskName.setPreferredSize(new Dimension(200, 16));
+        taskName.setPreferredSize(new Dimension(350, 16));
         tlb.row();
-        tlb.separator("");
-        tlb.row();
+        tlb.relatedGapRow();
         tlb.cell(taskProgress = new JProgressBar());
         taskProgress.setMaximum(progressMax);
         tlb.row();
-        tlb.cell(new JLabel(""));
-        tlb.row();
+        tlb.relatedGapRow();
         tlb.cell(new JLabel("Import steps"));
         tlb.row();
         taskSubtasks = new JList();
         taskSubtasks.setModel(llm = new ListListModel());
         taskSubtasks.setCellRenderer(new ProgressItemRenderer());
         scp = new JScrollPane(taskSubtasks);
-        scp.setPreferredSize(new Dimension(320, 250));
+        scp.setPreferredSize(new Dimension(350, 350));
         scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         tlb.cell(scp);
+        tlb.relatedGapRow();
+        tlb.row();
+        globalMessage = new JTextArea();
+        globalMessage.setWrapStyleWord(true);
+        globalMessage.setLineWrap(true);
+        JScrollPane scp = new JScrollPane(globalMessage);
+        tlb.cell(scp);
+        scp.setPreferredSize(new Dimension(350, 80));
+        
         panel = tlb.getPanel();
-        panel.setPreferredSize(new Dimension(350, 300));
+        panel.setPreferredSize(new Dimension(370, 300));
         return panel;
     }
 
@@ -78,14 +86,19 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         taskSubtasks.ensureIndexIsVisible(selIndex);
         panel.updateUI();
     }
-
+    
     public void taskStarted(String string, int i) {
         getOkButton().setEnabled(false);
         taskProgress.setMaximum(i);
         taskName.setText(string);
         panel.updateUI();
     }
-
+    
+    public void setGlobalMessage(String msg) {
+    	globalMessage.setText(msg);
+    	panel.updateUI();
+    }
+    
     public void worked(int i) {
         if (lastWork > i) {
             lastWork = 0;

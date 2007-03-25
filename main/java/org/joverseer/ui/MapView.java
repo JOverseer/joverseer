@@ -13,6 +13,8 @@ import org.joverseer.ui.support.JOverseerEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 public class MapView extends AbstractView  implements ApplicationListener {
@@ -29,11 +31,53 @@ public class MapView extends AbstractView  implements ApplicationListener {
         // few controls.
 
         scp = new JScrollPane(mapPanel = new MapPanel());
-        mapPanel.setPreferredSize(new Dimension(2500, 1800));
+        mapPanel.setFocusable(true);
+        mapPanel.addKeyListener(new KeyListener() {
+
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_UP) {
+					scp.getVerticalScrollBar().setValue(
+							scp.getVerticalScrollBar().getValue() - 
+							scp.getVerticalScrollBar().getBlockIncrement()
+							);
+				}
+				if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
+					scp.getVerticalScrollBar().setValue(
+							scp.getVerticalScrollBar().getValue() + 
+							scp.getVerticalScrollBar().getBlockIncrement()
+							);
+				}
+				if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+					scp.getHorizontalScrollBar().setValue(
+							scp.getHorizontalScrollBar().getValue() - 
+							scp.getHorizontalScrollBar().getBlockIncrement()
+							);
+				}
+				if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					scp.getHorizontalScrollBar().setValue(
+							scp.getHorizontalScrollBar().getValue() + 
+							scp.getHorizontalScrollBar().getBlockIncrement()
+							);
+				}
+				
+			}
+
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
+        mapPanel.setPreferredSize(new Dimension(3500, 2500));
         scp.setPreferredSize(new Dimension(800, 500));
         MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
-        scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize());
-        scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize());
+        scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
+        scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
         return scp;
     }
 

@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.beans.factory.config.ResourceFactoryBean;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.metadata.domain.Hex;
@@ -80,13 +82,13 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         images.clear();
     }
 
-    private Polygon getSidePolygon(HexSideEnum side) {
+    protected Polygon getSidePolygon(HexSideEnum side) {
         int i = side.getSide();
         Polygon p = new Polygon(new int[]{xPoints[i-1 % 6], xPoints[i % 6]}, new int[]{yPoints[i-1 % 6], yPoints[i % 6]}, 2);
         return p;
     }
 
-    private Point getSideCenter(HexSideEnum side) {
+    protected Point getSideCenter(HexSideEnum side) {
         int i = side.getSide();
         return new Point((xPoints[i % 6] + xPoints[i-1])/2, (yPoints[i % 6] + yPoints[i-1])/2);
     }
@@ -95,7 +97,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         return Hex.class.isInstance(obj);
     }
 
-    private Color getColor(Hex hex) {
+    protected Color getColor(Hex hex) {
         if (terrainColors.containsKey(hex.getTerrain().getTerrain())) {
             return (Color)terrainColors.get(hex.getTerrain().getTerrain());
         }
@@ -163,16 +165,23 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         }
 
         Hex hex = (Hex)obj;
-        BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", 
+        
+        boolean imageDrawn = false;
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        if (mapOptions.get(MapOptionsEnum.HexGraphics) == null || mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) {
+        	BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", 
                 metadata.getGridCellWidth() * metadata.getHexSize(), 
                 metadata.getGridCellHeight() * metadata.getHexSize());
-        if (img!= null) {
-            g.drawImage(img, x, y, null);
-            Polygon polygon = new Polygon(xPoints, yPoints, 6);
-            polygon.translate(x, y);
-            g.setColor(Color.black);
-            g.drawPolygon(polygon);
-        } else {
+	        if (img!= null) {
+	            g.drawImage(img, x, y, null);
+	            Polygon polygon = new Polygon(xPoints, yPoints, 6);
+	            polygon.translate(x, y);
+	            g.setColor(Color.black);
+	            g.drawPolygon(polygon);
+	            imageDrawn = true;
+	        }
+        }
+        if (!imageDrawn) {
             Polygon polygon = new Polygon(xPoints, yPoints, 6);
             polygon.translate(x, y);
             g.setColor(getColor(hex));

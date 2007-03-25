@@ -42,6 +42,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         if (game == null) {
             return;
         }
+        boolean errorOccurred = false;
         for (File f : files) {
             if (f.getAbsolutePath().endsWith(".xml")) {
                 try {
@@ -50,6 +51,9 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                     final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
                     r.setMonitor(monitor);
                     r.run();
+                    if (r.getErrorOccured()) {
+                    	errorOccurred = true;
+                    }
                 }
                 catch (Exception exc) {
                     int a = 1;
@@ -60,6 +64,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             }
 
         }
+        boolean warningOccurred = false;
         for (File f : files) {
             if (f.getAbsolutePath().endsWith(".pdf")) {
                 try {
@@ -68,6 +73,9 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                     final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
                     r.setMonitor(monitor);
                     r.run();
+                    if (r.getErrorOccurred()) {
+                    	warningOccurred = true;
+                    }
                 }
                 catch (Exception exc) {
                     int a = 1;
@@ -78,6 +86,15 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             }
 
         }
+        String globalMsg = "";
+        if (errorOccurred) {
+        	globalMsg = "Serious errors occurred during the import. The game information may not be reliable.";
+        } else if (warningOccurred) {
+        	globalMsg = "Some small errors occurred during the import. All vital information was imported but some secondary information from the pdf files was not parsed successfully.";
+        } else {
+        	globalMsg = "Import was successful.";
+        }
+        monitor.setGlobalMessage(globalMsg);
         Application.instance().getApplicationContext().publishEvent(
                                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
         

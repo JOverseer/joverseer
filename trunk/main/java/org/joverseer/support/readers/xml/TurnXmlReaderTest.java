@@ -6,7 +6,14 @@ import org.joverseer.game.Game;
 
 
 public class TurnXmlReaderTest extends TestCase {
-    public void testTurnXmlReader() throws Exception {
+	
+	
+    TurnXmlReaderTest() {
+		super("a");
+		// TODO Auto-generated constructor stub
+	}
+
+	public void testTurnXmlReader() throws Exception {
         Game g = new Game();
 
 //        TurnXmlReader r = new TurnXmlReader();

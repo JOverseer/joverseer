@@ -36,6 +36,9 @@ public class TurnXmlReader implements Runnable{
     String filename;
 
     ProgressMonitor monitor;
+    
+    boolean errorOccured = false;
+    
 
     public TurnXmlReader(Game game, String filename) {
         this.game = game;
@@ -188,12 +191,18 @@ public class TurnXmlReader implements Runnable{
     public void run() {
         try {
             readFile(filename);
+        }
+        catch (Exception exc) {
+        	monitor.subTaskStarted("Error : failed to read xml file (" + exc.getMessage() + ")");
+        	errorOccured = true;
+        }
+        try {
             updateGame(game);
             game.setCurrentTurn(game.getMaxTurn());
             Thread.sleep(100);
         }
         catch (Exception exc) {
-            // do nothing
+        	errorOccured = true;
         }
     }
 
@@ -261,6 +270,7 @@ public class TurnXmlReader implements Runnable{
             if (getMonitor() != null) {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
+                errorOccured = true;
             }
             throw new Exception("Error updating game from Xml file.", exc);
         }
@@ -536,4 +546,14 @@ public class TurnXmlReader implements Runnable{
             nationMessages.addItem(nm);
         }
     }
+
+	public boolean getErrorOccured() {
+		return errorOccured;
+	}
+
+	public void setErrorOccured(boolean errorOccured) {
+		this.errorOccured = errorOccured;
+	}
+    
+    
 }

@@ -8,5 +8,7 @@ public enum MapOptionValuesEnum {
     DrawOrdersOn,
     DrawOrdersOff,
     ShowClimateOn,
-    ShowClimateOff
+    ShowClimateOff,
+    HexGraphicsSimple,
+    HexGraphicsTexture
 }

@@ -65,6 +65,7 @@ public class GameMetadata implements Serializable {
     }
 
     public void setNations(Collection nations) {
+    	this.nations.clear();
         this.nations.addAll(nations);
     }
 

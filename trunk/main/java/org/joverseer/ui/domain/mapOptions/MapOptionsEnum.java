@@ -4,5 +4,6 @@ package org.joverseer.ui.domain.mapOptions;
 public enum MapOptionsEnum {
     NationMap,
     DrawOrders,
-    ShowClimate;
+    ShowClimate,
+    HexGraphics;
 }

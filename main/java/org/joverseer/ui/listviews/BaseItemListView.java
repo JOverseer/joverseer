@@ -1,6 +1,7 @@
 package org.joverseer.ui.listviews;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JComboBox;
@@ -18,9 +20,14 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -137,6 +144,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
 
         table.getTableHeader().setBackground(Color.WHITE);
+        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer());
+        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer());
+        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer());
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
@@ -216,6 +226,33 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             	nationAsNumber = "true";
             }
 			prefs.put("nationAsNumber", nationAsNumber);
+		}
+    	
+    }
+    
+    public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
+
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			if (isSelected) return c;
+			int objRow = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+			Object obj = tableModel.getRow(objRow);
+			if (IBelongsToNation.class.isInstance(obj)) {
+				IBelongsToNation natObj = (IBelongsToNation)obj;
+				if (natObj == null || natObj.getNationNo() == null || natObj.getNationNo() == 0) return c;
+				int nationNo = natObj.getNationNo();
+				
+				Game g = GameHolder.instance().getGame();
+				NationRelations nr = (NationRelations)g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+				if (nr == null) return c;
+				MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");
+				String colorKey = "Listview." + nr.getAllegiance().toString() + ".color";
+				Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[]{}, Locale.getDefault()));
+				c.setBackground(bg);
+				return c;
+			} else {
+				return c;
+			}
 		}
     	
     }

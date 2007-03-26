@@ -1,6 +1,7 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.ui.listviews.filters.NationFilter;
 
 
 public class NationMessageListView extends ItemListView {
@@ -11,4 +12,10 @@ public class NationMessageListView extends ItemListView {
     protected int[] columnWidths() {
         return new int[]{96, 400};
     }
+    
+    protected AbstractListViewFilter[] getFilters() {
+        return NationFilter.createNationFilters();
+    }
+
+
 }

@@ -7,25 +7,20 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.domain.Character;
 
 
 public class CharacterListView extends ItemListView {
 
     protected AbstractListViewFilter[] getFilters() {
-        ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
-        ret.add(new CharacterNationFilter("All", -1));
-        Game g = GameHolder.instance().getGame();
-        if (!Game.isInitialized(g)) return (AbstractListViewFilter[])ret.toArray(new AbstractListViewFilter[]{});
-        for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
-            ret.add(new CharacterNationFilter(n.getName(), n.getNumber()));
-        }
-        return (AbstractListViewFilter[])ret.toArray(new AbstractListViewFilter[]{});
+        return NationFilter.createNationFilters();
     }
 
     public CharacterListView() {
@@ -45,7 +40,7 @@ public class CharacterListView extends ItemListView {
     
 	protected JComponent createControlImpl() {
 		JComponent c = super.createControlImpl();
-		table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+		table.setDefaultRenderer(Integer.class, new BaseItemListView.AllegianceColorCellRenderer() {
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 				Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
 				JLabel lbl = (JLabel)c;

@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -17,8 +19,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
@@ -27,6 +31,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
@@ -173,6 +179,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return null;
     }
 
+
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2 && e.getButton() == 1) {
             selectHexCommandExecutor.execute();
@@ -198,5 +205,19 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    public class ToggleNationNoDisplay extends ActionCommand {
+
+		protected void doExecuteCommand() {
+            Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+            String nationAsNumber = prefs.get("nationAsNumber", null);
+            if (nationAsNumber != null && nationAsNumber.equalsIgnoreCase("true")) {
+            	nationAsNumber = "false";
+            } else {
+            	nationAsNumber = "true";
+            }
+			prefs.put("nationAsNumber", nationAsNumber);
+		}
+    	
+    }
 
 }

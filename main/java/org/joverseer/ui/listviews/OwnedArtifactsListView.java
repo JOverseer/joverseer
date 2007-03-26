@@ -30,6 +30,7 @@ public class OwnedArtifactsListView extends ItemListView {
         for (Character c : (ArrayList<Character>)items.getItems()) {
             for (Integer id : c.getArtifacts()) {
                 ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", id);
+                if (ai == null) continue;
                 Artifact a = new Artifact();
                 a.setName(ai.getName());
                 a.setNumber(ai.getNo());

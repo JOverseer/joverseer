@@ -34,14 +34,15 @@ public class NationMessageViewer extends ObjectViewer {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
         rumor = new JTextArea(2, 1);
-        rumor.setPreferredSize(new Dimension(220, 80));
+        //rumor.setPreferredSize(new Dimension(220, 80));
         rumor.setLineWrap(true);
         rumor.setWrapStyleWord(true);
         JScrollPane scp = new JScrollPane(rumor);
-        scp.setPreferredSize(new Dimension(220, 32));
-        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scp.setPreferredSize(new Dimension(240, 36));
+        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        rumor.setBorder(null);
+        scp.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
+        //rumor.setBorder(null);
         scp.setBorder(null);
         glb.append(scp);
 

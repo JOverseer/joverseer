@@ -1,6 +1,12 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Component;
 import java.util.ArrayList;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -35,7 +41,30 @@ public class CharacterListView extends ItemListView {
     
     
     
-    public class CharacterNationFilter extends AbstractListViewFilter {
+    
+    
+	protected JComponent createControlImpl() {
+		JComponent c = super.createControlImpl();
+		table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
+				Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+				JLabel lbl = (JLabel)c;
+				Integer v = (Integer)arg1;
+				if (v == null || v.equals(0)) {
+					lbl.setText("");
+				} 
+				return c;
+			}
+			
+		});
+		return c;
+	}
+
+
+
+
+
+	public class CharacterNationFilter extends AbstractListViewFilter {
         int nationNo;
         
         public CharacterNationFilter(String description, int nationNo) {

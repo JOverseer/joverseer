@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -246,15 +247,15 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
     
     public class MarketRenderer extends DefaultTableCellRenderer {
         Color[] rowColors = new Color[] {
-                Color.decode("#99FF99"), 
-                Color.decode("#99FF99"), 
+                Color.decode("#ADD3A6"), 
+                Color.decode("#ADD3A6"), 
                 Color.decode("#FFCCAA"), 
                 Color.decode("#FFCCAA"), 
-                Color.decode("#99FF99"), 
+                Color.decode("#ADD3A6"), 
                 Color.white, 
                 Color.white, 
-                Color.decode("#99FF99"), 
-                Color.decode("#99FF99"), 
+                Color.decode("#ADD3A6"), 
+                Color.decode("#ADD3A6"), 
                 Color.white, 
                 Color.lightGray
                 };
@@ -266,6 +267,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 c.setBackground(rowColors[row]);
             }
             JLabel lbl = ((JLabel)c);
+            if (hasFocus) {
+            	lbl.setBorder(BorderFactory.createLineBorder(Color.red, 1));
+            }
             lbl.setHorizontalAlignment(JLabel.RIGHT);
             return c;
         }
@@ -292,7 +296,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
             }
             if (!isSelected) {
                 if (row == 0 && column == 5 || row == 2 && column == 3) { // orders cost , gold production
-                    lbl.setBackground(Color.decode("#99FF99"));
+                    lbl.setBackground(Color.decode("#ADD3A6"));
                 } else {
                     lbl.setBackground(Color.white);
                 }

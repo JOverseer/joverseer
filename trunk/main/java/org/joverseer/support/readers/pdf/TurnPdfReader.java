@@ -400,8 +400,13 @@ public class TurnPdfReader implements Runnable {
     }
     
     public void updateGame(Game game) throws Exception {
+    	if (turnInfo == null) {
+    		errorOccurred = true;
+    		throw new Exception("Failed to parse pdf file.");
+    	}
         if (turnInfo.getTurnNo() != game.getMaxTurn()) {
             //todo fix
+        	errorOccurred = true;
             throw new Exception("Can only import pdfs for last turn.");
         }
         try {

@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import java.util.prefs.Preferences;
+
 import javax.swing.JPopupMenu;
 
 import org.springframework.richclient.table.BeanTableModel;
@@ -9,14 +11,17 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.JOverseerClient;
 
 
 public abstract class ItemTableModel extends BeanTableModel {
+	
     public ItemTableModel(Class aClass, MessageSource messageSource) {
         super(aClass, messageSource);
         setRowNumbers(false);
     }
 
+    
     protected Object getValueAtInternal(Object object, int i) {
         try {
             Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();

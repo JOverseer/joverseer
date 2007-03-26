@@ -121,7 +121,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
                 boolean isSelected,
                 boolean cellHasFocus) {
             JLabel lbl = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, hasFocus());
-            if (value.toString().startsWith("Error")) {
+            if (value != null && value.toString().startsWith("Error")) {
                 lbl.setForeground(Color.RED);
             }
             return lbl;

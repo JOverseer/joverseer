@@ -330,7 +330,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("nat")) {
                             sub = new NationParameterOrderSubeditor(paramDescription, o);
-                        } else if (paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spz") || paramType.equals("spm") || paramType.equals("spl")) {
+                        } else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spz") || paramType.equals("spm") || paramType.equals("spl")) {
                             sub = new SpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
                         }
                         if (sub != null) {

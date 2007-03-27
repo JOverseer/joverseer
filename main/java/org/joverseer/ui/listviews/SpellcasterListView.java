@@ -25,6 +25,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
@@ -50,6 +51,16 @@ public class SpellcasterListView extends BaseItemListView {
         spellLists.add(new SpellList("Conjuring", new Integer[]{508, 510, 512}, new String[]{"Cj Mo", "Cj Fo", "Cj Hd"}));
         spellLists.add(new SpellList("Divine Forces", new Integer[]{410, 419, 417}, new String[]{"Dvn Algnc Forces", "Dvn Nat Forces", "Dvn Char w/ Forces"}));
         return spellLists;
+    }
+    
+    
+
+    @Override
+    protected ColumnToSort[] getDefaultSort() {
+        return new ColumnToSort[]{
+                new ColumnToSort(0, 2),
+                new ColumnToSort(1, 0)
+        };
     }
 
     protected JComponent createControlImpl() {

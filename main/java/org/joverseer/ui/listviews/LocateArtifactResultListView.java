@@ -12,6 +12,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.table.ColumnToSort;
 
 
 public class LocateArtifactResultListView extends BaseItemListView {
@@ -21,9 +22,17 @@ public class LocateArtifactResultListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {32, 32, 32, 32, 96, 96, 160};
+        return new int[] {32, 32, 120, 32, 120, 96, 160};
     }
 
+
+    @Override
+    protected ColumnToSort[] getDefaultSort() {
+        return new ColumnToSort[]{
+                new ColumnToSort(0, 0),
+                new ColumnToSort(1, 4)
+        };
+    }
 
     protected void setItems() {
         HashMap<Integer, LocateArtifactResult> results = new HashMap<Integer, LocateArtifactResult>();

@@ -11,11 +11,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -41,10 +46,14 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
+import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
+import org.springframework.richclient.util.GridBagCellConstraints;
 
 
 public abstract class BaseItemListView extends AbstractView implements ApplicationListener, MouseListener {
@@ -62,6 +71,10 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected abstract void setItems();
  
     protected abstract int[] columnWidths();
+    
+    protected ColumnToSort[] getDefaultSort() {
+        return null;
+    }
     
     protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
         pageComponentContext.register("selectHexCommand", selectHexCommandExecutor);
@@ -152,6 +165,23 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         scrollPane.getViewport().setOpaque(true);
         scrollPane.getViewport().setBackground(table.getBackground());
         tlb.cell(scrollPane);
+        
+        if (getDefaultSort() != null) {
+            ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+            Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
+            JLabel restoreSorting = new JLabel();
+            restoreSorting.setIcon(ico);
+            restoreSorting.setPreferredSize(new Dimension(16, 16));
+            restoreSorting.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent arg0) {
+                    ((SortableTableModel)table.getModel()).sortByColumns(getDefaultSort());
+                }
+                
+            });
+            ((SortableTableModel)table.getModel()).sortByColumns(getDefaultSort());
+            restoreSorting.setToolTipText("Restore default sort order");
+            tlb.cell(restoreSorting, "colspec=left:30px valign=top");
+        }
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
         return p;

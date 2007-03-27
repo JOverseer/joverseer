@@ -5,6 +5,7 @@ import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -16,11 +17,11 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"hexNo", "turnNo", "spellName", "artifactNo", "artifactName", "owner", "artifactPowers"};
+        return new String[]{"turnNo", "hexNo", "spellName", "artifactNo", "artifactName", "owner", "artifactPowers"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class};
+        return new Class[]{Integer.class, Integer.class, String.class, Integer.class, String.class, String.class, String.class};
     }
     
     public LocateArtifactResult getResult(Artifact artifact) {
@@ -29,6 +30,11 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
         lar.setArtifactName(artifact.getName());
         lar.setArtifactNo(artifact.getNumber());
         lar.setOwner(artifact.getOwner());
+        
+        if (DerivedFromSpellInfoSource.class.isInstance(artifact.getInfoSource())) {
+            DerivedFromSpellInfoSource is = (DerivedFromSpellInfoSource)artifact.getInfoSource();
+            lar.setSpellName(is.getSpell() + " - " + is.getCasterName());
+        }
         
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());

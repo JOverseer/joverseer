@@ -14,6 +14,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.table.SortableTableModel;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
@@ -21,23 +22,25 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.Order;
 
 
 public class OrderTableModel extends ItemTableModel {
-    int drawColumnIndex = 4;
-    int resultsColumnIndex = 5;
+    int drawColumnIndex = 5;
+    int resultsColumnIndex = 6;
+    int nationIndex = 0;
     
     public OrderTableModel(MessageSource messageSource) {
         super(Order.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"character.name", "character.hexNo", "noAndCode", "parameters", "draw", "results"};
+        return new String[] {"character.nationNo", "character.name", "character.hexNo", "noAndCode", "parameters", "draw", "results"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class};  
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class};  
     }
 
 	
@@ -55,7 +58,18 @@ public class OrderTableModel extends ItemTableModel {
     }
 
     protected Object getValueAtInternal(Object object, int i) {
-        if (i == drawColumnIndex) {
+        if (i == nationIndex) {
+            Order order = (Order)object;
+            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+            if (game == null) return "";
+            if (IBelongsToNation.class.isInstance(order.getCharacter()) && getColumnPropertyNames()[i].equals("nationNo")) {
+                GameMetadata gm = game.getMetadata();
+                Integer nationNo = ((IBelongsToNation)order.getCharacter()).getNationNo();
+                if (nationNo == null) return "";
+                return gm.getNationByNum(nationNo).getShortName();
+            }
+            return super.getValueAtInternal(object, i);
+        } else if (i == drawColumnIndex) {
             OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
             return ovd.contains((Order)object);
         } else if (i == resultsColumnIndex) {

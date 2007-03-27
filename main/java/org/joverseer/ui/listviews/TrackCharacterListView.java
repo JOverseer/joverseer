@@ -27,6 +27,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 
 
@@ -44,6 +45,13 @@ public class TrackCharacterListView extends BaseItemListView {
     }
     
     
+    protected ColumnToSort[] getDefaultSort() {
+        return new ColumnToSort[]{
+                new ColumnToSort(0, 0),
+                new ColumnToSort(0, 1)
+        };
+    }
+
     protected JComponent createControlImpl() {
         JComponent tableComp = super.createControlImpl();
         TableLayoutBuilder tlb = new TableLayoutBuilder();

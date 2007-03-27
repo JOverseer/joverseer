@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -26,6 +27,7 @@ import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
+import org.joverseer.ui.support.ErrorDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -99,10 +101,11 @@ public class ExportOrdersForm extends AbstractForm {
         orders.setLineWrap(false);
         JScrollPane scp = new JScrollPane(orders);
         scp.setPreferredSize(new Dimension(500, 400));
-        glb.append(scp, 2, 1);
+        glb.append(scp, 3, 1);
         
         glb.nextLine();
         JButton generate = new JButton("Generate");
+        generate.setPreferredSize(new Dimension(100, 20));
         glb.append(generate, 1, 1);
         glb.nextLine();
         generate.addActionListener(new ActionListener() {
@@ -122,48 +125,13 @@ public class ExportOrdersForm extends AbstractForm {
             }
         });
         JButton save = new JButton("Save");
+        save.setPreferredSize(new Dimension(100, 20));
         glb.append(save, 1, 1);
         
         save.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!ordersOk) return;
-                cancelExport = false;
-                if (orderCheckResult != ORDERS_OK) {
-                    if (missingOrders) {
-                        MessageDialog dlg = new MessageDialog("Error", "Some characters are missing orders. Cannot export.");
-                        dlg.showDialog();
-                        return;
-                    }
-                    if (ordersWithErrors) {
-                        cancelExport = false;
-                        ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have been checked with Orderchecker and have errors. Continue with export?") {
-                            protected void onCancel() {
-                                super.onCancel();
-                                cancelExport = true;
-                            }
-                            
-                            protected void onConfirm() {
-                            }
-                            
-                        };
-                        dlg.showDialog();
-                        if (cancelExport) return;
-                    }
-                    if (uncheckedOrders) {
-                        ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have not been checked with Orderchecker. Continue with export?") {
-                            protected void onCancel() {
-                                super.onCancel();
-                                cancelExport = true;
-                            }
-
-                            protected void onConfirm() {
-                            }
-                        };
-                        dlg.showDialog();
-                        if (cancelExport) return;
-                    }
-                }
-                if (!ordersOk) return;
+                if (!checkOrderValidity()) return;
                 Game g = GameHolder.instance().getGame();
                 int nationNo = getSelectedNationNo();
                 PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
@@ -193,6 +161,35 @@ public class ExportOrdersForm extends AbstractForm {
             }
         });
         
+        JButton send = new JButton("Send");
+        send.setPreferredSize(new Dimension(100, 20));
+        glb.append(send, 1, 1);
+        glb.append(new JLabel(), 1, 1);
+        send.setVisible(false);
+        send.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!ordersOk) return;
+                if (!checkOrderValidity()) return;
+                Game g = GameHolder.instance().getGame();
+                try {
+                    String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
+                    File file = new File(fname);
+                    FileWriter f = new FileWriter(file);
+                    f.write(orders.getText());
+                    f.close();
+                    String cmd = "bin\\MailSender.exe mscoon@gmail.com " + fname + " " + file.getCanonicalPath();
+                    System.out.println("Starting mail client with command " + cmd);
+                    Runtime.getRuntime().exec(cmd);
+                    MessageDialog dlg = new MessageDialog("Message sent.", "Your orders were sent to your E-mail client.");
+                    dlg.showDialog();
+                }
+                catch (Exception exc) {
+                    ErrorDialog dlg = new ErrorDialog(exc);
+                    dlg.showDialog();
+                }
+            }
+        });
+                
         nation.setSelectedIndex(0);
         
         return glb.getPanel();
@@ -235,6 +232,47 @@ public class ExportOrdersForm extends AbstractForm {
         
         if (missingOrders || uncheckedOrders || ordersWithErrors) return ORDERS_NOT_OK;
         return ORDERS_OK;
+    }
+    
+    private boolean checkOrderValidity() {
+        cancelExport = false;
+        if (orderCheckResult != ORDERS_OK) {
+            if (missingOrders) {
+                MessageDialog dlg = new MessageDialog("Error", "Some characters are missing orders. Cannot export.");
+                dlg.showDialog();
+                return false;
+            }
+            if (ordersWithErrors) {
+                cancelExport = false;
+                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have been checked with Orderchecker and have errors. Continue with export?") {
+                    protected void onCancel() {
+                        super.onCancel();
+                        cancelExport = true;
+                    }
+                    
+                    protected void onConfirm() {
+                    }
+                    
+                };
+                dlg.showDialog();
+                if (cancelExport) return false;
+            }
+            if (uncheckedOrders) {
+                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have not been checked with Orderchecker. Continue with export?") {
+                    protected void onCancel() {
+                        super.onCancel();
+                        cancelExport = true;
+                    }
+
+                    protected void onConfirm() {
+                    }
+                };
+                dlg.showDialog();
+                if (cancelExport) return false;
+            }
+        }
+        return true;
+
     }
     
 }

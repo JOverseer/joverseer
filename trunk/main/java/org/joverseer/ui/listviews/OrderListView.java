@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
@@ -45,6 +46,8 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.ColumnToSort;
+import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
 
 
@@ -59,7 +62,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {64, 64, 96, 170, 30, 120};
+        return new int[] {48, 64, 64, 96, 170, 30, 120};
     }
 
     protected void setItems() {
@@ -260,6 +263,11 @@ public class OrderListView extends ItemListView {
         public String toString() {
             return getDescription();
         }
+    }
+    
+    public ColumnToSort[] getDefaultSort() {
+        return new ColumnToSort[]{new ColumnToSort(0, 0, SortOrder.ASCENDING),
+                new ColumnToSort(0, 1, SortOrder.ASCENDING)};
     }
     
     

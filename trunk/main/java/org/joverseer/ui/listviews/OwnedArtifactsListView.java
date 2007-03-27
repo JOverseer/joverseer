@@ -10,7 +10,9 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.domain.OwnedArtifact;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.table.ColumnToSort;
 
 
 public class OwnedArtifactsListView extends ItemListView {
@@ -19,7 +21,16 @@ public class OwnedArtifactsListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 96, 132, 48};
+        return new int[]{32, 96, 48, 132, 48};
+    }
+    
+    @Override
+    protected ColumnToSort[] getDefaultSort() {
+        return new ColumnToSort[]{
+                new ColumnToSort(0, 2),
+                new ColumnToSort(1, 3),
+                new ColumnToSort(2, 0)
+        };
     }
 
     protected void setItems() {
@@ -31,7 +42,8 @@ public class OwnedArtifactsListView extends ItemListView {
             for (Integer id : c.getArtifacts()) {
                 ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", id);
                 if (ai == null) continue;
-                Artifact a = new Artifact();
+                OwnedArtifact a = new OwnedArtifact();
+                a.setNationNo(c.getNationNo());
                 a.setName(ai.getName());
                 a.setNumber(ai.getNo());
                 a.setOwner(c.getName());

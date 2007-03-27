@@ -16,16 +16,20 @@
 package com.jidesoft.spring.richclient.docking;
 
 import java.awt.Color;
+import java.util.Locale;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.RepaintManager;
 
+import org.joverseer.support.GameHolder;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.StatusBarCommandGroup;
 
 import com.jidesoft.action.CommandBarFactory;
@@ -45,7 +49,8 @@ public class JideApplicationLifecycleAdvisor extends
 	
 	private StatusBarCommandGroup statusBar = null;
 	private RepaintManager repaintManager;
-
+        boolean canCloseWindow = true;
+        
 	public CommandGroup getSpecificCommandGroup(String name){
 		return getCommandGroup(name);
 	}
@@ -117,7 +122,22 @@ public class JideApplicationLifecycleAdvisor extends
 //		dockableHolder.getDockingManager().setUsePref(true);
 //		dockableHolder.getDockingManager().saveLayoutDataToFile("c:\\layout.jide");
 		
-		return super.onPreWindowClose(arg0);
+            canCloseWindow = true;
+            if (GameHolder.hasInitializedGame()) {
+                canCloseWindow = false;
+                // show warning
+                MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                ConfirmationDialog md = new ConfirmationDialog(
+                        ms.getMessage("confirmCloseAppDialog.title", new String[]{}, Locale.getDefault()),
+                        ms.getMessage("confirmCloseAppDialog.message", new String[]{}, Locale.getDefault()))
+                {
+                    protected void onConfirm() {
+                        canCloseWindow = true;
+                    }
+                };
+                md.showDialog();
+            }
+            return canCloseWindow;
 	}
 	
 	

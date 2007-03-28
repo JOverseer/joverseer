@@ -114,6 +114,8 @@
 			<list>
                 <bean class="org.joverseer.ui.command.JOverseerShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
                 <bean class="org.joverseer.ui.command.RestoreDefaultLayoutCommand"/>
+                <value>separator</value>
+                <bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
 			</list>
 		</property>
 	</bean>                

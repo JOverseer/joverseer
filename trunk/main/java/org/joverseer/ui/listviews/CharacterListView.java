@@ -1,7 +1,10 @@
 package org.joverseer.ui.listviews;
 
 import java.awt.Component;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -13,6 +16,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.domain.Character;
 import org.springframework.richclient.table.ColumnToSort;
@@ -21,7 +25,10 @@ import org.springframework.richclient.table.ColumnToSort;
 public class CharacterListView extends ItemListView {
 
     protected AbstractListViewFilter[] getFilters() {
-        return NationFilter.createNationFilters();
+        ArrayList filters = new ArrayList();
+        filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
+        filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+        return (AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{});
     }
 
     public CharacterListView() {
@@ -55,23 +62,4 @@ public class CharacterListView extends ItemListView {
         });
         return c;
     }
-
-
-    public class CharacterNationFilter extends AbstractListViewFilter {
-
-        int nationNo;
-
-        public CharacterNationFilter(String description, int nationNo) {
-            super(description);
-            this.nationNo = nationNo;
-        }
-
-        public boolean accept(Object obj) {
-            Character ch = (Character) obj;
-            return (nationNo == -1 || ch.getNationNo() == nationNo);
-        }
-
-
-    }
-
 }

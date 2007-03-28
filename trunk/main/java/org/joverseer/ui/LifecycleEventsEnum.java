@@ -11,5 +11,7 @@ public enum LifecycleEventsEnum {
     EconomyCalculatorUpdate,
     EditOrderEvent,
     MapMetadataChangedEvent,
-    RefreshHexItems
+    RefreshHexItems,
+    ListviewTableAutoresizeModeToggle,
+    ListviewRefreshItems
 }

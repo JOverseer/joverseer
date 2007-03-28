@@ -228,7 +228,21 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     public int computeNumberOfMen() {
         int ret = 0;
         for (ArmyElement ae : getElements()) {
+            if (ae.getArmyElementType() == ArmyElementType.WarMachimes ||
+                    ae.getArmyElementType() == ArmyElementType.Warships ||
+                    ae.getArmyElementType() == ArmyElementType.Transports) continue;
             ret += ae.getNumber();
+        }
+        return ret;
+    }
+    
+    public int computeNumberOfShips() {
+        int ret = 0;
+        for (ArmyElement ae : getElements()) {
+            if (ae.getArmyElementType() == ArmyElementType.Warships ||
+                    ae.getArmyElementType() == ArmyElementType.Transports) {
+                ret += ae.getNumber();
+            }
         }
         return ret;
     }

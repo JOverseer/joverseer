@@ -42,6 +42,7 @@ public class JOverseerJIDEClient {
 	private static final String CONTEXT_ROOT = "/ctx";
 	private static final String APPLICATION_CONTEXT = CONTEXT_ROOT + "/jideApplicationContext.xml";
 	private static final String PAGE_CONTEXT = CONTEXT_ROOT + "/richclient-page-application-context.xml";
+        private static final String PREFERENCES_CONTEXT = CONTEXT_ROOT + "/preferences-context.xml";
 	private static final String STARTUP_CONTEXT = CONTEXT_ROOT + "/richclient-startup-context.xml";
 	
     public void Test() {};
@@ -83,7 +84,7 @@ public class JOverseerJIDEClient {
             // the initial page.
             //Application.instance().
 
-            new ApplicationLauncher(STARTUP_CONTEXT, new String[] { APPLICATION_CONTEXT, PAGE_CONTEXT });
+            new ApplicationLauncher(STARTUP_CONTEXT, new String[] { APPLICATION_CONTEXT, PAGE_CONTEXT, PREFERENCES_CONTEXT });
 
         } catch( Exception e ) {
             System.out.println(e);

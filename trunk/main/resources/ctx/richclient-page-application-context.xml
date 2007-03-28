@@ -509,6 +509,12 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.orderEditor.OrderEditorView</value>
 		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
 	</bean>
 	
 	<bean id="fullPerspective" class="org.joverseer.ui.jide.FullPerspective">

@@ -7,9 +7,11 @@ import javax.swing.Icon;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.PageDescriptor;
+import org.springframework.richclient.image.IconSource;
 
 import com.jidesoft.docking.DockContext;
 import com.jidesoft.docking.DockableFrame;
@@ -33,15 +35,19 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 			log.info("Creating dockable frame for page component "+ pageComponent.getId());
 		}
 		Icon icon = pageComponent.getIcon();
+                IconSource iconSource = (IconSource) ApplicationServicesLocator.services().getService(IconSource.class);
+                icon = iconSource.getIcon(viewDescriptor.getId() + ".icon");
 		DockableFrame dockableFrame;
 		if (icon == null) {
-			dockableFrame = new DockableFrame(pageComponent.getId());
+                        icon = iconSource.getIcon("applicationInfo.image");
+			dockableFrame = new DockableFrame(pageComponent.getId(), icon);
 		} else {
 			dockableFrame = new DockableFrame(pageComponent.getId(), icon);
 		}
                 
 		dockableFrame.setTitle(pageComponent.getDisplayName());
 		dockableFrame.setTabTitle(pageComponent.getDisplayName());
+                dockableFrame.setToolTipText(pageComponent.getDisplayName());
 		dockableFrame.setFrameIcon(icon);
 		if(viewDescriptor != null){
 			dockableFrame.getContext().setInitMode(viewDescriptor.getInitMode());
@@ -50,7 +56,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 			if (viewDescriptor instanceof JOverseerJideViewDescriptor) {
 				JOverseerJideViewDescriptor jovViewDescriptor = (JOverseerJideViewDescriptor)viewDescriptor;
 				dockableFrame.setPreferredSize(new Dimension(jovViewDescriptor.getPreferredWidth(), jovViewDescriptor.getPreferredHeight()));
-			}
+			} 
 		}
 		else{
 			dockableFrame.getContext().setInitMode(DockContext.STATE_FRAMEDOCKED);

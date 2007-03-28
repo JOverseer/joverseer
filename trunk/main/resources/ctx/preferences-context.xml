@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="yesPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>yes</value>
+		</property>
+		<property name="description">
+			<value>Yes</value>
+		</property>
+	</bean>
+	<bean id="noPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>nn</value>
+		</property>
+		<property name="description">
+			<value>No</value>
+		</property>
+	</bean>
+							
+	<bean id="preferenceRegistry" class="org.joverseer.preferences.PreferenceRegistry">
+		<property name="prefix">
+			<value>display</value>
+		</property>
+		<property name="allPreferences">
+			<list>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.bgColor</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewRefreshItems</value>
+					</property>
+					<property name="description">
+						<value>Item Background Color</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>allegiance</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>none</value>
+								</property>
+								<property name="description">
+									<value>None</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegiance</value>
+								</property>
+								<property name="description">
+									<value>Allegiance</value>
+								</property>
+							</bean>															
+						</list>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.autoresizeCols</value>
+					</property>
+					<property name="description">
+						<value>Auto Resize Columns</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewTableAutoresizeModeToggle</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.showNationAs</value>
+					</property>
+					<property name="description">
+						<value>Show Nation As</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewRefreshItems</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>name</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>name</value>
+								</property>
+								<property name="description">
+									<value>Name</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>number</value>
+								</property>
+								<property name="description">
+									<value>Number</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -127,7 +127,7 @@
 	</bean>
 	
 	<bean id="applicationPageFactory" class="org.joverseer.ui.jide.JOverseerJideApplicationPageFactory" />
-	
+	    
 	<bean id="com.jidesoft.docking.DockingManager.DOUBLE_CLICK_NONE"
 		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
 		

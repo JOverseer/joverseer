@@ -18,7 +18,12 @@ public class ArmySizeEstimator {
         ArrayList<ArmySizeEstimate> ret = new ArrayList<ArmySizeEstimate>();
         for (ArmySizeEnum size : ArmySizeEnum.values()) {
             if (size != ArmySizeEnum.unknown && size != ArmySizeEnum.tiny) {
-                ret.add(new ArmySizeEstimate(size));
+                ret.add(new ArmySizeEstimate(ArmySizeEstimate.ARMY_TYPE, size));
+            }
+        }
+        for (ArmySizeEnum size : ArmySizeEnum.values()) {
+            if (size != ArmySizeEnum.unknown && size != ArmySizeEnum.tiny) {
+                ret.add(new ArmySizeEstimate(ArmySizeEstimate.NAVY_TYPE, size));
             }
         }
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();

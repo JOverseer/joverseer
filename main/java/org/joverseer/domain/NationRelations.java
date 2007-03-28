@@ -6,7 +6,6 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 
 public class NationRelations implements IBelongsToNation, Serializable {
-
     Integer nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];
     NationAllegianceEnum allegiance;

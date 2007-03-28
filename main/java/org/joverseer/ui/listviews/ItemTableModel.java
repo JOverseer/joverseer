@@ -8,6 +8,7 @@ import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.context.MessageSource;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
@@ -24,6 +25,8 @@ public abstract class ItemTableModel extends BeanTableModel {
     
     protected Object getValueAtInternal(Object object, int i) {
         try {
+            String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
+            if (pval.equals("number")) return super.getValueAtInternal(object, i);
             Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             if (game == null) return "";
             if (IBelongsToNation.class.isInstance(object) && getColumnPropertyNames()[i].equals("nationNo")) {

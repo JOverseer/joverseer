@@ -11,7 +11,7 @@ public class ArmySizeEstimatesListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {64, 64, 64, 64, 64};
+        return new int[] {64, 64, 64, 64, 64, 64};
     }
 
     protected void setItems() {

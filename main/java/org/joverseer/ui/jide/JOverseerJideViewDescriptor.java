@@ -3,8 +3,8 @@ package org.joverseer.ui.jide;
 import com.jidesoft.spring.richclient.docking.view.JideViewDescriptor;
 
 public class JOverseerJideViewDescriptor extends JideViewDescriptor {
-	int preferredWidth;
-	int preferredHeight;
+	int preferredWidth = 100;
+	int preferredHeight = 100;
 	public int getPreferredHeight() {
 		return preferredHeight;
 	}

@@ -15,6 +15,7 @@
  */
 package com.jidesoft.spring.richclient.docking;
 
+import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
@@ -175,7 +176,8 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	private static class DefaultCustomizer implements DockingManager.TabbedPaneCustomizer{
 	        
         	public void customize(JideTabbedPane tabbedPane) {
-                    
+                    tabbedPane.setTabResizeMode(JideTabbedPane.RESIZE_MODE_FIXED);
+                    tabbedPane.setShowTabButtons(true);
         	}
 	}
 }

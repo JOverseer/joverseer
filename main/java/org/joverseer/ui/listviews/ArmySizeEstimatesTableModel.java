@@ -10,11 +10,11 @@ public class ArmySizeEstimatesTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"size", "min", "max", "countKnown", "countUnknown"};
+        return new String[]{"type", "size", "min", "max", "countKnown", "countUnknown"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class};
+        return new Class[]{String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class};
     }
 
 }

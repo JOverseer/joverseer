@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import javax.swing.JComponent;
+
 import org.joverseer.game.TurnElementsEnum;
 
 
@@ -12,5 +14,6 @@ public class EncounterListView extends ItemListView {
         return new int[]{40, 96,
                         250};
     }
+
 
 }

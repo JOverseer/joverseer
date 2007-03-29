@@ -1,7 +1,11 @@
 package org.joverseer.ui.command;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
@@ -126,12 +130,13 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             final File file = fileChooser.getSelectedFile();
             prefs.put("importDir", file.getAbsolutePath());
             final Runnable thisObj = this;
-            class XmlAndPdfFileFilter implements FilenameFilter {
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", name);
+            class XmlAndPdfFileFilter implements FileFilter {
+                public boolean accept(File file) {
+                    return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
                 }
             }
-            files = file.listFiles(new XmlAndPdfFileFilter());
+            //files = file.listFiles(new XmlAndPdfFileFilter());
+            files = getFilesRecursive(file, new XmlAndPdfFileFilter());
             FormModel formModel = FormModelHelper.createFormModel(this);
             monitor = new JOverseerClientProgressMonitor(formModel);
             FormBackedDialogPage page = new FormBackedDialogPage(monitor);
@@ -158,4 +163,18 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         }
     }
 
+    private File[] getFilesRecursive(File folder, FileFilter filter) {
+        ArrayList<File> ret = new ArrayList<File>();
+        File[] files = folder.listFiles(filter);
+        ret.addAll(Arrays.asList(files));
+        FileFilter folderFilter = new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        };
+        for (File subfolder : folder.listFiles(folderFilter)) {
+            ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
+        }
+        return ret.toArray(new File[]{});
+    }
 }

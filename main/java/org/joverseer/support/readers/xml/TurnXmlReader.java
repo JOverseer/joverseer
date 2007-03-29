@@ -7,6 +7,7 @@ import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.log4j.Logger;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
+import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -32,6 +33,8 @@ public class TurnXmlReader implements Runnable{
     Turn turn = null;
     InfoSource infoSource = null;
 
+    ArrayList<PopulationCenter> currentNationPops = new ArrayList<PopulationCenter>();
+    
     Game game;
     String filename;
 
@@ -223,6 +226,8 @@ public class TurnXmlReader implements Runnable{
                 ti.initializeTurnWith(turn, lastTurn);
                 game.addTurn(turn);
             }
+            currentNationPops = new ArrayList<PopulationCenter>();
+            
             // update player info
             PlayerInfo pi = (PlayerInfo)turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", turnInfo.getNationNo());
             if (pi != null) {
@@ -278,6 +283,7 @@ public class TurnXmlReader implements Runnable{
 
     private void updatePCs() throws Exception {
         Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
+        PopCenterXmlInfoSource pcInfoSource = new PopCenterXmlInfoSource(infoSource.getTurnNo(), turnInfo.getNationNo(), infoSource.getTurnNo());
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) turnInfo.getPopCentres().getItems()) {
             PopulationCenter newPc;
             try {
@@ -286,7 +292,10 @@ public class TurnXmlReader implements Runnable{
                         String.valueOf(newPc.getX()),
                         String.valueOf(newPc.getY()),
                         newPc.getInformationSource().toString()));
-                newPc.setInfoSource(infoSource);
+                newPc.setInfoSource(pcInfoSource);
+                if (newPc.getNationNo() == turnInfo.getNationNo()) {
+                    currentNationPops.add(newPc);
+                }
                 PopulationCenter oldPc = (PopulationCenter) pcs.findFirstByProperties(new String[]{"x", "y"}, new Object[]{newPc.getX(), newPc.getY()});
                 if (oldPc == null) {
                     // no pc found - add newPc
@@ -304,7 +313,7 @@ public class TurnXmlReader implements Runnable{
                             newPc.setName(oldPc.getName());
                         }
                         if (newPc.getNationNo() == 0) {
-                            //newPc.setNationNo(oldPc.getNationNo());
+                             newPc.setNationNo(oldPc.getNationNo());
                         }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
@@ -320,11 +329,20 @@ public class TurnXmlReader implements Runnable{
                     else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
                         if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
                             newPc.setName(oldPc.getName());
-                            //newPc.setNationNo(oldPc.getNationNo());
+                            newPc.setNationNo(oldPc.getNationNo());
                         }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
                     } 
+                }
+                
+                // handle pops that are "reported" as belonging to the current nation
+                // but the current nation did not have them in the xml
+                ArrayList<PopulationCenter> potentiallyLostPops = (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", turnInfo.getNationNo());
+                for (PopulationCenter pop : potentiallyLostPops) {
+                    if (currentNationPops.contains(pop)) continue;
+                    // pop has been lost
+                    pop.setNationNo(0);
                 }
             }
             catch (Exception exc) {
@@ -504,6 +522,22 @@ public class TurnXmlReader implements Runnable{
                 oldHi.merge(hi);
             }
         }
+        
+        // handle current nation pops
+        for (PopulationCenter pc : currentNationPops) {
+            HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+            HexInfo nhi = new HexInfo();
+            nhi.setVisible(true);
+            nhi.setHasPopulationCenter(true);
+            nhi.getNationSources().add(pc.getNationNo());
+            nhi.setHexNo(pc.getHexNo());
+            if (hi != null) {
+                hi.merge(nhi);
+            } else {
+                hexInfos.addItem(hi);
+            }
+        }
+        
         // remove PCs if HexInfo shows empty hex
         ArrayList toRemove = new ArrayList();
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {

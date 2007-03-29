@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 
 import org.joverseer.metadata.GameMetadata;
@@ -23,6 +24,8 @@ public class Game implements Serializable {
     int maxTurn = -1;
 
     int currentTurn = -1;
+    
+    HashMap<String,String> parameters = new HashMap<String, String>();
 
     public GameMetadata getMetadata() {
         return metadata;
@@ -84,6 +87,14 @@ public class Game implements Serializable {
     public static boolean isInitialized(Game g) {
         return (g != null && g.getTurn() != null);
     }
+    
+    public HashMap<String, String> getParameters() {
+        return parameters;
+    }
+    
+    public void setParameters(HashMap<String, String> parameters) {
+        this.parameters = parameters;
+    }
 
     public static Game loadGame(File f) throws Exception {
         Game g = null;
@@ -97,5 +108,13 @@ public class Game implements Serializable {
         }
         g = (Game)in.readObject();
         return g;
+    }
+    
+    public String getParameter(String key) {
+        return parameters.get(key);
+    }
+    
+    public void setParameter(String key, String value) {
+        parameters.put(key, value);
     }
 }

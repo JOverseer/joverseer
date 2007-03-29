@@ -1,0 +1,83 @@
+VERSION 0.9.2
+-------------
+
+29/3/2007
+
+    * Improvements to Track Character tab
+          o Added button to search
+          o Added more information
+
+    * Added nation information to the Company tab 
+
+    * Added Preferences form (Main Menu -> Window -> Preferences).
+          o You can now globally control preferences for the program. Current preferences are:
+                + Choice to display nation number or nation name on the information tabs (where applicable)
+                + Choice to show allegiance background color on the information tabs (where applicable)
+                + Choice to automatically resize the width of information tabs to use all available space
+          o Preferences for each user are retained when you close the program.
+
+    * Characters listview
+          o Characters with zero skill no longer display a zero at the respective cell. The cell is blank now. 
+
+    * Hexes that contain pop centers of a known nation (xml imported) are considered "seen" now.
+
+    * Fixed some issues with the rumor viewer (Current Hex view). Added scrollbar when needed. 
+
+    * Changed the way the current hex is highlighted in the econo calc to make it stand out more. 
+
+    * Added Army tab, which shows all available armies for the turn. 
+
+    * Owned artifacts tab - added nation. 
+
+    * Added default sort order on various information tabs so that information is ordered better. Added button to the right (two arrows) so that the user can revert to the default sort if they have changed it. 
+
+    * When closing JOverseer the user is asked for confirmation. 
+
+    * Importing turns - the program now searches all available subfolders within a turn folder. 
+
+    * Fixed a bug with 330 order not showing the spell parameter in the Order Editor. 
+
+    * Army Size Estimates list view
+          o Fixed a bug that was confusing armies and navies
+          o Added navy size estimates
+
+    * Orders tab filter - now only nations for which the xmls have been imported are available. 
+
+    * Information tabs visualization enhancements:
+          o Added tab icons
+          o Changed the tab size so that the tab name is no longer truncated
+          o Added buttons on the right of the tabs to quickly access all the tabs 
+
+    * Fixed a bug with window manager - now clicking on the pin button no longer gives an error message.
+
+    * Artifact tabs
+          o Removed the Turn Artis tab as the information is already available in the LAs tab.
+          o Made some improvements to the LA tab (filters, new columns)
+
+    * The Encouters tab now shows multiple lines of text in each row. Let me know how you like this.
+
+    * Added Delete Last Turn menu option (Game -> Delete Last Turn). This option can be used to clear the latest turn so you can re-import it (if needed).
+    
+    * Selected hex is saved with the Game (upon Game -> Save Game) and restored when the game is loaded.
+
+    
+VERSION 0.9.1
+-------------
+
+25/3/2007
+
+	* Fixed a problem with nation names that contained accents ( e.g. Eothraim, Dunadain Rangers, etc) which was causing problems in parsing pdf data. Saved games are unfortunately not fixed, this change has an effect only on new games.
+	
+	* Fixed another minor bug with New Game and Nation names.
+	
+	* Added a new map option to control the way hexes are rendered (in response to remarks about colors seeming "subdued") 
+	  Now you can choose textured (the current graphics) or simple, which uses a single color to draw the hexes.
+	
+	* Ability to scroll the map using the keyboard (in response to Mark's request). You have to click on the map first so that it gets focus. Will see if I can add mouse dragging as well soon.
+	
+	* Improved the form that shows the progress when importing turns. When the process is finished, a message is shown explaining the kinds of errors that occurred (if any).
+
+	* Fixed a problem with the map size for the larger zoom levels (you were not able to see the whole map) as reported by Mark.
+	
+	
+    

@@ -10,7 +10,6 @@
 		<property name="viewDescriptors">
 			<list>
 				<value>artifactInfoListView</value>
-				<value>artifactListView</value>
 				<value>companyListView</value>
 				<value>encounterListView</value>
 				<value>enemyAgentListView</value>
@@ -262,23 +261,6 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.ArtifactInfoListView</value>
-		</property>
-	</bean>
-	
-	<bean id="artifactListView" 
-		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
-		
-		<property name="initMode">
-			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
-		</property>
-		<property name="initSide">
-			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
-		</property>
-		<property name="initIndex">
-			<value>3</value>
-		</property>
-		<property name="viewClass">
-			<value>org.joverseer.ui.listviews.ArtifactListView</value>
 		</property>
 	</bean>
 	

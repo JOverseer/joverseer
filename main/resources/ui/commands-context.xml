@@ -91,6 +91,8 @@
 			                <value>separator</value>
                             <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
                             <bean class="org.joverseer.ui.command.OpenGameDirTree"/>
+                            <bean class="org.joverseer.ui.command.DeleteLastTurnCommand"/>
+			                <value>separator</value>                            
                             <bean class="org.joverseer.ui.command.LoadGame"/>
                             <bean class="org.joverseer.ui.command.SaveGame"/>
 			                <value>separator</value>

@@ -1,8 +1,10 @@
 package org.joverseer.ui.command;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
@@ -120,7 +122,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
             return;
         }
         for (File tf : turnFolders) {
-            files = tf.listFiles(new XmlAndPdfFileFilter());
+            files = getFilesRecursive(tf, new XmlAndPdfFileFilter());
             for (File f : files) {
                 if (f.getAbsolutePath().endsWith(".xml")) {
                     try {
@@ -164,9 +166,24 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
     }
     
     
-    class XmlAndPdfFileFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
-            return name.endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", name);
+    class XmlAndPdfFileFilter implements FileFilter {
+        public boolean accept(File file) {
+            return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
         }
+    }
+    
+    private File[] getFilesRecursive(File folder, FileFilter filter) {
+        ArrayList<File> ret = new ArrayList<File>();
+        File[] files = folder.listFiles(filter);
+        ret.addAll(Arrays.asList(files));
+        FileFilter folderFilter = new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        };
+        for (File subfolder : folder.listFiles(folderFilter)) {
+            ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
+        }
+        return ret.toArray(new File[]{});
     }
 }

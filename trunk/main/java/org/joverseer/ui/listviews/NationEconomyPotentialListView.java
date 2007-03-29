@@ -6,13 +6,11 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
-import org.joverseer.domain.Character;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.listviews.NationEconomyPotentialTableModel.NationEconomyPotential;
-
+import org.joverseer.ui.domain.NationEconomyPotential;
 
 public class NationEconomyPotentialListView extends BaseItemListView {
 
@@ -21,7 +19,7 @@ public class NationEconomyPotentialListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{100, 64, 64, 64, 64, 64, 64};
+        return new int[]{100, 64, 64, 64, 64, 48, 64, 48, 64};
     }
 
     protected void setItems() {
@@ -37,6 +35,8 @@ public class NationEconomyPotentialListView extends BaseItemListView {
                 
                 
                 int bestNatSell = 0;
+                ProductEnum bestNatSellProd = null;
+                ProductEnum secondBestNatSellProd = null;
                 int secondBestNatSell = 0;
                 for (ProductEnum pe : ProductEnum.values()) {
                     if (pe == ProductEnum.Gold) continue;
@@ -45,11 +45,19 @@ public class NationEconomyPotentialListView extends BaseItemListView {
                     if (amt > bestNatSell) {
                         secondBestNatSell = bestNatSell;
                         bestNatSell = amt;
+                        secondBestNatSellProd = bestNatSellProd;
+                        bestNatSellProd = pe;
+                        
+                    } else if (amt > secondBestNatSell) {
+                        secondBestNatSell = amt;
+                        secondBestNatSellProd = pe;
                     }
                 }
                 
+                nep.setOneNatSellProduct(bestNatSellProd);
                 nep.setOneNatSell(bestNatSell);
-                nep.setTwoNatSells(bestNatSell + secondBestNatSell);
+                nep.setTwoNatSells(secondBestNatSell);
+                nep.setTwoNatSellProduct(secondBestNatSellProd);
                 
                 PopulationCenter capital = (PopulationCenter)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ne.getNationNo(), true});
                 if (capital != null) {

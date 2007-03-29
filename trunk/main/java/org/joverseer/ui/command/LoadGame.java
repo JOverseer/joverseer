@@ -1,5 +1,6 @@
 package org.joverseer.ui.command;
 
+import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -7,12 +8,14 @@ import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.JOverseerClient;
+import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -68,6 +71,31 @@ public class LoadGame extends ActionCommand {
                 gh.setGame(g);
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, g));
+                if (g.getParameter("horizontalMapScroll") != null) {
+                    MapPanel mp = MapPanel.instance();
+                    JScrollPane scp = (JScrollPane)mp.getParent().getParent();
+                    try {
+                        int hv = Integer.parseInt(g.getParameter("horizontalMapScroll"));
+                        int vv = Integer.parseInt(g.getParameter("verticalMapScroll"));
+                        scp.getHorizontalScrollBar().setValue(hv);
+                        scp.getVerticalScrollBar().setValue(vv);
+                    }
+                    catch (Exception exc) {
+                        
+                    }
+                }
+                if (g.getParameter("selHexX") != null) {
+                    try {
+                        int hx = Integer.parseInt(g.getParameter("selHexX"));
+                        int hy = Integer.parseInt(g.getParameter("selHexY"));
+                        Application.instance().getApplicationContext().publishEvent(
+                                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), new Point(hx, hy), g));
+                    }
+                    catch (Exception exc) {
+                        
+                    }
+                }
+                
             }
             catch (Exception exc) {
                 MessageDialog d = new MessageDialog("Error", exc.getMessage());

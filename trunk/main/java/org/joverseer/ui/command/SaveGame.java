@@ -5,10 +5,13 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.progress.BusyIndicator;
 import org.springframework.context.MessageSource;
+import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerClient;
+import org.joverseer.ui.map.MapPanel;
 
 import javax.swing.*;
+
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -47,8 +50,18 @@ public class SaveGame extends ActionCommand {
             File f = fileChooser.getSelectedFile();
             GZIPOutputStream zos;
             try {
+                Game g = gh.getGame();
+                MapPanel mp = MapPanel.instance();
+                JScrollPane scp = (JScrollPane)mp.getParent().getParent();
+                g.setParameter("horizontalMapScroll", String.valueOf(scp.getHorizontalScrollBar().getValue()));
+                g.setParameter("verticalMapScroll", String.valueOf(scp.getVerticalScrollBar().getValue()));
+                if (mp.getSelectedHex() != null) {
+                    g.setParameter("selHexX", String.valueOf((int)mp.getSelectedHex().getX()));
+                    g.setParameter("selHexY", String.valueOf((int)mp.getSelectedHex().getY()));
+                }
+
                 ObjectOutputStream out = new ObjectOutputStream(zos = new GZIPOutputStream(new FileOutputStream(f)));
-                out.writeObject(gh.getGame());
+                out.writeObject(g);
                 prefs.put("saveDir", f.getParent());
                 zos.finish();
                 out.close();

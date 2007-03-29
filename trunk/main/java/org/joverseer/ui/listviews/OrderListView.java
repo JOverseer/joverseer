@@ -24,6 +24,7 @@ import javax.swing.table.TableColumn;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
+import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
@@ -96,8 +97,9 @@ public class OrderListView extends ItemListView {
             Game g = GameHolder.instance().getGame();
             GameMetadata gm = g.getMetadata();
             for (int i = 1; i < 26; i++) {
+                PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", i);
+                if (pi == null) continue;
                 f = new OrderFilter(gm.getNationByNum(i).getName()) {
-
                     public boolean acceptCharacter(Character c) {
                         Game g = GameHolder.instance().getGame();
                         GameMetadata gm = g.getMetadata();

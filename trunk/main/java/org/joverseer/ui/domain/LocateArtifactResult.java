@@ -1,8 +1,9 @@
 package org.joverseer.ui.domain;
 
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.domain.IHasTurnNumber;
 
-    public class LocateArtifactResult implements IHasMapLocation {
+    public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
         int hexNo;
         String spellName;
         String caster;

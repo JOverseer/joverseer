@@ -176,7 +176,7 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	private static class DefaultCustomizer implements DockingManager.TabbedPaneCustomizer{
 	        
         	public void customize(JideTabbedPane tabbedPane) {
-                    tabbedPane.setTabResizeMode(JideTabbedPane.RESIZE_MODE_FIXED);
+                    tabbedPane.setTabResizeMode(JideTabbedPane.RESIZE_MODE_NONE);
                     tabbedPane.setShowTabButtons(true);
         	}
 	}

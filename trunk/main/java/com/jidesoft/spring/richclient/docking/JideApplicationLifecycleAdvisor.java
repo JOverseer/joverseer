@@ -21,10 +21,13 @@ import java.util.Locale;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.RepaintManager;
 
+import org.joverseer.game.Game;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.map.MapPanel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
@@ -138,6 +141,7 @@ public class JideApplicationLifecycleAdvisor extends
                 };
                 md.showDialog();
             }
+            
             return canCloseWindow;
 	}
 	

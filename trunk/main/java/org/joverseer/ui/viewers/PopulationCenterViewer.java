@@ -31,6 +31,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
@@ -160,8 +161,15 @@ public class PopulationCenterViewer extends ObjectViewer {
         }
         if (pc.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
             turnInfo.setVisible(true);
-            turnInfo.setText("Info from turn " + Math.min(pc.getInfoSource().getTurnNo(), 0));
-        } else {
+            turnInfo.setText("Info from turn " + Math.max(pc.getInfoSource().getTurnNo(), 0));
+        } 
+//        else if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource()) &&
+//                ((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo() < game.getCurrentTurn()) {
+//            turnInfo.setVisible(true);
+//            turnInfo.setText("Info from turn " + Math.max(((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo(), 0));
+//                
+//        }
+        else {
             turnInfo.setVisible(false);
         }
         

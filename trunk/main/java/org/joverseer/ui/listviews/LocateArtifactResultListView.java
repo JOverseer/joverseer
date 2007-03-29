@@ -11,6 +11,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.LocateArtifactResult;
+import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
@@ -53,11 +54,18 @@ public class LocateArtifactResultListView extends BaseItemListView {
             }
         }
         ArrayList items = new ArrayList();
+        AbstractListViewFilter filter = getActiveFilter();
         for (LocateArtifactResult lar : results.values()) {
-            items.add(lar);
+            if (filter == null || filter.accept(lar)) {
+                items.add(lar);
+            }
         }
         tableModel.setRows(items);
         tableModel.fireTableDataChanged();
+    }
+
+    protected AbstractListViewFilter[] getFilters() {
+        return TurnFilter.createTurnFiltersCurrentTurnAndAllTurns();
     }
     
 

@@ -60,6 +60,9 @@ VERSION 0.9.2
     
     * Selected hex is saved with the Game (upon Game -> Save Game) and restored when the game is loaded.
 
+    * Import Game Dir Tree now recognises more patterns for the names of turn folders.
+	
+	
     
 VERSION 0.9.1
 -------------

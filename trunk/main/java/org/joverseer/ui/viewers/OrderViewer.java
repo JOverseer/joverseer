@@ -27,6 +27,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.orders.OrderEditorForm;
 import org.joverseer.ui.orders.OrderVisualizationData;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
@@ -99,6 +100,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         
         OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
         draw.setSelected(ovd.contains(o));
+        draw.setVisible(GraphicUtils.canRenderOrder(o));
     }
 
     protected JComponent createFormControl() {
@@ -150,6 +152,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         draw.setPreferredSize(new Dimension(16, 16));
         draw.setOpaque(true);
         draw.setBackground(Color.white);
+        draw.setVisible(false);
         glb1.append(draw);
 
         JPanel p = glb1.getPanel();

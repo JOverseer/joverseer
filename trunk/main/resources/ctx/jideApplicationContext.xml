@@ -180,6 +180,7 @@
 	    <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
     </bean>
 	
+    <bean id="orderRenderer" class="org.joverseer.ui.map.renderers.OrderRenderer"/>
 	
 	<bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
         <property name="mapColumns">
@@ -203,7 +204,7 @@
                 <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
                 <ref bean="hexInfoRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.OrderRenderer"/>
+				<ref bean="orderRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
@@ -215,6 +216,8 @@
             </list>
         </property>
     </bean>
+    
+
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">

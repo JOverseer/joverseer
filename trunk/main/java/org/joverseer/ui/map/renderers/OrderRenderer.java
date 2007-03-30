@@ -52,8 +52,16 @@ public class OrderRenderer implements Renderer {
     private void init() {
         mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
-
+    
     public void render(Object obj, Graphics2D g, int x, int y) {
+        render(obj, g, x, y, true);
+    }
+    
+    public boolean canRender(Object obj) {
+        return render(obj, null, 1, 1, false);
+    }
+    
+    public boolean render(Object obj, Graphics2D g, int x, int y, boolean doRender) {
         if (mapMetadata == null) init();
 
         // todo render order
@@ -61,14 +69,27 @@ public class OrderRenderer implements Renderer {
         if (order.getOrderNo() == 810 ||
                 order.getOrderNo() == 870 ||
                 order.getOrderNo() == 820) {
-            renderCharacterMovementOrder(order, g);
+            if (doRender) {
+                renderCharacterMovementOrder(order, g);
+            }
+            return true;
         } else if (order.getOrderNo() == 850 || order.getOrderNo() == 860) {
-            renderArmyMovementOrder(order, g);
+            if (doRender) {
+                renderArmyMovementOrder(order, g);
+            }
+            return true;
         } else if (order.getOrderNo() == 947) {
-            renderNatTranOrder(order, g);
+            if (doRender) {
+                renderNatTranOrder(order, g);
+            }
+            return true;
         } else if (order.getOrderNo() == 948) {
-            renderTranCarOrder(order, g);
+            if (doRender) {
+                renderTranCarOrder(order, g);
+            }
+            return true;
         }
+        return false;
     }
 
     private void renderArmyMovementOrder(Order order, Graphics2D g) {

@@ -12,6 +12,10 @@ import java.awt.dnd.DropTargetListener;
 
 import javax.swing.text.JTextComponent;
 
+import org.joverseer.domain.Order;
+import org.joverseer.ui.map.renderers.OrderRenderer;
+import org.joverseer.ui.map.renderers.Renderer;
+import org.springframework.jca.cci.object.MappingRecordOperation;
 import org.springframework.richclient.application.Application;
 
 import com.jidesoft.docking.DockingManager;
@@ -73,5 +77,9 @@ public class GraphicUtils {
         window.getDockingManager().showFrame(id);
     }
     
-    
+    public static boolean canRenderOrder(Order o) {
+        Renderer orderRenderer = (Renderer)Application.instance().getApplicationContext().getBean("orderRenderer");
+        if (orderRenderer == null) return false;
+        return ((OrderRenderer)orderRenderer).canRender(o);
+    }
 }       

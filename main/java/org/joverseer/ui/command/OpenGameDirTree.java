@@ -6,16 +6,20 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
+import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
@@ -37,6 +41,8 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
     JOverseerClientProgressMonitor monitor;
     GameHolder gh;
     String turnFolderPattern = "t%g";
+    
+    static Log log = LogFactory.getLog(OpenGameDirTree.class);
 
     public OpenGameDirTree() {
         super("openGameDirTreeCommand");
@@ -63,9 +69,15 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
                     "t%s",
                     "t%02d",
                     "t%03d",
+                    "t %s",
+                    "t %02d",
+                    "t %03d",
                     "turn%s",
                     "turn%02d",
-                    "turn%03d"
+                    "turn%03d",
+                    "turn %s",
+                    "turn %02d",
+                    "turn %03d",
             };
             
 //            InputApplicationDialog dlg = new InputApplicationDialog();
@@ -86,6 +98,12 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
                     if (tf.exists()) {
                         turnFolders.add(tf);
                         files = tf.listFiles(new XmlAndPdfFileFilter());
+                        try {
+                            log.info("Adding turn folder " + tf.getCanonicalPath() + " with " + files.length + " files.");
+                        }
+                        catch (Exception exc) {
+                            
+                        }
                         fileCount += files.length;
                         break;
                     }

@@ -458,7 +458,7 @@ public class TurnXmlReader implements Runnable{
                 } else {
                     // army found
                     logger.debug("Army found in turn.");
-                    if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue())
+                    if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue() || newArmy.getNationNo() == turnInfo.getNationNo())
                     {
                         logger.debug("Replace.");
                         armies.removeItem(oldArmy);

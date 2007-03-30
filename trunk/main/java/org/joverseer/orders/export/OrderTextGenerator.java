@@ -37,7 +37,7 @@ public class OrderTextGenerator extends OrderFileGenerator {
         } else {
             String parameters = "";
             for (int i=0; i<16; i++) {
-                if (o.getParameter(i) == null || o.getParameter(i).equals("--")) continue;
+                if (o.getParameter(i) == null || o.getParameter(i).equals("--") || o.getParameter(i).equals("-")) continue;
                 parameters += (parameters.equals("") ? "" : "  ") + o.getParameter(i);
             }
             ret += (o.getNoAndCode().replace(" ", "  ") + "  " + parameters).trim(); 

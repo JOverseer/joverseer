@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,6 +28,7 @@ import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
+import org.joverseer.ui.command.OpenXmlDir;
 import org.joverseer.ui.support.ErrorDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -140,6 +142,11 @@ public class ExportOrdersForm extends AbstractForm {
                 fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
                 fileChooser.setApproveButtonText("Save");
                 fileChooser.setSelectedFile(new File(fname));
+                Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
+                String lastDir = prefs.get("importDir", null);
+                if (lastDir != null) {
+                    fileChooser.setCurrentDirectory(new File(lastDir));
+                }
                 if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
                     try {
                         pi.setTurnVersion(Integer.parseInt(version.getSelectedItem().toString()) + 1);

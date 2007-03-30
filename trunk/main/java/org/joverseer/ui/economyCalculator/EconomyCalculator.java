@@ -42,6 +42,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
 
+import com.jidesoft.grid.JideTable;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 
@@ -183,7 +184,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.relatedGapRow();
 
         MarketTableModel mtm = new MarketTableModel();
-        marketTable = new JTable(mtm);
+        marketTable = new JideTable(mtm);
+        ((JideTable)marketTable).setClearSelectionOnTableDataChanges(false);
         marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
         marketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (int i=0; i<mtm.getColumnCount(); i++) {
@@ -206,7 +208,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.relatedGapRow();
         
         EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
-        totalsTable = new JTable(ettm);
+        totalsTable = new JideTable(ettm);
+        ((JideTable)totalsTable).setClearSelectionOnTableDataChanges(false);
         totalsTable.getTableHeader().setVisible(false);
         for (int i=0; i<ettm.getColumnCount(); i++) {
             totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));

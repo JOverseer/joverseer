@@ -45,6 +45,8 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.list.SortedListModel;
 
+import com.jidesoft.swing.AutoCompletionComboBox;
+
 
 public class OrderEditor extends AbstractForm implements ApplicationListener {
     public static final String FORM_PAGE = "orderEditorForm";
@@ -201,7 +203,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         
         glb.append(new JLabel("Order :"));
         
-        glb.append(orderCombo = new JComboBox());
+        //orderCombo = new JComboBox();
+        orderCombo = new AutoCompletionComboBox();
+        glb.append(orderCombo);
 
         orderCombo.setPreferredSize(new Dimension(70, 18));
         orderCombo.addActionListener(new ActionListener() {
@@ -330,8 +334,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("nat")) {
                             sub = new NationParameterOrderSubeditor(paramDescription, o);
-                        } else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spz") || paramType.equals("spm") || paramType.equals("spl")) {
+                        } else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) {
                             sub = new SpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
+                        } else if (paramType.equals("spz")) {
+                        	sub = new ResearchSpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
                         }
                         if (sub != null) {
                             sub.addComponents(tlb, subeditorComponents, o, paramNo);
@@ -395,7 +401,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         Order o = (Order)obj;
         refreshOrderCombo();
         parameters.setText(o.getParameters());
-        orderCombo.setSelectedItem(o.getNoAndCode());
+        if (!o.isBlank()) {
+        	orderCombo.setSelectedItem(o.getNoAndCode());
+        } else {
+        	orderCombo.setSelectedIndex(0);
+        }
         Character c = o.getCharacter();
         if (c == null) {
             character.setText("");

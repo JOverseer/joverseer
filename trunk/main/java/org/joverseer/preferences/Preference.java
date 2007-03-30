@@ -60,11 +60,14 @@ public class Preference {
 
     public String getValue(String prefix) {
         if (valueCache != null) {
-            return getDefaultValue();
+            return valueCache;
         }
         Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
         String value = prefs.get(prefix + "." + key, null);
-        return value;
+        if (value != null) {
+        	return value;
+        }
+        return getDefaultValue();
     }
     
     public void setValue(String prefix, String value) {

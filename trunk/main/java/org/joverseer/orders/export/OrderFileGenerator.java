@@ -12,6 +12,8 @@ import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.ApplicationDescriptor;
 
 
 public class OrderFileGenerator {
@@ -73,9 +75,10 @@ public class OrderFileGenerator {
     }
     
     protected String getFileFooter() {
+    	ApplicationDescriptor appDesc = (ApplicationDescriptor)Application.instance().getApplicationContext().getBean("applicationDescriptor");
         return "\n" +
                 "ENDMEAUTOINPUT" + "\n" +
-                "AM03e.3";
+                "JO" + appDesc.getVersion();
     }
     
     protected String exportOrder(Character c, Order o) {
@@ -84,7 +87,7 @@ public class OrderFileGenerator {
         ret += o.getOrderNo();
         for (int i=0; i<16; i++) {
             String p = o.getParameter(i);
-            if (p == null || p.equals("")) {
+            if (p == null || p.equals("") || p.equals("-")) {
                 p = "--";
             }
             ret += "," + p;

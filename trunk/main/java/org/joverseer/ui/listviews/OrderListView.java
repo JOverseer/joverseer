@@ -55,6 +55,8 @@ import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
 
+import com.jidesoft.swing.AutoCompletionComboBox;
+
 
 public class OrderListView extends ItemListView {
 
@@ -218,7 +220,8 @@ public class OrderListView extends ItemListView {
                 }
                 SortedListModel slm = new SortedListModel(orders);
 
-                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
+                //JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
+                JComboBox comboBox = new AutoCompletionComboBox(new ComboBoxListModelAdapter(slm));
                 noAndCodeColumn.setCellEditor(new DefaultCellEditor(comboBox));
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {

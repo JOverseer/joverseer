@@ -37,7 +37,7 @@ public class PreferenceRegistry {
                 return p.getValue(getPrefix());
             }
         }
-        return null;
+        return "";
     }
     
     public void setPreferenceValue(String preferenceKey, String value) {

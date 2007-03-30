@@ -16,6 +16,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -30,17 +31,18 @@ public class OrderTableModel extends ItemTableModel {
     int drawColumnIndex = 5;
     int resultsColumnIndex = 6;
     int nationIndex = 0;
+    int costColumnIndex = 7;
     
     public OrderTableModel(MessageSource messageSource) {
         super(Order.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"character.nationNo", "character.name", "character.hexNo", "noAndCode", "parameters", "draw", "results"};
+        return new String[] {"character.nationNo", "character.name", "character.hexNo", "noAndCode", "parameters", "draw", "results", "cost"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class};  
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class, String.class};  
     }
 
 	
@@ -93,6 +95,17 @@ public class OrderTableModel extends ItemTableModel {
                 } 
             }
             return ico;
+        } else if (i == costColumnIndex) {
+            Order order = (Order)object;
+            OrderCostCalculator calc = new OrderCostCalculator();
+            int cost = calc.getOrderCost(order);
+            if (cost != 0) {
+                return cost;
+            } else if (cost == -1) {
+                return "Error";
+            } else {
+                return "";
+            }
         }
         return super.getValueAtInternal(object, i);
     }

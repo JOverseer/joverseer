@@ -9,9 +9,13 @@ import java.util.HashMap;
 public class ArmyRangeMapItem extends AbstractMapItem {
     Army army;
     HashMap rangeHexes;
+    boolean cav;
+    boolean fed;
     
     public ArmyRangeMapItem(int hexNo, boolean cav, boolean fed) {
         rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed);
+        this.cav = cav;
+        this.fed = fed;
     }
     
     public ArmyRangeMapItem(Army a) {
@@ -35,4 +39,26 @@ public class ArmyRangeMapItem extends AbstractMapItem {
     public String getDescription() {
         return String.format("Range for army {0} located at {1}.", new Object[]{getArmy().getCommanderName(), getArmy().getHexNo()});
     }
+
+    
+    public boolean isCav() {
+        return cav;
+    }
+
+    
+    public void setCav(boolean cav) {
+        this.cav = cav;
+    }
+
+    
+    public boolean isFed() {
+        return fed;
+    }
+
+    
+    public void setFed(boolean fed) {
+        this.fed = fed;
+    }
+    
+    
 }

@@ -1,5 +1,6 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -36,6 +38,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orderEditor.OrderEditor;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -50,6 +53,7 @@ import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
+import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
 
 
 public class OrderListView extends ItemListView {
@@ -63,7 +67,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {48, 64, 64, 96, 170, 30, 120};
+        return new int[] {48, 64, 64, 96, 170, 30, 120, 64};
     }
 
     protected void setItems() {
@@ -130,7 +134,31 @@ public class OrderListView extends ItemListView {
                 setItems();
             }
         });
-        table.setDefaultRenderer(Boolean.class, (new JTable().getDefaultRenderer(Boolean.class)));
+        table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Order o = (Order)tableModel.getRow(((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row));
+                if (GraphicUtils.canRenderOrder(o)) {
+                    JCheckBox b = new JCheckBox();
+                    b.setSelected((Boolean)value);
+                    b.setHorizontalAlignment(JCheckBox.CENTER);
+                    if (isSelected) {
+                        b.setBackground(Color.gray);
+                    } else {
+                        b.setBackground(Color.white);
+                    }
+                    return b;
+                } else {
+                    JLabel b = new JLabel(" ");
+                    if (isSelected) {
+                        b.setBackground(Color.gray);
+                    } else {
+                        b.setBackground(Color.white);
+                    }
+                    return b;
+                }
+            }
+            
+        });
         // specialized renderer for the icon returned by the orderResultType virtual field
         table.setDefaultRenderer(ImageIcon.class, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -150,8 +178,14 @@ public class OrderListView extends ItemListView {
                     lbl.setToolTipText(txt);
                 } else {
                     lbl.setToolTipText(null);
+                    lbl.setText(" ");
                 }
                 lbl.setHorizontalAlignment(JLabel.CENTER);
+                if (isSelected) {
+                    lbl.setBackground(Color.gray);
+                } else {
+                    lbl.setBackground(Color.white);
+                }
                 return lbl;
             }
             
@@ -271,6 +305,5 @@ public class OrderListView extends ItemListView {
         return new ColumnToSort[]{new ColumnToSort(0, 0, SortOrder.ASCENDING),
                 new ColumnToSort(0, 1, SortOrder.ASCENDING)};
     }
-    
     
 }

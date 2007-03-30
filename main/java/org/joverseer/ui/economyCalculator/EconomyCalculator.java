@@ -113,7 +113,6 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.cell(nationCombo = new JComboBox(), "align=left");
         nationCombo.setPreferredSize(new Dimension(200, 24));
         nationCombo.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
                 Game g = GameHolder.instance().getGame();
                 if (nationCombo.getSelectedItem() == null) return;
@@ -126,7 +125,6 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 refreshMarketLimitWarning();
                 sellBonus.setSelected(((EconomyTotalsTableModel)totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
             }
-            
         });
         lb.row();
         

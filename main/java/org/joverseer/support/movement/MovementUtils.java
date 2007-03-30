@@ -4,6 +4,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
@@ -77,6 +78,7 @@ public class MovementUtils {
             // out of map
             return -1;
         }
+        
         boolean roadExists = false;
         boolean bridgeOrFord = false;
         boolean minorRiver = false;
@@ -87,6 +89,11 @@ public class MovementUtils {
                     start.getHexSideElements(side).contains(HexSideElementEnum.Ford);
             minorRiver = start.getHexSideElements(side).contains(HexSideElementEnum.MinorRiver);
             majorRiver = start.getHexSideElements(side).contains(HexSideElementEnum.MajorRiver);
+        }
+        
+        // check if both start and dest are mountains and there is no road
+        if (start.getTerrain() == HexTerrainEnum.mountains && dest.getTerrain() == HexTerrainEnum.mountains && !roadExists) {
+            return -1;
         }
             
         // find appropriate cost matrix

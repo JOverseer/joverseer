@@ -11,6 +11,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class RangeMapItemRenderer extends DefaultHexRenderer {
@@ -47,8 +49,8 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
         int fontStyle = Font.PLAIN;
         Font f = new Font(fontName, fontStyle, fontSize);
 
-        GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
-
+        Color bgColor = getColorForArmy(armi.isFed());
+        
         HashMap rangeHexes = armi.getRangeHexes();
         for (Object hno : rangeHexes.keySet()) {
             int hexNo = (Integer)hno;
@@ -61,7 +63,7 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
             int h1 = w1;
             Point p = MapPanel.instance().getHexCenter(hexNo);
             Rectangle2D.Float e = new Rectangle2D.Float(p.x - w1 / 2 - 2, p.y - h1 / 2 - 2, w1 + 4, h1 + 4);
-            g.setColor(Color.RED);
+            g.setColor(bgColor);
             g.fill(e);
             g.setColor(Color.WHITE);
             g.draw(e);
@@ -70,6 +72,14 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
         }
     }
 
+    private Color getColorForArmy(boolean fed) {
+        MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");
+        if (!fed) {
+            return Color.decode(colorSource.getMessage("armyRangeBg.unfed.color", new Object[]{}, Locale.getDefault()));
+        } else {
+            return Color.decode(colorSource.getMessage("armyRangeBg.fed.color", new Object[]{}, Locale.getDefault()));
+        }
+    }
 
     private void renderCharacterRangeMapItem (Object obj, Graphics2D g, int x, int y) {
         CharacterRangeMapItem crmi = (CharacterRangeMapItem)obj;

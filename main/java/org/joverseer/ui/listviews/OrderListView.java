@@ -205,7 +205,7 @@ public class OrderListView extends ItemListView {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 setFilters();
-                TableColumn noAndCodeColumn = table.getColumnModel().getColumn(2);
+                TableColumn noAndCodeColumn = table.getColumnModel().getColumn(3);
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 ListListModel orders = new ListListModel();
                 orders.add(Order.NA);

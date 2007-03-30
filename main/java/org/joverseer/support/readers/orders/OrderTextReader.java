@@ -51,8 +51,8 @@ public class OrderTextReader {
                 String[] orderText = new String[]{null, null};
                 int[] orderLines = new int[]{0, 0};
     
-                String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?])* \\([\\w ]{5}\\) @ \\d{4}.*";
-                String orderPattern = "^\\d{3}  \\w{7}.*";
+                String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?])*\\s+\\([\\w ]{5}\\) @ \\d{4}.*";
+                String orderPattern = "^\\d{3}  \\w{6,7}.*";
                 
                 Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
                 int lineCounter = 0;
@@ -100,6 +100,9 @@ public class OrderTextReader {
         
         private void addOrders(String charId, String location, int charLine, String[] orderText, int[] orderLines, int pass) {
             Character c = (Character)getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charId);
+            if (c == null) {
+                c = (Character)getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charId.trim());
+            }
             if (c == null) {
                 String lineRes = lineResults.get(charLine);
                 lineRes += " " + "Character was not found in game.";

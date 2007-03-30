@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -23,12 +24,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
+import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -44,6 +47,7 @@ import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 public class EconomyCalculator extends AbstractView implements ApplicationListener {
     
+    JLabel autocalcOrderCost;
     JTable marketTable;
     JTable totalsTable;
     JTable pcTable;
@@ -59,13 +63,18 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshMarketLimitWarning();
+                refreshAutocalcOrderCost();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 loadNationCombo();
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshMarketLimitWarning();
+                refreshAutocalcOrderCost();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 loadNationCombo();
+                refreshAutocalcOrderCost();
+            } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+                refreshAutocalcOrderCost();
             }
 
         }
@@ -101,6 +110,28 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
+    private void refreshAutocalcOrderCost() {
+        int totalCost = 0;
+        OrderCostCalculator calc = new OrderCostCalculator();
+        for (Character c : (ArrayList<Character>)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", getSelectedNationNo())) {
+            for (int i=0; i<2; i++) {
+                if (c.getOrders()[i].isBlank()) continue;
+                int cost = calc.getOrderCost(c.getOrders()[i]);
+                if (cost > 0) {
+                    totalCost += cost;
+                }
+            }
+        }
+        autocalcOrderCost.setText(String.valueOf(totalCost));
+    }
+    
+    private int getSelectedNationNo() {
+        Game g = GameHolder.instance().getGame();
+        if (nationCombo.getSelectedItem() == null) return -1;
+        Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
+        return n.getNumber();
+    }
+    
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
 
@@ -123,6 +154,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshPcs(n.getNumber());
                 refreshMarketLimitWarning();
+                refreshAutocalcOrderCost();
                 sellBonus.setSelected(((EconomyTotalsTableModel)totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
             }
         });
@@ -188,6 +220,30 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
         lb.cell(scp);
+        
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
+        tlb.cell(new JLabel("Autocalc order cost: "), "colspec=left:100px");
+        tlb.gapCol();
+        autocalcOrderCost = new JLabel("0");
+        tlb.cell(autocalcOrderCost, "align=left");
+        
+        tlb.row();
+        tlb.relatedGapRow();
+        
+        JButton btn = new JButton("<- update");
+        btn.setPreferredSize(new Dimension(100, 24));
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                ((EconomyTotalsTableModel)totalsTable.getModel()).setOrdersCost(Integer.parseInt(autocalcOrderCost.getText()));
+                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();                
+            }
+        });
+        tlb.cell(btn);
+        tlb.cell(new JLabel());
+        JPanel pnl = tlb.getPanel();
+        pnl.setBackground(Color.white);
+        lb.gapCol();
+        lb.cell(pnl, "valign=top");
         lb.row();
         
         marketLimitWarning = new JLabel("Market limit warning!");
@@ -240,8 +296,6 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lostPopsTableModel.setRows(items);
         lostPopsTableModel.fireTableDataChanged();
     }
-
-
     
     public class MarketRenderer extends DefaultTableCellRenderer {
         Color[] rowColors = new Color[] {

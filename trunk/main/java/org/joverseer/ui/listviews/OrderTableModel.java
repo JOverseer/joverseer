@@ -47,7 +47,7 @@ public class OrderTableModel extends ItemTableModel {
 
 	
     protected boolean isCellEditableInternal(Object object, int i) {
-        return i>1 && i != resultsColumnIndex;
+        return i>2 && i != resultsColumnIndex;
     }
 
     public void fireTableCellUpdated(int row, int column) {
@@ -64,7 +64,7 @@ public class OrderTableModel extends ItemTableModel {
             Order order = (Order)object;
             Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             if (game == null) return "";
-            if (IBelongsToNation.class.isInstance(order.getCharacter()) && getColumnPropertyNames()[i].equals("nationNo")) {
+            if (IBelongsToNation.class.isInstance(order.getCharacter()) && getColumnPropertyNames()[i].endsWith("nationNo")) {
                 GameMetadata gm = game.getMetadata();
                 Integer nationNo = ((IBelongsToNation)order.getCharacter()).getNationNo();
                 if (nationNo == null) return "";

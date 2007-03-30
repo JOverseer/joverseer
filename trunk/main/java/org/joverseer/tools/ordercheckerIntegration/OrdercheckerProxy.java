@@ -20,9 +20,11 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Company;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -280,6 +282,7 @@ public class OrdercheckerProxy {
         }
         
         for (PopulationCenter popCenter : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+            if (popCenter.getSize() == PopulationCenterSizeEnum.ruins) continue;
             PopCenter pc = new PopCenter(popCenter.getHexNo());
             pc.setCapital(popCenter.getCapital() ? 1 : 0);
             pc.setDock(popCenter.getHarbor().getSize());
@@ -338,6 +341,13 @@ public class OrdercheckerProxy {
                         params.add(o.getParameter(i));
                         lastParam = i;
                     }
+                }
+                // fix army/navy movement order
+                // basically swap first and last params
+                if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
+                    String moveType = params.get(lastParam);
+                    params.set(lastParam, params.get(0));
+                    params.set(0, moveType);
                 }
                 for (int i=0; i<=lastParam; i++) {
                     mo.addParameter(params.get(i));
@@ -411,7 +421,11 @@ public class OrdercheckerProxy {
                     }
                 }
             } else if (prefix.equals("COMPANYCO")) {
-                //TODO continue
+                String commander = extractString(reqText, "Is ", " a company commander?");
+                Company company = (Company)t.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", commander);
+                if (company != null) {
+                    request.setSelected(true);
+                }
             }
             
         }

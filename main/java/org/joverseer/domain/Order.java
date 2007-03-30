@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 
 public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
-    public static String NA = "N/A";
+    public static String NA = " N/A";
     Integer nationNo;
 
     int orderNo = -1;

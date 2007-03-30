@@ -100,7 +100,13 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         
         OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
         draw.setSelected(ovd.contains(o));
-        draw.setVisible(GraphicUtils.canRenderOrder(o));
+        if (GraphicUtils.canRenderOrder(o)) {
+        	draw.setEnabled(true);
+        } else {
+        	draw.setEnabled(false);
+        	draw.setSelected(false);
+        }
+        
     }
 
     protected JComponent createFormControl() {
@@ -152,7 +158,8 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         draw.setPreferredSize(new Dimension(16, 16));
         draw.setOpaque(true);
         draw.setBackground(Color.white);
-        draw.setVisible(false);
+        draw.setVisible(true);
+        draw.setEnabled(false);
         glb1.append(draw);
 
         JPanel p = glb1.getPanel();

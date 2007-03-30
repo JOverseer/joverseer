@@ -28,6 +28,16 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.paramName = paramName;
         this.orderNo = orderNo;
     }
+    
+    protected void loadSpellCombo() {
+    	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+        parameter.addItem("");
+    	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
+            if (si.getOrderNumber() == orderNo) {
+                parameter.addItem(si.getNumber() + " - " + si.getName());
+            }
+        }
+    }
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
@@ -39,13 +49,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         spellNo.setVisible(false);
         tlb.row();
         
-        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-        parameter.addItem("");
-        for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
-            if (si.getOrderNumber() == orderNo) {
-                parameter.addItem(si.getNumber() + " - " + si.getName());
-            }
-        }
+        loadSpellCombo();
         
         // find and preload current spell (from order)
         if (o.getParameter(paramNo) != null) {

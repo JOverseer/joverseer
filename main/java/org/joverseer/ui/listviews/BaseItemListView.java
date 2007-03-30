@@ -200,7 +200,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
-                setItems();
+                //setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 if (filters != null) {
                     AbstractListViewFilter[] filterList = getFilters();

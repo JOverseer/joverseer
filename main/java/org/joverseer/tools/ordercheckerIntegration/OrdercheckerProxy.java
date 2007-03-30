@@ -79,7 +79,16 @@ public class OrdercheckerProxy {
             return;
         }
         Main.main.setMap(new Map());
-        ImportTerrainCsv terrain = new ImportTerrainCsv("bin/metadata/orderchecker/2950.game", Main.main.getMap());
+        String gt = "1650";
+        Game g = GameHolder.instance().getGame();
+        if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
+        	Main.main.getData().setGameType("1650");
+        	gt = "1650";        	
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
+        	Main.main.getData().setGameType("2950");
+        	gt = "2950";
+        } 
+        ImportTerrainCsv terrain = new ImportTerrainCsv("bin/metadata/orderchecker/" + gt + ".game", Main.main.getMap());
         result = terrain.getMapInformation();
         if(!result)
         {
@@ -335,7 +344,7 @@ public class OrdercheckerProxy {
                 ArrayList<String> params = new ArrayList<String>();
                 int lastParam = -1;
                 for (int i=0; i<17; i++) {
-                    if (o.getParameter(i) == null || o.getParameter(i).equals("--")) {
+                    if (o.getParameter(i) == null || o.getParameter(i).equals("--") || o.getParameter(i).equals("-")) {
                         params.add(o.getParameter(i));
                     } else {
                         params.add(o.getParameter(i));
@@ -390,6 +399,9 @@ public class OrdercheckerProxy {
             } 
         }
         
+        
+        Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
+        ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[]{});
         
         Main.main.setNation(nation);
     }

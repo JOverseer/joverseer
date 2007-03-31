@@ -67,10 +67,10 @@ public abstract class ItemListView extends BaseItemListView {
             }
             catch (Exception exc) {
                 // todo fix
-                int a = 1;
+            	tableModel.setRows(new ArrayList());
             }
         }
-        tableModel.fireTableDataChanged();
+        //tableModel.fireTableDataChanged();
     }
 
     

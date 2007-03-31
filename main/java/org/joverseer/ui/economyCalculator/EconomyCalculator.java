@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
 
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
@@ -35,6 +36,7 @@ import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -184,8 +186,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.relatedGapRow();
 
         MarketTableModel mtm = new MarketTableModel();
-        marketTable = new JideTable(mtm);
-        ((JideTable)marketTable).setClearSelectionOnTableDataChanges(false);
+        marketTable = new JOverseerTable(mtm);
+        
         marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
         marketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (int i=0; i<mtm.getColumnCount(); i++) {
@@ -208,8 +210,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.relatedGapRow();
         
         EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
-        totalsTable = new JideTable(ettm);
-        ((JideTable)totalsTable).setClearSelectionOnTableDataChanges(false);
+        totalsTable = new JOverseerTable(ettm); 
         totalsTable.getTableHeader().setVisible(false);
         for (int i=0; i<ettm.getColumnCount(); i++) {
             totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));

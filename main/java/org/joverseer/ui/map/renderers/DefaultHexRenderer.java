@@ -39,6 +39,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
     Color minorRiverColor;
     Color roadColor;
     Color bridgeFordColor;
+    HashMap mapOptions;
 
     public DefaultHexRenderer() {
     }
@@ -80,6 +81,8 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         setBridgeFordColor(Color.decode(colorStr));
 
         images.clear();
+        
+        mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
     }
 
     protected Polygon getSidePolygon(HexSideEnum side) {
@@ -167,7 +170,6 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         Hex hex = (Hex)obj;
         
         boolean imageDrawn = false;
-        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
         if (mapOptions.get(MapOptionsEnum.HexGraphics) == null || mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) {
         	BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", 
                 metadata.getGridCellWidth() * metadata.getHexSize(), 

@@ -24,15 +24,20 @@ import java.util.ArrayList;
 
 
 public class HexInfoRenderer extends DefaultHexRenderer {
+    GameHolder gh;
+    HashMap mapOptions;
+    int densityFactor = 4;
+    Renderer hexNumberRenderer = null;
+    BufferedImage img = null;
+
     @Override
     protected void init() {
         super.init();
         img = null;
+        gh = GameHolder.instance();
+        mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
     }
 
-    int densityFactor = 4;
-    Renderer hexNumberRenderer = null;
-    BufferedImage img = null;
 
     public int getDensityFactor() {
         return densityFactor;
@@ -48,8 +53,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
 
     private Image getImage() {
         if (img == null) {
-            MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
-            img = new BufferedImage(mm.getGridCellWidth() * mm.getHexSize(), mm.getGridCellHeight() * mm.getHexSize(), BufferedImage.TRANSLUCENT);
+            img = new BufferedImage(metadata.getGridCellWidth() * metadata.getHexSize(), metadata.getGridCellHeight() * metadata.getHexSize(), BufferedImage.TRANSLUCENT);
             Polygon polygon = new Polygon(xPoints, yPoints, 6);
             Graphics2D g = img.createGraphics();
 
@@ -95,8 +99,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         if (metadata == null) {
             init();
         }
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        Game game = gh.getGame();
+        
         Object map = mapOptions.get(MapOptionsEnum.NationMap);
         boolean showClimate = mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate) == MapOptionValuesEnum.ShowClimateOn;
         boolean visible = false;

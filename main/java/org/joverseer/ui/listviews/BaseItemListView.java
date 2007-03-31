@@ -113,6 +113,10 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             return null;
         return (AbstractListViewFilter) filters.getSelectedItem();
     }
+    
+    protected JTable createTable() {
+    	return TableUtils.createStandardSortableTable(tableModel);
+    }
 
     protected JComponent createControlImpl() {
 
@@ -154,7 +158,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         setItems();
 
         // create the JTable instance
-        table = TableUtils.createStandardSortableTable(tableModel);
+        table = createTable();
         org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
 
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");

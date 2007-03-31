@@ -69,8 +69,8 @@ public class TurnInitializer {
                 newRelations.addItem(nr);
             }
         }
-        newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name"}));
-        newTurn.getContainers().put(TurnElementsEnum.Army, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name", "hexNo"}));
+        newTurn.getContainers().put(TurnElementsEnum.Army, new Container(new String[]{"hexNo"}));
         newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
         newTurn.getContainers().put(TurnElementsEnum.Artifact, new Container(new String[]{"number", "hexNo"}));
         Container hexInfo = new Container(new String[]{"hexNo"});

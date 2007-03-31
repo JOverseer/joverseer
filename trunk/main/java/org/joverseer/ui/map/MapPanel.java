@@ -53,6 +53,7 @@ public class MapPanel extends JPanel implements MouseListener {
     BufferedImage mapBaseItemsBack = null;
     BufferedImage mapItemsBack = null;
     
+    MapMetadata metadata;
     
     Point selectedHex = null;
 
@@ -71,10 +72,17 @@ public class MapPanel extends JPanel implements MouseListener {
     private void setHexLocation(int x, int y) {
         location = getHexLocation(x, y);
     }
+    
+    protected MapMetadata getMetadata() {
+    	if (metadata == null) {
+    		metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata"); 
+    	}
+    	return metadata;
+    }
 
     public Point getHexCenter(int hexNo) {
         Point p = getHexLocation(hexNo);
-        MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        MapMetadata metadata = getMetadata(); 
         p.translate(metadata.getHexSize() * metadata.getGridCellWidth() / 2,
                     metadata.getHexSize() * metadata.getGridCellHeight() / 2);
         return p;
@@ -88,7 +96,7 @@ public class MapPanel extends JPanel implements MouseListener {
         Point location = new Point();
         x--;
         y--;
-        MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        MapMetadata metadata = getMetadata();
         if (y % 2 == 0) {
             location.setLocation(metadata.getHexSize() * metadata.getGridCellWidth() * x,
                                  metadata.getHexSize() * 3 / 4 * y * metadata.getGridCellHeight());
@@ -100,7 +108,7 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     private void setPoints(int x, int y) {
-        MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+    	MapMetadata metadata = getMetadata();
         xPoints[0] = metadata.getHexSize() / 2;
         xPoints[1] = metadata.getHexSize();
         xPoints[2] = metadata.getHexSize();
@@ -134,7 +142,7 @@ public class MapPanel extends JPanel implements MouseListener {
     private void createMap() {
         MapMetadata metadata;
         try {
-            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        	metadata = getMetadata();        
         }
         catch (Exception exc) {
             // application is not ready
@@ -178,7 +186,7 @@ public class MapPanel extends JPanel implements MouseListener {
     private void createMapItems() {
         MapMetadata metadata;
         try {
-            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        	metadata = getMetadata();
         }
         catch (Exception exc) {
             // application is not ready
@@ -244,7 +252,7 @@ public class MapPanel extends JPanel implements MouseListener {
     private void createMapBaseItems() {
         MapMetadata metadata;
         try {
-            metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+        	metadata = getMetadata();
         }
         catch (Exception exc) {
             // application is not ready
@@ -422,6 +430,8 @@ public class MapPanel extends JPanel implements MouseListener {
     }
     
     public void invalidateAndReset() {
+    	metadata = null;
+    	map = null;
         mapBack = null;
         mapItemsBack = null;
         mapBaseItemsBack = null;
@@ -429,6 +439,7 @@ public class MapPanel extends JPanel implements MouseListener {
     }
 
     public void invalidateAll() {
+    	metadata = null;
         map = null;
         mapBaseItems = null;
         mapItems = null;
@@ -436,6 +447,7 @@ public class MapPanel extends JPanel implements MouseListener {
     }
     
     public void invalidateMapItems() {
+    	metadata = null;
         mapItems = null;
     }
 

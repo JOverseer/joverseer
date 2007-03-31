@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -40,6 +41,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.JOverseerTable;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
@@ -53,6 +55,7 @@ import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
+import org.springframework.richclient.table.TableUtils;
 import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
 
 import com.jidesoft.swing.AutoCompletionComboBox;
@@ -124,6 +127,15 @@ public class OrderListView extends ItemListView {
        for (OrderFilter f : filterList) {
            combo.addItem(f);
        }
+    }
+    
+    protected JTable createTable() {
+    	JTable table = TableUtils.createStandardSortableTable(tableModel);
+    	JTable newTable = new JOverseerTable(table.getModel());
+    	newTable.setColumnModel(table.getColumnModel());
+    	newTable.setAutoResizeMode(table.getAutoResizeMode());
+    	table = null;
+    	return newTable;
     }
 
     protected JComponent createControlImpl() {

@@ -23,7 +23,7 @@ public class OrderFileGenerator {
         Collections.sort(chars, new BeanComparator("id"));
         ArrayList<Character> toRemove = new ArrayList<Character>();
         for (Character ch : chars) {
-            if (ch.getHealth() == null || ch.getHealth() == 0) {
+            if (ch.getHealth() == null || ch.getHealth() == 0 || ch.getHexNo() <= 0) {
                 toRemove.add(ch);
             }
         }

@@ -95,6 +95,10 @@ public class MovementUtils {
         if (start.getTerrain() == HexTerrainEnum.mountains && dest.getTerrain() == HexTerrainEnum.mountains && !roadExists) {
             return -1;
         }
+        
+        if (majorRiver && !bridgeOrFord) {
+        	return -1;
+        }
             
         // find appropriate cost matrix
         int[] movementCosts;

@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Order;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+import com.jidesoft.swing.AutoCompletionComboBox;
+
 
 public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox combo;
@@ -30,7 +32,7 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(combo = new JComboBox(), "colspec=left:100px");
+        tlb.cell(combo = new AutoCompletionComboBox(), "colspec=left:100px");
         combo.setPreferredSize(new Dimension(100, 18));
         combo.addItem("");
         for (String v : descriptions) {

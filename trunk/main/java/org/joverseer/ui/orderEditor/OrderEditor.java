@@ -7,6 +7,10 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -31,6 +35,7 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.AutocompletionComboBox;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -43,6 +48,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
+import org.springframework.richclient.list.EditableComboBoxAutoCompletion;
 import org.springframework.richclient.list.SortedListModel;
 
 import com.jidesoft.swing.AutoCompletionComboBox;
@@ -57,6 +63,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     JLabel descriptionLabel;
     JPanel subeditorPanel;
     JPanel myPanel;
+    
+    String currentOrderNoAndCode = "";
     
     ArrayList<JComponent> subeditorComponents = new ArrayList<JComponent>(); 
     
@@ -204,18 +212,22 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         glb.append(new JLabel("Order :"));
         
         //orderCombo = new JComboBox();
-        orderCombo = new AutoCompletionComboBox();
+        //orderCombo.setEditable(true);
+        //new EditableComboBoxAutoCompletion(orderCombo);
+        orderCombo = new AutocompletionComboBox();
         glb.append(orderCombo);
 
         orderCombo.setPreferredSize(new Dimension(70, 18));
         orderCombo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                refreshOrder();
-                refreshDescription();
-                refreshSubeditor();
+            	if (!currentOrderNoAndCode.equals(orderCombo.getSelectedItem())) {
+            		currentOrderNoAndCode = orderCombo.getSelectedItem().toString();
+            		refreshOrder();
+					refreshDescription();
+					refreshSubeditor();
+				}
             }
         });
-        
         
         glb.nextLine();
         
@@ -252,12 +264,14 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         return myPanel;
     }
     
-    private void refreshOrder() {
+    private boolean refreshOrder() {
         Order o = (Order)getFormObject();
         if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) {
             o.setParameters("");
             parameters.setText(o.getParameters());
+            return true;
         }
+        return false;
     }
     
     private String getSelectedOrderNo() {
@@ -328,6 +342,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("d")) {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
+                        } else if (paramType.equals("dcid")) {
+                            sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("i")) {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("dir") || paramType.equals("dirx")) {
@@ -393,7 +409,6 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 //        Point selectedHex = new Point(o.getCharacter().getX(), o.getCharacter().getY());
 //        Application.instance().getApplicationContext().publishEvent(
 //                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
-        
     }
     
     public void setFormObject(Object obj) {
@@ -406,6 +421,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         } else {
         	orderCombo.setSelectedIndex(0);
         }
+    	refreshOrder();
+		refreshDescription();
+		refreshSubeditor();
+        currentOrderNoAndCode = o.getNoAndCode(); 
         Character c = o.getCharacter();
         if (c == null) {
             character.setText("");

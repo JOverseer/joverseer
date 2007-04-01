@@ -80,9 +80,16 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
             return;
         }
         int i = noAndDescr.indexOf(' ');
+        if (i == -1) {
+        	i = 3;
+        }
         String no = noAndDescr.substring(0, i);
-        setOrderNo(Integer.parseInt(no));
-        // todo handle exceptions
+        try {
+        	setOrderNo(Integer.parseInt(no));
+        }
+        catch (Exception exc) {
+        	clear();
+        }
     }
 
     public String getNoAndCode() {

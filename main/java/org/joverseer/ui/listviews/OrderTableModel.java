@@ -21,6 +21,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.orderEditor.OrderParameterValidator;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.domain.IBelongsToNation;
@@ -28,21 +29,26 @@ import org.joverseer.domain.Order;
 
 
 public class OrderTableModel extends ItemTableModel {
-    int drawColumnIndex = 5;
-    int resultsColumnIndex = 6;
+    int drawColumnIndex = 6;
+    int resultsColumnIndex = 7;
     int nationIndex = 0;
-    int costColumnIndex = 7;
+    int costColumnIndex = 8;
+    int errorsColumnIndex = 5;
+    int noAndCodeIndex = 3;
+    int paramIndex = 4;
+    
+    OrderParameterValidator validator = new OrderParameterValidator();
     
     public OrderTableModel(MessageSource messageSource) {
         super(Order.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"character.nationNo", "character.name", "character.hexNo", "noAndCode", "parameters", "draw", "results", "cost"};
+        return new String[] {"character.nationNo", "character.name", "character.hexNo", "noAndCode", "parameters", "errors", "draw", "results", "cost"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class, String.class};  
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class, String.class};  
     }
 
 	
@@ -51,11 +57,11 @@ public class OrderTableModel extends ItemTableModel {
     }
 
     public void fireTableCellUpdated(int row, int column) {
-        super.fireTableCellUpdated(row, column);
+        //super.fireTableCellUpdated(row, column);
         Point selectedHex = MapPanel.instance().getSelectedHex();
         if (selectedHex != null) {
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshHexItems.toString(), selectedHex, this));
         }
     }
 
@@ -106,24 +112,43 @@ public class OrderTableModel extends ItemTableModel {
             } else {
                 return "";
             }
+        } else if (i == errorsColumnIndex) {
+        	String txt = "";
+        	Order order = (Order)object;
+        	for (int j=0; j<9; j++) {
+        		String msg = validator.checkParam(order, j);
+        		if (msg != null) {
+        			msg = "Param " + j + " " + msg;
+        			txt += (txt.equals("") ? "" : ", ") + msg;
+        		}
+        	}
+        	return txt;
         }
         return super.getValueAtInternal(object, i);
     }
 
-    protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
-        if (arg2 == drawColumnIndex) {
+    protected void setValueAtInternal(Object v, Object obj, int col) {
+        if (col == drawColumnIndex) {
             OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
-            if (ovd.contains((Order)arg1)) {
-                ovd.removeOrder((Order)arg1);
+            if (ovd.contains((Order)obj)) {
+                ovd.removeOrder((Order)obj);
             } else {
-                ovd.addOrder((Order)arg1);
+                ovd.addOrder((Order)obj);
             }
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
 
             return;
-        }
-        super.setValueAtInternal(arg0, arg1, arg2);
+        } else if (col == noAndCodeIndex) {
+        	Order o = (Order)obj;
+        	String oldNoAndCode = o.getNoAndCode();
+        	o.setNoAndCode(v.toString());
+        	if (!oldNoAndCode.equals(o.getNoAndCode())) {
+        		o.setParameters("");
+        	}
+        	return;
+        } 
+        super.setValueAtInternal(v, obj, col);
     }
     
     

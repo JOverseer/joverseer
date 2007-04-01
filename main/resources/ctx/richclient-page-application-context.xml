@@ -379,7 +379,7 @@
 			<value>3</value>
 		</property>
 		<property name="viewClass">
-			<value>org.joverseer.ui.listviews.OrderListView</value>
+			<value>org.joverseer.ui.listviews.OrderEditorListView</value>
 		</property>
 	</bean>
 	

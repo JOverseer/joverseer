@@ -236,4 +236,12 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
         return lostGoldRevenue;
     }
+    
+    public int getTaxIncrease() {
+        NationEconomy ne = getNationEconomy();
+        int finalGold = getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
+        if (finalGold >= 0) return 0;
+        int newTaxRevenue = (computeLostGoldRevenue() - finalGold) / (getTaxRevenue() / ne.getTaxRate() - computeLostTaxRevenue() / ne.getTaxRate());  
+        return newTaxRevenue;
+    }
 }

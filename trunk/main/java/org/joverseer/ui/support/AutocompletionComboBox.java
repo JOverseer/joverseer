@@ -65,7 +65,9 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
 
 			public void focusLost(FocusEvent e) {
 				fireActionEvent(true);
-				e.getOppositeComponent().requestFocus();
+                                if (e.getOppositeComponent() != null) {
+                                    e.getOppositeComponent().requestFocus();
+                                }
 			}
 			
 		});

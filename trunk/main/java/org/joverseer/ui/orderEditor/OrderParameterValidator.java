@@ -87,17 +87,31 @@ public class OrderParameterValidator {
     }
     
 	public String checkParam(Order o, int iParam) {
+                if (o.isBlank()) return null;
+                
+                String paramValue = o.getParameter(iParam);
+                if (paramValue == null || paramValue.equals("--") || paramValue.equals("")) {
+                        paramValue = "-";
+                }
+
+                // moveArmy order and high number param
+                if (o.getOrderNo() == 850 || o.getOrderNo() == 860 || o.getOrderNo() == 830) {
+                    if (iParam > 8) {
+                        if (isEmpty(paramValue) || inList(paramValue, "e,ne,nw,se,se,w,h")) {
+                            return null;
+                        } else {
+                            return "must be one of " + "e,ne,nw,se,se,w,no,ev";
+                        }
+                    }
+                }
+                
 		OrderEditorData oed = (OrderEditorData)getOrderEditorData().findFirstByProperty("orderNo", o.getOrderNo());
 		if (oed == null) {
-			return "OED not found";
+		    return "OED not found";
 		}
 		String paramType = "";
 		if (iParam < oed.getParamTypes().size()) {
 			paramType = oed.getParamTypes().get(iParam);
-		}
-		String paramValue = o.getParameter(iParam);
-		if (paramValue == null || paramValue.equals("--") || paramValue.equals("")) {
-			paramValue = "-";
 		}
 		if (paramType == null) {
 			paramType = "";

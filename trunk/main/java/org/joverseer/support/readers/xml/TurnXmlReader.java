@@ -329,7 +329,7 @@ public class TurnXmlReader implements Runnable{
                     else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
                         if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
                             newPc.setName(oldPc.getName());
-                            newPc.setNationNo(oldPc.getNationNo());
+                            //newPc.setNationNo(oldPc.getNationNo());
                         }
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
@@ -340,7 +340,9 @@ public class TurnXmlReader implements Runnable{
                 // but the current nation did not have them in the xml
                 ArrayList<PopulationCenter> potentiallyLostPops = (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", turnInfo.getNationNo());
                 for (PopulationCenter pop : potentiallyLostPops) {
+                    if (pop.getInfoSource().getTurnNo() == turnInfo.getTurnNo() && pop.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
                     if (currentNationPops.contains(pop)) continue;
+                    
                     // pop has been lost
                     pop.setNationNo(0);
                 }

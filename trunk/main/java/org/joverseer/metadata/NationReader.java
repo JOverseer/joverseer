@@ -8,102 +8,108 @@ import java.util.ArrayList;
 
 
 public class NationReader implements MetadataReader {
-    String[][] nations_2950 =
-            new String[][]{
-                    {"Unknown", "Un"},
-                    {"Woodmen", "Wm"},
-                    {"Northmen", "Nm"},
-                    {"Riders of Rohan", "RoR"},
-                    {"Dúnadan Rangers", "DR"},
-                    {"Silvan Elves", "Sil"},
-                    {"Northern Gondor", "NG"},
-                    {"Southern Gondor", "SG"},
-                    {"Dwarves", "Dwa"},
-                    {"Sinda Elves", "Sin"},
-                    {"Noldo Elves", "No"},
-                    {"Witch-king", "WK"},
-                    {"Dragon Lord", "DL"},
-                    {"Dog Lord", "DoL"},
-                    {"Cloud Lord", "CL"},
-                    {"Blind Sorcerer", "BS"},
-                    {"Ice King", "IK"},
-                    {"Quiet Avenger", "QA"},
-                    {"Fire King", "FK"},
-                    {"Long Rider", "LR"},
-                    {"Dark Lieutenants", "DkL"},
-                    {"Corsairs", "Co"},
-                    {"Rhûn Easterlings", "Ea"},
-                    {"Dunlendings", "Du"},
-                    {"White Wizard", "WW"},
-                    {"Khand Easterlings", "Kh"},
+    Object[][] nations_2950 =
+            new Object[][]{
+                    {"Unknown", "Un", new Object[]{}},
+                    {"Woodmen", "Wm", new Object[]{}},
+                    {"Northmen", "Nm", new Object[]{SNAEnum.ShipsWith750Timber}},
+                    {"Riders of Rohan", "RoR", new Object[]{}},
+                    {"Dúnadan Rangers", "DR", new Object[]{}},
+                    {"Silvan Elves", "Sil", new Object[]{}},
+                    {"Northern Gondor", "NG", new Object[]{SNAEnum.FortificationsWithHalfTimber}},
+                    {"Southern Gondor", "SG", new Object[]{SNAEnum.FortificationsWithHalfTimber}},
+                    {"Dwarves", "Dwa", new Object[]{}},
+                    {"Sinda Elves", "Sin", new Object[]{SNAEnum.ShipsWith500Timber}},
+                    {"Noldo Elves", "No", new Object[]{}},
+                    {"Witch-king", "WK", new Object[]{}},
+                    {"Dragon Lord", "DL", new Object[]{}},
+                    {"Dog Lord", "DoL", new Object[]{}},
+                    {"Cloud Lord", "CL", new Object[]{}},
+                    {"Blind Sorcerer", "BS", new Object[]{}},
+                    {"Ice King", "IK", new Object[]{}},
+                    {"Quiet Avenger", "QA", new Object[]{}},
+                    {"Fire King", "FK", new Object[]{SNAEnum.FreeHire}},
+                    {"Long Rider", "LR", new Object[]{}},
+                    {"Dark Lieutenants", "DkL", new Object[]{}},
+                    {"Corsairs", "Co", new Object[]{SNAEnum.ShipsWith750Timber}},
+                    {"Rhûn Easterlings", "Ea", new Object[]{}},
+                    {"Dunlendings", "Du", new Object[]{}},
+                    {"White Wizard", "WW", new Object[]{SNAEnum.FreeHire}},
+                    {"Khand Easterlings", "Kh", new Object[]{}},
             };
 
-    String[][] nations_1650 =
-        new String[][]{
-                {"Unknown", "Un"},
-                {"Woodmen", "Wm"},
-                {"Northmen", "Nm"},
-                {"Éothraim", "Eo"},
-                {"Arthedain", "Ar"},
-                {"Cardolan", "Ca"},
-                {"Northern Gondor", "NG"},
-                {"Southern Gondor", "SG"},
-                {"Dwarves", "Dwa"},
-                {"Sinda Elves", "Sin"},
-                {"Noldo Elves", "No"},
-                {"Witch-king", "WK"},
-                {"Dragon Lord", "DL"},
-                {"Dog Lord", "DoL"},
-                {"Cloud Lord", "CL"},
-                {"Blind Sorcerer", "BS"},
-                {"Ice King", "IK"},
-                {"Quiet Avenger", "QA"},
-                {"Fire King", "FK"},
-                {"Long Rider", "LR"},
-                {"Dark Lieutenants", "DkL"},
-                {"Corsairs", "Co"},
-                {"Haradwaith", "Ha"},
-                {"Dunlendings", "Du"},
-                {"Rhudaur", "Ru"},
-                {"Easterlings", "Ea"},
+    Object[][] nations_1650 =
+        new Object[][]{
+                {"Unknown", "Un", new Object[]{}},
+                {"Woodmen", "Wm", new Object[]{}},
+                {"Northmen", "Nm", new Object[]{SNAEnum.ShipsWith750Timber}},
+                {"Éothraim", "Eo", new Object[]{}},
+                {"Arthedain", "Ar", new Object[]{}},
+                {"Cardolan", "Ca", new Object[]{SNAEnum.FreeHire}},
+                {"Northern Gondor", "NG", new Object[]{SNAEnum.FortificationsWithHalfTimber}},
+                {"Southern Gondor", "SG", new Object[]{SNAEnum.FortificationsWithHalfTimber}},
+                {"Dwarves", "Dwa", new Object[]{}},
+                {"Sinda Elves", "Sin", new Object[]{SNAEnum.ShipsWith500Timber}},
+                {"Noldo Elves", "No", new Object[]{}},
+                {"Witch-king", "WK", new Object[]{}},
+                {"Dragon Lord", "DL", new Object[]{}},
+                {"Dog Lord", "DoL", new Object[]{}},
+                {"Cloud Lord", "CL", new Object[]{}},
+                {"Blind Sorcerer", "BS", new Object[]{}},
+                {"Ice King", "IK", new Object[]{}},
+                {"Quiet Avenger", "QA", new Object[]{}},
+                {"Fire King", "FK", new Object[]{SNAEnum.FreeHire}},
+                {"Long Rider", "LR", new Object[]{}},
+                {"Dark Lieutenants", "DkL", new Object[]{}},
+                {"Corsairs", "Co", new Object[]{SNAEnum.ShipsWith750Timber}},
+                {"Haradwaith", "Ha", new Object[]{SNAEnum.FreeHire}},
+                {"Dunlendings", "Du", new Object[]{}},
+                {"Rhudaur", "Ru", new Object[]{SNAEnum.FreeHire}},
+                {"Easterlings", "Ea", new Object[]{}},
         };
     
-    String[][] nations_BOFA = 
-    	new String[][]{
-    		{"Unknown", "Un"},
-    		{"North Kingdom", "NK"},
-    		{"South Kingdom", "SK"},
-    		{"Unplayed Nat III", "UN3"},
-    		{"Unplayed Nat IV", "UN4"},
-    		{"Unplayed V", "UN5"},
-    		{"Unplayed VI", "UN6"},
-    		{"Unplayed VII", "UN7"},
-    		{"Unplayed VIII", "UN8"},
-    		{"Unplayed IX", "UN8"},
-    		{"Goblins", "Go"},
-    		{"Warg Riders", "Wa"},
-    		{"Elves", "El"},
-    		{"Dwarves", "Dwa"},
-    		{"Northmen", "Nmen"},
-    		{"Unplayed XV", "UN15"},
-    		{"Unplayed XVI", "UN16"},
-    		{"Unplayed XVII", "UN17"},
-    		{"Unplayed XVIII", "UN18"},
-    		{"Unplayed XIX", "UN19"},
-    		{"Unplayed XX", "UN20"},
-    		{"Unplayed XXI", "UN21"},
-    		{"Unplayed XXII", "UN22"},
-    		{"Unplayed XXIII", "UN23"},
-    		{"Unplayed XXIV", "UN24"},
-    		{"Unplayed XXV", "UN25"}
+    Object[][] nations_BOFA = 
+    	new Object[][]{
+    		{"Unknown", "Un", new Object[]{}},
+    		{"North Kingdom", "NK", new Object[]{}},
+    		{"South Kingdom", "SK", new Object[]{}},
+    		{"Unplayed Nat III", "UN3", new Object[]{}},
+    		{"Unplayed Nat IV", "UN4", new Object[]{}},
+    		{"Unplayed V", "UN5", new Object[]{}},
+    		{"Unplayed VI", "UN6", new Object[]{}},
+    		{"Unplayed VII", "UN7", new Object[]{}},
+    		{"Unplayed VIII", "UN8", new Object[]{}},
+    		{"Unplayed IX", "UN8", new Object[]{}},
+    		{"Goblins", "Go", new Object[]{}},
+    		{"Warg Riders", "Wa", new Object[]{}},
+    		{"Elves", "El", new Object[]{}},
+    		{"Dwarves", "Dwa", new Object[]{}},
+    		{"Northmen", "Nmen", new Object[]{}},
+    		{"Unplayed XV", "UN15", new Object[]{}},
+    		{"Unplayed XVI", "UN16", new Object[]{}},
+    		{"Unplayed XVII", "UN17", new Object[]{}},
+    		{"Unplayed XVIII", "UN18", new Object[]{}},
+    		{"Unplayed XIX", "UN19", new Object[]{}},
+    		{"Unplayed XX", "UN20", new Object[]{}},
+    		{"Unplayed XXI", "UN21", new Object[]{}},
+    		{"Unplayed XXII", "UN22", new Object[]{}},
+    		{"Unplayed XXIII", "UN23", new Object[]{}},
+    		{"Unplayed XXIV", "UN24", new Object[]{}},
+    		{"Unplayed XXV", "UN25", new Object[]{}}
     };
+    
+    private void addSNAs(Nation n, Object[] snas) {
+        for (Object sna : snas) {
+            n.getSnas().add((SNAEnum)sna);
+        }
+    }
     
     public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         ArrayList nations = new ArrayList();
         if (gm.getGameType() == GameTypeEnum.game2950) {
             for (int i=0; i<26; i++) {
-                String shortName = nations_2950[i][1];
-                String name = nations_2950[i][0];
+                String shortName = (String)nations_2950[i][1];
+                String name = (String)nations_2950[i][0];
                 Nation n = new Nation(i, name, shortName);
                 if (n.getNumber() <= 10) {
                     n.setAllegiance(NationAllegianceEnum.FreePeople);
@@ -112,12 +118,13 @@ public class NationReader implements MetadataReader {
                 } else {
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
+                addSNAs(n, (Object[])nations_2950[i][2]);
                 nations.add(n);
             }
         } else if (gm.getGameType() == GameTypeEnum.game1650) {
             for (int i=0; i<26; i++) {
-                String shortName = nations_1650[i][1];
-                String name = nations_1650[i][0];
+                String shortName = (String)nations_1650[i][1];
+                String name = (String)nations_1650[i][0];
                 Nation n = new Nation(i, name, shortName);
                 if (n.getNumber() <= 10) {
                     n.setAllegiance(NationAllegianceEnum.FreePeople);
@@ -126,13 +133,14 @@ public class NationReader implements MetadataReader {
                 } else {
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
+                addSNAs(n, (SNAEnum[])nations_2950[i][2]);
                 nations.add(n);
             }
         }
         else if (gm.getGameType() == GameTypeEnum.gameBOFA) {
             for (int i=0; i<26; i++) {
-                String shortName = nations_BOFA[i][1];
-                String name = nations_BOFA[i][0];
+                String shortName = (String)nations_BOFA[i][1];
+                String name = (String)nations_BOFA[i][0];
                 Nation n = new Nation(i, name, shortName);
                 if (n.getNumber() <= 11) {
                     n.setAllegiance(NationAllegianceEnum.DarkServants);
@@ -141,6 +149,7 @@ public class NationReader implements MetadataReader {
                 } else {
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
+                addSNAs(n, (SNAEnum[])nations_2950[i][2]);
                 nations.add(n);
             }
         }

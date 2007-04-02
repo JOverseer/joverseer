@@ -48,7 +48,7 @@ public class OrderTableModel extends ItemTableModel {
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class, String.class};  
+        return new Class[]{String.class, String.class, Integer.class, String.class, String.class, String.class, Boolean.class, ImageIcon.class, String.class};  
     }
 
 	
@@ -123,6 +123,9 @@ public class OrderTableModel extends ItemTableModel {
         		}
         	}
         	return txt;
+        } else if (i == paramIndex) {
+            Order order = (Order)object;
+            return Order.getParametersAsString(order.getParameters());
         }
         return super.getValueAtInternal(object, i);
     }
@@ -147,7 +150,14 @@ public class OrderTableModel extends ItemTableModel {
         		o.setParameters("");
         	}
         	return;
-        } 
+        } else if (col == paramIndex) {
+            if (v != null) {
+                String txt = (String)v;
+                txt = txt.replace(" ", "#");
+                v = txt;
+            }
+            super.setValueAtInternal(v, obj, col);
+        }
         super.setValueAtInternal(v, obj, col);
     }
     

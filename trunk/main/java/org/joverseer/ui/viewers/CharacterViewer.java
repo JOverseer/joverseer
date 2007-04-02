@@ -630,7 +630,7 @@ public class CharacterViewer extends ObjectViewer {
                             .getSelectedHex(), this));
         }
     }
-
+    
     private JPopupMenu createCharacterPopupContextMenu() {
         Character c = (Character) getFormObject();
         showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);

@@ -19,6 +19,7 @@ import org.springframework.context.MessageSource;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.HarborSizeEnum;
+import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
@@ -159,19 +160,46 @@ public class PopulationCenterViewer extends ObjectViewer {
         } else {
             lostThisTurn.setVisible(false);
         }
+        turnInfo.setVisible(false);
         if (pc.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
             turnInfo.setVisible(true);
             turnInfo.setText("Info from turn " + Math.max(pc.getInfoSource().getTurnNo(), 0));
-        } 
+        } else {
+            // current turn
+            // check information source
+            if (pc.getInformationSource() != InformationSourceEnum.exhaustive) {
+                // go back and search in previous turns
+                InformationSourceEnum bestInfo = null;
+                int nation = 0;
+                int turnNo = -1;
+                String name = null;
+                Game g = GameHolder.instance().getGame();
+                for (int i = g.getCurrentTurn(); i>=0; i--) {
+                    Turn t = g.getTurn(i);
+                    if (t == null) continue;
+                    PopulationCenter pop = (PopulationCenter)t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
+                    if (pop == null) continue;
+                    if (bestInfo == null || bestInfo.getValue() < pop.getInformationSource().getValue()) {
+                        bestInfo = pop.getInformationSource();
+                        nation = pop.getNationNo();
+                        name = pop.getName();
+                        turnNo = i;
+                        if (nation > 0) break;
+                    }
+                }
+                if (bestInfo != null) {
+                    turnInfo.setVisible(true);
+                    turnInfo.setText("Info from turn " + turnNo + ": " + nation + " - " + name);
+                }
+            }
+        }
 //        else if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource()) &&
 //                ((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo() < game.getCurrentTurn()) {
 //            turnInfo.setVisible(true);
 //            turnInfo.setText("Info from turn " + Math.max(((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo(), 0));
 //                
 //        }
-        else {
-            turnInfo.setVisible(false);
-        }
+       
         
         if (getShowColor()) {
             Game g = GameHolder.instance().getGame();

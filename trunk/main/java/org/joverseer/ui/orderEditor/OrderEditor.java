@@ -36,6 +36,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.AutocompletionComboBox;
+import org.joverseer.ui.support.JLabelButton;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -58,11 +59,14 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     public static final String FORM_PAGE = "orderEditorForm";
     JComboBox orderCombo;
     JTextField parameters;
+    JTextField parametersInternal;
     JTextField character;
     JTextArea description;
     JLabel descriptionLabel;
     JPanel subeditorPanel;
     JPanel myPanel;
+    int bkOrderNo = -1;
+    String bkParams = "";
     
     String currentOrderNoAndCode = "";
     
@@ -181,31 +185,55 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         character.setEditable(false);
         character.setPreferredSize(new Dimension(200, 18));
 
-        JLabel btnSave = new JLabel();
-        btnSave.setPreferredSize(new Dimension(18, 18));
+        JLabelButton btn = new JLabelButton();
+        btn.setPreferredSize(new Dimension(18, 18));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon"));
-        btnSave.setIcon(ico);
-        glb.append(btnSave);
-        btnSave.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent arg0) {
+        btn.setIcon(ico);
+        glb.append(btn);
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 saveOrder();
             }
         });
-        btnSave.setToolTipText("Save order");
+        btn.setToolTipText("Save order");
         
-        btnSave = new JLabel();
-        btnSave.setPreferredSize(new Dimension(18, 18));
-        ico = new ImageIcon(imgSource.getImage("ShowHideOrderDescription.icon"));
-        btnSave.setIcon(ico);
-        glb.append(btnSave);
-        btnSave.addMouseListener(new MouseAdapter() {
+        btn = new JLabelButton();
+        btn.setPreferredSize(new Dimension(18, 18));
+        ico = new ImageIcon(imgSource.getImage("clear.icon"));
+        btn.setIcon(ico);
+        glb.append(btn);
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                clearOrder();
+            }
+        });
+        btn.setToolTipText("Delete order");
+        
+        btn = new JLabelButton();
+        btn.setPreferredSize(new Dimension(18, 18));
+        ico = new ImageIcon(imgSource.getImage("revert.icon"));
+        btn.setIcon(ico);
+        glb.append(btn);
+        btn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent arg0) {
+                revertOrder();
+            }
+        });
+        btn.setToolTipText("Revert order");
+        
+        btn = new JLabelButton();
+        btn.setPreferredSize(new Dimension(18, 18));
+        ico = new ImageIcon(imgSource.getImage("ShowHideOrderDescription.icon"));
+        btn.setIcon(ico);
+        glb.append(btn);
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
             	descriptionLabel.setVisible(!descriptionLabel.isVisible());
             	description.setVisible(!description.isVisible());
             }
         });
-        btnSave.setToolTipText("Show / hide description");
+        btn.setToolTipText("Show / hide description");
 
         glb.nextLine();
         
@@ -235,6 +263,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         glb.append(parameters = new JTextField());
         parameters.setEditable(false);
         parameters.setPreferredSize(new Dimension(70, 18));
+
+        parametersInternal = new JTextField();
+        parametersInternal.setVisible(false);
+        glb.append(parametersInternal);
+        
         glb.nextLine();
         
         glb.append(descriptionLabel = new JLabel("Description :"));
@@ -268,7 +301,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         Order o = (Order)getFormObject();
         if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) {
             o.setParameters("");
-            parameters.setText(o.getParameters());
+            parameters.setText(Order.getParametersAsString(o.getParameters()));
+            parametersInternal.setText(o.getParameters());
             return true;
         }
         return false;
@@ -402,7 +436,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     	updateParameters();
         Order o = (Order)getFormObject();
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
-        o.setParameters(parameters.getText());
+        o.setParameters(parametersInternal.getText());
         // throw an order changed event
         Application.instance().getApplicationContext().publishEvent(
                             new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
@@ -411,11 +445,34 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 //                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
     }
     
+    private void clearOrder() {
+        orderCombo.setSelectedItem(Order.NA);
+        Order o = (Order)getFormObject();
+        o.setNoAndCode(orderCombo.getSelectedItem().toString());
+        o.setParameters(parametersInternal.getText());
+        // throw an order changed event
+        Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+//        Point selectedHex = new Point(o.getCharacter().getX(), o.getCharacter().getY());
+//        Application.instance().getApplicationContext().publishEvent(
+//                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+    }
+    
+    private void revertOrder() {
+        Order o = (Order)getFormObject();
+        o.setOrderNo(bkOrderNo);
+        o.setParameters(bkParams);
+        setFormObject(o);
+    }
+    
     public void setFormObject(Object obj) {
         super.setFormObject(obj);
         Order o = (Order)obj;
+        bkOrderNo = o.getOrderNo();
+        bkParams = o.getParameters();
         refreshOrderCombo();
-        parameters.setText(o.getParameters());
+        parameters.setText(Order.getParametersAsString(o.getParameters()));
+        parametersInternal.setText(o.getParameters());
         if (!o.isBlank()) {
         	orderCombo.setSelectedItem(o.getNoAndCode());
         } else {
@@ -463,8 +520,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             if (val.equals("")) {
                 val = "-";
             }
-            v += (v.equals("") ? "" : " ") + val;
+            v += (v.equals("") ? "" : "#") + val;
         }
-        parameters.setText(v);
+        parametersInternal.setText(v);
+        parameters.setText(v.replace("#", " "));
     }
 }

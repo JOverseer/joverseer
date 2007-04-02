@@ -8,9 +8,11 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 
 
@@ -222,6 +224,10 @@ public class OrderCostCalculator {
     }
     
     public int hireArmyCost(Order o) {
+        Nation n = GameHolder.instance().getGame().getMetadata().getNationByNum(o.getCharacter().getNationNo());
+        if (n != null && n.hasSna(SNAEnum.FreeHire)) {
+            return 0;
+        }
         return 5000;
     }
     

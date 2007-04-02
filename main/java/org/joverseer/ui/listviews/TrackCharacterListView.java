@@ -19,6 +19,8 @@ import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -77,6 +79,35 @@ public class TrackCharacterListView extends BaseItemListView {
         tlb.row();
         return tlb.getPanel();
     }
+    
+    private Character findChar(Turn t, String name) {
+        String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
+        if (pv == null || pv.equals("accented")) {
+            Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name);
+            return c;
+        } else {
+            for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
+                if (AsciiUtils.convertNonAscii(c.getName()).toLowerCase().equals(name.toLowerCase())) {
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private Army findInArmies(Turn t, String name) {
+        String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
+        if (pv == null || pv.equals("accented")) {
+            return (Army)t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name);
+        } else {
+            for (Army a : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
+                if (AsciiUtils.convertNonAscii(a.getCommanderName()).toLowerCase().equals(name.toLowerCase())) {
+                    return a;
+                }
+            }
+        }
+        return null;
+    }
 
     protected void setItems() {
         ArrayList items = new ArrayList();
@@ -86,7 +117,7 @@ public class TrackCharacterListView extends BaseItemListView {
         if (!charName.equals("")) {
 	        for (Turn t : (ArrayList<Turn>)g.getTurns().getItems()) {
 	            // find in characters
-	            Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", charName);
+                    Character c = findChar(t, charName);
 	            if (c != null) {
 	                TrackCharacterInfo tci = new TrackCharacterInfo();
 	                tci.setTurnNo(t.getTurnNo());
@@ -102,7 +133,7 @@ public class TrackCharacterListView extends BaseItemListView {
 	                }
 	            }
 	            // find in armies
-	            Army a = (Army)t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", charName);
+	            Army a = findInArmies(t, charName);
 	            if (a != null) {
 	                TrackCharacterInfo tci = new TrackCharacterInfo();
 	                tci.setTurnNo(t.getTurnNo());
@@ -112,7 +143,14 @@ public class TrackCharacterListView extends BaseItemListView {
 	            }
 	            // find in rumors
 	            for (NationMessage nm : (ArrayList<NationMessage>)t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
-	                if (nm.getMessage().indexOf(charName) >= 0) {
+                        boolean found = false;
+                        String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
+                        if (pv == null || pv.equals("accented")) {
+                            found = nm.getMessage().indexOf(charName) >= 0; 
+                        } else {
+                            found = AsciiUtils.convertNonAscii(nm.getMessage()).toLowerCase().indexOf(charName.toLowerCase()) >= 0;
+                        }
+	                if (found) {
 	                    TrackCharacterInfo tci = new TrackCharacterInfo();
 	                    tci.setTurnNo(t.getTurnNo());
 	                    tci.setInfo(nm.getMessage());
@@ -127,8 +165,15 @@ public class TrackCharacterListView extends BaseItemListView {
 	            // find in LA/LAT results
 	            Container artis = t.getContainer(TurnElementsEnum.Artifact);
 	            for (Artifact arti : (ArrayList<Artifact>)artis.getItems()) {
-	            	if (arti.getOwner().indexOf(charName) >= 0) {
-	            		TrackCharacterInfo tci = new TrackCharacterInfo();
+                        boolean found = false;
+                        String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
+                        if (pv == null || pv.equals("accented")) {
+                            found = arti.getOwner().indexOf(charName) >= 0;
+                        } else {
+                            found = AsciiUtils.convertNonAscii(arti.getOwner()).toLowerCase().indexOf(charName.toLowerCase()) >= 0;
+                        }
+	            	if (found) {
+	            	    TrackCharacterInfo tci = new TrackCharacterInfo();
 	                    tci.setTurnNo(t.getTurnNo());
 	                    tci.setInfo(arti.getOwner() + " possesses #" + arti.getNumber() + " " + arti.getName());
 	                    tci.setHexNo(arti.getHexNo());

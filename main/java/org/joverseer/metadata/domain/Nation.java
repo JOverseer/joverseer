@@ -1,8 +1,10 @@
 package org.joverseer.metadata.domain;
 
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 public class Nation implements Serializable {
@@ -10,6 +12,7 @@ public class Nation implements Serializable {
     String name;
     String shortName;
     NationAllegianceEnum allegiance;
+    ArrayList<SNAEnum> snas= new ArrayList<SNAEnum>();
 
     public Nation(int number, String name, String shortName) {
         this.name = name;
@@ -47,5 +50,19 @@ public class Nation implements Serializable {
 
     public void setAllegiance(NationAllegianceEnum allegiance) {
         this.allegiance = allegiance;
+    }
+
+    
+    public ArrayList<SNAEnum> getSnas() {
+        return snas;
+    }
+
+    
+    public void setSnas(ArrayList<SNAEnum> snas) {
+        this.snas = snas;
+    }
+    
+    public boolean hasSna(SNAEnum sna) {
+        return getSnas().contains(sna);
     }
 }

@@ -123,6 +123,44 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.trackCharacterNames</value>
+					</property>
+					<property name="description">
+						<value>Track Character Names</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewRefreshItems</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>accented</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>accented</value>
+								</property>
+								<property name="description">
+									<value>Accented</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>ascii</value>
+								</property>
+								<property name="description">
+									<value>ascii</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>

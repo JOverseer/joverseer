@@ -124,7 +124,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     }
 
     public String getParameter(int i) {
-        String[] params = getParameters().split(" ");
+        String[] params = getParameters().split("#");
         if (params.length > i) {
             return params[i];
         }
@@ -147,5 +147,17 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         orderNo = -1;
         parameters = "";
         notes = "";
+    }
+    
+    public static String getParametersAsString(String params) {
+        return params.replace("#", " ");
+    }
+    
+    public void setParameters(String[] params) {
+        String p = "";
+        for (String param : params) {
+            p += (p.equals("") ? "" : "#") + param;
+        }
+        setParameters(p);
     }
 }

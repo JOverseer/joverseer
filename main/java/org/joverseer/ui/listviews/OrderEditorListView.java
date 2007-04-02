@@ -3,12 +3,14 @@ package org.joverseer.ui.listviews;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -20,14 +22,16 @@ import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.autocomplete.Configurator;
+//import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+//import org.jdesktop.swingx.autocomplete.Configurator;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PlayerInfo;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
@@ -37,6 +41,9 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.orderEditor.OrderParameterValidator;
+import org.joverseer.ui.support.AutocompletionComboBox;
+import org.joverseer.ui.support.ColumnBasedTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.value.support.ListListModel;
@@ -61,7 +68,9 @@ public class OrderEditorListView extends ItemListView {
     ActionCommand deleteOrderAction = new DeleteOrderAction();
     ActionCommand editOrderAction = new EditOrderAction();
     JComboBox combo;
-
+    OrderParameterValidator validator = new OrderParameterValidator();
+    Color paramErrorColor = Color.decode("#ffff99");
+    
     public OrderEditorListView() {
         super(TurnElementsEnum.Character, OrderEditorTableModel.class);
     }
@@ -92,7 +101,7 @@ public class OrderEditorListView extends ItemListView {
         		27,
         		27,
         		
-        		30, 120, 64};
+        		30, 64, 64};
     }
 
     protected void setItems() {
@@ -151,7 +160,28 @@ public class OrderEditorListView extends ItemListView {
     
     protected JTable createTable() {
     	JTable table = TableUtils.createStandardSortableTable(tableModel);
-    	JTable newTable = new JideTable(table.getModel());
+    	JTable newTable = new JTable(table.getModel()) {
+            Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
+            Color normalBackground = (Color) UIManager.get("Table.background");
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (isCellSelected(row, column)) {
+                    if (!c.getBackground().equals(paramErrorColor)) {
+                        c.setBackground(selectionBackground);
+                    }
+                } else if ((row / 2) % 2 == 1) {
+                    if (!c.getBackground().equals(paramErrorColor)) {
+                        c.setBackground(Color.decode("#eeeeee"));
+                    }
+                } else {
+                    if (!c.getBackground().equals(paramErrorColor)) {
+                        c.setBackground(normalBackground);
+                    }
+                }
+                return c;
+            }
+    	    
+        };
     	newTable.setColumnModel(table.getColumnModel());
     	newTable.setAutoResizeMode(table.getAutoResizeMode());
     	table = null;
@@ -171,8 +201,10 @@ public class OrderEditorListView extends ItemListView {
             	setItems();
             }
         });
-        table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer() {
-        	Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
+        
+        ColumnBasedTableCellRenderer tableRenderer = new ColumnBasedTableCellRenderer();
+        tableRenderer.setColumnRenderer(OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
+            Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
             Color normalBackground = (Color) UIManager.get("Table.background");
             
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -193,7 +225,7 @@ public class OrderEditorListView extends ItemListView {
             
         });
         // specialized renderer for the icon returned by the orderResultType virtual field
-        table.setDefaultRenderer(ImageIcon.class, new DefaultTableCellRenderer() {
+        tableRenderer.setColumnRenderer(OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 ImageIcon ico = (ImageIcon)value;
                 JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
@@ -215,6 +247,45 @@ public class OrderEditorListView extends ItemListView {
             }
             
         });
+        
+        //renderer for hex - boldify capital hex
+        tableRenderer.setColumnRenderer(OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                // find capital and compare
+                int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+                Object obj = tableModel.getRow(idx);
+                Order o = (Order)obj;
+                Character c = o.getCharacter();
+                PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{c.getNationNo(), Boolean.TRUE});
+                if (capital != null && c.getHexNo() == capital.getHexNo()) {
+                    lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
+                }
+                lbl.setHorizontalAlignment(JLabel.CENTER);
+                return lbl;
+            };
+        });
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                lbl.setHorizontalAlignment(JLabel.CENTER);
+                return lbl;
+            };
+        };
+        
+        // render stats - center alignment
+        tableRenderer.setColumnRenderer(OrderEditorTableModel.iStats, centerRenderer); 
+        
+        for (int i=OrderEditorTableModel.iParamStart; i<= OrderEditorTableModel.iParamEnd; i++) {
+            tableRenderer.setColumnRenderer(i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
+        }
+        
+        table.setDefaultRenderer(String.class, tableRenderer);
+        table.setDefaultRenderer(Boolean.class, tableRenderer);
+        table.setDefaultRenderer(ImageIcon.class, tableRenderer);
+        table.setDefaultRenderer(Integer.class, tableRenderer);
+        
         tlb.row();
         tlb.cell(tableComp);
         tlb.row();
@@ -244,10 +315,13 @@ public class OrderEditorListView extends ItemListView {
                 SortedListModel slm = new SortedListModel(orders);
 
 //                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
-//                JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
-                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
-                Configurator.enableAutoCompletion(comboBox);
-                final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
+                JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
+//                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
+                comboBox.setEditable(true);
+                comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+//                Configurator.enableAutoCompletion(comboBox);
+//                final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
+                final DefaultCellEditor editor = new DefaultCellEditor(comboBox);
                 noAndCodeColumn.setCellEditor(editor);
                 editor.addCellEditorListener(new CellEditorListener() {
 
@@ -375,5 +449,43 @@ public class OrderEditorListView extends ItemListView {
                 new ColumnToSort(0, 1, SortOrder.ASCENDING)};
     }
 
+    class OrderParameterCellRenderer extends DefaultTableCellRenderer {
+        int paramNo;
+        Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
+        Color normalBackground = (Color) UIManager.get("Table.background");
 
+        private OrderParameterCellRenderer(int paramNo) {
+            super();
+            this.paramNo = paramNo;
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+            Object obj = tableModel.getRow(idx);
+            Order o = (Order)obj;
+            String msg = null;
+            // TODO handle larger paramNos
+            if (paramNo < 9) {
+                msg = validator.checkParam(o, paramNo);
+            }
+            
+            if (msg != null) {
+                if (isSelected) {
+                    lbl.setBackground(selectionBackground);
+                } else {
+                    lbl.setBackground(paramErrorColor);
+                }
+                lbl.setToolTipText(msg);
+            } else {
+                if (isSelected) {
+                    lbl.setBackground(selectionBackground);
+                } else {
+                    lbl.setBackground(normalBackground);
+                }
+                lbl.setToolTipText(msg);
+            }
+            return lbl;
+        }
+    }
 }

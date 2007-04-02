@@ -31,6 +31,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 	public static int iResults = 21;
 	public static int iCost = 22;
 	public static int iNation = 0;
+        public static int iHexNo = 2;
 	
 	public OrderEditorTableModel(MessageSource messageSource) {
         super(Order.class, messageSource);
@@ -71,7 +72,7 @@ public class OrderEditorTableModel extends ItemTableModel {
         return new Class[]{
         		String.class, 
         		String.class, 
-        		String.class, 
+        		Integer.class, 
         		String.class, 
         		String.class, 
 
@@ -209,7 +210,7 @@ public class OrderEditorTableModel extends ItemTableModel {
         		if (txt == null || txt.equals("")) {
         			txt = "-";
         		} 
-        		paramTxt += (paramTxt.equals("") ? "" : " ") + txt;
+        		paramTxt += (paramTxt.equals("") ? "" : "#") + txt;
         		if (!txt.equals("-")) {
         			paramTxt2 = paramTxt;
         		}

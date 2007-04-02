@@ -7,6 +7,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderTextReader;
@@ -77,6 +79,8 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
     class ParseOrdersForm extends AbstractForm {
         JTextArea orderText;
         JTextArea parseResults;
+        JScrollPane orderScp;
+        JScrollPane parseScp;
         
         private ParseOrdersForm(FormModel arg0) {
             super(arg0, "parseOrdersForm");
@@ -88,16 +92,30 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
             tlb.gapCol();
             
             orderText = new JTextArea();
-            JScrollPane scp = new JScrollPane(orderText);
-            scp.setPreferredSize(new Dimension(300, 500));
-            tlb.cell(scp);
+            orderScp = new JScrollPane(orderText);
+            orderScp.setPreferredSize(new Dimension(300, 500));
+            orderScp.getViewport().addChangeListener(new ChangeListener() {
+
+                public void stateChanged(ChangeEvent e) {
+                    if (!parseResults.getText().equals("")) {
+                        parseScp.getViewport().setViewPosition(orderScp.getViewport().getViewPosition());
+                    }
+                }
+                
+            });
+            tlb.cell(orderScp);
             
             tlb.gapCol();
             parseResults = new JTextArea();
             parseResults.setEditable(false);
-            scp = new JScrollPane(parseResults);
-            scp.setPreferredSize(new Dimension(300, 500));
-            tlb.cell(scp);
+            parseScp = new JScrollPane(parseResults);
+            parseScp.setPreferredSize(new Dimension(300, 500));
+            parseScp.getViewport().addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    orderScp.getViewport().setViewPosition(parseScp.getViewport().getViewPosition());
+                }
+            });
+            tlb.cell(parseScp);
             
             return tlb.getPanel();
         }
@@ -108,6 +126,8 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
                 res += r + "\n";
             }
             parseResults.setText(res);
+            orderText.setCaretPosition(0);
+            parseResults.setCaretPosition(0);
         }
         
         public String getOrderText() {

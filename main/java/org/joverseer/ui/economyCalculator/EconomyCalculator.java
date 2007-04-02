@@ -57,6 +57,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
     JCheckBox sellBonus;
     JComboBox nationCombo;
     JLabel marketLimitWarning;
+    JLabel taxIncrease;
     BeanTableModel lostPopsTableModel;
     
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -66,16 +67,22 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshMarketLimitWarning();
+                refreshTaxIncrease();
                 refreshAutocalcOrderCost();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 loadNationCombo();
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshMarketLimitWarning();
+                refreshTaxIncrease();
                 refreshAutocalcOrderCost();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 loadNationCombo();
-                refreshAutocalcOrderCost();
+//                if (GameHolder.hasInitializedGame() && GameHolder.instance().getGame().getTurn() != null) {
+//                    refreshMarketLimitWarning();
+//                    refreshTaxIncrease();
+//                    refreshAutocalcOrderCost();
+//                }
             } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 refreshAutocalcOrderCost();
             }
@@ -94,6 +101,16 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
             marketLimitWarning.setVisible(true);
         } else {
             marketLimitWarning.setVisible(false);
+        }
+    }
+    
+    private void refreshTaxIncrease() {
+        int taxIncreaseAmt = ((EconomyTotalsTableModel)totalsTable.getModel()).getTaxIncrease();
+        if (taxIncreaseAmt == 0) {
+            taxIncrease.setVisible(false);
+        } else {
+            taxIncrease.setVisible(true);
+            taxIncrease.setText("Your taxes will go up by " + taxIncreaseAmt + "%!");
         }
     }
     
@@ -255,7 +272,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         marketLimitWarning.setForeground(Color.red);
         lb.cell(marketLimitWarning);
         lb.row();
+        lb.relatedGapRow();
         
+        taxIncrease = new JLabel("Your taxes will go up.");
+        taxIncrease.setFont(GraphicUtils.getFont(taxIncrease.getFont().getName(), Font.BOLD, taxIncrease.getFont().getSize()));
+        taxIncrease.setForeground(Color.red);
+        lb.cell(taxIncrease);
+        lb.row();
         
         lb.relatedGapRow();
         lb.separator("Pop Centers expected to be lost this turn");
@@ -327,6 +350,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
             	lbl.setBorder(BorderFactory.createLineBorder(Color.red, 1));
             }
             lbl.setHorizontalAlignment(JLabel.RIGHT);
+            
             return c;
         }
     }

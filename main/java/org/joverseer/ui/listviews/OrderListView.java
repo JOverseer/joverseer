@@ -31,9 +31,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 
-import org.jdesktop.swingx.autocomplete.ComboBoxAdaptor;
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.autocomplete.Configurator;
+//import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+//import org.jdesktop.swingx.autocomplete.Configurator;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
@@ -88,7 +87,7 @@ public class OrderListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {48, 64, 64, 96, 170, 120, 30, 120, 64};
+        return new int[] {48, 64, 64, 96, 170, 120, 30, 64, 64};
     }
 
     protected void setItems() {
@@ -242,8 +241,10 @@ public class OrderListView extends ItemListView {
 //                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
 //                JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
                 JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
-                Configurator.enableAutoCompletion(comboBox);
-                final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
+                comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+                //Configurator.enableAutoCompletion(comboBox);
+                //final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
+                final DefaultCellEditor editor = new DefaultCellEditor(comboBox);
                 noAndCodeColumn.setCellEditor(editor);
                 editor.addCellEditorListener(new CellEditorListener() {
 

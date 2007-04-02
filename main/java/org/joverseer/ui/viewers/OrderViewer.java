@@ -60,7 +60,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         if (o.getOrderNo() <= 0) {
             orderText.setText("N/A");
         } else {
-            orderText.setText(o.getNoAndCode() + " " + o.getParameters());
+            orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
             orderText.setCaretPosition(0);
         }
         OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");

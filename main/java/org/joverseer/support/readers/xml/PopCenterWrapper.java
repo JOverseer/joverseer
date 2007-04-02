@@ -1,4 +1,4 @@
-package org.joverseer.support.readers.xml;
+	package org.joverseer.support.readers.xml;
 
 import org.joverseer.domain.*;
 
@@ -174,10 +174,10 @@ public class PopCenterWrapper {
                 pc.setInformationSource(InformationSourceEnum.exhaustive);
                 break;
             case 1:
-                pc.setInformationSource(InformationSourceEnum.detailed);
+                pc.setInformationSource(InformationSourceEnum.exhaustive);
                 break;
             case 2:
-                pc.setInformationSource(InformationSourceEnum.some);
+                pc.setInformationSource(InformationSourceEnum.detailed);
                 break;
             case 3:
                 pc.setInformationSource(InformationSourceEnum.some);

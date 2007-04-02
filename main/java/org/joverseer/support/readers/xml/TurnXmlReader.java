@@ -283,8 +283,8 @@ public class TurnXmlReader implements Runnable{
 
     private void updatePCs() throws Exception {
         Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
-        PopCenterXmlInfoSource pcInfoSource = new PopCenterXmlInfoSource(infoSource.getTurnNo(), turnInfo.getNationNo(), infoSource.getTurnNo());
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) turnInfo.getPopCentres().getItems()) {
+            PopCenterXmlInfoSource pcInfoSource = new PopCenterXmlInfoSource(infoSource.getTurnNo(), turnInfo.getNationNo(), infoSource.getTurnNo());
             PopulationCenter newPc;
             try {
                 newPc = pcw.getPopulationCenter();
@@ -296,44 +296,71 @@ public class TurnXmlReader implements Runnable{
                 if (newPc.getNationNo() == turnInfo.getNationNo()) {
                     currentNationPops.add(newPc);
                 }
+                if (newPc.getName() == null || newPc.getName().equals("")) {
+                	newPc.setName("Unknown (Map Icon)");
+                }
+                System.out.println("NEW POP " + turnInfo.getNationNo());
+                System.out.println("new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());
+                
                 PopulationCenter oldPc = (PopulationCenter) pcs.findFirstByProperties(new String[]{"x", "y"}, new Object[]{newPc.getX(), newPc.getY()});
                 if (oldPc == null) {
                     // no pc found - add newPc
                     logger.debug("No Pop Centre found in turn, add.");
                     pcs.addItem(newPc);
                 } else {
+                    System.out.println("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " "  + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo());
                     logger.debug("Pop Centre found in turn.");
                     // distinguish cases
-                    if (newPc.getInformationSource().getValue() > oldPc.getInformationSource().getValue() ||
-                            // added to handle issue with Unknown map icons overwritting pcs derived from previous turn
-                            (newPc.getInformationSource().getValue() == oldPc.getInformationSource().getValue() &&
-                              newPc.getInfoSource().getTurnNo() > oldPc.getInfoSource().getTurnNo()))
-                    {
-                        if (newPc.getName().equals("Unknown (Map Icon)")) {
-                            newPc.setName(oldPc.getName());
-                        }
-                        if (newPc.getNationNo() == 0) {
-                             newPc.setNationNo(oldPc.getNationNo());
-                        }
-                        pcs.removeItem(oldPc);
-                        pcs.addItem(newPc);
-                    } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
-                        // replace and keep name and nation if unknown
-                        if (newPc.getName().equals("Unknown (Map Icon)")) {
-                            newPc.setName(oldPc.getName());
-                            newPc.setNationNo(oldPc.getNationNo());
-                        }
-                        pcs.removeItem(oldPc);
-                        pcs.addItem(newPc);
+                    if (newPc.getNationNo() > 0) {
+                    	System.out.println("simply replace");
+                    	pcs.removeItem(oldPc);
+                    	pcs.addItem(newPc);
+                    } else {
+                    	System.out.println("replace/update");
+                    	pcs.removeItem(oldPc);
+                    	pcs.addItem(newPc);
+                    	newPc.setNationNo(oldPc.getNationNo());
+                    	newPc.setName(oldPc.getName());
+                    	int prevTurnNo = oldPc.getInfoSource().getTurnNo();
+                    	if (PopCenterXmlInfoSource.class.isInstance(oldPc.getInfoSource())) {
+                    		prevTurnNo = ((PopCenterXmlInfoSource)oldPc.getInfoSource()).getPreviousTurnNo();
+                    	}
+                    	((PopCenterXmlInfoSource)newPc.getInfoSource()).setPreviousTurn(prevTurnNo);
+                    	System.out.println("updated new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());                    }
+                    
+                    if (newPc.getName().equals("Unknown (Map Icon)")) {
+                    	newPc.setName(oldPc.getName());
                     }
-                    else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
-                        if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
-                            newPc.setName(oldPc.getName());
-                            //newPc.setNationNo(oldPc.getNationNo());
-                        }
-                        pcs.removeItem(oldPc);
-                        pcs.addItem(newPc);
-                    } 
+//                    if (newPc.getInformationSource().getValue() > oldPc.getInformationSource().getValue() ||
+//                            // added to handle issue with Unknown map icons overwritting pcs derived from previous turn
+//                            (newPc.getInformationSource().getValue() == oldPc.getInformationSource().getValue() &&
+//                              newPc.getInfoSource().getTurnNo() > oldPc.getInfoSource().getTurnNo()))
+//                    {
+//                        if (newPc.getName().equals("Unknown (Map Icon)")) {
+//                            newPc.setName(oldPc.getName());
+//                        }
+//                        if (newPc.getNationNo() == 0) {
+//                             newPc.setNationNo(oldPc.getNationNo());
+//                        }
+//                        pcs.removeItem(oldPc);
+//                        pcs.addItem(newPc);
+//                    } else if (MetadataSource.class.isInstance(oldPc.getInfoSource())) {
+//                        // replace and keep name and nation if unknown
+//                        if (newPc.getName().equals("Unknown (Map Icon)")) {
+//                            newPc.setName(oldPc.getName());
+//                            newPc.setNationNo(oldPc.getNationNo());
+//                        }
+//                        pcs.removeItem(oldPc);
+//                        pcs.addItem(newPc);
+//                    }
+//                    else if (oldPc.getInfoSource().getTurnNo() < turnInfo.getTurnNo()) {
+//                        if (newPc.getInformationSource().getValue() < oldPc.getInformationSource().getValue() || MetadataSource.class.isInstance(oldPc.getInfoSource())) {
+//                            newPc.setName(oldPc.getName());
+//                            //newPc.setNationNo(oldPc.getNationNo());
+//                        }
+//                        pcs.removeItem(oldPc);
+//                        pcs.addItem(newPc);
+//                    } 
                 }
                 
                 // handle pops that are "reported" as belonging to the current nation

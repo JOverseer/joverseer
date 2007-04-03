@@ -19,7 +19,11 @@ import org.springframework.richclient.application.Application;
  * 2. information that depends on the game type, such as the hexes, the artifacts, etc 
  */
 public class GameMetadata implements Serializable {
-    GameTypeEnum gameType;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8007105168749869584L;
+	GameTypeEnum gameType;
     int gameNo;
     int nationNo;
 
@@ -31,7 +35,7 @@ public class GameMetadata implements Serializable {
     Container populationCenters = new Container(new String[]{"hexNo"});
     Container nationMapRanges = new Container(new String[]{"nationNo"});
     Container spells = new Container(new String[]{"no"});
-    
+    Container armies = new Container(new String[]{"hexNo"});
     
     ArrayList readers = new ArrayList();
 
@@ -202,8 +206,18 @@ public class GameMetadata implements Serializable {
         this.nationMapRanges = nationMapRanges;
     }
 
+
     
-    public Container getSpells() {
+    
+    public Container getArmies() {
+		return armies;
+	}
+
+	public void setArmies(Container armies) {
+		this.armies = armies;
+	}
+
+	public Container getSpells() {
         return spells;
     }
 

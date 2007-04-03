@@ -161,6 +161,41 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.hiddenPops</value>
+					</property>
+					<property name="description">
+						<value>Hidden Pops</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>alwaysShow</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>alwaysShow</value>
+								</property>
+								<property name="description">
+									<value>Show always</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>normalShow</value>
+								</property>
+								<property name="description">
+									<value>Show only when applicable</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>

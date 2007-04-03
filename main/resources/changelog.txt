@@ -1,5 +1,65 @@
+VERSION 0.9.3
+-------------
+
+3/4/2007
+
+    * Fixed a bug with incorect movement cost calculation when moving from one mountain hex to another
+
+    * The Draw Order option for orders is now available only for orders that can be drawn
+
+    * Army range on maps - different colors for fed (green) and unfed (red) armies
+    
+    * Econocalc 
+          o Cell editing - the default is now overwrite instead of append (i.e. Excel style editing)
+          o A warning has been added when taxes are expected to go up          
+          o Added "Autocalc orders cost" field next to the economy totals
+          o Added button to update the order cost in the totals table from the Autocalc orders cost field
+          
+    * Order editor 
+          o The order drop down now starts from the top instead of the bottom
+          o The drop down now has autocomplete functionality
+          o Added Delete Order and Revert buttons
+
+    * Export Orders 
+          o Varius bug fixes
+          o The generated file footer now designates that the file was generated with JOverseer
+                    
+    * OrderChecker integration - varius bug fixes
+
+    * Speed enhancements 
+          o When selecting hexes on the map
+          o For information tabs
+          o For map drawing                    
+              
+    * Order information tab - major revamp
+          o There is a separate cell for each order parameter
+          o Cells with incorrect parameters are highlighted with yellow background now and a tooltip shows the error
+          o Characters located at the capital are designated with bold hex number
+          o Rows are highlighted as to distinguish characters more easily
+          o Cost for orders is shown in the last column
+          
+    * Track Character tab now supports unaccented search (via the respective Preferences option)
+
+    * Changed the way Pop Centers are imported from the xml files
+          o The latest information wrt to size and fortification is now shown
+          o The latest information wrt to the owner is now shown (seperately if needed)          
+          o Hidden pops now can be shown on the map (controled by the respective Preferences option)
+
+    * Updated the secondary powers for several 2950 artifacts
+
+    * Fixed a bug with hidden pops - when starting a new game the hidden pops were not correctly initialized
+
+    * Import Orders from Text
+          o The two scrollbars in the form are now tied so you can scroll both fields simultaneously
+
+    * Added Pdf Viewer tab
+          o This view shows the pdf files in plain text format. Due to the pdfs being transformed in pdf the text is not very well formatted but it can still server as a quick reference if needed.
+                	
+    * The map can be scrolled by holding down the control key and dragging with the mouse
+
 VERSION 0.9.2
 -------------
+
 
 29/3/2007
 

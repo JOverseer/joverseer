@@ -23,6 +23,8 @@ import org.joverseer.ui.map.renderers.DefaultHexRenderer;
 import org.joverseer.ui.map.renderers.Renderer;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
+
 import java.awt.*;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragSourceListener;
@@ -34,7 +36,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 
-public class MapPanel extends JPanel implements MouseListener {
+public class MapPanel extends JPanel implements MouseInputListener {
     protected javax.swing.event.EventListenerList listenerList =
             new javax.swing.event.EventListenerList();
 
@@ -58,9 +60,16 @@ public class MapPanel extends JPanel implements MouseListener {
     Point selectedHex = null;
 
     private Game game = null;
+    
+    int xDiff, yDiff;
+
+    boolean isDragging;
+
+    java.awt.Container c;
 
     public MapPanel() {
         addMouseListener(this);
+        addMouseMotionListener(this);
         this.setTransferHandler(new HexNoTransferHandler("hex"));
         _instance = this;
     }
@@ -522,26 +531,7 @@ public class MapPanel extends JPanel implements MouseListener {
         }
         return new Rectangle(location.x, location.y, 1, 1);
     }
-
-    /**
-     * Handles the mouse pressed event to change the current selected hex
-     */
-    public void mousePressed(MouseEvent e)
-    {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            if (!GameHolder.hasInitializedGame()) return;
-            Point p = e.getPoint();
-//            MessageDialog dlg = new MessageDialog("test", p.x + "," + p.y);
-//            dlg.getDialog().show();
-            Point hex = getHexFromPoint(p);
-            setSelectedHex(hex);
-            this.updateUI();
-            TransferHandler handler = this.getTransferHandler();
-            handler.exportAsDrag(this, e, TransferHandler.COPY);
-            requestFocusInWindow();
-        }
-    }
-
+    
     /**
      * Given a client point (eg from mouse click), it finds the containing hex
      * and returns it as a point (i.e. point.x = hex.column, point.y = hex.row)
@@ -559,9 +549,41 @@ public class MapPanel extends JPanel implements MouseListener {
         if (y > metadata.getMapRows()) y = metadata.getMapRows();
         return new Point(x, y);
     }
+    
+    
+
+    /**
+     * Handles the mouse pressed event to change the current selected hex
+     */
+    public void mousePressed(MouseEvent e)
+    {
+        if (e.getButton() == MouseEvent.BUTTON1)
+            if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                xDiff = e.getX();
+                yDiff = e.getY();
+                
+            }
+            else {
+                if (!GameHolder.hasInitializedGame()) return;
+                Point p = e.getPoint();
+    //            MessageDialog dlg = new MessageDialog("test", p.x + "," + p.y);
+    //            dlg.getDialog().show();
+                Point hex = getHexFromPoint(p);
+                setSelectedHex(hex);
+                this.updateUI();
+                TransferHandler handler = this.getTransferHandler();
+                handler.exportAsDrag(this, e, TransferHandler.COPY);
+                requestFocusInWindow();
+
+            }
+    }
+
+    
 
     public void mouseReleased(MouseEvent e)
     {
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     public void mouseClicked(MouseEvent e)
@@ -575,8 +597,40 @@ public class MapPanel extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e)
     {
     }
+    
+    
 
-        public Game getGame() {
+    public void mouseDragged(MouseEvent e) {
+        if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+            c = this.getParent();
+            if (c instanceof JViewport) {
+              JViewport jv = (JViewport) c;
+              Point p = jv.getViewPosition();
+              int newX = p.x - (e.getX() - xDiff);
+              int newY = p.y - (e.getY() - yDiff);
+        
+              int maxX = this.getWidth()
+                  - jv.getWidth();
+              int maxY = this.getHeight()
+                  - jv.getHeight();
+              if (newX < 0)
+                newX = 0;
+              if (newX > maxX)
+                newX = maxX;
+              if (newY < 0)
+                newY = 0;
+              if (newY > maxY)
+                newY = maxY;
+        
+              jv.setViewPosition(new Point(newX, newY));
+            }
+        }
+    }
+
+    public void mouseMoved(MouseEvent e) {
+    }
+
+    public Game getGame() {
         if (game == null) {
             game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
+    private static final long serialVersionUID = 5781285200976386027L;
     Integer nationNo;
     int x;
     int y;

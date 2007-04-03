@@ -19,6 +19,10 @@ import java.io.Serializable;
  * todo rivers and traffic
  */
 public class Hex implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5588445214380293965L;
     int column;
     int row;
 

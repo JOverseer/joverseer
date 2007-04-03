@@ -96,12 +96,12 @@ public class MarketTableModel extends BaseEconomyTableModel {
         if (!Game.isInitialized(getGame()))
             return "";
         if (getGame().getTurn() == null) return "";
-        String productCode = columnHeaders[columnIndex];
-        ProductEnum product = ProductEnum.getFromCode(productCode);
         NationEconomy ne = getNationEconomy();
         if (ne == null) return "";
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return "";
+        String productCode = columnHeaders[columnIndex];
+        ProductEnum product = ProductEnum.getFromCode(productCode);
         if (rowIndex == 0) {
             return ecd.getStores(product);
         }

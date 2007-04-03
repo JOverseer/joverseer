@@ -77,7 +77,7 @@ public class OrderFileReader {
 						for (int j=2; j<parts.length; j++) {
 							String part = parts[j];
 							if (!part.equals("--")) {
-								parameters = parameters + (parameters.equals("") ? "" : " ") + part; 
+								parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part; 
 							}
 						}
 					}

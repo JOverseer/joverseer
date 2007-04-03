@@ -5,6 +5,10 @@ import java.io.Serializable;
 
 
 public class HexInfo implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4414153702938844460L;
     int x;
     int y;
     boolean visible;

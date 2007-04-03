@@ -6,6 +6,10 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 
 
 public class NationRelations implements IBelongsToNation, Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3415693212063202826L;
     Integer nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];
     NationAllegianceEnum allegiance;

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 
 public class Nation implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4715738430328876223L;
     Integer number;
     String name;
     String shortName;

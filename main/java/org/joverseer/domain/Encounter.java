@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 
 public class Encounter implements IHasMapLocation, Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -117862763508411685L;
     String character;
     int hexNo;
     String description;

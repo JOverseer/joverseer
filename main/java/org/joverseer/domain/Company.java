@@ -7,6 +7,10 @@ import org.joverseer.support.infoSources.InfoSource;
 
 
 public class Company implements IHasMapLocation, Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8506114031233392593L;
     int x;
     int y;
     String commander;

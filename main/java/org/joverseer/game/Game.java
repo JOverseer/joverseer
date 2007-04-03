@@ -17,6 +17,11 @@ import org.springframework.richclient.application.Application;
 
 
 public class Game implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5743076237064103323L;
+
     GameMetadata metadata;
 
     Container turns = new Container();

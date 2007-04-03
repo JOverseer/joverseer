@@ -129,7 +129,7 @@ public class OrderTextReader {
                         for (int j=2; j<parts.length; j++) {
                             String part = parts[j];
                             if (!part.equals("--") && !part.equals("")) {
-                                    parameters = parameters + (parameters.equals("") ? "" : " ") + part; 
+                                    parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part; 
                             }
                         }
                     }
@@ -139,6 +139,12 @@ public class OrderTextReader {
                     if (pass == 1) {
                         orders[i].setOrderNo(orderNo);
                         orders[i].setParameters(parameters);
+                        // check mov army orders and swap params if applicable
+                        if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
+                            String param1 = orders[i].getParameter(0);
+                            orders[i].setParameter(0, orders[i].getParameter(orders[i].getLastParamIndex()));
+                            orders[i].setParameter(orders[i].getLastParamIndex(), param1);
+                        }
                     }
                 }
             }

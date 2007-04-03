@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 
 public class SpellProficiency implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3411660721122678568L;
     int spellId;
     int proficiency;
     String name;

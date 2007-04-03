@@ -6,6 +6,11 @@ import org.joverseer.support.ProductContainer;
 
 
 public class NationEconomy implements IBelongsToNation, Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6860023083453300940L;
+
     Integer nationNo;
 
     int armyMaintenance;

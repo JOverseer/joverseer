@@ -2,6 +2,7 @@ package org.joverseer.support;
 
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.domain.Army;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelations;
@@ -70,7 +71,21 @@ public class TurnInitializer {
             }
         }
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name", "hexNo"}));
-        newTurn.getContainers().put(TurnElementsEnum.Army, new Container(new String[]{"hexNo"}));
+        
+        Container armies = new Container(new String[]{"hexNo"});
+        
+        if (previousTurn == null) {
+        	// get armies from metadata
+            GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+            Container gmArmies = gm.getArmies();
+            for (Army a : (ArrayList<Army>)gmArmies.items) {
+                Army newArmy = a.clone();
+                armies.addItem(newArmy);
+            }
+
+        }
+        
+        newTurn.getContainers().put(TurnElementsEnum.Army, armies);
         newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
         newTurn.getContainers().put(TurnElementsEnum.Artifact, new Container(new String[]{"number", "hexNo"}));
         Container hexInfo = new Container(new String[]{"hexNo"});

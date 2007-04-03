@@ -81,6 +81,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     protected NationEconomy getNationEconomy() {
         Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return null;
         Container nes = t.getContainer(TurnElementsEnum.NationEconomy);
         NationEconomy ne = (NationEconomy) nes.findFirstByProperty("nationNo", getNationNo());
         return ne;
@@ -88,6 +89,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     public int getProduction(ProductEnum p) {
         Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
         Container pcs = t.getContainer(TurnElementsEnum.PopulationCenter);
         ArrayList<PopulationCenter> natpcs = (ArrayList<PopulationCenter>) pcs.findAllByProperties(new String[] {
                 "nationNo", "lostThisTurn"}, new Object[] {getNationNo(), true});
@@ -102,6 +104,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     public int getStores(ProductEnum p) {
         Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
         Container pcs = t.getContainer(TurnElementsEnum.PopulationCenter);
         ArrayList<PopulationCenter> natpcs = (ArrayList<PopulationCenter>) pcs.findAllByProperties(new String[] {
                 "nationNo", "lostThisTurn"}, new Object[] {getNationNo(), true});
@@ -120,6 +123,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     public int getSellPrice(ProductEnum p) {
         Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
         Container pps = t.getContainer(TurnElementsEnum.ProductPrice);
         ProductPrice pp = (ProductPrice) pps.findFirstByProperty("product", p);
         return pp.getSellPrice();
@@ -127,6 +131,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     public int getBuyPrice(ProductEnum p) {
         Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
         Container pps = t.getContainer(TurnElementsEnum.ProductPrice);
         ProductPrice pp = (ProductPrice) pps.findFirstByProperty("product", p);
         return pp.getBuyPrice();
@@ -134,6 +139,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     public int getMarketTotal(ProductEnum p) {
         Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
         Container pps = t.getContainer(TurnElementsEnum.ProductPrice);
         ProductPrice pp = (ProductPrice) pps.findFirstByProperty("product", p);
         return pp.getMarketTotal();
@@ -141,7 +147,8 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
     public int getMarketProfits() {
         int profits = 0;
-
+        Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
         for (ProductEnum p : ProductEnum.values()) {
             if (p == ProductEnum.Gold)
                 continue;
@@ -162,7 +169,9 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     }
 
     public int getMarketProfits(ProductEnum p) {
-        return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100
+    	Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return 0;
+    	return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100
                 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor()
                 / 100;
     }
@@ -187,5 +196,12 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         this.goldProduction = goldProduction;
     }
     
-    
+    public boolean isInitialized() {
+    	Turn t = GameHolder.instance().getGame().getTurn();
+        if (t == null) return false;
+        Container pps = t.getContainer(TurnElementsEnum.ProductPrice);
+        ProductPrice pp = (ProductPrice) pps.findFirstByProperty("product", ProductEnum.Food);
+        if (pp == null) return false;
+        return true;
+    }
 }

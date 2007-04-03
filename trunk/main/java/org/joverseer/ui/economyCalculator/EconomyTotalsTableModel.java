@@ -85,6 +85,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (ne == null) return "";
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return "";
+        if (!ecd.isInitialized()) return "";
 
         if (columnIndex == 1) {
             switch (rowIndex) {

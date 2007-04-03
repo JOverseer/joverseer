@@ -3,6 +3,10 @@ package org.joverseer.domain;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -246,5 +250,20 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
             }
         }
         return ret;
+    }
+    
+    public Army clone() {
+    	try {
+    		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    		ObjectOutputStream os = new ObjectOutputStream(baos);
+    		os.writeObject(this);
+    		os.close();
+    		ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+    		Army a = (Army)is.readObject();
+    		return a;
+    	}
+    	catch (Exception exc) {
+    		return null;
+    	}
     }
 }

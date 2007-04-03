@@ -100,6 +100,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
         if (ne == null) return "";
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return "";
+        if (!ecd.isInitialized()) return "";
         String productCode = columnHeaders[columnIndex];
         ProductEnum product = ProductEnum.getFromCode(productCode);
         if (rowIndex == 0) {

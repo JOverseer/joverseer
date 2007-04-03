@@ -195,6 +195,8 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
         newPc.setX(getX());
         newPc.setY(getY());
 
+        //TODO BUG BUG
+        //this is a bug, info source should be cloned too!
         newPc.setInfoSource(getInfoSource());
         newPc.setInformationSource(getInformationSource());
 

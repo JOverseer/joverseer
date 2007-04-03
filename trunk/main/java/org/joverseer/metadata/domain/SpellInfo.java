@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 
 public class SpellInfo implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2027799051162482988L;
     String name;
     Integer number;
     Integer orderNumber;

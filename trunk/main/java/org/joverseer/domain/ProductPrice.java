@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 
 public class ProductPrice implements Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8315948351042885231L;
     ProductEnum product;
     int sellPrice;
     int buyPrice;

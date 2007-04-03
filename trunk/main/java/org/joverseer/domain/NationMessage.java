@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 
 public class NationMessage implements Serializable, IBelongsToNation, IHasMapLocation {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5607141998688317604L;
     int x = -1;
     int y = -1;
     Integer nationNo;

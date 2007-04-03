@@ -213,22 +213,16 @@ public class OrderParameterValidator {
 				return "must be one of le,br,st,mi,no";
 			}
 		} else if (paramType.equals("dir")) {
-			if (inList(paramValue, "ne,nw,w,se,sw,e,h,no,ev")) {
+			if (inList(paramValue, "ne,nw,w,se,sw,e,h")) {
 				return null;
 			} else {
-				return "must be one of ne,nw,w,se,sw,e,h,no,ev";
+				return "must be one of ne,nw,w,se,sw,e,h";
 			}
 		} else if (paramType.equals("dirx")) {
-			if (isEmpty(paramValue) || inList(paramValue, "ne,nw,w,se,sw,e,h,no,ev")) {
+			if (isEmpty(paramValue) || inList(paramValue, "ne,nw,w,se,sw,e,h")) {
 				return null;
 			} else {
-				return "must be one of ne,nw,w,se,sw,e,h,no,ev";
-			}
-		} else if (paramType.equals("dirx")) {
-			if (inList(paramValue, "ne,nw,w,se,sw,e,h,no,ev")) {
-				return null;
-			} else {
-				return "must be one of ne,nw,w,se,sw,e,h,no,ev";
+				return "must be one of ne,nw,w,se,sw,e,h";
 			}
 		} else if (paramType.equals("gen")) {
 			if (isEmpty(paramValue) || inList(paramValue, "m,f")) {
@@ -344,7 +338,14 @@ public class OrderParameterValidator {
 			} else {
 				return "must be one of " + list;
 			}
-		} else if (paramType.equals(""))
+		} else if (paramType.equals("mt")) {
+                        String list = "no,ev";
+                        if (inList(paramValue, list)) {
+                                return null;
+                        } else {
+                                return "must be one of " + list;
+                        }
+                } else if (paramType.equals(""))
 		{
 			if (paramValue.equals("-")) {
 				return null;

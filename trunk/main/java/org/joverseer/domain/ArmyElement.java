@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 
 public class ArmyElement implements Serializable {
+
+    private static final long serialVersionUID = -5669242428421000642L;
     ArmyElementType armyElementType;
     int number;
     int training;

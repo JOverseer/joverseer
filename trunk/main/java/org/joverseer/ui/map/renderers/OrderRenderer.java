@@ -98,7 +98,7 @@ public class OrderRenderer implements Renderer {
         }
         try {
             int currentHexNo = order.getCharacter().getHexNo();
-            String[] params = order.getParameters().split(" ");
+            String[] params = order.getParameters().split(Order.DELIM);
             Point p1;
             Point p2 = null;
             int cost = 0;

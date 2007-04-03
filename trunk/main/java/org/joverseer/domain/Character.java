@@ -11,6 +11,10 @@ import sun.text.Normalizer;
 
 
 public class Character implements IBelongsToNation, IHasMapLocation, Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2372359979734224557L;
     String id;
     String name;
     String title;

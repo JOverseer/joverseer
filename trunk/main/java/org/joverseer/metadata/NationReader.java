@@ -133,7 +133,7 @@ public class NationReader implements MetadataReader {
                 } else {
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
-                addSNAs(n, (SNAEnum[])nations_2950[i][2]);
+                addSNAs(n, (Object[])nations_1650[i][2]);
                 nations.add(n);
             }
         }
@@ -149,7 +149,7 @@ public class NationReader implements MetadataReader {
                 } else {
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
-                addSNAs(n, (SNAEnum[])nations_2950[i][2]);
+                addSNAs(n, (Object[])nations_BOFA[i][2]);
                 nations.add(n);
             }
         }

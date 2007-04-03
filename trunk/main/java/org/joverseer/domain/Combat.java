@@ -5,6 +5,10 @@ import java.util.HashMap;
 
 
 public class Combat implements IHasMapLocation, Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 9195835736979973465L;
     int x;
     int y;
     

@@ -33,6 +33,7 @@
 				<value>nationEconomyListView</value>
 				<value>armySizeEstimatesListView</value>
 				<value>nationEconomyPotentialsListView</value>
+				<value>pdfFileView</value>
 			</list>
 		</property>
 		<property name="perspectives">

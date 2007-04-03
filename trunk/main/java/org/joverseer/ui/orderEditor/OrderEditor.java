@@ -329,7 +329,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                 paramsEditable = false;
                 TableLayoutBuilder tlb = new TableLayoutBuilder(subeditorPanel);
                 int paramNo = 0;
-                if (oed.getOrderNo() == 850 || oed.getOrderNo() == 860 || oed.getOrderNo() == 840) {
+                if (oed.getOrderNo() == 850 || oed.getOrderNo() == 860 || oed.getOrderNo() == 830) {
                     AbstractOrderSubeditor sub = new MoveArmyOrderSubeditor(o);
                     sub.addComponents(tlb, subeditorComponents, o, 0);
                     sub.setEditor(this);
@@ -381,7 +381,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                         } else if (paramType.equals("i")) {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("dir") || paramType.equals("dirx")) {
-                            sub = new SingleParameterOrderSubeditor(paramDescription, o);
+                            //sub = new SingleParameterOrderSubeditor(paramDescription, o);
+                            sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"ne", "e", "se", "sw", "w", "nw"}, new String[]{"ne", "e", "se", "sw", "w", "nw"});
                         } else if (paramType.equals("nat")) {
                             sub = new NationParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) {
@@ -447,6 +448,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     
     private void clearOrder() {
         orderCombo.setSelectedItem(Order.NA);
+        parameters.setText("");
+        parametersInternal.setText("");
+        refreshSubeditor();
+        refreshDescription();
         Order o = (Order)getFormObject();
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
         o.setParameters(parametersInternal.getText());
@@ -520,9 +525,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             if (val.equals("")) {
                 val = "-";
             }
-            v += (v.equals("") ? "" : "#") + val;
+            v += (v.equals("") ? "" : Order.DELIM) + val;
         }
         parametersInternal.setText(v);
-        parameters.setText(v.replace("#", " "));
+        parameters.setText(v.replace(Order.DELIM, " "));
     }
 }

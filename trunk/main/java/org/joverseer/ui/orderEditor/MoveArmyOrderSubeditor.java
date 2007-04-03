@@ -46,7 +46,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         for (int i=1; i<20; i++) {
             if (o.getParameter(i) == null) break;
             dirs.add(o.getParameter(i));
-            txt += (txt.equals("") ? "" : " ") + o.getParameter(i);
+            txt += (txt.equals("") ? "" : Order.DELIM) + o.getParameter(i);
         }
         directionParams.setText(txt);
         
@@ -139,7 +139,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         String text = "";
         String val = "-";
         for (String dir : dirs) {
-            text += (text.equals("") ? "" : " ") + dir;
+            text += (text.equals("") ? "" : Order.DELIM) + dir;
         }
         directionParams.setText(text);
         getEditor().updateParameters();

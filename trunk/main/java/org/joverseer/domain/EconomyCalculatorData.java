@@ -12,6 +12,11 @@ import org.joverseer.support.ProductContainer;
 
 public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3226500573957331722L;
+
     Integer nationNo;
 
     ProductContainer sellUnits = new ProductContainer();

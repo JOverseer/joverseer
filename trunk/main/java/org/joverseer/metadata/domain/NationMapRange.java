@@ -5,6 +5,10 @@ import java.awt.*;
 
 
 public class NationMapRange implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7251072341355206761L;
     int nationNo;
     int tlX;
     int tlY;

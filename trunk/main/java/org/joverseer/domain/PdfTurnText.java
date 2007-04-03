@@ -6,6 +6,10 @@ import org.pdfbox.pdmodel.PDDocument;
 
 
 public class PdfTurnText implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4090453769447908846L;
     int nationNo;
     String text;
     

@@ -5,6 +5,7 @@ import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.log4j.Logger;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
@@ -19,6 +20,8 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
 import org.springframework.richclient.progress.ProgressMonitor;
+
+import com.jidesoft.plaf.basic.BasicDockableFrameTitlePane.HideAutohideAction;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -315,12 +318,18 @@ public class TurnXmlReader implements Runnable{
                     	System.out.println("simply replace");
                     	pcs.removeItem(oldPc);
                     	pcs.addItem(newPc);
+                        if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
+                            newPc.setLoyalty(oldPc.getLoyalty());
+                        }
                     } else {
                     	System.out.println("replace/update");
                     	pcs.removeItem(oldPc);
                     	pcs.addItem(newPc);
                     	newPc.setNationNo(oldPc.getNationNo());
                     	newPc.setName(oldPc.getName());
+                        if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
+                            newPc.setLoyalty(oldPc.getLoyalty());
+                        }
                     	int prevTurnNo = oldPc.getInfoSource().getTurnNo();
                     	if (PopCenterXmlInfoSource.class.isInstance(oldPc.getInfoSource())) {
                     		prevTurnNo = ((PopCenterXmlInfoSource)oldPc.getInfoSource()).getPreviousTurnNo();
@@ -372,6 +381,7 @@ public class TurnXmlReader implements Runnable{
                     
                     // pop has been lost
                     pop.setNationNo(0);
+                    pop.setLoyalty(0);
                 }
             }
             catch (Exception exc) {
@@ -569,11 +579,16 @@ public class TurnXmlReader implements Runnable{
         
         // remove PCs if HexInfo shows empty hex
         ArrayList toRemove = new ArrayList();
+        
+        String hiddenPopsPreferenceVal = PreferenceRegistry.instance().getPreferenceValue("map.hiddenPops");
+        boolean keepHiddenPops = hiddenPopsPreferenceVal==null || hiddenPopsPreferenceVal.equals("alwaysShow"); 
+        
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
             if (pc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() && pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue() && !MetadataSource.class.isInstance(pc.getInfoSource())) continue;
             if (pc.getSize() == PopulationCenterSizeEnum.ruins) continue;
             HexInfo hi = (HexInfo)hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
             if (hi.getVisible() && !hi.getHasPopulationCenter()) {
+                if (keepHiddenPops && pc.getHidden()) continue;
                 toRemove.add(pc);
             }
         }

@@ -610,7 +610,7 @@ public class TurnPdfReader implements Runnable {
         NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", turnInfo.getNationNo());
         if (turnInfo.getAllegiance().equals("Free People")) {
             nation.setAllegiance(NationAllegianceEnum.FreePeople);
-        } else if (turnInfo.getAllegiance().equals("Dark Servants")) {
+        } else if (turnInfo.getAllegiance().equals("Dark Servant")) {
             nation.setAllegiance(NationAllegianceEnum.DarkServants);
         } else if (turnInfo.getAllegiance().equals("Neutral")) {
             nation.setAllegiance(NationAllegianceEnum.Neutral);

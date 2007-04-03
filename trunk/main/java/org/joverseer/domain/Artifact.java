@@ -6,6 +6,8 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
 
 public class Artifact implements Serializable, IHasMapLocation {
+
+    private static final long serialVersionUID = -5267111841358845294L;
     int number;
     String name;
     int hexNo;

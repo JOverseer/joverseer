@@ -5,6 +5,10 @@ import java.io.Serializable;
 
 
 public class ArtifactInfo implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2804713282789639647L;
     String name;
     int no;
     ArrayList powers = new ArrayList();

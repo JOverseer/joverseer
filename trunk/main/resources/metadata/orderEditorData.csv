@@ -46,7 +46,7 @@
 ;;;;Product;Amount;;;;;;;
 325;NatSell;Misc;Product (mi,st,br,le,ti,mo,fo) + % of Product to be sold (1-100);prd;%;;;;;;;
 ;;;;Product;Percentage;;;;;;;
-330;CstCjSp;MagX;Spell ID # + [See spell for requirements];spx;d;;;;;;M;M
+330;CstCjSp;MagX;Spell ID # + [See spell for requirements];spx;dcid;;;;;;M;M
 ;;;;Spell;Target;;;;;;;
 340;TrPo2Ar;Misc;# of Food units transferred;d;;;;;;;;C
 ;;;;Number of food units;;;;;;;;
@@ -234,14 +234,14 @@
 ;;;;Destination;;;;;;;;
 825;CstMvSp;MagM;Spell ID # + 4-Digit Destination Hex (See spell for ranges);spm;hex;;;;;;M;M
 ;;;;Spell;Destination;;;;;;;
-830;MovNavy;Move;Directions for each Hex sailed (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);dir;dir;dirx;dirx;dirx;dirx;dirx;;C
-;;;;Direction;Direction;Direction;Direction;Direction;Direction;Direction;;
+830;MovNavy;Move;Directions for each Hex sailed (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);mt;dir;dirx;dirx;dirx;dirx;dirx;;C
+;;;;Type;Direction;Direction;Direction;Direction;Direction;Direction;;
 840;Stand;Move;Direction Hexside (ne,nw,w,se,sw,e);dir;;;;;;;;C
 ;;;;Direction;;;;;;;;
-850;MovArmy;Move;Directions for each Hex moved (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);dir;dir;dirx;dirx;dirx;dirx;dirx;;C
-;;;;Direction;Direction;Direction;Direction;Direction;Direction;Direction;;
-860;ForcMar;Move;Directions for each Hex moved (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);dir;dir;dirx;dirx;dirx;dirx;dirx;;C
-;;;;Direction;Direction;Direction;Direction;Direction;Direction;Direction;;
+850;MovArmy;Move;Directions for each Hex moved (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);mt;dir;dirx;dirx;dirx;dirx;dirx;;C
+;;;;Type;Direction;Direction;Direction;Direction;Direction;Direction;;
+860;ForcMar;Move;Directions for each Hex moved (ne,nw,w,se,sw,e - 1 per cell) + Travel mode (no,ev);mt;dir;dirx;dirx;dirx;dirx;dirx;;C
+;;;;Type;Direction;Direction;Direction;Direction;Direction;Direction;;
 870;MovJoin;Move;4-Digit Destination Hex (within 12 Hexes) + Army Commander ID (5 lowercase letters/spaces) ;hex;cid;;;;;;;
 ;;;;Destination;Commander;;;;;;;
 900;FindArt;Misc;Artifact ID # (0 if unknown);i;;;;;;;;

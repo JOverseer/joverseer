@@ -5,6 +5,10 @@ import java.util.Date;
 
 
 public class PlayerInfo implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -1488014589069610748L;
     int nationNo;
     String playerName;
     String accountNo;

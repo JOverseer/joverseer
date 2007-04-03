@@ -9,6 +9,10 @@ import java.io.Serializable;
 
 
 public class Turn implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8759609718974408867L;
     int turnNo;
     Date turnDate;
     SeasonEnum season;

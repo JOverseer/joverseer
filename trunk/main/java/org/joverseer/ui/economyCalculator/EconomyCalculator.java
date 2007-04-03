@@ -71,11 +71,16 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 refreshAutocalcOrderCost();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 loadNationCombo();
-                ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
-                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
-                refreshMarketLimitWarning();
-                refreshTaxIncrease();
-                refreshAutocalcOrderCost();
+                try {
+                    ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
+                    ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                    refreshMarketLimitWarning();
+                    refreshTaxIncrease();
+                    refreshAutocalcOrderCost();
+                }
+                catch (Exception exc) {
+                    exc.printStackTrace();
+                }
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 loadNationCombo();
 //                if (GameHolder.hasInitializedGame() && GameHolder.instance().getGame().getTurn() != null) {
@@ -175,6 +180,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 refreshPcs(n.getNumber());
                 refreshMarketLimitWarning();
                 refreshAutocalcOrderCost();
+                refreshTaxIncrease();
                 sellBonus.setSelected(((EconomyTotalsTableModel)totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
             }
         });
@@ -189,6 +195,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 Game g = GameHolder.instance().getGame();
                 if (!Game.isInitialized(g)) return;
                 if (nationCombo.getSelectedItem() == null) return;
+                if (((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData() == null) return;
                 ((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData().setSellBonus(sellBonus.isSelected());
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();

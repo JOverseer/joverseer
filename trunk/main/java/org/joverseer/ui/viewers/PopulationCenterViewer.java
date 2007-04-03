@@ -58,6 +58,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
     boolean showColor = true;
     
+    JTextField loyalty;
     JTextField name;
     JTextField nation;
     JTextField sizeFort;
@@ -90,10 +91,17 @@ public class PopulationCenterViewer extends ObjectViewer {
         
         GameMetadata gm = game.getMetadata();
 
-        int nationNo = pc.getNationNo();
+        int nationNo = 0;
+        int loyaltyNo = 0;
+        if (pc.getSize() != PopulationCenterSizeEnum.ruins) {
+            nationNo = pc.getNationNo();
+            loyaltyNo = pc.getLoyalty();
+        }
 
         nation.setText(gm.getNationByNum(nationNo).getShortName());
-
+        loyalty.setText(String.valueOf(loyaltyNo));
+        
+        
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
         
         if (pc.getHarbor() != HarborSizeEnum.none) {
@@ -161,16 +169,17 @@ public class PopulationCenterViewer extends ObjectViewer {
             lostThisTurn.setVisible(false);
         }
         String turnInfoStr = "";
-        
-        if (pc.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
-            turnInfoStr = "Info from t" + Math.max(pc.getInfoSource().getTurnNo(), 0); 
-        };
-        if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource())) {
-	        PopCenterXmlInfoSource is = (PopCenterXmlInfoSource)pc.getInfoSource();
-	        if (is.getTurnNo() != is.getPreviousTurnNo()) {
-	        	turnInfoStr += (turnInfoStr.equals("") ? "" : " - ") + "Owner from t" + is.getPreviousTurnNo();
-	        }
-        }        
+        if (pc.getSize() != PopulationCenterSizeEnum.ruins) {
+            if (pc.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
+                turnInfoStr = "Info from t" + Math.max(pc.getInfoSource().getTurnNo(), 0); 
+            };
+            if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource())) {
+    	        PopCenterXmlInfoSource is = (PopCenterXmlInfoSource)pc.getInfoSource();
+    	        if (is.getTurnNo() != is.getPreviousTurnNo()) {
+    	        	turnInfoStr += (turnInfoStr.equals("") ? "" : " - ") + "Owner from t" + is.getPreviousTurnNo();
+    	        }
+            }
+        }
         turnInfo.setText(turnInfoStr);
         turnInfo.setVisible(!turnInfoStr.equals(""));
 //        else if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource()) &&
@@ -235,9 +244,8 @@ public class PopulationCenterViewer extends ObjectViewer {
         c = nation;
         c.setBorder(null);
 
-        glb.append(c = new JTextField());
-        c.setBorder(null);
-        bf.bindControl(c, "loyalty");
+        glb.append(loyalty = new JTextField());
+        loyalty.setBorder(null);
         glb.nextLine();
         
         glb.append(productionDescription = new JTextField(), 2, 1);

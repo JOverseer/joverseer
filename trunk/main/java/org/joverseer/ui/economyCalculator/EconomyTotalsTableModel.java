@@ -84,6 +84,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         NationEconomy ne = getNationEconomy();
         if (ne == null) return "";
         EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return "";
+
         if (columnIndex == 1) {
             switch (rowIndex) {
                 case 0:
@@ -239,6 +241,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     public int getTaxIncrease() {
         NationEconomy ne = getNationEconomy();
+        if (ne == null) return 0;
         int finalGold = getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
         if (finalGold >= 0) return 0;
         int newTaxRevenue = (computeLostGoldRevenue() - finalGold) / (getTaxRevenue() / ne.getTaxRate() - computeLostTaxRevenue() / ne.getTaxRate());  

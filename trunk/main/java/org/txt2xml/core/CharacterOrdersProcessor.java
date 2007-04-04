@@ -29,7 +29,7 @@ public class CharacterOrdersProcessor extends Processor {
     }
     
     protected void resetMatching() {
-        Pattern p = Pattern.compile(namePattern2);
+        Pattern p = Pattern.compile(namePattern);
         String str = chars.toString();
         String datePattern = "\\d{1,2}/\\d{1,2}/\\d{4}  Game \\d+  Player \\d+  Turn \\d+  Page \\d+";
         str = str.replaceAll(datePattern, "");

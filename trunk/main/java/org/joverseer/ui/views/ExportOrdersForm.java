@@ -151,7 +151,9 @@ public class ExportOrdersForm extends AbstractForm {
                     try {
                         pi.setTurnVersion(Integer.parseInt(version.getSelectedItem().toString()) + 1);
                         FileWriter f = new FileWriter(fileChooser.getSelectedFile());
-                        f.write(orders.getText());
+                        String txt = orders.getText();
+                        txt = txt.replace("\n", System.getProperty("line.separator"));
+                        f.write(txt);
                         f.close();
                         MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
                         MessageDialog md = new MessageDialog("Turn Exported", "The turn was succesfully exported to file " + fileChooser.getSelectedFile() + ".");
@@ -208,7 +210,7 @@ public class ExportOrdersForm extends AbstractForm {
         Collections.sort(chars, new BeanComparator("id"));
         ArrayList<Character> toRemove = new ArrayList<Character>();
         for (Character ch : chars) {
-            if (ch.getHealth() == null || ch.getHealth() == 0) {
+            if (ch.getHealth() == null || ch.getHealth() == 0 || ch.getHexNo() <= 0) {
                 toRemove.add(ch);
             }
         }

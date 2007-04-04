@@ -12,7 +12,8 @@ public class CharacterWrapper {
         boolean assassinated;
         boolean cursed;
         boolean executed;
-	
+	String artifacts;
+        
 	ArrayList<OrderResult> orderResults = new ArrayList<OrderResult>();
 
 	public String getName() {
@@ -82,5 +83,17 @@ public class CharacterWrapper {
         public void setExecutedOn() {
             this.executed = true;
         }
+
+        
+        public String getArtifacts() {
+            return artifacts;
+        }
+
+        
+        public void setArtifacts(String artifacts) {
+            this.artifacts = artifacts;
+        }
+        
+        
 
 }

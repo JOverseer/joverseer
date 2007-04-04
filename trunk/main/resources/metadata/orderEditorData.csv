@@ -206,9 +206,9 @@
 ;;;;Char;;;;;;;;
 760;LvCmpy;Misc;;;;;;;;;;
 
-765;SplArmy;Misc;New Commander ID + # of each Troop Type, each in a different cell.;cid;d;d;d;d;d;d;;C
+765;SplArmy;Misc;New Commander ID + # of each Troop Type, each in a different cell.;cid;de;de;de;de;de;de;;C
 ;;;;New commander;HC;LC;HI;LI;AR;MA;;
-770;HrArmy;Comm;# of Troops + Type (hc,lc,hi,li,ar,ma) + Weap  (mi,st,br,wo) + Armor (mi,st,br,le,no) + Food;b;trp;wep;arm;d;;;C;C
+770;HrArmy;Comm;# of Troops + Type (hc,lc,hi,li,ar,ma) + Weap  (mi,st,br,wo) + Armor (mi,st,br,le,no) + Food;b;trp;wep;arm;de;;;C;C
 ;;;;Number of troops;Troop type;Weapon type;Armor type;Food units;;;;
 775;DsbArmy;Misc;;;;;;;;;;C
 
@@ -260,7 +260,7 @@
 
 935;UsScArt;Misc;Artifact ID # + Chosen 4-Digit Hex;b;hex;;;;;;;
 ;;;;Artifact id;Hex;;;;;;;
-940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;d;;;;;;M;M
+940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;dcid;;;;;;M;M
 ;;;;Spell;Target;;;;;;;
 945;UsHiArt;Misc;Artifact ID #;b;;;;;;;;
 ;;;;Artifact id;;;;;;;;

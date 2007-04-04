@@ -1,0 +1,6 @@
+Size;Can Feed;Force to Threaten;Defense;Cost toBuild
+Camp;100;0;200;2000 or 4000
+Village;200;200;500;4000
+Town;1000;1000;1000;6000
+MajorTown;2500;2500;2500;8000
+City;5000;5000;5000;10000

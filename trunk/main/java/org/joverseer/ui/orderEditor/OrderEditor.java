@@ -251,9 +251,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             	if (!currentOrderNoAndCode.equals(orderCombo.getSelectedItem())) {
             		currentOrderNoAndCode = orderCombo.getSelectedItem().toString();
             		refreshOrder();
-					refreshDescription();
-					refreshSubeditor();
-				}
+			refreshDescription();
+			refreshSubeditor();
+		}
             }
         });
         
@@ -300,6 +300,22 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     private boolean refreshOrder() {
         Order o = (Order)getFormObject();
         if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) {
+            // exclude changes between 
+            // 830, 850, 860
+            // 810, 820 and 870
+            String[] equivalentOrders = new String[]{ 
+                ",830,850,860,",
+                ",810,820,870,"};
+            boolean areEquivalent = false;
+            for (int i=0; i<equivalentOrders.length; i++) {
+                int j = equivalentOrders[i].indexOf("," + String.valueOf(o.getOrderNo()) + ",");
+                int k = equivalentOrders[i].indexOf("," + String.valueOf(getSelectedOrderNo()) + ",");
+                if (j >= 0 && k >= 0) {
+                    areEquivalent = true;
+                }
+            }
+            if (areEquivalent) return false;
+            
             o.setParameters("");
             parameters.setText(Order.getParametersAsString(o.getParameters()));
             parametersInternal.setText(o.getParameters());

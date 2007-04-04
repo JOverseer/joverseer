@@ -88,7 +88,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         if (game == null) return;
         
         name.setText(GraphicUtils.parseName(pc.getName()));
-        
+        name.setCaretPosition(0);
         GameMetadata gm = game.getMetadata();
 
         int nationNo = 0;

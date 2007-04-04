@@ -99,7 +99,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 
 	
     protected boolean isCellEditableInternal(Object object, int i) {
-        return i == iNoAndCode || (i >= iParamStart && i<= iParamEnd);
+        return i == iNoAndCode || (i >= iParamStart && i<= iParamEnd) || i == iDraw;
     }
     
     protected Object getValueAtInternal(Object object, int i) {

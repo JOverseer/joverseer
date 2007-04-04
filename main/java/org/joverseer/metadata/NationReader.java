@@ -142,9 +142,9 @@ public class NationReader implements MetadataReader {
                 String shortName = (String)nations_BOFA[i][1];
                 String name = (String)nations_BOFA[i][0];
                 Nation n = new Nation(i, name, shortName);
-                if (n.getNumber() <= 11) {
+                if (n.getNumber() >= 10 && n.getNumber() <= 11) {
                     n.setAllegiance(NationAllegianceEnum.DarkServants);
-                } else if (n.getNumber() <= 14) {
+                } else if (n.getNumber() >= 12 && n.getNumber() <= 14) {
                     n.setAllegiance(NationAllegianceEnum.FreePeople);
                 } else {
                     n.setAllegiance(NationAllegianceEnum.Neutral);

@@ -121,13 +121,13 @@ public class OrderTextReader {
                 if (orderText[i] == null) {
                     orders[i].clear();
                 } else {
-                    String[] parts = orderText[i].replace("  ", " ").split(" ");
+                    String[] parts = orderText[i].trim().replace("  ", Order.DELIM).split(Order.DELIM);
                     String parameters = "";
                     int orderNo = -1;
                     if (!parts[0].equals("")) {
                         orderNo = Integer.parseInt(parts[0]);
                         for (int j=2; j<parts.length; j++) {
-                            String part = parts[j];
+                            String part = parts[j].trim();
                             if (!part.equals("--") && !part.equals("")) {
                                     parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part; 
                             }

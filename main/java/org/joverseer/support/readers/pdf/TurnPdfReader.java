@@ -211,8 +211,8 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/Orders/Character", "addItem", "org.joverseer.support.readers.pdf.CharacterWrapper");
             // set nested properties
             digester.addRule("txt2xml/Turn/Orders/Character",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "HexID", "CharacterOrders"},
-                            new String[]{"name", "hexNo", "orders"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "HexID", "Artifacts", "CharacterOrders"},
+                            new String[]{"name", "hexNo", "artifacts", "orders"}));
             snpr.setAllowUnknownChildElements(true);
             // create LA result object
             digester.addObjectCreate("txt2xml/Turn/Orders/Character/LocateArtifact", "org.joverseer.support.readers.pdf.LocateArtifactResultWrapper");
@@ -532,7 +532,7 @@ public class TurnPdfReader implements Runnable {
     
     private void updateTurnData() throws Exception {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("m/d/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
             turn.setTurnDate(sdf.parse(turnInfo.getDate()));
             if (turnInfo.getSeason().equals("Spring")) {
                 turn.setSeason(SeasonEnum.Spring);

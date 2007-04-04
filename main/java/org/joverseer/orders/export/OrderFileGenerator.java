@@ -63,7 +63,7 @@ public class OrderFileGenerator {
         String[] dueDateParts = pi.getDueDate().split(" ");
         ret += String.format("%s,%s,%s,%s,%s,%s%s%s,%s,%s",
                 g.getMetadata().getGameNo(),
-                g.getMetadata().getNationNo(),
+                pi.getNationNo(),
                 pi.getAccountNo(),
                 pi.getSecret(),
                 pi.getPlayerName(),
@@ -85,7 +85,7 @@ public class OrderFileGenerator {
         String ret = c.getId();
         ret += ",";
         ret += o.getOrderNo();
-        for (int i=0; i<16; i++) {
+        for (int i=0; i<15; i++) {
             String p = o.getParameter(i);
             if (p == null || p.equals("") || p.equals("-")) {
                 p = "--";

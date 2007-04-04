@@ -140,7 +140,13 @@ public class OrderParameterValidator {
 			} else {
 				return "must be between 1 and 99999";
 			}
-		} else if (paramType.equals("c")) {
+		} else if (paramType.equals("de")) {
+                        if (isNumberOK(paramValue, 0, 99999)) {
+                                return null;
+                        } else {
+                                return "must be between 0 and 99999";
+                        }
+                } else if (paramType.equals("c")) {
 			if (isNumberOK(paramValue, 1, 999999)) {
 				return null;
 			} else {

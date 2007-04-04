@@ -238,9 +238,7 @@
                 <bean class="org.joverseer.metadata.CharacterReader"/>
                 <bean class="org.joverseer.metadata.NationMapRangeReader"/>
                 <bean class="org.joverseer.metadata.SpellReader"/>
-<!-- 
-<bean class="org.joverseer.metadata.ArmyReader"/>                
- -->                
+				<bean class="org.joverseer.metadata.ArmyReader"/>                
             </list>
         </property>
     </bean>

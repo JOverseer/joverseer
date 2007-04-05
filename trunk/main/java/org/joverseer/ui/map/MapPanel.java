@@ -546,7 +546,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
         MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
         int y = p.y / (metadata.getHexSize() * 3 / 4 * metadata.getGridCellHeight());
         int x;
-        if (y % 2 == 1) {
+        if (y % 2 == 0) {
             x = p.x / (metadata.getHexSize() * metadata.getGridCellWidth());
         } else {
             x = (p.x - metadata.getHexSize() / 2 * metadata.getGridCellWidth()) / (metadata.getHexSize() * metadata.getGridCellWidth());
@@ -566,24 +566,13 @@ public class MapPanel extends JPanel implements MouseInputListener {
     public void mousePressed(MouseEvent e)
     {
         if (e.getButton() == MouseEvent.BUTTON1)
+            xDiff = e.getX();
+        	yDiff = e.getY();
             if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
                 setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-                xDiff = e.getX();
-                yDiff = e.getY();
                 
             }
             else {
-                if (!GameHolder.hasInitializedGame()) return;
-                Point p = e.getPoint();
-    //            MessageDialog dlg = new MessageDialog("test", p.x + "," + p.y);
-    //            dlg.getDialog().show();
-                Point hex = getHexFromPoint(p);
-                setSelectedHex(hex);
-                this.updateUI();
-                TransferHandler handler = this.getTransferHandler();
-                handler.exportAsDrag(this, e, TransferHandler.COPY);
-                requestFocusInWindow();
-
             }
     }
 
@@ -596,6 +585,10 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
     public void mouseClicked(MouseEvent e)
     {
+    	Point p = e.getPoint();
+        Point hex = getHexFromPoint(p);
+        setSelectedHex(hex);
+        this.updateUI();
     }
 
     public void mouseEntered(MouseEvent e)
@@ -632,6 +625,18 @@ public class MapPanel extends JPanel implements MouseInputListener {
         
               jv.setViewPosition(new Point(newX, newY));
             }
+        } else {
+            if (!GameHolder.hasInitializedGame()) return;
+            Point p = e.getPoint();
+            int dx = Math.abs(e.getX() - xDiff);
+            int dy = Math.abs(e.getY() - yDiff);
+            if (dx > 5 || dy > 5) {
+	            Point hex = getHexFromPoint(new Point(xDiff, yDiff));
+	            TransferHandler handler = this.getTransferHandler();
+	            handler.exportAsDrag(this, e, TransferHandler.COPY);
+	            requestFocusInWindow();
+            }
+
         }
     }
 
@@ -654,7 +659,12 @@ public class MapPanel extends JPanel implements MouseInputListener {
     }
     
     public String getHex() {
-        return "1111";
+        Point p = getHexFromPoint(new Point(xDiff, yDiff));
+        String h = String.valueOf(p.x * 100 + p.y);
+        if (h.length() < 4) {
+        	h = "0" + h;
+        }
+        return h;
     }
     
     public void setHex(String hex) {};

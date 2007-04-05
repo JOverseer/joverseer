@@ -5,9 +5,12 @@ import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import org.joverseer.domain.Order;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.core.io.Resource;
@@ -85,6 +88,22 @@ public class OrderParameterValidator {
         }
         return orderEditorData;
     }
+        
+        public String checkOrder(Order o) {
+            if (o.isBlank()) return null;
+            OrderMetadata om = (OrderMetadata)GameHolder.instance().getGame().getMetadata().getOrders().findFirstByProperty("number", o.getOrderNo());
+            if (om == null) return null;
+            if (om.getRequirement().indexOf("At Capital") >= 0) {
+                if (o.getOrderNo() < 800) {
+                    PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{o.getCharacter().getNationNo(), true});
+                    if (capital == null) return null;
+                    if (capital.getHexNo() != o.getCharacter().getHexNo()) {
+                        return "Character must be in capital";
+                    }
+                }
+            }
+            return null;
+        }
     
 	public String checkParam(Order o, int iParam) {
                 if (o.isBlank()) return null;

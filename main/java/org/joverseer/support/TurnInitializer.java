@@ -8,6 +8,7 @@ import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -26,7 +27,8 @@ public class TurnInitializer {
         Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
 
         Container newPlayerInfo = newTurn.getContainer(TurnElementsEnum.PlayerInfo);
-        
+        GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+
         if (previousTurn != null) {
             // copy pcs
             Container oldPcs = previousTurn.getContainer(TurnElementsEnum.PopulationCenter);
@@ -37,12 +39,13 @@ public class TurnInitializer {
             // copy relations
             Container oldRelations = previousTurn.getContainer(TurnElementsEnum.NationRelation);
             for (NationRelations nr : (ArrayList<NationRelations>)oldRelations.items) {
+                Nation n = gm.getNationByNum(nr.getNationNo());
+                nr.setAllegiance(n.getAllegiance());
                 NationRelations newNr = nr.clone();
                 newRelations.addItem(newNr);
             }
         } else {
             // get pcs from metadata
-            GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
             Container gmPCs = gm.getPopulationCenters();
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)gmPCs.items) {
                 PopulationCenter newPc = pc.clone();
@@ -56,15 +59,40 @@ public class TurnInitializer {
                 
                 Nation n = gm.getNationByNum(i);
                 nr.setAllegiance(n.getAllegiance());
-                for (int j=1; j<26; j++) {
-                    if (i < 10 && j < 10) {
-                        nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
-                    } else if (i > 10 && i < 21 && j > 10 && j < 21) {
-                        nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
-                    } else if (i > 20 || j > 20) {
-                        nr.setRelationsFor(j, NationRelationsEnum.Neutral);
-                    } else {
-                        nr.setRelationsFor(j, NationRelationsEnum.Disliked);
+                if (gm.getGameType() == GameTypeEnum.game1650 || 
+                        gm.getGameType() == GameTypeEnum.game2950) {
+                    for (int j=1; j<26; j++) {
+                        if (i < 10 && j < 10) {
+                            nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
+                        } else if (i > 10 && i < 21 && j > 10 && j < 21) {
+                            nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
+                        } else if (i > 20 || j > 20) {
+                            nr.setRelationsFor(j, NationRelationsEnum.Neutral);
+                        } else {
+                            nr.setRelationsFor(j, NationRelationsEnum.Disliked);
+                        }
+                    }
+                } else if (gm.getGameType() == GameTypeEnum.gameBOFA) {
+                    for (int j=1; j<26; j++) {
+                        if (i == 10 || i == 11) {
+                            if (j == 10 || j == 11) {
+                                nr.setRelationsFor(j, NationRelationsEnum.Friendly);
+                            } else if (j >= 12 && j <= 14) {
+                                nr.setRelationsFor(j, NationRelationsEnum.Hated);
+                            } else {
+                                nr.setRelationsFor(j, NationRelationsEnum.Neutral);
+                            }
+                        } else if (i >= 12 && i <= 14) {
+                            if (j == 10 || j == 11) {
+                                nr.setRelationsFor(j, NationRelationsEnum.Hated);
+                            } else if (j >= 12 && j <= 14) {
+                                nr.setRelationsFor(j, NationRelationsEnum.Friendly);
+                            } else {
+                                nr.setRelationsFor(j, NationRelationsEnum.Neutral);
+                            }
+                        } else {
+                            nr.setRelationsFor(j, NationRelationsEnum.Neutral);
+                        }
                     }
                 }
                 newRelations.addItem(nr);
@@ -76,7 +104,6 @@ public class TurnInitializer {
         
         if (previousTurn == null) {
         	// get armies from metadata
-            GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
             Container gmArmies = gm.getArmies();
             for (Army a : (ArrayList<Army>)gmArmies.items) {
                 Army newArmy = a.clone();
@@ -89,7 +116,6 @@ public class TurnInitializer {
         newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
         newTurn.getContainers().put(TurnElementsEnum.Artifact, new Container(new String[]{"number", "hexNo"}));
         Container hexInfo = new Container(new String[]{"hexNo"});
-        GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
         for (Hex h : (Collection <Hex>)gm.getHexes()) {
             HexInfo hi = new HexInfo();
             hi.setVisible(false);

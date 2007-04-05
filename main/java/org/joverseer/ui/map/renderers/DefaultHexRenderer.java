@@ -158,6 +158,14 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         g.setStroke(s);
     }
 
+    protected boolean withinMapRange(int x, int y, MapMetadata metadata) {
+        if (x < metadata.getMinMapColumn()) return false;
+        if (x > metadata.getMaxMapColumn()) return false;
+        if (y < metadata.getMinMapRow()) return false;
+        if (y > metadata.getMaxMapRow()) return false;
+        return true;
+    }
+    
     public void render(Object obj, Graphics2D g, int x, int y) {
         if (!appliesTo(obj)) {
             throw new IllegalArgumentException(obj.toString());
@@ -168,6 +176,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         }
 
         Hex hex = (Hex)obj;
+        if (!withinMapRange(hex.getColumn(), hex.getRow(), metadata)) return;
         
         boolean imageDrawn = false;
         if (mapOptions.get(MapOptionsEnum.HexGraphics) == null || mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) {

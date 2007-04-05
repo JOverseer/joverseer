@@ -99,12 +99,13 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         if (metadata == null) {
             init();
         }
+        Hex hex = (Hex)obj;
+        if (!withinMapRange(hex.getColumn(), hex.getRow(), metadata)) return;
         Game game = gh.getGame();
         
         Object map = mapOptions.get(MapOptionsEnum.NationMap);
         boolean showClimate = mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate) == MapOptionValuesEnum.ShowClimateOn;
         boolean visible = false;
-        Hex hex = (Hex)obj;
         if (map == null) {
             HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());
             visible = hexInfo.getVisible();

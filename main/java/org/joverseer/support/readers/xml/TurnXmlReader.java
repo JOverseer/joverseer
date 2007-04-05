@@ -477,7 +477,7 @@ public class TurnXmlReader implements Runnable{
                         boolean bFound = false;
                         for (Army oa : (ArrayList<Army>)oldArmies) {
                             if (!oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") ||
-                                    oa.getNationAllegiance() != newArmy.getNationAllegiance()) {
+                                    oa.getNationAllegiance() == newArmy.getNationAllegiance()) {
                                 bFound = true;
                             }
                         }

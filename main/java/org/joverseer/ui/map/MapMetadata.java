@@ -8,8 +8,10 @@ public class MapMetadata {
     int gridCellWidth;
     int gridCellHeight;
     int hexSize = 4;
-    int mapColumns;
-    int mapRows;
+    int maxMapColumn;
+    int maxMapRow;
+    int minMapColumn = 1;
+    int minMapRow = 1;
 
     ArrayList renderers = new ArrayList();
 
@@ -37,20 +39,39 @@ public class MapMetadata {
         this.hexSize = hexSize;
     }
 
-    public int getMapColumns() {
-        return mapColumns;
+    public int getMaxMapColumn() {
+        return maxMapColumn;
     }
 
-    public void setMapColumns(int mapColumns) {
-        this.mapColumns = mapColumns;
+    public void setMaxMapColumn(int mapColumns) {
+        this.maxMapColumn = mapColumns;
     }
 
-    public int getMapRows() {
-        return mapRows;
+    public int getMaxMapRow() {
+        return maxMapRow;
     }
 
-    public void setMapRows(int mapRows) {
-        this.mapRows = mapRows;
+    public void setMaxMapRow(int mapRows) {
+        this.maxMapRow = mapRows;
+    }
+
+    public int getMinMapColumn() {
+        return minMapColumn;
+    }
+
+    
+    public void setMinMapColumn(int minMapColumn) {
+        this.minMapColumn = minMapColumn;
+    }
+
+    
+    public int getMinMapRow() {
+        return minMapRow;
+    }
+
+    
+    public void setMinMapRow(int minMapRow) {
+        this.minMapRow = minMapRow;
     }
 
     public void setRenderers(Collection renderers) {

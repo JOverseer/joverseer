@@ -74,6 +74,7 @@ public class MapView extends AbstractView  implements ApplicationListener {
         	
         });
         mapPanel.setPreferredSize(new Dimension(3500, 2500));
+        mapPanel.setBackground(Color.white);
         scp.setPreferredSize(new Dimension(800, 500));
         MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
         scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
@@ -121,8 +122,8 @@ public class MapView extends AbstractView  implements ApplicationListener {
             } else if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
                 MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
                 mapPanel.setPreferredSize(new Dimension(
-                            mm.getGridCellWidth() * mm.getHexSize() * (mm.getMapColumns() + 1),
-                            mm.getGridCellHeight() * mm.getHexSize() * mm.getMapRows()
+                            mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1),
+                            mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()
                         ));
                 mapPanel.invalidateAndReset();
                 mapPanel.updateUI();

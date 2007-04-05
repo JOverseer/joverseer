@@ -15,6 +15,8 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.JOverseerClient;
+import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
@@ -69,6 +71,10 @@ public class LoadGame extends ActionCommand {
                 GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
                 Game g = Game.loadGame(f);
                 gh.setGame(g);
+                MapMetadataUtils mmu = new MapMetadataUtils();
+                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+                mmu.setMapSize(mm, g.getMetadata().getGameType());
+
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, g));
                 if (g.getParameter("horizontalMapScroll") != null) {

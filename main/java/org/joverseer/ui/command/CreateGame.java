@@ -5,10 +5,13 @@ import java.util.Locale;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
+import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.support.ErrorDialog;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.views.NewGameForm;
@@ -52,6 +55,11 @@ public class CreateGame extends ActionCommand {
                     dlg.showDialog();
                     return true;
                 } 
+
+                MapMetadataUtils mmu = new MapMetadataUtils();
+                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+                mmu.setMapSize(mm, gm.getGameType());
+                
                 game.setMetadata(gm);
                 game.setMaxTurn(0);
                 GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");

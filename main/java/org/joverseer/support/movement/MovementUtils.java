@@ -7,6 +7,7 @@ import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.map.MapMetadata;
 import org.springframework.richclient.application.Application;
 
 import java.util.HashMap;
@@ -77,6 +78,13 @@ public class MovementUtils {
         if (dest == null) {
             // out of map
             return -1;
+        } else {
+            // out of map
+            MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+            if (dest.getColumn() < mm.getMinMapColumn()) return -1;
+            if (dest.getColumn() > mm.getMaxMapColumn()) return -1;
+            if (dest.getRow() < mm.getMinMapRow()) return -1;
+            if (dest.getRow() > mm.getMaxMapRow()) return -1;
         }
         
         boolean roadExists = false;

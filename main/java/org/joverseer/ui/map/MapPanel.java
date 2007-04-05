@@ -30,6 +30,7 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.util.Collection;
@@ -103,9 +104,9 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
     public Point getHexLocation(int x, int y) {
         Point location = new Point();
-        x--;
-        y--;
         MapMetadata metadata = getMetadata();
+        x = x - metadata.getMinMapColumn();
+        y = y - metadata.getMinMapRow();
         if (y % 2 == 0) {
             location.setLocation(metadata.getHexSize() * metadata.getGridCellWidth() * x,
                                  metadata.getHexSize() * 3 / 4 * y * metadata.getGridCellHeight());
@@ -164,9 +165,10 @@ public class MapPanel extends JPanel implements MouseInputListener {
         GameMetadata gm = game.getMetadata();
 
         if (mapBack == null) {
-            int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
-            int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
-            mapBack = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Dimension d = getMapDimension();
+            mapBack = new BufferedImage((int)d.getWidth(), (int)d.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            this.setPreferredSize(d);
+            this.setSize(d);
         }
         map = mapBack;
 
@@ -192,6 +194,12 @@ public class MapPanel extends JPanel implements MouseInputListener {
         }
     }
     
+    private Dimension getMapDimension() {
+        int width = (int)((double)((double)metadata.getMaxMapColumn() + 2d - (double)metadata.getMinMapColumn() - .5) * (double)metadata.getHexSize() * (double)metadata.getGridCellWidth());
+        int height = (int)((double)((double)metadata.getMaxMapRow() * .75d + .25) * (double)metadata.getHexSize() * (double)metadata.getGridCellHeight());
+        return new Dimension(width, height);
+    }
+    
     private void createMapItems() {
         MapMetadata metadata;
         try {
@@ -206,9 +214,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
         BusyIndicator.showAt(this);
         if (mapItemsBack == null) {
-            int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
-            int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
-            mapItemsBack = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Dimension d = getMapDimension();
+            mapItemsBack = new BufferedImage((int)d.getWidth(), (int)d.getHeight(), BufferedImage.TYPE_INT_ARGB);
         }
         mapItems = mapItemsBack;
 
@@ -272,9 +279,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
         BusyIndicator.showAt(this);
         if (mapBaseItemsBack == null) {
-            int width = (metadata.getMapColumns() + 1) * metadata.getHexSize() * metadata.getGridCellWidth();
-            int height = metadata.getMapRows() * metadata.getHexSize() * metadata.getGridCellHeight();
-            mapBaseItemsBack = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Dimension d = getMapDimension();
+            mapBaseItemsBack = new BufferedImage((int)d.getWidth(), (int)d.getHeight(), BufferedImage.TYPE_INT_ARGB);
         }
         mapBaseItems = mapBaseItemsBack;
 
@@ -538,15 +544,17 @@ public class MapPanel extends JPanel implements MouseInputListener {
      */
     private Point getHexFromPoint(Point p) {
         MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
-        int y = p.y / (metadata.getHexSize() * 3 / 4 * metadata.getGridCellHeight()) + 1;
+        int y = p.y / (metadata.getHexSize() * 3 / 4 * metadata.getGridCellHeight());
         int x;
         if (y % 2 == 1) {
-            x = p.x / (metadata.getHexSize() * metadata.getGridCellWidth()) + 1;
+            x = p.x / (metadata.getHexSize() * metadata.getGridCellWidth());
         } else {
-            x = (p.x - metadata.getHexSize() / 2 * metadata.getGridCellWidth()) / (metadata.getHexSize() * metadata.getGridCellWidth()) + 1;
+            x = (p.x - metadata.getHexSize() / 2 * metadata.getGridCellWidth()) / (metadata.getHexSize() * metadata.getGridCellWidth());
         }
-        if (x > metadata.getMapColumns()) x = metadata.getMapColumns();
-        if (y > metadata.getMapRows()) y = metadata.getMapRows();
+        x += metadata.getMinMapColumn();
+        y += metadata.getMinMapRow();
+        if (x > metadata.getMaxMapColumn()) x = metadata.getMaxMapColumn();
+        if (y > metadata.getMaxMapRow()) y = metadata.getMaxMapRow();
         return new Point(x, y);
     }
     

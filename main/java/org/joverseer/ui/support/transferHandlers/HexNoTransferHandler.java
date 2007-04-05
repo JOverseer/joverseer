@@ -18,10 +18,11 @@ public class HexNoTransferHandler extends StringTransferHandler {
     }
 
     protected String exportString(JComponent c) {
-        String v = String.valueOf(((MapPanel)c).getSelectedHex().x * 100 + ((MapPanel)c).getSelectedHex().y);
-        if (v.length() < 4) {
-            v = "0" + v;
-        }
+//        String v = String.valueOf(((MapPanel)c).getSelectedHex().x * 100 + ((MapPanel)c).getSelectedHex().y);
+//        if (v.length() < 4) {
+//            v = "0" + v;
+//        }
+    	String v = ((MapPanel)c).getHex();
         return v;
     }
 }

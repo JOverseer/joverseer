@@ -63,7 +63,12 @@ public abstract class ItemListView extends BaseItemListView {
             GameMetadata gm = g.getMetadata();
             try {
                 Container items = (Container) PropertyUtils.getProperty(gm, metadataProperty);
-                tableModel.setRows(items.getItems());
+                ArrayList filteredItems = new ArrayList();
+                AbstractListViewFilter filter = getActiveFilter();
+                for (Object o : items.getItems()) {
+                    if (filter == null || filter.accept(o)) filteredItems.add(o);
+                };
+                tableModel.setRows(filteredItems);
             }
             catch (Exception exc) {
                 // todo fix

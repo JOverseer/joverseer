@@ -81,7 +81,12 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         public void execute() {
             int row = table.getSelectedRow();
             if (row >= 0) {
-                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+            	int idx = 0;
+            	if (SortableTableModel.class.isInstance(table.getModel())) {
+            		idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+            	} else if (com.jidesoft.grid.SortableTableModel.class.isInstance(table.getModel())) {
+            		idx = ((com.jidesoft.grid.SortableTableModel) table.getModel()).getActualRowAt(row);
+            	}
                 if (idx >= tableModel.getRowCount())
                     return;
                 try {

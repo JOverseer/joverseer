@@ -1,9 +1,9 @@
 VERSION 0.9.3
 -------------
 
-3/4/2007
+5/4/2007
 
-    * Fixed a bug with incorect movement cost calculation when moving from one mountain hex to another
+    * Fixed a bug with incorrect movement cost calculation when moving from one mountain hex to another
 
     * The Draw Order option for orders is now available only for orders that can be drawn
 
@@ -56,6 +56,15 @@ VERSION 0.9.3
           o This view shows the pdf files in plain text format. Due to the pdfs being transformed in pdf the text is not very well formatted but it can still server as a quick reference if needed.
                 	
     * The map can be scrolled by holding down the control key and dragging with the mouse
+    
+    * Added Start Characters information tab
+    
+    * Fixed a bug with importing and changed Nation Allegiances
+    
+    * Added support for BOFA games
+    
+    * Fixed a bug with the date displayed on the window toolbar - the date displayed is the date the turn was issued
+    
 
 VERSION 0.9.2
 -------------

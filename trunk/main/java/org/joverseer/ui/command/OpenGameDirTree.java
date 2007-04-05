@@ -1,5 +1,6 @@
 package org.joverseer.ui.command;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
@@ -28,6 +29,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.InputApplicationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -51,6 +53,18 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
     protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
+        
+        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+        ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[]{}, Locale.getDefault()),
+                ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[]{}, Locale.getDefault())) {
+            protected void onConfirm() {
+                ChangeNationAllegiances cmd = new ChangeNationAllegiances();
+                cmd.doExecuteCommand();
+            }
+        };
+        dlg.setPreferredSize(new Dimension(500, 70));
+        dlg.showDialog();
+        
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -128,7 +142,6 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
                     return null;
                 }
             };
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
             dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[]{}, Locale.getDefault()));
             dialog.showDialog();
         }

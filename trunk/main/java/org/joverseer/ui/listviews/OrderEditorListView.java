@@ -282,6 +282,7 @@ public class OrderEditorListView extends ItemListView {
         for (int i=OrderEditorTableModel.iParamStart; i<= OrderEditorTableModel.iParamEnd; i++) {
             tableRenderer.setColumnRenderer(i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
         }
+        tableRenderer.setColumnRenderer(OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
         
         table.setDefaultRenderer(String.class, tableRenderer);
         table.setDefaultRenderer(Boolean.class, tableRenderer);
@@ -471,6 +472,39 @@ public class OrderEditorListView extends ItemListView {
                 msg = validator.checkParam(o, paramNo);
             }
             
+            if (msg != null) {
+                if (isSelected) {
+                    lbl.setBackground(selectionBackground);
+                } else {
+                    lbl.setBackground(paramErrorColor);
+                }
+                lbl.setToolTipText(msg);
+            } else {
+                if (isSelected) {
+                    lbl.setBackground(selectionBackground);
+                } else {
+                    lbl.setBackground(normalBackground);
+                }
+                lbl.setToolTipText(msg);
+            }
+            return lbl;
+        }
+    }
+    
+    class OrderNumberCellRenderer extends DefaultTableCellRenderer {
+        Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
+        Color normalBackground = (Color) UIManager.get("Table.background");
+
+        private OrderNumberCellRenderer() {
+            super();
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
+            Object obj = tableModel.getRow(idx);
+            Order o = (Order)obj;
+            String msg = validator.checkOrder(o);
             if (msg != null) {
                 if (isSelected) {
                     lbl.setBackground(selectionBackground);

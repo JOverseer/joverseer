@@ -23,6 +23,14 @@ public class HexNumberRenderer implements Renderer{
     public boolean appliesTo(Object obj) {
         return Hex.class.isInstance(obj);
     }
+    
+    protected boolean withinMapRange(int x, int y, MapMetadata metadata) {
+        if (x < metadata.getMinMapColumn()) return false;
+        if (x > metadata.getMaxMapColumn()) return false;
+        if (y < metadata.getMinMapRow()) return false;
+        if (y > metadata.getMaxMapRow()) return false;
+        return true;
+    }
 
     public void render(Object obj, Graphics2D g, int x, int y) {
         if (!appliesTo(obj)) {
@@ -33,6 +41,8 @@ public class HexNumberRenderer implements Renderer{
         }
 
         Hex hex = (Hex)obj;
+        if (!withinMapRange(hex.getColumn(), hex.getRow(), mapMetadata)) return;
+
         Font f = new Font(fontName, fontStyle, fontSize);
         String hexNo = String.valueOf(hex.getColumn());
         if (hex.getColumn() < 10) {

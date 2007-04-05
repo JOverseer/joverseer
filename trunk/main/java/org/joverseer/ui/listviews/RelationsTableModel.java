@@ -66,6 +66,5 @@ public class RelationsTableModel extends ItemTableModel {
         }
         return "";
     }
-
     
 }

@@ -52,6 +52,7 @@ public class RelationsListView extends ItemListView {
 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (column < 2) return c;
             MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");
             String relation = value.toString();
             Color bgColor = Color.WHITE;
@@ -66,6 +67,7 @@ public class RelationsListView extends ItemListView {
             }
             JLabel lbl = ((JLabel)c);
             c.setBackground(bgColor);
+            lbl.setForeground(Color.black);
             return lbl;
         }
         

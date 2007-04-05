@@ -183,11 +183,17 @@
     <bean id="orderRenderer" class="org.joverseer.ui.map.renderers.OrderRenderer"/>
 	
 	<bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
-        <property name="mapColumns">
+        <property name="maxMapColumn">
             <value>44</value>
         </property>
-        <property name="mapRows">
+        <property name="maxMapRow">
             <value>39</value>
+        </property>
+        <property name="minMapColumn">
+        	<value>1</value>
+        </property>
+        <property name="minMapRow">
+        	<value>1</value>
         </property>
         <property name="gridCellHeight">
             <value>13</value>
@@ -299,4 +305,6 @@
    	<bean id="orderResultContainer" class="org.joverseer.tools.ordercheckerIntegration.OrderResultContainer"/>
    	
    	<bean class="org.joverseer.ui.ApplicationEventLogger"/>
+   	
+   	<bean id="colorPicker" class="org.joverseer.ui.support.ColorPicker"/>
 </beans>

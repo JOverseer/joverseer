@@ -37,6 +37,7 @@ public class SpellReader  implements MetadataReader {
                 si.setRequiredInfo(parts[4]);
                 si.setRequirements(parts[5]);
                 si.setDescription(parts[6]);
+                si.setList(parts[7]);
                 spells.addItem(si);
             }
         }

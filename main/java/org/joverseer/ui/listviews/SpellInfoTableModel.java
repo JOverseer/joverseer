@@ -11,11 +11,11 @@ public class SpellInfoTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"number", "name", "difficulty", "orderNumber", "requiredInfo", "requirements", "description"};
+        return new String[]{"list", "number", "name", "difficulty", "orderNumber", "requiredInfo", "requirements", "description"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class};
+        return new Class[]{String.class, Integer.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class};
     }
 
 }

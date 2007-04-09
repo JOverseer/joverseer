@@ -15,6 +15,7 @@ public class SpellInfo implements Serializable {
     String requirements;
     String difficulty;
     String description;
+    String list;
     
     public String getDescription() {
         return description;
@@ -72,7 +73,17 @@ public class SpellInfo implements Serializable {
         this.requirements = requirements;
     }
     
-    public SpellDifficultyEnum getDifficultyLevel() {
+    
+    
+    public String getList() {
+		return list;
+	}
+
+	public void setList(String list) {
+		this.list = list;
+	}
+
+	public SpellDifficultyEnum getDifficultyLevel() {
         if (getDifficulty().equals("E")) return SpellDifficultyEnum.Easy;
         if (getDifficulty().equals("A")) return SpellDifficultyEnum.Average;
         if (getDifficulty().equals("H")) return SpellDifficultyEnum.Hard;

@@ -1,5 +1,6 @@
 package org.joverseer.ui.map;
 
+import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.progress.BusyIndicator;
@@ -22,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.joverseer.ui.map.renderers.DefaultHexRenderer;
 import org.joverseer.ui.map.renderers.Renderer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 
@@ -33,6 +35,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.io.File;
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -67,6 +70,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
     boolean isDragging;
 
     java.awt.Container c;
+    
+    boolean saveMap = true;
 
     public MapPanel() {
         addMouseListener(this);
@@ -184,6 +189,28 @@ public class MapPanel extends JPanel implements MouseInputListener {
 //        catch (Exception exc) {};
 //        g.drawImage(img, 0, 0, this);
         
+//        for (int i=metadata.getMinMapColumn(); i<=metadata.getMaxMapColumn(); i++) {
+//        	for (int j=metadata.getMinMapRow(); j<=metadata.getMaxMapRow(); j++) {
+//        		Hex h = gm.getHex(i * 100 + j);
+//        		setHexLocation(h.getColumn(), h.getRow());
+//                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+//                    if (r.appliesTo(h)) {
+//                        r.render(h, g, location.x, location.y);
+//                    }
+//                }
+//        	}
+//        }
+        
+        
+        try {
+        	Resource r = Application.instance().getApplicationContext().getResource("classpath:images/map/map.png");
+        	BufferedImage mm = ImageIO.read(r.getInputStream());
+        	g.drawImage(mm, 0, 0, null);
+        }
+        catch (Exception exc) {
+        	exc.printStackTrace();
+        }
+        
         for (Hex h : (Collection<Hex>)gm.getHexes()) {
             setHexLocation(h.getColumn(), h.getRow());
             for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
@@ -191,6 +218,14 @@ public class MapPanel extends JPanel implements MouseInputListener {
                     r.render(h, g, location.x, location.y);
                 }
             }
+        }
+        
+        if (saveMap) {
+        	File outputFile = new File("map.png");
+        	try {
+        		ImageIO.write(map, "PNG", outputFile);
+        	}
+        	catch (Exception exc) {};
         }
     }
     

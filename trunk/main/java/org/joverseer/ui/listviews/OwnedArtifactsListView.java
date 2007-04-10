@@ -21,7 +21,7 @@ public class OwnedArtifactsListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 96, 48, 132, 48};
+        return new int[]{32, 96, 48, 132, 48, 120, 120};
     }
     
     @Override
@@ -48,6 +48,8 @@ public class OwnedArtifactsListView extends ItemListView {
                 a.setNumber(ai.getNo());
                 a.setOwner(c.getName());
                 a.setHexNo(c.getHexNo());
+                a.setPower1(ai.getPower1());
+                a.setPower2(ai.getPower2());
                 artis.add(a);
             }
         }

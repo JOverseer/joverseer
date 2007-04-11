@@ -315,8 +315,8 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/Armies/Army", "addItem", "org.joverseer.support.readers.pdf.ArmyWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/Armies/Army",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Type", "Food", "Warships", "Transports", "WarMachines", "Climate", "Hex"},
-                            new String[]{"commander", "type", "food", "warships", "transports", "warMachines", "climate", "hexNo"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Type", "Food", "Warships", "Transports", "WarMachines", "Climate", "Hex", "Morale"},
+                            new String[]{"commander", "type", "food", "warships", "transports", "warMachines", "climate", "hexNo", "morale"}));
             snpr.setAllowUnknownChildElements(true);
             // create container for army elements
             digester.addObjectCreate("txt2xml/Turn/Armies/Army/Elements", "org.joverseer.support.Container");

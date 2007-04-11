@@ -192,11 +192,18 @@ public class OrderEditorTableModel extends ItemTableModel {
             return;
         } else if (col == iNoAndCode) {
         	Order o = (Order)obj;
-        	String oldNoAndCode = o.getNoAndCode();
+        	int oldNo = o.getOrderNo();
+                
         	o.setNoAndCode(v.toString());
-        	if (!oldNoAndCode.equals(o.getNoAndCode())) {
+        	if (oldNo != o.getOrderNo()) {
+                    if ((oldNo == 860 || oldNo == 850) && (o.getOrderNo() == 860 || o.getOrderNo() == 850)) {
+                        // keep same parameters
+                    } else {
         		o.setParameters("");
+                    }
         	}
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
         	return;
         } else if (col >= iParamStart && col <= iParamEnd) {
         	Order o = (Order)obj;
@@ -216,6 +223,8 @@ public class OrderEditorTableModel extends ItemTableModel {
         		}
         	}
         	o.setParameters(paramTxt2);
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
         	return;
         }
         super.setValueAtInternal(v, obj, col);

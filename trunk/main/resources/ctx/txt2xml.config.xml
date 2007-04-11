@@ -374,6 +374,12 @@
         		<element>Character</element>
 <!--         		<regex>(\p{L}+(?:[\s-]\p{L}+)*\s+was located in [.\p{L}\d\-\.\s/?#&amp;&#13;:()]+\.)</regex>
  -->
+				 <processor type="StringEnclosedMatch">
+					<element>Artifacts</element>
+					<startString>Artifacts   : </startString>
+					<endString>Spells</endString>
+					<includeStart>0</includeStart>
+	          	</processor>
         		<processor type="RegexMatch">
         			<element>Name</element>
         			<regex>(\p{L}+(?:[\s\-']\p{L}+)*)\s+was located in</regex>
@@ -382,14 +388,6 @@
         			<element>HexID</element>
         			<regex>(\d{4})\.</regex>
         		</processor>
-        		
-        		<processor type="StringEnclosedMatch">
-					<element>Artifacts</element>
-					<startString>Artifacts   : </startString>
-					<endString>Spells</endString>
-					<includeStart>0</includeStart>
-	          	</processor>
-
         		<processor type="Copy">
         			<element>CharacterOrders</element>
         		</processor>

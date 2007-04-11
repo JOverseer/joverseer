@@ -84,7 +84,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         return parameters.getText();
     }
     
-    private Container getOrderEditorData() {
+    public Container getOrderEditorData() {
         if (orderEditorData == null) {
             orderEditorData = new Container(new String[]{"orderNo"});
             try {
@@ -392,6 +392,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("d")) {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
+                        } else if (paramType.equals("de")) {
+                            sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("dcid")) {
                             sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("i")) {
@@ -546,4 +548,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         parametersInternal.setText(v);
         parameters.setText(v.replace(Order.DELIM, " "));
     }
+
+    
+    public ArrayList<JComponent> getSubeditorComponents() {
+        return subeditorComponents;
+    }
+    
+    
 }

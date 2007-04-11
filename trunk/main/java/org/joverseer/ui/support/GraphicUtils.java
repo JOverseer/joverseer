@@ -2,6 +2,7 @@ package org.joverseer.ui.support;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Stroke;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DropTarget;
@@ -9,10 +10,17 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.text.JTextComponent;
 
 import org.joverseer.domain.Order;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.map.renderers.OrderRenderer;
 import org.joverseer.ui.map.renderers.Renderer;
 import org.springframework.jca.cci.object.MappingRecordOperation;
@@ -20,6 +28,9 @@ import org.springframework.richclient.application.Application;
 
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
+import com.jidesoft.swing.JideSwingUtilities;
+import com.jidesoft.tipoftheday.ResourceBundleTipOfTheDaySource;
+import com.jidesoft.tipoftheday.TipOfTheDayDialog;
 
 
 public class GraphicUtils {
@@ -81,5 +92,26 @@ public class GraphicUtils {
         Renderer orderRenderer = (Renderer)Application.instance().getApplicationContext().getBean("orderRenderer");
         if (orderRenderer == null) return false;
         return ((OrderRenderer)orderRenderer).canRender(o);
+    }
+    
+    public static void showTipOfTheDay() {
+        ResourceBundleTipOfTheDaySource tipOfTheDaySource = new ResourceBundleTipOfTheDaySource(ResourceBundle.getBundle("tips"));
+        URL styleSheet = TipOfTheDayDialog.class.getResource("/tips.css");
+        TipOfTheDayDialog dialog = new TipOfTheDayDialog((Frame) null, tipOfTheDaySource, new AbstractAction("Show Tips on startup") {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() instanceof JCheckBox) {
+                    JCheckBox checkBox = (JCheckBox) e.getSource();
+                    PreferenceRegistry.instance().setPreferenceValue("general.tipOfTheDay", checkBox.isSelected() ? "yes" : "no");
+                }
+                // change your user preference
+            }
+        }, styleSheet);
+        dialog.setShowTooltip(PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes"));
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setResizable(false);
+        dialog.pack();
+        JideSwingUtilities.globalCenterWindow(dialog);
+        dialog.show();
+
     }
 }       

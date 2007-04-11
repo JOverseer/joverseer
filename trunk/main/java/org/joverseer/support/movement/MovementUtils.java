@@ -5,7 +5,12 @@ import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.springframework.richclient.application.Application;
@@ -47,11 +52,23 @@ public class MovementUtils {
         return d;
     }
 
-    public static int calculateMovementCostForArmy(int startHexNo, String direction, boolean isCavalry, boolean isFed) {
+    public static int calculateMovementCostForArmy(int startHexNo, String direction, boolean isCavalry, boolean isFed, boolean ignoreEnemyPops, NationAllegianceEnum allegiance, int initialHex) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         GameMetadata gm = g.getMetadata();
         Hex start = gm.getHex(startHexNo);
 
+        if (!ignoreEnemyPops && startHexNo != initialHex) {
+            PopulationCenter pc = (PopulationCenter)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", startHexNo);
+            if (pc != null && pc.getFortification() != FortificationSizeEnum.none) {
+                if (pc.getNationNo() == 0) {
+                    return -1;
+                }
+                NationRelations nr = (NationRelations)g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pc.getNationNo());
+                if (nr.getAllegiance() != allegiance) return -1;
+            }
+        }
+        
+        
         MovementDirection md = MovementDirection.getDirectionFromString(direction);
 
         if (md == MovementDirection.Home) {
@@ -171,7 +188,7 @@ public class MovementUtils {
         return destHexNo;
     }
 
-    public static HashMap calculateArmyRangeHexes(int startHexNo, boolean isCavalry, boolean isFed) {
+    public static HashMap calculateArmyRangeHexes(int startHexNo, boolean isCavalry, boolean isFed, boolean ignoreEnemyPops, NationAllegianceEnum allegiance) {
         HashMap<Integer, Integer> rangeHexes = new HashMap<Integer, Integer>();
         LinkedList<Integer> hexesToProcess = new LinkedList<Integer>();
         hexesToProcess.add(startHexNo);
@@ -179,7 +196,7 @@ public class MovementUtils {
         while (hexesToProcess.size() > 0) {
             int hexNo = (Integer)hexesToProcess.remove(0);
             for (MovementDirection dir : MovementDirection.values()) {
-                int cost = calculateMovementCostForArmy(hexNo, dir.getDir(), isCavalry, isFed);
+                int cost = calculateMovementCostForArmy(hexNo, dir.getDir(), isCavalry, isFed, ignoreEnemyPops, allegiance, startHexNo);
                 if (cost < 0) continue;
                 if (hexNo == startHexNo) {
                     prevCost = 0;

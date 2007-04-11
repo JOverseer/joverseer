@@ -13,19 +13,19 @@ public class ArmyRangeMapItem extends AbstractMapItem {
     boolean fed;
     
     public ArmyRangeMapItem(int hexNo, boolean cav, boolean fed) {
-        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed);
+        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed, true, null);
         this.cav = cav;
         this.fed = fed;
     }
     
-    public ArmyRangeMapItem(Army a) {
+    public ArmyRangeMapItem(Army a, boolean ignoreEnemyPops) {
         army = a;
         int hexNo = Integer.parseInt(army.getHexNo());
         Boolean cav = a.computeCavalry();
         if (cav == null) cav = false;
         Boolean fed = a.computeFed();
         if (fed == null) fed = false;
-        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed);
+        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed, ignoreEnemyPops, army.getNationAllegiance());
     }
 
     public Army getArmy() {

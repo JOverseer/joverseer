@@ -39,6 +39,7 @@
 				<ref bean="utilMenu"/>
 				<ref bean="windowMenu"/>
                 <ref bean="helpMenu"/>
+                <ref bean="adminMenu"/>
 			</list>
 		</property>
 	</bean>
@@ -96,6 +97,7 @@
                             <bean class="org.joverseer.ui.command.LoadGame"/>
                             <bean class="org.joverseer.ui.command.SaveGame"/>
 			                <value>separator</value>
+                            <bean class="org.joverseer.ui.command.SetOrderEditorAutoNationsCommand"/>			                
                             <bean class="org.joverseer.ui.command.ImportOrdersFromAutomagicFileCommand"/>
                             <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
                             <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
@@ -120,8 +122,16 @@
                 <bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
 			</list>
 		</property>
-	</bean>                
-               
+	</bean>    
+	
+	<bean id="adminMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>            
+               <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
+            </list>
+	    </property>
+    </bean>
     <!-- 
         Bean: helpMenu
         Type: user named
@@ -132,6 +142,7 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
+				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand"/>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
 				<ref bean="aboutCommand"/>
 			</list>

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 
 public class CharacterOrdersProcessor extends Processor {
-    String namePattern="((?:\\p{L}[\\s\\r ]+$)?\\p{L}+ Ranks\\s+:\\s+Command \\d+\\s+Agent \\d+\\s+Emissary \\d+\\s+Mage \\d+)";
+    String namePattern="((?:\\p{L}[\\s\\r ]+$)?\\p{L}+ Ranks\\s+:\\s+Command \\d+(?: \\(\\d+\\))?\\s+Agent \\d+(?: \\(\\d+\\))?\\s+Emissary \\d+(?: \\(\\d+\\))?\\s+Mage \\d+(?: \\(\\d+\\))?)";
     String namePattern2="(\\p{L}+(?:[\\s\\-']\\p{L}+)*) was located in the";
     Matcher m;
     String match;

@@ -71,7 +71,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
     java.awt.Container c;
     
-    boolean saveMap = true;
+    boolean saveMap = false;
 
     public MapPanel() {
         addMouseListener(this);
@@ -180,36 +180,17 @@ public class MapPanel extends JPanel implements MouseInputListener {
         Graphics2D g = map.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, map.getWidth(), map.getHeight());
-
-//        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-//        Image img = imgSource.getImage("memap");
+        
+  
+        
 //        try {
-//        	wait(1000);
+//        	Resource r = Application.instance().getApplicationContext().getResource("classpath:images/map/map.png");
+//        	BufferedImage mm = ImageIO.read(r.getInputStream());
+//        	g.drawImage(mm, 0, 0, null);
 //        }
-//        catch (Exception exc) {};
-//        g.drawImage(img, 0, 0, this);
-        
-//        for (int i=metadata.getMinMapColumn(); i<=metadata.getMaxMapColumn(); i++) {
-//        	for (int j=metadata.getMinMapRow(); j<=metadata.getMaxMapRow(); j++) {
-//        		Hex h = gm.getHex(i * 100 + j);
-//        		setHexLocation(h.getColumn(), h.getRow());
-//                for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
-//                    if (r.appliesTo(h)) {
-//                        r.render(h, g, location.x, location.y);
-//                    }
-//                }
-//        	}
+//        catch (Exception exc) {
+//        	exc.printStackTrace();
 //        }
-        
-        
-        try {
-        	Resource r = Application.instance().getApplicationContext().getResource("classpath:images/map/map.png");
-        	BufferedImage mm = ImageIO.read(r.getInputStream());
-        	g.drawImage(mm, 0, 0, null);
-        }
-        catch (Exception exc) {
-        	exc.printStackTrace();
-        }
         
         for (Hex h : (Collection<Hex>)gm.getHexes()) {
             setHexLocation(h.getColumn(), h.getRow());

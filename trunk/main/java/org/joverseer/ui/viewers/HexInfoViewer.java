@@ -159,12 +159,12 @@ public class HexInfoViewer extends ObjectViewer {
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {
                 for (MovementDirection md : MovementDirection.values()) {
-                    int cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), false, true);
+                    int cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), false, true, true, null, startHexNo);
                     JTextField tf = (JTextField) infCosts.get(md);
                     String costStr = (cost > 0 ? String.valueOf(cost) : "-");
                     tf.setText(String.valueOf(costStr));
 
-                    cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), true, true);
+                    cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), true, true, true, null, startHexNo);
                     tf = (JTextField) cavCosts.get(md);
                     costStr = (cost > 0 ? String.valueOf(cost) : "-");
                     tf.setText(String.valueOf(costStr));

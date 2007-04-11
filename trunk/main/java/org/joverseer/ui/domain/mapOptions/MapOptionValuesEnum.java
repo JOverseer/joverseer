@@ -7,6 +7,8 @@ public enum MapOptionValuesEnum {
     NationMapNeutrals,
     DrawOrdersOn,
     DrawOrdersOff,
+    DrawNamesOnOrdersOn,
+    DrawNamesOnOrdersOff,
     ShowClimateOn,
     ShowClimateOff,
     HexGraphicsSimple,

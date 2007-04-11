@@ -49,6 +49,7 @@ import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -129,7 +130,8 @@ public class CharacterViewer extends ObjectViewer {
         Character c = (Character) object;
         if (object != getFormObject()) {
             showArtifacts = false;
-            showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank();
+            showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank() ||
+                OrderEditorAutoNations.instance().containsNation(c.getNationNo());
             showSpells = false;
         }
         super.setFormObject(object);

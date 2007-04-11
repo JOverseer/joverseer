@@ -10,6 +10,8 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation{
     String owner;
     int hexNo;
     Integer nationNo;
+    String power1;
+    String power2;
     
     public int getX() {
         return hexNo / 100;
@@ -58,6 +60,27 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation{
     public void setOwner(String owner) {
         this.owner = owner;
     }
+
+    
+    public String getPower1() {
+        return power1;
+    }
+
+    
+    public void setPower1(String power1) {
+        this.power1 = power1;
+    }
+
+    
+    public String getPower2() {
+        return power2;
+    }
+
+    
+    public void setPower2(String power2) {
+        this.power2 = power2;
+    }
+    
     
     
 }

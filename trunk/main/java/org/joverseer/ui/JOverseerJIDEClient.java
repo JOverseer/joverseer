@@ -47,6 +47,8 @@ public class JOverseerJIDEClient {
 	
     public void Test() {};
 
+    public static String[] cmdLineArgs;
+    
     private static final Log _logger = LogFactory.getLog(JOverseerClient.class);
 
     /**
@@ -56,6 +58,7 @@ public class JOverseerJIDEClient {
      */
     public static void main( String[] args ) throws Exception {
         try {
+            cmdLineArgs = args;
             _logger.info("JOverseer Client starting up");
             
             com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");

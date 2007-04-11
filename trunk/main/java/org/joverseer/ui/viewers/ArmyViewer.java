@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -31,10 +32,16 @@ import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.viewers.HexInfoViewer.ShowArmyRangeCommand;
+import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
+import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
@@ -54,8 +61,10 @@ public class ArmyViewer extends ObjectViewer {
     JTextField travellingWith;
 
     ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
+    ActionCommand showArmyMovementIgnorePopsRangeAction = new ShowArmyMovementRangeIgnorePopsAction();
     ActionCommand toggleFedAction = new ToggleFedAction();
     ActionCommand deleteArmyCommand = new DeleteArmyCommand();
+    ActionCommand editArmyCommand = new EditArmyCommand();
 
     public ArmyViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -103,7 +112,6 @@ public class ArmyViewer extends ObjectViewer {
         glb.append(travellingWith = new JTextField(), 2, 1);
         travellingWith.setPreferredSize(new Dimension(150, 12));
 
-        
         commanderName.setBorder(null);
         commanderName
                 .setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
@@ -179,18 +187,33 @@ public class ArmyViewer extends ObjectViewer {
 
     private JPopupMenu createArmyPopupContextMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, toggleFedAction, "separator", deleteArmyCommand});
+                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, showArmyMovementIgnorePopsRangeAction, toggleFedAction, "separator", editArmyCommand, deleteArmyCommand});
         return group.createPopupMenu();
     }
-
-    private class ShowArmyMovementRangeAction extends ActionCommand {
-
+    
+    private class ShowArmyMovementRangeAction extends ShowArmyMovementRangeGenericAction {
         public ShowArmyMovementRangeAction() {
-            super("showArmyMovementRangeAction");
+            super("showArmyMovementRangeAction", false);
+        }
+    }
+    
+    private class ShowArmyMovementRangeIgnorePopsAction extends ShowArmyMovementRangeGenericAction {
+        public ShowArmyMovementRangeIgnorePopsAction() {
+            super("showArmyMovementRangeIgnorePopsAction", true);
+        }
+    }
+
+    private class ShowArmyMovementRangeGenericAction extends ActionCommand {
+        boolean ignoreEnemyPops;
+        
+        public ShowArmyMovementRangeGenericAction(String id, boolean ignoreEnemyPops) {
+            super(id);
+            this.ignoreEnemyPops = ignoreEnemyPops;
         }
 
         protected void doExecuteCommand() {
-            ArmyRangeMapItem armi = new ArmyRangeMapItem((org.joverseer.domain.Army) getFormObject());
+            org.joverseer.domain.Army army = (org.joverseer.domain.Army) getFormObject();
+            ArmyRangeMapItem armi = new ArmyRangeMapItem(army, ignoreEnemyPops);
             AbstractMapItem.add(armi);
 
             Application.instance().getApplicationContext().publishEvent(
@@ -228,6 +251,27 @@ public class ArmyViewer extends ObjectViewer {
         }
     }
 
+    private class EditArmyCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            Army a = (Army)getFormObject();
+            final EditArmyForm form = new EditArmyForm(FormModelHelper.createFormModel(a));
+            FormBackedDialogPage pg = new FormBackedDialogPage(form);
+            TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+
+                protected void onAboutToShow() {
+                    super.onAboutToShow();
+                    form.setFormObject(getFormObject());
+                }
+
+                protected boolean onFinish() {
+                    return true;
+                }
+            };
+            MessageSource ms = (MessageSource)Application.instance().getApplicationContext().getBean("messageSource");
+            dlg.setTitle(ms.getMessage("editArmyDialog.title", new Object[]{}, Locale.getDefault()));
+            dlg.showDialog();
+        }
+    }
     
     public boolean getShowColor() {
         return showColor;

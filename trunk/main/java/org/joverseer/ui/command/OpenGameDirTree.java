@@ -6,6 +6,8 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
@@ -42,7 +44,6 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
     ArrayList<File> turnFolders = new ArrayList<File>();
     JOverseerClientProgressMonitor monitor;
     GameHolder gh;
-    String turnFolderPattern = "t%g";
     
     static Log log = LogFactory.getLog(OpenGameDirTree.class);
 
@@ -215,6 +216,24 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
         for (File subfolder : folder.listFiles(folderFilter)) {
             ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
         }
+        //Collections.sort(ret, new FileComparator());
         return ret.toArray(new File[]{});
     }
+    
+    class FileComparator implements Comparator {
+
+        public int compare(Object arg0, Object arg1) {
+            if (!File.class.isInstance(arg0) || !File.class.isInstance(arg1)) return 0;
+            String fn1 = ((File)arg0).getName();
+            String fn2 = ((File)arg1).getName();
+            int i = fn1.indexOf(".");
+            int j = fn2.indexOf(".");
+            if (i == -1 || j == -1) return 0;
+            fn1 = fn1.substring(i - 4, 4);
+            fn2 = fn2.substring(i - 4, 4);
+            return fn1.compareTo(fn2);
+        }
+        
+    }
+
 }

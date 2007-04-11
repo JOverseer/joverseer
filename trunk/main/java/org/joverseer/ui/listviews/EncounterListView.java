@@ -18,10 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.listviews.BaseItemListView.AllegianceColorCellRenderer;
+import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
@@ -123,9 +124,9 @@ public class EncounterListView extends ItemListView {
         }
 
         table.getTableHeader().setBackground(Color.WHITE);
-        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer());
-        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer());
-        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer());
+        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
+        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
+        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);

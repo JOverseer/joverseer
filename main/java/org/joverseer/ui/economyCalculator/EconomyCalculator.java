@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -18,14 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
 
-import org.joverseer.domain.EconomyCalculatorData;
-import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
@@ -43,9 +39,6 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
-
-import com.jidesoft.grid.JideTable;
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 
 public class EconomyCalculator extends AbstractView implements ApplicationListener {
@@ -309,9 +302,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         
         JPanel p = lb.getPanel();
         p.setBackground(Color.white);
-        p.setPreferredSize(new Dimension(600, 1000));
         scp = new JScrollPane(p);
-        scp.setPreferredSize(new Dimension(600, 1000));
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
         return scp;

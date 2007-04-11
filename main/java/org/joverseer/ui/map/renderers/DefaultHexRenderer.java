@@ -184,7 +184,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
                 metadata.getGridCellWidth() * metadata.getHexSize(), 
                 metadata.getGridCellHeight() * metadata.getHexSize());
 	        if (img!= null) {
-	            //g.drawImage(img, x, y, null);
+	            g.drawImage(img, x, y, null);
 	            Polygon polygon = new Polygon(xPoints, yPoints, 6);
 	            polygon.translate(x, y);
 	            g.setColor(Color.black);
@@ -200,26 +200,26 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
             g.setColor(Color.black);
             g.drawPolygon(polygon);
         } 
-//        for (HexSideEnum side : HexSideEnum.values()) {
-//            Collection elements = hex.getHexSideElements(side);
-//            if (elements.size() > 0) {
-//                if (elements.contains(HexSideElementEnum.MajorRiver)) {
-//                    renderMajorRiver(g, side, x, y);
-//                } else if (elements.contains(HexSideElementEnum.MinorRiver)) {
-//                    renderMinorRiver(g, side, x, y);
-//                };
-//                if (elements.contains(HexSideElementEnum.Road)) {
-//                    renderRoad(g, side, x, y);
-//                };
-//                if (elements.contains(HexSideElementEnum.Bridge)) {
-//                    renderBridgeOrFord(g, side, x, y);
-//                };
-//                if (elements.contains(HexSideElementEnum.Ford)) {
-//                    renderBridgeOrFord(g, side, x, y);
-//                };
-//
-//            }
-//        }
+        for (HexSideEnum side : HexSideEnum.values()) {
+            Collection elements = hex.getHexSideElements(side);
+            if (elements.size() > 0) {
+                if (elements.contains(HexSideElementEnum.MajorRiver)) {
+                    renderMajorRiver(g, side, x, y);
+                } else if (elements.contains(HexSideElementEnum.MinorRiver)) {
+                    renderMinorRiver(g, side, x, y);
+                };
+                if (elements.contains(HexSideElementEnum.Road)) {
+                    renderRoad(g, side, x, y);
+                };
+                if (elements.contains(HexSideElementEnum.Bridge)) {
+                    renderBridgeOrFord(g, side, x, y);
+                };
+                if (elements.contains(HexSideElementEnum.Ford)) {
+                    renderBridgeOrFord(g, side, x, y);
+                };
+
+            }
+        }
     }
 
     public void setTerrainColor(HexTerrainEnum terrain, Color c) {

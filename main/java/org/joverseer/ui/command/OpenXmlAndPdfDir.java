@@ -3,10 +3,9 @@ package org.joverseer.ui.command;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
@@ -28,7 +27,6 @@ import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
@@ -183,4 +181,5 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         }
         return ret.toArray(new File[]{});
     }
+    
 }

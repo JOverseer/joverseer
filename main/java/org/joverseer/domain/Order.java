@@ -84,14 +84,14 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         }
         int i = noAndDescr.indexOf(' ');
         if (i == -1) {
-        	i = 3;
+            i = 3;
         }
         String no = noAndDescr.substring(0, i);
         try {
-        	setOrderNo(Integer.parseInt(no));
+            setOrderNo(Integer.parseInt(no));
         }
         catch (Exception exc) {
-        	clear();
+            clear();
         }
     }
 
@@ -119,7 +119,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 
     public void setMetadataDescription(String value) {
         // do nothing
-        // simple placeholder so that it form code can work with Order
+        // simple placeholder so that form code can work with Order
     }
 
     public boolean isBlank() {

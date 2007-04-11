@@ -10,6 +10,7 @@ import javax.swing.JTable;
 
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 
 public class StartingCharacterListView extends ItemListView {
 
@@ -30,7 +31,7 @@ public class StartingCharacterListView extends ItemListView {
 	
 	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
-        table.setDefaultRenderer(Integer.class, new BaseItemListView.AllegianceColorCellRenderer() {
+        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel) {
 
             public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
                     int arg4, int arg5) {

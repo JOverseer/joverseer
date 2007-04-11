@@ -1,5 +1,28 @@
 package org.joverseer.ui.map.renderers;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
+import java.util.HashMap;
+
+import org.joverseer.domain.Army;
+import org.joverseer.domain.Order;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.domain.ProductEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
+import org.joverseer.support.movement.MovementDirection;
+import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
@@ -7,20 +30,7 @@ import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.Arrow;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.domain.Army;
-import org.joverseer.domain.Order;
-import org.joverseer.domain.ProductEnum;
-import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
-import org.joverseer.support.movement.MovementUtils;
-import org.joverseer.support.movement.MovementDirection;
 import org.springframework.richclient.application.Application;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
-import java.util.HashMap;
 
 
 public class OrderRenderer implements Renderer {
@@ -35,7 +45,6 @@ public class OrderRenderer implements Renderer {
     }
     
     private boolean drawOrders() {
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
         Object obj = mapOptions.get(MapOptionsEnum.DrawOrders);
         if (obj == null) return false;
@@ -73,9 +82,20 @@ public class OrderRenderer implements Renderer {
                 renderCharacterMovementOrder(order, g);
             }
             return true;
-        } else if (order.getOrderNo() == 850 || order.getOrderNo() == 860) {
+        } else if (order.getOrderNo() == 825) {
+            if (doRender) {
+                renderMovementSpellOrder(order, g);
+            }
+            return true;
+        }
+        else if (order.getOrderNo() == 850 || order.getOrderNo() == 860) {
             if (doRender) {
                 renderArmyMovementOrder(order, g);
+            }
+            return true;
+        } else if (order.getOrderNo() == 840) {
+            if (doRender) {
+                renderStandAndDefendOrder(order, g);
             }
             return true;
         } else if (order.getOrderNo() == 947) {
@@ -91,12 +111,58 @@ public class OrderRenderer implements Renderer {
         }
         return false;
     }
+    
+    private void renderStandAndDefendOrder(Order order, Graphics2D g) {
+        if (order.getParameter(0) == null) {
+            return;
+        }
+        try {
+            int currentHexNo = order.getCharacter().getHexNo();
+            String param = order.getParameter(0);
+            
+            MovementDirection[] mds = new MovementDirection[]{null, null, null};
+            while (true) {
+                for (MovementDirection md : MovementDirection.values()) {
+                    if (md != MovementDirection.Home) {
+                        mds[0] = mds[1];
+                        mds[1] = mds[2];
+                        mds[2] = md;
+                    }
+                    if (mds[0] != null && mds[2] != null && mds[1].getDir().equals(param)) {
+                        break;
+                    }
+                }
+                if (mds[0] != null && mds[2] != null && mds[1].getDir().equals(param)) {
+                    break;
+                }
+            }
+            
+            for (MovementDirection md : mds) {
+                int nextHexNo = MovementUtils.getHexNoAtDir(currentHexNo, md);
+                Point p1;
+                Point p2 = null;
+                p1 = MapPanel.instance().getHexCenter(currentHexNo);
+                p2 = MapPanel.instance().getHexCenter(nextHexNo);
+                g.setStroke(GraphicUtils.getDashStroke(3, 8));
+                g.setColor(Color.black);
+                g.drawLine(p1.x, p1.y, p2.x, p2.y);
+                double theta = Math.atan2((p2.y - p1.y) , (p2.x - p1.x));
+                Shape a = Arrow.getArrowHead(p2.x, p2.y, 10, 15, theta);
+                g.fill(a);
+            }
+        }
+        catch (Exception exc) {
+            // parse or some other error, return
+            return;
+        }
+    }
 
     private void renderArmyMovementOrder(Order order, Graphics2D g) {
         if (order.getParameter(0) == null) {
             return;
         }
         try {
+            int maxCost = (order.getOrderNo() == 860 ? 14 : 12);
             int currentHexNo = order.getCharacter().getHexNo();
             String[] params = order.getParameters().split(Order.DELIM);
             Point p1;
@@ -106,8 +172,19 @@ public class OrderRenderer implements Renderer {
             Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             
             Army army = (Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", order.getCharacter().getName());
-            Boolean cav = army == null || army.computeCavalry();
-            Boolean fed = army == null || army.computeFed();
+            Boolean cav = null;
+            Boolean fed = null;
+            if (army != null) {
+                cav = army.computeCavalry();
+                fed = army.computeFed();
+            } else {
+                OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+                try {
+                    cav = (Boolean)ovd.getAdditionalInfo(order, "cavalry");
+                    fed = (Boolean)ovd.getAdditionalInfo(order, "fed");
+                }
+                catch (Exception exc) {};
+            }
             if (cav == null) cav = false;
             if (fed == null) fed = false;
             
@@ -122,30 +199,36 @@ public class OrderRenderer implements Renderer {
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
                 p2 = MapPanel.instance().getHexCenter(nextHexNo);
                 g.setStroke(GraphicUtils.getDashStroke(3, 8));
-                g.setColor(Color.black);
+                int curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed, true, null, currentHexNo);
+                if (cost + curCost <= maxCost) {
+                    g.setColor(Color.black);
+                } else {
+                    g.setColor(Color.red);
+                }
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
-                if (i == params.length - 2) {
+                if (i == params.length - 1) {
                     // last segment
                     double theta = Math.atan2((p2.y - p1.y) , (p2.x - p1.x));
                     Shape a = Arrow.getArrowHead(p2.x, p2.y, 10, 15, theta);
                     g.fill(a);
                 }
-                if (i > 0) {
+                if (i > 0 && cost > 0) {
                     // draw distance so far
                     drawString(g, String.valueOf(cost), p1, p1);
                 }
 
-                int curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed);
                 if (curCost == -1) {
                     cost = -1;
                 } else {
                     cost += curCost;
                 }
 
-                if (i == (params.length - 1) / 2) {
-                    // middle segment
-                    drawString(g, order.getCharacter().getName(), p1, p2);
+                if (drawCharNames()) {
+                    if (i == (params.length - 1) / 2) {
+                        // middle segment
+                        drawString(g, order.getCharacter().getName(), p1, p2);
+                    }
                 }
                 
                 currentHexNo = nextHexNo;
@@ -184,6 +267,71 @@ public class OrderRenderer implements Renderer {
         g.drawString(str, xt + 1, yt + 1);
 
     }
+    
+    private void renderMovementSpellOrder(Order order, Graphics2D g) {
+        if (order.getParameter(0) == null) {
+            return;
+        }
+        try {
+            String hexNoStr = order.getParameter(1);
+            String spellId = order.getParameter(0);
+            int hexNo = Integer.parseInt(hexNoStr);
+            int spellNo = Integer.parseInt(spellId);
+            Point p1 = MapPanel.instance().getHexCenter(hexNo);
+            Point p2 = MapPanel.instance().getHexCenter(order.getCharacter().getHexNo());
+
+            int distance = MovementUtils.distance(order.getCharacter().getHexNo(), hexNo);
+            boolean distanceOk = false;
+            PopulationCenter popCenter = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo);
+            if (spellNo == 302) {
+                distanceOk = distance <= 14;
+            } else if (spellNo == 304) {
+                distanceOk = distance <= 16;
+            } else if (spellNo == 306) {
+                distanceOk = distance <= 19;
+            } else if (spellNo == 308) {
+                // capital only
+                distanceOk = popCenter != null && popCenter.getNationNo() == order.getCharacter().getNationNo() && popCenter.getCapital();
+            } else if (spellNo == 310) {
+                // mt or city only
+                distanceOk = popCenter != null && popCenter.getNationNo() == order.getCharacter().getNationNo() && 
+                    popCenter.getSize().getCode() >= PopulationCenterSizeEnum.majorTown.getCode();
+            } else if (spellNo == 312) {
+                distanceOk = popCenter != null && popCenter.getNationNo() == order.getCharacter().getNationNo();
+            } else if (spellNo == 314) {
+                // teleport
+                distanceOk = true;
+            }
+            if (distanceOk) {
+                g.setColor(Color.BLACK);
+            } else {
+                g.setColor(Color.red);
+            }
+            // draw arrowhead
+            double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
+            g.setStroke(new BasicStroke(1));
+            Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
+            g.fill(arrowHead);
+
+            Stroke s = GraphicUtils.getDashStroke(3, 8);
+            g.setStroke(s);
+            // draw line
+            g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+            if (drawCharNames()) {
+                String name = order.getCharacter().getName();
+                if (order.getOrderNo() == 820) {
+                    name += " & co";
+                }
+                drawString(g, name, p1, p2);
+            }
+        }
+        catch (Exception exc) {
+            // parse or some other error, return
+            return;
+        }
+
+    }
 
     private void renderCharacterMovementOrder(Order order, Graphics2D g) {
         if (order.getParameter(0) == null) {
@@ -195,24 +343,31 @@ public class OrderRenderer implements Renderer {
             Point p1 = MapPanel.instance().getHexCenter(hexNo);
             Point p2 = MapPanel.instance().getHexCenter(order.getCharacter().getHexNo());
 
+            int distance = MovementUtils.distance(order.getCharacter().getHexNo(), hexNo);
+            
+            if (distance <= 12) {
+                g.setColor(Color.BLACK);
+            } else {
+                g.setColor(Color.red);
+            }
             // draw arrowhead
             double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
             g.setStroke(new BasicStroke(1));
-            g.setColor(Color.BLACK);
             Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
             g.fill(arrowHead);
 
             Stroke s = GraphicUtils.getDashStroke(3, 8);
             g.setStroke(s);
-            g.setColor(Color.BLACK);
             // draw line
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
-            String name = order.getCharacter().getName();
-            if (order.getOrderNo() == 820) {
-                name += " & co";
+            if (drawCharNames()) {
+                String name = order.getCharacter().getName();
+                if (order.getOrderNo() == 820) {
+                    name += " & co";
+                }
+                drawString(g, name, p1, p2);
             }
-            drawString(g, name, p1, p2);
         }
         catch (Exception exc) {
             // parse or some other error, return
@@ -294,6 +449,16 @@ public class OrderRenderer implements Renderer {
             // parse or some other error, return
             return;
         }
+    }
+    
+    private boolean drawCharNames() {
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        Object obj = mapOptions.get(MapOptionsEnum.DrawNamesOnOrders);
+        if (obj == null) return false;
+        if (obj == MapOptionValuesEnum.DrawNamesOnOrdersOn) {
+            return true;
+        }
+        return false;
     }
 
 }

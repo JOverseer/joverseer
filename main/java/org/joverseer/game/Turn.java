@@ -16,7 +16,7 @@ public class Turn implements Serializable {
     int turnNo;
     Date turnDate;
     SeasonEnum season;
-
+    
     Hashtable<TurnElementsEnum, Container> containers = new Hashtable<TurnElementsEnum, Container>();
 
     public int getTurnNo() {

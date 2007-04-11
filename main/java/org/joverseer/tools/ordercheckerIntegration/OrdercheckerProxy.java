@@ -387,16 +387,29 @@ public class OrdercheckerProxy {
         
         ReflectionUtils.invokeMethod(data, "findGame", new Object[]{nation});
         
-        for (NationRelations nr : (ArrayList<NationRelations>)t.getContainer(TurnElementsEnum.NationRelation).getItems()) {
-            
-            data.setNationAlignment(nr.getNationNo(), -1, nation);
-            if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {
-                data.setNationAlignment(nr.getNationNo(), 1, nation);
-            } else if (nr.getAllegiance() == NationAllegianceEnum.DarkServants) {
-                data.setNationAlignment(nr.getNationNo(), 2, nation);
-            } else if (nr.getAllegiance() == NationAllegianceEnum.Neutral) {
-                data.setNationAlignment(nr.getNationNo(), 0, nation);
-            } 
+        for (int i=1; i<=25; i++) {
+            NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", i);
+            if (nr != null) {
+                data.setNationAlignment(nr.getNationNo(), -1, nation);
+                if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {
+                    data.setNationAlignment(nr.getNationNo()-1, 1, nation);
+                } else if (nr.getAllegiance() == NationAllegianceEnum.DarkServants) {
+                    data.setNationAlignment(nr.getNationNo()-1, 2, nation);
+                } else if (nr.getAllegiance() == NationAllegianceEnum.Neutral) {
+                    data.setNationAlignment(nr.getNationNo()-1, 0, nation);
+                }
+            } else {
+                org.joverseer.metadata.domain.Nation n = (org.joverseer.metadata.domain.Nation)g.getMetadata().getNationByNum(i);
+                if (n != null) {
+                    if (n.getAllegiance() == NationAllegianceEnum.FreePeople) {
+                        data.setNationAlignment(nr.getNationNo()-1, 1, nation);
+                    } else if (n.getAllegiance() == NationAllegianceEnum.DarkServants) {
+                        data.setNationAlignment(nr.getNationNo()-1, 2, nation);
+                    } else if (n.getAllegiance() == NationAllegianceEnum.Neutral) {
+                        data.setNationAlignment(nr.getNationNo()-1, 0, nation);
+                    }
+                }
+            }
         }
         
         

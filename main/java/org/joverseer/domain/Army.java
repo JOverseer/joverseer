@@ -29,6 +29,8 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     ArmySizeEnum size;
     int troopCount;
     boolean navy;
+    
+    int morale;
 
     ArrayList<ArmyElement> elements = new ArrayList<ArmyElement>();
 
@@ -109,6 +111,18 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     public void setTroopCount(int troopCount) {
         this.troopCount = troopCount;
     }
+    
+    
+
+    
+    public int getMorale() {
+        return morale;
+    }
+
+    
+    public void setMorale(int morale) {
+        this.morale = morale;
+    }
 
     public int getX() {
         return x;
@@ -136,6 +150,15 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
     public ArrayList<ArmyElement> getElements() {
         return elements;
+    }
+    
+    public ArmyElement getElement(ArmyElementType type) {
+        for (ArmyElement ae : getElements()) {
+            if (ae.getArmyElementType() == type) {
+                return ae;
+            }
+        }
+        return null;
     }
     
     public void removeElement(ArmyElementType type) {

@@ -52,7 +52,7 @@ public class InfoView extends AbstractView {
         lb.cell(createTableFromResource("classpath:metadata/info/characterTitles.csv"), "align=left");
         lb.relatedGapRow();
 
-        return lb.getPanel();
+        return new JScrollPane(lb.getPanel());
 	}
 	
 	private JComponent createTableFromResource(String uri) {

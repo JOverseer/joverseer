@@ -31,8 +31,11 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -172,9 +175,10 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         }
 
         table.getTableHeader().setBackground(Color.WHITE);
-        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer());
-        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer());
-        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer());
+        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
+        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
+        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
+        table.setDefaultRenderer(InfoSource.class, new InfoSourceTableCellRenderer(tableModel));
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
@@ -287,41 +291,6 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
     }
 
-    public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
 
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
-
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.bgColor");
-            if (pval.equals("none")) return c;
-            if (isSelected) {
-                return c;
-            }
-            int objRow = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-            Object obj = tableModel.getRow(objRow);
-            if (IBelongsToNation.class.isInstance(obj)) {
-                IBelongsToNation natObj = (IBelongsToNation) obj;
-                if (natObj == null || natObj.getNationNo() == null || natObj.getNationNo() == 0)
-                    return c;
-                int nationNo = natObj.getNationNo();
-
-                Game g = GameHolder.instance().getGame();
-                NationRelations nr = (NationRelations) g.getTurn().getContainer(TurnElementsEnum.NationRelation)
-                        .findFirstByProperty("nationNo", nationNo);
-                if (nr == null)
-                    return c;
-                MessageSource colorSource = (MessageSource) Application.instance().getApplicationContext().getBean(
-                        "colorSource");
-                String colorKey = "Listview." + nr.getAllegiance().toString() + ".color";
-                Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[] {}, Locale.getDefault()));
-                c.setBackground(bg);
-                return c;
-            } else {
-                return c;
-            }
-        }
-
-    }
 
 }

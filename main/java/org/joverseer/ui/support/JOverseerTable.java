@@ -11,10 +11,12 @@ public class JOverseerTable extends javax.swing.JTable {
 	
 	public JOverseerTable() {
 		super();
+                setSurrendersFocusOnKeystroke(true);
 	}
 
 	public JOverseerTable(TableModel dm) {
 		super(dm);
+                setSurrendersFocusOnKeystroke(true);
 	}
 
 	public Component prepareEditor(TableCellEditor editor, int row, int column) {

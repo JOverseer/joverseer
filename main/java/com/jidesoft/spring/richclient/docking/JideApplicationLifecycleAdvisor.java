@@ -27,7 +27,10 @@ import javax.swing.RepaintManager;
 import org.joverseer.game.Game;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.orderEditor.test.TestOrderParameters;
+import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
@@ -61,7 +64,19 @@ public class JideApplicationLifecycleAdvisor extends
 	
 	public void onPostStartup(){
 		initializeRepaintManager();
-		
+
+                if (JOverseerJIDEClient.cmdLineArgs == null || JOverseerJIDEClient.cmdLineArgs.length == 0 || !JOverseerJIDEClient.cmdLineArgs[0].equals("d")) {
+                    JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+                    for (int i=0; i<menuBar.getMenuCount(); i++) {
+                          if (menuBar.getMenu(i).getText().equals("Admin")) {
+                                  menuBar.getMenu(i).setVisible(false);
+                          }
+                  }
+                }
+                
+                if (PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes")) {
+                    GraphicUtils.showTipOfTheDay();
+                }
 		// install LookAndFeelMenu from JIDE libs
 //		JMenu lMenu = CommandBarFactory.createLookAndFeelMenu(Application.instance().getActiveWindow().getControl());
 //		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();

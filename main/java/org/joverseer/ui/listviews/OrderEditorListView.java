@@ -48,6 +48,7 @@ import org.joverseer.ui.support.AutocompletionComboBox;
 import org.joverseer.ui.support.ColumnBasedTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.JOverseerTable;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
@@ -162,7 +163,7 @@ public class OrderEditorListView extends ItemListView {
     
     protected JTable createTable() {
     	JTable table = TableUtils.createStandardSortableTable(tableModel);
-    	JTable newTable = new JTable(table.getModel()) {
+    	JTable newTable = new JOverseerTable(table.getModel()) {
             Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
             Color normalBackground = (Color) UIManager.get("Table.background");
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {

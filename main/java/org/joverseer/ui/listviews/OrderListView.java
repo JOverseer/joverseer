@@ -167,7 +167,7 @@ public class OrderListView extends ItemListView {
             }
         });
         table.setDefaultRenderer(Boolean.class, new BooleanTableCellRenderer() {
-        	Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
+            Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
             Color normalBackground = (Color) UIManager.get("Table.background");
             
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

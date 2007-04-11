@@ -108,6 +108,10 @@ public class ArmyWrapper {
 
     public void updateArmy(Army army) {
         army.setFood(food);
+        try {
+            army.setMorale(Integer.parseInt(morale));
+        }
+        catch (Exception exc) {};
         army.setNavy(type.toUpperCase().equals("NAVY"));
         army.setElement(ArmyElementType.Warships, getWarships());
         army.setElement(ArmyElementType.Transports, getTransports());

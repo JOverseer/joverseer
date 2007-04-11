@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="0.9.3"/>
-		<property name="buildId" value="2007-04-03"/>
+		<property name="version" value="0.9.4"/>
+		<property name="buildId" value="2007-04-10"/>
 	</bean>
 	
 	<!--
@@ -307,4 +307,6 @@
    	<bean class="org.joverseer.ui.ApplicationEventLogger"/>
    	
    	<bean id="colorPicker" class="org.joverseer.ui.support.ColorPicker"/>
+
+   	<bean id="orderEditorAutoNations" class="org.joverseer.ui.orderEditor.OrderEditorAutoNations"/>   	
 </beans>

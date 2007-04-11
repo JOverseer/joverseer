@@ -35,6 +35,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox zoom;
     JComboBox hexGraphics;
     JCheckBox drawOrders;
+    JCheckBox drawNamesOnOrders;
     JCheckBox showClimate;
     
     boolean fireEvents = true;
@@ -42,7 +43,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 	protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
         JLabel label;
-        lb.cell(label = new JLabel("Turn : "), "colspec=left:100px");
+        lb.cell(label = new JLabel("Turn : "), "colspec=left:130px");
         label.setPreferredSize(new Dimension(100, 16));
         lb.cell(cmbTurns = new JComboBox(), "colspec=left:100px");
         lb.relatedGapRow();
@@ -115,6 +116,30 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                     mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
                 } else {
                     mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOff);
+                }
+                Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                if (!Game.isInitialized(g)) return;
+                int turnNo = g.getCurrentTurn();
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
+                
+            }
+            
+        });
+        lb.row();
+        
+        lb.cell(label = new JLabel("Draw names on orders : "));
+        //label.setPreferredSize(new Dimension(100, 16));
+        lb.cell(drawNamesOnOrders = new JCheckBox(), "align=left");
+        lb.relatedGapRow();
+        drawNamesOnOrders.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+                if (drawNamesOnOrders.getModel().isSelected()) {
+                    mapOptions.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOn);
+                } else {
+                    mapOptions.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOff);
                 }
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 if (!Game.isInitialized(g)) return;

@@ -1,31 +1,37 @@
 package org.joverseer.support.readers.xml;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
-import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.commons.digester.SetNestedPropertiesRule;
+import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmySizeEnum;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.HexInfo;
+import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.domain.NationEconomy;
+import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.PlayerInfo;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
-import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
-import org.joverseer.support.infoSources.XmlTurnInfoSource;
+import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
+import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
+import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.tools.NationMessageParser;
-import org.joverseer.game.Turn;
-import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.domain.*;
-import org.joverseer.domain.Character;
 import org.springframework.richclient.progress.ProgressMonitor;
-
-import com.jidesoft.plaf.basic.BasicDockableFrameTitlePane.HideAutohideAction;
-
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 
 public class TurnXmlReader implements Runnable{
@@ -314,7 +320,14 @@ public class TurnXmlReader implements Runnable{
                     System.out.println("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " "  + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo());
                     logger.debug("Pop Centre found in turn.");
                     // distinguish cases
-                    if (newPc.getNationNo() > 0) {
+                    if (oldPc != null && oldPc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() &&
+                            ((XmlTurnInfoSource)oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo()) {
+                        System.out.println("old pop too good - do not replace");
+                    } else if (newPc.getNationNo() == ((XmlTurnInfoSource)newPc.getInfoSource()).getNationNo()) {
+                        System.out.println("pop center of same nation - replace");
+                        pcs.removeItem(oldPc);
+                        pcs.addItem(newPc);
+                    } else if (newPc.getNationNo() > 0) {
                     	System.out.println("simply replace");
                     	pcs.removeItem(oldPc);
                     	pcs.addItem(newPc);
@@ -339,6 +352,11 @@ public class TurnXmlReader implements Runnable{
                     
                     if (newPc.getName().equals("Unknown (Map Icon)")) {
                     	newPc.setName(oldPc.getName());
+                    }
+                    if (oldPc != null && oldPc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() &&
+                            ((XmlTurnInfoSource)oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo() &&
+                            oldPc.getCapital()) {
+                        newPc.setCapital(true);
                     }
 //                    if (newPc.getInformationSource().getValue() > oldPc.getInformationSource().getValue() ||
 //                            // added to handle issue with Unknown map icons overwritting pcs derived from previous turn

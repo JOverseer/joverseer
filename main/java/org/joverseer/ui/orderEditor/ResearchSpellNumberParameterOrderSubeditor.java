@@ -10,26 +10,26 @@ import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 
 public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParameterOrderSubeditor {
-	
-	public ResearchSpellNumberParameterOrderSubeditor(String paramName, Order o, int orderNo) {
+
+    public ResearchSpellNumberParameterOrderSubeditor(String paramName, Order o, int orderNo) {
         super(paramName, o, orderNo);
     }
-	
-	protected void loadSpellCombo() {
-		GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-		Character c = getOrder().getCharacter();
+
+    protected void loadSpellCombo() {
+        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+        Character c = getOrder().getCharacter();
         parameter.addItem("");
-    	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
-    		boolean found = false;
-    		for (SpellProficiency sp : c.getSpells()) {
-    			if (sp.getSpellId() == si.getNumber()) {
-    				found = true;
-    			}
+        for (SpellInfo si : (ArrayList<SpellInfo>) gm.getSpells().getItems()) {
+            boolean found = false;
+            for (SpellProficiency sp : c.getSpells()) {
+                if (sp.getSpellId() == si.getNumber()) {
+                    found = true;
+                }
             }
-			if (!found) {
-				parameter.addItem(si.getNumber() + " - " + si.getName());
-			}
+            if (!found) {
+                parameter.addItem(si.getNumber() + " - " + si.getName());
+            }
         }
-	}
+    }
 
 }

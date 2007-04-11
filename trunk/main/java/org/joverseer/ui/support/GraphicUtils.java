@@ -12,6 +12,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
@@ -95,7 +96,15 @@ public class GraphicUtils {
     }
     
     public static void showTipOfTheDay() {
-        ResourceBundleTipOfTheDaySource tipOfTheDaySource = new ResourceBundleTipOfTheDaySource(ResourceBundle.getBundle("tips"));
+    	ResourceBundle rb;
+        ResourceBundleTipOfTheDaySource tipOfTheDaySource = new ResourceBundleTipOfTheDaySource(rb = ResourceBundle.getBundle("tips"));
+        int count = 0;
+        Enumeration e = rb.getKeys();
+        while (e.hasMoreElements()) {
+        	count++;
+        	e.nextElement();
+        }
+        tipOfTheDaySource.setCurrentTipIndex((int)(Math.random() * count));
         URL styleSheet = TipOfTheDayDialog.class.getResource("/tips.css");
         TipOfTheDayDialog dialog = new TipOfTheDayDialog((Frame) null, tipOfTheDaySource, new AbstractAction("Show Tips on startup") {
             public void actionPerformed(ActionEvent e) {

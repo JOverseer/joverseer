@@ -107,6 +107,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         if (pc.getHarbor() != HarborSizeEnum.none) {
         	sizeFort.setText(sizeFort.getText() + " - " + pc.getHarbor().toString());
         } 
+        sizeFort.setCaretPosition(0);
         
         // show production
         // if the pop center is a ruin, search in past turns and find the first
@@ -221,7 +222,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
         glb.append(sizeFort = new JTextField());
         c = sizeFort;
-        c.setPreferredSize(new Dimension(100, 12));
+        c.setPreferredSize(new Dimension(120, 12));
         c.setBorder(null);
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");

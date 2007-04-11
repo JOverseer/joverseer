@@ -192,6 +192,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
 //        	exc.printStackTrace();
 //        }
         
+
         for (Hex h : (Collection<Hex>)gm.getHexes()) {
             setHexLocation(h.getColumn(), h.getRow());
             for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {

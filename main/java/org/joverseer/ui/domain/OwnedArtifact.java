@@ -61,7 +61,6 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation{
         this.owner = owner;
     }
 
-    
     public String getPower1() {
         return power1;
     }

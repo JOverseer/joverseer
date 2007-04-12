@@ -536,6 +536,7 @@ public class TurnXmlReader implements Runnable{
                         // no found, add
                         Character cmd = new Character();
                         cmd.setName(commanderName);
+                        cmd.setTitle(newArmy.getCommanderTitle());
                         cmd.setId(commanderId);
                         cmd.setNationNo(newArmy.getNationNo());
                         cmd.setX(newArmy.getX());

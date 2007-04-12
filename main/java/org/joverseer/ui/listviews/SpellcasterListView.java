@@ -45,7 +45,7 @@ public class SpellcasterListView extends BaseItemListView {
     protected ArrayList createSpellLists() {
         ArrayList spellLists = new ArrayList();
         spellLists.add(new SpellList("Artifact/Character tracking", new Integer[]{418, 428, 420, 430}, new String[]{"LA", "LAT", "RC", "RCT"}));
-        spellLists.add(new SpellList("Curses", new Integer[]{506, 504, 502}, new String[]{"Curse", "Weak", "Sick"}));
+        spellLists.add(new SpellList("Curses", new Integer[]{506, 504, 502}, new String[]{"Curse", "Sick", "Weak"}));
         spellLists.add(new SpellList("Reveal PC", new Integer[]{434}, new String[]{"RPC"}));
         spellLists.add(new SpellList("Scrying", new Integer[]{414, 415, 436}, new String[]{"Scry Hex", "Scry Area", "Scry Character"}));
         spellLists.add(new SpellList("Conjuring", new Integer[]{508, 510, 512}, new String[]{"Cj Mo", "Cj Fo", "Cj Hd"}));

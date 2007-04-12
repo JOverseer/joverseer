@@ -38,7 +38,7 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
                 orderFileReader.setGame(gh.getGame());
                 orderFileReader.setOrderFile("file:///" + f.getAbsolutePath());
                 orderFileReader.readOrders();
-                MessageDialog dlg = new MessageDialog("Import Orders", "Orders for " + orderFileReader.getCharsRead() + " characters were imported.");
+                MessageDialog dlg = new MessageDialog("Import Orders", orderFileReader.getOrdersRead() + " orders were imported.");
                 dlg.showDialog();
                 Application.instance().getApplicationContext().publishEvent(
                                     new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));

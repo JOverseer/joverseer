@@ -21,8 +21,8 @@ import java.util.LinkedList;
 public class MovementUtils {
     static int[] infMovementCost = 	new int[]{3, 3, 5, 6, 5, 12, 4, -1, -1};
     static int[] infRoadMovementCost =	new int[]{2, 2, 3, 3, 3,  6, 2, -1, -1};
-    static int[] cavMovementCost =		new int[]{2, 2, 5, 5, 3, 12, 2, -1, -1};
-    static int[] cavRoadMovementCost = new int[]{1, 1, 2, 2, 1,  3, 1, -1, -1};
+    static int[] cavMovementCost =      new int[]{2, 2, 5, 5, 3, 12, 2, -1, -1};
+    static int[] cavRoadMovementCost =  new int[]{1, 1, 2, 2, 1,  3, 1, -1, -1};
 
     static int bridgeFordCost = 1;
     static int riverCost = 1;

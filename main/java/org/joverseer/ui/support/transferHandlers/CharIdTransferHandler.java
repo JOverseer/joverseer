@@ -18,6 +18,6 @@ public class CharIdTransferHandler extends StringTransferHandler {
         String v = super.exportString(c);
         Game g = GameHolder.instance().getGame();
         Character ch = (Character)g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", v);
-        return ch.getId();
+        return ch.getId() + "     ".substring(0, 5 - ch.getId().length());
     }
 }

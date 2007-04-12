@@ -2,6 +2,8 @@ package org.joverseer.ui.listviews;
 
 import java.util.ArrayList;
 
+import javax.swing.JTable;
+
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
@@ -12,6 +14,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 import org.joverseer.ui.domain.ProductLineWrapper;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.table.ColumnToSort;
 
 
 public class NationProductionListView extends BaseItemListView {
@@ -21,7 +24,7 @@ public class NationProductionListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {60, 60, 48, 48, 48, 48, 48, 48, 48};
+        return new int[] {0, 60, 60, 48, 48, 48, 48, 48, 48, 48};
     }
 
     protected void setItems() {
@@ -31,14 +34,19 @@ public class NationProductionListView extends BaseItemListView {
             return;
         Container nes = g.getTurn().getContainer(TurnElementsEnum.NationEconomy);
         ProductContainer totalProdContainer = new ProductContainer();
+        int counter = 1;
         for (NationEconomy ne : (ArrayList<NationEconomy>) nes.getItems()) {
             ProductLineWrapper prod = new ProductLineWrapper(ne.getProduction());
             prod.setNationNo(ne.getNationNo());
             prod.setDescr("Production");
+            prod.setIdx(counter);
+            counter++;
             items.add(prod);
             ProductLineWrapper stores = new ProductLineWrapper(ne.getStores());
             stores.setNationNo(ne.getNationNo());
             stores.setDescr("Stores");
+            stores.setIdx(counter);
+            counter++;
             items.add(stores);
 
             ProductContainer nationTotals = new ProductContainer();
@@ -46,6 +54,8 @@ public class NationProductionListView extends BaseItemListView {
             nationTotals.add(ne.getStores());
             ProductLineWrapper total = new ProductLineWrapper(nationTotals);
             total.setNationNo(ne.getNationNo());
+            total.setIdx(counter);
+            counter++;
             total.setDescr("Total");
             items.add(total);
             
@@ -58,8 +68,15 @@ public class NationProductionListView extends BaseItemListView {
         ProductLineWrapper buyPrices = new ProductLineWrapper();
         
         sellPrices.setDescr("Sell Price");
+        sellPrices.setIdx(counter);
+        counter++;
+
         buyPrices.setDescr("Buy Price");
+        buyPrices.setIdx(counter);
+        counter++;
         
+        totalProduction.setIdx(counter);
+
         ProductPrice pp = (ProductPrice) prices.findFirstByProperty("product", ProductEnum.Food);
         if (pp != null) {
             sellPrices.setFood(pp.getSellPrice());
@@ -111,7 +128,56 @@ public class NationProductionListView extends BaseItemListView {
         items.add(sellPrices);
         items.add(buyPrices);
         items.add(totalProduction);
-        tableModel.setRows(items);
+        
+        ArrayList filteredItems = new ArrayList();
+        for (ProductLineWrapper plw : (ArrayList<ProductLineWrapper>)items) {
+            if (getActiveFilter() == null || getActiveFilter().accept(plw)) {
+                filteredItems.add(plw);
+            }
+        }
+        tableModel.setRows(filteredItems);
         tableModel.fireTableDataChanged();
+    }
+    
+    
+    
+    protected JTable createTable() {
+        JTable tbl = super.createTable();
+        tbl.getColumnModel().getColumn(0).setWidth(0);
+        return tbl;
+    }
+
+    protected ColumnToSort[] getDefaultSort() {
+        return new ColumnToSort[]{new ColumnToSort(0, 0)};
+    }
+
+    protected AbstractListViewFilter[] getFilters() {
+        return new AbstractListViewFilter[]{
+                new ProductionFilter("All", null),
+                new ProductionFilter("Production", "Production"),
+                new ProductionFilter("Stores", "Stores"),
+                new ProductionFilter("Total", "Total"),
+        };
+    }
+
+
+
+    class ProductionFilter extends AbstractListViewFilter {
+        String type;
+
+        public ProductionFilter(String description, String type) {
+            super(description);
+            this.type = type;
+        }
+        
+        public boolean accept(Object obj) {
+            ProductLineWrapper plw = (ProductLineWrapper)obj;
+            return type == null || 
+                plw.getDescr().equals("Total Production") ||
+                plw.getDescr().equals("Sell Price") ||
+                plw.getDescr().equals("Buy Price") ||
+                plw.getDescr().equals(type);
+        }
+        
     }
 }

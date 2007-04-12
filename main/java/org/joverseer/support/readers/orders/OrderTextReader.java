@@ -20,6 +20,7 @@ public class OrderTextReader {
         ArrayList<String> lineResults = new ArrayList<String>();
         
         int chars = 0;
+        int orders = 0;
 
         public Game getGame() {
                 return game;
@@ -121,6 +122,7 @@ public class OrderTextReader {
                 if (orderText[i] == null) {
                     orders[i].clear();
                 } else {
+                    this.orders++;
                     String[] parts = orderText[i].trim().replace("  ", Order.DELIM).split(Order.DELIM);
                     String parameters = "";
                     int orderNo = -1;
@@ -163,6 +165,16 @@ public class OrderTextReader {
         
         public ArrayList<String> getLineResults() {
             return lineResults;
+        }
+
+        
+        public int getOrders() {
+            return orders;
+        }
+
+        
+        public void setOrders(int orders) {
+            this.orders = orders;
         }
         
         

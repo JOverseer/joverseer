@@ -30,7 +30,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(parameter = new JComboBox(), "colspec=left:100px");
+        tlb.cell(parameter = new JComboBox(), "colspec=left:150px");
         GameMetadata gm = GameHolder.instance().getGame().getMetadata();
         parameter.addItem("");
         parameter.setPreferredSize(new Dimension(60, 18));

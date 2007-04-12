@@ -122,7 +122,7 @@ public class ArmyWrapper {
                 if (ae.getArmyElementType() == t) {
                     ae.setTraining(aew.getTraining());
                     ae.setWeapons(aew.getWeapons());
-                    ae.setArmor(aew.getNumber());
+                    ae.setArmor(aew.getArmor());
                 }
             }
         }

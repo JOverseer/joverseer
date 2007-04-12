@@ -20,7 +20,7 @@ public class OrderFileReader {
 	
 	Game game;
 
-        int charsRead = 0;
+        int ordersRead = 0;
         
 	public Game getGame() {
 		return game;
@@ -86,7 +86,7 @@ public class OrderFileReader {
         					Order[] orders = c.getOrders();
         					orders[orderI].setOrderNo(orderNo);
         					orders[orderI].setParameters(parameters);
-                                                charsRead++;
+                                                ordersRead++;
                                         }
 				}
 				i++;
@@ -100,13 +100,13 @@ public class OrderFileReader {
 	}
 
     
-    public int getCharsRead() {
-        return charsRead;
+    public int getOrdersRead() {
+        return ordersRead;
     }
 
     
-    public void setCharsRead(int charsRead) {
-        this.charsRead = charsRead;
+    public void setOrdersRead(int charsRead) {
+        this.ordersRead = ordersRead;
     }
 	
 }

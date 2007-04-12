@@ -69,7 +69,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         orderTextReader.setGame(GameHolder.instance().getGame());
         orderTextReader.setOrderText(text);
         orderTextReader.readOrders(1);
-        MessageDialog dialog = new MessageDialog("Import Orders", "Orders for " + orderTextReader.getChars() + "  characters were imported.");
+        MessageDialog dialog = new MessageDialog("Import Orders", orderTextReader.getOrders() + " orders were imported.");
         dialog.showDialog();
         Application.instance().getApplicationContext().publishEvent(
                             new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), GameHolder.instance().getGame(), this));

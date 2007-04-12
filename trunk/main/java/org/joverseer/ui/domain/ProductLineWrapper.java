@@ -6,6 +6,7 @@ import org.joverseer.support.ProductContainer;
 
 
 public class ProductLineWrapper implements IBelongsToNation {
+    int idx;
     Integer leather;
     Integer food;
     Integer bronze;
@@ -112,6 +113,16 @@ public class ProductLineWrapper implements IBelongsToNation {
     
     public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
+    }
+
+    
+    public int getIdx() {
+        return idx;
+    }
+
+    
+    public void setIdx(int idx) {
+        this.idx = idx;
     }
     
     

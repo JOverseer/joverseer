@@ -123,8 +123,10 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         stlb.cell(btn = new JButton("back"));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                dirs.remove(dirs.size()-1);
-                updateEditor();
+                if (dirs.size() > 0) {
+                    dirs.remove(dirs.size()-1);
+                    updateEditor();
+                }
             }
         });
 
@@ -136,8 +138,10 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     }
 
     public void updateEditor() {
+        while (dirs.size() > 14) {
+            dirs.remove(dirs.size()-1);
+        }
         String text = "";
-        String val = "-";
         for (String dir : dirs) {
             text += (text.equals("") ? "" : Order.DELIM) + dir;
         }

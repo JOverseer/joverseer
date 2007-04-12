@@ -11,11 +11,11 @@ public class NationProductionTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"nationNo", "descr", "leather", "bronze", "steel", "mithril", "food", "timber", "mounts"};
+        return new String[] {"idx", "nationNo", "descr", "leather", "bronze", "steel", "mithril", "food", "timber", "mounts"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] { String.class, String.class, 
+        return new Class[] {Integer.class, String.class, String.class, 
                             Integer.class, Integer.class, Integer.class, Integer.class, 
                             Integer.class, Integer.class, Integer.class};
     }

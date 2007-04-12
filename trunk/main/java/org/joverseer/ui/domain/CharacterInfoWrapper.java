@@ -20,6 +20,7 @@ public class CharacterInfoWrapper implements IHasMapLocation, IHasTurnNumber, IB
     int challenge;
     
     int turnNo;
+    int firstTurnNo;
     
     String sources;
     
@@ -175,6 +176,18 @@ public class CharacterInfoWrapper implements IHasMapLocation, IHasTurnNumber, IB
 
     public int getY() {
         return getHexNo() % 100;
+    }
+
+
+    
+    public int getFirstTurnNo() {
+        return firstTurnNo;
+    }
+
+
+    
+    public void setFirstTurnNo(int firstTurnNo) {
+        this.firstTurnNo = firstTurnNo;
     }
     
     

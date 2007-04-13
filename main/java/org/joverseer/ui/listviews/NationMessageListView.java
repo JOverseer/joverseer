@@ -10,7 +10,7 @@ public class NationMessageListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{96, 400};
+        return new int[]{64, 400};
     }
     
     protected AbstractListViewFilter[] getFilters() {

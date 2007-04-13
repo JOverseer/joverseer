@@ -2,6 +2,7 @@ package org.joverseer.ui.info;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
@@ -34,69 +35,76 @@ import com.jidesoft.swing.JideTabbedPane;
 public class InfoView extends AbstractView {
 
     JideTabbedPane pane;
+    ArrayList<JTable> tables = new ArrayList<JTable>();
 
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
 
         lb.separator("Population Centers");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/popCenters.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/popCenters.csv", 700, 100), "align=left");
         lb.relatedGapRow();
 
         lb.separator("Fortifications");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/fortifications.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/fortifications.csv", 400, 100), "align=left");
         lb.relatedGapRow();
 
         lb.separator("General Costs");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/generalCosts.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/generalCosts.csv", 400, 220), "align=left");
         lb.relatedGapRow();
         
         lb.separator("Maintenance Costs");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/maintenanceCosts.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/maintenanceCosts.csv", 400, 200), "align=left");
         lb.relatedGapRow();
 
         lb.separator("Character Titles");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/characterTitles.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/characterTitles.csv", 400, 200), "align=left");
         lb.relatedGapRow();
         
         lb.separator("Movement");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/movementCosts.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/movementCosts.csv", 600, 200), "align=left");
         lb.relatedGapRow();
         
         lb.separator("Tactic vs Tactic");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/tacticVsTactic.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/tacticVsTactic.csv", 400, 120), "align=left");
         lb.relatedGapRow();
 
         lb.separator("Troop Type - Tactics");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/troopTactics.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/troopTactics.csv", 600, 120), "align=left");
         lb.relatedGapRow();
 
         lb.separator("Troop Combat Strength");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/armyCombatValues.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/armyCombatValues.csv", 300, 120), "align=left");
         lb.relatedGapRow();
 
         lb.separator("Troop Terrain Modifiers");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/troopTerrainPerformance.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/troopTerrainPerformance.csv", 600, 120), "align=left");
         lb.relatedGapRow();
         
-        lb.separator("Climate Production Modifieds");
+        lb.separator("Climate Production Modifiers");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/climateProduction.csv"), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/climateProduction.csv", 600, 140), "align=left");
+        lb.relatedGapRow();
+        
+        lb.separator("Dragons");
+        lb.relatedGapRow();
+        lb.cell(createTableFromResource("classpath:metadata/info/dragons.csv", 850, 900), "align=left");
         lb.relatedGapRow();
 
         return new JScrollPane(lb.getPanel());
     }
-
-    private JComponent createTableFromResource(String uri) {
+    
+    
+    private JComponent createTableFromResource(String uri, int w, int h) {
         Resource res = Application.instance().getApplicationContext().getResource(uri);
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream()));
@@ -117,6 +125,7 @@ public class InfoView extends AbstractView {
             JPanel pnl = new JPanel(new BorderLayout());
 
             JTable table = new JTable(model);
+            tables.add(table);
             table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
                 public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
                     JLabel lbl = (JLabel)super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
@@ -132,7 +141,8 @@ public class InfoView extends AbstractView {
             pnl.add(table.getTableHeader(), BorderLayout.PAGE_START);
             pnl.add(table, BorderLayout.CENTER);
 
-            TableUtils.setPreferredColumnWidths(table);
+            table.setPreferredSize(new Dimension(w, h));
+            TableUtils.sizeColumnsToFitRowData(table);
             reader.close();
             return pnl;
         } catch (Exception exc) {
@@ -147,6 +157,9 @@ public class InfoView extends AbstractView {
         ArrayList<String> colNames = new ArrayList<String>();
         ArrayList<String[]> values = new ArrayList<String[]>();
 
+        public boolean isCellEditable(int arg0, int arg1) {
+            return false;
+        }
 
         public ArrayList<String> getColNames() {
             return colNames;

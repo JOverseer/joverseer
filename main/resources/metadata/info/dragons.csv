@@ -1,0 +1,52 @@
+Name;Result;FP;DS;Neutrals;
+Scorba;Recruit;DEMAND;DEMAND;DEMAND
+Scorba;Escape;MEEK;MEEK;MEEK,FLEE
+Throkmaw;Recruit;DEMAND;DEMAND;DEMAND
+Throkmaw;Escape;-;-;FLEE
+Throkmaw;Combat;ALLEGIANCE,NAME;ALLEGIANCE,NAME;NAME
+Throkmaw;Injured/Killed;FLEE;FLEE;ALLEGIANCE
+Aivnec;Recruit;-;-;ALLEGIANCE
+Aivnec;Combat;ALLEGIANCE,FLEE,10K,100K;10K,100K;10K,100K
+Ando-Anca;Recruited;-;-;100K?
+Ando-Anca;Combat;DEMAND,HAUGHTY,FLEE;FLEE;FLEE
+Ando-Anca;Injured/Killed;ALLEGIANCE,NAME;ALLEGIANCE,NAME;ALLEGIANCE,NAME
+Angurth;Recruited;-;-;HAUGHTY?
+Angurth;Combat;ALLEGIANCE,DEMAND,MEEK;ALLEGIANCE,DEMAND,MEEK;MEEK
+Angurth;Injured/Killed;HAUGHTY,FLEE;HAUGHTY;-
+Bairanax;Recruited;-;-;100K
+Bairanax;Combat;10K,100K,FLEE;10K,100K,FLEE;FLEE
+Bairanax;Escape;MEEK;MEEK;ALLEGIANCE,MEEK
+Corlagon;Recruited;-;-;100K?
+Culgor;Recruited;-;-;MEEK
+Culgor;Injured/Killed;NAME,MEEK,10K,100K,FLEE;NAME,MEEK,10K,100K,FLEE;NAME;FLEE
+Culgor;Escape;-;-;FLEE
+Daelomin;Recruited;-;-;TWO Artifacts?
+Daelomin;Combat;DEMAND,HAUGHTY,FLEE;DEMAND,HAUGHTY,FLEE;FEE
+Itangast;Recruited;-;-;MEEK
+Itangast;Combat;ALLEGIANCE,NAME,HAUGHTY,FLEE;ALLEGIANCE,NAME,HAUGHTY;-
+Itangast;Injured/Killed;MEEK;MEEK;HAUGHTY
+Khuzadrepa;Recruited;-;-;MEEK
+Khuzadrepa;Combat;ALLEGIANC,NAME,10K,FLEE;NAME,10K,FLEE;NAME,10K
+Khuzadrepa;Injured/Killed;DEMAND,MEEK;DEMAND,MEEK;DEMAND,HAUGHTY,FLEE
+Klyaxar;Recruited;-;-;ALLEGIANCE?,HAUGHTY
+Klyaxar;Combat;ALLEGIANCE,DEMAND,HAUGHTY,10K,FLEE;ALLEGIANCE,DEMAND,HAUGHTY,10K,FLEE;DEMAND;FLEE
+Klyaxar;Injured/Escape;MEEK,ONE Artifact;-;-
+Lamthanc;Recruited;-;-;HAUGHTY
+Lamthanc;Escape;HAUGHTY;HAUGHTY;-
+Lamthanc;Combat;ALLEGIANCE,ONE Artifact,FLEE;ALLEGIANCE,ONE Artifact,FLEE;ALLEGIANCE,FLEE
+Leucaruth;Recruited;-;-;ONE Artifact
+Leucaruth;Combat;HAUGHTY,MEEK;-;-
+Leucaruth;Injured/Killed;ALLEGIANCE,NAME,DEMAND,ONE Artifact;ALLEGIANCE,NAME,DEMAND,ONE Artifact;ALLEGIANCE,NAME,DEMAND,MEEK
+Lomaw;Recruited;-;-;10K?
+Lomaw;Escape;MEEK;MEEK;MEEK
+Lomaw;Combat;TWO Artifacts,FLEE;TWO Artifacts,FLEE;TWO Artifacts;
+Lomaw;Injured/Killed;-;-;FLEE
+Smaug;Recruited;-;-;MEEK,10K,100K
+Smaug;Escape;MEEK;MEEK;-
+Smaug;Injured/Killed;FLEE,ONE Artifact,TWO Artifacts;ONE Artifact,TWO Artifacts;-
+Smaug;Combat;DEMAND;DEMAND;DEMAND
+Uruial;Recruited;-;-;ALLEGIANCE,MEEK?
+Uruial;Combat;ALLEGIANCE,HAUGHTY,MEEK,FLEE;ALLEGIANCE,HAUGHTY,MEEK,FLEE;-
+Uruial;Injured/Killed;NAME;NAME;NAME,HAUGHTY,FLEE
+Uruial;Escape;-;-;MEEK
+Turukulon;Recruited;-;-;-

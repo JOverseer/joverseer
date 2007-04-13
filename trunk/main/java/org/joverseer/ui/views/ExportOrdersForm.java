@@ -29,7 +29,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenXmlDir;
-import org.joverseer.ui.support.ErrorDialog;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;

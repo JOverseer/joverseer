@@ -1,0 +1,7 @@
+Troop Type;Best Tactic;Worst Tactic
+Heavy Cavalry;Charge;Ambush
+Light Cavalry;Surround;Ambush
+Heavy Infantry;Flank;Surround
+Light Infantry;Hit & Run;Charge
+Archers;Ambush;Flank
+Men-at-Arms;Hit & Run;Charge

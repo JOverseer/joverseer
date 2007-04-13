@@ -5,8 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
 
@@ -26,8 +28,9 @@ public class CharacterRenderer implements Renderer {
         if (mapMetadata == null) init();
 
         Character c = (Character)obj;
-
-
+        String pval = PreferenceRegistry.instance().getPreferenceValue("map.deadCharacters");
+        if (pval.equals("no") && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) return;
+        
         int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 3 / 7;
         int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 3 / 5;
         int w = mapMetadata.getGridCellWidth() / 3;

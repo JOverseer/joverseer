@@ -51,6 +51,8 @@ import org.txt2xml.driver.StreamDriver;
 
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
+    public static int parseTimeoutInSecs = 10;
+    public static boolean deleteFilesWhenFinished = true;
     static Logger logger = Logger.getLogger(TurnPdfReader.class);
     TurnInfo turnInfo;
     Turn turn;
@@ -63,7 +65,6 @@ public class TurnPdfReader implements Runnable {
     File xmlFile;
     String contents;
     PDDocument document;
-    boolean deleteFilesWhenFinished = true;
     boolean errorOccurred = false;
     
     public TurnPdfReader(Game game, String filename) {
@@ -379,14 +380,37 @@ public class TurnPdfReader implements Runnable {
             File f = new File(filename);
             pdfTextFile = File.createTempFile(f.getName(), ".pdf.txt");
             xmlFile = File.createTempFile(f.getName(), ".pdf.txt.xml");
-            pdf2xml();
-            if (getMonitor() != null) {
-                getMonitor().worked(50);
-                getMonitor().subTaskStarted("Parsing Pdf file...");
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    try {
+                        pdf2xml();
+                    }
+                    catch (Throwable exc) {
+                        if (getMonitor() != null) {
+                            getMonitor().subTaskStarted(exc.getMessage());
+                        }
+                        logger.error(exc);
+                        exc.printStackTrace();
+                    }
+                }
+            };
+            Thread t = new Thread(runnable);
+            t.start();
+            t.join(parseTimeoutInSecs * 1000);
+            if (t.getState() != Thread.State.TERMINATED) {
+                t.stop();
+                // do not update game
+                getMonitor().subTaskStarted("Error: Pdf parsing timer expired. Skipping...");
+                getMonitor().worked(100);
+            } else {
+                if (getMonitor() != null) {
+                    getMonitor().worked(50);
+                    getMonitor().subTaskStarted("Parsing Pdf file...");
+                }
+                readFile();
+                updateGame(game);
+                game.setCurrentTurn(game.getMaxTurn());
             }
-            readFile();
-            updateGame(game);
-            game.setCurrentTurn(game.getMaxTurn());
             Thread.sleep(100);
         }
         catch (Throwable exc) {

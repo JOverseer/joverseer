@@ -1,0 +1,107 @@
+package org.joverseer.support.info;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.application.Application;
+
+
+public class Info {
+    public String key;
+    String resourcePath;
+    
+    ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>(); 
+    
+    public ArrayList<String> getColumnHeaders() {
+        return values.get(0);
+    }
+    
+    public ArrayList<String> getRowHeaders() {
+        ArrayList<String> ret = new ArrayList<String>();
+        for (ArrayList<String> l : values) {
+            ret.add(l.get(0));
+        }
+        return ret;
+    }
+    
+    public int getColumnId(String header) {
+        return getColumnHeaders().indexOf(header);
+    }
+    
+    public int getRowId(String header) {
+        return getRowHeaders().indexOf(header);
+    }
+    
+    public String getValue(String h1, String h2) {
+        int i = getColumnId(h1);
+        int j = 0;
+        if (i < 0) {
+            i = getColumnId(h2);
+            if (i < 0) return null;
+            j = getRowId(h1);
+            if (j < 0) return null;
+        } else {
+            j = getRowId(h2);
+            if (j < 0) return null;
+        }
+        return getValue(j, i);
+    }
+    
+    public String getValue(int row, int col) {
+        return values.get(row).get(col);
+    }
+
+    
+    public String getKey() {
+        return key;
+    }
+
+    
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    
+    public String getResourcePath() {
+        return resourcePath;
+    }
+
+    
+    public void setResourcePath(String resourcePath) {
+        this.resourcePath = resourcePath;
+        load();
+    }
+    
+    protected void load() {
+        Resource res = Application.instance().getApplicationContext().getResource(this.resourcePath);
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(res.getInputStream()));
+
+            String ln;
+            while ((ln = reader.readLine()) != null) {
+                String[] parts = ln.split(";");
+                ArrayList<String> l = new ArrayList<String>();
+                l.addAll(Arrays.asList(parts));
+                values.add(l);
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+            values.clear();
+        }
+        finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                }
+                catch (Exception exc) {};
+            }
+        }
+    }
+    
+    
+    
+}

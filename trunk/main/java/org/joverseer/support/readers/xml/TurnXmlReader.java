@@ -331,9 +331,9 @@ public class TurnXmlReader implements Runnable{
                     	System.out.println("simply replace");
                     	pcs.removeItem(oldPc);
                     	pcs.addItem(newPc);
-                        if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
-                            newPc.setLoyalty(oldPc.getLoyalty());
-                        }
+//                        if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
+//                            newPc.setLoyalty(oldPc.getLoyalty());
+//                        }
                     } else {
                     	System.out.println("replace/update");
                     	pcs.removeItem(oldPc);
@@ -341,7 +341,7 @@ public class TurnXmlReader implements Runnable{
                     	newPc.setNationNo(oldPc.getNationNo());
                     	newPc.setName(oldPc.getName());
                         if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
-                            newPc.setLoyalty(oldPc.getLoyalty());
+                            //newPc.setLoyalty(oldPc.getLoyalty());
                         }
                     	int prevTurnNo = oldPc.getInfoSource().getTurnNo();
                     	if (PopCenterXmlInfoSource.class.isInstance(oldPc.getInfoSource())) {

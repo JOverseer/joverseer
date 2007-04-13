@@ -32,7 +32,7 @@ import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.JOverseerTable;
+import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -291,7 +291,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         pcTable.setBackground(Color.white);
         pcTable.setDefaultRenderer(Boolean.class, totalsTable.getDefaultRenderer(Boolean.class));
         pcTable.setDefaultEditor(Boolean.class, totalsTable.getDefaultEditor(Boolean.class));
-        org.joverseer.ui.support.TableUtils.setTableColumnWidths(pcTable, getLostPCColumWidths());
+        org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, getLostPCColumWidths());
         scp = new JScrollPane(pcTable);
         scp.setPreferredSize(new Dimension(600, 120));
         scp.getViewport().setBackground(Color.white);

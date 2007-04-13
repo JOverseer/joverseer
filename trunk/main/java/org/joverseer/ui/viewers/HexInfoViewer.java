@@ -31,7 +31,7 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;

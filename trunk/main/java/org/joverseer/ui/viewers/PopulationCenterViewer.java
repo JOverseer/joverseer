@@ -1,56 +1,53 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.image.ImageSource;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.form.binding.BindingFactory;
-import org.springframework.richclient.form.builder.TableFormBuilder;
-import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
-import org.joverseer.domain.Army;
-import org.joverseer.domain.Character;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+
 import org.joverseer.domain.HarborSizeEnum;
-import org.joverseer.domain.InformationSourceEnum;
-import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.domain.NewGame;
-import org.joverseer.ui.domain.mapItems.AbstractMapItem;
-import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditPopulationCenterForm;
-import org.joverseer.ui.views.NewGameForm;
-import org.joverseer.domain.ProductEnum;
-
-import javax.swing.*;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Locale;
+import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
+import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
 public class PopulationCenterViewer extends ObjectViewer {
@@ -65,8 +62,9 @@ public class PopulationCenterViewer extends ObjectViewer {
     JTextField lostThisTurn;
     JTextField productionDescription;
     JTextField turnInfo;
-    HashMap production = new HashMap();
-    HashMap stores = new HashMap();
+    HashMap<ProductEnum, JTextField> production = new HashMap<ProductEnum, JTextField>();
+    HashMap<ProductEnum, JTextField> stores = new HashMap<ProductEnum, JTextField>();
+    ArrayList<JLabel> productionLabels = new ArrayList<JLabel>();
 
     ActionCommand editPopulationCenter = new EditPopulationCenterCommand();
     ActionCommand toggleLostThisTurnCommand = new ToggleLostThisTurnCommand();
@@ -133,12 +131,24 @@ public class PopulationCenterViewer extends ObjectViewer {
                     }
                 }
             }
-        }
+        } 
         if (pcForProduction != pc) {
             productionDescription.setText(String.format("Production from turn %s (%s).", productionTurn.getTurnNo(), pcForProduction.getSize()));
             productionDescription.setVisible(true);
+            setStoresVisible(false);
+            setProductionLabelsVisible(true);
+            setProductionVisible(true);
         } else {
             productionDescription.setVisible(false);
+            // see if we have any production
+            boolean hasProduction = false;
+            for (ProductEnum pe : ProductEnum.values()) {
+                if (pc.getProduction(pe) != null) {
+                    hasProduction = true;
+                    break;
+                }
+            }
+            setAllProductionVisible(hasProduction);
         }
         
         for (ProductEnum p : ProductEnum.values()) {
@@ -205,10 +215,33 @@ public class PopulationCenterViewer extends ObjectViewer {
             name.setForeground(col);
         }
     }
+    
+    protected void setStoresVisible(boolean visible) {
+        for (JTextField f : stores.values()) {
+            f.setVisible(visible);
+        }
+    }
+    
+    protected void setProductionVisible(boolean visible) {
+        for (JTextField f : production.values()) {
+            f.setVisible(visible);
+        }
+    }
+    
+    protected void setProductionLabelsVisible(boolean visible) {
+        for (JLabel lbl : productionLabels) {
+            lbl.setVisible(visible);
+        }
+    }
+    
+    protected void setAllProductionVisible(boolean visible) {
+        setStoresVisible(visible);
+        setProductionVisible(visible);
+        setProductionLabelsVisible(visible);
+    }
 
     protected JComponent createFormControl() {
         getFormModel().setValidating(false);
-        BindingFactory bf = getBindingFactory();
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
@@ -259,6 +292,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         for (ProductEnum p : ProductEnum.values()) {
             JLabel label = new JLabel(" " + p.getCode());
+            productionLabels.add(label);
             label.setPreferredSize(new Dimension(28, 12));
             label.setFont(f);
             tlb.cell(label);
@@ -305,7 +339,6 @@ public class PopulationCenterViewer extends ObjectViewer {
     }
     
     private JPopupMenu createPopulationCenterPopupContextMenu() {
-        PopulationCenter pc = (PopulationCenter) getFormObject();
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "populationCenterCommandGroup",
                 new Object[] {toggleLostThisTurnCommand, "separator", editPopulationCenter, "separator", deletePopulationCenterCommand});

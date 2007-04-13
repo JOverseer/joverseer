@@ -112,7 +112,6 @@ public class GraphicUtils {
                     JCheckBox checkBox = (JCheckBox) e.getSource();
                     PreferenceRegistry.instance().setPreferenceValue("general.tipOfTheDay", checkBox.isSelected() ? "yes" : "no");
                 }
-                // change your user preference
             }
         }, styleSheet);
         dialog.setShowTooltip(PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes"));
@@ -120,7 +119,7 @@ public class GraphicUtils {
         dialog.setResizable(false);
         dialog.pack();
         JideSwingUtilities.globalCenterWindow(dialog);
-        dialog.show();
-
+        dialog.setModal(true);
+        dialog.setVisible(true);
     }
 }       

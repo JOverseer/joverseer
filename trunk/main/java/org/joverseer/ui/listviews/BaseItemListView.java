@@ -167,7 +167,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
         // create the JTable instance
         table = createTable();
-        org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
+        org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
 
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
         if (pval.equals("yes")) {

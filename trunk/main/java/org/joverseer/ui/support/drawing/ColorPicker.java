@@ -1,4 +1,4 @@
-package org.joverseer.ui.support;
+package org.joverseer.ui.support.drawing;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -8,6 +8,7 @@ import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
 
 import sun.applet.AppletListener;
 

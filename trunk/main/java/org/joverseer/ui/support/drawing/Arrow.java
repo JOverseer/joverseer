@@ -1,4 +1,4 @@
-package org.joverseer.ui.support;
+package org.joverseer.ui.support.drawing;
 
 /** * @(#)Arrow.java * * Copyright (c) 2000 by Sundar Dorai-Raj
   * * @author Sundar Dorai-Raj

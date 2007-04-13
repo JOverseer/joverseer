@@ -44,11 +44,11 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orderEditor.OrderParameterValidator;
-import org.joverseer.ui.support.AutocompletionComboBox;
-import org.joverseer.ui.support.ColumnBasedTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.JOverseerTable;
+import org.joverseer.ui.support.controls.AutocompletionComboBox;
+import org.joverseer.ui.support.controls.ColumnBasedTableCellRenderer;
+import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
@@ -104,7 +104,7 @@ public class OrderEditorListView extends ItemListView {
         		27,
         		27,
         		
-        		30, 64, 64};
+        		30, 64, 64, 64};
     }
 
     protected void setItems() {

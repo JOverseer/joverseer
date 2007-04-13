@@ -1,4 +1,4 @@
-package org.joverseer.ui.support;
+package org.joverseer.ui.support.controls;
 
 import java.awt.Component;
 import java.util.HashMap;

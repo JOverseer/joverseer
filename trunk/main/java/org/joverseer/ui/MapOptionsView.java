@@ -83,7 +83,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 String str = obj.toString();
-                if (str.equals("None")) {
+                if (str.equals("Current")) {
                     mapOptions.put(MapOptionsEnum.NationMap, null);
                 } else if (str.equals("Dark Servants")) {
                     mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapDarkServants);

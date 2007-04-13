@@ -6,12 +6,14 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
 
@@ -32,7 +34,23 @@ public class MultiCharacterRenderer implements Renderer {
         Turn turn = game.getTurn();
 
         org.joverseer.domain.Character c = (Character)obj;
-        ArrayList<Character> charsInHex = turn.getContainer(TurnElementsEnum.Character).findAllByProperty("hexNo", c.getHexNo());
+        
+        String pval = PreferenceRegistry.instance().getPreferenceValue("map.deadCharacters");
+        if (pval.equals("no")) {
+            if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) return;
+        }
+
+        ArrayList<Character> charsInHex = null;
+        charsInHex = turn.getContainer(TurnElementsEnum.Character).findAllByProperty("hexNo", c.getHexNo());
+        if (pval.equals("no")) {
+            ArrayList<Character> toRemove = new ArrayList<Character>();
+            for (Character ch : charsInHex) {
+                if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+                    toRemove.add(ch);
+                }
+            }
+            charsInHex.removeAll(toRemove);
+        }
         int i = charsInHex.indexOf(c);
 
         int ii = i % 12;

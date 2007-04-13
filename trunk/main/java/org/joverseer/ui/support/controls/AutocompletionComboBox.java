@@ -1,4 +1,4 @@
-package org.joverseer.ui.support;
+package org.joverseer.ui.support.controls;
 
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;

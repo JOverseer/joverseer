@@ -2,37 +2,31 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Component;
 import java.awt.Font;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 
-import org.joverseer.game.Game;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.domain.Character;
-import org.joverseer.domain.Order;
-import org.joverseer.domain.PopulationCenter;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 
 
 public class CharacterListView extends ItemListView {
     int iHexNo = 0;
+    int iOrderResults = 16;
     
     protected AbstractListViewFilter[] getFilters() {
-        ArrayList filters = new ArrayList();
+        ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
         filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
         return (AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{});
@@ -43,7 +37,11 @@ public class CharacterListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {40, 120, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 96};
+        return new int[] {40, 120, 
+                            32, 32, 32, 32, 
+                            32, 32, 32, 32, 
+                            32, 32, 32, 32, 
+                            32, 96, 96};
     }
 
 
@@ -74,9 +72,27 @@ public class CharacterListView extends ItemListView {
                     }
 
                 }
+                
                 return c;
             }
 
+        });
+        
+        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel) {
+            public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
+                    int arg4, int arg5) {
+                Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+                JLabel lbl = (JLabel) c;
+                
+                if (arg5 == iOrderResults) {
+                    String results = (String)arg1;
+                    if (results != null) {
+                        results = "<html><body>" + results.replace("\n", "<br>") + "</body></html>";
+                        lbl.setToolTipText(results);
+                    }
+                }
+                return c;
+            } 
         });
         return c;
     }

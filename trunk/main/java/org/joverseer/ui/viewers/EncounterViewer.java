@@ -22,7 +22,7 @@ import java.awt.font.*;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.views.NarrationForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;

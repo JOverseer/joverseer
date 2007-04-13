@@ -5,7 +5,7 @@ import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.Army;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.apache.log4j.Logger;
 import org.springframework.richclient.application.Application;

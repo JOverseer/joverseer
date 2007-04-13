@@ -1,7 +1,7 @@
 package org.joverseer.support.movement;
 
 public enum MovementDirection {
-	Northwest ("nw"),
+	NorthWest ("nw"),
 	NorthEast ("ne"),
 	East ("e"),
 	SouthEast("se"),

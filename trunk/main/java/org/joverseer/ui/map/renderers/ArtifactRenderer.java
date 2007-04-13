@@ -7,7 +7,7 @@ import java.awt.geom.RoundRectangle2D;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
 

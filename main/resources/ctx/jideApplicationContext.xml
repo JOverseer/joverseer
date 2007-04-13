@@ -306,7 +306,22 @@
    	
    	<bean class="org.joverseer.ui.ApplicationEventLogger"/>
    	
-   	<bean id="colorPicker" class="org.joverseer.ui.support.ColorPicker"/>
+   	<bean id="colorPicker" class="org.joverseer.ui.support.drawing.ColorPicker"/>
 
    	<bean id="orderEditorAutoNations" class="org.joverseer.ui.orderEditor.OrderEditorAutoNations"/>   	
+   	
+   	<bean id="infoRegistry" class="org.joverseer.support.info.InfoRegistry">
+   		<property name="infos">
+   			<list>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>characterTitles</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/characterTitles.csv</value>
+   					</property>
+   				</bean>
+   			</list>
+   		</property>
+   	</bean>
 </beans>

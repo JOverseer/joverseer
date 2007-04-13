@@ -28,8 +28,8 @@ import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
-import org.joverseer.ui.support.Arrow;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.drawing.Arrow;
 import org.springframework.richclient.application.Application;
 
 
@@ -88,7 +88,7 @@ public class OrderRenderer implements Renderer {
             }
             return true;
         }
-        else if (order.getOrderNo() == 850 || order.getOrderNo() == 860) {
+        else if (order.getOrderNo() == 850 || order.getOrderNo() == 860 || order.getOrderNo() == 830) {
             if (doRender) {
                 renderArmyMovementOrder(order, g);
             }
@@ -161,9 +161,11 @@ public class OrderRenderer implements Renderer {
         if (order.getParameter(0) == null) {
             return;
         }
+        boolean isNavy = order.getOrderNo() == 830;
         try {
-            int maxCost = (order.getOrderNo() == 860 ? 14 : 12);
+            int maxCost = (order.getOrderNo() == 850 ? 12 : 14);
             int currentHexNo = order.getCharacter().getHexNo();
+            int startHexNo = currentHexNo;
             String[] params = order.getParameters().split(Order.DELIM);
             Point p1;
             Point p2 = null;
@@ -199,8 +201,13 @@ public class OrderRenderer implements Renderer {
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
                 p2 = MapPanel.instance().getHexCenter(nextHexNo);
                 g.setStroke(GraphicUtils.getDashStroke(3, 8));
-                int curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed, true, null, currentHexNo);
-                if (cost + curCost <= maxCost) {
+                int curCost = 0;
+                if (!isNavy) {
+                    curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed, true, null, currentHexNo);
+                } else {
+                    curCost = MovementUtils.calculateMovementCostForNavy(currentHexNo, dir, fed, startHexNo);
+                }
+                if (cost + curCost <= maxCost && cost >= 0 && curCost > 0) {
                     g.setColor(Color.black);
                 } else {
                     g.setColor(Color.red);
@@ -218,7 +225,7 @@ public class OrderRenderer implements Renderer {
                     drawString(g, String.valueOf(cost), p1, p1);
                 }
 
-                if (curCost == -1) {
+                if (curCost == -1 || cost == -1) {
                     cost = -1;
                 } else {
                     cost += curCost;
@@ -234,7 +241,9 @@ public class OrderRenderer implements Renderer {
                 currentHexNo = nextHexNo;
             }
             // draw last distance
-            drawString(g, String.valueOf(cost), p2, p2);
+            if (cost > 0) {
+                drawString(g, String.valueOf(cost), p2, p2);
+            }
         }
         catch (Exception exc) {
             // parse or some other error, return
@@ -383,7 +392,7 @@ public class OrderRenderer implements Renderer {
             String hexNoStr = order.getParameter(0);
             int hexNo = Integer.parseInt(hexNoStr);
             Point p1 = MapPanel.instance().getHexCenter(hexNo);
-            int hexNo2 = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.Northwest);
+            int hexNo2 = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.NorthWest);
             Point p2 = MapPanel.instance().getHexCenter(hexNo2);
             
             ProductEnum product = ProductEnum.getFromCode(order.getParameter(1));

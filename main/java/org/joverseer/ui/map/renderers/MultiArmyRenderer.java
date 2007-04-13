@@ -3,9 +3,10 @@ package org.joverseer.ui.map.renderers;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.domain.*;
 import org.joverseer.game.Game;
-import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -61,13 +62,33 @@ public class MultiArmyRenderer extends ImageRenderer {
             }
         }
 
+        String type = "army";
+        String info = "unknown";
+        
+        String pval = PreferenceRegistry.instance().getPreferenceValue("map.showArmyType");
+        if (pval.equals("yes")) {
+            Boolean cav = army.computeCavalry();
+            info = cav == null ? "unknown" : cav == false ? "inf" : "cav";
+            
+            Boolean navy = army.isNavy();
+            type = navy == null ? "army" : navy ? "navy" : "army";
+        }
         BufferedImage armyImage = null;
         NationAllegianceEnum allegiance = army.getNationAllegiance();
         if (allegiance == NationAllegianceEnum.Neutral) {
             //todo pick game's nation opposite allegiance
-            allegiance = NationAllegianceEnum.DarkServants;
+            NationRelations nr = (NationRelations)game.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", game.getMetadata().getNationNo());
+            if (nr != null) {
+                if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {
+                    allegiance = NationAllegianceEnum.DarkServants;
+                } else if (nr.getAllegiance() == NationAllegianceEnum.DarkServants) {
+                    allegiance = NationAllegianceEnum.FreePeople;
+                }
+            } else {
+                allegiance = NationAllegianceEnum.DarkServants;
+            }
         }
-        armyImage = getImage("army." + allegiance.toString() + ".image");
+        armyImage = getImage(type + "." + info + "." + allegiance.toString() + ".image");
 
         BufferedImage img = copyImage(armyImage);
         Color color1 = ColorPicker.getInstance().getColor1(army.getNationNo());

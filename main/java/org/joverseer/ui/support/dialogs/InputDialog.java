@@ -1,4 +1,4 @@
-package org.joverseer.ui.support;
+package org.joverseer.ui.support.dialogs;
 
 import java.awt.Dimension;
 import java.util.ArrayList;

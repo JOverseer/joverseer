@@ -3,7 +3,7 @@ package org.joverseer.ui.map.renderers;
 import org.joverseer.domain.*;
 import org.joverseer.domain.Character;
 import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.ColorPicker;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
 import java.awt.*;

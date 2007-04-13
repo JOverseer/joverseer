@@ -17,7 +17,7 @@ import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.support.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.views.NarrationForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;

@@ -15,6 +15,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.springframework.richclient.application.Application;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -51,6 +52,92 @@ public class MovementUtils {
 
         return d;
     }
+    
+    public static boolean movementAlongMajorRiver(Hex startHex, MovementDirection md) {
+        Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        GameMetadata gm = g.getMetadata();
+        Hex dest = gm.getHex(getHexNoAtDir(startHex.getHexNo(), md));
+        
+        ArrayList<HexSideEnum> connectingSides = new ArrayList<HexSideEnum>();
+        if (md == MovementDirection.East) {
+            connectingSides.add(HexSideEnum.TopLeft);
+            connectingSides.add(HexSideEnum.Left);
+            connectingSides.add(HexSideEnum.BottomLeft);
+        } else if (md == MovementDirection.NorthEast) {
+            connectingSides.add(HexSideEnum.Left);
+            connectingSides.add(HexSideEnum.BottomLeft);
+            connectingSides.add(HexSideEnum.BottomRight);
+        } else if (md == MovementDirection.NorthWest) {
+            connectingSides.add(HexSideEnum.Right);
+            connectingSides.add(HexSideEnum.BottomLeft);
+            connectingSides.add(HexSideEnum.BottomRight);
+        } else if (md == MovementDirection.West) {
+            connectingSides.add(HexSideEnum.Left);
+            connectingSides.add(HexSideEnum.TopRight);
+            connectingSides.add(HexSideEnum.BottomRight);
+        } else if (md == MovementDirection.SouthWest) {
+            connectingSides.add(HexSideEnum.Right);
+            connectingSides.add(HexSideEnum.TopLeft);
+            connectingSides.add(HexSideEnum.TopRight);
+        } else if (md == MovementDirection.SouthEast) {
+            connectingSides.add(HexSideEnum.Left);
+            connectingSides.add(HexSideEnum.TopLeft);
+            connectingSides.add(HexSideEnum.TopRight);
+        }
+        for (HexSideEnum hse : connectingSides) {
+            if (dest.getHexSideElements(hse).contains(HexSideElementEnum.MajorRiver)) return true;
+        }
+        return false;
+    }
+    
+    public static int calculateMovementCostForNavy(int startHexNo, String direction, boolean isFed, int initialHex) {
+        Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        GameMetadata gm = g.getMetadata();
+        Hex start = gm.getHex(startHexNo);
+        MovementDirection md = MovementDirection.getDirectionFromString(direction);
+
+        int movementCost = isFed ? 1 : 2;
+        
+        Hex dest = gm.getHex(getHexNoAtDir(startHexNo, md));
+        if (dest == null) {
+            // out of map
+            return -1;
+        } else {
+            // out of map
+            MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+            if (dest.getColumn() < mm.getMinMapColumn()) return -1;
+            if (dest.getColumn() > mm.getMaxMapColumn()) return -1;
+            if (dest.getRow() < mm.getMinMapRow()) return -1;
+            if (dest.getRow() > mm.getMaxMapRow()) return -1;
+        }
+        
+        // check start hex terrain
+        if (start.getTerrain() != HexTerrainEnum.sea && start.getTerrain() != HexTerrainEnum.ocean) {
+            // check connecting river
+            if (movementAlongMajorRiver(start, md)) return movementCost;
+            if (startHexNo != initialHex) return -1;
+        }
+        
+        
+        if (md == MovementDirection.Home) {
+            // for home, return immediatelly
+            return 1;
+        }
+        
+        
+        if (dest.getTerrain() != HexTerrainEnum.shore && dest.getTerrain() != HexTerrainEnum.sea && dest.getTerrain() != HexTerrainEnum.ocean) {
+            // see if there is a pop center there
+            PopulationCenter pc = (PopulationCenter)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", dest.getHexNo());
+            if (pc == null) {
+                return -1;
+            }
+            else {
+                return movementCost;
+            }
+        } else {
+            return movementCost;
+        }
+    }
 
     public static int calculateMovementCostForArmy(int startHexNo, String direction, boolean isCavalry, boolean isFed, boolean ignoreEnemyPops, NationAllegianceEnum allegiance, int initialHex) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
@@ -86,7 +173,7 @@ public class MovementUtils {
             side = HexSideEnum.BottomLeft;
         } else if (md == MovementDirection.West) {
             side = HexSideEnum.Left;
-        } else if (md == MovementDirection.Northwest) {
+        } else if (md == MovementDirection.NorthWest) {
             side = HexSideEnum.TopLeft;
         } else if (md == MovementDirection.NorthEast) {
             side = HexSideEnum.TopRight;
@@ -172,7 +259,7 @@ public class MovementUtils {
             }
         } else if (dir == MovementDirection.West) {
             destHexNo -= 100;
-        } else if (dir == MovementDirection.Northwest) {
+        } else if (dir == MovementDirection.NorthWest) {
             destHexNo -= 1;
             if ((startHexNo % 100) % 2 == 1 ) {
                 destHexNo -= 100;

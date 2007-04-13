@@ -4,7 +4,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.support.InputDialog;
+import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.jidesoft.dialog.BannerPanel;

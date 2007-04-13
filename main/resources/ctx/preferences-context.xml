@@ -12,7 +12,7 @@
 	</bean>
 	<bean id="noPrefValue" class="org.joverseer.preferences.PreferenceValue">
 		<property name="key">
-			<value>nn</value>
+			<value>no</value>
 		</property>
 		<property name="description">
 			<value>No</value>
@@ -193,6 +193,54 @@
 									<value>Show only when applicable</value>
 								</property>
 							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.deadCharacters</value>
+					</property>
+					<property name="description">
+						<value>Show Dead Characters</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.showArmyType</value>
+					</property>
+					<property name="description">
+						<value>Show Army Type</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
 						</list>
 					</property>
 				</bean>

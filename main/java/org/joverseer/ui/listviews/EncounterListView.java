@@ -114,7 +114,7 @@ public class EncounterListView extends ItemListView {
         };
         ((JideTable)table).setRowResizable(true);
         ((JideTable)table).setRowAutoResizes(true);
-        org.joverseer.ui.support.TableUtils.setTableColumnWidths(table, columnWidths());
+        org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
 
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
         if (pval.equals("yes")) {

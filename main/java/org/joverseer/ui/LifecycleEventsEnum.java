@@ -13,5 +13,6 @@ public enum LifecycleEventsEnum {
     MapMetadataChangedEvent,
     RefreshHexItems,
     ListviewTableAutoresizeModeToggle,
-    ListviewRefreshItems
+    ListviewRefreshItems,
+    RefreshTurnMapItems
 }

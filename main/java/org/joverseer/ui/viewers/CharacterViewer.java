@@ -5,6 +5,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -50,11 +52,11 @@ import org.joverseer.ui.listviews.ArtifactInfoTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
-import org.joverseer.ui.support.ColorPicker;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.PopupMenuActionListener;
-import org.joverseer.ui.support.TableUtils;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
 import org.joverseer.ui.views.NarrationForm;
@@ -125,8 +127,6 @@ public class CharacterViewer extends ObjectViewer {
     }
 
     public void setFormObject(Object object) {
-        boolean showStartingInfo = false;
-        Character startingChar = null;
         Character c = (Character) object;
         if (object != getFormObject()) {
             showArtifacts = false;
@@ -137,7 +137,12 @@ public class CharacterViewer extends ObjectViewer {
         super.setFormObject(object);
         if (object == null)
             return;
-        
+        reset(c);
+    }
+    
+    public void reset(Character c) {
+        boolean showStartingInfo = false;
+        Character startingChar = null;
         characterName.setText(GraphicUtils.parseName(c.getName()));
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
@@ -319,6 +324,22 @@ public class CharacterViewer extends ObjectViewer {
             public JPopupMenu getPopupMenu() {
                 return createCharacterPopupContextMenu();
             }
+        });
+        
+        btnMenu = new JButton();
+        ico = new ImageIcon(imgSource.getImage("showCharDetails.icon"));
+        btnMenu.setIcon(ico);
+        btnMenu.setPreferredSize(new Dimension(16, 16));
+        glb.append(btnMenu);
+        btnMenu.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                showArtifacts = !showOrders;
+                showSpells = !showOrders;
+                showOrders = !showOrders;
+                reset((Character)getFormObject());
+            }
+            
         });
 
         glb.nextLine();

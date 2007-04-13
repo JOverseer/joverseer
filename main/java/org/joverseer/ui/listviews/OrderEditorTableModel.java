@@ -30,6 +30,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 	public static int iDraw = 20;
 	public static int iResults = 21;
 	public static int iCost = 22;
+        public static int iProfit = 23;
 	public static int iNation = 0;
         public static int iHexNo = 2;
 	
@@ -65,7 +66,8 @@ public class OrderEditorTableModel extends ItemTableModel {
         		
         		"draw", 
         		"results", 
-        		"cost"};
+        		"cost",
+                        "profit"};
     }
 
     protected Class[] createColumnClasses() {
@@ -94,7 +96,8 @@ public class OrderEditorTableModel extends ItemTableModel {
         		
         		Boolean.class, 
         		ImageIcon.class, 
-        		String.class};  
+        		String.class,
+                        String.class};  
     }
 
 	
@@ -142,14 +145,25 @@ public class OrderEditorTableModel extends ItemTableModel {
 	        Order order = (Order)object;
 	        OrderCostCalculator calc = new OrderCostCalculator();
 	        int cost = calc.getOrderCost(order);
-	        if (cost != 0) {
+	        if (cost > 0) {
 	            return cost;
 	        } else if (cost == -1) {
 	            return "Error";
 	        } else {
 	            return "";
 	        }
-	    } else if (i >= iParamStart && i <= iParamEnd) {
+	    } else if (i == iProfit) {
+                Order order = (Order)object;
+                OrderCostCalculator calc = new OrderCostCalculator();
+                int cost = calc.getOrderCost(order);
+                if (cost < 0) {
+                    return -cost;
+                } else if (cost == -1) {
+                    return "Error";
+                } else {
+                    return "";
+                }
+            }  else if (i >= iParamStart && i <= iParamEnd) {
 	    	Order order = (Order)object;
 	    	String v = order.getParameter(i - iParamStart);
 	    	if (v == null || v.equals("--") || v.equals("-")) {
@@ -239,3 +253,4 @@ public class OrderEditorTableModel extends ItemTableModel {
         }
     }
 }
+

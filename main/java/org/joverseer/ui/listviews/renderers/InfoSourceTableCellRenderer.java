@@ -35,12 +35,15 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
         return nationName;
     }
     
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    protected String getInfoSourceDescription(InfoSource value) {
         String strValue = "";
         if (InfoSource.class.isInstance(value)) {
             if (DerivedFromSpellInfoSource.class.isInstance(value)) {
                 DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource)value;
                 strValue = sis.getSpell() + " - " + sis.getCasterName();
+                for (InfoSource is : sis.getOtherInfoSources()) {
+                    strValue += ", " + getInfoSourceDescription(is);
+                }
             } else if (DerivedFromArmyInfoSource.class.isInstance(value)) {
                 strValue = "Army commander";
             } else if (DoubleAgentInfoSource.class.isInstance(value)) {
@@ -56,6 +59,11 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
                 strValue = "Xml (" + getNationStr(xis.getNationNo()) + ")";
             }
         }
+        return strValue;
+    }
+    
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        String strValue = getInfoSourceDescription((InfoSource)value);
         return super.getTableCellRendererComponent(table, strValue, isSelected, hasFocus, row, column);
     }
     

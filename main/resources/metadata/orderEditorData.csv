@@ -30,7 +30,7 @@
 
 275;ScttShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
 ;;;;Number of warships;Number of transports;;;;;;;
-280;AbanShp;Misc;4-Digit Hex Location + # of Warships + # of Transports;hex;a;a;;;;;;C
+280;AbanShp;Misc;4-Digit Hex Location + # of Warships + # of Transports;hex;ae;ae;;;;;;C
 ;;;;Hex;Number of warships;Number of transports;;;;;;
 285;ReacEnc;Misc;Response (<20 letters) - 1st Letter CAPITALIZED. All others lower case.;rsp;;;;;;;;
 ;;;;Response;;;;;;;;
@@ -56,17 +56,17 @@
 ;;;;Commander;Number of food units;;;;;;;
 349;TrWarMa;Misc;Other Commander Char ID (5 lowercase letters/spaces) + # of War Machines transferred;cid;b;;;;;;;C
 ;;;;Commander;Number of war machines;;;;;;;
-351;TrWpns;Misc;Other Commander ID (5 lowercase letters/spaces) + # of br/st/mi weapons, each in a diff. cell;cid;d;d;d;;;;;C
+351;TrWpns;Misc;Other Commander ID (5 lowercase letters/spaces) + # of br/st/mi weapons, each in a diff. cell;cid;de;de;de;;;;;C
 ;;;;Commander;Bronze weapons;Steel weapons;Mithril weapons;;;;;
-353;TrArmr;Misc;Other Commander ID (5 lowercase letters/spaces) + # of le/br/st/mi armor, each in a diff. cell;cid;d;d;d;d;;;;C
+353;TrArmr;Misc;Other Commander ID (5 lowercase letters/spaces) + # of le/br/st/mi armor, each in a diff. cell;cid;de;de;de;de;;;;C
 ;;;;Commander;Leather armor;Bronze Armor;Steel armor;Mithril armor;;;;
-355;TrTrps;Misc;Other Commander ID (5 lowercase letters/spaces) + # of each troop type, each in different cell.;cid;d;d;d;d;d;d;;C
+355;TrTrps;Misc;Other Commander ID (5 lowercase letters/spaces) + # of each troop type, each in different cell.;cid;de;de;de;de;de;de;;C
 ;;;;Commander;HC;LC;HI;LI;AR;MA;;
-357;TrShp;Misc;Other Commander ID (5 lowercase letters/spaces) + # of Warships + # of Transports transferred.;cid;a;a;;;;;;C
+357;TrShp;Misc;Other Commander ID (5 lowercase letters/spaces) + # of Warships + # of Transports transferred.;cid;ae;ae;;;;;;C
 ;;;;Commander;Number of warships;Number of transports;;;;;;
-360;TrArt;Misc;Other Character ID (5 lowercase letters/spaces) + 1-6 Artifact ID #’s (1 per cell);cid;b;e;e;e;e;e;;
+360;TrArt;Misc;Other Character ID (5 lowercase letters/spaces) + 1-6 Artifact ID #ï¿½s (1 per cell);cid;b;e;e;e;e;e;;
 ;;;;Character;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;
-363;TrHost;Misc;Other Character ID (5 lowercase letters/spaces) + 1-3 Hostage Character ID’s (1 per cell);cid;cid;xid;xid;;;;;
+363;TrHost;Misc;Other Character ID (5 lowercase letters/spaces) + 1-3 Hostage Character IDï¿½s (1 per cell);cid;cid;xid;xid;;;;;
 ;;;;Character;Hostage;Hostage;Hostage;;;;;
 370;UpWpns;Misc;New Weapon type (mi,st,br) + # of each Troop type upgraded, each in a different cell.;wep;d;d;d;d;d;d;;C
 ;;;;New weapon type;HC;LC;HI;LI;AR;MA;;
@@ -180,13 +180,13 @@
 ;;;;Artifact id;;;;;;;;
 690;StlGold;Agen;;;;;;;;;A;A
 
-700;ForgtSp;Misc;1-6 Spell ID #’s to be forgotten (1 per cell);b;e;e;e;e;e;;;M
+700;ForgtSp;Misc;1-6 Spell ID #ï¿½s to be forgotten (1 per cell);b;e;e;e;e;e;;;M
 ;;;;Spell;Spell;Spell;Spell;Spell;Spell;;;
 705;RsrchSp;Misc;Spell ID #;spz;;;;;;;;M
 ;;;;Spell;;;;;;;;
 710;PrenMgy;Mage;;;;;;;;;M;M
 
-725;NamChar;Comm;Name (5-17 letters, 1st CAPITALIZED) + Gender (m,f) + Comm + Agent + Emiss + Mage skill points.;nam;gen;a;a;a;a;;C;C
+725;NamChar;Comm;Name (5-17 letters, 1st CAPITALIZED) + Gender (m,f) + Comm + Agent + Emiss + Mage skill points.;nam;gen;ae;ae;ae;ae;;C;C
 ;;;;Name;Gender;Command;Agent;Emissary;Mage;;;
 728;NamComm;Comm;Name (5-17 letters - 1st letter CAPITALIZED) + Gender (m,f);nam;gen;;;;;;C;C
 ;;;;Name;Gender;;;;;;;
@@ -218,11 +218,11 @@
 ;;;;Commander;;;;;;;;
 790;LvArmy;Misc;;;;;;;;;;
 
-792;DropArt;Misc;1-6 Artifact ID #’s to be dropped (1 per cell);b;e;e;e;e;e;;;
+792;DropArt;Misc;1-6 Artifact ID #ï¿½s to be dropped (1 per cell);b;e;e;e;e;e;;;
 ;;;;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;;
 794;AnchShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
 ;;;;Number of warships;Number of transports;;;;;;;
-796;PickArt;Misc;1-6 Artifact ID #’s to be picked up (1 per cell);b;e;e;e;e;e;;;
+796;PickArt;Misc;1-6 Artifact ID #ï¿½s to be picked up (1 per cell);b;e;e;e;e;e;;;
 ;;;;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;;
 798;PickShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
 ;;;;Number of warships;Number of transports;;;;;;;

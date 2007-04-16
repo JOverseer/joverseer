@@ -26,7 +26,10 @@ public class OrderReader implements MetadataReader {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
+            int i = 0;
             while ((ln = reader.readLine()) != null) {
+                i++;
+                if (i == 1) continue;
                 String[] parts = ln.split(";");
                 OrderMetadata om = new OrderMetadata();
                 om.setName(parts[0]);

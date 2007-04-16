@@ -116,10 +116,10 @@ public class OrderParameterValidator {
                 // moveArmy order and high number param
                 if (o.getOrderNo() == 850 || o.getOrderNo() == 860 || o.getOrderNo() == 830) {
                     if (iParam > 6) {
-                        if (isEmpty(paramValue) || inList(paramValue, "e,ne,nw,se,se,w,h")) {
+                        if (isEmpty(paramValue) || inList(paramValue, "e,ne,nw,se,sw,w,h")) {
                             return null;
                         } else {
-                            return "must be one of " + "e,ne,nw,se,se,w,no,ev";
+                            return "must be one of " + "e,ne,nw,se,sw,w,no,ev";
                         }
                     }
                 }

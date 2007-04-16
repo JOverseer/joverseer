@@ -42,27 +42,36 @@ public class StringEnclosedMatchProcessor extends Processor {
         int currentStart = matchStart;
         String[] startStrings = getStartStrings();
         String foundStartString = null;
+        // find fist match
+        int idx = -1;
         for (String startString : startStrings) {
             matchStart = str.indexOf(startString, matchEnd);
-            if (matchStart > -1) {
+            if (matchStart > -1 && (matchStart <= idx || idx == -1)) {
+                idx = matchStart;
                 foundStartString = startString;
-                break;
             }
         }
-        if (matchStart == -1) {
+        if (idx == -1) {
             return false;
         }
+        matchStart = idx;
+        
         String[] endStrings = getEndStrings();
+        idx = -1;
         for (String endString : endStrings) {
             if (endString.equals("$")) {
                 matchEnd = str.length() - 1;
             } else {
                 matchEnd = str.indexOf(endString, matchStart + foundStartString.length());
             }
-            currentEndString = endString;
-            if (matchEnd > -1) {
-                return true;
+            if (matchEnd > -1 && (matchEnd <= idx || idx == -1)) {
+                idx = matchEnd;
+                currentEndString = endString;
             }
+        }
+        if (idx > -1) {
+            matchEnd = idx;
+            return true;
         }
         matchEnd = currentStart;
         return false;

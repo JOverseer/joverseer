@@ -138,7 +138,7 @@
 						<value>Display.Information Tabs</value>
 					</property>
 					<property name="defaultValue">
-						<value>accented</value>
+						<value>ascii</value>
 					</property>
 					<property name="domain">
 						<list>

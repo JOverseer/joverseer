@@ -42,7 +42,7 @@ public class NewGame implements PropertyConstraintProvider {
     public PropertyConstraint getPropertyConstraint(String string) {
         if (rules == null) {
             rules = new Rules();
-            rules.add("nationNo", Constraints.instance().gt(0));
+            rules.add("nationNo", Constraints.instance().and(Constraints.instance().gt(0), Constraints.instance().lt(26)));
             rules.add("number", Constraints.instance().gt(0));
         }
         return rules.getPropertyConstraint(string);

@@ -253,7 +253,7 @@ public class ExportOrdersForm extends AbstractForm {
             }
             if (ordersWithErrors) {
                 cancelExport = false;
-                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have been checked with Orderchecker and have errors. Continue with export?") {
+                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have been checked with Orderchecker and have errors or warnings. Continue with export?") {
                     protected void onCancel() {
                         super.onCancel();
                         cancelExport = true;

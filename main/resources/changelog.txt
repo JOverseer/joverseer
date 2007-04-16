@@ -1,3 +1,77 @@
+VERSION 0.9.4
+-------------
+
+16/4/2007
+
+	* Orders 
+		o Order Editor
+			+ Fixed bugs with order 770
+			+ Fixed a bug with Move Army orders and the back button
+		o Order Tab
+			+ Fixed bugs with orders 725, 355, 900, etc
+			+ Fixed a bug with Move Army order parameter validation
+			+ Added internal parameter testing suite
+			+ Added new filter "All Imported"
+		
+	* Order cost calculation
+		o Fixed a bug that caused econocalc to not be automatically updated when an order was edited
+		o Added nation SNAs for free Hire
+		o Added a new column for gain - now the gain from sell orders is shown in this column
+	
+	* Order drawing on the map
+		o Added a Map Option that allows the user to choose whether to show character names when drawing orders
+		o Added support for drawing Movement Spells
+		o Added support for naval movement
+		
+	* Map
+		o Added new menu item to Army menu to draw the Army's range while taking into account enemy pop centers
+		o Added preference to control whether to show dead characters on the map
+		o Added support for showing the type of armies on the map (inf, cav, navy)
+			+ Added preference to support whether this is shown or not
+	
+	* Parsing
+		o Fixed a bug with company parsing from pdfs
+		o Pop Centers read from the pdfs are now updated based on the hex number and not the name, so problems in parsing accented characters no longer matters.
+		o Fixed a bug with xml parsing of Pop Centers that caused capital info to be lost
+		
+	* Information Tabs
+		o Added "Info Source" column to the Characters tab
+		o Added "Order Results" column to the Characters tab. The tool tip for this column shows the character's results in readable manner.
+		o Characters located at their nation's capital are now marked with a bold hex number in the Characters tab
+		o Added "Power" column to Artifact tabs
+		o Added "Info Source" column to the PCs tab
+		o Fixed a bug with the loyalty information shown on the PCs tab
+		o Revamped the available options on the Spellcaster tab. Now all spells are available between the available lists.
+		o Army Sizes tab - added a line to separate Army from Navy sizes
+		o Fixed some issues with sorting in the Armies tab
+		o Added filters to the Productions tab
+		o Added "List" column to Spells tab
+		
+	* Import Game Dir Tree
+		o The messages that show the result of the import were not being properly shown. This has now been fixed.
+		
+	* Order Checker
+		o Added support for BOFA games
+		o Fixed a bug which was causing allegiances to not update properly
+
+	* Added "Order Editor Auto Nations" menu option, so that the user can select for which nations to have the orders ready for entry.
+	
+	* Fixed a size issue with the Econocalc scrollbar 
+	
+	* Fixed a bug with the message after importing an order file
+	
+	* Importing order files now supports MEOW too
+	
+	* Added tip of the day functionality
+	
+	* Added "Info" tab and "Order Info" tab
+	
+	* Added button to Character viewer (in Current Hex View) to automatically open all available character information (artis, spells, orders)
+
+	* Fixed some issues with the Population Center viewer (Current Hex View)
+	
+	
+
 VERSION 0.9.3
 -------------
 

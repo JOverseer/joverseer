@@ -1,5 +1,5 @@
-"2039",0,3,2,21,3,1,"Ardûmir",55,False,True,1,False
-"2137",0,3,2,21,3,1,"Caldûr",55,False,True,1,False
+"2039",0,3,2,21,3,1,"ArdÏ‹mir",55,False,True,1,False
+"2137",0,3,2,21,3,1,"CaldÏ‹r",55,False,True,1,False
 "2430",0,3,1,21,3,1,"Caras Tolfalas",55,False,True,1,False
 "2438",0,4,3,21,3,2,"Havens Of Umbar",75,True,True,1,False
 "2730",0,3,2,21,3,1,"Methir",55,False,True,1,False
@@ -8,11 +8,11 @@
 "2609",0,2,0,1,1,0,"Carrock",40,False,True,1,True
 "2613",0,1,0,1,1,0,"Sarn Lothduin",30,False,True,1,False
 "2711",0,4,2,1,1,0,"Buhr Widufiras",75,True,True,1,False
-"2712",0,1,0,1,1,0,"Sairthéod",30,False,True,1,False
+"2712",0,1,0,1,1,0,"SairthÎ¹od",30,False,True,1,False
 "3109",0,3,1,2,1,1,"Esgaroth",55,False,True,1,False
 "4013",0,4,2,2,1,2,"Shrel-Kain",75,True,True,1,False
 "4017",0,2,0,2,1,0,"Lest",40,False,True,1,False
-"4217",0,3,0,2,1,1,"Dilgûl",55,False,True,1,False
+"4217",0,3,0,2,1,1,"DilgÏ‹l",55,False,True,1,False
 "4415",0,3,0,2,1,1,"Elgaer",55,False,True,1,False
 "2121",0,3,2,3,1,0,"Hornburg",55,False,True,1,False
 "2220",0,2,0,3,1,0,"Dunlostir",40,False,True,1,False
@@ -23,21 +23,21 @@
 "0907",0,2,1,4,1,0,"Caras Celairnen",40,False,True,1,False
 "1109",0,2,1,4,1,0,"Tarmabar",40,False,True,1,False
 "1409",0,4,1,4,1,0,"Bree",75,True,True,1,False
-"1609",0,1,3,4,1,0,"Amon Sûl",30,False,True,1,False
+"1609",0,1,3,4,1,0,"Amon SÏ‹l",30,False,True,1,False
 "2608",0,2,1,5,1,0,"Caras Amarth",40,False,True,1,False
 "2709",0,2,1,5,1,0,"Galadbrynd",40,False,True,1,False
 "2908",0,4,2,5,1,0,"Aradhrynd",75,True,True,1,True
 "2915",0,1,0,5,1,0,"Ceber Fanuin",30,False,True,1,False
-"4413",0,3,0,5,1,1,"Rhûbar",55,False,True,1,False
+"4413",0,3,0,5,1,1,"RhÏ‹bar",55,False,True,1,False
 "2622",0,3,1,6,1,0,"Imdorad",55,False,True,1,False
 "2924",0,5,5,6,1,1,"Minas Tirith",100,True,True,1,False
 "2926",0,3,1,6,1,0,"Minas Arthor",55,False,True,1,False
 "2927",0,4,3,6,1,2,"Pelargir",75,False,True,1,False
-"3023",0,1,0,6,1,0,"Henneth Annûn",30,False,True,1,True
+"3023",0,1,0,6,1,0,"Henneth AnnÏ‹n",30,False,True,1,True
 "3024",0,3,2,6,1,1,"Osgiliath",55,False,True,1,False
 "3026",0,2,1,6,1,0,"Bar-en-Tinnen",40,False,True,1,False
 "2223",0,3,2,7,1,0,"Morthondost",55,False,True,1,False
-"2225",0,2,0,7,1,0,"Rendûl",40,False,True,1,False
+"2225",0,2,0,7,1,0,"RendÏ‹l",40,False,True,1,False
 "2227",0,5,2,7,1,2,"Dol Amroth",100,True,True,1,False
 "2425",0,2,0,7,1,0,"Ethring",40,False,True,1,False
 "2527",0,4,2,7,1,1,"Linhir",75,False,True,1,False
@@ -45,10 +45,10 @@
 "2628",0,3,1,7,1,1,"Fanuilond",55,False,True,1,False
 "0606",0,2,1,8,1,0,"Noegrod",40,False,True,1,False
 "0812",0,2,2,8,1,0,"Belegost",40,False,True,1,False
-"2004",0,1,1,8,1,0,"Zarak-dûm",30,False,True,1,False
-"3607",0,2,1,8,1,0,"Barak-shathûr",40,False,True,1,False
-"3707",0,4,2,8,1,0,"Azanulinbar-dûm",75,True,True,1,False
-"3916",0,2,1,8,1,0,"Kheled-nâla",40,False,True,1,False
+"2004",0,1,1,8,1,0,"Zarak-dÏ‹m",30,False,True,1,False
+"3607",0,2,1,8,1,0,"Barak-shathÏ‹r",40,False,True,1,False
+"3707",0,4,2,8,1,0,"Azanulinbar-dÏ‹m",75,True,True,1,False
+"3916",0,2,1,8,1,0,"Kheled-nÎ²la",40,False,True,1,False
 "2115",0,2,3,9,1,0,"Amon Lind",40,False,True,1,False
 "2314",0,1,0,9,1,0,"Nanduhirion",30,False,True,1,True
 "2325",0,3,1,9,1,1,"Edhellond",55,False,True,1,True
@@ -68,43 +68,43 @@
 "2518",0,1,0,12,2,0,"Ongushar",30,False,True,1,False
 "2715",0,4,4,12,2,0,"Dol Guldur",75,True,True,1,False
 "2809",0,2,2,12,2,0,"Sarn Goriwing",40,False,True,1,True
-"3822",0,4,1,12,2,0,"Lug Ghûrzun",75,False,True,1,False
+"3822",0,4,1,12,2,0,"Lug GhÏ‹rzun",75,False,True,1,False
 "2921",0,1,0,13,2,0,"Lag-dagor",30,False,True,1,False
 "3221",0,4,4,13,2,0,"Morannon",75,True,True,1,False
 "3321",0,1,0,13,2,0,"Lag-hundur",30,False,True,1,False
-"3421",0,1,0,13,2,0,"Lag-ulurîkon",30,False,True,1,False
+"3421",0,1,0,13,2,0,"Lag-ulurÎ¾kon",30,False,True,1,False
 "3624",0,4,3,13,2,0,"Ostigurth",75,False,True,1,False
 "3222",0,1,2,14,2,0,"Carach Angren",30,False,True,1,False
-"3428",0,4,0,14,2,0,"Bardúath",75,True,True,1,False
-"3528",0,2,0,14,2,0,"Nûrumurl",40,False,True,1,False
+"3428",0,4,0,14,2,0,"BardÏŠath",75,True,True,1,False
+"3528",0,2,0,14,2,0,"NÏ‹rumurl",40,False,True,1,False
 "3626",0,2,0,14,2,0,"Rul",40,False,True,1,False
-"3630",0,3,3,14,2,0,"Kâl Nargil",55,False,True,1,False
+"3630",0,3,3,14,2,0,"KÎ²l Nargil",55,False,True,1,False
 "3627",0,4,0,15,2,0,"Urlurtsu Nurn",75,False,True,1,False
 "3829",0,1,0,15,2,0,"Virk Ulgath",30,False,True,1,False
-"3929",0,4,3,15,2,1,"Luglûrak",75,True,True,1,False
+"3929",0,4,3,15,2,1,"LuglÏ‹rak",75,True,True,1,False
 "4025",0,1,1,15,2,0,"Burch Nurn",30,False,True,1,False
-"4126",0,1,0,15,2,0,"Ordûga Aivaisa",30,False,True,1,False
+"4126",0,1,0,15,2,0,"OrdÏ‹ga Aivaisa",30,False,True,1,False
 "3122",0,4,3,16,2,0,"Durthang",75,True,True,1,False
 "3123",0,3,2,16,2,0,"Barad Perras",55,False,True,1,False
-"3223",0,1,0,16,2,0,"Katund-âkul",30,False,True,1,False
-"3034",0,4,3,17,2,1,"Lugarlûr",75,True,True,1,False
+"3223",0,1,0,16,2,0,"Katund-Î²kul",30,False,True,1,False
+"3034",0,4,3,17,2,1,"LugarlÏ‹r",75,True,True,1,False
 "3533",0,4,0,17,2,1,"Jug Rijesha",75,False,True,1,False
 "3224",0,4,3,18,2,0,"Barad Ungol",75,True,True,1,False
-"3225",0,1,0,18,2,0,"Lag-dîgtumarr",30,False,True,1,False
-"3324",0,1,0,18,2,0,"Lag-zâjarzot",30,False,True,1,False
-"3327",0,1,0,18,2,0,"Lag-vrásfotak",30,False,True,1,False
+"3225",0,1,0,18,2,0,"Lag-dÎ¾gtumarr",30,False,True,1,False
+"3324",0,1,0,18,2,0,"Lag-zÎ²jarzot",30,False,True,1,False
+"3327",0,1,0,18,2,0,"Lag-vrÎ±sfotak",30,False,True,1,False
 "3426",0,3,0,18,2,0,"Barad-wath",55,False,True,1,False
 "3329",0,4,3,19,2,0,"Olbamarl",75,True,True,1,False
 "3120",0,1,1,20,2,0,"Thuringwathost",30,False,True,1,False
 "3323",0,1,0,20,2,0,"Lag-lithlad",30,False,True,1,False
-"3423",0,4,3,20,2,0,"Barad-dûr",75,True,True,1,False
+"3423",0,4,3,20,2,0,"Barad-dÏ‹r",75,True,True,1,False
 "3621",0,1,0,20,2,0,"Carvarad",30,False,True,1,False
 "3622",0,3,3,20,2,0,"Minas Durlith",55,False,True,1,False
 "3220",0,1,0,22,3,0,"Ashkiri",30,False,True,1,False
 "3319",0,2,0,22,3,0,"Ursh Lanna",40,False,True,1,False
 "3605",0,2,0,22,3,0,"Lar-Huz",40,False,True,1,False
 "1817",0,4,1,23,3,0,"Larach Duhnnan",75,True,True,1,False
-"1715",0,1,0,24,3,0,"Nîn-in-Eilph",30,False,True,1,False
+"1715",0,1,0,24,3,0,"NÎ¾n-in-Eilph",30,False,True,1,False
 "1918",0,2,1,24,3,0,"Arailt",40,False,True,1,False
 "4133",0,4,3,25,3,0,"Sturlurtsa Khand",75,True,True,1,False
 "4228",0,4,0,25,3,0,"Khand Amu",75,False,True,1,False
@@ -112,16 +112,16 @@
 "2214",0,1,0,16,2,0,"Lag-orod",30,False,True,1,False
 "3022",0,1,0,16,2,0,"Lag-scara",30,False,True,1,True
 "3234",0,1,1,17,2,0,"Wathduin",30,False,True,1,False
-"3335",0,1,1,17,2,0,"Kûl Dínbar",30,False,True,1,False
+"3335",0,1,1,17,2,0,"KÏ‹l DÎ½nbar",30,False,True,1,False
 "3437",0,1,1,17,2,0,"Tir Harn",30,False,True,1,False
-"3017",0,2,0,19,2,0,"Bûth Ovaisa",40,False,True,1,False
-"4215",0,2,3,19,2,0,"Tol Burûth",40,False,True,1,True
-"4425",0,2,0,19,2,0,"Lâgari Orath",40,False,True,1,False
-"4433",0,2,0,19,2,0,"Ordûga Harmal",40,False,True,1,False
+"3017",0,2,0,19,2,0,"BÏ‹th Ovaisa",40,False,True,1,False
+"4215",0,2,3,19,2,0,"Tol BurÏ‹th",40,False,True,1,True
+"4425",0,2,0,19,2,0,"LÎ²gari Orath",40,False,True,1,False
+"4433",0,2,0,19,2,0,"OrdÏ‹ga Harmal",40,False,True,1,False
 "3713",0,2,0,22,3,0,"Ilanin",40,False,True,1,False
 "4014",0,4,2,22,3,1,"Riavod",75,True,True,1,False
 "4318",0,3,0,22,3,1,"Mistrand",55,False,True,1,False
-"1420",0,2,0,23,3,0,"Enedhîr",40,False,True,1,False
+"1420",0,2,0,23,3,0,"EnedhÎ¾r",40,False,True,1,False
 "1720",0,1,0,23,3,0,"Angren",30,False,True,1,False
 "1916",0,1,0,23,3,0,"Cillien",30,False,True,1,False
 "1917",0,2,0,23,3,0,"Wularan",40,False,True,1,False
@@ -129,20 +129,20 @@
 "2017",0,2,0,24,3,0,"Treforn",40,False,True,1,False
 "2118",0,1,0,24,3,0,"Lag-sharak",30,False,True,1,False
 "2119",0,4,5,24,3,0,"Angrenost",75,True,True,1,False
-"2215",0,1,1,24,3,0,"Lag-thrûgrim",30,False,True,1,False
+"2215",0,1,1,24,3,0,"Lag-thrÏ‹grim",30,False,True,1,False
 "3538",0,2,0,25,3,0,"An Karagmir",40,False,True,1,False
 "4324",0,1,0,25,3,0,"Neburcha",30,False,True,1,False
 "4430",0,2,0,25,3,0,"Laorki",40,False,True,1,False
-"1108",0,6,2,0,0,0,"Annúminas",0,False,False,0,False
+"1108",0,6,2,0,0,0,"AnnÏŠminas",0,False,False,0,False
 "1319",0,6,1,0,0,0,"Lond Daer Enedh",0,False,False,0,False
 "1407",0,6,2,0,0,0,"Fornost Erain",0,False,False,0,False
 "1410",0,6,1,0,0,0,"Tyrn Gorthad",0,False,False,0,False
 "1411",0,6,1,0,0,0,"Andrath",0,False,False,0,False
 "1614",0,6,2,0,0,0,"Tharbad",0,False,False,0,False
-"1804",0,6,2,0,0,0,"Carn Dûm",0,False,False,0,False
+"1804",0,6,2,0,0,0,"Carn DÏ‹m",0,False,False,0,False
 "2013",0,6,1,0,0,0,"Eressea",0,False,False,0,False
 "2135",0,6,2,0,0,0,"Vamag",0,False,False,0,False
-"2212",0,6,4,0,0,0,"Khazad-Dûm",0,False,False,0,False
+"2212",0,6,4,0,0,0,"Khazad-DÏ‹m",0,False,False,0,False
 "2405",0,6,1,0,0,0,"Framsburg",0,False,False,0,False
 "3107",0,6,2,0,0,0,"Erebor",0,False,False,0,False
 "3108",0,6,1,0,0,0,"Dale",0,False,False,0,False

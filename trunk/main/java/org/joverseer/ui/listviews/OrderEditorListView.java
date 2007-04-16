@@ -134,9 +134,11 @@ public class OrderEditorListView extends ItemListView {
         };
         filterList.add(f);
 
-        f = new OrderFilter("All") {
+        f = new OrderFilter("All Imported") {
             public boolean acceptCharacter(Character c) {
-                return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0;
+                if (!GameHolder.hasInitializedGame()) return false;
+                PlayerInfo pi = (PlayerInfo)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", c.getNationNo());
+                return pi != null && c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0;
             }
         };
         filterList.add(f);

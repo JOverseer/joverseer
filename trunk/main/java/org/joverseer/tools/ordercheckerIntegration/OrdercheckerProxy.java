@@ -87,6 +87,9 @@ public class OrdercheckerProxy {
         } else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
         	Main.main.getData().setGameType("2950");
         	gt = "2950";
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
+            Main.main.getData().setGameType("BOFA");
+            gt = "bofa";
         } 
         ImportTerrainCsv terrain = new ImportTerrainCsv("bin/metadata/orderchecker/" + gt + ".game", Main.main.getMap());
         result = terrain.getMapInformation();
@@ -281,7 +284,9 @@ public class OrdercheckerProxy {
         	nation.setGameType("1650");        	
         } else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
         	nation.setGameType("2950");
-        } 
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
+            nation.setGameType("BOFA");
+        }
         
         nation.setSecret(Integer.parseInt(pi.getSecret()));
         nation.setPlayer(pi.getPlayerName());
@@ -310,7 +315,7 @@ public class OrdercheckerProxy {
         
         for (Character ch : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
             if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead) continue;
-            com.middleearthgames.orderchecker.Character mc = new com.middleearthgames.orderchecker.Character(ch.getId());
+            com.middleearthgames.orderchecker.Character mc = new com.middleearthgames.orderchecker.Character(ch.getId() + "     ".substring(0, 5 - ch.getId().length()));
             mc.setNation(ch.getNationNo());
             mc.setName(ch.getName());
             mc.setAgentRank(ch.getAgent());

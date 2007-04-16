@@ -104,7 +104,7 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
                         ArrayList<Character> chars = (ArrayList<Character>)g.getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", Main.main.getNation().getNation());
                         for (Character c : chars) {
                             if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) continue;
-                            com.middleearthgames.orderchecker.Character mc = Main.main.getNation().findCharacterById(c.getId());
+                            com.middleearthgames.orderchecker.Character mc = Main.main.getNation().findCharacterById(c.getId() + "     ".substring(0, 5 - c.getId().length()));
                             for (com.middleearthgames.orderchecker.Order mo : proxy.getCharacterOrders(mc)) {
                                 Order order = proxy.getOrderMap().get(mo);
                                 boolean resultFound = false;

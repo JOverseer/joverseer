@@ -52,7 +52,7 @@ import org.txt2xml.driver.StreamDriver;
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
     public static int parseTimeoutInSecs = 10;
-    public static boolean deleteFilesWhenFinished = true;
+    public static boolean deleteFilesWhenFinished = false;
     static Logger logger = Logger.getLogger(TurnPdfReader.class);
     TurnInfo turnInfo;
     Turn turn;
@@ -677,7 +677,8 @@ public class TurnPdfReader implements Runnable {
         Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
         String pcsNotFound = "";
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
-            PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("name", pcw.getName());
+            //PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("name", pcw.getName());
+            PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("hexNo", pcw.getHexNo());
             if (pc == null) {
                 pcsNotFound += (pcsNotFound.equals("") ? "" : ",") + pcw.getName();
             } else {

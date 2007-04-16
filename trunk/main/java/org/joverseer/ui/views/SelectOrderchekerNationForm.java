@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.joverseer.domain.NationEconomy;
+import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
@@ -34,7 +35,9 @@ public class SelectOrderchekerNationForm extends AbstractForm {
         if (!Game.isInitialized(g)) return;
         if (g.getTurn() == null) return;
         for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
-        	if (n.getNumber() == 0) continue;
+            if (n.getNumber() == 0) continue;
+            PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n.getNumber());
+            if (pi == null) continue;
             nationCombo.addItem(n.getName());
         }
         if (nationCombo.getItemCount() > 0) {

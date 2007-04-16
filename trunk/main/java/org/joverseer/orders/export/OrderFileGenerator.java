@@ -82,7 +82,7 @@ public class OrderFileGenerator {
     }
     
     protected String exportOrder(Character c, Order o) {
-        String ret = c.getId();
+        String ret = c.getId() + "     ".substring(0, 5 - c.getId().length());
         ret += ",";
         ret += o.getOrderNo();
         for (int i=0; i<15; i++) {

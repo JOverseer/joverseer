@@ -34,8 +34,8 @@ import com.jidesoft.swing.JideTabbedPane;
 
 public class InfoView extends AbstractView {
 
-    JideTabbedPane pane;
-    ArrayList<JTable> tables = new ArrayList<JTable>();
+    protected JideTabbedPane pane;
+    protected ArrayList<JTable> tables = new ArrayList<JTable>();
 
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -99,12 +99,12 @@ public class InfoView extends AbstractView {
         lb.relatedGapRow();
         lb.cell(createTableFromResource("classpath:metadata/info/dragons.csv", 850, 900), "align=left");
         lb.relatedGapRow();
-
+        
         return new JScrollPane(lb.getPanel());
     }
     
     
-    private JComponent createTableFromResource(String uri, int w, int h) {
+    protected JComponent createTableFromResource(String uri, int w, int h) {
         Resource res = Application.instance().getApplicationContext().getResource(uri);
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream()));

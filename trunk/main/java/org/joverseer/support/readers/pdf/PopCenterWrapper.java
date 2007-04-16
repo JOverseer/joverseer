@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.pdf;
 
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
 
@@ -69,7 +70,15 @@ public class PopCenterWrapper {
             pc.setStores(ProductEnum.Mounts, Integer.parseInt(getStores().getMounts()));
             pc.setStores(ProductEnum.Gold, 0);
             
-            //TODO update docks
+            if (getDocks() == null) {
+                pc.setHarbor(HarborSizeEnum.none);
+            } else if (getDocks().equals("Harbor")) {
+                pc.setHarbor(HarborSizeEnum.harbor);
+            } else if (getDocks().equals("Port")) {
+                pc.setHarbor(HarborSizeEnum.port);
+            } else {
+                pc.setHarbor(HarborSizeEnum.none);
+            };
         }
 	
 	

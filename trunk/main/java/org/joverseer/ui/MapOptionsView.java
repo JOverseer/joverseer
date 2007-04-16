@@ -258,7 +258,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 cmbTurns.addActionListener(al);
             }
             cmbTurns.setSelectedItem(g.getCurrentTurn());
-            cmbMaps.addItem("None");
+            cmbMaps.addItem("Current");
             cmbMaps.addItem("Free People");
             cmbMaps.addItem("Dark Servants");
             cmbMaps.addItem("Neutrals");

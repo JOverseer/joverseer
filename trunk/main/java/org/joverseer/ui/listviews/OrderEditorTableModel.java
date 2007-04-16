@@ -216,8 +216,10 @@ public class OrderEditorTableModel extends ItemTableModel {
         		o.setParameters("");
                     }
         	}
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, o));
         	return;
         } else if (col >= iParamStart && col <= iParamEnd) {
         	Order o = (Order)obj;

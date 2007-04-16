@@ -187,7 +187,7 @@ public class PopulationCenterViewer extends ObjectViewer {
             if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource())) {
     	        PopCenterXmlInfoSource is = (PopCenterXmlInfoSource)pc.getInfoSource();
     	        if (is.getTurnNo() != is.getPreviousTurnNo()) {
-    	        	turnInfoStr += (turnInfoStr.equals("") ? "" : " - ") + "Owner from t" + is.getPreviousTurnNo();
+    	        	turnInfoStr += (turnInfoStr.equals("") ? "" : " - ") + "Owner from t" + Math.max(is.getPreviousTurnNo(), 0);
     	        }
             }
         }

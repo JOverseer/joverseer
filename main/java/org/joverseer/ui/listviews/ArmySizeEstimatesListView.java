@@ -28,10 +28,13 @@ public class ArmySizeEstimatesListView extends BaseItemListView {
         table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (value == null || (Integer)value <= 0) {
-                    lbl.setText("");
+                try {
+	                if (value == null || (Integer)value <= 0) {
+	                    lbl.setText("");
+	                }
+	                lbl.setHorizontalAlignment(JLabel.RIGHT);
                 }
-                lbl.setHorizontalAlignment(JLabel.RIGHT);
+                catch (Exception exc) {};
                 return lbl;
             }
             

@@ -386,6 +386,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("a")) {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
+                        } else if (paramType.equals("ae")) {
+                            sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("b")) {
                             sub = new NumberParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("e")) {

@@ -136,6 +136,8 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         components.add(movementStyle);
         components.add(directionParams);
     }
+    
+    
 
     public void updateEditor() {
         while (dirs.size() > 14) {

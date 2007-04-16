@@ -44,6 +44,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
     ArrayList<File> turnFolders = new ArrayList<File>();
     JOverseerClientProgressMonitor monitor;
     GameHolder gh;
+    TitledPageApplicationDialog dialog;
     
     static Log log = LogFactory.getLog(OpenGameDirTree.class);
 
@@ -54,6 +55,8 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
     protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
+        
+        turnFolders.clear();
         
         MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[]{}, Locale.getDefault()),
@@ -128,7 +131,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
             FormModel formModel = FormModelHelper.createFormModel(this);
             monitor = new JOverseerClientProgressMonitor(formModel);
             FormBackedDialogPage page = new FormBackedDialogPage(monitor);
-            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+            dialog = new TitledPageApplicationDialog(page) {
                 protected void onAboutToShow() {
                     monitor.taskStarted(String.format("Importing Game Tree '%s'.", new Object[]{file.getAbsolutePath()}), 100 * fileCountFinal);
                     Thread t = new Thread(thisObj);
@@ -195,6 +198,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
         Application.instance().getApplicationContext().publishEvent(
                                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
         monitor.done();
+        dialog.setDescription("Processing finished.");
     }
     
     

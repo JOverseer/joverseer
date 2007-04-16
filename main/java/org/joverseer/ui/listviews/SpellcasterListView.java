@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.JComboBox;
@@ -15,6 +16,7 @@ import javax.swing.JSeparator;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -39,17 +41,25 @@ public class SpellcasterListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{96, 32, 32, 32, 32, 48, 48, 48, 48, 48, 48, 48, 48, 140};
+        return new int[]{96, 32, 32, 32, 32, 62, 62, 62, 62, 62, 62, 62, 62, 140};
     }
     
     protected ArrayList createSpellLists() {
         ArrayList spellLists = new ArrayList();
         spellLists.add(new SpellList("Artifact/Character tracking", new Integer[]{418, 428, 420, 430}, new String[]{"LA", "LAT", "RC", "RCT"}));
-        spellLists.add(new SpellList("Curses", new Integer[]{506, 504, 502}, new String[]{"Curse", "Sick", "Weak"}));
-        spellLists.add(new SpellList("Reveal PC", new Integer[]{434}, new String[]{"RPC"}));
-        spellLists.add(new SpellList("Scrying", new Integer[]{414, 415, 436}, new String[]{"Scry Hex", "Scry Area", "Scry Character"}));
-        spellLists.add(new SpellList("Conjuring", new Integer[]{508, 510, 512}, new String[]{"Cj Mo", "Cj Fo", "Cj Hd"}));
-        spellLists.add(new SpellList("Divine Forces", new Integer[]{410, 419, 417}, new String[]{"Dvn Algnc Forces", "Dvn Nat Forces", "Dvn Char w/ Forces"}));
+        spellLists.add(new SpellList("Healing", new Integer[]{2, 8, 4, 6}, new String[]{"Minor Heal", "Heal True", "Major Heal", "Greater Heal"}));
+        spellLists.add(new SpellListFromSpellMetadata("Movement", new String[]{"Movement Mastery", "Return Mastery", "Teleport"}));
+        spellLists.add(new SpellListFromSpellMetadata("Defense", new String[]{"Barrier Mastery", "Resistance Mastery"}));
+        spellLists.add(new SpellListFromSpellMetadata("Fire Mastery", new String[]{"Fire Mastery"}));
+        spellLists.add(new SpellListFromSpellMetadata("Word Mastery", new String[]{"Word Mastery"}));
+        spellLists.add(new SpellListFromSpellMetadata("Wind Mastery", new String[]{"Wind Mastery"}));
+        spellLists.add(new SpellListFromSpellMetadata("Dark Summons", new String[]{"Dark Summons"}));
+        spellLists.add(new SpellListFromSpellMetadata("Conjuring Ways", new String[]{"Conjuring Ways"}));
+        spellLists.add(new SpellListFromSpellMetadata("Spirit Mastery", new String[]{"Spirit Mastery"}));
+        spellLists.add(new SpellListFromSpellMetadata("Lore Spells", new String[]{"Lore Spells"}));
+        spellLists.add(new SpellListFromSpellMetadata("Divinations", new String[]{"Divinations"}));
+        spellLists.add(new SpellListFromSpellMetadata("Artifact Mastery", new String[]{"Artifact Mastery"}));
+        spellLists.add(new SpellListFromSpellMetadata("Scrying & Hidden Visions", new String[]{"Scrying", "Hidden Visions"}));
         return spellLists;
     }
     
@@ -66,7 +76,7 @@ public class SpellcasterListView extends BaseItemListView {
     protected JComponent createControlImpl() {
         JComponent tableComp = super.createControlImpl();
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(combo = new JComboBox(createSpellLists().toArray()), "align=left");
+        tlb.cell(combo = new JComboBox(), "align=left");
         combo.setPreferredSize(new Dimension(200, 24));
         combo.setOpaque(true);
         combo.addActionListener(new ActionListener() {
@@ -129,7 +139,13 @@ public class SpellcasterListView extends BaseItemListView {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 setItems();
-            } 
+            } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) 
+            {
+            	combo.removeAllItems();
+            	for (SpellList sl : (ArrayList<SpellList>)createSpellLists()) {
+            		combo.addItem(sl);
+            	}
+            }
         }
     }
     
@@ -167,5 +183,26 @@ public class SpellcasterListView extends BaseItemListView {
         }
     }
     
-   
+    private class SpellListFromSpellMetadata extends SpellList {
+    	ArrayList<String> spellLists = new ArrayList<String>();;
+    	
+    	public SpellListFromSpellMetadata(String name, String[] spellLists) {
+    		super(name, new Integer[]{}, new String[]{});
+    		this.spellLists.addAll(Arrays.asList(spellLists));
+    		initSpells();
+    	}
+    	
+    	protected void initSpells() {
+    		GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+    		
+    		for (String spellList : spellLists) {
+    			ArrayList<SpellInfo> sis = (ArrayList<SpellInfo>)gm.getSpells().findAllByProperty("list", spellList);
+    			for (SpellInfo si : sis) {
+    				getSpells().add(si.getNumber());
+    				getSpellDescrs().add(si.getName());
+    			}
+    		}
+    	}
+    	
+    }
 }

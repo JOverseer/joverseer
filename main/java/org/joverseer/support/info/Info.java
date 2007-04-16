@@ -27,24 +27,24 @@ public class Info {
         return ret;
     }
     
-    public int getColumnId(String header) {
+    public int getColumnIdx(String header) {
         return getColumnHeaders().indexOf(header);
     }
     
-    public int getRowId(String header) {
+    public int getRowIdx(String header) {
         return getRowHeaders().indexOf(header);
     }
     
     public String getValue(String h1, String h2) {
-        int i = getColumnId(h1);
+        int i = getColumnIdx(h1);
         int j = 0;
         if (i < 0) {
-            i = getColumnId(h2);
+            i = getColumnIdx(h2);
             if (i < 0) return null;
-            j = getRowId(h1);
+            j = getRowIdx(h1);
             if (j < 0) return null;
         } else {
-            j = getRowId(h2);
+            j = getRowIdx(h2);
             if (j < 0) return null;
         }
         return getValue(j, i);

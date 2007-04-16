@@ -20,7 +20,7 @@ public class ArmyTableModel extends ItemTableModel {
 	}
 
 	protected Class[] createColumnClasses() {
-		return new Class[]{Integer.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class}; 
+		return new Class[]{Integer.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class}; 
 	}
 
 	protected Object getValueAtInternal(Object object, int i) {
@@ -51,9 +51,9 @@ public class ArmyTableModel extends ItemTableModel {
 						count += el.getNumber();
 					}
 				}
-				return count;
+				return String.valueOf(count);
 			} else if (army.getTroopCount() > 0) {
-				return army.getTroopCount();
+				return String.valueOf(army.getTroopCount());
 			} else {
 				return "-";
 			}
@@ -61,7 +61,7 @@ public class ArmyTableModel extends ItemTableModel {
 			if (army.getElements().size() > 0) {
 				return CombatUtils.getNakedHeavyInfantryEquivalent(army);
 			} else {
-				return "-";
+				return null;
 			}
 		} 
 		else if (i == 8) { 

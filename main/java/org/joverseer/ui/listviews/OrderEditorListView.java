@@ -134,6 +134,13 @@ public class OrderEditorListView extends ItemListView {
         };
         filterList.add(f);
 
+        f = new OrderFilter("All") {
+            public boolean acceptCharacter(Character c) {
+                return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0;
+            }
+        };
+        filterList.add(f);
+        
         if (GameHolder.hasInitializedGame()) {
             Game g = GameHolder.instance().getGame();
             GameMetadata gm = g.getMetadata();
@@ -416,8 +423,10 @@ public class OrderEditorListView extends ItemListView {
                     Order order = (Order) obj;
                     order.clear();
                     ((BeanTableModel) table.getModel()).fireTableDataChanged();
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
                 } catch (Exception exc) {
-
+                	System.out.println(exc);
                 }
             }
         }

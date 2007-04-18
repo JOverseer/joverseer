@@ -37,7 +37,10 @@
 				<value>startingCharacterListView</value>
 				<value>infoView</value>
 				<value>orderInfoView</value>	
+				<!--
 				<value>advancedArtifactListView</value>			
+				-->
+				<value>advancedCharacterListView</value>
 			</list>
 		</property>
 		<property name="perspectives">
@@ -230,6 +233,7 @@
 		</property>
 	</bean>
 	
+	<!--
 	<bean id="advancedArtifactListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -244,6 +248,30 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.AdvancedArtifactListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+	</bean>
+	-->
+	
+	<bean id="advancedCharacterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterListView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

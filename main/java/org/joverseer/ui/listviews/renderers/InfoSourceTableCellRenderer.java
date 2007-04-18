@@ -7,11 +7,14 @@ import javax.swing.JTable;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.AgentActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
+import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
+import org.joverseer.support.infoSources.RumorInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.springframework.richclient.table.BeanTableModel;
@@ -23,7 +26,7 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
         super(tableModel);
     }
 
-    private String getNationStr(int nationNo) {
+    private static String getNationStr(int nationNo) {
         String nationName = String.valueOf(nationNo);
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
         if (pval == null || pval.equals("name")) {
@@ -35,7 +38,7 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
         return nationName;
     }
     
-    protected String getInfoSourceDescription(InfoSource value) {
+    public static String getInfoSourceDescription(InfoSource value) {
         String strValue = "";
         if (InfoSource.class.isInstance(value)) {
             if (DerivedFromSpellInfoSource.class.isInstance(value)) {
@@ -57,6 +60,14 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
             } else if (XmlTurnInfoSource.class.isInstance(value)) {
                 XmlTurnInfoSource xis = (XmlTurnInfoSource)value;
                 strValue = "Xml (" + getNationStr(xis.getNationNo()) + ")";
+            } else if (DerivedFromTitleInfoSource.class.isInstance(value)) {
+            	DerivedFromTitleInfoSource dtis = (DerivedFromTitleInfoSource)value;
+            	strValue = dtis.getTitle();
+            } else if (RumorInfoSource.class.isInstance(value)) {
+            	strValue = "Rumor";
+            } else if (AgentActionInfoSource.class.isInstance(value)) {
+            	AgentActionInfoSource aais = (AgentActionInfoSource)value;
+            	strValue = aais.getReports();
             }
         }
         return strValue;

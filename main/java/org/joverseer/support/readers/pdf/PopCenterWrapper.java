@@ -69,16 +69,6 @@ public class PopCenterWrapper {
             pc.setStores(ProductEnum.Timber, Integer.parseInt(getStores().getTimber()));
             pc.setStores(ProductEnum.Mounts, Integer.parseInt(getStores().getMounts()));
             pc.setStores(ProductEnum.Gold, 0);
-            
-            if (getDocks() == null) {
-                pc.setHarbor(HarborSizeEnum.none);
-            } else if (getDocks().equals("Harbor")) {
-                pc.setHarbor(HarborSizeEnum.harbor);
-            } else if (getDocks().equals("Port")) {
-                pc.setHarbor(HarborSizeEnum.port);
-            } else {
-                pc.setHarbor(HarborSizeEnum.none);
-            };
         }
 	
 	

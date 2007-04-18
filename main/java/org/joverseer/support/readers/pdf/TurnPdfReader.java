@@ -52,7 +52,7 @@ import org.txt2xml.driver.StreamDriver;
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
     public static int parseTimeoutInSecs = 10;
-    public static boolean deleteFilesWhenFinished = false;
+    public static boolean deleteFilesWhenFinished = true;
     static Logger logger = Logger.getLogger(TurnPdfReader.class);
     TurnInfo turnInfo;
     Turn turn;
@@ -181,8 +181,8 @@ public class TurnPdfReader implements Runnable {
             digester.addObjectCreate("txt2xml/Turn/PopulationCentres/PopCentre", "org.joverseer.support.readers.pdf.PopCenterWrapper");
             // set nested properties
             digester.addRule("txt2xml/Turn/PopulationCentres/PopCentre",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex", "Climate"},
-                            new String[]{"name", "hexNo", "climate"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex", "Climate", "Docks"},
+                            new String[]{"name", "hexNo", "climate", "docks"}));
             snpr.setAllowUnknownChildElements(true);
             // add pop center wrapper
             digester.addSetNext("txt2xml/Turn/PopulationCentres/PopCentre", "addItem", "org.joverseer.support.readers.pdf.PopCenterWrapper");

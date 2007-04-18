@@ -18,8 +18,8 @@ public class SpellInfoListView extends ItemListView {
 		return new ColumnToSort[]{new ColumnToSort(0, 0), new ColumnToSort(1, 1)};
 	}
 
-	protected AbstractListViewFilter[] getFilters() {
-		return SpellListFilter.createNationFilters();
+	protected AbstractListViewFilter[][] getFilters() {
+		return new AbstractListViewFilter[][]{SpellListFilter.createNationFilters()};
 	}
     
     

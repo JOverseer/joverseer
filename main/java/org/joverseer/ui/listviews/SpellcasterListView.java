@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,6 +13,10 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -47,19 +52,41 @@ public class SpellcasterListView extends BaseItemListView {
     protected ArrayList createSpellLists() {
         ArrayList spellLists = new ArrayList();
         spellLists.add(new SpellList("Artifact/Character tracking", new Integer[]{418, 428, 420, 430}, new String[]{"LA", "LAT", "RC", "RCT"}));
-        spellLists.add(new SpellList("Healing", new Integer[]{2, 8, 4, 6}, new String[]{"Minor Heal", "Heal True", "Major Heal", "Greater Heal"}));
-        spellLists.add(new SpellListFromSpellMetadata("Movement", new String[]{"Movement Mastery", "Return Mastery", "Teleport"}));
-        spellLists.add(new SpellListFromSpellMetadata("Defense", new String[]{"Barrier Mastery", "Resistance Mastery"}));
-        spellLists.add(new SpellListFromSpellMetadata("Fire Mastery", new String[]{"Fire Mastery"}));
-        spellLists.add(new SpellListFromSpellMetadata("Word Mastery", new String[]{"Word Mastery"}));
-        spellLists.add(new SpellListFromSpellMetadata("Wind Mastery", new String[]{"Wind Mastery"}));
-        spellLists.add(new SpellListFromSpellMetadata("Dark Summons", new String[]{"Dark Summons"}));
-        spellLists.add(new SpellListFromSpellMetadata("Conjuring Ways", new String[]{"Conjuring Ways"}));
+        spellLists.add(new SpellList("Healing", new Integer[]{2, 4, 6, 8}, new String[]{"Minor Heal", "Major Heal", "Great. Heal", "Heal True"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Movement", new String[]{"Movement Mastery", "Return Mastery", "Teleport"}));
+        spellLists.add(new SpellList("Movement", new Integer[]{302, 304, 306, 308, 310, 312, 314}, 
+        											new String[]{"Long Strd", "Fast Strd", "Path Mstr", "Capital Ret", "Major Ret", "Ret True", "Teleport"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Defense", new String[]{"Barrier Mastery", "Resistance Mastery"}));
+        spellLists.add(new SpellList("Defense", new Integer[]{102, 106, 112, 114, 104, 108, 110, 116}, 
+												new String[]{"Barriers", "Deflect.", "Shields", "Barr. Walls", "Resistances", "Blessings", "Protect.", "Force Walls"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Fire Mastery", new String[]{"Fire Mastery"}));
+        spellLists.add(new SpellList("Fire Mastery", new Integer[]{202, 204, 206, 232, 234, 236, 240}, 
+				new String[]{"Call Fire", "Wild Flames", "Wall of Fire", "Fire Bolts", "Fire Balls", "Fire Storms", "Smn Fire Sprts"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Word Mastery", new String[]{"Word Mastery"}));
+        spellLists.add(new SpellList("Words of Pain", new Integer[]{208, 210, 212, 220, 222, 224, 242}, 
+				new String[]{"Pain", "Calm", "Paralysis", "Agony", "Stun", "Command", "Death"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Wind Mastery", new String[]{"Wind Mastery"}));
+        spellLists.add(new SpellList("Wind Mastery", new Integer[]{214, 216, 218, 226, 228, 230, 238}, 
+				new String[]{"Call Winds", "Wild Winds", "Wall of Wind", "Chill Bolts", "Frost Balls", "Wind Storms", "Smn Wind Sprts"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Dark Summons", new String[]{"Dark Summons"}));
+        spellLists.add(new SpellList("Dark Summons", new Integer[]{244, 246, 248}, 
+				new String[]{"Frfl Hearts", "Smn Storms", "Fanaticism"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Conjuring Ways", new String[]{"Conjuring Ways"}));
+        spellLists.add(new SpellList("Conjuring Ways", new Integer[]{508, 510, 512}, 
+				new String[]{"Mounts", "Food", "Hordes"}));
         spellLists.add(new SpellListFromSpellMetadata("Spirit Mastery", new String[]{"Spirit Mastery"}));
-        spellLists.add(new SpellListFromSpellMetadata("Lore Spells", new String[]{"Lore Spells"}));
-        spellLists.add(new SpellListFromSpellMetadata("Divinations", new String[]{"Divinations"}));
-        spellLists.add(new SpellListFromSpellMetadata("Artifact Mastery", new String[]{"Artifact Mastery"}));
-        spellLists.add(new SpellListFromSpellMetadata("Scrying & Hidden Visions", new String[]{"Scrying", "Hidden Visions"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Lore Spells", new String[]{"Lore Spells"}));
+        spellLists.add(new SpellList("Lore Spells", new Integer[]{402, 404, 408, 422, 424, 432}, 
+				new String[]{"Allegiance", "Relations", "Nationality", "Power", "Mission", "Secrets"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Divinations", new String[]{"Divinations"}));
+        spellLists.add(new SpellList("Divinations", new Integer[]{406, 410, 417, 419, 426}, 
+				new String[]{"Army", "Algnce Forces", "Character", "Nation", "Army True"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Artifact Mastery", new String[]{"Artifact Mastery"}));
+        spellLists.add(new SpellList("Artifact Mastery", new Integer[]{412, 418, 428}, 
+				new String[]{"RA", "LA", "LAT"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Scrying & Hidden Visions", new String[]{"Scrying", "Hidden Visions"}));
+        spellLists.add(new SpellList("Scrying & Hidden Visions", new Integer[]{413, 414, 415, 436, 416, 420, 430, 434}, 
+				new String[]{"Scry PC", "Scry Hex", "Scry Area", "Scry Char", "Rev Prod", "Rev Char", "Rev Char True", "Rev PC"}));
         return spellLists;
     }
     
@@ -84,6 +111,41 @@ public class SpellcasterListView extends BaseItemListView {
                 setItems();
             }
         });
+        JTableHeader header = table.getTableHeader();
+        header.addMouseMotionListener(new MouseMotionAdapter() {
+        	TableColumn curCol;
+        	
+        	public void mouseMoved(MouseEvent evt) {
+                TableColumn col = null;
+                JTableHeader header = (JTableHeader)evt.getSource();
+                JTable table = header.getTable();
+                TableColumnModel colModel = table.getColumnModel();
+                int vColIndex = colModel.getColumnIndexAtX(evt.getX());
+        
+                // Return if not clicked on any column header
+                if (vColIndex >= 0) {
+                    col = colModel.getColumn(vColIndex);
+                }
+        
+                if (col != curCol) {
+                	String toolTip = "";
+                	SpellList sl = (SpellList)combo.getSelectedItem();
+                	if (sl != null) {
+                		int spellId = sl.getSpells().get(vColIndex - 5);
+                		if (spellId > 0) {
+	                		SpellInfo si = (SpellInfo)GameHolder.instance().getGame().getMetadata().getSpells().findFirstByProperty("number", spellId);
+	                		if (si == null) {
+	                			toolTip = String.valueOf(spellId);
+	                		} else {
+	                			toolTip = si.getNumber() + " - " + si.getName() + ": " + si.getDescription();
+	                		}
+                		}
+                	}
+                    header.setToolTipText(toolTip);
+                    curCol = col;
+                }
+            }
+        });
         tlb.row();
         tlb.cell(tableComp);
         tlb.row();
@@ -100,8 +162,9 @@ public class SpellcasterListView extends BaseItemListView {
         if (g == null || !Game.isInitialized(g)) return;
         Turn t = g.getTurn();
         if (t == null) return;
+        SpellcasterWrapper sw;
         for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
-            SpellcasterWrapper sw = new SpellcasterWrapper();
+            sw = new SpellcasterWrapper();
             sw.setCharacter(c.getName());
             sw.setHexNo(c.getHexNo());
             sw.setArtifactBonus(c.getMageTotal() - c.getMage());

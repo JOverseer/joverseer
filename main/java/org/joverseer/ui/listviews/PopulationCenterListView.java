@@ -31,11 +31,11 @@ public class PopulationCenterListView extends ItemListView {
 		return c;
 	}
 
-	protected AbstractListViewFilter[] getFilters() {
+	protected AbstractListViewFilter[][] getFilters() {
         ArrayList filters = new ArrayList();
         filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-        return (AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{});
+        return new AbstractListViewFilter[][]{(AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{})};
     }
     
     protected ColumnToSort[] getDefaultSort() {

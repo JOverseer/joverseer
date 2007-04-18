@@ -70,18 +70,22 @@ public class EncounterListView extends ItemListView {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
         // create the filter combo
-        AbstractListViewFilter[] filterList = getFilters();
-        if (filterList != null) {
-            filters = new JComboBox(filterList);
-            filters.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    setItems();
-                }
-            });
-            filters.setPreferredSize(new Dimension(200, 20));
-            filters.setOpaque(true);
-            tlb.cell(filters, "align=left");
+        AbstractListViewFilter[][] filterLists = getFilters();
+        if (filterLists != null) {
+        	for (AbstractListViewFilter[] filterList : filterLists) {
+        		JComboBox filter = new JComboBox(filterList);
+	            filters.add(filter);
+	            filter.addActionListener(new ActionListener() {
+	
+	                public void actionPerformed(ActionEvent e) {
+	                    setItems();
+	                }
+	            });
+	            filter.setPreferredSize(new Dimension(150, 20));
+	            filter.setOpaque(true);
+	            tlb.cell(filter, "align=left");
+	            tlb.gapCol();
+        	}
             tlb.row();
         }
 

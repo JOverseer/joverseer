@@ -64,9 +64,12 @@ public class LocateArtifactResultListView extends BaseItemListView {
         tableModel.fireTableDataChanged();
     }
 
-    protected AbstractListViewFilter[] getFilters() {
-        return TurnFilter.createTurnFiltersCurrentTurnAndAllTurns();
+    protected AbstractListViewFilter[][] getFilters() {
+    	return new AbstractListViewFilter[][]{
+    			TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),
+    			};
     }
+    
     
 
 }

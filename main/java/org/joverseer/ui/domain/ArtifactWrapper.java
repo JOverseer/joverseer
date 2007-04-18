@@ -17,6 +17,7 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     String power1;
     String power2;
     InfoSource infoSource;
+    String alignment;
     
     public int getHexNo() {
         return hexNo;
@@ -99,6 +100,14 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     public void setInfoSource(InfoSource infoSource) {
         this.infoSource = infoSource;
     }
+
+	public String getAlignment() {
+		return alignment;
+	}
+
+	public void setAlignment(String alignment) {
+		this.alignment = alignment;
+	}
 
     
 }

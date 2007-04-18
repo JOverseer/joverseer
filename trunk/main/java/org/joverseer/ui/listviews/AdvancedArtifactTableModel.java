@@ -12,11 +12,11 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"number", "name", "nationNo", "owner", "hexNo", "power1", "power2", "turnNo", "infoSource"};
+        return new String[]{"number", "name", "nationNo", "owner", "hexNo", "alignment", "power1", "power2", "turnNo", "infoSource"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{Integer.class, String.class, String.class, String.class, Integer.class, String.class, String.class, Integer.class, InfoSource.class};
+        return new Class[]{Integer.class, String.class, String.class, String.class, Integer.class, String.class, String.class, String.class, Integer.class, InfoSource.class};
     }
 
 }

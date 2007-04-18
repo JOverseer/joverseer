@@ -151,12 +151,14 @@ public class NationProductionListView extends BaseItemListView {
         return new ColumnToSort[]{new ColumnToSort(0, 0)};
     }
 
-    protected AbstractListViewFilter[] getFilters() {
-        return new AbstractListViewFilter[]{
-                new ProductionFilter("All", null),
-                new ProductionFilter("Production", "Production"),
-                new ProductionFilter("Stores", "Stores"),
-                new ProductionFilter("Total", "Total"),
+    protected AbstractListViewFilter[][] getFilters() {
+    	return new AbstractListViewFilter[][]{
+    			new AbstractListViewFilter[]{
+    					new ProductionFilter("All", null),
+    					new ProductionFilter("Production", "Production"),
+    					new ProductionFilter("Stores", "Stores"),
+    					new ProductionFilter("Total", "Total"),
+    			}
         };
     }
 

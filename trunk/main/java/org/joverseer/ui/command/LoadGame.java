@@ -104,7 +104,14 @@ public class LoadGame extends ActionCommand {
                 
             }
             catch (Exception exc) {
-                MessageDialog d = new MessageDialog("Error", exc.getMessage());
+            	String msg;
+            	exc.printStackTrace();
+            	if (exc.getMessage() == null) {
+            		msg = "Unexpected Error";
+            	} else {
+            		msg = exc.getMessage();
+            	}
+                MessageDialog d = new MessageDialog("Error", msg);
                 d.showDialog();
                 // do nothing
                 // todo fix

@@ -13,8 +13,8 @@ public class NationMessageListView extends ItemListView {
         return new int[]{64, 400};
     }
     
-    protected AbstractListViewFilter[] getFilters() {
-        return NationFilter.createNationFilters();
+    protected AbstractListViewFilter[][] getFilters() {
+    	return new AbstractListViewFilter[][]{NationFilter.createNationFilters()};
     }
 
 

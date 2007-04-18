@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
@@ -34,6 +35,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.filters.AndFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -58,7 +60,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected BeanTableModel tableModel;
 
     protected JTable table;
-    protected JComboBox filters;
+    protected ArrayList<JComboBox> filters = new ArrayList<JComboBox>();
     protected Class tableModelClass;
     protected SelectHexCommandExecutor selectHexCommandExecutor = new SelectHexCommandExecutor();
 
@@ -112,14 +114,18 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return createControlImpl();
     }
 
-    protected AbstractListViewFilter[] getFilters() {
+    protected AbstractListViewFilter[][] getFilters() {
         return null;
     }
 
     protected AbstractListViewFilter getActiveFilter() {
         if (filters == null)
             return null;
-        return (AbstractListViewFilter) filters.getSelectedItem();
+        AndFilter f = new AndFilter();
+        for (JComboBox filter : filters) {
+        	f.addFilter((AbstractListViewFilter)filter.getSelectedItem());
+        }
+        return f;
     }
     
     protected JTable createTable() {
@@ -148,18 +154,26 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
         // create the filter combo
-        AbstractListViewFilter[] filterList = getFilters();
-        if (filterList != null) {
-            filters = new JComboBox(filterList);
-            filters.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    setItems();
-                }
-            });
-            filters.setPreferredSize(new Dimension(200, 20));
-            filters.setOpaque(true);
-            tlb.cell(filters, "align=left");
+        AbstractListViewFilter[][] filterLists = getFilters();
+        if (filterLists != null) {
+        	TableLayoutBuilder lb = new TableLayoutBuilder();
+        	for (AbstractListViewFilter[] filterList : filterLists) {
+        		JComboBox filter = new JComboBox(filterList);
+	            filters.add(filter);
+	            filter.addActionListener(new ActionListener() {
+	
+	                public void actionPerformed(ActionEvent e) {
+	                    setItems();
+	                }
+	            });
+	            filter.setPreferredSize(new Dimension(150, 20));
+	            filter.setOpaque(true);
+	            lb.cell(filter, "colspec=left:150px");
+	            lb.gapCol();
+        	}
+        	JPanel p = lb.getPanel();
+        	p.setOpaque(true);
+        	tlb.cell(p, "align=left");
             tlb.row();
         }
 
@@ -215,13 +229,15 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 //setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                if (filters != null) {
-                    AbstractListViewFilter[] filterList = getFilters();
-                    filters.removeAllItems();
-                    for (AbstractListViewFilter f : filterList) {
-                        filters.addItem(f);
+                if (filters.size() > 0) {
+                    AbstractListViewFilter[][] filterLists = getFilters();
+                    for (int i=0; i<filterLists.length; i++) {
+                    	filters.get(i).removeAllItems();
+                    	for (AbstractListViewFilter f : filterLists[i]) {
+                    		filters.get(i).addItem(f);
+                    	}
+                    	filters.get(i).updateUI();
                     }
-                    filters.updateUI();
                 }
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle.toString())) {

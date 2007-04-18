@@ -18,7 +18,7 @@ public class NationFilter extends AbstractListViewFilter {
 
     public boolean accept(Object obj) {
         IBelongsToNation o = (IBelongsToNation)obj;
-        return (nationNo == -1 || o.getNationNo() == nationNo);
+        return (nationNo == -1 || (o.getNationNo() != null && o.getNationNo() == nationNo));
     }
  
     public static AbstractListViewFilter[] createNationFilters() {

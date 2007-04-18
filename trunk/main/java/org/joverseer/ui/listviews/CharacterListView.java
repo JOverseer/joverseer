@@ -25,11 +25,11 @@ public class CharacterListView extends ItemListView {
     int iHexNo = 0;
     int iOrderResults = 16;
     
-    protected AbstractListViewFilter[] getFilters() {
+    protected AbstractListViewFilter[][] getFilters() {
         ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
         filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-        return (AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{});
+        return new AbstractListViewFilter[][]{filters.toArray(new AbstractListViewFilter[]{})};
     }
 
     public CharacterListView() {

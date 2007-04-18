@@ -22,11 +22,11 @@ public class StartingCharacterListView extends ItemListView {
 		return new int[]{120, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
 	}
 	
-	protected AbstractListViewFilter[] getFilters() {
+	protected AbstractListViewFilter[][] getFilters() {
         ArrayList filters = new ArrayList();
         filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-        return (AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{});
+        return new AbstractListViewFilter[][]{(AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{})};
     }
 	
 	protected JComponent createControlImpl() {

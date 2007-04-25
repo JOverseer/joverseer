@@ -111,14 +111,18 @@ public class MovementUtils {
             if (dest.getRow() > mm.getMaxMapRow()) return -1;
         }
         
-        if (start.getTerrain() == HexTerrainEnum.shore && initialHex != startHexNo) {
-        	return -1;
-        }
+//        if (start.getTerrain() == HexTerrainEnum.shore && initialHex != startHexNo) {
+//        	return -1;
+//        }
         
         // check start hex terrain
         if (start.getTerrain() != HexTerrainEnum.sea && start.getTerrain() != HexTerrainEnum.ocean && dest.getTerrain() != HexTerrainEnum.sea && dest.getTerrain() != HexTerrainEnum.ocean) {
             // check connecting river
             if (movementAlongMajorRiver(start, md)) return movementCost;
+            return -1;
+        }
+        
+        if (startHexNo != initialHex && start.getTerrain() == HexTerrainEnum.shore && dest.getTerrain() != HexTerrainEnum.shore) {
             return -1;
         }
         

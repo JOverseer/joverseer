@@ -74,7 +74,9 @@ public class SpellcasterListView extends BaseItemListView {
         //spellLists.add(new SpellListFromSpellMetadata("Conjuring Ways", new String[]{"Conjuring Ways"}));
         spellLists.add(new SpellList("Conjuring Ways", new Integer[]{508, 510, 512}, 
 				new String[]{"Mounts", "Food", "Hordes"}));
-        spellLists.add(new SpellListFromSpellMetadata("Spirit Mastery", new String[]{"Spirit Mastery"}));
+        spellLists.add(new SpellList("Spirit Mastery", new Integer[]{502, 504, 506}, 
+				new String[]{"Weakness", "Sickness", "Curses"}));
+        //spellLists.add(new SpellListFromSpellMetadata("Spirit Mastery", new String[]{"Spirit Mastery"}));
         //spellLists.add(new SpellListFromSpellMetadata("Lore Spells", new String[]{"Lore Spells"}));
         spellLists.add(new SpellList("Lore Spells", new Integer[]{402, 404, 408, 422, 424, 432}, 
 				new String[]{"Allegiance", "Relations", "Nationality", "Power", "Mission", "Secrets"}));
@@ -131,8 +133,8 @@ public class SpellcasterListView extends BaseItemListView {
                 	String toolTip = "";
                 	SpellList sl = (SpellList)combo.getSelectedItem();
                 	if (sl != null) {
-                		int spellId = sl.getSpells().get(vColIndex - 5);
-                		if (spellId > 0) {
+                		if (vColIndex - 5 >= 0 && vColIndex - 5 < sl.getSpells().size()) {
+                			int spellId = sl.getSpells().get(vColIndex - 5);
 	                		SpellInfo si = (SpellInfo)GameHolder.instance().getGame().getMetadata().getSpells().findFirstByProperty("number", spellId);
 	                		if (si == null) {
 	                			toolTip = String.valueOf(spellId);

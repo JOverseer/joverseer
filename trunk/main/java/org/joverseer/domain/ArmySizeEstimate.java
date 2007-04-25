@@ -22,6 +22,9 @@ public class ArmySizeEstimate {
         if (a.isNavy() && !type.equals(NAVY_TYPE)) return;
         if (!a.isNavy() && !type.equals(ARMY_TYPE)) return;
         int troops = a.computeNumberOfMen();
+        if (troops == 0) {
+        	troops = a.getTroopCount();
+        }
         if (a.isNavy()) {
             troops = a.computeNumberOfShips();
         }

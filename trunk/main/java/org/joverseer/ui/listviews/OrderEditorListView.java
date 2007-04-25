@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -327,31 +329,34 @@ public class OrderEditorListView extends ItemListView {
                 }
                 SortedListModel slm = new SortedListModel(orders);
 
-                JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
-//                JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
-//                comboBox.setEditable(true);
-//                comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-                Configurator.enableAutoCompletion(comboBox);
+                //JComboBox comboBox = new JComboBox(new ComboBoxListModelAdapter(slm));
+                final JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
+                comboBox.setEditable(true);
+                comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+                //Configurator.enableAutoCompletion(comboBox);
                 final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
 //                final DefaultCellEditor editor = new DefaultCellEditor(comboBox);
                 noAndCodeColumn.setCellEditor(editor);
+
+
                 editor.addCellEditorListener(new CellEditorListener() {
 
-					public void editingCanceled(ChangeEvent e) {
-						table.requestFocus();
-					}
-
-					public void editingStopped(ChangeEvent e) {
-						table.requestFocus();
-					}
+        		public void editingCanceled(ChangeEvent e) {
+        			table.requestFocus();
+        		}
+        
+        		public void editingStopped(ChangeEvent e) {
+        			table.requestFocus();
+        		}
                 	
                 });
                 comboBox.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
-					public void keyPressed(KeyEvent arg0) {
-						if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
-							editor.cancelCellEditing();
-						}
-					}
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					editor.cancelCellEditing();
+                                                arg0.consume();
+				}
+			}
                 	
                 });
                 

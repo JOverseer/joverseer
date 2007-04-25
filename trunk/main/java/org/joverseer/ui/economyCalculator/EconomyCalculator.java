@@ -76,11 +76,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 }
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 loadNationCombo();
-//                if (GameHolder.hasInitializedGame() && GameHolder.instance().getGame().getTurn() != null) {
-//                    refreshMarketLimitWarning();
-//                    refreshTaxIncrease();
-//                    refreshAutocalcOrderCost();
-//                }
+                if (GameHolder.hasInitializedGame() && GameHolder.instance().getGame().getTurn() != null) {
+                    refreshMarketLimitWarning();
+                    refreshTaxIncrease();
+                    refreshAutocalcOrderCost();
+                }
             } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 refreshAutocalcOrderCost();
             }

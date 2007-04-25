@@ -241,6 +241,8 @@ public class OrderEditorTableModel extends ItemTableModel {
         	o.setParameters(paramTxt2);
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, o));
         	return;
         }
         super.setValueAtInternal(v, obj, col);

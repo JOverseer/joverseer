@@ -134,6 +134,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         for (Character c : (ArrayList<Character>)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", getSelectedNationNo())) {
             for (int i=0; i<2; i++) {
                 if (c.getOrders()[i].isBlank()) continue;
+                int no = c.getOrders()[i].getOrderNo();
+                if (no == 320 || no == 315 || no == 310 || no == 325) continue;
                 int cost = calc.getOrderCost(c.getOrders()[i]);
                 if (cost > 0) {
                     totalCost += cost;

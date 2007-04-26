@@ -1,9 +1,9 @@
 package org.joverseer.support.infoSources;
 
-public class AgentActionInfoSource extends InfoSource {
+public class RumorActionInfoSource extends InfoSource {
 	String reports;
 	
-	public AgentActionInfoSource(String reports) {
+	public RumorActionInfoSource(String reports) {
 		this.reports = reports;
 	}
 

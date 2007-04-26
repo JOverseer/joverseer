@@ -1,13 +1,13 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.metadata.domain.ArtifactInfo;
-import org.joverseer.ui.domain.EnemyAgentWrapper;
+import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
 import org.springframework.context.MessageSource;
 
 
-public class EnemyAgentTableModel extends ItemTableModel {
-    public EnemyAgentTableModel(MessageSource messageSource) {
-        super(EnemyAgentWrapper.class, messageSource);
+public class EnemyCharacterRumorTableModel extends ItemTableModel {
+    public EnemyCharacterRumorTableModel(MessageSource messageSource) {
+        super(EnemyCharacterRumorWrapper.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {

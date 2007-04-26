@@ -48,7 +48,7 @@ public class JLabelButton extends JLabel {
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent arg0) {
                 for (ActionListener a : actionListeners) {
-                    a.actionPerformed(null);
+                    a.actionPerformed(new ActionEvent(arg0.getSource(), 0, ""));
                 }
             }
         });

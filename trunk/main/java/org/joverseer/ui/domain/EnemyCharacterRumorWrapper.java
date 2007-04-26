@@ -15,12 +15,13 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 
 
-public class EnemyAgentWrapper implements IHasMapLocation {
+public class EnemyCharacterRumorWrapper implements IHasMapLocation {
     String name;
     int hexNo;
     int turnNo;
     String reportedTurns = "";
     boolean startChar;
+    String charType;
     
     public int getHexNo() {
         return hexNo;
@@ -73,8 +74,18 @@ public class EnemyAgentWrapper implements IHasMapLocation {
     public void setStartChar(boolean startChar) {
         this.startChar = startChar;
     }
+    
+    
 
-    public static Container getAgentWrappers() {
+    public String getCharType() {
+		return charType;
+	}
+
+	public void setCharType(String charType) {
+		this.charType = charType;
+	}
+
+	public static Container getAgentWrappers() {
     	Container thieves = new Container(new String[]{"name"});
         Game g = GameHolder.instance().getGame();
         if (Game.isInitialized(g)) {
@@ -82,13 +93,22 @@ public class EnemyAgentWrapper implements IHasMapLocation {
                     "theft",
                     "theft",
                     "assas.",
-                    "kidnap"
+                    "kidnap",
+                    "emiss."
+            };
+            String[] charTypes = new String[]{
+            		"agent",
+            		"agent",
+            		"agent",
+            		"agent",
+            		"emmisary"
             };
             String[] prefixes = new String[]{
                     "^There are rumors of a theft attempt involving (.+) at .+",
                     "^There are rumors of a theft attempt involving (.+)\\.$",
                     "^There are rumors of an assassination attempt involving (.+) and .+",
                     "^There are rumors of a kidnap attempt involving (.+) and .+",
+                    "^The loyalty was influenced from the efforts or presence of (.+) at .+",
             };
             for (int i=0; i<=g.getMaxTurn(); i++) {
                 Turn t = g.getTurn(i);
@@ -100,17 +120,19 @@ public class EnemyAgentWrapper implements IHasMapLocation {
                 for (NationMessage nm : (ArrayList<NationMessage>)t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
                     String charName = null;
                     String repType = null;
+                    String charType = null;
                     for (int j=0; j<prefixes.length; j++) {
                         String prefix = prefixes[j];
                         Matcher m = Pattern.compile(prefix).matcher(nm.getMessage());
                         if (m.matches()) {
                             charName = m.group(1);
                             repType = types[j];
+                            charType = charTypes[j];
                             break;
                         }
                     }
                     if (charName != null) {
-                        EnemyAgentWrapper thief = (EnemyAgentWrapper)thieves.findFirstByProperty("name", charName);
+                        EnemyCharacterRumorWrapper thief = (EnemyCharacterRumorWrapper)thieves.findFirstByProperty("name", charName);
                         Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", charName);
                         if (c != null) {
                             if (c.getNationNo() > 0) {
@@ -121,12 +143,13 @@ public class EnemyAgentWrapper implements IHasMapLocation {
                             }
                         }
                         if (thief == null) {
-                            thief = new EnemyAgentWrapper();
+                            thief = new EnemyCharacterRumorWrapper();
                             boolean startChar = g.getMetadata().getCharacters().findFirstByProperty("id", Character.getIdFromName(charName)) != null;
                             thief.setName(charName);
                             thief.setTurnNo(t.getTurnNo());
                             thief.addReport(repType + " " + t.getTurnNo());
                             thief.setStartChar(startChar);
+                            thief.setCharType(charType);
                             thieves.addItem(thief);
                         } else {
                             thief.addReport(repType + " " + t.getTurnNo());

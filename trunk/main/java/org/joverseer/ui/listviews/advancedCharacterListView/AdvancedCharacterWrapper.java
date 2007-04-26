@@ -6,8 +6,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Company;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.IHasTurnNumber;
@@ -19,13 +22,14 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
-import org.joverseer.support.infoSources.AgentActionInfoSource;
+import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.RumorInfoSource;
 import org.joverseer.ui.domain.ArtifactWrapper;
-import org.joverseer.ui.domain.EnemyAgentWrapper;
+import org.joverseer.ui.domain.CompanyWrapper;
+import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
 
 public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNation, IHasTurnNumber {
 
@@ -40,21 +44,37 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 
     ArrayList<ArtifactWrapper> artifacts = new ArrayList<ArtifactWrapper>();
 
-    boolean companyCommander;
-    boolean armyCommander;
-    boolean companyMember;
-
+    Company company;
+    Army army;
+    
+    CharacterDeathReasonEnum deathReason; 
+    
     String orderResults;
+    
+    
+    public Army getArmy() {
+		return army;
+	}
+    
+    
 
-    public boolean isArmyCommander() {
-        return armyCommander;
-    }
+	public CharacterDeathReasonEnum getDeathReason() {
+		return deathReason;
+	}
 
-    public void setArmyCommander(boolean armyCommander) {
-        this.armyCommander = armyCommander;
-    }
 
-    public HashMap<String, CharacterAttributeWrapper> getAttributes() {
+
+	public void setDeathReason(CharacterDeathReasonEnum deathReason) {
+		this.deathReason = deathReason;
+	}
+
+
+
+	public void setArmy(Army army) {
+		this.army = army;
+	}
+
+	public HashMap<String, CharacterAttributeWrapper> getAttributes() {
         return attributes;
     }
 
@@ -87,24 +107,18 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     public CharacterAttributeWrapper getAttribute(String attribute) {
         return getAttributes().get(attribute);
     }
+    
+    
 
-    public boolean isCompanyCommander() {
-        return companyCommander;
-    }
+    public Company getCompany() {
+		return company;
+	}
 
-    public void setCompanyCommander(boolean companyCommander) {
-        this.companyCommander = companyCommander;
-    }
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
-    public boolean isCompanyMember() {
-        return companyMember;
-    }
-
-    public void setCompanyMember(boolean companyMember) {
-        this.companyMember = companyMember;
-    }
-
-    public int getHexNo() {
+	public int getHexNo() {
         return hexNo;
     }
 
@@ -242,6 +256,21 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     public int getY() {
         return getHexNo() % 100;
     }
+    
+    public String getTravellingWith() {
+    	if (getCompany() != null) {
+    		CompanyWrapper cw = new CompanyWrapper(getCompany());
+			return "Company: " + cw.getCommander() + " - " + cw.getMemberStr();
+    	};
+    	if (getArmy() != null) {
+    		String chars = "";
+    		for (String c : (ArrayList<String>)getArmy().getCharacters()) {
+    			chars += (chars.equals("") ? "" : ", ") + c;
+    		}
+    		return "Army: " + getArmy().getCommanderName() + (chars.equals("") ? "" : " - " + chars); 
+    	}
+    	return "";
+    }
 
     public static ArrayList getWrappers() {
         Container ret = new Container(new String[] {"name", "turnNo", "id"});
@@ -260,6 +289,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
                     cw.setHexNo(c.getHexNo());
                     cw.setTurnNo(t.getTurnNo());
                     cw.setInfoSource(c.getInfoSource());
+                    cw.setDeathReason(c.getDeathReason());
                     if (c.getInformationSource() == InformationSourceEnum.exhaustive) {
                         addStats(cw, c, c.getInfoSource(), t.getTurnNo());
                     } else {
@@ -271,9 +301,40 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
                     guessStatsFromTitle(cw, c, t.getTurnNo());
                 }
             }
+            
+            // only for latest turn
+            if (i == game.getCurrentTurn()) {
+	            // assign companies 
+	            for (Company comp : (ArrayList<Company>)t.getContainer(TurnElementsEnum.Company).getItems()) {
+	            	AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", comp.getCommander());
+	            	if (cw != null) {
+	            		cw.setCompany(comp);
+	            	}
+	            	for (String member : comp.getMembers()) {
+	            		cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", member);
+	            		if (cw != null) {
+	            			cw.setCompany(comp);
+	            		}
+	            	}
+	            }
+	            
+	            // assign armies
+	            for (Army army : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
+	            	AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", army.getCommanderName());
+	            	if (cw != null) {
+	            		cw.setArmy(army);
+	            	}
+	            	for (String travellingWith : (ArrayList<String>)army.getCharacters()) {
+	            		cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", travellingWith);
+	            		if (cw != null) {
+	            			cw.setArmy(army);
+	            		}
+	            	}
+	            }
+            }
 
-            Container thieves = EnemyAgentWrapper.getAgentWrappers();
-            for (EnemyAgentWrapper eaw : (ArrayList<EnemyAgentWrapper>) thieves.getItems()) {
+            Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers();
+            for (EnemyCharacterRumorWrapper eaw : (ArrayList<EnemyCharacterRumorWrapper>) thieves.getItems()) {
                 AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", eaw.getName());
                 if (cw == null) {
                     cw = new AdvancedCharacterWrapper();
@@ -282,15 +343,28 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
                     cw.setHexNo(eaw.getHexNo());
                     cw.setTurnNo(eaw.getTurnNo());
                     getStartStats(cw);
+                    if (cw.getNationNo() == null) {
+                    	cw.setNationNo(0);
+                    }
                     RumorInfoSource ris = new RumorInfoSource();
                     ris.setTurnNo(eaw.getTurnNo());
                     cw.setInfoSource(ris);
-                    cw.setAttributeMax(new CharacterAttributeWrapper("agent", 10, eaw.getTurnNo(),
-                            new AgentActionInfoSource(eaw.getReportedTurns())));
+                    if (eaw.getCharType().equals("agent")) {
+                    	cw.setAttributeMax(new CharacterAttributeWrapper("agent", 10, eaw.getTurnNo(),
+                    			new RumorActionInfoSource(eaw.getReportedTurns())));
+                    } else {
+                    	cw.setAttributeMax(new CharacterAttributeWrapper("emmisary", 10, eaw.getTurnNo(),
+                    			new RumorActionInfoSource(eaw.getReportedTurns())));
+                    }
                     ret.addItem(cw);
                 } else {
-                    cw.setAttributeMax(new CharacterAttributeWrapper("agent", 10, eaw.getTurnNo(),
-                            new AgentActionInfoSource(eaw.getReportedTurns())));
+                    if (eaw.getCharType().equals("agent")) {
+                    	cw.setAttributeMax(new CharacterAttributeWrapper("agent", 10, eaw.getTurnNo(),
+                    			new RumorActionInfoSource(eaw.getReportedTurns())));
+                    } else {
+                    	cw.setAttributeMax(new CharacterAttributeWrapper("emmisary", 10, eaw.getTurnNo(),
+                    			new RumorActionInfoSource(eaw.getReportedTurns())));
+                    }
                 }
             }
         }
@@ -357,8 +431,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
             cw.setAttributeMax(new CharacterAttributeWrapper("mage", stat, stat, turnNo, tis));
         } else if (statType.equals("Emmissary")) {
             cw.setAttributeMax(new CharacterAttributeWrapper("emmisary", stat, stat, turnNo, tis));
-        }
-        ;
+        };
     }
 
     public static void getStartStats(AdvancedCharacterWrapper cw) {

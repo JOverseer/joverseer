@@ -12,7 +12,7 @@
 				<value>artifactInfoListView</value>
 				<value>companyListView</value>
 				<value>encounterListView</value>
-				<value>enemyAgentListView</value>
+				<value>enemyCharacterRumorListView</value>
 				<value>locateArtifactResultListView</value>
 				<value>nationMessageListView</value>
 				<value>orderListView</value>
@@ -37,9 +37,7 @@
 				<value>startingCharacterListView</value>
 				<value>infoView</value>
 				<value>orderInfoView</value>	
-				<!--
 				<value>advancedArtifactListView</value>			
-				-->
 				<value>advancedCharacterListView</value>
 			</list>
 		</property>
@@ -233,7 +231,6 @@
 		</property>
 	</bean>
 	
-	<!--
 	<bean id="advancedArtifactListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -256,7 +253,6 @@
 			<value>250</value>
 		</property>
 	</bean>
-	-->
 	
 	<bean id="advancedCharacterListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
@@ -446,7 +442,7 @@
 		</property>
 	</bean>
 	
-	<bean id="enemyAgentListView" 
+	<bean id="enemyCharacterRumorListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
 		<property name="initMode">
@@ -459,7 +455,7 @@
 			<value>3</value>
 		</property>
 		<property name="viewClass">
-			<value>org.joverseer.ui.listviews.EnemyAgentListView</value>
+			<value>org.joverseer.ui.listviews.EnemyCharacterRumorListView</value>
 		</property>
 	</bean>
 	

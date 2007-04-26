@@ -11,6 +11,7 @@ import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
@@ -39,18 +40,20 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
         Object obj = tableModel.getRow(objRow);
         if (IBelongsToNation.class.isInstance(obj)) {
             IBelongsToNation natObj = (IBelongsToNation) obj;
-            if (natObj == null || natObj.getNationNo() == null || natObj.getNationNo() == 0)
+            if (natObj == null || natObj.getNationNo() == null)
                 return c;
             int nationNo = natObj.getNationNo();
 
             Game g = GameHolder.instance().getGame();
             NationRelations nr = (NationRelations) g.getTurn().getContainer(TurnElementsEnum.NationRelation)
                     .findFirstByProperty("nationNo", nationNo);
-            if (nr == null)
-                return c;
+            NationAllegianceEnum allegiance = null;
+            if (nr != null && nationNo > 0) {
+            	allegiance = nr.getAllegiance();
+            }
             MessageSource colorSource = (MessageSource) Application.instance().getApplicationContext().getBean(
                     "colorSource");
-            String colorKey = "Listview." + nr.getAllegiance().toString() + ".color";
+            String colorKey = allegiance != null ? "Listview." + allegiance.toString() + ".color" : "ListView.unknownAllegiance.color";
             Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[] {}, Locale.getDefault()));
             c.setBackground(bg);
             return c;

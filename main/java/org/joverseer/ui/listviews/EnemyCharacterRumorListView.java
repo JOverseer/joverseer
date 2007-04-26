@@ -14,15 +14,15 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.domain.EnemyAgentWrapper;
+import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
 import org.joverseer.domain.Character;
 
 
-public class EnemyAgentListView extends BaseItemListView {
+public class EnemyCharacterRumorListView extends BaseItemListView {
 
 
-    public EnemyAgentListView() {
-        super(EnemyAgentTableModel.class);
+    public EnemyCharacterRumorListView() {
+        super(EnemyCharacterRumorTableModel.class);
     }
 
     protected int[] columnWidths() {
@@ -37,7 +37,7 @@ public class EnemyAgentListView extends BaseItemListView {
     }
 
     protected void setItems() {
-        Container thieves = EnemyAgentWrapper.getAgentWrappers();
+        Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers();
         tableModel.setRows(thieves.getItems());
         tableModel.fireTableDataChanged();
     }

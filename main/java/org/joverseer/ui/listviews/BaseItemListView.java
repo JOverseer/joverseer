@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
@@ -37,6 +38,7 @@ import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.filters.AndFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
@@ -215,6 +217,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
         table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
         table.setDefaultRenderer(InfoSource.class, new InfoSourceTableCellRenderer(tableModel));
+        table.setDefaultRenderer(CharacterDeathReasonEnum.class, new DeathReasonEnumRenderer(tableModel));
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);

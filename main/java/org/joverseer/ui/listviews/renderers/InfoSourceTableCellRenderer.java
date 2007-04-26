@@ -7,7 +7,7 @@ import javax.swing.JTable;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.infoSources.AgentActionInfoSource;
+import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
@@ -65,8 +65,8 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
             	strValue = dtis.getTitle();
             } else if (RumorInfoSource.class.isInstance(value)) {
             	strValue = "Rumor";
-            } else if (AgentActionInfoSource.class.isInstance(value)) {
-            	AgentActionInfoSource aais = (AgentActionInfoSource)value;
+            } else if (RumorActionInfoSource.class.isInstance(value)) {
+            	RumorActionInfoSource aais = (RumorActionInfoSource)value;
             	strValue = aais.getReports();
             }
         }

@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.infoSources.AgentActionInfoSource;
+import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;

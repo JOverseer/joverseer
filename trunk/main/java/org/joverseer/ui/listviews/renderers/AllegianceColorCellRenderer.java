@@ -59,4 +59,16 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
         }
     }
 
+    
+    public BeanTableModel getTableModel() {
+        return tableModel;
+    }
+
+    
+    public void setTableModel(BeanTableModel tableModel) {
+        this.tableModel = tableModel;
+    }
+    
+    
+
 }

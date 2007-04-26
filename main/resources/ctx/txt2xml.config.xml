@@ -410,7 +410,7 @@
         			</processor>
         			<processor type="RegexMatch">
         				<element>Owner</element>
-        				<regex>possessed by\s([\p{L}?]+(?:[\s\-']\p{L}+)*) at</regex>
+        				<regex>possessed by\s(\p{L}+(?:[\s\-']\p{L}+)*) at</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>Hex</element>
@@ -454,7 +454,7 @@
         			</processor>
         			<processor type="RegexMatch">
         				<element>Owner</element>
-        				<regex>possessed\sby\s([\p{L}?]+(?:[\s\-']\p{L}+)*) in</regex>
+        				<regex>possessed\sby\s(\p{L}+(?:[\s\-']\p{L}+)*) in</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>Hex</element>
@@ -482,14 +482,15 @@
         		<processor type="RegexMatch">
         			<!--  Parse RC result with owner -->
         			<element>RevealCharacter</element>
-        			<regex>(was ordered to cast a lore spell. Reveal Character \- [\p{L}?]+(?:[\s\-]\p{L}+)*\sis\slocated\sat\sor\snear\s+\d{4})</regex>
+        			<multiline>1</multiline>
+        			<regex>(was ordered to cast a lore spell. Reveal Character \- \p{L}+(?:[\s\-]\p{L}+)*\s+is\s+located\s+at\s+or\s+near\s+\d{4})</regex>
         			<processor type="RegexMatch">
         				<element>Character</element>
-        				<regex>([\p{L}?]+(?:[\s\-']\p{L}+)*) is located</regex>
+        				<regex>(\p{L}+(?:[\s\-']\p{L}+)*) is located</regex>
         			</processor>
         			<processor type="RegexMatch">
         				<element>Hex</element>
-        				<regex>at or near\s+(\d{4})</regex>
+        				<regex>at\s+or\s+near\s+(\d{4})</regex>
         			</processor>
         		</processor>
 

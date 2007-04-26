@@ -48,7 +48,7 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
                     strValue += ", " + getInfoSourceDescription(is);
                 }
             } else if (DerivedFromArmyInfoSource.class.isInstance(value)) {
-                strValue = "Army commander";
+                strValue = "Army/Navy commander";
             } else if (DoubleAgentInfoSource.class.isInstance(value)) {
                 DoubleAgentInfoSource dais = (DoubleAgentInfoSource)value;
                 strValue = "Double agent for " + getNationStr(dais.getNationNo()); 

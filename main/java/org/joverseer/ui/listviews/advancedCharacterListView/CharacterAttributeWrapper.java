@@ -6,6 +6,7 @@ public class CharacterAttributeWrapper {
 	String attribute;
 	InfoSource infoSource;
 	Object value;
+        Object totalValue;
 	int turnNo;
 	
 	public CharacterAttributeWrapper(String attribute, Object value, int turnNo, InfoSource infoSource) {
@@ -13,8 +14,16 @@ public class CharacterAttributeWrapper {
 		this.value = value;
 		this.turnNo = turnNo;
 		this.infoSource = infoSource;
-		
 	}
+        
+        public CharacterAttributeWrapper(String attribute, Object value, Object totalValue, int turnNo, InfoSource infoSource) {
+                this.attribute = attribute;
+                this.value = value;
+                this.turnNo = turnNo;
+                this.infoSource = infoSource;
+                this.totalValue = totalValue;
+        }
+        
 	
 	public InfoSource getInfoSource() {
 		return infoSource;
@@ -40,6 +49,17 @@ public class CharacterAttributeWrapper {
 	public void setTurnNo(int turnNo) {
 		this.turnNo = turnNo;
 	}
-	
+
+    
+    public Object getTotalValue() {
+        return totalValue;
+    }
+
+    
+    public void setTotalValue(Object totalValue) {
+        this.totalValue = totalValue;
+    }
+
+        
 	
 }

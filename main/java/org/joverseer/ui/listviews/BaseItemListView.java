@@ -63,6 +63,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected ArrayList<JComboBox> filters = new ArrayList<JComboBox>();
     protected Class tableModelClass;
     protected SelectHexCommandExecutor selectHexCommandExecutor = new SelectHexCommandExecutor();
+    protected JPanel buttonPanel;
 
     public BaseItemListView(Class tableModelClass) {
         this.tableModelClass = tableModelClass;
@@ -130,6 +131,27 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     
     protected JTable createTable() {
     	return TableUtils.createStandardSortableTable(tableModel);
+    }
+    
+    protected JComponent[] getButtons() {
+        if (getDefaultSort() != null) {
+            ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+            Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
+            JLabel restoreSorting = new JLabel();
+            restoreSorting.setIcon(ico);
+            restoreSorting.setPreferredSize(new Dimension(16, 16));
+            restoreSorting.addMouseListener(new MouseAdapter() {
+
+                public void mouseClicked(MouseEvent arg0) {
+                    ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+                }
+
+            });
+            ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+            restoreSorting.setToolTipText("Restore default sort order");
+            return new JComponent[]{restoreSorting};
+        }
+        return new JComponent[]{};
     }
 
     protected JComponent createControlImpl() {
@@ -199,23 +221,15 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         scrollPane.getViewport().setBackground(table.getBackground());
         tlb.cell(scrollPane);
 
-        if (getDefaultSort() != null) {
-            ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-            Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
-            JLabel restoreSorting = new JLabel();
-            restoreSorting.setIcon(ico);
-            restoreSorting.setPreferredSize(new Dimension(16, 16));
-            restoreSorting.addMouseListener(new MouseAdapter() {
-
-                public void mouseClicked(MouseEvent arg0) {
-                    ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
-                }
-
-            });
-            ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
-            restoreSorting.setToolTipText("Restore default sort order");
-            tlb.cell(restoreSorting, "colspec=left:30px valign=top");
+        TableLayoutBuilder lb = new TableLayoutBuilder();
+        for (JComponent compo : getButtons()) {
+            lb.cell(compo, "colspec=left:30px valign=top");
+            lb.relatedGapRow();
+            lb.row();
         }
+        JPanel pnl = lb.getPanel();
+        pnl.setBackground(Color.WHITE);
+        tlb.cell(pnl, "colspec=left:30px valign=top");
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
         return p;

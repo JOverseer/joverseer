@@ -36,6 +36,11 @@ public class CharacterAttributeWrapperTableCellRenderer extends AllegianceColorC
 				v += "+";
 			}
 		}
+                if (caw != null && caw.getTotalValue() != null) {
+                    if (!caw.getTotalValue().toString().equals(caw.getValue().toString()) && !caw.getTotalValue().toString().equals("0")) {
+                        v += "(" + caw.getTotalValue().toString() + ")";
+                    }
+                }
 		JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, v, isSelected, hasFocus, row, column);
 		String toolTip = "";
 		if (caw != null && caw.getValue() != null) {
@@ -51,6 +56,7 @@ public class CharacterAttributeWrapperTableCellRenderer extends AllegianceColorC
 			}
 		}
 		lbl.setToolTipText(toolTip);
+                lbl.setHorizontalAlignment(JLabel.CENTER);
 		return lbl;
 	}
 	

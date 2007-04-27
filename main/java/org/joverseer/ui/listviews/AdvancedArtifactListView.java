@@ -30,102 +30,105 @@ public class AdvancedArtifactListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{32, 96, 48, 132, 48, 48, 120, 120, 48, 120};
+        return new int[] {32, 96, 48, 132, 48, 48, 120, 120, 48, 120};
     }
 
     protected void setItems() {
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (!Game.isInitialized(g)) return;
+        if (!Game.isInitialized(g))
+            return;
         // initialize with metadata info
         Container aws = ArtifactWrapper.getArtifactWrappers();
         ArrayList filteredItems = new ArrayList();
         AbstractListViewFilter filter = getActiveFilter();
         for (Object obj : aws.getItems()) {
-        	if (filter == null || filter.accept(obj)) {
-        		filteredItems.add(obj);
-        	}
+            if (filter == null || filter.accept(obj)) {
+                filteredItems.add(obj);
+            }
         }
         tableModel.setRows(filteredItems);
     }
 
-	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
+    protected AbstractListViewFilter[][] getFilters() {
+        ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
         filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
         filters.add(new OwnedArtifactFilter("Owned", true));
         filters.add(new OwnedArtifactFilter("Not Owned", false));
-        return new AbstractListViewFilter[][]{
-        		filters.toArray(new AbstractListViewFilter[]{}),
-        		TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),
-        		new AbstractListViewFilter[]{
-        			new LASourceFilter("All sources", null),
-        			new LASourceFilter("LA/LAT", new Class[]{DerivedFromLocateArtifactInfoSource.class, DerivedFromLocateArtifactTrueInfoSource.class}),
-        			new LASourceFilter("Xml/Pdf", new Class[]{XmlTurnInfoSource.class}),
-        			new LASourceFilter("Starting", new Class[]{MetadataSource.class}),
-        		},
-        		new AbstractListViewFilter[]{
-        			new ArtifactPowerFilter("All Powers", null),
-        			new ArtifactPowerFilter("Combat", "Combat "),
-        			new ArtifactPowerFilter("Agent", "Agent "),
-        			new ArtifactPowerFilter("Command", "Command "),
-        			new ArtifactPowerFilter("Stealth", "Stealth "),
-        			new ArtifactPowerFilter("Mage", "Mage "),
-        			new ArtifactPowerFilter("Emissary", "Emissary "),
-        			new ArtifactPowerFilter("Curse", "Spirit Mastery"),
-        			new ArtifactPowerFilter("Conjuring", "Conjuring Ways"),
-        			new ArtifactPowerFilter("Teleport", " Teleport")
-        		}
-    		};
-	}
-	
-	class LASourceFilter extends AbstractListViewFilter {
-		Class[] classes;
-		public LASourceFilter(String descr, Class[] classes) {
-			super(descr);
-			this.classes = classes;
-		}
-		
-		public boolean accept(Object obj) {
-			if (classes == null) return true;
-			InfoSource is = ((ArtifactWrapper)obj).getInfoSource();
-			for (Class c : classes) {
-				if (c.isInstance(is)) return true;
-			}
-			return false;
-		}
-	}
+        return new AbstractListViewFilter[][] {
+                filters.toArray(new AbstractListViewFilter[] {}),
+                TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),
+                new AbstractListViewFilter[] {
+                        new LASourceFilter("All sources", null),
+                        new LASourceFilter("LA/LAT", new Class[] {DerivedFromLocateArtifactInfoSource.class,
+                                DerivedFromLocateArtifactTrueInfoSource.class}),
+                        new LASourceFilter("Xml/Pdf", new Class[] {XmlTurnInfoSource.class}),
+                        new LASourceFilter("Starting", new Class[] {MetadataSource.class}),},
+                new AbstractListViewFilter[] {new ArtifactPowerFilter("All Powers", null),
+                        new ArtifactPowerFilter("Combat", "Combat "), new ArtifactPowerFilter("Agent", "Agent "),
+                        new ArtifactPowerFilter("Command", "Command "), new ArtifactPowerFilter("Stealth", "Stealth "),
+                        new ArtifactPowerFilter("Mage", "Mage "), new ArtifactPowerFilter("Emissary", "Emissary "),
+                        new ArtifactPowerFilter("Curse", "Spirit Mastery"),
+                        new ArtifactPowerFilter("Conjuring", "Conjuring Ways"),
+                        new ArtifactPowerFilter("Teleport", " Teleport")}};
+    }
+
+    class LASourceFilter extends AbstractListViewFilter {
+
+        Class[] classes;
+
+        public LASourceFilter(String descr, Class[] classes) {
+            super(descr);
+            this.classes = classes;
+        }
+
+        public boolean accept(Object obj) {
+            if (classes == null)
+                return true;
+            InfoSource is = ((ArtifactWrapper) obj).getInfoSource();
+            for (Class c : classes) {
+                if (c.isInstance(is))
+                    return true;
+            }
+            return false;
+        }
+    }
 
     class OwnedArtifactFilter extends AbstractListViewFilter {
-    	Boolean owned;
-    	
-    	public OwnedArtifactFilter(String descr, Boolean owned) {
-    		super(descr);
-    		this.owned = owned; 
-    	}
-    	
-    	public boolean accept(Object obj) {
-    		ArtifactWrapper aw = (ArtifactWrapper)obj;
-    		if (owned == null) return true;
-    		if (owned) {
-    			return aw.getOwner() != null && !aw.getOwner().equals("");
-    		} else {
-    			return aw.getOwner() == null || aw.getOwner().equals("");
-    		}
-    	}
+
+        Boolean owned;
+
+        public OwnedArtifactFilter(String descr, Boolean owned) {
+            super(descr);
+            this.owned = owned;
+        }
+
+        public boolean accept(Object obj) {
+            ArtifactWrapper aw = (ArtifactWrapper) obj;
+            if (owned == null)
+                return true;
+            if (owned) {
+                return aw.getOwner() != null && !aw.getOwner().equals("");
+            } else {
+                return aw.getOwner() == null || aw.getOwner().equals("");
+            }
+        }
     }
-    
+
     class ArtifactPowerFilter extends AbstractListViewFilter {
-    	String powerStr;
-    	
-    	public ArtifactPowerFilter(String descr, String power) {
-    		super(descr);
-    		this.powerStr = power;
-    	}
-    	
-    	public boolean accept(Object obj) {
-    		if (powerStr == null) return true;
-    		ArtifactWrapper aw = (ArtifactWrapper)obj;
-    		return (aw.getPower1().indexOf(powerStr) > -1 || aw.getPower2().indexOf(powerStr) > -1);
-    	}
+
+        String powerStr;
+
+        public ArtifactPowerFilter(String descr, String power) {
+            super(descr);
+            this.powerStr = power;
+        }
+
+        public boolean accept(Object obj) {
+            if (powerStr == null)
+                return true;
+            ArtifactWrapper aw = (ArtifactWrapper) obj;
+            return (aw.getPower1().indexOf(powerStr) > -1 || aw.getPower2().indexOf(powerStr) > -1);
+        }
     }
 }

@@ -36,6 +36,8 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
 
     int x;
     int y;
+    
+    Boolean isHostage = null;
 
     ArrayList<Integer> artifacts = new ArrayList<Integer>();
     ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
@@ -281,5 +283,15 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     public static void main(String[] args) {
         System.out.println(Character.getIdFromName("Michèle"));
     }
+    
+    public Boolean getHostage() {
+        return isHostage;
+    }
+    
+    public void setHostage(Boolean isHostage) {
+        this.isHostage = isHostage;
+    }
+    
+    
     
 }

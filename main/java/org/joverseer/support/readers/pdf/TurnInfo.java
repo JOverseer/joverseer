@@ -17,6 +17,7 @@ public class TurnInfo {
     Container encounters;
     Container doubleAgents;
     Container challenges;
+    Container hostages;
     String date;
     String season;
 
@@ -148,4 +149,16 @@ public class TurnInfo {
     public void setSeason(String season) {
         this.season = season;
     }
+
+    
+    public Container getHostages() {
+        return hostages;
+    }
+
+    
+    public void setHostages(Container hostages) {
+        this.hostages = hostages;
+    }
+    
+    
 }

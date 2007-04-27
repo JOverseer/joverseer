@@ -4,5 +4,5 @@ import org.joverseer.game.Turn;
 
 
 public interface OrderResult {
-    public void updateGame(Turn turn, int nationNo, String casterName);
+    public void updateGame(Turn turn, int nationNo, String character);
 }

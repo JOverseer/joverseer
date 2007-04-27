@@ -259,6 +259,10 @@ public class CharacterWrapper {
                 character.setInformationSource(InformationSourceEnum.limited);
                 break;
         }
+        
+        if (getInformationSource() == 0) {
+            character.setHostage(getLocation() == 0);
+        } 
         return character;
     }
 }

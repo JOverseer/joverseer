@@ -273,7 +273,7 @@
 			<value>650</value>
 		</property>
 		<property name="preferredHeight">
-			<value>250</value>
+			<value>500</value>
 		</property>
 	</bean>
 	

@@ -37,6 +37,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
+import org.joverseer.support.infoSources.HostageInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.pdfbox.pdmodel.PDDocument;
@@ -215,6 +216,22 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"Name", "HexID", "Artifacts", "CharacterOrders"},
                             new String[]{"name", "hexNo", "artifacts", "orders"}));
             snpr.setAllowUnknownChildElements(true);
+            // create assassination result object
+            digester.addObjectCreate("txt2xml/Turn/Orders/Character/Assassination", "org.joverseer.support.readers.pdf.AssassinationResultWrapper");
+            // add to character
+            digester.addSetNext("txt2xml/Turn/Orders/Character/Assassination", "addOrderResult", "org.joverseer.support.readers.pdf.AssassinationResultWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Orders/Character/Assassination",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character"},
+                            new String[]{"character"}));
+            // create execution result object
+            digester.addObjectCreate("txt2xml/Turn/Orders/Character/Execution", "org.joverseer.support.readers.pdf.ExecutionResultWrapper");
+            // add to character
+            digester.addSetNext("txt2xml/Turn/Orders/Character/Execution", "addOrderResult", "org.joverseer.support.readers.pdf.ExecutionResultWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Orders/Character/Execution",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character"},
+                            new String[]{"character"}));
             // create LA result object
             digester.addObjectCreate("txt2xml/Turn/Orders/Character/LocateArtifact", "org.joverseer.support.readers.pdf.LocateArtifactResultWrapper");
             // add to character
@@ -346,19 +363,34 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Text"},
                             new String[]{"character", "hexNo", "description"}));
             snpr.setAllowUnknownChildElements(true);
-//          create container for double agents
+            // create container for double agents
             digester.addObjectCreate("txt2xml/Turn/DoubleAgents", "org.joverseer.support.Container");
             // add container to turn info
             digester.addSetNext("txt2xml/Turn/DoubleAgents", "setDoubleAgents");
             // create DoubleAgent wrapper
             digester.addObjectCreate("txt2xml/Turn/DoubleAgents/DoubleAgent", "org.joverseer.support.readers.pdf.DoubleAgentWrapper");
-            // add army wrapper
+            // add DoubleAgent wrapper
             digester.addSetNext("txt2xml/Turn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.pdf.DoubleAgentWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/DoubleAgents/DoubleAgent",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex"},
-                            new String[]{"name", "hexNo"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Nation"},
+                            new String[]{"name", "hexNo", "nation"}));
             snpr.setAllowUnknownChildElements(true);
+            
+            // create container for hostages
+            digester.addObjectCreate("txt2xml/Turn/Hostages", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/Hostages", "setHostages");
+            // create DoubleAgent wrapper
+            digester.addObjectCreate("txt2xml/Turn/Hostages/Hostage", "org.joverseer.support.readers.pdf.HostageWrapper");
+            // add DoubleAgent wrapper
+            digester.addSetNext("txt2xml/Turn/DoubleAgents/Hostage", "addItem", "org.joverseer.support.readers.pdf.HostageWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/DoubleAgents/Hostage",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Nation"},
+                            new String[]{"name", "nation"}));
+            snpr.setAllowUnknownChildElements(true);
+
             turnInfo = (TurnInfo)digester.parse("file:///" + xmlFile.getCanonicalPath());
 //            Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
 //            Matcher m = p.matcher(xmlFile.getCanonicalPath());
@@ -494,6 +526,13 @@ public class TurnPdfReader implements Runnable {
             }
             catch (Exception exc) {
             	errorOccurred = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            try {
+                updateHostages(game);
+            }
+            catch (Exception exc) {
+                errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -786,6 +825,33 @@ public class TurnPdfReader implements Runnable {
                 c = daw.getCharacter();
                 c.setInfoSource(dais);
                 cs.addItem(c);
+            }
+            // set nation if applicable
+            Nation n = game.getMetadata().getNationByName(daw.getNation());
+            if (n != null) {
+                c.setNationNo(n.getNumber());
+            }
+        }
+                
+    }
+    
+    public void updateHostages(Game game) throws Exception {
+        HostageInfoSource dais = new HostageInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+        Container hws = turnInfo.getHostages();
+        Container cs = turn.getContainer(TurnElementsEnum.Character);
+        for (HostageWrapper hw : (ArrayList<HostageWrapper>)hws.getItems()) {
+            Character c = (Character)cs.findFirstByProperty("name", hw.getName());
+            if (c == null) {
+                // add character
+                c = hw.getCharacter();
+                c.setInfoSource(dais);
+                cs.addItem(c);
+            } 
+            c.setHostage(true);
+            // set nation if applicable
+            Nation n = game.getMetadata().getNationByName(hw.getNation());
+            if (n != null) {
+                c.setNationNo(n.getNumber());
             }
         }
                 

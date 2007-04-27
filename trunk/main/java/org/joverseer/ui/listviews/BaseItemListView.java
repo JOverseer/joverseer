@@ -222,6 +222,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
         scrollPane.getViewport().setBackground(table.getBackground());
+        scrollPane.setPreferredSize(new Dimension(1200, 1200));
         tlb.cell(scrollPane);
 
         TableLayoutBuilder lb = new TableLayoutBuilder();

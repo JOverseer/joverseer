@@ -125,7 +125,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation {
                         String prefix = prefixes[j];
                         Matcher m = Pattern.compile(prefix).matcher(nm.getMessage());
                         if (m.matches()) {
-                            charName = m.group(1);
+                            charName = m.group(1).trim();
                             repType = types[j];
                             charType = charTypes[j];
                             break;

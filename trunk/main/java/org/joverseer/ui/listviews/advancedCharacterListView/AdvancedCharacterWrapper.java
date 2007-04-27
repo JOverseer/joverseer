@@ -335,6 +335,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 
             Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers();
             for (EnemyCharacterRumorWrapper eaw : (ArrayList<EnemyCharacterRumorWrapper>) thieves.getItems()) {
+                if (eaw.getTurnNo() != i) continue;
                 AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", eaw.getName());
                 if (cw == null) {
                     cw = new AdvancedCharacterWrapper();

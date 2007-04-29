@@ -38,6 +38,7 @@ public class OrderEditorView extends AbstractView implements ApplicationListener
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
                 GraphicUtils.showView("orderEditorView");
+                ((OrderEditor)f).giveFocus();
             }
         }
     }

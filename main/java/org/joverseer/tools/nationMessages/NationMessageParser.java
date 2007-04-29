@@ -1,4 +1,4 @@
-package org.joverseer.tools;
+package org.joverseer.tools.nationMessages;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

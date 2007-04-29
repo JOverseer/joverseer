@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.Icon;
@@ -46,6 +47,9 @@ import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSou
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
+import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
+import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
@@ -114,7 +118,6 @@ public class CharacterViewer extends ObjectViewer {
     ActionCommand showSpellsCommand = new ShowSpellsCommand();
     ActionCommand showOrdersCommand = new ShowOrdersCommand();
     ActionCommand showResultsCommand = new ShowResultsCommand();
-    ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterRangeOnMapCommand();
     ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
     ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
 
@@ -552,17 +555,6 @@ public class CharacterViewer extends ObjectViewer {
         }
     }
 
-    private class ShowCharacterRangeOnMapCommand extends ActionCommand {
-
-        protected void doExecuteCommand() {
-            CharacterRangeMapItem crmi = new CharacterRangeMapItem((Character) getFormObject());
-            AbstractMapItem.add(crmi);
-
-            Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
-                            .getSelectedHex(), this));
-        }
-    }
     
     private class AddRefuseChallengeCommand extends AddOrderCommand {
         public AddRefuseChallengeCommand() {
@@ -656,6 +648,22 @@ public class CharacterViewer extends ObjectViewer {
     
     private JPopupMenu createCharacterPopupContextMenu() {
         Character c = (Character) getFormObject();
+        ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(c.getHexNo(), 12);
+        ActionCommand showCharacterLongStrideRangeCommand = new ShowCharacterLongStrideRangeCommand(c.getHexNo());
+        ActionCommand showCharacterFastStrideRangeCommand = new ShowCharacterFastStrideRangeCommand(c.getHexNo());
+        boolean hasFastStride = false;
+        boolean hasLongStride = false;
+        for (SpellProficiency sp : c.getSpells()) {
+        	if (sp.getSpellId() == 304) {
+        		hasFastStride = true;
+        	}
+        	if (sp.getSpellId() == 302) {
+        		hasLongStride = true;
+        	}
+        }
+        showCharacterFastStrideRangeCommand.setEnabled(hasFastStride);
+        showCharacterLongStrideRangeCommand.setEnabled(hasLongStride);
+        
         showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);
         showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
         showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
@@ -677,7 +685,7 @@ public class CharacterViewer extends ObjectViewer {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
                 new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
-                        "separator", showCharacterRangeOnMapCommand, "separator", deleteCharacterCommand,
+                        "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
                         "separator", quickOrders});
         return group.createPopupMenu();
     }

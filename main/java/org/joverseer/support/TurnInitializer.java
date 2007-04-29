@@ -62,7 +62,7 @@ public class TurnInitializer {
                 if (gm.getGameType() == GameTypeEnum.game1650 || 
                         gm.getGameType() == GameTypeEnum.game2950) {
                     for (int j=1; j<26; j++) {
-                        if (i < 10 && j < 10) {
+                        if (i <= 10 && j <= 10) {
                             nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
                         } else if (i > 10 && i < 21 && j > 10 && j < 21) {
                             nr.setRelationsFor(j, NationRelationsEnum.Tolerated);

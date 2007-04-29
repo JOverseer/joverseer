@@ -94,14 +94,16 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation {
                     "theft",
                     "assas.",
                     "kidnap",
-                    "emiss."
+                    "emiss.",
+                    "sabot."
             };
             String[] charTypes = new String[]{
             		"agent",
             		"agent",
             		"agent",
             		"agent",
-            		"emmisary"
+            		"emmisary",
+            		"agent",
             };
             String[] prefixes = new String[]{
                     "^There are rumors of a theft attempt involving (.+) at .+",
@@ -109,6 +111,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation {
                     "^There are rumors of an assassination attempt involving (.+) and .+",
                     "^There are rumors of a kidnap attempt involving (.+) and .+",
                     "^The loyalty was influenced from the efforts or presence of (.+) at .+",
+                    "^There are rumors of a sabotage attempt involving (.+) at .+"
             };
             for (int i=0; i<=g.getMaxTurn(); i++) {
                 Turn t = g.getTurn(i);

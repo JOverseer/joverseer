@@ -27,6 +27,9 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
+import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
+import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
@@ -69,6 +72,8 @@ public class HexInfoViewer extends ObjectViewer {
     ShowUnfedInfantryArmyRangeCommand showUnfedInfantryArmyRangeCommand = new ShowUnfedInfantryArmyRangeCommand();
     ShowFedCavalryArmyRangeCommand showFedCavalryArmyRangeCommand = new ShowFedCavalryArmyRangeCommand();
     ShowUnfedCavalryArmyRangeCommand showUnfedCavalryArmyRangeCommand = new ShowUnfedCavalryArmyRangeCommand();
+    
+    
 
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -181,11 +186,20 @@ public class HexInfoViewer extends ObjectViewer {
     }
     
     protected JPopupMenu createHexInfoPopupContextMenu() {
+    	Hex hex = (Hex)getFormObject();
+        ActionCommand showCharacterLongStrideRangeCommand = new ShowCharacterLongStrideRangeCommand(hex.getHexNo());
+        ActionCommand showCharacterFastStrideRangeCommand = new ShowCharacterFastStrideRangeCommand(hex.getHexNo());
+        ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(hex.getHexNo(), 12);
+
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "hexInfoCommandGroup",
                 new Object[] {addBridgeNE, addBridgeE, addBridgeSE, addBridgeSW, addBridgeW, addBridgeNW, 
                         "separator",
                         removeBridgeNE, removeBridgeE, removeBridgeSE, removeBridgeSW, removeBridgeW, removeBridgeNW,
+                        "separator",
+                        showCharacterRangeOnMapCommand,
+                        showCharacterLongStrideRangeCommand,
+                        showCharacterFastStrideRangeCommand,
                         "separator",
                         showFedInfantryArmyRangeCommand,
                         showUnfedInfantryArmyRangeCommand,

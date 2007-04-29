@@ -296,6 +296,9 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
                         getStartStats(cw);
                         guessStatsFromTitle(cw, c, t.getTurnNo());
                     }
+                    if (i == game.getCurrentTurn() && c.getOrderResults() != null && !c.getOrderResults().equals("")) {
+                    	cw.setOrderResults(c.getOrderResults());
+                    }
                     ret.addItem(cw);
                 } else {
                     guessStatsFromTitle(cw, c, t.getTurnNo());

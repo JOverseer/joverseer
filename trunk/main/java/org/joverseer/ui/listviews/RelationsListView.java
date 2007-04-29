@@ -11,8 +11,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.table.BeanTableModel;
 
 
 public class RelationsListView extends ItemListView {
@@ -23,7 +25,7 @@ public class RelationsListView extends ItemListView {
     
     protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
-        table.setDefaultRenderer(String.class, new RelationsTableCellRenderer());
+        table.setDefaultRenderer(String.class, new RelationsTableCellRenderer(tableModel));
         return c;
     }
 
@@ -48,9 +50,13 @@ public class RelationsListView extends ItemListView {
     }
     
     
-    public class RelationsTableCellRenderer extends DefaultTableCellRenderer {
+    public class RelationsTableCellRenderer extends AllegianceColorCellRenderer {
 
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public RelationsTableCellRenderer(BeanTableModel tableModel) {
+			super(tableModel);
+		}
+
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (column < 2) return c;
             MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");

@@ -83,8 +83,8 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
 
     private void renderCharacterRangeMapItem (Object obj, Graphics2D g, int x, int y) {
         CharacterRangeMapItem crmi = (CharacterRangeMapItem)obj;
-        Character c = crmi.getCharacter();
-        int hexNo = c.getHexNo();
+        int hexNo = crmi.getHexNo();
+        int range = crmi.getRange();
         if (metadata == null) {
             init();
         }
@@ -98,7 +98,7 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
         for (Hex h : hexes) {
             int hn = h.getColumn() * 100 + h.getRow();
             int d;
-            if ((d = MovementUtils.distance(hexNo, hn)) == 12) {
+            if ((d = MovementUtils.distance(hexNo, hn)) == range) {
                 // draw each hex in range with special color
                 Point p = MapPanel.instance().getHexLocation(hn);
                 Polygon polygon = new Polygon(xPoints, yPoints, 6);

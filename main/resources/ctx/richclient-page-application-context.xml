@@ -39,6 +39,7 @@
 				<value>orderInfoView</value>	
 				<value>advancedArtifactListView</value>			
 				<value>advancedCharacterListView</value>
+				<value>nationStatisticsListView</value>
 			</list>
 		</property>
 		<property name="perspectives">
@@ -199,6 +200,29 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.CharacterListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+	</bean>
+	
+	<bean id="nationStatisticsListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NationStatisticsListView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

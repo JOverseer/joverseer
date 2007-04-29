@@ -30,7 +30,7 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
-import org.joverseer.tools.NationMessageParser;
+import org.joverseer.tools.nationMessages.NationMessageParser;
 import org.springframework.richclient.progress.ProgressMonitor;
 
 

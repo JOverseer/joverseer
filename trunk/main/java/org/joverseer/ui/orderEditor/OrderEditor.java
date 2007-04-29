@@ -375,7 +375,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                         } else if (paramType.equals("arm")) {
                             sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"no", "le", "br", "st", "mi"}, new String[]{"None", "Leather", "Bronze", "Steel", "Mithril"});
                         } else if (paramType.equals("trp")) {
-                            sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"hc", "lc", "hi", "li", "ar", "ma"}, new String[]{"Heavy Cavalry", "Light Cavalry", "Heavy Infantry", "Light Infantry", "Archers", "Men at Arms"});
+                            sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"hc", "lc", "hi", "li", "ar", "ma"}, new String[]{"HC", "LC", "HI", "LI", "AR", "MA"});
                         } else if (paramType.equals("gen")) {
                             sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"m", "f"}, new String[]{"Male", "Female"});
                         } else if (paramType.equals("alg")) {
@@ -434,6 +434,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             }
         }
         parameters.setEditable(paramsEditable);
+        parameters.setFocusable(paramsEditable);
+        subeditorPanel.requestFocusInWindow();
     }
     
     private void refreshDescription() {
@@ -556,5 +558,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         return subeditorComponents;
     }
     
-    
+    public void giveFocus() {
+    	orderCombo.requestFocusInWindow();
+    }
 }

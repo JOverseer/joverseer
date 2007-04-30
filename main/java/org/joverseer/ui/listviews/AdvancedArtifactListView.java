@@ -16,7 +16,8 @@ import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactTrueInfoSource;
-import org.joverseer.ui.domain.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
@@ -37,11 +38,10 @@ public class AdvancedArtifactListView extends BaseItemListView {
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (!Game.isInitialized(g))
             return;
-        // initialize with metadata info
-        Container aws = ArtifactWrapper.getArtifactWrappers();
+        ArrayList aws = ArtifactInfoCollector.instance().getWrappersForTurn(g.getCurrentTurn());
         ArrayList filteredItems = new ArrayList();
         AbstractListViewFilter filter = getActiveFilter();
-        for (Object obj : aws.getItems()) {
+        for (Object obj : aws) {
             if (filter == null || filter.accept(obj)) {
                 filteredItems.add(obj);
             }

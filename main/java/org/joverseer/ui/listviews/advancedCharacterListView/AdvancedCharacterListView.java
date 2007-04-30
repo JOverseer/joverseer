@@ -22,7 +22,10 @@ import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.joverseer.ui.domain.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 import org.joverseer.ui.listviews.BaseItemListView;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
@@ -48,7 +51,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
     }
 
     protected void setItems() {
-        ArrayList items = AdvancedCharacterWrapper.getWrappers();
+        ArrayList items = CharacterInfoCollector.instance().getWrappers();
         ArrayList filteredItems = new ArrayList();
         for (Object o : items) {
             if (getActiveFilter() == null || getActiveFilter().accept(o)) {

@@ -2,7 +2,9 @@ package org.joverseer.ui.listviews.advancedCharacterListView;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.ui.domain.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.springframework.context.MessageSource;
 

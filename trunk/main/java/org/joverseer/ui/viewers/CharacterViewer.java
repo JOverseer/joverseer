@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
@@ -41,11 +42,18 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
@@ -143,8 +151,13 @@ public class CharacterViewer extends ObjectViewer {
         reset(c);
     }
     
+    
+    
     public void reset(Character c) {
+        Game g = GameHolder.instance().getGame();
+        
         boolean showStartingInfo = false;
+        ArrayList artis = new ArrayList();
         Character startingChar = null;
         characterName.setText(GraphicUtils.parseName(c.getName()));
         if (statsTextBox != null) {
@@ -154,16 +167,53 @@ public class CharacterViewer extends ObjectViewer {
             
             if (txt.equals("")) {
                 // character is enemy
-                // retrieve starting info
-                Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"))
-                        .getGame();
-                GameMetadata gm = game.getMetadata();
-                Container startChars = gm.getCharacters();
-                if (startChars != null) {
-                    startingChar = (Character) startChars.findFirstByProperty("id", c.getId());
+                
+                // retrieve info from CharacterInfoCollector if possible
+                AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(c.getName(), g.getCurrentTurn());
+                if (acw != null) {
+                    startingChar = new Character();
+                    startingChar.setName(acw.getName());
+                    startingChar.setId(acw.getId());
+                    startingChar.setNationNo(acw.getNationNo());
+                    txt = getStatLineFromCharacterWrapper(acw);
+                    if (!txt.equals("")) {
+                        txt += "(collected info";
+                        if (acw.getStartChar()) {
+                            txt += " - start char";
+                        }
+                        txt += ")";
+                    }
+                    // artifacts
+                    if (showArtifacts) {
+                        for (ArtifactWrapper aw : acw.getArtifacts()) {
+                            // find artifact in metadata
+                            ArtifactInfo a = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+                            // copy into new object to change the name and add the turn - hack but for now it works
+                            ArtifactInfo na = new ArtifactInfo();
+                            na.setNo(a.getNo());
+                            na.setAlignment(a.getAlignment());
+                            na.setOwner(acw.getName());
+                            na.setPowers(a.getPowers());
+                            na.setName(a.getName() + " (t" + aw.getTurnNo() + ")");
+                            artis.add(na);
+                        }
+                    }
+                    
+                    
+                    
                     showStartingInfo = true;
-                    if (startingChar != null) {
-                        txt = getStatLine(startingChar) + "(start info)";
+                } else {
+                    // retrieve starting info
+                    Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"))
+                            .getGame();
+                    GameMetadata gm = game.getMetadata();
+                    Container startChars = gm.getCharacters();
+                    if (startChars != null) {
+                        startingChar = (Character) startChars.findFirstByProperty("id", c.getId());
+                        showStartingInfo = true;
+                        if (startingChar != null) {
+                            txt = getStatLine(startingChar) + "(start info)";
+                        }
                     }
                 }
             }
@@ -202,8 +252,7 @@ public class CharacterViewer extends ObjectViewer {
             int nationNo = (showStartingInfo && startingChar != null ? startingChar.getNationNo() : c.getNationNo());
             nationTextBox.setText(gm.getNationByNum(nationNo).getShortName());
             
-            ArrayList artis = new ArrayList();
-            if (showArtifacts) {
+            if (showArtifacts && !showStartingInfo) {
                 ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts()
                         : startingChar != null ? startingChar.getArtifacts() : null);
                 if (artifacts != null) {
@@ -217,7 +266,10 @@ public class CharacterViewer extends ObjectViewer {
                         artis.add(arti);
                     }
                 }
+            } else {
+                // do nothing, we have already populated the artis table
             }
+            
             ((BeanTableModel) artifactsTable.getModel()).setRows(artis);
             artifactsTable.setPreferredSize(new Dimension(artifactsTable.getWidth(), 16 * artis.size()));
 
@@ -250,7 +302,6 @@ public class CharacterViewer extends ObjectViewer {
             }
             
             if (getShowColor()) {
-                Game g = GameHolder.instance().getGame();
                 Turn t = g.getTurn();
                 
                 NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
@@ -264,6 +315,45 @@ public class CharacterViewer extends ObjectViewer {
             }
         }
 
+    }
+    
+    private String getStatTextFromCharacterWrapper(String prefix, CharacterAttributeWrapper caw) {
+        String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
+        if (v.equals("0")) v = "";
+        if (caw != null && caw.getValue() != null) {
+                InfoSource is = caw.getInfoSource();
+                if (DerivedFromTitleInfoSource.class.isInstance(is)) {
+                        v += "+";
+                } else if (RumorActionInfoSource.class.isInstance(is)) {
+                        v += "+";
+                }
+        }
+        if (caw != null && caw.getTotalValue() != null) {
+                if (!caw.getTotalValue().toString().equals(
+                                caw.getValue().toString())
+                                && !caw.getTotalValue().toString().equals("0")) {
+                        v += "(" + caw.getTotalValue().toString() + ")";
+                }
+        }
+        if (!v.equals("")) {
+            v = prefix + v + " ";
+        }
+        return v;
+    }
+    
+    public String getStatLineFromCharacterWrapper(AdvancedCharacterWrapper acw) {
+        String txt = "";
+        txt += getStatTextFromCharacterWrapper("C", acw.getCommand());
+        txt += getStatTextFromCharacterWrapper("A", acw.getAgent());
+        txt += getStatTextFromCharacterWrapper("E", acw.getEmmisary());
+        txt += getStatTextFromCharacterWrapper("M", acw.getMage());
+        txt += getStatTextFromCharacterWrapper("S", acw.getStealth());
+        txt += getStatTextFromCharacterWrapper("Cr", acw.getChallenge());
+        txt += getStatTextFromCharacterWrapper("H", acw.getHealth());
+        if (acw.getDeathReason() != null && acw.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+            txt += " (" + acw.getDeathReason().toString() + ")";
+        }
+        return txt;
     }
 
     private String getStatLine(Character c) {
@@ -531,17 +621,16 @@ public class CharacterViewer extends ObjectViewer {
         	final OrderResultsForm f = new OrderResultsForm(FormModelHelper.createFormModel(getFormObject()));
         	FormBackedDialogPage pg = new FormBackedDialogPage(f);
         	TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
-				protected boolean onFinish() {
-					return true;
-				}
+		protected boolean onFinish() {
+			return true;
+		}
 
-				@Override
-				protected void onAboutToShow() {
-					super.onAboutToShow();
-					f.setFormObject(getFormObject());
-				}
-				
-				protected Object[] getCommandGroupMembers() {
+		protected void onAboutToShow() {
+			super.onAboutToShow();
+			f.setFormObject(getFormObject());
+		}
+		
+		protected Object[] getCommandGroupMembers() {
                     return new AbstractCommand[] {
                             getFinishCommand()
                     };
@@ -664,7 +753,7 @@ public class CharacterViewer extends ObjectViewer {
         showCharacterFastStrideRangeCommand.setEnabled(hasFastStride);
         showCharacterLongStrideRangeCommand.setEnabled(hasLongStride);
         
-        showArtifactsCommand.setEnabled(c != null && c.getArtifacts().size() > 0);
+        showArtifactsCommand.setEnabled(c != null);
         showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
         showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
         

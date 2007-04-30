@@ -37,7 +37,7 @@ public class NationStatisticsListView extends BaseItemListView {
 	
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-        filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
+        filters.addAll(Arrays.asList(NationFilter.createNationFilters(true)));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
         return new AbstractListViewFilter[][] {
                 filters.toArray(new AbstractListViewFilter[] {})};
@@ -126,7 +126,7 @@ public class NationStatisticsListView extends BaseItemListView {
         }
         ArrayList filteredItems = new ArrayList();
         for (Object item : items) {
-        	if (getActiveFilter() != null || getActiveFilter().accept(item)) {
+        	if (getActiveFilter() == null || getActiveFilter().accept(item)) {
         		filteredItems.add(item);
         	}
         }

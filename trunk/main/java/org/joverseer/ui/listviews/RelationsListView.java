@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -50,6 +51,13 @@ public class RelationsListView extends ItemListView {
     }
     
     
+    
+    protected AbstractListViewFilter[][] getFilters() {
+        return new AbstractListViewFilter[][]{NationFilter.createAllAndAllImportedNationFilters()};
+    }
+
+
+
     public class RelationsTableCellRenderer extends AllegianceColorCellRenderer {
 
         public RelationsTableCellRenderer(BeanTableModel tableModel) {

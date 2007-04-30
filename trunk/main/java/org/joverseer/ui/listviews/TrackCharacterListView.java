@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -131,6 +132,13 @@ public class TrackCharacterListView extends BaseItemListView {
 	                    tci.setHexNo(c.getHexNo());
 	                    items.add(tci);
 	                }
+                        if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+                            tci = new TrackCharacterInfo();
+                            tci.setTurnNo(t.getTurnNo());
+                            tci.setInfo("Character died (" + c.getDeathReason().toString() + ").");
+                            tci.setHexNo(c.getHexNo());
+                            items.add(tci);
+                        }
 	            }
 	            // find in armies
 	            Army a = findInArmies(t, charName);

@@ -9,22 +9,34 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+
+import com.jidesoft.combobox.CheckBoxListComboBox;
 
 public class EditNationsForm extends AbstractForm {
 	public static String FORM_ID = "editNationsForm";
 
     ArrayList<JTextField> nationNames = new ArrayList<JTextField>();
     ArrayList<JTextField> nationShortNames = new ArrayList<JTextField>();
+    ArrayList<CheckBoxListComboBox> nationSNAs = new ArrayList<CheckBoxListComboBox>();
     ArrayList<JLabel> labels = new ArrayList<JLabel>();
 
     public EditNationsForm(FormModel arg0) {
 		super(arg0, FORM_ID);
-	}
+    }
 
+    protected String[] getSNAList() {
+        ArrayList<String> snas = new ArrayList<String>();
+        for (SNAEnum sna : SNAEnum.values()) {
+            snas.add(sna.toString());
+        }
+        return snas.toArray(new String[]{});
+    }
+    
     protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder(); 
         
@@ -43,6 +55,14 @@ public class EditNationsForm extends AbstractForm {
             nationShortName.setPreferredSize(new Dimension(100, 20));
             tlb.gapCol();
             tlb.cell(nationShortName);
+            
+            CheckBoxListComboBox nationSNAList = new CheckBoxListComboBox(getSNAList(), String[].class);
+            nationSNAList.setEditable(false);
+            nationSNAs.add(nationSNAList);
+            nationSNAList.setPreferredSize(new Dimension(200, 20));
+            tlb.gapCol();
+            tlb.cell(nationSNAList);
+            
             tlb.row();
         }
         return new JScrollPane(tlb.getPanel());
@@ -68,10 +88,12 @@ public class EditNationsForm extends AbstractForm {
                 Nation n = (Nation)gm.getNations().get(i);
                 nationNames.get(i-1).setText(n.getName());
                 nationShortNames.get(i-1).setText(n.getShortName());
+                
             } else {
                 labels.get(i-1).setEnabled(false);
                 nationNames.get(i-1).setEnabled(false);
                 nationShortNames.get(i-1).setEnabled(false);
+                nationSNAs.get(i-1).setEnabled(false);
             }
         }
     }

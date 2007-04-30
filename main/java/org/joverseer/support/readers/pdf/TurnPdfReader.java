@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
@@ -33,6 +34,7 @@ import org.joverseer.domain.SeasonEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
@@ -159,19 +161,31 @@ public class TurnPdfReader implements Runnable {
             // parse turn info
             digester.addObjectCreate("txt2xml/Turn", TurnInfo.class);
             digester.addRule("txt2xml/Turn/General",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Allegiance", "Nation", "TurnNumber", "Season", "Date"},
-                            new String[]{"allegiance", "nationNo", "turnNo", "season", "date"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Allegiance", "Nation", "TurnNumber", "Season", "Date", "NationName"},
+                            new String[]{"allegiance", "nationNo", "turnNo", "season", "date", "nationName"}));
+            snpr.setAllowUnknownChildElements(true);
+            // create container for SNAs
+            digester.addObjectCreate("txt2xml/Turn/General/SNAs", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/General/SNAs", "setSnas");
+            // create SNA wrapper
+            digester.addObjectCreate("txt2xml/Turn/General/SNAs/SNA", "org.joverseer.support.readers.pdf.SNAWrapper");
+            // set nested properties
+            digester.addRule("txt2xml/Turn/General/SNAs/SNA",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Number"},
+                            new String[]{"number"}));
             snpr.setAllowUnknownChildElements(true);
             // create container for nation relations
             digester.addObjectCreate("txt2xml/Turn/General/NationRelations", "org.joverseer.support.Container");
             // add container to turn info
             digester.addSetNext("txt2xml/Turn/General/NationRelations", "setNationRelations");
-        	// create nation relation wrapper
+            // create nation relation wrapper
             digester.addObjectCreate("txt2xml/Turn/General/NationRelations/NationRelation", "org.joverseer.support.readers.pdf.NationRelationWrapper");
-        	// set nested properties
+            // set nested properties
             digester.addRule("txt2xml/Turn/General/NationRelations/NationRelation",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Nation", "Relation"},
-                            new String[]{"nation", "relation"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Nation", "Relation", "NationNumber"},
+                            new String[]{"nation", "relation", "nationNo"}));
+            snpr.setAllowUnknownChildElements(true);
             // add to container
             digester.addSetNext("txt2xml/Turn/General/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.pdf.NationRelationWrapper");
             // create container for pcs
@@ -460,7 +474,7 @@ public class TurnPdfReader implements Runnable {
     		errorOccurred = true;
     		throw new Exception("Failed to parse pdf file.");
     	}
-        if (turnInfo.getTurnNo() != game.getMaxTurn()) {
+        if (turnInfo.getTurnNo() < game.getMaxTurn()) {
             //todo fix
         	errorOccurred = true;
             throw new Exception("Can only import pdfs for last turn.");
@@ -493,6 +507,9 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating nation relations...");
             }
             try {
+                if (game.getMetadata().getGameType() == GameTypeEnum.gameFA && turn.getTurnNo() == 0) {
+                    updateNationNames(game);
+                }
                 updateNationRelations(game);
             }
             catch (Exception exc) {
@@ -590,6 +607,75 @@ public class TurnPdfReader implements Runnable {
             }
         	errorOccurred = true;
             throw new Exception("Error updating game from Pdf file.", exc);
+        }
+    }
+    
+    private void updateNationNames(Game game) throws Exception {
+        for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)turnInfo.getNationRelations().getItems()) {
+            if (nrw.getNationNo() > 0) {
+                Nation n = game.getMetadata().getNationByNum(nrw.getNationNo());
+                if (n != null) {
+                    n.setName(nrw.getNation().trim());
+                    String[] shortNames = createNationShortNames(n.getName().trim());
+                    for (String s : shortNames) {
+                        boolean duplicate = false;
+                        for (Nation nn : (ArrayList<Nation>)game.getMetadata().getNations()) {
+                            if (nn == n) continue;
+                            if (nn.getShortName().equals(s)) {
+                                duplicate = true;
+                            }
+                        }
+                        if (!duplicate) {
+                            n.setShortName(s);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        // do current nation
+        Nation n = game.getMetadata().getNationByNum(turnInfo.getNationNo());
+        if (n != null) {
+            n.setName(turnInfo.getNationName().trim());
+            String[] shortNames = createNationShortNames(turnInfo.getNationName().trim());
+            for (String s : shortNames) {
+                boolean duplicate = false;
+                for (Nation nn : (ArrayList<Nation>)game.getMetadata().getNations()) {
+                    if (nn == n) continue;
+                    if (nn.getShortName().equals(s)) {
+                        duplicate = true;
+                    }
+                }
+                if (!duplicate) {
+                    n.setShortName(s);
+                    break;
+                }
+            }
+        }
+        
+    }
+    
+    private String[] createNationShortNames(String name) {
+        String[] parts = name.split(" ");
+        if (parts.length == 1) {
+            ArrayList<String> ret = new ArrayList<String>();
+            for (int i=2; i<=Math.min(name.length(),3); i++) {
+                ret.add(name.substring(0, i));
+            }
+            return ret.toArray(new String[]{});
+        } else if (parts.length == 2) {
+            return new String[]{
+                    parts[0].substring(0, 1) + parts[1].substring(0, 1),
+                    parts[0].substring(0, 2) + parts[1].substring(0, 1),
+                    parts[0].substring(0, 1) + parts[1].substring(0, 2),
+                    parts[0].substring(0, 2) + parts[1].substring(0, 2)};
+        } else {
+            return new String[]{
+                    parts[0].substring(0, 1) + parts[1].substring(0, 1) + parts[2].substring(0, 1),
+                    parts[0].substring(0, 2) + parts[1].substring(0, 1) + parts[2].substring(0, 1),
+                    parts[0].substring(0, 1) + parts[1].substring(0, 2) + parts[2].substring(0, 1),
+                    parts[0].substring(0, 1) + parts[1].substring(0, 1) + parts[2].substring(0, 2)
+            };
         }
     }
     

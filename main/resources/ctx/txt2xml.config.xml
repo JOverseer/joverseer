@@ -3,11 +3,31 @@
         <element>Turn</element>
         <startString>MEPBM GAMES|MEPBM Games</startString>
         <endString>TURNSHEET</endString>
+        
         <processor type="StringEnclosedMatch">
         	<element>General</element>
         	<startString>MEPBM GAMES|MEPBM Games</startString>
         	<endString>CENTERS</endString>
 
+			<processor type="RegexMatch">
+				<element>NationName</element>
+				<regex>\w+ # \d{1,3}\s+(.*)\s+Victory</regex>
+				<multiline>1</multiline>
+			</processor>
+
+			<processor type="StringEnclosedMatch">
+		    	<element>SNAs</element>
+		    	<startString>Special Nation Abilities :</startString>    	
+		    	<endString>Game #</endString>
+		    	
+		    	<processor type="RepeatRegexMatch">
+	    			<element>SNA</element>
+	    			<regex>(\d{2})</regex>
+	    			<processor type="Copy">
+	    				<element>Number</element>
+	    			</processor>
+	   			</processor>
+			</processor>
 	        <processor type="RegexMatch">
 	        	<element>Nation</element>
 	        	<regex>Player #\s+:\s+(\d+)</regex>
@@ -36,11 +56,15 @@
     	    	<endString>POPULAT</endString>
 		        	<processor type="RepeatRegexMatch">
 		        		<element>NationRelation</element>
-		        		<regex>(\p{L}+(?:[\s\-]\p{L}+)*\s+:\s+\w+)</regex>
+		        		<regex>((?:#\s?\d{1,2}\s+)?[\p{L}']+(?:[\s\-]['\p{L}]+)*\s+:\s+\w+)</regex>
 
+						<processor type="RegexMatch">
+		        			<element>NationNumber</element>
+		        			<regex>(\d{1,2})</regex>
+		        		</processor>
 		        		<processor type="RegexMatch">
 		        			<element>Nation</element>
-		        			<regex>(\p{L}+(?:[\s\-]\p{L}+)*)</regex>
+		        			<regex>([\p{L}']+(?:[\s\-]['\p{L}]+)*)</regex>
 		        		</processor>
 		        		<processor type="RegexMatch">
 		        			<element>Relation</element>

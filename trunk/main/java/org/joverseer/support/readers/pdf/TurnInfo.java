@@ -18,8 +18,10 @@ public class TurnInfo {
     Container doubleAgents;
     Container challenges;
     Container hostages;
+    Container snas;
     String date;
     String season;
+    String nationName;
 
     public String getAllegiance() {
         return allegiance;
@@ -159,6 +161,27 @@ public class TurnInfo {
     public void setHostages(Container hostages) {
         this.hostages = hostages;
     }
+
+    
+    public String getNationName() {
+        return nationName;
+    }
+
+    
+    public void setNationName(String nationName) {
+        this.nationName = nationName;
+    }
+
+    
+    public Container getSnas() {
+        return snas;
+    }
+
+    
+    public void setSnas(Container snas) {
+        this.snas = snas;
+    }
+    
     
     
 }

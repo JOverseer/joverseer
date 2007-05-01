@@ -35,6 +35,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
@@ -175,6 +176,8 @@ public class TurnPdfReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"Number"},
                             new String[]{"number"}));
             snpr.setAllowUnknownChildElements(true);
+            // add to container
+            digester.addSetNext("txt2xml/Turn/General/SNAs/SNA", "addItem", "org.joverseer.support.readers.pdf.SNAWrapper");
             // create container for nation relations
             digester.addObjectCreate("txt2xml/Turn/General/NationRelations", "org.joverseer.support.Container");
             // add container to turn info
@@ -508,7 +511,7 @@ public class TurnPdfReader implements Runnable {
             }
             try {
                 if (game.getMetadata().getGameType() == GameTypeEnum.gameFA && turn.getTurnNo() == 0) {
-                    updateNationNames(game);
+                    updateNationMetadata(game);
                 }
                 updateNationRelations(game);
             }
@@ -610,7 +613,7 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    private void updateNationNames(Game game) throws Exception {
+    private void updateNationMetadata(Game game) throws Exception {
         for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)turnInfo.getNationRelations().getItems()) {
             if (nrw.getNationNo() > 0) {
                 Nation n = game.getMetadata().getNationByNum(nrw.getNationNo());
@@ -653,6 +656,15 @@ public class TurnPdfReader implements Runnable {
             }
         }
         
+        //update SNAs
+        if (n != null) {
+        	for (SNAWrapper nw : (ArrayList<SNAWrapper>)turnInfo.getSnas().getItems()) {
+        		SNAEnum sna = SNAEnum.getSnaFromNumber(nw.getNumber());
+        		if (sna != null) {
+        			n.getSnas().add(sna);
+        		}
+        	}
+        }
     }
     
     private String[] createNationShortNames(String name) {

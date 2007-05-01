@@ -387,6 +387,7 @@ public class OrdercheckerProxy {
             	charsWith += (charsWith.equals("") ? "" :",") + ch;
             }
             a.setCharactersWith(charsWith);
+            a.setNavy(army.isNavy() ? 1 : 0);
             nation.addArmy(a);
         }
         

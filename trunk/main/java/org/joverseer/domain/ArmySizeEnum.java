@@ -17,4 +17,7 @@ public enum ArmySizeEnum implements Serializable {
         size = s;
     }
 
+    public int getSize() {
+    	return size;
+    }
 }

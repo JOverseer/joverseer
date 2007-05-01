@@ -1,23 +1,22 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.domain.*;
-import org.joverseer.game.Game;
-import org.joverseer.ui.support.drawing.ColorPicker;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.support.GameHolder;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.springframework.richclient.application.Application;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import org.joverseer.domain.Army;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.support.drawing.ColorPicker;
+import org.springframework.richclient.application.Application;
 
-public class MultiArmyRenderer extends ImageRenderer {
+public class MultiArmyIconRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 
     public boolean appliesTo(Object obj) {
@@ -26,12 +25,6 @@ public class MultiArmyRenderer extends ImageRenderer {
 
     private void init() {
         mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
-    }
-
-    private boolean isArmyFp(Army army) {
-//        //todo make decision based on allegiance, not nation no
-//        return army.getNationNo() <= 10;
-        return (army.getNationAllegiance() == NationAllegianceEnum.FreePeople);
     }
 
     public void render(Object obj, Graphics2D g, int x, int y) {
@@ -43,15 +36,15 @@ public class MultiArmyRenderer extends ImageRenderer {
 
         ArrayList<Army> armiesInHex = turn.getContainer(TurnElementsEnum.Army).findAllByProperty("hexNo", army.getHexNo());
 
-        boolean isArmyFp = isArmyFp(army);
+        boolean isArmyFp = true;//isArmyFp(army);
         // find index of army in armiesInHex of same allegiance
         int i = 0;
         int j = 0;
         for (Army a : armiesInHex) {
-            if (isArmyFp(a) == isArmyFp) {
+//            if (isArmyFp(a) == isArmyFp) {
                 if (a == army) break;
                 i++;
-            }
+//            }
         }
         // render up to five armies
         if (i >= 3) {
@@ -107,11 +100,11 @@ public class MultiArmyRenderer extends ImageRenderer {
         int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1 / 5;
         int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 13 / 20 + h * j;
 
-        if (isArmyFp(army)) {
+        //if (isArmyFp(army)) {
             dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - (w) * (i + 1) - 1;
-        } else {
-            dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 + (w) * i + 1;
-        }
+//        } else {
+//            dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 + (w) * i + 1;
+//        }
         g.drawImage(img, x + dx, y + dy, null);
     }
 }

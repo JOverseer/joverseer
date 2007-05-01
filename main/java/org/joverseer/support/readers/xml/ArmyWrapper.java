@@ -195,6 +195,9 @@ public class ArmyWrapper {
             case 2:
                 a.setNationAllegiance(NationAllegianceEnum.DarkServants);
                 break;
+            case 3:
+                a.setNationAllegiance(NationAllegianceEnum.Neutral);
+                break;
         }
 
         if (getCharsTravellingWith() != null && !getCharsTravellingWith().equals("")) {

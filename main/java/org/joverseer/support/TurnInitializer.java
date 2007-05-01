@@ -94,6 +94,19 @@ public class TurnInitializer {
                             nr.setRelationsFor(j, NationRelationsEnum.Neutral);
                         }
                     }
+                } else if (gm.getGameType() == GameTypeEnum.gameFA) {
+                	// init relations according to allegiance
+                    for (int j=1; j<26; j++) {
+                    	Nation n1 = gm.getNationByNum(j);
+                    	if (n.getAllegiance() == NationAllegianceEnum.Neutral ||
+                    			n1.getAllegiance() == NationAllegianceEnum.Neutral) {
+                    		nr.setRelationsFor(j, NationRelationsEnum.Neutral);
+                    	} else if (n.getAllegiance() == n1.getAllegiance()) {
+                    		nr.setRelationsFor(j, NationRelationsEnum.Tolerated);
+                    	} else {
+                    		nr.setRelationsFor(j, NationRelationsEnum.Disliked);
+                    	}
+                    }
                 }
                 newRelations.addItem(nr);
             }

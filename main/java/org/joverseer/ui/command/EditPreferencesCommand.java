@@ -3,7 +3,7 @@ package org.joverseer.ui.command;
 import java.util.Locale;
 
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.views.EditNationsForm;
+import org.joverseer.ui.views.EditNationMetadataForm;
 import org.joverseer.ui.views.EditPreferencesForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;

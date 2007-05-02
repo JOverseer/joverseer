@@ -325,6 +325,22 @@
    						<value>classpath:metadata/info/characterTitles.csv</value>
    					</property>
    				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>troopTypeDescriptions</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/troopTypeDescriptions.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>dragons</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/dragons.csv</value>
+   					</property>
+   				</bean>
    			</list>
    		</property>
    	</bean>

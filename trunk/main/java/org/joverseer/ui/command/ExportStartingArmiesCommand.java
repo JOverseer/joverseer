@@ -31,7 +31,7 @@ public class ExportStartingArmiesCommand extends ActionCommand {
 	    		String s = "";
 	    		s += a.getHexNo() + "," +
 	    			a.getCommanderName() + "," +
-	    			a.getNationAllegiance().getAllegiance() + "," +
+	    			(a.getNationAllegiance() != null ? a.getNationAllegiance().getAllegiance() : "0") + "," +
 	    			a.getNationNo() + "," +
 	    			(a.isNavy() ? "1" : "0") + "," +
 	    			a.getSize().getSize() + "," +

@@ -106,6 +106,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
             for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
                 for (Integer aid : c.getArtifacts()) {
                     ArtifactWrapper aw = (ArtifactWrapper)aws.findFirstByProperty("number", aid);
+                    if (aw == null) continue;
                     aw.setOwner(c.getName());
                     aw.setHexNo(c.getHexNo());
                     aw.setInfoSource(c.getInfoSource());

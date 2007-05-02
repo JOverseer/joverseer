@@ -90,6 +90,9 @@ public class OrdercheckerProxy {
         } else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
             Main.main.getData().setGameType("BOFA");
             gt = "bofa";
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
+            Main.main.getData().setGameType("Fourth Age");
+            gt = "fa";
         } 
         ImportTerrainCsv terrain = new ImportTerrainCsv("bin/metadata/orderchecker/" + gt + ".game", Main.main.getMap());
         result = terrain.getMapInformation();
@@ -286,7 +289,9 @@ public class OrdercheckerProxy {
         	nation.setGameType("2950");
         } else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
             nation.setGameType("BOFA");
-        }
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
+            nation.setGameType("Fourth Age");
+        } 
         
         nation.setSecret(Integer.parseInt(pi.getSecret()));
         nation.setPlayer(pi.getPlayerName());
@@ -334,6 +339,7 @@ public class OrdercheckerProxy {
             //TODO double check
             for (Integer artiNo : ch.getArtifacts()) {
                 ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
+                if (ai == null) return;
                 mc.addArtifact(ai.getNo(), ai.getName());
             }
             

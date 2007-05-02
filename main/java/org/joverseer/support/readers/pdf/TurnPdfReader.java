@@ -56,7 +56,7 @@ import org.txt2xml.driver.StreamDriver;
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
     public static int parseTimeoutInSecs = 10;
-    public static boolean deleteFilesWhenFinished = false;
+    public static boolean deleteFilesWhenFinished = true;
     static Logger logger = Logger.getLogger(TurnPdfReader.class);
     TurnInfo turnInfo;
     Turn turn;

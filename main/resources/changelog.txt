@@ -1,3 +1,51 @@
+VERSION 0.9.5
+-------------
+
+2/5/2007
+
+	* Added Advanced Character Tab
+		o This tab collects information for all characters through all turns and tries its best to update the information fom enemy/unknown characters
+		
+	* Added Advanced Artifact Tab
+		o This tab shows information for all artifacts as collected through all the turns of the game
+
+	* Added Statistics tab 
+		o Shows statistics about nation characters, nation pop centers and nation armies
+
+	* Army Sizes Estimates are now updated from the troop count reported by Recon orders
+
+	* Character movement 	 
+		o Added options to draw character movement range on the Hex menu so you can draw movement even when a character is not present at the hex
+		o Added options for drawing range for Fast Stride and Long Stride
+		o Added support for drawing character movement spell orders on the map
+		
+	* Import order file - the program now remembers the latest directory used
+
+	* Added extended support for SNAs
+		o SNAs can now be tweaked from the Edit Nation Metadata menu option.
+
+	* Added support for FA games
+		o Nation names and nation SNAs are now automatically read when importing the pdfs for turn 0
+
+	* Rumor parsing - Sabotage attempts are now recognized and the character classified as agent
+
+	* Fixed a bug with relations in 1650 games
+
+	* Fixed a bug with "import orders from text" functionality and 830/850/860 orders 	 
+
+	* Added icons for neutral armies
+	
+	* Fixed a bug with reordering columns in the information tabs
+
+	* Fixed a bug that was causing Orderchecker	to not recognize navies (take them as armies)
+
+	* Order Editor - changed troop types to use the shorthand notation (e.g. HC, LC etc) to allow quicker input
+	
+	* Character Viewer
+		o Statistics for enemy/unknown characters are now shown as collected in the Advanced Character information tab
+		o Artifact information for enemy/unknown characters is also shown (along with the turn the info was collected)
+	
+
 VERSION 0.9.4
 -------------
 

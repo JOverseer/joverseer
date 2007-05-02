@@ -37,10 +37,8 @@
 				<value>startingCharacterListView</value>
 				<value>infoView</value>
 				<value>orderInfoView</value>	
-				<!--
 				<value>advancedArtifactListView</value>			
 				<value>advancedCharacterListView</value>
-				-->
 				<value>nationStatisticsListView</value>
 			</list>
 		</property>
@@ -256,7 +254,7 @@
 			<value>250</value>
 		</property>
 	</bean>
-	<!--
+
 	<bean id="advancedArtifactListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -302,7 +300,7 @@
 			<value>500</value>
 		</property>
 	</bean>
-	-->
+
 	<bean id="armyListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		

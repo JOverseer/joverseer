@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.text.JTextComponent;
 
 import org.joverseer.domain.Order;
@@ -121,5 +123,9 @@ public class GraphicUtils {
         JideSwingUtilities.globalCenterWindow(dialog);
         dialog.setModal(true);
         dialog.setVisible(true);
+    }
+    
+    public static void setTableColumnRenderer(JTable table, int iColumn, TableCellRenderer renderer) {
+        table.getColumnModel().getColumn(iColumn).setCellRenderer(renderer);
     }
 }       

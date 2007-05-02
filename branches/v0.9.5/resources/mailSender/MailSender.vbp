@@ -1,0 +1,37 @@
+Type=Exe
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\System32\STDOLE2.TLB#OLE Automation
+Reference=*\G{00020813-0000-0000-C000-000000000046}#1.4#0#C:\ms-apps\Office\Office10\EXCEL.EXE#Microsoft Excel 10.0 Object Library
+Module=MailSender; MailSender.bas
+Startup="Sub Main"
+HelpFile=""
+Title="Project1"
+ExeName32="MailSender.exe"
+Path32="C:\Documents and Settings\mskounak\Desktop"
+Command32="c:\tst.txt"
+Name="Project1"
+HelpContextID="0"
+CompatibleMode="0"
+MajorVer=1
+MinorVer=0
+RevisionVer=0
+AutoIncrementVer=0
+ServerSupportFiles=0
+VersionCompanyName="cosmote"
+CompilationType=0
+OptimizationType=0
+FavorPentiumPro(tm)=0
+CodeViewDebugInfo=0
+NoAliasing=0
+BoundsCheck=0
+OverflowCheck=0
+FlPointCheck=0
+FDIVCheck=0
+UnroundedFP=0
+StartMode=0
+Unattended=0
+Retained=0
+ThreadPerObject=0
+MaxNumberOfThreads=1
+
+[MS Transaction Server]
+AutoRefresh=1

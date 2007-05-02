@@ -1,0 +1,16 @@
+<txt2xml>
+
+    <!-- Processor splits text into lines -->
+    <processor type="RegexDelimited">
+        <element>line</element>
+        <regex>\n</regex>
+        
+        <!-- Sub-processor to process each line -->
+        <processor type="RegexDelimited">
+            <element>field</element>
+            <regex>,\s*</regex>
+        </processor>
+        
+    </processor>
+
+</txt2xml>

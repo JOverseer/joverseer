@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <!-- 
+        Bean: windowCommandManager
+        Type: magic
+        Usage: required
+        Description: This specifies the component that will manage the commands
+            associated with a window.  You can specify the ids of commands that
+            are "shared" among listviews.  This indicates to the manager that they
+            will have different target executors in each view.
+    -->
+	<bean id="windowCommandManager" 
+		class="org.springframework.richclient.application.support.ApplicationWindowCommandManager">
+		<property name="sharedCommandIds">
+			<list>
+				<value>propertiesCommand</value>
+				<value>selectHexCommand</value>
+			</list>
+		</property>
+	</bean>
+	
+    <!-- 
+        Bean: menuBar
+        Type: magic
+        Usage: required
+        Description: This specifies the makeup of the main menu bar for the application.
+            The CommandGroupFactoryBean is a factory that generates command groups.
+            The "members" property is used to specify the top level menus in the
+            menu bar.
+    -->
+	<bean id="menuBar" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+				<ref bean="gameMenu"/>
+				<ref bean="utilMenu"/>
+				<ref bean="windowMenu"/>
+                <ref bean="helpMenu"/>
+                <ref bean="adminMenu"/>
+			</list>
+		</property>
+	</bean>
+	
+    <!-- 
+        Bean: toolBar
+        Type: magic
+        Usage: required
+        Description: This specifies the makeup of the toolbar for the application.
+            The CommandGroupFactoryBean is a factory that generates command groups.
+            The "members" property is used to specify the commands to place on the
+            toolbar.  Note that you can place command groups (menus) in the toolbar
+            as well and they will be rendered as a button that creates a drop down
+            menu when pressed.
+    -->
+	<bean id="toolBar" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+                <bean class="org.joverseer.ui.command.CreateGame"/>
+                <bean class="org.joverseer.ui.command.LoadGame"/>
+                <bean class="org.joverseer.ui.command.SaveGame"/>
+                <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
+                <value>separator</value>
+                <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
+                <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
+                <value>separator</value>
+            	<bean class="org.joverseer.ui.command.ClearMapItems"/>
+			</list>
+		</property>
+	</bean>
+
+    
+
+    <!--
+        Bean: fileMenu
+        Type: user named
+        Usage: optional
+        Description: This specifies the content of the file menu.  Note the references
+            to shared (predefined) commands by name, directly including a bean (the
+            ExitCommand), and including a sub-menu (newMenu).
+    -->
+	<bean id="gameMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+                            <bean class="org.joverseer.ui.command.CreateGame"/>
+                            <bean class="org.joverseer.ui.command.ChangeNationAllegiances"/>
+							<bean class="org.joverseer.ui.command.EditNationMetadataCommand"/>
+			                <value>separator</value>
+                            <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>                                                        
+                            <bean class="org.joverseer.ui.command.OpenGameDirTree"/>
+                            <bean class="org.joverseer.ui.command.DeleteLastTurnCommand"/>
+			                <value>separator</value>                            
+                            <bean class="org.joverseer.ui.command.LoadGame"/>
+                            <bean class="org.joverseer.ui.command.SaveGame"/>
+			                <value>separator</value>
+                            <bean class="org.joverseer.ui.command.SetOrderEditorAutoNationsCommand"/>			                
+                            <bean class="org.joverseer.ui.command.ImportOrdersFromAutomagicFileCommand"/>
+                            <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
+                            <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
+                            <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
+							<bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
+                            <!-- 
+                            <bean class="org.joverseer.ui.command.RunOrders"/>
+                            -->
+                            <value>separator</value>
+                            <bean class="org.springframework.richclient.command.support.ExitCommand"/>
+			</list>
+		</property>
+	</bean>
+	
+    <bean id="windowMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+                <bean class="org.joverseer.ui.command.JOverseerShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
+                <bean class="org.joverseer.ui.command.RestoreDefaultLayoutCommand"/>
+                <value>separator</value>
+                <bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
+			</list>
+		</property>
+	</bean>    
+	
+	<bean id="adminMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>            
+               <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
+               <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand"/>
+            </list>
+	    </property>
+    </bean>
+    <!-- 
+        Bean: helpMenu
+        Type: user named
+        Usage: optional
+        Description: This specifies the content of the "Help" menu.
+    -->
+	<bean id="helpMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand"/>
+				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
+				<ref bean="aboutCommand"/>
+			</list>
+		</property>
+	</bean>
+
+    <!-- 
+        Bean: aboutCommand
+        Type: user named
+        Usage: optional
+        Description: This creates a command to handle the "about" menu item.  It uses
+            a platform class to generate an about box from the configured application
+            data in the application context.
+    -->
+	<bean id="aboutCommand" 
+		class="org.springframework.richclient.command.support.AboutCommand">
+	</bean>
+
+	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+        <property name="members">
+            <list>	
+            	<bean class="org.joverseer.ui.command.HighlightDegradeCandidates"/>
+            	<bean class="org.joverseer.ui.command.HighlightLocatedArtifacts"/>
+            	<bean class="org.joverseer.ui.command.HighlightCombats"/>
+            	<bean class="org.joverseer.ui.command.HighlightCharacters"/>
+            	<value>separator</value>
+            	<bean class="org.joverseer.ui.command.ClearMapItems"/>
+           	</list>
+       	</property>
+   	</bean>
+</beans>

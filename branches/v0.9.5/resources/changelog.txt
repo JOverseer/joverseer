@@ -1,0 +1,277 @@
+VERSION 0.9.5
+-------------
+
+2/5/2007
+
+	* Added Advanced Character Tab
+		o This tab collects information for all characters through all turns and tries its best to update the information fom enemy/unknown characters
+		
+	* Added Advanced Artifact Tab
+		o This tab shows information for all artifacts as collected through all the turns of the game
+
+	* Added Statistics tab 
+		o Shows statistics about nation characters, nation pop centers and nation armies
+
+	* Army Sizes Estimates are now updated from the troop count reported by Recon orders
+
+	* Character movement 	 
+		o Added options to draw character movement range on the Hex menu so you can draw movement even when a character is not present at the hex
+		o Added options for drawing range for Fast Stride and Long Stride
+		o Added support for drawing character movement spell orders on the map
+		
+	* Import order file - the program now remembers the latest directory used
+
+	* Added extended support for SNAs
+		o SNAs can now be tweaked from the Edit Nation Metadata menu option.
+
+	* Added support for FA games
+		o Nation names and nation SNAs are now automatically read when importing the pdfs for turn 0
+
+	* Rumor parsing - Sabotage attempts are now recognized and the character classified as agent
+
+	* Fixed a bug with relations in 1650 games
+
+	* Fixed a bug with "import orders from text" functionality and 830/850/860 orders 	 
+
+	* Added icons for neutral armies
+	
+	* Fixed a bug with reordering columns in the information tabs
+
+	* Fixed a bug that was causing Orderchecker	to not recognize navies (take them as armies)
+
+	* Order Editor - changed troop types to use the shorthand notation (e.g. HC, LC etc) to allow quicker input
+	
+	* Character Viewer
+		o Statistics for enemy/unknown characters are now shown as collected in the Advanced Character information tab
+		o Artifact information for enemy/unknown characters is also shown (along with the turn the info was collected)
+	
+
+VERSION 0.9.4
+-------------
+
+16/4/2007
+
+	* Orders 
+		o Order Editor
+			+ Fixed bugs with order 770
+			+ Fixed a bug with Move Army orders and the back button
+		o Order Tab
+			+ Fixed bugs with orders 725, 355, 900, etc
+			+ Fixed a bug with Move Army order parameter validation
+			+ Added internal parameter testing suite
+			+ Added new filter "All Imported"
+		
+	* Order cost calculation
+		o Fixed a bug that caused econocalc to not be automatically updated when an order was edited
+		o Added nation SNAs for free Hire
+		o Added a new column for gain - now the gain from sell orders is shown in this column
+	
+	* Order drawing on the map
+		o Added a Map Option that allows the user to choose whether to show character names when drawing orders
+		o Added support for drawing Movement Spells
+		o Added support for naval movement
+		
+	* Map
+		o Added new menu item to Army menu to draw the Army's range while taking into account enemy pop centers
+		o Added preference to control whether to show dead characters on the map
+		o Added support for showing the type of armies on the map (inf, cav, navy)
+			+ Added preference to support whether this is shown or not
+	
+	* Parsing
+		o Fixed a bug with company parsing from pdfs
+		o Pop Centers read from the pdfs are now updated based on the hex number and not the name, so problems in parsing accented characters no longer matters.
+		o Fixed a bug with xml parsing of Pop Centers that caused capital info to be lost
+		
+	* Information Tabs
+		o Added "Info Source" column to the Characters tab
+		o Added "Order Results" column to the Characters tab. The tool tip for this column shows the character's results in readable manner.
+		o Characters located at their nation's capital are now marked with a bold hex number in the Characters tab
+		o Added "Power" column to Artifact tabs
+		o Added "Info Source" column to the PCs tab
+		o Fixed a bug with the loyalty information shown on the PCs tab
+		o Revamped the available options on the Spellcaster tab. Now all spells are available between the available lists.
+		o Army Sizes tab - added a line to separate Army from Navy sizes
+		o Fixed some issues with sorting in the Armies tab
+		o Added filters to the Productions tab
+		o Added "List" column to Spells tab
+		
+	* Import Game Dir Tree
+		o The messages that show the result of the import were not being properly shown. This has now been fixed.
+		
+	* Order Checker
+		o Added support for BOFA games
+		o Fixed a bug which was causing allegiances to not update properly
+
+	* Added "Order Editor Auto Nations" menu option, so that the user can select for which nations to have the orders ready for entry.
+	
+	* Fixed a size issue with the Econocalc scrollbar 
+	
+	* Fixed a bug with the message after importing an order file
+	
+	* Importing order files now supports MEOW too
+	
+	* Added tip of the day functionality
+	
+	* Added "Info" tab and "Order Info" tab
+	
+	* Added button to Character viewer (in Current Hex View) to automatically open all available character information (artis, spells, orders)
+
+	* Fixed some issues with the Population Center viewer (Current Hex View)
+	
+	
+
+VERSION 0.9.3
+-------------
+
+5/4/2007
+
+    * Fixed a bug with incorrect movement cost calculation when moving from one mountain hex to another
+
+    * The Draw Order option for orders is now available only for orders that can be drawn
+
+    * Army range on maps - different colors for fed (green) and unfed (red) armies
+    
+    * Econocalc 
+          o Cell editing - the default is now overwrite instead of append (i.e. Excel style editing)
+          o A warning has been added when taxes are expected to go up          
+          o Added "Autocalc orders cost" field next to the economy totals
+          o Added button to update the order cost in the totals table from the Autocalc orders cost field
+          
+    * Order editor 
+          o The order drop down now starts from the top instead of the bottom
+          o The drop down now has autocomplete functionality
+          o Added Delete Order and Revert buttons
+
+    * Export Orders 
+          o Varius bug fixes
+          o The generated file footer now designates that the file was generated with JOverseer
+                    
+    * OrderChecker integration - varius bug fixes
+
+    * Speed enhancements 
+          o When selecting hexes on the map
+          o For information tabs
+          o For map drawing                    
+              
+    * Order information tab - major revamp
+          o There is a separate cell for each order parameter
+          o Cells with incorrect parameters are highlighted with yellow background now and a tooltip shows the error
+          o Characters located at the capital are designated with bold hex number
+          o Rows are highlighted as to distinguish characters more easily
+          o Cost for orders is shown in the last column
+          
+    * Track Character tab now supports unaccented search (via the respective Preferences option)
+
+    * Changed the way Pop Centers are imported from the xml files
+          o The latest information wrt to size and fortification is now shown
+          o The latest information wrt to the owner is now shown (seperately if needed)          
+          o Hidden pops now can be shown on the map (controled by the respective Preferences option)
+
+    * Updated the secondary powers for several 2950 artifacts
+
+    * Fixed a bug with hidden pops - when starting a new game the hidden pops were not correctly initialized
+
+    * Import Orders from Text
+          o The two scrollbars in the form are now tied so you can scroll both fields simultaneously
+
+    * Added Pdf Viewer tab
+          o This view shows the pdf files in plain text format. Due to the pdfs being transformed in pdf the text is not very well formatted but it can still server as a quick reference if needed.
+                	
+    * The map can be scrolled by holding down the control key and dragging with the mouse
+    
+    * Added Start Characters information tab
+    
+    * Fixed a bug with importing and changed Nation Allegiances
+    
+    * Added support for BOFA games
+    
+    * Fixed a bug with the date displayed on the window toolbar - the date displayed is the date the turn was issued
+    
+
+VERSION 0.9.2
+-------------
+
+
+29/3/2007
+
+    * Improvements to Track Character tab
+          o Added button to search
+          o Added more information
+
+    * Added nation information to the Company tab 
+
+    * Added Preferences form (Main Menu -> Window -> Preferences).
+          o You can now globally control preferences for the program. Current preferences are:
+                + Choice to display nation number or nation name on the information tabs (where applicable)
+                + Choice to show allegiance background color on the information tabs (where applicable)
+                + Choice to automatically resize the width of information tabs to use all available space
+          o Preferences for each user are retained when you close the program.
+
+    * Characters listview
+          o Characters with zero skill no longer display a zero at the respective cell. The cell is blank now. 
+
+    * Hexes that contain pop centers of a known nation (xml imported) are considered "seen" now.
+
+    * Fixed some issues with the rumor viewer (Current Hex view). Added scrollbar when needed. 
+
+    * Changed the way the current hex is highlighted in the econo calc to make it stand out more. 
+
+    * Added Army tab, which shows all available armies for the turn. 
+
+    * Owned artifacts tab - added nation. 
+
+    * Added default sort order on various information tabs so that information is ordered better. Added button to the right (two arrows) so that the user can revert to the default sort if they have changed it. 
+
+    * When closing JOverseer the user is asked for confirmation. 
+
+    * Importing turns - the program now searches all available subfolders within a turn folder. 
+
+    * Fixed a bug with 330 order not showing the spell parameter in the Order Editor. 
+
+    * Army Size Estimates list view
+          o Fixed a bug that was confusing armies and navies
+          o Added navy size estimates
+
+    * Orders tab filter - now only nations for which the xmls have been imported are available. 
+
+    * Information tabs visualization enhancements:
+          o Added tab icons
+          o Changed the tab size so that the tab name is no longer truncated
+          o Added buttons on the right of the tabs to quickly access all the tabs 
+
+    * Fixed a bug with window manager - now clicking on the pin button no longer gives an error message.
+
+    * Artifact tabs
+          o Removed the Turn Artis tab as the information is already available in the LAs tab.
+          o Made some improvements to the LA tab (filters, new columns)
+
+    * The Encouters tab now shows multiple lines of text in each row. Let me know how you like this.
+
+    * Added Delete Last Turn menu option (Game -> Delete Last Turn). This option can be used to clear the latest turn so you can re-import it (if needed).
+    
+    * Selected hex is saved with the Game (upon Game -> Save Game) and restored when the game is loaded.
+
+    * Import Game Dir Tree now recognises more patterns for the names of turn folders.
+	
+	
+    
+VERSION 0.9.1
+-------------
+
+25/3/2007
+
+	* Fixed a problem with nation names that contained accents ( e.g. Eothraim, Dunadain Rangers, etc) which was causing problems in parsing pdf data. Saved games are unfortunately not fixed, this change has an effect only on new games.
+	
+	* Fixed another minor bug with New Game and Nation names.
+	
+	* Added a new map option to control the way hexes are rendered (in response to remarks about colors seeming "subdued") 
+	  Now you can choose textured (the current graphics) or simple, which uses a single color to draw the hexes.
+	
+	* Ability to scroll the map using the keyboard (in response to Mark's request). You have to click on the map first so that it gets focus. Will see if I can add mouse dragging as well soon.
+	
+	* Improved the form that shows the progress when importing turns. When the process is finished, a message is shown explaining the kinds of errors that occurred (if any).
+
+	* Fixed a problem with the map size for the larger zoom levels (you were not able to see the whole map) as reported by Mark.
+	
+	
+    

@@ -332,6 +332,16 @@
 			</processor>
 		</processor>
 		
+		<processor type="StringEnclosedMatch">
+			<element>Artifacts</element>
+			<startString>the following artifacts:</startString>
+			<endString>NATION MESSAGES</endString>
+			<processor type="RepeatRegexMatch">
+				<element>Artifact</element>
+				<regex>((?:[\p{L}-']+ )+\s{2,10}\w+\d+\s+)</regex>
+			</processor>
+		</processor>
+		
 		<!--  get the region for the encounters -->
    		<processor type="StringEnclosedMatch">
         	<element>Encounters</element>

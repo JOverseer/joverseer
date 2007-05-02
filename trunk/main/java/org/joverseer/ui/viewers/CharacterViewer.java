@@ -42,6 +42,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.info.InfoUtils;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
@@ -246,7 +247,14 @@ public class CharacterViewer extends ObjectViewer {
                 return;
             GameMetadata gm = game.getMetadata();
             int nationNo = (showStartingInfo && startingChar != null ? startingChar.getNationNo() : c.getNationNo());
-            nationTextBox.setText(gm.getNationByNum(nationNo).getShortName());
+            String nationName = gm.getNationByNum(nationNo).getShortName();
+            if (nationNo == 0) {
+                // check if it is a dragon
+                if (InfoUtils.isDragon(c.getName())) {
+                    nationName = "Dragon";
+                }
+            }
+            nationTextBox.setText(nationName);
             
             if (showArtifacts && !showStartingInfo) {
                 ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts()

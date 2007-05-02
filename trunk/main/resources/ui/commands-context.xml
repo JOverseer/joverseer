@@ -169,6 +169,7 @@
             	<bean class="org.joverseer.ui.command.HighlightLocatedArtifacts"/>
             	<bean class="org.joverseer.ui.command.HighlightCombats"/>
             	<bean class="org.joverseer.ui.command.HighlightCharacters"/>
+            	<bean class="org.joverseer.ui.command.HighlightDragonsCommand"/>            	
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
            	</list>

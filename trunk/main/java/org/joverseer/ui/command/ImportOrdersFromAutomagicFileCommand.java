@@ -2,6 +2,7 @@ package org.joverseer.ui.command;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 
@@ -33,8 +34,15 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setApproveButtonText("Load");
+        Preferences prefs = Preferences.userNodeForPackage(ImportOrdersFromAutomagicFileCommand.class);
+        String lastDir = prefs.get("importOrdersDir", null);
+        if (lastDir != null) {
+            fileChooser.setCurrentDirectory(new File(lastDir));
+        }
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
+            
+            prefs.put("importOrdersDir", f.getParentFile().getAbsolutePath());
             
             GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
             try {

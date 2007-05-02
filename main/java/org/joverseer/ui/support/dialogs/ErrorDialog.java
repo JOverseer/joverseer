@@ -10,7 +10,7 @@ public class ErrorDialog extends MessageDialog {
     }
     
     public ErrorDialog(Exception exc) {
-        super("Error", exc.getMessage());
+        super("Error", (exc != null ? exc.getMessage() : "Unexpected error."));
     }
     
 }

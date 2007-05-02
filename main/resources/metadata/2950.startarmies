@@ -1,4 +1,4 @@
-#hex,commander,allegiance,name,navy,size,troops,morale,<element type,number,training,weapons,armor>+
+#hex,commander,allegiance,nation,navy,size,troops,morale,<element type,number,training,weapons,armor>+
 2508,Unknown,1,1,0,1,100,40,HC,,,,,LC,,,,,HI,,,,,LI,100,50,30,10,AR,,,,,MA,,,,,WM,,,,,WA,,,,,TR,,,,,
 2711,Unknown,1,1,0,1,200,40,HC,,,,,LC,,,,,HI,100,50,30,10,LI,100,50,30,10,AR,,,,,MA,,,,,WM,,,,,WA,,,,,TR,,,,,
 3109,Unknown,1,2,0,1,200,30,HC,,,,,LC,,,,,HI,100,40,30,10,LI,100,40,30,10,AR,,,,,MA,,,,,WM,,,,,WA,,,,,TR,,,,,

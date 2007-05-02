@@ -310,11 +310,10 @@
 
    	<bean id="orderEditorAutoNations" class="org.joverseer.ui.orderEditor.OrderEditorAutoNations"/>   	
 
-<!--   	
 	<bean id="characterInfoCollector" class="org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector"/>   	
 
 	<bean id="artifactInfoCollector" class="org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector"/>   	
--->   	
+
    	<bean id="infoRegistry" class="org.joverseer.support.info.InfoRegistry">
    		<property name="infos">
    			<list>

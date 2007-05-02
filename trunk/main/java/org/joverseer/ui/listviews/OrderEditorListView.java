@@ -49,7 +49,6 @@ import org.joverseer.ui.orderEditor.OrderParameterValidator;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
-import org.joverseer.ui.support.controls.ColumnBasedTableCellRenderer;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -65,8 +64,6 @@ import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
-
-import com.jidesoft.grid.JideTable;
 
 public class OrderEditorListView extends ItemListView {
 
@@ -215,9 +212,10 @@ public class OrderEditorListView extends ItemListView {
             	setItems();
             }
         });
+
         
-        ColumnBasedTableCellRenderer tableRenderer = new ColumnBasedTableCellRenderer();
-        tableRenderer.setColumnRenderer(OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
+        
+        GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
             Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
             Color normalBackground = (Color) UIManager.get("Table.background");
             
@@ -239,7 +237,7 @@ public class OrderEditorListView extends ItemListView {
             
         });
         // specialized renderer for the icon returned by the orderResultType virtual field
-        tableRenderer.setColumnRenderer(OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
+        GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 ImageIcon ico = (ImageIcon)value;
                 JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
@@ -263,7 +261,7 @@ public class OrderEditorListView extends ItemListView {
         });
         
         //renderer for hex - boldify capital hex
-        tableRenderer.setColumnRenderer(OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
+        GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 // find capital and compare
@@ -289,17 +287,12 @@ public class OrderEditorListView extends ItemListView {
         };
         
         // render stats - center alignment
-        tableRenderer.setColumnRenderer(OrderEditorTableModel.iStats, centerRenderer); 
+        GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iStats, centerRenderer); 
         
         for (int i=OrderEditorTableModel.iParamStart; i<= OrderEditorTableModel.iParamEnd; i++) {
-            tableRenderer.setColumnRenderer(i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
+            GraphicUtils.setTableColumnRenderer(table, i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
         }
-        tableRenderer.setColumnRenderer(OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
-        
-        table.setDefaultRenderer(String.class, tableRenderer);
-        table.setDefaultRenderer(Boolean.class, tableRenderer);
-        table.setDefaultRenderer(ImageIcon.class, tableRenderer);
-        table.setDefaultRenderer(Integer.class, tableRenderer);
+        GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
         
         tlb.row();
         tlb.cell(tableComp);

@@ -88,7 +88,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
-    public int getMarketLimitWarningThreshhold() {
+    public static int getMarketLimitWarningThreshhold() {
         return 20000;
     }
     

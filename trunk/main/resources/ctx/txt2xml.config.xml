@@ -289,8 +289,29 @@
 	   		</processor>
    		</processor>
    		<processor type="StringEnclosedMatch">
+   			<element>AnchoredShips</element>
+   			<startString>Ships have been left anchored at the following locations:</startString>
+   			<endString>You have the fol</endString>
+   			<processor type="RepeatRegexMatch">
+   				<element>Ships</element>
+   				<regex>\d+ \w+ at hex \d{4}</regex>
+   				<processor type="RegexMatch">
+   					<element>Number</element>
+   					<regex>(\d+) </regex>
+   				</processor>
+   				<processor type="RegexMatch">
+   					<element>Type</element>
+   					<regex>(\w+) at</regex>
+   				</processor>
+   				<processor type="RegexMatch">
+   					<element>Hex</element>
+   					<regex>hex (\d{4})</regex>
+   				</processor>
+   			</processor>
+   		</processor>
+   		<processor type="StringEnclosedMatch">
    			<element>DoubleAgents</element>
-   			<startString>the following double agents:</startString>
+   			<startString>lowing double agents:</startString>
    			<endString>You have</endString>
    			<processor type="RepeatRegexMatch">
    				<element>DoubleAgent</element>
@@ -338,7 +359,31 @@
 			<endString>NATION MESSAGES</endString>
 			<processor type="RepeatRegexMatch">
 				<element>Artifact</element>
-				<regex>((?:[\p{L}-']+ )+\s{2,10}\w+\d+\s+)</regex>
+				<regex>((?:[\p{L}-']+ )+\s{2,10}\w+\s\d{1,3})</regex>
+				<processor type="RegexMatch">
+					<element>Name</element>
+					<regex>((?:[\p{L}-']+ )*(?:[\p{L}-']+)?) </regex>
+				</processor>
+				<processor type="RegexMatch">
+					<element>Number</element>
+					<regex>(\d{1,3})</regex>
+				</processor>
+			</processor>
+			<processor type="RepeatRegexMatch">
+				<element>Artifact</element>
+				<regex>(^(?:[\p{L}-']+\s)+\s?\d{1,3}[\p{L}'\- ]+ at \d{4})</regex>
+				<processor type="RegexMatch">
+					<element>Name</element>
+					<regex>((?:[\p{L}-']+ )*(?:[\p{L}-']+)?) </regex>
+				</processor>
+				<processor type="RegexMatch">
+					<element>Number</element>
+					<regex>(\d{1,3})</regex>
+				</processor>
+				<processor type="RegexMatch">
+					<element>Hex</element>
+					<regex>(\d{4})</regex>
+				</processor>
 			</processor>
 		</processor>
 		

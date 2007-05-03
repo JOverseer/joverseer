@@ -235,7 +235,7 @@ public class CharacterInfoCollector implements ApplicationListener {
             cw.setAttributeMax(new CharacterAttributeWrapper("agent", stat, stat, turnNo, tis));
         } else if (statType.equals("Mage")) {
             cw.setAttributeMax(new CharacterAttributeWrapper("mage", stat, stat, turnNo, tis));
-        } else if (statType.equals("Emmissary")) {
+        } else if (statType.equals("Emissary")) {
             cw.setAttributeMax(new CharacterAttributeWrapper("emmisary", stat, stat, turnNo, tis));
         };
     }

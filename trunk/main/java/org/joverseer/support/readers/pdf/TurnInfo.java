@@ -19,6 +19,8 @@ public class TurnInfo {
     Container challenges;
     Container hostages;
     Container snas;
+    Container artifacts;
+    Container anchoredShips;
     String date;
     String season;
     String nationName;
@@ -180,6 +182,26 @@ public class TurnInfo {
     
     public void setSnas(Container snas) {
         this.snas = snas;
+    }
+
+    
+    public Container getArtifacts() {
+        return artifacts;
+    }
+
+    
+    public void setArtifacts(Container artifacts) {
+        this.artifacts = artifacts;
+    }
+
+    
+    public Container getAnchoredShips() {
+        return anchoredShips;
+    }
+
+    
+    public void setAnchoredShips(Container anchoredShips) {
+        this.anchoredShips = anchoredShips;
     }
     
     

@@ -1,5 +1,7 @@
 package org.joverseer.support.info;
 
+import org.joverseer.domain.ArmyElementType;
+
 public class InfoUtils {
 
     public static Boolean isDragon(String charName) {
@@ -39,13 +41,27 @@ public class InfoUtils {
         return null;
     }
 
-    public static String getTroopTypeFromDescription(String description) {
+    public static ArmyElementType getElementTypeFromDescription(String description) {
         Info info = InfoRegistry.instance().getInfo("troopTypeDescriptions");
         if (info == null)
             return null;
         for (int j = 1; j < info.getRowHeaders().size(); j++) {
             if (info.getValue(j, 3).equals("description")) {
-                return info.getValue(j, 2);
+                String t = info.getValue(j, 2);
+                if (t.equals("1")) {
+                    return ArmyElementType.HeavyCavalry;
+                } else if (t.equals("2")) {
+                    return ArmyElementType.LightCavalry;
+                } else if (t.equals("3")) {
+                    return ArmyElementType.HeavyInfantry;
+                } else if (t.equals("4")) {
+                    return ArmyElementType.LightInfantry;
+                } else if (t.equals("5")) {
+                    return ArmyElementType.Archers;
+                } else if (t.equals("6")) {
+                    return ArmyElementType.MenAtArms;
+                }; 
+                return null;
             }
         }
         return null;

@@ -239,9 +239,6 @@ public class MovementUtils {
         if (!isFed) {
             cost = cost + (new Double(Math.ceil(new Double(cost) / 3))).intValue();
         }
-        if (majorRiver) {
-            cost += 1;
-        }
         if (minorRiver && !bridgeOrFord) {
             cost += 2;
         }

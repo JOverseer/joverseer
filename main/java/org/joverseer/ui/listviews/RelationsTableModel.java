@@ -1,6 +1,7 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
@@ -66,5 +67,29 @@ public class RelationsTableModel extends ItemTableModel {
         }
         return "";
     }
+
+    
+    
+    protected void setValueAtInternal(Object value, Object object, int i) {
+        if (i < 2) return;
+        if (i-1 == ((NationRelations)object).getNationNo()) return;
+        NationRelations nr = (NationRelations)object;
+        if (value.toString().equals("F")) {
+            nr.setRelationsFor(i-1, NationRelationsEnum.Friendly);
+        } else if (value.toString().equals("T")) {
+            nr.setRelationsFor(i-1, NationRelationsEnum.Tolerated);
+        } else if (value.toString().equals("N")) {
+            nr.setRelationsFor(i-1, NationRelationsEnum.Neutral);
+        } else if (value.toString().equals("D")) {
+            nr.setRelationsFor(i-1, NationRelationsEnum.Disliked);
+        } else if (value.toString().equals("H")) {
+            nr.setRelationsFor(i-1, NationRelationsEnum.Hated);
+        } 
+    }
+
+    protected boolean isCellEditableInternal(Object object, int i) {
+        return i >= 2 && !getValueAtInternal(object, i).equals("");
+    }
+    
     
 }

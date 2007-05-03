@@ -18,6 +18,9 @@ import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmySizeEnum;
+import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -36,8 +39,10 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.SNAEnum;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.HostageInfoSource;
@@ -56,7 +61,7 @@ import org.txt2xml.driver.StreamDriver;
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
     public static int parseTimeoutInSecs = 10;
-    public static boolean deleteFilesWhenFinished = true;
+    public static boolean deleteFilesWhenFinished = false;
     static Logger logger = Logger.getLogger(TurnPdfReader.class);
     TurnInfo turnInfo;
     Turn turn;
@@ -408,6 +413,34 @@ public class TurnPdfReader implements Runnable {
                             new String[]{"name", "nation"}));
             snpr.setAllowUnknownChildElements(true);
 
+            // create container for artifacts
+            digester.addObjectCreate("txt2xml/Turn/Artifacts", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/Artifacts", "setArtifacts");
+            // create Artifact wrapper
+            digester.addObjectCreate("txt2xml/Turn/Artifacts/Artifact", "org.joverseer.support.readers.pdf.ArtifactWrapper");
+            // add Artifact wrapper
+            digester.addSetNext("txt2xml/Turn/Artifacts/Artifact", "addItem", "org.joverseer.support.readers.pdf.ArtifactWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Artifacts/Artifact",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex", "Number"},
+                            new String[]{"name", "hexNo", "number"}));
+            snpr.setAllowUnknownChildElements(true);
+
+            // create container for anchored ships
+            digester.addObjectCreate("txt2xml/Turn/AnchoredShips", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("txt2xml/Turn/AnchoredShips", "setAnchoredShips");
+            // create anchored ships wrapper
+            digester.addObjectCreate("txt2xml/Turn/AnchoredShips/Ships", "org.joverseer.support.readers.pdf.AnchoredShipsWrapper");
+            // add anchored ships wrapper
+            digester.addSetNext("txt2xml/Turn/AnchoredShips/Ships", "addItem", "org.joverseer.support.readers.pdf.AnchoredShipsWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/AnchoredShips/Ships",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Number", "Hex", "Type"},
+                            new String[]{"number", "hexNo", "type"}));
+            snpr.setAllowUnknownChildElements(true);
+
             turnInfo = (TurnInfo)digester.parse("file:///" + xmlFile.getCanonicalPath());
 //            Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
 //            Matcher m = p.matcher(xmlFile.getCanonicalPath());
@@ -566,6 +599,13 @@ public class TurnPdfReader implements Runnable {
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
+            try {
+                updateAnchoredShips(game);
+            }
+            catch (Exception exc) {
+                errorOccurred = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
             if (getMonitor() != null) {
                 getMonitor().worked(90);
                 getMonitor().subTaskStarted("Updating companies...");
@@ -575,6 +615,17 @@ public class TurnPdfReader implements Runnable {
             }
             catch (Exception exc) {
             	errorOccurred = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(95);
+                getMonitor().subTaskStarted("Updating artifacts...");
+            }
+            try {
+                updateArtifacts(game);
+            }
+            catch (Exception exc) {
+                errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -723,7 +774,7 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-      private void updateArmies(Game game) {
+    private void updateArmies(Game game) {
         Container armies = game.getTurn().getContainer(TurnElementsEnum.Army);
         Container aws = turnInfo.getArmies();
         if (aws == null) return;
@@ -731,6 +782,38 @@ public class TurnPdfReader implements Runnable {
             Army a = (Army)armies.findFirstByProperty("commanderName", aw.getCommander());
             if (a != null) {
                 aw.updateArmy(a);
+            }
+        }
+    }
+      
+    private void updateAnchoredShips(Game game) {
+        String commanderName = "[Anchored Ships]";
+        Container armies = game.getTurn().getContainer(TurnElementsEnum.Army);
+        Container asws = turnInfo.getAnchoredShips();
+        if (asws == null) return;
+        for (AnchoredShipsWrapper asw : (ArrayList<AnchoredShipsWrapper>)asws.getItems()) {
+            String hexNo = String.valueOf(asw.getHexNo());
+            Army a = (Army)armies.findFirstByProperties(new String[]{"commanderName", "hexNo", "nationNo"}, new Object[]{commanderName, hexNo, turnInfo.getNationNo()});
+            if (a == null) {
+                a = new Army();
+                a.setNavy(true);
+                a.setSize(ArmySizeEnum.unknown);
+                a.setCommanderName(commanderName);
+                a.setCommanderTitle("");
+                a.setHexNo(hexNo);
+                a.setNationNo(turnInfo.getNationNo());
+                NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
+                NationRelations nr = (NationRelations)game.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", turnInfo.getNationNo());
+                if (nr != null) {
+                    allegiance = nr.getAllegiance();
+                }
+                a.setNationAllegiance(allegiance);
+                armies.addItem(a);
+            }
+            if (asw.getType().equalsIgnoreCase("warships")) {
+                a.setElement(ArmyElementType.Warships, asw.getNumber());
+            } else {
+                a.setElement(ArmyElementType.Transports, asw.getNumber());
             }
         }
     }
@@ -856,6 +939,42 @@ public class TurnPdfReader implements Runnable {
             ClimateEnum climate = translateClimate(aw.getClimate());
             if (climate != null) {
                 hi.setClimate(climate);
+            }
+        }
+    }
+    
+    public void updateArtifacts(Game game) throws Exception {
+        Container aws = turnInfo.getArtifacts();
+        for (ArtifactWrapper aw : (ArrayList<ArtifactWrapper>)aws.getItems()) {
+            // for FA game, update artifact numbers
+            if (game.getMetadata().getGameType() == GameTypeEnum.gameFA) {
+                String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
+                boolean found = false;
+                for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+                    if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+                        found = true;
+                        ai.setNo(aw.getNumber());
+                        break;
+                    }
+                }
+                if (!found) {
+                    // add artifact
+                    ArtifactInfo ai = new ArtifactInfo();
+                    ai.setName(aw.getName().trim());
+                    ai.setNo(aw.getNumber());
+                    game.getMetadata().getArtifacts().addItem(ai);
+                }
+            };
+            
+            // update hidden artifacts
+            if (aw.getHexNo() > 0) {
+                Artifact a = new Artifact();
+                a.setNumber(aw.getNumber());
+                a.setName(aw.getName().trim());
+                a.setHexNo(aw.getHexNo());
+                a.setOwner(turnInfo.getNationName());
+                a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
+                game.getTurn().getContainer(TurnElementsEnum.Artifact).addItem(a);
             }
         }
     }

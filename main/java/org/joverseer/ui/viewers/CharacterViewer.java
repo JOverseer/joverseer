@@ -50,6 +50,10 @@ import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
+import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
@@ -165,40 +169,40 @@ public class CharacterViewer extends ObjectViewer {
                 // character is enemy
                 
                 // retrieve info from CharacterInfoCollector if possible
-//                AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(c.getName(), g.getCurrentTurn());
-//                if (acw != null) {
-//                    startingChar = new Character();
-//                    startingChar.setName(acw.getName());
-//                    startingChar.setId(acw.getId());
-//                    startingChar.setNationNo(acw.getNationNo());
-//                    txt = getStatLineFromCharacterWrapper(acw);
-//                    if (!txt.equals("")) {
-//                        txt += "(collected info";
-//                        if (acw.getStartChar()) {
-//                            txt += " - start char";
-//                        }
-//                        txt += ")";
-//                    }
-//                    // artifacts
-//                    if (showArtifacts) {
-//                        for (ArtifactWrapper aw : acw.getArtifacts()) {
-//                            // find artifact in metadata
-//                            ArtifactInfo a = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
-//                            // copy into new object to change the name and add the turn - hack but for now it works
-//                            ArtifactInfo na = new ArtifactInfo();
-//                            na.setNo(a.getNo());
-//                            na.setAlignment(a.getAlignment());
-//                            na.setOwner(acw.getName());
-//                            na.setPowers(a.getPowers());
-//                            na.setName(a.getName() + " (t" + aw.getTurnNo() + ")");
-//                            artis.add(na);
-//                        }
-//                    }
-//                    
-//                    
-//                    
-//                    showStartingInfo = true;
-//                } else 
+                AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(c.getName(), g.getCurrentTurn());
+                if (acw != null) {
+                    startingChar = new Character();
+                    startingChar.setName(acw.getName());
+                    startingChar.setId(acw.getId());
+                    startingChar.setNationNo(acw.getNationNo());
+                    txt = getStatLineFromCharacterWrapper(acw);
+                    if (!txt.equals("")) {
+                        txt += "(collected info";
+                        if (acw.getStartChar()) {
+                            txt += " - start char";
+                        }
+                        txt += ")";
+                    }
+                    // artifacts
+                    if (showArtifacts) {
+                        for (ArtifactWrapper aw : acw.getArtifacts()) {
+                            // find artifact in metadata
+                            ArtifactInfo a = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+                            // copy into new object to change the name and add the turn - hack but for now it works
+                            ArtifactInfo na = new ArtifactInfo();
+                            na.setNo(a.getNo());
+                            na.setAlignment(a.getAlignment());
+                            na.setOwner(acw.getName());
+                            na.setPowers(a.getPowers());
+                            na.setName(a.getName() + " (t" + aw.getTurnNo() + ")");
+                            artis.add(na);
+                        }
+                    }
+                    
+                    
+                    
+                    showStartingInfo = true;
+                } else 
             	{
                     // retrieve starting info
                     Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"))
@@ -321,44 +325,44 @@ public class CharacterViewer extends ObjectViewer {
 
     }
     
-//    private String getStatTextFromCharacterWrapper(String prefix, CharacterAttributeWrapper caw) {
-//        String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
-//        if (v.equals("0")) v = "";
-//        if (caw != null && caw.getValue() != null) {
-//                InfoSource is = caw.getInfoSource();
-//                if (DerivedFromTitleInfoSource.class.isInstance(is)) {
-//                        v += "+";
-//                } else if (RumorActionInfoSource.class.isInstance(is)) {
-//                        v += "+";
-//                }
-//        }
-//        if (caw != null && caw.getTotalValue() != null) {
-//                if (!caw.getTotalValue().toString().equals(
-//                                caw.getValue().toString())
-//                                && !caw.getTotalValue().toString().equals("0")) {
-//                        v += "(" + caw.getTotalValue().toString() + ")";
-//                }
-//        }
-//        if (!v.equals("")) {
-//            v = prefix + v + " ";
-//        }
-//        return v;
-//    }
-//    
-//    public String getStatLineFromCharacterWrapper(AdvancedCharacterWrapper acw) {
-//        String txt = "";
-//        txt += getStatTextFromCharacterWrapper("C", acw.getCommand());
-//        txt += getStatTextFromCharacterWrapper("A", acw.getAgent());
-//        txt += getStatTextFromCharacterWrapper("E", acw.getEmmisary());
-//        txt += getStatTextFromCharacterWrapper("M", acw.getMage());
-//        txt += getStatTextFromCharacterWrapper("S", acw.getStealth());
-//        txt += getStatTextFromCharacterWrapper("Cr", acw.getChallenge());
-//        txt += getStatTextFromCharacterWrapper("H", acw.getHealth());
-//        if (acw.getDeathReason() != null && acw.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
-//            txt += " (" + acw.getDeathReason().toString() + ")";
-//        }
-//        return txt;
-//    }
+    private String getStatTextFromCharacterWrapper(String prefix, CharacterAttributeWrapper caw) {
+        String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
+        if (v.equals("0")) v = "";
+        if (caw != null && caw.getValue() != null) {
+                InfoSource is = caw.getInfoSource();
+                if (DerivedFromTitleInfoSource.class.isInstance(is)) {
+                        v += "+";
+                } else if (RumorActionInfoSource.class.isInstance(is)) {
+                        v += "+";
+                }
+        }
+        if (caw != null && caw.getTotalValue() != null) {
+                if (!caw.getTotalValue().toString().equals(
+                                caw.getValue().toString())
+                                && !caw.getTotalValue().toString().equals("0")) {
+                        v += "(" + caw.getTotalValue().toString() + ")";
+                }
+        }
+        if (!v.equals("")) {
+            v = prefix + v + " ";
+        }
+        return v;
+    }
+    
+    public String getStatLineFromCharacterWrapper(AdvancedCharacterWrapper acw) {
+        String txt = "";
+        txt += getStatTextFromCharacterWrapper("C", acw.getCommand());
+        txt += getStatTextFromCharacterWrapper("A", acw.getAgent());
+        txt += getStatTextFromCharacterWrapper("E", acw.getEmmisary());
+        txt += getStatTextFromCharacterWrapper("M", acw.getMage());
+        txt += getStatTextFromCharacterWrapper("S", acw.getStealth());
+        txt += getStatTextFromCharacterWrapper("Cr", acw.getChallenge());
+        txt += getStatTextFromCharacterWrapper("H", acw.getHealth());
+        if (acw.getDeathReason() != null && acw.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+            txt += " (" + acw.getDeathReason().toString() + ")";
+        }
+        return txt;
+    }
 
     private String getStatLine(Character c) {
         String txt = "";

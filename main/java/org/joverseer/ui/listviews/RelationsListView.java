@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.Locale;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
@@ -27,6 +30,7 @@ public class RelationsListView extends ItemListView {
     protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
         table.setDefaultRenderer(String.class, new RelationsTableCellRenderer(tableModel));
+        table.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox(new String[]{"F", "T", "N", "D", "H"})));
         return c;
     }
 
@@ -64,7 +68,7 @@ public class RelationsListView extends ItemListView {
 			super(tableModel);
 		}
 
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (column < 2) return c;
             MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");

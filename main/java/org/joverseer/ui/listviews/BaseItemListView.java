@@ -238,25 +238,30 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         p.setBackground(Color.WHITE);
         return p;
     }
+    
+    protected void refreshFilters() {
+        if (filters.size() > 0) {
+            AbstractListViewFilter[][] filterLists = getFilters();
+            for (int i=0; i<filterLists.length; i++) {
+                filters.get(i).removeAllItems();
+                for (AbstractListViewFilter f : filterLists[i]) {
+                        filters.get(i).addItem(f);
+                }
+                filters.get(i).updateUI();
+            }
+        }
+    }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+                refreshFilters();
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 //setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                if (filters.size() > 0) {
-                    AbstractListViewFilter[][] filterLists = getFilters();
-                    for (int i=0; i<filterLists.length; i++) {
-                    	filters.get(i).removeAllItems();
-                    	for (AbstractListViewFilter f : filterLists[i]) {
-                    		filters.get(i).addItem(f);
-                    	}
-                    	filters.get(i).updateUI();
-                    }
-                }
+                refreshFilters();
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle.toString())) {
                 String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");

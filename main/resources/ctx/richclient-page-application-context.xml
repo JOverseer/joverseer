@@ -40,6 +40,7 @@
 				<value>advancedArtifactListView</value>			
 				<value>advancedCharacterListView</value>
 				<value>nationStatisticsListView</value>
+				<value>teamEconomyView</value>
 			</list>
 		</property>
 		<property name="perspectives">
@@ -87,6 +88,29 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.economyCalculator.EconomyCalculator</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+	</bean>
+	
+	<bean id="teamEconomyView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.economyCalculator.TeamEconomyView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

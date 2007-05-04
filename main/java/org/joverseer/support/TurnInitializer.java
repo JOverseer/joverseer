@@ -20,10 +20,10 @@ import java.util.Collection;
 
 public class TurnInitializer {
     public void initializeTurnWith(Turn newTurn, Turn previousTurn) {
-        newTurn.getContainers().put(TurnElementsEnum.PopulationCenter, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.PopulationCenter, new Container(new String[]{"hexNo", "nationNo"}));
         Container newPcs = newTurn.getContainer(TurnElementsEnum.PopulationCenter);
 
-        newTurn.getContainers().put(TurnElementsEnum.NationRelation, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.NationRelation, new Container(new String[]{"nationNo"}));
         Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
 
         Container newPlayerInfo = newTurn.getContainer(TurnElementsEnum.PlayerInfo);
@@ -111,9 +111,9 @@ public class TurnInitializer {
                 newRelations.addItem(nr);
             }
         }
-        newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name", "hexNo"}));
+        newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name", "hexNo", "nationNo"}));
         
-        Container armies = new Container(new String[]{"hexNo"});
+        Container armies = new Container(new String[]{"hexNo", "nationNo"});
         
         if (previousTurn == null) {
         	// get armies from metadata
@@ -126,7 +126,7 @@ public class TurnInitializer {
         }
         
         newTurn.getContainers().put(TurnElementsEnum.Army, armies);
-        newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container());
+        newTurn.getContainers().put(TurnElementsEnum.NationEconomy, new Container(new String[]{"nationNo"}));
         newTurn.getContainers().put(TurnElementsEnum.Artifact, new Container(new String[]{"number", "hexNo"}));
         Container hexInfo = new Container(new String[]{"hexNo"});
         for (Hex h : (Collection <Hex>)gm.getHexes()) {

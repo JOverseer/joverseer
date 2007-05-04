@@ -50,7 +50,7 @@ public class OrderVisualizationData {
                 dlg.showDialog();
                 if (dlg.getResult()) {
                     orders.add(order);
-                    setAdditionalInfo(order, "cav", cavalry.isSelected());
+                    setAdditionalInfo(order, "cavalry", cavalry.isSelected());
                     setAdditionalInfo(order, "fed", fed.isSelected());
                 }
             } else {

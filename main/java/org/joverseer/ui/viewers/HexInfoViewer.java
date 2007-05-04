@@ -26,6 +26,7 @@ import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
+import org.joverseer.tools.HexInfoHistory;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
@@ -53,6 +54,7 @@ public class HexInfoViewer extends ObjectViewer {
 
     JTextField hexNo;
     JTextField climate;
+    JTextField latestInfo;
     
     RemoveBridgeCommand removeBridgeNE = new RemoveBridgeNE();
     RemoveBridgeCommand removeBridgeE = new RemoveBridgeE();
@@ -107,6 +109,13 @@ public class HexInfoViewer extends ObjectViewer {
         });
         
         lb.nextLine();
+        lb.append(l = new JLabel("Last info :"), 2, 1);
+        lb.append(latestInfo = new JTextField(), 2, 1);
+        latestInfo.setPreferredSize(new Dimension(120, 16));
+        latestInfo.setBorder(null);
+        
+        lb.nextLine();
+        
         lb.append(new JSeparator(), 5, 1);
         lb.nextLine();
 
@@ -161,6 +170,17 @@ public class HexInfoViewer extends ObjectViewer {
             HexInfo hi = (HexInfo)g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
             climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
 
+            Integer iLatestInfo = HexInfoHistory.getLatestHexInfoTurnNoForHex(hi.getHexNo());
+            if (iLatestInfo == null) {
+                latestInfo.setText("-");
+            } else {
+                if (iLatestInfo == -1) {
+                    latestInfo.setText("never");
+                } else {
+                    latestInfo.setText("t" + iLatestInfo);
+                }
+            }
+            
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {
                 for (MovementDirection md : MovementDirection.values()) {

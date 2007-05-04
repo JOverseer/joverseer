@@ -38,6 +38,11 @@ public class MultiArmyRenderer extends ImageRenderer {
         if (mapMetadata == null) init();
 
         Army army = (Army)obj;
+        
+        boolean showAnchoredShips =
+            PreferenceRegistry.instance().getPreferenceValue("map.anchoredShips").equals("yes");
+        if (!showAnchoredShips && Army.isAnchoredShips(army)) return;
+        
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         Turn turn = game.getTurn();
 
@@ -48,6 +53,7 @@ public class MultiArmyRenderer extends ImageRenderer {
         int i = 0;
         int j = 0;
         for (Army a : armiesInHex) {
+            if (!showAnchoredShips && Army.isAnchoredShips(a)) continue;
             if (isArmyFp(a) == isArmyFp) {
                 if (a == army) break;
                 i++;
@@ -72,6 +78,9 @@ public class MultiArmyRenderer extends ImageRenderer {
             
             Boolean navy = army.isNavy();
             type = navy == null ? "army" : navy ? "navy" : "army";
+            if (army.isNavy() && Army.isAnchoredShips(army)) {
+                info = "anchored";
+            }
         }
         BufferedImage armyImage = null;
         NationAllegianceEnum allegiance = army.getNationAllegiance();

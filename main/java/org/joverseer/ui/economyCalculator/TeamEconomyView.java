@@ -7,9 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -19,18 +21,28 @@ import org.joverseer.domain.NationEconomy;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
+import org.joverseer.ui.listviews.NationProductionListView;
+import org.joverseer.ui.listviews.NationStatisticsListView;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+
+import com.jidesoft.docking.DockingManager;
+import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
+import com.jidesoft.spring.richclient.docking.view.JideAbstractView;
 
 
 public class TeamEconomyView extends AbstractView implements ApplicationListener {
     JTable teamEconomyTable;
     TeamEconomyTableModel teamEconomyTableModel;
     JComboBox showProductAsCombo;
+    NationProductionListView nationProductionListView;
+    NationStatisticsListView nationStatisticsListView;
     
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -49,8 +61,8 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
         for (int i=0; i<teamEconomyTableModel.getColumnCount(); i++) {
             teamEconomyTable.getColumnModel().getColumn(i).setPreferredWidth(teamEconomyTableModel.getColumnWidth(i));
         }
-        teamEconomyTable.setDefaultRenderer(Integer.class, new TeamEconomyTableRenderer());
-//        teamEconomyTable.setDefaultRenderer(String.class, new MarketRenderer());
+        teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer());
+        teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer());
         teamEconomyTable.setBackground(Color.white);
         JScrollPane scp = new JScrollPane(teamEconomyTable);
         scp.setPreferredSize(new Dimension(600, 250));
@@ -83,7 +95,27 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
         lb.cell(tlb.getPanel(), "align=left");
         lb.relatedGapRow();
         
-        return lb.getPanel();
+        lb.separator("Team Products");
+        lb.relatedGapRow();
+        
+        nationProductionListView = new NationProductionListView();
+        JPanel pnl = (JPanel)nationProductionListView.getControl();
+        pnl.setPreferredSize(new Dimension(300, 300));
+        lb.cell(pnl);
+        
+        lb.relatedGapRow();
+        
+        lb.separator("Statistics");
+        lb.relatedGapRow();
+        
+        nationStatisticsListView = new NationStatisticsListView();
+        pnl = (JPanel)nationStatisticsListView.getControl();
+        pnl.setPreferredSize(new Dimension(300, 250));
+        lb.cell(pnl);
+        
+        lb.relatedGapRow();
+        
+        return new JScrollPane(lb.getPanel());
     }
     
     public void refreshTableItems() {
@@ -100,11 +132,13 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
                 ecds.add(ecd);
             }
         }
+        ecds.add(null);
         teamEconomyTableModel.setRows(ecds);
-                
     }
     
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        nationProductionListView.onApplicationEvent(applicationEvent);
+        nationStatisticsListView.onApplicationEvent(applicationEvent);
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString())) {
@@ -128,7 +162,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
     }
     
     
-    class TeamEconomyTableRenderer extends DefaultTableCellRenderer {
+    class IntegerTeamEconomyTableRenderer extends DefaultTableCellRenderer {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (column == TeamEconomyTableModel.iFinalGold) {
@@ -137,9 +171,11 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
                     lbl.setForeground(Color.red);
                 }
             } else if (column == TeamEconomyTableModel.iMarket) {
-                Integer amt = (Integer)value;
-                if (amt > EconomyCalculator.getMarketLimitWarningThreshhold()) {
-                    lbl.setForeground(Color.red);
+                if (row < teamEconomyTableModel.getRowCount() - 1) { 
+                    Integer amt = (Integer)value;
+                    if (amt > EconomyCalculator.getMarketLimitWarningThreshhold()) {
+                        lbl.setForeground(Color.red);
+                    }
                 }
 //            } else if (column == teamEconomyTableModel.getBestNatSellIndex(row)) {
 //                lbl.setForeground(Color.green);
@@ -150,18 +186,52 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
                 if (amt < 0) {
                     lbl.setForeground(Color.red);
                 }
+            } else if (column == TeamEconomyTableModel.iTaxRate) {
+                Integer amt = (Integer)value;
+                if (amt < 60) {
+                    lbl.setForeground(Color.decode("#009900"));
+                } else if (amt > 60) {
+                    lbl.setForeground(Color.red);
+                }
             } else {
                 if (isSelected) {
                     lbl.setForeground(Color.white);
                 } else {
                     lbl.setForeground(Color.black);
                 }
-            }
+            } 
+            
             if (teamEconomyTableModel.getColumnClass(column) == Integer.class) {
                 lbl.setHorizontalAlignment(JLabel.RIGHT);
             }
+            
+            if (!isSelected) {
+                if (row == teamEconomyTableModel.getRowCount() - 1) {
+                    lbl.setBackground(Color.decode("#CCCCFF"));
+                } else {
+                    lbl.setBackground(Color.white);
+                }
+            }
+            if (hasFocus) {
+                lbl.setBorder(BorderFactory.createLineBorder(Color.red, 1));
+            }
             return lbl;
         }
+
         
     }
+    
+    class StringTeamEconomyTableRenderer extends DefaultTableCellRenderer {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (!isSelected) {
+                if (row == teamEconomyTableModel.getRowCount() - 1) {
+                    lbl.setBackground(Color.decode("#CCCCFF"));
+                } else {
+                    lbl.setBackground(Color.white);
+                }
+            }
+            return lbl;
+        }
+    };
 }

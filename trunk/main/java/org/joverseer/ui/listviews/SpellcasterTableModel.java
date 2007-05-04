@@ -63,8 +63,18 @@ public class SpellcasterTableModel extends ItemTableModel {
     protected Object getValueAtInternal(Object object, int i) {
         if (i <  getSpellStartI()) return super.getValueAtInternal(object, i);
         if (i - getSpellStartI() < spells.size()) {
+            int spellId = spells.get(i - getSpellStartI());
             SpellcasterWrapper sw = (SpellcasterWrapper)object;
-            return sw.getProficiency(spells.get(i - getSpellStartI()));
+            if (spellId > 1000) {
+                // spirit mastery health drop effect
+                if (spellId == 1502) {
+                    return sw.getMageRank() / 3;
+                } else {
+                    return sw.getMageRank() / 2;
+                }
+            } else {
+                return sw.getProficiency(spellId);
+            }
         }
         if (i == 13) {
         	// return Orders

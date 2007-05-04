@@ -26,7 +26,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
     public static int iProdStart = 1;
     public static int iProdEnd = 7;
     public static int iSurplus = 8;
-    
+    public static int iTaxRate = 11;
     
     String showProductsAs = PROD_TOTAL;
     
@@ -105,6 +105,21 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
     }
 
     public Object getValueAt(int row, int col) {
+        if (row == getRowCount() - 1) {
+            // totals
+            if (col == 0) {
+                return "total";
+            }
+            int sum = 0;
+            for (int i=0; i<getRowCount() - 1; i++) {
+                Object v = getValueAt(i, col);
+                if (Integer.class.isInstance(v)) {
+                    sum += (Integer)v;
+                }
+            }
+            if (col == iTaxRate) sum = sum / (getRowCount() - 1);
+            return sum;
+        }
         EconomyCalculatorData ecd = getEconomyCalculatorData(row);
         if (ecd == null) return "";
         NationEconomy ne = getNationEconomy(ecd.getNationNo());
@@ -143,7 +158,6 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
                 // reserves
                 return ne.getReserve();
             case 10:
-                // lost gold
                 return - EconomyTotalsTableModel.computeLostGoldRevenue(ne.getNationNo()) 
                         - EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
             case 11:

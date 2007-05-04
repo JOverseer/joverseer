@@ -12,5 +12,5 @@ public enum MapOptionValuesEnum {
     ShowClimateOn,
     ShowClimateOff,
     HexGraphicsSimple,
-    HexGraphicsTexture
+    HexGraphicsTexture,
 }

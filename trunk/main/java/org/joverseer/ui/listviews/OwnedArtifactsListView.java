@@ -8,6 +8,7 @@ import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.OwnedArtifact;
@@ -48,6 +49,23 @@ public class OwnedArtifactsListView extends ItemListView {
                 a.setNumber(ai.getNo());
                 a.setOwner(c.getName());
                 a.setHexNo(c.getHexNo());
+                a.setPower1(ai.getPower1());
+                a.setPower2(ai.getPower2());
+                artis.add(a);
+            }
+        }
+        for (Artifact ar : (ArrayList<Artifact>)g.getTurn().getContainer(TurnElementsEnum.Artifact).getItems()) {
+            if (ar.getOwner() != null && !ar.getOwner().equals("")) {
+                ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
+                if (ai == null) continue;
+                Nation n = g.getMetadata().getNationByName(ar.getOwner());
+                if (n == null) continue;
+                OwnedArtifact a = new OwnedArtifact();
+                a.setNationNo(n.getNumber());
+                a.setName(ai.getName());
+                a.setNumber(ai.getNo());
+                a.setOwner(ar.getOwner());
+                a.setHexNo(ar.getHexNo());
                 a.setPower1(ai.getPower1());
                 a.setPower2(ai.getPower2());
                 artis.add(a);

@@ -189,11 +189,8 @@ public class CharacterViewer extends ObjectViewer {
                             // find artifact in metadata
                             ArtifactInfo a = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
                             // copy into new object to change the name and add the turn - hack but for now it works
-                            ArtifactInfo na = new ArtifactInfo();
-                            na.setNo(a.getNo());
-                            na.setAlignment(a.getAlignment());
-                            na.setOwner(acw.getName());
-                            na.setPowers(a.getPowers());
+                            ArtifactData na = new ArtifactData();
+                            na.setNumber(a.getNo());
                             na.setName(a.getName() + " (t" + aw.getTurnNo() + ")");
                             artis.add(na);
                         }
@@ -266,12 +263,18 @@ public class CharacterViewer extends ObjectViewer {
                 if (artifacts != null) {
                     for (Integer no : artifacts) {
                         ArtifactInfo arti = (ArtifactInfo) gm.getArtifacts().findFirstByProperty("no", no);
+                        ArtifactData na = new ArtifactData();
                         if (arti == null) {
-                            arti = new ArtifactInfo();
-                            arti.setNo(no);
+                            na.setNumber(no);
                             arti.setName("---");
+                        } else {
+                            na.setNumber(no);
+                            na.setName(arti.getName());
                         }
-                        artis.add(arti);
+                        if (no == c.getArtifactInUse()) {
+                            na.setInUse("x");
+                        }
+                        artis.add(na);
                     }
                 }
             } else {
@@ -462,27 +465,19 @@ public class CharacterViewer extends ObjectViewer {
 
         glb.append(artifactsTable = new JTable(), 2, 1);
         artifactsTable.setPreferredSize(new Dimension(150, 20));
-        final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
-
-            protected String[] createColumnPropertyNames() {
-                return new String[] {"no", "name"};
-            }
-
-            protected Class[] createColumnClasses() {
-                return new Class[] {String.class, String.class};
-            }
-        };
-        
+        final ArtifactTableModel tableModel = new ArtifactTableModel(this.getMessageSource());        
         artifactsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	if (e.getClickCount() == 1) {
-	                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
-	                if (a == null) return;
-	                TransferHandler handler = new ParamTransferHandler(a.getNo());
-	                artifactsTable.setTransferHandler(handler);
-	                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
+                    ArtifactData ad = (ArtifactData)tableModel.getRow(artifactsTable.getSelectedRow()); 
+                    ArtifactInfo a = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", ad.getNumber());
+                    if (a == null) return;
+                    TransferHandler handler = new ParamTransferHandler(a.getNo());
+                    artifactsTable.setTransferHandler(handler);
+                    handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
             	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
-                    ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
+                    ArtifactData ad = (ArtifactData)tableModel.getRow(artifactsTable.getSelectedRow()); 
+                    ArtifactInfo a = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", ad.getNumber());
                     if (a == null) return;
                     final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" +
                                     a.getAlignment() + "\n" +
@@ -498,7 +493,7 @@ public class CharacterViewer extends ObjectViewer {
         tableModel.setRowNumbers(false);
         artifactsTable.setModel(tableModel);
         // todo think about this
-        TableUtils.setTableColumnWidths(artifactsTable, new int[] {30, 120});
+        TableUtils.setTableColumnWidths(artifactsTable, new int[] {30, 120, 20});
         artifactsTable.setBorder(null);
 
         glb.nextLine();
@@ -796,5 +791,54 @@ public class CharacterViewer extends ObjectViewer {
         this.showColor = showColor;
     }
     
+    class ArtifactData {
+        int number;
+        String name;
+        String inUse;
+        
+        public String getInUse() {
+            return inUse;
+        }
+        
+        public void setInUse(String inUse) {
+            this.inUse = inUse;
+        }
+        
+        public String getName() {
+            return name;
+        }
+        
+        public void setName(String name) {
+            this.name = name;
+        }
+        
+        public int getNumber() {
+            return number;
+        }
+        
+        public void setNumber(int number) {
+            this.number = number;
+        }
+    }
+ 
+    class ArtifactTableModel extends BeanTableModel {
 
+        public ArtifactTableModel(MessageSource ms) {
+            super(ArtifactData.class, ms);
+        }
+
+        protected String[] createColumnPropertyNames() {
+            return new String[]{"number", "name", "inUse"};
+        }
+
+        protected Class[] createColumnClasses() {
+            return new Class[]{String.class, String.class, String.class};
+        }
+
+        protected boolean isCellEditableInternal(Object arg0, int arg1) {
+            return false;
+        }
+        
+        
+    }
 }

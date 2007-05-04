@@ -20,5 +20,6 @@ public enum TurnElementsEnum implements Serializable {
     Challenge,
     EconomyCalucatorData,
     PdfText,
-    PlayerInfo
+    PlayerInfo,
+    Notes
 }

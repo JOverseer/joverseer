@@ -9,6 +9,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -100,6 +101,11 @@ public class ArtifactInfoCollector implements ApplicationListener {
                             aw.setNationNo(c.getNationNo());
                         }
                     }
+                }
+                // owner is a nation (hidden artifact)
+                Nation n = g.getMetadata().getNationByName(a.getOwner());
+                if (n != null) {
+                    aw.setNationNo(n.getNumber());
                 }
             }
             

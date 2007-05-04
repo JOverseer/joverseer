@@ -290,4 +290,8 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     		return null;
     	}
     }
+    
+    public static boolean isAnchoredShips(Army a) {
+        return a.getCommanderName().equals("[Anchored Ships]");
+    }
 }

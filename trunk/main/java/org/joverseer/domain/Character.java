@@ -41,7 +41,8 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
 
     ArrayList<Integer> artifacts = new ArrayList<Integer>();
     ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
-
+    int artifactInUse;
+    
     InformationSourceEnum informationSource;
     InfoSource infoSource;
 
@@ -290,6 +291,16 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     
     public void setHostage(Boolean isHostage) {
         this.isHostage = isHostage;
+    }
+
+    
+    public int getArtifactInUse() {
+        return artifactInUse;
+    }
+
+    
+    public void setArtifactInUse(int artifactInUse) {
+        this.artifactInUse = artifactInUse;
     }
     
     

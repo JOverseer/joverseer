@@ -1,0 +1,29 @@
+<txt2xml>
+    <processor type="StringEnclosedMatch">
+    	<element>SNAs</element>
+    	<startString>Special Nation Abilities :</startString>    	
+    	<endString>Game #</endString>
+    	
+    	<processor type="RepeatRegexMatch">
+    		<element>SNA</element>
+    		<regex>(\d{2})</regex>
+   		</processor>
+	</processor>
+	<processor type="StringEnclosedMatch">
+		<element>NationNames</element>
+		<startString>RELATIONS WITH OTHER NATIONS</startString>
+		<endString>POPULATION CENTERS</endString>
+		<processor type="RepeatRegexMatch">
+			<element>Nation</element>
+			<regex>(#\s?\d{1,2} [\w' ]+)  :</regex>
+			<processor type="RegexMatch">
+				<element>Number</element>
+				<regex>(\d{1,2})</regex>
+			</processor>
+			<processor type="RegexMatch">
+				<element>Name</element>
+				<regex>(\w[\w' ]+\w)</regex>
+			</processor>
+		</processor>
+	</processor>
+</txt2xml>

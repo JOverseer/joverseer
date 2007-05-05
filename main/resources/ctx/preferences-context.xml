@@ -247,6 +247,27 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>map.anchoredShips</value>
+					</property>
+					<property name="description">
+						<value>Show Anchored Ships</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>													
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>general.tipOfTheDay</value>
 					</property>
 					<property name="description">

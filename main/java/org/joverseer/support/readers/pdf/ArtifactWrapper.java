@@ -5,6 +5,7 @@ public class ArtifactWrapper {
     int number;
     String name;
     int hexNo;
+    String power;
     
     public int getHexNo() {
         return hexNo;
@@ -28,6 +29,16 @@ public class ArtifactWrapper {
     
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    
+    public String getPower() {
+        return power;
+    }
+
+    
+    public void setPower(String power) {
+        this.power = power;
     }
     
     

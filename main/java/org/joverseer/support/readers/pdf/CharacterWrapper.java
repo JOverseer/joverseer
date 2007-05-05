@@ -54,6 +54,16 @@ public class CharacterWrapper {
 	
 	public void updateCharacter(Character c) {
             c.setOrderResults(getOrders());
+            // update artifacts
+            int idx = getArtifacts().indexOf("√"); 
+            if (idx > -1) {
+                // there is an artifact in use
+                int i = getArtifacts().lastIndexOf("#", idx);
+                int j = getArtifacts().indexOf(" ", i);
+                String no = getArtifacts().substring(i+1, j).trim();
+                int artiNo = Integer.parseInt(no);
+                c.setArtifactInUse(artiNo);
+            }
         }
 
     

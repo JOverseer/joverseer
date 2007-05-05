@@ -29,6 +29,7 @@ import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.HexInfo;
+import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PdfTurnText;
@@ -423,8 +424,8 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/Artifacts/Artifact", "addItem", "org.joverseer.support.readers.pdf.ArtifactWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/Artifacts/Artifact",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex", "Number"},
-                            new String[]{"name", "hexNo", "number"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Hex", "Number", "Power"},
+                            new String[]{"name", "hexNo", "number", "power"}));
             snpr.setAllowUnknownChildElements(true);
 
             // create container for anchored ships
@@ -808,6 +809,8 @@ public class TurnPdfReader implements Runnable {
                     allegiance = nr.getAllegiance();
                 }
                 a.setNationAllegiance(allegiance);
+                a.setInformationSource(InformationSourceEnum.exhaustive);
+                a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
                 armies.addItem(a);
             }
             if (asw.getType().equalsIgnoreCase("warships")) {
@@ -965,6 +968,44 @@ public class TurnPdfReader implements Runnable {
                     game.getMetadata().getArtifacts().addItem(ai);
                 }
             };
+            
+            // for all games update powers
+            ArtifactInfo ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+            if (ai != null && aw.getPower() != null && !aw.getPower().equals("")) {
+                // parse power
+                String power = aw.getPower();
+                if (power.startsWith("Increases")) {
+                    int idx = power.lastIndexOf(" ");
+                    String value = power.substring(idx + 1);
+                    if (power.indexOf("Agent") > -1) {
+                        power = "Agent " + value;
+                    } else if (power.indexOf("Command") > -1) {
+                        power = "Command " + value;
+                    } else if (power.indexOf("Mage") > -1) {
+                        power = "Mage " + value;
+                    } else if (power.indexOf("Emmisary") > -1) {
+                        power = "Emmisary " + value;
+                    } else if (power.indexOf("Stealth") > -1) {
+                        power = "Stealth " + value;
+                    }
+                } else if (power.startsWith("COMBAT")) {
+                    int i2 = power.lastIndexOf(" ");
+                    int i1 = power.lastIndexOf(" ", i2-1);
+                    power = "Combat " + power.substring(i1 + 1, i2).trim();
+                } else if (power.indexOf("Open seas")> -1) {
+                    power = "Open seas";
+                } else if (power.indexOf("HIDING - one Pop") > -1) {
+                    power = "Hide PC";
+                } else if (power.indexOf("SCRYING - \"Scout Area\"") > -1) {
+                    power = "Scry Area";
+                }
+                
+                if (!power.equals(aw.getPower())) {
+                    power += "*"; // mark power as updated for this game
+                }
+                
+                ai.getPowers().set(0, power);
+            }
             
             // update hidden artifacts
             if (aw.getHexNo() > 0) {

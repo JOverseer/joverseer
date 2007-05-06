@@ -117,13 +117,13 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
                     sum += (Integer)v;
                 }
             }
-            if (col == iTaxRate) sum = sum / (getRowCount() - 1);
+            if (col == iTaxRate) sum = sum / Math.max((getRowCount() - 1), 1);
             return sum;
         }
         EconomyCalculatorData ecd = getEconomyCalculatorData(row);
-        if (ecd == null) return "";
+        if (ecd == null) return null;
         NationEconomy ne = getNationEconomy(ecd.getNationNo());
-        if (ne == null) return "";
+        if (ne == null) return null;
         switch (col) {
             case 0:
                 // nation
@@ -183,7 +183,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
                             EconomyTotalsTableModel.computeLostGoldRevenue(ne.getNationNo()) -
                             EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
         };
-        return "";
+        return null;
     }
     
     public int getBestNatSellIndex(int row) {

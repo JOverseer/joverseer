@@ -10,6 +10,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.springframework.richclient.application.Application;
@@ -44,13 +45,15 @@ public class LocateArtifactResultListView extends BaseItemListView {
             if (g.getTurn(ti) == null) continue;
             Container artis = g.getTurn(ti).getContainer(TurnElementsEnum.Artifact);
             for (Artifact arti : (ArrayList<Artifact>)artis.getItems()) {
-                if (results.containsKey(arti.getNumber())) {
-                    results.remove(arti.getNumber());
-                }
-                LocateArtifactResult lar =
-                    ((LocateArtifactResultTableModel)tableModel).getResult(arti);
-                lar.setTurnNo(ti);
-                results.put(arti.getNumber(), lar);
+            	if (DerivedFromSpellInfoSource.class.isInstance(arti.getInfoSource())) {
+	                if (results.containsKey(arti.getNumber())) {
+	                    results.remove(arti.getNumber());
+	                }
+	                LocateArtifactResult lar =
+	                    ((LocateArtifactResultTableModel)tableModel).getResult(arti);
+	                lar.setTurnNo(ti);
+	                results.put(arti.getNumber(), lar);
+            	}
             }
         }
         ArrayList items = new ArrayList();

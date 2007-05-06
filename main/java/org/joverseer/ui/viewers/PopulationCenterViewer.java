@@ -18,6 +18,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.HarborSizeEnum;
+import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
@@ -29,6 +30,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
@@ -95,9 +97,19 @@ public class PopulationCenterViewer extends ObjectViewer {
             nationNo = pc.getNationNo();
             loyaltyNo = pc.getLoyalty();
         }
+        if (loyaltyNo == 0) {
+        	if (pc.getLoyaltyEstimate() != null) {
+        		String txt = pc.getLoyaltyEstimate().getValue() + " (t" +
+        					((DerivedFromInfluenceOtherInfoSource)pc.getLoyaltyEstimate().getInfoSource()).getTurnNo() + ")";
+        		loyalty.setText(txt);
+        	} else {
+        		loyalty.setText(String.valueOf(loyaltyNo));
+        	}
+        } else {
+        	loyalty.setText(String.valueOf(loyaltyNo));
+        }
 
         nation.setText(gm.getNationByNum(nationNo).getShortName());
-        loyalty.setText(String.valueOf(loyaltyNo));
         
         
         sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());

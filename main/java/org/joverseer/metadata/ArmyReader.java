@@ -31,6 +31,7 @@ public class ArmyReader implements MetadataReader {
 
             String ln;
             while ((ln = reader.readLine()) != null) {
+            	if (ln.equals("")) continue;
             	ln = ln.replace("\"", "");
             	String parts[] = ln.split(",");
             	

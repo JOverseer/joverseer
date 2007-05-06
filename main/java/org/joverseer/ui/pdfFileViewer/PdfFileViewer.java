@@ -55,6 +55,7 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
                 } else {
                     text.setText(ptt.getText());
                     text.setCaretPosition(0);
+                    lastSearchIdx = 0;
                 }
                 
                 

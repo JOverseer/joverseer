@@ -1,12 +1,15 @@
 package org.joverseer.ui.pdfFileViewer; 
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -19,6 +22,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -27,6 +31,8 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
 public class PdfFileViewer extends AbstractView implements ApplicationListener {
+	String searchString = null;
+	int lastSearchIdx = 0;
     JTextArea text;
     JComboBox nationCombo;
     JPanel panel;
@@ -34,7 +40,9 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
     
     protected JComponent createControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(nationCombo = new JComboBox(), "align=left");
+        
+        TableLayoutBuilder lb = new TableLayoutBuilder();
+        lb.cell(nationCombo = new JComboBox(), "align=left");
         nationCombo.setPreferredSize(new Dimension(200, 24));
         nationCombo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -52,12 +60,32 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
                 
             }
         });
+        
+        lb.gapCol();
+        JLabel lbl = new JLabel("Find :");
+        lb.cell(lbl);
+        lb.gapCol();
+        search = new JTextField();
+        search.setPreferredSize(new Dimension(100, 20));
+        lb.cell(search);
+        lb.gapCol();
+        JButton btnSearch = new JButton("Next");
+        lb.cell(btnSearch);
+        btnSearch.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				doSearch();
+			}
+        	
+        });
+        
+        tlb.cell(lb.getPanel(), "align=left");
         tlb.row();
         
         text = new JTextArea();
         //text.setLineWrap(true);
         //text.setWrapStyleWord(true);
-        //text.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
+        text.setFont(GraphicUtils.getFont("Monaco ", Font.PLAIN, 11));
         tlb.cell(new JScrollPane(text));
         
         panel = tlb.getPanel();
@@ -87,9 +115,36 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 loadNationCombo();
+                initSearch();
+            } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+                loadNationCombo();
+                initSearch();
             }
         }
     }
     
+    private void initSearch() {
+    	searchString = null;
+    	lastSearchIdx = 0;
+    }
+    
+    private void doSearch() {
+    	if (!search.getText().equals(searchString)) {
+    		lastSearchIdx = 0;
+    		searchString = search.getText();
+    	}
+    	int i = text.getText().indexOf(searchString, lastSearchIdx + searchString.length());
+    	if (i > -1) {
+    		lastSearchIdx = i;
+    		text.setCaretPosition(lastSearchIdx);
+    		text.setSelectionStart(lastSearchIdx);
+    		text.setSelectionEnd(lastSearchIdx + searchString.length());
+    		text.requestFocusInWindow();
+    	} else {
+    		lastSearchIdx = 0;
+    		text.setSelectionStart(-1);
+    		text.setSelectionEnd(-1);
+    	}
+    }
 
 }

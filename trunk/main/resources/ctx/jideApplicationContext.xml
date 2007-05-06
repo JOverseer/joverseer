@@ -341,6 +341,46 @@
    						<value>classpath:metadata/info/dragons.csv</value>
    					</property>
    				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>characterWounds</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/characterWounds.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>armyWareTypes</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/armyWareTypes.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>armyTrainingDescriptions</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/armyTrainingDescriptions.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>armyLossesDescriptions</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/armyLossesDescriptions.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>armyMoraleDescriptions</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/armyMoraleDescriptions.csv</value>
+   					</property>
+   				</bean>
    			</list>
    		</property>
    	</bean>

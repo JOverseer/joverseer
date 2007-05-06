@@ -22,6 +22,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
+import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -43,6 +44,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
     JComboBox showProductAsCombo;
     NationProductionListView nationProductionListView;
     NationStatisticsListView nationStatisticsListView;
+    NationEconomyListView nationEconomyListView;
     
     protected JComponent createControl() {
         TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -105,12 +107,22 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
         
         lb.relatedGapRow();
         
-        lb.separator("Statistics");
+        lb.separator("Team Economy");
+        lb.relatedGapRow();
+        
+        nationEconomyListView = new NationEconomyListView();
+        pnl = (JPanel)nationEconomyListView.getControl();
+        pnl.setPreferredSize(new Dimension(300, 270));
+        lb.cell(pnl);
+        
+        lb.relatedGapRow();
+        
+        lb.separator("Team Statistics");
         lb.relatedGapRow();
         
         nationStatisticsListView = new NationStatisticsListView();
         pnl = (JPanel)nationStatisticsListView.getControl();
-        pnl.setPreferredSize(new Dimension(300, 250));
+        pnl.setPreferredSize(new Dimension(300, 270));
         lb.cell(pnl);
         
         lb.relatedGapRow();
@@ -138,6 +150,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
     
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         nationProductionListView.onApplicationEvent(applicationEvent);
+        nationEconomyListView.onApplicationEvent(applicationEvent);
         nationStatisticsListView.onApplicationEvent(applicationEvent);
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
@@ -165,6 +178,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
     class IntegerTeamEconomyTableRenderer extends DefaultTableCellRenderer {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (value == null) return lbl;
             if (column == TeamEconomyTableModel.iFinalGold) {
                 Integer amt = (Integer)value;
                 if (amt < 0) {
@@ -226,7 +240,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
             JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (!isSelected) {
                 if (row == teamEconomyTableModel.getRowCount() - 1) {
-                    lbl.setBackground(Color.decode("#CCCCFF"));
+                    lbl.setBackground(Color.decode("#333399"));
                 } else {
                     lbl.setBackground(Color.white);
                 }

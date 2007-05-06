@@ -337,9 +337,9 @@ public class TurnXmlReader implements Runnable{
                     } else {
                     	System.out.println("replace/update");
                     	pcs.removeItem(oldPc);
-                    	pcs.addItem(newPc);
                     	newPc.setNationNo(oldPc.getNationNo());
                     	newPc.setName(oldPc.getName());
+                    	pcs.addItem(newPc);
                         if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
                             //newPc.setLoyalty(oldPc.getLoyalty());
                         }
@@ -390,24 +390,26 @@ public class TurnXmlReader implements Runnable{
 //                    } 
                 }
                 
-                // handle pops that are "reported" as belonging to the current nation
-                // but the current nation did not have them in the xml
-                ArrayList<PopulationCenter> potentiallyLostPops = (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", turnInfo.getNationNo());
-                for (PopulationCenter pop : potentiallyLostPops) {
-                    if (pop.getInfoSource().getTurnNo() == turnInfo.getTurnNo() && pop.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
-                    if (currentNationPops.contains(pop)) continue;
-                    
-                    // pop has been lost
-                    pop.setNationNo(0);
-                    pop.setLoyalty(0);
-                }
+                
             }
             catch (Exception exc) {
                 throw exc;
             }
-
+            
+        }
+        // handle pops that are "reported" as belonging to the current nation
+        // but the current nation did not have them in the xml
+        ArrayList<PopulationCenter> potentiallyLostPops = (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", turnInfo.getNationNo());
+        for (PopulationCenter pop : potentiallyLostPops) {
+            if (pop.getInfoSource().getTurnNo() == turnInfo.getTurnNo() && pop.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue()) continue;
+            if (currentNationPops.contains(pop)) continue;
+            
+            // pop has been lost
+            pop.setNationNo(0);
+            pop.setLoyalty(0);
         }
     }
+    
     private void updateChars() throws Exception {
         Container chars = turn.getContainer(TurnElementsEnum.Character);
         for (CharacterWrapper cw : (ArrayList<CharacterWrapper>) turnInfo.getCharacters().getItems()) {

@@ -1,25 +1,26 @@
 package org.joverseer.support.readers.pdf;
 
+import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 
-public class InfluenceOtherResult implements OrderResult {
+public class InfluenceOtherResultWrapper implements OrderResult {
 	String popCenter;
 	String loyalty;
 	public void updateGame(Turn turn, int nationNo, String character) {
 		PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", popCenter);
-		// TODO
-//		if (pc != null) {
-//			if (pc.getInformationSource() == InformationSourceEnum.exhaustive || 
-//					pc.getInformationSource() == InformationSourceEnum.detailed) return;
-//			if (pc.getLoyalty() == 0) {
-//				pc.setLoyalty(getLoyaltyAsInt());
-//			} else {
-//				pc.setLoyalty(Math.min(pc.getLoyalty(), getLoyaltyAsInt()));
-//			}
-//		}
+		if (pc != null) {
+			if (pc.getInformationSource() == InformationSourceEnum.exhaustive || 
+					pc.getInformationSource() == InformationSourceEnum.detailed) return;
+			InfoSourceValue loyaltyEstimate = new InfoSourceValue();
+			loyaltyEstimate.setValue(getLoyalty());
+			DerivedFromInfluenceOtherInfoSource diois = new DerivedFromInfluenceOtherInfoSource(turn.getTurnNo(), nationNo, character, getLoyalty());
+			loyaltyEstimate.setInfoSource(diois);
+			pc.setLoyaltyEstimate(loyaltyEstimate); 
+		}
 	}
 	
 	public String getLoyalty() {

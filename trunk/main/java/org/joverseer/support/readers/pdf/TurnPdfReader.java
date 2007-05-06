@@ -283,7 +283,14 @@ public class TurnPdfReader implements Runnable {
             digester.addCallMethod("txt2xml/Turn/Orders/Character/Assassinated", "setAssassinatedOn");
             digester.addCallMethod("txt2xml/Turn/Orders/Character/Cursed", "setCursedOn");
             digester.addCallMethod("txt2xml/Turn/Orders/Character/Executed", "setExecutedOn");
-            
+            // create InfOther result object
+            digester.addObjectCreate("txt2xml/Turn/Orders/Character/InfOther", "org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper");
+            // add to character
+            digester.addSetNext("txt2xml/Turn/Orders/Character/InfOther", "addOrderResult", "org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Orders/Character/InfOther",
+                    snpr = new SetNestedPropertiesRule(new String[]{"PopCenter", "Loyalty"},
+                            new String[]{"popCenter", "loyalty"}));
             // create container for companies
             digester.addObjectCreate("txt2xml/Turn/Companies", "org.joverseer.support.Container");
             // add container to turn info
@@ -318,6 +325,11 @@ public class TurnPdfReader implements Runnable {
             digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army", "org.joverseer.support.readers.pdf.CombatArmy");
             // add to container
             digester.addSetNext("txt2xml/Turn/Combats/Combat/Armies/Army", "addItem", "org.joverseer.support.readers.pdf.CombatArmy");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Combats/Combat/Armies/Army",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Morale"},
+                            new String[]{"commanderName", "morale"}));
+            snpr.setAllowUnknownChildElements(true);
             // create regiment container
             digester.addObjectCreate("txt2xml/Turn/Combats/Combat/Armies/Army/Regiments", "org.joverseer.support.Container");
             // add container to army
@@ -839,12 +851,13 @@ public class TurnPdfReader implements Runnable {
                 if (c == null) {
                     c = new Combat();
                     c.setHexNo(cw.getHexNo());
-                    c.addNarration(nationNo, cw.getNarration());
+                    c.addNarration(turnInfo.getNationNo(), cw.getNarration());
                     combats.addItem(c);
                 } else {
-                    c.addNarration(nationNo, cw.getNarration());
+                    c.addNarration(turnInfo.getNationNo(), cw.getNarration());
                 }
             }
+            cw.updateGame(game, turnInfo.getTurnNo(), turnInfo.getNationNo());
         }
     }
 

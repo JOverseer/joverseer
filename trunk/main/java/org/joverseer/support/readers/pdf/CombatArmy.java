@@ -6,6 +6,7 @@ public class CombatArmy {
         String nation;
         String commanderName;
         String losses;
+        String morale;
         boolean survived;
         Container regiments = new Container();
         
@@ -50,6 +51,14 @@ public class CombatArmy {
         public void setRegiments(Container regiments) {
             this.regiments = regiments;
         }
+
+		public String getMorale() {
+			return morale;
+		}
+
+		public void setMorale(String morale) {
+			this.morale = morale;
+		}
         
         
     }

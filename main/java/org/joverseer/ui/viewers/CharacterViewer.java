@@ -95,7 +95,7 @@ import org.springframework.richclient.table.BeanTableModel;
 import sun.awt.geom.AreaOp.AddOp;
 
 
-public class CharacterViewer2 extends ObjectViewer {
+public class CharacterViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "CharacterViewer";
 
@@ -131,7 +131,7 @@ public class CharacterViewer2 extends ObjectViewer {
     ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
     ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
 
-    public CharacterViewer2(FormModel formModel) {
+    public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
     

@@ -2,15 +2,27 @@ package org.joverseer.support.readers.pdf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
+import org.joverseer.game.Game;
+import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmyEstimate;
+import org.joverseer.domain.ArmyEstimateElement;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.InfoSourceValue;
+import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
+import org.joverseer.support.info.InfoUtils;
+import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 
 
 public class CombatWrapper {
     String narration;
     int hexNo;
     Container armies = new Container(); 
-    HashMap<String, String> characterResult = new HashMap<String, String>();
+    HashMap<String, ArrayList<String>> characterWounds = new HashMap<String, ArrayList<String>>();
+    HashMap<String, ArrayList<String>> armyLosses = new HashMap<String, ArrayList<String>>();
     
     public int getHexNo() {
         return hexNo;
@@ -39,10 +51,24 @@ public class CombatWrapper {
     public void setArmies(Container armies) {
         this.armies = armies;
     }
+    
+    private void addToList(String key, String value, HashMap<String, ArrayList<String>> map) {
+    	ArrayList<String> list = map.get(key);
+    	if (list == null) {
+    		list = new ArrayList<String>();
+    		map.put(key, list);
+    	}
+    	list.add(value);
+    }
 
     public void parse() {
+    	System.out.println("Parsing battle at " + getHexNo());
     	// parse char results
-    	String txt = getNarration().replace("\n", " ").replace("\r", " ").replace("\\s+", " ");
+    	String txt = getNarration().replace("\n", " ").replace("\r", " ");
+    	while (txt.indexOf("  ") > -1) {
+    		txt = txt.replace("  ", " ");
+    	};
+    	
     	String injured = " appeared to have survived but suffers from ";
     	int i = 0;
     	do {
@@ -55,11 +81,81 @@ public class CombatWrapper {
     			String wounds = txt.substring(i + injured.length(), k);
     			System.out.println(charName + " suffered " + wounds + " wounds.");
     			wounds = wounds + " wounds";
-    			characterResult.put(charName, wounds);
+    			addToList(charName, wounds, characterWounds);
     			i = i + injured.length();
     		}
     	} while (i > -1);
     	
+    	// parse army losses
+    	String losses = "'s forces were victorious in the battle, but suffered ";
+    	i = 0;
+    	do {
+    		i = txt.indexOf(losses, i);
+    		if (i > -1) {
+    			// found
+    			int j = txt.lastIndexOf(".", i);
+    			int k = txt.indexOf(" ", i + losses.length());
+    			String commanderName = txt.substring(j+1, i).trim();
+    			String aLosses = txt.substring(i + losses.length(), k);
+    			System.out.println(commanderName + "'s had " + aLosses + " losses.");
+    			aLosses = aLosses;
+    			addToList(commanderName, aLosses, armyLosses);
+
+    			i = i + losses.length();
+    		} 
+    	} while (i > -1);
+    	
+    	//  parse army losses against pc
+    	losses = "'s army survived the attack on the";
+    	String losses1 = ", but suffered ";
+    	i = 0;
+    	int i1 = 0;
+    	do {
+    		i = txt.indexOf(losses, i);
+    		i1 = txt.indexOf(losses1, i + losses.length());
+    		if (i > -1 && i1 > -1) {
+    			// found
+    			int j = txt.lastIndexOf(".", i);
+    			int k = txt.indexOf(" ", i1 + losses1.length());
+    			String commanderName = txt.substring(j+1, i).trim();
+    			String aLosses = txt.substring(i1 + losses1.length(), k);
+    			System.out.println(commanderName + "'s had " + aLosses + " losses against the pop center.");
+    			aLosses = aLosses;
+    			addToList(commanderName, aLosses, armyLosses);
+
+    			i = i1 + losses1.length();
+    		} 
+    	} while (i > -1);
+    	
+    	// parse destroyed armies
+    	String destroyed = "'s forces were destroyed/routed in the battle.";
+    	i = 0;
+    	do {
+    		i = txt.indexOf(destroyed, i);
+    		if (i > -1) {
+    			// found
+    			int j = txt.lastIndexOf(".", i);
+    			String commanderName = txt.substring(j+1, i).trim();
+    			System.out.println(commanderName + "'s were destroyed.");
+    			addToList(commanderName, "destroyed", armyLosses);
+    			i = i + losses.length();
+    		} 
+    	} while (i > -1);
+    	
+    	// parse found no enemies to fight
+    	String noFight = "'s forces found no enemy armies to fight.";
+    	i = 0;
+    	do {
+    		i = txt.indexOf(noFight, i);
+    		if (i > -1) {
+    			// found
+    			int j = txt.lastIndexOf(".", i);
+    			String commanderName = txt.substring(j+1, i).trim();
+    			System.out.println(commanderName + "'s found no enemies to fight.");
+    			addToList(commanderName, null, armyLosses);
+    			i = i + losses.length();
+    		} 
+    	} while (i > -1);
     }
     
     private static String getStringSegment(String string, String startString, String endString, boolean includeStart, boolean includeEnd) {
@@ -76,7 +172,114 @@ public class CombatWrapper {
         return string.substring(idx1, idx2).trim();
     }
 
-    
+    public void updateGame(Game game, int turnNo, int nationNo) {
+    	for (String charName : characterWounds.keySet()) {
+    		Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", charName);
+    		if (c == null) {
+    			// do nothing
+    		} else {
+    			if (c.getInformationSource() == InformationSourceEnum.exhaustive || 
+    					c.getInformationSource() == InformationSourceEnum.detailed) continue;
+    			// update health
+    			ArrayList<String> woundsDescrList = characterWounds.get(charName);
+    			for (String woundsDescr : woundsDescrList) {
+    				woundsDescr = woundsDescr.substring(0, 1).toUpperCase() + woundsDescr.substring(1);
+    				String healthRange = InfoUtils.getHealthRangeFromWounds(woundsDescr);
+	    			if (healthRange != null) {
+	    				if (c.getHealth() == null || c.getHealth() == 0 && 
+	    						c.getInformationSource() != InformationSourceEnum.exhaustive &&
+	    						c.getInformationSource() != InformationSourceEnum.detailed) {
+	    						DerivedFromWoundsInfoSource dwis = new DerivedFromWoundsInfoSource(turnNo, nationNo);
+	    						dwis.setWoundsDescription(woundsDescr);
+	    						c.setHealthEstimate(new InfoSourceValue(woundsDescr, dwis));
+	    				}
+	    				System.out.println(charName + " " + healthRange);
+	    			}
+    			}
+    		}
+    	}
+    	
+    	for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {
+    		try {
+    			String commander = ca.getCommanderName().trim();
+    			String commanderTitle = null;
+    			String commanderName = null;
+    			String[] commanderTitles = "Veteran,Hero,Commander,Captain,Lord,Regent,Warlord,General,Marshal,Lord Marshal".split(",");
+    			for (String ct : commanderTitles) {
+    				if (commander.startsWith(ct + " ")) {
+    					commanderTitle = ct;
+    					commanderName = commander.substring(ct.length() + 1).trim();
+    				}
+    			}
+	    		ArmyEstimate ae = (ArmyEstimate)game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", commanderName); 
+	    		if (ae != null) {
+	    			game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(ae);
+	    		}
+    			ae = new ArmyEstimate();
+
+	    		ae.setCommanderName(commanderName);
+	    		ae.setCommanderTitle(commanderTitle);
+	    		ae.setHexNo(getHexNo());
+	    		if (armyLosses.get(ae.getCommanderName()) != null) {
+		    		for (String l : armyLosses.get(ae.getCommanderName())) {
+		    			if (l == null) continue;
+		    			ae.getLossesDescriptions().add(l);
+		    			String lossesRange = InfoUtils.getArmyLossesRange(l);
+		    			ae.getLossesRanges().add(lossesRange);
+		    		}
+	    		}
+	    		
+	    		// morale
+	    		String moraleRange = InfoUtils.getArmyMoraleRange(ca.getMorale());
+	    		ae.setMoraleRange(moraleRange);
+	    		
+	    		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+	    		
+	    		for (CombatArmyRegiment cae : (ArrayList<CombatArmyRegiment>)ca.regiments.getItems()) {
+	    			String descr = cae.getDescription();
+	    			String[] parts = descr.split("\\s{2,50}");
+	    			if (parts.length == 4) {
+	    				// parts[0] split into number and descr
+	    				int i = parts[0].indexOf(" ");
+	    				int no = Integer.parseInt(parts[0].substring(0, i).trim());
+	    				String rd = parts[0].substring(i + 1).trim();
+	    				ArmyElementType aet = InfoUtils.getElementTypeFromDescription(rd);
+	    				String weapons = parts[1];
+	    				String weaponRange = InfoUtils.getArmyWareTypeRange(weapons);
+	    				String armor = parts[2];
+	    				String armorRange = InfoUtils.getArmyWareTypeRange(armor);
+	    				String training = parts[3];
+	    				parts = training.split(" ");
+	    				String trainingRange = null;
+	    				for (String p : parts) {
+	    					 trainingRange = InfoUtils.getArmyTrainingRange(p);
+	    					 if (trainingRange != null) break;
+	    				}
+	    				System.out.println(no + " " + aet + " " + weapons + " " + weaponRange + " " + armor + " " + armorRange + " " + training + " " + trainingRange);
+	    				
+	    				ArmyEstimateElement aee = new ArmyEstimateElement();
+	    				aee.setNumber(no);
+	    				aee.setDescription(rd);
+	    				aee.setType(aet);
+	    				aee.setWeaponsDescription(weapons);
+	    				aee.setWeaponsRange(weaponRange);
+	    				aee.setArmorDescription(armor);
+	    				aee.setArmorRange(armorRange);
+	    				aee.setTrainingDescription(training);
+	    				aee.setTrainingRange(trainingRange);
+	    				
+	    				ae.getRegiments().add(aee);
+	    			} else {
+	    				System.out.println("Error parsing regiment " + descr);
+	    			}
+	    		}
+    		}
+    		catch (Exception exc) {
+    			exc.printStackTrace();
+    		}
+    	}
+    		
+    }
     
     
 }

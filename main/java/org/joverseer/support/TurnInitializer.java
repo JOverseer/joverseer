@@ -140,5 +140,6 @@ public class TurnInitializer {
         newTurn.getContainers().put(TurnElementsEnum.NationMessage, new Container(new String[]{"hexNo"}));
         newTurn.getContainers().put(TurnElementsEnum.Company, new Container(new String[]{"hexNo", "commander"}));
         newTurn.getContainers().put(TurnElementsEnum.Combat, new Container(new String[]{"hexNo"}));
+        newTurn.getContainers().put(TurnElementsEnum.ArmyEstimate, new Container(new String[]{"hexNo"}));
     }
 }

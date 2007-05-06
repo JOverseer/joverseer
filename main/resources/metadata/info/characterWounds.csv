@@ -1,0 +1,8 @@
+Description;Health Range
+No wounds;100
+Minor wounds;76-99
+Light wounds;51-75
+Bloody wounds;26-50
+Serious wounds;11-25
+Grievous wounds;06-10
+Deadly wounds;01-05

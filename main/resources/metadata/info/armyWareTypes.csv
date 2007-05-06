@@ -1,0 +1,13 @@
+Description;Range
+none;0
+wooden;10
+leather;10
+bronze;30
+steel;60
+mithril;90
+leather/bronze;11-29
+wooden/bronze;11-29
+bronze/steel;31-59
+steel/mithril;61-89
+none/leather;0-9
+

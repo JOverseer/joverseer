@@ -458,10 +458,18 @@
 	                    <endString>At the head|The Camp|The Village|The Town|The Major Town|The City|Report from</endString>
 	                    <processor type="StringEnclosedMatch">
 	                    	<element>Commander</element>
-	                    	<startString>rode </startString>
+	                    	<startString>army rode </startString>
 	                    	<endString> of the nation</endString>
 	                    	<includeStart>0</includeStart>
 	                    </processor>
+	                    <processor type="StringEnclosedMatch">
+	                    	<element>Morale</element>
+	                    	<startString>The mount on which </startString>
+	                    	<endString> battle lines</endString>
+	                    	<removeNewLines>True</removeNewLines>
+	                    	<includeStart>0</includeStart>
+	                    </processor>
+	                    
 	                    <processor type="Copy">
 	                    	<element>Regiments</element>
 		                    <processor type="RepeatRegexMatch">

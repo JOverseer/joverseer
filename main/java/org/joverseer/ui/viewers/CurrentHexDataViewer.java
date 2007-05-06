@@ -45,8 +45,8 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     JPanel popCenterPanel;
     PopulationCenterViewer popCenterViewer;
     JPanel hexInfoPanel;
-    HexInformationViewer hexInfoViewer;
-    ArrayList<CharacterViewer> characterViewers = new ArrayList<CharacterViewer>();
+    HexInfoViewer hexInfoViewer;
+    ArrayList<CharacterViewer2> characterViewers = new ArrayList<CharacterViewer2>();
     ArrayList<JPanel> characterPanels = new ArrayList<JPanel>();
     ArrayList<ArmyViewer> armyViewers = new ArrayList<ArmyViewer>();
     ArrayList<JPanel> armyPanels = new ArrayList<JPanel>();
@@ -89,7 +89,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         tlb.separator(" Characters ");
         tlb.row();
         for (int i=0; i<30; i++) {
-            CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()));
+            CharacterViewer2 vc = new CharacterViewer2(FormModelHelper.createFormModel(new Character()));
             characterViewers.add(vc);
             JPanel cp = new JPanel();
             cp.add(vc.getControl());
@@ -154,7 +154,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             cp.setVisible(false);
         }
         
-        hexInfoViewer = new HexInformationViewer(FormModelHelper.createFormModel(new Hex()));
+        hexInfoViewer = new HexInfoViewer(FormModelHelper.createFormModel(new Hex()));
         hexInfoPanel = new JPanel();
         hexInfoPanel.add(hexInfoViewer.getControl());
         tlb.separator(" Hex Info ");

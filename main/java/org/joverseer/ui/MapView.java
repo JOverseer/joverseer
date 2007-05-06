@@ -128,6 +128,8 @@ public class MapView extends AbstractView  implements ApplicationListener {
                             mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1),
                             mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()
                         ));
+                scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
+                scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
                 mapPanel.invalidateAndReset();
                 mapPanel.updateUI();
                 scp.updateUI();

@@ -45,7 +45,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class HexInformationViewer extends ObjectViewer {
+public class HexInfoViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "HexInfoViewer";
 
@@ -77,7 +77,7 @@ public class HexInformationViewer extends ObjectViewer {
     
     
 
-    public HexInformationViewer(FormModel formModel) {
+    public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
     

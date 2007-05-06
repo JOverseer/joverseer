@@ -221,7 +221,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
             
             if (!isSelected) {
                 if (row == teamEconomyTableModel.getRowCount() - 1) {
-                    lbl.setBackground(Color.decode("#CCCCFF"));
+                    lbl.setBackground(Color.decode("#d7dfe7"));
                 } else {
                     lbl.setBackground(Color.white);
                 }
@@ -240,7 +240,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
             JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (!isSelected) {
                 if (row == teamEconomyTableModel.getRowCount() - 1) {
-                    lbl.setBackground(Color.decode("#333399"));
+                    lbl.setBackground(Color.decode("#d7dfe7"));
                 } else {
                     lbl.setBackground(Color.white);
                 }

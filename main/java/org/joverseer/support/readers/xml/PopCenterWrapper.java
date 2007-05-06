@@ -123,10 +123,10 @@ public class PopCenterWrapper {
                 pc.setFortification(FortificationSizeEnum.fort);
                 break;
             case 3:
-                pc.setFortification(FortificationSizeEnum.keep);
+                pc.setFortification(FortificationSizeEnum.castle);
                 break;
             case 4:
-                pc.setFortification(FortificationSizeEnum.castle);
+                pc.setFortification(FortificationSizeEnum.keep);
                 break;
             case 5:
                 pc.setFortification(FortificationSizeEnum.citadel);

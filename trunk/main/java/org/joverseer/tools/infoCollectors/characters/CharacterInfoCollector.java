@@ -8,6 +8,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -16,6 +17,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
+import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.RumorActionInfoSource;
@@ -98,6 +100,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                     } else {
                         getStartStats(cw);
                         guessStatsFromTitle(cw, c, t.getTurnNo());
+                        addHealthEstimate(cw, c);
                     }
                     if (i == game.getCurrentTurn() && c.getOrderResults() != null && !c.getOrderResults().equals("")) {
                         cw.setOrderResults(c.getOrderResults());
@@ -105,6 +108,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                     ret.addItem(cw);
                 } else {
                     guessStatsFromTitle(cw, c, t.getTurnNo());
+                    addHealthEstimate(cw, c);
                 }
             }
             
@@ -252,6 +256,21 @@ public class CharacterInfoCollector implements ApplicationListener {
             cw.setStartChar(true);
         }
     }
+    
+    public static void addHealthEstimate(AdvancedCharacterWrapper cw, Character c) {
+    	if ((c.getHealth() == null || c.getHealth() == 0) && c.getHealthEstimate() != null) {
+    		InfoSourceValue isv = cw.getHealthEstimate();
+    		if (isv != null) {
+    			DerivedFromWoundsInfoSource dwis1 = (DerivedFromWoundsInfoSource)isv.getInfoSource();
+    			DerivedFromWoundsInfoSource dwis2 = (DerivedFromWoundsInfoSource)c.getHealthEstimate().getInfoSource();
+    			if (dwis1.getTurnNo() < dwis2.getTurnNo()) {
+    				cw.setHealthEstimate(c.getHealthEstimate());
+    			}
+    		} else {
+    			cw.setHealthEstimate(c.getHealthEstimate());
+    		}
+        }
+    }
 
     public static void addStats(AdvancedCharacterWrapper cw, Character c, InfoSource is, int turnNo) {
         cw.setAttribute(new CharacterAttributeWrapper("command", c.getCommand(), c.getCommandTotal(), turnNo, is));
@@ -266,7 +285,11 @@ public class CharacterInfoCollector implements ApplicationListener {
 
         cw.setAttribute(new CharacterAttributeWrapper("challenge", c.getChallenge(), turnNo, is));
 
-        cw.setAttribute(new CharacterAttributeWrapper("health", c.getHealth(), turnNo, is));
+        if (c.getHealth() != null && c.getHealth() > 0) {
+        	cw.setAttribute(new CharacterAttributeWrapper("health", c.getHealth(), turnNo, is));
+        } else if (c.getHealthEstimate() != null) {
+        	cw.setHealthEstimate(c.getHealthEstimate());
+        }
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {

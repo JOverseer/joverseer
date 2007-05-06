@@ -14,6 +14,7 @@ import org.joverseer.domain.Company;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.IHasTurnNumber;
+import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -52,7 +53,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     CharacterDeathReasonEnum deathReason; 
     
     String orderResults;
-    
+    InfoSourceValue healthEstimate;
     
     public Army getArmy() {
 		return army;
@@ -287,6 +288,18 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     public void setStartChar(boolean isStartChar) {
         this.isStartChar = isStartChar;
     }
- 
 
+
+
+	public InfoSourceValue getHealthEstimate() {
+		return healthEstimate;
+	}
+
+
+
+	public void setHealthEstimate(InfoSourceValue healthEstimate) {
+		this.healthEstimate = healthEstimate;
+	}
+ 
+    
 }

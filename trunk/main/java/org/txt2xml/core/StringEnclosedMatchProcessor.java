@@ -8,6 +8,7 @@ public class StringEnclosedMatchProcessor extends Processor {
     int matchEnd = 0;
     boolean includeStart = true;
     boolean includeEnd = true;
+    boolean removeNewLines = false;
     String currentEndString = null;
 
     public String getEndString() {
@@ -39,6 +40,9 @@ public class StringEnclosedMatchProcessor extends Processor {
     protected boolean findMatch() {
         assert (chars != null);// : "Null text but asked to findMatch!";
         String str = chars.toString();
+        if (removeNewLines) {
+        	str = str.replace("\n", "").replace("\r", "");
+        }
         int currentStart = matchStart;
         String[] startStrings = getStartStrings();
         String foundStartString = null;
@@ -119,8 +123,16 @@ public class StringEnclosedMatchProcessor extends Processor {
         matchEnd = 0;
     }
 
-    
+	public boolean getRemoveNewLines() {
+		return removeNewLines;
+	}
 
+	public void setRemoveNewLines(boolean removeNewLines) {
+		this.removeNewLines = removeNewLines;
+	}
+
+    
+    
 
     
 }

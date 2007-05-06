@@ -275,6 +275,7 @@ public class CombatWrapper {
 	    		}
     		}
     		catch (Exception exc) {
+    			System.out.println("Error in combat " + getHexNo() + " turn " + turnNo + " nation " + nationNo);
     			exc.printStackTrace();
     		}
     	}

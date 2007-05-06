@@ -1,8 +1,11 @@
 package org.joverseer.domain;
 
+import java.io.Serializable;
 
-public class Note implements IBelongsToNation, IHasMapLocation {
-    Integer nationNo;
+
+public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
+	private static final long serialVersionUID = 1459488400804286715L;
+	Integer nationNo;
     int hexNo;
     
     Object target;

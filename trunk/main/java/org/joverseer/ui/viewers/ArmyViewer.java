@@ -32,7 +32,7 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.joverseer.ui.viewers.HexInformationViewer.ShowArmyRangeCommand;
+import org.joverseer.ui.viewers.HexInfoViewer.ShowArmyRangeCommand;
 import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;

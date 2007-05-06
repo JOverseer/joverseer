@@ -30,6 +30,7 @@ import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.SpellProficiency;
@@ -44,6 +45,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
+import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.RumorActionInfoSource;
@@ -93,7 +95,7 @@ import org.springframework.richclient.table.BeanTableModel;
 import sun.awt.geom.AreaOp.AddOp;
 
 
-public class CharacterViewer extends ObjectViewer {
+public class CharacterViewer2 extends ObjectViewer {
 
     public static final String FORM_PAGE = "CharacterViewer";
 
@@ -129,7 +131,7 @@ public class CharacterViewer extends ObjectViewer {
     ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
     ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
 
-    public CharacterViewer(FormModel formModel) {
+    public CharacterViewer2(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
     
@@ -189,8 +191,11 @@ public class CharacterViewer extends ObjectViewer {
                             // find artifact in metadata
                             ArtifactInfo a = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
                             // copy into new object to change the name and add the turn - hack but for now it works
-                            ArtifactData na = new ArtifactData();
-                            na.setNumber(a.getNo());
+                            ArtifactInfo na = new ArtifactInfo();
+                            na.setNo(a.getNo());
+                            na.setAlignment(a.getAlignment());
+                            na.setOwner(acw.getName());
+                            na.setPowers(a.getPowers());
                             na.setName(a.getName() + " (t" + aw.getTurnNo() + ")");
                             artis.add(na);
                         }
@@ -263,18 +268,12 @@ public class CharacterViewer extends ObjectViewer {
                 if (artifacts != null) {
                     for (Integer no : artifacts) {
                         ArtifactInfo arti = (ArtifactInfo) gm.getArtifacts().findFirstByProperty("no", no);
-                        ArtifactData na = new ArtifactData();
                         if (arti == null) {
-                            na.setNumber(no);
+                            arti = new ArtifactInfo();
+                            arti.setNo(no);
                             arti.setName("---");
-                        } else {
-                            na.setNumber(no);
-                            na.setName(arti.getName());
                         }
-                        if (no == c.getArtifactInUse()) {
-                            na.setInUse("x");
-                        }
-                        artis.add(na);
+                        artis.add(arti);
                     }
                 }
             } else {
@@ -360,7 +359,14 @@ public class CharacterViewer extends ObjectViewer {
         txt += getStatTextFromCharacterWrapper("M", acw.getMage());
         txt += getStatTextFromCharacterWrapper("S", acw.getStealth());
         txt += getStatTextFromCharacterWrapper("Cr", acw.getChallenge());
-        txt += getStatTextFromCharacterWrapper("H", acw.getHealth());
+        String healthTxt = getStatTextFromCharacterWrapper("H", acw.getHealth());;
+        if (!healthTxt.equals("")) {
+        	txt += healthTxt;
+        } else if (acw.getHealthEstimate() != null) {
+        	InfoSourceValue isv = acw.getHealthEstimate();
+        	DerivedFromWoundsInfoSource dwis = (DerivedFromWoundsInfoSource)isv.getInfoSource();
+        	txt += " " + isv.getValue() + "(t" + dwis.getTurnNo() + ") ";
+        }
         if (acw.getDeathReason() != null && acw.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
             txt += " (" + acw.getDeathReason().toString() + ")";
         }
@@ -375,7 +381,9 @@ public class CharacterViewer extends ObjectViewer {
         txt += getStatText("M", c.getMage(), c.getMageTotal());
         txt += getStatText("S", c.getStealth(), c.getStealthTotal());
         txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
-        txt += (c.getHealth() == null ? "" : "H" + c.getHealth());
+        if (c.getHealth() != null) {
+        	txt += " H" + c.getHealth();
+        } 
         if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
             txt += " (" + c.getDeathReason().toString() + ")";
         }
@@ -465,19 +473,27 @@ public class CharacterViewer extends ObjectViewer {
 
         glb.append(artifactsTable = new JTable(), 2, 1);
         artifactsTable.setPreferredSize(new Dimension(150, 20));
-        final ArtifactTableModel tableModel = new ArtifactTableModel(this.getMessageSource());        
+        final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
+
+            protected String[] createColumnPropertyNames() {
+                return new String[] {"no", "name"};
+            }
+
+            protected Class[] createColumnClasses() {
+                return new Class[] {String.class, String.class};
+            }
+        };
+        
         artifactsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	if (e.getClickCount() == 1) {
-                    ArtifactData ad = (ArtifactData)tableModel.getRow(artifactsTable.getSelectedRow()); 
-                    ArtifactInfo a = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", ad.getNumber());
-                    if (a == null) return;
-                    TransferHandler handler = new ParamTransferHandler(a.getNo());
-                    artifactsTable.setTransferHandler(handler);
-                    handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
+	                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
+	                if (a == null) return;
+	                TransferHandler handler = new ParamTransferHandler(a.getNo());
+	                artifactsTable.setTransferHandler(handler);
+	                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
             	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
-                    ArtifactData ad = (ArtifactData)tableModel.getRow(artifactsTable.getSelectedRow()); 
-                    ArtifactInfo a = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", ad.getNumber());
+                    ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
                     if (a == null) return;
                     final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" +
                                     a.getAlignment() + "\n" +
@@ -493,7 +509,7 @@ public class CharacterViewer extends ObjectViewer {
         tableModel.setRowNumbers(false);
         artifactsTable.setModel(tableModel);
         // todo think about this
-        TableUtils.setTableColumnWidths(artifactsTable, new int[] {30, 120, 20});
+        TableUtils.setTableColumnWidths(artifactsTable, new int[] {30, 120});
         artifactsTable.setBorder(null);
 
         glb.nextLine();
@@ -791,54 +807,5 @@ public class CharacterViewer extends ObjectViewer {
         this.showColor = showColor;
     }
     
-    class ArtifactData {
-        int number;
-        String name;
-        String inUse;
-        
-        public String getInUse() {
-            return inUse;
-        }
-        
-        public void setInUse(String inUse) {
-            this.inUse = inUse;
-        }
-        
-        public String getName() {
-            return name;
-        }
-        
-        public void setName(String name) {
-            this.name = name;
-        }
-        
-        public int getNumber() {
-            return number;
-        }
-        
-        public void setNumber(int number) {
-            this.number = number;
-        }
-    }
- 
-    class ArtifactTableModel extends BeanTableModel {
 
-        public ArtifactTableModel(MessageSource ms) {
-            super(ArtifactData.class, ms);
-        }
-
-        protected String[] createColumnPropertyNames() {
-            return new String[]{"number", "name", "inUse"};
-        }
-
-        protected Class[] createColumnClasses() {
-            return new Class[]{String.class, String.class, String.class};
-        }
-
-        protected boolean isCellEditableInternal(Object arg0, int arg1) {
-            return false;
-        }
-        
-        
-    }
 }

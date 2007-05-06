@@ -63,9 +63,9 @@ public class PopulationCenterReader implements MetadataReader {
                 } else if (fortification.equals("2")) {
                     fortSize = FortificationSizeEnum.fort;
                 } else if (fortification.equals("3")) {
-                    fortSize = FortificationSizeEnum.keep;
-                } else if (fortification.equals("4")) {
                     fortSize = FortificationSizeEnum.castle;
+                } else if (fortification.equals("4")) {
+                    fortSize = FortificationSizeEnum.keep;
                 } else if (fortification.equals("5")) {
                     fortSize = FortificationSizeEnum.citadel;
                 }

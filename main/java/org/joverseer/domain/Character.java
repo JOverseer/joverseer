@@ -33,6 +33,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     int stealthTotal;
     int challenge;
     Integer health;
+    InfoSourceValue healthEstimate;
 
     int x;
     int y;
@@ -124,8 +125,18 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     public void setHealth(Integer health) {
         this.health = health;
     }
+    
+    
 
-    public String getId() {
+    public InfoSourceValue getHealthEstimate() {
+		return healthEstimate;
+	}
+
+	public void setHealthEstimate(InfoSourceValue healthEstimate) {
+		this.healthEstimate = healthEstimate;
+	}
+
+	public String getId() {
         return id;
     }
 

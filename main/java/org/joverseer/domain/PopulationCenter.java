@@ -28,6 +28,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     boolean hidden;
 
     int loyalty;
+    InfoSourceValue loyaltyEstimate;
 
     InformationSourceEnum informationSource;
 
@@ -181,8 +182,18 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     public void setLostThisTurn(boolean lostThisTurn) {
         this.lostThisTurn = lostThisTurn;
     }
+    
+    
 
-    public PopulationCenter clone() {
+    public InfoSourceValue getLoyaltyEstimate() {
+		return loyaltyEstimate;
+	}
+
+	public void setLoyaltyEstimate(InfoSourceValue loyaltyEstimate) {
+		this.loyaltyEstimate = loyaltyEstimate;
+	}
+
+	public PopulationCenter clone() {
         PopulationCenter newPc = new PopulationCenter();
         newPc.setName(getName());
         newPc.setCapital(getCapital());

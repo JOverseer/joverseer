@@ -45,7 +45,7 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
-public class HexInfoViewer extends ObjectViewer {
+public class HexInformationViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "HexInfoViewer";
 
@@ -54,7 +54,7 @@ public class HexInfoViewer extends ObjectViewer {
 
     JTextField hexNo;
     JTextField climate;
-    JTextField latestInfo;
+    JTextField turnInfo;
     
     RemoveBridgeCommand removeBridgeNE = new RemoveBridgeNE();
     RemoveBridgeCommand removeBridgeE = new RemoveBridgeE();
@@ -77,7 +77,7 @@ public class HexInfoViewer extends ObjectViewer {
     
     
 
-    public HexInfoViewer(FormModel formModel) {
+    public HexInformationViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
     
@@ -109,13 +109,13 @@ public class HexInfoViewer extends ObjectViewer {
         });
         
         lb.nextLine();
-        lb.append(l = new JLabel("Last info :"), 2, 1);
-        lb.append(latestInfo = new JTextField(), 2, 1);
-        latestInfo.setPreferredSize(new Dimension(120, 16));
-        latestInfo.setBorder(null);
-        
+
+        lb.append(l = new JLabel("Latest info :"), 2, 1);
+        lb.append(turnInfo = new JTextField(), 4, 1);
+        turnInfo.setPreferredSize(new Dimension(80, 12));
+        turnInfo.setBorder(null);
         lb.nextLine();
-        
+
         lb.append(new JSeparator(), 5, 1);
         lb.nextLine();
 
@@ -166,21 +166,17 @@ public class HexInfoViewer extends ObjectViewer {
             hexNoStr += String.valueOf(h.getRow());
             hexNo.setText(hexNoStr);
             
+            Integer latestTurnInfo = HexInfoHistory.getLatestHexInfoTurnNoForHex(h.getHexNo());
+            if (latestTurnInfo == null || latestTurnInfo == -1) {
+            	turnInfo.setText("never");
+            } else {
+            	turnInfo.setText("t" + latestTurnInfo);
+            }
+            
             Game g = GameHolder.instance().getGame();
             HexInfo hi = (HexInfo)g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
             climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
 
-            Integer iLatestInfo = HexInfoHistory.getLatestHexInfoTurnNoForHex(hi.getHexNo());
-            if (iLatestInfo == null) {
-                latestInfo.setText("-");
-            } else {
-                if (iLatestInfo == -1) {
-                    latestInfo.setText("never");
-                } else {
-                    latestInfo.setText("t" + iLatestInfo);
-                }
-            }
-            
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {
                 for (MovementDirection md : MovementDirection.values()) {

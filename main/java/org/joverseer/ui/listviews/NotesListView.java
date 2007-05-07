@@ -21,8 +21,6 @@ import javax.swing.table.JTableHeader;
 
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.listviews.filters.TurnFilter;
-import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
@@ -36,14 +34,16 @@ import com.jidesoft.grid.MultilineTableCellRenderer;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
 
-public class ArmyEstimatesListView extends ItemListView {
 
-    public ArmyEstimatesListView() {
-        super(TurnElementsEnum.ArmyEstimate, ArmyEstimatesTableModel.class);
+public class NotesListView extends ItemListView {
+
+    public NotesListView() {
+        super(TurnElementsEnum.Notes, NotesTableModel.class);
     }
 
+
     protected int[] columnWidths() {
-        return new int[] {42, 80, 64, 130, 48, 48, 100, 120, 120, 120};
+        return new int[] {42, 64, 200, 64};
     }
 
     protected JComponent createControlImpl() {
@@ -126,9 +126,6 @@ public class ArmyEstimatesListView extends ItemListView {
         }
 
         table.getTableHeader().setBackground(Color.WHITE);
-        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
-        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
-        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);

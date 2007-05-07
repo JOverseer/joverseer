@@ -73,6 +73,8 @@ import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
+import org.joverseer.ui.views.EditCharacterForm;
+import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
@@ -130,7 +132,8 @@ public class CharacterViewer extends ObjectViewer {
     ActionCommand showResultsCommand = new ShowResultsCommand();
     ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
     ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
-
+    ActionCommand editCharacterCommand = new EditCharacterCommand();
+    
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -754,6 +757,30 @@ public class CharacterViewer extends ObjectViewer {
         }
     }
     
+    private class EditCharacterCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            final Character c = (Character)getFormObject();
+            FormModel formModel = FormModelHelper.createFormModel(c);
+            final EditCharacterForm form = new EditCharacterForm(formModel);
+            FormBackedDialogPage page = new FormBackedDialogPage(form);
+
+            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                protected void onAboutToShow() {
+                }
+
+                protected boolean onFinish() {
+                    form.commit();
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this, this));
+                    return true;
+                }
+            };
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            dialog.setTitle(ms.getMessage("editCharacter.title", new Object[]{String.valueOf(c.getName())}, Locale.getDefault()));
+            dialog.showDialog();
+        }
+    }
+    
     private JPopupMenu createCharacterPopupContextMenu() {
         Character c = (Character) getFormObject();
         ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(c.getHexNo(), 12);
@@ -793,6 +820,7 @@ public class CharacterViewer extends ObjectViewer {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "armyCommandGroup",
                 new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
+                        "separator", editCharacterCommand,
                         "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
                         "separator", quickOrders});
         return group.createPopupMenu();

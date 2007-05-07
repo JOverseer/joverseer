@@ -1,6 +1,8 @@
 package org.joverseer.domain;
 
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.AsciiUtils;
+import org.joverseer.support.NationMap;
 import org.joverseer.support.infoSources.InfoSource;
 
 import java.util.ArrayList;
@@ -314,6 +316,11 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         this.artifactInUse = artifactInUse;
     }
     
+    public Nation getNation() {
+        return NationMap.getNationFromNo(getNationNo());
+    }    
     
-    
+    public void setNation(Nation nation) {
+        setNationNo(nation.getNumber());
+    }
 }

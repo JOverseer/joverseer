@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -18,7 +19,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.HexInfo;
+import org.joverseer.domain.Note;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
@@ -36,11 +39,17 @@ import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.views.EditCharacterForm;
+import org.joverseer.ui.views.EditNoteForm;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
@@ -75,7 +84,7 @@ public class HexInfoViewer extends ObjectViewer {
     ShowFedCavalryArmyRangeCommand showFedCavalryArmyRangeCommand = new ShowFedCavalryArmyRangeCommand();
     ShowUnfedCavalryArmyRangeCommand showUnfedCavalryArmyRangeCommand = new ShowUnfedCavalryArmyRangeCommand();
     
-    
+    AddNoteCommand addNoteCommand = new AddNoteCommand();
 
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -221,6 +230,8 @@ public class HexInfoViewer extends ObjectViewer {
                         showUnfedInfantryArmyRangeCommand,
                         showFedCavalryArmyRangeCommand,
                         showUnfedCavalryArmyRangeCommand,
+                        "separator",
+                        addNoteCommand
                         });
         return group.createPopupMenu();
     }
@@ -398,6 +409,34 @@ public class HexInfoViewer extends ObjectViewer {
     public class ShowUnfedCavalryArmyRangeCommand extends ShowArmyRangeCommand {
         public ShowUnfedCavalryArmyRangeCommand() {
             super("showUnfedCavalryArmyRangeCommand", true, false);
+        }
+    }
+    
+    public class AddNoteCommand extends ActionCommand {
+        protected void doExecuteCommand() {
+            final Note n = new Note();
+            Hex h = (Hex)getFormObject();
+            n.setTarget(h.getHexNo());
+            FormModel formModel = FormModelHelper.createFormModel(n);
+            final EditNoteForm form = new EditNoteForm(formModel);
+            FormBackedDialogPage page = new FormBackedDialogPage(form);
+
+            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                protected void onAboutToShow() {
+                }
+
+                protected boolean onFinish() {
+                    form.commit();
+                    Game g = GameHolder.instance().getGame();
+                    Turn t = g.getTurn();
+                    t.getContainer(TurnElementsEnum.Notes).addItem(n);
+                    return true;
+                }
+            };
+            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+            dialog.setTitle(ms.getMessage("editNoteDialog.title", new Object[]{""}, Locale.getDefault()));
+            dialog.setModal(false);
+            dialog.showDialog();
         }
     }
 

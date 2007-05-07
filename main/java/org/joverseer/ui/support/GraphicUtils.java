@@ -26,8 +26,11 @@ import org.joverseer.domain.Order;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.map.renderers.OrderRenderer;
 import org.joverseer.ui.map.renderers.Renderer;
+import org.springframework.binding.convert.support.AbstractConverter;
+import org.springframework.binding.util.MapAccessor;
 import org.springframework.jca.cci.object.MappingRecordOperation;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.form.AbstractForm;
 
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
@@ -127,5 +130,39 @@ public class GraphicUtils {
     
     public static void setTableColumnRenderer(JTable table, int iColumn, TableCellRenderer renderer) {
         table.getColumnModel().getColumn(iColumn).setCellRenderer(renderer);
+    }
+    
+    public static void registerIntegerPropertyConverters(AbstractForm f, String property) {
+        f.getFormModel().registerPropertyConverter(property, 
+                new AbstractConverter() {
+                   protected Object doConvert(Object arg0, Class arg1, MapAccessor arg2) throws Exception {
+                       return (arg0 == null ? 0 : arg0.equals("") ? 0 : Integer.parseInt(arg0.toString()));
+                   }
+
+                   public Class[] getSourceClasses() {
+                       return new Class[] {String.class};
+                   }
+
+                   public Class[] getTargetClasses() {
+                       return new Class[] {Integer.class, Object.class};
+                   }
+                   
+               }, 
+               new AbstractConverter() {
+                   protected Object doConvert(Object arg0, Class arg1, MapAccessor arg2) throws Exception {
+                       if (arg0 == null) {
+                           return "";
+                       }
+                       return arg0.toString();
+                   }
+       
+                   public Class[] getSourceClasses() {
+                       return new Class[] {Integer.class, Object.class};
+                   }
+       
+                   public Class[] getTargetClasses() {
+                       return new Class[] {String.class};
+                   }
+               });
     }
 }       

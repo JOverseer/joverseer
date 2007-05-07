@@ -7,7 +7,8 @@ import org.springframework.richclient.application.Application;
 
 
 public class NationMap {
-    public static Nation getNationFromNo(int nationNo) {
+    public static Nation getNationFromNo(Integer nationNo) {
+        if (nationNo == null) return null;
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (Game.isInitialized(g)) {
             GameMetadata gm = g.getMetadata();

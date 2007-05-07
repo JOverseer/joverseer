@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
@@ -24,9 +26,12 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ArmyAllegianceNameComparator;
 import org.joverseer.tools.CharacterDeathAllegianceNameComparator;
+import org.joverseer.tools.combatCalc.CombatArmy;
+import org.joverseer.tools.combatCalc.TacticEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
@@ -210,6 +215,31 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             if (!armyPanels.get(i).isVisible()) {
                 armyViewers.get(i).setFormObject(a);
                 armyPanels.get(i).setVisible(true);
+                try {
+	                CombatArmy ca = new CombatArmy(a);
+	                org.joverseer.tools.combatCalc.Combat c = new org.joverseer.tools.combatCalc.Combat();
+	                System.out.println("Army " + a.getCommanderName());
+	                System.out.println("Str: " + c.computeNativeArmyStrength(ca, HexTerrainEnum.plains));
+	                System.out.println("Con: " + c.computNativeArmyConstitution(ca));
+	                
+	                CombatArmy ca2 = new CombatArmy();
+	                ca2.setCommandRank(20);
+	                ca2.setMorale(20);
+	                ArmyElement ae = new ArmyElement(ArmyElementType.HeavyInfantry, 100);
+	                ae.setTraining(20);
+	                ae.setWeapons(10);
+	                ae.setArmor(0);
+	                ca2.getElements().add(ae);
+	                ca2.setTactic(TacticEnum.Standard);
+	                
+	                int s2 = c.computeModifiedArmyStrength(HexTerrainEnum.plains, ca2, ca);
+	                
+	                System.out.println("Losses: " + c.computeLosses(ca, s2));
+	                
+                }
+                catch (Exception exc) {
+                	exc.printStackTrace();
+                }
                 return;
             }
         }

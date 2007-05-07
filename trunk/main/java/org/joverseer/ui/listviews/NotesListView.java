@@ -43,7 +43,7 @@ public class NotesListView extends ItemListView {
 
 
     protected int[] columnWidths() {
-        return new int[] {42, 64, 200, 64};
+        return new int[] {42, 96, 64, 200, 64};
     }
 
     protected JComponent createControlImpl() {

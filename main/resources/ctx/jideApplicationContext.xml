@@ -381,6 +381,38 @@
    						<value>classpath:metadata/info/armyMoraleDescriptions.csv</value>
    					</property>
    				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>combat.tacticVsTacticModifiers</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/combatCalc/tacticVsTacticModifiers.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>combat.troopsStrengths</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/combatCalc/troopsStrengths.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>combat.troopTacticModifiers</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/combatCalc/troopsTacticModifiers.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>combat.troopTerrainModifiers</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/combatCalc/troopTerrainModifiers.csv</value>
+   					</property>
+   				</bean>
    			</list>
    		</property>
    	</bean>

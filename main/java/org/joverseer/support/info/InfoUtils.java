@@ -3,7 +3,9 @@ package org.joverseer.support.info;
 import java.util.HashMap;
 
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.AsciiUtils;
+import org.joverseer.tools.combatCalc.TacticEnum;
 
 public class InfoUtils {
 
@@ -130,4 +132,45 @@ public class InfoUtils {
         }
         return null;
     }
+    
+    public static String getValueFromGrid(String columnHeader, String rowHeader, String key) {
+    	Info info = InfoRegistry.instance().getInfo(key);
+        if (info == null)
+            return null;
+        for (int j=0; j<info.getRowHeaders().size(); j++) {
+        	if (info.getValue(j, 0).toLowerCase().equals(columnHeader.toLowerCase())) {
+        		for (int i=0; i<info.getColumnHeaders().size(); i++) {
+        			if (info.getValue(0, i).toLowerCase().equals(rowHeader.toLowerCase())) {
+        				return info.getValue(j, i);
+        			}
+        		}
+        	}
+        }
+        return null;
+    }
+    
+    public static Integer getTroopTerrainModifier(ArmyElementType type, HexTerrainEnum terrain) {
+    	Object obj = getValueFromGrid(type.getType(), terrain.toString(), "combat.troopTerrainModifiers");
+    	if (obj == null) return null;
+    	return Integer.parseInt(obj.toString());
+    }
+    
+    public static Integer getTroopTacticModifier(ArmyElementType type, TacticEnum tactic) {
+    	Object obj = getValueFromGrid(type.getType(), tactic.toString(), "combat.troopTacticModifiers");
+    	if (obj == null) return null;
+    	return Integer.parseInt(obj.toString());
+    }
+
+    public static Integer getTacticVsTacticModifier(TacticEnum tactic1, TacticEnum tactic2) {
+    	Object obj = getValueFromGrid(tactic1.toString(), tactic2.toString(), "combat.tacticVsTacticModifiers");
+    	if (obj == null) return null;
+    	return Integer.parseInt(obj.toString());
+    }
+    
+    public static Integer getTroopStrength(ArmyElementType type, String strengthType) {
+    	Object obj = getValueFromGrid(type.getType(), strengthType, "combat.troopsStrengths");
+    	if (obj == null) return null;
+    	return Integer.parseInt(obj.toString());
+    }
+
 }

@@ -117,6 +117,9 @@ public class Combat {
                 if (ca == null) continue;
                 side2Con += computNativeArmyConstitution(ca);
             }
+            side1Con = Math.max(side1Con, 1);
+            side2Con = Math.max(side2Con, 1);
+            if (side1Con == 1 || side2Con == 1) return;
             System.out.println("Total side1 con: " + side1Con);
             System.out.println("Total side2 con: " + side2Con);
             
@@ -133,13 +136,13 @@ public class Combat {
                     
                     // losses for ca1
                     side1Losses[i] = computeNewLosses(terrain, climate, ca2, ca1, side2Relations[j][i], side1Con, rounds);
-                    if (side1Losses[i] < 100) {
+                    if (side1Losses[i] < 99.5) {
                         side1Alive = true;
                     }
                     
                     // losses for ca2
                     side2Losses[j] = computeNewLosses(terrain, climate, ca1, ca2, side1Relations[i][j], side2Con, rounds);
-                    if (side2Losses[j] < 100) {
+                    if (side2Losses[j] < 99.5) {
                         side2Alive = true;
                     }
                 }
@@ -160,7 +163,7 @@ public class Combat {
             }        
             
             
-            finished = !(side1Alive && side2Alive);
+            finished = !(side1Alive && side2Alive) || rounds > 20;
             rounds++;
         } while (!finished);
     }

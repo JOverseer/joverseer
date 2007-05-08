@@ -46,7 +46,7 @@ public class CombatArmyTableModel extends BeanTableModel {
             for (ArmyElement ae : ca.getElements()) {
                 if (ae.getNumber() > 0) {
                     ret += (ret.equals("") ? "" : " ") + 
-                    ae.getNumber() + ae.getArmyElementType().getType();
+                    (int)Math.round(ae.getNumber() * (100 - ca.getLosses()) / 100) + ae.getArmyElementType().getType();
                 }
             }
             return ret;
@@ -68,6 +68,8 @@ public class CombatArmyTableModel extends BeanTableModel {
             } else {
                 return (int)Math.round(ca.getLosses());
             }
+        } else if (arg1 == iLosses) {
+            return Math.round(ca.getLosses());
         }
         return super.getValueAtInternal(arg0, arg1);
     }

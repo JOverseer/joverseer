@@ -250,6 +250,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
                             };
                             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
                             dialog.setTitle(ms.getMessage("editCharacter.title", new Object[]{}, Locale.getDefault()));
+                            dialog.setModal(false);
                             dialog.showDialog();
        
                         }

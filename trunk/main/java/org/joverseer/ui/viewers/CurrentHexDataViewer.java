@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationMessage;
@@ -33,13 +35,20 @@ import org.joverseer.tools.CharacterDeathAllegianceNameComparator;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.TacticEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.combatCalculator.CombatArmyForm;
+import org.joverseer.ui.combatCalculator.CombatForm;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.views.EditCharacterForm;
+import org.springframework.binding.form.FormModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -218,24 +227,33 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
                 try {
 	                CombatArmy ca = new CombatArmy(a);
 	                org.joverseer.tools.combatCalc.Combat c = new org.joverseer.tools.combatCalc.Combat();
-	                System.out.println("Army " + a.getCommanderName());
-	                System.out.println("Str: " + c.computeNativeArmyStrength(ca, HexTerrainEnum.plains));
-	                System.out.println("Con: " + c.computNativeArmyConstitution(ca));
+	            
 	                
-	                CombatArmy ca2 = new CombatArmy();
-	                ca2.setCommandRank(20);
-	                ca2.setMorale(20);
-	                ArmyElement ae = new ArmyElement(ArmyElementType.HeavyInfantry, 100);
-	                ae.setTraining(20);
-	                ae.setWeapons(10);
-	                ae.setArmor(0);
-	                ca2.getElements().add(ae);
-	                ca2.setTactic(TacticEnum.Standard);
-	                
-	                int s2 = c.computeModifiedArmyStrength(HexTerrainEnum.plains, ca2, ca);
-	                
-	                System.out.println("Losses: " + c.computeLosses(ca, s2));
-	                
+	                c.getSide1()[0] = ca;
+                        
+                        
+                        if (ca.getCommandRank() == 50) {
+                            final org.joverseer.tools.combatCalc.Combat cc = c;
+                            FormModel formModel = FormModelHelper.createFormModel(cc);
+                            final CombatForm form = new CombatForm(formModel);
+                            FormBackedDialogPage page = new FormBackedDialogPage(form);
+
+                            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                                protected void onAboutToShow() {
+                                    form.setFormObject(cc);
+                                }
+
+                                protected boolean onFinish() {
+                                    form.commit();
+                                    return true;
+                                }
+                            };
+                            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                            dialog.setTitle(ms.getMessage("editCharacter.title", new Object[]{}, Locale.getDefault()));
+                            dialog.showDialog();
+       
+                        }
+                        c.runBattle();
                 }
                 catch (Exception exc) {
                 	exc.printStackTrace();

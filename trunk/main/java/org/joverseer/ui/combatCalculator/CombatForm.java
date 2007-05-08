@@ -1,6 +1,13 @@
 package org.joverseer.ui.combatCalculator;
 
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -16,8 +23,12 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.joverseer.domain.Army;
 import org.joverseer.domain.ClimateEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.springframework.binding.form.FormModel;
@@ -35,8 +46,6 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
-
-import com.jgoodies.forms.layout.RowSpec;
 
 
 public class CombatForm extends AbstractForm {
@@ -57,7 +66,8 @@ public class CombatForm extends AbstractForm {
         TableLayoutBuilder lb = new TableLayoutBuilder();
         lb.cell(new JLabel("Terrain :"), "colspec=left:80px");
         lb.gapCol();
-        JComboBox cb = (JComboBox)sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.values()))).getControl(); 
+        JComboBox cb = (JComboBox)sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.values()))).getControl();
+        cb.setPreferredSize(new Dimension(100, 20));
         lb.cell(cb, "colspec=left:120px");
         cb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -71,6 +81,7 @@ public class CombatForm extends AbstractForm {
         lb.cell(new JLabel("Climate :"), "colspec=left:80px");
         lb.gapCol();
         cb = (JComboBox)sbf.createBoundComboBox("climate", new ListListModel(Arrays.asList(ClimateEnum.values()))).getControl();
+        cb.setPreferredSize(new Dimension(100, 20));
         lb.cell(cb, "colspec=left:120px");
         cb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -89,8 +100,11 @@ public class CombatForm extends AbstractForm {
         side1Table = TableUtils.createStandardSortableTable(side1TableModel);
         org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(side1Table, side1TableModel.getColumnWidths());
         
+        side1Table.setDropTarget(new DropTarget(side1Table, new AddToTableDropTargetListener(0)));
+        
         JScrollPane scp = new JScrollPane(side1Table);
         scp.setPreferredSize(new Dimension(560, 200));
+        scp.setDropTarget(new DropTarget(scp, new AddToTableDropTargetListener(0)));
         tlb.cell(scp);
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -140,9 +154,11 @@ public class CombatForm extends AbstractForm {
         side2TableModel = new CombatArmyTableModel(this, messageSource);
         side2Table = TableUtils.createStandardSortableTable(side2TableModel);
         org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(side2Table, side2TableModel.getColumnWidths());
+        side2Table.setDropTarget(new DropTarget(side2Table, new AddToTableDropTargetListener(1)));
         
         scp = new JScrollPane(side2Table);
         scp.setPreferredSize(new Dimension(560, 200));
+        scp.setDropTarget(new DropTarget(scp, new AddToTableDropTargetListener(1)));
         tlb.cell(scp);
         
         lb = new TableLayoutBuilder();
@@ -344,6 +360,66 @@ public class CombatForm extends AbstractForm {
             
         }
         
+        
+    }
+    
+    class AddToTableDropTargetListener implements DropTargetListener {
+        int side;
+        
+        public AddToTableDropTargetListener(int side) {
+            this.side = side;
+        }
+        
+        public void dragEnter(DropTargetDragEvent dtde) {
+            dtde.acceptDrag(dtde.getDropAction());
+        }
+
+        public void dragExit(DropTargetEvent dte) {
+        }
+
+        public void dragOver(DropTargetDragEvent dtde) {
+            dtde.acceptDrag(dtde.getDropAction());
+        }
+
+        public void drop(DropTargetDropEvent dtde) {
+            try {
+                Transferable t = dtde.getTransferable();
+                String commander = t.getTransferData(DataFlavor.stringFlavor).toString();
+                // find in armies
+                Game g = GameHolder.instance().getGame();
+                Army a = (Army)g.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", commander);
+                if (a != null) {
+                    // check data
+                    if (a.getMorale() > 0) {
+                        CombatArmy ca = new CombatArmy(a);
+                        Combat c = (Combat)getFormObject();
+                        if (side == 0) {
+                            for (int i=0; i<c.getSide1().length; i++) {
+                                if (c.getSide1()[i] == null) {
+                                    c.getSide1()[i] = ca;
+                                    refreshArmies();
+                                    return;
+                                }
+                            }
+                        } else {
+                            for (int i=0; i<c.getSide2().length; i++) {
+                                if (c.getSide2()[i] == null) {
+                                    c.getSide2()[i] = ca;
+                                    refreshArmies();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exc) {
+                exc.printStackTrace();
+            };
+        }
+
+        public void dropActionChanged(DropTargetDragEvent dtde) {
+        }
         
     }
 }

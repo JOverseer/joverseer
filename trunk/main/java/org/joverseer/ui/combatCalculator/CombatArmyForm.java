@@ -30,13 +30,9 @@ import org.springframework.richclient.list.ComboBoxListModelAdapter;
 public class CombatArmyForm extends AbstractForm {
     public static String FORM_ID = "combatArmyForm";
 
-    
-    
     public CombatArmyForm(FormModel arg0) {
         super(arg0, FORM_ID);
     }
-
-
 
     protected JComponent createFormControl() {
         SwingBindingFactory sbf = (SwingBindingFactory)getBindingFactory();

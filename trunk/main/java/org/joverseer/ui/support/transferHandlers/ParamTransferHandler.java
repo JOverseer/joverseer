@@ -4,15 +4,15 @@ import javax.swing.JComponent;
 
 
 public class ParamTransferHandler extends StringTransferHandler {
-    int artiNo;
+    Object param;
     
-    public ParamTransferHandler(int artiNo) {
+    public ParamTransferHandler(Object param) {
         super("");
-        this.artiNo = artiNo;
+        this.param = param;
     }
 
     protected String exportString(JComponent c) {
-        return String.valueOf(artiNo);
+        return param.toString();
     }
     
     

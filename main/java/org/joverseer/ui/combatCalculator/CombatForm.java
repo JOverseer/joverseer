@@ -1,15 +1,7 @@
 package org.joverseer.ui.combatCalculator;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -21,22 +13,18 @@ import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelationsEnum;
-import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
@@ -44,9 +32,6 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
-import org.joverseer.ui.support.controls.PopupMenuActionListener;
-import org.joverseer.ui.support.transferHandlers.DragAndDropMouseInputHandler;
-import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.ValueModel;
 import org.springframework.binding.value.support.ListListModel;
@@ -65,7 +50,6 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
-import com.jidesoft.grid.TableSelectionModel;
 import com.jidesoft.popup.JidePopup;
 
 
@@ -288,7 +272,7 @@ public class CombatForm extends AbstractForm {
             }
         });
         lb.cell(btn, "colspec=left:30px");
-        lb.relatedGapRow();
+        lb.gapCol();
         
         ico = new ImageIcon(imgSource.getImage("add.icon"));
         btn = new JButton(ico);
@@ -310,7 +294,7 @@ public class CombatForm extends AbstractForm {
             }
         });
         lb.cell(btn, "colspec=left:30px");
-        lb.relatedGapRow();
+        lb.gapCol();
         
         ico = new ImageIcon(imgSource.getImage("switch.icon"));
         btn = new JButton(ico);
@@ -374,7 +358,7 @@ public class CombatForm extends AbstractForm {
         for (CombatArmy ca : c.getSide2()) {
             if (ca != null) ca.setLosses(0);
         }
-        c.runBattle();
+        c.runArmyBattle();
     }
     
     protected void refreshArmies() {
@@ -577,7 +561,8 @@ public class CombatForm extends AbstractForm {
             closePopup.setPreferredSize(new Dimension(70, 20));
             closePopup.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                            popup.hidePopup();
+                        popup.hidePopup();
+                        runCombat();
                     }
             });
             tlb.cell(closePopup, "align=left");
@@ -682,7 +667,6 @@ public class CombatForm extends AbstractForm {
     }
     
     public void addArmyEstimate(ArmyEstimate ae) {
-        
     }
     
 }

@@ -1,7 +1,6 @@
 package org.joverseer.ui.combatCalculator;
 
 import org.joverseer.domain.ArmyElement;
-import org.joverseer.domain.ArmyElementType;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.springframework.context.MessageSource;

@@ -36,6 +36,9 @@ public class Combat {
     boolean[][] side1Attack = new boolean[maxArmies][maxAll];
     boolean[][] side2Attack = new boolean[maxArmies][maxAll];
     
+    CombatPopCenter side1Pc = null;
+    CombatPopCenter side2Pc = null;
+    
     int rounds = 0;
 
     int maxRounds;
@@ -119,8 +122,35 @@ public class Combat {
     protected void addToLog(String msg) {
         log += msg + "\n";
     }
+    
+    public void runPcBattle(int attackerSide) {
+        int defenderSide = (attackerSide == 0 ? 1 : 0);
+        
+        // compute str for attacker
+        int attackerStr = 0;
+        for (int i=0; i<maxArmies; i++) {
+            if (attackerSide == 0) {
+                int str = computeNativeArmyStrength(side1[i], terrain, climate);
+                // adjust for relations
+                int relMod = CombatModifiers.getRelationModifier(side1Relations[i][maxAll-1]);
+                str = (int)(str * (double)relMod / 100d);
+                attackerStr += str;
+            } else {
+                int str = computeNativeArmyStrength(side2[i], terrain, climate);
+                // adjust for relations
+                int relMod = CombatModifiers.getRelationModifier(side2Relations[i][maxAll-1]);
+                str = (int)(str * (double)relMod / 100d);
+                attackerStr += str;
+            }
+        }
+        
+        // compute pop center defense and attack
+        int popCenterStr = 0;
+        int popCenterDef = 0;
+        
+    }
 
-    public void runBattle() {
+    public void runArmyBattle() {
         rounds = 0;
         boolean finished = false;
         log = "";

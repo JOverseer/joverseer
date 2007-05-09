@@ -6,8 +6,13 @@ import java.util.HashMap;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
+import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
 
 import sun.security.action.GetLongAction;
@@ -18,6 +23,9 @@ public class Combat {
     
     HexTerrainEnum terrain;
     ClimateEnum climate;
+    
+    int hexNo;
+    String description;
 
     CombatArmy[] side1 = new CombatArmy[maxArmies];
     CombatArmy[] side2 = new CombatArmy[maxArmies];
@@ -30,6 +38,10 @@ public class Combat {
     
     int rounds = 0;
 
+    int maxRounds;
+    
+    String log;
+    
     public Combat() {
         for (int i=0; i<maxArmies; i++) {
             for (int j=0; j<maxAll; j++) {
@@ -46,6 +58,10 @@ public class Combat {
     }
     
     public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate) {
+        return computeNativeArmyStrength(ca, terrain, climate, null);
+    }
+    
+    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride) {
         int strength = 0;
         for (ArmyElement ae : ca.getElements()) {
             Integer s = InfoUtils.getTroopStrength(ae.getArmyElementType(), "Attack");
@@ -54,13 +70,17 @@ public class Combat {
             int tacticMod = InfoUtils.getTroopTacticModifier(ae.getArmyElementType(), ca.getTactic());
             int terrainMod = InfoUtils.getTroopTerrainModifier(ae.getArmyElementType(), terrain);
             double mod = (double) (ae.getTraining() + ae.getWeapons() + tacticMod + terrainMod) / 400d;
+            
             strength += s * ae.getNumber() * mod;
         }
         //System.out.println("Str before mods: " + strength);
         strength = strength
                 * (ca.getCommandRank() + ca.getMorale() + CombatModifiers.getModifierFor(
                         ca.getNationNo(), terrain, climate) * 2) / 400;
-        strength = (int)(strength * (double)(100 - ca.getLosses()) / 100d);
+        if (lossesOverride == null) {
+            lossesOverride = ca.getLosses();
+        }
+        strength = (int)(strength * (double)(100 - lossesOverride) / 100d);
         return strength;
     }
     
@@ -95,12 +115,17 @@ public class Combat {
         int constit = computNativeArmyConstitution(ca, 0d);
         return Math.min((double)enemyStrength * 100 / (double)Math.max(constit,1), 100);
     }
+    
+    protected void addToLog(String msg) {
+        log += msg + "\n";
+    }
 
     public void runBattle() {
         rounds = 0;
         boolean finished = false;
+        log = "";
         do {
-            System.out.println("Starting round " + rounds);
+            addToLog("Starting round " + rounds);
             double[] side1Losses = new double[maxArmies];
             double[] side2Losses = new double[maxArmies];
 
@@ -110,19 +135,30 @@ public class Combat {
             for (int i=0; i<maxArmies; i++) {
                 CombatArmy ca = side1[i];
                 if (ca == null) continue;
-                side1Con += computNativeArmyConstitution(ca);
+                int constit = computNativeArmyConstitution(ca);
+                int sconstit = computNativeArmyConstitution(ca, 0d);
+                addToLog("Side 1, army " + i + " con: " + constit + "/" + sconstit);
+                side1Con += constit;
+                side1Losses[i] = ca.getLosses();
             }
+            addToLog("Total Side 1 con: " + side1Con);
+            addToLog("");
             for (int i=0; i<maxArmies; i++) {
                 CombatArmy ca = side2[i];
                 if (ca == null) continue;
-                side2Con += computNativeArmyConstitution(ca);
+                int constit = computNativeArmyConstitution(ca);
+                int sconstit = computNativeArmyConstitution(ca, 0d);
+                addToLog("Side 2, army " + i + " con: " + constit + "/" + sconstit);
+                side2Con += constit;
+                side2Losses[i] = ca.getLosses();
             }
+            addToLog("Total Side 2 con: " + side2Con);
             side1Con = Math.max(side1Con, 1);
             side2Con = Math.max(side2Con, 1);
             if (side1Con == 1 || side2Con == 1) return;
-            System.out.println("Total side1 con: " + side1Con);
-            System.out.println("Total side2 con: " + side2Con);
             
+            addToLog("");
+
             boolean side1Alive = false;
             boolean side2Alive = false;
             // compute losses for each army
@@ -131,17 +167,21 @@ public class Combat {
                 if (ca1 == null) continue;
                 
                 for (int j=0; j<maxArmies; j++) {
-                    CombatArmy ca2 = side2[i];
+                    CombatArmy ca2 = side2[j];
                     if (ca2 == null) continue;
                     
                     // losses for ca1
-                    side1Losses[i] = computeNewLosses(terrain, climate, ca2, ca1, side2Relations[j][i], side1Con, rounds);
+                    addToLog("");
+                    addToLog("Computing Losses for 2," + j + " attacking 1," + i);
+                    side1Losses[i] += computeNewLosses(terrain, climate, ca2, ca1, side2Relations[j][i], side1Con, rounds);
                     if (side1Losses[i] < 99.5) {
                         side1Alive = true;
                     }
                     
                     // losses for ca2
-                    side2Losses[j] = computeNewLosses(terrain, climate, ca1, ca2, side1Relations[i][j], side2Con, rounds);
+                    addToLog("");
+                    addToLog("Computing Losses for 1," + i + " attacking 2," + j);
+                    side2Losses[j] += computeNewLosses(terrain, climate, ca1, ca2, side1Relations[i][j], side2Con, rounds);
                     if (side2Losses[j] < 99.5) {
                         side2Alive = true;
                     }
@@ -152,23 +192,25 @@ public class Combat {
             for (int i=0; i<maxArmies; i++) {
                 CombatArmy ca1 = side1[i];
                 if (ca1 == null) continue;
-                ca1.setLosses(side1Losses[i]);
-                System.out.println("Side1 army " + i + " con : " + computNativeArmyConstitution(ca1));
+                ca1.setLosses(Math.min(side1Losses[i], 100));
+                addToLog("Side 1 army " + i + " new con : " + computNativeArmyConstitution(ca1));
             }
             for (int i=0; i<maxArmies; i++) {
                 CombatArmy ca2 = side2[i];
                 if (ca2 == null) continue;
-                ca2.setLosses(side2Losses[i]);
-                System.out.println("Side2 army " + i + " con : " + computNativeArmyConstitution(ca2));
+                ca2.setLosses(Math.min(side2Losses[i], 100));
+                addToLog("Side 2 army " + i + " new con : " + computNativeArmyConstitution(ca2));
             }        
             
-            
-            finished = !(side1Alive && side2Alive) || rounds > 20;
             rounds++;
+            finished = !(side1Alive && side2Alive) || rounds >= maxRounds;
+            addToLog("");
+            addToLog("");
         } while (!finished);
+        System.out.println(log);
     }
     
-    public static double computeNewLosses(HexTerrainEnum terrain,
+    public double computeNewLosses(HexTerrainEnum terrain,
                                             ClimateEnum climate,
                                             CombatArmy att,
                                             CombatArmy def,
@@ -179,17 +221,23 @@ public class Combat {
         int relMod = CombatModifiers.getRelationModifier(relations);
         int defCon = computNativeArmyConstitution(def);
         int attStr = computeModifiedArmyStrength(terrain, climate, att, def);
+        addToLog("Relations mod: " + relMod);
+        addToLog("Attacker modified str: " + attStr);
         int attBonus = 0;
         int defBonus = 0;
         if (round == 0) {
             attBonus = att.getOffensiveAddOns();
             defBonus = def.getDefensiveAddOns();
             attStr += attBonus - defBonus;
+            addToLog("First round - str: " + attBonus + " con: " + defBonus);
         }
-        double l = computeLosses(def, attStr *
-                    relMod / 100 * 
-                    defCon / defenderSideTotalCon);
-        return Math.min(losses1 + l, 100);
+        double lossesFactor = (double)defCon / (double)defenderSideTotalCon;
+        addToLog("Defender loss factor: " + lossesFactor);
+        double l = computeLosses(def, (int)(attStr *
+                    relMod / 100d * lossesFactor)
+                    );
+        addToLog("New losses: " + l);
+        return l;
     }
 
     
@@ -271,6 +319,118 @@ public class Combat {
     public void setTerrain(HexTerrainEnum terrain) {
         this.terrain = terrain;
     }
+
+    public boolean addToSide(int side, CombatArmy ca) {
+        if (side == 0) {
+            for (int i=0; i<side1.length; i++) {
+                if (side1[i] == null) {
+                    side1[i] = ca;
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            for (int i=0; i<side2.length; i++) {
+                if (side2[i] == null) {
+                    side2[i] = ca;
+                    return true;
+                }
+            }
+            return false;
+
+        }
+    }
     
+    public boolean removeFromSide(int side, CombatArmy ca) {
+        boolean found = false;
+        if (side == 0) {
+            for (int i=0; i<side1.length; i++) {
+                if (side1[i] == ca) {
+                    side1[i] = null;
+                    found = true;
+                }
+                if (i > 0 && side1[i-1] == null && side1[i] != null) {
+                    side1[i-1] = side1[i];
+                    side1[i] = null;
+                }
+            }
+            return found;
+        } else {
+            for (int i=0; i<side2.length; i++) {
+                if (side2[i] == ca) {
+                    side2[i] = null;
+                    found = true;
+                }
+                if (i > 0 && side2[i-1] == null && side2[i] != null) {
+                    side2[i-1] = side2[i];
+                    side2[i] = null;
+                }
+            }
+            return found;
+
+        }
+    }
+    
+    public NationAllegianceEnum estimateAllegianceForSide(int side) {
+        NationAllegianceEnum ret = null;
+        Game g = GameHolder.instance().getGame();
+        CombatArmy[] cas = (side == 0 ? side1 : side2);
+        for (CombatArmy ca : cas) {
+            if (ca == null) continue;
+            if (ca.getNationNo() > 0) {
+                NationRelations nr = (NationRelations)g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", ca.getNationNo());
+                if (nr != null) {
+                    if (ret == null) {
+                        ret = nr.getAllegiance();
+                    } else if (nr.getAllegiance() != ret) {
+                        ret = null;
+                        return ret;
+                    } else {
+                        // allegiances match, do nothing
+                    }
+                }
+            }
+        }
+        // no allegiance given
+        return ret;
+    }
+
+    
+    public int getMaxRounds() {
+        return maxRounds;
+    }
+
+    
+    public void setMaxRounds(int maxRounds) {
+        this.maxRounds = maxRounds;
+    }
+
+    
+    public String getDescription() {
+        return description;
+    }
+
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
+    public int getHexNo() {
+        return hexNo;
+    }
+
+    
+    public void setHexNo(int hexNo) {
+        this.hexNo = hexNo;
+    }
+    
+    public int getArmyIndex(int side, CombatArmy a) {
+        CombatArmy[] cas = (side == 0 ? side1 : side2);
+        for (int i=0; i<cas.length; i++) {
+            if (cas[i] == a) return i;
+        }
+        return -1;
+    }
     
 }

@@ -54,7 +54,7 @@ public class CombatArmyTableModel extends BeanTableModel {
             if (getCombat() == null) {
                 return 0;
             } else {
-                return getCombat().computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate());
+                return getCombat().computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d);
             }
         } else if (arg1 == iCon) {
             if (getCombat() == null) {
@@ -69,7 +69,7 @@ public class CombatArmyTableModel extends BeanTableModel {
                 return (int)Math.round(ca.getLosses());
             }
         } else if (arg1 == iLosses) {
-            return Math.round(ca.getLosses());
+            return Math.round(ca.getLosses()) + "%";
         }
         return super.getValueAtInternal(arg0, arg1);
     }

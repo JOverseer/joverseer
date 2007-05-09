@@ -224,41 +224,6 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             if (!armyPanels.get(i).isVisible()) {
                 armyViewers.get(i).setFormObject(a);
                 armyPanels.get(i).setVisible(true);
-                try {
-	                CombatArmy ca = new CombatArmy(a);
-	                org.joverseer.tools.combatCalc.Combat c = new org.joverseer.tools.combatCalc.Combat();
-	            
-	                
-	                c.getSide1()[0] = ca;
-                        
-                        
-                        if (ca.getCommandRank() == 50) {
-                            final org.joverseer.tools.combatCalc.Combat cc = c;
-                            FormModel formModel = FormModelHelper.createFormModel(cc);
-                            final CombatForm form = new CombatForm(formModel);
-                            FormBackedDialogPage page = new FormBackedDialogPage(form);
-
-                            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                                protected void onAboutToShow() {
-                                    form.setFormObject(cc);
-                                }
-
-                                protected boolean onFinish() {
-                                    form.commit();
-                                    return true;
-                                }
-                            };
-                            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                            dialog.setTitle(ms.getMessage("editCharacter.title", new Object[]{}, Locale.getDefault()));
-                            dialog.setModal(false);
-                            dialog.showDialog();
-       
-                        }
-                        c.runBattle();
-                }
-                catch (Exception exc) {
-                	exc.printStackTrace();
-                }
                 return;
             }
         }

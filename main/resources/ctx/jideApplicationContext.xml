@@ -314,6 +314,8 @@
 
 	<bean id="artifactInfoCollector" class="org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector"/>   	
 
+	<bean id="combatCalculatorHolder" class="org.joverseer.ui.combatCalculator.CombatFormHolder"/>
+
    	<bean id="infoRegistry" class="org.joverseer.support.info.InfoRegistry">
    		<property name="infos">
    			<list>

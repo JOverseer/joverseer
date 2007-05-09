@@ -176,6 +176,8 @@ public class CombatArmy {
         } else {
             setCommandRank(50);
         }
+        setNationNo(a.getNationNo());
+        setCommander(a.getCommanderName());
         setMorale(a.getMorale());
         setTactic(TacticEnum.Standard);
     }

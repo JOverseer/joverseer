@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -19,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.text.html.HTMLDocument;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.httpclient.HttpClient;
@@ -39,6 +41,7 @@ import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -255,6 +258,7 @@ public class ExportOrdersForm extends AbstractForm {
                         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
                             protected void onAboutToShow() {
                             	try {
+                            		((HTMLDocument)frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
                             		frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
                             	}
                             	catch (Exception exc) {
@@ -264,6 +268,12 @@ public class ExportOrdersForm extends AbstractForm {
 
                             protected boolean onFinish() {
                                 return true;
+                            }
+                            
+                            protected Object[] getCommandGroupMembers() {
+                                return new AbstractCommand[] {
+                                        getFinishCommand()
+                                };
                             }
                         };
                         MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);

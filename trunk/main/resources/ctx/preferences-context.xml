@@ -326,6 +326,58 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.proxy</value>
+					</property>
+					<property name="description">
+						<value>Proxy</value>
+					</property>
+					<property name="group">
+						<value>Auto Submit Orders</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value></value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.proxyPort</value>
+					</property>
+					<property name="description">
+						<value>Proxy Port</value>
+					</property>
+					<property name="group">
+						<value>Auto Submit Orders</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value></value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.url</value>
+					</property>
+					<property name="description">
+						<value>URL</value>
+					</property>
+					<property name="group">
+						<value>Auto Submit Orders</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>http://www.meturn.com</value>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>

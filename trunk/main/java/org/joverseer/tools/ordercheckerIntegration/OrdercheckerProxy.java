@@ -52,7 +52,9 @@ import com.middleearthgames.orderchecker.io.ImportTerrainCsv;
 public class OrdercheckerProxy {
     HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> orderMap =
         new HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order>();
-
+    HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> reverseOrderMap =
+        new HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order>();
+    int nationNo;
     
     public void runOrderchecker() {
         Data data = Main.main.getData();
@@ -263,6 +265,7 @@ public class OrdercheckerProxy {
     }
     
     public void updateOrdercheckerGameData(int nationNo) throws Exception {
+        setNationNo(nationNo);
         Main.mainFrame = new JFrame();
         final Main main = new Main();
         Main.main = main;
@@ -373,6 +376,7 @@ public class OrdercheckerProxy {
                     mo.addParameter(params.get(i));
                 }
                 orderMap.put(mo, o);
+                reverseOrderMap.put(o, mo);
                 mc.addOrder(mo);
             }
         }
@@ -508,6 +512,27 @@ public class OrdercheckerProxy {
 
     public Vector<String> getOrderErrorResults(Order o) throws Exception {
         return (Vector<String>)ReflectionUtils.retrieveField(o, "errorResults");
+    }
+
+    
+    public HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> getReverseOrderMap() {
+        return reverseOrderMap;
+    }
+
+    
+    public void setReverseOrderMap(
+            HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> reverseOrderMap) {
+        this.reverseOrderMap = reverseOrderMap;
+    }
+
+    
+    public int getNationNo() {
+        return nationNo;
+    }
+
+    
+    public void setNationNo(int nationNo) {
+        this.nationNo = nationNo;
     }
 
     

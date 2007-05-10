@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -24,29 +23,28 @@ import javax.swing.JTextField;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.orders.export.OrderFileGenerator;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenXmlDir;
-import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.ConfirmationDialog;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
@@ -143,41 +141,7 @@ public class ExportOrdersForm extends AbstractForm {
         
         save.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (!ordersOk) return;
-                if (!checkOrderValidity()) return;
-                Game g = GameHolder.instance().getGame();
-                int nationNo = getSelectedNationNo();
-                PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
-                String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-                fileChooser.setApproveButtonText("Save");
-                fileChooser.setSelectedFile(new File(fname));
-                Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
-                String lastDir = prefs.get("importDir", null);
-                if (lastDir != null) {
-                    fileChooser.setCurrentDirectory(new File(lastDir));
-                }
-                if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        pi.setTurnVersion(Integer.parseInt(version.getSelectedItem().toString()) + 1);
-                        FileWriter f = new FileWriter(fileChooser.getSelectedFile());
-                        String txt = orders.getText();
-                        txt = txt.replace("\n", System.getProperty("line.separator"));
-                        f.write(txt);
-                        f.close();
-                        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                        MessageDialog md = new MessageDialog("Turn Exported", "The turn was succesfully exported to file " + fileChooser.getSelectedFile() + ".");
-                        md.showDialog();
-                    }
-                    catch (Exception exc) {
-                        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                        MessageDialog md = new MessageDialog(
-                                ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
-                                exc.getMessage());
-                        md.showDialog();
-                    }
-                }
+                saveAndSendOrders(false);
             }
         });
         
@@ -190,17 +154,48 @@ public class ExportOrdersForm extends AbstractForm {
         
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (!ordersOk) return;
-                if (!checkOrderValidity()) return;
-                Game g = GameHolder.instance().getGame();
-                try {
-                    String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
-                    File file = new File(fname);
-                    FileWriter f = new FileWriter(file);
-                    f.write(orders.getText());
-                    f.close();
-                    
-                    Preferences prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
+            	saveAndSendOrders(true);
+            }
+        });
+                
+        nation.setSelectedIndex(0);
+        
+        return glb.getPanel();
+    }
+    
+    private void increaseVersionNumber(PlayerInfo pi) {
+    	pi.setTurnVersion(pi.getTurnVersion() + 1);
+    	nation.setSelectedIndex(nation.getSelectedIndex());
+    }
+    
+    private void saveAndSendOrders(boolean send) {
+    	if (!ordersOk) return;
+        if (!checkOrderValidity()) return;
+        Game g = GameHolder.instance().getGame();
+        int nationNo = getSelectedNationNo();
+        PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+        String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        fileChooser.setApproveButtonText("Save");
+        fileChooser.setSelectedFile(new File(fname));
+        Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
+        String lastDir = prefs.get("importDir", null);
+        if (lastDir != null) {
+            fileChooser.setCurrentDirectory(new File(lastDir));
+        }
+        if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+            try {
+                FileWriter f = new FileWriter(fileChooser.getSelectedFile());
+                String txt = orders.getText();
+                txt = txt.replace("\n", System.getProperty("line.separator"));
+                f.write(txt);
+                f.close();
+                if (!send) {
+                	increaseVersionNumber(pi);
+                }
+                if (send) {
+                	prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
                     String email = prefs.get("useremail", "");
                     String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
                     InputDialog idlg = new InputDialog();
@@ -221,46 +216,83 @@ public class ExportOrdersForm extends AbstractForm {
                     } while (!Pattern.matches(emailRegex, email));
                     prefs.put("useremail", email);
                     
-                    String name = "";
-                    String acct = "";
+                    String name = pi.getPlayerName();
+                    String acct = pi.getAccountNo();
                     
-                    String url = "http://test.com?submitme";
-                    PostMethod filePost = new PostMethod(url);
-                    Part[] parts = {
-                            new StringPart("emailaddr", email),
-                            new StringPart("name", name),
-                            new StringPart("account", acct),
-                            new FilePart(file.getName(), file)
-                        };
-                    filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+                    String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
+//                    final PostMethod filePost = new PostMethod(url);
+//                    Part[] parts = {
+//                            new StringPart("emailaddr", email),
+//                            new StringPart("name", name),
+//                            new StringPart("account", acct),
+//                            new FilePart(file.getName(), file)
+//                        };
+//                    filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+                    final GetMethod filePost = new GetMethod("http://www.meturn.com/");
                     HttpClient client = new HttpClient();
-                    client.getHttpConnectionManager().
-                        getParams().setConnectionTimeout(5000);
+                    client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+                    
+                    String proxy = PreferenceRegistry.instance().getPreferenceValue("submitOrders.proxy");
+                    if (proxy != null && !proxy.equals("")) {
+                    	String proxyPort = PreferenceRegistry.instance().getPreferenceValue("submitOrders.proxyPort");
+                    	try {
+                    		Integer iProxyPort = Integer.parseInt(proxyPort);
+                    		client.getHostConfiguration().setProxy(proxy, iProxyPort);
+                    	}
+                    	catch (NumberFormatException exc) {
+                    		ErrorDialog dlg = new ErrorDialog("It appears you have defined a proxy server but the value for the port is incorrect.");
+                    		dlg.showDialog();
+                    		return;
+                    	}
+                    }
+                    
                     int status = client.executeMethod(filePost);
                     String msg = "";
                     if (status == HttpStatus.SC_OK) {
-                        msg = "Turn sent succesfully. You should save your game now (to update the order version counter). The save game dialog will automatically come up.";
-                        MessageDialog dlg = new MessageDialog("Send turn", msg);
-                        dlg.showDialog();
-                        (new SaveGame()).execute();
-                        return;
+                        final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
+                        FormBackedDialogPage page = new FormBackedDialogPage(frm);
+
+                        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                            protected void onAboutToShow() {
+                            	try {
+                            		frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
+                            	}
+                            	catch (Exception exc) {
+                            		
+                            	}
+                            }
+
+                            protected boolean onFinish() {
+                                return true;
+                            }
+                        };
+                        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                        dialog.setTitle(ms.getMessage("submitOrdersDialog.title", new Object[]{}, Locale.getDefault()));
+                        dialog.showDialog();
+                        
+                        increaseVersionNumber(pi);
+                        filePost.releaseConnection();
+                        
+                        msg = "Orders sent to Middle Earth Games and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
+                    	MessageDialog md = new MessageDialog("Turn Submitted", msg);
+                    	md.showDialog();
                     } else {
-                        msg = "Send failed (response: " + HttpStatus.getStatusText(status) + ").";
-                        MessageDialog dlg = new MessageDialog("Send turn", msg);
-                        dlg.showDialog();
+                    	send = false;
                     }
-                }
-                catch (Exception exc) {
-                    ErrorDialog dlg = new ErrorDialog("Send failed. Cause: " + exc.getMessage());
-                    dlg.showDialog();
-                    exc.printStackTrace();
-                }
+                } else {
+                	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                	MessageDialog md = new MessageDialog("Turn Exported", "The turn was succesfully exported to file " + fileChooser.getSelectedFile() + ".");
+                	md.showDialog();
+                } 
             }
-        });
-                
-        nation.setSelectedIndex(0);
-        
-        return glb.getPanel();
+            catch (Exception exc) {
+                MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                MessageDialog md = new MessageDialog(
+                        ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
+                        exc.getMessage());
+                md.showDialog();
+            }
+        }
     }
     
     private int validateOrders() {

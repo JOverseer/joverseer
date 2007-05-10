@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -21,7 +22,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class EditPreferencesForm extends AbstractForm {
     public static String FORM_ID = "editPreferencesForm";
     JPanel panel;
-    HashMap<String, JComboBox> components = new HashMap<String, JComboBox>();
+    HashMap<String, JComponent> components = new HashMap<String, JComponent>();
     
     public EditPreferencesForm(FormModel arg0) {
         super(arg0, FORM_ID);
@@ -42,16 +43,25 @@ public class EditPreferencesForm extends AbstractForm {
             }
             tlb.cell(new JLabel(p.getDescription()));
             tlb.gapCol();
-            JComboBox combo = new JComboBox();
-            combo.setPreferredSize(new Dimension(100, 20));
-            for (PreferenceValue pv : p.getDomain()) {
-                combo.addItem(pv.getDescription());
-                if (reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) {
-                    combo.setSelectedItem(pv.getDescription());
-                }
+            if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
+	            JComboBox combo = new JComboBox();
+	            combo.setPreferredSize(new Dimension(150, 20));
+	            for (PreferenceValue pv : p.getDomain()) {
+	                combo.addItem(pv.getDescription());
+	                if (reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) {
+	                    combo.setSelectedItem(pv.getDescription());
+	                }
+	            }
+	            components.put(p.getKey(), combo);
+	            tlb.cell(combo);
+            } else {
+            	JTextField tf = new JTextField();
+            	tf.setPreferredSize(new Dimension(150, 20));
+            	tf.setText(reg.getPreferenceValue(p.getKey()));
+            	components.put(p.getKey(), tf);
+            	tlb.cell(tf);
             }
-            components.put(p.getKey(), combo);
-            tlb.cell(combo);
+            
             tlb.relatedGapRow();
         }
 
@@ -66,13 +76,19 @@ public class EditPreferencesForm extends AbstractForm {
         PreferenceRegistry reg = (PreferenceRegistry)getFormObject();
         ArrayList<Preference> prefs = reg.getPreferencesSortedByGroup();
         for (Preference p : prefs) {
-            JComboBox combo = components.get(p.getKey());
-            if (combo.getSelectedItem() != null) {
-                for (PreferenceValue pv : p.getDomain()) {
-                    if (pv.getDescription().equals(combo.getSelectedItem().toString())) {
-                        reg.setPreferenceValue(p.getKey(), pv.getKey());
-                    }
-                }
+            JComponent c = components.get(p.getKey());
+            if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
+            	JComboBox combo = (JComboBox)c;
+	            if (combo.getSelectedItem() != null) {
+	                for (PreferenceValue pv : p.getDomain()) {
+	                    if (pv.getDescription().equals(combo.getSelectedItem().toString())) {
+	                        reg.setPreferenceValue(p.getKey(), pv.getKey());
+	                    }
+	                }
+	            }
+            } else {
+            	JTextField tf = (JTextField)c;
+            	reg.setPreferenceValue(p.getKey(), tf.getText());
             }
         }
     }

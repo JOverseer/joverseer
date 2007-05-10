@@ -9,7 +9,11 @@ import org.springframework.richclient.application.Application;
 
 
 public class Preference {
+	public static String TYPE_DROPDOWN = "dropDown";
+	public static String TYPE_TEXT = "text";
+
     String key;
+    String type = TYPE_DROPDOWN;
     String description;
     PreferenceValue[] domain;
     String valueCache = null;
@@ -98,6 +102,15 @@ public class Preference {
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+    
     
     
 }

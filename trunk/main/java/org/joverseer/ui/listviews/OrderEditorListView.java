@@ -42,10 +42,11 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.orderEditor.OrderParameterValidator;
+import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
@@ -387,7 +388,7 @@ public class OrderEditorListView extends ItemListView {
 
     public JPopupMenu getPopupMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "orderCommandGroup", new Object[] {editOrderAction, deleteOrderAction});
+                "orderCommandGroup", new Object[] {editOrderAction, deleteOrderAction, "separator", new DrawAllOrdersAction(), new UnDrawAllOrdersAction()});
         return group.createPopupMenu();
     }
     
@@ -431,6 +432,29 @@ public class OrderEditorListView extends ItemListView {
             }
         }
 
+    }
+    
+    private class DrawAllOrdersAction extends ActionCommand {
+        protected void doExecuteCommand() {
+            OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+            for (Object o : tableModel.getRows()) {
+                Order order = (Order)o;
+                if (GraphicUtils.canRenderOrder(order)) {
+                    ovd.addOrder(order);
+                }
+            }
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+        }
+    }
+    
+    private class UnDrawAllOrdersAction extends ActionCommand {
+        protected void doExecuteCommand() {
+            OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+            ovd.clear();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+        }
     }
 
     private abstract class OrderFilter {

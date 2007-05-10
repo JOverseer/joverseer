@@ -582,7 +582,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
      */
     public void mousePressed(MouseEvent e)
     {
-        if (e.getButton() == MouseEvent.BUTTON1)
+        if (e.getButton() == MouseEvent.BUTTON1) {
             xDiff = e.getX();
         	yDiff = e.getY();
             if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
@@ -591,6 +591,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
             }
             else {
             }
+        }
     }
 
     

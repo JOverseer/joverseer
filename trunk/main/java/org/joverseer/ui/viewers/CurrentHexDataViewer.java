@@ -1,6 +1,8 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Locale;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.LayoutFocusTraversalPolicy;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.joverseer.domain.Army;
@@ -415,6 +418,21 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
                 for (int i=0; i<characterPanels.size(); i++) {
                     if (!characterPanels.get(i).isVisible()) continue;
                     characterViewers.get(i).setFormObject(characterViewers.get(i).getFormObject());
+                }
+            }
+            if (e.getEventType().equals(LifecycleEventsEnum.SelectCharEvent.toString())) { 
+                Character c = (Character)e.getData();
+                selectCharacter(c);
+            }
+        }
+    }
+    
+    protected void selectCharacter(Character c) {
+        for (int i=0; i<characterViewers.size(); i++) {
+            if (characterPanels.get(i).isVisible()) {
+                Character ch = (Character)characterViewers.get(i).getFormObject();
+                if (c == ch) {
+                    GraphicUtils.showView("currentHexDataViewer");
                 }
             }
         }

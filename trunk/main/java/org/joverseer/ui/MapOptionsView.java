@@ -13,6 +13,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import org.joverseer.game.Game;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.map.MapMetadata;

@@ -18,6 +18,23 @@
 			<value>No</value>
 		</property>
 	</bean>
+		<bean id="onPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>on</value>
+		</property>
+		<property name="description">
+			<value>On</value>
+		</property>
+	</bean>
+	<bean id="offPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>off</value>
+		</property>
+		<property name="description">
+			<value>Off</value>
+		</property>
+	</bean>
+	
 							
 	<bean id="preferenceRegistry" class="org.joverseer.preferences.PreferenceRegistry">
 		<property name="prefix">
@@ -275,6 +292,28 @@
 					</property>
 					<property name="group">
 						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>orderEditor.autoSave</value>
+					</property>
+					<property name="description">
+						<value>Auto Save</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
 					</property>
 					<property name="defaultValue">
 						<value>no</value>

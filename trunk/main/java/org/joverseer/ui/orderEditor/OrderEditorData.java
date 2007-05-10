@@ -69,13 +69,13 @@ public class OrderEditorData {
         this.skill = skill;
     }
 
-	protected ArrayList<String> getParamDescriptions() {
-		return paramDescriptions;
-	}
-
-	protected void setParamDescriptions(ArrayList<String> paramDescriptions) {
-		this.paramDescriptions = paramDescriptions;
-	}
+    public ArrayList<String> getParamDescriptions() {
+    	return paramDescriptions;
+    }
+    
+    public void setParamDescriptions(ArrayList<String> paramDescriptions) {
+    	this.paramDescriptions = paramDescriptions;
+    }
     
     
 }

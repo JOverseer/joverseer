@@ -1,13 +1,13 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FocusTraversalPolicy;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -18,23 +18,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.Order;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.orderEditor.OrderEditor;
-import org.joverseer.ui.orders.OrderEditorForm;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
@@ -111,33 +104,29 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
     protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-        glb.setDefaultInsets(new Insets(0, 0, 0, 3));
+        glb.setDefaultInsets(new Insets(1, 1, 1, 3));
         glb.append(orderText = new JTextField());
         orderText.setBorder(null);
-        orderText.setPreferredSize(new Dimension(170, 12));
+        orderText.setPreferredSize(new Dimension(170, 16));
         orderText.setText("N/A");
 
         orderResultIcon = new JLabel("");
         orderResultIcon.setPreferredSize(new Dimension(16, 16));
         glb.append(orderResultIcon);
         
-        GridBagLayoutBuilder glb1 = new GridBagLayoutBuilder();
-        glb1.setDefaultInsets(new Insets(0, 0, 0, 3));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("edit.image"));
-        JLabel btn = new JLabel(ico);
+        final JButton btn = new JButton(ico);
         btn.setToolTipText("Edit order");
-        btn.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent arg0) {
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 Order order = (Order)getFormObject();
                 Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
             }
         });
         btn.setPreferredSize(new Dimension(16, 16));
-        btn.setOpaque(true);
-        btn.setBackground(Color.white);
-        glb1.append(btn);
+        glb.append(btn);
 
 //        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
@@ -160,18 +149,48 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         draw.setBackground(Color.white);
         draw.setVisible(true);
         draw.setEnabled(false);
-        glb1.append(draw);
-
-        JPanel p = glb1.getPanel();
-        p.setOpaque(true);
-        p.setBackground(Color.white);
-        glb.append(p);
+        glb.append(draw);
 
         glb.nextLine();
-        p = glb.getPanel();
+        JPanel p = glb.getPanel();
         //p.setPreferredSize(new Dimension(166, 16));
         p.setBackground(Color.white);
         p.setBorder(null);
+        
+        p.setFocusTraversalPolicyProvider(true);
+        p.setFocusTraversalPolicy(new FocusTraversalPolicy() {
+            public Component getComponentAfter(Container aContainer, Component aComponent) {
+                if (aComponent == btn) {
+                    return draw;
+                } else if (aComponent == draw) {
+                    return btn;
+                }
+                return btn;
+            }
+
+            public Component getComponentBefore(Container aContainer, Component aComponent) {
+                if (aComponent == btn) {
+                    return draw;
+                } else if (aComponent == draw) {
+                    return btn;
+                }
+                return draw;
+            }
+
+            
+            public Component getDefaultComponent(Container aContainer) {
+                return btn;
+            }
+
+            public Component getFirstComponent(Container aContainer) {
+                return btn;
+            }
+
+            public Component getLastComponent(Container aContainer) {
+                return (draw.isEnabled() ? draw : btn);
+            }
+            
+        });
         return p;
     }
 

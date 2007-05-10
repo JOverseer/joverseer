@@ -1,14 +1,20 @@
 package org.joverseer.ui.support.controls;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 
 public class JLabelButton extends JLabel {
@@ -52,11 +58,15 @@ public class JLabelButton extends JLabel {
                 }
             }
         });
+        
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
     
     public void addActionListener(ActionListener a) {
         actionListeners.add(a);
     }
+
+    
+    
     
 }

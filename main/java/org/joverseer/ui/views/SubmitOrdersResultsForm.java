@@ -1,7 +1,6 @@
 package org.joverseer.ui.views;
 
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -10,7 +9,6 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 public class SubmitOrdersResultsForm extends AbstractForm {
 	static String FORM_ID = "submitOrdersResultsForm"; 
@@ -27,8 +25,8 @@ public class SubmitOrdersResultsForm extends AbstractForm {
 		htmlResponse.setContentType("text/html");
 		htmlResponse.setEditorKit(new HTMLEditorKit());
 		
+		htmlResponse.setPreferredSize(new Dimension(600, 500));
 		JScrollPane scp = new JScrollPane(htmlResponse);
-		scp.setPreferredSize(new Dimension(600, 500));
 		
 		return scp;
 	}

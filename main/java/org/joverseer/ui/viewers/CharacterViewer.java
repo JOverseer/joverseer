@@ -1,8 +1,10 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -68,6 +70,7 @@ import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -112,7 +115,7 @@ public class CharacterViewer extends ObjectViewer {
     JTable artifactsTable;
     JTable spellsTable;
     
-    JLabel swapOrdersIconCmd;
+    JLabelButton swapOrdersIconCmd;
 
     JButton btnMenu;
 
@@ -419,6 +422,7 @@ public class CharacterViewer extends ObjectViewer {
         });
         c.setBorder(null);
         c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
+        
         c.setPreferredSize(new Dimension(160, 12));
         
         glb.append(c = new JTextField());
@@ -429,24 +433,24 @@ public class CharacterViewer extends ObjectViewer {
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 
-        btnMenu = new JButton();
+        final JButton btnMainMenu = new JButton();
         Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
-        btnMenu.setIcon(ico);
-        btnMenu.setPreferredSize(new Dimension(16, 16));
-        glb.append(btnMenu);
-        btnMenu.addActionListener(new PopupMenuActionListener() {
+        btnMainMenu.setIcon(ico);
+        btnMainMenu.setPreferredSize(new Dimension(16, 16));
+        glb.append(btnMainMenu);
+        btnMainMenu.addActionListener(new PopupMenuActionListener() {
 
             public JPopupMenu getPopupMenu() {
                 return createCharacterPopupContextMenu();
             }
         });
         
-        btnMenu = new JButton();
+        final JButton btnCharDetails = new JButton();
         ico = new ImageIcon(imgSource.getImage("showCharDetails.icon"));
-        btnMenu.setIcon(ico);
-        btnMenu.setPreferredSize(new Dimension(16, 16));
-        glb.append(btnMenu);
-        btnMenu.addActionListener(new ActionListener() {
+        btnCharDetails.setIcon(ico);
+        btnCharDetails.setPreferredSize(new Dimension(16, 16));
+        glb.append(btnCharDetails);
+        btnCharDetails.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
                 showArtifacts = !showOrders;
@@ -579,22 +583,24 @@ public class CharacterViewer extends ObjectViewer {
         });
         
         glb.nextLine();
+        
 
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        tlb.cell(order1comp = order1.createFormControl());
+        tlb.cell(order1comp = order1.createFormControl(),"rowspec=top:20px");
         tlb.row();
         order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-        tlb.cell(order2comp = order2.createFormControl());
+        tlb.cell(order2comp = order2.createFormControl(),"rowspec=top:20px");
         tlb.row();
         orderPanel = tlb.getPanel();
         orderPanel.setBackground(Color.white);
         glb.append(orderPanel, 2, 1);
-        glb.append(swapOrdersIconCmd = new JLabel(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
+        glb.append(swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
+        swapOrdersIconCmd.setVerticalAlignment(JButton.CENTER);
         swapOrdersIconCmd.setToolTipText("Swap orders");
-        
-        swapOrdersIconCmd.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+        swapOrdersIconCmd.setPreferredSize(new Dimension(16, 16));
+        swapOrdersIconCmd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 				Character c = (Character)getFormObject();
 				c.setOrders(new Order[]{c.getOrders()[1], c.getOrders()[0]});
 		          Application.instance().getApplicationContext().publishEvent(
@@ -603,8 +609,54 @@ public class CharacterViewer extends ObjectViewer {
         });
         
         glb.nextLine();
-
+        
         JPanel panel = glb.getPanel();
+        panel.setFocusTraversalPolicyProvider(true);
+        panel.setFocusTraversalPolicy(new FocusTraversalPolicy() {
+            public Component getComponentAfter(java.awt.Container aContainer, Component aComponent) {
+                if (aComponent == characterName) {
+                    return btnMainMenu;
+                } else if (aComponent == btnMainMenu) {
+                    return btnCharDetails;
+                } else if (aComponent == btnCharDetails) {
+                    return order1comp.getFocusTraversalPolicy().getFirstComponent(order1comp);
+                } else if (aComponent == order1comp.getFocusTraversalPolicy().getLastComponent(order1comp)) {
+                    return order2comp.getFocusTraversalPolicy().getFirstComponent(order2comp);
+                } else if (aComponent == order2comp.getFocusTraversalPolicy().getLastComponent(order1comp)) {
+                    return characterName;
+                }
+                return characterName;
+            }
+
+            public Component getComponentBefore(java.awt.Container aContainer, Component aComponent) {
+                if (aComponent == characterName) {
+                    return order2comp.getFocusTraversalPolicy().getLastComponent(order2comp);
+                } else if (aComponent == btnMainMenu) {
+                    return characterName;
+                } else if (aComponent == btnCharDetails) {
+                    return btnMainMenu;
+                } else if (aComponent == order1comp.getFocusTraversalPolicy().getFirstComponent(order1comp)) {
+                    return btnCharDetails;
+                } else if (aComponent == order2comp.getFocusTraversalPolicy().getFirstComponent(order2comp)) {
+                    return order1comp.getFocusTraversalPolicy().getLastComponent(order1comp);
+                }
+                return characterName;
+            }
+
+            public Component getDefaultComponent(java.awt.Container aContainer) {
+                return characterName;
+            }
+
+            public Component getFirstComponent(java.awt.Container aContainer) {
+                return characterName;
+            }
+
+            public Component getLastComponent(java.awt.Container aContainer) {
+                return order2comp.isVisible() ? order2comp.getFocusTraversalPolicy().getLastComponent(order2comp) : btnCharDetails;
+            }
+            
+        });
+        
         panel.setBackground(Color.white);
         return panel;
     }

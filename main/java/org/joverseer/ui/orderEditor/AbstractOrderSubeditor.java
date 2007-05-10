@@ -56,7 +56,9 @@ public abstract class AbstractOrderSubeditor {
 
 	public void setOrder(Order order) {
 		this.order = order;
-	}
+        }
 
-    
+
+       
+        
 }

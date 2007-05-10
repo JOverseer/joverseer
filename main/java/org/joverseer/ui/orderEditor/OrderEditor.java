@@ -32,6 +32,7 @@ import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -185,7 +186,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         character.setEditable(false);
         character.setPreferredSize(new Dimension(200, 18));
 
-        JLabelButton btn = new JLabelButton();
+        JButton btn = new JButton();
         btn.setPreferredSize(new Dimension(18, 18));
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon"));
@@ -193,12 +194,27 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         glb.append(btn);
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                updateParameters();
                 saveOrder();
             }
         });
         btn.setToolTipText("Save order");
         
-        btn = new JLabelButton();
+        btn = new JButton();
+        btn.setPreferredSize(new Dimension(18, 18));
+        ico = new ImageIcon(imgSource.getImage("char.icon"));
+        btn.setIcon(ico);
+        glb.append(btn);
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.SelectCharEvent.toString(), ((Order)getFormObject()).getCharacter(), this));
+
+            }
+        });
+        btn.setToolTipText("Goto chars");
+        
+        btn = new JButton();
         btn.setPreferredSize(new Dimension(18, 18));
         ico = new ImageIcon(imgSource.getImage("clear.icon"));
         btn.setIcon(ico);
@@ -210,7 +226,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         });
         btn.setToolTipText("Delete order");
         
-        btn = new JLabelButton();
+        btn = new JButton();
         btn.setPreferredSize(new Dimension(18, 18));
         ico = new ImageIcon(imgSource.getImage("revert.icon"));
         btn.setIcon(ico);
@@ -222,7 +238,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         });
         btn.setToolTipText("Revert order");
         
-        btn = new JLabelButton();
+        btn = new JButton();
         btn.setPreferredSize(new Dimension(18, 18));
         ico = new ImageIcon(imgSource.getImage("ShowHideOrderDescription.icon"));
         btn.setIcon(ico);
@@ -253,6 +269,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             		refreshOrder();
 			refreshDescription();
 			refreshSubeditor();
+                        if (getAutoSave()) {
+                            saveOrder();
+                        }
 		}
             }
         });
@@ -456,7 +475,6 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     }
     
     private void saveOrder() {
-    	updateParameters();
         Order o = (Order)getFormObject();
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
         o.setParameters(parametersInternal.getText());
@@ -490,6 +508,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         o.setOrderNo(bkOrderNo);
         o.setParameters(bkParams);
         setFormObject(o);
+        if (getAutoSave()) {
+            saveOrder();
+        }
     }
     
     public void setFormObject(Object obj) {
@@ -551,6 +572,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         }
         parametersInternal.setText(v);
         parameters.setText(v.replace(Order.DELIM, " "));
+        if (getAutoSave()) {
+            saveOrder();
+        }
+            
     }
 
     
@@ -560,5 +585,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     
     public void giveFocus() {
     	orderCombo.requestFocusInWindow();
+    }
+    
+    public boolean getAutoSave() {
+        String pval = PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave");
+        return pval.equals("yes");
     }
 }

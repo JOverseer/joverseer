@@ -44,9 +44,11 @@ public class OrderVisualizationData {
                 InputDialog dlg = new InputDialog();
                 JCheckBox fed;
                 JCheckBox cavalry;
+                dlg.setTitle("Order - Provide Addition Information");
                 dlg.addComponent("Fed :", fed = new JCheckBox());
                 dlg.addComponent("Cavalry :", cavalry = new JCheckBox());
-                dlg.init("Enter the required information for the army movement.");
+                String txt = o.getCharacter().getName() + "'s army (" + o.getCharacter().getHexNo() + "): Enter the required information for drawing the army move."; 
+                dlg.init(txt);
                 dlg.showDialog();
                 if (dlg.getResult()) {
                     orders.add(order);

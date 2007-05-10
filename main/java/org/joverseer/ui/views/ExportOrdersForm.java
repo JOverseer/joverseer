@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.prefs.Preferences;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,8 +19,16 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -29,7 +38,9 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenXmlDir;
+import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
+import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -174,7 +185,9 @@ public class ExportOrdersForm extends AbstractForm {
         send.setPreferredSize(new Dimension(100, 20));
         glb.append(send, 1, 1);
         glb.append(new JLabel(), 1, 1);
-        send.setVisible(false);
+        
+        send.setVisible(true);
+        
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!ordersOk) return;
@@ -186,15 +199,61 @@ public class ExportOrdersForm extends AbstractForm {
                     FileWriter f = new FileWriter(file);
                     f.write(orders.getText());
                     f.close();
-                    String cmd = "bin\\MailSender.exe mscoon@gmail.com " + fname + " " + file.getCanonicalPath();
-                    System.out.println("Starting mail client with command " + cmd);
-                    Runtime.getRuntime().exec(cmd);
-                    MessageDialog dlg = new MessageDialog("Message sent.", "Your orders were sent to your E-mail client.");
-                    dlg.showDialog();
+                    
+                    Preferences prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
+                    String email = prefs.get("useremail", "");
+                    String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
+                    InputDialog idlg = new InputDialog();
+                    idlg.setTitle("Send turn");
+                    idlg.init("Enter the email address where you want the confirmation email to be sent.");
+                    JTextField emailText = new JTextField();
+                    idlg.addComponent("Email address :", emailText);
+                    idlg.setPreferredSize(new Dimension(400, 80));
+                    emailText.setText(email);
+                    do {
+                        idlg.showDialog();
+                        if (!idlg.getResult()) {
+                            ErrorDialog md = new ErrorDialog("Send aborted.");
+                            md.showDialog();
+                            return;
+                        }
+                        email = emailText.getText();
+                    } while (!Pattern.matches(emailRegex, email));
+                    prefs.put("useremail", email);
+                    
+                    String name = "";
+                    String acct = "";
+                    
+                    String url = "http://test.com?submitme";
+                    PostMethod filePost = new PostMethod(url);
+                    Part[] parts = {
+                            new StringPart("emailaddr", email),
+                            new StringPart("name", name),
+                            new StringPart("account", acct),
+                            new FilePart(file.getName(), file)
+                        };
+                    filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+                    HttpClient client = new HttpClient();
+                    client.getHttpConnectionManager().
+                        getParams().setConnectionTimeout(5000);
+                    int status = client.executeMethod(filePost);
+                    String msg = "";
+                    if (status == HttpStatus.SC_OK) {
+                        msg = "Turn sent succesfully. You should save your game now (to update the order version counter). The save game dialog will automatically come up.";
+                        MessageDialog dlg = new MessageDialog("Send turn", msg);
+                        dlg.showDialog();
+                        (new SaveGame()).execute();
+                        return;
+                    } else {
+                        msg = "Send failed (response: " + HttpStatus.getStatusText(status) + ").";
+                        MessageDialog dlg = new MessageDialog("Send turn", msg);
+                        dlg.showDialog();
+                    }
                 }
                 catch (Exception exc) {
-                    ErrorDialog dlg = new ErrorDialog(exc);
+                    ErrorDialog dlg = new ErrorDialog("Send failed. Cause: " + exc.getMessage());
                     dlg.showDialog();
+                    exc.printStackTrace();
                 }
             }
         });

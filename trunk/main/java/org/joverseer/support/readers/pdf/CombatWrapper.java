@@ -98,7 +98,6 @@ public class CombatWrapper {
     			String commanderName = txt.substring(j+1, i).trim();
     			String aLosses = txt.substring(i + losses.length(), k);
     			System.out.println(commanderName + "'s had " + aLosses + " losses.");
-    			aLosses = aLosses;
     			addToList(commanderName, aLosses, armyLosses);
 
     			i = i + losses.length();
@@ -120,7 +119,6 @@ public class CombatWrapper {
     			String commanderName = txt.substring(j+1, i).trim();
     			String aLosses = txt.substring(i1 + losses1.length(), k);
     			System.out.println(commanderName + "'s had " + aLosses + " losses against the pop center.");
-    			aLosses = aLosses;
     			addToList(commanderName, aLosses, armyLosses);
 
     			i = i1 + losses1.length();

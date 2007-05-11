@@ -17,6 +17,8 @@ public class Nation implements Serializable {
     String shortName;
     NationAllegianceEnum allegiance;
     ArrayList<SNAEnum> snas= new ArrayList<SNAEnum>();
+    boolean removed = false;
+    boolean eliminated = false;
 
     public Nation(int number, String name, String shortName) {
         this.name = name;
@@ -69,4 +71,26 @@ public class Nation implements Serializable {
     public boolean hasSna(SNAEnum sna) {
         return getSnas().contains(sna);
     }
+
+    
+    public boolean getRemoved() {
+        return removed;
+    }
+
+    
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
+
+    
+    public boolean getEliminated() {
+        return eliminated;
+    }
+
+    
+    public void setEliminated(boolean eliminated) {
+        this.eliminated = eliminated;
+    }
+    
+    
 }

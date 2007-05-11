@@ -28,11 +28,9 @@ import org.joverseer.ui.map.renderers.OrderRenderer;
 import org.joverseer.ui.map.renderers.Renderer;
 import org.springframework.binding.convert.support.AbstractConverter;
 import org.springframework.binding.util.MapAccessor;
-import org.springframework.jca.cci.object.MappingRecordOperation;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 
-import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
 import com.jidesoft.swing.JideSwingUtilities;
 import com.jidesoft.tipoftheday.ResourceBundleTipOfTheDaySource;

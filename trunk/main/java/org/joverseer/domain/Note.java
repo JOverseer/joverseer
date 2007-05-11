@@ -18,14 +18,16 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
     
     
     public Integer getNationNo() {
-        return nationNo;
+        if (getTarget() == null) return 0;
+        if (Integer.class.isInstance(getTarget())) {
+            return 0;
+        } else if (IBelongsToNation.class.isInstance(getTarget())) {
+            return ((IBelongsToNation)getTarget()).getNationNo();
+        }
+        return 0;
     }
 
-    
-    public void setNationNo(Integer nationNo) {
-        this.nationNo = nationNo;
-    }
-
+    public void setNationNo(Integer n) {};
     
     public Object getTarget() {
         return target;
@@ -72,17 +74,31 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
             return (Integer)getTarget();
         } else if (IHasMapLocation.class.isInstance(getTarget())) {
             return ((IHasMapLocation)getTarget()).getX() * 100 +
-            ((IHasMapLocation)getTarget()).getY();
+                    ((IHasMapLocation)getTarget()).getY();
         }
         return 0;
     }
     
     public int getX() {
-        return getHexNo() % 100;
+        return getHexNo() / 100;
     }
     
     public int getY() {
-        return getHexNo() / 100;
+        return getHexNo() % 100;
+    }
+    
+    public String getTargetDescription() {
+        if (getTarget() == null) return "";
+        if (Integer.class.isInstance(getTarget())) {
+            return getTarget().toString();
+        } else if (Character.class.isInstance(getTarget())) {
+            return ((Character)getTarget()).getName();
+        } else if (PopulationCenter.class.isInstance(getTarget())) {
+            return ((PopulationCenter)getTarget()).getName();
+        } else if (Army.class.isInstance(getTarget())) {
+            return ((Army)getTarget()).getCommanderName() + "'s army";
+        }
+        return "";
     }
     
 }

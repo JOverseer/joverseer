@@ -242,7 +242,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
         totalsTable.setBackground(Color.white);
         scp = new JScrollPane(totalsTable);
-        scp.setPreferredSize(new Dimension(600, 100));
+        scp.setPreferredSize(new Dimension(600, 90));
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
         lb.cell(scp);

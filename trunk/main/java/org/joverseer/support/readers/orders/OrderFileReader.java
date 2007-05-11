@@ -140,7 +140,7 @@ public class OrderFileReader {
     }
 
 
-    public void setOrdersRead(int charsRead) {
+    public void setOrdersRead(int ordersRead) {
         this.ordersRead = ordersRead;
     }
 

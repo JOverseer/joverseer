@@ -151,12 +151,32 @@ public class OrderParameterValidator {
             return "OED not found";
         }
         String paramType = "";
+        
         if (iParam < oed.getParamTypes().size()) {
             paramType = oed.getParamTypes().get(iParam);
         }
         if (paramType == null) {
             paramType = "";
         }
+        // 940 order
+        if (o.getOrderNo() == 940 && iParam == 1) {
+            // get spellId
+            String spellId = o.getParameter(0);
+            if (",406,408,417,420,422,424,426,430,436,".indexOf("," + spellId + ",") > -1) {
+                paramType = "cid";
+            } else if (",416,".indexOf("," + spellId + ",") > -1) {
+                paramType = "pro";
+            } else if (",404,419,432,".indexOf("," + spellId + ",") > -1) {
+                paramType = "nat";
+            } else if (",402,410,".indexOf("," + spellId + ",") > -1) {
+                paramType = "alg";
+            } else if (",412,418,428,".indexOf("," + spellId + ",") > -1) {
+                paramType = "b";
+            } else if (",413,414,415,434,".indexOf("," + spellId + ",") > -1) {
+                paramType = "hex";
+            }
+        }
+        
         if (paramType.equals("a")) {
             if (isNumberOK(paramValue, 1, 99)) {
                 return null;
@@ -258,13 +278,13 @@ public class OrderParameterValidator {
             if (isHexNum(paramValue)) {
                 return null;
             } else {
-                return "must be a 4-digit number";
+                return "must be a 4-digit (hex) number";
             }
         } else if (paramType.equals("alg")) {
-            if (inList(paramValue, "g,e")) {
+            if (inList(paramValue, "g,e,n")) {
                 return null;
             } else {
-                return "must be one of g,e";
+                return "must be one of g,e,n";
             }
         } else if (paramType.equals("arm")) {
             if (inList(paramValue, "le,br,st,mi,no")) {

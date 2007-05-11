@@ -216,7 +216,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         marketTable.setDefaultRenderer(String.class, new MarketRenderer());
         marketTable.setBackground(Color.white);
         JScrollPane scp = new JScrollPane(marketTable);
-        scp.setPreferredSize(new Dimension(600, 200));
+        scp.setPreferredSize(new Dimension(600, 226));
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
         lb.cell(scp);
@@ -229,6 +229,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.relatedGapRow();
         
         EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
+        
+        mtm.setTotalsModel(ettm);
+        
         totalsTable = new JOverseerTable(ettm); 
         totalsTable.getTableHeader().setVisible(false);
         for (int i=0; i<ettm.getColumnCount(); i++) {
@@ -335,7 +338,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 Color.white, 
                 Color.decode("#ADD3A6"), 
                 Color.decode("#ADD3A6"), 
-                Color.white, 
+                Color.white,
+                Color.white,
+                Color.white,
                 Color.lightGray
                 };
         

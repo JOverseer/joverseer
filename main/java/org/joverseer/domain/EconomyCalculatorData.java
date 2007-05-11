@@ -22,6 +22,8 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     ProductContainer sellUnits = new ProductContainer();
     ProductContainer sellPct = new ProductContainer();
     ProductContainer buyUnits = new ProductContainer();
+    ProductContainer bidPrices = new ProductContainer();
+    ProductContainer bidUnits = new ProductContainer();
 
     boolean sellBonus;
     int ordersCost;
@@ -60,6 +62,34 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         this.sellUnits.setProduct(p, amount);
     }
 
+
+    public int getBidUnits(ProductEnum p) {
+        if (bidUnits == null) {
+            bidUnits = new ProductContainer();
+        }
+        return bidUnits.getProduct(p) == null ? 0 : bidUnits.getProduct(p); 
+    }
+    
+    public void setBidUnits(ProductEnum p, Integer amount) {
+        if (bidUnits == null) {
+            bidUnits = new ProductContainer();
+        }
+        this.bidUnits.setProduct(p, amount);
+    }
+    
+    public int getBidPrice(ProductEnum p) {
+        if (bidPrices == null) {
+            bidPrices = new ProductContainer();
+        }
+        return bidPrices.getProduct(p) == null ? 0 : bidPrices.getProduct(p); 
+    }
+    
+    public void setBidPrice(ProductEnum p, Integer amount) {
+        if (bidPrices == null) {
+            bidPrices = new ProductContainer();
+        }
+        this.bidPrices.setProduct(p, amount);
+    }
 
     public int getOrdersCost() {
         return ordersCost;
@@ -154,7 +184,8 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
                 continue;
             int productProfit = getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100
                     + (getTotal(p) - getSellUnits(p)) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor()
-                    / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100;
+                    / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 
+                    - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
             profits += productProfit;
         }
         return profits;
@@ -172,8 +203,9 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     	Turn t = GameHolder.instance().getGame().getTurn();
         if (t == null) return 0;
     	return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100
-                * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor()
-                / 100;
+                * getSellPrice(p) * getSellBonusFactor() / 100 
+                - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100
+                - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
     }
 
 
@@ -185,6 +217,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     public void setSellBonus(boolean sellBonus) {
         this.sellBonus = sellBonus;
     }
+    
 
 
     public Integer getGoldProduction() {

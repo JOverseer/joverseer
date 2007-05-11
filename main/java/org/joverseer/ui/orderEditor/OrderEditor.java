@@ -368,6 +368,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                     AbstractOrderSubeditor sub = new MoveArmyOrderSubeditor(o);
                     sub.addComponents(tlb, subeditorComponents, o, 0);
                     sub.setEditor(this);
+                } else if (oed.getOrderNo() == 940) {
+                    AbstractOrderSubeditor sub = new CastLoSpellOrderSubeditor(o);
+                    sub.addComponents(tlb, subeditorComponents, o, 0);
+                    sub.setEditor(this);
+                    
                 } else {
                     for (int i=0; i<oed.getParamTypes().size(); i++) {
                     	String paramType = oed.getParamTypes().get(i);
@@ -398,7 +403,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                         } else if (paramType.equals("gen")) {
                             sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"m", "f"}, new String[]{"Male", "Female"});
                         } else if (paramType.equals("alg")) {
-                            sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"g", "e"}, new String[]{"Good", "Evil"});
+                            sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"});
                         } else if (paramType.equals("nam")) {
                             sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("rsp")) {

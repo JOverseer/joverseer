@@ -25,6 +25,8 @@ import javax.swing.text.html.HTMLDocument;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NTCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
@@ -189,7 +191,8 @@ public class ExportOrdersForm extends AbstractForm {
         }
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             try {
-                FileWriter f = new FileWriter(fileChooser.getSelectedFile());
+                File file = fileChooser.getSelectedFile();
+                FileWriter f = new FileWriter(file);
                 String txt = orders.getText();
                 txt = txt.replace("\n", System.getProperty("line.separator"));
                 f.write(txt);
@@ -198,96 +201,96 @@ public class ExportOrdersForm extends AbstractForm {
                 	increaseVersionNumber(pi);
                 }
                 if (send) {
-                	prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
-                    String email = prefs.get("useremail", "");
-                    String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
-                    InputDialog idlg = new InputDialog();
-                    idlg.setTitle("Send turn");
-                    idlg.init("Enter the email address where you want the confirmation email to be sent.");
-                    JTextField emailText = new JTextField();
-                    idlg.addComponent("Email address :", emailText);
-                    idlg.setPreferredSize(new Dimension(400, 80));
-                    emailText.setText(email);
-                    do {
-                        idlg.showDialog();
-                        if (!idlg.getResult()) {
-                            ErrorDialog md = new ErrorDialog("Send aborted.");
-                            md.showDialog();
-                            return;
-                        }
-                        email = emailText.getText();
-                    } while (!Pattern.matches(emailRegex, email));
-                    prefs.put("useremail", email);
-                    
-                    String name = pi.getPlayerName();
-                    String acct = pi.getAccountNo();
-                    
-                    String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
-//                    final PostMethod filePost = new PostMethod(url);
-//                    Part[] parts = {
-//                            new StringPart("emailaddr", email),
-//                            new StringPart("name", name),
-//                            new StringPart("account", acct),
-//                            new FilePart(file.getName(), file)
-//                        };
-//                    filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
-                    final GetMethod filePost = new GetMethod("http://www.meturn.com/");
-                    HttpClient client = new HttpClient();
-                    client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
-                    
-                    String proxy = PreferenceRegistry.instance().getPreferenceValue("submitOrders.proxy");
-                    if (proxy != null && !proxy.equals("")) {
-                    	String proxyPort = PreferenceRegistry.instance().getPreferenceValue("submitOrders.proxyPort");
-                    	try {
-                    		Integer iProxyPort = Integer.parseInt(proxyPort);
-                    		client.getHostConfiguration().setProxy(proxy, iProxyPort);
-                    	}
-                    	catch (NumberFormatException exc) {
-                    		ErrorDialog dlg = new ErrorDialog("It appears you have defined a proxy server but the value for the port is incorrect.");
-                    		dlg.showDialog();
-                    		return;
-                    	}
-                    }
-                    
-                    int status = client.executeMethod(filePost);
-                    String msg = "";
-                    if (status == HttpStatus.SC_OK) {
-                        final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
-                        FormBackedDialogPage page = new FormBackedDialogPage(frm);
-
-                        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                            protected void onAboutToShow() {
-                            	try {
-                            		((HTMLDocument)frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
-                            		frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
-                            	}
-                            	catch (Exception exc) {
-                            		
-                            	}
-                            }
-
-                            protected boolean onFinish() {
-                                return true;
-                            }
-                            
-                            protected Object[] getCommandGroupMembers() {
-                                return new AbstractCommand[] {
-                                        getFinishCommand()
-                                };
-                            }
-                        };
-                        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                        dialog.setTitle(ms.getMessage("submitOrdersDialog.title", new Object[]{}, Locale.getDefault()));
-                        dialog.showDialog();
-                        
+                    String prefMethod = PreferenceRegistry.instance().getPreferenceValue("submitOrders.method");
+                    if (prefMethod.equals("email")) {
+                        // send by email
+                        String recipientEmail = PreferenceRegistry.instance().getPreferenceValue("submitOrders.recipientEmail");
+                        String cmd = "bin\\mailSender\\MailSender.exe " + recipientEmail + " " + fname + " " + file.getCanonicalPath();
+                        System.out.println("Starting mail client with command " + cmd);
+                        Runtime.getRuntime().exec(cmd);
                         increaseVersionNumber(pi);
-                        filePost.releaseConnection();
-                        
-                        msg = "Orders sent to Middle Earth Games and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
-                    	MessageDialog md = new MessageDialog("Turn Submitted", msg);
-                    	md.showDialog();
+
+                        String msg = "Orders sent to Middle Earth Games (" + recipientEmail + ") by email and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
+                        MessageDialog md = new MessageDialog("Turn Submitted", msg);
+                        md.showDialog();
                     } else {
-                    	send = false;
+                        // submit to meturn.com
+                        prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
+                        String email = prefs.get("useremail", "");
+                        String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
+                        InputDialog idlg = new InputDialog();
+                        idlg.setTitle("Send turn");
+                        idlg.init("Enter the email address where you want the confirmation email to be sent.");
+                        JTextField emailText = new JTextField();
+                        idlg.addComponent("Email address :", emailText);
+                        idlg.setPreferredSize(new Dimension(400, 80));
+                        emailText.setText(email);
+                        do {
+                            idlg.showDialog();
+                            if (!idlg.getResult()) {
+                                ErrorDialog md = new ErrorDialog("Send aborted.");
+                                md.showDialog();
+                                return;
+                            }
+                            email = emailText.getText();
+                        } while (!Pattern.matches(emailRegex, email));
+                        prefs.put("useremail", email);
+                        
+                        String name = pi.getPlayerName();
+                        String acct = pi.getAccountNo();
+                        
+                        String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
+    //                    final PostMethod filePost = new PostMethod(url);
+    //                    Part[] parts = {
+    //                            new StringPart("emailaddr", email),
+    //                            new StringPart("name", name),
+    //                            new StringPart("account", acct),
+    //                            new FilePart(file.getName(), file)
+    //                        };
+    //                    filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+                        final GetMethod filePost = new GetMethod("http://www.meturn.com/");
+                        HttpClient client = new HttpClient();
+                        client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+                        int status = client.executeMethod(filePost);
+                        String msg = "";
+                        if (status == HttpStatus.SC_OK) {
+                            final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
+                            FormBackedDialogPage page = new FormBackedDialogPage(frm);
+    
+                            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+                                protected void onAboutToShow() {
+                                	try {
+                                		((HTMLDocument)frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
+                                		frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
+                                	}
+                                	catch (Exception exc) {
+                                		
+                                	}
+                                }
+    
+                                protected boolean onFinish() {
+                                    return true;
+                                }
+                                
+                                protected Object[] getCommandGroupMembers() {
+                                    return new AbstractCommand[] {
+                                            getFinishCommand()
+                                    };
+                                }
+                            };
+                            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                            dialog.setTitle(ms.getMessage("submitOrdersDialog.title", new Object[]{}, Locale.getDefault()));
+                            dialog.showDialog();
+                            
+                            increaseVersionNumber(pi);
+                            filePost.releaseConnection();
+                            
+                            msg = "Orders sent to Middle Earth Games and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
+                        	MessageDialog md = new MessageDialog("Turn Submitted", msg);
+                        	md.showDialog();
+                        } else {
+                        	send = false;
+                        }
                     }
                 } else {
                 	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);

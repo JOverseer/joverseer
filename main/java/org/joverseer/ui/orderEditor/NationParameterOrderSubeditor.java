@@ -33,7 +33,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(parameter = new JComboBox(), "colspec=left:150px");
         GameMetadata gm = GameHolder.instance().getGame().getMetadata();
         parameter.addItem("");
-        parameter.setPreferredSize(new Dimension(60, 18));
+        parameter.setPreferredSize(new Dimension(120, 18));
         tlb.row();
         tlb.cell(nationNo = new JTextField());
         nationNo.setVisible(false);

@@ -150,10 +150,16 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (columnIndex == 5 && rowIndex == 0) {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+
         }
         if (columnIndex == 3 && rowIndex == 2) {
             setGoldProduction((Integer)aValue);
             fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+
         }
     }
 
@@ -228,6 +234,36 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return lostTaxRevenue;
     }
 
+    public int computeNewTaxBase() {
+        if (getSelectedNationNo() < 1) return 0;
+        return computeNewTaxBase(getSelectedNationNo());
+    }
+    
+    public static int computeNewTaxBase(int nationNo) {
+        Game g = GameHolder.instance().getGame();
+        if (!Game.isInitialized(g)) return 0;
+        if (g.getTurn() == null) return 0;
+        int newTaxBase = 0;
+        
+        for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+            if (pc.getNationNo().equals(nationNo) && !pc.getLostThisTurn()) {
+                int sz = 0;
+                if (pc.getSize() == PopulationCenterSizeEnum.village) {
+                    sz = 1;
+                } else if (pc.getSize() == PopulationCenterSizeEnum.town) {
+                    sz = 2;
+                } else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
+                    sz = 3;
+                } else if (pc.getSize() == PopulationCenterSizeEnum.city) {
+                    sz = 4;
+                }
+                newTaxBase += sz;
+            }
+            
+        }
+        return newTaxBase;
+    }
+
     public int computeLostGoldRevenue() {
         if (getSelectedNationNo() < 1) return 0;
         return computeLostGoldRevenue(getSelectedNationNo());
@@ -254,7 +290,18 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (ne == null) return 0;
         int finalGold = getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
         if (finalGold >= 0) return 0;
-        int newTaxRevenue = (computeLostGoldRevenue() - finalGold) / (getTaxRevenue() / ne.getTaxRate() - computeLostTaxRevenue() / ne.getTaxRate());  
-        return newTaxRevenue;
+        //double newTaxRate = Math.round((double)computeLostGoldRevenue() - (double)finalGold) / ((double)getTaxRevenue() / (double)ne.getTaxRate() - (double)computeLostTaxRevenue() / (double)ne.getTaxRate());
+        double newTaxRate = Math.round((double)-finalGold / (double)2500 / (double)computeNewTaxBase()* 100d);
+        return (int)newTaxRate;
+    }
+    
+    public int getBuyAmountForTaxIncrease(int newTaxRate) {
+        NationEconomy ne = getNationEconomy();
+        if (ne == null) return 0;
+        double finalGold = Math.round(
+                        ((double)getTaxRevenue() - (double)computeLostTaxRevenue()) * (double)newTaxRate / (double)ne.getTaxRate() 
+                        + (double)getGoldProduction() - (double)computeLostGoldRevenue() -
+                        (double)ne.getTotalMaintenance() + (double)ne.getReserve());
+        return (int)finalGold;
     }
 }

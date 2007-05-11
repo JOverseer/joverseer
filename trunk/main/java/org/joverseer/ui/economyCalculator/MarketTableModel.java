@@ -32,11 +32,11 @@ public class MarketTableModel extends BaseEconomyTableModel {
     String[] columnHeaders = new String[] {"", "le", "br", "st", "mi", "fo", "ti", "mo"};
     String[] rowHeaders = new String[] {"stores", "production", "available to sell", "profit if all were sold",
             "sell price", "units you wish to sell", "percent you wish to sell", "available on market",
-            "purchase price", "units you wish to buy", "cost/profit"};
+            "purchase price", "units you wish to buy", "bid price", "units your wish to bid for", "cost/profit"};
 
     int[] columnWidths = new int[] {170, 64, 64, 64, 64, 64, 64, 64};
 
-    
+    EconomyTotalsTableModel ettm;
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
@@ -60,6 +60,28 @@ public class MarketTableModel extends BaseEconomyTableModel {
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
         }
+        if (rowIndex == 10) {
+            ecd.setBidPrice(product, (Integer) aValue);
+            fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+        }
+        if (rowIndex == 11) {
+            if (aValue != null && aValue.toString().startsWith("-")) {
+                String tr = aValue.toString().substring(1);
+                Integer newTr = Integer.parseInt(tr);
+                int amt = getTotalsModel().getBuyAmountForTaxIncrease(newTr);
+                if (amt > 0 && ecd.getBidPrice(product) > 0) {
+                    aValue = (int)Math.round((double)amt / (double)ecd.getBidPrice(product));
+                } else {
+                    aValue = 0;
+                }
+            }
+            ecd.setBidUnits(product, (Integer) aValue);
+            fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+        }
     }
 
     public int getColumnCount() {
@@ -67,7 +89,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
     }
 
     public int getRowCount() {
-        return 11;
+        return 13;
     }
 
     public String getColumnName(int column) {
@@ -86,7 +108,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex > 0 && (rowIndex == 5 || rowIndex == 6 || rowIndex == 9);
+        return columnIndex > 0 && (rowIndex == 5 || rowIndex == 6 || rowIndex == 9 || rowIndex == 10 || rowIndex == 11);
     }
 
 
@@ -135,9 +157,25 @@ public class MarketTableModel extends BaseEconomyTableModel {
             return ecd.getBuyUnits(product);
         }
         if (rowIndex == 10) {
+            return ecd.getBidPrice(product);
+        }
+        if (rowIndex == 11) {
+            return ecd.getBidUnits(product);
+        }
+        if (rowIndex == 12) {
             return ecd.getMarketProfits(product);
         }
         return "";
+    }
+
+    
+    public EconomyTotalsTableModel getTotalsModel() {
+        return ettm;
+    }
+
+    
+    public void setTotalsModel(EconomyTotalsTableModel ettm) {
+        this.ettm = ettm;
     }
 
     

@@ -58,6 +58,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
                 if (parameter.getItemAt(i).toString().startsWith(spellId + " ")) {
                     parameter.setSelectedIndex(i);
                     spellNo.setText(o.getParameter(paramNo));
+                    valueChanged();
                 }
             }
         }

@@ -327,29 +327,47 @@
 					</property>
 				</bean>
 				
+				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
-						<value>submitOrders.proxy</value>
+						<value>submitOrders.method</value>
 					</property>
 					<property name="description">
-						<value>Proxy</value>
+						<value>Method</value>
 					</property>
 					<property name="group">
 						<value>Auto Submit Orders</value>
 					</property>
-					<property name="type">
-						<value>text</value>
-					</property>
 					<property name="defaultValue">
-						<value></value>
+						<value>meturn</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>meturn</value>
+								</property>
+								<property name="description">
+									<value>meturn.com</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>email</value>
+								</property>
+								<property name="description">
+									<value>e-mail</value>
+								</property>
+							</bean>							
+						</list>
 					</property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
-						<value>submitOrders.proxyPort</value>
+						<value>submitOrders.recipientEmail</value>
 					</property>
 					<property name="description">
-						<value>Proxy Port</value>
+						<value>Recipient Address</value>
 					</property>
 					<property name="group">
 						<value>Auto Submit Orders</value>
@@ -358,7 +376,7 @@
 						<value>text</value>
 					</property>
 					<property name="defaultValue">
-						<value></value>
+						<value>me@middleearthgames.com</value>
 					</property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">

@@ -14,7 +14,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public abstract class AbstractOrderSubeditor {
-	Order order;
+    Order order;
     OrderEditor editor;
 
     public void updateEditor() {
@@ -59,6 +59,8 @@ public abstract class AbstractOrderSubeditor {
         }
 
 
+   public void valueChanged() {
        
+   }
         
 }

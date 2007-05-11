@@ -19,7 +19,7 @@ After the user has selected the desired nation, the typical Orderchecker forms a
 
 [http://joverseer.googlecode.com/svn/wiki/images/orderchecker.info-request.jpg]
 
-When the user has completed answering the questions, the Orderchecker results form comes up, displayed the results for each order.
+When the user has completed answering the questions, the Orderchecker results form comes up, displaying the results for each order.
 
 [http://joverseer.googlecode.com/svn/wiki/images/orderchecker.results-form.jpg]
 
@@ -33,7 +33,7 @@ Letting the mouse hover of the icon that represents the results, brings up a too
 
 [http://joverseer.googlecode.com/svn/wiki/images/orderchecker.result-tooltip.jpg]
 
-Editing an order will result in the Orderchecker result being removed for this order.
+Editing an order will case the Orderchecker result to be removed for this order.
 
 Also, the results are shown in the Order list-view (bottom panel).
 
@@ -42,3 +42,5 @@ Also, the results are shown in the Order list-view (bottom panel).
 = Orderchecker =
 
 Orderchecker is a program developed by Bernie Geiger. It is available for download from the Middle Earth Games web site.
+
+Orderchecker has been bundled JOverseer, so you don't need to download it to use it from within JOverseer. You only need to download it if you want to run it as a standalone program.

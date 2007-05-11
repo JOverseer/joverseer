@@ -173,6 +173,7 @@
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
             	<value>separator</value>
+            	<bean class="org.joverseer.ui.command.ImportNotesFromPreviousTurnCommand"/>
             	<bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
            	</list>
        	</property>

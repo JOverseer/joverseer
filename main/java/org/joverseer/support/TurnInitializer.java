@@ -3,6 +3,7 @@ package org.joverseer.support;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Note;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelations;
@@ -28,6 +29,8 @@ public class TurnInitializer {
 
         Container newPlayerInfo = newTurn.getContainer(TurnElementsEnum.PlayerInfo);
         GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+        
+        Container newNotes = newTurn.getContainer(TurnElementsEnum.Notes);
 
         if (previousTurn != null) {
             // copy pcs
@@ -40,8 +43,9 @@ public class TurnInitializer {
             Container oldRelations = previousTurn.getContainer(TurnElementsEnum.NationRelation);
             for (NationRelations nr : (ArrayList<NationRelations>)oldRelations.items) {
                 Nation n = gm.getNationByNum(nr.getNationNo());
-                nr.setAllegiance(n.getAllegiance());
                 NationRelations newNr = nr.clone();
+                newNr.setAllegiance(n.getAllegiance());
+                newNr.setEliminated(n.getEliminated());
                 newRelations.addItem(newNr);
             }
         } else {
@@ -59,6 +63,7 @@ public class TurnInitializer {
                 
                 Nation n = gm.getNationByNum(i);
                 nr.setAllegiance(n.getAllegiance());
+                nr.setEliminated(n.getEliminated());
                 if (gm.getGameType() == GameTypeEnum.game1650 || 
                         gm.getGameType() == GameTypeEnum.game2950) {
                     for (int j=1; j<26; j++) {

@@ -1,31 +1,15 @@
 package org.joverseer.ui.orders;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JCheckBox;
+
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.dialogs.InputDialog;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-
-import com.jidesoft.dialog.BannerPanel;
-import com.jidesoft.dialog.ButtonPanel;
-import com.jidesoft.dialog.StandardDialog;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.border.BevelBorder;
 
 
 public class OrderVisualizationData {

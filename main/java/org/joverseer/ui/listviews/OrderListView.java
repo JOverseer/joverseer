@@ -8,31 +8,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Comparator;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.ComboBoxEditor;
 import javax.swing.DefaultCellEditor;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
-import javax.swing.text.JTextComponent;
 
-//import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-//import org.jdesktop.swingx.autocomplete.Configurator;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
@@ -45,22 +35,16 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
-import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.controls.AutocompletionComboBox;
-import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
-import org.springframework.richclient.list.EditableComboBoxAutoCompletion;
 import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ColumnToSort;
@@ -69,11 +53,7 @@ import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
 
-import com.jidesoft.combobox.AbstractComboBox;
 import com.jidesoft.grid.JideTable;
-import com.jidesoft.grid.ListComboBoxCellEditor;
-import com.jidesoft.swing.AutoCompletion;
-import com.jidesoft.swing.AutoCompletionComboBox;
 
 
 public class OrderListView extends ItemListView {

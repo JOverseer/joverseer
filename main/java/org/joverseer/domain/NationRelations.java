@@ -13,6 +13,8 @@ public class NationRelations implements IBelongsToNation, Serializable {
     Integer nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];
     NationAllegianceEnum allegiance;
+    boolean eliminated = false;
+    boolean removed = false;
 
     public Integer getNationNo() {
         return nationNo;
@@ -37,10 +39,21 @@ public class NationRelations implements IBelongsToNation, Serializable {
     public void setRelationsFor(int nationNo, NationRelationsEnum relation) {
         relations[nationNo] = relation;
     }
+    
+    public boolean getEliminated() {
+        return eliminated;
+    }
+    
+    public void setEliminated(boolean eliminated) {
+        this.eliminated = eliminated;
+    }
+    
+    
 
     public NationRelations clone() {
         NationRelations c = new NationRelations();
         c.setNationNo(getNationNo());
+        c.setEliminated(getEliminated());
         c.setAllegiance(getAllegiance());
         for (int i = 0; i < 26; i++) {
             c.setRelationsFor(i, getRelationsFor(i));

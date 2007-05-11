@@ -37,7 +37,7 @@ public class RelationsListView extends ItemListView {
 
 
     protected int[] columnWidths() {
-        return new int[]{64, 96, 
+        return new int[]{64, 96, 64,
                         32, 32, 32, 32, 32, 
                         32, 32, 32, 32, 32,
                         32, 32, 32, 32, 32,
@@ -70,7 +70,7 @@ public class RelationsListView extends ItemListView {
 
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            if (column < 2) return c;
+            if (column < 3) return c;
             MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");
             String relation = value.toString();
             Color bgColor = Color.WHITE;

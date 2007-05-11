@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -33,7 +32,6 @@ import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.grid.JideTable;
 import com.jidesoft.grid.MultilineTableCellRenderer;
-import com.jidesoft.grid.NestedTableHeader;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
 

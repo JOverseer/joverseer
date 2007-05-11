@@ -5,35 +5,37 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
+import org.joverseer.domain.Note;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.AddEditNoteCommand;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.image.ImageSource;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.grid.JideTable;
 import com.jidesoft.grid.MultilineTableCellRenderer;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
-
+import com.jidesoft.grid.SortableTableModel;
 
 public class NotesListView extends ItemListView {
 
@@ -43,7 +45,7 @@ public class NotesListView extends ItemListView {
 
 
     protected int[] columnWidths() {
-        return new int[] {42, 96, 64, 200, 64};
+        return new int[] {42, 96, 64, 300, 64};
     }
 
     protected JComponent createControlImpl() {
@@ -132,23 +134,6 @@ public class NotesListView extends ItemListView {
         scrollPane.getViewport().setBackground(table.getBackground());
         tlb.cell(scrollPane);
 
-        if (getDefaultSort() != null) {
-            ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-            Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
-            JLabel restoreSorting = new JLabel();
-            restoreSorting.setIcon(ico);
-            restoreSorting.setPreferredSize(new Dimension(16, 16));
-            restoreSorting.addMouseListener(new MouseAdapter() {
-
-                public void mouseClicked(MouseEvent arg0) {
-                    ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
-                }
-
-            });
-            ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
-            restoreSorting.setToolTipText("Restore default sort order");
-            tlb.cell(restoreSorting, "colspec=left:30px valign=top");
-        }
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
 
@@ -157,8 +142,60 @@ public class NotesListView extends ItemListView {
         r.setLineWrap(true);
         table.setDefaultRenderer(String.class, r);
         table.setDefaultRenderer(Integer.class, r);
-
+        
         return p;
     }
 
+
+    public JPopupMenu getPopupMenu() {
+        CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+                "noteCommandGroup", new Object[] {new EditNoteCommand(), new DeleteNoteCommand()});
+        return group.createPopupMenu();
+    }
+    
+    class DeleteNoteCommand extends ActionCommand {
+
+        protected void doExecuteCommand() {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
+                if (idx >= tableModel.getRowCount())
+                    return;
+                try {
+                    Object obj = tableModel.getRow(idx);
+                    Note note = (Note) obj;
+                    GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
+
+                } catch (Exception exc) {
+
+                }
+            }
+        }
+        
+    }
+
+    class EditNoteCommand extends ActionCommand {
+
+        protected void doExecuteCommand() {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
+                if (idx >= tableModel.getRowCount())
+                    return;
+                try {
+                    Object obj = tableModel.getRow(idx);
+                    Note note = (Note) obj;
+                    new AddEditNoteCommand(note).execute();
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                }
+            }
+        }
+        
+    }
+
+    
+    
 }

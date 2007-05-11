@@ -31,6 +31,7 @@ import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.tools.HexInfoHistory;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
@@ -84,8 +85,6 @@ public class HexInfoViewer extends ObjectViewer {
     ShowFedCavalryArmyRangeCommand showFedCavalryArmyRangeCommand = new ShowFedCavalryArmyRangeCommand();
     ShowUnfedCavalryArmyRangeCommand showUnfedCavalryArmyRangeCommand = new ShowUnfedCavalryArmyRangeCommand();
     
-    AddNoteCommand addNoteCommand = new AddNoteCommand();
-
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -231,7 +230,7 @@ public class HexInfoViewer extends ObjectViewer {
                         showFedCavalryArmyRangeCommand,
                         showUnfedCavalryArmyRangeCommand,
                         "separator",
-                        addNoteCommand
+                        new AddEditNoteCommand(hex.getHexNo())
                         });
         return group.createPopupMenu();
     }
@@ -412,32 +411,5 @@ public class HexInfoViewer extends ObjectViewer {
         }
     }
     
-    public class AddNoteCommand extends ActionCommand {
-        protected void doExecuteCommand() {
-            final Note n = new Note();
-            Hex h = (Hex)getFormObject();
-            n.setTarget(h.getHexNo());
-            FormModel formModel = FormModelHelper.createFormModel(n);
-            final EditNoteForm form = new EditNoteForm(formModel);
-            FormBackedDialogPage page = new FormBackedDialogPage(form);
-
-            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                protected void onAboutToShow() {
-                }
-
-                protected boolean onFinish() {
-                    form.commit();
-                    Game g = GameHolder.instance().getGame();
-                    Turn t = g.getTurn();
-                    t.getContainer(TurnElementsEnum.Notes).addItem(n);
-                    return true;
-                }
-            };
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            dialog.setTitle(ms.getMessage("editNoteDialog.title", new Object[]{""}, Locale.getDefault()));
-            dialog.setModal(false);
-            dialog.showDialog();
-        }
-    }
-
+    
 }

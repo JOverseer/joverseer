@@ -17,7 +17,7 @@ public class RelationsTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"nationNo", "allegiance", 
+        return new String[] {"nationNo", "allegiance", "eliminated", 
                              "nationNo", "nationNo", "nationNo", "nationNo", "nationNo", 
                              "nationNo", "nationNo", "nationNo", "nationNo", "nationNo", 
                              "nationNo", "nationNo", "nationNo", "nationNo", "nationNo", 
@@ -26,7 +26,7 @@ public class RelationsTableModel extends ItemTableModel {
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] { String.class, String.class, 
+        return new Class[] { String.class, String.class, String.class, 
                                 String.class, String.class, String.class, String.class, String.class, 
                                 String.class, String.class, String.class, String.class, String.class, 
                                 String.class, String.class, String.class, String.class, String.class, 
@@ -35,24 +35,28 @@ public class RelationsTableModel extends ItemTableModel {
     }
     
     public String[] createColumnNames() {
-        String[] colNames = new String[27];
+        String[] colNames = new String[28];
         colNames[0] = "Nation";
         colNames[1] = "Allegiance";
+        colNames[2] = "Eliminated";
         for (int i=1; i<26; i++) {
-            colNames[i+1] = "N" + i;
+            colNames[i+2] = "N" + i;
         }
         return colNames;
     }
     
     public String getColumnName(int arg0) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (g == null || !Game.isInitialized(g) || arg0 < 2) return super.getColumnName(arg0);
-        return g.getMetadata().getNationByNum(arg0 - 1).getShortName();
+        if (g == null || !Game.isInitialized(g) || arg0 < 3) return super.getColumnName(arg0);
+        return g.getMetadata().getNationByNum(arg0 - 2).getShortName();
     }
 
     protected Object getValueAtInternal(Object object, int i) {
         if (i < 2) return super.getValueAtInternal(object, i);
-        if (i-1 == ((NationRelations)object).getNationNo()) return "";
+        if (i == 2) {
+            return ((NationRelations)object).getEliminated() ? "x" : "";
+        }
+        if (i-2 == ((NationRelations)object).getNationNo()) return "";
         switch (((NationRelations)object).getRelationsFor(i-1)) {
             case Friendly:
                 return "F";
@@ -71,8 +75,8 @@ public class RelationsTableModel extends ItemTableModel {
     
     
     protected void setValueAtInternal(Object value, Object object, int i) {
-        if (i < 2) return;
-        if (i-1 == ((NationRelations)object).getNationNo()) return;
+        if (i < 3) return;
+        if (i-2 == ((NationRelations)object).getNationNo()) return;
         NationRelations nr = (NationRelations)object;
         if (value.toString().equals("F")) {
             nr.setRelationsFor(i-1, NationRelationsEnum.Friendly);
@@ -88,7 +92,7 @@ public class RelationsTableModel extends ItemTableModel {
     }
 
     protected boolean isCellEditableInternal(Object object, int i) {
-        return i >= 2 && !getValueAtInternal(object, i).equals("");
+        return i >= 3 && !getValueAtInternal(object, i).equals("");
     }
     
     

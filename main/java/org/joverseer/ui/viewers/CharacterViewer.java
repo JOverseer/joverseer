@@ -59,6 +59,7 @@ import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
@@ -874,6 +875,7 @@ public class CharacterViewer extends ObjectViewer {
                 new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
                         "separator", editCharacterCommand,
                         "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
+                        "separator", new AddEditNoteCommand(c),
                         "separator", quickOrders});
         return group.createPopupMenu();
     }

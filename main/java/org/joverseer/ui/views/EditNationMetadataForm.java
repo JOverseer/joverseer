@@ -31,6 +31,7 @@ public class EditNationMetadataForm extends AbstractForm {
     ArrayList<JTextField> nationNames = new ArrayList<JTextField>();
     ArrayList<JTextField> nationShortNames = new ArrayList<JTextField>();
     ArrayList<JTextField> nationSNAs = new ArrayList<JTextField>();
+    ArrayList<JCheckBox> removed = new ArrayList<JCheckBox>();
     ArrayList<JButton> editSNAButtons = new ArrayList<JButton>();
     ArrayList<JLabel> labels = new ArrayList<JLabel>();
 
@@ -69,6 +70,17 @@ public class EditNationMetadataForm extends AbstractForm {
     protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder(); 
         
+        tlb.cell(new JLabel(" "));
+        tlb.gapCol();
+        tlb.cell(new JLabel("Name"));
+        tlb.gapCol();
+        tlb.cell(new JLabel("Short Name"));
+        tlb.gapCol();
+        tlb.cell(new JLabel("Removed"));
+        tlb.gapCol();
+        tlb.cell(new JLabel("SNAs"));
+        tlb.relatedGapRow();
+        
         for (int i=0; i<25; i++) {
             JTextField nationName = new JTextField();
             nationNames.add(nationName);
@@ -84,6 +96,12 @@ public class EditNationMetadataForm extends AbstractForm {
             nationShortName.setPreferredSize(new Dimension(100, 20));
             tlb.gapCol();
             tlb.cell(nationShortName);
+            
+            JCheckBox rem = new JCheckBox();
+            rem.setText("");
+            tlb.gapCol();
+            tlb.cell(rem, "align=center");
+            removed.add(rem);
 
             JTextField nationSNAList = new JTextField();
             nationSNAList.setEditable(false);
@@ -165,6 +183,15 @@ public class EditNationMetadataForm extends AbstractForm {
                 Nation n = (Nation)gm.getNations().get(i);
                 n.setName(nationNames.get(i-1).getText());
                 n.setShortName(nationShortNames.get(i-1).getText());
+                n.setRemoved(removed.get(i-1).isSelected());
+                HashMap<SNAEnum, JCheckBox> checkboxes = snaCheckBoxes.get(popups.get(i-1));
+                for (SNAEnum sna : SNAEnum.values()) {
+                    if (checkboxes.get(sna).isSelected() && !n.getSnas().contains(sna)) {
+                        n.getSnas().add(sna);
+                    } else if (!checkboxes.get(sna).isSelected() && n.getSnas().contains(sna)) {
+                        n.getSnas().remove(sna);
+                    }
+                }
             }
         }
     }
@@ -177,15 +204,17 @@ public class EditNationMetadataForm extends AbstractForm {
                 Nation n = (Nation)gm.getNations().get(i);
                 nationNames.get(i-1).setText(n.getName());
                 nationShortNames.get(i-1).setText(n.getShortName());
-        		HashMap<SNAEnum, JCheckBox> checkboxes = snaCheckBoxes.get(popups.get(i-1));
-        		for (SNAEnum sna : SNAEnum.values()) {
-        			checkboxes.get(sna).setSelected(n.getSnas().contains(sna));
-        		}
+    		HashMap<SNAEnum, JCheckBox> checkboxes = snaCheckBoxes.get(popups.get(i-1));
+    		for (SNAEnum sna : SNAEnum.values()) {
+    			checkboxes.get(sna).setSelected(n.getSnas().contains(sna));
+    		}
+                removed.get(i-1).setSelected(n.getRemoved());
                 updateSNATextFieldFromCheckBoxes(i-1);
             } else {
                 labels.get(i-1).setEnabled(false);
                 nationNames.get(i-1).setEnabled(false);
                 nationShortNames.get(i-1).setEnabled(false);
+                removed.get(i-1).setEnabled(false);
                 nationSNAs.get(i-1).setEnabled(false);
             }
         }

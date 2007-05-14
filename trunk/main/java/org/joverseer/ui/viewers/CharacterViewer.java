@@ -137,6 +137,7 @@ public class CharacterViewer extends ObjectViewer {
     ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
     ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
     ActionCommand editCharacterCommand = new EditCharacterCommand();
+    ActionCommand sendOrdersByChatCommand = new SendOrdersByChatCommand();
     
     public CharacterViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -876,7 +877,8 @@ public class CharacterViewer extends ObjectViewer {
                         "separator", editCharacterCommand,
                         "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
                         "separator", new AddEditNoteCommand(c),
-                        "separator", quickOrders});
+                        "separator", quickOrders,
+                        "separator", sendOrdersByChatCommand});
         return group.createPopupMenu();
     }
     
@@ -888,6 +890,17 @@ public class CharacterViewer extends ObjectViewer {
     public void setShowColor(boolean showColor) {
         this.showColor = showColor;
     }
-    
+
+    class SendOrdersByChatCommand extends ActionCommand {
+
+        protected void doExecuteCommand() {
+            Character c = (Character)getFormObject();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SendOrderByChat.toString(), c.getOrders()[0], this));
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SendOrderByChat.toString(), c.getOrders()[1], this));
+        }
+        
+    }
 
 }

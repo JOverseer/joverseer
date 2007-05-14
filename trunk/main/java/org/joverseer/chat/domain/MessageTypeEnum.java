@@ -1,7 +1,7 @@
 package org.joverseer.chat.domain;
 
 
-public enum MessageType {
+public enum MessageTypeEnum {
     Text,
     Order
 }

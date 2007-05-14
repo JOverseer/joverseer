@@ -24,6 +24,7 @@ public class ChatHandler extends Thread {
             handlers.addElement(this);
             while (true) {
                 String msg = i.readUTF();
+                System.out.println("handler received " + msg);
                 broadcast(msg);
             }
         } catch (IOException ex) {
@@ -40,11 +41,13 @@ public class ChatHandler extends Thread {
 
     protected static void broadcast(String message) {
         synchronized (handlers) {
+            System.out.println("broadcasting " + message);
             Enumeration e = handlers.elements();
             while (e.hasMoreElements()) {
                 ChatHandler c = (ChatHandler) e.nextElement();
                 try {
                     synchronized (c.o) {
+                        System.out.println("handler sending to client");
                         c.o.writeUTF(message);
                     }
                     c.o.flush();

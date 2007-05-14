@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 
 
-public class ChatServer {
+public class ChatServer implements Runnable {
     private int port = 9600;
 
     public void run() {

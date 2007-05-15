@@ -70,6 +70,7 @@ public class OrderEditorListView extends ItemListView {
 
     ActionCommand deleteOrderAction = new DeleteOrderAction();
     ActionCommand editOrderAction = new EditOrderAction();
+    ActionCommand sendOrderByChatAction = new SendOrderByChatAction();
     JComboBox combo;
     OrderParameterValidator validator = new OrderParameterValidator();
     Color paramErrorColor = Color.decode("#ffff99");
@@ -388,7 +389,11 @@ public class OrderEditorListView extends ItemListView {
 
     public JPopupMenu getPopupMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "orderCommandGroup", new Object[] {editOrderAction, deleteOrderAction, "separator", new DrawAllOrdersAction(), new UnDrawAllOrdersAction()});
+                "orderCommandGroup", new Object[] {
+                        editOrderAction, deleteOrderAction, sendOrderByChatAction, 
+                        "separator", 
+                        new DrawAllOrdersAction(), new UnDrawAllOrdersAction(),
+                        new SendAllOrdersByChatAction()});
         return group.createPopupMenu();
     }
     
@@ -434,6 +439,27 @@ public class OrderEditorListView extends ItemListView {
 
     }
     
+    private class SendOrderByChatAction extends ActionCommand {
+
+        protected void doExecuteCommand() {
+            int row = table.getSelectedRow();
+            if (row >= 0) {
+                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= tableModel.getRowCount())
+                    return;
+                try {
+                    Object obj = tableModel.getRow(idx);
+                    Order order = (Order) obj;
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), order, this));
+                } catch (Exception exc) {
+                        System.out.println(exc);
+                }
+            }
+        }
+
+    }
+    
     private class DrawAllOrdersAction extends ActionCommand {
         protected void doExecuteCommand() {
             OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
@@ -454,6 +480,19 @@ public class OrderEditorListView extends ItemListView {
             ovd.clear();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+        }
+    }
+    
+    private class SendAllOrdersByChatAction extends ActionCommand {
+        protected void doExecuteCommand() {
+            ArrayList<Order> os = new ArrayList<Order>();
+            for (Object o : tableModel.getRows()) {
+                Order order = (Order)o;
+                os.add(order);
+            }
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), os, this));
+
         }
     }
 

@@ -11,7 +11,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import org.joverseer.chat.domain.Message;
-import org.joverseer.chat.domain.MessageTypeEnum;
 import org.joverseer.chat.domain.User;
 
 
@@ -41,12 +40,15 @@ public class ChatClient implements Runnable {
     public void run() {
         try {
             while (true) {
-                String line = i.readUTF();
+                //String line = i.readUTF();
+                //String line = (String)ChatUtils.readObject(i);
+                Message line = (Message)ChatUtils.readObject(i);
                 if (line != null) {
                     System.out.println("client received " + line);
                     for (MessageReceiver mr : receivers) {
-                        Message msg = Message.messageFromString(line);
-                        mr.messageReceived(msg);
+                        //Message msg = Message.messageFromString(line);
+                        //mr.messageReceived(msg);
+                        mr.messageReceived(line);
                     }
                 }
                 //Thread.sleep(100);
@@ -63,22 +65,24 @@ public class ChatClient implements Runnable {
             }
         }
     }
-    public void sendMessage(String msg) {
-        sendMessage(msg, MessageTypeEnum.Text);
+    public boolean sendMessage(Object msg) {
+        return sendMessage(msg, false);
     }
 
-    public void sendMessage(String msg, MessageTypeEnum type) {
+    public boolean sendMessage(Object obj, boolean system) {
         try {
             Message msgObj = new Message();
             msgObj.setUser(new User(user.getUsername()));
-            msgObj.setContents(msg);
-            msgObj.setType(type);
-            System.out.println("client sending " + msg);
-            o.writeUTF(Message.stringFromMessage(msgObj));
+            msgObj.setContents(obj);
+            msgObj.setSystem(system);
+            System.out.println("client sending new message " + msgObj);
+            ChatUtils.writeObject(msgObj, o);
             o.flush();
+            return true;
         } catch (IOException ex) {
             ex.printStackTrace();
             listener.stop();
+            return false;
         }
     }
     

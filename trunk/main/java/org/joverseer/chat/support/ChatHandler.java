@@ -15,19 +15,24 @@ public class ChatHandler extends Thread {
 
     public ChatHandler(Socket s) throws IOException {
         this.s = s;
-        i = new DataInputStream(new BufferedInputStream(s.getInputStream()));
-        o = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
+        try {
+            i = new DataInputStream(new BufferedInputStream(s.getInputStream()));
+            o = new DataOutputStream(new BufferedOutputStream(s.getOutputStream()));
+        }
+        catch (Exception exc) {};
     }
 
     public void run() {
         try {
             handlers.addElement(this);
             while (true) {
-                String msg = i.readUTF();
-                System.out.println("handler received " + msg);
-                broadcast(msg);
+                //String msg = i.readUTF();
+                //String msg = (String)ChatUtils.readObject(i);
+                Object obj = (Object)ChatUtils.readObject(i);
+                System.out.println("handler received " + obj);
+                broadcast(obj);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             handlers.removeElement(this);
@@ -39,7 +44,7 @@ public class ChatHandler extends Thread {
         }
     }
 
-    protected static void broadcast(String message) {
+    protected static void broadcast(Object message) {
         synchronized (handlers) {
             System.out.println("broadcasting " + message);
             Enumeration e = handlers.elements();
@@ -48,11 +53,13 @@ public class ChatHandler extends Thread {
                 try {
                     synchronized (c.o) {
                         System.out.println("handler sending to client");
-                        c.o.writeUTF(message);
+                        //c.o.writeUTF(message);
+                        ChatUtils.writeObject(message, c.o);
                     }
                     c.o.flush();
                 } catch (IOException ex) {
                     c.stop();
+                    
                 }
             }
         }

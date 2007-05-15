@@ -896,9 +896,9 @@ public class CharacterViewer extends ObjectViewer {
         protected void doExecuteCommand() {
             Character c = (Character)getFormObject();
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SendOrderByChat.toString(), c.getOrders()[0], this));
+                    new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), c.getOrders()[0], this));
             Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.SendOrderByChat.toString(), c.getOrders()[1], this));
+                    new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), c.getOrders()[1], this));
         }
         
     }

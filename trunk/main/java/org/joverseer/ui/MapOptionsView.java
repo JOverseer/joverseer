@@ -42,6 +42,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     boolean fireEvents = true;
 
 	protected JComponent createControl() {
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
         TableLayoutBuilder lb = new TableLayoutBuilder();
         JLabel label;
         lb.cell(label = new JLabel("Turn : "), "colspec=left:130px");
@@ -108,6 +110,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.cell(label = new JLabel("Draw orders : "));
         //label.setPreferredSize(new Dimension(100, 16));
         lb.cell(drawOrders = new JCheckBox(), "align=left");
+        drawOrders.setSelected(mapOptions.get(MapOptionsEnum.DrawOrders) != null && 
+        		mapOptions.get(MapOptionsEnum.DrawOrders) == MapOptionValuesEnum.DrawOrdersOn);
         lb.relatedGapRow();
         drawOrders.addActionListener(new ActionListener() {
 

@@ -49,7 +49,11 @@ public class StringEnclosedMatchProcessor extends Processor {
         // find fist match
         int idx = -1;
         for (String startString : startStrings) {
-            matchStart = str.indexOf(startString, matchEnd);
+        	if (startString.equals("^")) {
+        		matchStart = matchEnd;
+        	} else {
+        		matchStart = str.indexOf(startString, matchEnd);
+        	}
             if (matchStart > -1 && (matchStart <= idx || idx == -1)) {
                 idx = matchStart;
                 foundStartString = startString;

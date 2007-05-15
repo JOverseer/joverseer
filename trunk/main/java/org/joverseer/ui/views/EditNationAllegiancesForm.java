@@ -80,6 +80,11 @@ public class EditNationAllegiancesForm extends AbstractForm {
                 labels.get(i-1).setText(n.getName() + " :");
                 allegiances.get(i-1).setSelectedItem(n.getAllegiance());
                 eliminated.get(i-1).setSelected(n.getEliminated());
+                if (n.getRemoved()) {
+                	labels.get(i-1).setEnabled(false);
+                    allegiances.get(i-1).setEnabled(false);
+                    eliminated.get(i-1).setEnabled(false);
+                }
             } else {
                 labels.get(i-1).setEnabled(false);
                 allegiances.get(i-1).setEnabled(false);

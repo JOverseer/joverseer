@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -22,6 +23,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.SpellDifficultyEnum;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -46,7 +48,16 @@ public class SpellcasterListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{96, 32, 32, 32, 32, 62, 62, 62, 62, 62, 62, 62, 62, 140};
+        int[] widths = new int[105];
+        widths[0] = 96;
+        widths[1] = 32;
+        widths[2] = 42;
+        widths[3] = 64;
+        widths[4] = 42;
+        for (int i=0; i<100; i++) {
+        	widths[i + 5] = 64;
+        }
+        return widths;
     }
     
     protected ArrayList createSpellLists() {
@@ -89,6 +100,21 @@ public class SpellcasterListView extends BaseItemListView {
         //spellLists.add(new SpellListFromSpellMetadata("Scrying & Hidden Visions", new String[]{"Scrying", "Hidden Visions"}));
         spellLists.add(new SpellList("Scrying & Hidden Visions", new Integer[]{413, 414, 415, 436, 416, 420, 430, 434}, 
 				new String[]{"Scry PC", "Scry Hex", "Scry Area", "Scry Char", "Rev Prod", "Rev Char", "Rev Char True", "Rev PC"}));
+        
+        // all spells
+        if (GameHolder.instance().hasInitializedGame()) {
+        	SpellList all = new SpellList("All", new Integer[]{}, new String[]{});
+        	
+	        for (SpellInfo si : (ArrayList<SpellInfo>)GameHolder.instance().getGame().getMetadata().getSpells().getItems()) {
+	        	all.getSpells().add(si.getNumber());
+	        	all.getSpellDescrs().add(si.getName());
+	        	if (si.getList().equals("Spirit Mastery")) {
+	        		all.getSpells().add(si.getNumber() + 100);
+	            	all.getSpellDescrs().add(si.getName() + " ΗΕ");
+	        	}
+	        }
+	        spellLists.add(all);
+        }
         return spellLists;
     }
     
@@ -101,6 +127,29 @@ public class SpellcasterListView extends BaseItemListView {
                 new ColumnToSort(1, 0)
         };
     }
+    
+    protected void resetColumns() {
+    	try {
+    		SpellList sl = (SpellList)combo.getSelectedItem();
+            if (sl == null) return;
+            for (int i=5; i<sl.getSpells().size() + 5; i++) {
+            	TableColumn col = table.getColumnModel().getColumn(i);
+            	col.setMaxWidth(100);
+            	col.setPreferredWidth(64);
+            	col.setHeaderValue(sl.getSpellDescrs().get(i-5));
+            }
+            for (int i=sl.getSpells().size() + 5; i<105; i++) {
+            	TableColumn col = table.getColumnModel().getColumn(i);
+            	col.setMaxWidth(0);
+            	col.setPreferredWidth(0);
+            }
+            table.updateUI();
+            
+        }
+    	catch (Exception exc) {
+    		exc.printStackTrace();
+    	}
+    }
 
     protected JComponent createControlImpl() {
         JComponent tableComp = super.createControlImpl();
@@ -110,6 +159,7 @@ public class SpellcasterListView extends BaseItemListView {
         combo.setOpaque(true);
         combo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	//resetColumns();
                 setItems();
             }
         });
@@ -165,6 +215,7 @@ public class SpellcasterListView extends BaseItemListView {
     
     protected void setItems() {
         if (combo == null) return;
+        if (tableModel == null) return;
         SpellList sl = (SpellList)combo.getSelectedItem();
         if (sl == null) return;
         ArrayList<Integer> spells = sl.getSpells();
@@ -199,12 +250,14 @@ public class SpellcasterListView extends BaseItemListView {
             ((SpellcasterTableModel)tableModel).getSpellDescrs().add(sl.getSpellDescrs().get(i));
         }
         tableModel.setRows(items);
+        tableModel.fireTableStructureChanged();
         tableModel.fireTableDataChanged();
-        try {
-            for (int i=1; i<11; i++) {
-                table.getColumnModel().getColumn(i+3).setHeaderValue(tableModel.getColumnName(i+3));
-            }
-        } catch (Exception exc) {};
+        resetColumns();
+//        try {
+//            for (int i=1; i<11; i++) {
+//                table.getColumnModel().getColumn(i+3).setHeaderValue(tableModel.getColumnName(i+3));
+//            }
+//        } catch (Exception exc) {};
     }
     
     public void onApplicationEvent(ApplicationEvent applicationEvent) {

@@ -28,6 +28,11 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NTCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -240,15 +245,15 @@ public class ExportOrdersForm extends AbstractForm {
                         String acct = pi.getAccountNo();
                         
                         String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
-    //                    final PostMethod filePost = new PostMethod(url);
-    //                    Part[] parts = {
-    //                            new StringPart("emailaddr", email),
-    //                            new StringPart("name", name),
-    //                            new StringPart("account", acct),
-    //                            new FilePart(file.getName(), file)
-    //                        };
-    //                    filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
-                        final GetMethod filePost = new GetMethod("http://www.meturn.com/");
+                        final PostMethod filePost = new PostMethod(url);
+                        Part[] parts = {
+                                new StringPart("emailaddr", email),
+                                new StringPart("name", name),
+                                new StringPart("account", acct),
+                                new FilePart(file.getName(), file)
+                            };
+                        filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+                        //final GetMethod filePost = new GetMethod("http://www.meturn.com/");
                         HttpClient client = new HttpClient();
                         client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
                         int status = client.executeMethod(filePost);

@@ -38,4 +38,14 @@ public class ArmySizeEstimator {
         }
         return ret;
     }
+    
+    public ArmySizeEstimate getSizeEstimateForArmySize(ArmySizeEnum size, String armyType) {
+    	ArrayList<ArmySizeEstimate> se = estimateArmySizes();
+    	for (ArmySizeEstimate ae : se) {
+    		if (ae.getType().equals(armyType) && ae.getSize() == size) {
+    			return ae;
+    		}
+    	}
+    	return null;
+    }
 }

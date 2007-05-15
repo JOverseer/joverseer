@@ -57,7 +57,7 @@ public class RelationsTableModel extends ItemTableModel {
             return ((NationRelations)object).getEliminated() ? "x" : "";
         }
         if (i-2 == ((NationRelations)object).getNationNo()) return "";
-        switch (((NationRelations)object).getRelationsFor(i-1)) {
+        switch (((NationRelations)object).getRelationsFor(i-2)) {
             case Friendly:
                 return "F";
             case Tolerated:
@@ -75,19 +75,19 @@ public class RelationsTableModel extends ItemTableModel {
     
     
     protected void setValueAtInternal(Object value, Object object, int i) {
-        if (i < 3) return;
+        if (i < 2) return;
         if (i-2 == ((NationRelations)object).getNationNo()) return;
         NationRelations nr = (NationRelations)object;
         if (value.toString().equals("F")) {
-            nr.setRelationsFor(i-1, NationRelationsEnum.Friendly);
+            nr.setRelationsFor(i-2, NationRelationsEnum.Friendly);
         } else if (value.toString().equals("T")) {
-            nr.setRelationsFor(i-1, NationRelationsEnum.Tolerated);
+            nr.setRelationsFor(i-2, NationRelationsEnum.Tolerated);
         } else if (value.toString().equals("N")) {
-            nr.setRelationsFor(i-1, NationRelationsEnum.Neutral);
+            nr.setRelationsFor(i-2, NationRelationsEnum.Neutral);
         } else if (value.toString().equals("D")) {
-            nr.setRelationsFor(i-1, NationRelationsEnum.Disliked);
+            nr.setRelationsFor(i-2, NationRelationsEnum.Disliked);
         } else if (value.toString().equals("H")) {
-            nr.setRelationsFor(i-1, NationRelationsEnum.Hated);
+            nr.setRelationsFor(i-2, NationRelationsEnum.Hated);
         } 
     }
 

@@ -17,12 +17,15 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.ArmySizeEnum;
+import org.joverseer.domain.ArmySizeEstimate;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.ArmySizeEstimator;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
@@ -155,11 +158,23 @@ public class ArmyViewer extends ObjectViewer {
                 extraInfo.setText(extraInfo.getText() + (extraInfo.getText().equals("") ? "" : " ")
                         + element.getDescription());
             }
-            extraInfo.setText(extraInfo.getText() + " (" + CombatUtils.getNakedHeavyInfantryEquivalent(army) + "enHI)");
+            int nhi = CombatUtils.getNakedHeavyInfantryEquivalent(army);
+            if (nhi > 0) {
+            	extraInfo.setText(extraInfo.getText() + " (" + nhi + "enHI)");
+            }
         } else if (army.getTroopCount() > 0) {
             extraInfo.setVisible(true);
             extraInfo.setText("~ " + army.getTroopCount() + " men");
-        } else {
+        } else if (army.getSize() != ArmySizeEnum.unknown && !army.isNavy()) {
+        	ArmySizeEstimate ae = (new ArmySizeEstimator()).getSizeEstimateForArmySize(army.getSize(), ArmySizeEstimate.ARMY_TYPE);
+        	if (ae == null || ae.getMin() == null) {
+        		extraInfo.setVisible(false);
+        	} else {
+        		extraInfo.setVisible(true);
+        		extraInfo.setText("est. " + ae.getMin() + "-" + ae.getMax() + " men");
+        	}
+        }
+        else {
             extraInfo.setVisible(false);
         }
         extraInfo.setCaretPosition(0);

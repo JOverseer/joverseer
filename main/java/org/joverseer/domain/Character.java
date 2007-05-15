@@ -1,5 +1,6 @@
 package org.joverseer.domain;
 
+import org.joverseer.domain.structuredOrderResults.IStructuredOrderResult;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.NationMap;
@@ -36,7 +37,8 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     int challenge;
     Integer health;
     InfoSourceValue healthEstimate;
-
+    ArrayList<IStructuredOrderResult> structuredOrderResults = new ArrayList<IStructuredOrderResult>();
+    
     int x;
     int y;
     
@@ -322,5 +324,12 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     
     public void setNation(Nation nation) {
         setNationNo(nation.getNumber());
+    }
+    
+    public ArrayList<IStructuredOrderResult> getStructuredOrderResults() {
+    	if (structuredOrderResults == null) {
+    		structuredOrderResults = new ArrayList<IStructuredOrderResult>();
+    	}
+    	return structuredOrderResults;
     }
 }

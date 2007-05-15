@@ -2,6 +2,8 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.DefaultCellEditor;
@@ -14,6 +16,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
@@ -37,7 +40,7 @@ public class RelationsListView extends ItemListView {
 
 
     protected int[] columnWidths() {
-        return new int[]{64, 96, 64,
+        return new int[]{48, 80, 58,
                         32, 32, 32, 32, 32, 
                         32, 32, 32, 32, 32,
                         32, 32, 32, 32, 32,
@@ -49,7 +52,7 @@ public class RelationsListView extends ItemListView {
         super.setItems();
         try {
             for (int i=1; i<26; i++) {
-                table.getColumnModel().getColumn(i+1).setHeaderValue(tableModel.getColumnName(i+1));
+                table.getColumnModel().getColumn(i+2).setHeaderValue(tableModel.getColumnName(i+2));
             }
         } catch (Exception exc) {};
     }
@@ -57,7 +60,10 @@ public class RelationsListView extends ItemListView {
     
     
     protected AbstractListViewFilter[][] getFilters() {
-        return new AbstractListViewFilter[][]{NationFilter.createAllAndAllImportedNationFilters()};
+    	ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
+        filters.addAll(Arrays.asList(NationFilter.createAllAndAllImportedNationFilters()));
+        filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+        return new AbstractListViewFilter[][]{filters.toArray(new AbstractListViewFilter[]{})};
     }
 
 

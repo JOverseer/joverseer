@@ -1,6 +1,8 @@
 package org.joverseer.ui.listviews;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -20,29 +22,43 @@ public class SpellcasterTableModel extends ItemTableModel {
     public SpellcasterTableModel(MessageSource messageSource) {
         super(SpellcasterWrapper.class, messageSource);
     }
+    
+    
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"character", "hexNo", "nationNo", "mageRank", "artifactBonus", "spell", "spell", "spell", "spell", 
-                                "spell", "spell", "spell", "spell", "orders"}; 
+        String[] cols = new String[] {"character", "hexNo", "nationNo", "mageRank", "artifactBonus"};
+        List<String> colList = new ArrayList<String>();
+        colList.addAll(Arrays.asList((String[])cols));
+        for (int i=0; i<100; i++) {
+        	colList.add("spell");
+        }
+        return colList.toArray(new String[]{});
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] { String.class, String.class, String.class, Integer.class, Integer.class, 
-                                Integer.class, Integer.class, Integer.class, Integer.class,
-                                Integer.class, Integer.class, Integer.class, Integer.class, String.class};
+    	Class[] cols = new Class[] {String.class, String.class, String.class, Integer.class, Integer.class};
+        List<Class> colList = new ArrayList<Class>();
+        colList.addAll(Arrays.asList((Class[])cols));
+        for (int i=0; i<100; i++) {
+        	colList.add(Integer.class);
+        }
+        return colList.toArray(new Class[]{});
+//        return new Class[] { String.class, String.class, String.class, Integer.class, Integer.class, 
+//                                Integer.class, Integer.class, Integer.class, Integer.class,
+//                                Integer.class, Integer.class, Integer.class, Integer.class, String.class};
     }
     
     public String[] createColumnNames() {
-        String[] colNames = new String[14];
+        String[] colNames = new String[105];
         colNames[0] = "Character";
         colNames[1] = "Hex";
         colNames[2] = "Nation";
         colNames[3] = "Mage Rank";
         colNames[4] = "Bonus";
-        for (int i=0; i<8; i++) {
+        for (int i=0; i<100; i++) {
             colNames[i + getSpellStartI()] = "Spell " + (i + 1);
         }
-        colNames[13] = "Orders";
+        //colNames[13] = "Orders";
         return colNames;
     }
     
@@ -54,9 +70,9 @@ public class SpellcasterTableModel extends ItemTableModel {
         if (arg0 - getSpellStartI() < spells.size()) {
             return spellDescrs.get(arg0 - getSpellStartI());
         }
-        if (arg0 == 13) {
-        	return super.getColumnName(arg0);
-        }
+//        if (arg0 == 13) {
+//        	return super.getColumnName(arg0);
+//        }
         return "";
     }
 
@@ -76,21 +92,21 @@ public class SpellcasterTableModel extends ItemTableModel {
                 return sw.getProficiency(spellId);
             }
         }
-        if (i == 13) {
-        	// return Orders
-        	SpellcasterWrapper sw = (SpellcasterWrapper)object;
-        	Game g = GameHolder.instance().getGame();
-        	Turn t = g.getTurn();
-        	Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", sw.getCharacter());
-        	if (c == null) return "";
-        	String orders = "";
-        	for (int j=0; j<2; j++) {
-        		if (!c.getOrders()[j].isBlank()) {
-        			orders += (orders.equals("") ? "" : ", ") + c.getOrders()[j].getNoAndCode() + " " + c.getOrders()[j].getParameters();
-        		}
-        	}
-        	return orders;
-        }
+//        if (i == 13) {
+//        	// return Orders
+//        	SpellcasterWrapper sw = (SpellcasterWrapper)object;
+//        	Game g = GameHolder.instance().getGame();
+//        	Turn t = g.getTurn();
+//        	Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", sw.getCharacter());
+//        	if (c == null) return "";
+//        	String orders = "";
+//        	for (int j=0; j<2; j++) {
+//        		if (!c.getOrders()[j].isBlank()) {
+//        			orders += (orders.equals("") ? "" : ", ") + c.getOrders()[j].getNoAndCode() + " " + c.getOrders()[j].getParameters();
+//        		}
+//        	}
+//        	return orders;
+//        }
         return "";
     }
     

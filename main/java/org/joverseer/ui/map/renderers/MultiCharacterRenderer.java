@@ -79,5 +79,9 @@ public class MultiCharacterRenderer implements Renderer {
         g.setColor(color2);
         //g.drawRect(x + dx, y + dy, w, h);
         g.draw(e);
+        if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+        	g.drawLine((int)e.getBounds().getX(), (int)e.getBounds().getY(), 
+        			(int)e.getBounds().getMaxX(), (int)e.getBounds().getMaxY());
+        }
     }
 }

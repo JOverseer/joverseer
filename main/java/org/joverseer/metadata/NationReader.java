@@ -12,7 +12,7 @@ public class NationReader implements MetadataReader {
             new Object[][]{
                     {"Unknown", "Un", new Object[]{}},
                     {"Woodmen", "Wm", new Object[]{SNAEnum.StealthBonus, SNAEnum.ChallengeBonus, SNAEnum.ScoutReconAtDouble, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM}},
-                    {"Northmen", "Nm", new Object[]{SNAEnum.ShipsWith750Timber, SNAEnum.BuySellBonus, SNAEnum.TroopsAt20Training, SNAEnum.EmmisariesAt40}},
+                    {"Northmen", "Nm", new Object[]{SNAEnum.ShipsWith750Timber, SNAEnum.BuySellBonus, SNAEnum.TroopsAt20Training, SNAEnum.EmmisariesAt40, SNAEnum.WarshipsAtStr5}},
                     {"Riders of Rohan", "RoR", new Object[]{SNAEnum.TroopsAt20Training, SNAEnum.CommandersAt40, SNAEnum.NoMoraleLossOnFM, SNAEnum.AccessToCjrMts}},
                     {"Dúnadan Rangers", "DR", new Object[]{SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood, SNAEnum.FortificationsWithHalfTimber, SNAEnum.MagesAt40}},
                     {"Silvan Elves", "Sil", new Object[]{SNAEnum.ShipsWith500Timber, SNAEnum.TroopsAt25Training, SNAEnum.StealthBonus, SNAEnum.BetterMoraleAtNoFood}},
@@ -42,27 +42,27 @@ public class NationReader implements MetadataReader {
         new Object[][]{
                 {"Unknown", "Un", new Object[]{}},
                 {"Woodmen", "Wm", new Object[]{SNAEnum.StealthBonus, SNAEnum.ChallengeBonus, SNAEnum.ScoutReconAtDouble, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM}},
-                {"Northmen", "Nm", new Object[]{SNAEnum.ShipsWith750Timber, SNAEnum.EmmisariesAt40, SNAEnum.TroopsAt20Training, SNAEnum.ShipsWith750Timber}},
+                {"Northmen", "Nm", new Object[]{SNAEnum.ShipsWith750Timber, SNAEnum.EmmisariesAt40, SNAEnum.TroopsAt20Training, SNAEnum.ShipsWith750Timber, SNAEnum.WarshipsAtStr5}},
                 {"Éothraim", "Eo", new Object[]{SNAEnum.TroopsAt20Training, SNAEnum.CommandersAt40, SNAEnum.NoMoraleLossOnFM, SNAEnum.AccessToCjrMts}},
-                {"Arthedain", "Ar", new Object[]{SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood, SNAEnum.FortificationsWithHalfTimber, SNAEnum.MagesAt40}},
-                {"Cardolan", "Ca", new Object[]{SNAEnum.FreeHire, SNAEnum.ArmiesAt40Morale, SNAEnum.CommandersAt40, SNAEnum.MAAt25Training, SNAEnum.ScoutReconPlus20}},
-                {"Northern Gondor", "NG", new Object[]{SNAEnum.FortificationsWithHalfTimber, SNAEnum.CommandersAt40, SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood}},
-                {"Southern Gondor", "SG", new Object[]{SNAEnum.FortificationsWithHalfTimber, SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood, SNAEnum.MagesAt40}},
-                {"Dwarves", "Dwa", new Object[]{SNAEnum.HIAt30Training, SNAEnum.NoMoraleLossOnFM, SNAEnum.FortificationsWithHalfTimber, SNAEnum.ScoutReconAt50}},
-                {"Sinda Elves", "Sin", new Object[]{SNAEnum.ShipsWith500Timber, SNAEnum.TroopsAt25Training, SNAEnum.StealthBonus, SNAEnum.BetterMoraleAtNoFood}},
-                {"Noldo Elves", "No", new Object[]{SNAEnum.TroopsAt25Training, SNAEnum.StealthBonus, SNAEnum.UncoverSecretsAt40, SNAEnum.NoMoraleLossOnFM}},
+                {"Arthedain", "Ar", new Object[]{SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood, SNAEnum.FortificationsWithHalfTimber, SNAEnum.MagesAt40, SNAEnum.WarshipsAtStr4}},
+                {"Cardolan", "Ca", new Object[]{SNAEnum.FreeHire, SNAEnum.ArmiesAt40Morale, SNAEnum.CommandersAt40, SNAEnum.MAAt25Training, SNAEnum.ScoutReconPlus20, SNAEnum.WarshipsAtStr4}},
+                {"Northern Gondor", "NG", new Object[]{SNAEnum.FortificationsWithHalfTimber, SNAEnum.CommandersAt40, SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood, SNAEnum.WarshipsAtStr4}},
+                {"Southern Gondor", "SG", new Object[]{SNAEnum.FortificationsWithHalfTimber, SNAEnum.TroopsAt20Training, SNAEnum.BetterMoraleAtNoFood, SNAEnum.MagesAt40, SNAEnum.WarshipsAtStr5}},
+                {"Dwarves", "Dwa", new Object[]{SNAEnum.HIAt30Training, SNAEnum.NoMoraleLossOnFM, SNAEnum.FortificationsWithHalfTimber, SNAEnum.ScoutReconAt50, SNAEnum.WarshipsAtStr2}},
+                {"Sinda Elves", "Sin", new Object[]{SNAEnum.ShipsWith500Timber, SNAEnum.TroopsAt25Training, SNAEnum.StealthBonus, SNAEnum.BetterMoraleAtNoFood, SNAEnum.WarshipsAtStr5}},
+                {"Noldo Elves", "No", new Object[]{SNAEnum.TroopsAt25Training, SNAEnum.StealthBonus, SNAEnum.UncoverSecretsAt40, SNAEnum.NoMoraleLossOnFM, SNAEnum.WarshipsAtStr5}},
                 {"Witch-king", "WK", new Object[]{SNAEnum.CommandersAt40, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM, SNAEnum.AccessToFrflHrts, SNAEnum.AccessToCjrHds}},
-                {"Dragon Lord", "DL", new Object[]{SNAEnum.StealthBonus, SNAEnum.AccessToTeleport, SNAEnum.ScoutReconAtDouble, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM}},
+                {"Dragon Lord", "DL", new Object[]{SNAEnum.StealthBonus, SNAEnum.AccessToTeleport, SNAEnum.ScoutReconAtDouble, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM, SNAEnum.WarshipsAtStr2}},
                 {"Dog Lord", "DoL", new Object[]{SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM, SNAEnum.TroopsAt20Training, SNAEnum.AccessToCjrMts, SNAEnum.StealthBonus}},
                 {"Cloud Lord", "CL", new Object[]{SNAEnum.KindapAssassAtPlus20, SNAEnum.AgentsAt40, SNAEnum.StealthBonus, SNAEnum.UncoverSecretsAt40}},
-                {"Blind Sorcerer", "BS", new Object[]{SNAEnum.OpenSeasMvmnt, SNAEnum.AccessToSmnStrms, SNAEnum.AccessToCjrHds, SNAEnum.MagesAt40}},
+                {"Blind Sorcerer", "BS", new Object[]{SNAEnum.OpenSeasMvmnt, SNAEnum.AccessToSmnStrms, SNAEnum.AccessToCjrHds, SNAEnum.MagesAt40, SNAEnum.WarshipsAtStr4}},
                 {"Ice King", "IK", new Object[]{SNAEnum.StealthBonus, SNAEnum.AgentsAt40, SNAEnum.AccessToSmnStrms, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM}},
-                {"Quiet Avenger", "QA", new Object[]{SNAEnum.ScoutReconAtDouble, SNAEnum.UncoverSecretsAt40, SNAEnum.CommandersAt40, SNAEnum.EmmisariesAt40}},
+                {"Quiet Avenger", "QA", new Object[]{SNAEnum.ScoutReconAtDouble, SNAEnum.UncoverSecretsAt40, SNAEnum.CommandersAt40, SNAEnum.EmmisariesAt40, SNAEnum.WarshipsAtStr4}},
                 {"Fire King", "FK", new Object[]{SNAEnum.FreeHire, SNAEnum.ArmiesAt40Morale, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM, SNAEnum.AccessToFntcsm, SNAEnum.AccessToCjrHds}},
-                {"Long Rider", "LR", new Object[]{SNAEnum.CommandersAt40, SNAEnum.AccessToCjrMts, SNAEnum.AccessToCjrMts, SNAEnum.NoMoraleLossOnFM}},
+                {"Long Rider", "LR", new Object[]{SNAEnum.CommandersAt40, SNAEnum.AccessToCjrMts, SNAEnum.AccessToCjrMts, SNAEnum.NoMoraleLossOnFM, SNAEnum.WarshipsAtStr4}},
                 {"Dark Lieutenants", "DkL", new Object[]{SNAEnum.BetterMoraleAtNoFood, SNAEnum.CommandersAt40, SNAEnum.AccessToFrflHrts, SNAEnum.AccessToCjrHds}},
-                {"Corsairs", "Co", new Object[]{SNAEnum.ShipsWith750Timber, SNAEnum.OpenSeasMvmnt, SNAEnum.ChallengeBonus}},
-                {"Haradwaith", "Ha", new Object[]{SNAEnum.FreeHire, SNAEnum.MAAt25Training, SNAEnum.UncoverSecretsAt40, SNAEnum.ChallengeBonus}},
+                {"Corsairs", "Co", new Object[]{SNAEnum.ShipsWith750Timber, SNAEnum.OpenSeasMvmnt, SNAEnum.ChallengeBonus, SNAEnum.WarshipsAtStr5}},
+                {"Haradwaith", "Ha", new Object[]{SNAEnum.FreeHire, SNAEnum.MAAt25Training, SNAEnum.UncoverSecretsAt40, SNAEnum.ChallengeBonus, SNAEnum.WarshipsAtStr5}},
                 {"Dunlendings", "Du", new Object[]{SNAEnum.ChallengeBonus, SNAEnum.ScoutReconAtDouble, SNAEnum.AgentsAt40}},
                 {"Rhudaur", "Ru", new Object[]{SNAEnum.FreeHire, SNAEnum.MAAt25Training, SNAEnum.CommandersAt40, SNAEnum.ChallengeBonus}},
                 {"Easterlings", "Ea", new Object[]{SNAEnum.CommandersAt40, SNAEnum.ChallengeBonus, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM}},
@@ -195,6 +195,7 @@ public class NationReader implements MetadataReader {
                 } else if (n.getNumber() >= 12 && n.getNumber() <= 14) {
                     n.setAllegiance(NationAllegianceEnum.FreePeople);
                 } else {
+                	n.setRemoved(true);
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
                 addSNAs(n, (Object[])nations_BOFA[i][2]);

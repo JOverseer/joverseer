@@ -37,7 +37,8 @@ public enum SNAEnum {
     KindapAssassAtPlus20(31, "Kindap/Assass. at Plus 20"),
     OpenSeasMvmnt(32, "Open Seas Movement"),
     WarshipsAtStr4(33, "Warships at Str 4"),
-    WarshipsAtStr5(34, "Warships at Str 5");
+    WarshipsAtStr5(34, "Warships at Str 5"),
+    WarshipsAtStr2(50, "Warships at Str 2");
     
 	int number;
     String description;

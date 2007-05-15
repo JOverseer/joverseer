@@ -118,7 +118,7 @@ public class TrackCharacterListView extends BaseItemListView {
         if (!charName.equals("")) {
 	        for (Turn t : (ArrayList<Turn>)g.getTurns().getItems()) {
 	            // find in characters
-                    Character c = findChar(t, charName);
+                Character c = findChar(t, charName);
 	            if (c != null) {
 	                TrackCharacterInfo tci = new TrackCharacterInfo();
 	                tci.setTurnNo(t.getTurnNo());

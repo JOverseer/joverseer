@@ -130,6 +130,8 @@
 			<list>            
                <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
                <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand"/>
+               <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>               
+            	<bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
             </list>
 	    </property>
     </bean>
@@ -174,7 +176,6 @@
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ImportNotesFromPreviousTurnCommand"/>
-            	<bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
            	</list>
        	</property>
    	</bean>

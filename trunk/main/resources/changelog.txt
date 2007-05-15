@@ -1,3 +1,81 @@
+VERSION 0.9.6
+-------------
+12/5/2007
+
+	* Added Auto-Submit orders functionality
+		o Orders can be submitted either by email (Windows only - needs MS Excel installed on your system), or by meturn.com. The method used is controled from the program preferences.
+
+	* Added two rows for bidding for products (instead of simply buying) to the EconoCalc
+		o Added "Bump Taxes Functionality". You use this through the bid for products functionality:
+			1. Fill in the desired bid price
+			2. In the bid amount, fill in the NEGATIVE of the tax rate you want to achieve. E.g. type -80 if you want to bump your taxes to 80. The program will automatically fill in the need buy amount.
+
+	* Added "Removed" option to the Nation Metadata form to mark nations that have been removed from play
+	
+	* Added "Eliminated" option to the Change Allegiances form to mark nations that have been eliminated
+
+	* Added Notes functionality. Notes can now be added to Hexes and Characters. 
+		o Currently notes can only be viewed in the Notes information tab.
+		o Notes marked as "Persistent" can be automatically copied from the previous turn to the current turn by using the Tools -> Copy Notes command.
+
+	* Added the ability to edit relations on the Relations information tab
+
+	* Fixed a bug with movement cost calculation and bridge crossing
+
+	* Fixed a bug with turn filters in the information tabs
+	
+	* Added "Team Economy View"
+		o This view combines the Nation Economy, Nation Production, Nation Economy Potential and Statistics views
+
+	* Added support for Anchored Ships
+		o Anchored ships are depicted as a special type of army, shown in the Current Hex View (and in all other Army views).
+		o Anchored ships can also shown on the map. This is controlled from the program preferences.
+
+	* The Hex Info part of the Current Hex View now shows the last turn this hex was visible (via a recon, scout area, etc)
+
+	* Spellcaster information tab now shows the health effect of spirit mastery spells                                                        
+
+	* Artifact parsing in the pdf files. 
+		o Artifact powers are read from the pdf files
+			+ Artifact information is automatically updated so the Artifact tabs now show the exact bonuses.
+			+ When an artifact's powers have been updated from the pdf files they are marked with a trailing "*" to distinguish from powers read from the game background info.
+		o Artifacs nations have hidden are now parsed and shown in the correct location
+	
+	* The artifacts that a character has equiped is now parsed from the pdf files and shown in the character details in the Current Hex View
+
+	* Influence Other orders are now parsed from the pdf files. 
+		o The Current Hex View now reports the smallest loyalty that was reported from an Influence Other command.
+
+	* Character wounds are now parsed from the pdf files
+		o Character information now shows the most recent wounds reported for that character when appropriate.
+
+	* Army composition and losses are now parsed from combat descriptions from the pdf files
+		o The army composition is shown in the Army Estimates information tab.
+
+	* Pdf View
+		o Fixed a bug with the pdf viewer when the turn shown was changed
+		o Added search functionality to pdf viewer                                                                            
+		o Changed the font to Monaco for improved readability
+
+	* Order Editor
+		o The buttons can now receive focus so you can now tab to them using the keyboard
+		o A preference to "Auto Save" orders in the Order Editor was added. When on, every change in an order's fields is automatically reflected to the character.
+		o Added specialized editor for the 940 order to support all the options
+
+	* Order information tab
+		o Added options to the right click menu to automatically toggle draw on and off for all shown orders
+		o A check has been added for characters issuing duplicate skill orders
+
+	* Char (adv) tab 
+		o Fixed the filters (added Not FP, Not DS, Not Neutral)
+		o Fixed the blank text for the Copy to Clipboard command 
+
+	* Changed the Draw Orders option in the Map Options View to On by default                                                                     
+
+	* Most dragons are now recognized and reported as Dragons (instead of Unknown nation) in the Current Hex View
+	
+	
+
 VERSION 0.9.5
 -------------
 

@@ -513,8 +513,7 @@
         		
         		<processor type="RegexMatch">
         			<element>InfOther</element>
-					<regex>(was\s+ordered\s+to\s+influence\s+their\s+population\s+center\s+loyalty.\s+The\s+loyalty\s+was\s+
-influenced/reduced\s+at\s+\p{L}+(?:[\s\-']\p{L}+)*.\s+Current\s+loyalty\s+is\s+perceived\s+to\s+be\s+\w+\.)</regex>
+					<regex>(was\s+ordered\s+to\s+influence\s+their\s+population\s+center\s+loyalty.\s+The\s+loyalty\s+was\s+influenced/reduced\s+at\s+\p{L}+(?:[\s\-']\p{L}+)*.\s+Current\s+loyalty\s+is\s+perceived\s+to\s+be\s+\w+\.)</regex>
         			<processor type="RegexMatch">
         				<element>PopCenter</element>
         				<regex>at (\p{L}+(?:[\s\-']\p{L}+)*)</regex>
@@ -527,7 +526,7 @@ influenced/reduced\s+at\s+\p{L}+(?:[\s\-']\p{L}+)*.\s+Current\s+loyalty\s+is\s+p
         		
         		<processor type="RegexMatch">
         			<element>Execution</element>
-        			<regex>was ordered to execute a hostage. (\p{L}+(?:[\s\-']\p{L}+)*)\s+was executed.</regex>
+        			<regex>was\s+ordered\s+to\s+execute\s+a\s+hostage.\s+(\p{L}+(?:[\s\-']\p{L}+)*)\s+was\s+s+executed.</regex>
         			<processor type="Copy">
         				<element>Character</element>
         			</processor>
@@ -535,23 +534,84 @@ influenced/reduced\s+at\s+\p{L}+(?:[\s\-']\p{L}+)*.\s+Current\s+loyalty\s+is\s+p
         		
         		<processor type="RegexMatch">
         			<element>FailedAssassination</element>
-        			<regex>was ordered to assassinate a character. He was not able to assassinate</regex>
-        		</processor>
+        			<regex>was\s+not\s+able\s+to\s+assassinate\s+[\s\(\)\w"]+\.((?:[\w\s]+\p{L}+(?:[\s\-']\p{L}+)*\s+while\s+performing)?)</regex>
+        			<processor type="RegexMatch">
+        				<element>InjuredBy</element>
+        				<regex>injured\s+by\s+(\p{L}+(?:[\s\-']\p{L}+)*)\s+while</regex>
+		      		</processor>        				
+	      		</processor>
         		
         		<processor type="RegexMatch">
         			<element>Assassination</element>
-        			<regex>was ordered to assassinate a character. (\p{L}+(?:[\s\-']\p{L}+)*)\s+was\s+assassinated\.</regex>
+        			<regex>was\s+ordered\s+to\s+assassinate\s+a\s+character.\s+(\p{L}+(?:[\s\-']\p{L}+)*)\s+was\s+assassinated\.</regex>
+ 	      			<processor type="Copy">
+        				<element>Character</element>
+        			</processor>
+       			</processor>
+       			
+       			<processor type="RegexMatch">
+        			<element>FailedStealArtifact</element>
+        			<regex>was\s+ordered\s+to\s+steal\s+an\s+artifact.\s+\w+\s+was\s+not\s+able\s+to\s+steal\s+the\s+artifact</regex>
+	       		</processor>
+
+       			<processor type="RegexMatch">
+        			<element>StealArtifact</element>
+        			<regex>was\s+ordered\s+to\s+steal\s+an\s+artifact.\s+\p{L}+(?:[\s\-']\p{L}+)*\s+#\d{2,3}\s+was\s+stolen</regex>
+	      			<processor type="Copy">
+        				<element>Artifact</element>
+        			</processor>
+        		</processor>
+        		
+   			    <processor type="RegexMatch">
+        			<element>FailedKidnap</element>
+        			<regex>was\s+not\s+able\s+to\s+kidnap\s+the\s+character</regex>
+        		</processor>
+        		
+        		<processor type="RegexMatch">
+        			<element>Kidnap</element>
+        			<regex>was\s+ordered\s+to\s+kidnap\s+a\s+character.\s+(\p{L}+(?:[\s\-']\p{L}+)*)\s+was\s+kidnaped\.</regex>
         			<processor type="Copy">
         				<element>Character</element>
         			</processor>
        			</processor>
+       			
+       			<processor type="RegexMatch">
+        			<element>FailedStealGold</element>
+        			<regex>was\s+ordered\s+to\s+steal\s+the\s+Gold.\s+\w+\s+was\s+not\s+able\s+to\s+steal\s+Gold\s+</regex>
+        		</processor>
 
+   			    <processor type="RegexMatch">
+        			<element>StealGold</element>
+        			<regex>(was\s+ordered\s+to\s+steal\s+the\s+Gold.\s+\d+\s+Gold\s+was\s+stolen\s+at\s+\p{L}+(?:[\s\-']\p{L}+)*\.)</regex>
+		   			    <processor type="RegexMatch">
+		        			<element>Gold</element>
+        					<regex>(\d+)</regex>
+    					</processor>
+		   			    <processor type="RegexMatch">
+		        			<element>PopCenter</element>
+        					<regex>\s+stolen\s+at\s+(\p{L}+(?:[\s\-']\p{L}+)*)</regex>
+    					</processor>
+	       		</processor>
+       			
+   			    <processor type="RegexMatch">
+        			<element>FailedSabotage</element>
+        			<regex>was\s+not\s+able\s+to\s+sabotage</regex>
+	       		</processor>
+        		
+        		<processor type="RegexMatch">
+        			<element>SabotageBridge</element>
+        			<regex>was ordered to sabotage a bridge. A bridge was sabotaged at (\d{4}).</regex>
+        			<processor type="Copy">
+        				<element>Hex</element>
+        			</processor>
+       			</processor>
+       			
         		<processor type="RegexMatch">
 					<element>FailedLocateArtifact</element>
-					<regex>was ordered to cast a lore spell. Locate Artifact \- Not able to</regex>
+					<regex>was\s+ordered\s+to\s+cast\s+a\s+lore\s+spell.\s+Locate\s+Artifact\s+\-\s+Not\s+able\s+to</regex>
 				</processor>
 
-        		<processor type="LAOwner">
+	       		<processor type="LAOwner">
         			<!--  Parse LA result with owner -->
         			<element>LocateArtifact</element>
         			<processor type="RegexMatch">
@@ -591,7 +651,7 @@ influenced/reduced\s+at\s+\p{L}+(?:[\s\-']\p{L}+)*.\s+Current\s+loyalty\s+is\s+p
         		
     			<processor type="RegexMatch">
 					<element>FailedLocateArtifact</element>
-					<regex>was ordered to cast a lore spell. Locate Artifact True \- Not able to</regex>
+					<regex>was\s+ordered\s+to\s+cast\s+a\s+lore\s+spell.\s+Locate\s+Artifact\s+True\s+\-\s+Not\s+able\s+to</regex>
 				</processor>
         		
         		

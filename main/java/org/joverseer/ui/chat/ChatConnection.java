@@ -2,24 +2,26 @@ package org.joverseer.ui.chat;
 
 
 public class ChatConnection {
-    String server;
-    int port;
+    String myIP;
+    int myPort;
     String username;
+    String peerIP;
+    int peerPort;
     
-    public int getPort() {
-        return port;
+    public int getMyPort() {
+        return myPort;
     }
     
-    public void setPort(int port) {
-        this.port = port;
+    public void setMyPort(int port) {
+        this.myPort = port;
     }
     
-    public String getServer() {
-        return server;
+    public String getMyIP() {
+        return myIP;
     }
     
-    public void setServer(String server) {
-        this.server = server;
+    public void setMyIP(String server) {
+        this.myIP = server;
     }
     
     public String getUsername() {
@@ -29,6 +31,27 @@ public class ChatConnection {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    
+    public String getPeerIP() {
+        return peerIP;
+    }
+
+    
+    public void setPeerIP(String peerIP) {
+        this.peerIP = peerIP;
+    }
+
+    
+    public int getPeerPort() {
+        return peerPort;
+    }
+
+    
+    public void setPeerPort(int peerPort) {
+        this.peerPort = peerPort;
+    }
+    
     
     
 }

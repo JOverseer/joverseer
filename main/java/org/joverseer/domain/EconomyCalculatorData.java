@@ -24,6 +24,8 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     ProductContainer buyUnits = new ProductContainer();
     ProductContainer bidPrices = new ProductContainer();
     ProductContainer bidUnits = new ProductContainer();
+    
+    Integer newTaxRate = null;
 
     boolean sellBonus;
     int ordersCost;
@@ -229,6 +231,18 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         this.goldProduction = goldProduction;
     }
     
+    
+    
+    
+    public Integer getNewTaxRate() {
+        return newTaxRate;
+    }
+
+    
+    public void setNewTaxRate(Integer newTaxRate) {
+        this.newTaxRate = newTaxRate;
+    }
+
     public boolean isInitialized() {
     	Turn t = GameHolder.instance().getGame().getTurn();
         if (t == null) return false;
@@ -237,4 +251,6 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         if (pp == null) return false;
         return true;
     }
+    
+    
 }

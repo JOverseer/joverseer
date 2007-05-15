@@ -32,9 +32,28 @@ public class ChatServer implements Runnable {
             }
         }
     }
+    
+    public ChatServer() {};
+    
+    public ChatServer(int p) {
+        port = p;
+    }
+    
+    
+
+    
+    public int getPort() {
+        return port;
+    }
+
+    
+    public void setPort(int port) {
+        this.port = port;
+    }
 
     public static void main(String[] args) {
         ChatServer cs = new ChatServer();
         cs.run();
     }
+    
 }

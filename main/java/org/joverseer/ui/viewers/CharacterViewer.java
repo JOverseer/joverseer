@@ -878,7 +878,8 @@ public class CharacterViewer extends ObjectViewer {
                         "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
                         "separator", new AddEditNoteCommand(c),
                         "separator", quickOrders,
-                        "separator", sendOrdersByChatCommand});
+                        //"separator", sendOrdersByChatCommand
+                        });
         return group.createPopupMenu();
     }
     

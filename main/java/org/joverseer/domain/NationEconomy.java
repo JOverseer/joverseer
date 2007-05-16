@@ -22,6 +22,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     int surplus;
     int reserve;
     int taxBase;
+    int goldProduction;
 
     ProductContainer production = new ProductContainer();
     ProductContainer stores = new ProductContainer();
@@ -129,4 +130,16 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     public ProductContainer getStores() {
         return stores;
     }
+
+    
+    public int getGoldProduction() {
+        return goldProduction;
+    }
+
+    
+    public void setGoldProduction(int goldProduction) {
+        this.goldProduction = goldProduction;
+    }
+    
+    
 }

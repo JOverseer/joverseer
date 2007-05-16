@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -202,6 +203,7 @@ public class ExportOrdersForm extends AbstractForm {
                 txt = txt.replace("\n", System.getProperty("line.separator"));
                 f.write(txt);
                 f.close();
+                pi.setLastOrderFile(file.getAbsolutePath());
                 if (!send) {
                 	increaseVersionNumber(pi);
                 }
@@ -218,6 +220,7 @@ public class ExportOrdersForm extends AbstractForm {
                         String msg = "Orders sent to Middle Earth Games (" + recipientEmail + ") by email and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
                         MessageDialog md = new MessageDialog("Turn Submitted", msg);
                         md.showDialog();
+                        pi.setOrdersSentOn(new Date());
                     } else {
                         // submit to meturn.com
                         prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
@@ -293,6 +296,7 @@ public class ExportOrdersForm extends AbstractForm {
                             msg = "Orders sent to Middle Earth Games and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
                         	MessageDialog md = new MessageDialog("Turn Submitted", msg);
                         	md.showDialog();
+                                pi.setOrdersSentOn(new Date());
                         } else {
                         	send = false;
                         }

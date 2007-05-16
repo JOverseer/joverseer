@@ -1,14 +1,22 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.tools.PopulationCenterLoyaltyEstimator;
 import org.springframework.context.MessageSource;
 
 
 public class PopulationCenterTableModel extends ItemTableModel {
     static int iProductStart = 8;
     static int iLostThisTurn = 7;
+    static int iLoyalty = 5;
     
     public PopulationCenterTableModel(MessageSource messageSource) {
         super(PopulationCenter.class, messageSource);
@@ -19,7 +27,7 @@ public class PopulationCenterTableModel extends ItemTableModel {
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] { Integer.class, String.class, String.class, String.class, String.class, Integer.class, InfoSource.class, String.class,
+        return new Class[] { Integer.class, String.class, String.class, String.class, String.class, String.class, InfoSource.class, String.class,
                                Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class};
     }
 
@@ -34,6 +42,21 @@ public class PopulationCenterTableModel extends ItemTableModel {
         if (i == iLostThisTurn) {
             PopulationCenter pc = (PopulationCenter)object;
             return pc.getLostThisTurn() ? "yes" : "";
+        }
+        if (i == iLoyalty) {
+            PopulationCenter pc = (PopulationCenter)object;
+            
+            if (pc.getLoyalty() > 0) {
+                return String.valueOf(pc.getLoyalty());
+            } else {
+                InfoSourceValue isv = PopulationCenterLoyaltyEstimator.getLoyaltyEstimateForPopCenter(pc);
+                if (isv != null) {
+                    return isv.getValue().toString() + " (t" + 
+                        ((DerivedFromInfluenceOtherInfoSource)isv.getInfoSource()).getTurnNo() + ")";
+                }
+            }
+            return "";
+            
         }
         return super.getValueAtInternal(object, i);
     }

@@ -3,6 +3,7 @@ package org.joverseer.tools.infoCollectors.artifacts;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
@@ -13,6 +14,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -23,7 +25,8 @@ import org.springframework.richclient.application.Application;
 
 
 public class ArtifactInfoCollector implements ApplicationListener {
-
+    static Logger logger = Logger.getLogger(ArtifactInfoCollector.class);
+    
     HashMap<Integer, Container> turnInfo = new HashMap<Integer, Container>();
     
     public static ArtifactInfoCollector instance() {
@@ -35,7 +38,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
     }
     
     public ArrayList getWrappersForTurn(int turnNo) {
-        Container ret = new Container(new String[] {"name", "turnNo", "id"});
+        Container ret = new Container(new String[] {"name", "turnNo", "number"});
         if (!GameHolder.hasInitializedGame())
             return ret.getItems();
         Game game = GameHolder.instance().getGame();
@@ -88,6 +91,20 @@ public class ArtifactInfoCollector implements ApplicationListener {
             if (t == null) continue;
             for (Artifact a : (ArrayList<Artifact>)t.getContainer(TurnElementsEnum.Artifact).getItems()) {
                 ArtifactWrapper aw = (ArtifactWrapper)aws.findFirstByProperty("number", a.getNumber());
+                if (aw == null) {
+                    // try to find by name
+                    aw = (ArtifactWrapper)aws.findFirstByProperty("name", a.getName());
+                    if (aw == null) {
+                        logger.error("Failed to find artifact wrapper for #" + a.getNumber() + " " + a.getName());
+                        // create new
+                        aw = new ArtifactWrapper();
+                        aw.setNumber(a.getNumber());
+                        aw.setName(a.getName());
+                        aw.setTurnNo(i);
+                        aws.addItem(aw);
+                    }
+                }
+                
                 aw.setOwner(a.getOwner());
                 aw.setHexNo(a.getHexNo());
                 aw.setInfoSource(a.getInfoSource());

@@ -9,6 +9,8 @@ VERSION 0.9.6
 		o Added "Bump Taxes Functionality". You use this through the bid for products functionality:
 			1. Fill in the desired bid price
 			2. In the bid amount, fill in the NEGATIVE of the tax rate you want to achieve. E.g. type -80 if you want to bump your taxes to 80. The program will automatically fill in the need buy amount.
+			
+	* The Tax Rate can now be changed in the Econocalc
 
 	* Added "Removed" option to the Nation Metadata form to mark nations that have been removed from play
 	
@@ -44,7 +46,7 @@ VERSION 0.9.6
 	* The artifacts that a character has equiped is now parsed from the pdf files and shown in the character details in the Current Hex View
 
 	* Influence Other orders are now parsed from the pdf files. 
-		o The Current Hex View now reports the smallest loyalty that was reported from an Influence Other command.
+		o The Current Hex View and Pop Center tab now report the smallest loyalty that was reported from an Influence Other command.
 
 	* Character wounds are now parsed from the pdf files
 		o Character information now shows the most recent wounds reported for that character when appropriate.
@@ -73,7 +75,6 @@ VERSION 0.9.6
 	* Changed the Draw Orders option in the Map Options View to On by default                                                                     
 
 	* Most dragons are now recognized and reported as Dragons (instead of Unknown nation) in the Current Hex View
-	
 	
 
 VERSION 0.9.5

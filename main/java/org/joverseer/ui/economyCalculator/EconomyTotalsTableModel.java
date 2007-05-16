@@ -106,7 +106,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (columnIndex == 3) {
             switch (rowIndex) {
                 case 0:
-                    return ne.getTaxRate();
+                    return getTaxRate();
                 case 1:
                     return getTaxRevenue();
                 case 2:
@@ -128,22 +128,28 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                     return ne.getReserve();
                 case 3:
                     // final gold
-                    return getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
+                    return getFinalGold();
             }
             return "";
         }
         return "";
     }
     
+    public int getFinalGold() {
+        NationEconomy ne = getNationEconomy();
+        return getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
+    }
+    
     public int getTaxRevenue() {
         NationEconomy ne = getNationEconomy();
-        return ne.getTaxBase() * 2500 * ne.getTaxRate() / 100;
+        return ne.getTaxBase() * 2500 * getTaxRate() / 100;
     }
     
     
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return (columnIndex == 5 && rowIndex == 0) ||
-                (columnIndex == 3 && rowIndex == 2);
+                (columnIndex == 3 && rowIndex == 2) ||
+                (columnIndex == 3 && rowIndex == 0);
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
@@ -160,6 +166,12 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
 
+        }
+        if (columnIndex == 3 && rowIndex == 0) {
+            setTaxRate((Integer)aValue);
+            fireTableDataChanged();
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
         }
     }
 
@@ -179,7 +191,12 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null || ecd.getGoldProduction() == null) {
             NationEconomy ne = getNationEconomy();
-            return ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100; 
+            // hack to compute gold production if needed
+            if (ne.getGoldProduction()==0 && 
+                    ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100 != 0) {
+                ne.setGoldProduction(ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100);
+            }
+            return ne.getGoldProduction();
         }
         return ecd.getGoldProduction();
     }
@@ -202,10 +219,25 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (ecd == null) return;
         ecd.setOrdersCost(ordersCost);
     }
+    
+    public void setTaxRate(int newTaxRate) {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return;
+        ecd.setTaxRate(newTaxRate);
+    }
+    
+    public int getTaxRate() {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null || ecd.getTaxRate() == null) {
+            NationEconomy ne = getNationEconomy();
+            return ne.getTaxRate();
+        }
+        return ecd.getTaxRate();
+    }
 
     public int computeLostTaxRevenue() {
-        if (getSelectedNationNo() < 1) return 0;
-        return computeLostTaxRevenue(getSelectedNationNo());
+        if (getNationNo() < 1) return 0;
+        return computeLostTaxRevenue(getNationNo());
     }
     
     public static int computeLostTaxRevenue(int nationNo) {
@@ -227,7 +259,12 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                     sz = 4;
                 }
                 NationEconomy ne = (NationEconomy)g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo);
-                lostTaxRevenue += sz * 2500 * ne.getTaxRate() / 100; 
+                EconomyCalculatorData ecd = (EconomyCalculatorData)g.getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", nationNo);
+                if (ecd == null || ecd.getTaxRate() == null) {
+                    lostTaxRevenue += sz * 2500 * ne.getTaxRate() / 100;
+                } else {
+                    lostTaxRevenue += sz * 2500 * ecd.getTaxRate() / 100; 
+                }
             }
             
         }
@@ -235,8 +272,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     }
 
     public int computeNewTaxBase() {
-        if (getSelectedNationNo() < 1) return 0;
-        return computeNewTaxBase(getSelectedNationNo());
+        if (getNationNo() < 1) return 0;
+        return computeNewTaxBase(getNationNo());
     }
     
     public static int computeNewTaxBase(int nationNo) {
@@ -265,8 +302,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     }
 
     public int computeLostGoldRevenue() {
-        if (getSelectedNationNo() < 1) return 0;
-        return computeLostGoldRevenue(getSelectedNationNo());
+        if (getNationNo() < 1) return 0;
+        return computeLostGoldRevenue(getNationNo());
     }
     
     public static int computeLostGoldRevenue(int nationNo) {
@@ -299,7 +336,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         NationEconomy ne = getNationEconomy();
         if (ne == null) return 0;
         double finalGold = Math.round(
-                        ((double)getTaxRevenue() - (double)computeLostTaxRevenue()) * (double)newTaxRate / (double)ne.getTaxRate() 
+                        ((double)getTaxRevenue() - (double)computeLostTaxRevenue()) * (double)newTaxRate / (double)getTaxRate() 
                         + (double)getGoldProduction() - (double)computeLostGoldRevenue() -
                         (double)ne.getTotalMaintenance() + (double)ne.getReserve());
         return (int)finalGold;

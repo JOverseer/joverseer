@@ -25,11 +25,10 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     ProductContainer bidPrices = new ProductContainer();
     ProductContainer bidUnits = new ProductContainer();
     
-    Integer newTaxRate = null;
-
     boolean sellBonus;
     int ordersCost;
     int productionFactor = 100;
+    Integer taxRate = null;
     Integer goldProduction;
 
     public int getBuyUnits(ProductEnum p) {
@@ -232,15 +231,18 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     }
     
     
+
     
     
-    public Integer getNewTaxRate() {
-        return newTaxRate;
+
+    
+    public Integer getTaxRate() {
+        return taxRate;
     }
 
     
-    public void setNewTaxRate(Integer newTaxRate) {
-        this.newTaxRate = newTaxRate;
+    public void setTaxRate(Integer taxRate) {
+        this.taxRate = taxRate;
     }
 
     public boolean isInitialized() {

@@ -1,13 +1,13 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\System32\STDOLE2.TLB#OLE Automation
 Reference=*\G{00020813-0000-0000-C000-000000000046}#1.4#0#C:\ms-apps\Office\Office10\EXCEL.EXE#Microsoft Excel 10.0 Object Library
+Reference=*\G{420B2830-E718-11CF-893D-00A0C9054228}#1.0#0#C:\WINDOWS\system32\scrrun.dll#Microsoft Scripting Runtime
 Module=MailSender; MailSender.bas
 Startup="Sub Main"
 HelpFile=""
 Title="Project1"
 ExeName32="MailSender.exe"
-Path32="C:\Documents and Settings\mskounak\Desktop"
-Command32="c:\tst.txt"
+Command32="mscoon@gmail.com me07v11.026 D:\data\mscoon\MiddleEarth\g26\t18\me07v11.026"
 Name="Project1"
 HelpContextID="0"
 CompatibleMode="0"

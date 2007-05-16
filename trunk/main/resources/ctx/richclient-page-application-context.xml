@@ -43,7 +43,10 @@
 				<value>nationStatisticsListView</value>
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
+				<value>playerInfoListView</value>
+				<!-- 
 				<value>chatView</value>
+				 -->
 			</list>
 		</property>
 		<property name="perspectives">
@@ -236,6 +239,29 @@
 		</property>
 	</bean>
 	
+	<bean id="playerInfoListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.PlayerInfoListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+	</bean>
+	
 	<bean id="armyEstimatesListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -281,7 +307,8 @@
 			<value>250</value>
 		</property>
 	</bean>
-	
+
+<!-- 
 	<bean id="chatView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -304,6 +331,7 @@
 			<value>250</value>
 		</property>
 	</bean>
+ -->		
 	
 	<bean id="startingCharacterListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">

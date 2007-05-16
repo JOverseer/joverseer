@@ -13,14 +13,14 @@ import org.joverseer.support.GameHolder;
 
 public abstract class BaseEconomyTableModel extends AbstractTableModel {
     Game game = null;
-    int selectedNationNo = 7;
+    int nationNo = 7;
     
     protected NationEconomy getNationEconomy() {
         if (!Game.isInitialized(getGame())) return null;
         if (getGame().getTurn() == null) return null;
         Turn t = game.getTurn();
         Container nes = t.getContainer(TurnElementsEnum.NationEconomy);
-        NationEconomy ne = (NationEconomy) nes.findFirstByProperty("nationNo", getSelectedNationNo());
+        NationEconomy ne = (NationEconomy) nes.findFirstByProperty("nationNo", getNationNo());
         return ne;
     }
     
@@ -29,10 +29,10 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
         if (getGame().getTurn() == null) return null;
         Turn t = game.getTurn();
         Container nes = t.getContainer(TurnElementsEnum.EconomyCalucatorData);
-        EconomyCalculatorData ecd = (EconomyCalculatorData) nes.findFirstByProperty("nationNo", getSelectedNationNo());
+        EconomyCalculatorData ecd = (EconomyCalculatorData) nes.findFirstByProperty("nationNo", getNationNo());
         if (ecd == null) {
             ecd = new EconomyCalculatorData();
-            ecd.setNationNo(getSelectedNationNo());
+            ecd.setNationNo(getNationNo());
             nes.addItem(ecd);
         }
         return ecd;
@@ -45,11 +45,11 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
         return game;
     }
     
-    protected Integer getSelectedNationNo() {
-        return selectedNationNo;
+    protected Integer getNationNo() {
+        return nationNo;
     }
     
-    protected void setSelectedNationNo(int nationNo) {
-        selectedNationNo = nationNo;
+    protected void setNationNo(int nationNo) {
+        this.nationNo = nationNo;
     }
 }

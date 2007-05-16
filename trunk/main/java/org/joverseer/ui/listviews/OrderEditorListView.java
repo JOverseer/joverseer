@@ -390,10 +390,13 @@ public class OrderEditorListView extends ItemListView {
     public JPopupMenu getPopupMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "orderCommandGroup", new Object[] {
-                        editOrderAction, deleteOrderAction, sendOrderByChatAction, 
+                        editOrderAction, deleteOrderAction, 
+                        //sendOrderByChatAction, 
                         "separator", 
                         new DrawAllOrdersAction(), new UnDrawAllOrdersAction(),
-                        new SendAllOrdersByChatAction()});
+                        //new SendAllOrdersByChatAction()
+                        }
+                );
         return group.createPopupMenu();
     }
     

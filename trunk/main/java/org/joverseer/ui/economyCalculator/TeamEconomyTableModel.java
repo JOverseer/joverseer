@@ -124,6 +124,8 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
         if (ecd == null) return null;
         NationEconomy ne = getNationEconomy(ecd.getNationNo());
         if (ne == null) return null;
+        EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
+        ettm.setNationNo(ecd.getNationNo());
         switch (col) {
             case 0:
                 // nation
@@ -153,7 +155,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
                 return getProduct(ecd, ProductEnum.Mounts);
             case 8:
                 // surplus
-                return ne.getSurplus();
+                return ettm.getSurplus();
             case 9:
                 // reserves
                 return ne.getReserve();
@@ -162,7 +164,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
                         - EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
             case 11:
                 // tax rate
-                return ne.getTaxRate();
+                return ettm.getTaxRate();
             case 12:
                 // chars in capital
                 PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ecd.getNationNo(), true});
@@ -176,12 +178,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
                 return ecd.getOrdersCost();
             case 15:
                 // available gold
-                return ne.getSurplus() + 
-                            ne.getReserve() + 
-                            ecd.getMarketProfits() - 
-                            ecd.getOrdersCost() -
-                            EconomyTotalsTableModel.computeLostGoldRevenue(ne.getNationNo()) -
-                            EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
+                return ettm.getFinalGold();
         };
         return null;
     }

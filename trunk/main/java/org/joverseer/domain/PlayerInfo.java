@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-public class PlayerInfo implements Serializable {
+public class PlayerInfo implements IBelongsToNation, Serializable {
     /**
      * 
      */
@@ -15,6 +15,8 @@ public class PlayerInfo implements Serializable {
     String secret;
     String dueDate;
     int turnVersion = 1;
+    String lastOrderFile = null;
+    Date ordersSentOn = null;
     
     public String getAccountNo() {
         return accountNo;
@@ -32,11 +34,11 @@ public class PlayerInfo implements Serializable {
         this.dueDate = dueDate;
     }
     
-    public int getNationNo() {
+    public Integer getNationNo() {
         return nationNo;
     }
     
-    public void setNationNo(int nationNo) {
+    public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
     
@@ -64,6 +66,26 @@ public class PlayerInfo implements Serializable {
     
     public void setTurnVersion(int turnVersion) {
         this.turnVersion = turnVersion;
+    }
+
+    
+    public String getLastOrderFile() {
+        return lastOrderFile;
+    }
+
+    
+    public void setLastOrderFile(String lastOrderFile) {
+        this.lastOrderFile = lastOrderFile;
+    }
+
+    
+    public Date getOrdersSentOn() {
+        return ordersSentOn;
+    }
+
+    
+    public void setOrdersSentOn(Date ordersSentOn) {
+        this.ordersSentOn = ordersSentOn;
     }
     
     

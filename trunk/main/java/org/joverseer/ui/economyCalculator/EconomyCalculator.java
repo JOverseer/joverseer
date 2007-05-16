@@ -168,8 +168,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 Game g = GameHolder.instance().getGame();
                 if (nationCombo.getSelectedItem() == null) return;
                 Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
-                ((MarketTableModel)marketTable.getModel()).setSelectedNationNo(n.getNumber());
-                ((EconomyTotalsTableModel)totalsTable.getModel()).setSelectedNationNo(n.getNumber());
+                ((MarketTableModel)marketTable.getModel()).setNationNo(n.getNumber());
+                ((EconomyTotalsTableModel)totalsTable.getModel()).setNationNo(n.getNumber());
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshPcs(n.getNumber());
@@ -380,7 +380,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 }
             }
             if (!isSelected) {
-                if (row == 0 && column == 5 || row == 2 && column == 3) { // orders cost , gold production
+                if (((EconomyTotalsTableModel)table.getModel()).isCellEditable(row, column)) { // orders cost , gold production
                     lbl.setBackground(Color.decode("#ADD3A6"));
                 } else {
                     lbl.setBackground(Color.white);

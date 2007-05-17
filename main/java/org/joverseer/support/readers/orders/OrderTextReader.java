@@ -93,7 +93,7 @@ public class OrderTextReader {
                 }
             }
             catch (Exception exc) {
-                System.out.println(exc.getMessage());
+                exc.printStackTrace();
             }
         }
         

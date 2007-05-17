@@ -34,6 +34,7 @@ import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.apache.log4j.Logger;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -41,6 +42,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenXmlDir;
@@ -60,6 +62,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 
 public class ExportOrdersForm extends AbstractForm {
+    static Logger logger = Logger.getLogger(ExportOrdersForm.class);
     public static int ORDERS_OK = 0;
     public static int ORDERS_NOT_OK = 1;
     
@@ -68,7 +71,7 @@ public class ExportOrdersForm extends AbstractForm {
     JTextArea orders;
     boolean ordersOk = false;
     boolean cancelExport = false;
-    
+    Integer oldSelectedNation = null;
     int orderCheckResult = 0;
     
     boolean uncheckedOrders = false;
@@ -107,6 +110,11 @@ public class ExportOrdersForm extends AbstractForm {
                 int nationNo = getSelectedNationNo();
                 PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
                 version.setSelectedItem(String.valueOf(pi.getTurnVersion()));
+                if (oldSelectedNation == null || oldSelectedNation != nationNo) {
+                    orders.setText("");
+                    ordersOk = false;
+                    oldSelectedNation = nationNo;
+                }
             }
             
         });
@@ -143,6 +151,7 @@ public class ExportOrdersForm extends AbstractForm {
                 catch (Exception exc) {
                     orders.setText(exc.getMessage());
                     ordersOk = false;
+                    logger.error(exc);
                 }
             }
         });
@@ -185,6 +194,7 @@ public class ExportOrdersForm extends AbstractForm {
         Game g = GameHolder.instance().getGame();
         int nationNo = getSelectedNationNo();
         PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+        pi.setTurnVersion(Integer.parseInt(version.getSelectedItem().toString()));
         String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -213,7 +223,7 @@ public class ExportOrdersForm extends AbstractForm {
                         // send by email
                         String recipientEmail = PreferenceRegistry.instance().getPreferenceValue("submitOrders.recipientEmail");
                         String cmd = "bin\\mailSender\\MailSender.exe " + recipientEmail + " " + fname + " " + file.getCanonicalPath();
-                        System.out.println("Starting mail client with command " + cmd);
+                        logger.debug("Starting mail client with command " + cmd);
                         Runtime.getRuntime().exec(cmd);
                         increaseVersionNumber(pi);
 
@@ -272,7 +282,7 @@ public class ExportOrdersForm extends AbstractForm {
                                 		frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
                                 	}
                                 	catch (Exception exc) {
-                                		
+                                            logger.error(exc);
                                 	}
                                 }
     
@@ -308,6 +318,7 @@ public class ExportOrdersForm extends AbstractForm {
                 } 
             }
             catch (Exception exc) {
+                logger.error(exc);
                 MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
                 MessageDialog md = new MessageDialog(
                         ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),

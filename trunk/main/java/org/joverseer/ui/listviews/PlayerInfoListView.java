@@ -20,7 +20,7 @@ public class PlayerInfoListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{64, 160, 64, 48, 200, 120};
+        return new int[]{64, 160, 64, 80, 200, 120};
     }
 
     protected JComponent createControlImpl() {
@@ -29,7 +29,12 @@ public class PlayerInfoListView extends ItemListView {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 SimpleDateFormat sdf = new SimpleDateFormat(); 
                 Date d = (Date)value;
-                return super.getTableCellRendererComponent(table, sdf.format(d), isSelected, hasFocus, row, column);
+                if (d == null) {
+                    value = "";
+                } else {
+                    value = sdf.format(d);
+                }
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             }
             
         });

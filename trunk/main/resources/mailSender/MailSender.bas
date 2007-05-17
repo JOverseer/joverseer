@@ -21,6 +21,7 @@ Public Sub Main()
     
     
     'app.Workbooks.Open a_strArgs(2)
+    Clipboard.Clear
     Clipboard.SetText orders
     
     Dim s As Excel.Worksheet

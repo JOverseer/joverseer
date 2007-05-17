@@ -1022,13 +1022,16 @@ public class TurnPdfReader implements Runnable {
             
             // update hidden artifacts
             if (aw.getHexNo() > 0) {
-                Artifact a = new Artifact();
-                a.setNumber(aw.getNumber());
-                a.setName(aw.getName().trim());
-                a.setHexNo(aw.getHexNo());
-                a.setOwner(turnInfo.getNationName());
-                a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
-                game.getTurn().getContainer(TurnElementsEnum.Artifact).addItem(a);
+                Artifact a = (Artifact)game.getTurn().getContainer(TurnElementsEnum.Artifact).findFirstByProperty("number", aw.getNumber());
+                if (a == null) {
+                    a = new Artifact();
+                    a.setNumber(aw.getNumber());
+                    a.setName(aw.getName().trim());
+                    a.setHexNo(aw.getHexNo());
+                    a.setOwner(turnInfo.getNationName());
+                    a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
+                    game.getTurn().getContainer(TurnElementsEnum.Artifact).addItem(a);
+                }
             }
         }
     }

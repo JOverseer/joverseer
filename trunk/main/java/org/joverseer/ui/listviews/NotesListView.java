@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -14,7 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
 
 import org.joverseer.domain.Note;
 import org.joverseer.game.TurnElementsEnum;
@@ -23,12 +26,15 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.controls.TextAreaEditor;
+import org.joverseer.ui.support.controls.TextAreaRenderer;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.ShuttleSortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.grid.JideTable;
@@ -45,7 +51,7 @@ public class NotesListView extends ItemListView {
 
 
     protected int[] columnWidths() {
-        return new int[] {42, 96, 64, 300, 64};
+        return new int[] {42, 96, 64, 96, 300, 64};
     }
 
     protected JComponent createControlImpl() {
@@ -91,33 +97,33 @@ public class NotesListView extends ItemListView {
 
         // create the JTable instance
         table = TableUtils.createStandardSortableTable(tableModel);
-        table = new SortableTable(table.getModel()) {
-
-            protected void initTable() {
-                super.initTable();
-                setSortTableHeaderRenderer();
-            }
-
-            protected SortTableHeaderRenderer createSortHeaderRenderer() {
-                return new SortTableHeaderRenderer() {
-
-                    protected void initComponents() {
-                        super.initComponents();
-                        _headerPanel.add(_titlePanel, BorderLayout.CENTER);
-                    }
-
-                    protected JLabel createLabel(String text) {
-                        return new JLabel(text, JLabel.LEADING);
-                    }
-                };
-            }
-
-            protected JTableHeader createDefaultTableHeader() {
-                return new JTableHeader(columnModel);
-            }
-        };
-        ((JideTable) table).setRowResizable(true);
-        ((JideTable) table).setRowAutoResizes(true);
+//        table = new SortableTable(table.getModel()) {
+//
+//            protected void initTable() {
+//                super.initTable();
+//                setSortTableHeaderRenderer();
+//            }
+//
+//            protected SortTableHeaderRenderer createSortHeaderRenderer() {
+//                return new SortTableHeaderRenderer() {
+//
+//                    protected void initComponents() {
+//                        super.initComponents();
+//                        _headerPanel.add(_titlePanel, BorderLayout.CENTER);
+//                    }
+//
+//                    protected JLabel createLabel(String text) {
+//                        return new JLabel(text, JLabel.LEADING);
+//                    }
+//                };
+//            }
+//
+//            protected JTableHeader createDefaultTableHeader() {
+//                return new JTableHeader(columnModel);
+//            }
+//        };
+//        ((JideTable) table).setRowResizable(true);
+//        ((JideTable) table).setRowAutoResizes(true);
         org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
 
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
@@ -137,11 +143,14 @@ public class NotesListView extends ItemListView {
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
 
-        MultilineTableCellRenderer r = new MultilineTableCellRenderer();
-        r.setWrapStyleWord(true);
-        r.setLineWrap(true);
+        //MultilineTableCellRenderer r = new MultilineTableCellRenderer();
+        //r.setWrapStyleWord(true);
+        //r.setLineWrap(true);
+        TextAreaRenderer r = new TextAreaRenderer();
         table.setDefaultRenderer(String.class, r);
         table.setDefaultRenderer(Integer.class, r);
+        
+        table.getColumnModel().getColumn(NotesTableModel.iText).setCellEditor(new TextAreaEditor());
         
         return p;
     }
@@ -158,7 +167,8 @@ public class NotesListView extends ItemListView {
         protected void doExecuteCommand() {
             int row = table.getSelectedRow();
             if (row >= 0) {
-                int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
+                //int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
+                int idx = ((ShuttleSortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
                 if (idx >= tableModel.getRowCount())
                     return;
                 try {
@@ -181,7 +191,8 @@ public class NotesListView extends ItemListView {
         protected void doExecuteCommand() {
             int row = table.getSelectedRow();
             if (row >= 0) {
-                int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
+                //int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
+                int idx = ((ShuttleSortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
                 if (idx >= tableModel.getRowCount())
                     return;
                 try {

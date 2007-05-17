@@ -23,9 +23,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
@@ -34,6 +38,7 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
@@ -112,6 +117,8 @@ public class CharacterViewer extends ObjectViewer {
     JTextField infoSourcesTextBox;
     JTextField nationTextBox;
     JTextField companyMembersTextBox;
+    JTextArea notes;
+    JScrollPane notesPane;
 
     JTable artifactsTable;
     JTable spellsTable;
@@ -330,6 +337,14 @@ public class CharacterViewer extends ObjectViewer {
                     col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
                 }
                 characterName.setForeground(col);
+            }
+            
+            Note n = (Note)g.getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c);
+            if (n != null) {
+                notesPane.setVisible(true);
+                notes.setText(n.getText());
+            } else {
+                notesPane.setVisible(false);
             }
         }
 
@@ -610,6 +625,36 @@ public class CharacterViewer extends ObjectViewer {
 			}
         });
         
+        glb.nextLine();
+        
+        
+        notes = new JTextArea();
+        //rumor.setPreferredSize(new Dimension(220, 80));
+        notes.setLineWrap(true);
+        notes.setWrapStyleWord(true);
+        notesPane = new JScrollPane(notes);
+        notesPane.setMaximumSize(new Dimension(240, 36));
+        notesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        notesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        notesPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
+        //rumor.setBorder(null);
+        notesPane.setBorder(null);
+        Font f = GraphicUtils.getFont(notes.getFont().getName(), Font.ITALIC, notes.getFont().getSize());
+        notes.setFont(f);
+        notes.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent arg0) {
+                updateNotes();
+            }
+    
+            public void insertUpdate(DocumentEvent arg0) {
+                updateNotes();
+            }
+    
+            public void removeUpdate(DocumentEvent arg0) {
+                updateNotes();
+            }
+        });
+        glb.append(notesPane, 5, 1);
         glb.nextLine();
         
         JPanel panel = glb.getPanel();
@@ -902,6 +947,14 @@ public class CharacterViewer extends ObjectViewer {
                     new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), c.getOrders()[1], this));
         }
         
+    }
+    
+    public void updateNotes() {
+        Character c = (Character)getFormObject();
+        Note n = (Note)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c);
+        if (n != null) {
+            n.setText(notes.getText());
+        }
     }
 
 }

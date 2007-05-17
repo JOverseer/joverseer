@@ -308,8 +308,8 @@ public class TurnXmlReader implements Runnable{
                 if (newPc.getName() == null || newPc.getName().equals("")) {
                 	newPc.setName("Unknown (Map Icon)");
                 }
-                System.out.println("NEW POP " + turnInfo.getNationNo());
-                System.out.println("new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());
+                logger.debug("NEW POP " + turnInfo.getNationNo());
+                logger.debug("new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());
                 
                 PopulationCenter oldPc = (PopulationCenter) pcs.findFirstByProperties(new String[]{"x", "y"}, new Object[]{newPc.getX(), newPc.getY()});
                 if (oldPc == null) {
@@ -317,25 +317,25 @@ public class TurnXmlReader implements Runnable{
                     logger.debug("No Pop Centre found in turn, add.");
                     pcs.addItem(newPc);
                 } else {
-                    System.out.println("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " "  + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo());
+                    logger.debug("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " "  + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo());
                     logger.debug("Pop Centre found in turn.");
                     // distinguish cases
                     if (oldPc != null && oldPc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() &&
                             ((XmlTurnInfoSource)oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo()) {
-                        System.out.println("old pop too good - do not replace");
+                        logger.debug("old pop too good - do not replace");
                     } else if (newPc.getNationNo() == ((XmlTurnInfoSource)newPc.getInfoSource()).getNationNo()) {
-                        System.out.println("pop center of same nation - replace");
+                        logger.debug("pop center of same nation - replace");
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);
                     } else if (newPc.getNationNo() > 0) {
-                    	System.out.println("simply replace");
+                        logger.debug("simply replace");
                     	pcs.removeItem(oldPc);
                     	pcs.addItem(newPc);
 //                        if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
 //                            newPc.setLoyalty(oldPc.getLoyalty());
 //                        }
                     } else {
-                    	System.out.println("replace/update");
+                        logger.debug("replace/update");
                     	pcs.removeItem(oldPc);
                     	newPc.setNationNo(oldPc.getNationNo());
                     	newPc.setName(oldPc.getName());
@@ -348,7 +348,7 @@ public class TurnXmlReader implements Runnable{
                     		prevTurnNo = ((PopCenterXmlInfoSource)oldPc.getInfoSource()).getPreviousTurnNo();
                     	}
                     	((PopCenterXmlInfoSource)newPc.getInfoSource()).setPreviousTurn(prevTurnNo);
-                    	System.out.println("updated new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());                    }
+                        logger.debug("updated new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());                    }
                     
                     if (newPc.getName().equals("Unknown (Map Icon)")) {
                     	newPc.setName(oldPc.getName());

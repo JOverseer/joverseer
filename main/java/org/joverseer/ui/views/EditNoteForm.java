@@ -61,6 +61,9 @@ public class EditNoteForm extends AbstractForm {
         checkBox.setText("");
         formBuilder.row();
 
+        formBuilder.add("tags");
+        formBuilder.row();
+        
         Binding tb = sbf.createBoundTextArea("text"); 
         JTextArea area = (JTextArea)tb.getControl();
         area.setLineWrap(true);

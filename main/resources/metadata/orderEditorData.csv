@@ -84,7 +84,7 @@
 ;;;;Number of troops;Weapon type;Armor type;;;;;;
 420;MenAtAr;Comm;# Recruited;b;;;;;;;C;C
 ;;;;Number of troops;Weapon type;Armor type;;;;;;
-425;RtrTrps;Misc;# of each Troop type retired, each in a different cell. (# ONLY);d;d;d;d;d;d;;;C
+425;RtrTrps;Misc;# of each Troop type retired, each in a different cell. (# ONLY);de;de;de;de;de;de;;;C
 ;;;;HC;LC;HI;LI;AR;MA;;;
 430;TrpsMan;Comm;Troop type (hc,lc,hi,li,ar,ma);trp;;;;;;;C;C
 ;;;;Troop type;;;;;;;;

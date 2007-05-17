@@ -16,5 +16,6 @@ public enum LifecycleEventsEnum {
     ListviewRefreshItems,
     RefreshTurnMapItems,
     SelectCharEvent,
-    SendOrdersByChat
+    SendOrdersByChat,
+    NoteAddedOrUpdated
 }

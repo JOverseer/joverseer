@@ -15,6 +15,7 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
     
     String text;
     boolean persistent;
+    String tags;
     
     
     public Integer getNationNo() {
@@ -100,5 +101,17 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
         }
         return "";
     }
+
+    
+    public String getTags() {
+        return tags;
+    }
+
+    
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+    
+    
     
 }

@@ -89,12 +89,12 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         public void execute() {
             int row = table.getSelectedRow();
             if (row >= 0) {
-            	int idx = 0;
-            	if (SortableTableModel.class.isInstance(table.getModel())) {
-            		idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-            	} else if (com.jidesoft.grid.SortableTableModel.class.isInstance(table.getModel())) {
-            		idx = ((com.jidesoft.grid.SortableTableModel) table.getModel()).getActualRowAt(row);
-            	}
+                int idx = 0;
+                if (SortableTableModel.class.isInstance(table.getModel())) {
+                    idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+                } else if (com.jidesoft.grid.SortableTableModel.class.isInstance(table.getModel())) {
+                    idx = ((com.jidesoft.grid.SortableTableModel) table.getModel()).getActualRowAt(row);
+                }
                 if (idx >= tableModel.getRowCount())
                     return;
                 try {
@@ -126,15 +126,15 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             return null;
         AndFilter f = new AndFilter();
         for (JComboBox filter : filters) {
-        	f.addFilter((AbstractListViewFilter)filter.getSelectedItem());
+            f.addFilter((AbstractListViewFilter) filter.getSelectedItem());
         }
         return f;
     }
-    
+
     protected JTable createTable() {
-    	return TableUtils.createStandardSortableTable(tableModel);
+        return TableUtils.createStandardSortableTable(tableModel);
     }
-    
+
     protected JComponent[] getButtons() {
         if (getDefaultSort() != null) {
             ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -151,9 +151,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             });
             ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
             restoreSorting.setToolTipText("Restore default sort order");
-            return new JComponent[]{restoreSorting};
+            return new JComponent[] {restoreSorting};
         }
-        return new JComponent[]{};
+        return new JComponent[] {};
     }
 
     protected JComponent createControlImpl() {
@@ -180,24 +180,24 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         // create the filter combo
         AbstractListViewFilter[][] filterLists = getFilters();
         if (filterLists != null) {
-        	TableLayoutBuilder lb = new TableLayoutBuilder();
-        	for (AbstractListViewFilter[] filterList : filterLists) {
-        		JComboBox filter = new JComboBox(filterList);
-	            filters.add(filter);
-	            filter.addActionListener(new ActionListener() {
-	
-	                public void actionPerformed(ActionEvent e) {
-	                    setItems();
-	                }
-	            });
-	            filter.setPreferredSize(new Dimension(150, 20));
-	            filter.setOpaque(true);
-	            lb.cell(filter, "colspec=left:150px");
-	            lb.gapCol();
-        	}
-        	JPanel p = lb.getPanel();
-        	p.setOpaque(true);
-        	tlb.cell(p, "align=left");
+            TableLayoutBuilder lb = new TableLayoutBuilder();
+            for (AbstractListViewFilter[] filterList : filterLists) {
+                JComboBox filter = new JComboBox(filterList);
+                filters.add(filter);
+                filter.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                        setItems();
+                    }
+                });
+                filter.setPreferredSize(new Dimension(150, 20));
+                filter.setOpaque(true);
+                lb.cell(filter, "colspec=left:150px");
+                lb.gapCol();
+            }
+            JPanel p = lb.getPanel();
+            p.setOpaque(true);
+            tlb.cell(p, "align=left");
             tlb.row();
         }
 
@@ -238,14 +238,14 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         p.setBackground(Color.WHITE);
         return p;
     }
-    
+
     protected void refreshFilters() {
         if (filters.size() > 0) {
             AbstractListViewFilter[][] filterLists = getFilters();
-            for (int i=0; i<filterLists.length; i++) {
+            for (int i = 0; i < filterLists.length; i++) {
                 filters.get(i).removeAllItems();
                 for (AbstractListViewFilter f : filterLists[i]) {
-                        filters.get(i).addItem(f);
+                    filters.get(i).addItem(f);
                 }
                 filters.get(i).updateUI();
             }
@@ -259,7 +259,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
                 refreshFilters();
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
-                //setItems();
+                // setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 refreshFilters();
                 setItems();
@@ -329,7 +329,6 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         }
 
     }
-
 
 
 }

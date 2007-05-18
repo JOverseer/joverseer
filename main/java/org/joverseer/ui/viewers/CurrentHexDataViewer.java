@@ -350,6 +350,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
         Collections.sort(chars, new CharacterDeathAllegianceNameComparator());
 
         for (Character ch : (Collection<Character>)chars) {
+            if (ch.getHostage() != null && ch.getHostage()) continue;
             showCharacter(ch);
         }
 

@@ -419,11 +419,11 @@ public class TurnPdfReader implements Runnable {
             // create DoubleAgent wrapper
             digester.addObjectCreate("txt2xml/Turn/Hostages/Hostage", "org.joverseer.support.readers.pdf.HostageWrapper");
             // add DoubleAgent wrapper
-            digester.addSetNext("txt2xml/Turn/DoubleAgents/Hostage", "addItem", "org.joverseer.support.readers.pdf.HostageWrapper");
+            digester.addSetNext("txt2xml/Turn/Hostages/Hostage", "addItem", "org.joverseer.support.readers.pdf.HostageWrapper");
             // parse properties
-            digester.addRule("txt2xml/Turn/DoubleAgents/Hostage",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Nation"},
-                            new String[]{"name", "nation"}));
+            digester.addRule("txt2xml/Turn/Hostages/Hostage",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Name", "Nation", "Owner", "Hex"},
+                            new String[]{"name", "nation", "owner", "hexNo"}));
             snpr.setAllowUnknownChildElements(true);
 
             // create container for artifacts
@@ -535,6 +535,7 @@ public class TurnPdfReader implements Runnable {
                 updateTurnData();
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error updating turn data : '" + exc.getMessage() + "'.");
             }
@@ -562,6 +563,7 @@ public class TurnPdfReader implements Runnable {
                 updateNationRelations(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -584,6 +586,7 @@ public class TurnPdfReader implements Runnable {
                 updateCharacters(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -591,6 +594,7 @@ public class TurnPdfReader implements Runnable {
                 updateDoubleAgents(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -598,6 +602,7 @@ public class TurnPdfReader implements Runnable {
                 updateHostages(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
                 errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -609,6 +614,7 @@ public class TurnPdfReader implements Runnable {
                 updateArmies(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -616,6 +622,7 @@ public class TurnPdfReader implements Runnable {
                 updateAnchoredShips(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
                 errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -627,6 +634,7 @@ public class TurnPdfReader implements Runnable {
                 updateCompanies(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -638,6 +646,7 @@ public class TurnPdfReader implements Runnable {
                 updateArtifacts(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
                 errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -649,6 +658,7 @@ public class TurnPdfReader implements Runnable {
                 updateCombats(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -656,6 +666,7 @@ public class TurnPdfReader implements Runnable {
                 updateEncounters(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
@@ -663,11 +674,13 @@ public class TurnPdfReader implements Runnable {
                 updateClimates(game);
             }
             catch (Exception exc) {
+                logger.error(exc);
             	errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
         }
         catch (Exception exc) {
+            logger.error(exc);
             if (getMonitor() != null) {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
@@ -1122,10 +1135,21 @@ public class TurnPdfReader implements Runnable {
                 cs.addItem(c);
             } 
             c.setHostage(true);
+           
             // set nation if applicable
-            Nation n = game.getMetadata().getNationByName(hw.getNation());
-            if (n != null) {
-                c.setNationNo(n.getNumber());
+            if (hw.getNation() != null) {
+                Nation n = game.getMetadata().getNationByName(hw.getNation());
+                if (n != null) {
+                    c.setNationNo(n.getNumber());
+                }
+            }
+            
+            // add to owner
+            c = (Character)cs.findFirstByProperty("name", hw.getOwner());
+            if (c != null) {
+                if (!c.getHostages().contains(hw.getName())) {
+                    c.getHostages().add(hw.getName());
+                }
             }
         }
                 

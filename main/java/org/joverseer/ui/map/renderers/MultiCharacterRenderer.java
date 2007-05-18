@@ -39,18 +39,26 @@ public class MultiCharacterRenderer implements Renderer {
         if (pval.equals("no")) {
             if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) return;
         }
+        
+        if (c.getHostage() != null && c.getHostage()) return;
 
         ArrayList<Character> charsInHex = null;
         charsInHex = turn.getContainer(TurnElementsEnum.Character).findAllByProperty("hexNo", c.getHexNo());
+        ArrayList<Character> toRemove = new ArrayList<Character>();
         if (pval.equals("no")) {
-            ArrayList<Character> toRemove = new ArrayList<Character>();
             for (Character ch : charsInHex) {
                 if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
                     toRemove.add(ch);
                 }
             }
-            charsInHex.removeAll(toRemove);
         }
+        for (Character ch : charsInHex) {
+            if (ch.getHostage() != null && ch.getHostage() == true && !toRemove.contains(ch)) {
+                toRemove.add(ch);
+            }
+        }
+        charsInHex.removeAll(toRemove);
+        
         int i = charsInHex.indexOf(c);
 
         int ii = i % 12;

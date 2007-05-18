@@ -46,6 +46,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
 
     ArrayList<Integer> artifacts = new ArrayList<Integer>();
     ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
+    ArrayList<String> hostages = new ArrayList<String>();
     int artifactInUse;
     
     InformationSourceEnum informationSource;
@@ -332,4 +333,19 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     	}
     	return structuredOrderResults;
     }
+
+    
+    public ArrayList<String> getHostages() {
+        if (hostages == null) {
+            hostages = new ArrayList<String>();
+        }
+        return hostages;
+    }
+
+    
+    public void setHostages(ArrayList<String> hostages) {
+        this.hostages = hostages;
+    }
+    
+    
 }

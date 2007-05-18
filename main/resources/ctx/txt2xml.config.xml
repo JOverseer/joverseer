@@ -339,12 +339,16 @@
 				<element>Hostage</element>
 				<regex>(\p{L}+(?:[\s\-']\p{L}+)* of the \p{L}+(?:[\s\-]\p{L}+)* is held by \p{L}+(?:[\s\-']\p{L}+)* at (\d{4}))</regex>
    				<processor type="RegexMatch">
-   					<element>Character</element>
+   					<element>Name</element>
    					<regex>(\p{L}+(?:[\s\-']\p{L}+)*) of the</regex>
    				</processor>
    				<processor type="RegexMatch">
    					<element>Nation</element>
    					<regex>(\p{L}+(?:[\s\-']\p{L}+)*) is held by</regex>
+   				</processor>
+   				<processor type="RegexMatch">
+   					<element>Owner</element>
+   					<regex>(\p{L}+(?:[\s\-']\p{L}+)*) at</regex>
    				</processor>
    				<processor type="RegexMatch">
    					<element>Hex</element>

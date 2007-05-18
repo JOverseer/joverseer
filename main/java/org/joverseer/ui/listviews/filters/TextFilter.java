@@ -8,19 +8,25 @@ public class TextFilter extends AbstractListViewFilter {
     String property;
     String value;
     
-    public TextFilter(String description, String property) {
+    public TextFilter(String description, String property, String value) {
         super(description);
         this.property = property;
+        this.value = value;
     }
 
     public boolean accept(Object obj) {
+        if (value == null) return true;
         try {
-            if (ReflectionUtils.retrieveField(obj, property).toString().indexOf(value) > -1) {
+            Object val = ReflectionUtils.retrieveField(obj, property);
+            if (val == null) val = "";
+            if (value.equals("")) return val.toString().equals("");
+            if (val.toString().indexOf(value) > -1) {
                 return true;
             }
             return false;
         }
         catch (Exception exc) {
+            exc.printStackTrace();
             return true;
         }
     }

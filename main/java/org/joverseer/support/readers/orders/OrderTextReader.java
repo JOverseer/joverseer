@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import org.joverseer.domain.Character;
+import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -51,6 +52,7 @@ public class OrderTextReader {
                 int charLine = 0;
                 String[] orderText = new String[]{null, null};
                 int[] orderLines = new int[]{0, 0};
+                String notes = "";
     
                 String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?]+)*\\s+\\([\\w ]{5}\\) @ \\d{4}.*";
                 String orderPattern = "^\\d{3}\\s{1,2}\\w{5,7}.*";
@@ -60,7 +62,7 @@ public class OrderTextReader {
                 while ((line = reader.readLine()) != null) {
                     if (chP.matcher(line).matches()) {
                         if (charId != null) {
-                            addOrders(charId, location, charLine, orderText, orderLines, pass);
+                            addOrders(charId, location, charLine, orderText, orderLines, notes, pass);
                         }
                         int j1 = line.indexOf("(");
                         int j2 = line.indexOf(")");
@@ -70,6 +72,7 @@ public class OrderTextReader {
                             location = line.substring(j3 + 2, j3 + 6);
                             charLine = lineCounter;
                             i = 0;
+                            notes = "";
                             lineResults.add("Character line (char id: " + charId + ").");
                         } else {
                             lineResults.add("Line ignored. Looks like character line but parsing failed.");
@@ -83,13 +86,17 @@ public class OrderTextReader {
                         } else {
                             lineResults.add("Order line ignored.");
                         }
+                    } else if (i == 2 && !line.trim().equals("")) {
+                        // comments
+                        notes += (line.equals("") ? "" : "\n") + line;
+                        lineResults.add("Order notes.");
                     } else {
                         lineResults.add("Line ignored.");
                     }
                     lineCounter++;
                 }
                 if (charId != null) {
-                    addOrders(charId, location, charLine, orderText, orderLines, pass);
+                    addOrders(charId, location, charLine, orderText, orderLines, notes, pass);
                 }
             }
             catch (Exception exc) {
@@ -99,7 +106,7 @@ public class OrderTextReader {
         
         
         
-        private void addOrders(String charId, String location, int charLine, String[] orderText, int[] orderLines, int pass) {
+        private void addOrders(String charId, String location, int charLine, String[] orderText, int[] orderLines, String notes, int pass) {
             Character c = (Character)getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charId);
             if (c == null) {
                 c = (Character)getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charId.trim());
@@ -116,6 +123,21 @@ public class OrderTextReader {
                 lineResults.set(charLine, lineRes.trim());
                 return;
             }
+            
+            if (pass == 1 && notes != null && !notes.equals("")) {
+                Note n = new Note();
+                n.setTarget(c);
+                n.setNationNo(c.getNationNo());
+                n.setText(notes.trim());
+                n.setTags("Order");
+                for (Note nd : (ArrayList<Note>)getGame().getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c)) {
+                    if (nd.getTags().indexOf("Order") > -1) {
+                        getGame().getTurn().getContainer(TurnElementsEnum.Notes).removeItem(nd);
+                    }
+                }
+                getGame().getTurn().getContainer(TurnElementsEnum.Notes).addItem(n);
+            }
+            
             chars++;
             Order[] orders = c.getOrders();
             for (int i=0; i<2; i++) {

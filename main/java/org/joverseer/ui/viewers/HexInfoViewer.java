@@ -53,6 +53,7 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
 public class HexInfoViewer extends ObjectViewer {
@@ -65,6 +66,7 @@ public class HexInfoViewer extends ObjectViewer {
     JTextField hexNo;
     JTextField climate;
     JTextField turnInfo;
+    NotesViewer notesViewer;
     
     RemoveBridgeCommand removeBridgeNE = new RemoveBridgeNE();
     RemoveBridgeCommand removeBridgeE = new RemoveBridgeE();
@@ -155,6 +157,15 @@ public class HexInfoViewer extends ObjectViewer {
             lb.append(tf);
             lb.nextLine();
         }
+        
+        notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
+        tlb.cell(notesViewer.createFormControl(), "colspec=left:240px");
+        JPanel notesPanel = tlb.getPanel();
+        notesPanel.setBackground(Color.white);
+        lb.append(notesPanel, 8, 1);
+        lb.nextLine();
+        
         JPanel panel = lb.getPanel();
         panel.setBackground(Color.WHITE);
         return panel;
@@ -198,14 +209,17 @@ public class HexInfoViewer extends ObjectViewer {
                     costStr = (cost > 0 ? String.valueOf(cost) : "-");
                     tf.setText(String.valueOf(costStr));
                 }
-                return;
+            } else {
+                for (JTextField tf : (Collection<JTextField>) infCosts.values()) {
+                    tf.setText("");
+                }
+                for (JTextField tf : (Collection<JTextField>) cavCosts.values()) {
+                    tf.setText("");
+                }
             }
-            for (JTextField tf : (Collection<JTextField>) infCosts.values()) {
-                tf.setText("");
-            }
-            for (JTextField tf : (Collection<JTextField>) cavCosts.values()) {
-                tf.setText("");
-            }
+            
+            ArrayList<Note> notes = (ArrayList<Note>)g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", h.getHexNo());
+            notesViewer.setFormObject(notes);
         }
     }
     

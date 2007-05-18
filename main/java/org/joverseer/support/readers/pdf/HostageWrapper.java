@@ -7,6 +7,7 @@ import org.joverseer.domain.InformationSourceEnum;
 public class HostageWrapper {
     String name;
     String nation;
+    String owner;
     int hexNo;
     
     public int getHexNo() {
@@ -33,6 +34,15 @@ public class HostageWrapper {
         this.nation = nation;
     }
     
+    public String getOwner() {
+        return owner;
+    }
+
+    
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     public Character getCharacter() {
         Character c = new Character();
         c.setName(getName());

@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -25,6 +26,7 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
+import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.TextAreaEditor;
 import org.joverseer.ui.support.controls.TextAreaRenderer;
@@ -134,6 +136,7 @@ public class NotesListView extends ItemListView {
         }
 
         table.getTableHeader().setBackground(Color.WHITE);
+        table.setRowHeight(12);
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
@@ -206,6 +209,21 @@ public class NotesListView extends ItemListView {
         }
         
     }
+
+    protected AbstractListViewFilter[][] getFilters() {
+        return new AbstractListViewFilter[][]{
+                new AbstractListViewFilter[]{
+                        new TextFilter("All", "tags", null),
+                        new TextFilter("No tags", "tags", ""),
+                        new TextFilter("Agents", "tags", "Agents"),
+                        new TextFilter("Emissaries", "tags", "Emissaries"),
+                        new TextFilter("Mages", "tags", "Mages"),
+                        new TextFilter("Artifacts", "tags", "Artifacts"),
+                        new TextFilter("Gold", "tags", "Gold"),
+                        new TextFilter("Order Comments", "tags", "Order")
+                }};
+        }
+    
 
     
     

@@ -64,7 +64,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             texts.get(i).setText(notes.get(i).getText());
             texts.get(i).setCaretPosition(0);
             int h = texts.get(i).getPreferredSize().height;
-            scps.get(i).setPreferredSize(new Dimension(210, Math.min(h, 36)));
+            scps.get(i).setPreferredSize(new Dimension(260, Math.min(h, 36)));
         } else {
             setVisibleByIndex(i, false);
         }
@@ -136,13 +136,13 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
 
             JScrollPane notesPane = new JScrollPane(ta);
             // notesPane.setPreferredSize(new Dimension(240, 36));
-            notesPane.setMaximumSize(new Dimension(210, 36));
+            notesPane.setMaximumSize(new Dimension(270, 36));
             notesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
             notesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             notesPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
             notesPane.setBorder(null);
             scps.add(notesPane);
-            tlb.cell(notesPane, "colspec=left:240px");
+            tlb.cell(notesPane, "colspec=left:280px");
             tlb.row();
         }
         JPanel p = tlb.getPanel();

@@ -40,7 +40,7 @@ public class TextAreaEditor extends AbstractCellEditor implements TableCellEdito
                 myEditor.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
                 myEditor.setText(value==null ? "" : value.toString());
 
-                myScrollPane.setBounds(0,0,table.getColumnModel().getColumn(column).getWidth(), 0);
+                myScrollPane.setBounds(0,0,table.getColumnModel().getColumn(column).getWidth(), 30);
                 int rowHeight = table.getRowHeight(row);
                 int thisHeight = myScrollPane.getPreferredSize().height+2;
                 if (thisHeight>rowHeight) table.setRowHeight(row, thisHeight);

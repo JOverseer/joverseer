@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 
 public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
@@ -21,7 +22,7 @@ public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
             int row, int column) {
-        JTextArea ta = new JTextArea();
+        JTextArea ta = this;
         ta.setWrapStyleWord(true);
         ta.setLineWrap(true);
         if (isSelected) {
@@ -37,14 +38,16 @@ public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
         
         ta.setText(value.toString());
 
-        JScrollPane scp = new JScrollPane(ta);
-        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        //scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scp.setBorder(BorderFactory.createEmptyBorder());
-
+//        JScrollPane scp = new JScrollPane(ta);
+//        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+//        //scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//        scp.setBorder(BorderFactory.createEmptyBorder());
+        TableColumnModel columnModel = table.getColumnModel();
+        setSize(columnModel.getColumn(column).getWidth(), 100000);
         int rowHeight = table.getRowHeight(row);
         int thisHeight = this.getPreferredSize().height;
-        if (thisHeight>rowHeight) table.setRowHeight(row, thisHeight);
-        return scp;
+        //if (thisHeight>rowHeight) 
+            table.setRowHeight(row, thisHeight);
+        return this;
     }
 }

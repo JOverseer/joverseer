@@ -15,29 +15,35 @@ public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
 
     public TextAreaRenderer() {
         super();
+        setWrapStyleWord(true);
+        setLineWrap(true);
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
             int row, int column) {
-
+        JTextArea ta = new JTextArea();
+        ta.setWrapStyleWord(true);
+        ta.setLineWrap(true);
         if (isSelected) {
-            setBackground(getSelectionColor());
-            setForeground(getSelectedTextColor());
+            ta.setBackground(getSelectionColor());
+            ta.setForeground(getSelectedTextColor());
         } else {
-            setBackground(Color.white);
-            setForeground(Color.black);
+            ta.setBackground(Color.white);
+            ta.setForeground(Color.black);
         }
 
         // Nun der Text rein:
         if (value == null) value = "";
-        setText(value.toString());
+        
+        ta.setText(value.toString());
 
-        JScrollPane scp = new JScrollPane(this);
+        JScrollPane scp = new JScrollPane(ta);
         scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        //scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scp.setBorder(BorderFactory.createEmptyBorder());
 
         int rowHeight = table.getRowHeight(row);
-        int thisHeight = scp.getPreferredSize().height+2;
+        int thisHeight = this.getPreferredSize().height;
         if (thisHeight>rowHeight) table.setRowHeight(row, thisHeight);
         return scp;
     }

@@ -17,7 +17,10 @@ import org.springframework.richclient.application.ApplicationDescriptor;
 
 
 public class OrderFileGenerator {
+    Turn turn;
+    
     public String generateOrderFile(Game g, Turn t, int nationNo) throws Exception {
+        turn = t;
         String ret = "";
         ArrayList<Character> chars = (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo);
         Collections.sort(chars, new BeanComparator("id"));

@@ -28,6 +28,7 @@ public class TextAreaEditor extends AbstractCellEditor implements TableCellEdito
                 myScrollPane = new JScrollPane(myEditor);
                 myScrollPane.setBorder(BorderFactory.createEmptyBorder());
                 myScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                myScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 myScrollPane.getVerticalScrollBar().setFocusable(false);
                 myScrollPane.getHorizontalScrollBar().setFocusable(false);
         }

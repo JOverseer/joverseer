@@ -7,6 +7,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.UniqueIdGenerator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.views.EditNoteForm;
@@ -23,11 +24,9 @@ public class AddEditNoteCommand extends ActionCommand {
     Note note;
     
     public AddEditNoteCommand(Object target) {
-        note = (Note)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", target);
-        if (note == null) {
-            note = new Note();
-            note.setTarget(target);
-        }
+        note = new Note();
+        note.setId(UniqueIdGenerator.get());
+        note.setTarget(target);
     }
     
     public AddEditNoteCommand(Note note) {
@@ -52,6 +51,8 @@ public class AddEditNoteCommand extends ActionCommand {
                 }
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.NoteAddedOrUpdated.toString(), note, this));
 
                 return true;
             }

@@ -64,7 +64,7 @@ public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
                 }
             }
             if (copy) {
-                if (turn.getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", target) == null) {
+                if (turn.getContainer(TurnElementsEnum.Notes).findFirstByProperty("id", n.getId()) == null) {
                     Note newNote = new Note();
                     newNote.setTarget(target);
                     newNote.setText(n.getText() + "");

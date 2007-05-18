@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -118,7 +120,10 @@ public class CharacterViewer extends ObjectViewer {
     JTextField nationTextBox;
     JTextField companyMembersTextBox;
     JTextArea notes;
+    JTextArea hostages;
+    JScrollPane hostagesPane;
     JScrollPane notesPane;
+    NotesViewer notesViewer;
 
     JTable artifactsTable;
     JTable spellsTable;
@@ -136,6 +141,7 @@ public class CharacterViewer extends ObjectViewer {
     boolean showArtifacts = false;
     boolean showSpells = false;
     boolean showOrders = false;
+    boolean showHostages = false;
 
     ActionCommand showArtifactsCommand = new ShowArtifactsCommand();
     ActionCommand showSpellsCommand = new ShowSpellsCommand();
@@ -161,6 +167,7 @@ public class CharacterViewer extends ObjectViewer {
             showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank() ||
                 OrderEditorAutoNations.instance().containsNation(c.getNationNo());
             showSpells = false;
+            showHostages = false;
         }
         super.setFormObject(object);
         if (object == null)
@@ -338,14 +345,25 @@ public class CharacterViewer extends ObjectViewer {
                 }
                 characterName.setForeground(col);
             }
-            
-            Note n = (Note)g.getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c);
-            if (n != null) {
-                notesPane.setVisible(true);
-                notes.setText(n.getText());
+            if (showHostages && c.getHostages().size() > 0) {
+                hostagesPane.setVisible(true);
+                String htxt = "";
+                for (String h : c.getHostages()) {
+                    htxt += (htxt.equals("") ? "" : ", ") + h;
+                    Character hostage = (Character)g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", h);
+                    if (hostage != null) {
+                        Integer hNationNo = hostage.getNationNo();
+                        String hNationName = gm.getNationByNum(hNationNo).getShortName();
+                        htxt += "(" + hNationName + ")";
+                    }
+                }
+                hostages.setText(("Hostages: " + htxt));
             } else {
-                notesPane.setVisible(false);
+                hostagesPane.setVisible(false);
             }
+            
+            ArrayList<Note> notes = (ArrayList<Note>)g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
+            notesViewer.setFormObject(notes);
         }
 
     }
@@ -473,6 +491,7 @@ public class CharacterViewer extends ObjectViewer {
                 showArtifacts = !showOrders;
                 showSpells = !showOrders;
                 showOrders = !showOrders;
+                showHostages = !showHostages;
                 reset((Character)getFormObject());
             }
             
@@ -600,8 +619,17 @@ public class CharacterViewer extends ObjectViewer {
         });
         
         glb.nextLine();
-        
 
+        hostages = new JTextArea();
+        hostages.setWrapStyleWord(true);
+        hostages.setLineWrap(true);
+        hostagesPane = new JScrollPane(hostages);
+        hostagesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        hostagesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        hostagesPane.setBorder(BorderFactory.createEmptyBorder());
+        glb.append(hostagesPane, 6, 1);
+        glb.nextLine();
+        
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
         tlb.cell(order1comp = order1.createFormControl(),"rowspec=top:20px");
@@ -627,34 +655,40 @@ public class CharacterViewer extends ObjectViewer {
         
         glb.nextLine();
         
+        notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
+        tlb = new TableLayoutBuilder();
+        tlb.cell(notesViewer.createFormControl(), "colspec=left:240px");
+        JPanel notesPanel = tlb.getPanel();
+        notesPanel.setBackground(Color.white);
+        glb.append(notesPanel, 6, 1);
         
-        notes = new JTextArea();
-        //rumor.setPreferredSize(new Dimension(220, 80));
-        notes.setLineWrap(true);
-        notes.setWrapStyleWord(true);
-        notesPane = new JScrollPane(notes);
-        notesPane.setMaximumSize(new Dimension(240, 36));
-        notesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        notesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        notesPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
-        //rumor.setBorder(null);
-        notesPane.setBorder(null);
-        Font f = GraphicUtils.getFont(notes.getFont().getName(), Font.ITALIC, notes.getFont().getSize());
-        notes.setFont(f);
-        notes.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent arg0) {
-                updateNotes();
-            }
-    
-            public void insertUpdate(DocumentEvent arg0) {
-                updateNotes();
-            }
-    
-            public void removeUpdate(DocumentEvent arg0) {
-                updateNotes();
-            }
-        });
-        glb.append(notesPane, 5, 1);
+//        notes = new JTextArea();
+//        //rumor.setPreferredSize(new Dimension(220, 80));
+//        notes.setLineWrap(true);
+//        notes.setWrapStyleWord(true);
+//        notesPane = new JScrollPane(notes);
+//        notesPane.setMaximumSize(new Dimension(240, 36));
+//        notesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+//        notesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//        notesPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
+//        //rumor.setBorder(null);
+//        notesPane.setBorder(null);
+//        Font f = GraphicUtils.getFont(notes.getFont().getName(), Font.ITALIC, notes.getFont().getSize());
+//        notes.setFont(f);
+//        notes.getDocument().addDocumentListener(new DocumentListener() {
+//            public void changedUpdate(DocumentEvent arg0) {
+//                updateNotes();
+//            }
+//    
+//            public void insertUpdate(DocumentEvent arg0) {
+//                updateNotes();
+//            }
+//    
+//            public void removeUpdate(DocumentEvent arg0) {
+//                updateNotes();
+//            }
+//        });
+//        glb.append(notesPane, 5, 1);
         glb.nextLine();
         
         JPanel panel = glb.getPanel();

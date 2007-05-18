@@ -16,19 +16,23 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
     String text;
     boolean persistent;
     String tags;
-    
+    long id;
     
     public Integer getNationNo() {
-        if (getTarget() == null) return 0;
-        if (Integer.class.isInstance(getTarget())) {
+        if (nationNo == null) {
+            if (Integer.class.isInstance(getTarget())) {
+                return 0;
+            } else if (IBelongsToNation.class.isInstance(getTarget())) {
+                return ((IBelongsToNation)getTarget()).getNationNo();
+            }
             return 0;
-        } else if (IBelongsToNation.class.isInstance(getTarget())) {
-            return ((IBelongsToNation)getTarget()).getNationNo();
         }
-        return 0;
+        return nationNo;
     }
 
-    public void setNationNo(Integer n) {};
+    public void setNationNo(Integer n) {
+        nationNo = n;
+    };
     
     public Object getTarget() {
         return target;
@@ -110,6 +114,16 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
     
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    
+    public long getId() {
+        return id;
+    }
+
+    
+    public void setId(long id) {
+        this.id = id;
     }
     
     

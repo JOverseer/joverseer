@@ -3,9 +3,11 @@ package org.joverseer.orders.export;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Character;
+import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 
 
 public class OrderTextGenerator extends OrderFileGenerator {
@@ -41,6 +43,15 @@ public class OrderTextGenerator extends OrderFileGenerator {
                 parameters += (parameters.equals("") ? "" : "  ") + o.getParameter(i);
             }
             ret += (o.getNoAndCode().replace(" ", "  ") + "  " + parameters).trim(); 
+        }
+        if (o == c.getOrders()[1]) {
+            // export comments
+            ArrayList<Note> notes = (ArrayList<Note>)turn.getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
+            for (Note n : notes) {
+                if (n.getTags() != null && n.getTags().indexOf("Order") > -1) {
+                    ret += "\n" + n.getText();
+                }
+            }
         }
         return ret;
     }

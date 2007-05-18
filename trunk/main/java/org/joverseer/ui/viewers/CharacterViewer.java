@@ -657,7 +657,7 @@ public class CharacterViewer extends ObjectViewer {
         
         notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
         tlb = new TableLayoutBuilder();
-        tlb.cell(notesViewer.createFormControl(), "colspec=left:240px");
+        tlb.cell(notesViewer.createFormControl(), "colspec=left:285px");
         JPanel notesPanel = tlb.getPanel();
         notesPanel.setBackground(Color.white);
         glb.append(notesPanel, 6, 1);

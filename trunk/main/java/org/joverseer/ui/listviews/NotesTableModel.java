@@ -28,9 +28,9 @@ public class NotesTableModel extends ItemTableModel {
     }
 
     
-    protected boolean isCellEditableInternal(Object object, int i) {
-        return i == iText || i == iTags;
-    }
+//    protected boolean isCellEditableInternal(Object object, int i) {
+//        return i == iText || i == iTags;
+//    }
 
     protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
         super.setValueAtInternal(arg0, arg1, arg2);

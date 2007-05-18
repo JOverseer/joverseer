@@ -26,6 +26,7 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
+import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.TextAreaEditor;
@@ -136,7 +137,6 @@ public class NotesListView extends ItemListView {
         }
 
         table.getTableHeader().setBackground(Color.WHITE);
-        table.setRowHeight(12);
         table.addMouseListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
@@ -149,11 +149,11 @@ public class NotesListView extends ItemListView {
         //MultilineTableCellRenderer r = new MultilineTableCellRenderer();
         //r.setWrapStyleWord(true);
         //r.setLineWrap(true);
-        TextAreaRenderer r = new TextAreaRenderer();
-        table.setDefaultRenderer(String.class, r);
-        table.setDefaultRenderer(Integer.class, r);
-        
-        table.getColumnModel().getColumn(NotesTableModel.iText).setCellEditor(new TextAreaEditor());
+//        TextAreaRenderer r = new TextAreaRenderer();
+//        table.setDefaultRenderer(String.class, r);
+//        table.setDefaultRenderer(Integer.class, r);
+//        
+        //table.getColumnModel().getColumn(NotesTableModel.iText).setCellEditor(new TextAreaEditor());
         
         return p;
     }
@@ -212,6 +212,7 @@ public class NotesListView extends ItemListView {
 
     protected AbstractListViewFilter[][] getFilters() {
         return new AbstractListViewFilter[][]{
+                NationFilter.createNationFilters(),
                 new AbstractListViewFilter[]{
                         new TextFilter("All", "tags", null),
                         new TextFilter("No tags", "tags", ""),

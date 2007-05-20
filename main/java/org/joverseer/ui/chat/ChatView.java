@@ -110,6 +110,7 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
                     return;
                 }
                 final ChatConnection conn = new ChatConnection();
+                conn.setMyIP("127.0.0.1");
                 conn.setMyPort(9600);
                 final ConnectToChatServerForm frm = new ConnectToChatServerForm(FormModelHelper.createFormModel(conn));
                 
@@ -160,8 +161,9 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
                     return;
                 }
                 final ChatConnection conn = new ChatConnection();
-                conn.setMyIP("localhost");
+                conn.setMyIP("127.0.0.1");
                 conn.setMyPort(9600);
+                conn.setPeerPort(9600);
                 final ConnectToChatServerForm frm = new ConnectToChatServerForm(FormModelHelper.createFormModel(conn));
                 
                 FormBackedDialogPage page = new FormBackedDialogPage(frm);

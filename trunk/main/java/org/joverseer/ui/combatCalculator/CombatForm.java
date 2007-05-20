@@ -2,6 +2,11 @@ package org.joverseer.ui.combatCalculator;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -163,9 +168,11 @@ public class CombatForm extends AbstractForm {
                 }
             };
         });
+        side1Table.setDropTarget(new DropTarget(side1Table, new AddArmyDropTargetAdapter(0)));
         
         JScrollPane scp = new JScrollPane(side1Table);
         scp.setPreferredSize(new Dimension(560, 130));
+        scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
         tlb.cell(scp);
 
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -257,9 +264,11 @@ public class CombatForm extends AbstractForm {
                 }
             };
         });
+        side2Table.setDropTarget(new DropTarget(side2Table, new AddArmyDropTargetAdapter(1)));
 
         scp = new JScrollPane(side2Table);
         scp.setPreferredSize(new Dimension(560, 130));
+        scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(1)));
         tlb.cell(scp);
         
         lb = new TableLayoutBuilder();
@@ -669,4 +678,70 @@ public class CombatForm extends AbstractForm {
     public void addArmyEstimate(ArmyEstimate ae) {
     }
     
+    class AddArmyDropTargetAdapter extends DropTargetAdapter {
+    	int side;
+    	
+    	public AddArmyDropTargetAdapter(int side) {
+    		super();
+    		this.side = side;
+    	}
+    	
+		public void drop(DropTargetDropEvent e) {
+			Transferable t = e.getTransferable();
+			try {
+				DataFlavor armyArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" +  Army[].class.getName() + "\"");
+				DataFlavor armyFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" +  Army.class.getName());
+				DataFlavor armyEstimateArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" +  ArmyEstimate[].class.getName() + "\"");
+				DataFlavor armyEstimateFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" +  ArmyEstimate.class.getName());
+				
+				Combat c = (Combat)getFormObject();
+				if (t.isDataFlavorSupported(armyArrayFlavor)) {
+					Army[] armies = (Army[])t.getTransferData(armyArrayFlavor);
+					for (Army a : armies) {
+						CombatArmy ca = new CombatArmy(a);
+						c.addToSide(side, ca);
+						if (side == 0) {
+							side1TableModel.addRow(ca);
+						} else {
+							side2TableModel.addRow(ca);
+						}
+					}
+					runCombat();
+				} else if (t.isDataFlavorSupported(armyFlavor)) {
+					CombatArmy ca = new CombatArmy((Army)t.getTransferData(armyFlavor));
+					c.addToSide(side, ca);
+					if (side == 0) {
+						side1TableModel.addRow(ca);
+					} else {
+						side2TableModel.addRow(ca);
+					}
+					runCombat();
+				} else if (t.isDataFlavorSupported(armyEstimateArrayFlavor)) {
+					ArmyEstimate[] armies = (ArmyEstimate[])t.getTransferData(armyEstimateArrayFlavor);
+					for (ArmyEstimate a : armies) {
+						CombatArmy ca = new CombatArmy(a);
+						c.addToSide(side, ca);
+						if (side == 0) {
+							side1TableModel.addRow(ca);
+						} else {
+							side2TableModel.addRow(ca);
+						}
+					}
+					runCombat();
+				} else if (t.isDataFlavorSupported(armyEstimateFlavor)) {
+					CombatArmy ca = new CombatArmy((ArmyEstimate)t.getTransferData(armyEstimateFlavor));
+					c.addToSide(side, ca);
+					if (side == 0) {
+						side1TableModel.addRow(ca);
+					} else {
+						side2TableModel.addRow(ca);
+					}
+					runCombat();
+				}
+			}
+			catch (Exception exc) {
+				exc.printStackTrace();
+			}
+		}
+    }; 
 }

@@ -30,6 +30,14 @@ public class ArmyEstimate implements Serializable, IHasMapLocation {
 	public ArrayList<ArmyEstimateElement> getRegiments() {
 		return regiments;
 	}
+	
+	public ArmyEstimateElement getRegiment(ArmyElementType t) {
+		for (ArmyEstimateElement aee : getRegiments()) {
+			if (aee.getType().equals(t)) return aee;
+		}
+		return null;
+	}
+	
 	public int getHexNo() {
 		return hexNo;
 	}

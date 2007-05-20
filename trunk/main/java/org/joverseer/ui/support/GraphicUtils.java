@@ -54,32 +54,7 @@ public class GraphicUtils {
         return new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 10, new float[]{width, width}, 2);        
     }
     
-    public static void addOverwriteDropListener(JTextComponent c) {
-        final JTextComponent cc = c;
-        c.setDropTarget(new DropTarget(c, new DropTargetListener() {
-
-            public void dragEnter(DropTargetDragEvent arg0) {
-            }
-    
-            public void dragExit(DropTargetEvent arg0) {
-            }
-    
-            public void dragOver(DropTargetDragEvent arg0) {
-            }
-    
-            public void drop(DropTargetDropEvent arg0) {
-                try {
-                    cc.setText(arg0.getTransferable().getTransferData(DataFlavor.stringFlavor).toString());
-                    cc.requestFocus();
-                }
-                catch (Exception exc) {
-                    
-                }
-            }
-            public void dropActionChanged(DropTargetDragEvent arg0) {
-            }
-        }));
-    }
+   
     
     public static String parseName(String name) {
         if (name.equals("Unknown (Map Icon)")) return "Unknown";

@@ -2,6 +2,11 @@ package org.joverseer.ui.orderEditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -9,8 +14,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
+import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
@@ -29,7 +38,30 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
         parameter.setPreferredSize(new Dimension(60, 18));
         attachAutoUpdateDocumentListener(parameter);
         components.add(parameter);
-        GraphicUtils.addOverwriteDropListener(parameter);
+        //GraphicUtils.addOverwriteDropListener(parameter);
+        parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
+			public void drop(DropTargetDropEvent dtde) {
+	                try {
+	                	Transferable t = dtde.getTransferable();
+	                	CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
+	                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
+	                	String txt = "";
+	                	if (t.isDataFlavorSupported(characterDataFlavor)) {
+	                		txt = ((Character)t.getTransferData(characterDataFlavor)).getId();
+	                		txt = Character.getSpacePaddedIdFromId(txt);
+	                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
+	                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
+	                	} else {
+	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+	                	}
+	                	parameter.setText(txt);
+	                    parameter.requestFocus();
+	                }
+	                catch (Exception exc) {
+	                    
+	                }
+			}
+        }));
         tlb.row();
     }
 

@@ -230,8 +230,13 @@ public class CharacterInfoCollector implements ApplicationListener {
         String statType = InfoUtils.getCharacterStatsTypeFromTitle(c.getTitle());
         if (statRange == null)
             return;
-        String[] parts = statRange.split("-");
-        int stat = Integer.parseInt(parts[0]);
+        int stat = 0;
+        if (statRange.indexOf("-") > -1) { // parse range eg 50-59
+        	String[] parts = statRange.split("-");
+        	stat = Integer.parseInt(parts[0]);
+        } else { // parse 100+
+        	stat = 100;
+        }
         DerivedFromTitleInfoSource tis = new DerivedFromTitleInfoSource(c.getTitle());
         tis.setTurnNo(turnNo);
         if (statType.equals("Commander")) {

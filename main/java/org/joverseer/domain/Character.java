@@ -266,6 +266,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
         String id = name.toLowerCase().substring(0, Math.min(5, name.length()));
         return AsciiUtils.convertNonAscii(id);
     }
+    
+    public static String getSpacePaddedIdFromId(String id) {
+    	return id + "     ".substring(0, 5 - id.length());
+    }
 
     
     public String getEncounter() {

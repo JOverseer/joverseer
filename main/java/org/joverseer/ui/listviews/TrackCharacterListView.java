@@ -2,6 +2,11 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +25,7 @@ import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
@@ -27,6 +33,8 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
+import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -64,6 +72,30 @@ public class TrackCharacterListView extends BaseItemListView {
         character.setPreferredSize(new Dimension(200, 20));
         character.setDragEnabled(true);
         character.setOpaque(true);
+        character.setDropTarget(new DropTarget(character, new DropTargetAdapter() {
+			public void drop(DropTargetDropEvent dtde) {
+                try {
+                	Transferable t = dtde.getTransferable();
+                	CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
+                	String txt = "";
+                	if (t.isDataFlavorSupported(characterDataFlavor)) {
+                		txt = ((Character)t.getTransferData(characterDataFlavor)).getId();
+                		txt = Character.getSpacePaddedIdFromId(txt);
+                	} else {
+                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+                	}
+                	character.setText(txt);
+                	character.requestFocus();
+                }
+                catch (Exception exc) {
+                }
+			}
+        }));
+        character.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setItems();
+			}
+        });
         
         JButton btn = new JButton("Track");
         btn.setPreferredSize(new Dimension(70, 20));

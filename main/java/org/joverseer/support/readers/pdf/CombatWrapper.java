@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.joverseer.game.Game;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
@@ -224,12 +225,14 @@ public class CombatWrapper {
 		    			ae.getLossesDescriptions().add(l);
 		    			String lossesRange = InfoUtils.getArmyLossesRange(l);
 		    			ae.getLossesRanges().add(lossesRange);
+		    			ae.getLosses().add(getRangeAverage(lossesRange));
 		    		}
 	    		}
 	    		
 	    		// morale
 	    		String moraleRange = InfoUtils.getArmyMoraleRange(ca.getMorale());
 	    		ae.setMoraleRange(moraleRange);
+	    		ae.setMorale(getRangeAverage(moraleRange));
 	    		
 	    		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
 	    		
@@ -261,10 +264,13 @@ public class CombatWrapper {
 	    				aee.setType(aet);
 	    				aee.setWeaponsDescription(weapons);
 	    				aee.setWeaponsRange(weaponRange);
+	    				aee.setWeapons(getRangeAverage(weaponRange));
 	    				aee.setArmorDescription(armor);
 	    				aee.setArmorRange(armorRange);
+	    				aee.setArmor(getRangeAverage(armorRange));
 	    				aee.setTrainingDescription(training);
 	    				aee.setTrainingRange(trainingRange);
+	    				aee.setTraining(getRangeAverage(trainingRange));
 	    				
 	    				ae.getRegiments().add(aee);
 	    			} else {
@@ -280,5 +286,36 @@ public class CombatWrapper {
     		
     }
     
-    
+    protected int getRangeAverage(String rangeString, int max) {
+    	if (rangeString.indexOf("-") > -1) {
+	    	String[] parts = rangeString.split("-");
+	    	try {
+	    		return (int)Math.round(((double)Integer.parseInt(parts[0]) + (double)Integer.parseInt(parts[1])) / 2d);
+	    	}
+	    	catch (Exception exc) {
+	    		exc.printStackTrace();
+	    	}
+	    	return 0;
+    	}
+    	if (rangeString.endsWith("+")) {
+    		String[] parts = rangeString.split("+");
+	    	try {
+	    		return (int)Math.round(((double)Integer.parseInt(parts[0]) + (double)max) / 2d);
+	    	}
+	    	catch (Exception exc) {
+	    		exc.printStackTrace();
+	    	}
+	    	return 0;
+    	}
+    	try {
+    		return Integer.parseInt(rangeString);
+    	}
+    	catch (Exception exc) {
+    		exc.printStackTrace();
+    	}
+    	return 0;
+    }
+    protected int getRangeAverage(String rangeString) {
+    	return getRangeAverage(rangeString, 100);
+    }
 }

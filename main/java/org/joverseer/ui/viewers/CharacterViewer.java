@@ -82,6 +82,8 @@ import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
+import org.joverseer.ui.support.transferHandlers.ArtifactInfoExportTransferHandler;
+import org.joverseer.ui.support.transferHandlers.CharacterExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
 import org.joverseer.ui.views.EditCharacterForm;
@@ -184,9 +186,9 @@ public class CharacterViewer extends ObjectViewer {
         ArrayList artis = new ArrayList();
         Character startingChar = null;
         characterName.setText(GraphicUtils.parseName(c.getName()));
+        characterName.setTransferHandler(new CharacterExportTransferHandler(c));
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
-
             String txt = getStatLine(c);
             
             if (txt.equals("")) {
@@ -450,7 +452,7 @@ public class CharacterViewer extends ObjectViewer {
         characterName = (JTextField) c;
         characterName.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                characterName.setTransferHandler(new CharIdTransferHandler("text"));
+//                characterName.setTransferHandler(new CharIdTransferHandler("text"));
                 TransferHandler handler = characterName.getTransferHandler();
                 handler.exportAsDrag(characterName, e, TransferHandler.COPY);
             }
@@ -532,7 +534,7 @@ public class CharacterViewer extends ObjectViewer {
             	if (e.getClickCount() == 1) {
 	                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
 	                if (a == null) return;
-	                TransferHandler handler = new ParamTransferHandler(a.getNo());
+	                TransferHandler handler = new ArtifactInfoExportTransferHandler(a);
 	                artifactsTable.setTransferHandler(handler);
 	                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
             	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
@@ -551,7 +553,6 @@ public class CharacterViewer extends ObjectViewer {
         
         tableModel.setRowNumbers(false);
         artifactsTable.setModel(tableModel);
-        // todo think about this
         TableUtils.setTableColumnWidths(artifactsTable, new int[] {30, 120});
         artifactsTable.setBorder(null);
 
@@ -574,19 +575,15 @@ public class CharacterViewer extends ObjectViewer {
         TableUtils.setTableColumnWidths(spellsTable, new int[] {30, 90, 30});
         spellsTable.setBorder(null);
         
-        
-//        spellsTable.addMouseListener(new MouseAdapter() {
-//            public void mousePressed(MouseEvent e) {
-//                SpellProficiency sp = (SpellProficiency)tableModel.getRow(spellsTable.getSelectedRow());
-//                if (sp == null) return;
-//                TransferHandler handler = new ParamTransferHandler(sp.getSpellId());
-//                spellsTable.setTransferHandler(handler);
-//                handler.exportAsDrag(spellsTable, e, TransferHandler.COPY);
-//            }
-//        });
-        spellsTable.addMouseListener(new MouseListener() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
+        spellsTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+            	if (e.getClickCount() == 1) {
+            		SpellProficiency sp = (SpellProficiency)spellModel.getRow(spellsTable.getSelectedRow());
+                    if (sp == null) return;
+                    TransferHandler handler = new ParamTransferHandler(sp.getSpellId());
+                    spellsTable.setTransferHandler(handler);
+                    handler.exportAsDrag(spellsTable, e, TransferHandler.COPY);
+            	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
                     SpellProficiency sp = (SpellProficiency)spellModel.getRow(spellsTable.getSelectedRow());
                     if (sp == null) return;
                     
@@ -605,17 +602,7 @@ public class CharacterViewer extends ObjectViewer {
                 }
             }
 
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            public void mouseExited(MouseEvent e) {
-            }
-
-            public void mousePressed(MouseEvent e) {
-            }
-
-            public void mouseReleased(MouseEvent e) {
-            }
+            
         });
         
         glb.nextLine();

@@ -1,6 +1,11 @@
 package org.joverseer.ui.orderEditor;
 
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -8,7 +13,13 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 
+import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
+import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.SpellInfo;
+import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
+import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
+import org.joverseer.ui.support.dataFlavors.SpellInfoDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
@@ -30,7 +41,28 @@ public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
             tlb.cell(parameter = new JFormattedTextField(f), "colspec=left:150px");
             parameter.setText(o.getParameter(paramNo));
             parameter.setPreferredSize(new Dimension(50, 18));
-            
+            parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
+    			public void drop(DropTargetDropEvent dtde) {
+    	                try {
+    	                	Transferable t = dtde.getTransferable();
+    	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
+    	                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
+    	                	String txt = "";
+    	                	if (t.isDataFlavorSupported(spellInfoDataFlavor)) {
+    	                		txt = String.valueOf(((SpellInfo)t.getTransferData(spellInfoDataFlavor)).getNumber());
+    	                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
+    	                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
+    	                	} else {
+    	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+    	                	}
+    	                	parameter.setText(txt);
+    	                    parameter.requestFocus();
+    	                }
+    	                catch (Exception exc) {
+    	                    
+    	                }
+    			}
+            }));
             attachAutoUpdateDocumentListener(parameter);
             components.add(parameter);
         }

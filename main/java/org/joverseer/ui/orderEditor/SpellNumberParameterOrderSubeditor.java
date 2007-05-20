@@ -1,6 +1,11 @@
 package org.joverseer.ui.orderEditor;
 
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,10 +15,14 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
+import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
@@ -44,6 +53,34 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(new JLabel(paramName), "colspec=left:70px");
         tlb.cell(parameter = new JComboBox(), "colspec=left:180px");
         parameter.setPreferredSize(new Dimension(180, 18));
+        parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
+			public void drop(DropTargetDropEvent dtde) {
+                try {
+                	Transferable t = dtde.getTransferable();
+                	CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
+                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
+                	String txt = "";
+                	if (t.isDataFlavorSupported(characterDataFlavor)) {
+                		txt = ((Character)t.getTransferData(characterDataFlavor)).getId();
+                		txt = Character.getSpacePaddedIdFromId(txt);
+                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
+                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
+                	} else {
+                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+                	}
+                	JComboBox cmb = (JComboBox)parameter;
+                	for (int i=0; i<cmb.getItemCount(); i++) {
+                		if (cmb.getItemAt(i).toString().startsWith(txt + " ")) {
+                			cmb.setSelectedIndex(i);
+                		}
+                	};
+                }
+                catch (Exception exc) {
+                    
+                }
+			}
+        }));
+        
         tlb.row();
         tlb.cell(spellNo = new JTextField());
         spellNo.setVisible(false);

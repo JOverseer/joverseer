@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -23,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -41,6 +46,8 @@ import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
+import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -57,8 +64,10 @@ import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 
-public abstract class BaseItemListView extends AbstractView implements ApplicationListener, MouseListener {
-
+public abstract class BaseItemListView extends AbstractView implements ApplicationListener, MouseListener, MouseMotionListener {
+	protected int xDiff;
+	protected int yDiff;
+	
     protected BeanTableModel tableModel;
 
     protected JTable table;
@@ -78,7 +87,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected ColumnToSort[] getDefaultSort() {
         return null;
     }
-
+    
     protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
         pageComponentContext.register("selectHexCommand", selectHexCommandExecutor);
         selectHexCommandExecutor.setEnabled(GameHolder.hasInitializedGame());
@@ -219,6 +228,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         table.setDefaultRenderer(InfoSource.class, new InfoSourceTableCellRenderer(tableModel));
         table.setDefaultRenderer(CharacterDeathReasonEnum.class, new DeathReasonEnumRenderer(tableModel));
         table.addMouseListener(this);
+        table.addMouseMotionListener(this);
+        //table.setDragEnabled(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
         scrollPane.getViewport().setBackground(table.getBackground());
@@ -291,31 +303,48 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 2 && e.getButton() == 1) {
+        
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseExited(MouseEvent e) {
+    }
+
+    public void mousePressed(MouseEvent e) {
+    	if (e.getClickCount() == 2 && e.getButton() == 1) {
             selectHexCommandExecutor.execute();
         }
         if (e.getClickCount() == 1 && e.getButton() == 3) {
             showContextMenu(e);
         }
-    }
-
-    public void mouseEntered(MouseEvent e) {
-        // To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void mouseExited(MouseEvent e) {
-        // To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public void mousePressed(MouseEvent e) {
-        // To change body of implemented methods use File | Settings | File Templates.
+    	if (e.getButton() == MouseEvent.BUTTON1) {
+            xDiff = e.getX();
+        	yDiff = e.getY();
+    	}
     }
 
     public void mouseReleased(MouseEvent e) {
-        // To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public class ToggleNationNoDisplay extends ActionCommand {
+    public void mouseDragged(MouseEvent e) {
+    	Point p = e.getPoint();
+        int dx = Math.abs(e.getX() - xDiff);
+        int dy = Math.abs(e.getY() - yDiff);
+        if (dx > 5 || dy > 5) {
+        	startDragAndDropAction(e);
+        }
+	}
+    
+    protected void startDragAndDropAction(MouseEvent e) {
+    	
+    }
+
+	public void mouseMoved(MouseEvent e) {
+	}
+
+	public class ToggleNationNoDisplay extends ActionCommand {
 
         protected void doExecuteCommand() {
             Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);

@@ -5,6 +5,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -104,8 +105,8 @@ public class AdvancedCharacterListView extends BaseItemListView {
         comps.add(popupMenu);
         return comps.toArray(new JComponent[] {});
     }
-
-    class CopyToClipboardCommand extends ActionCommand implements ClipboardOwner {
+    
+	class CopyToClipboardCommand extends ActionCommand implements ClipboardOwner {
 
         String DELIM = "\t";
         String NL = "\n";
@@ -209,5 +210,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
             return deathReasons == null || deathReasons.contains(((AdvancedCharacterWrapper)obj).getDeathReason());
         }
     }
+    
+    
 
 }

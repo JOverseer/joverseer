@@ -3,6 +3,8 @@ package org.joverseer.ui.listviews;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,12 +19,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.TransferHandler;
 import javax.swing.table.JTableHeader;
 
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
+import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
@@ -130,6 +137,7 @@ public class ArmyEstimatesListView extends ItemListView {
         table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
         table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
         table.addMouseListener(this);
+        table.addMouseMotionListener(this);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
         scrollPane.getViewport().setBackground(table.getBackground());
@@ -163,5 +171,47 @@ public class ArmyEstimatesListView extends ItemListView {
 
         return p;
     }
+
+	protected void startDragAndDropAction(MouseEvent e) {
+		final ArmyEstimate[] selectedArmies = new ArmyEstimate[table.getSelectedRowCount()];
+		String copyString = "";
+		for (int i=0; i<table.getSelectedRowCount(); i++) {
+			int idx = ((com.jidesoft.grid.SortableTableModel)table.getModel()).getActualRowAt(table.getSelectedRows()[i]);
+			ArmyEstimate a = (ArmyEstimate)tableModel.getRow(idx);
+			selectedArmies[i] = a;
+			String ln = "";
+			for (int j=0; j<table.getColumnCount(); j++) {
+				Object v = table.getValueAt(i, j);
+				if (v == null) v = "";
+				ln += (ln.equals("") ? "" : "\t") + v;
+			}
+			copyString += (copyString.equals("") ? "" : "\n") + ln;
+		}
+		final String str = copyString;
+		
+		TransferHandler handler = new GenericExportTransferHandler() {
+			protected Transferable createTransferable(JComponent arg0) {
+				try {
+					Transferable t = new GenericTransferable(
+						new DataFlavor[]{
+							new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" +  ArmyEstimate[].class.getName() + "\""),
+							new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" +  ArmyEstimate.class.getName()),
+							DataFlavor.stringFlavor
+						},
+						new Object[]{selectedArmies, selectedArmies[0], str});
+					return t;
+				}
+				catch (Exception exc) {
+					exc.printStackTrace();
+					return null;
+				}
+						
+			}
+		};
+		table.setTransferHandler(handler);
+        handler.exportAsDrag(table, e, TransferHandler.COPY);
+	}
+    
+    
 
 }

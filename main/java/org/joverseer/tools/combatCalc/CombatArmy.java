@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmyEstimate;
+import org.joverseer.domain.ArmyEstimateElement;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
+import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
+import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 
 
 public class CombatArmy {
@@ -177,6 +182,49 @@ public class CombatArmy {
             setCommandRank(50);
         }
         setNationNo(a.getNationNo());
+        setCommander(a.getCommanderName());
+        setMorale(a.getMorale());
+        setTactic(TacticEnum.Standard);
+    }
+    
+    public CombatArmy(ArmyEstimate a) {
+    	double left = 1;
+    	for (int l : a.getLosses()) {
+    		left *= (100d - (double)l) / 100d;
+    	}
+    	
+        Game g = GameHolder.instance().getGame();
+        for (ArmyElementType aet : ArmyElementType.values()) {
+            ArmyEstimateElement ae = a.getRegiment(aet);
+            if (ae == null) {
+                ae = new ArmyEstimateElement();
+                ae.setType(aet);
+                ae.setNumber(0);
+            }
+            ArmyElement nae = new ArmyElement(ae.getType(), (int)Math.round((double)ae.getNumber() * left));
+            nae.setWeapons(ae.getWeapons());
+            nae.setTraining(ae.getTraining());
+            nae.setArmor(ae.getArmor());
+            getElements().add(nae);
+        }
+        
+        setCommandRank(50);
+        Character c = (Character) g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name",
+                a.getCommanderName());
+        if (c != null && c.getCommandTotal() > 0) {
+            setCommandRank(c.getCommandTotal());
+        } else {
+        	AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(a.getCommanderName(), g.getCurrentTurn());
+        	if (acw != null) {
+        		CharacterAttributeWrapper caw = acw.getCommand();
+        		if (caw != null && caw.getTotalValue() != null && (Integer)caw.getTotalValue() > 0) {
+        			setCommandRank((Integer)caw.getTotalValue());
+        		} else if (caw != null && caw.getValue() != null && (Integer)caw.getValue() > 0) {
+        			setCommandRank((Integer)caw.getValue());
+        		}
+        	}
+        }
+        setNationNo(0);
         setCommander(a.getCommanderName());
         setMorale(a.getMorale());
         setTactic(TacticEnum.Standard);

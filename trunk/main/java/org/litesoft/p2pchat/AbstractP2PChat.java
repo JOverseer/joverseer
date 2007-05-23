@@ -3,6 +3,8 @@ package org.litesoft.p2pchat;
 import java.io.*;
 import java.net.*;
 
+import com.sun.corba.se.spi.activation.Server;
+
 
 // Copyright Status:
 //
@@ -54,6 +56,8 @@ public abstract class AbstractP2PChat
     private static final String VERSION = "0.2";
 
     private static final int DEFAULTPORT = 11581;
+    
+    ServerSocket serverSocket;
 
     protected static String getTitle()
     {
@@ -76,7 +80,7 @@ public abstract class AbstractP2PChat
         System.out.println( "   A colon (':') seperates the address and port (eg 192.168.1.5:5432)" );
         System.out.println( "   Our Address and/or port is indictaed by being surrounded by square" );
         System.out.println( "      brackets (eg [192.168.1.5:5432])" );
-        System.exit( 0 );
+        //System.exit( 0 );
     }
 
     abstract protected UserDialog getUserDialog( MyInfo pMyInfo );
@@ -100,7 +104,7 @@ public abstract class AbstractP2PChat
                 for ( int i = 0 ; i < initialPeers.length ; i++ )
                     ppm.addNewPeer( initialPeers[ i ] );
 
-            ServerSocket serverSocket = getServerSocket( parser.zMyInfo.getPort() );
+            serverSocket = getServerSocket( parser.zMyInfo.getPort() );
 
             new ActivePeerManager( parser.zMyInfo , userDialog , ppm );
 
@@ -114,6 +118,17 @@ public abstract class AbstractP2PChat
             e.printStackTrace();
             System.exit( 1 );
         }
+    }
+    
+    public void disconnect() {
+    	if (serverSocket == null) {
+    		try {
+    			serverSocket.close();
+    		}
+    		catch (Exception exc) {
+    			exc.printStackTrace();
+    		}
+    	}
     }
 
     private ServerSocket getServerSocket( int pPort )

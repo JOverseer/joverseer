@@ -6,9 +6,11 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.combatCalculator.CombatForm;
 import org.joverseer.ui.combatCalculator.CombatFormHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.views.EditNationMetadataForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -53,6 +55,8 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
 
             protected boolean onFinish() {
                 form.commit();
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
                 return true;
             }
             

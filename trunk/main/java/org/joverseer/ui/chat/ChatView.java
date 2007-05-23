@@ -15,6 +15,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -63,12 +64,14 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     private PendingPeerManager zPendingPeerManager = null;
     private List zPeersList;
     
+    P2PChatAWT chat;
+    Thread chatThread;
+    
     JTextPane text;
     JTextField message;
     StyledDocument doc;
     
-    ChatClient client;
-    ChatServer server;
+    boolean connected = false;
     
     UserDialog chatDialog;
     
@@ -97,66 +100,17 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
 
         JScrollPane scp = new JScrollPane(text);
         scp.setPreferredSize(new Dimension(400, 100));
-        tlb.cell(scp, "align=left rowSpec=fill:default:grow");
+        tlb.cell(scp, "align=left rowSpec=fill:default:grow colspec=left:410px");
         tlb.gapCol();
-        JButton connect = new JButton("C");
-        tlb.cell(connect,"align=left");
-        tlb.gapCol();
-        connect.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (client != null) {
-                    ErrorDialog dlg = new ErrorDialog("Already connected. You must disconnect first.");
-                    dlg.showDialog();
-                    return;
-                }
-                final ChatConnection conn = new ChatConnection();
-                conn.setMyIP("127.0.0.1");
-                conn.setMyPort(9600);
-                final ConnectToChatServerForm frm = new ConnectToChatServerForm(FormModelHelper.createFormModel(conn));
-                
-                FormBackedDialogPage page = new FormBackedDialogPage(frm);
 
-                TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                    protected void onAboutToShow() {
-                    }
-
-                    protected boolean onFinish() {
-                        frm.commit();
-                        try {
-                            messageReceived("Connecting to server " + conn.getMyIP() + ":" + conn.getMyPort() + " as " + conn.getUsername());
-                            client = ChatClient.connect(conn.getMyIP(), conn.getMyPort(), new User(conn.getUsername()));
-                            setClient(client);
-                            messageReceived("Connected!"); 
-                            setMessageEnabled(true);
-                        }
-                        catch (Exception exc) {
-                            setMessageEnabled(false);
-                            ErrorDialog d = new ErrorDialog(exc);
-                            d.showDialog();
-                        }
-                        return true;
-                    }
-                };
-                MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                dialog.setTitle(ms.getMessage("editNoteDialog.title", new Object[]{""}, Locale.getDefault()));
-                dialog.setModal(false);
-                dialog.showDialog();
-                
-            }
-        });
         
-        JButton startServer = new JButton("S");
-        tlb.cell(startServer,"align=left");
-        tlb.relatedGapRow();
-        startServer.addActionListener(new ActionListener() {
+        TableLayoutBuilder lb = new TableLayoutBuilder();
+        JButton startChat = new JButton("C");
+        lb.cell(startChat);
+        startChat.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (client != null) {
-                    ErrorDialog dlg = new ErrorDialog("Already connected as a client. You must disconnect first.");
-                    dlg.showDialog();
-                    return;
-                }
-                if (server != null) {
-                    ErrorDialog dlg = new ErrorDialog("Already running a server. You must close the server first.");
+                if (connected) {
+                    ErrorDialog dlg = new ErrorDialog("Already connected. You must disconnect first.");
                     dlg.showDialog();
                     return;
                 }
@@ -184,7 +138,7 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
 //                            String server = conn.getServer();
 //                            messageReceived("Connected to " + conn.getServer() + ":" + conn.getPort() + " as " + conn.getUsername()); 
 //                            setMessageEnabled(true);
-                            final P2PChatAWT chat = new P2PChatAWT() {
+                            chat = new P2PChatAWT() {
                                 protected UserDialog getUserDialog(MyInfo pMyInfo) {
                                     zMyInfo = pMyInfo;
                                     return chatDialog;
@@ -200,9 +154,10 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
                                     chat.init(args);
                                 }
                             };
-                            Thread t = new Thread(r);
-                            t.start();
+                            chatThread = new Thread(r);
+                            chatThread.start();
                             setMessageEnabled(true);
+                            addMsg("Chat started, waiting for connections...");
                         }
                         catch (Exception exc) {
                             setMessageEnabled(false);
@@ -228,7 +183,19 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
 //                }
             }
         });
+        lb.relatedGapRow();
+        JButton disconnect = new JButton("D");
+        lb.cell(disconnect);
+        disconnect.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	disconnect();
+            }
+        });
         
+        
+        
+        tlb.cell(lb.getPanel(),"align=left");
+        tlb.relatedGapRow();
         tlb.relatedGapRow();
         
         message = new JTextField();
@@ -406,10 +373,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
         //text.setCaretPosition(text.getText().length());
     }
 
-    public ChatClient getClient() {
-        return client;
-    }
-
     private void addMsg(String msg) {
         try {
             final String m = msg;
@@ -426,11 +389,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
         }
     }
     
-    public void setClient(ChatClient client) {
-        this.client = client;
-        this.client.addMessageReceiver(this);
-    }
-
     public void sendOrder(Order o) {
         //client.sendMessage(new OrderWrapper(o));
         OrderWrapper ow = new OrderWrapper(o);
@@ -467,7 +425,9 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     }
     
     protected void disconnect() {
-        client = null;
+    	chat.disconnect();
+    	chatThread.stop();
+    	connected = false;
         setMessageEnabled(false);
         messageReceived("Disconnected from server.");
     }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
+import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.Game;
@@ -18,7 +19,7 @@ import org.joverseer.support.info.InfoUtils;
 
 import sun.security.action.GetLongAction;
 
-public class Combat implements Serializable {
+public class Combat implements Serializable, IHasMapLocation {
     private static final long serialVersionUID = 6784272689637435343L;
     static int maxArmies = 10;
     static int maxAll = 11;
@@ -466,6 +467,14 @@ public class Combat implements Serializable {
             if (cas[i] == a) return i;
         }
         return -1;
+    }
+    
+    public int getX() {
+    	return getHexNo() / 100;
+    }
+    
+    public int getY() {
+    	return getHexNo() % 100;
     }
     
 }

@@ -181,6 +181,7 @@ public class CombatForm extends AbstractForm {
         lb = new TableLayoutBuilder();
         ico = new ImageIcon(imgSource.getImage("edit.image"));
         btn = new JButton(ico);
+        btn.setToolTipText("Edit Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -192,6 +193,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("add.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Add New Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -203,6 +205,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("remove.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Remove Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -214,6 +217,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("switch.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Switch Sides (Sends Army to other side)");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -225,6 +229,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("relations.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Change Relations for Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -274,6 +279,7 @@ public class CombatForm extends AbstractForm {
         lb = new TableLayoutBuilder();
         ico = new ImageIcon(imgSource.getImage("edit.image"));
         btn = new JButton(ico);
+        btn.setToolTipText("Edit Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -285,6 +291,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("add.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Add New Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -307,6 +314,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("switch.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Switch Sides (Sends Army to other side)");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -318,6 +326,7 @@ public class CombatForm extends AbstractForm {
         
         ico = new ImageIcon(imgSource.getImage("relations.icon"));
         btn = new JButton(ico);
+        btn.setToolTipText("Change Relations for Army");
         btn.setPreferredSize(new Dimension(20, 20));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -642,7 +651,7 @@ public class CombatForm extends AbstractForm {
                 }
             };
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            dialog.setTitle(ms.getMessage("editCharacter.title", new Object[]{}, Locale.getDefault()));
+            dialog.setTitle(ms.getMessage("editCombatArmy.title", new Object[]{}, Locale.getDefault()));
             dialog.showDialog();       
             
         }

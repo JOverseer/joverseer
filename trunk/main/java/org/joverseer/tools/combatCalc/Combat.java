@@ -1,5 +1,6 @@
 package org.joverseer.tools.combatCalc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,7 +18,8 @@ import org.joverseer.support.info.InfoUtils;
 
 import sun.security.action.GetLongAction;
 
-public class Combat {
+public class Combat implements Serializable {
+    private static final long serialVersionUID = 6784272689637435343L;
     static int maxArmies = 10;
     static int maxAll = 11;
     
@@ -255,17 +257,20 @@ public class Combat {
         addToLog("Attacker modified str: " + attStr);
         int attBonus = 0;
         int defBonus = 0;
+        // adjust by relations
+        attStr = (int)((double)attStr * (double)relMod / 100d);
+        // handle first round
         if (round == 0) {
             attBonus = att.getOffensiveAddOns();
             defBonus = def.getDefensiveAddOns();
-            attStr += attBonus - defBonus;
+            attStr += attBonus;
             addToLog("First round - str: " + attBonus + " con: " + defBonus);
         }
         double lossesFactor = (double)defCon / (double)defenderSideTotalCon;
         addToLog("Defender loss factor: " + lossesFactor);
-        double l = computeLosses(def, (int)(attStr *
-                    relMod / 100d * lossesFactor)
-                    );
+        attStr = (int)(attStr * lossesFactor) - defBonus;
+        if (attStr < 0) attStr = 0;
+        double l = computeLosses(def, attStr);
         addToLog("New losses: " + l);
         return l;
     }

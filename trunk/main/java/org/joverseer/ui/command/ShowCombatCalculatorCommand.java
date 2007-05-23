@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import java.util.Locale;
 
 import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.ui.combatCalculator.CombatForm;
@@ -12,6 +13,7 @@ import org.joverseer.ui.views.EditNationMetadataForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -23,8 +25,8 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
     
     public ShowCombatCalculatorCommand() {
         super("showCombatCalculatorCommand");
-        combat = new Combat();
-        combat.setMaxRounds(10);
+        combat = null;
+        
     }
     
     public ShowCombatCalculatorCommand(Combat combat) {
@@ -36,6 +38,11 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
     protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (combat == null) {
+            combat = new Combat();
+            combat.setMaxRounds(10);
+            g.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(combat);
+        }
         final CombatForm form = CombatFormHolder.instance().getCombatForm();
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
@@ -47,6 +54,12 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
             protected boolean onFinish() {
                 form.commit();
                 return true;
+            }
+            
+            protected Object[] getCommandGroupMembers() {
+                return new AbstractCommand[] {
+                        getFinishCommand()
+                };
             }
         };
         MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);

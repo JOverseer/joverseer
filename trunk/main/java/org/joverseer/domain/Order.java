@@ -199,4 +199,125 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         }
         return i;
     }
+    
+    public String getP0() {
+        return getParameter(0);
+    }
+    
+    public void setP0(String v) {
+        setParameter(0, v);
+    }
+    
+    public String getP1() {
+        return getParameter(1);
+    }
+    
+    public void setP1(String v) {
+        setParameter(1, v);
+    }
+    public String getP2() {
+        return getParameter(2);
+    }
+    
+    public void setP2(String v) {
+        setParameter(2, v);
+    }
+
+    public String getP3() {
+        return getParameter(3);
+    }
+    
+    public void setP3(String v) {
+        setParameter(3, v);
+    }
+
+    public String getP4() {
+        return getParameter(4);
+    }
+    
+    public void setP4(String v) {
+        setParameter(4, v);
+    }
+
+    public String getP5() {
+        return getParameter(5);
+    }
+    
+    public void setP5(String v) {
+        setParameter(5, v);
+    }
+
+    public String getP6() {
+        return getParameter(6);
+    }
+    
+    public void setP6(String v) {
+        setParameter(6, v);
+    }
+
+    public String getP7() {
+        return getParameter(7);
+    }
+    
+    public void setP7(String v) {
+        setParameter(7, v);
+    }
+
+    public String getP8() {
+        return getParameter(8);
+    }
+    
+    public void setP8(String v) {
+        setParameter(8, v);
+    }
+
+    public String getP9() {
+        return getParameter(9);
+    }
+    
+    public void setP9(String v) {
+        setParameter(9, v);
+    }
+
+    public String getP10() {
+        return getParameter(10);
+    }
+    
+    public void setP10(String v) {
+        setParameter(10, v);
+    }
+
+    public String getP11() {
+        return getParameter(11);
+    }
+    
+    public void setP11(String v) {
+        setParameter(11, v);
+    }
+
+    public String getP12() {
+        return getParameter(12);
+    }
+    
+    public void setP12(String v) {
+        setParameter(12, v);
+    }
+
+    public String getP13() {
+        return getParameter(13);
+    }
+    
+    public void setP13(String v) {
+        setParameter(13, v);
+    }
+    
+    public String getP14() {
+        return getParameter(14);
+    }
+    
+    public void setP14(String v) {
+        setParameter(14, v);
+    }
+    
+    
 }

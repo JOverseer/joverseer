@@ -109,6 +109,7 @@ public class OrderParameterValidator {
             OrderMetadata om1 = (OrderMetadata) GameHolder.instance().getGame().getMetadata().getOrders()
                                     .findFirstByProperty("number", o1.getOrderNo());
             if (om1 == null) return null;
+            if (o.getOrderNo() == 710 || o1.getOrderNo() == 710) return null;
             if (om1.getSkillRequirement().equals(om.getSkillRequirement()) && om1.getSkillRequirement().endsWith("S")) {
                 String type = "";
                 if (om.getSkillRequirement().equals("CS")) {

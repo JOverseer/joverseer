@@ -23,6 +23,7 @@ public class FullPerspective extends Perspective {
 		manager.showFrame("nationEconomyListView");
 		manager.showFrame("orderEditorView");
 		manager.showFrame("economyCalculatorView");
+                manager.showFrame("chatView");
 		manager.showWorkspace();
 		
 	}

@@ -39,7 +39,7 @@ public class AddEditNoteCommand extends ActionCommand {
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            protected void onAboutToShow() { 
             }
 
             protected boolean onFinish() {

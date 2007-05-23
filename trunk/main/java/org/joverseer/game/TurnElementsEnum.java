@@ -22,5 +22,6 @@ public enum TurnElementsEnum implements Serializable {
     PdfText,
     PlayerInfo,
     Notes,
-    ArmyEstimate
+    ArmyEstimate,
+    CombatCalcCombats,
 }

@@ -34,4 +34,8 @@ public enum HexTerrainEnum implements Serializable {
     public int getTerrain() {
         return terrain;
     }
+    
+    public static HexTerrainEnum[] landValues() {
+        return new HexTerrainEnum[]{plains, shore, forest, swamp, hillsNrough, mountains, desert};
+    }
 }

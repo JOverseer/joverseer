@@ -1,5 +1,6 @@
 package org.joverseer.tools.combatCalc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Army;
@@ -18,8 +19,9 @@ import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 
 
-public class CombatArmy {
+public class CombatArmy implements Serializable {
 
+    private static final long serialVersionUID = -6792883257780173753L;
     String commander;
     int nationNo;
     ArrayList<ArmyElement> elements = new ArrayList<ArmyElement>();

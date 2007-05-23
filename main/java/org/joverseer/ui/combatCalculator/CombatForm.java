@@ -116,7 +116,7 @@ public class CombatForm extends AbstractForm {
 
         lb.cell(new JLabel("Terrain :"), "colspec=left:80px");
         lb.gapCol();
-        JComboBox cb = (JComboBox)sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.values()))).getControl();
+        JComboBox cb = (JComboBox)sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.landValues()))).getControl();
         cb.setPreferredSize(new Dimension(100, 20));
         lb.cell(cb, "colspec=left:120px");
         cb.addActionListener(new ActionListener() {
@@ -368,6 +368,16 @@ public class CombatForm extends AbstractForm {
             if (ca != null) ca.setLosses(0);
         }
         c.runArmyBattle();
+        for (int i=0; i<side1TableModel.getRowCount(); i++) {
+            for (int j=0; j<side1TableModel.getColumnCount(); j++) {
+                side1TableModel.fireTableCellUpdated(i, j);
+            }
+        }
+        for (int i=0; i<side2TableModel.getRowCount(); i++) {
+            for (int j=0; j<side2TableModel.getColumnCount(); j++) {
+                side2TableModel.fireTableCellUpdated(i, j);
+            }
+        }
     }
     
     protected void refreshArmies() {
@@ -409,7 +419,7 @@ public class CombatForm extends AbstractForm {
             Combat combat = (Combat)getFormObject();
             if (side == 0) {
                 int idx1 = side1Table.getSelectedRow();
-                if (idx1 < -1) return;
+                if (idx1 < 0) return;
                 int idx = ((SortableTableModel)side1Table.getModel()).convertSortedIndexToDataIndex(idx1);
                 CombatArmy ca = (CombatArmy)side1TableModel.getRow(idx);
                 if (combat.addToSide(1, ca)) {

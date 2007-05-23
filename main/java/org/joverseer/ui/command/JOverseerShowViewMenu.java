@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import org.apache.commons.beanutils.BeanComparator;
+import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.application.ViewDescriptorRegistry;
 import org.springframework.richclient.application.config.ApplicationWindowAware;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.image.ImageSource;
 
 /**
  * A menu containing a collection of sub-menu items that each display a given view.
@@ -58,17 +65,65 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
                                            .getService(ViewDescriptorRegistry.class);
         
         ViewDescriptor[] views = viewDescriptorRegistry.getViewDescriptors();
-        HashMap<String,ViewDescriptor> viewMap = new HashMap<String,ViewDescriptor>(); 
-        for (ViewDescriptor vd : views) {
-            viewMap.put(vd.getCaption().replace("&", ""), vd);
-        }
-        ArrayList<String> captions = new ArrayList<String>();
-        captions.addAll(viewMap.keySet());
+        ArrayList<String> viewGroups = new ArrayList<String>();
         
-        Collections.sort(captions);
-        for(String caption : captions) {
-            addInternal(viewMap.get(caption).createShowViewCommand(window));
+        for (ViewDescriptor vd : views) {
+            String group = "";
+            if (JOverseerJideViewDescriptor.class.isInstance(vd)) {
+                group = ((JOverseerJideViewDescriptor)vd).getViewGroup();
+                if (group == null) {
+                    group = "";
+                }
+            }
+            if (!viewGroups.contains(group)) {
+                viewGroups.add(group);
+            }
         }
+        Collections.sort(viewGroups);
+        
+        for (String viewGroup : viewGroups) {
+            HashMap<String,ViewDescriptor> viewMap = new HashMap<String,ViewDescriptor>(); 
+            for (ViewDescriptor vd : views) {
+                String cViewGroup = "";
+                if (JOverseerJideViewDescriptor.class.isInstance(vd)) {
+                    cViewGroup = ((JOverseerJideViewDescriptor)vd).getViewGroup();
+                    if (cViewGroup == null) {
+                        cViewGroup = "";
+                    }
+                }
+                if (viewGroup.equals(cViewGroup)) {
+                    viewMap.put(vd.getCaption().replace("&", ""), vd);
+                }
+            }
+            ArrayList<String> captions = new ArrayList<String>();
+            captions.addAll(viewMap.keySet());
+
+            ImageSource imgSource = (ImageSource)Application.instance().getApplicationContext().getBean("imageSource");
+            if (!viewGroup.equals("")) {
+                CommandGroup cg = new CommandGroup(viewGroup);
+                Collections.sort(captions);
+                for(String caption : captions) {
+                    AbstractCommand cmd = viewMap.get(caption).createShowViewCommand(window);
+                    cg.add(cmd);
+                    Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
+                    cmd.setIcon(ico);
+                }
+                cg.setLabel(viewGroup);
+                
+                addInternal(cg);
+                
+            } else {
+                for(String caption : captions) {
+                    AbstractCommand cmd = viewMap.get(caption).createShowViewCommand(window); 
+                    addInternal(cmd);
+                    Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
+                    cmd.setIcon(ico);
+                }
+                addSeparator();
+            }
+        }        
+        
+        
     }
     
 }

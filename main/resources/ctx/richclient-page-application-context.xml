@@ -43,7 +43,9 @@
 				<value>nationStatisticsListView</value>
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
+				<value>chatWindowView</value>				
 				<value>playerInfoListView</value>
+				<value>combatCalcView</value>
 			</list>
 		</property>
 		<property name="perspectives">
@@ -74,6 +76,9 @@
 		<property name="preferredHeight">
 			<value>600</value>
 		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
 		
 	</bean>
 	
@@ -98,6 +103,10 @@
 		<property name="preferredHeight">
 			<value>600</value>
 		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+		
 	</bean>
 	
 	<bean id="teamEconomyView" 
@@ -121,6 +130,10 @@
 		<property name="preferredHeight">
 			<value>600</value>
 		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+		
 	</bean>
 
 	<bean id="infoView" 
@@ -143,6 +156,9 @@
 		</property>
 		<property name="preferredHeight">
 			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Game Info</value>
 		</property>
 	</bean>
 	
@@ -167,6 +183,9 @@
 		<property name="preferredHeight">
 			<value>600</value>
 		</property>
+		<property name="viewGroup">
+			<value>Game Info</value>
+		</property>
 	</bean>
 
 	<bean id="pdfFileView" 
@@ -190,6 +209,9 @@
 		<property name="preferredHeight">
 			<value>600</value>
 		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
 	</bean>
 	
 	<bean id="currentHexDataViewer" 
@@ -209,6 +231,9 @@
 		</property>
 		<property name="preferredWidth">
 			<value>350</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
 		</property>
 	</bean>
 	
@@ -234,8 +259,63 @@
 		<property name="preferredHeight">
 			<value>250</value>
 		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
 	</bean>
 	
+	<bean id="chatWindowView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.chat.ChatView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Collaboration</value>
+		</property>
+	</bean>
+
+	<bean id="combatCalcView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.CombatCalcCombatListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Collaboration</value>
+		</property>
+	</bean>
+
 	<bean id="playerInfoListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -256,6 +336,9 @@
 		</property>
 		<property name="preferredHeight">
 			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
 		</property>
 	</bean>
 	
@@ -280,6 +363,9 @@
 		<property name="preferredHeight">
 			<value>250</value>
 		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
 	</bean>
 	
 	<bean id="nationStatisticsListView" 
@@ -303,33 +389,11 @@
 		<property name="preferredHeight">
 			<value>250</value>
 		</property>
-	</bean>
-
-	<!--
-	<bean id="chatView" 
-		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
-		
-		<property name="initMode">
-			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
-		</property>
-		<property name="initSide">
-			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
-		</property>
-		<property name="initIndex">
-			<value>3</value>
-		</property>
-		<property name="viewClass">
-			<value>org.joverseer.ui.chat.ChatView</value>
-		</property>
-		<property name="preferredWidth">
-			<value>650</value>
-		</property>
-		<property name="preferredHeight">
-			<value>250</value>
+		<property name="viewGroup">
+			<value>Team</value>
 		</property>
 	</bean>
 
- -->		
 	
 	<bean id="startingCharacterListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
@@ -351,6 +415,9 @@
 		</property>
 		<property name="preferredHeight">
 			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Starting Info</value>
 		</property>
 	</bean>
 
@@ -375,6 +442,9 @@
 		<property name="preferredHeight">
 			<value>250</value>
 		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
 	</bean>
 	
 	<bean id="advancedCharacterListView" 
@@ -397,6 +467,9 @@
 		</property>
 		<property name="preferredHeight">
 			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
 		</property>
 	</bean>
 
@@ -421,6 +494,9 @@
 		<property name="preferredHeight">
 			<value>250</value>
 		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
 	</bean>
 	
 	<bean id="nationEconomyPotentialsListView" 
@@ -444,6 +520,9 @@
 		<property name="preferredHeight">
 			<value>250</value>
 		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
 	</bean>
 	
 	<bean id="populationCenterListView" 
@@ -460,6 +539,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.PopulationCenterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
 		</property>
 	</bean>
 	
@@ -478,6 +560,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.OwnedArtifactsListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
 	</bean>
 	
 	<bean id="armySizeEstimatesListView" 
@@ -494,6 +579,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.ArmySizeEstimatesListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
 		</property>
 	</bean>
 	
@@ -512,6 +600,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.NationEconomyListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
 	</bean>
 	
 	<bean id="artifactInfoListView" 
@@ -528,6 +619,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.ArtifactInfoListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Starting Info</value>
 		</property>
 	</bean>
 	
@@ -546,6 +640,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.NotesListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
 	</bean>
 	
 	<bean id="companyListView" 
@@ -562,6 +659,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.CompanyListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
 		</property>
 	</bean>
 	
@@ -580,6 +680,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.EncounterListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
 	</bean>
 	
 	<bean id="enemyCharacterRumorListView" 
@@ -596,6 +699,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.EnemyCharacterRumorListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
 		</property>
 	</bean>
 	
@@ -614,6 +720,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.LocateArtifactResultListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
 	</bean>
 		
 	<bean id="nationMessageListView" 
@@ -630,6 +739,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.NationMessageListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
 		</property>
 	</bean>
 	
@@ -648,6 +760,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.NationProductionListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
 	</bean>
 	
 	<bean id="orderListView" 
@@ -664,6 +779,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.OrderEditorListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Orders</value>
 		</property>
 	</bean>
 	
@@ -682,6 +800,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.RelationsListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
 	</bean>
 	
 	<bean id="spellcasterListView" 
@@ -698,6 +819,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.SpellcasterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
 		</property>
 	</bean>
 	
@@ -716,6 +840,9 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.SpellInfoListView</value>
 		</property>
+		<property name="viewGroup">
+			<value>Game Info</value>
+		</property>
 	</bean>
 	
 	<bean id="trackCharacterListView" 
@@ -732,6 +859,9 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.TrackCharacterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
 		</property>
 	</bean>
 	
@@ -755,6 +885,9 @@
 		</property>
 		<property name="preferredHeight">
 			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
 		</property>
 	</bean>
 	
@@ -780,6 +913,9 @@
 		</property>
 		<property name="preferredHeight">
 			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
 		</property>
 	</bean>
 	

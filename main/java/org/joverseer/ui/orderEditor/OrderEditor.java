@@ -344,7 +344,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         }
     }
     
-    private void refreshSubeditor() {
+    protected void refreshSubeditor() {
         subeditorPanel.removeAll();
         subeditorComponents.clear();
         Order o = (Order)getFormObject();

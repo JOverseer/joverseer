@@ -532,12 +532,14 @@ public class CharacterViewer extends ObjectViewer {
         artifactsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	if (e.getClickCount() == 1) {
-	                ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
-	                if (a == null) return;
-	                TransferHandler handler = new ArtifactInfoExportTransferHandler(a);
-	                artifactsTable.setTransferHandler(handler);
-	                handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
+                    if (artifactsTable.getSelectedRow() < 0) return;
+                    ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
+                    if (a == null) return;
+                    TransferHandler handler = new ArtifactInfoExportTransferHandler(a);
+                    artifactsTable.setTransferHandler(handler);
+                    handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
             	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
+                    if (artifactsTable.getSelectedRow() < 0) return;
                     ArtifactInfo a = (ArtifactInfo)tableModel.getRow(artifactsTable.getSelectedRow());
                     if (a == null) return;
                     final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" +
@@ -578,12 +580,14 @@ public class CharacterViewer extends ObjectViewer {
         spellsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
             	if (e.getClickCount() == 1) {
-            		SpellProficiency sp = (SpellProficiency)spellModel.getRow(spellsTable.getSelectedRow());
+                    if (spellsTable.getSelectedRow() < 0) return;
+            	    SpellProficiency sp = (SpellProficiency)spellModel.getRow(spellsTable.getSelectedRow());
                     if (sp == null) return;
                     TransferHandler handler = new ParamTransferHandler(sp.getSpellId());
                     spellsTable.setTransferHandler(handler);
                     handler.exportAsDrag(spellsTable, e, TransferHandler.COPY);
             	} else if (e.getClickCount() == 2&& e.getButton() == MouseEvent.BUTTON1) {
+                    if (spellsTable.getSelectedRow() < 0) return;
                     SpellProficiency sp = (SpellProficiency)spellModel.getRow(spellsTable.getSelectedRow());
                     if (sp == null) return;
                     

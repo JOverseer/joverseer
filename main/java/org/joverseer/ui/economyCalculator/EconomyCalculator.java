@@ -75,12 +75,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                     exc.printStackTrace();
                 }
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+                ((MarketTableModel)marketTable.getModel()).setGame(null);
+                ((EconomyTotalsTableModel)totalsTable.getModel()).setGame(null);
                 loadNationCombo();
-//                if (GameHolder.hasInitializedGame() && GameHolder.instance().getGame().getTurn() != null) {
-//                    refreshMarketLimitWarning();
-//                    refreshTaxIncrease();
-//                    refreshAutocalcOrderCost();
-//                }
             } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 refreshAutocalcOrderCost();
             }

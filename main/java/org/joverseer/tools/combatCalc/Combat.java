@@ -10,6 +10,7 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
@@ -30,14 +31,14 @@ public class Combat implements Serializable, IHasMapLocation {
     int hexNo;
     String description;
 
-    CombatArmy[] side1 = new CombatArmy[maxArmies];
-    CombatArmy[] side2 = new CombatArmy[maxArmies];
+    CombatArmy[] side1 = new CombatArmy[maxAll];
+    CombatArmy[] side2 = new CombatArmy[maxAll];
     
-    NationRelationsEnum[][] side1Relations = new NationRelationsEnum[maxArmies][maxAll];
-    NationRelationsEnum[][] side2Relations = new NationRelationsEnum[maxArmies][maxAll];
+    NationRelationsEnum[][] side1Relations = new NationRelationsEnum[maxAll][maxAll];
+    NationRelationsEnum[][] side2Relations = new NationRelationsEnum[maxAll][maxAll];
      
-    boolean[][] side1Attack = new boolean[maxArmies][maxAll];
-    boolean[][] side2Attack = new boolean[maxArmies][maxAll];
+    boolean[][] side1Attack = new boolean[maxAll][maxAll];
+    boolean[][] side2Attack = new boolean[maxAll][maxAll];
     
     CombatPopCenter side1Pc = null;
     CombatPopCenter side2Pc = null;
@@ -49,7 +50,7 @@ public class Combat implements Serializable, IHasMapLocation {
     String log;
     
     public Combat() {
-        for (int i=0; i<maxArmies; i++) {
+        for (int i=0; i<maxAll; i++) {
             for (int j=0; j<maxAll; j++) {
                 side1Relations[i][j] = NationRelationsEnum.Disliked;
                 side2Relations[i][j] = NationRelationsEnum.Disliked;
@@ -126,31 +127,53 @@ public class Combat implements Serializable, IHasMapLocation {
         log += msg + "\n";
     }
     
-    public void runPcBattle(int attackerSide) {
+    public void runPcBattle(int attackerSide, int round) {
         int defenderSide = (attackerSide == 0 ? 1 : 0);
         
         // compute str for attacker
+        int wms = 0;
         int attackerStr = 0;
+        int totalCon = 0;
+        CombatPopCenter pc = (attackerSide == 0 ? side2Pc : side1Pc);
+        double[] losses = new double[maxArmies];
         for (int i=0; i<maxArmies; i++) {
             if (attackerSide == 0) {
+                if (side1[i] == null) continue;
                 int str = computeNativeArmyStrength(side1[i], terrain, climate);
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(side1Relations[i][maxAll-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
+                wms += side1[i].getWM().getNumber();
+                totalCon += computNativeArmyConstitution(side1[i]);
+                losses[i] = side1[i].getLosses();
             } else {
+                if (side2[i] == null) continue;
                 int str = computeNativeArmyStrength(side2[i], terrain, climate);
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(side2Relations[i][maxAll-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
+                wms += side2[i].getWM().getNumber();
+                totalCon += computNativeArmyConstitution(side2[i]);
+                losses[i] = side2[i].getLosses();
             }
         }
         
         // compute pop center defense and attack
-        int popCenterStr = 0;
-        int popCenterDef = 0;
-        
+        int popCenterStr = computePopCenterStrength(pc, wms);
+        pc.setCaptured(popCenterStr <= attackerStr);
+        for (int i=0; i<maxArmies; i++) {
+            if (attackerSide == 0) {
+                if (side1[i] == null) continue;
+                double l = computeNewLossesFromPopCenter(side1[i], pc, side2Relations[maxAll - 1][i], totalCon, wms, round);
+                side1[i].setLosses(side1[i].getLosses() + l);
+            } else {
+                if (side2[i] == null) continue;
+                double l = computeNewLossesFromPopCenter(side2[i], pc, side1Relations[maxAll - 1][i], totalCon, wms, round);
+                side2[i].setLosses(side2[i].getLosses() + l);
+            }
+        }
     }
 
     public void runArmyBattle() {
@@ -243,6 +266,43 @@ public class Combat implements Serializable, IHasMapLocation {
         System.out.println(log);
     }
     
+    public int computePopCenterStrength(CombatPopCenter pc) {
+        return computePopCenterStrength(pc, 0);
+    }
+    
+    public int computePopCenterStrength(CombatPopCenter pc, int numberOfWarMachines) {
+        int popDef = new int[]{200, 500, 1000, 2500, 5000}[pc.getSize().getCode()-1];
+        int fortDef = new int[]{0, 2000, 6000, 10000, 16000, 24000}[pc.getFort().getSize()];
+        int wmStr = numberOfWarMachines * 200;
+        fortDef = Math.max(fortDef - wmStr, 0);
+        return (int)Math.round(((double)popDef + (double)fortDef) * (100d + (double)pc.getLoyalty()) / 100d);
+    }
+    
+    public double computeNewLossesFromPopCenter(CombatArmy army,
+            CombatPopCenter pc,
+            NationRelationsEnum relations,
+            int armySideTotalCon,
+            int armyTotalWMs,
+            int round) {
+        int relMod = CombatModifiers.getRelationModifier(relations);
+        int defCon = computNativeArmyConstitution(army);
+        int attStr = computePopCenterStrength(pc, armyTotalWMs);
+        int defBonus = 0;
+        // adjust by relations
+        attStr = (int)((double)attStr * (double)relMod / 100d);
+        // handle first round
+        if (round == 0) {
+            defBonus = army.getDefensiveAddOns();
+        }
+        double lossesFactor = (double)defCon / (double)armySideTotalCon;
+        addToLog("Defender loss factor: " + lossesFactor);
+        attStr = (int)(attStr * lossesFactor) - defBonus;
+        if (attStr < 0) attStr = 0;
+        double l = computeLosses(army, attStr);
+        addToLog("New losses: " + l);
+        return l;
+    }
+    
     public double computeNewLosses(HexTerrainEnum terrain,
                                             ClimateEnum climate,
                                             CombatArmy att,
@@ -250,7 +310,6 @@ public class Combat implements Serializable, IHasMapLocation {
                                             NationRelationsEnum relations,
                                             int defenderSideTotalCon,
                                             int round) {
-        double losses1 = def.getLosses();
         int relMod = CombatModifiers.getRelationModifier(relations);
         int defCon = computNativeArmyConstitution(def);
         int attStr = computeModifiedArmyStrength(terrain, climate, att, def);
@@ -476,5 +535,26 @@ public class Combat implements Serializable, IHasMapLocation {
     public int getY() {
     	return getHexNo() % 100;
     }
+
+    
+    public CombatPopCenter getSide1Pc() {
+        return side1Pc;
+    }
+
+    
+    public void setSide1Pc(CombatPopCenter side1Pc) {
+        this.side1Pc = side1Pc;
+    }
+
+    
+    public CombatPopCenter getSide2Pc() {
+        return side2Pc;
+    }
+
+    
+    public void setSide2Pc(CombatPopCenter side2Pc) {
+        this.side2Pc = side2Pc;
+    }
+
     
 }

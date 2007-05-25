@@ -11,6 +11,8 @@ public class CombatPopCenter {
     PopulationCenterSizeEnum size;
     FortificationSizeEnum fort;
     int loyalty;
+    Integer nationNo;
+    boolean captured = false;
     
     public CombatPopCenter() {
         size = PopulationCenterSizeEnum.town;
@@ -64,6 +66,26 @@ public class CombatPopCenter {
     
     public void setSize(PopulationCenterSizeEnum size) {
         this.size = size;
+    }
+
+    
+    public Integer getNationNo() {
+        return nationNo;
+    }
+
+    
+    public void setNationNo(Integer nationNo) {
+        this.nationNo = nationNo;
+    }
+
+    
+    public boolean isCaptured() {
+        return captured;
+    }
+
+    
+    public void setCaptured(boolean captured) {
+        this.captured = captured;
     }
     
     

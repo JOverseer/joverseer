@@ -1,6 +1,5 @@
 package org.joverseer.ui.chat;
 
-import java.awt.AWTPermission;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -15,21 +14,15 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import org.joverseer.chat.domain.Message;
-import org.joverseer.chat.domain.User;
-import org.joverseer.chat.support.ChatClient;
-import org.joverseer.chat.support.ChatServer;
 import org.joverseer.chat.support.MessageReceiver;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
@@ -44,7 +37,6 @@ import org.litesoft.p2pchat.P2PChatAWT;
 import org.litesoft.p2pchat.PeerInfo;
 import org.litesoft.p2pchat.PendingPeerManager;
 import org.litesoft.p2pchat.UserDialog;
-import org.scopemvc.view.swing.SwingUtil;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -74,6 +66,7 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     boolean connected = false;
     
     UserDialog chatDialog;
+    
     
     protected void setMessageEnabled(boolean v) {
         message.setEnabled(v);
@@ -108,6 +101,7 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
         JButton startChat = new JButton("C");
         lb.cell(startChat);
         startChat.addActionListener(new ActionListener() {
+            
             public void actionPerformed(ActionEvent e) {
                 if (connected) {
                     ErrorDialog dlg = new ErrorDialog("Already connected. You must disconnect first.");
@@ -488,6 +482,8 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
         // TODO Auto-generated method stub
         
     }
+    
+    
     
     
 }

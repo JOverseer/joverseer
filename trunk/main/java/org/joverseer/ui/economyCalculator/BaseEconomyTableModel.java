@@ -45,6 +45,10 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
         return game;
     }
     
+    public void setGame(Game g) {
+        game = g;
+    }
+    
     protected Integer getNationNo() {
         return nationNo;
     }

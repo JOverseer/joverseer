@@ -303,7 +303,12 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 
     public void mouseClicked(MouseEvent e) {
-        
+        if (e.getClickCount() == 2 && e.getButton() == 1) {
+            selectHexCommandExecutor.execute();
+        }
+        if (e.getClickCount() == 1 && e.getButton() == 3) {
+            showContextMenu(e);
+        }
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -313,12 +318,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     }
 
     public void mousePressed(MouseEvent e) {
-    	if (e.getClickCount() == 2 && e.getButton() == 1) {
-            selectHexCommandExecutor.execute();
-        }
-        if (e.getClickCount() == 1 && e.getButton() == 3) {
-            showContextMenu(e);
-        }
+    	
     	if (e.getButton() == MouseEvent.BUTTON1) {
             xDiff = e.getX();
         	yDiff = e.getY();

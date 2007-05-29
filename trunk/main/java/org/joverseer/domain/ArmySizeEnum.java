@@ -2,7 +2,12 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for army sizes. The numeric value reflects the value used in the turn xml files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum ArmySizeEnum implements Serializable {
     unknown(0),
     tiny (5),

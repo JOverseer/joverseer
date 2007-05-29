@@ -3,6 +3,12 @@ package org.joverseer.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Stores the program's estimate about an army (as derived from sources such as combat narrations)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArmyEstimate implements Serializable, IHasMapLocation {
 	private static final long serialVersionUID = -3658619439763149556L;
 	String commanderName;

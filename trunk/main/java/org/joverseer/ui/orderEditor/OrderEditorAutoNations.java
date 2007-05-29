@@ -29,7 +29,7 @@ public class OrderEditorAutoNations implements ApplicationListener {
     
     public void removeNation(int n) {
         if (nations.contains(n)) {
-            nations.remove(n);
+            nations.remove((Object)n);
         }
     }
     

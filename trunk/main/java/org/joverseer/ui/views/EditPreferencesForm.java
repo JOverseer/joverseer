@@ -41,7 +41,7 @@ public class EditPreferencesForm extends AbstractForm {
                 tlb.relatedGapRow();
                 group = p.getGroup();
             }
-            tlb.cell(new JLabel(p.getDescription()));
+            tlb.cell(new JLabel(p.getDescription()), "colspec=left:270px");
             tlb.gapCol();
             if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
 	            JComboBox combo = new JComboBox();
@@ -59,7 +59,7 @@ public class EditPreferencesForm extends AbstractForm {
             	tf.setPreferredSize(new Dimension(150, 20));
             	tf.setText(reg.getPreferenceValue(p.getKey()));
             	components.put(p.getKey(), tf);
-            	tlb.cell(tf);
+            	tlb.cell(tf, "colspec=left:170px");
             }
             
             tlb.relatedGapRow();
@@ -67,7 +67,7 @@ public class EditPreferencesForm extends AbstractForm {
 
         panel = tlb.getPanel();
         JScrollPane scp = new JScrollPane(panel);
-        scp.setPreferredSize(new Dimension(300, 500));
+        scp.setPreferredSize(new Dimension(500, 600));
         return scp;
     }
 

@@ -3,11 +3,15 @@ package org.joverseer.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-
+/**
+ * Stores information about a player
+ * 
+ * In addition to information read from the xml turn, it stores the latest 
+ * turn version, file, and date for the orders of this nation/player.
+ *  
+ * @author Marios Skounakis
+ */
 public class PlayerInfo implements IBelongsToNation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -1488014589069610748L;
     int nationNo;
     String playerName;

@@ -2,6 +2,12 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+/**
+ * Stores information about an element of an army estimate.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArmyEstimateElement implements Serializable {
 
 	private static final long serialVersionUID = 5958104833199695499L;

@@ -12,7 +12,12 @@ import java.lang.reflect.Method;
 
 import sun.text.Normalizer;
 
-
+/**
+ * Stores information about a character reported in the turn results.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Character implements IBelongsToNation, IHasMapLocation, Serializable {
     /**
      * 

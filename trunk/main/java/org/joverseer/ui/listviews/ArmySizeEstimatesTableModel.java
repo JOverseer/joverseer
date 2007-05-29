@@ -1,6 +1,6 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.domain.ArmySizeEstimate;
+import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.springframework.context.MessageSource;
 
 

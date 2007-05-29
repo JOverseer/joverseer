@@ -4,10 +4,19 @@ import java.util.ArrayList;
 import java.io.Serializable;
 
 
+
+/**
+ * Stores information about a given hex, as found in the turn results.
+ * 
+ * This information includes:
+ * - whether the hex is visible or not
+ * - whether it contains a pop center or not (for visible hexes)
+ * - it's climate (if known)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class HexInfo implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -4414153702938844460L;
     int x;
     int y;
@@ -78,6 +87,9 @@ public class HexInfo implements Serializable {
         this.climate = climate;
     }
 
+    /**
+     * Merges the information from the current hex info with the parameter hex info.
+     */
     public void merge(HexInfo hi) {
         if (hi.getHexNo() != getHexNo()) {
             throw new RuntimeException("incompatible HexInfos due to hex no");

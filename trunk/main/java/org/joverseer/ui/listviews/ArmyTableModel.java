@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.context.MessageSource;
@@ -27,8 +28,17 @@ public class ArmyTableModel extends ItemTableModel {
 		Army army = (Army)object;
 		if (i == 2) {
 			String commander = army.getCommanderName();
-			return GraphicUtils.parseName(commander);
-		} else if (i == 4) {
+			commander = GraphicUtils.parseName(commander);
+                        if (commander.equals("Unknown")) {
+                            commander = "-";
+                        }
+                        return commander;
+		} else if (i == 3) {
+		    if (army.getSize().equals(ArmySizeEnum.unknown)) {
+		        return "";              
+                    }
+                    return army.getSize().toString();
+                } else if (i == 4) {
 			if (army.getElements().size() > 0) {
 				String txt = "";
 	            for (ArmyElement element : army.getElements()) {

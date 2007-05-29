@@ -2,7 +2,12 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for population center fortification sizes
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum FortificationSizeEnum implements Serializable {
     none (0),
     tower (1),

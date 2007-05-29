@@ -10,11 +10,18 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 
 
+/**
+ * Stores the economy calculator data for a given nation for this turn.
+ * 
+ * This class is used to store various information such as the market buys and sells for
+ * a give nation, the new tax rate, etc.
+ * 
+ * @author Marios Skounakis
+ *
+ */
+
 public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 3226500573957331722L;
 
     Integer nationNo;

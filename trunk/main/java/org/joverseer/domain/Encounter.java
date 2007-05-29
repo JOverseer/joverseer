@@ -3,10 +3,13 @@ package org.joverseer.domain;
 import java.io.Serializable;
 
 
+/**
+ * Stores the narration for a given encounter as found in the pdf turn results.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Encounter implements IHasMapLocation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -117862763508411685L;
     String character;
     int hexNo;

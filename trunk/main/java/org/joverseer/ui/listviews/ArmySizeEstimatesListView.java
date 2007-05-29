@@ -8,8 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.joverseer.domain.ArmySizeEstimate;
-import org.joverseer.tools.ArmySizeEstimator;
+import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
+import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
 
 
 public class ArmySizeEstimatesListView extends BaseItemListView {

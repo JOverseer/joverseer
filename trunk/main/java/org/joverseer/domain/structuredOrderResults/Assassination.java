@@ -1,5 +1,11 @@
 package org.joverseer.domain.structuredOrderResults;
 
+/**
+ * Stores Assassinations (Order result)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Assassination implements IStructuredOrderResult {
 	String target;
 

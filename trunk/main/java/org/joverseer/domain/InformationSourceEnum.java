@@ -2,7 +2,12 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for the information source read from the xml turn files
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum InformationSourceEnum implements Serializable {
     exhaustive (4),
     detailed (3),

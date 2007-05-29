@@ -2,7 +2,12 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for army element types
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum ArmyElementType implements Serializable {
     HeavyCavalry ("HC"),
     LightCavalry ("LC"),

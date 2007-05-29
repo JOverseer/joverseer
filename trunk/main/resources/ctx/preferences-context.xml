@@ -396,6 +396,27 @@
 						<value>http://www.meturn.com</value>
 					</property>
 				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.autoSave</value>
+					</property>
+					<property name="description">
+						<value>Autosave Game After Version Change</value>
+					</property>
+					<property name="group">
+						<value>Auto Submit Orders</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>

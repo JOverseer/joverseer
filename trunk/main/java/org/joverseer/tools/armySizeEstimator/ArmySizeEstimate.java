@@ -1,6 +1,15 @@
-package org.joverseer.domain;
+package org.joverseer.tools.armySizeEstimator;
 
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmySizeEnum;
 
+/**
+ * Helper class used to estimate the number of men (or ships, in case of navies) 
+ * that correspond to a give army size (e.g. small, large, etc). 
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArmySizeEstimate {
     public static String ARMY_TYPE = "Army";
     public static String NAVY_TYPE = "Navy";

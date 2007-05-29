@@ -2,7 +2,11 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for population center sizes
+ * 
+ * @author Marios Skounakis
+ */
 public enum PopulationCenterSizeEnum implements Serializable {
     ruins (0),
     camp (1),

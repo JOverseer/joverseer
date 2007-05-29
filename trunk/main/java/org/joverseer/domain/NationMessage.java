@@ -2,11 +2,17 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+/**
+ * Stores a nation message
+ * 
+ * Although messages don't normally have a hex number, they are assigned hex numbers using the
+ * Nation Message Parser
+ * 
+ * @author Marios Skounakis
+ *
+ */
 
 public class NationMessage implements Serializable, IBelongsToNation, IHasMapLocation {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -5607141998688317604L;
     int x = -1;
     int y = -1;

@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import org.joverseer.support.infoSources.InfoSource;
 
 
+/**
+ * Stores company information for the turn.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Company implements IHasMapLocation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8506114031233392593L;
     int x;
     int y;

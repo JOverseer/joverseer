@@ -2,7 +2,15 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Stores information about army elements (i.e. HC, LC, etc). For each element,
+ * the number of men, training, weapons and armor are stored.
+ * 
+ * Ships and War Machines are also considered elements.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArmyElement implements Serializable {
 
     private static final long serialVersionUID = -5669242428421000642L;

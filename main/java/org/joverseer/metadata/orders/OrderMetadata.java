@@ -3,7 +3,19 @@ package org.joverseer.metadata.orders;
 import java.io.Serializable;
 import org.joverseer.domain.Character;
 
-
+/**
+ * Order metadata. It holds information about orders:
+ * - the order name
+ * - the order code
+ * - the order number
+ * - the order difficulty
+ * - the requirements for executing the order
+ * - the parameters required to fill in for this order
+ * - the skill requirements for this order
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class OrderMetadata implements Serializable {
     String name;
     String code;

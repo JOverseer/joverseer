@@ -14,7 +14,12 @@ import org.joverseer.support.infoSources.MetadataSource;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Population metadata reader. Reads population center starting info from data files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class PopulationCenterReader implements MetadataReader {
     String populationCenterFilename = "pcs";
 

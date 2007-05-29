@@ -6,11 +6,20 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ * Background information about a Nation. It holds:
+ * - nation number
+ * - nation name
+ * - nation short name
+ * - starting nation allegiance
+ * - an arraylist of the nation SNAs
+ * - a flag whether the nation has been eliminated
+ * - a flag whether the nation has been removed from the game (e.g. for grudge games)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Nation implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 4715738430328876223L;
     Integer number;
     String name;

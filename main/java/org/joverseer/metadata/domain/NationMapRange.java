@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.awt.*;
 
 
+/**
+ * Holds the hex ranges that define the nation's map (as reported in the turn xml and pdf
+ * files)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class NationMapRange implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 7251072341355206761L;
     int nationNo;
     int tlX;

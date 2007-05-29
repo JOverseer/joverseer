@@ -10,7 +10,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-
+/**
+ * Reads the nation map ranges from data files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class NationMapRangeReader implements MetadataReader {
     String nationMapFilename = "maps.csv";
 

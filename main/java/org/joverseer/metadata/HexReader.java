@@ -13,12 +13,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
 /**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 10:03:25 PM
  *
  * Loads hex information from the given files
+ * 
+ * @author Marios Skounakis
  */
 public class HexReader implements MetadataReader {
     String terrainFilename = "terrain";

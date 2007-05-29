@@ -6,7 +6,14 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+/**
+ * Reads nation information for the game metadata
+ * 
+ * TODO: Move data from the in-code arrays that it currently resides in to files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class NationReader implements MetadataReader {
     Object[][] nations_2950 =
             new Object[][]{

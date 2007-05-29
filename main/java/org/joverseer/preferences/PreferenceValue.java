@@ -1,6 +1,14 @@
 package org.joverseer.preferences;
 
-
+/**
+ * Value for preferences with a predefined domain (list of values)
+ * Contains key-value pairs.
+ * 
+ * TODO: should refactor to use message source for user-friendly strings 
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class PreferenceValue {
     String key;
     String description;

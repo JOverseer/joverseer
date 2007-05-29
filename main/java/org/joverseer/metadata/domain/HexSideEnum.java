@@ -2,7 +2,14 @@ package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for the hex sides
+ * 
+ * Values are according to the palantir data files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum HexSideEnum implements Serializable {
     TopLeft (6),
     TopRight (1),

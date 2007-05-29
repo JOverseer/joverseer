@@ -2,7 +2,14 @@ package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for hex terains
+ * 
+ * Values are according to the palantir data files. 
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum HexTerrainEnum implements Serializable {
     plains(1),
     shore(2),

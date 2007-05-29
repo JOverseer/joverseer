@@ -7,11 +7,15 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.io.Serializable;
 
-
+/**
+ * Basic Turn structure. It stores all the information that pertains to a specific turn.
+ * 
+ * Turn information is stored in a hashmap of containers, one for each TurnElementEnum item.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Turn implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8759609718974408867L;
     int turnNo;
     Date turnDate;

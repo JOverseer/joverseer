@@ -10,7 +10,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-
+/**
+ * Reads starting character information
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class CharacterReader  implements MetadataReader {
     String characterFilename = "chars.csv";
 

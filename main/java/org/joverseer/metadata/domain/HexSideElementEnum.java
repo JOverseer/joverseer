@@ -2,7 +2,14 @@ package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for the possible elements of a hex-side
+ * 
+ * Value are according to the palantir data files
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum HexSideElementEnum implements Serializable {
     MajorRiver (3),
     MinorRiver (4),

@@ -15,7 +15,14 @@ import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.tools.infoCollectors.characters.ComputedInfoSource;
 import org.springframework.core.io.Resource;
 
-
+/**
+ * Reads starting army information.
+ * 
+ * This is the "detailed" reader, ie it reads army details such as training, weapon/armor/training ranks, etc
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class DetailArmyReader implements MetadataReader {
     String armyFilename = "startarmies";
 

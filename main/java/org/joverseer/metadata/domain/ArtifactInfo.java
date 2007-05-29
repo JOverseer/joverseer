@@ -3,11 +3,15 @@ package org.joverseer.metadata.domain;
 import java.util.ArrayList;
 import java.io.Serializable;
 
+/**
+ * Background information for artifacts. It holds the number, name, alignment, 
+ * starting owner and powers for each artifact.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 
 public class ArtifactInfo implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -2804713282789639647L;
     String name;
     int no;

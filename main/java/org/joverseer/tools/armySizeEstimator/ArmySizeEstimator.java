@@ -1,10 +1,9 @@
-package org.joverseer.tools;
+package org.joverseer.tools.armySizeEstimator;
 
 import java.util.ArrayList;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
-import org.joverseer.domain.ArmySizeEstimate;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;

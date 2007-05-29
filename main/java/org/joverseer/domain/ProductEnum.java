@@ -1,6 +1,10 @@
 package org.joverseer.domain;
 
-
+/**
+ * Enumeration for products
+ * 
+ * @author Marios Skounakis
+ */
 public enum ProductEnum {
     Leather("le"),
     Bronze("br"),

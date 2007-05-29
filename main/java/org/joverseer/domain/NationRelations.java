@@ -4,11 +4,17 @@ import java.io.Serializable;
 
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 
+/**
+ * Stores the relation status for a given nation. This includes
+ * - the allegiance
+ * - the relations to the rest of the nations
+ * - whether it has been eliminated or removed from the game
+ * 
+ * @author Marios Skounakis
+ *
+ */
 
 public class NationRelations implements IBelongsToNation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -3415693212063202826L;
     Integer nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];

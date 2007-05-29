@@ -3,10 +3,13 @@ package org.joverseer.domain;
 import java.io.Serializable;
 
 
+/**
+ * Stores a character's proficiency in casting a spell
+ * 
+ * @author Marios Skounakis
+ */
+
 public class SpellProficiency implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -3411660721122678568L;
     int spellId;
     int proficiency;

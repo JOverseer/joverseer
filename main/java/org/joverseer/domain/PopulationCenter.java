@@ -8,11 +8,12 @@ import org.joverseer.metadata.domain.Nation;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
+/**
+ * Stores information about a population center from the pdf turns
+ * 
+ * @author Marios Skounakis
+ */
 public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 5077983571531270227L;
     String name;
     int x;

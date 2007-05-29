@@ -2,11 +2,13 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+/**
+ * Stores the market info (sell/buy price and market total) for a given product 
+ * 
+ * @author Marios Skounakis
+ */
 
 public class ProductPrice implements Serializable{
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8315948351042885231L;
     ProductEnum product;
     int sellPrice;

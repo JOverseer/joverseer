@@ -2,7 +2,6 @@ package org.joverseer.domain;
 
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -10,7 +9,14 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ * Sores information about armies reported in the turn.
+ * 
+ * In addition to armies, Anchored Ships are represented as armies.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
     private static final long serialVersionUID = 5781285200976386027L;
@@ -188,6 +194,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         getElements().add(new ArmyElement(type, count));
     }
 
+    /**
+     * Returns true if the army is fed, null if unknown, false if unfed.
+     */
     public Boolean isFed() {
         return fed;
     }
@@ -196,6 +205,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         this.fed = fed;
     }
 
+    /**
+     * Gets the value for the amount of food for this army. Null if unknown.
+     */
     public Integer getFood() {
         return food;
     }
@@ -204,6 +216,13 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         this.food = food;
     }
 
+    /**
+     * Computes whether the army is fed.
+     * - if isFed/setFed has been set, it returns this value
+     * - if uses the food amount if known to compute if the army is fed
+     * - otherwise returns null if food unknown or if it cannot compute the food consumption for the army
+     * @return
+     */
     public Boolean computeFed() {
         if (isFed() != null) {
             return isFed();
@@ -215,6 +234,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         return null;
     }
     
+    /**
+     * Computes the amount of food the army consumes (needs in order to be fed)
+     * If this is not possible (i.e. elements are not known) return null 
+     */
     public Integer computeFoodConsumption() {
         if (getElements().size() == 0) return null;
         int ret = 0;
@@ -234,6 +257,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         setY(hexN % 100);
     }
 
+    /**
+     * Computes whether the army is cavalry as follows:
+     * - checks the isCavalry/setCavalry (if set, it returns this value)
+     * - if above is null, checks the elements (if possible)
+     * - if elements are null or empty it returns null 
+     */
     public Boolean computeCavalry() {
         if (isCavalry() != null) {
             return isCavalry();
@@ -247,14 +276,24 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         return true;
     }
 
+    /**
+     * Override for cavalry 
+     */
     public Boolean isCavalry() {
         return cavalry;
     }
 
+    /**
+     * Override for cavalry 
+     */
     public void setCavalry(Boolean cavalry) {
         this.cavalry = cavalry;
     }
 
+    /**
+     * Computes the number of men in the army
+     * Returns 0 if no elements are known for this army
+     */
     public int computeNumberOfMen() {
         int ret = 0;
         for (ArmyElement ae : getElements()) {
@@ -266,6 +305,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         return ret;
     }
     
+    /**
+     * Computes the number of ships in the army
+     * Returns 0 if no elements are known for this army
+     */
     public int computeNumberOfShips() {
         int ret = 0;
         for (ArmyElement ae : getElements()) {
@@ -277,6 +320,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         return ret;
     }
     
+    /**
+     * Deep clone for this army
+     */
     public Army clone() {
     	try {
     		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -292,6 +338,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     	}
     }
     
+    /**
+     * Returns true if this army represents Anchored Ships
+     */
     public static boolean isAnchoredShips(Army a) {
         return a.getCommanderName().equals("[Anchored Ships]");
     }

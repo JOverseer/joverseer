@@ -1,5 +1,11 @@
 package org.joverseer.domain.structuredOrderResults;
 
+/**
+ * Stores Kidnaps (Order result)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Kidnap implements IStructuredOrderResult {
 	String target;
 

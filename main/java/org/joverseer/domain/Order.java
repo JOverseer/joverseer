@@ -12,18 +12,25 @@ import org.springframework.richclient.application.Application;
 import java.util.ArrayList;
 import java.io.Serializable;
 
-
+/**
+ * Stores an order for a character
+ * 
+ * The order parameters are stored all within the same string, separated by the DELIM character
+ * 
+ * @author Marios Skounakis
+ */
 public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 
     private static final long serialVersionUID = 1643607461991378403L;
-    public static String NA = " N/A";
+    public static String NA = " N/A";     // Description for the blank order
     public static String DELIM = "#";
-    Integer nationNo;
+    
+    Integer nationNo; //TODO is this needed? is this set anywhere?
 
     int orderNo = -1;
     String parameters = "";
     
-    String notes;
+    String notes; //TODO delete
 
     Character character;
 
@@ -102,6 +109,10 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         return om.getNumber() + " " + om.getCode();
     }
 
+    /**
+     * Returns the metadata for this order (description, etc) by automatically looking it up
+     * in the game metadata
+     */
     public OrderMetadata getMetadata() {
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null) return null;
@@ -146,6 +157,9 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
         this.notes = notes;
     }
 
+    /**
+     * Clears the order
+     */
     public void clear() {
         orderNo = -1;
         parameters = "";

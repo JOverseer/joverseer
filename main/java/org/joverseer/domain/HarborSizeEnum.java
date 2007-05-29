@@ -2,7 +2,12 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-
+/**
+ * Enumeration for population center harbor sizes
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum HarborSizeEnum implements Serializable {
     none (0),
     port (1),

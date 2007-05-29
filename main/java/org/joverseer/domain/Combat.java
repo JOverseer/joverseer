@@ -3,11 +3,15 @@ package org.joverseer.domain;
 import java.io.Serializable;
 import java.util.HashMap;
 
-
+/**
+ * Stores the narrations for a given combat. Note that there may be more than one narrations
+ * in the case that multiple nations participated. Narrations are stored in a hashtable
+ * indexed by nation number.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Combat implements IHasMapLocation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 9195835736979973465L;
     int x;
     int y;

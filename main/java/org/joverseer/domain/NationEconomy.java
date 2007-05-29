@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 import org.joverseer.support.ProductContainer;
 
-
+/**
+ * Stores information about the economy of a given nation
+ *  
+ * @author Marios Skounakis
+ *
+ */
 public class NationEconomy implements IBelongsToNation, Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -6860023083453300940L;
 
     Integer nationNo;

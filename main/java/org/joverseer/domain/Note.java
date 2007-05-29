@@ -5,7 +5,20 @@ import java.io.Serializable;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.NationMap;
 
-
+/**
+ * Stores a note made by the player
+ * 
+ * Notes have
+ * - a nation
+ * - a location
+ * - a target, which can be generally a character or a hex
+ * - a text
+ * - a set of tags (comma separated list)
+ * - a unique id
+ * - a flag whether they are persistent
+ * 
+ * @author Marios Skounakis
+ */
 public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
     private static final long serialVersionUID = 1459488400804286715L;
 

@@ -4,7 +4,18 @@ import java.io.Serializable;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
-
+/**
+ * Srores information about an artifact. It only stores current reported information such
+ * as the owner, the hex, and the number. The powers are stored in the ArtifactInfo class.
+ * 
+ * Note that currently only artifacts NOT owned by friendly chars are stored 
+ * using this class. This includes aretifacts that:
+ * - have been located with LA/LAT spells
+ * - have been hidden by a friendly nation
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Artifact implements Serializable, IHasMapLocation {
 
     private static final long serialVersionUID = -5267111841358845294L;

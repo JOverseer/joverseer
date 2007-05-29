@@ -1,6 +1,14 @@
 package org.joverseer.support.infoSources;
 
+/**
+ * Information about the character's wounds.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class DerivedFromWoundsInfoSource extends PdfTurnInfoSource {
+
+	private static final long serialVersionUID = 8782783582422616900L;
 	String woundsDescription;
 
 	public String getWoundsDescription() {

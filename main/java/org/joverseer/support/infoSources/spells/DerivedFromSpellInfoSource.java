@@ -4,9 +4,21 @@ import java.util.ArrayList;
 
 import org.joverseer.support.infoSources.InfoSource;
 
-
+/**
+ * Information derived from a spell (usually divination spells).
+ * Contains:
+ * - the turn number
+ * - the nation number of the caster
+ * - the caster's name
+ * - the hex associated with the item
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class DerivedFromSpellInfoSource extends InfoSource {
-    ArrayList<InfoSource> otherInfoSources = new ArrayList<InfoSource>(); 
+    private static final long serialVersionUID = 1876576030752835266L;
+
+	ArrayList<InfoSource> otherInfoSources = new ArrayList<InfoSource>(); 
     
     int nationNo;
     String casterName;

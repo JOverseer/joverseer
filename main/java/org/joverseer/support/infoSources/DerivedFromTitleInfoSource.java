@@ -1,6 +1,13 @@
 package org.joverseer.support.infoSources;
 
+/**
+ * Information about character stats derived from the character's title.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class DerivedFromTitleInfoSource extends TurnInfoSource {
+	private static final long serialVersionUID = -294276048631699957L;
 	String title;
 	
 	public DerivedFromTitleInfoSource(String title) {

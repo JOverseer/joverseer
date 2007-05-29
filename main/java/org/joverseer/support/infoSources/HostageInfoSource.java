@@ -1,10 +1,13 @@
 package org.joverseer.support.infoSources;
 
 
+/**
+ * Information wrt to Hastage info as found in pdf files
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class HostageInfoSource extends InfoSource {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 566193776197455348L;
     int nationNo;
 

@@ -18,9 +18,21 @@ import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 
-
+/**
+ * Represents an army for a land combat for the combat calculator
+ * 
+ * Holds all the information pertinent to an army such as:
+ * - commander and rank
+ * - nation number
+ * - elements
+ * - morale
+ * - tactic
+ * - losses in the combat
+ *  
+ * @author Marios Skounakis
+ *
+ */
 public class CombatArmy implements Serializable {
-
     private static final long serialVersionUID = -6792883257780173753L;
     String commander;
     int nationNo;

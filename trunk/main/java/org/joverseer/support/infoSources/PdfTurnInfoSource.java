@@ -1,8 +1,14 @@
 package org.joverseer.support.infoSources;
 
-
+/**
+ * Information derived from a pdf turn file
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class PdfTurnInfoSource extends TurnInfoSource {
-    int nationNo;
+    private static final long serialVersionUID = 130686164691200861L;
+	int nationNo;
 
     public PdfTurnInfoSource(int turnNo, int nationNo) {
         this.nationNo = nationNo;

@@ -2,9 +2,6 @@ package org.joverseer.support.infoSources;
 
 
 public class DoubleAgentInfoSource extends InfoSource {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 566193776197455349L;
     int nationNo;
 

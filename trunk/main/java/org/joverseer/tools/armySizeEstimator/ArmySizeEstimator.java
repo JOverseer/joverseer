@@ -11,7 +11,13 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Class the estimates the number of men (and ships) per army (and navy) size
+ * It uses the ArmySizeEstimate
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArmySizeEstimator {
     public ArrayList<ArmySizeEstimate> estimateArmySizes() {
         ArrayList<ArmySizeEstimate> ret = new ArrayList<ArmySizeEstimate>();

@@ -14,16 +14,29 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.joverseer.support.readers.xml.TurnXmlReader;
-import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
-import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Collects information from all turns for artifacts and stores them in a container.
+ * 
+ * This class scans all turns and collates all information found with respect to artifacts. 
+ * More specifically it:
+ * - initializes the information from the artifact metadata
+ * - updates powers, hex numbers and owners from each turn, keeping the latest info each time
+ * - makes heavy use of info sources to maintain the source of each piece of information
+ * 
+ * In the end of the day it aggregates all intelligence for artifacts as found in:
+ * - xml turns
+ * - LA/LATs
+ * - starting info
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArtifactInfoCollector implements ApplicationListener {
     static Logger logger = Logger.getLogger(ArtifactInfoCollector.class);
     

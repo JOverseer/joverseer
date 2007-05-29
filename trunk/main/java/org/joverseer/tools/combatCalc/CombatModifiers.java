@@ -4,7 +4,14 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 
-
+/**
+ * Holds various lookup info with combat modifiers.
+ * 
+ * TODO: Move this information to a file.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class CombatModifiers {
     static int terr_clim_mod[][] = new int[][] {
             /*           NONE */

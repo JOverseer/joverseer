@@ -32,6 +32,27 @@ import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.ui.domain.CompanyWrapper;
 import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
 
+/**
+ * Wraps information about a character. Used by the character info collector.
+ * 
+ * Character attributes are stored as CharacterAttributeWrappers.
+ * 
+ * This class stores the character's:
+ * - name
+ * - location
+ * - nation
+ * - id
+ * - whether it is a starting char or not
+ * - death reason
+ * - company the char is travelling with
+ * - army the char is commanding
+ * - artifacts the char is carrying
+ * - health estimates (from wounds)
+ * - order results
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNation, IHasTurnNumber {
 
     String name;

@@ -20,6 +20,19 @@ import org.joverseer.support.info.InfoUtils;
 
 import sun.security.action.GetLongAction;
 
+/**
+ * Represents a land combat for the combat calculator.
+ * 
+ * It holds all information pertinent to the execution of a combat, such as
+ * - terrain
+ * - climate
+ * - involved armies and pop centers
+ * - relations
+ * 
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Combat implements Serializable, IHasMapLocation {
     private static final long serialVersionUID = 6784272689637435343L;
     static int maxArmies = 10;

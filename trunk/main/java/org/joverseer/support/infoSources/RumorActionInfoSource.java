@@ -1,5 +1,13 @@
 package org.joverseer.support.infoSources;
 
+/**
+ * Information from a rumor action
+ * 
+ * TODO: Check if this is being used and refine comments
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class RumorActionInfoSource extends InfoSource {
 	String reports;
 	

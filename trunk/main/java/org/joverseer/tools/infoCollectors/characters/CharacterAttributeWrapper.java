@@ -2,11 +2,23 @@ package org.joverseer.tools.infoCollectors.characters;
 
 import org.joverseer.support.infoSources.InfoSource;
 
+/**
+ * Wraps information about a character attribute.
+ * 
+ * Each character attribute has:
+ * - a value
+ * - a total value (modified by arties), if applicable
+ * - a name
+ * - an information source that tells us how it was derived (e.g. xml turn, title, rumor, etc)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class CharacterAttributeWrapper implements Comparable {
 	String attribute;
 	InfoSource infoSource;
 	Object value;
-        Object totalValue;
+    Object totalValue;
 	int turnNo;
 	
 	public CharacterAttributeWrapper(String attribute, Object value, int turnNo, InfoSource infoSource) {

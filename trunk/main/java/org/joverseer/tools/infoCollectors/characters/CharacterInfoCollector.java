@@ -31,7 +31,16 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Collects information about characters from each turn and aggregates into a comprehensive report.
+ * 
+ * More specifically:
+ * - It starts from the current turn and goes back one turn at a time
+ * - Every time a piece of information is found, it is updated on the respective char (e.g. a title found for the character)
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class CharacterInfoCollector implements ApplicationListener {
 
     HashMap<Integer, Container> turnInfo = new HashMap<Integer, Container>();

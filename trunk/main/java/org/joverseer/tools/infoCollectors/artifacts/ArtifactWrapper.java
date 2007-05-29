@@ -1,23 +1,17 @@
 package org.joverseer.tools.infoCollectors.artifacts;
 
-import java.util.ArrayList;
-
-import org.joverseer.domain.Artifact;
-import org.joverseer.domain.Character;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.IHasTurnNumber;
-import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.ArtifactInfo;
-import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.support.infoSources.MetadataSource;
-import org.springframework.richclient.application.Application;
 
-
+/**
+ * Wraps information about an artifact. Used by the artifact info collector.
+ * 
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasTurnNumber {
     int hexNo;
     Integer nationNo;

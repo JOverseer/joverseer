@@ -1,12 +1,25 @@
 package org.joverseer.tools.combatCalc;
 
+import java.io.Serializable;
+
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 
-
-public class CombatPopCenter {
-    String name;
+/**
+ * Holds all the information pertinent to a population center within a land combat such as
+ * - name
+ * - loyalty
+ * - size
+ * - fortifications
+ * - nation
+ * 
+ * @author Marios Skounakis
+ *
+ */
+public class CombatPopCenter implements Serializable {
+    private static final long serialVersionUID = -1043824019785601335L;
+	String name;
     int hexNo;
     PopulationCenterSizeEnum size;
     FortificationSizeEnum fort;

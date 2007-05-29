@@ -6,7 +6,12 @@ import java.util.Comparator;
 
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * The container for all preferences. It currently implements the singleton pattern.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class PreferenceRegistry {
     ArrayList<Preference> allPreferences = new ArrayList<Preference>();
     String prefix;

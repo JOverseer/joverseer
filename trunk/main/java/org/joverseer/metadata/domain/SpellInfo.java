@@ -3,10 +3,19 @@ package org.joverseer.metadata.domain;
 import java.io.Serializable;
 
 
+/**
+ * Background information for game spells. It holds:
+ * - the spell name
+ * - the spell number
+ * - the order number that must be used to cast the spell
+ * - information for casting the spell (required info, requirements, description)
+ * - the spell difficulty
+ * - the spell list name
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class SpellInfo implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 2027799051162482988L;
     String name;
     Integer number;

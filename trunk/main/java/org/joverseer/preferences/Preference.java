@@ -7,7 +7,22 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Basic class for user preferences.
+ * 
+ * It contains:
+ * - the preference key with which the preference is accessed from the code
+ * - the preference type, which defines how the preference is assigned it's value (serves as a guide for the gui layer)
+ * - the preference user-friendly description TODO: should move to message source
+ * - the preference's domain (if applicable), array of PreferenceValue objects
+ * - the preferences cached value, so that we don't always have to go to the system preferences to retrieve its value
+ * - the lifecycle event that is thrown when the preference's value is changed TODO: Maybe should be changed to a list
+ * - the preference's group for grouping preferences, currently also serves as user-friendly description of the group for the gui layer TODO: make this a key and move user-friendly description to message source
+ * - the preference's default value
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Preference {
 	public static String TYPE_DROPDOWN = "dropDown";
 	public static String TYPE_TEXT = "text";

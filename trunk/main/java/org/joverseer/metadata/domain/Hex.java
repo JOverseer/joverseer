@@ -6,22 +6,20 @@ import java.util.Collection;
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: mskounak
- * Date: Sep 10, 2006
- * Time: 6:41:13 PM
- *
  * Holds information about a hex
  * - location
  * - terrain
  * - rivers
  * - roads/fords
- * todo rivers and traffic
+ * - traffic
+ * 
+ * All information about the hex sides is stored in a hashmap, key-ed by HexSideEnum items
+ * and valued by HexSideElementEnum items.
+ * 
+ * @author Marios Skounakis
+ *
  */
 public class Hex implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 5588445214380293965L;
     int column;
     int row;

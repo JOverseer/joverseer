@@ -10,7 +10,12 @@ import org.joverseer.support.Container;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Spell metadata reader. Reads spell metadata from data files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class SpellReader  implements MetadataReader {
     String spellFilename = "spells.csv";
 

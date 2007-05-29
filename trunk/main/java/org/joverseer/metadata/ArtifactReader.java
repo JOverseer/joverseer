@@ -9,7 +9,12 @@ import org.joverseer.support.Container;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Reads starting artifact information
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArtifactReader implements MetadataReader {
     String artifactFilename = "arties.csv";
 

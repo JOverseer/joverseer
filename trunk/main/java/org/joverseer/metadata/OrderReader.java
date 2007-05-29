@@ -9,7 +9,12 @@ import org.joverseer.support.Container;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Order metadata reader. Reads order metadata from data files.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class OrderReader implements MetadataReader {
     String orderFilename = "orders.csv";
 

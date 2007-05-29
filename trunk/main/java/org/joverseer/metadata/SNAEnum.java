@@ -2,7 +2,15 @@ package org.joverseer.metadata;
 
 import java.util.HashMap;
 
-
+/**
+ * Enumeration for SNAs. 
+ * 
+ * TODO: Should move to domain package. Cannot do that easily because it will render stored
+ * games unreadable.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public enum SNAEnum {
     ScoutReconAtDouble(1, "Scout/Recon at Double"),
     ScoutReconPlus20(2, "Scout/Recon at +20"),

@@ -7,6 +7,17 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.tools.combatCalc.TacticEnum;
 
+/**
+ * Various information utils. Basically wraps the Info objects via functions so that
+ * game information is made accessible in a more friendly way to the code.
+ * 
+ * Contains static functions only.
+ * 
+ * TODO: This is a bad design. It should be refactored somehow but it is not very easy.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class InfoUtils {
 
     public static Boolean isDragon(String charName) {

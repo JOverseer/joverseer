@@ -15,11 +15,17 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * The basic game structure.
+ * 
+ * It contains the game metadata, which is static data that depends on the game type.
+ * It also contains a container of turns, for all the info for the game's turns.
+ * Finally, it contains a hash map of string/string parameters for arbitrary attributes. 
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Game implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = -5743076237064103323L;
 
     GameMetadata metadata;

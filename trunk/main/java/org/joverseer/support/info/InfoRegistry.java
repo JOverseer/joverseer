@@ -4,7 +4,12 @@ import java.util.ArrayList;
 
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Registry for infos. Currently implements the Singleton pattern.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class InfoRegistry {
     ArrayList<Info> infos = new ArrayList<Info>();
 

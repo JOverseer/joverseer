@@ -8,7 +8,16 @@ import java.util.Arrays;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Basic class for background game information (such as generic order costs, movement costs, etc).
+ * It basically serves to store tabular data that is accessed from the program.
+ * The data resides in csv files (resources)
+ * 
+ *  Each info is identified by a string key.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class Info {
     public String key;
     String resourcePath;

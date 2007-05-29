@@ -14,6 +14,12 @@ import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.springframework.core.io.Resource;
 
+/**
+ * Reads starting army information.
+ * 
+ * @author Marios Skounakis
+ *
+ */
 public class ArmyReader implements MetadataReader {
     String armyFilename = "armies";
 

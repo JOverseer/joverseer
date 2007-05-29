@@ -16,12 +16,11 @@ import org.springframework.richclient.application.Application;
 /**
  * Holds metadata about the game such as
  * 1. the game type and other game instance stuff
- * 2. information that depends on the game type, such as the hexes, the artifacts, etc 
+ * 2. information that depends on the game type, such as the hexes, the artifacts, etc
+ * 
+ * @author Marios Skounakis
  */
 public class GameMetadata implements Serializable {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 8007105168749869584L;
 	GameTypeEnum gameType;
     int gameNo;

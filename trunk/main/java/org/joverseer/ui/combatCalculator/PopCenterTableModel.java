@@ -10,7 +10,8 @@ import org.springframework.richclient.table.BeanTableModel;
 
 
 public class PopCenterTableModel extends BeanTableModel {
-    public static int iDefense = 5;
+    public static int iDefense = 6;
+    public static int iAttackerStr = 5;
     
     Form parentForm;
     
@@ -21,15 +22,15 @@ public class PopCenterTableModel extends BeanTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"name", "nationNo", "loyalty", "size", "fort", "defense"};
+        return new String[]{"name", "nationNo", "loyalty", "size", "fort", "strengthOfAttackingArmies", "defense"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class};
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class};
     }
     
     public int[] getColumnWidths() {
-        return new int[]{100, 48, 48, 80, 80, 80};
+        return new int[]{100, 48, 48, 80, 80, 80, 80};
     }
 
     protected Combat getCombat() {

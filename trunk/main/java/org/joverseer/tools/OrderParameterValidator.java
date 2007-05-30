@@ -18,6 +18,16 @@ import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
+/**
+ * Utility class that validates order parameters based on the resource file
+ * orderEditorData.csv
+ * 
+ * It returns an error message for every order parameter or null if the param is correct
+ * 
+ * Validation is more syntactical than logical
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderParameterValidator {
 
     Container orderEditorData = null;

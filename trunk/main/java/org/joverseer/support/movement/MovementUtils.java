@@ -19,6 +19,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+/**
+ * Various movement utilities. This class contains only static methods.
+ * 
+ * @author Marios Skounakis
+ */
 public class MovementUtils {
     static int[] infMovementCost = 	new int[]{3, 3, 5, 6, 5, 12, 4, -1, -1};
     static int[] infRoadMovementCost =	new int[]{2, 2, 3, 3, 3,  6, 2, -1, -1};
@@ -29,6 +34,9 @@ public class MovementUtils {
     static int riverCost = 1;
     static int majorRiverCost = -1;
 
+    /**
+     * Computes the distance between hexes hexA and hexB
+     */
     public static int distance(int hexA, int hexB) {
         Integer x1 = hexA / 100;
         Integer y1 = hexA % 100;
@@ -52,7 +60,11 @@ public class MovementUtils {
 
         return d;
     }
-    
+
+    /**
+     * Returns true if moving in direction md from startHex is a movement along a major river
+     * (for navies)
+     */
     public static boolean movementAlongMajorRiver(Hex startHex, MovementDirection md) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         GameMetadata gm = g.getMetadata();
@@ -89,7 +101,15 @@ public class MovementUtils {
         }
         return false;
     }
-    
+
+    /**
+     * Calculates the cost for moving from startHexNo towards direction for a navy
+     * @param startHexNo Moving from
+     * @param direction Move direction
+     * @param isFed Whether the navy is fed
+     * @param initialHex The hex where the navy started at
+     * @return
+     */
     public static int calculateMovementCostForNavy(int startHexNo, String direction, boolean isFed, int initialHex) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         GameMetadata gm = g.getMetadata();
@@ -147,6 +167,17 @@ public class MovementUtils {
         }
     }
 
+    /**
+     * Calculates the movement cost for an army moving from startHexNo towards direction
+     * @param startHexNo Moving from
+     * @param direction Moving towards direction
+     * @param isCavalry Is the army cavalry?
+     * @param isFed Is the army fed?
+     * @param ignoreEnemyPops Ignore/stop at non-friendly pops?
+     * @param allegiance What is the army allegiance? (to determine non-frienly pops)
+     * @param initialHex Initial hex where army started from
+     * @return
+     */
     public static int calculateMovementCostForArmy(int startHexNo, String direction, boolean isCavalry, boolean isFed, boolean ignoreEnemyPops, NationAllegianceEnum allegiance, int initialHex) {
         Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         GameMetadata gm = g.getMetadata();

@@ -14,7 +14,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.MessageDialog;
 
-
+/**
+ * Reads orders from an order file.
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderFileReader {
 
     String orderFile;

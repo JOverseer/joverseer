@@ -6,6 +6,13 @@ import org.joverseer.metadata.domain.Nation;
 import org.springframework.richclient.application.Application;
 
 
+/**
+ * Utility class that maps nation numbers to metadata natios
+ * 
+ * TODO probably it should be removed or moved elsewhere
+ * 
+ * @author Marios Skounakis
+ */
 public class NationMap {
     public static Nation getNationFromNo(Integer nationNo) {
         if (nationNo == null) return null;

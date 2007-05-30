@@ -7,7 +7,11 @@ import org.joverseer.support.Container;
 
 import java.util.ArrayList;
 
-
+/**
+ * Holds information about a nation economy (from xml turns)
+ * 
+ * @author Marios Skounakis
+ */
 public class EconomyWrapper {
     int armyMaint;
     int popMaint;

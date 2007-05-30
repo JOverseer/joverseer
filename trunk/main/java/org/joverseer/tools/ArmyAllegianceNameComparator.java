@@ -12,7 +12,14 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 
-
+/**
+ * Comparator that compares armies based on:
+ * - their allegiance
+ * - the commander name
+ * in order of precedence
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyAllegianceNameComparator implements Comparator {
 
     public int compare(Object o1, Object o2) {

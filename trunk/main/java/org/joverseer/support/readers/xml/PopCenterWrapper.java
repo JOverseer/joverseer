@@ -1,8 +1,14 @@
-	package org.joverseer.support.readers.xml;
+package org.joverseer.support.readers.xml;
 
 import org.joverseer.domain.*;
 
+/**
+ * Holds information about pop centers (from xml turns)
+ * 
+ * @author Marios Skounakis
+ */
 public class PopCenterWrapper {
+
     int hexID;
     String name;
     int nation;
@@ -168,7 +174,7 @@ public class PopCenterWrapper {
                 pc.setHarbor(HarborSizeEnum.harbor);
                 break;
         }
-        //todo set allegiance
+        // todo set allegiance
         switch (getInformationSource()) {
             case 0:
                 pc.setInformationSource(InformationSourceEnum.exhaustive);

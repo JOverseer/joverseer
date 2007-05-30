@@ -1,6 +1,10 @@
 package org.joverseer.tools.ordercheckerIntegration;
 
-
+/**
+ * Order Result Type enumeration
+ * 
+ * @author Marios Skounakis
+ */
 public enum OrderResultTypeEnum {
     Okay(-1),
     Info(0),

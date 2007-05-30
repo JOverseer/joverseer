@@ -4,7 +4,11 @@ import org.joverseer.domain.HexInfo;
 
 import java.util.ArrayList;
 
-
+/**
+ * Holds the nation info from xml turns (empty pop hexes and population hexes)
+ * 
+ * @author Marios Skounakis
+ */
 public class NationInfoWrapper {
     String emptyPopHexes;
     String popHexes;

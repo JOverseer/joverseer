@@ -2,7 +2,11 @@ package org.joverseer.support.readers.pdf;
 
 import org.joverseer.domain.Encounter;
 
-
+/**
+ * Holds information about encounters
+ * 
+ * @author Marios Skounakis
+ */
 public class EncounterWrapper {
     String character;
     int hexNo;

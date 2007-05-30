@@ -1,6 +1,11 @@
 package org.joverseer.support.readers.pdf;
 
 
+/**
+ * Stores information about artifacts
+ * 
+ * @author Marios Skounakis
+ */
 public class ArtifactWrapper {
     int number;
     String name;

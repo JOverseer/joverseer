@@ -5,6 +5,18 @@ import org.joverseer.domain.Character;
 
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
+/**
+ * Stores information about characters.
+ * 
+ * This information is complementary to character info read from the xmls. It contains:
+ * - name
+ * - order results
+ * - hex number
+ * - various death flags (assassinated, cursed, executed)
+ * - artifacts
+ * 
+ * @author Marios Skounakis
+ */
 public class CharacterWrapper {
 	String name;
 	String orders;

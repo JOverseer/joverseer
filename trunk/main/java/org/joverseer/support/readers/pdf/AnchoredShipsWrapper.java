@@ -1,6 +1,10 @@
 package org.joverseer.support.readers.pdf;
 
-
+/**
+ * Stores information about anchored ships
+ * 
+ * @author Marios Skounakis
+ */
 public class AnchoredShipsWrapper {
     int number;
     String type;

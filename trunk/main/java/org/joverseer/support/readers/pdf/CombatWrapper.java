@@ -2,22 +2,29 @@ package org.joverseer.support.readers.pdf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Pattern;
-
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.joverseer.game.Game;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmyEstimateElement;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.info.InfoUtils;
 import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 
 
+/**
+ * Stores information about a combat. More specifically it stores:
+ * - the involved armies (as CombatArmy objects)
+ * - the hex number
+ * - the narration
+ * - the character wounds (hashmap keyed by char name, valued by arraylist of string wound descriptions)
+ * - the army losses (hashmap keyed by commander name, valued by arraylist of string loss descriptions)
+ * 
+ * @author Marios Skounakis
+ */
 public class CombatWrapper {
     String narration;
     int hexNo;
@@ -236,7 +243,7 @@ public class CombatWrapper {
 	    		
 	    		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
 	    		
-	    		for (CombatArmyRegiment cae : (ArrayList<CombatArmyRegiment>)ca.regiments.getItems()) {
+	    		for (CombatArmyElement cae : (ArrayList<CombatArmyElement>)ca.regiments.getItems()) {
 	    			String descr = cae.getDescription();
 	    			String[] parts = descr.split("\\s{2,50}");
 	    			if (parts.length == 4) {

@@ -2,7 +2,13 @@ package org.joverseer.support.readers.pdf;
 
 import org.joverseer.domain.Challenge;
 
-
+/**
+ * Stores information about challenges:
+ * - character
+ * - narration
+ * 
+ * @author Marios Skounakis
+ */
 public class ChallengeWrapper extends CombatWrapper {
     String character;
     

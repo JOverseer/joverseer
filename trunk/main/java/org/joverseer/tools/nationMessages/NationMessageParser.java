@@ -10,7 +10,12 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 
-
+/**
+ * Utility class that parses nation messages and extracts a hex number, if possible.
+ * The hex number is derived by the pop center or the character as found in the rumor.
+ * 
+ * @author Marios Skounakis
+ */
 public class NationMessageParser {
     String name = "\\p{L}+(?:[\\s\\-]\\p{L}+)*";
     int turnNo;

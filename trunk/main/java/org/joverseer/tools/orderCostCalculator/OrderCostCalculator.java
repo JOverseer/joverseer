@@ -17,7 +17,16 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 
+/**
+ * Utility class that calculates the cost for a give order.
+ * 
+ * Currently it computes the gold cost, but work is in process (and unfinished) to 
+ * also compute product costs 
+ * 
+ * @author Marios Skounakis
+ */
 
+//TODO finish
 public class OrderCostCalculator {
     public int getOrderCost(Order o) {
         switch (o.getOrderNo()) {

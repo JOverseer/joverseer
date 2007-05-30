@@ -3,14 +3,12 @@ package org.joverseer.support.readers.pdf;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
@@ -58,7 +56,29 @@ import org.txt2xml.config.ProcessorFactory;
 import org.txt2xml.core.Processor;
 import org.txt2xml.driver.StreamDriver;
 
-
+/**
+ * Class that reads pdf turn files, parses them and updates the game's turns.
+ * 
+ * The class assumes that the xml files for this turn have already been read.
+ * 
+ * Parsing goes as follows:
+ * 1. the PDFBox library extracts the text from the pdf files
+ * 2. the txt2xml package converts the text into xml
+ * 3. the xml is read using the Apache Digester and stored into objects contained into a TurnInfo object
+ * 4. the objects are read and used to update the current game
+ * 
+ * The Parser has two public static attributes:
+ * 1. parseTimeoutInSecs, which is the amount of time to spend trying to parse a pdf file. Sometimes
+ * pdf parsing hangs, and this timeout is used to interrupt the thread doing the parsing so
+ * that the program doesn't hang.
+ * 2. deleteFilesWhenFinished, which tells the parser whether to delete the intermediate
+ * txt and xml files that it produces. Useful for debugging.
+ * 
+ * The class is set-up to cooperate with a ProgressMonitor so that the progress in
+ * parsing the pdf files can be shown in the gui layer.
+ *  
+ * @author Marios Skounakis
+ */
 public class TurnPdfReader implements Runnable {
     public static final String DEFAULT_ENCODING = "UTF-8";
     public static int parseTimeoutInSecs = 10;

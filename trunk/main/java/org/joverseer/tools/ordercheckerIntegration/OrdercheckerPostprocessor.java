@@ -14,7 +14,11 @@ import com.middleearthgames.orderchecker.Main;
 
 /**
  * Performs additional checks on the orders and adds the results to the order checker results
+ * 
+ * @author Marios Skounakis
  */
+
+//TODO this class is not being used right now
 public class OrdercheckerPostprocessor {
     OrdercheckerProxy proxy;
 

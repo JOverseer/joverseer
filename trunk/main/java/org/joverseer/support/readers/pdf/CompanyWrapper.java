@@ -1,10 +1,12 @@
 package org.joverseer.support.readers.pdf;
 
-import java.util.ArrayList;
-
 import org.joverseer.domain.Company;
 
-
+/**
+ * Holds information about companies
+ * 
+ * @author Marios Skounakis
+ */
 public class CompanyWrapper {
     String commanderName;
     int hexNo;

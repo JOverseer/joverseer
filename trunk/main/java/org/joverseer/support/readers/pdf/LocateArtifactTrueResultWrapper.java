@@ -12,6 +12,12 @@ import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactTrueInf
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
+/**
+ * Holds information about Locate Artifact True order results
+ * 
+ * @author Marios Skounakis
+ */
+
 public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper {
     public void updateGame(Turn turn, int nationNo, String casterName) {
         int hexNo = getHexNo();

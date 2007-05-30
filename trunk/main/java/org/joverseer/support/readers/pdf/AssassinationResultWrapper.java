@@ -6,7 +6,11 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 
-
+/**
+ * Stores information about assassination results (target, etc)
+ * 
+ * @author Marios Skounakis
+ */
 public class AssassinationResultWrapper implements OrderResult {
         int hexNo;
         String character;

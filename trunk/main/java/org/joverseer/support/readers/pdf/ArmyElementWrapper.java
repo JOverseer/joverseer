@@ -1,6 +1,10 @@
 package org.joverseer.support.readers.pdf;
 
-
+/**
+ * Stores information about army elements
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyElementWrapper {
     String type;
     int number;

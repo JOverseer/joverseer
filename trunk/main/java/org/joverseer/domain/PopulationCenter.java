@@ -14,6 +14,7 @@ import java.util.HashMap;
  * @author Marios Skounakis
  */
 public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Serializable {
+
     private static final long serialVersionUID = 5077983571531270227L;
     String name;
     int x;
@@ -34,15 +35,15 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     InformationSourceEnum informationSource;
 
     InfoSource infoSource;
-    
+
     ProductContainer production = new ProductContainer();
     ProductContainer stores = new ProductContainer();
-    
+
     boolean lostThisTurn = false;
 
     public PopulationCenter() {
     }
-    
+
     public String getName() {
         return name;
     }
@@ -155,7 +156,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
         setX(hexNo / 100);
         setY(hexNo % 100);
     }
-    
+
     public Integer getProduction(ProductEnum p) {
         return production.getProduct(p);
     }
@@ -163,7 +164,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     public Integer getStores(ProductEnum p) {
         return stores.getProduct(p);
     }
-    
+
     public void setProduction(ProductEnum p, Integer amount) {
         production.setProduct(p, amount);
     }
@@ -171,30 +172,27 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
     public void setStores(ProductEnum p, Integer amount) {
         stores.setProduct(p, amount);
     }
-    
-    
 
-    
+
     public boolean getLostThisTurn() {
         return lostThisTurn;
     }
 
-    
+
     public void setLostThisTurn(boolean lostThisTurn) {
         this.lostThisTurn = lostThisTurn;
     }
-    
-    
+
 
     public InfoSourceValue getLoyaltyEstimate() {
-		return loyaltyEstimate;
-	}
+        return loyaltyEstimate;
+    }
 
-	public void setLoyaltyEstimate(InfoSourceValue loyaltyEstimate) {
-		this.loyaltyEstimate = loyaltyEstimate;
-	}
+    public void setLoyaltyEstimate(InfoSourceValue loyaltyEstimate) {
+        this.loyaltyEstimate = loyaltyEstimate;
+    }
 
-	public PopulationCenter clone() {
+    public PopulationCenter clone() {
         PopulationCenter newPc = new PopulationCenter();
         newPc.setName(getName());
         newPc.setCapital(getCapital());
@@ -207,8 +205,8 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
         newPc.setX(getX());
         newPc.setY(getY());
 
-        //TODO BUG BUG
-        //this is a bug, info source should be cloned too!
+        // TODO BUG BUG
+        // this is a bug, info source should be cloned too!
         newPc.setInfoSource(getInfoSource());
         newPc.setInformationSource(getInformationSource());
 

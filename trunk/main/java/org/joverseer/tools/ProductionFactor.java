@@ -4,6 +4,13 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 
+/**
+ * Returns the production factor for a hex given it's pop center size and climate
+ * 
+ * @author Marios Skounakis
+ */
+
+//TODO externalize to data files
 public class ProductionFactor {
     static int[][] climateFactors = 
         new int[][]{

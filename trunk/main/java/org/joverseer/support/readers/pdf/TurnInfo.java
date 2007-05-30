@@ -1,9 +1,12 @@
 package org.joverseer.support.readers.pdf;
 
-import java.util.Date;
-
 import org.joverseer.support.Container;
 
+/**
+ * Container class for all the information read from a pdf turn.
+ * 
+ * @author Marios Skounakis
+ */
 public class TurnInfo {
     int turnNo = -1;
     int nationNo = -1;

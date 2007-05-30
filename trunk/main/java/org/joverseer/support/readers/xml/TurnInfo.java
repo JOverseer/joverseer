@@ -2,7 +2,11 @@ package org.joverseer.support.readers.xml;
 
 import org.joverseer.support.Container;
 
-
+/**
+ * Holds all the information read from the xml turns
+ * 
+ * @author Marios Skounakis
+ */
 public class TurnInfo {
     Container popCentres;
     Container characters;

@@ -7,7 +7,11 @@ import java.io.Serializable;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-
+/**
+ * Implements cache functionality for the Container class
+ * 
+ * @author Marios Skounakis
+ */
 public class ContainerCache implements Serializable {
     String propertyName;
     HashMap<Object, ArrayList> cache;

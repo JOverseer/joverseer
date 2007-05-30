@@ -18,7 +18,13 @@ import org.springframework.richclient.application.Application;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
+/**
+ * Utility class that initializes a new turn. Based on the existence of not of a previous turn
+ * the new turn is initialized accordingly (e.g. with pop centers from the previous turn
+ * or with pop center metadata)
+ * 
+ * @author Marios Skounakis
+ */
 public class TurnInitializer {
     public void initializeTurnWith(Turn newTurn, Turn previousTurn) {
         newTurn.getContainers().put(TurnElementsEnum.PopulationCenter, new Container(new String[]{"hexNo", "nationNo"}));

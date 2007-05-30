@@ -1,9 +1,13 @@
 package org.joverseer.support.readers.pdf;
 
-import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
 
+/**
+ * Holds information about pop centers
+ * 
+ * @author Marios Skounakis
+ */
 public class PopCenterWrapper {
 	String name;
 	int hexNo;

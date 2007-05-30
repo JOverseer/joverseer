@@ -5,7 +5,11 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.domain.InformationSourceEnum;
 
-
+/**
+ * Holds information about characters (from xml turns)
+ * 
+ * @author Marios Skounakis
+ */
 public class CharacterWrapper {
     String id;
     String name;

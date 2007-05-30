@@ -11,7 +11,15 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 
-
+/**
+ * Comparator that compares armies based on:
+ * - their death reason (not dead chars go first)
+ * - their allegiance
+ * - their name
+ * in order of precedence
+ * 
+ * @author Marios Skounakis
+ */
 public class CharacterDeathAllegianceNameComparator implements Comparator {
 
     public int compare(Object o1, Object o2) {

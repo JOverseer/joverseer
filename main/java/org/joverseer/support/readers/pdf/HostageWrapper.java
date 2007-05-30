@@ -3,7 +3,11 @@ package org.joverseer.support.readers.pdf;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.InformationSourceEnum;
 
-
+/**
+ * Holds information about hostages
+ * 
+ * @author Marios Skounakis
+ */
 public class HostageWrapper {
     String name;
     String nation;

@@ -2,7 +2,11 @@ package org.joverseer.tools.ordercheckerIntegration;
 
 import org.joverseer.domain.Order;
 
-
+/**
+ * Class that stores a result from Order Checker for a give order.
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderResult {
     Order order;
     String message;

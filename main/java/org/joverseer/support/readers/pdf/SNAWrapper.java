@@ -1,6 +1,9 @@
 package org.joverseer.support.readers.pdf;
 
-
+/**
+ * Holds information about SNAs
+ * @author Marios Skounakis
+ */
 public class SNAWrapper {
     int number;
 

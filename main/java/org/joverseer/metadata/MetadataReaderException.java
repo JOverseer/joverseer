@@ -4,13 +4,11 @@ package org.joverseer.metadata;
 /**
  * Exception for metadata readers
  * 
- * TODO: Check if this is used anywhere. If not, delete.
- * 
  * @author Marios Skounakis
  *
  */
-public class MetadataReaderException extends Exception {
 
+public class MetadataReaderException extends Exception {
     public MetadataReaderException() {
         super();
     }

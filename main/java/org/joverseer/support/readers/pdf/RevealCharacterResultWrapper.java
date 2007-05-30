@@ -9,7 +9,10 @@ import org.joverseer.support.infoSources.TurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromRevealCharacterInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
-
+/**
+ * Holds information about Reveal Character order results
+ * @author Marios Skounakis
+ */
 public class RevealCharacterResultWrapper implements OrderResult {
     String characterName;
     int hexNo;

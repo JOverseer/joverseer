@@ -4,7 +4,13 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 
+/**
+ * Utility class that computes the Naked Heavy Infantry Equivalent
+ * 
+ * @author Marios Skounakis
+ */
 
+//TODO Needs to be merged with some other methods - maybe combat utils
 public class CombatUtils {
     public static int getNakedHeavyInfantryEquivalent(Army a) {
         int nhi = 0;

@@ -5,7 +5,15 @@ import java.util.HashMap;
 
 import org.joverseer.domain.ProductEnum;
 
-
+/**
+ * Utility class that stores product-value pairs.
+ * 
+ * It also provides the ability to add product containers together
+ * 
+ * Useful for storing pop center production (and not only that)
+ * 
+ * @author Marios Skounakis
+ */
 public class ProductContainer implements Serializable {
     HashMap<ProductEnum, Integer> products = new HashMap<ProductEnum, Integer>();
     

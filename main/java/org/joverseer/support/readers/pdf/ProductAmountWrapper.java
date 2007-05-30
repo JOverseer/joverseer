@@ -1,5 +1,10 @@
 package org.joverseer.support.readers.pdf;
 
+/**
+ * Holds information about product amounts (for all products)
+ * 
+ * @author Marios Skounakis
+ */
 public class ProductAmountWrapper {
 	String leather;
 	String bronze;

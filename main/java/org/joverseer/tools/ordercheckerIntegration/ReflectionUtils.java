@@ -4,6 +4,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.Constructor;
 
+/**
+ * A set of static utility methods for accessing methods and fields (private and public) on
+ * a given object using reflection.
+ * 
+ * @author Marios Skounakis
+ */
+
+//TODO move outside the orderchecker package?
+
 public class ReflectionUtils {
     public static Object invokeMethod(Object obj, String methodName, Object[] args) throws Exception {
         Class clazz = obj.getClass();

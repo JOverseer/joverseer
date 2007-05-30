@@ -1,5 +1,10 @@
 package org.joverseer.support.readers.pdf;
 
+/**
+ * Holds information about Nation Relations
+ * 
+ * @author Marios Skounakis
+ */
 public class NationRelationWrapper {
 
     String nation;

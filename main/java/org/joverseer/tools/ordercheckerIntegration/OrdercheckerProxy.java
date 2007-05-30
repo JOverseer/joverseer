@@ -3,18 +3,15 @@ package org.joverseer.tools.ordercheckerIntegration;
 import java.awt.Component;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-import javax.swing.JTree;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -49,6 +46,19 @@ import com.middleearthgames.orderchecker.io.Data;
 import com.middleearthgames.orderchecker.io.ImportRulesCsv;
 import com.middleearthgames.orderchecker.io.ImportTerrainCsv;
 
+/**
+ * Class the acts as a proxy between JOverseer and Bernie Geiger's Order Checker
+ * 
+ * It:
+ * - prepares the Order Checker by updating it with the current game's data
+ * - runs it (and takes care of showing the appropriate request screens)
+ * - provides helper methods for accessing the order results
+ * 
+ * It heavily depends on the ReflectionUtils class for accessing private fields and
+ * method on the Order Checker code.
+ * 
+ * @author Marios Skounakis
+ */
 public class OrdercheckerProxy {
     HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> orderMap =
         new HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order>();

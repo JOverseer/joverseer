@@ -33,7 +33,17 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.tools.nationMessages.NationMessageParser;
 import org.springframework.richclient.progress.ProgressMonitor;
 
-
+/**
+ * Class tha reads xml turn files and updates the game
+ * 
+ * The class uses Apache Digester to parse the xml files into objects. Then the
+ * objects are parsed and the game is updated.
+ * 
+ * The class is set-up to cooperate with a ProgressMonitor so that the progress in
+ * parsing the pdf files can be shown in the gui layer.
+ * 
+ * @author Marios Skounakis
+ */
 public class TurnXmlReader implements Runnable{
     static Logger logger = Logger.getLogger(TurnXmlReader.class);
 

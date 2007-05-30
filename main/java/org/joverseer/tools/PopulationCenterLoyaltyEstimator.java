@@ -7,7 +7,18 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 
-
+/**
+ * Utility class that finds the latest applicable loyalty estimate for a given pop center,
+ * or null if no such estimate can be found.
+ * 
+ * More specifically it:
+ * - starts from the current turn
+ * - goes back one turn at a time, checking for an existing estimate
+ * - if at any time the pop center's size or nation is changed, it returns null, 
+ * because older estimates are going to be not applicable
+ * 
+ * @author Marios Skounakis
+ */
 public class PopulationCenterLoyaltyEstimator {
     public static InfoSourceValue getLoyaltyEstimateForPopCenter(PopulationCenter pc) {
         if (pc.getLoyaltyEstimate() != null) return pc.getLoyaltyEstimate();

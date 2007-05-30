@@ -7,6 +7,11 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 
+/**
+ * Holds information about Influence Other order results
+ * 
+ * @author Marios Skounakis
+ */
 public class InfluenceOtherResultWrapper implements OrderResult {
 	String popCenter;
 	String loyalty;

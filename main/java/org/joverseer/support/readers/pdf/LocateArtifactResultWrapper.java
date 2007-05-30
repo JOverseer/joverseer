@@ -11,6 +11,11 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 
+/**
+ * Holds information about Locate Artifact order results
+ * 
+ * @author Marios Skounakis
+ */
 public class LocateArtifactResultWrapper implements OrderResult {
 	int hexNo;
 	int artifactNo;

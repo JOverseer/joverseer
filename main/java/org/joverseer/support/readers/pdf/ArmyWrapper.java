@@ -7,6 +7,11 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.support.Container;
 
+/**
+ * Stores information about armies
+ * 
+ * @author Marios Skounakis
+ */
 
 public class ArmyWrapper {
     String commander;

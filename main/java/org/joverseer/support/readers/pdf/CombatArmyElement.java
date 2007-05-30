@@ -1,7 +1,11 @@
 package org.joverseer.support.readers.pdf;
 
-
-public class CombatArmyRegiment {
+/**
+ * Stores information about an element of a CombatArmy
+ * 
+ * @author Marios Skounakis
+ */
+public class CombatArmyElement {
     String description;
 
     

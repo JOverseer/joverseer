@@ -2,6 +2,11 @@ package org.joverseer.support.readers.pdf;
 
 import org.joverseer.support.Container;
 
+/**
+ * Stores information about an army participating in a combat.
+ * 
+ * @author Marios Skounakis
+ */
 public class CombatArmy {
         String nation;
         String commanderName;

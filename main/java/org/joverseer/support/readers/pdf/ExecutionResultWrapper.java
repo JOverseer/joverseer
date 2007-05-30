@@ -6,7 +6,11 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 
-
+/**
+ * Holds information about execution results
+ * 
+ * @author Marios Skounakis
+ */
 public class ExecutionResultWrapper implements OrderResult {
     String character;
     

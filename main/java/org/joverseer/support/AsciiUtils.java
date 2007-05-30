@@ -1,6 +1,12 @@
 package org.joverseer.support;
 
-
+/**
+ * Class for manipulating unicode strings
+ * 
+ * Contains static methods and cannot be instantiated
+ * 
+ * @author Marios Skounakis
+ */
 public class AsciiUtils {
 
     private static final String PLAIN_ASCII =

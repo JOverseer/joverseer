@@ -11,7 +11,11 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
 
-
+/**
+ * Container wrapper for the Order Results.
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderResultContainer implements ApplicationListener {
     Container results = new Container(new String[]{"order"});
     

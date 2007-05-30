@@ -7,7 +7,11 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Holds information about armies (from xml turns)
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyWrapper {
     int hexID;
     int nation;

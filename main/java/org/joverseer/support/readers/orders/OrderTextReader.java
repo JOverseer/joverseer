@@ -12,7 +12,12 @@ import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 
-
+/**
+ * Reads orders from a text representation. The format supported is that
+ * used by Automagic or the Generate Order Report command.
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderTextReader {
         String orderText;
         

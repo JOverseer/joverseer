@@ -6,7 +6,12 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 
-
+/**
+ * Utility class that computes the last turn that a hex was visible
+ * 
+ * @author Marios Skounakis
+ */
+//TODO is this really needed as a separate class?
 public class HexInfoHistory {
     public static Integer getLatestHexInfoTurnNoForHex(int hexNo) {
         if (!GameHolder.instance().hasInitializedGame()) return null;

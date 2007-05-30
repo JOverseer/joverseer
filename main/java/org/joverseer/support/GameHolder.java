@@ -3,7 +3,11 @@ package org.joverseer.support;
 import org.joverseer.game.Game;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Simple wrapper for the Game object.
+ * 
+ * @author Marios Skounakis
+ */
 public class GameHolder {
     Game game;
 

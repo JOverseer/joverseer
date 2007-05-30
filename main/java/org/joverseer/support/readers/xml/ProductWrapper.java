@@ -5,7 +5,12 @@ import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.support.Container;
 
-
+/**
+ * Holds information about products (from xml turns)
+ * Basically it is the nation product totals along with market info
+ * 
+ * @author Marios Skounakis
+ */
 public class ProductWrapper {
     String type;
     int buyPrice;

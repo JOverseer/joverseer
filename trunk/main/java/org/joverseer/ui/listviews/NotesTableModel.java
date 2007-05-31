@@ -35,7 +35,7 @@ public class NotesTableModel extends ItemTableModel {
     protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
         super.setValueAtInternal(arg0, arg1, arg2);
         Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.NoteAddedOrUpdated.toString(), this, this));
+                new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), this, this));
 
     }
 

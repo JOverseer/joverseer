@@ -425,7 +425,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
                 Character c = (Character)e.getData();
                 selectCharacter(c);
             }
-            if (e.getEventType().equals(LifecycleEventsEnum.NoteAddedOrUpdated.toString())) { 
+            if (e.getEventType().equals(LifecycleEventsEnum.NoteUpdated.toString())) { 
                 Point p = MapPanel.instance().getSelectedHex();
                 refresh(p);
             }

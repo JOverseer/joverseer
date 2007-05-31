@@ -26,8 +26,9 @@ public class DeleteNoteCommand extends ActionCommand {
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
         Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.NoteAddedOrUpdated.toString(), note, this));
-
+                new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), note, this));
+        Application.instance().getApplicationContext().publishEvent(
+                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), note, this));
 
     }
 

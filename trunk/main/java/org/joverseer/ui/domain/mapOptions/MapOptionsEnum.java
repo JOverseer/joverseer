@@ -6,5 +6,5 @@ public enum MapOptionsEnum {
     DrawOrders,
     DrawNamesOnOrders,
     ShowClimate,
-    HexGraphics;
+    HexGraphics
 }

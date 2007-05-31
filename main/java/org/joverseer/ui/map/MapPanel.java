@@ -273,7 +273,25 @@ public class MapPanel extends JPanel implements MouseInputListener {
         catch (Exception exc) {
             logger.error("Error rendering orders " + exc.getMessage());
         }
-        
+        try {
+            ArrayList notes = getGame().getTurn().getContainer(TurnElementsEnum.Notes).getItems();
+            for (Note n : (ArrayList<Note>)notes) {
+            	for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                    if (r.appliesTo(n)) {
+                    	setHexLocation(n.getX(), n.getY());
+                        try {
+                            r.render(n, g, location.x, location.y);
+                        }
+                        catch (Exception exc) {
+                            logger.error("Error rendering note " + n.getHexNo() + " " + n.getText() + " " + exc.getMessage());
+                        }
+                    }
+            	}
+            }
+        }
+        catch (Exception exc) {
+        	logger.error("Error rendering notes " + exc.getMessage());
+        }
         BusyIndicator.clearAt(this);
     }
 

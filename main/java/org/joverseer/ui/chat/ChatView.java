@@ -3,7 +3,6 @@ package org.joverseer.ui.chat;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.List;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,8 +21,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import org.joverseer.chat.domain.Message;
-import org.joverseer.chat.support.MessageReceiver;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
@@ -31,12 +28,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
-import org.litesoft.p2pchat.ActivePeerManager;
-import org.litesoft.p2pchat.MyInfo;
-import org.litesoft.p2pchat.P2PChatAWT;
-import org.litesoft.p2pchat.PeerInfo;
-import org.litesoft.p2pchat.PendingPeerManager;
-import org.litesoft.p2pchat.UserDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -49,14 +40,8 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 
-public class ChatView extends AbstractView implements MessageReceiver, ApplicationListener, UserDialog {
+public class ChatView extends AbstractView implements ApplicationListener {
     //JTextArea text;
-    private MyInfo zMyInfo;
-    private ActivePeerManager zActivePeerManager = null;
-    private PendingPeerManager zPendingPeerManager = null;
-    private List zPeersList;
-    
-    P2PChatAWT chat;
     Thread chatThread;
     
     JTextPane text;
@@ -65,7 +50,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     
     boolean connected = false;
     
-    UserDialog chatDialog;
     
     
     protected void setMessageEnabled(boolean v) {
@@ -73,7 +57,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     }
     
     protected JComponent createControl() {
-        chatDialog = this;
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         
         MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
@@ -132,26 +115,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
 //                            String server = conn.getServer();
 //                            messageReceived("Connected to " + conn.getServer() + ":" + conn.getPort() + " as " + conn.getUsername()); 
 //                            setMessageEnabled(true);
-                            chat = new P2PChatAWT() {
-                                protected UserDialog getUserDialog(MyInfo pMyInfo) {
-                                    zMyInfo = pMyInfo;
-                                    return chatDialog;
-                                }
-                            };
-                            Runnable r = new Runnable() {
-                                public void run() {
-                                    String[] args = new String[]{
-                                            conn.getUsername(),
-                                            conn.getPeerIP() + ":" + conn.getPeerPort(),
-                                            "[" + conn.getMyIP() + ":" + conn.getMyPort() + "]"
-                                            };
-                                    chat.init(args);
-                                }
-                            };
-                            chatThread = new Thread(r);
-                            chatThread.start();
-                            setMessageEnabled(true);
-                            addMsg("Chat started, waiting for connections...");
                         }
                         catch (Exception exc) {
                             setMessageEnabled(false);
@@ -210,8 +173,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
 //                } else {
 //                    message.setText("");
 //                }
-                zActivePeerManager.sendToAllCHAT( message.getText() );
-                showCHAT(zMyInfo, message.getText());
                 message.setText("");
             }
         });
@@ -316,20 +277,15 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
         }
     }
 
-    public void messageReceived(Message msg) {
-        if (msg == null) return;
-        String msgStr = "";
-    }
-    
-    public void showObject(PeerInfo peerInfo, Object obj) {
+    public void showObject(Object obj) {
         String msgStr = "";
         if (OrderWrapper.class.isInstance(obj)) {
-            orderWrapperReceived((OrderWrapper)obj, peerInfo.getChatName());
+            orderWrapperReceived((OrderWrapper)obj, "");
         } else if (MultiOrderWrapper.class.isInstance(obj)) {
             final MultiOrderWrapper mow = (MultiOrderWrapper)obj;
-            addMsg(peerInfo.getChatName() + "> " + "sent group of orders.");
+            addMsg("" + "> " + "sent group of orders.");
             for (OrderWrapper ow : mow.getOrderWrappers()) {
-                orderWrapperReceived(ow, peerInfo.getChatName());
+                orderWrapperReceived(ow, "");
             }
             addMsg("");
             //addMsg(msg.getUser().getUsername() + ": " + "Accept all orders.");
@@ -357,7 +313,7 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
 
         }
         else {
-            msgStr = peerInfo.getChatName() + "> " + obj.toString();
+            msgStr = "" + "> " + obj.toString();
             addMsg(msgStr);
         }
     }
@@ -386,9 +342,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     public void sendOrder(Order o) {
         //client.sendMessage(new OrderWrapper(o));
         OrderWrapper ow = new OrderWrapper(o);
-        zActivePeerManager.sendToAllObject( ow );
-        
-        showObject(zMyInfo, ow);
         message.setText("");
     }
     
@@ -398,9 +351,6 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
             mow.getOrderWrappers().add(new OrderWrapper(o));
         }        
         //client.sendMessage(mow);
-        zActivePeerManager.sendToAllObject( mow );
-        
-        showObject(zMyInfo, mow);
         message.setText("");
     }
     
@@ -419,71 +369,11 @@ public class ChatView extends AbstractView implements MessageReceiver, Applicati
     }
     
     protected void disconnect() {
-    	chat.disconnect();
-    	chatThread.stop();
     	connected = false;
         setMessageEnabled(false);
         messageReceived("Disconnected from server.");
     }
 
-    public void setActivePeerManager( ActivePeerManager pActivePeerManager )
-    {
-        if ( pActivePeerManager != null )
-            zActivePeerManager = pActivePeerManager;
-    }
-
-    public void setPendingPeerManager( PendingPeerManager pPendingPeerManager )
-    {
-        if ( pPendingPeerManager != null )
-            zPendingPeerManager = pPendingPeerManager;
-    }
-
-    public void showCHAT(PeerInfo pPeerInfo, String pMessage) {
-        String msg = pPeerInfo.getChatName() + "> " + pMessage;
-        addMsg(msg);
-    }
-
-    public void showConnect(PeerInfo pPeerInfo) {
-        String msg = pPeerInfo.getChatName() + " (" + pPeerInfo.getAddresses() + ") connected.";
-        addMsg(msg);
-    }
-
-    public void showConnectFailed(PeerInfo pPeerInfo) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void showDisconnect(PeerInfo pPeerInfo) {
-        String msg = pPeerInfo.getChatName() + " (" + pPeerInfo.getAddresses() + ") disconnected.";
-        addMsg(msg);
-    }
-
-    public void showHELO(PeerInfo pPeerInfo) {
-        String msg = "HELO from " + pPeerInfo.getChatName() + " (" + pPeerInfo.getAddresses() + ").";
-        addMsg(msg);
-    }
-
-    public void showNAME(PeerInfo pPeerInfo) {
-        String msg = "Name from " + pPeerInfo.getChatName() + " (" + pPeerInfo.getAddresses() + ").";
-        addMsg(msg);
-    }
-
-    public void showPMSG(PeerInfo pPeerInfo, String pMessage) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void showStreamsFailed(PeerInfo pPeerInfo) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void showUnrecognized(PeerInfo pPeerInfo, String pBadMessage) {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    
     
     
 }

@@ -215,6 +215,7 @@
                 <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
                 <bean class="org.joverseer.ui.map.renderers.EncounterRenderer"/>                                
+				<bean class="org.joverseer.ui.map.renderers.NotesRenderer"/>            
                 <bean class="org.joverseer.ui.map.renderers.HighlightedHexRenderer">                
                 	<property name="width"><value>2</value></property>
                 	<property name="highlightColor"><value>#ff3300</value></property>

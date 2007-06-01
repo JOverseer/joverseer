@@ -1,27 +1,20 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.LayoutFocusTraversalPolicy;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.joverseer.domain.Army;
-import org.joverseer.domain.ArmyElement;
-import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
-import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationMessage;
@@ -31,31 +24,30 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ArmyAllegianceNameComparator;
 import org.joverseer.tools.CharacterDeathAllegianceNameComparator;
-import org.joverseer.tools.combatCalc.CombatArmy;
-import org.joverseer.tools.combatCalc.TacticEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.combatCalculator.CombatArmyForm;
-import org.joverseer.ui.combatCalculator.CombatForm;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.views.EditCharacterForm;
-import org.springframework.binding.form.FormModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Shows information for the current hex, using the various viewers in this package
+ * 
+ * For some object types (e.g. pop center or hex info) only one viewer is created
+ * For other object types (e.g. characters), multiple viewers are created 
+ * 
+ * Viewers are shown/hidden as needed
+ * 
+ * @author Marios Skounakis
+ */
 public class CurrentHexDataViewer extends AbstractView implements ApplicationListener {
     JPanel panel;
     JPanel mainPanel;

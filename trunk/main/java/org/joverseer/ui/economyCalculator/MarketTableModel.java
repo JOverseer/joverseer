@@ -1,39 +1,26 @@
 package org.joverseer.ui.economyCalculator;
 
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.border.Border;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
-import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
-import org.joverseer.support.ProductContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Table model for the market actions of a nation for the Economy Calculator
+ * @author Marios Skounakis
+ */
 public class MarketTableModel extends BaseEconomyTableModel {
-
+    // row 0 of the table
     String[] columnHeaders = new String[] {"", "le", "br", "st", "mi", "fo", "ti", "mo"};
+    // column 0 of the table
     String[] rowHeaders = new String[] {"stores", "production", "available to sell", "profit if all were sold",
             "sell price", "units you wish to sell", "percent you wish to sell", "available on market",
             "purchase price", "units you wish to buy", "bid price", "units your wish to bid for", "cost/profit"};
 
+    // column widths
     int[] columnWidths = new int[] {170, 64, 64, 64, 64, 64, 64, 64};
 
     EconomyTotalsTableModel ettm;

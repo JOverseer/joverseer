@@ -12,7 +12,11 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Form that shows a generic narration (e.g. a combat narration or an encounter)
+ * 
+ * @author Marios Skounakis
+ */
 public class NarrationForm extends AbstractForm {
     
     public static final String FORM_PAGE = "narrationForm";

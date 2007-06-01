@@ -14,8 +14,14 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 
 
-
+/**
+ * Table model for the Team Economy main table
+ * It basically shows a complete economic picture for all the imported nations in tabular format
+ * 
+ * @author Marios Skounakis
+ */
 public class TeamEconomyTableModel extends BaseEconomyTableModel {
+    // what to show for each product 
     public static String PROD_TOTAL = "total";
     public static String PROD_PRODUCTION = "production";
     public static String PROD_STORES = "stores";

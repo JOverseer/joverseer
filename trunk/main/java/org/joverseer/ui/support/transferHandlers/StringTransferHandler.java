@@ -10,9 +10,12 @@ import java.lang.reflect.Method;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import org.joverseer.ui.map.MapPanel;
-
-
+/**
+ * Generic String transfer handler
+ * Pretty useless
+ * 
+ * @author Marios Skounakis
+ */
 public class StringTransferHandler extends TransferHandler {
     String property;
     

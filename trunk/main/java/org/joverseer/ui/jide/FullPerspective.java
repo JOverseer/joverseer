@@ -1,9 +1,13 @@
 package org.joverseer.ui.jide;
 
-import com.jidesoft.docking.DockContext;
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.perspective.Perspective;
 
+/**
+ * The basic perspective for the application
+ * 
+ * @author Marios Skounakis
+ */
 public class FullPerspective extends Perspective {
 
 	public FullPerspective() {

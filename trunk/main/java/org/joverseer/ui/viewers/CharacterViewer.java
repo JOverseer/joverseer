@@ -2,7 +2,6 @@ package org.joverseer.ui.viewers;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
@@ -11,9 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.BorderFactory;
@@ -21,20 +18,15 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.joverseer.domain.Army;
-import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
@@ -70,8 +62,6 @@ import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
-import org.joverseer.ui.domain.mapItems.AbstractMapItem;
-import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
@@ -85,10 +75,7 @@ import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.support.transferHandlers.ArtifactInfoExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharacterExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.ParamTransferHandler;
-import org.joverseer.ui.support.transferHandlers.CharIdTransferHandler;
 import org.joverseer.ui.views.EditCharacterForm;
-import org.joverseer.ui.views.EditPopulationCenterForm;
-import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -99,7 +86,6 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.binding.BindingFactory;
 import org.springframework.richclient.image.ImageSource;
@@ -107,9 +93,11 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 
-import sun.awt.geom.AreaOp.AddOp;
-
-
+/**
+ * Shows characters in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class CharacterViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "CharacterViewer";

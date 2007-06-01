@@ -4,7 +4,11 @@ import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.support.ProductContainer;
 
-
+/**
+ * Wraps information for a product line (for the Economy Calculator Market Table)
+ * 
+ * @author Marios Skounakis
+ */
 public class ProductLineWrapper implements IBelongsToNation {
     int idx;
     Integer leather;

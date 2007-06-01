@@ -11,6 +11,10 @@ import javax.swing.TransferHandler;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 
+/**
+ * TransferHandler for ArtifactInfo objects
+ * @author Marios Skounakis
+ */
 public class ArtifactInfoExportTransferHandler extends TransferHandler {
 	ArtifactInfo artifactInfo;
 	

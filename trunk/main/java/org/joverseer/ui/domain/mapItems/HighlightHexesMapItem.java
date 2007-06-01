@@ -3,7 +3,14 @@ package org.joverseer.ui.domain.mapItems;
 import java.util.ArrayList;
 
 
+/**
+ * Handles the drawing of a list of highlighted hexes. Used to draw the various hightlight
+ * tools.
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightHexesMapItem extends AbstractMapItem {
+    private static final long serialVersionUID = -3111521381662784087L;
     ArrayList<Integer> hexesToHighlight = new ArrayList<Integer>();
     String description;
     

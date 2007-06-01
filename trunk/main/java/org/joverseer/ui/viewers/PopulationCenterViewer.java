@@ -52,7 +52,11 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Shows pcs in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class PopulationCenterViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "PopulationCenterViewer";

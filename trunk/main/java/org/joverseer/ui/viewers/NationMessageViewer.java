@@ -1,21 +1,28 @@
 package org.joverseer.ui.viewers;
 
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
-import org.springframework.context.ApplicationListener;
-import org.springframework.binding.form.FormModel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import org.joverseer.domain.NationMessage;
-import org.joverseer.metadata.GameMetadata;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
+import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-import javax.swing.*;
-import java.awt.*;
-
-
+/**
+ * Shows nation messages in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class NationMessageViewer extends ObjectViewer {
     public static final String FORM_PAGE = "NationMessageViewer";
 

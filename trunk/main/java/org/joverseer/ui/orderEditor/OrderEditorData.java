@@ -2,7 +2,11 @@ package org.joverseer.ui.orderEditor;
 
 import java.util.ArrayList;
 
-
+/**
+ * Holds information about editing Orders - i.e. information for the order parameters
+ * Data is loaded from file orderEditorData.csv
+ * @author Marios Skounakis
+ */
 public class OrderEditorData {
     int orderNo;
     String orderDescr;

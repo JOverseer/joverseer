@@ -29,12 +29,11 @@ import com.jidesoft.spring.richclient.docking.LayoutManager;
 import com.jidesoft.spring.richclient.perspective.Perspective;
 
 /**
- * Simple command to reload the JIDE layout from a store. Simple
- * delegates to the LayoutManager. 
- * @author Jonny Wray
+ * Restores the default layout of the main application window as stored in the default layout file
  *
+ * @author Marios Skounakis
  */
-public class RestoreDefaultLayoutCommand extends ApplicationWindowAwareCommand{
+public class RestoreDefaultLayoutCommand extends ApplicationWindowAwareCommand {
 	private static final Log log = LogFactory.getLog(RestoreDefaultLayoutCommand.class);
 
 	private static final String ID = "restoreDefaultLayoutCommand"; 

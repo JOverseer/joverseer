@@ -10,7 +10,11 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 
-
+/**
+ * Base table model for the Economy Calculator table models
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class BaseEconomyTableModel extends AbstractTableModel {
     Game game = null;
     int nationNo = 7;

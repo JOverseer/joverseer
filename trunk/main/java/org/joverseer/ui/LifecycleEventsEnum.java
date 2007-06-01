@@ -1,6 +1,10 @@
 package org.joverseer.ui;
 
-
+/**
+ * Lifecycle events
+ * 
+ * @author Marios Skounakis
+ */
 public enum LifecycleEventsEnum {
     GameChangedEvent,
     SelectedHexChangedEvent,

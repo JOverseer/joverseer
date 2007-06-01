@@ -26,7 +26,13 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.list.SortedListModel;
 
-
+/**
+ * Simple order editor
+ * 
+ * @author Marios Skounakis
+ *
+ * @deprecated
+ */
 public class OrderEditorForm extends AbstractForm implements ActionListener {
     public static final String FORM_PAGE = "orderEditorForm";
     GameMetadata gm;

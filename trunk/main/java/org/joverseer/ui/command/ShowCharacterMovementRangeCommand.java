@@ -8,6 +8,11 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
+/**
+ * Shows the movement range of a character on the map
+ * 
+ * @author Marios Skounakis
+ */
 public class ShowCharacterMovementRangeCommand extends ActionCommand {
 	int hexNo;
 	int range;

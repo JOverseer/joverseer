@@ -10,6 +10,10 @@ import javax.swing.TransferHandler;
 
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 
+/**
+ * TransferHandler for Character objects
+ * @author Marios Skounakis
+ */
 public class CharacterExportTransferHandler extends TransferHandler {
 	org.joverseer.domain.Character character;
 	

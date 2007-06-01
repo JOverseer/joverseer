@@ -4,16 +4,20 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-import org.joverseer.domain.Order;
+import junit.framework.TestCase;
+
 import org.joverseer.domain.Character;
+import org.joverseer.domain.Order;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.dialog.ApplicationDialog;
 
-import junit.framework.TestCase;
-
-
+/**
+ * Tests whether the OrderEditor can support all parameter types specified
+ * in the OrderEditorData specified in the respective metadata file
+ *  
+ * @author Marios Skounakis
+ */
 public class TestOrderParameters extends TestCase {
     public void testOrderParametersForOrderEditor() {
         OrderEditor oe = (OrderEditor)Application.instance().getApplicationContext().getBean("orderEditor");

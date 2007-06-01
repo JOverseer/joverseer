@@ -5,7 +5,11 @@ import java.util.HashMap;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 
-
+/**
+ * Wraps information about spell casters for the spellcaster list view
+ * 
+ * @author Marios Skounakis
+ */
 public class SpellcasterWrapper implements IHasMapLocation, IBelongsToNation {
     String character;
     int hexNo;

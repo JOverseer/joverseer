@@ -22,21 +22,7 @@ import org.springframework.richclient.application.ApplicationLauncher;
 import com.jidesoft.plaf.LookAndFeelFactory;
 
 /**
- * This is an archetype application using the Spring Richclient platform.
- * <p>
- * The Spring Rich platform relies on the <a href="http://www.springframework.org/">Spring</a>
- * project to manage the application context with all the associated benefits it offers.
- * <p>
- * A start at the Spring Rich Client documentation can be found on the <a
- * href="http://opensource.atlassian.com/confluence/spring/display/RCP/Home">wiki</a>.
- * </p>
- * 
- * @author Larry Streepy
- * @see The <a
- *      href="http://www.springframework.org/">Spring project</a>
- * @see The <a
- *      href="http://opensource.atlassian.com/confluence/spring/display/RCP/Home">Spring
- *      Rich Wiki</a>
+ * The main class for the JOverseer gui client
  */
 public class JOverseerJIDEClient {
 	private static final String CONTEXT_ROOT = "/ctx";
@@ -49,7 +35,7 @@ public class JOverseerJIDEClient {
 
     public static String[] cmdLineArgs;
     
-    private static final Log _logger = LogFactory.getLog(JOverseerClient.class);
+    private static final Log _logger = LogFactory.getLog(JOverseerJIDEClient.class);
 
     /**
      * Main routine for the simple sample application.

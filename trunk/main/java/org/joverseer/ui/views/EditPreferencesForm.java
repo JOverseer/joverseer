@@ -18,7 +18,12 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Preferences form
+ * 
+ * Generated dynamically from the existing preferences 
+ * @author Marios Skounakis
+ */
 public class EditPreferencesForm extends AbstractForm {
     public static String FORM_ID = "editPreferencesForm";
     JPanel panel;
@@ -34,20 +39,25 @@ public class EditPreferencesForm extends AbstractForm {
         String group = "";
         
         PreferenceRegistry reg = (PreferenceRegistry)getFormObject();
+        // sort prefs by group
         ArrayList<Preference> prefs = reg.getPreferencesSortedByGroup();
         for (Preference p : prefs) {
             if (!p.getGroup().equals(group)) {
+                // if new group, show separator
                 tlb.separator(p.getGroup().replace(".", " - "));
                 tlb.relatedGapRow();
                 group = p.getGroup();
             }
+            // show pref label
             tlb.cell(new JLabel(p.getDescription()), "colspec=left:270px");
             tlb.gapCol();
+            // show control for editing pref, based on pref type
             if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
 	            JComboBox combo = new JComboBox();
 	            combo.setPreferredSize(new Dimension(150, 20));
 	            for (PreferenceValue pv : p.getDomain()) {
 	                combo.addItem(pv.getDescription());
+                        // find the appriate combo box item from the key
 	                if (reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) {
 	                    combo.setSelectedItem(pv.getDescription());
 	                }
@@ -81,6 +91,7 @@ public class EditPreferencesForm extends AbstractForm {
             	JComboBox combo = (JComboBox)c;
 	            if (combo.getSelectedItem() != null) {
 	                for (PreferenceValue pv : p.getDomain()) {
+                            // translate the selected combo box value to a preference value key
 	                    if (pv.getDescription().equals(combo.getSelectedItem().toString())) {
 	                        reg.setPreferenceValue(p.getKey(), pv.getKey());
 	                    }

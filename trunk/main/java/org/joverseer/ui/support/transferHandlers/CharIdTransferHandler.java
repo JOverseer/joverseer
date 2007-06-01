@@ -7,6 +7,10 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.domain.Character;
 
+/**
+ * TransferHandler for character id
+ * @author Marios Skounakis
+ */
 
 public class CharIdTransferHandler extends StringTransferHandler {
 

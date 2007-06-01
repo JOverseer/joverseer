@@ -40,7 +40,16 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
 
-
+/**
+ * The economy calculator view
+ * 
+ * The basic functionality is:
+ * - a combo box allows the user to select a nation
+ * - the view displays all economy information for this nation
+ * - economy information can be edited accordingly by the user
+ * 
+ * @author Marios Skounakis
+ */
 public class EconomyCalculator extends AbstractView implements ApplicationListener {
     
     JLabel autocalcOrderCost;
@@ -85,10 +94,16 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
+    /**
+     * If sell amount is above this amount give a "market limit warning" 
+     */
     public static int getMarketLimitWarningThreshhold() {
         return 20000;
     }
     
+    /**
+     * Refreshes the market limit warning message
+     */
     private void refreshMarketLimitWarning() {
         int marketProfits = ((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
         if (marketProfits >= getMarketLimitWarningThreshhold()) {
@@ -99,6 +114,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
+    /**
+     * Refreshes the tax increase message
+     */
     private void refreshTaxIncrease() {
         int taxIncreaseAmt = ((EconomyTotalsTableModel)totalsTable.getModel()).getTaxIncrease();
         if (taxIncreaseAmt == 0) {
@@ -125,6 +143,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
+    /**
+     * Refreshes the autocalc order cost field
+     */
     private void refreshAutocalcOrderCost() {
         int totalCost = 0;
         OrderCostCalculator calc = new OrderCostCalculator();
@@ -162,6 +183,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         nationCombo.setPreferredSize(new Dimension(200, 24));
         nationCombo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // when selected nation changed
+                // refresh all tables and warnings
                 Game g = GameHolder.instance().getGame();
                 if (nationCombo.getSelectedItem() == null) return;
                 Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
@@ -184,6 +207,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         sellBonus.setBackground(Color.white);
         sellBonus.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                // when sell bonus changed
+                // update the economy calculator data for this nation
+                // refresh the economy tables and the warnings
                 Game g = GameHolder.instance().getGame();
                 if (!Game.isInitialized(g)) return;
                 if (nationCombo.getSelectedItem() == null) return;
@@ -191,6 +217,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 ((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData().setSellBonus(sellBonus.isSelected());
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                refreshMarketLimitWarning();
+                refreshTaxIncrease();
             }
         });
         lb.row();
@@ -257,6 +285,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         btn.setPreferredSize(new Dimension(100, 24));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                // when button clicked
+                // update the economy calculator data with the autocalc order cost value
                 ((EconomyTotalsTableModel)totalsTable.getModel()).setOrdersCost(Integer.parseInt(autocalcOrderCost.getText()));
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();                
             }
@@ -324,7 +354,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lostPopsTableModel.fireTableDataChanged();
     }
     
+    /**
+     * Renderer for the Market Table
+     * 
+     * @author Marios Skounakis
+     */
     public class MarketRenderer extends DefaultTableCellRenderer {
+        //TODO export colors to color.properties
         Color[] rowColors = new Color[] {
                 Color.decode("#ADD3A6"), 
                 Color.decode("#ADD3A6"), 
@@ -357,7 +393,14 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
+    /**
+     * Renderer for the totals table
+     * 
+     * @author Marios Skounakis
+     */
     public class TotalsRenderer extends DefaultTableCellRenderer {
+        //TODO export colors to resources
+        //TODO remove hard-coded column and row numbers
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             JLabel lbl = ((JLabel)c);
@@ -387,7 +430,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
 
-
+    /**
+     * Column widths for the Lost Pop Centers list view
+     */
     public int[] getLostPCColumWidths() {
         return new int[]{140, 64, 64, 64, 65, 96};
     }

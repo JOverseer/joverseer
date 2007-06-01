@@ -1,14 +1,18 @@
 package org.joverseer.ui.domain;
 
 import org.joverseer.metadata.GameTypeEnum;
-import org.springframework.rules.RulesSource;
-import org.springframework.rules.Rules;
 import org.springframework.rules.PropertyConstraintProvider;
-import org.springframework.rules.factory.Constraints;
+import org.springframework.rules.Rules;
 import org.springframework.rules.constraint.property.PropertyConstraint;
-import org.springframework.core.closure.Constraint;
+import org.springframework.rules.factory.Constraints;
 
-
+/**
+ * Object to support the creation of a new game
+ * 
+ * Implements the PropertyConstraintProvider to support validation
+ * 
+ * @author Marios Skounakis
+ */
 public class NewGame implements PropertyConstraintProvider {
     GameTypeEnum gameType;
     Integer number;

@@ -8,7 +8,11 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 
-
+/**
+ * Form for creating a new game
+ * 
+ * @author Marios Skounakis
+ */
 public class NewGameForm extends AbstractForm {
      public static final String FORM_PAGE = "newGameForm";
 

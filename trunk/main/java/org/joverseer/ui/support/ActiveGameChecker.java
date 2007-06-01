@@ -7,7 +7,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.MessageDialog;
 
-
+/**
+ * Checks if the program has an active game and shows an error message if no active game is found
+ * 
+ * @author Marios Skounakis
+ */
 public class ActiveGameChecker {
     public static boolean checkActiveGameExists() {
         if (!GameHolder.hasInitializedGame()) {

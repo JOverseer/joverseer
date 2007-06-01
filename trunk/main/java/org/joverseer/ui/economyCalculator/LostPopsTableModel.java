@@ -1,18 +1,17 @@
 package org.joverseer.ui.economyCalculator;
 
-import java.util.ArrayList;
-
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 
-
+/**
+ * Table model for population centers for the Economy Calculator
+ *  
+ * @author Marios Skounakis
+ */
 public class LostPopsTableModel extends BeanTableModel {
     int selectedNationNo = -1;
     

@@ -1,22 +1,22 @@
 package org.joverseer.ui.support.controls;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
-
+/**
+ * A Label that acts as a button, ie:
+ * - shows a hand cursor to the user
+ * - can take ActionListeners
+ * 
+ * @author Marios Skounakis
+ */
 public class JLabelButton extends JLabel {
     ArrayList<ActionListener> actionListeners = new ArrayList<ActionListener>();
     

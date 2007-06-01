@@ -16,7 +16,12 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Subeditor for order params that take a nation number as a value
+ * Provides a combo box that translates between nation names and nation numbers
+ * 
+ * @author Marios Skounakis
+ */
 public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox parameter;
     JTextField nationNo;

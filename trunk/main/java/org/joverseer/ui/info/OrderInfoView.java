@@ -6,7 +6,12 @@ import javax.swing.JScrollPane;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Order info view
+ * Shows information about orders in tabular format
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderInfoView extends InfoView {
 
     protected JComponent createControl() {

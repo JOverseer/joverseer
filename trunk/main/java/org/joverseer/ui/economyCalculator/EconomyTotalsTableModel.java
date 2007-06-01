@@ -2,8 +2,6 @@ package org.joverseer.ui.economyCalculator;
 
 import java.util.ArrayList;
 
-import javax.swing.table.AbstractTableModel;
-
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
@@ -13,15 +11,19 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Table model for the Economy Totals table for the Economy Calculator
+ * 
+ * Provides various methods for calculating fields of the Economy Totals table
+ * 
+ * @author Marios Skounakis
+ */
 public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     String[] columnHeaders = new String[] {"", "", "", "", "", ""};
+    // "row headers", they go into column 0 of the table
     String[] rowHeaders1 = new String[] {
             "army maintenance",
             "pc maintenance",
@@ -30,6 +32,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             "pc losses"
             };
 
+    // "row headers 2", they go into column 2 of the table
     String[] rowHeaders2 = new String[] {
             "tax rate",
             "tax revenue",
@@ -38,6 +41,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             "surplus"
             };
 
+    //  "row headers 3", they go into column 4 of the table
     String[] rowHeaders3 = new String[] {
             "orders cost",
             "",
@@ -135,16 +139,23 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return "";
     }
     
+    /**
+     * Computes the final gold for the nation
+     * @return
+     */
     public int getFinalGold() {
         NationEconomy ne = getNationEconomy();
         return getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
     }
     
+    /**
+     * Computes the tax revenue for the nation
+     * @return
+     */
     public int getTaxRevenue() {
         NationEconomy ne = getNationEconomy();
         return ne.getTaxBase() * 2500 * getTaxRate() / 100;
     }
-    
     
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return (columnIndex == 5 && rowIndex == 0) ||
@@ -175,6 +186,9 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
     }
 
+    /**
+     * Returns the surplus for the nation
+     */
     public int getSurplus() {
         NationEconomy ne = getNationEconomy();
         return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance() + getMarketProfits();
@@ -187,11 +201,17 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return ecd.getMarketProfits();
     }
     
+    /**
+     * Computes the gold production for the nation, unless it has been specicically set
+     * by the user
+     * @return
+     */
     public Integer getGoldProduction() {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null || ecd.getGoldProduction() == null) {
             NationEconomy ne = getNationEconomy();
             // hack to compute gold production if needed
+            // gold production = total revenue - calculated tax revenue
             if (ne.getGoldProduction()==0 && 
                     ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100 != 0) {
                 ne.setGoldProduction(ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100);
@@ -226,6 +246,11 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         ecd.setTaxRate(newTaxRate);
     }
     
+    /**
+     * Gets the tax rate from the nation economy, unless it has been specifically set by the user
+     * 
+     * @return
+     */
     public int getTaxRate() {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null || ecd.getTaxRate() == null) {
@@ -240,6 +265,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return computeLostTaxRevenue(getNationNo());
     }
     
+    /**
+     * Computes the expected lost tax revenue based on the pop centers marked as expected to be lost
+     * for the given nation
+     */
     public static int computeLostTaxRevenue(int nationNo) {
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g)) return 0;
@@ -276,6 +305,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return computeNewTaxBase(getNationNo());
     }
     
+    /**
+     * Computes the new tax base for the given nation based on the pop centers
+     * marked as expected to be lost this turn
+     */
     public static int computeNewTaxBase(int nationNo) {
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g)) return 0;
@@ -306,6 +339,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return computeLostGoldRevenue(getNationNo());
     }
     
+    /**
+     * Computes the lost gold revenue for the given nation based on the pop centers
+     * marked as expected to be lost this turn
+     */
     public static int computeLostGoldRevenue(int nationNo) {
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g)) return 0;
@@ -322,6 +359,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return lostGoldRevenue;
     }
     
+    /**
+     * Computes the tax increase 
+     * Returns 0 if no tax increase will occur 
+     */
     public int getTaxIncrease() {
         NationEconomy ne = getNationEconomy();
         if (ne == null) return 0;
@@ -332,6 +373,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return (int)newTaxRate;
     }
     
+    /**
+     * Computes the amount of gold that must be bought in order to incur the given
+     * tax increase 
+     */
     public int getBuyAmountForTaxIncrease(int newTaxRate) {
         NationEconomy ne = getNationEconomy();
         if (ne == null) return 0;

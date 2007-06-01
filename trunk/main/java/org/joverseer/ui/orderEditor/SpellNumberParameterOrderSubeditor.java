@@ -25,6 +25,11 @@ import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+/**
+ * Subeditor for Spell Number parameters
+ * 
+ * @author Marios Skounakis
+ */
 
 public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     String paramName;

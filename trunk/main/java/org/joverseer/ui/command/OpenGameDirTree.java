@@ -88,7 +88,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
+        Preferences prefs = Preferences.userNodeForPackage(OpenGameDirTree.class);
         String lastDir = prefs.get("importDir", null);
         if (lastDir != null) {
             fileChooser.setCurrentDirectory(new File(lastDir));

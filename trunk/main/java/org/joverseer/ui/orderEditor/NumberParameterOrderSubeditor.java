@@ -13,16 +13,19 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 
-import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
-import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.dataFlavors.SpellInfoDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Subeditor for parameters that take a number as parameter
+ * 
+ * @author Marios Skounakis
+ */
+//TODO could add some validation here for number ranges
 public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     JFormattedTextField parameter;
     String paramName;

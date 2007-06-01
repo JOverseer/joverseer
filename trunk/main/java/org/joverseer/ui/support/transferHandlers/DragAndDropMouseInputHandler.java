@@ -8,7 +8,12 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputAdapter;
 
-
+/**
+ * MouseInputAdapter that adds drag&drop functionality to a component
+ * Method getTransferHandler can be overriden to provide the customer handler for the dnd operation
+ * 
+ * @author Marios Skounakis
+ */
 public class DragAndDropMouseInputHandler extends MouseInputAdapter {
     private boolean recognized;
     protected Point pressedPoint;

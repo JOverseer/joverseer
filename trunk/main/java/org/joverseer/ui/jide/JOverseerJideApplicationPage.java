@@ -21,6 +21,11 @@ import com.jidesoft.spring.richclient.docking.JideApplicationPage;
 import com.jidesoft.spring.richclient.docking.view.JideAbstractView;
 import com.jidesoft.spring.richclient.docking.view.JideViewDescriptor;
 
+/**
+ * Specializes JideApplicationPage
+ * 
+ * @author Marios Skounakis
+ */
 public class JOverseerJideApplicationPage extends JideApplicationPage {
 	private static final Log log = LogFactory.getLog(JideApplicationPage.class);
 

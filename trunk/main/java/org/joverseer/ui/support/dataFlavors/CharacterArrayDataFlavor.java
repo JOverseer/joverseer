@@ -4,6 +4,10 @@ import java.awt.datatransfer.DataFlavor;
 
 import org.joverseer.domain.Character;
 
+/**
+ * Data flavor for Character[]
+ * @author Marios Skounakis
+ */
 public class CharacterArrayDataFlavor extends DataFlavor {
 
 	public CharacterArrayDataFlavor() throws ClassNotFoundException {

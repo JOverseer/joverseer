@@ -12,6 +12,13 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+/**
+ * Standardized generic input dialog that can have an arbitrary number of input components
+ * which are defined externally using the addComponent method
+ * 
+ * @author Marios Skounakis
+ */
+//TODO should change to use an overridable method to get the components
 
 public class InputDialog extends TitledPageApplicationDialog {
     ArrayList<String> componentNames = new ArrayList<String>();

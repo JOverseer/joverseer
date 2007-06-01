@@ -35,7 +35,6 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.joverseer.ui.viewers.HexInfoViewer.ShowArmyRangeCommand;
 import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -48,7 +47,11 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-
+/**
+ * Shows armies in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "ArmyViewer";

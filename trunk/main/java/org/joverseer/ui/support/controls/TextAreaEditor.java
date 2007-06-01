@@ -1,19 +1,22 @@
 package org.joverseer.ui.support.controls;
 
 import java.awt.Component;
-import java.util.EventObject;
-import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
-
+/**
+ * Cell Editor that uses a Text Area
+ * 
+ * Has various problems
+ * 
+ * @author Marios Skounakis
+ */
+//TODO Fix or delete
 public class TextAreaEditor extends AbstractCellEditor implements TableCellEditor
 {
         protected JTextArea myEditor;

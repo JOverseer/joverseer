@@ -14,9 +14,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.beans.support.PropertyComparator;
-import org.springframework.binding.convert.support.AbstractConverter;
 import org.springframework.binding.form.FormModel;
-import org.springframework.binding.util.MapAccessor;
 import org.springframework.binding.value.support.ValueHolder;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
@@ -25,7 +23,12 @@ import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 
-
+/**
+ * Edit a note
+ * 
+ * @author Marios Skounakis
+ */
+//TODO needs validation
 public class EditNoteForm extends AbstractForm {
     public static final String FORM_PAGE = "editNoteForm";
 

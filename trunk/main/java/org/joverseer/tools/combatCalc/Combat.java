@@ -176,6 +176,7 @@ public class Combat implements Serializable, IHasMapLocation {
         // compute pop center defense and attack
         int popCenterStr = computePopCenterStrength(pc, wms);
         pc.setCaptured(popCenterStr <= attackerStr);
+        pc.setStrengthOfAttackingArmies(attackerStr);
         for (int i=0; i<maxArmies; i++) {
             if (attackerSide == 0) {
                 if (side1[i] == null) continue;

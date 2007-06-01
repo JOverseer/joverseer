@@ -26,6 +26,7 @@ public class CombatPopCenter implements Serializable {
     int loyalty;
     Integer nationNo;
     boolean captured = false;
+    int strengthOfAttackingArmies;
     
     public CombatPopCenter() {
         size = PopulationCenterSizeEnum.town;
@@ -100,6 +101,17 @@ public class CombatPopCenter implements Serializable {
     public void setCaptured(boolean captured) {
         this.captured = captured;
     }
+
+    
+    public int getStrengthOfAttackingArmies() {
+        return strengthOfAttackingArmies;
+    }
+
+    
+    public void setStrengthOfAttackingArmies(int strengthOfAttackingArmies) {
+        this.strengthOfAttackingArmies = strengthOfAttackingArmies;
+    }
+
     
     
 }

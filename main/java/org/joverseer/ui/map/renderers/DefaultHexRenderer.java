@@ -1,29 +1,35 @@
 package org.joverseer.ui.map.renderers;
 
-import org.springframework.richclient.application.Application;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
-import org.springframework.beans.factory.config.ResourceFactoryBean;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Stroke;
+import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Locale;
+
+import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.joverseer.metadata.domain.HexSideEnum;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.metadata.domain.HexSideEnum;
-import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ReplicateScaleFilter;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.Locale;
-
-
+/**
+ * Renders a hex (terrain, sides, etc)
+ * 
+ * @author Marios Skounakis
+ */
 public class DefaultHexRenderer extends ImageRenderer implements ApplicationListener {
     HashMap terrainColors = new HashMap();
 

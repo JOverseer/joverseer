@@ -5,7 +5,11 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Map Metadata utilities
+ * 
+ * @author Marios Skounakis
+ */
 public class MapMetadataUtils {
     public void setMapSize(MapMetadata metadata, GameTypeEnum gameType) {
         if (gameType == GameTypeEnum.gameBOFA) {

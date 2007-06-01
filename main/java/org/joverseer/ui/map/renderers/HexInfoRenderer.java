@@ -1,28 +1,37 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.domain.HexInfo;
-import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.domain.NationMapRange;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.drawing.ColorPicker;
-import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
-import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
-import org.springframework.richclient.application.Application;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Polygon;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.util.HashMap;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.joverseer.domain.HexInfo;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.metadata.domain.NationMapRange;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
+import org.joverseer.ui.support.drawing.ColorPicker;
+import org.springframework.richclient.application.Application;
 
+/**
+ * Renders visible/invisible hexes
+ * it can render:
+ * - a specific map (e.g. Northmen)
+ * - a map combined from multiple nations (e.g. DS map)
+ * - the current map, using the HexInfo objects
+ * 
+ * @author Marios Skounakis
+ */
 public class HexInfoRenderer extends DefaultHexRenderer {
     GameHolder gh;
     HashMap mapOptions;

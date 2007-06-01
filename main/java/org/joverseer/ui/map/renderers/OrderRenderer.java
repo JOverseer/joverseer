@@ -32,7 +32,13 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.Arrow;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Draws orders on the map
+ * Sometimes to draw an order you need some parameters (e.g. fed and cavalry for a new army)
+ * To find those params, it uses the OrderVisualizationData container
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderRenderer implements Renderer {
     MapMetadata mapMetadata = null;
     OrderVisualizationData orderVisualizationData = null;

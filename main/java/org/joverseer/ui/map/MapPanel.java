@@ -1,45 +1,74 @@
 package org.joverseer.ui.map;
 
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.image.ImageSource;
-import org.springframework.richclient.progress.BusyIndicator;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.domain.mapItems.AbstractMapItem;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
-import org.joverseer.metadata.domain.Hex;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.domain.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import javax.swing.JViewport;
+import javax.swing.TransferHandler;
+import javax.swing.event.MouseInputListener;
+
+import org.apache.log4j.Logger;
+import org.joverseer.domain.Army;
+import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.Combat;
+import org.joverseer.domain.Encounter;
+import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.Order;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.Container;
-import org.joverseer.support.movement.MovementDirection;
-import org.joverseer.support.movement.MovementUtils;
-import org.apache.log4j.Logger;
-import org.joverseer.ui.map.renderers.DefaultHexRenderer;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.progress.BusyIndicator;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.event.MouseInputListener;
-
-import java.awt.*;
-import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragSourceListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Dimension2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.io.File;
-import java.util.Collection;
-import java.util.ArrayList;
-
-
+/**
+ * The basic control for displaying the map. It derives itself from a JPanel and implements
+ * custom painting.
+ * 
+ * Painting is done in a layered way in order to avoid having to always redraw everything, which is slow
+ * The three layers are:
+ * 1. the map, which shows the terrain and other static stuff for the game type
+ * 2. the map base items, which shows fairly non-volative objects for the current turn such as pop centers, chars, armies, etc
+ * 3. the map items, which shows volative objects such as army ranges and orders
+ * Each layer is stored in a buffered image so that if one of the higher layers is changed,
+ * the buffered image is used to redraw the lower layer.
+ * 
+ * The control uses renderers to paint the various layers. 
+ *
+ * The control also implements mouse listener and mouse motion listener interfaces
+ * to provide:
+ * - hex selection upon mouse click
+ * - scrolling upon ctrl+mouse drag
+ * - drag & drop capability for draggin hex number from the map to other controls
+ * 
+ * 
+ * @author Marios Skounakis
+ */
 public class MapPanel extends JPanel implements MouseInputListener {
     protected javax.swing.event.EventListenerList listenerList =
             new javax.swing.event.EventListenerList();

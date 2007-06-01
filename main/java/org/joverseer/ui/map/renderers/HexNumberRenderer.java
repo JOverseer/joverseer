@@ -6,7 +6,11 @@ import org.springframework.richclient.application.Application;
 
 import java.awt.*;
 
-
+/**
+ * Renders the hex number
+ *  
+ * @author Marios Skounakis
+ */
 public class HexNumberRenderer implements Renderer{
     String fontName = "Microsoft Sans Serif";
     int fontSize = 8;

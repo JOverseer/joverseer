@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.joverseer.domain.Challenge;
-import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -14,7 +13,11 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Renders encounters
+ * 
+ * @author Marios Skounakis
+ */
 public class EncounterRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 
@@ -29,10 +32,6 @@ public class EncounterRenderer implements Renderer {
     public void render(Object obj, Graphics2D g, int x, int y) {
         if (mapMetadata == null) init();
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        Turn turn = game.getTurn();
-
-        Encounter c = (Encounter)obj;
-        
         int w = mapMetadata.getGridCellWidth() / 3;
         int h = mapMetadata.getGridCellHeight() / 3;
         int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1/2 - w/2;

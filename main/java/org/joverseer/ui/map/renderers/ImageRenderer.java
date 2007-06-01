@@ -8,7 +8,12 @@ import java.util.HashMap;
 import java.awt.image.*;
 import java.awt.*;
 
-
+/**
+ * Base class for renderers that use images 
+ * Provides utility methods
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class ImageRenderer implements Renderer {
     protected HashMap images = new HashMap();
 
@@ -25,6 +30,10 @@ public abstract class ImageRenderer implements Renderer {
         return newImage;
     }
 
+    /**
+     * Gets the image with the given name from the image source
+     * Provides caching for speed
+     */
     protected BufferedImage getImage(String imgName) {
         if (!images.containsKey(imgName)) {
             try {
@@ -45,6 +54,10 @@ public abstract class ImageRenderer implements Renderer {
         return (BufferedImage) images.get(imgName);
     }
     
+    /**
+     * Gets the image with the given name from the image source, and scales it to the given dimension
+     * Provides caching for speed
+     */
     protected BufferedImage getImage(String imgName, int desiredWidth, int desiredHeight) {
         if (!images.containsKey(imgName)) {
             try {
@@ -76,6 +89,9 @@ public abstract class ImageRenderer implements Renderer {
         return (BufferedImage) images.get(imgName);
     }
 
+    /**
+     * Make the given color transparent to the given image
+     */
     public static Image makeColorTransparent(Image im, final Color color) {
         ImageFilter filter = new RGBImageFilter() {
             // the color we are looking for... Alpha bits are set to opaque
@@ -96,6 +112,9 @@ public abstract class ImageRenderer implements Renderer {
         return Toolkit.getDefaultToolkit().createImage(ip);
     }
 
+    /**
+     * Replace one color with the other
+     */
     protected void changeColor(BufferedImage src, Color remove, Color replace) {
         int w = src.getWidth();
         int h = src.getHeight();
@@ -114,6 +133,9 @@ public abstract class ImageRenderer implements Renderer {
         }
     }
 
+    /**
+     * Used to generate the effect of dashed lines to designate hidden pop centers
+     */
     protected void makeHidden(BufferedImage src, Color remove, Color replace) {
         int w = src.getWidth();
         int h = src.getHeight();

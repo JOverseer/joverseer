@@ -2,7 +2,7 @@ package org.joverseer.preferences;
 
 import java.util.prefs.Preferences;
 
-import org.joverseer.ui.JOverseerClient;
+import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
@@ -81,7 +81,7 @@ public class Preference {
         if (valueCache != null) {
             return valueCache;
         }
-        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         String value = prefs.get(prefix + "." + key, null);
         if (value != null) {
         	valueCache = value;
@@ -95,7 +95,7 @@ public class Preference {
     }
     
     public void setValue(String prefix, String value) {
-        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         prefs.put(prefix + "." + key, value);
         clearCache();
         if (getLifecycleEvent() != null) {

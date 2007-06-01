@@ -1,7 +1,6 @@
 package org.joverseer.ui.command;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
@@ -13,12 +12,14 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.dialog.MessageDialog;
 
-
+/**
+ * Highlight all hexes where a combat was conducted this turn
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightCombats extends ActionCommand {
     public HighlightCombats() {
         super("highlightCombatsCommand");

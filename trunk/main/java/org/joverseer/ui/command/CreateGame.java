@@ -23,7 +23,11 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Create new game using the NewGameForm
+ * 
+ * @author Marios Skounakis
+ */
 public class CreateGame extends ActionCommand {
     public CreateGame() {
         super("createGameCommand");

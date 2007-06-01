@@ -25,7 +25,11 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Imports orders from text using the ParseOrdersForm form
+ * 
+ * @author Marios Skounakis
+ */
 public class ImportOrdersFromEmailTextCommand extends ActionCommand {
     ParseOrdersForm form;
     

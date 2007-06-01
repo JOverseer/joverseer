@@ -10,6 +10,15 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.command.ActionCommand;
 
+/**
+ * Admin command
+ * 
+ * Exports all Order Results for all characters and all turns for this game
+ * 
+ * Output file is: c:\orders.out.txt
+ * 
+ * @author Marios Skounakis
+ */
 public class ExportOrderResultsCommand extends ActionCommand {
     public ExportOrderResultsCommand() {
         super("exportOrderResultsCommand");

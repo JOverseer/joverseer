@@ -11,6 +11,11 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 
+/**
+ * Delete the given note from the turn
+ * 
+ * @author Marios Skounakis
+ */
 public class DeleteNoteCommand extends ActionCommand {
     Note note;
     

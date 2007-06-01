@@ -1,7 +1,6 @@
 package org.joverseer.ui.command;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
@@ -11,15 +10,16 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
-import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.dialog.MessageDialog;
 
-
+/**
+ * Highlight all hexes which contain friendly pops that are in risk of degrading (loyalty <= 16)
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightDegradeCandidates extends ActionCommand {
     int loyaltyThreshold = 17;
     

@@ -3,18 +3,14 @@ package org.joverseer.ui.command;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
-import javax.swing.JTextField;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,7 +18,6 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
-import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
@@ -33,12 +28,33 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.InputApplicationDialog;
-import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Reads the xml and pdf files for a whole game from a directory tree
+ * Structure must be:
+ * - game folder
+ *      - folder for turn 1
+ *      - folder for turn 2
+ *      - ...
+ *      
+ * The game folder may have any arbitrary name
+ * The turn folders must follow a specific pattern, basically a name that can be:
+ * - t0
+ * - t00
+ * - t000
+ * - turn0
+ * - turn00
+ * - turn000
+ * - turn 0
+ * - turn 00
+ * - turn 000
+ * and all capitalization variations of the above
+ * 
+ * 
+ * @author Marios Skounakis
+ */
 public class OpenGameDirTree extends ActionCommand implements Runnable {
     File[] files;
     ArrayList<File> turnFolders = new ArrayList<File>();

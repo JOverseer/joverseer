@@ -16,6 +16,11 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
+/**
+ * Selects the next highlighted hex based on the current hex selection
+ * 
+ * @author Marios Skounakis
+ */
 public class GotoNextHighlightedHexCommand extends ActionCommand {
     public GotoNextHighlightedHexCommand() {
         super("gotoNextHighlightedHexCommand");

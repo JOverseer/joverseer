@@ -1,11 +1,13 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.domain.Artifact;
-import org.joverseer.domain.Company;
 import org.joverseer.ui.domain.CompanyWrapper;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for companies
+ * 
+ * @author Marios Skounakis
+ */
 public class CompanyTableModel extends ItemTableModel {
     public CompanyTableModel(MessageSource messageSource) {
         super(CompanyWrapper.class, messageSource);

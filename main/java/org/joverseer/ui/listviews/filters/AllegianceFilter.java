@@ -10,7 +10,14 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
-
+/**
+ * Filter for ListView
+ * 
+ * Implements Allegiance Filter (filters items based on their allegiance)
+ * Items must implement the IBelongsToNation interface
+ * 
+ * @author Marios Skounakis
+ */
 public class AllegianceFilter extends AbstractListViewFilter {
     NationAllegianceEnum allegiance;
     boolean inverse = false;
@@ -44,6 +51,10 @@ public class AllegianceFilter extends AbstractListViewFilter {
         return ret;
     }
  
+    /**
+     * Creates the standard allegiance filters: FP, DS, Neut, Not FP, Not DS, Not Neut
+     * 
+     */
     public static AbstractListViewFilter[] createAllegianceFilters() {
         ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
         for (NationAllegianceEnum allegiance : NationAllegianceEnum.values()) {

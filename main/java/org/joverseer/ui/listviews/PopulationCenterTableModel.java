@@ -3,16 +3,16 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
-import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.PopulationCenterLoyaltyEstimator;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for PopulationCenter objects
+ * 
+ * @author Marios Skounakis
+ */
 public class PopulationCenterTableModel extends ItemTableModel {
     static int iProductStart = 8;
     static int iLostThisTurn = 7;

@@ -2,6 +2,11 @@ package org.joverseer.ui.listviews;
 
 import org.springframework.context.MessageSource;
 
+/**
+ * Table model for starting character objects
+ *  
+ * @author Marios Skounakis
+ */
 public class StartingCharacterTableModel extends ItemTableModel {
 
 	public StartingCharacterTableModel(MessageSource messageSource) {

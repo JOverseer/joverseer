@@ -5,25 +5,22 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
-import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
@@ -42,6 +39,12 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.table.SortableTableModel;
 
+/**
+ * Advanced Character information tab
+ * Shows AdvancedCharacterWrappers in a jtable
+ * 
+ * @author Marios Skounakis
+ */
 public class AdvancedCharacterListView extends BaseItemListView {
 
     public AdvancedCharacterListView() {

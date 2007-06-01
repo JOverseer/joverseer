@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
-import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
@@ -15,7 +14,11 @@ import org.joverseer.ui.domain.OwnedArtifact;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
-
+/**
+ * List view for Owned Artifacts
+ * 
+ * @author Marios Skounakis
+ */
 public class OwnedArtifactsListView extends ItemListView {
     public OwnedArtifactsListView() {
         super(TurnElementsEnum.Character, OwnedArtifactsTableModel.class);
@@ -43,6 +46,7 @@ public class OwnedArtifactsListView extends ItemListView {
             for (Integer id : c.getArtifacts()) {
                 ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", id);
                 if (ai == null) continue;
+                //TODO move OwnedArtifact creation outside this class
                 OwnedArtifact a = new OwnedArtifact();
                 a.setNationNo(c.getNationNo());
                 a.setName(ai.getName());
@@ -60,6 +64,7 @@ public class OwnedArtifactsListView extends ItemListView {
                 if (ai == null) continue;
                 Nation n = g.getMetadata().getNationByName(ar.getOwner());
                 if (n == null) continue;
+//              TODO move OwnedArtifact creation outside this class
                 OwnedArtifact a = new OwnedArtifact();
                 a.setNationNo(n.getNumber());
                 a.setName(ai.getName());

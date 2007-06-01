@@ -1,11 +1,8 @@
 package org.joverseer.ui.listviews;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,8 +11,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.prefs.Preferences;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,34 +22,24 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.TransferHandler;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
-import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
-import org.joverseer.domain.NationRelations;
-import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.ui.JOverseerClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.filters.AndFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
-import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -63,11 +48,19 @@ import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
+/**
+ * Base class for ListViews It basically provides support for: - having a table with the given ItemTableModel descendant -
+ * having filters - having a default sort order - having a popup menu for the table rows - having a set of buttons on
+ * the right of the table
+ * 
+ * @author Marios Skounakis
+ */
+public abstract class BaseItemListView extends AbstractView implements ApplicationListener, MouseListener,
+        MouseMotionListener {
 
-public abstract class BaseItemListView extends AbstractView implements ApplicationListener, MouseListener, MouseMotionListener {
-	protected int xDiff;
-	protected int yDiff;
-	
+    protected int xDiff;
+    protected int yDiff;
+
     protected BeanTableModel tableModel;
 
     protected JTable table;
@@ -80,21 +73,35 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         this.tableModelClass = tableModelClass;
     }
 
+    /**
+     * Set the contents of the table model here
+     */
     protected abstract void setItems();
 
+    /**
+     * Return the desired column widths
+     */
     protected abstract int[] columnWidths();
 
+    /**
+     * Return the desired default sort specification
+     */
     protected ColumnToSort[] getDefaultSort() {
         return null;
     }
-    
+
     protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
         pageComponentContext.register("selectHexCommand", selectHexCommandExecutor);
         selectHexCommandExecutor.setEnabled(GameHolder.hasInitializedGame());
     }
 
+    /**
+     * What happens when you double click on a row that implements the IHasMapLocation interface ... the respective hex
+     * is selected
+     */
     private class SelectHexCommandExecutor extends AbstractActionCommandExecutor {
 
+        // TODO move to a seperate class?
         public void execute() {
             int row = table.getSelectedRow();
             if (row >= 0) {
@@ -126,6 +133,10 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return createControlImpl();
     }
 
+    /**
+     * Return the desired filters Two dimensional array so you can return multiple groups of filtes Each group of
+     * filters goes into a separate combo box
+     */
     protected AbstractListViewFilter[][] getFilters() {
         return null;
     }
@@ -144,6 +155,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return TableUtils.createStandardSortableTable(tableModel);
     }
 
+    /**
+     * Buttons on the right of the table
+     */
     protected JComponent[] getButtons() {
         if (getDefaultSort() != null) {
             ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -165,6 +179,11 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return new JComponent[] {};
     }
 
+    /**
+     * create the view...
+     * 
+     * @return
+     */
     protected JComponent createControlImpl() {
 
         // fetch the messageSource instance from the application context
@@ -229,7 +248,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         table.setDefaultRenderer(CharacterDeathReasonEnum.class, new DeathReasonEnumRenderer(tableModel));
         table.addMouseListener(this);
         table.addMouseMotionListener(this);
-        //table.setDragEnabled(true);
+        // table.setDragEnabled(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setOpaque(true);
@@ -318,45 +337,33 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     }
 
     public void mousePressed(MouseEvent e) {
-    	
-    	if (e.getButton() == MouseEvent.BUTTON1) {
+
+        if (e.getButton() == MouseEvent.BUTTON1) {
             xDiff = e.getX();
-        	yDiff = e.getY();
-    	}
+            yDiff = e.getY();
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
     }
 
     public void mouseDragged(MouseEvent e) {
-    	Point p = e.getPoint();
+        Point p = e.getPoint();
         int dx = Math.abs(e.getX() - xDiff);
         int dy = Math.abs(e.getY() - yDiff);
         if (dx > 5 || dy > 5) {
-        	startDragAndDropAction(e);
+            startDragAndDropAction(e);
         }
-	}
-    
-    protected void startDragAndDropAction(MouseEvent e) {
-    	
     }
 
-	public void mouseMoved(MouseEvent e) {
-	}
+    /**
+     * Implement what you want to happen when a drag & drop action is started
+     */
+    protected void startDragAndDropAction(MouseEvent e) {
 
-	public class ToggleNationNoDisplay extends ActionCommand {
+    }
 
-        protected void doExecuteCommand() {
-            Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
-            String nationAsNumber = prefs.get("nationAsNumber", null);
-            if (nationAsNumber != null && nationAsNumber.equalsIgnoreCase("true")) {
-                nationAsNumber = "false";
-            } else {
-                nationAsNumber = "true";
-            }
-            prefs.put("nationAsNumber", nationAsNumber);
-        }
-
+    public void mouseMoved(MouseEvent e) {
     }
 
 

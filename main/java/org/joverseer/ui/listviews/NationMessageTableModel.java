@@ -3,7 +3,11 @@ package org.joverseer.ui.listviews;
 import org.springframework.context.MessageSource;
 import org.joverseer.domain.NationMessage;
 
-
+/**
+ * Table model for NationMessage objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NationMessageTableModel extends ItemTableModel {
     public NationMessageTableModel(MessageSource messageSource) {
         super(NationMessage.class, messageSource);

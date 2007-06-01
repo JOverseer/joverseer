@@ -10,7 +10,11 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.CompanyWrapper;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * List view for companies
+ * 
+ * @author Marios Skounakis
+ */
 public class CompanyListView extends BaseItemListView {
     public CompanyListView() {
         super(CompanyTableModel.class);

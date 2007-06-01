@@ -1,10 +1,13 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for Enemy Character Rumors
+ * 
+ * @author Marios Skounakis
+ */
 public class EnemyCharacterRumorTableModel extends ItemTableModel {
     public EnemyCharacterRumorTableModel(MessageSource messageSource) {
         super(EnemyCharacterRumorWrapper.class, messageSource);

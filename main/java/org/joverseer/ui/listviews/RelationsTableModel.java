@@ -3,14 +3,15 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
-
+/**
+ * Table model for NationRelation objects
+ * 
+ * @author Marios Skounakis
+ */
 public class RelationsTableModel extends ItemTableModel {
     public RelationsTableModel(MessageSource messageSource) {
         super(NationRelations.class, messageSource);

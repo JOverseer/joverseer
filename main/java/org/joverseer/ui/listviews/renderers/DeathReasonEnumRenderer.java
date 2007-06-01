@@ -7,6 +7,11 @@ import javax.swing.JTable;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.springframework.richclient.table.BeanTableModel;
 
+/**
+ * Cell renderer for CharacterDeathReasonEnum
+ * 
+ * @author Marios Skounakis
+ */
 public class DeathReasonEnumRenderer extends AllegianceColorCellRenderer {
 
     public DeathReasonEnumRenderer(BeanTableModel tableModel) {

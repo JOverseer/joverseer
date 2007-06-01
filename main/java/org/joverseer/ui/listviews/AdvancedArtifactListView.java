@@ -3,13 +3,7 @@ package org.joverseer.ui.listviews;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.joverseer.domain.Artifact;
-import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.ArtifactInfo;
-import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -23,7 +17,12 @@ import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * The advanced artifact information tab
+ * Shows ArtifactWrappers from the ArtifactInfoCollector
+ * 
+ * @author Marios Skounakis
+ */
 public class AdvancedArtifactListView extends BaseItemListView {
 
     public AdvancedArtifactListView() {
@@ -59,11 +58,11 @@ public class AdvancedArtifactListView extends BaseItemListView {
                 filters.toArray(new AbstractListViewFilter[] {}),
                 TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),
                 new AbstractListViewFilter[] {
-                        new LASourceFilter("All sources", null),
-                        new LASourceFilter("LA/LAT", new Class[] {DerivedFromLocateArtifactInfoSource.class,
+                        new InfoSourceClassFilter("All sources", null),
+                        new InfoSourceClassFilter("LA/LAT", new Class[] {DerivedFromLocateArtifactInfoSource.class,
                                 DerivedFromLocateArtifactTrueInfoSource.class}),
-                        new LASourceFilter("Xml/Pdf", new Class[] {XmlTurnInfoSource.class}),
-                        new LASourceFilter("Starting", new Class[] {MetadataSource.class}),},
+                        new InfoSourceClassFilter("Xml/Pdf", new Class[] {XmlTurnInfoSource.class}),
+                        new InfoSourceClassFilter("Starting", new Class[] {MetadataSource.class}),},
                 new AbstractListViewFilter[] {new ArtifactPowerFilter("All Powers", null),
                         new ArtifactPowerFilter("Combat", "Combat "), new ArtifactPowerFilter("Agent", "Agent "),
                         new ArtifactPowerFilter("Command", "Command "), new ArtifactPowerFilter("Stealth", "Stealth "),
@@ -73,11 +72,15 @@ public class AdvancedArtifactListView extends BaseItemListView {
                         new ArtifactPowerFilter("Teleport", " Teleport")}};
     }
 
-    class LASourceFilter extends AbstractListViewFilter {
+    /**
+     * Filter based on the class of the info source
+     * @author Marios Skounakis
+     */
+    class InfoSourceClassFilter extends AbstractListViewFilter {
 
         Class[] classes;
 
-        public LASourceFilter(String descr, Class[] classes) {
+        public InfoSourceClassFilter(String descr, Class[] classes) {
             super(descr);
             this.classes = classes;
         }
@@ -94,6 +97,10 @@ public class AdvancedArtifactListView extends BaseItemListView {
         }
     }
 
+    /**
+     * Filter for owned/not owned artifacts
+     * @author Marios Skounakis
+     */
     class OwnedArtifactFilter extends AbstractListViewFilter {
 
         Boolean owned;
@@ -115,6 +122,11 @@ public class AdvancedArtifactListView extends BaseItemListView {
         }
     }
 
+    /**
+     * Filter based no the artifact power
+     * 
+     * @author Marios Skounakis
+     */
     class ArtifactPowerFilter extends AbstractListViewFilter {
 
         String powerStr;

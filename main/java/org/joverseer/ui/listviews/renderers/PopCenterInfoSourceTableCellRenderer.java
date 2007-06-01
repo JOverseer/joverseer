@@ -9,6 +9,11 @@ import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.springframework.richclient.table.BeanTableModel;
 
+/**
+ * Cell renderer for the Population Center Info Source
+ * 
+ * @author Marios Skounakis
+ */
 public class PopCenterInfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
 
     public PopCenterInfoSourceTableCellRenderer(BeanTableModel tableModel) {

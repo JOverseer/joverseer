@@ -5,15 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.domain.Character;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.SpellcasterWrapper;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Table model for SpellcasterWrapper objects
+ * 
+ * @author Marios Skounakis
+ */
 public class SpellcasterTableModel extends ItemTableModel {
    
     ArrayList<Integer> spells = new ArrayList<Integer>();
@@ -43,9 +44,6 @@ public class SpellcasterTableModel extends ItemTableModel {
         	colList.add(Integer.class);
         }
         return colList.toArray(new Class[]{});
-//        return new Class[] { String.class, String.class, String.class, Integer.class, Integer.class, 
-//                                Integer.class, Integer.class, Integer.class, Integer.class,
-//                                Integer.class, Integer.class, Integer.class, Integer.class, String.class};
     }
     
     public String[] createColumnNames() {
@@ -92,21 +90,7 @@ public class SpellcasterTableModel extends ItemTableModel {
                 return sw.getProficiency(spellId);
             }
         }
-//        if (i == 13) {
-//        	// return Orders
-//        	SpellcasterWrapper sw = (SpellcasterWrapper)object;
-//        	Game g = GameHolder.instance().getGame();
-//        	Turn t = g.getTurn();
-//        	Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", sw.getCharacter());
-//        	if (c == null) return "";
-//        	String orders = "";
-//        	for (int j=0; j<2; j++) {
-//        		if (!c.getOrders()[j].isBlank()) {
-//        			orders += (orders.equals("") ? "" : ", ") + c.getOrders()[j].getNoAndCode() + " " + c.getOrders()[j].getParameters();
-//        		}
-//        	}
-//        	return orders;
-//        }
+
         return "";
     }
     

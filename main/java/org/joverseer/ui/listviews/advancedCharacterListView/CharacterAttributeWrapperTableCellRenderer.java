@@ -2,22 +2,26 @@ package org.joverseer.ui.listviews.advancedCharacterListView;
 
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.font.TextAttribute;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 
-import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.table.BeanTableModel;
 
+/**
+ * Renderer for CharacterAttributeWrapper objects
+ * Adds a tooltip to show detailed information
+ * 
+ * @author Marios Skounakis
+ */
 public class CharacterAttributeWrapperTableCellRenderer extends
 		AllegianceColorCellRenderer {
 

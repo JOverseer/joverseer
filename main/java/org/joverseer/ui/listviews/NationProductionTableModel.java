@@ -1,10 +1,13 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.domain.NationEconomy;
 import org.joverseer.ui.domain.ProductLineWrapper;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for Nation Production objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NationProductionTableModel extends ItemTableModel {
     public NationProductionTableModel(MessageSource messageSource) {
         super(ProductLineWrapper.class, messageSource);

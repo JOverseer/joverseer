@@ -9,7 +9,6 @@ import java.util.Arrays;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import org.joverseer.domain.Army;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.InfoSource;
@@ -21,7 +20,11 @@ import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 
-
+/**
+ * List view for PopulationCenter objects
+ * 
+ * @author Marios Skounakis
+ */
 public class PopulationCenterListView extends ItemListView {
 
     public PopulationCenterListView() {
@@ -51,6 +54,12 @@ public class PopulationCenterListView extends ItemListView {
         return new ColumnToSort[] {new ColumnToSort(0, 2), new ColumnToSort(0, 1)};
     }
 
+    /**
+     * Drag and drop exports:
+     * - PopulationCenter[] array of all selected items
+     * - PopulationCenter the first selected item
+     * - String representation of all selected items
+     */
     protected void startDragAndDropAction(MouseEvent e) {
         final PopulationCenter[] selectedItems = new PopulationCenter[table.getSelectedRowCount()];
         String copyString = "";

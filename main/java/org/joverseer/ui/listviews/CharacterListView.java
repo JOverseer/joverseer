@@ -20,7 +20,11 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 
-
+/**
+ * ListView for Character objects
+ * 
+ * @author Marios Skounakis
+ */
 public class CharacterListView extends ItemListView {
     int iHexNo = 0;
     int iOrderResults = 16;

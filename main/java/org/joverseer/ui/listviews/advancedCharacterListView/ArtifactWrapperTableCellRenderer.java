@@ -7,17 +7,18 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.infoSources.RumorActionInfoSource;
-import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.table.BeanTableModel;
 
-
+/**
+ * Table cell renderer for the AdvancedCharacterListView
+ * Basically adds a tooltip for the artifacts so that their name, powers and info source can be shown
+ * @author Marios Skounakis
+ */
 public class ArtifactWrapperTableCellRenderer extends AllegianceColorCellRenderer {
         
 

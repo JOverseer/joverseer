@@ -1,10 +1,13 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for Spell Info objects
+ * 
+ * @author Marios Skounakis
+ */
 public class SpellInfoTableModel extends ItemTableModel {
     public SpellInfoTableModel(MessageSource messageSource) {
         super(SpellInfo.class, messageSource);

@@ -7,6 +7,13 @@ import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
+/**
+ * Filter that filters spells based on the spell list
+ * 
+ * Items must be SpellInfo items
+ * 
+ * @author Marios Skounakis
+ */
 public class SpellListFilter extends AbstractListViewFilter {
     String spellList;
     

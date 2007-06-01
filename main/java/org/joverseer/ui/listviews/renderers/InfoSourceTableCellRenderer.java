@@ -20,7 +20,10 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.springframework.richclient.table.BeanTableModel;
 
-
+/**
+ * Cell renderer for the InfoSource class
+ * @author Marios Skounakis
+ */
 public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
 
     public InfoSourceTableCellRenderer(BeanTableModel tableModel) {

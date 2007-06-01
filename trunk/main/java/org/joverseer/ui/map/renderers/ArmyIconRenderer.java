@@ -1,19 +1,23 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.FortificationSizeEnum;
-import org.joverseer.domain.PopulationCenterSizeEnum;
-import org.joverseer.domain.Army;
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.support.drawing.ColorPicker;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.apache.log4j.Logger;
-import org.springframework.richclient.application.Application;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import org.apache.log4j.Logger;
+import org.joverseer.domain.Army;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.support.drawing.ColorPicker;
+import org.springframework.richclient.application.Application;
 
+/**
+ * Renderer for armies
+ * Renders one icon for all armies of the same allegiance in the hex
+ * using the standard old and generic army icons (i.e. no army type)
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyIconRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

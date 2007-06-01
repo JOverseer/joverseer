@@ -3,7 +3,10 @@ package org.joverseer.ui.map;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
+/**
+ * Metadata for the map (dimensions, grid sizes, etc)
+ * @author Marios Skounakis
+ */
 public class MapMetadata {
     int gridCellWidth;
     int gridCellHeight;

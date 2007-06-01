@@ -2,7 +2,11 @@ package org.joverseer.ui.map.renderers;
 
 import java.awt.*;
 
-
+/**
+ * Interface for all renderers
+ * 
+ * @author Marios Skounakis
+ */
 public interface Renderer {
     public boolean appliesTo(Object ojb);
 

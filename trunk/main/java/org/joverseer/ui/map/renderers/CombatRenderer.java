@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
-import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -13,7 +12,11 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Renders combats as a small dot on the top of the hex
+ *  
+ * @author Marios Skounakis
+ */
 public class CombatRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 
@@ -28,10 +31,6 @@ public class CombatRenderer implements Renderer {
     public void render(Object obj, Graphics2D g, int x, int y) {
         if (mapMetadata == null) init();
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        Turn turn = game.getTurn();
-
-        Combat c = (Combat)obj;
-        
         int w = mapMetadata.getGridCellWidth() / 3;
         int h = mapMetadata.getGridCellHeight() / 3;
         int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1/2 - w/2;

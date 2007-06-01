@@ -1,28 +1,33 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
-import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
-import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
-import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.domain.Character;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+
 import org.joverseer.domain.Army;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementUtils;
+import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
+import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
+import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-
-
+/**
+ * Renders RangeMapItem objects
+ * 
+ * @author Marios Skounakis
+ */
 public class RangeMapItemRenderer extends DefaultHexRenderer {
     String highlightColor = "#ff3300";
     int width = 2;

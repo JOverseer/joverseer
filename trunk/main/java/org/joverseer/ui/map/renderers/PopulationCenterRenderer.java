@@ -1,18 +1,23 @@
 package org.joverseer.ui.map.renderers;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+
+import org.apache.log4j.Logger;
+import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
-import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
-import org.apache.log4j.Logger;
 
-import java.awt.*;
-import java.awt.image.*;
-
-
+/**
+ * Renders PopulationCenter objects
+ * 
+ * @author Marios Skounakis
+ */
 public class PopulationCenterRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

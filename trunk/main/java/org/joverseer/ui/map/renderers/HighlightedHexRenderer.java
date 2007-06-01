@@ -6,13 +6,15 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Stroke;
 
-import org.joverseer.metadata.domain.Hex;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.drawing.ColorPicker;
 
-
+/**
+ * Renders the highlighted hexes
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightedHexRenderer extends DefaultHexRenderer {
     String highlightColor = "#ff3300";
     int width = 2;

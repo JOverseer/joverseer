@@ -1,22 +1,29 @@
 package org.joverseer.ui.map.renderers;
 
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.domain.*;
-import org.joverseer.game.Game;
-import org.joverseer.ui.support.drawing.ColorPicker;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.support.GameHolder;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.springframework.richclient.application.Application;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import org.joverseer.domain.Army;
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.support.drawing.ColorPicker;
+import org.springframework.richclient.application.Application;
 
+/**
+ * Renders multiple armies as seperate icons within the hex.
+ * Can show a specific image per army type (cav, inf, nav, unknown)
+ * Up to 10 armies can be shown (5 for each side)
+ * Neutral armies are shown in the opposing allegiance's side
+ * 
+ * @author Marios Skounakis
+ */
 public class MultiArmyRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

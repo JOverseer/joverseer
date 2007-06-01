@@ -16,7 +16,11 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Renders all characters in the hex as seperate dots
+ * 
+ * @author Marios Skounakis
+ */
 public class MultiCharacterRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 
@@ -35,11 +39,13 @@ public class MultiCharacterRenderer implements Renderer {
 
         org.joverseer.domain.Character c = (Character)obj;
         
+        // show dead chars according to preference
         String pval = PreferenceRegistry.instance().getPreferenceValue("map.deadCharacters");
         if (pval.equals("no")) {
             if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) return;
         }
         
+        // do not show hostages
         if (c.getHostage() != null && c.getHostage()) return;
 
         ArrayList<Character> charsInHex = null;

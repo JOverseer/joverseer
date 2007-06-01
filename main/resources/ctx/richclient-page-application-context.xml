@@ -68,7 +68,7 @@
 			<value>1</value>
 		</property>
 		<property name="viewClass">
-			<value>org.joverseer.ui.MapView</value>
+			<value>org.joverseer.ui.views.MapView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>
@@ -878,7 +878,7 @@
 			<value>4</value>
 		</property>
 		<property name="viewClass">
-			<value>org.joverseer.ui.MapOptionsView</value>
+			<value>org.joverseer.ui.views.MapOptionsView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>350</value>

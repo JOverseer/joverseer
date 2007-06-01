@@ -28,13 +28,18 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 
 
+/**
+ * Highlights a set of characters based on criteria specified using the
+ * HighlightOptionsForm form
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightCharacters extends ActionCommand {
     public HighlightCharacters() {
         super("highlightCharactersCommand");

@@ -19,7 +19,12 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Add or Edit a note
+ * Uses the EditNoteForm
+ * 
+ * @author Marios Skounakis
+ */
 public class AddEditNoteCommand extends ActionCommand {
     Note note;
     

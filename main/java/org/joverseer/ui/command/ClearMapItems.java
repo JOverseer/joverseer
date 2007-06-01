@@ -10,7 +10,11 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
-
+/**
+ * Clear the map items
+ * 
+ * @author Marios Skounakis
+ */
 public class ClearMapItems  extends ActionCommand {
     
     public ClearMapItems() {

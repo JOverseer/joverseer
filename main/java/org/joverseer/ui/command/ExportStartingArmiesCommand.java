@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
-import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -14,6 +13,13 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.command.ActionCommand;
 
+/**
+ * Admin command
+ * 
+ * Exports all t0 armies of this game to a text file (c:\file.out) 
+ * 
+ * @author Marios Skounakis
+ */
 public class ExportStartingArmiesCommand extends ActionCommand {
     public ExportStartingArmiesCommand() {
         super("exportStartingArmiesCommand");

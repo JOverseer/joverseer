@@ -2,7 +2,6 @@ package org.joverseer.ui.command;
 
 import java.util.ArrayList;
 
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -17,7 +16,11 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
-
+/**
+ * Highlight hexes that contain dragons
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightDragonsCommand  extends ActionCommand {
     
     public HighlightDragonsCommand() {

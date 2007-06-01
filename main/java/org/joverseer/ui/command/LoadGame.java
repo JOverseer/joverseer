@@ -2,19 +2,16 @@ package org.joverseer.ui.command;
 
 import java.awt.Point;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.JOverseerClient;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.map.MapPanel;
@@ -26,10 +23,12 @@ import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.filechooser.DefaultFileFilter;
 import org.springframework.richclient.progress.BusyIndicator;
-import org.springframework.richclient.util.SwingWorker;
 
-import java.util.zip.*;
-
+/**
+ * Loads a game from a saved game file
+ * 
+ * @author Marios Skounakis
+ */
 public class LoadGame extends ActionCommand {
     public LoadGame() {
         super("LoadGameCommand");

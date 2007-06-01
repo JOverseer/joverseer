@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.views.EditNationAllegiancesForm;
 import org.joverseer.ui.views.EditNationMetadataForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -15,6 +14,10 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
+/**
+ * Opens the EditNationMetadataForm to edit the Nation Metadata
+ * @author Marios Skounakis
+ */
 public class EditNationMetadataCommand extends ActionCommand {
     
     public EditNationMetadataCommand() {

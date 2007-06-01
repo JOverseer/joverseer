@@ -16,7 +16,6 @@ import javax.swing.JTextArea;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.support.GameHolder;
 import org.springframework.binding.form.FormModel;
@@ -29,7 +28,11 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-
+/**
+ * Opens the ExportOrderTextForm form
+ * 
+ * @author Marios Skounakis
+ */
 public class ExportOrderTextCommand extends ActionCommand {
     public ExportOrderTextCommand() {
         super("exportOrderTextCommand");

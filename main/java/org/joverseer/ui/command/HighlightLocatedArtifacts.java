@@ -19,7 +19,11 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.MessageDialog;
 
-
+/**
+ * Highlights hexes that contain LA/LAT'ed artifacts
+ * 
+ * @author Marios Skounakis
+ */
 public class HighlightLocatedArtifacts extends ActionCommand {
     public HighlightLocatedArtifacts() {
         super("highlightLocatedArtifactsCommand");

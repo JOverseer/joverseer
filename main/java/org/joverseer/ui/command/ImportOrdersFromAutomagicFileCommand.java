@@ -17,7 +17,11 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 
-
+/**
+ * Imports orders from an automagic or meow order file
+ * 
+ * @author Marios Skounakis
+ */
 public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
     private boolean confirmed = false;
     

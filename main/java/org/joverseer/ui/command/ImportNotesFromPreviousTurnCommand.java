@@ -16,7 +16,11 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
-
+/**
+ * Imports all persistent notes from the previous turn
+ * 
+ * @author Marios Skounakis
+ */
 public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
     public ImportNotesFromPreviousTurnCommand() {
         super("importNotesFromPreviousTurnCommand");

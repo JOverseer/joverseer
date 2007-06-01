@@ -14,7 +14,11 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Open the EditNationAllegiancesForm
+ * 
+ * @author Marios Skounakis
+ */
 public class ChangeNationAllegiances extends ActionCommand {
     
     public ChangeNationAllegiances() {

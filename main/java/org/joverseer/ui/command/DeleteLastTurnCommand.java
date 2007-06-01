@@ -11,7 +11,11 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 
-
+/**
+ * Delete the last turn of the game
+ * 
+ * @author Marios Skounakis
+ */
 public class DeleteLastTurnCommand extends ActionCommand {
     
     public DeleteLastTurnCommand() {

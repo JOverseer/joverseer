@@ -4,6 +4,10 @@ package org.joverseer.ui.listviews;
 import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.springframework.context.MessageSource;
 
+/**
+ * Table model for TrackCharacterInfo objects
+ * @author Marios Skounakis
+ */
 public class TrackCharacterTableModel extends ItemTableModel {
 
     public TrackCharacterTableModel(MessageSource messageSource) {

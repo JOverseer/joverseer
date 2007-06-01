@@ -11,10 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 
-import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
@@ -23,7 +20,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 
-
+/**
+ * List view for NationRelation objects
+ * 
+ * @author Marios Skounakis
+ */
 public class RelationsListView extends ItemListView {
     public RelationsListView() {
         super(TurnElementsEnum.NationRelation, RelationsTableModel.class);
@@ -33,6 +34,7 @@ public class RelationsListView extends ItemListView {
     protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
         table.setDefaultRenderer(String.class, new RelationsTableCellRenderer(tableModel));
+        // set combo box editor for the relations
         table.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox(new String[]{"F", "T", "N", "D", "H"})));
         return c;
     }
@@ -65,7 +67,6 @@ public class RelationsListView extends ItemListView {
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
         return new AbstractListViewFilter[][]{filters.toArray(new AbstractListViewFilter[]{})};
     }
-
 
 
     public class RelationsTableCellRenderer extends AllegianceColorCellRenderer {

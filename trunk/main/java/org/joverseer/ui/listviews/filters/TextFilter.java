@@ -3,7 +3,13 @@ package org.joverseer.ui.listviews.filters;
 import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
-
+/**
+ * Text filter
+ * 
+ * Unfinished and not used
+ * 
+ * @author Marios Skounakis
+ */
 public class TextFilter extends AbstractListViewFilter {
     String property;
     String value;

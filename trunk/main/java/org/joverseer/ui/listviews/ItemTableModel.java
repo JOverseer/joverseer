@@ -1,20 +1,21 @@
 package org.joverseer.ui.listviews;
 
-import java.util.prefs.Preferences;
-
-import javax.swing.JPopupMenu;
-
-import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.application.Application;
-import org.springframework.context.MessageSource;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.JOverseerClient;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.table.BeanTableModel;
 
-
+/**
+ * Base class for Item table models.
+ * 
+ * Basically provides a central control for how nation columns are displayed (number of short name)
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class ItemTableModel extends BeanTableModel {
 	
     public ItemTableModel(Class aClass, MessageSource messageSource) {

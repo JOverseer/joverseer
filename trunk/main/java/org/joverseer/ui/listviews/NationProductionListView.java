@@ -16,7 +16,11 @@ import org.joverseer.ui.domain.ProductLineWrapper;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
-
+/**
+ * List view for Nation Production objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NationProductionListView extends BaseItemListView {
 
     public NationProductionListView() {
@@ -36,6 +40,8 @@ public class NationProductionListView extends BaseItemListView {
         ProductContainer totalProdContainer = new ProductContainer();
         int counter = 1;
         for (NationEconomy ne : (ArrayList<NationEconomy>) nes.getItems()) {
+            //TODO move ProductLineWrapper creation to the table model or other place
+            
             ProductLineWrapper prod = new ProductLineWrapper(ne.getProduction());
             prod.setNationNo(ne.getNationNo());
             prod.setDescr("Production");

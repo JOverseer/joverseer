@@ -35,7 +35,10 @@ import com.jidesoft.grid.MultilineTableCellRenderer;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
 
-
+/**
+ * List view for encounters
+ * @author Marios Skounakis
+ */
 public class EncounterListView extends ItemListView {
     public EncounterListView() {
         super(TurnElementsEnum.Encounter, EncounterTableModel.class);
@@ -46,9 +49,12 @@ public class EncounterListView extends ItemListView {
                         370};
     }
 
-    @Override
+    /**
+     * Overrides and ignores the base class implementation because 
+     * it needs a JideTable to use the MultiLineRenderer
+     */
     protected JComponent createControlImpl() {
-//      fetch the messageSource instance from the application context
+        // fetch the messageSource instance from the application context
         MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 
         // create the table model

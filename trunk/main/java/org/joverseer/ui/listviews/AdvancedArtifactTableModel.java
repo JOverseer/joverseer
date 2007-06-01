@@ -4,7 +4,10 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for the AdvancedArtifactListView
+ * @author Marios Skounakis
+ */
 public class AdvancedArtifactTableModel extends ItemTableModel {
 
     public AdvancedArtifactTableModel(MessageSource messageSource) {

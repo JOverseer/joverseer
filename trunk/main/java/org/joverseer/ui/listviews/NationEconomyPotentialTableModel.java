@@ -3,7 +3,11 @@ package org.joverseer.ui.listviews;
 import org.joverseer.ui.domain.NationEconomyPotential;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for NationEconomyPotential objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NationEconomyPotentialTableModel extends ItemTableModel {
 
     public NationEconomyPotentialTableModel(MessageSource messageSource) {

@@ -11,7 +11,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
 
-
+/**
+ * List view that shows ArmySizeEstimate objects
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmySizeEstimatesListView extends BaseItemListView {
     public ArmySizeEstimatesListView() {
         super(ArmySizeEstimatesTableModel.class);

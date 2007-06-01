@@ -10,6 +10,12 @@ import org.joverseer.tools.CombatUtils;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.context.MessageSource;
 
+/**
+ * Table model for Army objects
+ * 
+ * @author Marios Skounakis
+ */
+//TODO remove hard-coded references to column numbers
 public class ArmyTableModel extends ItemTableModel {
 
 	public ArmyTableModel(MessageSource messageSource) {

@@ -19,7 +19,14 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
 
-
+/**
+ * Cell renderer that colors the row background according to the allegiance of the item shown
+ * The Item must implement the IBelongsToNation interface
+ * 
+ * Can be used only with with tables that use BeanTableModels
+ * 
+ * @author Marios Skounakis
+ */
 public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
     BeanTableModel tableModel;
     

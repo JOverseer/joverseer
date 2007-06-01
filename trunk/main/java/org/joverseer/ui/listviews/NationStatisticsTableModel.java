@@ -3,6 +3,11 @@ package org.joverseer.ui.listviews;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
 import org.springframework.context.MessageSource;
 
+/**
+ * Table model for NationStatisticsWrapper objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NationStatisticsTableModel extends ItemTableModel {
 
 	public NationStatisticsTableModel(MessageSource messageSource) {

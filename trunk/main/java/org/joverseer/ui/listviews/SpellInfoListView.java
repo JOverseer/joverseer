@@ -3,7 +3,11 @@ package org.joverseer.ui.listviews;
 import org.joverseer.ui.listviews.filters.SpellListFilter;
 import org.springframework.richclient.table.ColumnToSort;
 
-
+/**
+ * List view for SpellInfo objects
+ * 
+ * @author Marios Skounakis
+ */
 public class SpellInfoListView extends ItemListView {
     public SpellInfoListView() {
         super("spells", SpellInfoTableModel.class);

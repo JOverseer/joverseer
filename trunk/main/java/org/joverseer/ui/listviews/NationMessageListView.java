@@ -3,7 +3,11 @@ package org.joverseer.ui.listviews;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.NationFilter;
 
-
+/**
+ * List view for NationMessage objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NationMessageListView extends ItemListView {
     public NationMessageListView() {
         super(TurnElementsEnum.NationMessage, NationMessageTableModel.class);

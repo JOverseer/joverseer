@@ -1,15 +1,16 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.domain.Army;
-import org.joverseer.domain.Character;
 import org.joverseer.domain.Note;
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Table model for Note objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NotesTableModel extends ItemTableModel {
     public static int iTarget = 1;
     public static int iText = 4;

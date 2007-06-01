@@ -22,11 +22,9 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.table.JTableHeader;
 
-import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
@@ -43,6 +41,11 @@ import com.jidesoft.grid.MultilineTableCellRenderer;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
 
+/**
+ * List view that shows ArmyEstimate objects
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyEstimatesListView extends ItemListView {
 
     public ArmyEstimatesListView() {
@@ -53,6 +56,10 @@ public class ArmyEstimatesListView extends ItemListView {
         return new int[] {42, 80, 64, 130, 48, 48, 100, 120, 120, 120};
     }
 
+    /**
+     * Implements its own createControlImpl without calling the base because I need to
+     * create a JideTable (to use the MutliLineRenderer) instead of a standard Spring/Swing table
+     */
     protected JComponent createControlImpl() {
         MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 
@@ -172,46 +179,46 @@ public class ArmyEstimatesListView extends ItemListView {
         return p;
     }
 
-	protected void startDragAndDropAction(MouseEvent e) {
-		final ArmyEstimate[] selectedArmies = new ArmyEstimate[table.getSelectedRowCount()];
-		String copyString = "";
-		for (int i=0; i<table.getSelectedRowCount(); i++) {
-			int idx = ((com.jidesoft.grid.SortableTableModel)table.getModel()).getActualRowAt(table.getSelectedRows()[i]);
-			ArmyEstimate a = (ArmyEstimate)tableModel.getRow(idx);
-			selectedArmies[i] = a;
-			String ln = "";
-			for (int j=0; j<table.getColumnCount(); j++) {
-				Object v = table.getValueAt(i, j);
-				if (v == null) v = "";
-				ln += (ln.equals("") ? "" : "\t") + v;
-			}
-			copyString += (copyString.equals("") ? "" : "\n") + ln;
-		}
-		final String str = copyString;
-		
-		TransferHandler handler = new GenericExportTransferHandler() {
-			protected Transferable createTransferable(JComponent arg0) {
-				try {
-					Transferable t = new GenericTransferable(
-						new DataFlavor[]{
-							new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" +  ArmyEstimate[].class.getName() + "\""),
-							new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" +  ArmyEstimate.class.getName()),
-							DataFlavor.stringFlavor
-						},
-						new Object[]{selectedArmies, selectedArmies[0], str});
-					return t;
-				}
-				catch (Exception exc) {
-					exc.printStackTrace();
-					return null;
-				}
-						
-			}
-		};
-		table.setTransferHandler(handler);
+    protected void startDragAndDropAction(MouseEvent e) {
+        final ArmyEstimate[] selectedArmies = new ArmyEstimate[table.getSelectedRowCount()];
+        String copyString = "";
+        for (int i = 0; i < table.getSelectedRowCount(); i++) {
+            int idx = ((com.jidesoft.grid.SortableTableModel) table.getModel())
+                    .getActualRowAt(table.getSelectedRows()[i]);
+            ArmyEstimate a = (ArmyEstimate) tableModel.getRow(idx);
+            selectedArmies[i] = a;
+            String ln = "";
+            for (int j = 0; j < table.getColumnCount(); j++) {
+                Object v = table.getValueAt(i, j);
+                if (v == null)
+                    v = "";
+                ln += (ln.equals("") ? "" : "\t") + v;
+            }
+            copyString += (copyString.equals("") ? "" : "\n") + ln;
+        }
+        final String str = copyString;
+
+        TransferHandler handler = new GenericExportTransferHandler() {
+
+            protected Transferable createTransferable(JComponent arg0) {
+                try {
+                    Transferable t = new GenericTransferable(new DataFlavor[] {
+                            new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\""
+                                    + ArmyEstimate[].class.getName() + "\""),
+                            new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class="
+                                    + ArmyEstimate.class.getName()), DataFlavor.stringFlavor}, new Object[] {
+                            selectedArmies, selectedArmies[0], str});
+                    return t;
+                } catch (Exception exc) {
+                    exc.printStackTrace();
+                    return null;
+                }
+
+            }
+        };
+        table.setTransferHandler(handler);
         handler.exportAsDrag(table, e, TransferHandler.COPY);
-	}
-    
-    
+    }
+
 
 }

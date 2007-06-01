@@ -1,36 +1,24 @@
 package org.joverseer.ui.listviews;
 
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
 import org.apache.commons.beanutils.PropertyUtils;
-import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.PageComponentContext;
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
-import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.SortableTableModel;
-import org.springframework.richclient.table.TableUtils;
 
-
+/**
+ * Base class for Item List Views.
+ * 
+ * It specializes BaseItemListView for the cases that the items to be shown are either
+ * TurnElementEnum items that are held within the turn or items that can be accessed 
+ * using a property of the game metadata
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class ItemListView extends BaseItemListView {
     TurnElementsEnum turnElementType = null;
     String metadataProperty;

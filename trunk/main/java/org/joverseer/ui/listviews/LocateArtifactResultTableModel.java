@@ -1,7 +1,6 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.domain.Artifact;
-import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.GameHolder;
@@ -10,7 +9,11 @@ import org.joverseer.ui.domain.LocateArtifactResult;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Table model for LA/LAT results
+ * 
+ * @author Marios Skounakis
+ */
 public class LocateArtifactResultTableModel extends ItemTableModel {
     public LocateArtifactResultTableModel(MessageSource messageSource) {
         super(LocateArtifactResult.class, messageSource);

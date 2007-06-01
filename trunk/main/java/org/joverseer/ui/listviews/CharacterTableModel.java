@@ -3,7 +3,10 @@ package org.joverseer.ui.listviews;
 import org.joverseer.support.infoSources.InfoSource;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for Character objects
+ * @author Marios Skounakis
+ */
 public class CharacterTableModel extends ItemTableModel {
     public CharacterTableModel(MessageSource messageSource) {
         super(Character.class, messageSource);

@@ -1,10 +1,8 @@
 package org.joverseer.ui.listviews;
 
 import java.awt.Component;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -12,7 +10,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
 
-
+/**
+ * List view for PlayerInfo objects
+ * 
+ * @author Marios Skounakis
+ */
 public class PlayerInfoListView extends ItemListView {
 
     public PlayerInfoListView() {

@@ -12,24 +12,30 @@ import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 
+/**
+ * List view for Starting Characters
+ * 
+ * @author Marios Skounakis
+ */
 public class StartingCharacterListView extends ItemListView {
 
-	public StartingCharacterListView() {
-		super("characters", StartingCharacterTableModel.class);
-	}
+    public StartingCharacterListView() {
+        super("characters", StartingCharacterTableModel.class);
+    }
 
-	protected int[] columnWidths() {
-		return new int[]{120, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
-	}
-	
-	protected AbstractListViewFilter[][] getFilters() {
+    protected int[] columnWidths() {
+        return new int[] {120, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32};
+    }
+
+    protected AbstractListViewFilter[][] getFilters() {
         ArrayList filters = new ArrayList();
         filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
         filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-        return new AbstractListViewFilter[][]{(AbstractListViewFilter[])filters.toArray(new AbstractListViewFilter[]{})};
+        return new AbstractListViewFilter[][] {(AbstractListViewFilter[]) filters
+                .toArray(new AbstractListViewFilter[] {})};
     }
-	
-	protected JComponent createControlImpl() {
+
+    protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
         table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel) {
 

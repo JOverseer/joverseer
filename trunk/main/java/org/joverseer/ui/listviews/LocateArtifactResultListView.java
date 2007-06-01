@@ -3,11 +3,9 @@ package org.joverseer.ui.listviews;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.joverseer.domain.Artifact;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
@@ -16,7 +14,11 @@ import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
-
+/**
+ * List view for LA/LAT results
+ * 
+ * @author Marios Skounakis
+ */
 public class LocateArtifactResultListView extends BaseItemListView {
 
     public LocateArtifactResultListView() {

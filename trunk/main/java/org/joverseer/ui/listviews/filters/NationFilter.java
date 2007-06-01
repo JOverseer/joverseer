@@ -9,6 +9,13 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
+/**
+ * Filter for Nations
+ * 
+ * Items must implements the IBelongsToNation interface
+ * 
+ * @author Marios Skounakis
+ */
 public class NationFilter extends AbstractListViewFilter {
     static int ALL_NATIONS = -1;
     static int ALL_IMPORTED = -2;
@@ -34,6 +41,12 @@ public class NationFilter extends AbstractListViewFilter {
         return createNationFilters(false);
     }
  
+    /**
+     * Creates the standard nation filters:
+     * - All nations
+     * - All imported (if includeAllImported == true)
+     * - One for each nation in the game metadata
+     */
     public static AbstractListViewFilter[] createNationFilters(boolean includeAllImported) {
         ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
         if (includeAllImported) {
@@ -47,7 +60,13 @@ public class NationFilter extends AbstractListViewFilter {
         }
         return (AbstractListViewFilter[])ret.toArray(new AbstractListViewFilter[]{});
     }
-    
+
+    /**
+     * Creates a list of nation filters with:
+     * - All imported
+     * - All
+     * No specific nations are included 
+     */
     public static AbstractListViewFilter[] createAllAndAllImportedNationFilters() {
         ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
         ret.add(new NationFilter("All imported", ALL_IMPORTED));

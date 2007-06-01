@@ -1,6 +1,10 @@
 package org.joverseer.ui.listviews;
 
-
+/**
+ * Base class for ItemListView filters
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class AbstractListViewFilter {
     String description;
     

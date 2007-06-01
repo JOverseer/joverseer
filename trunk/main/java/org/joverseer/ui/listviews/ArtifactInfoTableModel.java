@@ -3,7 +3,11 @@ package org.joverseer.ui.listviews;
 import org.springframework.context.MessageSource;
 import org.joverseer.metadata.domain.ArtifactInfo;
 
-
+/**
+ * Table model for ArtifactInfo objects
+ *  
+ * @author Marios Skounakis
+ */
 public class ArtifactInfoTableModel extends ItemTableModel {
     public ArtifactInfoTableModel(MessageSource messageSource) {
         super(ArtifactInfo.class, messageSource);

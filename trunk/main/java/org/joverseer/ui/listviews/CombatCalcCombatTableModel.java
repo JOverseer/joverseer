@@ -4,7 +4,11 @@ import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for Combats for the Combat Calc
+ * 
+ * @author Marios Skounakis
+ */
 public class CombatCalcCombatTableModel extends ItemTableModel {
     public static int iSide1 = 2;
     public static int iSide2 = 3;

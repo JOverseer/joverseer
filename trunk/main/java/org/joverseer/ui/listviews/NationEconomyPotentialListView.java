@@ -12,6 +12,11 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.NationEconomyPotential;
 
+/**
+ * List view for NationEconomyPotential objects.
+ * 
+ * @author Marios Skounakis
+ */
 public class NationEconomyPotentialListView extends BaseItemListView {
 
     public NationEconomyPotentialListView() {
@@ -27,6 +32,7 @@ public class NationEconomyPotentialListView extends BaseItemListView {
         ArrayList<NationEconomyPotential> potentials = new ArrayList<NationEconomyPotential>();
         if (Game.isInitialized(g)) {
             for (NationEconomy ne : (ArrayList<NationEconomy>)g.getTurn().getContainer(TurnElementsEnum.NationEconomy).getItems()) {
+                //TODO move NationEconomyPotential creation to TableModel or other place out of here
                 NationEconomyPotential nep = ((NationEconomyPotentialTableModel)tableModel).getNewPotential();
                 nep.setNationNo(ne.getNationNo());
                 nep.setSurplus(ne.getSurplus());

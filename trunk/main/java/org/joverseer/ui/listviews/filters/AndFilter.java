@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
+/**
+ * Filter that combines filters
+ * 
+ * @author Marios Skounakis
+ */
 public class AndFilter extends AbstractListViewFilter {
 	ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
 	public AndFilter() {

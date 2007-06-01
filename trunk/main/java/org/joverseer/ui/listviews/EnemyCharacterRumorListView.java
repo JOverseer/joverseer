@@ -1,23 +1,16 @@
 package org.joverseer.ui.listviews;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.swing.JComponent;
 import javax.swing.JTable;
 
-import org.joverseer.domain.NationMessage;
-import org.joverseer.domain.NationRelations;
-import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
-import org.joverseer.domain.Character;
 
-
+/**
+ * List view for Enemy Character Rumors
+ * 
+ * @author Marios Skounakis
+ */
 public class EnemyCharacterRumorListView extends BaseItemListView {
 
 

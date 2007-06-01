@@ -1,24 +1,17 @@
 package org.joverseer.ui.listviews;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
 
 import org.joverseer.domain.Note;
 import org.joverseer.game.TurnElementsEnum;
@@ -29,8 +22,6 @@ import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.controls.TextAreaEditor;
-import org.joverseer.ui.support.controls.TextAreaRenderer;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -40,12 +31,11 @@ import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ShuttleSortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
-import com.jidesoft.grid.JideTable;
-import com.jidesoft.grid.MultilineTableCellRenderer;
-import com.jidesoft.grid.SortTableHeaderRenderer;
-import com.jidesoft.grid.SortableTable;
-import com.jidesoft.grid.SortableTableModel;
-
+/**
+ * List view for notes objects
+ * 
+ * @author Marios Skounakis
+ */
 public class NotesListView extends ItemListView {
 
     public NotesListView() {
@@ -57,6 +47,7 @@ public class NotesListView extends ItemListView {
         return new int[] {42, 96, 64, 96, 300, 64};
     }
 
+    //TODO issues with the cell renderers - need multiline or not?
     protected JComponent createControlImpl() {
         MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 

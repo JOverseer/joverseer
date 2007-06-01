@@ -5,7 +5,11 @@ import java.util.Date;
 import org.joverseer.domain.PlayerInfo;
 import org.springframework.context.MessageSource;
 
-
+/**
+ * Table model for PlayerInfo objects
+ * 
+ * @author Marios Skounakis
+ */
 public class PlayerInfoTableModel extends ItemTableModel {
 
     public PlayerInfoTableModel(MessageSource messageSource) {

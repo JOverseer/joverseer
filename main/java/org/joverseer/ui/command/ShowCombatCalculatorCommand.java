@@ -11,17 +11,18 @@ import org.joverseer.ui.combatCalculator.CombatForm;
 import org.joverseer.ui.combatCalculator.CombatFormHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.views.EditNationMetadataForm;
-import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Shows the combat calculator
+ * 
+ * @author Marios Skounakis
+ */
 public class ShowCombatCalculatorCommand extends ActionCommand {
     Combat combat;
     

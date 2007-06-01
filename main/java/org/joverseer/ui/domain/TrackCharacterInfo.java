@@ -2,7 +2,13 @@ package org.joverseer.ui.domain;
 
 import org.joverseer.domain.IHasMapLocation;
 
+/**
+ * Wraps information for the results in the Track Char list view
+ * 
+ * @author Marios Skounakis
+ */
 
+//TODO Should implement IHasTurnNumber?
 public class TrackCharacterInfo implements IHasMapLocation {
     int turnNo;
     String info;

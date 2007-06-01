@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -21,7 +20,6 @@ import javax.swing.JTextField;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.Note;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
@@ -40,22 +38,20 @@ import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
-import org.joverseer.ui.views.EditCharacterForm;
-import org.joverseer.ui.views.EditNoteForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Shows hex info in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class HexInfoViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "HexInfoViewer";

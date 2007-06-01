@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
@@ -30,7 +29,15 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Reads xml and pdf turn files from a given directory (and all subdirectories). All files
+ * must be for the same turn, and this turn must either be the latest turn of the game or
+ * a turn larger than the last turn of the game.
+ * 
+ * Xml files are read first, then pdf files
+ * 
+ * @author Marios Skounakis
+ */
 public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
     File[] files;
     JOverseerClientProgressMonitor monitor;
@@ -126,7 +133,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
+        Preferences prefs = Preferences.userNodeForPackage(OpenGameDirTree.class);
         String lastDir = prefs.get("importDir", null);
         if (lastDir != null) {
             fileChooser.setCurrentDirectory(new File(lastDir));

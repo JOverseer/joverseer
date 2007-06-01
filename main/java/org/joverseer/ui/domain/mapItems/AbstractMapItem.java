@@ -9,6 +9,12 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.*;
 
+/**
+ * Abstract class that forms the base for all volatile (i.e. drawable, non static) items
+ * that must be drawn on the map.
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class AbstractMapItem implements Serializable {
     public abstract String getDescription();
     

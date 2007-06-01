@@ -14,10 +14,13 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-
+/**
+ * Shows artifacts in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class ArtifactViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "ArtifactViewer";

@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.JOverseerClient;
+import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
@@ -56,7 +56,7 @@ public class LoadGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setApproveButtonText("Load");
-        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         String saveDir = prefs.get("saveDir", null);
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));

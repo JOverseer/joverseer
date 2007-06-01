@@ -33,7 +33,12 @@ import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Shows notes 
+ * Used in other viewers whose objects can be targets of notes
+ * 
+ * @author Marios Skounakis
+ */
 public class NotesViewer extends ObjectViewer implements ActionListener {
 
     public static final String FORM_PAGE = "NotesViewer";

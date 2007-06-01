@@ -17,6 +17,12 @@ import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
 
+/**
+ * Edit a character
+ * 
+ * @author Marios Skounakis
+ */
+//TODO needs validation
 
 public class EditCharacterForm extends AbstractForm {
     public static final String FORM_PAGE = "editCharacterForm";

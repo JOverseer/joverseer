@@ -21,7 +21,6 @@ import org.joverseer.domain.NationEconomy;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
 import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
@@ -29,15 +28,19 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-import com.jidesoft.docking.DockingManager;
-import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
-import com.jidesoft.spring.richclient.docking.view.JideAbstractView;
-
-
+/**
+ * The team economy view
+ * 
+ * It create a new table called team economy and it also uses a number of list views:
+ * - the nation economy list view
+ * - the nation production list view
+ * - the nation statistics list view
+ * 
+ * @author Marios Skounakis
+ */
 public class TeamEconomyView extends AbstractView implements ApplicationListener {
     JTable teamEconomyTable;
     TeamEconomyTableModel teamEconomyTableModel;
@@ -174,7 +177,11 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
         }
     }
     
-    
+    /**
+     * Renderer for the team economy main table
+     * 
+     * @author Marios Skounakis
+     */
     class IntegerTeamEconomyTableRenderer extends DefaultTableCellRenderer {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             JLabel lbl = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

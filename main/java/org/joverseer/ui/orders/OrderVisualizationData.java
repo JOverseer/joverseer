@@ -11,7 +11,15 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.dialogs.InputDialog;
 
-
+/**
+ * Holds info for visualizing orders on the map (used by the Order renderers)
+ * 
+ * Basically when an order is added, if it is missing some data (as in the case of
+ * move army orders when the army cannot be found), it popups up a screen asking for the
+ * additional info
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderVisualizationData {
     ArrayList<Order> orders = new ArrayList<Order>();
     HashMap<Order, HashMap<String, Object>> orderInfo = new HashMap<Order, HashMap<String, Object>>();

@@ -27,12 +27,15 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-
+/**
+ * Shows combats in the Current Hex View
+ * 
+ * @author Marios Skounakis
+ */
 public class CombatViewer extends ObjectViewer {
 
     public static final String FORM_PAGE = "CombatViewer";

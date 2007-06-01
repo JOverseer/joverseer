@@ -28,6 +28,13 @@ import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 
+/**
+ * Forms that shows/edits an army
+ * 
+ * @author Marios Skounakis
+ */
+
+//TODO needs validation
 
 public class EditArmyForm extends AbstractForm {
     public static String FORM_ID = "editArmyForm";

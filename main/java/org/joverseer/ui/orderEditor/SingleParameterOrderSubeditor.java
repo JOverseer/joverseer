@@ -1,6 +1,5 @@
 package org.joverseer.ui.orderEditor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -11,18 +10,20 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.metadata.domain.ArtifactInfo;
-import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Subeditor for generic single parameter
+ * 
+ * @author Marios Skounakis
+ */
 public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField parameter;
     String paramName;

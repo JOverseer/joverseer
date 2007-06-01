@@ -3,15 +3,19 @@ package org.joverseer.ui.support.controls;
 import java.awt.Color;
 import java.awt.Component;
 
-import javax.swing.BorderFactory;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-
+/**
+ * Cell Renderer that uses a Text Area
+ * 
+ * Has various problems
+ * 
+ * @author Marios Skounakis
+ */
+//TODO Fix or delete
 public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
 
     public TextAreaRenderer() {

@@ -10,6 +10,11 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 
+/**
+ * Wraps company information for showing companies in the CompanyListView
+ * 
+ * @author Marios Skounakis
+ */
 public class CompanyWrapper implements IHasMapLocation, IBelongsToNation {
 	Company company;
 	

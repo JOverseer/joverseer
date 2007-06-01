@@ -1,35 +1,41 @@
-package org.joverseer.ui;
+package org.joverseer.ui.views;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.prefs.Preferences;
 
-import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.joverseer.game.Game;
-import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.support.GameHolder;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
-import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
+import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-
+/**
+ * View for changing the map options
+ * @author Marios Skounakis
+ */
 public class MapOptionsView extends AbstractView implements ApplicationListener {
     JComboBox cmbTurns;
     JComboBox cmbMaps;
@@ -209,7 +215,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         hexGraphics.setSelectedIndex(1);
         lb.relatedGapRow();
         hexGraphics.setPreferredSize(new Dimension(100, 16));
-        final Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        final Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         hexGraphics.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {

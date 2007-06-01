@@ -22,9 +22,15 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-import com.jidesoft.combobox.CheckBoxListComboBox;
 import com.jidesoft.popup.JidePopup;
 
+/**
+ * Form for editing nation metadata
+ * 
+ * The form is created dynamically from nation metadata
+ * 
+ * @author Marios Skounakis
+ */
 public class EditNationMetadataForm extends AbstractForm {
 	public static String FORM_ID = "editNationMetadataForm";
 

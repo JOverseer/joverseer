@@ -9,6 +9,11 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 
+/**
+ * Subeditor for the Research Spell order
+ * 
+ * @author Marios Skounakis
+ */
 public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParameterOrderSubeditor {
 
     public ResearchSpellNumberParameterOrderSubeditor(String paramName, Order o, int orderNo) {

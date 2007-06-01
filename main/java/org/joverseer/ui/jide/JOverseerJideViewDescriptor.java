@@ -2,6 +2,11 @@ package org.joverseer.ui.jide;
 
 import com.jidesoft.spring.richclient.docking.view.JideViewDescriptor;
 
+/**
+ * Specializes JideViewDescriptor
+ * 
+ * @author Marios Skounakis
+ */
 public class JOverseerJideViewDescriptor extends JideViewDescriptor {
 
     int preferredWidth = 100;

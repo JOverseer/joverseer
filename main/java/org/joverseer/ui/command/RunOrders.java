@@ -11,7 +11,17 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
-
+/**
+ * Runs the Orders (basically runs the game)
+ * 
+ * This is an unfinished command that is part of the execution module, whose aim is to
+ * be able to execute the commands, thus turning JOverseer into a game module in addiotion
+ * to a gui module. 
+ * 
+ * Needs implementation.
+ * 
+ * @author Marios Skounakis
+ */
 public class RunOrders extends ActionCommand {
 
     public RunOrders() {

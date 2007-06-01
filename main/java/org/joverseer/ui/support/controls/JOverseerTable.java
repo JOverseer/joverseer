@@ -5,15 +5,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.EventObject;
 
-import javax.swing.CellEditor;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 
-import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-
+/**
+ * Extends JTable adding functionality for overwritting cell contents upon cell edit
+ * (contents start selected so a single key stroke overwrites them)
+ * 
+ * @author Marios Skounakis
+ */
 public class JOverseerTable extends javax.swing.JTable {
 	boolean overwriteOnCellEdit = true;
 	
@@ -40,12 +42,6 @@ public class JOverseerTable extends javax.swing.JTable {
         
         private void onKeyPressed( final KeyEvent e )
         {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run()
-                {
-                    CellEditor ed = getCellEditor();
-                }
-            });
         }
 
         public boolean editCellAt(int row, int col, EventObject event)

@@ -8,7 +8,15 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
 
-
+/**
+ * Container that holds the "Order Editor Auto Nations"
+ * For these nations, characters are automatically shown with their orders in the Character Viewer
+ * saving the user the need to click on the "Show Orders" option
+ * 
+ * Basically allows quicker order editing for chars of this nation
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderEditorAutoNations implements ApplicationListener {
     private static OrderEditorAutoNations _instance = null;
     

@@ -8,10 +8,10 @@ import java.io.FileWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,9 +26,6 @@ import javax.swing.text.html.HTMLDocument;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NTCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
@@ -42,10 +39,9 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
-import org.joverseer.ui.command.OpenXmlDir;
+import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -60,6 +56,12 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
+/**
+ * Export/Submit orders form
+ * 
+ * @author Marios Skounakis
+ */
+//TODO document better
 
 public class ExportOrdersForm extends AbstractForm {
     static Logger logger = Logger.getLogger(ExportOrdersForm.class);
@@ -200,7 +202,7 @@ public class ExportOrdersForm extends AbstractForm {
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save");
         fileChooser.setSelectedFile(new File(fname));
-        Preferences prefs = Preferences.userNodeForPackage(OpenXmlDir.class);
+        Preferences prefs = Preferences.userNodeForPackage(OpenGameDirTree.class);
         String lastDir = prefs.get("importDir", null);
         if (lastDir != null) {
             fileChooser.setCurrentDirectory(new File(lastDir));

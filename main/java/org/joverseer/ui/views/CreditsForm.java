@@ -1,4 +1,4 @@
-package org.joverseer.ui;
+package org.joverseer.ui.views;
 
 import java.awt.Dimension;
 
@@ -10,11 +10,14 @@ import javax.swing.event.HyperlinkListener;
 
 import org.springframework.binding.form.FormModel;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
-
+/**
+ * Credits form
+ * 
+ * @author Marios Skounakis
+ */
 public class CreditsForm extends AbstractForm implements HyperlinkListener {
     public static String PAGE_NAME = "CreditsForm";
     

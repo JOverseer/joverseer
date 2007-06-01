@@ -4,8 +4,14 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-
+/**
+ * Abstract action listener that shows a popup menu
+ * @author Marios Skounakis
+ */
 public abstract class PopupMenuActionListener implements ActionListener {
+    /**
+     * Return the popup menu to show
+     */
     public abstract JPopupMenu getPopupMenu();
 
     public void actionPerformed(ActionEvent e) {

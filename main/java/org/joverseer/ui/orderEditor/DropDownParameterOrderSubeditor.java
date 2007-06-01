@@ -15,7 +15,11 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.jidesoft.swing.AutoCompletionComboBox;
 
-
+/**
+ * Subeditor for parameters that use a drop down list to select the value
+ * 
+ * @author Marios Skounakis
+ */
 public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox combo;
     JTextField parameter;

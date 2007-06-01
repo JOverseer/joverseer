@@ -1,13 +1,11 @@
 package org.joverseer.ui.orderEditor;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -20,7 +18,11 @@ import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Subeditor for the 940 order
+ * 
+ * @author Marios Skounakis
+ */
 public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     String paramName;
     JComboBox parameter;
@@ -98,6 +100,10 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
         });
     }
     
+    /**
+     * Refreshes the component that edits the second parameter of the 940 order
+     * according to the selected spell
+     */
     private void refreshSecondParameter() {
         try {
             int spellId = Integer.parseInt(spellNo.getText());
@@ -115,6 +121,8 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             } else if (",413,414,415,434,".indexOf("," + spellId + ",") > -1) {
                 paramType = "hex";
             }
+            // a lot of hacking is going on here to adjust the components
+            // and update the OrderEditor appropriately
             if (currentComp != null) {
                 secondParamPanel.remove(currentCompPanel);
                 components.remove(currentComp);

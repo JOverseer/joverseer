@@ -1,23 +1,18 @@
 package org.joverseer.ui.command;
 
 import java.awt.Dimension;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Vector;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
@@ -25,11 +20,8 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
 import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.views.EditNationAllegiancesForm;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
-import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
-import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
@@ -40,21 +32,14 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.middleearthgames.orderchecker.Main;
-import com.middleearthgames.orderchecker.Nation;
-import com.middleearthgames.orderchecker.PopCenter;
-import com.middleearthgames.orderchecker.gui.OCTreeNode;
-import com.middleearthgames.orderchecker.io.*;
 
-import org.joverseer.domain.Army;
-import org.joverseer.domain.ArmyElement;
-import org.joverseer.domain.Character;
-import org.joverseer.domain.CharacterDeathReasonEnum;
-import org.joverseer.domain.NationRelations;
-import org.joverseer.domain.Order;
-import org.joverseer.domain.PlayerInfo;
-import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.SpellProficiency;
-
+/**
+ * Runs OrderChecker using the OrderCheckerProxy class.
+ * 
+ * It also takes care of updating the orders with the results stored in the OrderCheckerProxy and OrderChecker objects
+ * 
+ * @author Marios Skounakis
+ */
 public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
     private static final Log log = LogFactory.getLog(RestoreDefaultLayoutCommand.class);
 
@@ -71,19 +56,21 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
         try {
             if (!ActiveGameChecker.checkActiveGameExists()) return;
             
+            // show a form so that the user selects the desired nation
             final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));
             FormBackedDialogPage pg = new FormBackedDialogPage(frm);
             TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
-				protected boolean onFinish() {
-					selectedNation = ((org.joverseer.metadata.domain.Nation)frm.getFormObject()).getNumber();
-					return true;
-				}
+		protected boolean onFinish() {
+			selectedNation = ((org.joverseer.metadata.domain.Nation)frm.getFormObject()).getNumber();
+			return true;
+		}
             };
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
             dlg.setTitle(ms.getMessage("selectOrdercheckerNation.title", new Object[]{}, Locale.getDefault()));
             dlg.showDialog();
             if (selectedNation == -1) return;
-            
+
+            // create new order checker proxy
             proxy = new OrdercheckerProxy();
             proxy.updateOrdercheckerGameData(selectedNation);
             final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
@@ -98,6 +85,8 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
                         
                         Game g = GameHolder.instance().getGame();
     
+                        // update the order result container with the order results
+                        // the order results are retrieved from the order checker proxy
                         OrderResultContainer cont = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
                         
                         ArrayList<OrderResult> resultList = new ArrayList<OrderResult>();
@@ -164,6 +153,13 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
         
     }
 
+    /**
+     * Simple form for displaying the OrderChecker windows. Basically embeds the
+     * information request and relation order checker windows into a dialog and shows 
+     * them in JOverseer.
+     * 
+     * @author Marios Skounakis
+     */
     public class OrdercheckerForm extends AbstractForm {
         public OrdercheckerForm(Main main) {
             super(FormModelHelper.createFormModel(main), "OrdercheckerForm");

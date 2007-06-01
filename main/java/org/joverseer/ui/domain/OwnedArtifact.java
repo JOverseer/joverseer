@@ -3,7 +3,11 @@ package org.joverseer.ui.domain;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 
-
+/**
+ * Wraps artifact info for the Owned Artifacts list view
+ * 
+ * @author Marios Skounakis
+ */
 public class OwnedArtifact implements IHasMapLocation, IBelongsToNation {
     int number;
     String name;

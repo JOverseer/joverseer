@@ -1,10 +1,11 @@
-package org.joverseer.ui;
+package org.joverseer.ui.views;
 
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.viewers.PopulationCenterViewer;

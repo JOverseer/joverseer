@@ -1,22 +1,24 @@
 package org.joverseer.ui.support.drawing;
 
+import java.awt.Color;
+import java.util.Hashtable;
+import java.util.Locale;
+
+import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
-import org.joverseer.metadata.GameTypeEnum;
-import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.support.GameHolder;
-import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 
-import sun.applet.AppletListener;
-
-import java.util.Hashtable;
-import java.util.Locale;
-import java.awt.*;
-
-
+/**
+ * ColorPicker
+ * Users a properties file that serves as a MessageSource to retrieve colors
+ * 
+ * @author Marios Skounakis
+ */
 public class ColorPicker implements ApplicationListener {
     Hashtable color1 = new Hashtable();
     Hashtable color2 = new Hashtable();

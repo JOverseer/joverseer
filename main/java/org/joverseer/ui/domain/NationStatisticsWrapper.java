@@ -2,6 +2,11 @@ package org.joverseer.ui.domain;
 
 import org.joverseer.domain.IBelongsToNation;
 
+/**
+ * Wraps data for the nation statistics list view
+ * 
+ * @author Marios Skounakis
+ */
 public class NationStatisticsWrapper implements IBelongsToNation {
 	Integer nationNo;
 	int characters;

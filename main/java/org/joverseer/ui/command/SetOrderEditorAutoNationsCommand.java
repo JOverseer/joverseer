@@ -28,9 +28,13 @@ import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-import sun.applet.AppletListener;
-
-
+/**
+ * Commands that opens the OrderEditorAutoNationsForm and allows the user to set the
+ * Order Editor Auto Nations (nations for which the character viewer automatically shows
+ * the orders so they can be edited more easily - save one click to open the orders)
+ * 
+ * @author Marios Skounakis
+ */
 public class SetOrderEditorAutoNationsCommand extends ActionCommand {
     
     public SetOrderEditorAutoNationsCommand() {

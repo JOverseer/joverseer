@@ -9,10 +9,15 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import org.joverseer.domain.Order;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+/**
+ * Base class for order subeditors.
+ * 
+ * The subeditor is an editor for one or more parameters of the order
+ * 
+ * @author Marios Skounakis
+ */
 public abstract class AbstractOrderSubeditor {
     Order order;
     OrderEditor editor;
@@ -34,6 +39,7 @@ public abstract class AbstractOrderSubeditor {
     }
     
     public void attachAutoUpdateDocumentListener(JTextComponent c) {
+        // call updateEditor whenever the text component is changed
         c.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent arg0) {
             }

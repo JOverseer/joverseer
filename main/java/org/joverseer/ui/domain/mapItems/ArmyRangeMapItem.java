@@ -1,12 +1,21 @@
 package org.joverseer.ui.domain.mapItems;
 
+import java.util.HashMap;
+
 import org.joverseer.domain.Army;
 import org.joverseer.support.movement.MovementUtils;
 
-import java.util.HashMap;
-
-
+/**
+ * Class that handles the drawing of army ranges on the map.
+ * 
+ * It contains options to draw:
+ * - an existing army, ignoring or not enemy pops
+ * - a new army, given flags for cavalry and fed and the starting position
+ * 
+ * @author Marios Skounakis
+ */
 public class ArmyRangeMapItem extends AbstractMapItem {
+    private static final long serialVersionUID = 7197917745582629886L;
     Army army;
     HashMap rangeHexes;
     boolean cav;

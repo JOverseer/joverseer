@@ -2,10 +2,7 @@ package org.joverseer.ui.command;
 
 import java.util.Locale;
 
-import javax.swing.JComponent;
-
-import org.joverseer.domain.Army;
-import org.joverseer.ui.CreditsForm;
+import org.joverseer.ui.views.CreditsForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
@@ -16,7 +13,11 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-
+/**
+ * Shows the program credits using the CreditsForm
+ * 
+ * @author Marios Skounakis
+ */
 public class ShowCreditsCommand  extends ActionCommand {
     public ShowCreditsCommand() {
         super("ShowCreditsCommand");

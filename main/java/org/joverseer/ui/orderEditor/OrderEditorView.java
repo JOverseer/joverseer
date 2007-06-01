@@ -17,7 +17,11 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.form.Form;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * View for the OrderEditor form
+ * 
+ * @author Marios Skounakis
+ */
 public class OrderEditorView extends AbstractView implements ApplicationListener{
     Form f;
     

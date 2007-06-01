@@ -1,24 +1,30 @@
 package org.joverseer.ui.command;
 
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.dialog.MessageDialog;
-import org.springframework.richclient.progress.BusyIndicator;
-import org.springframework.context.MessageSource;
-import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
-import org.joverseer.ui.JOverseerClient;
-import org.joverseer.ui.map.MapPanel;
-
-import javax.swing.*;
-
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.prefs.Preferences;
-import java.util.zip.*;
+import java.util.zip.GZIPOutputStream;
 
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+
+import org.joverseer.game.Game;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.map.MapPanel;
+import org.springframework.context.MessageSource;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.progress.BusyIndicator;
+
+/**
+ * Saves the current game to a file
+ * 
+ * @author Marios Skounakis
+ */
 public class SaveGame extends ActionCommand {
     public SaveGame() {
         super("SaveGameCommand");
@@ -37,7 +43,7 @@ public class SaveGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save");
-        Preferences prefs = Preferences.userNodeForPackage(JOverseerClient.class);
+        Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         String saveDir = prefs.get("saveDir", null);
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));

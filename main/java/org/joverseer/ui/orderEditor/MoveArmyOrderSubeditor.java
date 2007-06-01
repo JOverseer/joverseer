@@ -14,7 +14,12 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Order;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-
+/**
+ * Subeditor for the Army Movement Orders. It provides a set of buttons with which the
+ * user selects the desired directions to fill in the order
+ * 
+ * @author Marios Skounakis
+ */
 public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox movementStyle;
     ArrayList<String> dirs = new ArrayList<String>();

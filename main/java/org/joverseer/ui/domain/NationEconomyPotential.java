@@ -4,7 +4,11 @@ import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.ProductEnum;
 
-
+/**
+ * Wraps data for the nation economy potential list view
+ * 
+ * @author Marios Skounakis
+ */
 public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation {
     Integer nationNo;
     int hexNo;

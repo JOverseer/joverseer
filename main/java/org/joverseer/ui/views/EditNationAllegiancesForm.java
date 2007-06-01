@@ -3,20 +3,27 @@ package org.joverseer.ui.views;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.form.builder.TableFormBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.joverseer.metadata.domain.*;
 
+/**
+ * Form that is dynamically created based on the nation metadata of the game
+ * 
+ * It shows one combobox and one checkbox per nation so that the user
+ * can specify the nation allegiances and whether the nation has been eliminated or not
+ * 
+ * @author Marios Skounakis
+ */
 public class EditNationAllegiancesForm extends AbstractForm {
     public static final String FORM_PAGE = "editNationAllegiancesForm";
     

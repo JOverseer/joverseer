@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,24 +13,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.joverseer.ui.listviews.ArtifactInfoListView;
-import org.joverseer.ui.listviews.SpellInfoListView;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BaseTableModel;
-import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.ListTableModel;
 import org.springframework.richclient.table.TableUtils;
-
-import sun.misc.JavaLangAccess;
 
 import com.jidesoft.swing.JideTabbedPane;
 
+/**
+ * The InfoView
+ * 
+ * Shows various background game info (such as movement costs, army element strengths, maintenance costs etc)
+ * The info is retrieve from the info data files
+ * 
+ * @author Marios Skounakis
+ */
 public class InfoView extends AbstractView {
 
     protected JideTabbedPane pane;
@@ -103,7 +103,10 @@ public class InfoView extends AbstractView {
         return new JScrollPane(lb.getPanel());
     }
     
-    
+    /**
+     * Creates a jtable for the given dimensions (w, h)
+     * using the file found in uri 
+     */
     protected JComponent createTableFromResource(String uri, int w, int h) {
         Resource res = Application.instance().getApplicationContext().getResource(uri);
         try {

@@ -42,6 +42,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class ChatView extends AbstractView implements ApplicationListener {
     //JTextArea text;
+    
     Thread chatThread;
     
     JTextPane text;
@@ -115,6 +116,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //                            String server = conn.getServer();
 //                            messageReceived("Connected to " + conn.getServer() + ":" + conn.getPort() + " as " + conn.getUsername()); 
 //                            setMessageEnabled(true);
+                            setMessageEnabled(true);
+                            addMsg("Chat started, waiting for connections...");
                         }
                         catch (Exception exc) {
                             setMessageEnabled(false);
@@ -277,13 +280,14 @@ public class ChatView extends AbstractView implements ApplicationListener {
         }
     }
 
+    
     public void showObject(Object obj) {
         String msgStr = "";
         if (OrderWrapper.class.isInstance(obj)) {
             orderWrapperReceived((OrderWrapper)obj, "");
         } else if (MultiOrderWrapper.class.isInstance(obj)) {
             final MultiOrderWrapper mow = (MultiOrderWrapper)obj;
-            addMsg("" + "> " + "sent group of orders.");
+            addMsg("> " + "sent group of orders.");
             for (OrderWrapper ow : mow.getOrderWrappers()) {
                 orderWrapperReceived(ow, "");
             }
@@ -313,7 +317,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
 
         }
         else {
-            msgStr = "" + "> " + obj.toString();
+            msgStr = "> " + obj.toString();
             addMsg(msgStr);
         }
     }

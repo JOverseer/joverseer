@@ -29,6 +29,7 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
@@ -240,7 +241,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
         }
     }
     
-    private Dimension getMapDimension() {
+    public Dimension getMapDimension() {
         int width = (int)((double)((double)metadata.getMaxMapColumn() + 2d - (double)metadata.getMinMapColumn() - .5) * (double)metadata.getHexSize() * (double)metadata.getGridCellWidth());
         int height = (int)((double)((double)metadata.getMaxMapRow() * .75d + .25) * (double)metadata.getHexSize() * (double)metadata.getGridCellHeight());
         return new Dimension(width, height);
@@ -706,6 +707,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
     }
 
     public void mouseMoved(MouseEvent e) {
+    	MapTooltipHolder tooltipHolder = MapTooltipHolder.instance();
+    	tooltipHolder.showTooltip(e.getPoint(), e.getPoint());
     }
 
     public Game getGame() {

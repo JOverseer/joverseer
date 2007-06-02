@@ -2,6 +2,7 @@ package org.joverseer.ui.map.renderers;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
@@ -129,5 +131,6 @@ public class MultiArmyRenderer extends ImageRenderer {
             dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 + (w) * i + 1;
         }
         g.drawImage(img, x + dx, y + dy, null);
+        MapTooltipHolder.instance().addTooltipObject(new Rectangle(x + dx, y+dy, img.getWidth(), img.getHeight()), army);
     }
 }

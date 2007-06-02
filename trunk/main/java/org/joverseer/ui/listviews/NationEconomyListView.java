@@ -14,7 +14,7 @@ public class NationEconomyListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{60, 128,
-                        64, 64, 64, 64};
+        return new int[]{60, 80,
+        		80, 80, 80, 64, 64, 64, 64, 64};
     }
 }

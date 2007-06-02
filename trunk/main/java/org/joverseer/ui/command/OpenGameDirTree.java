@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.TurnPostProcessor;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
@@ -218,6 +219,9 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
                 }
     
             }
+            TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
+            turnPostProcessor.postProcessTurn(game.getTurn(game.getMaxTurn()));
+
         }
         String globalMsg = "";
         if (errorOccurred) {

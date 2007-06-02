@@ -9,12 +9,14 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 
 /**
  * Comparator that compares armies based on:
  * - their death reason (not dead chars go first)
  * - their allegiance
+ * - their nation (if preference currentHexView.sortCharacters is allegianceNationName)
  * - their name
  * in order of precedence
  * 
@@ -30,6 +32,11 @@ public class CharacterDeathAllegianceNameComparator implements Comparator {
         if (i != 0) return i;
         i = compareAllegiance(c1, c2);
         if (i != 0) return i;
+        String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.sortCharacters");
+        if (pval != null && pval.equals("allegianceNationName")) {
+        	i = compareNation(c1, c2);
+        	if (i != 0) return i;
+        }
         return c1.getName().compareTo(c2.getName());
     }
     
@@ -43,6 +50,16 @@ public class CharacterDeathAllegianceNameComparator implements Comparator {
             return -1;
         }
         return 1;
+    }
+    
+    private int compareNation(Character c1, Character c2) {
+    	if (c1.getNationNo() == null || c1.getNationNo() == 0) {
+    		return 1;
+    	}
+    	if (c2.getNationNo() == null || c2.getNationNo() == 0) {
+    		return -1;
+    	}
+    	return c1.getNationNo() - c2.getNationNo();
     }
         
     private int compareAllegiance(Character c1, Character c2) {

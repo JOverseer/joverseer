@@ -3,6 +3,7 @@ package org.joverseer.support;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Character;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.HexInfo;

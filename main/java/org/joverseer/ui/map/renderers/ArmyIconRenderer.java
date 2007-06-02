@@ -2,12 +2,14 @@ package org.joverseer.ui.map.renderers;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
@@ -67,5 +69,6 @@ public class ArmyIconRenderer extends ImageRenderer {
         }
 
         g.drawImage(img, x + dx, y + dy, null);
+        
     }
 }

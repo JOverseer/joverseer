@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.TurnPostProcessor;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
@@ -54,12 +55,14 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         if (game == null) {
             return;
         }
+        int xmlCount = 0;
+        int pdfCount = 0;
         boolean errorOccurred = false;
         for (File f : files) {
             if (f.getAbsolutePath().endsWith(".xml")) {
                 try {
                     monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-
+                    xmlCount++;
                     final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
                     r.setMonitor(monitor);
                     r.run();
@@ -81,7 +84,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             if (f.getAbsolutePath().endsWith(".pdf")) {
                 try {
                     monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-
+                    pdfCount++;
                     final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
                     r.setMonitor(monitor);
                     r.run();
@@ -98,6 +101,12 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             }
 
         }
+        
+        monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
+        
+        TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
+        turnPostProcessor.postProcessTurn(game.getTurn(game.getMaxTurn()));
+        
         String globalMsg = "";
         if (errorOccurred) {
         	globalMsg = "Serious errors occurred during the import. The game information may not be reliable.";

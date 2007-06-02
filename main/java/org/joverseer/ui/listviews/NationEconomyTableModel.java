@@ -14,11 +14,11 @@ public class NationEconomyTableModel extends ItemTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"nationNo", "totalMaintenance", "revenue", "surplus", "reserve", "taxRate"};
+        return new String[] {"nationNo", "armyMaintenance", "popMaintenance", "charMaintenance", "totalMaintenance", "goldProduction", "revenue", "surplus", "reserve", "taxRate"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class};
+        return new Class[] { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class};
     }
 
 }

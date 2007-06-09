@@ -1,7 +1,3 @@
-/*
- * EditPopulationCenter.java Created on September 9, 2006, 11:59 PM To change this template, choose Tools | Template
- * Manager and open the template in the editor.
- */
 package org.joverseer.ui.views;
 
 import java.util.ArrayList;
@@ -10,6 +6,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
 import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
@@ -57,6 +54,8 @@ public class EditPopulationCenterForm extends AbstractForm {
         formBuilder.add("size", cmb);
         formBuilder.row();
         formBuilder.add("fortification", cmb = new JComboBox(FortificationSizeEnum.values()));
+        formBuilder.row();
+        formBuilder.add("harbor", cmb = new JComboBox(HarborSizeEnum.values()));
         formBuilder.row();
         formBuilder.add("loyalty");
         formBuilder.row();

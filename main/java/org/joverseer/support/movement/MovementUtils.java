@@ -136,13 +136,14 @@ public class MovementUtils {
 //        }
         
         // check start hex terrain
-        if (start.getTerrain() != HexTerrainEnum.sea && start.getTerrain() != HexTerrainEnum.ocean && dest.getTerrain() != HexTerrainEnum.sea && dest.getTerrain() != HexTerrainEnum.ocean) {
+        if (//start.getTerrain() != HexTerrainEnum.sea && start.getTerrain() != HexTerrainEnum.ocean && 
+        		dest.getTerrain() != HexTerrainEnum.sea && dest.getTerrain() != HexTerrainEnum.ocean) {
             // check connecting river
             if (movementAlongMajorRiver(start, md)) return movementCost;
-            return -1;
+            if (start.getTerrain() != HexTerrainEnum.sea && start.getTerrain() != HexTerrainEnum.ocean) return -1;
         }
         
-        if (startHexNo != initialHex && start.getTerrain() == HexTerrainEnum.shore && dest.getTerrain() != HexTerrainEnum.shore) {
+        if (startHexNo != initialHex && start.getTerrain() == HexTerrainEnum.shore && dest.getTerrain() == HexTerrainEnum.shore) {
             return -1;
         }
         
@@ -163,6 +164,9 @@ public class MovementUtils {
                 return movementCost;
             }
         } else {
+        	if (dest.getTerrain() == HexTerrainEnum.shore) {
+        		return -2; // -2 means that you are consuming all of your remaining mps
+        	}
             return movementCost;
         }
     }

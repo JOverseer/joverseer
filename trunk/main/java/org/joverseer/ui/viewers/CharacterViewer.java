@@ -310,8 +310,47 @@ public class CharacterViewer extends ObjectViewer {
                 companyMembersTextBox.setText("Company: " + members);
                 companyMembersTextBox.setCaretPosition(0);
                 companyMembersTextBox.setVisible(true);
+                companyMembersTextBox.setFont(GraphicUtils.getFont(
+                		companyMembersTextBox.getFont().getName(),
+                		Font.ITALIC, 
+                		companyMembersTextBox.getFont().getSize()));
             } else {
-                companyMembersTextBox.setVisible(false);
+            	// check if he is travelling with a company or an army...
+                boolean found = false;
+            	for (Company comp : (ArrayList<Company>)companies.getItems()) {
+            		if (comp.getMembers().contains(c.getName())) {
+            			companyMembersTextBox.setVisible(true);
+            			companyMembersTextBox.setText("In " + comp.getCommander() + "'s company");
+                        companyMembersTextBox.setCaretPosition(0);
+                        companyMembersTextBox.setFont(GraphicUtils.getFont(
+                        		companyMembersTextBox.getFont().getName(),
+                        		Font.ITALIC, 
+                        		companyMembersTextBox.getFont().getSize()));                        found = true;
+                        break;
+            		}
+            	}
+            	if (!found) {
+            		if (c.getNationNo() != null && c.getNationNo() > 0) {
+            			ArrayList<Army> armies = (ArrayList<Army>)game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperty("nationNo", c.getNationNo());
+            			for (Army a : armies) {
+            				if (a.getCharacters().contains(c.getName())) {
+                    			companyMembersTextBox.setVisible(true);
+                    			companyMembersTextBox.setText("In " + a.getCommanderName() + "'s army");
+                                companyMembersTextBox.setCaretPosition(0);
+                                companyMembersTextBox.setFont(GraphicUtils.getFont(
+                                		companyMembersTextBox.getFont().getName(),
+                                		Font.ITALIC, 
+                                		companyMembersTextBox.getFont().getSize()));
+                                found = true;
+                                break;
+            				}
+            			}
+            		}
+            	}
+            	if (!found) {
+            		companyMembersTextBox.setVisible(false);
+            	}
+            	
             }
             order1.setFormObject(c.getOrders()[0]);
             order2.setFormObject(c.getOrders()[1]);

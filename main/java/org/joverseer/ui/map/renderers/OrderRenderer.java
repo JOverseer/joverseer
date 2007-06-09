@@ -212,6 +212,10 @@ public class OrderRenderer implements Renderer {
                     curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed, true, null, currentHexNo);
                 } else {
                     curCost = MovementUtils.calculateMovementCostForNavy(currentHexNo, dir, fed, startHexNo);
+                    if (curCost == -2) {
+                    	// consume all remaining mps
+                    	curCost = maxCost - cost;
+                    }
                 }
                 if (cost + curCost <= maxCost && cost >= 0 && curCost > 0) {
                     g.setColor(Color.black);

@@ -1,3 +1,54 @@
+VERSION 0.9.7
+-------------
+22/6/2007
+
+	* Moved Preferences menu option under the Tools menu
+	
+	* Added support for drawing palantir, recon, scry area and scout area orders on the map
+	
+	* Sorting in the Army info tab - fixed a bug with the number column sorting as string and not numbers
+	
+	* Fixed some issues with the Order Editor and the 940 order
+	
+	* Added a command to save the map to a file as a jpeg image
+	
+	* Fixed a bug with the Orders tab not respecting the "Show Nation As" preference 	 
+	
+	* Fixed a bug with naval movement when moving out of a river into the sea/ocean 	 
+	
+	* Edit pop center: now allows you to edit docks 	 
+	
+	* You can now see who each character is travelling with (army or company) in the Current Hex View
+	
+	* When importing a directory, the number of imported files is now shown in the import log
+	
+	* Added columns to the Economy information tab for detailed maintenance and revenue
+	
+	* Added a new command in the Tools menu to visualize the last turn you had info for each hex on the map
+	
+	* Current hex view - you can now choose to sort characters by nation then by name (the default is by name)
+		o This is controlled from the program preferences 
+		
+	* Notes are now shown on the map with a small dot on the top left of the hex
+	
+	* Added pop center on the combat calculator form 	 
+	
+	* The icons for several views have been updated
+	
+	* Added a new preference that controls whether the save game dialog will be automatically shown after generating or sending an order file (to save the order file version)
+	
+	* Fixed a bug with the Order Editor Auto Nations form that was causing an error when deselecting nations
+	
+	* The Orders tab no longer gives a warning when a character is issuing two 710 orders
+	
+	* Views in the Show View menu were organized in sub-menus
+	
+	* Credits have been updated.
+	
+	* Fixed a bug with the 425 order
+	
+	* Fixed a bug that was causing Army Movement orders to be incorrectly imported in some cases
+
 VERSION 0.9.6
 -------------
 12/5/2007

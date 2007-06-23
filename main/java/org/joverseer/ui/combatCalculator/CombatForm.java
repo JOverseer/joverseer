@@ -363,6 +363,17 @@ public class CombatForm extends AbstractForm {
         
         tlb.cell(scp);
         
+        ico = new ImageIcon(imgSource.getImage("remove.icon"));
+        btn = new JButton(ico);
+        btn.setPreferredSize(new Dimension(20, 20));
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                new RemovePopCenterCommand().doExecuteCommand();
+            }
+        });
+        tlb.cell(btn);
+        tlb.gapCol();
+        
         tlb.relatedGapRow();
         
         tlb.cell(new JLabel(" "));
@@ -843,5 +854,21 @@ public class CombatForm extends AbstractForm {
             }
         }
     };
+
+    class RemovePopCenterCommand extends ActionCommand {
+
+		protected void doExecuteCommand() {
+			final Combat c = (Combat) getFormObject();
+			ConfirmationDialog md = new ConfirmationDialog("Remove pop center?", "Remove pop center?") {
+                protected void onConfirm() {
+        			c.setSide2Pc(null);
+        			popCenterTableModel.getRows().clear();
+        			popCenterTableModel.fireTableDataChanged();
+        			runCombat();
+                }
+            };
+		}
+    	
+    }
 
 }

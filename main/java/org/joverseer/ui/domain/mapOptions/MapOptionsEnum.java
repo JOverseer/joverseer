@@ -14,5 +14,6 @@ public enum MapOptionsEnum {
     DrawOrders,         // whether the allow orders to be drawn or not
     DrawNamesOnOrders,  // whether to draw char names when drawing orders
     ShowClimate,        // show the climate or not
-    HexGraphics;        // type of graphics to use (TODO this could be a preference)
+    HexGraphics         // type of graphics to use (TODO this could be a preference)
+    
 }

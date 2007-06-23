@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -20,6 +21,7 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
@@ -32,6 +34,8 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.Arrow;
 import org.springframework.richclient.application.Application;
 
+import com.jidesoft.swing.JideSwingUtilities.GetHandler;
+
 /**
  * Draws orders on the map
  * Sometimes to draw an order you need some parameters (e.g. fed and cavalry for a new army)
@@ -39,7 +43,7 @@ import org.springframework.richclient.application.Application;
  * 
  * @author Marios Skounakis
  */
-public class OrderRenderer implements Renderer {
+public class OrderRenderer extends DefaultHexRenderer {
     MapMetadata mapMetadata = null;
     OrderVisualizationData orderVisualizationData = null;
 
@@ -64,9 +68,6 @@ public class OrderRenderer implements Renderer {
         return Order.class.isInstance(obj) && !((Order)obj).isBlank() && drawOrders() && getOrderVisualizationData().contains((Order)obj);
     }
 
-    private void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
-    }
     
     public void render(Object obj, Graphics2D g, int x, int y) {
         render(obj, g, x, y, true);
@@ -113,6 +114,26 @@ public class OrderRenderer implements Renderer {
             if (doRender) {
                 renderTranCarOrder(order, g);
             }
+            return true;
+        } else if (order.getOrderNo() == 925) {
+        	if (doRender) {
+        		renderReconOrder(order, g);
+        	}
+            return true;
+        } else if (order.getOrderNo() == 910) {
+        	if (doRender) {
+        		renderScoAreaOrder(order, g);
+        	}
+            return true;
+        } else if (order.getOrderNo() == 935) {
+        	if (doRender) {
+        		renderScryingArtifactOrder(order, g);
+        	}
+            return true;
+        } else if (order.getOrderNo() == 940 && order.getParameter(0) != null && order.getParameter(0).equals("415")) {
+        	if (doRender) {
+        		renderScryAreaOrder(order, g);
+        	}
             return true;
         }
         return false;
@@ -468,6 +489,82 @@ public class OrderRenderer implements Renderer {
             // parse or some other error, return
             return;
         }
+    }
+    
+    private void renderReconTypeOrder(int hexNo, String text, Graphics2D g) {
+    	int[] xs = new int[18];
+    	int[] ys = new int[18];
+    	MovementDirection[] sides = new MovementDirection[]{
+    			MovementDirection.NorthWest,
+    			MovementDirection.NorthEast,
+    			MovementDirection.East,
+    			MovementDirection.SouthEast,
+    			MovementDirection.SouthWest,
+    			MovementDirection.West
+    	};
+    	int i = 0;
+    	for (MovementDirection md : sides) {
+    		// for each direction
+    		// get the hex at the dir
+    		int h = MovementUtils.getHexNoAtDir(hexNo, md);
+    		Point pc = MapPanel.instance().getHexLocation(h);
+    		// get the three appropriate sides
+    		for (int j=0; j<3; j++) {
+    			// get side - start from side 4, and add j and i
+    			// j to get the next three sides
+    			// and i to index by hex
+	    		int hsi = (4 + i + j) % 6;
+	    		Point p = new Point(this.xPoints[hsi], this.yPoints[hsi]);
+	    		p.translate(pc.x, pc.y);
+	    		xs[i * 3 + j] = p.x;
+	    		ys[i * 3 + j] = p.y;
+    		}
+    		i++;
+    	}
+    	Stroke s = g.getStroke();
+    	g.setStroke(GraphicUtils.getBasicStroke(3));
+    	Polygon pl = new Polygon(xs, ys, 18);
+    	g.setColor(Color.blue);
+    	g.drawPolygon(pl);
+    	Point p = MapPanel.instance().getHexCenter(hexNo);
+    	if (drawCharNames()) {
+    		drawString(g, text, p, p);
+    	}
+    	g.setStroke(s);
+    }
+    
+    private void renderReconOrder(Order o, Graphics2D g) {
+    	OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+    	try {
+    		int hexNo = Integer.parseInt((String)(ovd.getAdditionalInfo(o, "hexNo")));
+    		renderReconTypeOrder(hexNo, o.getCharacter().getName() + "'s recon", g);
+    	}
+    	catch (Exception exc) {};
+    }
+
+    private void renderScoAreaOrder(Order o, Graphics2D g) {
+    	OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+    	try {
+    		int hexNo = Integer.parseInt((String)(ovd.getAdditionalInfo(o, "hexNo")));
+    		renderReconTypeOrder(hexNo, o.getCharacter().getName() + "'s ScoArea", g);
+    	}
+    	catch (Exception exc) {};
+    }
+
+    private void renderScryingArtifactOrder(Order o, Graphics2D g) {
+    	try {
+    		int hexNo = Integer.parseInt(o.getParameter(1));
+    		renderReconTypeOrder(hexNo, o.getCharacter().getName() + "'s scry arti", g);
+    	}
+    	catch (Exception exc) {};
+    }
+    
+    private void renderScryAreaOrder(Order o, Graphics2D g) {
+    	try {
+    		int hexNo = Integer.parseInt(o.getParameter(1));
+    		renderReconTypeOrder(hexNo, o.getCharacter().getName() + "'s Scry Area", g);
+    	}
+    	catch (Exception exc) {};
     }
     
     private boolean drawCharNames() {

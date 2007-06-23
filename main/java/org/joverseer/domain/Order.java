@@ -332,6 +332,14 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     public void setP14(String v) {
         setParameter(14, v);
     }
+
+    public static Order getOtherOrder(Order o) {
+    	return getOtherOrder(o.getCharacter(), o);
+    }
     
+    public static Order getOtherOrder(Character c, Order o) {
+    	if (c.getOrders()[0] == o) return c.getOrders()[1];
+    	return c.getOrders()[0];
+    }
     
 }

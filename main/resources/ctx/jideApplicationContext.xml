@@ -211,7 +211,7 @@
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
                 <ref bean="hexInfoRenderer"/>
 				<ref bean="orderRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.RangeMapItemRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.HexValueMapItemRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>
                 <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
                 <bean class="org.joverseer.ui.map.renderers.EncounterRenderer"/>                                

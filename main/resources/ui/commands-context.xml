@@ -122,8 +122,6 @@
 			<list>
                 <bean class="org.joverseer.ui.command.JOverseerShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
                 <bean class="org.joverseer.ui.command.RestoreDefaultLayoutCommand"/>
-                <value>separator</value>
-                <bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
 			</list>
 		</property>
 	</bean>    
@@ -176,12 +174,17 @@
             	<bean class="org.joverseer.ui.command.HighlightCombats"/>
             	<bean class="org.joverseer.ui.command.HighlightCharacters"/>
             	<bean class="org.joverseer.ui.command.HighlightDragonsCommand"/>            	
+            	<bean class="org.joverseer.ui.command.ShowHexInfoTurnReportCommand"/>
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ImportNotesFromPreviousTurnCommand"/>
             	<value>separator</value>
                 <bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
+                <value>separator</value>
+            	<bean class="org.joverseer.ui.command.ExportMapToFileCommand"/>
+                <value>separator</value>
+                <bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
            	</list>
        	</property>
    	</bean>

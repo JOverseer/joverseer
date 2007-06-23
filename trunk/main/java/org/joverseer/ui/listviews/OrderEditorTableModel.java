@@ -10,6 +10,7 @@ import org.joverseer.domain.Order;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
@@ -80,6 +81,8 @@ public class OrderEditorTableModel extends ItemTableModel {
                 Integer nationNo = ((IBelongsToNation) order.getCharacter()).getNationNo();
                 if (nationNo == null)
                     return "";
+                String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
+                if (pval.equals("number")) return nationNo;
                 return gm.getNationByNum(nationNo).getShortName();
             }
             return super.getValueAtInternal(object, i);

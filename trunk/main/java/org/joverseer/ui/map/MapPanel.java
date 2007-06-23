@@ -737,5 +737,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
     
     public void setHex(String hex) {};
     
-
+    public BufferedImage getMap() {
+    	return mapItems;
+    }
+    
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
@@ -36,7 +37,7 @@ public class OrderVisualizationData {
                 InputDialog dlg = new InputDialog();
                 JCheckBox fed;
                 JCheckBox cavalry;
-                dlg.setTitle("Order - Provide Addition Information");
+                dlg.setTitle("Order - Provide Additional Information");
                 dlg.addComponent("Fed :", fed = new JCheckBox());
                 dlg.addComponent("Cavalry :", cavalry = new JCheckBox());
                 String txt = o.getCharacter().getName() + "'s army (" + o.getCharacter().getHexNo() + "): Enter the required information for drawing the army move."; 
@@ -49,6 +50,24 @@ public class OrderVisualizationData {
                 }
             } else {
                 orders.add(o);
+            }
+        } else if (o.getOrderNo() == 925 || o.getOrderNo() == 910) {
+        	InputDialog dlg = new InputDialog();
+        	JTextField hexNo = new JTextField();
+        	Order oo = Order.getOtherOrder(o);
+        	if (oo.getOrderNo() == 810 || oo.getOrderNo() == 820) {
+        		if (oo.getParameter(0) != null && !oo.getParameter(0).equals("") && !oo.getParameter(0).equals("-")) {
+        			hexNo.setText(oo.getParameter(0));
+        		}
+        	}
+        	dlg.setTitle("Order - Provide Additional Information");
+            dlg.addComponent("Location after movement phase :", hexNo);
+            String txt = o.getCharacter().getName() + "'s Recon/ScoArea: Enter the required information for drawing the character's Recon/ScoArea.";
+            dlg.init(txt);
+            dlg.showDialog();
+            if (dlg.getResult()) {
+                orders.add(o);
+                setAdditionalInfo(o, "hexNo", hexNo.getText());
             }
         } else {
             orders.add(o);

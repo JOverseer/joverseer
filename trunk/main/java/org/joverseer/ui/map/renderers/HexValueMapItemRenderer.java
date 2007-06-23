@@ -12,29 +12,33 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import org.joverseer.domain.Army;
+import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
+import org.joverseer.ui.domain.mapItems.HexInfoTurnReportMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
 /**
- * Renders RangeMapItem objects
+ * Renders MapItem objects that store hex-value pairs
+ * e.g. ArmyRangeMapItem, HexInfoTurnReportMapItem, etc
  * 
  * @author Marios Skounakis
  */
-public class RangeMapItemRenderer extends DefaultHexRenderer {
+public class HexValueMapItemRenderer extends DefaultHexRenderer {
     String highlightColor = "#ff3300";
     int width = 2;
     
     public boolean appliesTo(Object obj) {
         return CharacterRangeMapItem.class.isInstance(obj) ||
-                ArmyRangeMapItem.class.isInstance(obj);
+                ArmyRangeMapItem.class.isInstance(obj) ||
+                HexInfoTurnReportMapItem.class.isInstance(obj);
     }
 
     public void render(Object obj, Graphics2D g, int x, int y) {
@@ -42,6 +46,8 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
             renderCharacterRangeMapItem(obj, g, x, y);
         } else if (ArmyRangeMapItem.class.isInstance(obj)) {
             renderArmyRangeMapItem(obj, g, x, y);
+        } else if (HexInfoTurnReportMapItem.class.isInstance(obj)) {
+            renderHexInfoTurnReportMapItem(obj, g, x, y);
         }
     }
 
@@ -75,6 +81,46 @@ public class RangeMapItemRenderer extends DefaultHexRenderer {
             g.setFont(f);
             g.drawString(strCost, p.x - w / 2, p.y + h / 2);
         }
+    }
+    
+    private void renderHexInfoTurnReportMapItem(Object obj, Graphics2D g, int x, int y) {
+    	Game game = GameHolder.instance().getGame();
+    	
+    	String fontName = "Helvetica";
+        int fontSize = 9;
+        int fontStyle = Font.PLAIN;
+        Font f = new Font(fontName, fontStyle, fontSize);
+
+        Color bgColor = Color.decode("#999999");
+    	
+    	HexInfoTurnReportMapItem hitrmi = (HexInfoTurnReportMapItem)obj;
+    	for (Object hno : hitrmi.getHexes().keySet()) {
+    		int hexNo = (Integer)hno;
+            int turn = (Integer)hitrmi.getHexes().get(hexNo);
+            if (turn == game.getCurrentTurn()) {
+            	continue;
+            }
+            if (turn < 0) turn = 0;
+            int colorDistance = Math.min(10, game.getCurrentTurn() - turn) * 10;
+            Color c = new Color(bgColor.getRed() - colorDistance,
+            					bgColor.getGreen() - colorDistance,
+            					bgColor.getBlue() - colorDistance);
+            
+            String str = String.valueOf(turn);
+            Rectangle2D r = g.getFontMetrics().getStringBounds(str, g);
+            int w = new Double(r.getWidth()).intValue();
+            int h = new Double(r.getHeight()).intValue();
+            int w1 = Math.max(w, h);
+            int h1 = w1;
+            Point p = MapPanel.instance().getHexCenter(hexNo);
+            Rectangle2D.Float e = new Rectangle2D.Float(p.x - w1 / 2 - 2, p.y - h1 / 2 - 2, w1 + 4, h1 + 4);
+            g.setColor(c);
+            g.fill(e);
+            g.setColor(Color.WHITE);
+            g.draw(e);
+            g.setFont(f);
+            g.drawString(str, p.x - w / 2, p.y + h / 2);
+    	}
     }
 
     private Color getColorForArmy(boolean fed) {

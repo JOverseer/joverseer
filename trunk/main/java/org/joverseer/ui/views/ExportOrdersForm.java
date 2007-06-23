@@ -42,6 +42,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenGameDirTree;
+import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -233,6 +234,7 @@ public class ExportOrdersForm extends AbstractForm {
                         MessageDialog md = new MessageDialog("Turn Submitted", msg);
                         md.showDialog();
                         pi.setOrdersSentOn(new Date());
+                        autoSaveGameAccordingToPref();
                     } else {
                         // submit to meturn.com
                         prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
@@ -308,7 +310,8 @@ public class ExportOrdersForm extends AbstractForm {
                             msg = "Orders sent to Middle Earth Games and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
                         	MessageDialog md = new MessageDialog("Turn Submitted", msg);
                         	md.showDialog();
-                                pi.setOrdersSentOn(new Date());
+                            pi.setOrdersSentOn(new Date());
+                            autoSaveGameAccordingToPref();
                         } else {
                         	send = false;
                         }
@@ -317,6 +320,7 @@ public class ExportOrdersForm extends AbstractForm {
                 	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
                 	MessageDialog md = new MessageDialog("Turn Exported", "The turn was succesfully exported to file " + fileChooser.getSelectedFile() + ".");
                 	md.showDialog();
+                	autoSaveGameAccordingToPref();
                 } 
             }
             catch (Exception exc) {
@@ -408,6 +412,13 @@ public class ExportOrdersForm extends AbstractForm {
         }
         return true;
 
+    }
+    
+    private void autoSaveGameAccordingToPref() {
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("submitOrders.autoSave");
+    	if (pval.equals("yes")) {
+    		new SaveGame().execute();
+    	}
     }
     
 }

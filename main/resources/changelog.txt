@@ -20,7 +20,7 @@ VERSION 0.9.7
 	
 	* You can now see who each character is travelling with (army or company) in the Current Hex View
 	
-	* When importing a directory, the number of imported files is now shown in the import log
+	* When importing a directory with turn files, the total number of imported files is now shown in the import log
 	
 	* Added columns to the Economy information tab for detailed maintenance and revenue
 	
@@ -31,7 +31,7 @@ VERSION 0.9.7
 		
 	* Notes are now shown on the map with a small dot on the top left of the hex
 	
-	* Added pop center on the combat calculator form 	 
+	* Added pop center on the combat calculator form 
 	
 	* The icons for several views have been updated
 	
@@ -39,7 +39,7 @@ VERSION 0.9.7
 	
 	* Fixed a bug with the Order Editor Auto Nations form that was causing an error when deselecting nations
 	
-	* The Orders tab no longer gives a warning when a character is issuing two 710 orders
+	* The Orders tab no longer gives a "two skill orders" warning when a mage character is issuing two 710 orders
 	
 	* Views in the Show View menu were organized in sub-menus
 	
@@ -47,7 +47,7 @@ VERSION 0.9.7
 	
 	* Fixed a bug with the 425 order
 	
-	* Fixed a bug that was causing Army Movement orders to be incorrectly imported in some cases
+	* Fixed a bug that was causing Army Movement orders to be incorrectly imported (when importing from text) in some cases
 
 VERSION 0.9.6
 -------------

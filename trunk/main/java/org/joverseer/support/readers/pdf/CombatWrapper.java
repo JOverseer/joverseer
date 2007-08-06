@@ -130,7 +130,10 @@ public class CombatWrapper {
     			addToList(commanderName, aLosses, armyLosses);
 
     			i = i1 + losses1.length();
-    		} 
+    		} else {
+    			i = -1;
+    			i1 = -1;
+    		}
     	} while (i > -1);
     	
     	// parse destroyed armies

@@ -71,6 +71,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.support.transferHandlers.ArtifactInfoExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharacterExportTransferHandler;
@@ -911,6 +912,7 @@ public class CharacterViewer extends ObjectViewer {
     private class EditCharacterCommand extends ActionCommand {
         protected void doExecuteCommand() {
             final Character c = (Character)getFormObject();
+            final String charName = c.getName();
             FormModel formModel = FormModelHelper.createFormModel(c);
             final EditCharacterForm form = new EditCharacterForm(formModel);
             FormBackedDialogPage page = new FormBackedDialogPage(form);
@@ -920,7 +922,13 @@ public class CharacterViewer extends ObjectViewer {
                 }
 
                 protected boolean onFinish() {
+                    if (!form.getFormModel().getValueModel("name").getValue().equals(charName)) {
+                        ErrorDialog errDlg = new ErrorDialog("You cannot change the name of the character. Delete the character and create a new one if you want to change the name.");
+                        errDlg.showDialog();
+                        return false;
+                    }
                     form.commit();
+                    c.setId(Character.getIdFromName(c.getName()));
                     Application.instance().getApplicationContext().publishEvent(
                             new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this, this));
                     return true;

@@ -3,6 +3,7 @@ package org.joverseer.ui.map.renderers;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import org.apache.log4j.Logger;
@@ -10,6 +11,7 @@ import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
@@ -69,8 +71,11 @@ public class PopulationCenterRenderer extends ImageRenderer {
         if (fortImage != null) {
             g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2 , null);
         }
-        g.drawImage(img, hexCenter.x - pcImage.getWidth(null) / 2, hexCenter.y - pcImage.getHeight(null) / 2 , null);
-        
+        int px = hexCenter.x - pcImage.getWidth(null) / 2;
+        int py = hexCenter.y - pcImage.getHeight(null) / 2;
+        g.drawImage(img, px, py, null);
+        MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
+
     }
 
 }

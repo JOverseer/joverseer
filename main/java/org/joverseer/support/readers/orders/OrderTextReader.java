@@ -174,12 +174,13 @@ public class OrderTextReader {
                         orders[i].setParameters(parameters);
                         // check mov army orders and swap params if applicable
                         if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
-                            String paramTemp = orders[i].getParameter(orders[i].getLastParamIndex());
-                            if (paramTemp.equals("no") || paramTemp.equals("ev")) {
-                                for (int ii=orders[i].getLastParamIndex(); ii>0; ii--) {
-                                    orders[i].setParameter(ii, orders[i].getParameter(ii-1));
+                            //String paramTemp = orders[i].getParameter(orders[i].getLastParamIndex());
+                            String paramZero = orders[i].getParameter(0);
+                            if (paramZero.equals("no") || paramZero.equals("ev")) {
+                                for (int ii=0; ii<orders[i].getLastParamIndex() - 1; ii++) {
+                                    orders[i].setParameter(ii, orders[i].getParameter(ii+1));
                                 }
-                                orders[i].setParameter(0, paramTemp);
+                                orders[i].setParameter(orders[i].getLastParamIndex(), paramZero);
                             }
                         }
                     }

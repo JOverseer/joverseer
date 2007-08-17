@@ -4,15 +4,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Artifact;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.transferHandlers.ArtifactExportTransferHandler;
+import org.joverseer.ui.support.transferHandlers.CharacterExportTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
@@ -41,6 +46,7 @@ public class ArtifactViewer extends ObjectViewer {
         super.setFormObject(obj);
 
         Artifact a = (Artifact)obj;
+        artifactName.setTransferHandler(new ArtifactExportTransferHandler(a));
         artifactName.setText("#" + String.valueOf(a.getNumber()) + " " + a.getName());
         artifactName.setCaretPosition(0);
         owner.setText(a.getOwner() != null ? a.getOwner() : "unclaimed");
@@ -69,6 +75,12 @@ public class ArtifactViewer extends ObjectViewer {
         artifactName.setPreferredSize(new Dimension(150, 12));
         artifactName.setFont(GraphicUtils.getFont(artifactName.getFont().getName(), Font.BOLD, artifactName.getFont().getSize()));
         artifactName.setBorder(null);
+        artifactName.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                TransferHandler handler = artifactName.getTransferHandler();
+                handler.exportAsDrag(artifactName, e, TransferHandler.COPY);
+            }
+        });
         
         glb.append(owner = new JTextField());
         owner.setPreferredSize(new Dimension(70, 12));

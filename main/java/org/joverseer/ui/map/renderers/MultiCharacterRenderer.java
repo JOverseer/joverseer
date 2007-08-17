@@ -2,6 +2,7 @@ package org.joverseer.ui.map.renderers;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
@@ -38,13 +40,13 @@ public class MultiCharacterRenderer implements Renderer {
         Turn turn = game.getTurn();
 
         org.joverseer.domain.Character c = (Character)obj;
-        
+
         // show dead chars according to preference
         String pval = PreferenceRegistry.instance().getPreferenceValue("map.deadCharacters");
         if (pval.equals("no")) {
             if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) return;
         }
-        
+
         // do not show hostages
         if (c.getHostage() != null && c.getHostage()) return;
 
@@ -64,38 +66,40 @@ public class MultiCharacterRenderer implements Renderer {
             }
         }
         charsInHex.removeAll(toRemove);
-        
+
         int i = charsInHex.indexOf(c);
 
         int ii = i % 12;
         int jj = i / 12;
-        
+
         int dx = mapMetadata.getGridCellWidth() * 1 / 4;
         int dy = mapMetadata.getGridCellHeight();
         int w = mapMetadata.getGridCellWidth() / 3;
         int h = mapMetadata.getGridCellHeight() / 3;
 
         //todo make decision based on allegiance, not nation no
-//        if (c.getNationNo() > 10) {
-//            dx = dx + mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - w;
-//        } else {
-//            dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - dx;
-//        }
+//      if (c.getNationNo() > 10) {
+//      dx = dx + mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - w;
+//      } else {
+//      dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - dx;
+//      }
         Color color1 = ColorPicker.getInstance().getColor1(c.getNationNo());
         Color color2 = ColorPicker.getInstance().getColor2(c.getNationNo());
         g.setColor(color1);
         //g.fillRect(x + dx, y + dy, w, h);
 
-
-        RoundRectangle2D.Float e = new RoundRectangle2D.Float(x + dx + (w * ii), y + dy + (h * jj), w, h, w/5*2, h/5*2);
+        int cx = x + dx + (w * ii);
+        int cy = y + dy + (h * jj);
+        RoundRectangle2D.Float e = new RoundRectangle2D.Float(cx, cy, w, h, w/5*2, h/5*2);
         g.fill(e);
 
         g.setColor(color2);
         //g.drawRect(x + dx, y + dy, w, h);
         g.draw(e);
         if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
-        	g.drawLine((int)e.getBounds().getX(), (int)e.getBounds().getY(), 
-        			(int)e.getBounds().getMaxX(), (int)e.getBounds().getMaxY());
+            g.drawLine((int)e.getBounds().getX(), (int)e.getBounds().getY(), 
+                    (int)e.getBounds().getMaxX(), (int)e.getBounds().getMaxY());
         }
+        MapTooltipHolder.instance().addTooltipObject(new Rectangle(cx, cy, w, h), c);
     }
 }

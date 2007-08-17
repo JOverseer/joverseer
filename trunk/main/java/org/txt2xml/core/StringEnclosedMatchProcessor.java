@@ -91,8 +91,10 @@ public class StringEnclosedMatchProcessor extends Processor {
         if (!includeStart) {
             matchStart = matchStart + startString.length();
         }
-        if (!includeEnd) {
-            matchEnd = matchEnd - currentEndString.length();
+        if (includeEnd) {
+            if (!currentEndString.equals("$")) {
+                matchEnd = matchEnd + currentEndString.length();
+            }
         }
         return chars.subSequence(matchStart, matchEnd);
     }

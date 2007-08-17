@@ -39,6 +39,7 @@
 	<bean id="applicationEventMulticaster" 
 		class="org.springframework.context.event.SimpleApplicationEventMulticaster"/>
 		
+	<bean id="rulesSource" class="org.joverseer.validation.JOverseerRulesSource"/>		
 	
 	<!--
 		Definition of some provided status bar items that are added to the status bar
@@ -68,6 +69,7 @@
         <property name="messageSourceId"><idref bean="messageSource"/></property>
         <property name="applicationWindowFactoryId"><idref bean="applicationWindowFactory" /></property>
         <property name="applicationPageFactoryId"><idref bean="applicationPageFactory" /></property>
+        <property name="rulesSource" ref="rulesSource"/>
         <property name="registryEntries">
         	<!-- 
         		Map of class name to idref to include application specific services into the

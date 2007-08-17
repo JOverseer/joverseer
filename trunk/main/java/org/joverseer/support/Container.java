@@ -29,6 +29,8 @@ import org.apache.commons.collections.functors.AllPredicate;
  * @author Marios Skounakis
  */
 public class Container implements Serializable {
+
+    private static final long serialVersionUID = -3898746240033481558L;
     public ArrayList items = new ArrayList();
     public HashMap<String, ContainerCache> caches = new HashMap<String, ContainerCache>();
 
@@ -52,6 +54,11 @@ public class Container implements Serializable {
         }
     }
 
+    public void refreshItem(Object obj) {
+        removeItem(obj);
+        addItem(obj);
+    }
+    
     public void removeItem(Object obj) {
         if (items.contains(obj)) {
             items.remove(obj);

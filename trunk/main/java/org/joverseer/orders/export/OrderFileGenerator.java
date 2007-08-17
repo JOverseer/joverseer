@@ -90,6 +90,16 @@ public class OrderFileGenerator {
         ret += o.getOrderNo();
         for (int i=0; i<15; i++) {
             String p = o.getParameter(i);
+            if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
+                // special handling for move army orders
+                if (i == 0) {
+                    p = o.getParameter(o.getLastParamIndex());
+                } else if (i <= o.getLastParamIndex()) {
+                    p = o.getParameter(i-1);
+                } else {
+                    p = null;
+                }
+            }
             if (p == null || p.equals("") || p.equals("-")) {
                 p = "--";
             }

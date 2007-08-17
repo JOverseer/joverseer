@@ -39,8 +39,8 @@ public class EditCharacterForm extends AbstractForm {
         formBuilder.add("name");
         formBuilder.row();
         
-        formBuilder.add("id");
-        formBuilder.row();
+        //formBuilder.add("id");
+        //formBuilder.row();
         
         formBuilder.add("hexNo");
         formBuilder.row();

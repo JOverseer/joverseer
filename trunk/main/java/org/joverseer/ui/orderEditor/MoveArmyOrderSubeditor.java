@@ -37,7 +37,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         movementStyle.addItem("");
         movementStyle.addItem("no");
         movementStyle.addItem("ev");
-        movementStyle.setSelectedItem(o.getParameter(0));
+        movementStyle.setSelectedItem(o.getParameter(o.getLastParamIndex()));
         movementStyle.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 updateEditor();
@@ -48,7 +48,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         directionParams.setVisible(false);
 
         String txt = "";
-        for (int i=1; i<20; i++) {
+        for (int i=0; i<o.getLastParamIndex(); i++) {
             if (o.getParameter(i) == null) break;
             dirs.add(o.getParameter(i));
             txt += (txt.equals("") ? "" : Order.DELIM) + o.getParameter(i);
@@ -138,8 +138,8 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(new JLabel(" "));
         tlb.cell(stlb.getPanel());
         
-        components.add(movementStyle);
         components.add(directionParams);
+        components.add(movementStyle);
     }
     
     

@@ -4,7 +4,9 @@ import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.TurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromLocateArtifactInfoSource;
@@ -63,11 +65,22 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
         DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
         Container artis = turn.getContainer(TurnElementsEnum.Artifact);
         Artifact a = (Artifact)artis.findFirstByProperty("number", getArtifactNo());
+        
+        String artifactName = getArtifactName();
+        if (artifactName.equals("artifact")) {
+            // dummy name
+            // see if you can retrieve from ArtifactInfo
+            ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", getArtifactNo());
+            if (ai != null) {
+                artifactName = ai.getName();
+            }
+        }
+        
         if (a == null) {
             // artifact not found, add
             a = new Artifact();
             a.setNumber(getArtifactNo());
-            a.setName(getArtifactName());
+            a.setName(artifactName);
             a.setOwner(getOwner());
             a.setHexNo(getHexNo());
             a.setInfoSource(is1);
@@ -75,6 +88,9 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
         } else {
             // artifact found, check info source
             InfoSource is = a.getInfoSource();
+            if (a.getName().equals("artifact")) {
+                a.setName(artifactName);
+            }
             if (TurnInfoSource.class.isInstance(is)) {
                 // turn import, do nothing
                 return;

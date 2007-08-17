@@ -299,6 +299,22 @@ public class TurnPdfReader implements Runnable {
             digester.addRule("txt2xml/Turn/Orders/Character/RevealCharacter",
                     snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex"},
                             new String[]{"characterName", "hexNo"}));
+            // create RCT result object
+            digester.addObjectCreate("txt2xml/Turn/Orders/Character/RevealCharacterTrue", "org.joverseer.support.readers.pdf.RevealCharacterResultTrueWrapper");
+            // add to character
+            digester.addSetNext("txt2xml/Turn/Orders/Character/RevealCharacterTrue", "addOrderResult", "org.joverseer.support.readers.pdf.RevealCharacterResultTrueWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Orders/Character/RevealCharacterTrue",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex"},
+                            new String[]{"characterName", "hexNo"}));
+            // create DivCharsWithForces result object
+            digester.addObjectCreate("txt2xml/Turn/Orders/Character/DivCharsWithForces", "org.joverseer.support.readers.pdf.DivCharsWithForcesResultWrapper");
+            // add to character
+            digester.addSetNext("txt2xml/Turn/Orders/Character/DivCharsWithForces", "addOrderResult", "org.joverseer.support.readers.pdf.DivCharsWithForcesResultWrapper");
+            // parse properties
+            digester.addRule("txt2xml/Turn/Orders/Character/DivCharsWithForces",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Commander", "Characters"},
+                            new String[]{"commander", "characters"}));
             // handle assassinated, cursed, executed chars
             digester.addCallMethod("txt2xml/Turn/Orders/Character/Assassinated", "setAssassinatedOn");
             digester.addCallMethod("txt2xml/Turn/Orders/Character/Cursed", "setCursedOn");
@@ -866,7 +882,7 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public void updateCombats(Game game) {
+    public void updateCombats(Game game) throws Exception {
         Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);
         Container challenges = game.getTurn().getContainer(TurnElementsEnum.Challenge);
         Container cws = turnInfo.getCombats();
@@ -890,7 +906,12 @@ public class TurnPdfReader implements Runnable {
                     c.addNarration(turnInfo.getNationNo(), cw.getNarration());
                 }
             }
-            cw.updateGame(game, turnInfo.getTurnNo(), turnInfo.getNationNo());
+            try {
+                cw.updateGame(game, turnInfo.getTurnNo(), turnInfo.getNationNo());
+            }
+            catch (Exception exc) {
+                throw new Exception("Failed to parse combat at " + cw.getHexNo());
+            }
         }
     }
 

@@ -148,11 +148,37 @@ public class OrderParameterValidator {
 
         // moveArmy order and high number param
         if (o.getOrderNo() == 850 || o.getOrderNo() == 860 || o.getOrderNo() == 830) {
-            if (iParam > 6) {
-                if (isEmpty(paramValue) || inList(paramValue, "e,ne,nw,se,sw,w,h")) {
+            int iLastParam = o.getLastParamIndex();
+            if (iParam == 0) {
+                if (inList(paramValue, "e,ne,nw,se,sw,w,h")) {
                     return null;
                 } else {
-                    return "must be one of " + "e,ne,nw,se,sw,w,no,ev";
+                    return "must be one of " + "e,ne,nw,se,sw,w,h";
+                }
+            } else if (iParam < iLastParam) {
+                if (inList(paramValue, "e,ne,nw,se,sw,w,h")) {
+                    return null;
+                } else {
+                    return "must be one of " + "e,ne,nw,se,sw,w,h,no,ev";
+                }
+            } else if (iParam == iLastParam) {
+                if (inList(paramValue, "e,ne,nw,se,sw,w,h,no,ev")) {
+                    return null;
+                } else {
+                    return "must be one of " + "e,ne,nw,se,sw,w,h,no,ev";
+                }
+            } else if (iParam == iLastParam + 1) {
+                String lastParam = o.getParameter(iLastParam);
+                if (inList(lastParam, "e,ne,nw,se,sw,w")) {
+                    return "must be one of " + "e,ne,nw,se,sw,w,h,no,ev";
+                } else {
+                    return null;
+                }
+            } else {
+                if (isEmpty(paramValue)) {
+                    return null;
+                } else {
+                    return "must be empty";
                 }
             }
         }

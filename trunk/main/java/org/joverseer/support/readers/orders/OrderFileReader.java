@@ -123,6 +123,16 @@ public class OrderFileReader {
                         Order[] orders = c.getOrders();
                         orders[orderI].setOrderNo(orderNo);
                         orders[orderI].setParameters(parameters);
+                        if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
+                            //String paramTemp = orders[i].getParameter(orders[i].getLastParamIndex());
+                            String paramZero = orders[i].getParameter(0);
+                            if (paramZero.equals("no") || paramZero.equals("ev")) {
+                                for (int ii=0; ii<orders[i].getLastParamIndex() - 1; ii++) {
+                                    orders[i].setParameter(ii, orders[i].getParameter(ii+1));
+                                }
+                                orders[i].setParameter(orders[i].getLastParamIndex(), paramZero);
+                            }
+                        }
                         ordersRead++;
                     }
                 }

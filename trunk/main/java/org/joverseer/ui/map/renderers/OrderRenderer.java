@@ -216,13 +216,21 @@ public class OrderRenderer extends DefaultHexRenderer {
             }
             if (cav == null) cav = false;
             if (fed == null) fed = false;
+
+            boolean evasive = false;
+            if (order.getParameter(order.getLastParamIndex()).equals("ev")) {
+                evasive = true;
+            }
             
-            for (int i=1; i<params.length; i++) {
+            for (int i=0; i<order.getLastParamIndex(); i++) {
                 String dir = params[i];
                 MovementDirection md = MovementDirection.getDirectionFromString(dir);
                 int nextHexNo = MovementUtils.getHexNoAtDir(currentHexNo, md);
                 if (nextHexNo == currentHexNo) {
                     cost += 1;
+                    if (evasive) {
+                        cost += 1;
+                    }
                     continue;
                 }
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
@@ -231,8 +239,14 @@ public class OrderRenderer extends DefaultHexRenderer {
                 int curCost = 0;
                 if (!isNavy) {
                     curCost = MovementUtils.calculateMovementCostForArmy(currentHexNo, dir, cav, fed, true, null, currentHexNo);
+                    if (evasive && curCost > 0) {
+                        curCost = curCost * 2;
+                    }
                 } else {
                     curCost = MovementUtils.calculateMovementCostForNavy(currentHexNo, dir, fed, startHexNo);
+                    if (evasive && curCost > 0) {
+                        curCost = curCost * 2;
+                    }
                     if (curCost == -2) {
                     	// consume all remaining mps
                     	curCost = maxCost - cost;

@@ -10,6 +10,11 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -28,6 +33,7 @@ import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
+import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
@@ -43,8 +49,13 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.dataFlavors.ArtifactDataFlavor;
+import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.dialog.ConfirmationDialog;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.progress.BusyIndicator;
 
 /**
@@ -107,6 +118,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
         addMouseListener(this);
         addMouseMotionListener(this);
         this.setTransferHandler(new HexNoTransferHandler("hex"));
+        this.setDropTarget(new DropTarget(this, new MapPanelDropTargetAdapter()));
         _instance = this;
     }
 
@@ -739,6 +751,50 @@ public class MapPanel extends JPanel implements MouseInputListener {
     
     public BufferedImage getMap() {
     	return mapItems;
+    }
+    
+    class MapPanelDropTargetAdapter extends DropTargetAdapter {
+
+        public void drop(DropTargetDropEvent e) {
+            Transferable t = e.getTransferable();
+            Object obj = null;
+            try {
+                if (t.isDataFlavorSupported(new CharacterDataFlavor())) {
+                    obj = t.getTransferData(new CharacterDataFlavor());
+                } else if (t.isDataFlavorSupported(new ArtifactDataFlavor())) {
+                    obj = t.getTransferData(new ArtifactDataFlavor());
+                } else if (t.isDataFlavorSupported(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class="
+                            + Army.class.getName()))) {
+                    obj = t.getTransferData(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class="
+                            + Army.class.getName()));
+                };
+                Point p = MapPanel.instance().getHexFromPoint(e.getLocation());
+                final int hexNo = p.x * 100 + p.y;
+                if (obj != null) {
+                    final Turn turn = GameHolder.instance().getGame().getTurn();
+                    final Object target = obj; 
+                    ConfirmationDialog dlg = new ConfirmationDialog("Move item?", "Are you sure you want to move the selected item to hex " + hexNo + "?") {
+                        protected void onConfirm() {
+                            if (Character.class.isInstance(target)) {
+                                ((Character)target).setHexNo(hexNo);
+                                turn.getContainer(TurnElementsEnum.Character).refreshItem(target);
+                            } else if (Army.class.isInstance(target)) {
+                                ((Army)target).setHexNo(String.valueOf(hexNo));
+                                turn.getContainer(TurnElementsEnum.Army).refreshItem(target);
+                            } else if (Artifact.class.isInstance(target)) {
+                                ((Artifact)target).setHexNo(hexNo);
+                                turn.getContainer(TurnElementsEnum.Artifact).refreshItem(target);
+                            }
+                            Application.instance().getApplicationContext().publishEvent(
+                                    new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+                        }
+                    };
+                    dlg.showDialog();
+                }
+            }
+            catch (Exception exc) {};
+        }
+        
     }
     
 }

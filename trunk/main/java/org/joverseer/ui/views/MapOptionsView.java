@@ -100,6 +100,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                     mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapFreePeople);
                 } else if (str.equals("Neutrals")) {
                     mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNeutrals);
+                } else if (str.equals("None")) {
+                	mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNone);
                 } else {
                     int nationNo = g.getMetadata().getNationByName(str).getNumber();
                     mapOptions.put(MapOptionsEnum.NationMap, String.valueOf(nationNo));
@@ -277,6 +279,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Nation n = g.getMetadata().getNationByNum(nmr.getNationNo());
                 cmbMaps.addItem(n.getName());
             }
+            cmbMaps.addItem("None");
         }
         fireEvents = true;
     }

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -18,13 +19,17 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.HexInfo;
+import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.Note;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.tools.HexInfoHistory;
@@ -38,10 +43,14 @@ import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
+import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -82,6 +91,8 @@ public class HexInfoViewer extends ObjectViewer {
     ShowUnfedInfantryArmyRangeCommand showUnfedInfantryArmyRangeCommand = new ShowUnfedInfantryArmyRangeCommand();
     ShowFedCavalryArmyRangeCommand showFedCavalryArmyRangeCommand = new ShowFedCavalryArmyRangeCommand();
     ShowUnfedCavalryArmyRangeCommand showUnfedCavalryArmyRangeCommand = new ShowUnfedCavalryArmyRangeCommand();
+    
+    AddPopCenterCommand addPopCenterCommand = new AddPopCenterCommand(); 
     
     public HexInfoViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -240,6 +251,7 @@ public class HexInfoViewer extends ObjectViewer {
                         showFedCavalryArmyRangeCommand,
                         showUnfedCavalryArmyRangeCommand,
                         "separator",
+                        new AddPopCenterCommand(),
                         new AddEditNoteCommand(hex.getHexNo())
                         });
         return group.createPopupMenu();
@@ -421,5 +433,36 @@ public class HexInfoViewer extends ObjectViewer {
         }
     }
     
+    public class AddPopCenterCommand extends ActionCommand {
+    	protected void doExecuteCommand() {
+    		final PopulationCenter pc = new PopulationCenter();
+    		InfoSource is = new UserInfoSource();
+    		is.setTurnNo(GameHolder.instance().getGame().getCurrentTurn());
+    		pc.setInfoSource(is);
+    		pc.setInformationSource(InformationSourceEnum.exhaustive);
+    		pc.setHexNo(((Hex)getFormObject()).getHexNo());
+    		FormModel formModel = FormModelHelper.createFormModel(pc);
+            final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel);
+            FormBackedDialogPage page = new FormBackedDialogPage(form);
+
+            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+
+                protected void onAboutToShow() {
+                }
+
+                protected boolean onFinish() {
+                    form.commit();
+                    GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
+                    Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+                    return true;
+                }
+            };
+            MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+            dialog.setTitle(ms.getMessage("editPopulationCenterDialog.title", new Object[] {String.valueOf(pc
+                    .getHexNo())}, Locale.getDefault()));
+            dialog.showDialog();
+    	}
+    }
     
 }

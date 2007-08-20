@@ -44,7 +44,8 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
     Color majorRiverColor;
     Color minorRiverColor;
     Color roadColor;
-    Color bridgeFordColor;
+    Color bridgeColor;
+    Color fordColor;
     HashMap mapOptions;
 
     public DefaultHexRenderer() {
@@ -84,7 +85,9 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         colorStr = colorSource.getMessage("road.color", null, Locale.getDefault());
         setRoadColor(Color.decode(colorStr));
         colorStr = colorSource.getMessage("bridge.color", null, Locale.getDefault());
-        setBridgeFordColor(Color.decode(colorStr));
+        setBridgeColor(Color.decode(colorStr));
+        colorStr = colorSource.getMessage("ford.color", null, Locale.getDefault());
+        setFordColor(Color.decode(colorStr));
 
         images.clear();
         
@@ -150,7 +153,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         g.setStroke(s);
     }
 
-    public void renderBridgeOrFord(Graphics2D g, HexSideEnum side, int x, int y) {
+    public void renderBridge(Graphics2D g, HexSideEnum side, int x, int y) {
         Stroke s = g.getStroke();
         Stroke r = new BasicStroke(6);
         Point sideCenter = getSideCenter(side);
@@ -158,7 +161,21 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);
         start.translate(x, y);
         sideCenter.translate(x, y);
-        g.setColor(getBridgeFordColor());
+        g.setColor(getBridgeColor());
+        g.setStroke(r);
+        g.drawLine(start.x, start.y, sideCenter.x, sideCenter.y);
+        g.setStroke(s);
+    }
+
+    public void renderFord(Graphics2D g, HexSideEnum side, int x, int y) {
+        Stroke s = g.getStroke();
+        Stroke r = new BasicStroke(6);
+        Point sideCenter = getSideCenter(side);
+        Point center = new Point(hexCenter);
+        Point start = new Point((center.x + 2 * sideCenter.x) / 3, (center.y + 2 * sideCenter.y) / 3);
+        start.translate(x, y);
+        sideCenter.translate(x, y);
+        g.setColor(getFordColor());
         g.setStroke(r);
         g.drawLine(start.x, start.y, sideCenter.x, sideCenter.y);
         g.setStroke(s);
@@ -218,10 +235,10 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
                     renderRoad(g, side, x, y);
                 };
                 if (elements.contains(HexSideElementEnum.Bridge)) {
-                    renderBridgeOrFord(g, side, x, y);
+                    renderBridge(g, side, x, y);
                 };
                 if (elements.contains(HexSideElementEnum.Ford)) {
-                    renderBridgeOrFord(g, side, x, y);
+                    renderFord(g, side, x, y);
                 };
 
             }
@@ -239,12 +256,20 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         terrainColors.put(i, c);
     }
 
-    public Color getBridgeFordColor() {
-        return bridgeFordColor;
+    public Color getBridgeColor() {
+        return bridgeColor;
     }
 
-    public void setBridgeFordColor(Color bridgeFordColor) {
-        this.bridgeFordColor = bridgeFordColor;
+    public void setBridgeColor(Color bridgeColor) {
+        this.bridgeColor = bridgeColor;
+    }
+    
+    public Color getFordColor() {
+        return fordColor;
+    }
+
+    public void setFordColor(Color fordColor) {
+        this.fordColor = fordColor;
     }
 
     public Color getMajorRiverColor() {

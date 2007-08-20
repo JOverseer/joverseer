@@ -125,6 +125,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.FreePeople);
         } else if (map == MapOptionValuesEnum.NationMapNeutrals) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.Neutral);
+        } else if (map == MapOptionValuesEnum.NationMapNone) {
+        	visible = true;
         } else {
             int nationNo = Integer.parseInt((String)map);
             NationMapRange nmr = (NationMapRange)game.getMetadata().getNationMapRanges().findFirstByProperty("nationNo", nationNo);

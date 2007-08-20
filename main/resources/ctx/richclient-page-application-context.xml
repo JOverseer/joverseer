@@ -48,6 +48,7 @@
 				-->
 				<value>playerInfoListView</value>
 				<value>combatCalcView</value>
+				<value>mapEditorView</value>
 			</list>
 		</property>
 		<property name="perspectives">
@@ -894,6 +895,31 @@
 		</property>
 	</bean>
 	
+	<bean id="mapEditorView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.views.MapEditorView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
 	
 	
 	<bean id="orderEditorView" 

@@ -181,6 +181,44 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>listviews.nationFilterOrder</value>
+					</property>
+					<property name="description">
+						<value>Nation Filter Order</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>GameChangedEvent</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>nationNumber</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>nationNumber</value>
+								</property>
+								<property name="description">
+									<value>By Nation Number</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>myAllegianceNationNumber</value>
+								</property>
+								<property name="description">
+									<value>My Allegiance, Nation Number</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>currentHexView.sortCharacters</value>
 					</property>
 					<property name="description">

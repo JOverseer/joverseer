@@ -521,6 +521,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         Order o = (Order) getFormObject();
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
         o.setParameters(parametersInternal.getText());
+        currentOrderNoAndCode = "";
         // throw an order changed event
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));

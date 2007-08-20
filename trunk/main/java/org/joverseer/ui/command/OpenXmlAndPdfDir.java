@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.GamePreference;
 import org.joverseer.support.TurnPostProcessor;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
@@ -142,14 +143,13 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        Preferences prefs = Preferences.userNodeForPackage(OpenGameDirTree.class);
-        String lastDir = prefs.get("importDir", null);
+        String lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
         if (lastDir != null) {
             fileChooser.setCurrentDirectory(new File(lastDir));
         }
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             final File file = fileChooser.getSelectedFile();
-            prefs.put("importDir", file.getAbsolutePath());
+            GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
             final Runnable thisObj = this;
             class XmlAndPdfFileFilter implements FileFilter {
                 public boolean accept(File file) {

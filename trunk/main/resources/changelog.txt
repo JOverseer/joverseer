@@ -1,3 +1,49 @@
+VERSION 0.9.8
+-------------
+
+20/8/2007
+
+    * Characters, Armies and Artifacts can now be moved
+        o This can be done by:
+            + Using the "Edit Character" to change the Hex of the character
+            + Dragging from the Current Hex View panel to the desired hex on the map
+
+    * Added support for parsing RCT and Div Chars with Forces spells
+    
+    * Moved the "Travel Mode" parameter for orders 830, 850, 860 to the end (from the beginning that it currently was). This is to be consistent the other MEPBM programs.
+
+	* Added the ability to create a new character (Tools Menu -> Add New Character)
+
+	* Added the ability to create new pop centers (Current Hex View -> Hex Info -> Add Population Center)
+
+	* Fixed an issue with Artifact names and scenaria based on FA (e.g. FA, BOFA) which caused the Current Hex View to show the word "artifact" instead of the artifact name.
+
+	* Added tooltips for Characters, Armies and Pop Centers on the map. Now if you let the mouse pointer hover over an item on the map, a tooltip with its name appears.	
+
+	* Added "None" option to the available Maps in the Map Options. This way you can have a map with no Fog of War (non-visible) hexes
+
+    * Added the Map Editor view. This view allows the user to edit the map directly.
+        o To open the Map Editor go to Window -> Show View -> Main Views -> Map Editor
+        o To activate the Map Editor check the Active checkbox on the top
+        o To use the editor, select one of the brushes (e.g. plains, hills, road, river)
+        o If you select a terrain brush, clicking on the hex with the RIGHT mouse button will change the hex terrain to the selected terrain
+        o If you select a "feature" brush (e.g. road, river), then you must click with the RIGHT mouse button close to a hex side.
+            + If the hex side does not contain the feature, the feature will be added
+            + If the hex side does contain the feature, the feature will be removed
+            + Neighboring hexes are also updated to be consistent (e.g. if you update NE side of 3203 with a road, the system will also add a road to SE 3202)
+            + The system makes all necessary checks (e.g. adding a bridge removes the ford, or removing a river also removes bridges and fords, etc)
+            + The changes that are being applies are shown on the right hand side of the Map Editor with a textual description
+        o Remeber to save the game to save the new map
+        o Currently there is no way to start with a blank map, so you will have to start with one of the existing scenaria and work with that map
+        o Remember that you can export the map to a jpeg image using Tools -> Export Map Image
+            
+	* Fixed an issue with the background data file for the 2950 scnario artifacts
+
+	* Fixed an issue with the Order Editor not updating the parameter controls correctly in some cases
+	
+	* The folders used to import files from and save orders to are now stored with the game
+
+
 VERSION 0.9.7
 -------------
 22/6/2007

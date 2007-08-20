@@ -6,8 +6,14 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Insets;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -17,6 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Order;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
@@ -26,6 +33,8 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.dataFlavors.OrderDataFlavor;
+import org.joverseer.ui.support.transferHandlers.OrderExportTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
@@ -61,6 +70,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
             orderText.setCaretPosition(0);
         }
+        orderText.setTransferHandler(new OrderExportTransferHandler(o));
         OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
         OrderResultTypeEnum orderResultType = container.getResultTypeForOrder(o);
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -114,6 +124,48 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         orderText.setBorder(null);
         orderText.setPreferredSize(new Dimension(170, 16));
         orderText.setText("N/A");
+
+        orderText.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                TransferHandler handler = orderText.getTransferHandler();
+                handler.exportAsDrag(orderText, e, TransferHandler.COPY);
+            }
+        });
+        
+        orderText.setDropTarget(new DropTarget(orderText, new DropTargetAdapter() {
+            public void drop(DropTargetDropEvent dtde) {
+                try {
+                    Transferable t = dtde.getTransferable();
+                    if (dtde.isDataFlavorSupported(new OrderDataFlavor())) {
+                        Order no = (Order)t.getTransferData(new OrderDataFlavor());
+                        Order o = (Order)getFormObject();
+                        
+                        org.joverseer.domain.Character c = o.getCharacter();
+                        o.setCharacter(no.getCharacter());
+                        no.setCharacter(c);
+                        
+                        if (c.getOrders()[0] == o) {
+                            c.getOrders()[0] = no;
+                        } else {
+                            c.getOrders()[1] = no;
+                        }
+                        
+                        if (o.getCharacter().getOrders()[0] == no) {
+                            o.getCharacter().getOrders()[0] = o;
+                        } else {
+                            o.getCharacter().getOrders()[1] = o;
+                        }
+                        Application.instance().getApplicationContext().publishEvent(
+                                new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+
+                        Application.instance().getApplicationContext().publishEvent(
+                                new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), no, this));
+                    }
+                }
+                catch (Exception exc) {
+                }
+            }
+        }));
 
         orderResultIcon = new JLabel("");
         orderResultIcon.setPreferredSize(new Dimension(16, 16));

@@ -39,6 +39,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.GamePreference;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenGameDirTree;
@@ -203,14 +204,18 @@ public class ExportOrdersForm extends AbstractForm {
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save");
         fileChooser.setSelectedFile(new File(fname));
-        Preferences prefs = Preferences.userNodeForPackage(OpenGameDirTree.class);
-        String lastDir = prefs.get("importDir", null);
+        
+        String lastDir = GamePreference.getValueForPreference("orderDir", ExportOrdersForm.class);
+        if (lastDir == null) {
+            lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
+        }
         if (lastDir != null) {
             fileChooser.setCurrentDirectory(new File(lastDir));
         }
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = fileChooser.getSelectedFile();
+                GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
                 FileWriter f = new FileWriter(file);
                 String txt = orders.getText();
                 txt = txt.replace("\n", System.getProperty("line.separator"));
@@ -237,7 +242,7 @@ public class ExportOrdersForm extends AbstractForm {
                         autoSaveGameAccordingToPref();
                     } else {
                         // submit to meturn.com
-                        prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
+                        Preferences prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
                         String email = prefs.get("useremail", "");
                         String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
                         InputDialog idlg = new InputDialog();

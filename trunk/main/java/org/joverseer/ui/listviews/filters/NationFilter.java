@@ -3,9 +3,12 @@ package org.joverseer.ui.listviews.filters;
 import java.util.ArrayList;
 
 import org.joverseer.domain.IBelongsToNation;
+import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
@@ -55,8 +58,32 @@ public class NationFilter extends AbstractListViewFilter {
         ret.add(new NationFilter("All", ALL_NATIONS));
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g)) return (AbstractListViewFilter[])ret.toArray(new AbstractListViewFilter[]{});
-        for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
-            ret.add(new NationFilter(n.getName(), n.getNumber()));
+        
+        String pref = PreferenceRegistry.instance().getPreferenceValue("listviews.nationFilterOrder");
+        if (pref == null || pref.equals("nationNumber")) {
+            for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
+                ret.add(new NationFilter(n.getName(), n.getNumber()));
+            }
+        } else {
+            // find the allegiance of the game's nation
+            int nationNo = g.getMetadata().getNationNo();
+            Nation mn = g.getMetadata().getNationByNum(nationNo);
+            if (mn.getAllegiance() == NationAllegianceEnum.DarkServants) {
+                for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
+                    if (n.getAllegiance() == mn.getAllegiance()) {
+                        ret.add(new NationFilter(n.getName(), n.getNumber()));
+                    }
+                }
+                for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
+                    if (n.getAllegiance() != mn.getAllegiance()) {
+                        ret.add(new NationFilter(n.getName(), n.getNumber()));
+                    }
+                }
+            } else {
+                for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
+                    ret.add(new NationFilter(n.getName(), n.getNumber()));
+                }
+            }
         }
         return (AbstractListViewFilter[])ret.toArray(new AbstractListViewFilter[]{});
     }

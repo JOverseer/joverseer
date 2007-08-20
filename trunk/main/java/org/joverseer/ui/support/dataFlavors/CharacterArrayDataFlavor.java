@@ -10,8 +10,10 @@ import org.joverseer.domain.Character;
  */
 public class CharacterArrayDataFlavor extends DataFlavor {
 
-	public CharacterArrayDataFlavor() throws ClassNotFoundException {
-		super(DataFlavor.javaJVMLocalObjectMimeType + ";class=" +  Character[].class.getName() );
-	}
+    private static final long serialVersionUID = -6431618842452918230L;
+
+    public CharacterArrayDataFlavor() throws ClassNotFoundException {
+        super(DataFlavor.javaJVMLocalObjectMimeType + ";class=" +  Character[].class.getName() );
+    }
 
 }

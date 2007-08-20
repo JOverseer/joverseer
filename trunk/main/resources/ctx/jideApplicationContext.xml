@@ -309,6 +309,8 @@
    	
    	<bean class="org.joverseer.ui.ApplicationEventLogger"/>
    	
+   	<bean id="mapEditorOptions" class="java.util.HashMap"/>
+   	
    	<bean id="colorPicker" class="org.joverseer.ui.support.drawing.ColorPicker"/>
 
    	<bean id="orderEditorAutoNations" class="org.joverseer.ui.orderEditor.OrderEditorAutoNations"/>   	

@@ -9,8 +9,10 @@ import org.joverseer.metadata.domain.ArtifactInfo;
  * @author Marios Skounakis
  */
 public class ArtifactInfoDataFlavor extends DataFlavor {
-	public ArtifactInfoDataFlavor() throws ClassNotFoundException {
-		super(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArtifactInfo.class.getName());
-	}
+    static final long serialVersionUID = -5889417279331870460L;
+
+    public ArtifactInfoDataFlavor() throws ClassNotFoundException {
+        super(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArtifactInfo.class.getName());
+    }
 
 }

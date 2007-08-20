@@ -10,8 +10,10 @@ import org.joverseer.metadata.domain.Hex;
  */
 public class HexDataFlavor extends DataFlavor {
 
-	public HexDataFlavor() throws ClassNotFoundException {
-		super(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Hex.class.getName() );
-	}
+    private static final long serialVersionUID = 2874812200654692002L;
+
+    public HexDataFlavor() throws ClassNotFoundException {
+        super(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Hex.class.getName() );
+    }
 
 }

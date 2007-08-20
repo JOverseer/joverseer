@@ -16,6 +16,7 @@ import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 
 
 public class ArtifactExportTransferHandler extends TransferHandler {
+
     Artifact artifact;
 
     public ArtifactExportTransferHandler(Artifact artifact) {

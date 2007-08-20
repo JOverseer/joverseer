@@ -9,6 +9,7 @@ public enum MapOptionValuesEnum {
     NationMapFreePeople,
     NationMapDarkServants,
     NationMapNeutrals,
+    NationMapNone,
     DrawOrdersOn,
     DrawOrdersOff,
     DrawNamesOnOrdersOn,

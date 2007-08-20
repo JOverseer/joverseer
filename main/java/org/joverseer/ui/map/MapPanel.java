@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -43,15 +44,22 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.joverseer.metadata.domain.HexSideEnum;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.movement.MovementDirection;
+import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.dataFlavors.ArtifactDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
+import org.joverseer.ui.views.MapEditorView;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.dialog.ConfirmationDialog;
@@ -663,10 +671,170 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
     public void mouseClicked(MouseEvent e)
     {
-    	Point p = e.getPoint();
-        Point hex = getHexFromPoint(p);
-        setSelectedHex(hex);
-        this.updateUI();
+    	if (e.getButton() == MouseEvent.BUTTON1) {
+	    	Point p = e.getPoint();
+	        Point hex = getHexFromPoint(p);
+	        setSelectedHex(hex);
+	        this.updateUI();
+    	} else if (e.getButton() == MouseEvent.BUTTON3) {
+    		HashMap mapEditorOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapEditorOptions");
+    		Boolean active = (Boolean)mapEditorOptions.get(MapEditorOptionsEnum.active);
+    		if (active == null || !active) return;
+    		Object brush = mapEditorOptions.get(MapEditorOptionsEnum.brush);
+    		if (HexTerrainEnum.class.isInstance(brush)) {
+    			Point p = e.getPoint();
+    	        Point h = getHexFromPoint(p);
+    	        int hexNo = h.x * 100 + h.y;
+    	        Hex hex = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
+    	        hex.setTerrain((HexTerrainEnum)brush);
+    	        MapEditorView.instance.log("");
+    	        MapEditorView.instance.log(hexNo + " terrain " + brush.toString());
+    	        invalidateAll();
+    	        this.updateUI();
+    		} else if (HexSideElementEnum.class.isInstance(brush)) {
+    			Point p = e.getPoint();
+    	        Point h = getHexFromPoint(p);
+    	        int hexNo = h.x * 100 + h.y;
+    	        Hex hex = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
+    	        
+    	        Point hp = getHexLocation(hexNo);
+    	        int hexHalfWidth = metadata.getGridCellWidth() * metadata.getHexSize() / 2;
+    	        int hexOneThirdHeight = metadata.getGridCellHeight() * metadata.getHexSize() / 3;
+    	        
+    	        boolean leftSide = p.x < hp.x + hexHalfWidth;
+    	        int ySide = 0;
+    	        if (p.y < hp.y + hexOneThirdHeight) {
+    	        	ySide = 0;
+    	        } else if (p.y < hp.y + 2 * hexOneThirdHeight) {
+    	        	ySide = 1;
+    	        } else {
+    	        	ySide = 2;
+    	        }
+    	        HexSideEnum hexSide = null;
+    	        HexSideEnum otherHexSide = null;
+    	        int otherHexNo = 0;
+    	        if (leftSide) {
+    	        	if (ySide == 0) {
+    	        		hexSide = HexSideEnum.TopLeft;
+    	        		otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.NorthWest);
+    	        		otherHexSide = HexSideEnum.BottomRight;
+    	        	}
+    	        	if (ySide == 1) {
+    	        		hexSide = HexSideEnum.Left;
+    	        		otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.West);
+    	        		otherHexSide = HexSideEnum.Right;
+    	        	}
+    	        	if (ySide == 2) {
+    	        		hexSide = HexSideEnum.BottomLeft;
+    	        		otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.SouthWest);
+    	        		otherHexSide = HexSideEnum.TopRight;
+    	        	}
+    	        } else {
+    	        	if (ySide == 0) {
+    	        		hexSide = HexSideEnum.TopRight;
+    	        		otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.NorthEast);
+    	        		otherHexSide = HexSideEnum.BottomLeft;
+    	        	}
+    	        	if (ySide == 1) {
+    	        		hexSide = HexSideEnum.Right;
+    	        		otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.East);
+    	        		otherHexSide = HexSideEnum.Left;
+    	        	}
+    	        	if (ySide == 2) {
+    	        		hexSide = HexSideEnum.BottomRight;
+    	        		otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.SouthEast);
+    	        		otherHexSide = HexSideEnum.TopLeft;
+    	        	}
+    	        }    	      
+    	        Hex otherHex = null;
+    	        if (otherHexNo > 0) {
+    	        	otherHex = GameHolder.instance().getGame().getMetadata().getHex(otherHexNo);
+    	        }
+    	        
+    	        HexSideElementEnum element = (HexSideElementEnum)brush;
+    	        ArrayList<HexSideElementEnum> toRemove = new ArrayList<HexSideElementEnum>();
+	        	ArrayList<HexSideElementEnum> toAdd = new ArrayList<HexSideElementEnum>();
+
+    	        if (hex.getHexSideElements(hexSide).contains(element)) {
+    	        	// remove element
+    	        	// if element is a river, then remove the bridge as well
+    	        	if (element.equals(HexSideElementEnum.MajorRiver)) {
+    	        		// remove major river
+    	        		// remove bridge
+    	        		// remove ford
+    	        		toRemove.add(HexSideElementEnum.MajorRiver);
+    	        		toRemove.add(HexSideElementEnum.Bridge);
+    	        		toRemove.add(HexSideElementEnum.Ford);
+    	        	} else if (element.equals(HexSideElementEnum.MinorRiver)) {
+    	        		// remove minor river
+    	        		// remove bridge
+    	        		// remove ford
+    	        		toRemove.add(HexSideElementEnum.MinorRiver);
+    	        		toRemove.add(HexSideElementEnum.Bridge);
+    	        		toRemove.add(HexSideElementEnum.Ford);
+    	        	} else {
+    	        		// just remove the element
+    	        		toRemove.add(element);
+    	        	}
+    	        	
+    	        } else { 
+    	        	// adding new element
+    	        	if (element.equals(HexSideElementEnum.MajorRiver)) {
+    	        		// if new is major river, remove minor river
+    	        		toRemove.add(HexSideElementEnum.MinorRiver);
+    	        	} else if (element.equals(HexSideElementEnum.MinorRiver)) {
+    	        		// if new is minor river, remove major river    	        		
+    	        		toRemove.add(HexSideElementEnum.MajorRiver);
+    	        	} else if (element.equals(HexSideElementEnum.Bridge)) {
+    	        		// if new is bridge, remove ford
+    	        		toRemove.add(HexSideElementEnum.Ford);
+    	        	} else if (element.equals(HexSideElementEnum.Ford)) {
+    	        		// if new is ford, remove bridge and road
+    	        		toRemove.add(HexSideElementEnum.Bridge);
+    	        	}
+    	        	// add appropriate elements
+    	        	if (element.equals(HexSideElementEnum.Bridge)) {
+    	        		// add a bridge only if river exists
+    	        		if (hex.getHexSideElements(hexSide).contains(HexSideElementEnum.MinorRiver) ||
+    	        				hex.getHexSideElements(hexSide).contains(HexSideElementEnum.MajorRiver)) {
+    	        			toAdd.add(HexSideElementEnum.Bridge);
+    	        		} 
+    	        	} else {
+    	        		toAdd.add(element);
+    	        	}
+    	        	
+    	        }
+    	        if (toRemove.size() + toAdd.size() > 0) {
+    	        	MapEditorView.instance.log("");
+    	        }
+    	        // remove what you must
+	        	for (HexSideElementEnum el : toRemove) {
+	        		if (hex.getHexSideElements(hexSide).contains(el)) {
+	        			hex.getHexSideElements(hexSide).remove(el);
+	        			MapEditorView.instance.log(hex.getHexNo() + " " + hexSide.toString() + " remove " + el.toString());
+	        		}
+	        		if (otherHex != null) {
+	        			if (otherHex.getHexSideElements(otherHexSide).contains(el)) {
+	        				otherHex.getHexSideElements(otherHexSide).remove(el);
+	        				MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " remove " + el.toString());
+	        			}
+	        		}
+	        	}
+	        	//add what you must
+	        	for (HexSideElementEnum el : toAdd) {
+	        		if (!hex.getHexSideElements(hexSide).contains(el)) {
+	        			MapEditorView.instance.log(hex.getHexNo() + " " + hexSide.toString() + " add " + el.toString());
+	        			hex.getHexSideElements(hexSide).add(el);
+	        		}
+	        		if (otherHex != null && !otherHex.getHexSideElements(otherHexSide).contains(el)) {
+	        			MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " add " + el.toString());
+	        			otherHex.getHexSideElements(otherHexSide).add(el);
+	        		}
+	        	}
+    	        invalidateAll();
+    	        this.updateUI();
+    		}
+    	}
     }
 
     public void mouseEntered(MouseEvent e)

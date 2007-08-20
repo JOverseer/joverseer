@@ -129,4 +129,8 @@ public class Game implements Serializable {
         parameters.put(key, value);
     }
     
+    public boolean containsParameter(String key) {
+        return parameters.containsKey(key);
+    }
+    
 }

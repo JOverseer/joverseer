@@ -5,7 +5,14 @@ import java.util.prefs.Preferences;
 
 import org.joverseer.ui.JOverseerJIDEClient;
 
-
+/**
+ * Support for remembering the recent games the user has accessed
+ * Recent games are stored in a user preference called "recentGames"
+ * as a string with the format:
+ * game1No!game1File#game2No!game2File#...
+ * 
+ * @author Marios Skounakis
+ */
 public class RecentGames {
     public ArrayList<RecentGameInfo> getRecentGameInfo(String str) {
         ArrayList<RecentGameInfo> res = new ArrayList<RecentGameInfo>();

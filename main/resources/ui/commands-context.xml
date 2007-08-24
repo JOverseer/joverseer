@@ -75,6 +75,8 @@
 			</list>
 		</property>
 	</bean>
+	
+	
 
     
 
@@ -111,7 +113,16 @@
                             <bean class="org.joverseer.ui.command.RunOrders"/>
                             -->
                             <value>separator</value>
+                            <ref bean="recentGamesMenu"/>
+                            <value>separator</value>
                             <bean class="org.springframework.richclient.command.support.ExitCommand"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="recentGamesMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
 			</list>
 		</property>
 	</bean>

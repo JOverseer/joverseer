@@ -9,6 +9,9 @@
 package com.jidesoft.spring.richclient.docking;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
@@ -21,7 +24,10 @@ import javax.swing.RepaintManager;
 import org.joverseer.game.Game;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.RecentGames;
+import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.test.TestOrderParameters;
 import org.joverseer.ui.support.GraphicUtils;
@@ -65,8 +71,34 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
                     menuBar.getMenu(i).setVisible(false);
                 }
             }
+            
+            
         }
-
+        JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+        for (int i = 0; i < menuBar.getMenuCount(); i++) {
+            // recent games
+            if (menuBar.getMenu(i).getText().equals("Game")) {
+                for (int j=0; j<menuBar.getMenu(i).getItemCount(); j++) {
+                    if (menuBar.getMenu(i).getItem(j) != null && menuBar.getMenu(i).getItem(j).getText() != null && menuBar.getMenu(i).getItem(j).getText().equals("Recent Games")) {
+                        JMenu menu = (JMenu)menuBar.getMenu(i).getItem(j);
+                        RecentGames rg = new RecentGames();
+                        ArrayList<RecentGames.RecentGameInfo> rgis = rg.getRecentGameInfo();
+                        for (RecentGameInfo rgi : rgis) {
+                            final RecentGameInfo frgi = rgi;
+                            JMenuItem mu = new JMenuItem();
+                            mu.setText("Game " + String.valueOf(rgi.getNumber()));
+                            mu.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    LoadGame loadGame = new LoadGame(frgi.getFile());
+                                    loadGame.execute();
+                                }
+                            });
+                            menu.add(mu);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

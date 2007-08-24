@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
@@ -30,8 +31,15 @@ import org.springframework.richclient.progress.BusyIndicator;
  * @author Marios Skounakis
  */
 public class LoadGame extends ActionCommand {
+    String fname = null;
+    
     public LoadGame() {
         super("LoadGameCommand");
+    }
+    
+    public LoadGame(String fname) {
+        super("LoadGameCommand");
+        this.fname = fname;
     }
 
     protected void doExecuteCommand() {
@@ -53,23 +61,29 @@ public class LoadGame extends ActionCommand {
     }
     
     private void loadGame() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        fileChooser.setApproveButtonText("Load");
-        Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-        String saveDir = prefs.get("saveDir", null);
-        if (saveDir != null) {
-            fileChooser.setCurrentDirectory(new File(saveDir));
+        if (fname == null) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+            fileChooser.setApproveButtonText("Load");
+            Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
+            String saveDir = prefs.get("saveDir", null);
+            if (saveDir != null) {
+                fileChooser.setCurrentDirectory(new File(saveDir));
+            }
+            fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file"));
+            if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+                fname = fileChooser.getSelectedFile().getAbsolutePath(); 
+            }
         }
-        fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file"));
 
-        if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+        if (fname != null) {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-            File f = fileChooser.getSelectedFile();
+            File f = new File(fname);
             try {
                 GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
                 Game g = Game.loadGame(f);
                 gh.setGame(g);
+
                 MapMetadataUtils mmu = new MapMetadataUtils();
                 MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
                 mmu.setMapSize(mm, g.getMetadata().getGameType());
@@ -100,6 +114,8 @@ public class LoadGame extends ActionCommand {
                         
                     }
                 }
+                RecentGames rgs = new RecentGames();
+                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath());
                 
             }
             catch (Exception exc) {

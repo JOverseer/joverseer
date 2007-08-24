@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.map.MapPanel;
 import org.springframework.context.MessageSource;
@@ -53,10 +54,12 @@ public class SaveGame extends ActionCommand {
         fileChooser.setSelectedFile(new File(fname));
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
+
             File f = fileChooser.getSelectedFile();
             GZIPOutputStream zos;
             try {
                 Game g = gh.getGame();
+
                 MapPanel mp = MapPanel.instance();
                 JScrollPane scp = (JScrollPane)mp.getParent().getParent();
                 g.setParameter("horizontalMapScroll", String.valueOf(scp.getHorizontalScrollBar().getValue()));
@@ -69,6 +72,10 @@ public class SaveGame extends ActionCommand {
                 ObjectOutputStream out = new ObjectOutputStream(zos = new GZIPOutputStream(new FileOutputStream(f)));
                 out.writeObject(g);
                 prefs.put("saveDir", f.getParent());
+
+                RecentGames rgs = new RecentGames();
+                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath());
+
                 zos.finish();
                 out.close();
             }

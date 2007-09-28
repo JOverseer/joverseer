@@ -50,11 +50,12 @@ public class LocateArtifactResultWrapper implements OrderResult {
 	}
 	
 	public void updateGame(Turn turn, int nationNo, String casterName) {
+			Character c = null;
             if (getOwner() != null && !getOwner().equals("")) {
                 DerivedFromLocateArtifactInfoSource is1 = new DerivedFromLocateArtifactInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
 
                 Container chars = turn.getContainer(TurnElementsEnum.Character);
-                Character c = (Character)chars.findFirstByProperty("name", getOwner());
+                c = (Character)chars.findFirstByProperty("name", getOwner());
                 if (c == null) {
                     // character not found, add
                     c = new Character();
@@ -101,7 +102,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
                 a.setNumber(getArtifactNo());
                 a.setName(artifactName);
                 a.setOwner(getOwner());
-                a.setHexNo(getHexNo());
+                a.setHexNo(c == null ? getHexNo() : c.getHexNo());
                 a.setInfoSource(is1);
                 artis.addItem(a);
             } else {

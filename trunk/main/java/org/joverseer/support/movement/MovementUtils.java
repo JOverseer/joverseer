@@ -271,14 +271,14 @@ public class MovementUtils {
             }
         }
         int cost = movementCosts[dest.getTerrain().getTerrain() - 1];
-        if (!isFed) {
-            cost = cost + (new Double(Math.ceil(new Double(cost) / 3))).intValue();
-        }
         if (minorRiver && !bridgeOrFord) {
             cost += 2;
         }
         if (bridgeOrFord) {
             cost += 1;
+        }
+        if (!isFed) {
+            cost = cost + (new Double(Math.ceil(new Double(cost) / 3))).intValue();
         }
         return cost;
     }

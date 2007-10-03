@@ -1,3 +1,21 @@
+VERSION 0.9.9
+-------------
+
+2/10/2007
+
+	* Fixed a bug with the calculation of unfed army movement cost
+	
+	* Fixed a bug with the Orderchecker integration that occured after changing the position of the travel mode parameter in version 0.9.8
+
+	* Casting a LA/LAT on a known char (e.g. one reported in an xml file), will no longer cause the LA info to be ignored. Now the artifact is assigned to the character and correctly placed on the map.
+
+	* Added support for quickly loading recent games. Now you see the recent games that you have loaded in JOverseer in the Game -> Recent Games menu option.
+
+	* Added support for Draging & Droping orders between characters. So now if you want to change the character who is doing a specific order, just drag and drop.
+	
+	* Added option to change the sorting of Nations in ListViews so that if you are playing a DS you can see DS nations on top. See the preferences dialog for this.
+
+
 VERSION 0.9.8
 -------------
 

@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="0.9.8"/>
-		<property name="buildId" value="2007-08-20"/>
+		<property name="version" value="0.9.9"/>
+		<property name="buildId" value="2007-10-02"/>
 	</bean>
 	
 	<!--
@@ -70,16 +70,6 @@
         <property name="applicationWindowFactoryId"><idref bean="applicationWindowFactory" /></property>
         <property name="applicationPageFactoryId"><idref bean="applicationPageFactory" /></property>
         <property name="rulesSource" ref="rulesSource"/>
-        <property name="registryEntries">
-        	<!-- 
-        		Map of class name to idref to include application specific services into the
-        		service locator. Another option would be to override the DefaultApplicationServices
-        		implementation
-        	 -->
-        	<map>
-        		<entry key="com.jidesoft.spring.richclient.googledemo.preferences.GoogleSettingsManager" value="googleSettingsManager" />
-        	</map>
-        </property>
     </bean>
     
     

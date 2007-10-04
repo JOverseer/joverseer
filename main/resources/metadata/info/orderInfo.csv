@@ -117,7 +117,7 @@ Name New Mage;737;NamMage;Name (5-17 letters) / Gender;Automatic ;At Capital
 Cast Movement Spell;825;CstMvSp;Spell ID # / Destination Hex # (See spell for ranges);Varies ;Improves Cast Rank
 Cast Lore Spell*;940;CstLoSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank
 Mage [misc.];;;;;
-Forget Spell(s);700;ForgtSp;1-6 Spell ID #'s to be forgotten (1 per line);Automatic ;
+Forget Spell(s);700;ForgtSp;1-6 Spell ID numbers to be forgotten (1 per line);Automatic ;
 Research Spell;705;RsrchSp;Spell ID #;Varies;Own Pop Center
 ;;;;;
 MISCELLANEOUS;;;;;
@@ -130,8 +130,8 @@ Bid from Caravans;310;BidCar;Product / # of units to purchase / Amount bid (pric
 Purchase from Caravans*;315;PrchCar;Product / # of units to purchase;Automatic ;
 Sell to Caravans*;320;SellCar;Product / # of units to sell;Automatic ;At PC where stuff is
 Nation Sell to Caravans*;325;NatSell;Product / % of product to be sold (1-100);Automatic ;At Capital
-Transfer: Artifacts to Character*;360;TrArt;Other Character ID / 1-6 Artifact ID #'s (1 per line);Automatic ;
-Transfer: Hostages to Character;363;TrHost;Other Character ID / 1-3 Hostage Character ID's (1 per line);Automatic ;
+Transfer: Artifacts to Character*;360;TrArt;Other Character ID / 1-6 Artifact ID numbers (1 per line);Automatic ;
+Transfer: Hostages to Character;363;TrHost;Other Character ID / 1-3 Hostage Character IDs (1 per line);Automatic ;
 Retire Character;740;RtrChar;None;Automatic ;
 Join Company;755;JnCmpy;Company Commander ID;Automatic ;
 Leave Company;760;LvCmpy;None;Automatic ;

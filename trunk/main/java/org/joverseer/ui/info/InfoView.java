@@ -22,6 +22,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BaseTableModel;
 import org.springframework.richclient.table.TableUtils;
 
+import com.jidesoft.grid.SortableTableModel;
 import com.jidesoft.swing.JideTabbedPane;
 
 /**
@@ -127,7 +128,7 @@ public class InfoView extends AbstractView {
             }
             JPanel pnl = new JPanel(new BorderLayout());
 
-            JTable table = new JTable(model);
+            JTable table = TableUtils.createStandardSortableTable(model);
             tables.add(table);
             table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
                 public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {

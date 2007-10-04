@@ -378,9 +378,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                     sub.setEditor(this);
                 } else if (oed.getOrderNo() == 940) {
                     AbstractOrderSubeditor sub = new CastLoSpellOrderSubeditor(o);
-                    sub.addComponents(tlb, subeditorComponents, o, 0);
                     sub.setEditor(this);
-
+                    sub.addComponents(tlb, subeditorComponents, o, 0);
                 } else {
                     for (int i = 0; i < oed.getParamTypes().size(); i++) {
                         String paramType = oed.getParamTypes().get(i);

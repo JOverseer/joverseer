@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,10 +20,14 @@ import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Character;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.binding.form.FormModel;
+import org.springframework.binding.value.support.ValueHolder;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
+import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
@@ -43,6 +49,7 @@ public class EditArmyForm extends AbstractForm {
     JTextField commandRank;
     JTextField morale;
     JTextField food;
+    JComboBox nation;
     JTable elements;
     BeanTableModel elementTableModel;
     

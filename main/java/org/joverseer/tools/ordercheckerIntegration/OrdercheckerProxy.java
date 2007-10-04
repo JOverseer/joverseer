@@ -376,10 +376,12 @@ public class OrdercheckerProxy {
                     }
                 }
                 // fix army/navy movement order
-                // basically swap first and last params
+                // basically move last param to front 
                 if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
                     String moveType = params.get(lastParam);
-                    params.set(lastParam, params.get(0));
+                    for (int i=o.getLastParamIndex(); i>0; i--) {
+                    	params.set(i, params.get(i-1));
+                    }
                     params.set(0, moveType);
                 }
                 for (int i=0; i<=lastParam; i++) {

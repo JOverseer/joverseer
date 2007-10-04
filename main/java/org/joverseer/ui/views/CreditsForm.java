@@ -38,7 +38,9 @@ public class CreditsForm extends AbstractForm implements HyperlinkListener {
         catch (Exception exc) {
             System.out.println(exc.getMessage());
         }
-        glb.append(new JScrollPane(editor));
+        JScrollPane scp = new JScrollPane(editor); 
+        scp.setPreferredSize(new Dimension(750, 500));
+        glb.append(scp);
         glb.nextLine();
         return glb.getPanel();
     }

@@ -18,6 +18,9 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.PlayerInfo;
+import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.springframework.beans.support.PropertyComparator;
@@ -52,9 +55,21 @@ public class EditArmyForm extends AbstractForm {
     JComboBox nation;
     JTable elements;
     BeanTableModel elementTableModel;
+    ArrayList<ArmyElement> elementList;
     
     public EditArmyForm(FormModel arg0) {
         super(arg0, FORM_ID);
+    }
+    
+    private ArrayList getNations() {
+        Game g = GameHolder.instance().getGame();
+        ArrayList<NationRelations> nrs = (ArrayList<NationRelations>)g.getTurn().getContainer(TurnElementsEnum.NationRelation).getItems();
+        ArrayList ret = new ArrayList();
+        ret.add(g.getMetadata().getNationByNum(0).getName());
+        for (NationRelations nr : nrs) {
+            ret.add(g.getMetadata().getNationByNum(nr.getNationNo()).getName());
+        }
+        return ret;
     }
 
     protected JComponent createFormControl() {
@@ -63,6 +78,12 @@ public class EditArmyForm extends AbstractForm {
         lb.append(new JLabel("Commander"));
         lb.append(commander = new JTextField());
         commander.setPreferredSize(new Dimension(120, 20));
+        
+        lb.nextLine();
+        
+        lb.append(new JLabel("Nation"));
+        lb.append(nation = new JComboBox(getNations().toArray()));
+        nation.setPreferredSize(new Dimension(120, 20));
         
         lb.nextLine();
         
@@ -94,7 +115,24 @@ public class EditArmyForm extends AbstractForm {
         tlb.cell(pnl, "align=left");
         tlb.relatedGapRow();
         
-        elements = new JTable(elementTableModel = new ArmyElementTableModel((MessageSource)Application.instance().getApplicationContext().getBean("messageSource")));
+        elements = new JTable(elementTableModel = new ArmyElementTableModel((MessageSource)Application.instance().getApplicationContext().getBean("messageSource")){
+        	@Override
+        	public boolean isCellEditable(int arg0, int arg1) {
+        		if (arg0 == 0) return false;
+        		return super.isCellEditable(arg0, arg1);
+        	}
+        	
+        	@Override
+        	public void setValueAt(Object arg0, int arg1, int arg2) {
+        		try {
+        			Integer.parseInt(arg0.toString());
+        		}
+        		catch (Exception exc) {
+        			arg0 = 0;
+        		}
+        		super.setValueAt(arg0, arg1, arg2);
+        	}
+        });
         elements.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 if ((Integer)value == 0) {
@@ -120,14 +158,17 @@ public class EditArmyForm extends AbstractForm {
         
         commander.setText(a.getCommanderName());
         
+        nation.setSelectedItem(GameHolder.instance().getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
+        
         Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", a.getCommanderName());
         if (c != null) {
             commandRank.setText(String.valueOf(c.getCommandTotal()));
         }
+        commandRank.setEditable(false);
         morale.setText(String.valueOf(a.getMorale()));
         food.setText(String.valueOf(a.getFood()));
         
-        ArrayList<ArmyElement> elementList = new ArrayList<ArmyElement>();
+        elementList = new ArrayList<ArmyElement>();
         for (ArmyElementType aet : ArmyElementType.values()) {
             ArmyElement nae = new ArmyElement(aet, 0);
             ArmyElement ae = a.getElement(aet);
@@ -141,6 +182,31 @@ public class EditArmyForm extends AbstractForm {
         }
         elementTableModel.setRows(elementList);
         TableUtils.sizeColumnsToFitRowData(elements);
+    }
+    
+    public void commit() {
+    	super.commit();
+        Army a = (Army)getFormObject();
+        
+        a.setCommanderName(commander.getText());
+        try {
+        	a.setMorale(Integer.parseInt(morale.getText()));
+        }
+        catch (Exception exc) {};
+        try {
+        	a.setFood(Integer.parseInt(food.getText()));
+        }
+        catch (Exception exc) {};
+        try {
+        	a.setNationNo(GameHolder.instance().getGame().getMetadata().getNationByName(nation.getSelectedItem().toString()).getNumber());
+        }
+        catch (Exception exc) {};
+        a.getElements().clear();
+        for (ArmyElement ae : elementList) {
+        	if (ae.getNumber() > 0) {
+        		a.getElements().add(ae);
+        	}
+        }
     }
 
 

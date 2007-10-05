@@ -282,6 +282,16 @@ public class ArmyViewer extends ObjectViewer {
                 }
 
                 protected boolean onFinish() {
+                	form.commit();
+                	Army a = (Army)getFormObject();
+                	Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                    Turn t = g.getTurn();
+                    Container armies = t.getContainer(TurnElementsEnum.Army);
+                    armies.removeItem(a);
+                    armies.addItem(a);
+                	Application.instance().getApplicationContext().publishEvent(
+                            new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
+                                    .getSelectedHex(), this));
                     return true;
                 }
             };

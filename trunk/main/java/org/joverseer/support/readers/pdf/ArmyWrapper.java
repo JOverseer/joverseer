@@ -135,12 +135,12 @@ public class ArmyWrapper {
     
     private ArmyElementType getArmyElementType(String type) {
         type = type.trim();
-        if (type.equals("Heavy Cavalry")) return ArmyElementType.HeavyCavalry;
-        if (type.equals("Light Cavalry")) return ArmyElementType.LightCavalry;
-        if (type.equals("Heavy Infantry")) return ArmyElementType.HeavyInfantry;
-        if (type.equals("Light Infantry")) return ArmyElementType.LightInfantry;
-        if (type.equals("Archers")) return ArmyElementType.Archers;
-        if (type.equals("Men at Arms")) return ArmyElementType.MenAtArms;
+        if (type.startsWith("Heavy Cavalry")) return ArmyElementType.HeavyCavalry;
+        if (type.startsWith("Light Cavalry")) return ArmyElementType.LightCavalry;
+        if (type.startsWith("Heavy Infantry")) return ArmyElementType.HeavyInfantry;
+        if (type.startsWith("Light Infantry")) return ArmyElementType.LightInfantry;
+        if (type.startsWith("Archers")) return ArmyElementType.Archers;
+        if (type.startsWith("Men at Arms") || type.startsWith("Men-at-Arms")) return ArmyElementType.MenAtArms;
         return null;
     }
 

@@ -133,6 +133,7 @@ public class LoadGame extends ActionCommand {
             }
             finally {
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+                fname = null;
             }
         }
     }

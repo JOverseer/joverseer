@@ -168,10 +168,10 @@ public class PopCenterWrapper {
                 pc.setHarbor(HarborSizeEnum.none);
                 break;
             case 1:
-                pc.setHarbor(HarborSizeEnum.port);
+                pc.setHarbor(HarborSizeEnum.harbor);
                 break;
             case 2:
-                pc.setHarbor(HarborSizeEnum.harbor);
+                pc.setHarbor(HarborSizeEnum.port);
                 break;
         }
         // todo set allegiance

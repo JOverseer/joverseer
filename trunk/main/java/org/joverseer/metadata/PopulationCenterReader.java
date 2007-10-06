@@ -76,10 +76,10 @@ public class PopulationCenterReader implements MetadataReader {
                 }
 
                 HarborSizeEnum harborSize = HarborSizeEnum.none;
-                if (harbor.equals("1")) {
-                    harborSize = HarborSizeEnum.harbor;
-                } else if (harbor.equals("2")) {
+                if (harbor.equals("2")) {
                     harborSize = HarborSizeEnum.port;
+                } else if (harbor.equals("1")) {
+                    harborSize = HarborSizeEnum.harbor;
                 }
 
                 int nationNo = Integer.parseInt(nation);

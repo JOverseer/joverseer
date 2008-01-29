@@ -251,8 +251,9 @@ public class TurnXmlReader implements Runnable{
             PlayerInfo pi = (PlayerInfo)turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", turnInfo.getNationNo());
             if (pi != null) {
                 turn.getContainer(TurnElementsEnum.PlayerInfo).removeItem(pi);
+            } else {
+            	pi = new PlayerInfo();
             }
-            pi = new PlayerInfo();
             pi.setNationNo(turnInfo.getNationNo());
             pi.setPlayerName(turnInfo.getPlayerName());
             pi.setDueDate(turnInfo.getDueDate());

@@ -125,12 +125,11 @@ public class OrderFileReader {
                         orders[orderI].setParameters(parameters);
                         if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
                             //String paramTemp = orders[i].getParameter(orders[i].getLastParamIndex());
-                            String paramZero = orders[orderI].getParameter(0);
+                            String paramZero = new String(orders[orderI].getParameter(0));
                             if (paramZero.equals("no") || paramZero.equals("ev")) {
-                                for (int ii=0; ii<orders[orderI].getLastParamIndex() - 1; ii++) {
-                                    orders[orderI].setParameter(ii, orders[orderI].getParameter(ii+1));
-                                }
-                                orders[orderI].setParameter(orders[orderI].getLastParamIndex(), paramZero);
+                            	String params = orders[orderI].getParameters();
+                            	params = params.substring(3) + "#" + paramZero;
+                                orders[orderI].setParameters(params);
                             }
                         }
                         ordersRead++;

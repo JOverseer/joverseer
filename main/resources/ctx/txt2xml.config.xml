@@ -465,6 +465,7 @@
 	                    	<startString>army rode </startString>
 	                    	<endString> of the nation</endString>
 	                    	<includeStart>0</includeStart>
+	                    	<includeEnd>0</includeEnd>
 	                    </processor>
 	                    <processor type="StringEnclosedMatch">
 	                    	<element>Morale</element>
@@ -472,6 +473,7 @@
 	                    	<endString> battle lines</endString>
 	                    	<removeNewLines>True</removeNewLines>
 	                    	<includeStart>0</includeStart>
+	                    	<includeEnd>0</includeEnd>	                    	
 	                    </processor>
 	                    
 	                    <processor type="Copy">

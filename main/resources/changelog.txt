@@ -1,3 +1,40 @@
+VERSION 0.9.11
+--------------
+
+29/01/2008
+
+	* Using the Edit Army function you can now change the nation to which an army belongs
+	
+	* Fixed a bug with travel mode and importing Automagic/MEOW files
+	
+	* Fixed a bug with harbors and ports being mixed up when creating new games
+	
+	* Fixed an issue with the automated versioning of order files
+	
+	* Fixed a bug with importing army details
+	
+
+
+VERSION 0.9.10
+--------------
+
+4/10/2007
+
+	* Fixes the bug with the travel mode and Orderchecker
+	
+	* Fixed a bug with the order editor that was causing an error when you
+tried to edit an existing 940 order
+
+	* All tables in the Info and OrderInfo panes are sortable. 
+		+ However numbers are treated as strings in all tables so sometimes they are sorted incorrectly.
+		+ You can sort by clicking on a column header.
+
+	* Fixed some order descriptions (360, 363, 700) in the OrderInfo pane
+that showed strange characters
+
+	* Fixed a bug that was causing the Credits Form to not show correctly
+with Java 1.6.
+
 VERSION 0.9.9
 -------------
 

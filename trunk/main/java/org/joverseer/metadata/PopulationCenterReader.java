@@ -75,12 +75,23 @@ public class PopulationCenterReader implements MetadataReader {
                     fortSize = FortificationSizeEnum.citadel;
                 }
 
+                
                 HarborSizeEnum harborSize = HarborSizeEnum.none;
-                if (harbor.equals("2")) {
-                    harborSize = HarborSizeEnum.port;
-                } else if (harbor.equals("1")) {
-                    harborSize = HarborSizeEnum.harbor;
+                // hack, in the data files for 2950 the numbers are messed up
+                if (!gm.gameType.equals(GameTypeEnum.game2950)) {
+	                if (harbor.equals("2")) {
+	                    harborSize = HarborSizeEnum.port;
+	                } else if (harbor.equals("1")) {
+	                    harborSize = HarborSizeEnum.harbor;
+	                }
+                } else {
+                	if (harbor.equals("2")) {
+                        harborSize = HarborSizeEnum.harbor;
+                    } else if (harbor.equals("1")) {
+                        harborSize = HarborSizeEnum.port;
+                    }
                 }
+                    
 
                 int nationNo = Integer.parseInt(nation);
 

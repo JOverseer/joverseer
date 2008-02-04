@@ -21,9 +21,9 @@ public class CharacterWrapper {
 	String name;
 	String orders;
 	int hexNo;
-        boolean assassinated;
-        boolean cursed;
-        boolean executed;
+    boolean assassinated;
+    boolean cursed;
+    boolean executed;
 	String artifacts;
         
 	ArrayList<OrderResult> orderResults = new ArrayList<OrderResult>();

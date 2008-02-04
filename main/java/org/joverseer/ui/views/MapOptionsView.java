@@ -41,6 +41,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox cmbMaps;
     JComboBox zoom;
     JComboBox hexGraphics;
+    JComboBox nationColors;
     JCheckBox drawOrders;
     JCheckBox drawNamesOnOrders;
     JCheckBox showClimate;
@@ -239,6 +240,29 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         if (hexGraphicsOpt != null) {
             hexGraphics.setSelectedItem(hexGraphicsOpt);
         }
+        
+        lb.row();
+        lb.cell(label = new JLabel("Nation colors : "));
+        lb.cell(nationColors = new JComboBox(new String[]{"Color/Nation", "Color/Allegiance"}), "align=left");
+        nationColors.setSelectedIndex(0);
+        lb.relatedGapRow();
+        nationColors.setPreferredSize(new Dimension(100, 16));
+        nationColors.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                String opt = (String)nationColors.getSelectedItem();
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+                if (opt == null) return;
+                if (opt.equals("Color/Nation")) {
+                	mapOptions.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsNation);                	
+                } else if (opt.equals("Color/Allegiance")) {
+                	mapOptions.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);                	
+                };
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+            }
+        });
+        
 
         resetGame();
         JPanel panel = lb.getPanel();

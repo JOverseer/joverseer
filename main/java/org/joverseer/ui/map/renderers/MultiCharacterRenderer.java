@@ -3,6 +3,7 @@ package org.joverseer.ui.map.renderers;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.info.InfoUtils;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -85,6 +87,12 @@ public class MultiCharacterRenderer implements Renderer {
 //      }
         Color color1 = ColorPicker.getInstance().getColor1(c.getNationNo());
         Color color2 = ColorPicker.getInstance().getColor2(c.getNationNo());
+        
+        boolean dragon = InfoUtils.isDragon(c.getName()); 
+        if (dragon) {
+        	color1 = ColorPicker.getInstance().getColor("dragon");
+        }
+        
         g.setColor(color1);
         //g.fillRect(x + dx, y + dy, w, h);
 
@@ -99,6 +107,12 @@ public class MultiCharacterRenderer implements Renderer {
         if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
             g.drawLine((int)e.getBounds().getX(), (int)e.getBounds().getY(), 
                     (int)e.getBounds().getMaxX(), (int)e.getBounds().getMaxY());
+        }
+        
+        if (dragon) {
+        	g.setColor(color2);
+        	Rectangle2D.Float ee = new Rectangle2D.Float(cx+2, cy+2, w-2, h-2);
+            g.fill(ee);
         }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(cx, cy, w, h), c);
     }

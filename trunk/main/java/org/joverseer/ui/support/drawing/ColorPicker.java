@@ -1,12 +1,17 @@
 package org.joverseer.ui.support.drawing;
 
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import org.joverseer.domain.NationRelations;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -40,33 +45,55 @@ public class ColorPicker implements ApplicationListener {
     }
 
     public Color getColor1(int nationNo) {
-        if (!color1.containsKey(nationNo)) {
+    	String key = String.valueOf(nationNo);
+    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
+        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+        	key = nr.getAllegiance().toString();
+        }
+        if (!color1.containsKey(key)) {
             String colorStr = null;
             GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
             try {
-                colorStr = getColorSource().getMessage("nation." + nationNo + "." + gameType.toString() + ".color", null, Locale.getDefault());
+                colorStr = getColorSource().getMessage("nation." + key + "." + gameType.toString() + ".color", null, Locale.getDefault());
             }
             catch (Exception exc) {
-                colorStr = getColorSource().getMessage("nation." + nationNo + ".color", null, Locale.getDefault());
+            	try {
+            		colorStr = getColorSource().getMessage("nation." + key + ".color", null, Locale.getDefault());
+            	}
+            	catch (Exception e) {
+        			colorStr = getColorSource().getMessage(key + ".color", null, Locale.getDefault());
+            	}
             };
-            color1.put(nationNo, Color.decode(colorStr));
+            color1.put(key, Color.decode(colorStr));
         }
-        return (Color)color1.get(nationNo);
+        return (Color)color1.get(key);
     }
 
     public Color getColor2(int nationNo) {
-        if (!color2.containsKey(nationNo)) {
+    	String key = String.valueOf(nationNo);
+    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
+        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+        	key = nr.getAllegiance().toString();
+        }
+        if (!color2.containsKey(key)) {
             String colorStr = null;
             GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
             try {
-                colorStr = getColorSource().getMessage("nation." + nationNo + "." + gameType.toString() + ".color2", null, Locale.getDefault());
+                colorStr = getColorSource().getMessage("nation." + key + "." + gameType.toString() + ".color2", null, Locale.getDefault());
             }
             catch (Exception exc) {
-                colorStr = getColorSource().getMessage("nation." + nationNo + ".color2", null, Locale.getDefault());
+            	try {
+            		colorStr = getColorSource().getMessage("nation." + key + ".color2", null, Locale.getDefault());
+            	}
+            	catch (Exception e) {
+        			colorStr = getColorSource().getMessage(key + ".color2", null, Locale.getDefault());
+            	}
             };
-            color2.put(nationNo, Color.decode(colorStr));
+            color2.put(key, Color.decode(colorStr));
         }
-        return (Color)color2.get(nationNo);
+        return (Color)color2.get(key);
     }
 
     public Color getColor(String color) {

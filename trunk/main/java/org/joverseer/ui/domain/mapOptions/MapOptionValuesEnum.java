@@ -18,4 +18,6 @@ public enum MapOptionValuesEnum {
     ShowClimateOff,
     HexGraphicsSimple,
     HexGraphicsTexture,
+    NationColorsNation,
+    NationColorsAllegiance
 }

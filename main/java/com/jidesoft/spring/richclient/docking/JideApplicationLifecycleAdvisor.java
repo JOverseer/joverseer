@@ -154,5 +154,16 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
         super.onPreInitialize(arg0);
     }
 
+	public void afterPropertiesSet() throws Exception {
+		try {
+			super.afterPropertiesSet();
+		}
+		catch (Exception exc) {
+			// workaround
+		}
+	}
+    
+    
+
 
 }

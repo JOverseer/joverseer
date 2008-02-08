@@ -1,5 +1,6 @@
 package org.joverseer.ui.views;
 
+import java.applet.AppletContext;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
@@ -42,6 +44,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox zoom;
     JComboBox hexGraphics;
     JComboBox nationColors;
+    JComboBox fogOfWarStyle;
     JCheckBox drawOrders;
     JCheckBox drawNamesOnOrders;
     JCheckBox showClimate;
@@ -125,6 +128,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         drawOrders.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+            	if (!fireEvents) return;
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
                 if (drawOrders.getModel().isSelected()) {
                     mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
@@ -173,6 +177,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         showClimate.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
+            	if (!fireEvents) return;
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
                 if (showClimate.getModel().isSelected()) {
                     mapOptions.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
@@ -202,6 +207,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         zoom.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
+            	if (!fireEvents) return;
                 ZoomOption opt = (ZoomOption)zoom.getSelectedItem();
                 if (opt == null) return;
                 MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
@@ -222,6 +228,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         hexGraphics.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
+            	if (!fireEvents) return;
                 String opt = (String)hexGraphics.getSelectedItem();
                 if (opt == null) return;
                 prefs.put("hexGraphics", opt);
@@ -250,6 +257,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         nationColors.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
+            	if (!fireEvents) return;
                 String opt = (String)nationColors.getSelectedItem();
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
                 if (opt == null) return;
@@ -263,17 +271,40 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
         });
         
+        lb.row();
+        lb.cell(label = new JLabel("Fog of war style : "));
+        lb.cell(fogOfWarStyle = new JComboBox(new String[]{"Lines", "X's (palantir)"}), "align=left");
+        fogOfWarStyle.setSelectedIndex(0);
+        lb.relatedGapRow();
+        fogOfWarStyle.setPreferredSize(new Dimension(120, 16));
+        fogOfWarStyle.addActionListener(new ActionListener() {
 
+            public void actionPerformed(ActionEvent arg0) {
+            	if (!fireEvents) return;
+                String opt = (String)fogOfWarStyle.getSelectedItem();
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+                if (opt == null) return;
+                prefs.put("fogOfWarStyle", opt);
+                if (opt.equals("Lines")) {
+                	mapOptions.put(MapOptionsEnum.FogOfWarStyle, MapOptionValuesEnum.FogOfWarLines);                	
+                } else if (opt.equals("X's (palantir)")) {
+                	mapOptions.put(MapOptionsEnum.FogOfWarStyle, MapOptionValuesEnum.FogOfWarXs);                	
+                };
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+            }
+        });
+        String fogOfWarStyleOpt = prefs.get("fogOfWarStyle", null);
+        if (fogOfWarStyleOpt != null) {
+        	fogOfWarStyle.setSelectedItem(fogOfWarStyleOpt);
+        }
+        
         resetGame();
         JPanel panel = lb.getPanel();
         panel.setPreferredSize(new Dimension(130, 200));
         panel.setBorder(new EmptyBorder(5,5,5,5));
         
         return new JScrollPane(panel);
-//        TableLayoutBuilder tlb = new TableLayoutBuilder();
-//        tlb.cell(panel, "align=left");
-//        tlb.gapCol();
-//        return panel;
     }
 
     public void resetGame() {
@@ -325,6 +356,20 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                     }
                 }
                 fireEvents = true;
+            }
+            if (e.getEventType().equals(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString())) {
+                fireEvents = false;
+                
+                fogOfWarStyle.setSelectedIndex(1);
+                zoom.setSelectedIndex(1);
+                hexGraphics.setSelectedItem("Simple");
+                nationColors.setSelectedIndex(0);
+                showClimate.setSelected(false);                
+                
+                fireEvents = true;
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+
             }
         }
     }

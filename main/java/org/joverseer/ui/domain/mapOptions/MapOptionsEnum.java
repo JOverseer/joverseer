@@ -15,6 +15,6 @@ public enum MapOptionsEnum {
     DrawNamesOnOrders,  // whether to draw char names when drawing orders
     ShowClimate,        // show the climate or not
     HexGraphics,        // type of graphics to use (TODO this could be a preference)
-    NationColors		// use color per nation or color per allegiance
-    
+    NationColors,		// use color per nation or color per allegiance
+    FogOfWarStyle       // the style to use to render fog of war
 }

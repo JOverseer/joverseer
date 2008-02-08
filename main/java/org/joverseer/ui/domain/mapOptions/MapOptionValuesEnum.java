@@ -19,5 +19,7 @@ public enum MapOptionValuesEnum {
     HexGraphicsSimple,
     HexGraphicsTexture,
     NationColorsNation,
-    NationColorsAllegiance
+    NationColorsAllegiance,
+    FogOfWarLines,
+    FogOfWarXs
 }

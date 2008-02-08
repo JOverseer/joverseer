@@ -21,5 +21,6 @@ public enum LifecycleEventsEnum {
     RefreshTurnMapItems,
     SelectCharEvent,
     SendOrdersByChat,
-    NoteUpdated
+    NoteUpdated,
+    SetPalantirMapStyleEvent
 }

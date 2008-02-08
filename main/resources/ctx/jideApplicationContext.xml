@@ -14,7 +14,7 @@
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="0.9.11"/>
-		<property name="buildId" value="2008-01-29"/>
+		<property name="buildId" value="2008-02-05"/>
 	</bean>
 	
 	<!--
@@ -198,8 +198,9 @@
                 <ref bean="defaultHexRenderer"/>
                 <ref bean="hexNumberRenderer"></ref>
                 <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>                
                 <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.ArmyIconRenderer"/>                
                 <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
                 <ref bean="hexInfoRenderer"/>
 				<ref bean="orderRenderer"/>

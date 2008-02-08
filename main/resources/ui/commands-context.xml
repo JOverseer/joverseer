@@ -72,6 +72,9 @@
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
+            	<!--
+            	<bean class="org.joverseer.ui.command.PalantirStyleMapCommand"/>
+            	-->
 			</list>
 		</property>
 	</bean>

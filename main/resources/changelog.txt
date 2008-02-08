@@ -1,7 +1,10 @@
 VERSION 0.9.11
 --------------
 
-29/01/2008
+05/02/2008
+    * The import procedure was changed so that PDF files are ignored if the nation's XML file has not imported. This should fix a number of issues.
+    
+    * Added a new map option that draws the map using one color per allegiance instead of one color per nation    
 
 	* Using the Edit Army function you can now change the nation to which an army belongs
 	

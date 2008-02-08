@@ -31,6 +31,7 @@ import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PdfTurnText;
+import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.SeasonEnum;
 import org.joverseer.game.Game;
@@ -564,8 +565,19 @@ public class TurnPdfReader implements Runnable {
         	errorOccurred = true;
             throw new Exception("Can only import pdfs for last turn.");
         }
+        
+        
         try {
             turn = game.getTurn(game.getMaxTurn());
+            // check to see if corresponding XML has been imported
+            PlayerInfo pi = (PlayerInfo)turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", turnInfo.getNationNo());
+            if (pi == null) {
+            	if (getMonitor() != null) {
+                    getMonitor().worked(100);
+                    getMonitor().subTaskStarted("Skipping file because XML has not been imported...");
+                }	
+            	return;
+            }
             
             try {
                 updateTurnData();
@@ -1130,6 +1142,7 @@ public class TurnPdfReader implements Runnable {
                     c.setDeathReason(deathReason);
                     c.setHexNo(cw.getHexNo());
                     c.setInfoSource(infoSource);
+                    c.setInformationSource(InformationSourceEnum.exhaustive);
                     cs.addItem(c);
                 }
             };

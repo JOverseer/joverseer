@@ -28,6 +28,7 @@ import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.tools.nationMessages.NationMessageParser;
@@ -292,6 +293,7 @@ public class TurnXmlReader implements Runnable{
             }
         }
         catch (Exception exc) {
+        	
             if (getMonitor() != null) {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
@@ -443,6 +445,7 @@ public class TurnXmlReader implements Runnable{
                     // char found
                     logger.debug("Character found in turn.");
                     if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
+                    		PdfTurnInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
                             (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue()))
                     {
                         logger.debug("Replace.");
@@ -452,6 +455,7 @@ public class TurnXmlReader implements Runnable{
                 }
             }
             catch (Exception exc) {
+            	logger.error(exc);
                 throw exc;
             }
         }

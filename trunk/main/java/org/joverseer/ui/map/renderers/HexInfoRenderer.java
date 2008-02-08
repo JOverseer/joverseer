@@ -1,6 +1,7 @@
 package org.joverseer.ui.map.renderers;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -14,6 +15,7 @@ import org.joverseer.domain.HexInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.NationMapRange;
@@ -38,8 +40,10 @@ public class HexInfoRenderer extends DefaultHexRenderer {
     int densityFactor = 4;
     Renderer hexNumberRenderer = null;
     BufferedImage img = null;
-
-    @Override
+    String fontName = "Microsoft Sans Serif";
+    int fontSize = 8;
+    int fontStyle = Font.ITALIC;
+    
     protected void init() {
         super.init();
         img = null;
@@ -104,6 +108,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         if (!appliesTo(obj)) {
             throw new IllegalArgumentException(obj.toString());
         }
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        boolean simpleColors = mapOptions.get(MapOptionsEnum.FogOfWarStyle) != null && !mapOptions.get(MapOptionsEnum.FogOfWarStyle).equals(MapOptionValuesEnum.FogOfWarLines);
 
         if (metadata == null) {
             init();
@@ -113,7 +119,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         Game game = gh.getGame();
         
         Object map = mapOptions.get(MapOptionsEnum.NationMap);
-        boolean showClimate = mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate) == MapOptionValuesEnum.ShowClimateOn;
+        boolean showClimate = !simpleColors && (mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate) == MapOptionValuesEnum.ShowClimateOn);
         boolean visible = false;
         if (map == null) {
             HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());
@@ -156,9 +162,29 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             }
         }
         if (!visible) {
-            Image img = getImage();
-            g.drawImage(img, x, y, null);
-            repaintNumber = true;
+        	if (simpleColors) {
+        		Font f = new Font(fontName, fontStyle, fontSize);
+        		int w = ((Number)f.getStringBounds("0000", g.getFontRenderContext()).getWidth()).intValue();
+        		x = metadata.getGridCellWidth() * metadata.getHexSize() + x - w / 2;
+                y = metadata.getGridCellHeight() * metadata.getHexSize() / 4 + y + 8;
+
+        		g.setFont(f);
+        		if (hex.getTerrain() == HexTerrainEnum.mountains ||
+        				hex.getTerrain() == HexTerrainEnum.forest ||
+        				hex.getTerrain() == HexTerrainEnum.hillsNrough ||
+        				hex.getTerrain() == HexTerrainEnum.swamp ||
+        				hex.getTerrain() == HexTerrainEnum.sea ||
+        				hex.getTerrain() == HexTerrainEnum.ocean) {
+        			g.setColor(Color.decode("#DDDDDD"));
+        		} else {
+        			g.setColor(Color.gray);
+        		}
+                g.drawString("x", x, y);
+        	} else {
+        		Image img = getImage();
+            	g.drawImage(img, x, y, null);
+            	repaintNumber = true;
+        	}
         }
         
         if (repaintNumber) {

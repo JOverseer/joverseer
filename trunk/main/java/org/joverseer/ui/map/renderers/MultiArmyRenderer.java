@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.joverseer.domain.Army;
 import org.joverseer.game.Game;
@@ -13,6 +14,8 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -28,8 +31,10 @@ import org.springframework.richclient.application.Application;
  */
 public class MultiArmyRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
-
+    
     public boolean appliesTo(Object obj) {
+    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+        if (!mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) return false;
         return Army.class.isInstance(obj);
     }
 

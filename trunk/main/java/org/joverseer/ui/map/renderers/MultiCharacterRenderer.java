@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -15,6 +16,8 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -70,7 +73,10 @@ public class MultiCharacterRenderer implements Renderer {
         charsInHex.removeAll(toRemove);
 
         int i = charsInHex.indexOf(c);
-
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        boolean simpleColors =!mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture); 
+        if (i>0 && simpleColors) return;
+        
         int ii = i % 12;
         int jj = i / 12;
 
@@ -87,9 +93,13 @@ public class MultiCharacterRenderer implements Renderer {
 //      }
         Color color1 = ColorPicker.getInstance().getColor1(c.getNationNo());
         Color color2 = ColorPicker.getInstance().getColor2(c.getNationNo());
+        if (simpleColors) {
+        	color1 = Color.white;
+        	color2 = Color.black;
+        }
         
         boolean dragon = InfoUtils.isDragon(c.getName()); 
-        if (dragon) {
+        if (dragon && !simpleColors) {
         	color1 = ColorPicker.getInstance().getColor("dragon");
         }
         
@@ -109,7 +119,7 @@ public class MultiCharacterRenderer implements Renderer {
                     (int)e.getBounds().getMaxX(), (int)e.getBounds().getMaxY());
         }
         
-        if (dragon) {
+        if (dragon && !simpleColors) {
         	g.setColor(color2);
         	Rectangle2D.Float ee = new Rectangle2D.Float(cx+2, cy+2, w-2, h-2);
             g.fill(ee);

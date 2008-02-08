@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -26,6 +29,8 @@ public class ArmyIconRenderer extends ImageRenderer {
     static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
     public boolean appliesTo(Object obj) {
+    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+        if (mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) return false;
         return Army.class.isInstance(obj);
     }
 
@@ -53,8 +58,13 @@ public class ArmyIconRenderer extends ImageRenderer {
         BufferedImage img = copyImage(armyImage);
         Color color1 = ColorPicker.getInstance().getColor1(army.getNationNo());
         Color color2 = ColorPicker.getInstance().getColor2(army.getNationNo());
-        changeColor(img, Color.white, color1);
-        changeColor(img, Color.black, color2);
+        if (allegiance == NationAllegianceEnum.FreePeople) {
+            changeColor(img, Color.red, color1);
+            changeColor(img, Color.black, color2);
+        } else {
+            changeColor(img, Color.red, color2);
+            changeColor(img, Color.black, color1);
+        }
 
         int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 5 / 20;
         int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 13 / 20;

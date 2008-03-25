@@ -1,0 +1,131 @@
+2002,0,1,0,13,2,0,Buhr Gasu,30,False,True,1,False
+3020,0,1,0,13,2,0,Alungrai,30,False,True,1,False
+3221,0,1,3,13,2,0,Carach Angren,30,False,True,1,False
+3021,0,1,0,13,2,0,Conasse,30,False,True,1,False
+3121,0,4,1,13,2,0,Durthang,75,False,True,1,False
+3120,0,4,2,13,2,0,Morannon,75,True,True,1,False
+2821,0,2,0,13,2,0,Pelkanin,45,False,True,1,False
+2920,0,2,0,13,2,0,Ras Morthil,45,False,True,1,False
+2921,0,1,0,13,2,0,Tar Beriad,30,False,True,1,False
+3119,0,2,0,13,2,0,Thuringwathost,45,False,True,1,False
+3014,0,4,1,13,2,0,Urbrith,75,False,True,1,False
+2105,0,3,0,11,2,0,Carach Annon,60,False,True,1,False
+1904,0,4,0,11,2,0,Carn Dum,75,False,True,1,False
+2108,0,3,1,11,2,0,Eithel Culroch,60,False,True,1,False
+2203,0,3,0,11,2,0,Helcaraxe,60,False,True,1,False
+2703,0,1,0,11,2,0,Kala Dalakurth,30,False,True,1,False
+2902,0,2,0,11,2,0,Lag-agul,45,False,True,1,False
+2311,0,1,0,11,2,0,Lag-lach,30,False,True,1,False
+2207,0,1,0,11,2,0,Lag-Mithrin,30,False,True,1,False
+2204,0,3,0,11,2,0,Lag-raukonar,60,False,True,1,False
+2206,0,1,0,11,2,0,Lag-Scorba,30,False,True,1,False
+2215,0,1,1,11,2,0,Lag-thrugrim,30,False,True,1,False
+2006,0,3,1,11,2,0,Mt Gram,60,False,True,1,False
+2305,0,5,1,11,2,0,Mount Gundabad,100,True,True,1,False
+2205,0,2,0,11,2,0,Narram,45,False,True,1,False
+2404,0,3,0,11,2,0,Yalumea,60,False,True,1,False
+2817,0,1,0,12,2,0,Angrest,30,False,True,1,False
+2715,0,5,3,12,2,0,Dol Guldur,100,True,True,1,True
+2714,0,1,0,12,2,0,Kelume,30,False,True,1,False
+3220,0,5,0,12,2,0,Lag-hundur,100,False,True,1,False
+2914,0,1,0,12,2,0,Lag-kanil,30,False,True,1,False
+2812,0,3,0,12,2,0,Lag-krazul,60,False,True,1,False
+2814,0,5,1,12,2,0,Lag-siif,100,False,True,1,False
+2717,0,1,0,12,2,0,Lamina,30,False,True,1,False
+3017,0,2,0,12,2,0,Maranwe,45,False,True,1,False
+2518,0,1,0,12,2,0,Ongush,30,False,True,1,False
+2809,0,4,1,12,2,0,San Goriwing,75,False,True,1,True
+2815,0,3,0,12,2,0,Snagarl,60,False,True,1,False
+2617,0,3,0,12,2,0,Tir Limlight,60,False,True,1,False
+2008,0,1,2,18,2,0,Cameth Brin,30,False,True,1,False
+2307,0,4,0,18,2,0,Delange,75,False,True,1,False
+2308,0,1,0,18,2,0,Dol Delgrod,30,False,True,1,False
+2310,0,2,0,18,2,0,Ebidos,45,False,True,1,False
+2403,0,2,0,18,2,0,Eldos,45,False,True,1,False
+2411,0,2,0,18,2,0,Eorcan,45,False,True,1,False
+2511,0,3,0,18,2,0,Foltur,60,False,True,1,False
+2409,0,4,1,18,2,0,Goblin-gate,75,False,True,1,False
+2309,0,4,1,18,2,0,Goblin-town,75,True,True,1,False
+2110,0,1,0,18,2,0,Lag-kaijfa,30,False,True,1,False
+2214,0,1,0,18,2,0,Lag-orod,30,False,True,1,False
+2212,0,3,4,18,2,0,Moria,60,False,True,1,False
+2210,0,1,0,18,2,0,Rhandir,30,False,True,1,False
+2211,0,2,2,18,2,0,Veasse,45,False,True,1,False
+1918,0,3,1,24,2,0,Arailt,60,False,True,1,False
+1916,0,3,0,24,2,0,Cillien,60,False,True,1,False
+1910,0,4,0,24,2,0,Fennas Druinin,75,False,True,1,False
+2015,0,3,0,24,2,0,Imled Druwaith,60,False,True,1,False
+2119,0,5,4,24,2,0,Isengard,100,True,True,1,False
+1912,0,2,0,24,2,0,Kemen Brith,45,False,True,1,False
+2115,0,2,4,24,2,0,Kemen Girith,45,False,True,1,False
+1920,0,1,0,24,2,0,Kemen-sereg,30,False,True,1,False
+1921,0,1,0,24,2,0,Ondicor,30,False,True,1,False
+2118,0,1,0,24,2,0,Ostimar,30,False,True,1,False
+2017,0,4,0,24,2,0,Treform,75,False,True,1,False
+2014,0,1,0,24,2,0,Wagala,30,False,True,1,False
+1917,0,3,1,24,2,0,Wularen,60,False,True,1,False
+2512,0,2,0,2,1,0,Bethadal,45,False,True,1,False
+3112,0,3,1,2,1,0,Buhr Ailgra,60,False,True,1,False
+2610,0,1,0,2,1,0,Buhr Martis,30,False,True,1,False
+3012,0,2,0,2,1,0,Buhr Waldmarh,45,False,True,1,False
+2711,0,4,1,2,1,0,Buhr Widufiras,75,False,True,1,False
+2609,0,3,0,2,1,0,Carrock,60,False,True,1,True
+3108,0,4,0,2,1,0,Dale,75,True,True,1,False
+2410,0,1,0,2,1,0,Ered Minrath,30,False,True,1,False
+3109,0,4,0,2,1,0,Esgaroth,75,False,True,1,False
+2405,0,3,1,2,1,0,Framsburg,60,False,True,1,False
+2508,0,4,1,2,1,0,Maethelberg,75,False,True,1,False
+2615,0,1,0,2,1,0,Mijesic,30,False,True,1,False
+2712,0,1,0,2,1,0,Sairtheod,30,False,True,1,False
+2613,0,1,0,2,1,0,Sarn Lothduin,30,False,True,1,False
+2315,0,1,0,2,1,0,Tol Ithluin,30,False,True,1,False
+2718,0,1,1,3,1,0,Aethertos,30,False,True,1,False
+2421,0,4,2,3,1,0,Aldburg,75,False,True,1,False
+2120,0,1,0,3,1,0,Belegos,30,False,True,1,False
+2419,0,4,1,3,1,0,Buhr Lomia,75,False,True,1,False
+2320,0,2,0,3,1,0,Buhr Mantros,45,False,True,1,False
+2319,0,3,0,3,1,0,Caranmir,60,False,True,1,False
+2220,0,2,0,3,1,0,Dunlostir,45,False,True,1,False
+2321,0,4,1,3,1,0,Edoras,75,True,True,1,False
+2121,0,4,2,3,1,0,Hornburg,75,False,True,1,False
+2720,0,3,1,3,1,0,Methedras,60,False,True,1,False
+2520,0,2,1,3,1,0,Onondrith,45,False,True,1,False
+3046,0,1,0,3,1,0,Portre,30,False,True,1,False
+3116,0,1,0,3,1,0,Romenost,30,False,True,1,False
+2420,0,2,0,3,1,0,Stowburg,45,False,True,1,False
+2908,0,5,2,5,1,0,Aradhrynd,100,True,True,1,False
+2608,0,4,0,5,1,0,Caras Amath,75,False,True,1,False
+2912,0,1,0,5,1,0,Caras Widu,30,False,True,1,False
+2915,0,1,0,5,1,0,Ceber Fanuin,30,False,True,1,False
+2708,0,1,0,5,1,0,Elentiniel,30,False,True,1,False
+2810,0,3,1,5,1,0,Erelinden,60,False,True,1,False
+2807,0,2,0,5,1,0,Faltision,45,False,True,1,False
+2709,0,3,1,5,1,0,Galadbrynd,60,False,True,1,False
+2911,0,3,0,5,1,0,Hen Gwirion,60,False,True,1,False
+2907,0,2,0,5,1,0,Kelume,45,False,True,1,False
+2808,0,1,0,5,1,0,Quilari,30,False,True,1,False
+2606,0,2,0,5,1,0,Sarn Celebdor,45,False,True,1,False
+2607,0,1,0,5,1,0,Timulion,30,False,True,1,False
+2906,0,4,0,5,1,0,Tuilindo,75,False,True,1,False
+3002,0,4,2,8,1,0,Celeb-ost,75,False,True,1,False
+2304,0,2,0,8,1,0,Duria,45,False,True,1,False
+3107,0,3,3,8,1,0,Erebor,60,False,True,1,False
+2306,0,2,0,8,1,0,Erui,45,False,True,1,False
+2313,0,1,0,8,1,0,Goronwe,30,False,True,1,False
+2407,0,2,0,8,1,0,Grimfall,45,False,True,1,False
+2604,0,3,0,8,1,0,Malrond,60,False,True,1,False
+2802,0,1,0,8,1,0,Mormoth,30,False,True,1,False
+2016,0,1,1,8,1,0,Naugrim,30,False,True,1,False
+2904,0,4,1,8,1,0,Norr-dum,75,False,True,1,False
+2804,0,1,1,8,1,0,Ringbar,30,False,True,1,False
+3004,0,1,0,8,1,0,Sarnost,30,False,True,1,False
+3205,0,4,2,8,1,0,Iron Hills,75,True,True,1,False
+2704,0,2,1,8,1,0,Thraktal,64,False,True,1,False
+2213,0,1,0,8,1,0,Zalag-varr,30,False,True,1,False
+2004,0,3,1,8,1,0,Zarak-dum,60,False,True,1,False
+2513,0,3,0,10,1,0,Caras Andamon,60,False,True,1,False
+2414,0,3,0,10,1,0,Caras Galadhon,60,False,True,1,False
+2413,0,5,0,10,1,0,Cerin Amroth,100,False,True,1,True
+2209,0,5,0,10,1,0,Imladris,100,False,True,1,True
+2514,0,5,2,10,1,0,Lothlorien,100,True,True,1,True
+2314,0,3,0,10,1,0,Nanduhirion,60,False,True,1,True

@@ -147,6 +147,7 @@
                <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
                <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand"/>
                <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>               
+               <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand"/>               
                <bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
             </list>
 	    </property>

@@ -75,7 +75,7 @@ public class PopulationCenterReader implements MetadataReader {
                     fortSize = FortificationSizeEnum.citadel;
                 }
 
-                
+                	
                 HarborSizeEnum harborSize = HarborSizeEnum.none;
                 // hack, in the data files for 2950 the numbers are messed up
                 if (gm.gameType.equals(GameTypeEnum.game2950)) {

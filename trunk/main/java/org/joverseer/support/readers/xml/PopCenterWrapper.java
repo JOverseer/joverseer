@@ -160,6 +160,10 @@ public class PopCenterWrapper {
             case 5:
                 pc.setSize(PopulationCenterSizeEnum.city);
                 break;
+            case 0:
+            	//TODO expecting clarification, this only exists in new xmls
+            	pc.setSize(PopulationCenterSizeEnum.ruins);
+            	break;
             default:
                 throw new RuntimeException("Illegal size " + getSize());
         }

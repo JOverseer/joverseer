@@ -80,5 +80,21 @@ public class ArtifactWrapper {
 		this.stealth = stealth;
 	}
 	
+	public String getPower() {
+		if (command > 0) {
+			return "Command " + command;
+		} else if (agent > 0) {
+			return "Agent " + agent;
+		} else if (emissary > 0) {
+			return "Emissary " + agent;
+		} else if (mage > 0) {
+			return "Mage " + agent;
+		} else if (stealth > 0) {
+			return "Stealth " + agent;
+		} else if (combat > 0) {
+			return "Combat " + combat;
+		}
+		return "";
+	}
 	
 }

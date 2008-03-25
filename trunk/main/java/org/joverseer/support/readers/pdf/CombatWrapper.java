@@ -255,6 +255,10 @@ public class CombatWrapper {
 	    				int no = Integer.parseInt(parts[0].substring(0, i).trim());
 	    				String rd = parts[0].substring(i + 1).trim();
 	    				ArmyElementType aet = InfoUtils.getElementTypeFromDescription(rd);
+	    				if (aet == null) {
+	    					System.out.println("Failed to find element type from description " + rd);
+	    					continue;
+	    				}
 	    				String weapons = parts[1];
 	    				String weaponRange = InfoUtils.getArmyWareTypeRange(weapons);
 	    				String armor = parts[2];

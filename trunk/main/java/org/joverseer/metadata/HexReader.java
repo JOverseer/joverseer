@@ -79,6 +79,7 @@ public class HexReader implements MetadataReader {
                 parts[0] = parts[0].replaceAll("\"", "");
                 int no = Integer.parseInt(parts[0]);
                 Hex hex = (Hex)hexes.get(no);
+                if (hex == null) continue;
 
                 int iside = Integer.parseInt(parts[2]);
                 int itype = Integer.parseInt(parts[3]);

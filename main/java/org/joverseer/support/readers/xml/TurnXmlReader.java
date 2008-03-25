@@ -67,8 +67,22 @@ public class TurnXmlReader implements Runnable{
         this.game = game;
         this.filename = filename;
     }
+    
+    
 
-    public ProgressMonitor getMonitor() {
+    public TurnInfo getTurnInfo() {
+		return turnInfo;
+	}
+
+
+
+	public void setTurnInfo(TurnInfo turnInfo) {
+		this.turnInfo = turnInfo;
+	}
+
+
+
+	public ProgressMonitor getMonitor() {
         return monitor;
     }
 

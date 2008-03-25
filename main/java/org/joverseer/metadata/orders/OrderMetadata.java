@@ -2,6 +2,10 @@ package org.joverseer.metadata.orders;
 
 import java.io.Serializable;
 import org.joverseer.domain.Character;
+import org.joverseer.game.Game;
+import org.joverseer.metadata.SNAEnum;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.support.GameHolder;
 
 /**
  * Order metadata. It holds information about orders:
@@ -17,7 +21,8 @@ import org.joverseer.domain.Character;
  *
  */
 public class OrderMetadata implements Serializable {
-    String name;
+    private static final long serialVersionUID = -1253155095462805602L;
+	String name;
     String code;
     int number;
     String difficulty;
@@ -105,6 +110,17 @@ public class OrderMetadata implements Serializable {
             return c.getMage() > 0;
         }
         return false;
+    }
+    
+    public boolean orderAllowedDueToScoutingSNA(Character c) {
+    	if (number == 925 || number == 905 || number == 910 || number == 915 || number == 920 || number == 930) {
+    		Nation n = c.getNation();
+    		if (n == null) return false;
+    		if (n.hasSna(SNAEnum.ScoutReconAt50)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
 }

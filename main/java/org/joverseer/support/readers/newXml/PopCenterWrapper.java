@@ -2,6 +2,8 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 
+import org.joverseer.domain.PopulationCenter;
+
 public class PopCenterWrapper {
 	int hexNo;
 	boolean sieged;
@@ -50,6 +52,10 @@ public class PopCenterWrapper {
 		return products;
 	}
 	
-	
+	public void updatePopCenter(PopulationCenter pc) {
+		for (ProductionWrapper pw : (ArrayList<ProductionWrapper>)products) {
+			pw.updatePopCenter(pc);
+		}
+	}
 	
 }

@@ -7,8 +7,15 @@ public class TurnInfo {
 	Container popCentres;
 	Container armies;
 	Container hiddenArtifacts;
-	Container nonHhiddenArtifacts;
+	Container nonHiddenArtifacts;
 	Container hexes;
+	
+	int turnNo = -1;
+    int nationNo = -1;
+    String date;
+    String season;
+    String nationName;
+    boolean seasonChanging;
 	
 	public Container getCharacters() {
 		return characters;
@@ -44,12 +51,12 @@ public class TurnInfo {
 		this.hiddenArtifacts = hiddenArtifacts;
 	}
 
-	public Container getNonHhiddenArtifacts() {
-		return nonHhiddenArtifacts;
+	public Container getNonHiddenArtifacts() {
+		return nonHiddenArtifacts;
 	}
 
-	public void setNonHhiddenArtifacts(Container nonHhiddenArtifacts) {
-		this.nonHhiddenArtifacts = nonHhiddenArtifacts;
+	public void setNonHiddenArtifacts(Container nonHhiddenArtifacts) {
+		this.nonHiddenArtifacts = nonHhiddenArtifacts;
 	}
 
 	public Container getHexes() {
@@ -58,6 +65,54 @@ public class TurnInfo {
 
 	public void setHexes(Container hexes) {
 		this.hexes = hexes;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getNationName() {
+		return nationName;
+	}
+
+	public void setNationName(String nationName) {
+		this.nationName = nationName;
+	}
+
+	public int getNationNo() {
+		return nationNo;
+	}
+
+	public void setNationNo(int nationNo) {
+		this.nationNo = nationNo;
+	}
+
+	public String getSeason() {
+		return season;
+	}
+
+	public void setSeason(String season) {
+		this.season = season;
+	}
+
+	public boolean getSeasonChanging() {
+		return seasonChanging;
+	}
+
+	public void setSeasonChanging(boolean seasonChanging) {
+		this.seasonChanging = seasonChanging;
+	}
+
+	public int getTurnNo() {
+		return turnNo;
+	}
+
+	public void setTurnNo(int turnNo) {
+		this.turnNo = turnNo;
 	}
 	
 	

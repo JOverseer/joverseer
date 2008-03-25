@@ -162,7 +162,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
         MapMetadata metadata = getMetadata();
         x = x - metadata.getMinMapColumn();
         y = y - metadata.getMinMapRow();
-        if (y % 2 == 0) {
+        if ((y + metadata.getMinMapRow() + 1) % 2 == 0) {
             location.setLocation(metadata.getHexSize() * metadata.getGridCellWidth() * x,
                                  metadata.getHexSize() * 3 / 4 * y * metadata.getGridCellHeight());
         } else {
@@ -631,7 +631,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
         MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
         int y = p.y / (metadata.getHexSize() * 3 / 4 * metadata.getGridCellHeight());
         int x;
-        if (y % 2 == 0) {
+        if ((y + metadata.getMinMapRow() + 1) % 2 == 0) {
             x = p.x / (metadata.getHexSize() * metadata.getGridCellWidth());
         } else {
             x = (p.x - metadata.getHexSize() / 2 * metadata.getGridCellWidth()) / (metadata.getHexSize() * metadata.getGridCellWidth());

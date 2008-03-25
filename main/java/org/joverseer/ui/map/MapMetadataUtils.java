@@ -20,7 +20,15 @@ public class MapMetadataUtils {
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
 
-        } else {
+        } else if (gameType == GameTypeEnum.gameUW) {
+            metadata.setMinMapColumn(19);
+            metadata.setMinMapRow(2);
+            metadata.setMaxMapColumn(32);
+            metadata.setMaxMapRow(21);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+
+        } else{
             metadata.setMinMapColumn(1);
             metadata.setMinMapRow(1);
             metadata.setMaxMapColumn(44);

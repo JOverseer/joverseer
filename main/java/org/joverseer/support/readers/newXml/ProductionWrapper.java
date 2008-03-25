@@ -1,5 +1,8 @@
 package org.joverseer.support.readers.newXml;
 
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.ProductEnum;
+
 public class ProductionWrapper {
 	String type;
 	String currentStores;
@@ -24,5 +27,19 @@ public class ProductionWrapper {
 		this.type = type;
 	}
 	
-	
+	public void updatePopCenter(PopulationCenter pc) {
+		try {
+			ProductEnum pe = ProductEnum.getFromCode(getType());
+			pc.setProduction(pe, getExpProduction());
+			try {
+				pc.setStores(pe, Integer.parseInt(getCurrentStores()));
+			}
+			catch (Exception e) {
+				pc.setStores(pe, 0);
+			}
+		}
+		catch (Exception e) {
+			//TODO add log message
+		}
+	}
 }

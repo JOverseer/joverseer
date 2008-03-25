@@ -1106,52 +1106,58 @@ public class TurnPdfReader implements Runnable {
         Container cws = turnInfo.getCharacters();
         Container cs = turn.getContainer(TurnElementsEnum.Character);
         for (CharacterWrapper cw : (ArrayList<CharacterWrapper>)cws.getItems()) {
-            Character c = (Character)cs.findFirstByProperty("name", cw.getName());
-            if (c == null) {
-                CharacterDeathReasonEnum deathReason = null;
-                
-                if (cw.getAssassinated()) {
-                    deathReason = CharacterDeathReasonEnum.Assassinated; 
-                } else if (cw.getCursed()) {
-                    deathReason = CharacterDeathReasonEnum.Cursed; 
-                    
-                } else if (cw.getExecuted()) {
-                    deathReason = CharacterDeathReasonEnum.Executed; 
-                }
-                
-                if (deathReason == null) {
-                    // check last turn
-                    // if charname existed, we can add him as dead
-                    Turn t = game.getTurn(turnInfo.getTurnNo() - 1);
-                    if (t != null) {
-                        c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", cw.getName());
-                        if (c != null) {
-                            deathReason = CharacterDeathReasonEnum.Dead;
-                        }
-                    }
-                }
-                
-                if (deathReason != null) {
-                    // assassinated
-                    // add char
-                    c = new Character();
-                    c.setName(cw.getName());
-                    c.setId(Character.getIdFromName(cw.getName()));
-                    c.setNationNo(turnInfo.getNationNo());
-                    c.setHealth(0);
-                    c.setDeathReason(deathReason);
-                    c.setHexNo(cw.getHexNo());
-                    c.setInfoSource(infoSource);
-                    c.setInformationSource(InformationSourceEnum.exhaustive);
-                    cs.addItem(c);
-                }
-            };
-            if (c != null) {
-                cw.updateCharacter(c);
-            }
-            for (OrderResult orderResult : cw.getOrderResults()) {
-                orderResult.updateGame(turn, nationNo, cw.getName());
-            }
+        	try {
+	            Character c = (Character)cs.findFirstByProperty("name", cw.getName());
+	            if (c == null) {
+	                CharacterDeathReasonEnum deathReason = null;
+	                
+	                if (cw.getAssassinated()) {
+	                    deathReason = CharacterDeathReasonEnum.Assassinated; 
+	                } else if (cw.getCursed()) {
+	                    deathReason = CharacterDeathReasonEnum.Cursed; 
+	                    
+	                } else if (cw.getExecuted()) {
+	                    deathReason = CharacterDeathReasonEnum.Executed; 
+	                }
+	                
+	                if (deathReason == null) {
+	                    // check last turn
+	                    // if charname existed, we can add him as dead
+	                    Turn t = game.getTurn(turnInfo.getTurnNo() - 1);
+	                    if (t != null) {
+	                        c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", cw.getName());
+	                        if (c != null) {
+	                            deathReason = CharacterDeathReasonEnum.Dead;
+	                        }
+	                    }
+	                }
+	                
+	                if (deathReason != null) {
+	                    // assassinated
+	                    // add char
+	                    c = new Character();
+	                    c.setName(cw.getName());
+	                    c.setId(Character.getIdFromName(cw.getName()));
+	                    c.setNationNo(turnInfo.getNationNo());
+	                    c.setHealth(0);
+	                    c.setDeathReason(deathReason);
+	                    c.setHexNo(cw.getHexNo());
+	                    c.setInfoSource(infoSource);
+	                    c.setInformationSource(InformationSourceEnum.exhaustive);
+	                    cs.addItem(c);
+	                }
+	            };
+	            if (c != null) {
+	                cw.updateCharacter(c);
+	            }
+	            for (OrderResult orderResult : cw.getOrderResults()) {
+	                orderResult.updateGame(turn, nationNo, cw.getName());
+	            }
+        	}
+        	catch (Exception exc) {
+        		logger.error("failed to parse character " + cw.getName());
+        		logger.error(exc);
+        	}
         }
     }
     

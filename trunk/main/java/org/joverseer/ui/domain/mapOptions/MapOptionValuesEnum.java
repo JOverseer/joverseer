@@ -16,10 +16,6 @@ public enum MapOptionValuesEnum {
     DrawNamesOnOrdersOff,
     ShowClimateOn,
     ShowClimateOff,
-    HexGraphicsSimple,
-    HexGraphicsTexture,
     NationColorsNation,
     NationColorsAllegiance,
-    FogOfWarLines,
-    FogOfWarXs
 }

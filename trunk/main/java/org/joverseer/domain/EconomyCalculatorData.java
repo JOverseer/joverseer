@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
@@ -195,6 +196,19 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
                     / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 
                     - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
             profits += productProfit;
+        }
+        
+        String pval = PreferenceRegistry.instance().getPreferenceValue("general.strictMarketLimit");
+        if (pval.equals("yes")) {
+	        int marketLimit = 20000;
+	        pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
+	    	try {
+	    		marketLimit = Integer.parseInt(pval);
+	    	}
+	    	catch (Exception exc) {
+	    	}
+	        
+	        return marketLimit > profits ? profits : marketLimit;
         }
         return profits;
     }

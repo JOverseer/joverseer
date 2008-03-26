@@ -11,10 +11,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
@@ -202,7 +204,9 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
         if (!withinMapRange(hex.getColumn(), hex.getRow(), metadata)) return;
         
         boolean imageDrawn = false;
-        if (mapOptions.get(MapOptionsEnum.HexGraphics) == null || mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) {
+        
+        String pval = PreferenceRegistry.instance().getPreferenceValue("map.terrainGraphics");
+        if (pval.equals("texture")) {
         	BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", 
                 metadata.getGridCellWidth() * metadata.getHexSize(), 
                 metadata.getGridCellHeight() * metadata.getHexSize());

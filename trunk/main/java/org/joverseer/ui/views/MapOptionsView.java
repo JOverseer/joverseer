@@ -42,9 +42,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JComboBox cmbTurns;
     JComboBox cmbMaps;
     JComboBox zoom;
-    JComboBox hexGraphics;
     JComboBox nationColors;
-    JComboBox fogOfWarStyle;
     JCheckBox drawOrders;
     JCheckBox drawNamesOnOrders;
     JCheckBox showClimate;
@@ -218,35 +216,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
         });
         
-        lb.row();
-        lb.cell(label = new JLabel("Terrain graphics : "));
-        lb.cell(hexGraphics = new JComboBox(new String[]{"Simple", "Texture"}), "align=left");
-        hexGraphics.setSelectedIndex(1);
-        lb.relatedGapRow();
-        hexGraphics.setPreferredSize(new Dimension(100, 16));
-        final Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-        hexGraphics.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-            	if (!fireEvents) return;
-                String opt = (String)hexGraphics.getSelectedItem();
-                if (opt == null) return;
-                prefs.put("hexGraphics", opt);
-                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
-                if (opt.equals("Simple")) {
-                	mapOptions.put(MapOptionsEnum.HexGraphics, MapOptionValuesEnum.HexGraphicsSimple);                	
-                } else if (opt.equals("Texture")) {
-                	mapOptions.put(MapOptionsEnum.HexGraphics, MapOptionValuesEnum.HexGraphicsTexture);                	
-                };
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
-            }
-        });
         
-        String hexGraphicsOpt = prefs.get("hexGraphics", null);
-        if (hexGraphicsOpt != null) {
-            hexGraphics.setSelectedItem(hexGraphicsOpt);
-        }
         
         lb.row();
         lb.cell(label = new JLabel("Nation colors : "));
@@ -271,33 +241,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             }
         });
         
-        lb.row();
-        lb.cell(label = new JLabel("Fog of war style : "));
-        lb.cell(fogOfWarStyle = new JComboBox(new String[]{"Lines", "X's (palantir)"}), "align=left");
-        fogOfWarStyle.setSelectedIndex(0);
-        lb.relatedGapRow();
-        fogOfWarStyle.setPreferredSize(new Dimension(120, 16));
-        fogOfWarStyle.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-            	if (!fireEvents) return;
-                String opt = (String)fogOfWarStyle.getSelectedItem();
-                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
-                if (opt == null) return;
-                prefs.put("fogOfWarStyle", opt);
-                if (opt.equals("Lines")) {
-                	mapOptions.put(MapOptionsEnum.FogOfWarStyle, MapOptionValuesEnum.FogOfWarLines);                	
-                } else if (opt.equals("X's (palantir)")) {
-                	mapOptions.put(MapOptionsEnum.FogOfWarStyle, MapOptionValuesEnum.FogOfWarXs);                	
-                };
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
-            }
-        });
-        String fogOfWarStyleOpt = prefs.get("fogOfWarStyle", null);
-        if (fogOfWarStyleOpt != null) {
-        	fogOfWarStyle.setSelectedItem(fogOfWarStyleOpt);
-        }
+        
         
         resetGame();
         JPanel panel = lb.getPanel();
@@ -360,9 +304,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             if (e.getEventType().equals(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString())) {
                 fireEvents = false;
                 
-                fogOfWarStyle.setSelectedIndex(1);
                 zoom.setSelectedIndex(1);
-                hexGraphics.setSelectedItem("Simple");
                 nationColors.setSelectedIndex(0);
                 showClimate.setSelected(false);                
                 

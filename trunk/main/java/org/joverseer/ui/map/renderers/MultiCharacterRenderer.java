@@ -73,8 +73,12 @@ public class MultiCharacterRenderer implements Renderer {
         charsInHex.removeAll(toRemove);
 
         int i = charsInHex.indexOf(c);
-        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
-        boolean simpleColors =!mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture); 
+        //HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        //boolean simpleColors =!mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture);
+        pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
+        boolean simpleColors = pval.equals("simplified");
+        
+        
         if (i>0 && simpleColors) return;
         
         int ii = i % 12;

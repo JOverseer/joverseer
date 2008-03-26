@@ -19,6 +19,7 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.NationMapRange;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
@@ -108,8 +109,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         if (!appliesTo(obj)) {
             throw new IllegalArgumentException(obj.toString());
         }
-        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
-        boolean simpleColors = mapOptions.get(MapOptionsEnum.FogOfWarStyle) != null && !mapOptions.get(MapOptionsEnum.FogOfWarStyle).equals(MapOptionValuesEnum.FogOfWarLines);
+        String pval = PreferenceRegistry.instance().getPreferenceValue("map.fogOfWarStyle");
+        boolean simpleColors = pval.equals("xs");
 
         if (metadata == null) {
             init();

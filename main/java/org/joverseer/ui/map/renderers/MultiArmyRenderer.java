@@ -33,8 +33,8 @@ public class MultiArmyRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
     
     public boolean appliesTo(Object obj) {
-    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
-        if (!mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) return false;
+        String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
+        if (pval.equals("simplified")) return false;
         return Army.class.isInstance(obj);
     }
 

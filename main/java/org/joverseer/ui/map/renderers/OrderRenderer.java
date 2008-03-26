@@ -171,7 +171,7 @@ public class OrderRenderer extends DefaultHexRenderer {
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
                 p2 = MapPanel.instance().getHexCenter(nextHexNo);
                 g.setStroke(GraphicUtils.getDashStroke(3, 8));
-                g.setColor(Color.black);
+                g.setColor(Color.RED);
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
                 double theta = Math.atan2((p2.y - p1.y) , (p2.x - p1.x));
                 Shape a = Arrow.getArrowHead(p2.x, p2.y, 10, 15, theta);
@@ -253,9 +253,9 @@ public class OrderRenderer extends DefaultHexRenderer {
                     }
                 }
                 if (cost + curCost <= maxCost && cost >= 0 && curCost > 0) {
-                    g.setColor(Color.black);
+                    g.setColor(Color.RED);
                 } else {
-                    g.setColor(Color.red);
+                    g.setColor(Color.PINK);
                 }
                 g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
@@ -359,7 +359,7 @@ public class OrderRenderer extends DefaultHexRenderer {
             if (distanceOk) {
                 g.setColor(Color.BLACK);
             } else {
-                g.setColor(Color.red);
+                g.setColor(Color.GRAY);
             }
             // draw arrowhead
             double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
@@ -402,7 +402,7 @@ public class OrderRenderer extends DefaultHexRenderer {
             if (distance <= 12) {
                 g.setColor(Color.BLACK);
             } else {
-                g.setColor(Color.red);
+                g.setColor(Color.GRAY);
             }
             // draw arrowhead
             double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
@@ -447,13 +447,13 @@ public class OrderRenderer extends DefaultHexRenderer {
 //          draw arrowhead
             double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
             g.setStroke(new BasicStroke(1));
-            g.setColor(Color.BLACK);
+            g.setColor(Color.GREEN);
             Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
             g.fill(arrowHead);
 
             Stroke s = GraphicUtils.getDashStroke(3, 6);
             g.setStroke(s);
-            g.setColor(Color.BLACK);
+            g.setColor(Color.GREEN);
             // draw line
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
@@ -485,13 +485,13 @@ public class OrderRenderer extends DefaultHexRenderer {
 //          draw arrowhead
             double theta = Math.atan2((p1.y - p2.y) , (p1.x - p2.x));
             g.setStroke(new BasicStroke(1));
-            g.setColor(Color.BLACK);
+            g.setColor(Color.GREEN);
             Shape arrowHead = Arrow.getArrowHead(p1.x, p1.y, 10, 15, theta);
             g.fill(arrowHead);
 
             Stroke s = GraphicUtils.getDashStroke(3, 6);
             g.setStroke(s);
-            g.setColor(Color.BLACK);
+            g.setColor(Color.GREEN);
             // draw line
             g.drawLine(p1.x, p1.y, p2.x, p2.y);
 

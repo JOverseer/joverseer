@@ -71,13 +71,12 @@ public class EditPreferencesForm extends AbstractForm {
             	components.put(p.getKey(), tf);
             	tlb.cell(tf, "colspec=left:170px");
             }
-            
-            tlb.relatedGapRow();
+           
         }
 
         panel = tlb.getPanel();
         JScrollPane scp = new JScrollPane(panel);
-        scp.setPreferredSize(new Dimension(500, 600));
+        scp.setPreferredSize(new Dimension(500, 700));
         return scp;
     }
 

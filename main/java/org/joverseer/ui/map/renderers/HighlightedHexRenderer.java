@@ -6,9 +6,13 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Stroke;
 
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 
 /**
  * Renders the highlighted hexes
@@ -66,5 +70,5 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
         this.width = width;
     }
 
-
+    
 }

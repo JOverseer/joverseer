@@ -27,6 +27,7 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -98,7 +99,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
      * If sell amount is above this amount give a "market limit warning" 
      */
     public static int getMarketLimitWarningThreshhold() {
-        return 20000;
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
+    	try {
+    		return Integer.parseInt(pval);
+    	}
+    	catch (Exception exc) {
+    		return 20000;
+    	}
     }
     
     /**

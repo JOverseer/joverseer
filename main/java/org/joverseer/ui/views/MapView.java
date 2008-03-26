@@ -101,15 +101,10 @@ public class MapView extends AbstractView  implements ApplicationListener {
                     mapPanel.updateUI();
                     // expand shr
                     Rectangle vr = mapPanel.getVisibleRect();
-                    int w = (int)(vr.getWidth() - shr.getWidth());
-                    int h = (int)(vr.getHeight() - shr.getHeight());
-                    Rectangle nr = new Rectangle(shr.x - w / 2,
-                                                 shr.y - h / 2,
-                                                 (int)shr.getWidth() + w / 2,
-                                                (int)shr.getHeight() + h);
-                    if (!scp.getViewportBorderBounds().contains(nr)) {
-                        mapPanel.scrollRectToVisible(nr);
-                    }
+                    
+                    vr.x = shr.x - (vr.width - shr.width) / 2;
+                    vr.y = shr.y - (vr.height - shr.height) / 2;
+                    mapPanel.scrollRectToVisible(vr);
                 }
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 mapPanel.invalidateAll();

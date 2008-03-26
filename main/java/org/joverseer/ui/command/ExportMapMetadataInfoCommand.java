@@ -17,7 +17,7 @@ import org.springframework.richclient.command.ActionCommand;
 public class ExportMapMetadataInfoCommand extends ActionCommand {
     
     public ExportMapMetadataInfoCommand() {
-        super("exportMapMetadataInfo");
+        super("exportMapMetadataInfoCommand");
     }
 
     protected void doExecuteCommand() {

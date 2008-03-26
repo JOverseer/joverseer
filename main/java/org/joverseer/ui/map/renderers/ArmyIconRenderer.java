@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
@@ -29,8 +30,8 @@ public class ArmyIconRenderer extends ImageRenderer {
     static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
     public boolean appliesTo(Object obj) {
-    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
-        if (mapOptions.get(MapOptionsEnum.HexGraphics).equals(MapOptionValuesEnum.HexGraphicsTexture)) return false;
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
+        if (!pval.equals("simplified")) return false;
         return Army.class.isInstance(obj);
     }
 

@@ -286,6 +286,111 @@
 						</list>
 					</property>
 				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.terrainGraphics</value>
+					</property>
+					<property name="description">
+						<value>Terrain Graphics</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>texture</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>texture</value>
+								</property>
+								<property name="description">
+									<value>Texture</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>simple</value>
+								</property>
+								<property name="description">
+									<value>Simple</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.fogOfWarStyle</value>
+					</property>
+					<property name="description">
+						<value>Fog of War Style</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>lines</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>lines</value>
+								</property>
+								<property name="description">
+									<value>Lines</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>xs</value>
+								</property>
+								<property name="description">
+									<value>X's (palantir)</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.charsAndArmies</value>
+					</property>
+					<property name="description">
+						<value>Chars/Armies</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>extended</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>simplified</value>
+								</property>
+								<property name="description">
+									<value>Simplified (Palantir)</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>extended</value>
+								</property>
+								<property name="description">
+									<value>Extended</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
@@ -362,6 +467,46 @@
 					</property>
 					<property name="description">
 						<value>Show Tip of the Day</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.marketSellLimit</value>
+					</property>
+					<property name="description">
+						<value>Market Sell Limit</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>20000</value>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.strictMarketLimit</value>
+					</property>
+					<property name="description">
+						<value>Strict Market Limit</value>
 					</property>
 					<property name="group">
 						<value>General</value>

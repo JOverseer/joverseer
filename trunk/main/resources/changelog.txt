@@ -1,3 +1,31 @@
+VERSION 0.9.12
+--------------
+
+25/03/2008
+	* Fixed a bug with parsing battle results that was failing to parse archers and produce accurate Army Estimates
+	
+	* You can now issue recon/scout orders for Dwarven characters using the Order Editor
+	
+	* Changes to the Map Options:
+		+ New map options:
+			o Option to show fog of war (unseen hexes) marked with a small x (like palantir)
+			o Option to show simplified character/army information (like palantir). With this option only one character and one army per side are shown in each hex.
+		+ The new map options as well as the "Terrain Graphics" option are now controled from the Preferences screen
+		
+	* Different colors for each type of order are now used when drawing orders
+		+ Character movement orders are drawn in black
+		+ Army movement orders are drawn in red
+		+ Transfers are drawn in green
+		+ Recons/scrys are drawn in blue
+		
+	* Added support for the Untold War scenario. 
+	
+	* Added a new command "Toggle Draw Orders" in the Tools menu which draws/hides all orders
+	
+	* Added a new preference (Preferences window) for the desired Market Sell Limit. The default is 20000.
+		+ The economy calculator now uses the sell limit as the maximum value for market sells. If you sell more, the turn totals are computed using the market limit.
+
+
 VERSION 0.9.11
 --------------
 

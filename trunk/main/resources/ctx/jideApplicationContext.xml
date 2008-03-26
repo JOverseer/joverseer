@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="0.9.11"/>
-		<property name="buildId" value="2008-02-05"/>
+		<property name="version" value="0.9.12"/>
+		<property name="buildId" value="2008-03-25"/>
 	</bean>
 	
 	<!--
@@ -171,6 +171,12 @@
 		<property name="densityFactor"><value>4</value></property>
 	    <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
     </bean>
+    
+    <bean id="highlightedHexRenderer" class="org.joverseer.ui.map.renderers.HighlightedHexRenderer">                
+    	<property name="width"><value>2</value></property>
+    	<property name="highlightColor"><value>#ff3300</value></property>
+   	</bean>
+    
 	
     <bean id="orderRenderer" class="org.joverseer.ui.map.renderers.OrderRenderer"/>
 	
@@ -209,10 +215,7 @@
                 <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
                 <bean class="org.joverseer.ui.map.renderers.EncounterRenderer"/>                                
 				<bean class="org.joverseer.ui.map.renderers.NotesRenderer"/>            
-                <bean class="org.joverseer.ui.map.renderers.HighlightedHexRenderer">                
-                	<property name="width"><value>2</value></property>
-                	<property name="highlightColor"><value>#ff3300</value></property>
-               	</bean>
+                <ref bean="highlightedHexRenderer"/>				
             </list>
         </property>
     </bean>

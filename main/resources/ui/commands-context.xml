@@ -193,6 +193,8 @@
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
             	<value>separator</value>
+            	<bean class="org.joverseer.ui.command.ToggleDrawAllOrdersCommand"/>
+            	<value>separator</value>
                 <bean class="org.joverseer.ui.command.CreateCharacterCommand"/>
             	<bean class="org.joverseer.ui.command.ImportNotesFromPreviousTurnCommand"/>
             	<value>separator</value>

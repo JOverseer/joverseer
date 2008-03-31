@@ -71,12 +71,12 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                     if (r.getErrorOccured()) {
                     	errorOccurred = true;
                     }
-//                    final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
-//                    xr.setMonitor(monitor);
-//                    xr.run();
-//                    if (xr.getErrorOccured()) {
-//                    	errorOccurred = true;
-//                    }
+                    final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
+                    xr.setMonitor(monitor);
+                    xr.run();
+                    if (xr.getErrorOccured()) {
+                    	errorOccurred = true;
+                    }
                 }
                 catch (Exception exc) {
                     int a = 1;

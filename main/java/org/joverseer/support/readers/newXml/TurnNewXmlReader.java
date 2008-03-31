@@ -8,12 +8,17 @@ import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Artifact;
+import org.joverseer.domain.Company;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.InfoSource;
@@ -69,8 +74,8 @@ public class TurnNewXmlReader implements Runnable {
             digester.addSetProperties("METurn/More/TurnInfo/Season", "changing", "seasonChanging");
             // set nested properties
             digester.addRule("METurn/More/TurnInfo",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Season"},
-                            new String[]{"season"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Season", "NationAlignment"},
+                            new String[]{"season", "alignment"}));
             snpr.setAllowUnknownChildElements(true);
 			
 			// create container for Non Hidden Artifactss
@@ -130,15 +135,48 @@ public class TurnNewXmlReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
             // add to container
             digester.addSetNext("METurn/More/PopCentres/PopCentre/Product", "addProduct", "org.joverseer.support.readers.newXml.ProductionWrapper");
-            if (getMonitor() != null) {
-                getMonitor().subTaskStarted(String.format("Parsing file %s for additional info...", new Object[]{fileName}));
-                getMonitor().worked(5);
-            }
+            
+            // create container for Nation Relations
+            digester.addObjectCreate("METurn/NationRelations", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/NationRelations", "setNationRelations");
+            // create pop center wrapper
+            digester.addObjectCreate("METurn/NationRelations/NationRelation", "org.joverseer.support.readers.newXml.NationRelationWrapper");
+            // set hex no
+            digester.addSetProperties("METurn/NationRelations/NationRelation", "ID", "nationNo");
+            // set relation
+            digester.addCallMethod("METurn/NationRelations/NationRelation", "setRelation", 1);
+            digester.addCallParam("METurn/NationRelations/NationRelation", 0);
+            // add to container
+            digester.addSetNext("METurn/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.newXml.NationRelationWrapper");
+            
+            
+            // create container for Companies
+            digester.addObjectCreate("METurn/Companies", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/Companies", "setCompanies");
+            // create pop center wrapper
+            digester.addObjectCreate("METurn/Companies/Company", "org.joverseer.support.readers.newXml.CompanyWrapper");
+            // set hex no
+            digester.addSetProperties("METurn/Companies/Company", "HexID", "hexNo");
+            // set nested properties
+            digester.addRule("METurn/Companies/Company",
+                    snpr = new SetNestedPropertiesRule(new String[]{"CompanyCO"},
+                            new String[]{"commander"}));
+            snpr.setAllowUnknownChildElements(true);
+            
+            // set members
+            digester.addCallMethod("METurn/Companies/Company/CompanyMember", "addMember", 1);
+            digester.addCallParam("METurn/Companies/Company/CompanyMember", 0);
+            // add to container
+            digester.addSetNext("METurn/Companies/Company", "addItem", "org.joverseer.support.readers.newXml.CompanyWrapper");
+            
             turnInfo = (TurnInfo) digester.parse(fileName);
 		}
 
 		catch (Exception exc) {
 			// todo fix
+			logger.error(exc);
 			throw new Exception("Error parsing Xml Turn file.", exc);
 		}
 	}
@@ -193,10 +231,99 @@ public class TurnNewXmlReader implements Runnable {
                 errorOccured = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
+            if (getMonitor() != null) {
+                getMonitor().worked(20);
+                getMonitor().subTaskStarted("Updating relations...");
+            }
+            try {
+                updateRelations(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(30);
+                getMonitor().subTaskStarted("Updating companies...");
+            }
+            try {
+                updateCompanies(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
         }
         catch (Exception exc) {
         	
         }
+	}
+	
+	private void updateRelations(Game game) throws Exception {
+		Container nrws = turnInfo.getNationRelations();
+        Container nationRelations = turn.getContainer(TurnElementsEnum.NationRelation);
+        String pcsNotFound = "";
+        
+        Nation nation = game.getMetadata().getNationByNum(nationNo);
+        if (nation == null) {
+        	throw new Exception("Failed to find nation with number " + nationNo);
+        }
+        Container nrs = turn.getContainer(TurnElementsEnum.NationRelation);
+        NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", nationNo);
+        
+        if (turnInfo.getAlignment() == 1) {
+            nation.setAllegiance(NationAllegianceEnum.FreePeople);
+        } else if (turnInfo.getAlignment() == 2) {
+            nation.setAllegiance(NationAllegianceEnum.DarkServants);
+        } else if (turnInfo.getAlignment() == 3) {
+            nation.setAllegiance(NationAllegianceEnum.Neutral);
+        } 
+        if (nr == null) {
+        	throw new Exception("Failed to retrieve NationRelations object for nation " + nationNo);
+        }
+        nr.setAllegiance(nation.getAllegiance());
+        
+        String problematicNations = "";
+        for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)nrws.getItems()) {
+        	Nation n = game.getMetadata().getNationByNum(nrw.getNationNo());
+        	if (n == null) {
+        		problematicNations += (problematicNations.equals("") ? "" : ", ") + nrw.getNationNo();
+        	} else {
+	            int natNo = n.getNumber();
+	            NationRelationsEnum relation = NationRelationsEnum.Tolerated;
+	            if (nrw.getRelation().equals("Friendly")) {
+	                relation = NationRelationsEnum.Friendly;
+	            } else if (nrw.getRelation().equals("Tolerated")) {
+	                relation = NationRelationsEnum.Tolerated;
+	            } else if (nrw.getRelation().equals("Neutral")) {
+	                relation = NationRelationsEnum.Neutral;
+	            } else if (nrw.getRelation().equals("Disliked")) {
+	                relation = NationRelationsEnum.Disliked;
+	            } else if (nrw.getRelation().equals("Hated")) {
+	                relation = NationRelationsEnum.Hated;
+	            }  
+	            nr.setRelationsFor(natNo, relation);
+        	}
+        }
+        if (!problematicNations.equals("")) {
+        	throw new Exception("Failed to update relations with nations " + problematicNations + " because the nation names were invalid.");
+        }
+	}
+	
+	private void updateCompanies(Game game) {
+		Container cws = turnInfo.getCompanies();
+		Container cs = turn.getContainer(TurnElementsEnum.Company);
+		for (CompanyWrapper cw : (ArrayList<CompanyWrapper>)cws.getItems()) {
+			Company newC = cw.getCompany();
+			newC.setInfoSource(infoSource);
+            Company oldC = (Company)cs.findFirstByProperty("commander", newC.getCommander());
+            if (oldC != null) {
+                cs.removeItem(oldC);
+            }
+            cs.addItem(newC);
+		}
 	}
 	
 	private void updatePopCenters(Game game) {

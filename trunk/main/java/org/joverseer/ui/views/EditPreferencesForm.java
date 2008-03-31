@@ -71,7 +71,7 @@ public class EditPreferencesForm extends AbstractForm {
             	components.put(p.getKey(), tf);
             	tlb.cell(tf, "colspec=left:170px");
             }
-           
+            tlb.relatedGapRow();
         }
 
         panel = tlb.getPanel();

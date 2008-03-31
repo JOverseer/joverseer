@@ -9,6 +9,8 @@ public class TurnInfo {
 	Container hiddenArtifacts;
 	Container nonHiddenArtifacts;
 	Container hexes;
+	Container nationRelations;
+	Container companies;
 	
 	int turnNo = -1;
     int nationNo = -1;
@@ -16,7 +18,16 @@ public class TurnInfo {
     String season;
     String nationName;
     boolean seasonChanging;
+    int alignment;
 	
+	public int getAlignment() {
+		return alignment;
+	}
+
+	public void setAlignment(int alignment) {
+		this.alignment = alignment;
+	}
+
 	public Container getCharacters() {
 		return characters;
 	}
@@ -113,6 +124,22 @@ public class TurnInfo {
 
 	public void setTurnNo(int turnNo) {
 		this.turnNo = turnNo;
+	}
+
+	public Container getNationRelations() {
+		return nationRelations;
+	}
+
+	public void setNationRelations(Container nationRelations) {
+		this.nationRelations = nationRelations;
+	}
+
+	public Container getCompanies() {
+		return companies;
+	}
+
+	public void setCompanies(Container companies) {
+		this.companies = companies;
 	}
 	
 	

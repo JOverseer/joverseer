@@ -37,6 +37,7 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
+import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -73,7 +74,7 @@ public class OrderEditorListView extends ItemListView {
     JComboBox combo;
     OrderParameterValidator validator = new OrderParameterValidator();
     Color paramErrorColor = Color.decode("#ffff99");
-
+    Color paramWarningColor = Color.decode("#99FF99");
     public OrderEditorListView() {
         super(TurnElementsEnum.Character, OrderEditorTableModel.class);
     }
@@ -169,15 +170,15 @@ public class OrderEditorListView extends ItemListView {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 if (isCellSelected(row, column)) {
-                    if (!c.getBackground().equals(paramErrorColor)) {
+                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor)) {
                         c.setBackground(selectionBackground);
                     }
                 } else if ((row / 2) % 2 == 1) {
-                    if (!c.getBackground().equals(paramErrorColor)) {
+                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor)) {
                         c.setBackground(Color.decode("#eeeeee"));
                     }
                 } else {
-                    if (!c.getBackground().equals(paramErrorColor)) {
+                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor)) {
                         c.setBackground(normalBackground);
                     }
                 }
@@ -535,26 +536,28 @@ public class OrderEditorListView extends ItemListView {
             int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
             Object obj = tableModel.getRow(idx);
             Order o = (Order) obj;
-            String msg = null;
+            OrderValidationResult res = null;
             // TODO handle larger paramNos
             if (paramNo < 9) {
-                msg = validator.checkParam(o, paramNo);
+                res = validator.checkParam(o, paramNo);
             }
 
-            if (msg != null) {
+            if (res != null) {
                 if (isSelected) {
                     lbl.setBackground(selectionBackground);
-                } else {
+                } else if (res.getLevel() == OrderValidationResult.ERROR){
                     lbl.setBackground(paramErrorColor);
+                } else if (res.getLevel() == OrderValidationResult.WARNING){
+                	lbl.setBackground(paramWarningColor);
                 }
-                lbl.setToolTipText(msg);
+                lbl.setToolTipText(res.getMessage());
             } else {
                 if (isSelected) {
                     lbl.setBackground(selectionBackground);
                 } else {
                     lbl.setBackground(normalBackground);
                 }
-                lbl.setToolTipText(msg);
+                lbl.setToolTipText(null);
             }
             return lbl;
         }
@@ -581,21 +584,23 @@ public class OrderEditorListView extends ItemListView {
             int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
             Object obj = tableModel.getRow(idx);
             Order o = (Order) obj;
-            String msg = validator.checkOrder(o);
-            if (msg != null) {
+            OrderValidationResult res = validator.checkOrder(o);
+            if (res != null) {
                 if (isSelected) {
                     lbl.setBackground(selectionBackground);
-                } else {
+                } else if (res.getLevel() == OrderValidationResult.ERROR){
                     lbl.setBackground(paramErrorColor);
+                } else if (res.getLevel() == OrderValidationResult.WARNING) {
+                	lbl.setBackground(paramWarningColor);
                 }
-                lbl.setToolTipText(msg);
+                lbl.setToolTipText(res.getMessage());
             } else {
                 if (isSelected) {
                     lbl.setBackground(selectionBackground);
                 } else {
                     lbl.setBackground(normalBackground);
                 }
-                lbl.setToolTipText(msg);
+                lbl.setToolTipText(null);
             }
             return lbl;
         }

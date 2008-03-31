@@ -13,6 +13,7 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
@@ -26,6 +27,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -55,6 +57,15 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
     protected void doExecuteCommand() {
         try {
             if (!ActiveGameChecker.checkActiveGameExists()) return;
+            
+            if (GameHolder.instance().getGame().getMetadata().getGameType().equals(GameTypeEnum.gameUW)) {
+            	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+                MessageDialog md = new MessageDialog(
+                ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
+                ms.getMessage("errorOrdercheckerDoesNotSupportUW", new String[]{}, Locale.getDefault()));
+                md.showDialog();
+                return;
+            }
             
             // show a form so that the user selects the desired nation
             final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));

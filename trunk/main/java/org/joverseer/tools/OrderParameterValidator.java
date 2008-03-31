@@ -91,7 +91,7 @@ public class OrderParameterValidator {
         return orderEditorData;
     }
 
-    public String checkOrder(Order o) {
+    public OrderValidationResult checkOrder(Order o) {
         if (o.isBlank())
             return null;
         OrderMetadata om = (OrderMetadata) GameHolder.instance().getGame().getMetadata().getOrders()
@@ -106,7 +106,7 @@ public class OrderParameterValidator {
                 if (capital == null)
                     return null;
                 if (capital.getHexNo() != o.getCharacter().getHexNo()) {
-                    return "Character must be in capital";
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "Character must be in capital");
                 }
             }
         }
@@ -131,13 +131,13 @@ public class OrderParameterValidator {
                 } else if (om.getSkillRequirement().equals("ES")) {
                     type = "Emmisary";
                 }
-                return "Character is trying to issue two " + type + " skill orders.";
+                new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " skill orders.");
             }
         }
         return null;
     }
 
-    public String checkParam(Order o, int iParam) {
+    public OrderValidationResult checkParam(Order o, int iParam) {
         if (o.isBlank())
             return null;
 
@@ -153,24 +153,24 @@ public class OrderParameterValidator {
                 if (inList(paramValue, "e,ne,nw,se,sw,w,h")) {
                     return null;
                 } else {
-                    return "must be one of " + "e,ne,nw,se,sw,w,h";
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + "e,ne,nw,se,sw,w,h");
                 }
             } else if (iParam < iLastParam) {
                 if (inList(paramValue, "e,ne,nw,se,sw,w,h")) {
                     return null;
                 } else {
-                    return "must be one of " + "e,ne,nw,se,sw,w,h,no,ev";
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + "e,ne,nw,se,sw,w,h,no,ev");
                 }
             } else if (iParam == iLastParam) {
                 if (inList(paramValue, "e,ne,nw,se,sw,w,h,no,ev")) {
                     return null;
                 } else {
-                    return "must be one of " + "e,ne,nw,se,sw,w,h,no,ev";
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + "e,ne,nw,se,sw,w,h,no,ev");
                 }
             } else if (iParam == iLastParam + 1) {
                 String lastParam = o.getParameter(iLastParam);
                 if (inList(lastParam, "e,ne,nw,se,sw,w")) {
-                    return "must be one of " + "e,ne,nw,se,sw,w,h,no,ev";
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + "e,ne,nw,se,sw,w,h,no,ev");
                 } else {
                     return null;
                 }
@@ -178,14 +178,14 @@ public class OrderParameterValidator {
                 if (isEmpty(paramValue)) {
                     return null;
                 } else {
-                    return "must be empty";
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "must be empty");
                 }
             }
         }
 
         OrderEditorData oed = (OrderEditorData) getOrderEditorData().findFirstByProperty("orderNo", o.getOrderNo());
         if (oed == null) {
-            return "OED not found";
+            return new OrderValidationResult(OrderValidationResult.ERROR, "OED not found");
         }
         String paramType = "";
         
@@ -218,146 +218,152 @@ public class OrderParameterValidator {
             if (isNumberOK(paramValue, 1, 99)) {
                 return null;
             } else {
-                return "must be between 1 and 99";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 99");
             }
         } else if (paramType.equals("ae")) {
             if (isNumberOK(paramValue, 0, 99)) {
                 return null;
             } else {
-                return "must be between 0 and 99";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 0 and 99");
             }
         } else if (paramType.equals("i")) {
             if (isNumberOK(paramValue, 0, 999)) {
                 return null;
             } else {
-                return "must be between 0 and 999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 0 and 999");
             }
         }
         if (paramType.equals("%")) {
             if (isNumberOK(paramValue, 1, 100)) {
                 return null;
             } else {
-                return "must be between 1 and 100";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 100");
             }
         } else if (paramType.equals("b")) {
             if (isNumberOK(paramValue, 1, 999)) {
                 return null;
             } else {
-                return "must be between 1 and 999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 999");
             }
         } else if (paramType.equals("d")) {
             if (isNumberOK(paramValue, 1, 99999)) {
                 return null;
             } else {
-                return "must be between 1 and 99999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 99999");
             }
         } else if (paramType.equals("de")) {
             if (isNumberOK(paramValue, 0, 99999)) {
                 return null;
             } else {
-                return "must be between 0 and 99999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 0 and 99999");
             }
         } else if (paramType.equals("c")) {
             if (isNumberOK(paramValue, 1, 999999)) {
                 return null;
             } else {
-                return "must be between 1 and 999999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 999999");
             }
         } else if (paramType.equals("e")) {
             if (isEmpty(paramValue) || isNumberOK(paramValue, 1, 999)) {
                 return null;
             } else {
-                return "must be empty or between 1 and 999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be empty or between 1 and 999");
             }
         } else if (paramType.equals("f")) {
             if (isEmpty(paramValue) || isNumberOK(paramValue, 1, 99999)) {
                 return null;
             } else {
-                return "must be empty or between 1 and 99999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be empty or between 1 and 99999");
             }
         } else if (paramType.equals("g")) {
             if (isNumberOK(paramValue, 0, 999)) {
                 return null;
             } else {
-                return "must be between 0 and 999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 0 and 999");
             }
         } else if (paramType.equals("nam")) {
-            if (isEmpty(paramValue) || lengthOK(paramValue, 5, 17)) {
+            if (isEmpty(paramValue)) {
+            	return new OrderValidationResult(OrderValidationResult.WARNING, "may be between 5 and 17 chars (name).");
+            } else if (lengthOK(paramValue, 5, 17)) {
                 return null;
             } else {
-                return "must be between 5 and 17 chars";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 5 and 17 chars");
             }
         } else if (paramType.equals("rsp")) {
             if (isResponse(paramValue) || lengthOK(paramValue, 1, 20)) {
                 return null;
             } else {
-                return "must be between 5 and 17 chars";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 5 and 17 chars");
             }
         } else if (paramType.equals("dcid")) {
             if (isCharId(paramValue) || isNumberOK(paramValue, 1, 99999)) {
                 return null;
             } else {
-                return "must be 5 lowercase chars (including spaces) or a number between 1 and 99999";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be 5 lowercase chars (including spaces) or a number between 1 and 99999");
             }
         } else if (paramType.equals("cid")) {
             if (isCharId(paramValue)) {
                 return null;
             } else {
-                return "must be 5 lowercase chars (including spaces)";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be 5 lowercase chars (including spaces)");
             }
         } else if (paramType.equals("xid")) {
             if (isEmpty(paramValue) || isCharId(paramValue)) {
                 return null;
             } else {
-                return "must be 5 lowercase chars (including spaces) or empty";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be 5 lowercase chars (including spaces) or empty");
             }
         } else if (paramType.equals("hex")) {
             if (isHexNum(paramValue)) {
                 return null;
             } else {
-                return "must be a 4-digit (hex) number";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be a 4-digit (hex) number");
             }
         } else if (paramType.equals("alg")) {
             if (inList(paramValue, "g,e,n")) {
                 return null;
             } else {
-                return "must be one of g,e,n";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of g,e,n");
             }
         } else if (paramType.equals("arm")) {
             if (inList(paramValue, "le,br,st,mi,no")) {
                 return null;
             } else {
-                return "must be one of le,br,st,mi,no";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of le,br,st,mi,no");
             }
         } else if (paramType.equals("dir")) {
             if (inList(paramValue, "ne,nw,w,se,sw,e,h")) {
                 return null;
             } else {
-                return "must be one of ne,nw,w,se,sw,e,h";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of ne,nw,w,se,sw,e,h");
             }
         } else if (paramType.equals("dirx")) {
             if (isEmpty(paramValue) || inList(paramValue, "ne,nw,w,se,sw,e,h")) {
                 return null;
             } else {
-                return "must be one of ne,nw,w,se,sw,e,h";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of ne,nw,w,se,sw,e,h");
             }
         } else if (paramType.equals("gen")) {
-            if (isEmpty(paramValue) || inList(paramValue, "m,f")) {
+            if (isEmpty(paramValue)) {
+            	return new OrderValidationResult(OrderValidationResult.WARNING, "may be one of m,f (gender)");
+            } else  if (inList(paramValue, "m,f")) {
                 return null;
             } else {
-                return "must be one of m,f";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of m,f");
             }
         } else if (paramType.equals("genc")) {
-            if (isEmpty(paramValue) || inList(paramValue, "m,f")) {
+        	if (isEmpty(paramValue)) {
+            	return new OrderValidationResult(OrderValidationResult.WARNING, "may be one of m,f (gender)");
+            } else  if (inList(paramValue, "m,f")) {
                 return null;
             } else {
-                return "must be one of m,f";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of m,f");
             }
         } else if (paramType.equals("map")) {
             if (inList(paramValue, "ne,nw,w,se,sw,e")) {
                 return null;
             } else {
-                return "must be one of ne,nw,w,se,sw,e";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of ne,nw,w,se,sw,e");
             }
         } else if (paramType.equals("nat")) {
             Game g = GameHolder.instance().getGame();
@@ -371,105 +377,105 @@ public class OrderParameterValidator {
             if (inList(paramValue, nations)) {
                 return null;
             } else {
-                return "must be one of " + nations;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + nations);
             }
         } else if (paramType.equals("prd")) {
             if (inList(paramValue, "mi,st,br,le,ti,mo,fo")) {
                 return null;
             } else {
-                return "must be one of mi,st,br,le,ti,mo,fo";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of mi,st,br,le,ti,mo,fo");
             }
         } else if (paramType.equals("pro")) {
             if (inList(paramValue, "go,mi,st,br,le,ti,mo,fo")) {
                 return null;
             } else {
-                return "must be one of go,mi,st,br,le,ti,mo,fo";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of go,mi,st,br,le,ti,mo,fo");
             }
         } else if (paramType.equals("spc")) {
             String spells = "102,104,106,108,110,112,114,116,202,204,206,208,210,212,214,216,218,220,222,224,226,228,230,232,234,236,238,240,242,244,246,248";
             if (inList(paramValue, spells)) {
                 return null;
             } else {
-                return "must be one of " + spells;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + spells);
             }
         } else if (paramType.equals("sph")) {
             String spells = "2,4,6,8";
             if (inList(paramValue, spells)) {
                 return null;
             } else {
-                return "must be one of " + spells;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + spells);
             }
         } else if (paramType.equals("spl")) {
             String spells = "402,404,406,408,410,412,413,414,415,416,417,418,419,420,422,424,426,428,430,432,434,436";
             if (inList(paramValue, spells)) {
                 return null;
             } else {
-                return "must be one of " + spells;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + spells);
             }
         } else if (paramType.equals("spm")) {
             String spells = "302,304,306,308,310,312,314";
             if (inList(paramValue, spells)) {
                 return null;
             } else {
-                return "must be one of " + spells;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + spells);
             }
         } else if (paramType.equals("spx")) {
             String spells = "502,504,506,508,510,512";
             if (inList(paramValue, spells)) {
                 return null;
             } else {
-                return "must be one of " + spells;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + spells);
             }
         } else if (paramType.equals("spz")) {
             String spells = "102,104,106,108,110,112,114,116,202,204,206,208,210,212,214,216,218,220,222,224,226,228,230,232,234,236,238,240,242,244,246,248,402,404,406,408,410,412,413,414,415,416,417,418,419,420,422,424,426,428,430,432,434,436,302,304,306,308,310,312,314,502,504,506,508,510,512";
             if (inList(paramValue, spells)) {
                 return null;
             } else {
-                return "must be one of " + spells;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + spells);
             }
         } else if (paramType.equals("tac")) {
             String list = "ch,fl,st,su,hr,am";
             if (inList(paramValue, list)) {
                 return null;
             } else {
-                return "must be one of " + list;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + list);
             }
         } else if (paramType.equals("trp")) {
             String list = "hc,lc,hi,li,ar,ma";
             if (inList(paramValue, list)) {
                 return null;
             } else {
-                return "must be one of " + list;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + list);
             }
         } else if (paramType.equals("wep")) {
             String list = "mi,st,br,wo";
             if (inList(paramValue, list)) {
                 return null;
             } else {
-                return "must be one of " + list;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + list);
             }
         } else if (paramType.equals("yn")) {
             String list = "y,n";
             if (inList(paramValue, list)) {
                 return null;
             } else {
-                return "must be one of " + list;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + list);
             }
         } else if (paramType.equals("mt")) {
             String list = "no,ev";
             if (inList(paramValue, list)) {
                 return null;
             } else {
-                return "must be one of " + list;
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be one of " + list);
             }
         } else if (paramType.equals("")) {
             if (paramValue.equals("-")) {
                 return null;
             } else {
-                return "must be empty";
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be empty");
             }
         } else {
-            return "unchecked";
+            return new OrderValidationResult(OrderValidationResult.ERROR, "unchecked");
         }
 
     }

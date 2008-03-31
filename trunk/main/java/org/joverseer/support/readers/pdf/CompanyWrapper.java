@@ -38,6 +38,8 @@ public class CompanyWrapper {
         this.members = members;
     }
     
+    
+    
     public Company getCompany() {
         Company c = new Company();
         c.setHexNo(hexNo);

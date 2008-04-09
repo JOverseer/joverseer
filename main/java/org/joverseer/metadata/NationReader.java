@@ -167,6 +167,36 @@ public class NationReader implements MetadataReader {
                 {"Khand Easterlings", "Kh", new Object[]{SNAEnum.CommandersAt40, SNAEnum.ChallengeBonus, SNAEnum.BetterMoraleAtNoFood}},
         };
     
+    Object[][] nations_KS =
+        new Object[][]{
+                {"Unknown", "Un", new Object[]{}},
+                {"Line of Eldacar", "LE", new Object[]{}},
+                {"Rebels of Ered Lithui", "REL", new Object[]{}},
+                {"Rhovanion", "Rho", new Object[]{}},
+                {"Horselords of Rhovanion", "HR", new Object[]{}},
+                {"Kingdom of Arnor", "KoA", new Object[]{}},
+                {"Quendi", "Qu", new Object[]{}},
+                {"Nation VII", "N07", new Object[]{}},
+                {"Nation VIII", "N08", new Object[]{}},
+                {"Nation IX", "N09", new Object[]{}},
+                {"Nation X", "N10", new Object[]{}},
+                {"Line of Castamir", "LoC", new Object[]{}},
+                {"Line of Morlaen", "LoM", new Object[]{}},
+                {"Line of Elendin", "Loe", new Object[]{}},
+                {"Southron Kingdoms", "SK", new Object[]{}},
+                {"Hithlum", "Hi", new Object[]{}},
+                {"Witch-realm of Angmar", "WA", new Object[]{}},
+                {"NationXVII", "N17", new Object[]{}},
+                {"NationXVIII", "N18", new Object[]{}},
+                {"NationXIX", "N19", new Object[]{}},
+                {"NationXX", "N20", new Object[]{}},
+                {"Line of Tirkhor", "Co", new Object[]{}},
+                {"Khazad", "Ea", new Object[]{}},
+                {"NationXXIII", "N23", new Object[]{}},
+                {"NationXXVI", "N24", new Object[]{}},
+                {"NationXXV", "N25", new Object[]{}},
+        };
+    
     private void addSNAs(Nation n, Object[] snas) {
         for (Object sna : snas) {
             n.getSnas().add((SNAEnum)sna);
@@ -251,6 +281,21 @@ public class NationReader implements MetadataReader {
                     n.setAllegiance(NationAllegianceEnum.Neutral);
                 }
                 addSNAs(n, (Object[])nations_UW[i][2]);
+                nations.add(n);
+            }
+        }else if (gm.getGameType() == GameTypeEnum.gameKS) {
+            for (int i=0; i<26; i++) {
+                String shortName = (String)nations_KS[i][1];
+                String name = (String)nations_KS[i][0];
+                Nation n = new Nation(i, name, shortName);
+                if (n.getNumber() <= 10) {
+                    n.setAllegiance(NationAllegianceEnum.FreePeople);
+                } else if (n.getNumber() <= 20) {
+                    n.setAllegiance(NationAllegianceEnum.DarkServants);
+                } else {
+                    n.setAllegiance(NationAllegianceEnum.Neutral);
+                }
+                addSNAs(n, (Object[])nations_KS[i][2]);
                 nations.add(n);
             }
         }

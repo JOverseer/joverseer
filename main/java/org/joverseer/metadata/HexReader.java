@@ -1,4 +1,4 @@
-package org.joverseer.metadata;
+	package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -75,6 +75,8 @@ public class HexReader implements MetadataReader {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
             while ((ln = reader.readLine()) != null) {
+            	// format is <hex>,0,side,traffic type
+            	
                 String[] parts = ln.split(",");
                 parts[0] = parts[0].replaceAll("\"", "");
                 int no = Integer.parseInt(parts[0]);

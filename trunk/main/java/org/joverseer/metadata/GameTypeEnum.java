@@ -12,7 +12,8 @@ public enum GameTypeEnum {
     game2950("2950"),
     gameBOFA("BOFA"),
     gameFA("1000"),
-    gameUW("UW");
+    gameUW("UW"),
+    gameKS("KS");
 
     private final String myName;
 

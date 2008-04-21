@@ -7,6 +7,7 @@ import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
+import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.NationRelations;
@@ -164,12 +165,39 @@ public class TurnNewXmlReader implements Runnable {
                     snpr = new SetNestedPropertiesRule(new String[]{"CompanyCO"},
                             new String[]{"commander"}));
             snpr.setAllowUnknownChildElements(true);
-            
             // set members
             digester.addCallMethod("METurn/Companies/Company/CompanyMember", "addMember", 1);
             digester.addCallParam("METurn/Companies/Company/CompanyMember", 0);
             // add to container
             digester.addSetNext("METurn/Companies/Company", "addItem", "org.joverseer.support.readers.newXml.CompanyWrapper");
+            
+            // create container for armies
+            digester.addObjectCreate("METurn/More/Armies", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/More/Armies", "setArmies");
+            // create army wrapper
+            digester.addObjectCreate("METurn/More/Armies/Army", "org.joverseer.support.readers.newXml.ArmyWrapper");
+            //  set commander
+            digester.addSetProperties("METurn/More/Armies/Army", "Commander", "commander");
+            // set nested properties
+            digester.addRule("METurn/More/Armies/Army",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Food", "Morale", "Warships", "Transports", "Warships", "Climate"},
+                            new String[]{"food", "morale", "warships", "transports", "warships"}));
+            snpr.setAllowUnknownChildElements(true);
+        	// add to container
+            digester.addSetNext("METurn/More/Armies/Army", "addItem", "org.joverseer.support.readers.newXml.ArmyWrapper");
+            
+            // create army regiment wrapper
+            digester.addObjectCreate("METurn/More/Armies/Army/Troops", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
+            // set troop type
+            digester.addSetProperties("METurn/More/Armies/Army/Troops", "Type", "troopType");
+            // set nested properties
+            digester.addRule("METurn/More/Armies/Army/Troops",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Number", "Training", "Weapons", "Armor", "Description"},
+                            new String[]{"number", "training", "weapons", "armor", "description"}));
+            snpr.setAllowUnknownChildElements(true);
+        	// add regiment to army
+            digester.addSetNext("METurn/More/Armies/Army/Troops", "addRegiment", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
             
             turnInfo = (TurnInfo) digester.parse(fileName);
 		}
@@ -255,6 +283,18 @@ public class TurnNewXmlReader implements Runnable {
                 errorOccured = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
+            if (getMonitor() != null) {
+                getMonitor().worked(40);
+                getMonitor().subTaskStarted("Updating armies...");
+            }
+            try {
+                updateArmies(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
         }
         catch (Exception exc) {
         	
@@ -324,6 +364,17 @@ public class TurnNewXmlReader implements Runnable {
             }
             cs.addItem(newC);
 		}
+	}
+	
+	private void updateArmies(Game game) {
+		Container aws = turnInfo.getArmies();
+		Container as = turn.getContainer(TurnElementsEnum.Army);
+		for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
+            Army a = (Army)as.findFirstByProperty("commanderName", aw.getCommander());
+            if (a != null) {
+                aw.updateArmy(a);
+            }
+        }
 	}
 	
 	private void updatePopCenters(Game game) {

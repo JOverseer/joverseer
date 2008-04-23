@@ -26,11 +26,12 @@
 	-->
 	<bean id="lifecycleAdvisor" 
 		class="com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor" >
-<!--
-		<property name="windowCommandBarDefinitions" value="com/jidesoft/spring/richclient/googledemo/config/commandsContext.xml" />
--->
+        <property name="windowCommandManagerBeanName" value="windowCommandManager" />
+    	<property name="menubarBeanName" value="menuBar" />
+	    <property name="toolbarBeanName" value="toolBar" />
         <property name="windowCommandBarDefinitions" value="ui/commands-context.xml"/>
 		<property name="startingPageId" value="mainPage" />
+		
 	</bean>
 	
 	<!-- 
@@ -80,8 +81,8 @@
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>org.springframework.richclient.application.messages</value>
 				<value>ui.messages</value>
+				<value>org.springframework.richclient.application.messages</value>
 			</list>
 		</property>
 	</bean>
@@ -94,13 +95,12 @@
 				<value>classpath:ui/images.properties</value>
 			</list>
 		</property>
-        <property name="resourceBasePath" value="images/"/>
 	</bean>
 
 	<bean id="imageSource"
 		class="org.springframework.richclient.image.DefaultImageSource">
         <constructor-arg index="0" ref="imageResourcesFactory"/>
-        <property name="brokenImageIndicator" value="images/alert/error_obj.gif"/>
+        <property name="brokenImageIndicator" value="/org/springframework/richclient/images/alert/error_obj.gif"/>
 	</bean>
 	
 	<bean id="iconSource" 

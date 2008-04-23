@@ -37,7 +37,6 @@ import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
-import org.springframework.richclient.progress.StatusBarCommandGroup;
 
 import com.jidesoft.action.CommandBarFactory;
 import com.jidesoft.docking.DefaultDockableHolder;
@@ -52,7 +51,6 @@ import com.sun.org.apache.bcel.internal.generic.LNEG;
  */
 public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
 
-    private StatusBarCommandGroup statusBar = null;
     private RepaintManager repaintManager;
     boolean canCloseWindow = true;
 
@@ -113,16 +111,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
         this.repaintManager = repaintManager;
     }
 
-    public void setStatusBar(StatusBarCommandGroup statusBar) {
-        this.statusBar = statusBar;
-    }
-
-    public StatusBarCommandGroup getStatusBarCommandGroup() {
-        if (statusBar == null) {
-            statusBar = new StatusBarCommandGroup();
-        }
-        return statusBar;
-    }
+    
 
     private void initializeRepaintManager() {
         if (repaintManager != null) {

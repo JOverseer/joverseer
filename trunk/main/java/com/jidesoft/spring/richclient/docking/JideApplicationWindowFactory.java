@@ -15,15 +15,17 @@
  */
 package com.jidesoft.spring.richclient.docking;
 
-import javax.swing.JTabbedPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.ApplicationWindowFactory;
+import org.springframework.richclient.application.config.ApplicationWindowConfigurer;
+import org.springframework.richclient.application.support.DefaultApplicationWindowConfigurer;
 
 import com.jidesoft.docking.DefaultDockableHolder;
 import com.jidesoft.docking.DockingManager;
+import com.jidesoft.docking.PopupMenuCustomizer;
 import com.jidesoft.swing.JideTabbedPane;
 import com.jidesoft.utils.Lm;
 
@@ -38,7 +40,7 @@ import com.jidesoft.utils.Lm;
  */
 public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 
-	private Short layoutVersion = 1;
+	private Short layoutVersion = null;
 	private String profileKey = "profileKey";
 	
 	private boolean saveLayoutOnClose = true;
@@ -57,6 +59,12 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	private boolean heavyweightComponentEnabled = false;
 	private boolean showWorkspace = true;
 	private DockingManager.TabbedPaneCustomizer tabbedPaneCustomizer = new DefaultCustomizer();
+	private PopupMenuCustomizer popupMenuCustomizer = null;
+	
+	
+	private boolean showMenuBar = true;
+	private boolean showToolBar = true;
+	private boolean showStatusBar = true;
 	
 	public ApplicationWindow createApplicationWindow() {
 		DefaultDockableHolder dockableHolder = new DefaultDockableHolder();
@@ -65,7 +73,15 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 		dockableHolder.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		Lm.setParent(dockableHolder);
 		
-		JideApplicationWindow window = new JideApplicationWindow(dockableHolder);
+		JideApplicationWindow window = new JideApplicationWindow(dockableHolder){
+		    protected ApplicationWindowConfigurer initWindowConfigurer() {
+		    	DefaultApplicationWindowConfigurer configurer = new DefaultApplicationWindowConfigurer( this );
+		    	configurer.setShowMenuBar(showMenuBar);
+		    	configurer.setShowToolBar(showToolBar);
+		    	configurer.setShowStatusBar(showStatusBar);
+		    	return configurer;
+		    }
+		};
 		JideApplicationWindowCloseListener closeListener = new JideApplicationWindowCloseListener(window,
 				dockableHolder.getDockingManager(), saveLayoutOnClose);
 		dockableHolder.addWindowListener(closeListener);
@@ -90,11 +106,35 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
     	manager.setDoubleClickAction(doubleClickAction);
     	manager.setHeavyweightComponentEnabled(heavyweightComponentEnabled);
     	manager.setShowWorkspace(showWorkspace);
-    	manager.setTabbedPaneCustomer(tabbedPaneCustomizer);
     	manager.setFloatable(floatable);
+    	manager.setTabbedPaneCustomizer(tabbedPaneCustomizer);
+    	if(popupMenuCustomizer != null){
+    		manager.setPopupMenuCustomizer(popupMenuCustomizer);
+    	}
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(!heavyweightComponentEnabled);
     }
 	
+    public void setShowToolBar(boolean showToolBar){
+    	this.showToolBar = showToolBar;
+    }
+    
+    public void setShowMenuBar(boolean showMenuBar){
+    	this.showMenuBar = showMenuBar;
+    }
+    
+    public void setShowStatusBar(boolean showStatusBar){
+    	this.showStatusBar = showStatusBar;
+    }
+    
+    /**
+     * Specify the popup menu customizer to be used the the docking manager.
+     * 
+     * @param customizer
+     */
+    public void setPopupMenuCustomizer(PopupMenuCustomizer customizer){
+    	this.popupMenuCustomizer = customizer;
+    }
+    
     /**
      * Specify the tabbed pane customizer to be used by the docking manager
      * 
@@ -174,10 +214,8 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	}
 
 	private static class DefaultCustomizer implements DockingManager.TabbedPaneCustomizer{
-	        
-        	public void customize(JideTabbedPane tabbedPane) {
-                    tabbedPane.setTabResizeMode(JideTabbedPane.RESIZE_MODE_NONE);
-                    tabbedPane.setShowTabButtons(true);
-        	}
+		public void customize(JideTabbedPane tabbedPane) {
+		}
 	}
 }
+

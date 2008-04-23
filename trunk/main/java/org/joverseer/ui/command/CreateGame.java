@@ -37,7 +37,7 @@ public class CreateGame extends ActionCommand {
         final NewGame ng = new NewGame();
         FormModel formModel = FormModelHelper.createFormModel(ng);
         final NewGameForm form = new NewGameForm(formModel);
-        FormBackedDialogPage page = new FormBackedDialogPage(form);
+        final FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         final MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {

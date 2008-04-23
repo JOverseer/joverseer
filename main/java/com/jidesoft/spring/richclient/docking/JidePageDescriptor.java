@@ -15,43 +15,33 @@
  */
 package com.jidesoft.spring.richclient.docking;
 
-
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Icon;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.richclient.application.PageDescriptor;
+import org.apache.log4j.Logger;
 import org.springframework.richclient.application.PageLayoutBuilder;
+import org.springframework.richclient.application.support.AbstractPageDescriptor;
 
-//import com.jidesoft.spring.richclient.docking.editor.DefaultEditorRegistry;
-//import com.jidesoft.spring.richclient.docking.editor.EditorRegistry;
 import com.jidesoft.spring.richclient.perspective.PerspectiveManager;
 
 /**
- * An implemenatation of a Spring RCP PageDescriptor that
+ * An implementation of a Spring RCP PageDescriptor that
  * describes a Spring Page within a JideApplicationWindow. 
  * 
  * @author Tom Corbin
  * @author Jonny Wray
  * 
  */
-public class JidePageDescriptor implements PageDescriptor, BeanNameAware {
-	private static final Log log = LogFactory.getLog(JidePageDescriptor.class);
+public class JidePageDescriptor extends AbstractPageDescriptor {
+	private static final Logger log = Logger.getLogger(JidePageDescriptor.class);
 
 	private List _viewDescriptors = new ArrayList();
-	private String _id;
-//	private EditorRegistry editorFactory = new DefaultEditorRegistry();
     private Object initialEditorContents = null;
 
     private PerspectiveManager perspectiveManager = new PerspectiveManager();
     
-    public PerspectiveManager getPerspectiveManager(){
+	public PerspectiveManager getPerspectiveManager(){
     	return perspectiveManager;
     }
     
@@ -59,7 +49,7 @@ public class JidePageDescriptor implements PageDescriptor, BeanNameAware {
 	 * The bean name is the default id
 	 */
 	public void setBeanName(String beanName){
-		setId(beanName);
+		super.setBeanName(beanName);
 		perspectiveManager.setPageName(beanName);
 	}
 	
@@ -86,26 +76,7 @@ public class JidePageDescriptor implements PageDescriptor, BeanNameAware {
     	return initialEditorContents;
     }
 	
-//	public EditorRegistry getEditorFactory(){
-//		return editorFactory;
-//	}
 	
-	/**
-	 * Injects an editor factory to be used to obtain editor descriptors
-	 * from a given editor object, the details of which is of course 
-	 * application specific. If an editor factory is not injected the
-	 * default is used which simply returns nothing for every editor 
-	 * object
-	 * 
-	 * @param editorFactory
-	 */
-//	public void setEditorFactory(EditorRegistry editorFactory){
-//		this.editorFactory = editorFactory;
-//	}
-//	
-	public String getId() {
-		return _id;
-	}
 	
 	/**
 	 * Builds the initial page layout by iterating the
@@ -121,51 +92,12 @@ public class JidePageDescriptor implements PageDescriptor, BeanNameAware {
 			}
 		}
 	}
-
-	public String getDisplayName() {
-		return null;
-	}
-
-	public String getCaption() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.richclient.core.DescribedElement#getDescription()
-	 */
-	public String getDescription() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.richclient.core.VisualizedElement#getImage()
-	 */
-	public Image getImage() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.richclient.core.VisualizedElement#getIcon()
-	 */
-	public Icon getIcon() {
-		return null;
-	}
-
+	
 	public List getViewDescriptors() {
 		return _viewDescriptors;
 	}
 
 	public void setViewDescriptors(List viewDescriptors) {
 		_viewDescriptors = viewDescriptors;
-	}
-
-	public void setId(String id) {
-		_id = id;
 	}
 }

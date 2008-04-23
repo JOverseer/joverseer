@@ -41,7 +41,7 @@ public class EditNoteForm extends AbstractForm {
         formBuilder.setLabelAttributes("valign=top colGrId=label colSpec=left:pref");
         
         SwingBindingFactory sbf = (SwingBindingFactory)getBindingFactory();
-        GraphicUtils.registerIntegerPropertyConverters(this, "targetDescription");
+        //GraphicUtils.registerIntegerPropertyConverters(this, "targetDescription");
         
         JTextField tf = (JTextField)formBuilder.add(sbf.createBoundTextField("targetDescription"))[1];
         tf.setEditable(false);

@@ -20,7 +20,7 @@ public class ConnectToChatServerForm extends AbstractForm {
     protected JComponent createFormControl() {
         TableFormBuilder tlb = new TableFormBuilder(getBindingFactory());
         
-        GraphicUtils.registerIntegerPropertyConverters(this, "port");
+        //GraphicUtils.registerIntegerPropertyConverters(this, "port");
         
         tlb.add("myIP");
         tlb.row();

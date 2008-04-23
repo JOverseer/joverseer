@@ -39,7 +39,7 @@ public class CreateCharacterCommand extends ActionCommand {
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
             protected void onAboutToShow() { 
-                this.setDescription(this.getDescription().getText());
+                this.setDescription(this.getDescription().getMessage());
             }
 
             protected boolean onFinish() {

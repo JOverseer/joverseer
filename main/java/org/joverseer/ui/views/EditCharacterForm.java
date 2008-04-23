@@ -34,7 +34,7 @@ public class EditCharacterForm extends AbstractForm {
     protected JComponent createFormControl() {
         TableFormBuilder formBuilder = new TableFormBuilder(getBindingFactory());
         
-        GraphicUtils.registerIntegerPropertyConverters(this, "hexNo");
+        //GraphicUtils.registerIntegerPropertyConverters(this, "hexNo");
 
         formBuilder.add("name");
         formBuilder.row();

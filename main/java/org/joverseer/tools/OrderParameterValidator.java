@@ -369,10 +369,16 @@ public class OrderParameterValidator {
             Game g = GameHolder.instance().getGame();
             String nations = "";
             if (g.getMetadata().getGameType() == GameTypeEnum.game1650
-                    || g.getMetadata().getGameType() == GameTypeEnum.game2950) {
+                    || g.getMetadata().getGameType() == GameTypeEnum.game2950
+                    || g.getMetadata().getGameType() == GameTypeEnum.gameFA
+                    ) {
                 nations = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25";
             } else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
                 nations = "10,11,12,13,14";
+            } else if (g.getMetadata().getGameType() == GameTypeEnum.gameKS) {
+            	nations = "1,2,3,4,5,6,11,12,13,14,15,16,21,22";
+            } else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
+            	nations = "1,2,3,5,8,10,11,12,13,18,24";
             }
             if (inList(paramValue, nations)) {
                 return null;

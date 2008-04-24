@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 
 import org.joverseer.game.Game;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.ui.JOverseerJIDEClient;
@@ -44,6 +45,7 @@ public class SaveGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save");
+        
         Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         String saveDir = prefs.get("saveDir", null);
         if (saveDir != null) {
@@ -78,15 +80,21 @@ public class SaveGame extends ActionCommand {
 
                 zos.finish();
                 out.close();
+                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
+                String pval = PreferenceRegistry.instance().getPreferenceValue("general.informationAfterSaveGame");
+                if (pval.equals("yes")) {
+	                MessageDialog dlg = new MessageDialog("Game Saved", "Game succesfully saved to " + fileChooser.getSelectedFile().getCanonicalPath());
+	        		dlg.showDialog();
+                }
             }
             catch (Exception exc) {
+                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
                 MessageDialog d = new MessageDialog("Error", exc.getMessage());
                 d.showDialog();
                 // do nothing
                 // todo fix
             }
             finally {
-                BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
             }
         }
     }

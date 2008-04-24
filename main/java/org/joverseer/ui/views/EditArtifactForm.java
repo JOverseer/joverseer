@@ -18,8 +18,8 @@ public class EditArtifactForm extends AbstractForm {
     protected JComponent createFormControl() {
         TableFormBuilder formBuilder = new TableFormBuilder(getBindingFactory());
         
-        //GraphicUtils.registerIntegerPropertyConverters(this, "hexNo");
-        //GraphicUtils.registerIntegerPropertyConverters(this, "number");
+        GraphicUtils.registerIntegerPropertyConverters(this, "hexNo");
+        GraphicUtils.registerIntegerPropertyConverters(this, "number");
         
         formBuilder.add("number");
         formBuilder.row();

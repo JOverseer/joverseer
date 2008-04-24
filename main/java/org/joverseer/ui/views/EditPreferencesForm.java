@@ -9,14 +9,18 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
+import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+
+import com.jidesoft.swing.JideTabbedPane;
 
 /**
  * Preferences form
@@ -34,8 +38,9 @@ public class EditPreferencesForm extends AbstractForm {
     }
 
     protected JComponent createFormControl() {
-        TableLayoutBuilder tlb = new TableLayoutBuilder();
-        
+        JTabbedPane tabPane = new JTabbedPane();
+        tabPane.setTabPlacement(JTabbedPane.LEFT);
+        TableLayoutBuilder tlb = null;
         String group = "";
         
         PreferenceRegistry reg = (PreferenceRegistry)getFormObject();
@@ -43,13 +48,21 @@ public class EditPreferencesForm extends AbstractForm {
         ArrayList<Preference> prefs = reg.getPreferencesSortedByGroup();
         for (Preference p : prefs) {
             if (!p.getGroup().equals(group)) {
+            	if (tlb != null) {
+            		//add to tabPane
+            		String tabName = group.replace(".", " - ");
+            		
+            		tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
+            	}
+            	tlb = new TableLayoutBuilder();
                 // if new group, show separator
                 tlb.separator(p.getGroup().replace(".", " - "));
                 tlb.relatedGapRow();
                 group = p.getGroup();
             }
             // show pref label
-            tlb.cell(new JLabel(p.getDescription()), "colspec=left:270px");
+            tlb.gapCol();
+            tlb.cell(new JLabel(p.getDescription()), "colspec=left:220px");
             tlb.gapCol();
             // show control for editing pref, based on pref type
             if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
@@ -63,20 +76,23 @@ public class EditPreferencesForm extends AbstractForm {
 	                }
 	            }
 	            components.put(p.getKey(), combo);
-	            tlb.cell(combo);
+	            tlb.cell(combo, "colspec=left:200px");
             } else {
             	JTextField tf = new JTextField();
             	tf.setPreferredSize(new Dimension(150, 20));
             	tf.setText(reg.getPreferenceValue(p.getKey()));
             	components.put(p.getKey(), tf);
-            	tlb.cell(tf, "colspec=left:170px");
+            	tlb.cell(tf, "colspec=left:200px");
             }
+            tlb.gapCol();
             tlb.relatedGapRow();
         }
 
-        panel = tlb.getPanel();
-        JScrollPane scp = new JScrollPane(panel);
-        scp.setPreferredSize(new Dimension(500, 700));
+        //panel = tlb.getPanel();
+        //panel = tabPane;
+        //JScrollPane scp = new JScrollPane(panel);
+        JScrollPane scp = new JScrollPane(tabPane);
+        scp.setPreferredSize(new Dimension(650, 350));
         return scp;
     }
 

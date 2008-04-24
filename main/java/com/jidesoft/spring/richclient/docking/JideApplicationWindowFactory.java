@@ -215,6 +215,7 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 
 	private static class DefaultCustomizer implements DockingManager.TabbedPaneCustomizer{
 		public void customize(JideTabbedPane tabbedPane) {
+			tabbedPane.setShowTabButtons(true);
 		}
 	}
 }

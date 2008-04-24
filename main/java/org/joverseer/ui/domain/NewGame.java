@@ -18,7 +18,8 @@ public class NewGame implements PropertyConstraintProvider {
     Integer number;
     Integer nationNo;
     Rules rules = null;
-
+    String additionalNations;
+    
     public GameTypeEnum getGameType() {
         return gameType;
     }
@@ -42,8 +43,18 @@ public class NewGame implements PropertyConstraintProvider {
     public void setNumber(Integer number) {
         this.number = number;
     }
+    
+    
 
-    public PropertyConstraint getPropertyConstraint(String string) {
+    public String getAdditionalNations() {
+		return additionalNations;
+	}
+
+	public void setAdditionalNations(String additionalNations) {
+		this.additionalNations = additionalNations;
+	}
+
+	public PropertyConstraint getPropertyConstraint(String string) {
         if (rules == null) {
             rules = new Rules();
             rules.add("nationNo", Constraints.instance().and(Constraints.instance().gt(0), Constraints.instance().lt(26)));

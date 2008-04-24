@@ -22,6 +22,7 @@ import org.joverseer.ui.listviews.AbstractListViewFilter;
 public class NationFilter extends AbstractListViewFilter {
     static int ALL_NATIONS = -1;
     static int ALL_IMPORTED = -2;
+    static int ADDITIONAL_NATIONS = -3;
     
     int nationNo;
     
@@ -36,6 +37,26 @@ public class NationFilter extends AbstractListViewFilter {
         if (nationNo == ALL_IMPORTED) {
             if (!GameHolder.instance().hasInitializedGame()) return true;
             return GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", o.getNationNo()) != null; 
+        }
+        if (nationNo == ADDITIONAL_NATIONS) {
+        	if (!GameHolder.instance().hasInitializedGame()) return true;
+        	Game g = GameHolder.instance().getGame();
+        	if (o.getNationNo() == null) return true;
+        	int nationNo = g.getMetadata().getNationNo();
+        	if (nationNo == o.getNationNo()) return true;
+        	String additionalNations = g.getMetadata().getAdditionalNations();
+        	if (additionalNations != null) {
+        		try {
+	        		String[] ps = additionalNations.split(",");
+	        		for (String p : ps) {
+	        			if (Integer.parseInt(p) == o.getNationNo()) return true;
+	        		}
+        		}
+        		catch (Exception e) {
+        			// do nothing
+        		}
+        	}
+        	return false;
         }
         return o.getNationNo() != null && o.getNationNo() == nationNo;
     }
@@ -52,6 +73,7 @@ public class NationFilter extends AbstractListViewFilter {
      */
     public static AbstractListViewFilter[] createNationFilters(boolean includeAllImported) {
         ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
+        ret.add(new NationFilter("Mine", ADDITIONAL_NATIONS));
         if (includeAllImported) {
             ret.add(new NationFilter("All imported", ALL_IMPORTED));
         }

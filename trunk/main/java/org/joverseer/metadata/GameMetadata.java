@@ -25,6 +25,7 @@ public class GameMetadata implements Serializable {
 	GameTypeEnum gameType;
     int gameNo;
     int nationNo;
+    String additionalNations;
 
     ArrayList nations = new ArrayList();
     Container hexes = new Container(new String[]{"hexNo"});
@@ -48,7 +49,22 @@ public class GameMetadata implements Serializable {
         this.gameType = gameType;
     }
 
-    public Collection getHexes() {
+    public String getAdditionalNations() {
+		return additionalNations;
+	}
+
+	public void setAdditionalNations(String additionalNations) {
+		this.additionalNations = additionalNations;
+		if (additionalNations != null) {
+			String[] ps = additionalNations.split(",");
+			additionalNations = "";
+			for (String p : ps) {
+				additionalNations = additionalNations + (additionalNations.equals("") ? "" : ",") + p;
+			}
+		}
+	}
+
+	public Collection getHexes() {
         return hexes.getItems();
     }
     

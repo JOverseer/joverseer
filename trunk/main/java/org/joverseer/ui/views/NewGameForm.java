@@ -29,6 +29,8 @@ public class NewGameForm extends AbstractForm {
         tlb.add("nationNo");
         tlb.row();
         tlb.add("number");
+        tlb.row();
+        tlb.add("additionalNations");
         return tlb.getForm();
     }
     

@@ -11,6 +11,7 @@ public class TurnInfo {
 	Container hexes;
 	Container nationRelations;
 	Container companies;
+	Container charMessages;
 	
 	int turnNo = -1;
     int nationNo = -1;
@@ -26,6 +27,16 @@ public class TurnInfo {
 
 	public void setAlignment(int alignment) {
 		this.alignment = alignment;
+	}
+	
+	
+
+	public Container getCharMessages() {
+		return charMessages;
+	}
+
+	public void setCharMessages(Container charMessages) {
+		this.charMessages = charMessages;
 	}
 
 	public Container getCharacters() {

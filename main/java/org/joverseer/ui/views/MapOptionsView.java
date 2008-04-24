@@ -46,6 +46,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
     JCheckBox drawOrders;
     JCheckBox drawNamesOnOrders;
     JCheckBox showClimate;
+    JCheckBox popCenterNames;
     
     boolean fireEvents = true;
 
@@ -167,6 +168,32 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             
         });
         lb.row();
+        
+        lb.cell(label = new JLabel("Show PC names : "));
+        //label.setPreferredSize(new Dimension(100, 16));
+        lb.cell(popCenterNames = new JCheckBox(), "align=left");
+        lb.relatedGapRow();
+        popCenterNames.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+            	if (!fireEvents) return;
+                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+                if (popCenterNames.getModel().isSelected()) {
+                    mapOptions.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
+                } else {
+                    mapOptions.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOff);
+                }
+                Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+                if (!Game.isInitialized(g)) return;
+                int turnNo = g.getCurrentTurn();
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+                
+            }
+            
+        });
+        lb.row();
+
         //lb.append(new JLabel("  "));
         lb.cell(label = new JLabel("Show climate : "));
         //label.setPreferredSize(new Dimension(100, 16));

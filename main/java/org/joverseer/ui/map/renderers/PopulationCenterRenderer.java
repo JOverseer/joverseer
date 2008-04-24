@@ -1,17 +1,27 @@
 package org.joverseer.ui.map.renderers;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
+import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.richclient.application.Application;
 
@@ -23,6 +33,7 @@ import org.springframework.richclient.application.Application;
 public class PopulationCenterRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 
+    
     static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
     public boolean appliesTo(Object obj) {
@@ -76,6 +87,44 @@ public class PopulationCenterRenderer extends ImageRenderer {
         g.drawImage(img, px, py, null);
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
 
+        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        Object map = mapOptions.get(MapOptionsEnum.PopCenterNames);
+        if (map!= null && map.equals(MapOptionValuesEnum.PopCenterNamesOn)) {
+	        String pcName = popCenter.getName();
+	        if (!pcName.toUpperCase().startsWith("UNKNOWN")) {
+	        	Point p = new Point(hexCenter.x, hexCenter.y +4);
+	    		drawString(g, pcName, p, p);
+	        }
+        }
     }
+    
+    private void drawString(Graphics2D g, String str, Point p1, Point p2) {
+        // calculate and prepare character name rendering
+        Point p = new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
+        Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9);
+        FontMetrics fm = g.getFontMetrics(f);
+        Rectangle2D bb = fm.getStringBounds(str, g);
+        Rectangle b = new Rectangle(((Double)bb.getX()).intValue(),
+                                        ((Double)bb.getY()).intValue(),
+                                        ((Double)bb.getWidth()).intValue(),
+                                        ((Double)bb.getHeight()).intValue());
+        int xt = p.x - new Double(b.getWidth() / 2).intValue();
+        int yt = p.y;
+        b.translate(xt, yt);
+        RoundRectangle2D rr = new RoundRectangle2D.Double(b.getX(), b.getY(), b.getWidth() + 2, b.getHeight() + 2, 3, 3);
+        g.setFont(f);
+
+        g.setColor(Color.BLACK);
+        // fill rectangle behind char name
+        Composite oc = g.getComposite();
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        g.fill(rr);
+        g.setComposite(oc);
+        // draw char name
+        g.setColor(Color.WHITE);
+        g.drawString(str, xt + 1, yt + 1);
+
+    }
+
 
 }

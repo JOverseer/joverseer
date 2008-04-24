@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.Character;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -198,6 +199,20 @@ public class TurnNewXmlReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
         	// add regiment to army
             digester.addSetNext("METurn/More/Armies/Army/Troops", "addRegiment", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
+
+            // character messages
+            digester.addObjectCreate("METurn/More/Characters/CharacterMessages", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/More/Characters/CharacterMessages", "setCharMessages");
+            // create character message wrapper
+            digester.addObjectCreate("METurn/More/Characters/CharacterMessages/CharacterMessage", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
+            //  set char
+            digester.addSetProperties("METurn/More/Characters/CharacterMessages/CharacterMessage", "CharID", "charId");
+            // add lines
+            digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", "addLine", 1);
+            digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", 0);
+        	// add to container
+            digester.addSetNext("METurn/More/Characters/CharacterMessages/CharacterMessage", "addItem", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
             
             turnInfo = (TurnInfo) digester.parse(fileName);
 		}
@@ -295,10 +310,34 @@ public class TurnNewXmlReader implements Runnable {
                 errorOccured = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
+            if (getMonitor() != null) {
+                getMonitor().worked(50);
+                getMonitor().subTaskStarted("Updating characters...");
+            }
+            try {
+                updateCharacterMessages(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
         }
         catch (Exception exc) {
         	
         }
+	}
+	
+	private void updateCharacterMessages(Game game) throws Exception {
+		Container nrws = turnInfo.getCharMessages();
+		Container cs = turn.getContainer(TurnElementsEnum.Character);
+		for (CharacterMessageWrapper cmw : (ArrayList<CharacterMessageWrapper>)nrws.getItems()) {
+			Character c = (Character)cs.findFirstByProperty("id", cmw.getCharId());
+			if (c != null) {
+				cmw.updateCharacter(c);
+			}
+		}
+        
 	}
 	
 	private void updateRelations(Game game) throws Exception {

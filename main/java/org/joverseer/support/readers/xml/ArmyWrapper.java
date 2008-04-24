@@ -176,12 +176,17 @@ public class ArmyWrapper {
             case 1:
                 a.setInformationSource(InformationSourceEnum.detailed);
                 break;
+            case 2:
+                a.setInformationSource(InformationSourceEnum.some);
+                break;
             case 3:
                 a.setInformationSource(InformationSourceEnum.some);
                 break;
             case 4:
                 a.setInformationSource(InformationSourceEnum.limited);
                 break;
+            default:
+            	throw new RuntimeException("Uknown information source " + getInformationSource());
         }
 
         GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();

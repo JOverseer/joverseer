@@ -87,29 +87,30 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
             }
 
         }
-        boolean warningOccurred = false;
-        for (File f : files) {
-            if (f.getAbsolutePath().endsWith(".pdf")) {
-                try {
-                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-                    pdfCount++;
-                    final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-                    r.setMonitor(monitor);
-                    r.run();
-                    if (r.getErrorOccurred()) {
-                    	warningOccurred = true;
-                    }
-                }
-                catch (Exception exc) {
-                    int a = 1;
-                    monitor.subTaskStarted(exc.getMessage());
-                    // do nothing
-                    // todo fix
-                }
-            }
-
-        }
         
+        boolean warningOccurred = false;
+//        for (File f : files) {
+//            if (f.getAbsolutePath().endsWith(".pdf")) {
+//                try {
+//                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
+//                    pdfCount++;
+//                    final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
+//                    r.setMonitor(monitor);
+//                    r.run();
+//                    if (r.getErrorOccurred()) {
+//                    	warningOccurred = true;
+//                    }
+//                }
+//                catch (Exception exc) {
+//                    int a = 1;
+//                    monitor.subTaskStarted(exc.getMessage());
+//                    // do nothing
+//                    // todo fix
+//                }
+//            }
+//
+//        }
+//        
         monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
         
         TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
@@ -193,14 +194,16 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
     private File[] getFilesRecursive(File folder, FileFilter filter) {
         ArrayList<File> ret = new ArrayList<File>();
         File[] files = folder.listFiles(filter);
-        ret.addAll(Arrays.asList(files));
-        FileFilter folderFilter = new FileFilter() {
-            public boolean accept(File pathname) {
-                return pathname.isDirectory();
-            }
-        };
-        for (File subfolder : folder.listFiles(folderFilter)) {
-            ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
+        if (files.length > 0) {
+	        ret.addAll(Arrays.asList(files));
+	        FileFilter folderFilter = new FileFilter() {
+	            public boolean accept(File pathname) {
+	                return pathname.isDirectory();
+	            }
+	        };
+	        for (File subfolder : folder.listFiles(folderFilter)) {
+	            ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
+	        }
         }
         return ret.toArray(new File[]{});
     }

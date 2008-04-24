@@ -18,4 +18,6 @@ public enum MapOptionValuesEnum {
     ShowClimateOff,
     NationColorsNation,
     NationColorsAllegiance,
+    PopCenterNamesOn,
+    PopCenterNamesOff
 }

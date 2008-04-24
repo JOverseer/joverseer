@@ -69,7 +69,7 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
         windowControl.setIconImage(configurer.getImage());
         windowControl.setJMenuBar(createMenuBarControl());
         windowControl.getContentPane().add(createToolBarControl(), BorderLayout.NORTH);
-        windowControl.getContentPane().add(createStatusBarControl(), BorderLayout.SOUTH);
+        //windowControl.getContentPane().add(createStatusBarControl(), BorderLayout.SOUTH);
     }
 
     /**

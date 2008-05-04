@@ -272,3 +272,9 @@
 ;;;;Character;;;;;;;;
 950;ReloCap;Comm;New Capital 4-Digit Hex Location;hex;;;;;;;C;C
 ;;;;New capital hex;;;;;;;;
+942;MvTnMap;Comm;Hexside (ne,nw,w,se,sw,e);dir;;;;;;;CE;CE
+;;;;Direction;;;;;;;;
+960;IncrCar;Comm-Emis;Rate (1-50%);%;;;;;;;CE;CE
+;;;;Rate;;;;;;;;
+965;DecrCar;Comm-Emis;Rate (1-50%);%;;;;;;;CE;CE
+;;;;Rate;;;;;;;;

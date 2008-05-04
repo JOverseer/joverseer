@@ -6,7 +6,10 @@ import org.joverseer.support.readers.pdf.AssassinationResultWrapper;
 import org.joverseer.support.readers.pdf.ExecutionResultWrapper;
 import org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper;
 import org.joverseer.support.readers.pdf.LocateArtifactResultWrapper;
+import org.joverseer.support.readers.pdf.LocateArtifactTrueResultWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
+import org.joverseer.support.readers.pdf.RevealCharacterResultWrapper;
+import org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper;
 import org.joverseer.ui.domain.LocateArtifactResult;
 
 public class CharacterMessageWrapper {
@@ -51,12 +54,48 @@ public class CharacterMessageWrapper {
 			if (or == null) or = getInfOtherOrderResult(line);
 			if (or == null) or = getLAOrderResult(line);
 			if (or == null) or = getOwnedLAOrderResult(line);
+			if (or == null) or = getLATOrderResult(line);
+			if (or == null) or = getOwnedLATOrderResult(line);
+			if (or == null) or = getRCTOrderResult(line);
+			if (or == null) or = getRCOrderResult(line);
 			if (or != null) {
 				ret.add(or);
 			}
 		}
 		return ret;
 		
+	}
+	
+	protected OrderResult getRCTOrderResult(String line) {
+		String ptr[] = new String[]{
+				"He was ordered to cast a lore spell. Reveal Character True - ",
+				" is located ",
+				" at ",
+				"."};
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			RevealCharacterTrueResultWrapper rw = new RevealCharacterTrueResultWrapper();
+			rw.setCharacterName(matches[0]);
+			rw.setHexNo(Integer.parseInt(matches[2]));
+			return rw;
+		}
+		return null;
+	}
+	
+	protected OrderResult getRCOrderResult(String line) {
+		String ptr[] = new String[]{
+				"He was ordered to cast a lore spell. Reveal Character - ",
+				" is located ",
+				" at or near ",
+				"."};
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			RevealCharacterResultWrapper rw = new RevealCharacterResultWrapper();
+			rw.setCharacterName(matches[0]);
+			rw.setHexNo(Integer.parseInt(matches[2]));
+			return rw;
+		}
+		return null;
 	}
 	
 	protected OrderResult getOwnedLAOrderResult(String line) {
@@ -78,6 +117,25 @@ public class CharacterMessageWrapper {
 		return null;
 	}
 
+	protected OrderResult getOwnedLATOrderResult(String line) {
+		String ptr[] = 
+			new String[]{"He was ordered to cast a lore spell. Locate Artifact True - ", 
+						" #",
+						"is possessed by ", 
+						" at ",  
+						"."};
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
+			or.setArtifactName(matches[0]);
+			or.setArtifactNo(Integer.parseInt(matches[1]));
+			or.setOwner(matches[2]);
+			or.setHexNo(Integer.parseInt(matches[3]));
+			return or;
+		}
+		return null;
+	}
+
 	public OrderResult getLAOrderResult(String line) {
 		String ptr[] = 
 			new String[]{"He was ordered to cast a lore spell. Locate Artifact - ", 
@@ -88,6 +146,24 @@ public class CharacterMessageWrapper {
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
+			or.setArtifactName(matches[0]);
+			or.setArtifactNo(Integer.parseInt(matches[1]));
+			or.setHexNo(Integer.parseInt(matches[3]));
+			return or;
+		}
+		return null;
+	}
+
+	public OrderResult getLATOrderResult(String line) {
+		String ptr[] = 
+			new String[]{"He was ordered to cast a lore spell. Locate Artifact True - ", 
+						" #",
+						"is located", 
+						" at ",  
+						"."};
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);
 			or.setArtifactNo(Integer.parseInt(matches[1]));
 			or.setHexNo(Integer.parseInt(matches[3]));

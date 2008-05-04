@@ -73,7 +73,7 @@ public class NationFilter extends AbstractListViewFilter {
      */
     public static AbstractListViewFilter[] createNationFilters(boolean includeAllImported) {
         ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
-        ret.add(new NationFilter("Mine", ADDITIONAL_NATIONS));
+        //ret.add(new NationFilter("Mine", ADDITIONAL_NATIONS));
         if (includeAllImported) {
             ret.add(new NationFilter("All imported", ALL_IMPORTED));
         }

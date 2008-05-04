@@ -30,7 +30,8 @@ public class NewGameForm extends AbstractForm {
         tlb.row();
         tlb.add("number");
         tlb.row();
-        tlb.add("additionalNations");
+        //tlb.add("additionalNations");
+        tlb.add("newXmlFormat");
         return tlb.getForm();
     }
     

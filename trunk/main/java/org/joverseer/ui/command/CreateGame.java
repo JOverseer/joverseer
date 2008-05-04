@@ -53,6 +53,7 @@ public class CreateGame extends ActionCommand {
                 gm.setNationNo(ng.getNationNo());
                 gm.setGameType(ng.getGameType());
                 gm.setAdditionalNations(ng.getAdditionalNations());
+                gm.setNewXmlFormat(ng.getNewXmlFormat());
                 try {
                     gm.load();
                 } catch (Exception e) {

@@ -71,7 +71,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
                     InfoSource is = c.getInfoSource();
                     if (TurnInfoSource.class.isInstance(is)) {
                         // turn import, do nothing
-                        return;
+                        // return;
                     } else if (DerivedFromSpellInfoSource.class.isInstance(is)) {
                         // spell
                         // add info source...

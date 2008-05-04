@@ -19,8 +19,19 @@ public class NewGame implements PropertyConstraintProvider {
     Integer nationNo;
     Rules rules = null;
     String additionalNations;
+    boolean newXmlFormat;
     
-    public GameTypeEnum getGameType() {
+    
+    
+    public boolean getNewXmlFormat() {
+		return newXmlFormat;
+	}
+
+	public void setNewXmlFormat(boolean newXmlFormat) {
+		this.newXmlFormat = newXmlFormat;
+	}
+
+	public GameTypeEnum getGameType() {
         return gameType;
     }
 

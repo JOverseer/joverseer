@@ -71,11 +71,13 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                     if (r.getErrorOccured()) {
                     	errorOccurred = true;
                     }
-                    final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
-                    xr.setMonitor(monitor);
-                    xr.run();
-                    if (xr.getErrorOccured()) {
-                    	errorOccurred = true;
+                    if (game.getMetadata().getNewXmlFormat()) {
+	                    final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
+	                    xr.setMonitor(monitor);
+	                    xr.run();
+	                    if (xr.getErrorOccured()) {
+	                    	errorOccurred = true;
+	                    }
                     }
                 }
                 catch (Exception exc) {
@@ -89,28 +91,28 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
         }
         
         boolean warningOccurred = false;
-//        for (File f : files) {
-//            if (f.getAbsolutePath().endsWith(".pdf")) {
-//                try {
-//                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-//                    pdfCount++;
-//                    final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-//                    r.setMonitor(monitor);
-//                    r.run();
-//                    if (r.getErrorOccurred()) {
-//                    	warningOccurred = true;
-//                    }
-//                }
-//                catch (Exception exc) {
-//                    int a = 1;
-//                    monitor.subTaskStarted(exc.getMessage());
-//                    // do nothing
-//                    // todo fix
-//                }
-//            }
-//
-//        }
-//        
+        if (!game.getMetadata().getNewXmlFormat()) {
+	        for (File f : files) {
+	            if (f.getAbsolutePath().endsWith(".pdf")) {
+	                try {
+	                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
+	                    pdfCount++;
+	                    final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
+	                    r.setMonitor(monitor);
+	                    r.run();
+	                    if (r.getErrorOccurred()) {
+	                    	warningOccurred = true;
+	                    }
+	                }
+	                catch (Exception exc) {
+	                    int a = 1;
+	                    monitor.subTaskStarted(exc.getMessage());
+	                    // do nothing
+	                    // todo fix
+	                }
+	            }
+	        }
+        }        
         monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
         
         TurnPostProcessor turnPostProcessor = new TurnPostProcessor();

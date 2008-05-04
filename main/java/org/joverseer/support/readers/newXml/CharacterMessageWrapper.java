@@ -2,6 +2,12 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 import org.joverseer.domain.Character;
+import org.joverseer.support.readers.pdf.AssassinationResultWrapper;
+import org.joverseer.support.readers.pdf.ExecutionResultWrapper;
+import org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper;
+import org.joverseer.support.readers.pdf.LocateArtifactResultWrapper;
+import org.joverseer.support.readers.pdf.OrderResult;
+import org.joverseer.ui.domain.LocateArtifactResult;
 
 public class CharacterMessageWrapper {
 	String charId;
@@ -34,5 +40,136 @@ public class CharacterMessageWrapper {
 	
 	public void updateCharacter(Character c) {
 		c.setOrderResults(getOrdersAsString());
+	}
+	
+	public ArrayList getOrderResults() {
+		ArrayList ret = new ArrayList();
+		for (String line : (ArrayList<String>)lines) {
+			OrderResult or = null;
+			or = getAssassinationOrderResult(line);
+			if (or == null) or = getExecutionOrderResult(line);
+			if (or == null) or = getInfOtherOrderResult(line);
+			if (or == null) or = getLAOrderResult(line);
+			if (or == null) or = getOwnedLAOrderResult(line);
+			if (or != null) {
+				ret.add(or);
+			}
+		}
+		return ret;
+		
+	}
+	
+	protected OrderResult getOwnedLAOrderResult(String line) {
+		String ptr[] = 
+			new String[]{"He was ordered to cast a lore spell. Locate Artifact - ", 
+						" #",
+						"is possessed by ", 
+						" at or near ",  
+						"."};
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
+			or.setArtifactName(matches[0]);
+			or.setArtifactNo(Integer.parseInt(matches[1]));
+			or.setOwner(matches[2]);
+			or.setHexNo(Integer.parseInt(matches[3]));
+			return or;
+		}
+		return null;
+	}
+
+	public OrderResult getLAOrderResult(String line) {
+		String ptr[] = 
+			new String[]{"He was ordered to cast a lore spell. Locate Artifact - ", 
+						" #",
+						"is located", 
+						" at or near ",  
+						"."};
+		String matches[] = matchPattern(line, ptr);
+		if (matches != null) {
+			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
+			or.setArtifactName(matches[0]);
+			or.setArtifactNo(Integer.parseInt(matches[1]));
+			or.setHexNo(Integer.parseInt(matches[3]));
+			return or;
+		}
+		return null;
+	}
+
+	private String[] matchPattern(String line, String[] pattern) {
+		try {
+			int[] locations = new int[pattern.length];
+			int[] widths = new int[pattern.length];
+			for (int j=0; j<pattern.length; j++) {
+				String p = pattern[j];
+				int startIndex = 0;
+				if (j > 0) {
+					startIndex = locations[j-1];
+				}
+				int i = line.indexOf(p, startIndex);
+				if (i == -1) return null;
+				locations[j] = i;
+				widths[j] = p.length();
+			}
+			String[] matches = new String[locations.length - 1];
+			for (int j=0; j<matches.length; j++) {
+				matches[j] = line.substring(locations[j] + widths[j], locations[j+1]).trim();
+			}
+			return matches;
+		}
+		catch (Throwable e) {
+			int aa = 1;
+			return null;
+		}
+	}
+	
+	private OrderResult getExecutionOrderResult(String line) {
+		String ptr = "was ordered to execute a hostage.";
+		String ptr1 = " was executed.";
+		int i = line.indexOf(ptr);
+		int j = line.indexOf(ptr1);
+		if (i > -1 && j > -1) {
+			int s = i + ptr.length();
+			String charName = line.substring(s, j).trim();
+			ExecutionResultWrapper arw = new ExecutionResultWrapper();
+			arw.setCharacter(charName);
+			return arw;
+		}
+		return null;
+	}
+	
+	private OrderResult getInfOtherOrderResult(String line) {
+		String ptr = "was ordered to influence their population center loyalty. The loyalty was influenced/reduced at ";
+		String ptr1 = ". Current loyalty is perceived to be ";
+		String ptr2 = ".";
+		int i = line.indexOf(ptr);
+		int j = line.indexOf(ptr1);
+		if (i > -1 && j > -1) {
+			int k = line.substring(j).indexOf(ptr2, 5);
+			int s = i + ptr.length();
+			String popCenterName = line.substring(s, j).trim();
+			s = j + ptr1.length();
+			String loyalty = line.substring(s, j+k);
+			InfluenceOtherResultWrapper rw = new InfluenceOtherResultWrapper();
+			rw.setPopCenter(popCenterName);
+			rw.setLoyalty(loyalty);
+			return rw;
+		}
+		return null;
+	}
+	
+	private OrderResult getAssassinationOrderResult(String line) {
+		String ptr = "was ordered to assassinate a character.";
+		String ptr1 = "was assassinated.";
+		int i = line.indexOf(ptr);
+		int j = line.indexOf(ptr1);
+		if (i > -1 && j > -1) {
+			int s = i + ptr.length();
+			String charName = line.substring(s, j).trim();
+			AssassinationResultWrapper arw = new AssassinationResultWrapper();
+			arw.setCharacter(charName);
+			return arw;
+		}
+		return null;
 	}
 }

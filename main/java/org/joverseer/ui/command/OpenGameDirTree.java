@@ -18,6 +18,7 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
 import org.joverseer.support.TurnPostProcessor;
+import org.joverseer.support.readers.newXml.TurnNewXmlReader;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
@@ -188,26 +189,13 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
                         if (r.getErrorOccured()) {
                             errorOccurred = true;
                         }
-                    }
-                    catch (Exception exc) {
-                        int a = 1;
-                        monitor.subTaskStarted(exc.getMessage());
-                        // do nothing
-                        // todo fix
-                    }
-                }
-    
-            }
-            for (File f : files) {
-                if (f.getAbsolutePath().endsWith(".pdf")) {
-                    try {
-                        monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-    
-                        final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-                        r.setMonitor(monitor);
-                        r.run();
-                        if (r.getErrorOccurred()) {
-                            warningOccurred = true;
+                        if (game.getMetadata().getNewXmlFormat()) {
+    	                    final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
+    	                    xr.setMonitor(monitor);
+    	                    xr.run();
+    	                    if (xr.getErrorOccured()) {
+    	                    	errorOccurred = true;
+    	                    }
                         }
                     }
                     catch (Exception exc) {
@@ -218,6 +206,28 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
                     }
                 }
     
+            }
+            if (!game.getMetadata().getNewXmlFormat()) {
+	            for (File f : files) {
+	                if (f.getAbsolutePath().endsWith(".pdf")) {
+	                    try {
+	                        monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
+	    
+	                        final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
+	                        r.setMonitor(monitor);
+	                        r.run();
+	                        if (r.getErrorOccurred()) {
+	                            warningOccurred = true;
+	                        }
+	                    }
+	                    catch (Exception exc) {
+	                        int a = 1;
+	                        monitor.subTaskStarted(exc.getMessage());
+	                        // do nothing
+	                        // todo fix
+	                    }
+	                }
+	            }
             }
             TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
             turnPostProcessor.postProcessTurn(game.getTurn(game.getMaxTurn()));

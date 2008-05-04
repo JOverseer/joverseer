@@ -26,6 +26,7 @@ public class GameMetadata implements Serializable {
     int gameNo;
     int nationNo;
     String additionalNations;
+    boolean newXmlFormat = false;
 
     ArrayList nations = new ArrayList();
     Container hexes = new Container(new String[]{"hexNo"});
@@ -109,8 +110,18 @@ public class GameMetadata implements Serializable {
     public void setGameNo(int gameNo) {
         this.gameNo = gameNo;
     }
+    
+    
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+    public boolean getNewXmlFormat() {
+		return newXmlFormat;
+	}
+
+	public void setNewXmlFormat(boolean newXmlFormat) {
+		this.newXmlFormat = newXmlFormat;
+	}
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.writeObject(getCharacters());
         out.writeObject(getArtifacts());
         out.writeObject(getSpells());

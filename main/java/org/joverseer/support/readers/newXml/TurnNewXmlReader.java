@@ -25,6 +25,7 @@ import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
+import org.joverseer.support.readers.pdf.OrderResult;
 import org.springframework.richclient.progress.ProgressMonitor;
 
 public class TurnNewXmlReader implements Runnable {
@@ -335,6 +336,9 @@ public class TurnNewXmlReader implements Runnable {
 			Character c = (Character)cs.findFirstByProperty("id", cmw.getCharId());
 			if (c != null) {
 				cmw.updateCharacter(c);
+			}
+			for (OrderResult or : (ArrayList<OrderResult>)cmw.getOrderResults()) {
+				or.updateGame(turn, turnInfo.nationNo, c.getName());
 			}
 		}
         

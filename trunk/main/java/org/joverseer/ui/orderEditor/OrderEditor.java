@@ -164,7 +164,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         orders.add(Order.NA);
         for (OrderMetadata om : (ArrayList<OrderMetadata>) orderMetadata.getItems()) {
             if (o.getCharacter() != null && (om.charHasRequiredSkill(o.getCharacter()) || om.orderAllowedDueToScoutingSNA(o.getCharacter()))) {
-                orders.add(om.getNumber() + " " + om.getCode());
+            	if (om.orderAllowedForGameType()) {
+            		orders.add(om.getNumber() + " " + om.getCode());
+            	}
             }
         }
         SortedListModel slm = new SortedListModel(orders);

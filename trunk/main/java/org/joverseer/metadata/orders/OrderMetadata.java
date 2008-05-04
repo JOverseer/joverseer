@@ -3,6 +3,7 @@ package org.joverseer.metadata.orders;
 import java.io.Serializable;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
@@ -109,6 +110,9 @@ public class OrderMetadata implements Serializable {
                 getSkillRequirement().equals("MS")) {
             return c.getMage() > 0;
         }
+        if (getSkillRequirement().equals("ECS")) {
+        	return c.getEmmisary() > 0 && c.getCommand() > 0;
+        }
         return false;
     }
     
@@ -121,6 +125,15 @@ public class OrderMetadata implements Serializable {
     		}
     	}
     	return false;
+    }
+    
+    public boolean orderAllowedForGameType() {
+    	if (number == 942 || number == 960 || number == 965) {
+    		Game g = GameHolder.instance().getGame();
+    		return g.getMetadata().getGameType().equals(GameTypeEnum.gameFA) ||
+    			g.getMetadata().getGameType().equals(GameTypeEnum.gameKS);
+    	}
+    	return true;
     }
 
 }

@@ -130,8 +130,10 @@ public class OrderParameterValidator {
                     type = "Mage";
                 } else if (om.getSkillRequirement().equals("ES")) {
                     type = "Emmisary";
+                } if (om.getSkillRequirement().equals("ECS")) {
+                    type = "Command/Emmisary";
                 }
-                new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " skill orders.");
+                return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " skill orders.");
             }
         }
         return null;

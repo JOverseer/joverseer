@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Main-Class: org.joverseer.ui.JOverseerJIDEClient
+Class-Path: FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-beanutils-1.7.0.jar 
+ commons-collections-3.1.jar commons-digester-1.7.jar commons-httpclient-3.0.1.jar 
+ commons-logging-1.1.jar forms-1.0.7.jar jdom.jar jide-action.jar jide-beaninfo.jar 
+ jide-common.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar 
+ joverseer.jar junit-3.8.1.jar log4j-1.2.12.jar looks-2.0.4.jar scope-bin.jar 
+ skinlf-1.2.11.jar spring-beans.jar spring-binding-1.0.5.jar spring-context-support.jar 
+ spring-context.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar 
+ commons-codec-1.3.jar
+
+

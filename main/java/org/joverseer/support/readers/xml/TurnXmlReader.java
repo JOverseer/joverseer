@@ -31,6 +31,7 @@ import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
+import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.tools.nationMessages.NationMessageParser;
 import org.springframework.richclient.progress.ProgressMonitor;
 
@@ -460,6 +461,7 @@ public class TurnXmlReader implements Runnable{
                     logger.debug("Character found in turn.");
                     if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
                     		PdfTurnInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
+                    		DerivedFromSpellInfoSource.class.isInstance(oldCharacter.getInfoSource()) ||
                             (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue()))
                     {
                         logger.debug("Replace.");

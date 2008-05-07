@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.0.0"/>
-		<property name="buildId" value="2008-05-03"/>
+		<property name="version" value="0.9.13"/>
+		<property name="buildId" value="2008-05-07"/>
 	</bean>
 	
 	<!--

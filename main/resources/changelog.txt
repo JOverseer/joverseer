@@ -1,3 +1,40 @@
+VERSION 0.9.13
+--------------
+
+07/05/2008
+
+	* Refactored library dependences
+
+	* Fixed some minor Java 6 compatibility issues   	 
+	
+	* Fixed a problem which was causing double-clicking on a character to not correctly auto-center the map 	 
+	
+	* Added a new preference called "strict market limit"
+		+ Set this preference to "yes" and you market gains will be capped by the market limit in the economy calculator 	 
+	
+	* Fixed a problem with hex highlighter not resizing correctly according to the zoom level 	 
+
+	* Added basic support for the Kin Strife scenario
+		+ Starting information is not yet complete but you can run games
+
+	* You can no longer run OrderChecker for Untold War or Kin Strife games 
+		+ You now get an error message since OC does not support it 	 
+
+	* Redesigned Preferences window form 	 
+
+	* Added option to the Map Options View to display Pop Center names on the map 
+
+	* Fixed: when drawing army move orders the arrow was not being shown
+	 	 
+	* Added confirmation that save was completed after saving a game
+	 	 
+	* Added FA-specific orders (942, 960, 965) to the order editor 	 
+
+	* Removed the status bar (was not being used anyway) to gain screen real-estate 	 
+
+	* When creating a new game there is a new option for specifying that the game is using the new xml format so that turn files are parsed accordingly
+
+
 VERSION 0.9.12
 --------------
 

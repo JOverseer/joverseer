@@ -11,6 +11,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -143,7 +144,7 @@ public class TurnNewXmlReader implements Runnable {
             digester.addObjectCreate("METurn/NationRelations", "org.joverseer.support.Container");
             // add container to turn info
             digester.addSetNext("METurn/NationRelations", "setNationRelations");
-            // create pop center wrapper
+            // create nation relation wrapper
             digester.addObjectCreate("METurn/NationRelations/NationRelation", "org.joverseer.support.readers.newXml.NationRelationWrapper");
             // set hex no
             digester.addSetProperties("METurn/NationRelations/NationRelation", "ID", "nationNo");
@@ -214,6 +215,40 @@ public class TurnNewXmlReader implements Runnable {
             digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", 0);
         	// add to container
             digester.addSetNext("METurn/More/Characters/CharacterMessages/CharacterMessage", "addItem", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
+
+            
+            // create container for Encounters
+            digester.addObjectCreate("METurn/EncounterMessages", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/EncounterMessages", "setEncounters");
+            // create encounter wrapper
+            digester.addObjectCreate("METurn/EncounterMessages/Encounter", "org.joverseer.support.readers.newXml.EncounterWrapper");
+            // set attributes
+            digester.addSetProperties("METurn/EncounterMessages/Encounter", "CharID", "charId");
+            digester.addSetProperties("METurn/EncounterMessages/Encounter", "Hex", "hex");
+            digester.addSetProperties("METurn/EncounterMessages/Encounter", "Reacting", "reacting");
+            // set nested properties
+            digester.addRule("METurn/EncounterMessages/Encounter",
+                    snpr = new SetNestedPropertiesRule(new String[]{"EncounterText"},
+                            new String[]{"text"}));
+            snpr.setAllowUnknownChildElements(true);
+            // add to container
+            digester.addSetNext("METurn/EncounterMessages/Encounter", "addItem", "org.joverseer.support.readers.newXml.EncounterWrapper");
+            
+            // create container for Hexes
+            digester.addObjectCreate("METurn/Hexes", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/Hexes", "setHexes");
+            // create hex wrapper
+            digester.addObjectCreate("METurn/Hexes/Hex", "org.joverseer.support.readers.newXml.HexWrapper");
+            // set attributes
+            // set nested properties
+            digester.addRule("METurn/Hexes/Hex",
+                    snpr = new SetNestedPropertiesRule(new String[]{"HexID", "Terrain", "PopcenterName", "PopcenterSize", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers"},
+                            new String[]{"hexID", "terrain", "popCenterName", "popCenterSize", "roads", "bridges", "fords", "minorRivers", "majorRivers"}));
+            snpr.setAllowUnknownChildElements(true);
+            // add to container
+            digester.addSetNext("METurn/Hexes/Hex", "addItem", "org.joverseer.support.readers.newXml.HexWrapper");
             
             turnInfo = (TurnInfo) digester.parse(fileName);
 		}
@@ -323,9 +358,60 @@ public class TurnNewXmlReader implements Runnable {
                 errorOccured = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
+            if (getMonitor() != null) {
+                getMonitor().worked(60);
+                getMonitor().subTaskStarted("Updating encounters...");
+            }
+            try {
+                updateEncounters(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(70);
+                getMonitor().subTaskStarted("Updating hexes...");
+            }
+            try {
+                updateHexes(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(100);
+            }
         }
         catch (Exception exc) {
         	
+        }
+	}
+	
+	private void updateHexes(Game game) throws Exception {
+		Container hws = turnInfo.getHexes();
+		if (hws == null) return;
+		for (HexWrapper hw : (ArrayList<HexWrapper>)hws.getItems()) {
+			hw.updateGame(game);
+		}
+	}
+	
+	private void updateEncounters(Game game) throws Exception {
+		Container ews = turnInfo.getEncounters();
+        if (ews == null) return;
+        Container encounters = game.getTurn().getContainer(TurnElementsEnum.Encounter);
+        for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
+            Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{ew.getCharId(), Integer.parseInt(ew.getHex())});
+            if (e != null) {
+                encounters.removeItem(e);
+            }
+            e = ew.getEncounter();
+            Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", e.getCharacter());
+            e.setCharacter(c.getName());
+            encounters.addItem(e);
         }
 	}
 	

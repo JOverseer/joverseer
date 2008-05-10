@@ -78,5 +78,10 @@ public class Hex implements Serializable {
         }
     }
 
+    public void clearHexSideElements() {
+    	for (HexSideEnum hse : HexSideEnum.values()) {
+    		((ArrayList)hexSideElements.get(hse)).clear();
+    	}
+    }
 }
 

@@ -57,7 +57,7 @@
 			<bean class="com.jgoodies.looks.plastic.theme.Silver"/>
 		</property>
     </bean>
-	
+
 	<bean id="serviceLocator" class="org.springframework.richclient.application.ApplicationServicesLocator">
         <property name="applicationServices" ref="applicationServices"/>
     </bean>

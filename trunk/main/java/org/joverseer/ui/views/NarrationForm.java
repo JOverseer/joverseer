@@ -30,7 +30,7 @@ public class NarrationForm extends AbstractForm {
     protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         textArea = new JTextArea();
-        textArea.setLineWrap(false);
+        textArea.setLineWrap(true);
         textArea.setEditable(false);
         textArea.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
         tlb.cell(textArea);

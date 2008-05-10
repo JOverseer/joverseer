@@ -75,7 +75,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
         scp.setPreferredSize(new Dimension(350, 80));
         
         panel = tlb.getPanel();
-        panel.setPreferredSize(new Dimension(370, 300));
+        panel.setPreferredSize(new Dimension(390, 300));
         return panel;
     }
 

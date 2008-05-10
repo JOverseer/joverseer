@@ -132,6 +132,7 @@ public class GameMetadata implements Serializable {
         out.writeObject(getGameType());
         out.writeObject(getGameNo());
         out.writeObject(getNationNo());
+        out.writeObject(getNewXmlFormat());
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -145,6 +146,12 @@ public class GameMetadata implements Serializable {
         setGameType((GameTypeEnum)in.readObject());
         setGameNo((Integer)in.readObject());
         setNationNo((Integer)in.readObject());
+        try {
+        	setNewXmlFormat((Boolean)in.readObject());
+        }
+        catch (Exception e) {
+        	// do nothing, this may have not been set
+        }
     }
 
     public Nation getNationByNum(int number) {

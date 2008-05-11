@@ -1,4 +1,4 @@
-#summary Installation Instructions
+#summary Instructions for installing JOverseer
 #labels Featured
 =Installation Instructions=
 

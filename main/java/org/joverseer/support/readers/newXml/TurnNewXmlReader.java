@@ -421,7 +421,7 @@ public class TurnNewXmlReader implements Runnable {
 		for (CharacterMessageWrapper cmw : (ArrayList<CharacterMessageWrapper>)nrws.getItems()) {
 			Character c = (Character)cs.findFirstByProperty("id", cmw.getCharId());
 			if (c != null) {
-				cmw.updateCharacter(c);
+				cmw.updateCharacter(c, game);
 			}
 			for (OrderResult or : (ArrayList<OrderResult>)cmw.getOrderResults()) {
 				or.updateGame(turn, turnInfo.nationNo, c.getName());

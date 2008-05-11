@@ -2,6 +2,9 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.readers.pdf.AssassinationResultWrapper;
 import org.joverseer.support.readers.pdf.ExecutionResultWrapper;
 import org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper;
@@ -41,8 +44,55 @@ public class CharacterMessageWrapper {
 		return ret;
 	}
 	
-	public void updateCharacter(Character c) {
+	public void updateCharacter(Character c, Game game) {
 		c.setOrderResults(getOrdersAsString());
+		if (getAssassinated()) {
+			c.setDeathReason(CharacterDeathReasonEnum.Assassinated);
+		} else if (getCursed()) {
+			c.setDeathReason(CharacterDeathReasonEnum.Cursed);
+		} else if (getExecuted()) {
+			c.setDeathReason(CharacterDeathReasonEnum.Executed);
+		}
+		if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
+			Integer hexNo = getOriginalLocation();
+			if (hexNo != null) {
+				game.getTurn().getContainer(TurnElementsEnum.Character).removeItem(c);
+				c.setHexNo(hexNo);
+				game.getTurn().getContainer(TurnElementsEnum.Character).addItem(c);
+			}
+		}
+	}
+	
+	protected Integer getOriginalLocation() {
+		for (String line : (ArrayList<String>)lines) {
+			if (line.indexOf("was located") > -1) {
+				String hexNo = line.substring(line.length()-5, line.length() -1);
+				return Integer.parseInt(hexNo);
+			}
+		}
+		return null;
+	}
+	
+	protected boolean getAssassinated() {
+		for (String line : (ArrayList<String>)lines) {
+			if (line.indexOf("was assassinated.")>-1) return true;
+		}
+		return false;
+	}
+	
+	
+	protected boolean getCursed() {
+		for (String line : (ArrayList<String>)lines) {
+			if (line.indexOf("was killed due to a mysterious and deadly curse.")>-1) return true;
+		}
+		return false;
+	}
+	
+	protected boolean getExecuted() {
+		for (String line : (ArrayList<String>)lines) {
+			if (line.indexOf("was executed.")>-1) return true;
+		}
+		return false;
 	}
 	
 	public ArrayList getOrderResults() {

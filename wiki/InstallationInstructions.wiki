@@ -1,0 +1,19 @@
+#summary Installation Instructions
+#labels Featured
+=Installation Instructions=
+
+_These instructions apply to version 1.0.0 and later_
+
+==Fresh Installation==
+
+To install JOverseer:
+1. Download the libraries package (JOverseer v1.0.0 libraries) from the Downloads page. Unzip to your preferred folder (i.e. desktop\JOverseer)
+2. Download the JOverseer executable package (e.g. JOverseer v1.0.0). Unzip to the folder you unzipped the libraries into (i.e. desktopzJOverseer)
+
+To run JOverseer, on Windows run joverseer.bat. On linux/unix/MacOs, run unix-launcher.sh.
+
+==Upgrading from version 0.9.x==
+
+Please note that if have an older installation, in the 0.9.x line, you need to make a completely new installation for version 1.0.0. However all saved games should work fine between 0.9.x and 1.0.0 versions.
+
+Also note that if you want to maintain your window layout, you can copy file page_mainPage_layout_nullPerspective.layout from your old installation to your 1.0.0 installation.

@@ -46,11 +46,11 @@ public class CharacterMessageWrapper {
 	
 	public void updateCharacter(Character c, Game game) {
 		c.setOrderResults(getOrdersAsString());
-		if (getAssassinated()) {
+		if (getAssassinated(c)) {
 			c.setDeathReason(CharacterDeathReasonEnum.Assassinated);
-		} else if (getCursed()) {
+		} else if (getCursed(c)) {
 			c.setDeathReason(CharacterDeathReasonEnum.Cursed);
-		} else if (getExecuted()) {
+		} else if (getExecuted(c)) {
 			c.setDeathReason(CharacterDeathReasonEnum.Executed);
 		}
 		if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
@@ -65,32 +65,38 @@ public class CharacterMessageWrapper {
 	
 	protected Integer getOriginalLocation() {
 		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf("was located") > -1) {
+			if (line.indexOf("was located") > -1 && line.indexOf("was located in an unknown location") == -1) {
 				String hexNo = line.substring(line.length()-5, line.length() -1);
-				return Integer.parseInt(hexNo);
+				try {
+					return Integer.parseInt(hexNo);
+				}
+				catch (Exception exc) {
+					// do nothing
+					return null;
+				}
 			}
 		}
 		return null;
 	}
 	
-	protected boolean getAssassinated() {
+	protected boolean getAssassinated(Character c) {
 		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf("was assassinated.")>-1) return true;
+			if (line.indexOf(c.getName() + " was assassinated.")>-1) return true;
 		}
 		return false;
 	}
 	
 	
-	protected boolean getCursed() {
+	protected boolean getCursed(Character c) {
 		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf("was killed due to a mysterious and deadly curse.")>-1) return true;
+			if (line.indexOf("He was killed due to a mysterious and deadly curse.")>-1) return true;
 		}
 		return false;
 	}
 	
-	protected boolean getExecuted() {
+	protected boolean getExecuted(Character c) {
 		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf("was executed.")>-1) return true;
+			if (line.indexOf(c.getName() + " was executed.")>-1) return true;
 		}
 		return false;
 	}

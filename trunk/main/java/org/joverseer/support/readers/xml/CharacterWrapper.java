@@ -13,7 +13,7 @@ import org.joverseer.domain.InformationSourceEnum;
 public class CharacterWrapper {
     String id;
     String name;
-    int location = -1;
+    String location = null;
     int nation;
     int command;
     int totalCommand;
@@ -96,11 +96,11 @@ public class CharacterWrapper {
         this.informationSource = informationSource;
     }
 
-    public int getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(int location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -205,8 +205,18 @@ public class CharacterWrapper {
         character.setId(Character.getIdFromName(getName()));
         character.setName(getName());
         character.setNationNo(getNation());
-        character.setX(getLocation() / 100);
-        character.setY(getLocation() % 100);
+        int hexNo = 0;
+        try {
+        	hexNo = Integer.parseInt(getLocation());
+        }
+        catch (Exception exc) {
+        	if (getLocation().equals("DEAD")) {
+        		hexNo = 0;
+        		setHealth(0);
+        	}
+        }
+        character.setX(hexNo / 100);
+        character.setY(hexNo % 100);
         character.setTitle(getTitle());
         character.setCommand(getCommand());
         character.setCommandTotal(getTotalCommand());
@@ -265,7 +275,7 @@ public class CharacterWrapper {
         }
         
         if (getInformationSource() == 0) {
-            character.setHostage(getLocation() == 0);
+            character.setHostage(getLocation().equals("HOST") || "0".equals(getLocation()) || "0000".equals(getLocation()));
         } 
         return character;
     }

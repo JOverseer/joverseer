@@ -24,7 +24,7 @@ public class ExecutionResultWrapper implements OrderResult {
             c.setInfoSource(new PdfTurnInfoSource(turn.getTurnNo(), nationNo));
             turn.getContainer(TurnElementsEnum.Character).addItem(c);
         }
-        c.setDeathReason(CharacterDeathReasonEnum.Assassinated);
+        c.setDeathReason(CharacterDeathReasonEnum.Executed);
     }
 
     

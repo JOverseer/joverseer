@@ -104,7 +104,10 @@ public class OrderFileReader {
                     } else {
                         orderI++;
                     }
-                    charName = parts[0];
+                    charName = parts[0].trim();
+                    while (charName.length() < 5) {
+                    	charName = charName + " ";
+                    }
                     String parameters = "";
                     int orderNo = -1;
                     if (!parts[1].equals("")) {
@@ -112,7 +115,8 @@ public class OrderFileReader {
 
                         for (int j = 2; j < parts.length; j++) {
                             String part = parts[j];
-                            if (!part.equals("--")) {
+                            part = part.trim();
+                            if (!part.replace(" ", "").equals("--")) {
                                 parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part;
                             }
                         }

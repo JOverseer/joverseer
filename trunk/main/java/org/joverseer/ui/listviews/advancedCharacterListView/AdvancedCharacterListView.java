@@ -14,7 +14,10 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
@@ -34,6 +37,7 @@ import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.support.AbstractApplicationPage;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.image.ImageSource;
@@ -52,7 +56,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48};
+        return new int[] {96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32};
     }
 
     protected void setItems() {
@@ -86,7 +90,12 @@ public class AdvancedCharacterListView extends BaseItemListView {
                     new DeathFilter("Not Dead & Dead", null),
                     new DeathFilter("Not Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.NotDead, null}),
                     new DeathFilter("Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed}),
-                }
+                },
+                new AbstractListViewFilter[]{
+                	new ArmyCommanderFilter("", null),
+                	new ArmyCommanderFilter("Army commander", true),
+                	new ArmyCommanderFilter("Not army commander", false)
+                },
         };
     }
 
@@ -190,7 +199,8 @@ public class AdvancedCharacterListView extends BaseItemListView {
                     + getArtifactText(aw.getA3()) + DELIM + getArtifactText(aw.getA4()) + DELIM
                     + getArtifactText(aw.getA5()) + DELIM + aw.getTravellingWith() + DELIM
                     + getDeathReasonStr(aw.getDeathReason()) + DELIM + aw.getTurnNo() + DELIM
-                    + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource());
+                    + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource())+ DELIM
+                    + aw.getDragonPotential();
         }
 
         public void lostOwnership(Clipboard arg0, Transferable arg1) {
@@ -214,6 +224,23 @@ public class AdvancedCharacterListView extends BaseItemListView {
         }
     }
     
-    
+    class ArmyCommanderFilter extends AbstractListViewFilter {
+    	Boolean isArmyCommander = null;
+    	
+    	public ArmyCommanderFilter(String descr, Boolean isArmyCommander) {
+    		super(descr);
+    		this.isArmyCommander = isArmyCommander;
+    	}
+    	
+    	public boolean accept(Object obj) {
+    		if (isArmyCommander == null) return true;
+    		Turn turn = GameHolder.instance().getGame().getTurn();
+    		if (turn.getContainer(TurnElementsEnum.Army).findAllByProperty("commanderName", ((AdvancedCharacterWrapper)obj).getName()).size() > 0) {
+    			return isArmyCommander;
+    		} else {
+    			return !isArmyCommander;
+    		}
+    	}
+    }
 
 }

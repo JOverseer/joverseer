@@ -3,12 +3,15 @@ package org.joverseer.ui.listviews;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
@@ -30,7 +33,11 @@ public class ArmyListView extends ItemListView {
     }
 
     protected AbstractListViewFilter[][] getFilters() {
-        return new AbstractListViewFilter[][] {NationFilter.createNationFilters()};
+    	ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
+        filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
+        filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+        return new AbstractListViewFilter[][] {
+                filters.toArray(new AbstractListViewFilter[] {})};
     }
 
 

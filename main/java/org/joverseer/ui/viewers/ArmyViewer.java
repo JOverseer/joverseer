@@ -22,6 +22,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.CombatUtils;
@@ -64,11 +65,13 @@ public class ArmyViewer extends ObjectViewer {
     JTextField armyType;
     JTextField extraInfo;
     JTextField food;
+    JTextField cav;
     JTextField travellingWith;
 
     ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
     ActionCommand showArmyMovementIgnorePopsRangeAction = new ShowArmyMovementRangeIgnorePopsAction();
     ActionCommand toggleFedAction = new ToggleFedAction();
+    ActionCommand toggleCavAction = new ToggleCavAction();
     ActionCommand deleteArmyCommand = new DeleteArmyCommand();
     ActionCommand editArmyCommand = new EditArmyCommand();
 
@@ -114,6 +117,8 @@ public class ArmyViewer extends ObjectViewer {
         glb.nextLine();
         glb.append(food = new JTextField());
         food.setPreferredSize(new Dimension(100, 12));
+        glb.append(cav = new JTextField());
+        cav.setPreferredSize(new Dimension(40, 12));
         glb.nextLine();
         glb.append(travellingWith = new JTextField(), 2, 1);
         travellingWith.setPreferredSize(new Dimension(150, 12));
@@ -126,6 +131,7 @@ public class ArmyViewer extends ObjectViewer {
         armyType.setBorder(null);
         extraInfo.setBorder(null);
         food.setBorder(null);
+        cav.setBorder(null);
         travellingWith.setBorder(null);
 
         JPanel panel = glb.getPanel();
@@ -161,9 +167,13 @@ public class ArmyViewer extends ObjectViewer {
                 extraInfo.setText(extraInfo.getText() + (extraInfo.getText().equals("") ? "" : " ")
                         + element.getDescription());
             }
-            int nhi = CombatUtils.getNakedHeavyInfantryEquivalent(army);
-            if (nhi > 0) {
-            	extraInfo.setText(extraInfo.getText() + " (" + nhi + "enHI)");
+            
+            String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents");
+            if (pval != null && pval.equals("yes")) {
+            	int nhi = CombatUtils.getNakedHeavyInfantryEquivalent(army);
+            	if (nhi > 0) {
+            		extraInfo.setText(extraInfo.getText() + " (" + nhi + "enHI)");
+            	}
             }
         } else if (army.getTroopCount() > 0) {
             extraInfo.setVisible(true);
@@ -182,14 +192,37 @@ public class ArmyViewer extends ObjectViewer {
         }
         extraInfo.setCaretPosition(0);
         String foodStr = "";
+        String foodTooltip = "";
         if (army.getFood() != null) {
             foodStr = army.getFood().toString() + " ";
         }
         Boolean fed = army.computeFed();
 
         foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
+        if (fed != null && fed == true) {
+        	foodTooltip = "Move orders treat this army as fed.";
+        } else {
+        	foodTooltip = "Move orders treat this army as unfed.";
+        }
         food.setText(foodStr);
+        food.setToolTipText(foodTooltip);
         // armyMorale.setText("M: 0");
+        
+        String cavString = "";
+        String cavTooltip = "";
+        Boolean isCav =army.computeCavalry(); 
+        if (isCav == null) {
+        	cavString = "";
+        	cavTooltip = "";
+        } else if (isCav) {
+        	cavString = "Cav";
+        	cavTooltip = "Move orders treat this army as cavalry.";
+        } else {
+        	cavString = "Inf";
+        	cavTooltip = "Move orders treat this army as infantry.";
+        }
+        cav.setText(cavString);
+        cav.setToolTipText(cavTooltip);
         
         if (army.getCharacters().size() > 0) {
             travellingWith.setVisible(true);
@@ -205,7 +238,7 @@ public class ArmyViewer extends ObjectViewer {
 
     private JPopupMenu createArmyPopupContextMenu() {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, showArmyMovementIgnorePopsRangeAction, toggleFedAction, "separator", editArmyCommand, deleteArmyCommand});
+                "armyCommandGroup", new Object[] {showArmyMovementRangeAction, showArmyMovementIgnorePopsRangeAction, toggleFedAction, toggleCavAction, "separator", editArmyCommand, deleteArmyCommand});
         return group.createPopupMenu();
     }
     
@@ -252,6 +285,28 @@ public class ArmyViewer extends ObjectViewer {
             a.setFed(fed == null || fed != true ? true : false);
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
+    }
+    
+    private class ToggleCavAction extends ActionCommand {
+
+        public ToggleCavAction() {
+            super("toggleCavAction");
+        }
+
+        protected void doExecuteCommand() {
+            Army a = (org.joverseer.domain.Army) getFormObject();
+            Boolean cav = a.computeCavalry();
+            a.setCavalry(cav == null || cav != true ? true : false);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
         }
     }

@@ -116,6 +116,16 @@ public class OrderEditorListView extends ItemListView {
             }
         };
         filterList.add(f);
+        
+        f = new OrderFilter("Emissaries (E>=30)") {
+            public boolean acceptCharacter(Character c) {
+                return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0
+                        && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank()) &&
+                        c.getEmmisary() >= 30;
+            }
+        };
+        filterList.add(f);
+
 
         f = new OrderFilter("All Imported") {
 

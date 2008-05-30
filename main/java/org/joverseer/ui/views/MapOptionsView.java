@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -62,7 +63,6 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 
         cmbTurns.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (!fireEvents) return;
                 Object obj = cmbTurns.getSelectedItem();
                 if (obj == null) return;
                 int turnNo = (Integer) obj;
@@ -70,7 +70,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 if (g.getCurrentTurn() == turnNo) return;
                 g.setCurrentTurn(turnNo);
-
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
                 if (MapPanel.instance().getSelectedHex() != null) {
@@ -89,7 +90,6 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         cmbMaps.setPreferredSize(new Dimension(100, 16));
         cmbMaps.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (!fireEvents) return;
                 Object obj = cmbMaps.getSelectedItem();
                 if (obj == null) return;
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
@@ -110,6 +110,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                     mapOptions.put(MapOptionsEnum.NationMap, String.valueOf(nationNo));
                 }
                 int turnNo = g.getCurrentTurn();
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
             }
@@ -127,7 +129,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         drawOrders.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-            	if (!fireEvents) return;
+            	
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
                 if (drawOrders.getModel().isSelected()) {
                     mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
@@ -137,6 +139,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 if (!Game.isInitialized(g)) return;
                 int turnNo = g.getCurrentTurn();
+                if (!fireEvents) return;
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
                 
@@ -161,6 +164,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 if (!Game.isInitialized(g)) return;
                 int turnNo = g.getCurrentTurn();
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
                 
@@ -176,8 +181,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         popCenterNames.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-            	if (!fireEvents) return;
-                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+            	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
                 if (popCenterNames.getModel().isSelected()) {
                     mapOptions.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
                 } else {
@@ -186,6 +190,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 if (!Game.isInitialized(g)) return;
                 int turnNo = g.getCurrentTurn();
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
                 
@@ -202,8 +208,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         showClimate.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-            	if (!fireEvents) return;
-                HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+            	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
                 if (showClimate.getModel().isSelected()) {
                     mapOptions.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
                 } else {
@@ -212,6 +217,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 if (!Game.isInitialized(g)) return;
                 int turnNo = g.getCurrentTurn();
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
                 
@@ -221,6 +228,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.row();
         lb.cell(label = new JLabel("Zoom level : "));
         ZoomOption[] zoomOptions = new ZoomOption[]{
+        		new ZoomOption("0,5", 13, 11),
                 new ZoomOption("1", 13, 13),
                 new ZoomOption("2", 15, 15),
                 new ZoomOption("3", 17, 17),
@@ -232,17 +240,18 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         zoom.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-            	if (!fireEvents) return;
-                ZoomOption opt = (ZoomOption)zoom.getSelectedItem();
+            	ZoomOption opt = (ZoomOption)zoom.getSelectedItem();
                 if (opt == null) return;
                 MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
                 metadata.setGridCellHeight(opt.getHeight());
                 metadata.setGridCellWidth(opt.getWidth());
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
             }
         });
-        
+        zoom.setSelectedIndex(1);
         
         
         lb.row();
@@ -254,8 +263,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         nationColors.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-            	if (!fireEvents) return;
-                String opt = (String)nationColors.getSelectedItem();
+            	 String opt = (String)nationColors.getSelectedItem();
                 HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
                 if (opt == null) return;
                 if (opt.equals("Color/Nation")) {
@@ -263,6 +271,8 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 } else if (opt.equals("Color/Allegiance")) {
                 	mapOptions.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);                	
                 };
+                if (!fireEvents) return;
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
             }
@@ -331,9 +341,14 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
             if (e.getEventType().equals(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString())) {
                 fireEvents = false;
                 
-                zoom.setSelectedIndex(1);
+                zoom.setSelectedIndex(2);
                 nationColors.setSelectedIndex(0);
                 showClimate.setSelected(false);                
+                PreferenceRegistry.instance().setPreferenceValue("map.terrainGraphics", "simple");
+                PreferenceRegistry.instance().setPreferenceValue("map.fogOfWarStyle", "xs");
+                PreferenceRegistry.instance().setPreferenceValue("map.charsAndArmies", "simplified");
+                PreferenceRegistry.instance().setPreferenceValue("map.deadCharacters", "no");
+                PreferenceRegistry.instance().setPreferenceValue("map.showArmyType", "no");
                 
                 fireEvents = true;
                 Application.instance().getApplicationContext().publishEvent(

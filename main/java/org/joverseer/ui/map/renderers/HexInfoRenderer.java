@@ -120,7 +120,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         Game game = gh.getGame();
         
         Object map = mapOptions.get(MapOptionsEnum.NationMap);
-        boolean showClimate = !simpleColors && (mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate) == MapOptionValuesEnum.ShowClimateOn);
+        boolean showClimate = (mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate).equals(MapOptionValuesEnum.ShowClimateOn));
         boolean visible = false;
         if (map == null) {
             HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());

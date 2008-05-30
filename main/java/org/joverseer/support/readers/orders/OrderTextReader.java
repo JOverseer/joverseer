@@ -160,7 +160,7 @@ public class OrderTextReader {
                     if (!parts[0].equals("")) {
                         orderNo = Integer.parseInt(parts[0]);
                         for (int j=2; j<parts.length; j++) {
-                            String part = parts[j].trim();
+                            String part = parts[j].trim().replace(" ", "");
                             if (!part.equals("--") && !part.equals("")) {
                                     parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part; 
                             }

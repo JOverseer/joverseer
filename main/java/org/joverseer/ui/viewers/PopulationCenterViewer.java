@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.NationRelations;
@@ -37,6 +38,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditPopulationCenterForm;
@@ -119,9 +121,10 @@ public class PopulationCenterViewer extends ObjectViewer {
 
         nation.setText(gm.getNationByNum(nationNo).getShortName());
 
-
-        sizeFort.setText(pc.getSize().toString() + " - " + pc.getFortification().toString());
-
+        sizeFort.setText(UIUtils.renderEnum(pc.getSize()));
+        if (!pc.getFortification().equals(FortificationSizeEnum.none)) {
+        	sizeFort.setText(sizeFort.getText() + " - " + UIUtils.renderEnum(pc.getFortification()));
+        }
         if (pc.getHarbor() != HarborSizeEnum.none) {
             sizeFort.setText(sizeFort.getText() + " - " + pc.getHarbor().toString());
         }

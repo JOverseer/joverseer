@@ -1,5 +1,7 @@
 package org.joverseer.support.infoSources;
 
+import org.joverseer.support.GameHolder;
+
 /**
  * Information derived from a pdf turn file
  * 
@@ -23,4 +25,7 @@ public class PdfTurnInfoSource extends TurnInfoSource {
         this.nationNo = nationNo;
     }
 
+    public String toString() {
+    	return "PDF (" + GameHolder.instance().getGame().getMetadata().getNationByNum(getNationNo()).getShortName() + ")";
+    }
 }

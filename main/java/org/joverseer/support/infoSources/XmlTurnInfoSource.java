@@ -1,6 +1,7 @@
 package org.joverseer.support.infoSources;
 
 import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.support.GameHolder;
 
 /**
  * Information extracted from an xml turn file
@@ -24,5 +25,10 @@ public class XmlTurnInfoSource extends TurnInfoSource {
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
     }
+    
+    public String toString() {
+    	return "XML (" + GameHolder.instance().getGame().getMetadata().getNationByNum(getNationNo()).getShortName() + ")";
+    }
+
 
 }

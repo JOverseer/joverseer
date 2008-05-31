@@ -218,8 +218,10 @@
 "2039",0,4,2,21,3,2,"Ardumir",75,False,True,,False
 "2339",0,4,2,21,3,2,"Pellardur",75,False,True,,False
 "1609",0,6,3,0,0,0,"Amon Sul",0,False,False,,False
-"1411",0,6,1,0,0,0,"Ruins 1411",0,False,False,,False
-"1410",0,6,1,0,0,0,"Ruins 1410",0,False,False,,False
-"1108",0,6,2,0,0,0,"Ruins 1108",0,False,False,,False
-"1319",0,6,1,0,0,0,"Ruins 1319",0,False,False,,False
+"1411",0,6,1,0,0,0,"Andrath",0,False,False,,False
+"1410",0,6,1,0,0,0,"Tyrn Gorthad",0,False,False,,False
+"1108",0,6,2,0,0,0,"Annuminas",0,False,False,,False
+"1319",0,6,1,0,0,0,"Lond Daer Enedh",0,False,False,,False
 "2321",0,6,3,0,0,0,"Ruins 2321",0,False,False,,False
+"2013",0,6,1,0,0,0,"Ost-in-Edhil",0,False,False,,False
+"3319",0,3,0,25,3,0,"Easterling town",0,False,False,,False

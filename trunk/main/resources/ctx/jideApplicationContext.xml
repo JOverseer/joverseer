@@ -299,6 +299,8 @@
    	</bean>
    	-->
    	
+   	<bean id="mapTooltipHolder" class="org.joverseer.ui.map.MapTooltipHolder"/>
+   	
    	<bean id="orderResultContainer" class="org.joverseer.tools.ordercheckerIntegration.OrderResultContainer"/>
    	
    	<bean class="org.joverseer.ui.ApplicationEventLogger"/>

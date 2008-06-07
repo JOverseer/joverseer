@@ -439,6 +439,27 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>map.tooltips</value>
+					</property>
+					<property name="description">
+						<value>Show Tool Tips</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>map.showArmyType</value>
 					</property>
 					<property name="description">

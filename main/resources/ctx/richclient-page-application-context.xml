@@ -112,6 +112,8 @@
 		
 	</bean>
 	
+	
+	
 	<bean id="teamEconomyView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		

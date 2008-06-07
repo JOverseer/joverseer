@@ -524,7 +524,9 @@ public class TurnNewXmlReader implements Runnable {
 		aws.addAll(aws1.getItems());
         for (ArtifactWrapper aw : (ArrayList<ArtifactWrapper>)aws) {
             // for FA game, update artifact numbers
-            if (game.getMetadata().getGameType() == GameTypeEnum.gameFA) {
+        	try {
+            if (game.getMetadata().getGameType() == GameTypeEnum.gameFA ||
+            		game.getMetadata().getGameType() == GameTypeEnum.gameKS) {
                 String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
                 boolean found = false;
                 for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
@@ -552,7 +554,11 @@ public class TurnNewXmlReader implements Runnable {
                 
                 if (!power.equals(ai.getPower1())) {
                     power += "*"; // mark power as updated for this game
-                    ai.getPowers().set(0, power);
+                    if (ai.getPowers().size() == 0) {
+                    	ai.getPowers().add(power);
+                    } else {
+                    	ai.getPowers().set(0, power);
+                    }
                 }
             }
             
@@ -570,6 +576,10 @@ public class TurnNewXmlReader implements Runnable {
 //                    game.getTurn().getContainer(TurnElementsEnum.Artifact).addItem(a);
 //                }
 //            }
+        	}
+        	catch (Exception exc) {
+        		logger.error(exc);
+        	}
         }
 	}
 }

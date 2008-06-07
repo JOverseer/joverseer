@@ -177,7 +177,7 @@ public class ArmyWrapper {
                 a.setInformationSource(InformationSourceEnum.detailed);
                 break;
             case 2:
-                a.setInformationSource(InformationSourceEnum.some);
+                a.setInformationSource(InformationSourceEnum.someMore);
                 break;
             case 3:
                 a.setInformationSource(InformationSourceEnum.some);

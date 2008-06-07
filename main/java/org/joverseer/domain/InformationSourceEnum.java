@@ -11,6 +11,7 @@ import java.io.Serializable;
 public enum InformationSourceEnum implements Serializable {
     exhaustive (4),
     detailed (3),
+    someMore (2),
     some (1),
     limited (0);
 

@@ -3,6 +3,7 @@ package org.joverseer.ui.views;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -30,7 +31,6 @@ public class MapView extends AbstractView  implements ApplicationListener {
     protected JComponent createControl() {
         // In this view, we're just going to use standard Swing to place a
         // few controls.
-
         scp = new JScrollPane(mapPanel = new MapPanel());
         mapPanel.setFocusable(true);
         mapPanel.addKeyListener(new KeyListener() {
@@ -80,6 +80,11 @@ public class MapView extends AbstractView  implements ApplicationListener {
         MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
         scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
         scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
+        
+        
+        
+        TableLayoutBuilder tlb = new TableLayoutBuilder();
+        tlb.cell(new JLabel("New game"));
         return scp;
     }
 

@@ -548,7 +548,11 @@ public class TurnXmlReader implements Runnable{
                 } else {
                     // army found
                     logger.debug("Army found in turn.");
-                    if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue() || newArmy.getNationNo() == turnInfo.getNationNo())
+                    if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue())
+                    	// condition below was removed on 7 June 2008 because the new xml format files
+                    	// contain usually the same army twice, once with exhaustive info source and one with 
+                    	// "some" info source
+                    	// || newArmy.getNationNo() == turnInfo.getNationNo())
                     {
                         logger.debug("Replace.");
                         armies.removeItem(oldArmy);

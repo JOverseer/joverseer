@@ -82,12 +82,21 @@ public class ArmyWrapper {
         army.setElement(ArmyElementType.WarMachimes, getWarmachines());
         for (ArmyRegimentWrapper arw : (ArrayList<ArmyRegimentWrapper>)getRegiments()) {
             ArmyElementType t = getArmyElementType(arw.getTroopType());
+            boolean found = false;
             for (ArmyElement ae : army.getElements()) {
-                if (ae.getArmyElementType() == t) {
+                if (ae.getArmyElementType().equals(t)) {
                     ae.setTraining(arw.getTraining());
                     ae.setWeapons(arw.getWeapons());
                     ae.setArmor(arw.getArmor());
+                    found = true;
                 }
+            }
+            if (!found) {
+            	ArmyElement ae = new ArmyElement(t, arw.getNumber());
+            	 ae.setTraining(arw.getTraining());
+                 ae.setWeapons(arw.getWeapons());
+                 ae.setArmor(arw.getArmor());
+                 //army.getElements().add(ae);
             }
         }
     }

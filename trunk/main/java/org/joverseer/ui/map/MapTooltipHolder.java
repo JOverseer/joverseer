@@ -12,6 +12,10 @@ import javax.swing.Action;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 
@@ -19,9 +23,12 @@ public class MapTooltipHolder {
     Object[][] toolTipObjects = null;
     String currentToolTipText = null;
 
-    private static MapTooltipHolder instance = new MapTooltipHolder();
+    private static MapTooltipHolder instance = null;
 
     public static MapTooltipHolder instance() {
+    	if (instance == null) {
+    		instance = (MapTooltipHolder)Application.instance().getApplicationContext().getBean("mapTooltipHolder");
+    	}
         return instance;
     }
 
@@ -77,5 +84,9 @@ public class MapTooltipHolder {
         Dimension d = MapPanel.instance().getMapDimension();
         toolTipObjects = new Object[d.width][d.height];
     }
+
+	public void reset() {
+		toolTipObjects = null;
+	}
 
 }

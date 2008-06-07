@@ -47,6 +47,7 @@ import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
@@ -362,6 +363,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
         Game game = getGame();
         if (!Game.isInitialized(game)) return;
 
+        MapTooltipHolder.instance().reset();
+        
         BusyIndicator.showAt(this);
         if (mapBaseItemsBack == null) {
             Dimension d = getMapDimension();
@@ -888,7 +891,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
     public void mouseMoved(MouseEvent e) {
     	MapTooltipHolder tooltipHolder = MapTooltipHolder.instance();
-    	tooltipHolder.showTooltip(e.getPoint(), e.getPoint());
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.tooltips");
+    	if (pval != null && pval.equals("yes")) tooltipHolder.showTooltip(e.getPoint(), e.getPoint());
     }
 
     public Game getGame() {

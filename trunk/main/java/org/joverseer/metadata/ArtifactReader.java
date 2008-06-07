@@ -37,25 +37,30 @@ public class ArtifactReader implements MetadataReader {
 
             String ln;
             while ((ln = reader.readLine()) != null) {
-                String[] parts = ln.split(";");
-                int no = Integer.parseInt(parts[0]);
-                String name = parts[1];
-                String power1 = parts[3];
-                String bonus = parts[4];
-                power1 += " " + bonus;
-                String owner = (parts.length == 7 ? parts[6] : "");
-                String alignment = parts[2];
-                String power2 = (parts.length >= 6 ? parts[5] : "");
-                ArtifactInfo artifact = new ArtifactInfo();
-                artifact.setNo(no);
-                artifact.setName(name);
-                artifact.setOwner(owner);
-                artifact.setAlignment(alignment);
-                artifact.getPowers().add(power1);
-                if (!power2.equals("")) {
-                    artifact.getPowers().add(power2);
-                }
-                artifacts.addItem(artifact);
+            	try {
+	                String[] parts = ln.split(";");
+	                int no = Integer.parseInt(parts[0]);
+	                String name = parts[1];
+	                String power1 = parts.length > 3 ? parts[3] : "";
+	                String bonus = parts.length > 4 ? parts[4] : "";
+	                power1 += " " + bonus;
+	                String owner = (parts.length > 6 ? parts[6] : "");
+	                String alignment = parts[2];
+	                String power2 = (parts.length >= 6 ? parts[5] : "");
+	                ArtifactInfo artifact = new ArtifactInfo();
+	                artifact.setNo(no);
+	                artifact.setName(name);
+	                artifact.setOwner(owner);
+	                artifact.setAlignment(alignment);
+	                artifact.getPowers().add(power1);
+	                if (!power2.equals("")) {
+	                    artifact.getPowers().add(power2);
+	                }
+	                artifacts.addItem(artifact);
+            	}
+            	catch (Exception e) {
+            		throw e;
+            	}
             }
         }
         catch (IOException exc) {

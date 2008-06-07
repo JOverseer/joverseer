@@ -40,7 +40,7 @@ public class DetailArmyReader implements MetadataReader {
 
             String ln;
             while ((ln = reader.readLine()) != null) {
-                if (ln.startsWith(("#"))) continue;
+                if (ln.startsWith(("#")) || ln.equals("")) continue;
                 try {
                     String parts[] = ln.split(";");
                     String hexNo = parts[0];

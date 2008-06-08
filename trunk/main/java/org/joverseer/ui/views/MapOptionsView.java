@@ -228,7 +228,10 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
         lb.row();
         lb.cell(label = new JLabel("Zoom level : "));
         ZoomOption[] zoomOptions = new ZoomOption[]{
-        		new ZoomOption("0,5", 9, 9),
+        		new ZoomOption("s1", 6, 6),
+        		new ZoomOption("s2", 7, 7),
+        		new ZoomOption("s3", 9, 9),
+        		new ZoomOption("s4", 11, 11),
                 new ZoomOption("1", 13, 13),
                 new ZoomOption("2", 15, 15),
                 new ZoomOption("3", 17, 17),
@@ -241,10 +244,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 
             public void actionPerformed(ActionEvent arg0) {
             	ZoomOption opt = (ZoomOption)zoom.getSelectedItem();
-            	if (opt.width < 13) {
-            		opt.width = 8;
-            		opt.height = 8;
-            	}
+            	
                 if (opt == null) return;
                 MapMetadata metadata = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
                 metadata.setGridCellHeight(opt.getHeight());

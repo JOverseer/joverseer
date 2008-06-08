@@ -73,11 +73,13 @@ public class MultiArmyRenderer extends ImageRenderer {
                 i++;
             }
         }
+        int maxFirstLine = mapMetadata.getGridCellWidth() < 10 ? 2 : 3;
+        int maxSecondLine = mapMetadata.getGridCellWidth() < 10 ? 1 : 2;
         // render up to five armies
-        if (i >= 3) {
+        if (i >= maxFirstLine) {
             j = 1;
-            i = i - 3;
-            if (i > 2) {
+            i = i - maxFirstLine;
+            if (i >= maxSecondLine) {
                 return;
             }
         }

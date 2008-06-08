@@ -142,6 +142,7 @@ public class TrackCharacterListView extends BaseItemListView {
         		id.addComponent("Start turn: ", st);
         		id.init("Draw tracking info starting at turn...");
         		st.setText("0");
+        		id.setPreferredSize(new Dimension(400, 100));
         		id.showDialog();
 
         		int startTurn = 0;
@@ -152,7 +153,7 @@ public class TrackCharacterListView extends BaseItemListView {
         	
             	for (int i=0; i<tableModel.getRowCount(); i++) {
             		TrackCharacterInfo tci = (TrackCharacterInfo)tableModel.getRow(i);
-            		if (tci.getTurnNo() != lastTurn && tci.getTurnNo() >= startTurn) {
+            		if (tci.getTurnNo() != lastTurn && tci.getTurnNo() >= startTurn && tci.getHexNo() > 0) {
             			lastTurn = tci.getTurnNo();
             			tcmi.addPoint(tci.getHexNo(), tci.getTurnNo());
             		}

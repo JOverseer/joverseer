@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -17,6 +18,7 @@ import org.joverseer.ui.domain.mapItems.TrackCharacterMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.drawing.Arrow;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
@@ -67,6 +69,7 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
         Stroke currentStroke = g.getStroke();
         g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
         TrackCharacterMapItem hmi = (TrackCharacterMapItem)obj;
+        String tn = null;
         for (int i=0; i<hmi.getHexes().size(); i++) {
         	Integer hexNo = hmi.getHexes().get(i);
         	Integer turnNo = hmi.getTurns().get(i);
@@ -77,13 +80,29 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
             g.drawPolygon(polygon);
             
         	Point p2 = MapPanel.instance().getHexCenter(hexNo);
-            if (i > 0) {
-            	Integer prevHexNo = hmi.getHexes().get(i-1);
-            	Point p1 = MapPanel.instance().getHexCenter(prevHexNo);
-            	g.drawLine(p2.x, p2.y, p1.x, p1.y);
+        	Integer prevHexNo = -1;
+        	Point p1 = null;
+        	if (i > 0) {
+            	prevHexNo = hmi.getHexes().get(i-1);
+            	p1 = MapPanel.instance().getHexCenter(prevHexNo);
+            	if (!prevHexNo.equals(hexNo)) {
+            		// draw an arrow connecting the points
+                	g.drawLine(p2.x, p2.y, p1.x, p1.y);
+	            	double theta = Math.atan2((p2.y - p1.y) , (p2.x - p1.x));
+	                Shape a = Arrow.getArrowHead(p2.x, p2.y, 7, 11, theta);
+	                g.fill(a);
+            	}
             }
             
-            drawString(g, String.valueOf(turnNo), p2, p2);
+        	tn = String.valueOf(turnNo);
+            for (int j=i-1; j>=0; j--) {
+            	if (hmi.getHexes().get(j).equals(hexNo)) {
+            		tn = hmi.getTurns().get(j) + "," + tn;
+            	} else {
+            		break;
+            	}
+            }
+        	drawString(g, tn, p2, p2);
             
         }
         g.setStroke(currentStroke);

@@ -47,7 +47,7 @@ public class HexNumberRenderer implements Renderer{
         Hex hex = (Hex)obj;
         if (!withinMapRange(hex.getColumn(), hex.getRow(), mapMetadata)) return;
 
-        Font f = new Font(fontName, fontStyle, fontSize);
+        Font f = new Font(fontName, fontStyle, mapMetadata.getGridCellWidth() < 10 ? 7 : fontSize);
         String hexNo = String.valueOf(hex.getColumn());
         if (hex.getColumn() < 10) {
             hexNo = "0" + hexNo;
@@ -59,6 +59,7 @@ public class HexNumberRenderer implements Renderer{
 
         int w = ((Number)f.getStringBounds(hexNo, g.getFontRenderContext()).getWidth()).intValue();
 
+        
         x = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - w / 2 + x;
         y = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() / 4 + y;
 

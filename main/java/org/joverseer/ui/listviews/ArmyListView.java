@@ -6,15 +6,25 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
+import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.support.controls.JLabelButton;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.table.SortableTableModel;
 
 /**
@@ -62,7 +72,13 @@ public class ArmyListView extends ItemListView {
         return c;
     }
 
-    /**
+    protected JComponent[] getButtons() {
+    	return new JComponent[]{
+    			new PopupMenuCommand().getButton(new Object[]{
+    					new GenericCopyToClipboardCommand(table)})};
+	}
+
+	/**
      * Drag and drop generates a transferable with the following three flavors:
      * - Army[] (all the selected armies)
      * - Army (the first selected army)

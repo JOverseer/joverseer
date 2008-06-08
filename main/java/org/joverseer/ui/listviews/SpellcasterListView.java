@@ -25,6 +25,8 @@ import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.SpellcasterWrapper;
+import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
+import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
@@ -135,6 +137,12 @@ public class SpellcasterListView extends BaseItemListView {
     protected ColumnToSort[] getDefaultSort() {
         return new ColumnToSort[] {new ColumnToSort(0, 2), new ColumnToSort(1, 0)};
     }
+    
+    protected JComponent[] getButtons() {
+    	return new JComponent[]{
+    			new PopupMenuCommand().getButton(new Object[]{
+    					new GenericCopyToClipboardCommand(table)})};
+	}
 
     /**
      * Resets the columns - setting widths and header values

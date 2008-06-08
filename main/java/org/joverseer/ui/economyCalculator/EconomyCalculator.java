@@ -73,7 +73,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 refreshTaxIncrease();
                 refreshAutocalcOrderCost();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
-                loadNationCombo();
+                loadNationCombo(false);
                 try {
                     ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                     ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
@@ -87,7 +87,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
                 ((MarketTableModel)marketTable.getModel()).setGame(null);
                 ((EconomyTotalsTableModel)totalsTable.getModel()).setGame(null);
-                loadNationCombo();
+                loadNationCombo(true);
             } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 refreshAutocalcOrderCost();
             }
@@ -134,20 +134,27 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         }
     }
     
-    private void loadNationCombo() {
+    private void loadNationCombo(boolean autoFocusOnGameNation) {
         nationCombo.removeAllItems();
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g)) return;
         if (g.getTurn() == null) return;
+        int selectedIndex = 0;
+        int i = 0;
         for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
             NationEconomy ne = (NationEconomy)g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", n.getNumber());
             // load only nations for which economy has been imported
             if (ne == null) continue;
             nationCombo.addItem(n.getName());
+            if (autoFocusOnGameNation && n.getNumber() == g.getMetadata().getNationNo()) {
+            	selectedIndex = i;
+            }
+            i++;
         }
         if (nationCombo.getItemCount() > 0) {
-            nationCombo.setSelectedIndex(0);
+            nationCombo.setSelectedIndex(selectedIndex);
         }
+        
     }
     
     /**

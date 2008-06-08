@@ -98,8 +98,8 @@ public class OrderEditorListView extends ItemListView {
             for (Character c : (ArrayList<Character>) items.getItems()) {
                 if (!f.acceptCharacter(c))
                     continue;
-                for (Order o : c.getOrders()) {
-                    orders.add(o);
+                for (int i=0; i<c.getNumberOfOrders(); i++) {
+                    orders.add(c.getOrders()[i]);
                 }
             }
         }

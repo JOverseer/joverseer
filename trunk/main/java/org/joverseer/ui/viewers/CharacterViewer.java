@@ -125,8 +125,10 @@ public class CharacterViewer extends ObjectViewer {
 
     JComponent order1comp;
     JComponent order2comp;
+    JComponent order3comp;
     OrderViewer order1;
     OrderViewer order2;
+    OrderViewer order3;
     JPanel orderPanel;
 
     boolean showArtifacts = false;
@@ -155,8 +157,9 @@ public class CharacterViewer extends ObjectViewer {
         Character c = (Character) object;
         if (object != getFormObject()) {
             showArtifacts = false;
-            showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank() ||
+            showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank() || !c.getOrders()[0].isBlank() || 
                 OrderEditorAutoNations.instance().containsNation(c.getNationNo());
+            resetOrderPanel(c.getNumberOfOrders());
             showSpells = false;
             showHostages = false;
         }
@@ -166,7 +169,21 @@ public class CharacterViewer extends ObjectViewer {
         reset(c);
     }
     
-    
+    private void resetOrderPanel(int numberOfOrders) {
+    	orderPanel.removeAll();
+    	TableLayoutBuilder tlb = new TableLayoutBuilder();
+        tlb.cell(order1comp,"rowspec=top:20px");
+        tlb.row();
+        tlb.cell(order2comp,"rowspec=top:20px");
+        tlb.row();
+        if (numberOfOrders == 3) {
+	        tlb.cell(order3comp,"rowspec=top:20px");
+	        tlb.row();
+        }
+        JPanel pnl = tlb.getPanel();
+        pnl.setBackground(Color.white);
+        orderPanel.add(pnl);
+    }
     
     public void reset(Character c) {
         Game g = GameHolder.instance().getGame();
@@ -355,8 +372,14 @@ public class CharacterViewer extends ObjectViewer {
             }
             order1.setFormObject(c.getOrders()[0]);
             order2.setFormObject(c.getOrders()[1]);
+            order3.setFormObject(c.getOrders()[2]);
             if (showOrders) {
             	orderPanel.setVisible(true);
+            	if (c.getNumberOfOrders() == 3) {
+            		order3comp.setVisible(true);
+            	} else {
+            		order3comp.setVisible(false);
+            	}
             	swapOrdersIconCmd.setVisible(true);
             } else {
             	orderPanel.setVisible(false);
@@ -656,7 +679,11 @@ public class CharacterViewer extends ObjectViewer {
         order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
         tlb.cell(order2comp = order2.createFormControl(),"rowspec=top:20px");
         tlb.row();
-        orderPanel = tlb.getPanel();
+        order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+        tlb.cell(order3comp = order3.createFormControl(),"rowspec=top:20px");
+        tlb.row();
+        orderPanel = new JPanel();
+        orderPanel.add(tlb.getPanel());
         orderPanel.setBackground(Color.white);
         glb.append(orderPanel, 2, 1);
         glb.append(swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
@@ -874,7 +901,7 @@ public class CharacterViewer extends ObjectViewer {
 
         protected void doExecuteCommand() {
             Character c = (Character)getFormObject();
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
                 if (c.getOrders()[i].isBlank()) {
                     c.getOrders()[i].setOrderNo(orderNo);
                     c.getOrders()[i].setParameters(params);

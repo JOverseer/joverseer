@@ -24,4 +24,7 @@ public class DerivedFromCombatNarrationInfoSource extends PdfTurnInfoSource {
 		this.lossesDescription = lossesDescription;
 	}
 	
+	public String toString() {
+    	return "Combat narration";
+    }
 }

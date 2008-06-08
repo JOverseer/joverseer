@@ -157,7 +157,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         int totalCost = 0;
         OrderCostCalculator calc = new OrderCostCalculator();
         for (Character c : (ArrayList<Character>)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", getSelectedNationNo())) {
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
                 if (c.getOrders()[i].isBlank()) continue;
                 int no = c.getOrders()[i].getOrderNo();
                 if (no == 320 || no == 315 || no == 310 || no == 325) continue;

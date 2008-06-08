@@ -36,7 +36,7 @@ public class OrderFileGenerator {
         String header = getFileHeader(g, t, nationNo, chars);
         ret += header;
         for (Character c : chars) {
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
                 Order o = c.getOrders()[i];
                 ret += exportOrder(c, o);
                 ret += "\n";
@@ -50,11 +50,13 @@ public class OrderFileGenerator {
     protected String getFileHeader(Game g, Turn t, int nationNo, ArrayList<Character> chars) throws Exception {
         // check for existence of 285 order
         boolean order285exists = false;
+        int orderCount = 0;
         for (Character ch : chars) {
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<ch.getNumberOfOrders(); i++) {
                 if (ch.getOrders()[i].getOrderNo() == 285) {
                     order285exists = true;
                 }
+                orderCount++;
             }
         }
         
@@ -72,7 +74,7 @@ public class OrderFileGenerator {
                 pi.getPlayerName(),
                 dueDateParts[1], dueDateParts[0], dueDateParts[2],
                 order285exists ? "YES" : "NO",
-                chars.size() * 2);
+                orderCount);
         ret += "\n\n";
         return ret;
     }

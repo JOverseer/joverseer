@@ -67,6 +67,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
                         new ArtifactPowerFilter("Combat", "Combat "), new ArtifactPowerFilter("Agent", "Agent "),
                         new ArtifactPowerFilter("Command", "Command "), new ArtifactPowerFilter("Stealth", "Stealth "),
                         new ArtifactPowerFilter("Mage", "Mage "), new ArtifactPowerFilter("Emissary", "Emissary "),
+                        new ArtifactPowerFilter("Scrying", "Scry"),
                         new ArtifactPowerFilter("Curse", "Spirit Mastery"),
                         new ArtifactPowerFilter("Conjuring", "Conjuring Ways"),
                         new ArtifactPowerFilter("Teleport", " Teleport")}};

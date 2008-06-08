@@ -31,5 +31,4 @@ public class PopCenterXmlInfoSource extends XmlTurnInfoSource implements Seriali
     }
     
     
-
 }

@@ -358,7 +358,7 @@ public class ExportOrdersForm extends AbstractForm {
         OrderResultContainer orc = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
         
         for (Character ch : chars) {
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<ch.getNumberOfOrders(); i++) {
                 if (ch.getOrders()[i].isBlank()) {
                     missingOrders = true;
                 } else {

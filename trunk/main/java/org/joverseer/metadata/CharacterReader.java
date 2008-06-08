@@ -50,6 +50,10 @@ public class CharacterReader  implements MetadataReader {
                 int mage = Integer.parseInt(parts[5]);
                 int stealth = Integer.parseInt(parts[6]);
                 int challenge = Integer.parseInt(parts[7]);
+                int numberOfOrders = 2;
+                if (parts.length > 8) {
+                	numberOfOrders = Integer.parseInt(parts[8]);
+                }
                 Character c = new Character();
                 c.setNationNo(nationNo);
                 c.setName(charName);
@@ -60,6 +64,7 @@ public class CharacterReader  implements MetadataReader {
                 c.setMage(mage);
                 c.setStealth(stealth);
                 c.setChallenge(challenge);
+                c.setNumberOfOrders(numberOfOrders);
                 c.setInfoSource(ms);
                 characters.addItem(c);
             }

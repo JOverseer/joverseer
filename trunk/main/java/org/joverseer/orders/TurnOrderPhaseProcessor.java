@@ -39,7 +39,7 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
         Integer[] orderNumbers = getPhaseOrderNumbers();
         Arrays.sort(orderNumbers);
         for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
                 if (Arrays.binarySearch(orderNumbers, c.getOrders()[i].getOrderNo()) > 0) {
                     orders.add(new OrderExecutionWrapper(c, i));
                 }

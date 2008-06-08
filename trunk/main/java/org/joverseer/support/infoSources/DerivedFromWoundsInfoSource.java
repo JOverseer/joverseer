@@ -23,6 +23,8 @@ public class DerivedFromWoundsInfoSource extends PdfTurnInfoSource {
 		super(turnNo, nationNo);
 	}
 	
-	
+	public String toString() {
+    	return "Wounds";
+    }
 
 }

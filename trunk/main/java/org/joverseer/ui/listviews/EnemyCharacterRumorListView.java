@@ -5,6 +5,9 @@ import javax.swing.JTable;
 
 import org.joverseer.support.Container;
 import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
+import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
+import org.joverseer.ui.listviews.commands.ListViewDescriptionPopupCommand;
+import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 
 /**
  * List view for Enemy Character Rumors
@@ -16,6 +19,7 @@ public class EnemyCharacterRumorListView extends BaseItemListView {
 
     public EnemyCharacterRumorListView() {
         super(EnemyCharacterRumorTableModel.class);
+        
     }
 
     protected int[] columnWidths() {
@@ -34,4 +38,12 @@ public class EnemyCharacterRumorListView extends BaseItemListView {
         tableModel.setRows(thieves.getItems());
         tableModel.fireTableDataChanged();
     }
+    
+    protected JComponent[] getButtons() {
+    	return new JComponent[]{
+    			new PopupMenuCommand().getButton(new Object[]{
+    					new GenericCopyToClipboardCommand(table),
+    					//new ListViewDescriptionPopupCommand("enemyCharacterRumorListView")
+    					})};
+	}
 }

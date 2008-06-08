@@ -59,8 +59,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
         lb.relatedGapRow();
         
         teamEconomyTableModel = new TeamEconomyTableModel();
-        teamEconomyTable = new JOverseerTable(teamEconomyTableModel);
-        
+        teamEconomyTable = new JOverseerTable(new com.jidesoft.grid.SortableTableModel(teamEconomyTableModel));
         teamEconomyTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
         teamEconomyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         for (int i=0; i<teamEconomyTableModel.getColumnCount(); i++) {

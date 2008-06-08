@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -21,6 +22,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Combat;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -31,13 +33,20 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.TrackCharacterInfo;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
+import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
+import org.joverseer.ui.domain.mapItems.TrackCharacterMapItem;
+import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
+import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
+
+import sun.rmi.runtime.GetThreadPoolAction;
 
 /**
  * List view for Track Character results
@@ -47,6 +56,8 @@ import org.springframework.richclient.table.SortableTableModel;
 public class TrackCharacterListView extends BaseItemListView {
 
     JTextField character;
+    JComboBox from;
+    JComboBox to;
     protected SelectRowCommandExecutor selectRowCommandExecutor = new SelectRowCommandExecutor();
 
 
@@ -101,17 +112,57 @@ public class TrackCharacterListView extends BaseItemListView {
                 setItems();
             }
         });
-
+        
+        tlb.gapCol();
         JButton btn = new JButton("Track");
         btn.setPreferredSize(new Dimension(70, 20));
         tlb.gapCol();
-        tlb.cell(btn, "align=left");
+        tlb.cell(btn, "colspec=left:70px");
         btn.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
                 setItems();
             }
         });
+
+        tlb.gapCol();
+        btn = new JButton("Draw");
+        btn.setPreferredSize(new Dimension(70, 20));
+        tlb.gapCol();
+        tlb.cell(btn, "align=left");
+        btn.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+            	TrackCharacterMapItem tcmi = new TrackCharacterMapItem();
+            	int lastTurn = -1;
+            	
+        		final JTextField st = new JTextField();
+        		InputDialog id = new InputDialog();
+        		id.setTitle("Track Character");
+        		id.addComponent("Start turn: ", st);
+        		id.init("Draw tracking info starting at turn...");
+        		st.setText("0");
+        		id.showDialog();
+
+        		int startTurn = 0;
+        		try {
+        			startTurn = Integer.parseInt(st.getText());
+        		}
+        		catch (Exception exc) {};
+        	
+            	for (int i=0; i<tableModel.getRowCount(); i++) {
+            		TrackCharacterInfo tci = (TrackCharacterInfo)tableModel.getRow(i);
+            		if (tci.getTurnNo() != lastTurn && tci.getTurnNo() >= startTurn) {
+            			lastTurn = tci.getTurnNo();
+            			tcmi.addPoint(tci.getHexNo(), tci.getTurnNo());
+            		}
+            	}
+                AbstractMapItem.add(tcmi);
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), tcmi, this));
+            }
+        });
+
         tlb.row();
         tlb.relatedGapRow();
         tlb.cell(tableComp);

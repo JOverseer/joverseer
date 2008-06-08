@@ -1,6 +1,11 @@
 package org.joverseer.ui.command;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -57,7 +62,7 @@ public class ExportOrderTextCommand extends ActionCommand {
         
     }
     
-    class ExportOrderTextForm extends AbstractForm {
+    class ExportOrderTextForm extends AbstractForm implements ClipboardOwner {
         JComboBox nation;
         JTextArea orders;
 
@@ -112,10 +117,25 @@ public class ExportOrderTextCommand extends ActionCommand {
                     }
                 }
             });
+            
+            JButton ctc = new JButton("Copy to Clipboard");
+            glb.append(ctc, 1, 1);
+            glb.nextLine();
+            final ClipboardOwner clipboardOwner = this;
+            ctc.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                	StringSelection stringSelection = new StringSelection(orders.getText());
+                	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(stringSelection, clipboardOwner);
+                }
+            });
             nation.setSelectedIndex(0);
             
             return glb.getPanel();
         }
+
+		public void lostOwnership(Clipboard clipboard, Transferable contents) {
+		}
         
     }
 

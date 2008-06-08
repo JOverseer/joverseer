@@ -12,6 +12,8 @@ import javax.swing.TransferHandler;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
+import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.PopCenterInfoSourceTableCellRenderer;
@@ -53,6 +55,12 @@ public class PopulationCenterListView extends ItemListView {
     protected ColumnToSort[] getDefaultSort() {
         return new ColumnToSort[] {new ColumnToSort(0, 2), new ColumnToSort(0, 1)};
     }
+    
+    protected JComponent[] getButtons() {
+    	return new JComponent[]{
+    			new PopupMenuCommand().getButton(new Object[]{
+    					new GenericCopyToClipboardCommand(table)})};
+	}
 
     /**
      * Drag and drop exports:

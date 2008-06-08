@@ -22,6 +22,7 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
@@ -340,6 +341,16 @@ public class TurnXmlReader implements Runnable{
                 logger.debug("new:" + newPc.getHexNo() + " " + newPc.getName() + " "  + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + ((PopCenterXmlInfoSource)pcInfoSource).getPreviousTurnNo());
                 
                 PopulationCenter oldPc = (PopulationCenter) pcs.findFirstByProperties(new String[]{"x", "y"}, new Object[]{newPc.getX(), newPc.getY()});
+                // for KS, try to find starting pc with same name
+                if (game.getMetadata().getGameType().equals(GameTypeEnum.gameKS) && !newPc.getName().equals("Unknown (Map Icon)")) {
+                	PopulationCenter startingPc = (PopulationCenter)pcs.findFirstByProperty("name", newPc.getName());
+                	if (startingPc != null) {
+	                	if (MetadataSource.class.isInstance(startingPc.getInfoSource()) && startingPc.getHexNo() != newPc.getHexNo()) {
+	                		// remove starting pc
+	                		pcs.removeItem(startingPc);
+	                	}
+                	}
+                }
                 if (oldPc == null) {
                     // no pc found - add newPc
                     logger.debug("No Pop Centre found in turn, add.");

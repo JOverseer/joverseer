@@ -127,6 +127,14 @@ public class AdvancedCharacterListView extends BaseItemListView {
         protected void doExecuteCommand() {
             game = GameHolder.instance().getGame();
             String txt = "";
+            for (int j=0; j<tableModel.getDataColumnCount(); j++) {
+            	txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+            	if (j == 2) {
+            		// duplicate column "nation"
+            		txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+            	}
+            }
+            txt += NL;
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(i);
                 AdvancedCharacterWrapper aw = (AdvancedCharacterWrapper) tableModel.getRow(idx);
@@ -198,9 +206,10 @@ public class AdvancedCharacterListView extends BaseItemListView {
                     + getArtifactText(aw.getA1()) + DELIM + getArtifactText(aw.getA2()) + DELIM
                     + getArtifactText(aw.getA3()) + DELIM + getArtifactText(aw.getA4()) + DELIM
                     + getArtifactText(aw.getA5()) + DELIM + aw.getTravellingWith() + DELIM
-                    + getDeathReasonStr(aw.getDeathReason()) + DELIM + aw.getTurnNo() + DELIM
+                    + getDeathReasonStr(aw.getDeathReason()) + DELIM 
                     + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource())+ DELIM
-                    + aw.getDragonPotential();
+                    + aw.getTurnNo() + DELIM
+                    + (aw.getDragonPotential() == null ? "" : aw.getDragonPotential());
         }
 
         public void lostOwnership(Clipboard arg0, Transferable arg1) {

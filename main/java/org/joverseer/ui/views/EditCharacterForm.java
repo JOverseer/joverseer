@@ -93,6 +93,9 @@ public class EditCharacterForm extends AbstractForm {
 
         formBuilder.add("health");
         formBuilder.row();
+        
+        formBuilder.add("numberOfOrders");
+        formBuilder.row();
         return formBuilder.getForm();
     }
 }

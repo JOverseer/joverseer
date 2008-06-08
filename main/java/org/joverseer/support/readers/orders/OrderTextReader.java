@@ -55,8 +55,8 @@ public class OrderTextReader {
                 String location = null;
                 int i = 0;
                 int charLine = 0;
-                String[] orderText = new String[]{null, null};
-                int[] orderLines = new int[]{0, 0};
+                String[] orderText = new String[]{null, null, null};
+                int[] orderLines = new int[]{0, 0, 0};
                 String notes = "";
     
                 String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?]+)*\\s+\\([\\w ]{5}\\) @ \\d{4}.*";
@@ -83,7 +83,7 @@ public class OrderTextReader {
                             lineResults.add("Line ignored. Looks like character line but parsing failed.");
                         }
                     } else if (Pattern.matches(orderPattern, line)) {
-                        if (charId != null && i < 2) {
+                        if (charId != null) {
                             orderLines[i] = lineCounter;
                             orderText[i] = line;
                             lineResults.add("Order line.");
@@ -91,7 +91,7 @@ public class OrderTextReader {
                         } else {
                             lineResults.add("Order line ignored.");
                         }
-                    } else if (i == 2 && !line.trim().equals("")) {
+                    } else if (!line.trim().equals("")) {
                         // comments
                         notes += (line.equals("") ? "" : "\n") + line;
                         lineResults.add("Order notes.");
@@ -145,7 +145,7 @@ public class OrderTextReader {
             
             chars++;
             Order[] orders = c.getOrders();
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
                 if (orderText[i] == null) {
                     orders[i].clear();
                 } else {

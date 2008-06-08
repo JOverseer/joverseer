@@ -23,5 +23,7 @@ public class DerivedFromTitleInfoSource extends TurnInfoSource {
 		this.title = title;
 	}
 	
-	
+	public String toString() {
+    	return "Title";
+    }
 }

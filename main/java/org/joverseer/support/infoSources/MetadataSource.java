@@ -15,4 +15,8 @@ public class MetadataSource extends InfoSource {
     public void setTurnNo(int turnNo) {
         // do nothing
     }
+    
+    public String toString() {
+    	return "Starting info";
+    }
 }

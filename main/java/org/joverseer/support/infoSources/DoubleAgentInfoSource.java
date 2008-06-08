@@ -21,4 +21,8 @@ public class DoubleAgentInfoSource extends InfoSource {
     public String getDescription() {
         return String.valueOf(nationNo);
     }
+    
+    public String toString() {
+    	return "Double agent";
+    }
 }

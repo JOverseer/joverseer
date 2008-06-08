@@ -35,5 +35,7 @@ public class DerivedFromInfluenceOtherInfoSource extends PdfTurnInfoSource {
 		this.loyaltyResult = loyaltyResult;
 	}
 	
-
+	public String toString() {
+    	return "InfOther Rumor";
+    }
 }

@@ -7,6 +7,8 @@ package org.joverseer.support.infoSources;
  *
  */
 public class RumorInfoSource extends TurnInfoSource {
-	
+	public String toString() {
+    	return "Rumor";
+    }
 
 }

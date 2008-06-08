@@ -27,4 +27,8 @@ public class HostageInfoSource extends InfoSource {
     public String getDescription() {
         return String.valueOf(nationNo);
     }
+    
+    public String toString() {
+    	return "Hostage";
+    }
 }

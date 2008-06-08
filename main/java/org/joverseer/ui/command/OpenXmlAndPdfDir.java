@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 
 import org.joverseer.game.Game;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
 import org.joverseer.support.TurnPostProcessor;
@@ -137,17 +139,28 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
     protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
-
         MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[]{}, Locale.getDefault()),
-                ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[]{}, Locale.getDefault())) {
-            protected void onConfirm() {
-                ChangeNationAllegiances cmd = new ChangeNationAllegiances();
-                cmd.doExecuteCommand();
-            }
-        };
-        dlg.setPreferredSize(new Dimension(500, 70));
-        dlg.showDialog();
+        
+        // check if allegiances have been set for all neurals
+        Game g = GameHolder.instance().getGame();
+        boolean neutralNationExists = false;
+        for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
+        	if (n.getAllegiance().equals(NationAllegianceEnum.Neutral) &&
+        			!n.getEliminated() && !n.getRemoved()) {
+        		neutralNationExists = true;
+        	}
+        }
+        if (neutralNationExists) {
+	        ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[]{}, Locale.getDefault()),
+	                ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[]{}, Locale.getDefault())) {
+	            protected void onConfirm() {
+	                ChangeNationAllegiances cmd = new ChangeNationAllegiances();
+	                cmd.doExecuteCommand();
+	            }
+	        };
+	        dlg.setPreferredSize(new Dimension(500, 70));
+	        dlg.showDialog();
+        }
         
 
         JFileChooser fileChooser = new JFileChooser();

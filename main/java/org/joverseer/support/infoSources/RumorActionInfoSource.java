@@ -23,5 +23,7 @@ public class RumorActionInfoSource extends InfoSource {
 		this.reports = reports;
 	}
 	
-	
+	public String toString() {
+    	return "Rumor";
+    }
 }

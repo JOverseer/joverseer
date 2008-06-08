@@ -55,7 +55,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     InformationSourceEnum informationSource;
     InfoSource infoSource;
 
-    Order[] orders = new Order[]{new Order(this), new Order(this)};
+    Order[] orders = new Order[]{new Order(this), new Order(this), new Order(this)};
+    
+    int numberOfOrders = 2;
     
     String orderResults;
     String encounter;
@@ -258,6 +260,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     }
 
     public Order[] getOrders() {
+    	if (orders.length == 2) {
+    		orders = new Order[]{orders[0], orders[1], new Order(this)};
+    	}
         return orders;
     }
 
@@ -353,6 +358,15 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     public void setHostages(ArrayList<String> hostages) {
         this.hostages = hostages;
     }
+
+	public int getNumberOfOrders() {
+		if (numberOfOrders == 0) numberOfOrders = 2;
+		return numberOfOrders;
+	}
+
+	public void setNumberOfOrders(int numberOfOrders) {
+		this.numberOfOrders = numberOfOrders;
+	}
     
     
 }

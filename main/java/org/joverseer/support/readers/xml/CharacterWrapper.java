@@ -29,6 +29,7 @@ public class CharacterWrapper {
     int health;
     String title;
     int informationSource;
+    int ordersAllowed;
     ArrayList artifacts = new ArrayList();
     ArrayList spells = new ArrayList();
 
@@ -191,8 +192,18 @@ public class CharacterWrapper {
     public void setTotalStealth(int totalStealth) {
         this.totalStealth = totalStealth;
     }
+    
+    
 
-    public void addArtifact(String artifact) {
+    public int getOrdersAllowed() {
+		return ordersAllowed;
+	}
+
+	public void setOrdersAllowed(int ordersAllowed) {
+		this.ordersAllowed = ordersAllowed;
+	}
+
+	public void addArtifact(String artifact) {
         artifacts.add(artifact);
     }
 
@@ -232,7 +243,7 @@ public class CharacterWrapper {
         if (getHealth() > 0) {
             character.setHealth(getHealth());
         }
-
+        character.setNumberOfOrders(getOrdersAllowed());
         String artifactId;
         ArrayList<Integer> artifacts = new ArrayList<Integer>();
         for (String artifact : (ArrayList<String>)getArtifacts()) {

@@ -53,7 +53,9 @@ import org.springframework.richclient.table.TableUtils;
  */
 public class EconomyCalculator extends AbstractView implements ApplicationListener {
     
+	int tranCarOrderCost = 0;
     JLabel autocalcOrderCost;
+    JLabel finalGoldWarning;
     JTable marketTable;
     JTable totalsTable;
     JTable pcTable;
@@ -72,6 +74,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 refreshMarketLimitWarning();
                 refreshTaxIncrease();
                 refreshAutocalcOrderCost();
+                refreshFinalGoldWarning();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
                 loadNationCombo(false);
                 try {
@@ -80,6 +83,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                     refreshMarketLimitWarning();
                     refreshTaxIncrease();
                     refreshAutocalcOrderCost();
+                    refreshFinalGoldWarning();
                 }
                 catch (Exception exc) {
                     exc.printStackTrace();
@@ -119,6 +123,30 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         } else {
             marketLimitWarning.setVisible(false);
         }
+    }
+    
+    private void refreshFinalGoldWarning() {
+    	int finalGold = ((EconomyTotalsTableModel)totalsTable.getModel()).getFinalGold();
+    	if (finalGold >=0 ) {
+    		finalGoldWarning.setVisible(false);
+    	} else {
+    		// check orders cost
+    		int ordersCost = ((MarketTableModel)marketTable.getModel()).getEconomyCalculatorData().getOrdersCost();
+    		if (ordersCost > 0) {
+    			// find cost for TranCar orders
+    			if (ordersCost < -finalGold) {
+    				finalGoldWarning.setVisible(true);
+    				finalGoldWarning.setText("Danger - negative final gold without including order cost!");
+    			} else if (tranCarOrderCost < -finalGold) {
+    				finalGoldWarning.setVisible(true);
+    				finalGoldWarning.setText("Negative final gold. Some of your orders may not be executed.");
+    			} else {
+    				finalGoldWarning.setVisible(true);
+    				finalGoldWarning.setText("Negative final gold. Some of your TranCar (948) orders may be adjusted.");
+    			}
+    		}
+    	}
+    	
     }
     
     /**
@@ -162,6 +190,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
      */
     private void refreshAutocalcOrderCost() {
         int totalCost = 0;
+        tranCarOrderCost = 0;
         OrderCostCalculator calc = new OrderCostCalculator();
         for (Character c : (ArrayList<Character>)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", getSelectedNationNo())) {
             for (int i=0; i<c.getNumberOfOrders(); i++) {
@@ -171,6 +200,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 int cost = calc.getOrderCost(c.getOrders()[i]);
                 if (cost > 0) {
                     totalCost += cost;
+                }
+                if (no == 948) {
+                	tranCarOrderCost += cost;
                 }
             }
         }
@@ -209,6 +241,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 refreshPcs(n.getNumber());
                 refreshMarketLimitWarning();
                 refreshAutocalcOrderCost();
+                refreshFinalGoldWarning();
                 refreshTaxIncrease();
                 sellBonus.setSelected(((EconomyTotalsTableModel)totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
             }
@@ -232,6 +265,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
                 ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
                 refreshMarketLimitWarning();
+                refreshFinalGoldWarning();
                 refreshTaxIncrease();
             }
         });
@@ -302,7 +336,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 // when button clicked
                 // update the economy calculator data with the autocalc order cost value
                 ((EconomyTotalsTableModel)totalsTable.getModel()).setOrdersCost(Integer.parseInt(autocalcOrderCost.getText()));
-                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();                
+                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                refreshFinalGoldWarning();
             }
         });
         tlb.cell(btn);
@@ -317,6 +352,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         marketLimitWarning.setFont(GraphicUtils.getFont(marketLimitWarning.getFont().getName(), Font.BOLD, marketLimitWarning.getFont().getSize()));
         marketLimitWarning.setForeground(Color.red);
         lb.cell(marketLimitWarning);
+        lb.row();
+        lb.relatedGapRow();
+        
+        finalGoldWarning = new JLabel("Final gold warning!");
+        finalGoldWarning.setFont(GraphicUtils.getFont(finalGoldWarning.getFont().getName(), Font.BOLD, marketLimitWarning.getFont().getSize()));
+        finalGoldWarning.setForeground(Color.red);
+        lb.cell(finalGoldWarning);
         lb.row();
         lb.relatedGapRow();
         

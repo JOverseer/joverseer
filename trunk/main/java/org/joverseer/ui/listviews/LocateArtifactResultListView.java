@@ -8,6 +8,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.joverseer.ui.listviews.filters.TurnFilter;
@@ -39,7 +40,7 @@ public class LocateArtifactResultListView extends BaseItemListView {
     }
 
     protected void setItems() {
-        HashMap<Integer, LocateArtifactResult> results = new HashMap<Integer, LocateArtifactResult>();
+        ArrayList<LocateArtifactResult> results = new ArrayList<LocateArtifactResult>();
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (!Game.isInitialized(g)) return;
 
@@ -48,19 +49,17 @@ public class LocateArtifactResultListView extends BaseItemListView {
             Container artis = g.getTurn(ti).getContainer(TurnElementsEnum.Artifact);
             for (Artifact arti : (ArrayList<Artifact>)artis.getItems()) {
             	if (DerivedFromSpellInfoSource.class.isInstance(arti.getInfoSource())) {
-	                if (results.containsKey(arti.getNumber())) {
-	                    results.remove(arti.getNumber());
+	                for (LocateArtifactResult lar : ((LocateArtifactResultTableModel)tableModel).getResults(arti)) {
+	                	lar.setTurnNo(ti);
+	                	results.add(lar);
 	                }
-	                LocateArtifactResult lar =
-	                    ((LocateArtifactResultTableModel)tableModel).getResult(arti);
-	                lar.setTurnNo(ti);
-	                results.put(arti.getNumber(), lar);
+	                
             	}
             }
         }
         ArrayList items = new ArrayList();
         AbstractListViewFilter filter = getActiveFilter();
-        for (LocateArtifactResult lar : results.values()) {
+        for (LocateArtifactResult lar : results) {
             if (filter == null || filter.accept(lar)) {
                 items.add(lar);
             }

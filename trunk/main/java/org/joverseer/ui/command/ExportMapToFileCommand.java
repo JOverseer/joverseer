@@ -47,7 +47,7 @@ public class ExportMapToFileCommand  extends ActionCommand {
         fileChooser.setSelectedFile(new File("game" + game.getMetadata().getGameNo() + "t" + game.getCurrentTurn() + ".jpeg"));
         fileChooser.setFileFilter(new FileFilter() {
 			public boolean accept(File f) {
-				return f.getAbsolutePath().endsWith(".jpeg");
+				return f.isDirectory() || f.getAbsolutePath().endsWith(".jpeg");
 			}
 
 			public String getDescription() {

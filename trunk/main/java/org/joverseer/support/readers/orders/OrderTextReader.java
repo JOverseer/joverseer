@@ -59,7 +59,7 @@ public class OrderTextReader {
                 int[] orderLines = new int[]{0, 0, 0};
                 String notes = "";
     
-                String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?]+)*\\s+\\([\\w ]{5}\\) @ \\d{4}.*";
+                String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?]+)*\\s+\\([\\w\\-\\s' ]{5}\\) @ \\d{4}.*";
                 String orderPattern = "^\\d{3}\\s{1,2}\\w{5,7}.*";
                 
                 Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);

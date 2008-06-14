@@ -90,6 +90,8 @@ public class OrderCostCalculator {
                 return sellToCaravanCost(o);
             case 325:
                 return natSellToCaravanCost(o);
+            case 948:
+            	return tranCarOrderCost(o);
         }
         return 0;
     }
@@ -472,6 +474,23 @@ public class OrderCostCalculator {
             return 2500;
         }
         return 0;
+    }
+    
+    public int tranCarOrderCost(Order order) {
+    	if (order.getLastParamIndex() < 3) return 0;
+    	if (order.getParameter(2).equals("go")) {
+    		int g = 0;
+    		try {
+    			g = Integer.parseInt(order.getParameter(3));
+    		}
+    		catch (Exception e) {
+    			// do nothing
+    		}
+    		float d = g;
+    		d = d * 1.1f;
+    		return Math.round(d);
+    	}
+    	return 0;
     }
     
     public static Nation getMetadataNation(Order order) {

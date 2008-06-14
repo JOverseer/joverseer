@@ -1,9 +1,12 @@
 package org.joverseer.ui.listviews;
 
+import java.util.ArrayList;
+
 import org.joverseer.domain.Artifact;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.springframework.context.MessageSource;
@@ -27,17 +30,25 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
         return new Class[]{Integer.class, Integer.class, String.class, Integer.class, String.class, String.class, String.class};
     }
     
-    public LocateArtifactResult getResult(Artifact artifact) {
+    public ArrayList<LocateArtifactResult> getResults(Artifact artifact) {
+    	ArrayList<LocateArtifactResult> lars = new ArrayList<LocateArtifactResult>();
+    	DerivedFromSpellInfoSource dfsis = (DerivedFromSpellInfoSource)artifact.getInfoSource();
+    	lars.add(getResult(artifact, dfsis));
+    	for (InfoSource is : dfsis.getOtherInfoSources()) {
+    		if (DerivedFromSpellInfoSource.class.isInstance(is)) {
+    			lars.add(getResult(artifact, (DerivedFromSpellInfoSource)is));
+    		}
+    	}
+    	return lars;
+    }
+    
+    public LocateArtifactResult getResult(Artifact artifact, DerivedFromSpellInfoSource dfsis) {
         LocateArtifactResult lar = new LocateArtifactResult();
-        lar.setHexNo(artifact.getHexNo());
+        lar.setHexNo(dfsis.getHexNo());
         lar.setArtifactName(artifact.getName());
         lar.setArtifactNo(artifact.getNumber());
         lar.setOwner(artifact.getOwner());
-        
-        if (DerivedFromSpellInfoSource.class.isInstance(artifact.getInfoSource())) {
-            DerivedFromSpellInfoSource is = (DerivedFromSpellInfoSource)artifact.getInfoSource();
-            lar.setSpellName(is.getSpell() + " - " + is.getCasterName());
-        }
+        lar.setSpellName(dfsis.getSpell() + " - " + dfsis.getCasterName());
         
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());

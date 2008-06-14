@@ -11,10 +11,12 @@ package com.jidesoft.spring.richclient.docking;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
+import javax.management.JMException;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -40,6 +42,7 @@ import org.springframework.richclient.dialog.ConfirmationDialog;
 
 import com.jidesoft.action.CommandBarFactory;
 import com.jidesoft.docking.DefaultDockableHolder;
+import com.jidesoft.swing.JideMenu;
 import com.sun.org.apache.bcel.internal.generic.LNEG;
 
 /**
@@ -96,6 +99,31 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
                     }
                 }
             }
+            
+            // user guide
+            if (menuBar.getMenu(i).getText().equals("Help")) {
+            	try {
+	            	final File f = Application.instance().getApplicationContext().getResource("JOverseerUserGuide.pdf").getFile();
+	            	if (f.exists()) {
+	            		JMenuItem mi = new JMenuItem("User's Guide");
+	            		mi.addActionListener(new ActionListener(){
+							public void actionPerformed(ActionEvent e) {
+								try {
+									Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + f.getAbsolutePath());
+								}
+								catch (Exception exc) {
+									// do nothing
+								}
+							}
+	            		});
+	            		menuBar.getMenu(i).add(mi);
+	            	}
+            	}
+            	catch (Exception exc) {
+            		// do nothing
+            	}
+            }
+            	
         }
     }
 

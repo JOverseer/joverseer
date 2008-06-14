@@ -93,7 +93,7 @@
 3016,0,1,0,3,1,0,Portre,30,False,True,1,False
 3116,0,1,0,3,1,0,Romenost,30,False,True,1,False
 2420,0,2,0,3,1,0,Stowburg,45,False,True,1,False
-2908,0,5,2,5,1,0,Aradhrynd,100,True,True,1,False
+2908,0,5,2,5,1,0,Aradhrynd,100,True,True,1,True
 2608,0,4,0,5,1,0,Caras Amath,75,False,True,1,False
 2912,0,1,0,5,1,0,Caras Widu,30,False,True,1,False
 2915,0,1,0,5,1,0,Ceber Fanuin,30,False,True,1,False

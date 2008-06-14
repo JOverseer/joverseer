@@ -180,7 +180,11 @@ public class ArmyWrapper {
                 a.setInformationSource(InformationSourceEnum.someMore);
                 break;
             case 3:
-                a.setInformationSource(InformationSourceEnum.some);
+            	if (getExtraInfo() != null && !getExtraInfo().equals("")) {
+            		a.setInformationSource(InformationSourceEnum.detailed);
+            	} else {
+            		a.setInformationSource(InformationSourceEnum.some);
+            	}
                 break;
             case 4:
                 a.setInformationSource(InformationSourceEnum.limited);
@@ -188,6 +192,7 @@ public class ArmyWrapper {
             default:
             	throw new RuntimeException("Uknown information source " + getInformationSource());
         }
+        
 
         GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
 

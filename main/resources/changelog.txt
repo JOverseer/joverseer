@@ -1,3 +1,44 @@
+VERSION 1.0.1
+-------------
+
+15/06/2008
+	
+	* JOverseer User Guide was created.
+
+	* Info tab - Dragons table - DS and neutral columns were mixed up - fixed.
+
+	* Added starting ruins and pop centers at hexes 1410, 1411, 2013, 1319, 2321 for the 1650 module.
+	
+	* Added 'Cav' property to armies. Toggling this will cause an army to be considered cavalry for order-drawing purposes.
+
+	* Added preference whether to show the enHI (equivalent to naked HI) for armies in the Current Hex View tab
+
+	* Fixed a bug that was causing climate to not be drawn when selecting "Show climate" in Map Options View
+	
+	* Added filter in Orders tab to show only Emissaries (E>=30) 	 
+
+	* Added a preference to control whether tooltips are shown on the map view or not
+
+	* KS module - added starting armies and artifacts
+	
+	* For games where all neutrals have been aligned, importing a turn will no longer ask you to change allegiances
+		+ Allegiances can still be changed by the respective option in the Game menu.
+		
+	* Added Scrys in the power filter in the Artifacts tab 	 
+	
+	* KS module - added support for chars with 3 orders
+	
+	* Added Copy to Clipboard button to Export Orders Text form
+	
+	* Added "draw" functionality to the Track Character tab 	 
+	
+	* Added four new (smaller) zoom levels for the map in the Map Options View (s1 - s4)
+
+	* Untold War module - corrected the Silvan capital (2908) to be hidden
+
+	* Added order 948 when transfering gold to the automatic order cost calculation.
+		+ Enhanced the messages show in the Economy Calculator view when orders cost more than the available reserves
+
 VERSION 1.0.0
 -------------
 

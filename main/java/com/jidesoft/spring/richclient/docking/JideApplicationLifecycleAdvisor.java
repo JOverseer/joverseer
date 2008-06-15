@@ -103,7 +103,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
             // user guide
             if (menuBar.getMenu(i).getText().equals("Help")) {
             	try {
-	            	final File f = Application.instance().getApplicationContext().getResource("JOverseerUserGuide.pdf").getFile();
+	            	final File f = new File("JOverseerUserGuide.pdf");
 	            	if (f.exists()) {
 	            		JMenuItem mi = new JMenuItem("User's Guide");
 	            		mi.addActionListener(new ActionListener(){

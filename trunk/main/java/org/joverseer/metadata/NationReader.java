@@ -127,7 +127,7 @@ public class NationReader implements MetadataReader {
                 {"Nation XV", "N15", new Object[]{}},
                 {"Nation XVI", "N16", new Object[]{}},
                 {"Nation XVII", "N17", new Object[]{}},
-                {"Nation XVII", "N18", new Object[]{}},
+                {"Nation XVIII", "N18", new Object[]{}},
                 {"Nation XIX", "N19", new Object[]{}},
                 {"Nation XX", "N20", new Object[]{}},
                 {"Nation XXI", "N21", new Object[]{}},

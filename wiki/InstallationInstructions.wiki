@@ -5,8 +5,8 @@
 _These instructions apply to version 1.0.0 and later_
 
 To install JOverseer:
-  # Download the libraries package (JOverseer libraries) from the Downloads page. Unzip to your preferred folder (i.e. desktop\JOverseer)
-  # Download the JOverseer executable package (e.g. JOverseer v1.0.x). Unzip to the folder you unzipped the libraries into (i.e. desktop\JOverseer)
+  # Download *the libraries package* (JOverseer libraries) from the Downloads page. Unzip to your preferred folder (i.e. desktop\JOverseer)
+  # Download the *JOverseer executable package* (e.g. JOverseer v1.0.x). Unzip to the folder you unzipped the libraries into (i.e. desktop\JOverseer)
   # Download and read the User Guide!
 
-To run JOverseer, on Windows run joverseer.bat. On linux / unix / Mac OS, run unix-launcher.sh.
+To run JOverseer, on Windows run *joverseer.bat*. On linux / unix / Mac OS, run *unix-launcher.sh*.

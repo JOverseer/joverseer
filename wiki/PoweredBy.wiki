@@ -7,7 +7,7 @@
 
   * *JIDE* (http://www.jidesoft.com)
 
-  * JIDE Spring Rich Client Integration (https://jide-springrcp.dev.java.net/)
+  * *JIDE Spring Rich Client Integration* (https://jide-springrcp.dev.java.net/)
 
   * *PDFBox* (http://www.pdfbox.org)
 

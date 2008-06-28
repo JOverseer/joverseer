@@ -17,10 +17,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
@@ -30,6 +32,11 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.OrderParameterValidator;
+import org.joverseer.tools.OrderValidationResult;
+import org.joverseer.tools.ordercheckerIntegration.OrderResult;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
@@ -285,7 +292,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         glb.append(parameters = new JTextField());
         parameters.setEditable(false);
         parameters.setPreferredSize(new Dimension(70, 18));
-
+        
+        
+        
         parametersInternal = new JTextField();
         parametersInternal.setVisible(false);
         glb.append(parametersInternal);
@@ -508,6 +517,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         // throw an order changed event
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+        validateOrder();
         // Point selectedHex = new Point(o.getCharacter().getX(), o.getCharacter().getY());
         // Application.instance().getApplicationContext().publishEvent(
         // new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
@@ -606,7 +616,39 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         }
 
     }
+    
+    protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
+    	if (res == null) return;
+		OrderResultContainer cont = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
+    	String e = "";
+    	if (paramI != null) {
+    		e = "Param " + paramI +": ";
+    	}
+    	e += res.getMessage();
+    	if (res.getLevel() == OrderValidationResult.ERROR) {
+    		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
+    		cont.addResult(or);
+    	} else {
+    		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
+    		cont.addResult(or);
+    	}
+    	
+    }
 
+    public void validateOrder() {
+    	Order o = (Order)getFormObject();
+    	OrderParameterValidator opv = new OrderParameterValidator();
+    	ArrayList<OrderValidationResult> ovrs = new ArrayList<OrderValidationResult>();
+    	OrderValidationResult ovr = opv.checkOrder(o);
+    	String msg = "";
+    	addValidationResult(o, ovr, null);
+    	for (int i=0; i<=o.getLastParamIndex(); i++) {
+    		ovr = opv.checkParam(o, i);
+    		if (ovr != null) {
+    			addValidationResult(o, ovr, i);
+    		}
+    	}
+    }
 
     public ArrayList<JComponent> getSubeditorComponents() {
         return subeditorComponents;

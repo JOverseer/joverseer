@@ -94,6 +94,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 loadNationCombo(true);
             } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 refreshAutocalcOrderCost();
+                refreshFinalGoldWarning();
             }
 
         }

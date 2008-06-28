@@ -18,10 +18,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
@@ -43,6 +46,7 @@ import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -50,6 +54,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
@@ -437,10 +442,23 @@ public class HexInfoViewer extends ObjectViewer {
     	protected void doExecuteCommand() {
     		final PopulationCenter pc = new PopulationCenter();
     		InfoSource is = new UserInfoSource();
-    		is.setTurnNo(GameHolder.instance().getGame().getCurrentTurn());
+    		Game g = GameHolder.instance().getGame();
+    		int hexNo = ((Hex)getFormObject()).getHexNo();
+    		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo) != null) {
+    			ErrorDialog md = new ErrorDialog("Cannot add new pop center - there is already a pop center in this hex.");
+    			md.showDialog();
+    			return;
+    		}
+    		is.setTurnNo(g.getCurrentTurn());
     		pc.setInfoSource(is);
     		pc.setInformationSource(InformationSourceEnum.exhaustive);
-    		pc.setHexNo(((Hex)getFormObject()).getHexNo());
+    		pc.setHexNo(hexNo);
+    		pc.setSize(PopulationCenterSizeEnum.ruins);
+    		pc.setFortification(FortificationSizeEnum.none);
+    		pc.setHarbor(HarborSizeEnum.none);
+    		pc.setNationNo(0);
+    		pc.setLoyalty(0);
+    		pc.setName("-");
     		FormModel formModel = FormModelHelper.createFormModel(pc);
             final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel);
             FormBackedDialogPage page = new FormBackedDialogPage(form);

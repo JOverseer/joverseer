@@ -201,8 +201,8 @@ public class AdvancedCharacterListView extends BaseItemListView {
             return aw.getHexNo() + DELIM + aw.getName() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM
                     + getStatText(aw.getCommand()) + DELIM + getStatText(aw.getAgent()) + DELIM
                     + getStatText(aw.getEmmisary()) + DELIM + getStatText(aw.getMage()) + DELIM
-                    + getStatText(aw.getStealth()) + DELIM + getStatText(aw.getChallenge()) + DELIM
-                    + getStatText(aw.getHealth()) + DELIM + getArtifactText(aw.getA0()) + DELIM
+                    + getStatText(aw.getStealth()) + DELIM + getStatText(aw.getHealth()) + DELIM
+                    + getStatText(aw.getChallenge()) + DELIM + getArtifactText(aw.getA0()) + DELIM
                     + getArtifactText(aw.getA1()) + DELIM + getArtifactText(aw.getA2()) + DELIM
                     + getArtifactText(aw.getA3()) + DELIM + getArtifactText(aw.getA4()) + DELIM
                     + getArtifactText(aw.getA5()) + DELIM + aw.getTravellingWith() + DELIM

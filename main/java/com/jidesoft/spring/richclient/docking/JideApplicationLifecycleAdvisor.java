@@ -21,6 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.RepaintManager;
 
 import org.joverseer.game.Game;
@@ -116,6 +117,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 								}
 							}
 	            		});
+	            		menuBar.getMenu(i).add(new JSeparator());
 	            		menuBar.getMenu(i).add(mi);
 	            	}
             	}

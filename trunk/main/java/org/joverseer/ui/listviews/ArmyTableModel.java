@@ -40,7 +40,7 @@ public class ArmyTableModel extends ItemTableModel {
                         }
                         return commander;
 		} else if (i == 3) {
-		    if (army.getSize().equals(ArmySizeEnum.unknown)) {
+		    if (army.getSize() == null || army.getSize().equals(ArmySizeEnum.unknown)) {
 		        return "";              
                     }
                     return army.getSize().toString();

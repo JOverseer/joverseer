@@ -22,6 +22,7 @@ import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.binding.form.FormModel;
@@ -118,7 +119,7 @@ public class EditArmyForm extends AbstractForm {
         elements = new JTable(elementTableModel = new ArmyElementTableModel((MessageSource)Application.instance().getApplicationContext().getBean("messageSource")){
         	@Override
         	public boolean isCellEditable(int arg0, int arg1) {
-        		if (arg0 == 0) return false;
+        		if (arg1 == 0) return false;
         		return super.isCellEditable(arg0, arg1);
         	}
         	
@@ -154,6 +155,7 @@ public class EditArmyForm extends AbstractForm {
     
     public void setFormObject(Object arg0) {
         super.setFormObject(arg0);
+        if (arg0 == null) return;
         Army a = (Army)arg0;
         
         commander.setText(a.getCommanderName());
@@ -198,7 +200,9 @@ public class EditArmyForm extends AbstractForm {
         }
         catch (Exception exc) {};
         try {
-        	a.setNationNo(GameHolder.instance().getGame().getMetadata().getNationByName(nation.getSelectedItem().toString()).getNumber());
+        	Nation n = GameHolder.instance().getGame().getMetadata().getNationByName(nation.getSelectedItem().toString());
+        	a.setNationNo(n.getNumber());
+        	a.setNationAllegiance(n.getAllegiance());
         }
         catch (Exception exc) {};
         a.getElements().clear();

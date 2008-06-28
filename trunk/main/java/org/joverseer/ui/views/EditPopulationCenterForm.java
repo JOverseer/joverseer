@@ -37,7 +37,7 @@ public class EditPopulationCenterForm extends AbstractForm {
         TableFormBuilder formBuilder = new TableFormBuilder(getBindingFactory());
         formBuilder.add("name");
         formBuilder.row();
-
+        
         ArrayList nations = new ArrayList();
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (Game.isInitialized(g)) {

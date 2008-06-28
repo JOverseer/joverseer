@@ -162,6 +162,8 @@
 			<list>
 				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand"/>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
+				<bean class="org.joverseer.ui.command.ShowChangelogCommand"/>
+				<value>separator</value>
 				<ref bean="aboutCommand"/>
 			</list>
 		</property>
@@ -194,6 +196,7 @@
             	<bean class="org.joverseer.ui.command.ToggleDrawAllOrdersCommand"/>
             	<value>separator</value>
                 <bean class="org.joverseer.ui.command.CreateCharacterCommand"/>
+                <bean class="org.joverseer.ui.command.CreateArmyCommand"/>
             	<bean class="org.joverseer.ui.command.ImportNotesFromPreviousTurnCommand"/>
             	<value>separator</value>
                 <bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>

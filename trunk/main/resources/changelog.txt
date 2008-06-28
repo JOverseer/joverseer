@@ -1,3 +1,14 @@
+VERSION 1.0.2
+-------------
+
+22/06/2008
+	
+	* Fixed a small issue with the Economy Calculator not updating the "Your taxes will be raised message"
+	
+	* Fixed an issue with FA games (nations XVIII was incorrectly named nation XVII)
+	
+	
+	
 VERSION 1.0.1
 -------------
 

@@ -1,52 +1,67 @@
-Name;Result;FP;Neutrals;DS;
-Scorba;Recruit;DEMAND;DEMAND;DEMAND
-Scorba;Escape;MEEK;MEEK;MEEK,FLEE
-Throkmaw;Recruit;DEMAND;DEMAND;DEMAND
-Throkmaw;Escape;-;-;FLEE
-Throkmaw;Combat;ALLEGIANCE,NAME;ALLEGIANCE,NAME;NAME
-Throkmaw;Injured/Killed;FLEE;FLEE;ALLEGIANCE
-Aivnec;Recruit;-;-;ALLEGIANCE
+Name;Result;FP;Neutrals;DS
 Aivnec;Combat;ALLEGIANCE,FLEE,10K,100K;10K,100K;10K,100K
-Ando-Anca;Recruited;-;-;100K?
+Aivnec;Injured/Killed;MEEK;MEEK;MEEK
+Aivnec;Recruit;-;-;ALLEGIANCE
 Ando-Anca;Combat;DEMAND,HAUGHTY,FLEE;FLEE;FLEE
 Ando-Anca;Injured/Killed;ALLEGIANCE,NAME;ALLEGIANCE,NAME;ALLEGIANCE,NAME
-Angurth;Recruited;-;-;HAUGHTY?
+Ando-Anca;Recruited;-;-;100K?
+Ando-Anca;Escape;MEEK;MEEK;MEEK
+Ando-Anca;Combat;DEMAND,FLEE;FLEE;FLEE
 Angurth;Combat;ALLEGIANCE,DEMAND,MEEK;ALLEGIANCE,DEMAND,MEEK;MEEK
 Angurth;Injured/Killed;HAUGHTY,FLEE;HAUGHTY;-
-Bairanax;Recruited;-;-;100K
+Angurth;Recruited;-;-;HAUGHTY?
 Bairanax;Combat;10K,100K,FLEE;10K,100K,FLEE;FLEE
 Bairanax;Escape;MEEK;MEEK;ALLEGIANCE,MEEK
+Bairanax;Recruited;-;-;100K
 Corlagon;Recruited;-;-;100K?
-Culgor;Recruited;-;-;MEEK
-Culgor;Injured/Killed;NAME,MEEK,10K,100K,FLEE;NAME,MEEK,10K,100K,FLEE;NAME;FLEE
+Corlagon;Combat;ALLEGIANCE,FLEE;ALLEGIANCE,FLEE;ALLEGIANCE,FLEE,DEMAND
+Corlagon;Escape;-;-;MEEK
+Corlagon;Injured/Killed;MEEK;MEEK;TEN,ONE
 Culgor;Escape;-;-;FLEE
-Daelomin;Recruited;-;-;TWO Artifacts?
+Culgor;Injured/Killed;NAME,MEEK,10K,100K,FLEE;NAME,MEEK,10K,100K,FLEE;NAME,FLEE
+Culgor;Recruited;-;-;MEEK
 Daelomin;Combat;DEMAND,HAUGHTY,FLEE;DEMAND,HAUGHTY,FLEE;FEE
-Itangast;Recruited;-;-;MEEK
+Daelomin;Recruited;-;-;TWO Artifacts?
+Gostir;Escape;MEEK;MEEK;-
+Gostir;Recruited;-;-;MEEK,ONE
 Itangast;Combat;ALLEGIANCE,NAME,HAUGHTY,FLEE;ALLEGIANCE,NAME,HAUGHTY;-
 Itangast;Injured/Killed;MEEK;MEEK;HAUGHTY
-Khuzadrepa;Recruited;-;-;MEEK
+Itangast;Recruited;-;-;MEEK
 Khuzadrepa;Combat;ALLEGIANC,NAME,10K,FLEE;NAME,10K,FLEE;NAME,10K
 Khuzadrepa;Injured/Killed;DEMAND,MEEK;DEMAND,MEEK;DEMAND,HAUGHTY,FLEE
-Klyaxar;Recruited;-;-;ALLEGIANCE?,HAUGHTY
-Klyaxar;Combat;ALLEGIANCE,DEMAND,HAUGHTY,10K,FLEE;ALLEGIANCE,DEMAND,HAUGHTY,10K,FLEE;DEMAND;FLEE
+Khuzadrepa;Recruited;-;-;MEEK
+Klyaxar;Combat;ALLEGIANCE,DEMAND,HAUGHTY,10K,FLEE;ALLEGIANCE,DEMAND,HAUGHTY,10K,FLEE;DEMAND,FLEE
 Klyaxar;Injured/Escape;MEEK,ONE Artifact;-;-
-Lamthanc;Recruited;-;-;HAUGHTY
-Lamthanc;Escape;HAUGHTY;HAUGHTY;-
+Klyaxar;Recruited;-;-;ALLEGIANCE?,HAUGHTY
 Lamthanc;Combat;ALLEGIANCE,ONE Artifact,FLEE;ALLEGIANCE,ONE Artifact,FLEE;ALLEGIANCE,FLEE
-Leucaruth;Recruited;-;-;ONE Artifact
+Lamthanc;Escape;HAUGHTY;HAUGHTY;-
+Lamthanc;Recruited;-;-;HAUGHTY
 Leucaruth;Combat;HAUGHTY,MEEK;-;-
 Leucaruth;Injured/Killed;ALLEGIANCE,NAME,DEMAND,ONE Artifact;ALLEGIANCE,NAME,DEMAND,ONE Artifact;ALLEGIANCE,NAME,DEMAND,MEEK
-Lomaw;Recruited;-;-;10K?
+Leucaruth;Recruited;-;-;ONE Artifact
+Lomaw;Combat;TWO Artifacts,FLEE;TWO Artifacts,FLEE;TWO Artifacts
 Lomaw;Escape;MEEK;MEEK;MEEK
-Lomaw;Combat;TWO Artifacts,FLEE;TWO Artifacts,FLEE;TWO Artifacts;
 Lomaw;Injured/Killed;-;-;FLEE
-Smaug;Recruited;-;-;MEEK,10K,100K
+Lomaw;Recruited;-;-;10K?
+Nimanaur;Injured/Killed;NAME,DEMAND,HAUGHTY,TEN;NAME,DEMAND,HAUGHTY,TEN;ALLEGIANCE,NAME
+Nimanaur;Combat;ALLEGIANCE;ALLEGIANCE;-
+Nimanaur;Escape;-;-;MEEK
+Nimanaur;Recruited;-;-;10K,100K
+Ruingurth;Escape;(all answers);(all answers);(all answers)
+Scatha;Escape;MEEK;-;-
+Scatha;Recruited;100K;-;MEEK,100K
+Scorba;Escape;MEEK;MEEK;MEEK,FLEE
+Scorba;Recruited;DEMAND;DEMAND;DEMAND
+Smaug;Combat;DEMAND;DEMAND;DEMAND
 Smaug;Escape;MEEK;MEEK;-
 Smaug;Injured/Killed;FLEE,ONE Artifact,TWO Artifacts;ONE Artifact,TWO Artifacts;-
-Smaug;Combat;DEMAND;DEMAND;DEMAND
-Uruial;Recruited;-;-;ALLEGIANCE,MEEK?
-Uruial;Combat;ALLEGIANCE,HAUGHTY,MEEK,FLEE;ALLEGIANCE,HAUGHTY,MEEK,FLEE;-
-Uruial;Injured/Killed;NAME;NAME;NAME,HAUGHTY,FLEE
-Uruial;Escape;-;-;MEEK
+Smaug;Recruited;-;-;MEEK,10K,100K
+Throkmaw;Combat;ALLEGIANCE,NAME;ALLEGIANCE,NAME;NAME
+Throkmaw;Escape;-;-;FLEE
+Throkmaw;Injured/Killed;FLEE;FLEE;ALLEGIANCE
+Throkmaw;Recruit;DEMAND;DEMAND;DEMAND
 Turukulon;Recruited;-;-;-
+Uruial;Combat;ALLEGIANCE,HAUGHTY,MEEK,FLEE;ALLEGIANCE,HAUGHTY,MEEK,FLEE;-
+Uruial;Escape;-;-;MEEK
+Uruial;Injured/Killed;NAME;NAME;NAME,HAUGHTY,FLEE
+Uruial;Recruited;-;-;ALLEGIANCE,MEEK?

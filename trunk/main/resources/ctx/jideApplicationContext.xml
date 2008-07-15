@@ -341,7 +341,7 @@
    						<value>dragons</value>
    					</property>
    					<property name="resourcePath">
-   						<value>classpath:metadata/info/dragons.csv</value>
+   						<value>classpath:metadata/info/dragons2.csv</value>
    					</property>
    				</bean>
    				<bean class="org.joverseer.support.info.Info">

@@ -310,6 +310,41 @@
 
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>map.hiddenPopsDrawStyle</value>
+					</property>
+					<property name="description">
+						<value>Hidden Pops Draw Style</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>standard</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>standard</value>
+								</property>
+								<property name="description">
+									<value>Standard</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>h</value>
+								</property>
+								<property name="description">
+									<value>H marker</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>map.terrainGraphics</value>
 					</property>
 					<property name="description">

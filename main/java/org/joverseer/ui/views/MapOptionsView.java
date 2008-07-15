@@ -99,10 +99,16 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                     mapOptions.put(MapOptionsEnum.NationMap, null);
                 } else if (str.equals("Dark Servants")) {
                     mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapDarkServants);
+                } else if (str.equals("Not Dark Servants")) {
+                    mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotDarkServants);
                 } else if (str.equals("Free People")) {
                     mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapFreePeople);
+                } else if (str.equals("Not Free People")) {
+                    mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotFreePeople);
                 } else if (str.equals("Neutrals")) {
                     mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNeutrals);
+                } else if (str.equals("Not Neutrals")) {
+                    mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotNeutrals);
                 } else if (str.equals("None")) {
                 	mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNone);
                 } else {
@@ -320,6 +326,9 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                 cmbMaps.addItem(n.getName());
             }
             cmbMaps.addItem("None");
+            cmbMaps.addItem("Not Free People");
+            cmbMaps.addItem("Not Dark Servants");
+            cmbMaps.addItem("Not Neutrals");
         }
         fireEvents = true;
     }

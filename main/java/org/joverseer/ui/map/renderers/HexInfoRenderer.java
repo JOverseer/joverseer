@@ -94,10 +94,10 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         ArrayList<NationMapRange> nmrs = (ArrayList <NationMapRange>)game.getMetadata().getNationMapRanges().getItems();
         for (NationMapRange nmr : nmrs) {
             Nation n = game.getMetadata().getNationByNum(nmr.getNationNo());
-            if (n.getAllegiance() != allegiance) continue;
+            if (!n.getAllegiance().equals(allegiance)) continue;
             if (nmr.getRectangle().contains(hex.getColumn(), hex.getRow())) {
                 if (nmr.getRectangle().getX() + nmr.getRectangle().getWidth() == hex.getColumn() + 1) {
-                    return hex.getRow() % 2 == 1;
+                	continue;
                 }
                 return true;
             }
@@ -128,10 +128,19 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             int a = 1;
         } else if (map == MapOptionValuesEnum.NationMapDarkServants) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.DarkServants);
+        } else if (map == MapOptionValuesEnum.NationMapNotDarkServants) {
+            visible = visibleToAllegiance(hex, game, NationAllegianceEnum.FreePeople) ||
+            			visibleToAllegiance(hex, game, NationAllegianceEnum.Neutral);
         } else if (map == MapOptionValuesEnum.NationMapFreePeople) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.FreePeople);
+        } else if (map == MapOptionValuesEnum.NationMapNotFreePeople) {
+        	visible = visibleToAllegiance(hex, game, NationAllegianceEnum.DarkServants) ||
+						visibleToAllegiance(hex, game, NationAllegianceEnum.Neutral);
         } else if (map == MapOptionValuesEnum.NationMapNeutrals) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.Neutral);
+        } else if (map == MapOptionValuesEnum.NationMapNotNeutrals) {
+        	visible = visibleToAllegiance(hex, game, NationAllegianceEnum.DarkServants) ||
+						visibleToAllegiance(hex, game, NationAllegianceEnum.FreePeople);
         } else if (map == MapOptionValuesEnum.NationMapNone) {
         	visible = true;
         } else {

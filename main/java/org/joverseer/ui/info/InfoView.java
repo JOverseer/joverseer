@@ -98,7 +98,7 @@ public class InfoView extends AbstractView {
         
         lb.separator("Dragons");
         lb.relatedGapRow();
-        lb.cell(createTableFromResource("classpath:metadata/info/dragons.csv", 850, 900), "align=left");
+        lb.cell(createTableFromResource("classpath:metadata/info/dragons2.csv", 850, 1100), "align=left");
         lb.relatedGapRow();
         
         return new JScrollPane(lb.getPanel());

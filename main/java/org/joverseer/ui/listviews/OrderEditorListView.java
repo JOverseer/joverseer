@@ -103,7 +103,26 @@ public class OrderEditorListView extends ItemListView {
                 }
             }
         }
+        int row = table.getSelectedRow();
+        Object o = null; 
+        try {
+        	o = tableModel.getRow(row); // get the object for this row
+        }
+        catch (Exception e) {
+        	// do nothing
+        }
+        int column = table.getSelectedColumn();
         tableModel.setRows(orders);
+        try {
+        	if (o != null && o.equals(tableModel.getRow(row))) {
+        		// if row is still showing same order, keep selection
+        		table.setRowSelectionInterval(row, row);
+        		table.setColumnSelectionInterval(column, column);
+        	}
+        }
+        catch (Exception e) {
+        	// do nothing
+        }
     }
 
     private ArrayList<OrderFilter> createOrderFilterList() {

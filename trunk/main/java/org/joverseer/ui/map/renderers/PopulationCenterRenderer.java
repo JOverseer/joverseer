@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
@@ -76,15 +77,48 @@ public class PopulationCenterRenderer extends ImageRenderer {
         Color color2 = ColorPicker.getInstance().getColor2(popCenter.getNationNo());
         changeColor(img, Color.red, color1);
         changeColor(img, Color.black, color2);
-        if (popCenter.getHidden()) {
-            makeHidden(img, color1, color2);
+        
+        boolean standardHiddenPopcenter = true;
+    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.hiddenPopsDrawStyle");
+    	if (pval != null && pval.equals("h")) {
+    		standardHiddenPopcenter = false;
+    	}
+        if (popCenter.getHidden() && standardHiddenPopcenter) {
+        	makeHidden(img, color1, color2);
         }
         if (fortImage != null) {
             g.drawImage(fortImage, hexCenter.x - fortImage.getWidth() / 2, hexCenter.y - fortImage.getHeight(null) + pcImage.getHeight(null) / 2 , null);
         }
+            
         int px = hexCenter.x - pcImage.getWidth(null) / 2;
         int py = hexCenter.y - pcImage.getHeight(null) / 2;
         g.drawImage(img, px, py, null);
+        if (popCenter.getHidden() && !standardHiddenPopcenter) {
+        	Point p = new Point(hexCenter.x, hexCenter.y + 3);
+            Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.BOLD, 9);
+            FontMetrics fm = g.getFontMetrics(f);
+            Rectangle2D bb = fm.getStringBounds("H", g);
+            Rectangle b = new Rectangle(((Double)bb.getX()).intValue(),
+                                            ((Double)bb.getY()).intValue(),
+                                            ((Double)bb.getWidth()).intValue(),
+                                            ((Double)bb.getHeight()).intValue());
+            int xt = p.x - new Double(b.getWidth() / 2).intValue();
+            int yt = p.y;
+            b.translate(xt, yt);
+            RoundRectangle2D rr = new RoundRectangle2D.Double(b.getX(), b.getY(), b.getWidth() + 2, b.getHeight() + 1, 0, 0);
+            g.setFont(f);
+
+            g.setColor(Color.BLACK);
+
+            Composite oc = g.getComposite();
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
+            g.fill(rr);
+            // draw char name
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
+            g.setColor(Color.WHITE);
+            g.drawString("H", xt + 1, yt + 1);
+            g.setComposite(oc);
+        }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
 
         HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
@@ -119,7 +153,6 @@ public class PopulationCenterRenderer extends ImageRenderer {
         Composite oc = g.getComposite();
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         g.fill(rr);
-        g.setComposite(oc);
         // draw char name
         g.setColor(Color.WHITE);
         g.drawString(str, xt + 1, yt + 1);

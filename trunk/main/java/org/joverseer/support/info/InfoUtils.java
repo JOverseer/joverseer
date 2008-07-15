@@ -24,7 +24,7 @@ public class InfoUtils {
         Info info = InfoRegistry.instance().getInfo("dragons");
         if (info == null)
             return null;
-        if (info.getRowIdx(charName) > -1)
+        if (info.getRowIdx(charName.toUpperCase()) > -1)
             return true;
         return false;
     }

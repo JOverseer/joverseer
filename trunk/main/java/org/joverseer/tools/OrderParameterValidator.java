@@ -90,6 +90,54 @@ public class OrderParameterValidator {
         }
         return orderEditorData;
     }
+    
+    public OrderValidationResult checkForDuplicateSkillOrder(Order o) {
+        if (o.isBlank())
+            return null;
+        OrderMetadata om = (OrderMetadata) GameHolder.instance().getGame().getMetadata().getOrders()
+                .findFirstByProperty("number", o.getOrderNo());
+        if (om == null)
+            return null;
+        // check for duplicate skill order
+        Character c = o.getCharacter();
+        int i = o.getCharacter().getOrders()[0] == o ? 1 : 0;
+        Order o1 = c.getOrders()[i];
+        if (!o1.isBlank()) {
+            OrderMetadata om1 = (OrderMetadata) GameHolder.instance().getGame().getMetadata().getOrders()
+                                    .findFirstByProperty("number", o1.getOrderNo());
+            if (om1 == null) return null;
+            if (om1.getSkillRequirement().equals(om.getSkillRequirement()) && om1.getSkillRequirement().endsWith("S")) {
+                String type = "";
+                if (om.getSkillRequirement().equals("CS")) {
+                    type = "Command skill";
+                } else if (om.getSkillRequirement().equals("AS")) {
+                    type = "Agent skill";
+                } else if (om.getSkillRequirement().equals("MS")) {
+                    type = "Mage skill";
+                } else if (om.getSkillRequirement().equals("ES")) {
+                    type = "Emmisary skill";
+                } else if (om.getSkillRequirement().equals("ECS")) {
+                    type = "Command/Emmisary skill";
+                } 
+                return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " orders.");
+            }
+            // check for duplicate movement orders
+            boolean o1IsMove = om1.getSkillRequirement().equals("Move") || o1.getOrderNo() == 825;
+            boolean o2IsMove = om.getSkillRequirement().equals("Move") || o.getOrderNo() == 825;
+            if (o1IsMove && o2IsMove) {
+            	return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two Move orders.");
+            }
+            // check for miscellaneous mage orders
+            boolean o1IsCastSpell = o1.getOrderNo() == 120 || 
+            						o1.getOrderNo() == 225 || 
+            						o1.getOrderNo() == 330 ||
+            						o1.getOrderNo() == 940;
+            if (o1IsCastSpell && o1.getOrderNo() == o.getOrderNo()) {
+            	return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two Casting orders of the same type of spell.");
+            }
+        }
+        return null;
+    }
 
     public OrderValidationResult checkOrder(Order o) {
         if (o.isBlank())
@@ -110,32 +158,8 @@ public class OrderParameterValidator {
                 }
             }
         }
-        
-        // check for duplicate skill order
-        Character c = o.getCharacter();
-        int i = o.getCharacter().getOrders()[0] == o ? 1 : 0;
-        Order o1 = c.getOrders()[i];
-        if (!o1.isBlank()) {
-            OrderMetadata om1 = (OrderMetadata) GameHolder.instance().getGame().getMetadata().getOrders()
-                                    .findFirstByProperty("number", o1.getOrderNo());
-            if (om1 == null) return null;
-            if (o.getOrderNo() == 710 || o1.getOrderNo() == 710) return null;
-            if (om1.getSkillRequirement().equals(om.getSkillRequirement()) && om1.getSkillRequirement().endsWith("S")) {
-                String type = "";
-                if (om.getSkillRequirement().equals("CS")) {
-                    type = "Command";
-                } else if (om.getSkillRequirement().equals("AS")) {
-                    type = "Agent";
-                } else if (om.getSkillRequirement().equals("MS")) {
-                    type = "Mage";
-                } else if (om.getSkillRequirement().equals("ES")) {
-                    type = "Emmisary";
-                } if (om.getSkillRequirement().equals("ECS")) {
-                    type = "Command/Emmisary";
-                }
-                return new OrderValidationResult(OrderValidationResult.ERROR, "Character is trying to issue two " + type + " skill orders.");
-            }
-        }
+        OrderValidationResult ovr = checkForDuplicateSkillOrder(o);
+        if (ovr != null) return ovr;
         return null;
     }
 

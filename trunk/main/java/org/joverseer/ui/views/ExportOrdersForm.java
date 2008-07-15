@@ -40,6 +40,8 @@ import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
+import org.joverseer.tools.OrderParameterValidator;
+import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenGameDirTree;
@@ -81,6 +83,7 @@ public class ExportOrdersForm extends AbstractForm {
     boolean uncheckedOrders = false;
     boolean ordersWithErrors = false;
     boolean missingOrders = false;
+    boolean duplicateSkillOrders = false;
     
     public ExportOrdersForm(FormModel model) {
         super(model, "ExportOrdersForm");
@@ -354,9 +357,10 @@ public class ExportOrdersForm extends AbstractForm {
         missingOrders = false;
         ordersWithErrors = false;
         uncheckedOrders = false;
+        duplicateSkillOrders = false;
         
         OrderResultContainer orc = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
-        
+        OrderParameterValidator validator = new OrderParameterValidator();
         for (Character ch : chars) {
             for (int i=0; i<ch.getNumberOfOrders(); i++) {
                 if (ch.getOrders()[i].isBlank()) {
@@ -370,11 +374,15 @@ public class ExportOrdersForm extends AbstractForm {
                             ordersWithErrors = true;
                         }
                     }
+                    OrderValidationResult ovr = validator.checkForDuplicateSkillOrder(ch.getOrders()[i]);
+                    if (ovr != null) {
+                    	duplicateSkillOrders = true;
+                    }
                 }
             }
         }
         
-        if (missingOrders || uncheckedOrders || ordersWithErrors) return ORDERS_NOT_OK;
+        if (missingOrders || uncheckedOrders || ordersWithErrors || duplicateSkillOrders) return ORDERS_NOT_OK;
         return ORDERS_OK;
     }
     
@@ -383,6 +391,11 @@ public class ExportOrdersForm extends AbstractForm {
         if (orderCheckResult != ORDERS_OK) {
             if (missingOrders) {
                 MessageDialog dlg = new MessageDialog("Error", "Some characters are missing orders. Cannot export.");
+                dlg.showDialog();
+                return false;
+            }
+            if (duplicateSkillOrders) {
+            	MessageDialog dlg = new MessageDialog("Error", "Some characters are trying to issue duplicate skill orders. Cannot export.");
                 dlg.showDialog();
                 return false;
             }

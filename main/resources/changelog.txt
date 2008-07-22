@@ -1,3 +1,34 @@
+VERSION 1.0.3
+-------------
+
+22/07/2008
+
+	* Fixed an issue with the Chars (Adv) tab copy to clipboard function that caused the Health and Challenge column headers to be reversed
+
+	* Enhanced the Population Center Form
+		+ The data is now validated so the user cannot enter invalid values and cause the program to crash
+		+ The user can now control whether the pop center is hidden or not
+	
+	* Added an option to add a new army (Tools --> Add Army)
+		
+	* Completely revamped the Dragon table in the Info tab
+	
+	* Added Not FP, Not DS and Not Neutral options to Map drop down in the Map Options View
+	
+	* Added an alternative way to indicate hidden pop centers on the map
+		+ It is controlled by the "Hidden Pops Draw Style" preference in the "Display - Map" preference group
+		
+	* Updated the list of starting ruins for the 1650 scenario
+	
+	* Duplicate skill orders are now disallowed
+		+ You cannot export your orders into a file when a character is issuing two skill orders
+		+ In addition to duplicate skill orders, duplicate movement orders, or a movement order and a movement spell are disallowed
+
+	* Improved the Order informatio tab to keep the focus after editing an order and pressing enter
+	
+	* When drawing a Recon order for a character whose other order is 820, the program will automatically suggest the character's destination
+
+
 VERSION 1.0.2
 -------------
 

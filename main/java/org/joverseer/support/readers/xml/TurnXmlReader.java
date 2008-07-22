@@ -480,6 +480,21 @@ public class TurnXmlReader implements Runnable{
                         chars.addItem(newCharacter);
                     }
                 }
+                // if character is same nation, process PC existence in hex
+                // if a PC is found in the hex with info source from previous turn, the PC should be removed
+                // this works on the assumption that if a PC exists in the same hex as the character
+                // the PC will be reported in the turn
+                // temporarily have this controlled by a preference
+                String pval = PreferenceRegistry.instance().getPreferenceValue("import.deletePopCentersIfCharPresent");
+                if (pval != null && pval.equals("yes")) {
+	                PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", newCharacter.getHexNo());
+	                if (pc != null) {
+	                	if (pc.getInfoSource().getTurnNo() < turn.getTurnNo()) {
+	                		logger.debug("Removing Pop Center " + pc.getName() + " at hex " + pc.getHexNo() + " because it was not reported in current turn and a character is present in the hex.");
+	                		turn.getContainer(TurnElementsEnum.PopulationCenter).removeItem(pc);
+	                	}
+	                }
+                }
             }
             catch (Exception exc) {
             	logger.error(exc);

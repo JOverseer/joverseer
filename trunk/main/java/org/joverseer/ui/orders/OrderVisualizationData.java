@@ -55,7 +55,7 @@ public class OrderVisualizationData {
         	InputDialog dlg = new InputDialog();
         	JTextField hexNo = new JTextField();
         	Order oo = Order.getOtherOrder(o);
-        	if (oo.getOrderNo() == 810 || oo.getOrderNo() == 820) {
+        	if (oo.getOrderNo() == 810 || oo.getOrderNo() == 820 || oo.getOrderNo() == 870) {
         		if (oo.getParameter(0) != null && !oo.getParameter(0).equals("") && !oo.getParameter(0).equals("-")) {
         			hexNo.setText(oo.getParameter(0));
         		}

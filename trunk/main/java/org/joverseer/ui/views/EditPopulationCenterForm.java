@@ -2,6 +2,7 @@ package org.joverseer.ui.views;
 
 import java.util.ArrayList;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
@@ -56,6 +57,8 @@ public class EditPopulationCenterForm extends AbstractForm {
         formBuilder.add("fortification", cmb = new JComboBox(FortificationSizeEnum.values()));
         formBuilder.row();
         formBuilder.add("harbor", cmb = new JComboBox(HarborSizeEnum.values()));
+        formBuilder.row();
+        formBuilder.add("hidden", new JCheckBox());
         formBuilder.row();
         formBuilder.add("loyalty");
         formBuilder.row();

@@ -46,8 +46,6 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 
-import sun.rmi.runtime.GetThreadPoolAction;
-
 /**
  * List view for Track Character results
  * 

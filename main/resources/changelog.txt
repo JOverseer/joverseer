@@ -24,7 +24,7 @@ VERSION 1.0.3
 		+ You cannot export your orders into a file when a character is issuing two skill orders
 		+ In addition to duplicate skill orders, duplicate movement orders, or a movement order and a movement spell are disallowed
 
-	* Improved the Order informatio tab to keep the focus after editing an order and pressing enter
+	* Improved the Order information tab to keep the focus after editing an order and pressing enter
 	
 	* When drawing a Recon order for a character whose other order is 820, the program will automatically suggest the character's destination
 

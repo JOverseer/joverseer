@@ -84,9 +84,14 @@ public class EditPreferencesForm extends AbstractForm {
             	components.put(p.getKey(), tf);
             	tlb.cell(tf, "colspec=left:200px");
             }
+            
             tlb.gapCol();
             tlb.relatedGapRow();
         }
+        
+        // add last group
+        String tabName = group.replace(".", " - ");
+        tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
 
         //panel = tlb.getPanel();
         //panel = tabPane;

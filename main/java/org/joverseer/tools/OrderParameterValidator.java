@@ -154,7 +154,7 @@ public class OrderParameterValidator {
                 if (capital == null)
                     return null;
                 if (capital.getHexNo() != o.getCharacter().getHexNo()) {
-                    return new OrderValidationResult(OrderValidationResult.ERROR, "Character must be in capital");
+                    return new OrderValidationResult(OrderValidationResult.WARNING, "Character must be in capital");
                 }
             }
         }
@@ -272,10 +272,10 @@ public class OrderParameterValidator {
                 return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 999");
             }
         } else if (paramType.equals("d")) {
-            if (isNumberOK(paramValue, 1, 99999)) {
+            if (isNumberOK(paramValue, 0, 99999)) {
                 return null;
             } else {
-                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 1 and 99999");
+                return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 0 and 99999");
             }
         } else if (paramType.equals("de")) {
             if (isNumberOK(paramValue, 0, 99999)) {
@@ -309,7 +309,7 @@ public class OrderParameterValidator {
             }
         } else if (paramType.equals("nam")) {
             if (isEmpty(paramValue)) {
-            	return new OrderValidationResult(OrderValidationResult.WARNING, "may be between 5 and 17 chars (name).");
+            	return new OrderValidationResult(OrderValidationResult.INFO, "may be between 5 and 17 chars (name).");
             } else if (lengthOK(paramValue, 5, 17)) {
                 return null;
             } else {
@@ -371,7 +371,7 @@ public class OrderParameterValidator {
             }
         } else if (paramType.equals("gen")) {
             if (isEmpty(paramValue)) {
-            	return new OrderValidationResult(OrderValidationResult.WARNING, "may be one of m,f (gender)");
+            	return new OrderValidationResult(OrderValidationResult.INFO, "may be one of m,f (gender)");
             } else  if (inList(paramValue, "m,f")) {
                 return null;
             } else {
@@ -379,7 +379,7 @@ public class OrderParameterValidator {
             }
         } else if (paramType.equals("genc")) {
         	if (isEmpty(paramValue)) {
-            	return new OrderValidationResult(OrderValidationResult.WARNING, "may be one of m,f (gender)");
+            	return new OrderValidationResult(OrderValidationResult.INFO, "may be one of m,f (gender)");
             } else  if (inList(paramValue, "m,f")) {
                 return null;
             } else {

@@ -46,11 +46,13 @@ public class ColorPicker implements ApplicationListener {
 
     public Color getColor1(int nationNo) {
     	String key = String.valueOf(nationNo);
-    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
-        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
-        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
-        	key = nr.getAllegiance().toString();
-        }
+    	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
+	    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
+	        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+	        	key = nr.getAllegiance().toString();
+	        }
+    	}
         if (!color1.containsKey(key)) {
             String colorStr = null;
             GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
@@ -72,11 +74,13 @@ public class ColorPicker implements ApplicationListener {
 
     public Color getColor2(int nationNo) {
     	String key = String.valueOf(nationNo);
-    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
-        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
-        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
-        	key = nr.getAllegiance().toString();
-        }
+    	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
+	    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
+	        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+	        	key = nr.getAllegiance().toString();
+	        }
+    	}
         if (!color2.containsKey(key)) {
             String colorStr = null;
             GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();

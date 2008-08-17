@@ -140,7 +140,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected AbstractListViewFilter[][] getFilters() {
         return null;
     }
-
+    
     protected AbstractListViewFilter getActiveFilter() {
         if (filters == null)
             return null;

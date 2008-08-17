@@ -1,6 +1,10 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -13,6 +17,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.ArmyElementType;
+import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
@@ -23,6 +30,7 @@ import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.table.SortableTableModel;
@@ -75,7 +83,8 @@ public class ArmyListView extends ItemListView {
     protected JComponent[] getButtons() {
     	return new JComponent[]{
     			new PopupMenuCommand().getButton(new Object[]{
-    					new GenericCopyToClipboardCommand(table)})};
+    					new GenericCopyToClipboardCommand(table),
+    					new ExportArmyDataAction()})};
 	}
 
 	/**
@@ -124,4 +133,63 @@ public class ArmyListView extends ItemListView {
     }
 
 
+    public class ExportArmyDataAction extends ActionCommand implements ClipboardOwner {
+    	String DELIM = ";";
+        String NL = "\n";
+        Game game;
+        
+        
+        
+		public ExportArmyDataAction() {
+			super("exportArmyDataAction");
+		}
+
+		protected void doExecuteCommand() {
+			String str = "";
+			for (int j=0; j<tableModel.getRowCount(); j++) {
+				Army a = (Army)tableModel.getRow(j);
+				str += a.getHexNo() + DELIM +
+						a.getCommanderName() + DELIM +
+						a.getNationAllegiance().getAllegiance() + DELIM +
+						a.getNationNo() + DELIM +
+						(a.isNavy() ? 1 : 0) + DELIM +
+						a.getSize().getSize() + DELIM +
+						a.getTroopCount() + DELIM +
+						a.getMorale() + DELIM +
+						getElementString(a, ArmyElementType.HeavyCavalry) + DELIM +
+						getElementString(a, ArmyElementType.LightCavalry) + DELIM +
+						getElementString(a, ArmyElementType.HeavyInfantry) + DELIM +
+						getElementString(a, ArmyElementType.LightInfantry) + DELIM +
+						getElementString(a, ArmyElementType.Archers) + DELIM +
+						getElementString(a, ArmyElementType.MenAtArms) + DELIM +
+						getElementString(a, ArmyElementType.WarMachimes) + DELIM +
+						getElementString(a, ArmyElementType.Warships) + DELIM +
+						getElementString(a, ArmyElementType.Transports) + DELIM + NL;
+			}
+			StringSelection stringSelection = new StringSelection(str);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, this);
+		}
+		
+		protected String getElementString(Army a, ArmyElementType aet) {
+			String str = "";
+			ArmyElement ae = a.getElement(aet);
+			if (ae == null) {
+				str = aet.getType() + DELIM + "" + DELIM + "" + DELIM + "" + DELIM + "";
+			} else {
+				str = aet.getType() + DELIM +
+					ae.getNumber() + DELIM +
+					ae.getTraining() + DELIM +
+					ae.getWeapons() + DELIM +
+					ae.getArmor();
+			}
+			return str;
+		}
+
+		public void lostOwnership(Clipboard arg0, Transferable arg1) {
+			// TODO Auto-generated method stub
+			
+		}
+    	
+    }
 }

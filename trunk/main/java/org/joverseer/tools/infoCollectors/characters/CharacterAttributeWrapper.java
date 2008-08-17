@@ -15,6 +15,11 @@ import org.joverseer.support.infoSources.RumorActionInfoSource;
  * 
  */
 public class CharacterAttributeWrapper implements Comparable {
+	public static int COMPARE_BY_TOTAL_VALUE = 1;
+	public static int COMPARE_BY_NET_VALUE = 2;
+	public static int COMPARIZON_MODE = COMPARE_BY_TOTAL_VALUE;
+	
+	
 	String attribute;
 
 	InfoSource infoSource;
@@ -86,17 +91,19 @@ public class CharacterAttributeWrapper implements Comparable {
 		if (o == null)
 			return 1;
 		CharacterAttributeWrapper caw = (CharacterAttributeWrapper) o;
-		Object v1 = getTotalValue();
-		Object v2 = caw.getTotalValue();
-		if (v1 == null && v2 != null)
-			return -1;
-		if (v1 != null && v2 == null)
-			return 1;
-		if (v1 != null && v2 != null) {
-			return ((Comparable) v1).compareTo(v2);
+		if (COMPARIZON_MODE == COMPARE_BY_TOTAL_VALUE) {
+			Object v1 = getTotalValue();
+			Object v2 = caw.getTotalValue();
+			if (v1 == null && v2 != null)
+				return -1;
+			if (v1 != null && v2 == null)
+				return 1;
+			if (v1 != null && v2 != null) {
+				return ((Comparable) v1).compareTo(v2);
+			}
 		}
-		v1 = getValue();
-		v2 = caw.getValue();
+		Object v1 = getValue();
+		Object v2 = caw.getValue();
 		if (v1 == null && v2 != null)
 			return -1;
 		if (v1 != null && v2 == null)

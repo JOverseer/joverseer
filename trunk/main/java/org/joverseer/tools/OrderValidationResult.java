@@ -1,8 +1,9 @@
 package org.joverseer.tools;
 
 public class OrderValidationResult {
-	public static int WARNING = 1;
-	public static int ERROR = 2;
+	public static int INFO = 1;
+	public static int WARNING = 2;
+	public static int ERROR = 3;
 	
 	int level;
 	String message;

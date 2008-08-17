@@ -74,7 +74,8 @@ public class OrderEditorListView extends ItemListView {
     JComboBox combo;
     OrderParameterValidator validator = new OrderParameterValidator();
     Color paramErrorColor = Color.decode("#ffff99");
-    Color paramWarningColor = Color.decode("#99FF99");
+    Color paramWarningColor = Color.decode("#99ffff");
+    Color paramInfoColor = Color.decode("#99FF99");
     public OrderEditorListView() {
         super(TurnElementsEnum.Character, OrderEditorTableModel.class);
     }
@@ -93,16 +94,19 @@ public class OrderEditorListView extends ItemListView {
             return;
         Container items = g.getTurn().getContainer(turnElementType);
         ArrayList orders = new ArrayList();
-        OrderFilter f = (OrderFilter) combo.getSelectedItem();
-        if (f != null) {
-            for (Character c : (ArrayList<Character>) items.getItems()) {
-                if (!f.acceptCharacter(c))
-                    continue;
-                for (int i=0; i<c.getNumberOfOrders(); i++) {
-                    orders.add(c.getOrders()[i]);
-                }
+        for (Character c : (ArrayList<Character>) items.getItems()) {
+        	boolean acceptChar = true;
+        	for (JComboBox filter : filters) {
+        		if (filter.getSelectedItem() != null) {
+        			acceptChar = acceptChar && ((OrderFilter)filter.getSelectedItem()).acceptCharacter(c);
+        		}
+        	}
+            if (!acceptChar) continue;
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
+                orders.add(c.getOrders()[i]);
             }
         }
+        
         int row = table.getSelectedRow();
         Object o = null; 
         try {
@@ -125,7 +129,74 @@ public class OrderEditorListView extends ItemListView {
         }
     }
 
-    private ArrayList<OrderFilter> createOrderFilterList() {
+    private ArrayList<OrderFilter> createOrderTypeFilterList() {
+        ArrayList<OrderFilter> filterList = new ArrayList<OrderFilter>();
+        
+        OrderFilter f = new OrderFilter("All") {
+            public boolean acceptCharacter(Character c) {
+                return true;
+            }
+        };
+        filterList.add(f);
+        
+        f = new OrderFilter("Emissaries (E>=30)") {
+            public boolean acceptCharacter(Character c) {
+                return c.getEmmisary() >= 30;
+            }
+        };
+        filterList.add(f);
+        
+        f = new OrderFilter("Agent (A>=30)") {
+            public boolean acceptCharacter(Character c) {
+                return c.getAgent() >= 30;
+            }
+        };
+        filterList.add(f);
+        
+        f = new OrderFilter("Army/Navy Movement") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "830,840,850,860");
+            }
+        };
+        filterList.add(f);
+
+        f = new OrderFilter("Char/Comp Movement") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "810,820,870,825");
+            }
+        };
+        filterList.add(f);
+
+        f = new OrderFilter("Recon/Scout/Palantir") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "925,905,910,915,920,925,930,935");
+            }
+        };
+        filterList.add(f);
+
+        f = new OrderFilter("Product Transfers") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "947,948");
+            }
+        };
+        filterList.add(f);
+        
+        return filterList;
+    }
+    
+    protected boolean characterHasOrderInList(Character c, String orderList) {
+    	String[] parts = orderList.split(",");
+    	for (String p : parts) {
+    		int orderNo = Integer.parseInt(p);
+    		for (Order o : c.getOrders()) {
+    			if (o.getOrderNo() == orderNo) return true;
+    		}
+    	}
+    	return false;
+    }
+
+    
+    private ArrayList<OrderFilter> createOrderNationFilterList() {
         ArrayList<OrderFilter> filterList = new ArrayList<OrderFilter>();
         OrderFilter f = new OrderFilter("All characters with orders") {
 
@@ -135,16 +206,6 @@ public class OrderEditorListView extends ItemListView {
             }
         };
         filterList.add(f);
-        
-        f = new OrderFilter("Emissaries (E>=30)") {
-            public boolean acceptCharacter(Character c) {
-                return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0
-                        && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank()) &&
-                        c.getEmmisary() >= 30;
-            }
-        };
-        filterList.add(f);
-
 
         f = new OrderFilter("All Imported") {
 
@@ -181,15 +242,14 @@ public class OrderEditorListView extends ItemListView {
         return filterList;
     }
 
-    protected void setFilters() {
-        combo.removeAllItems();
-        ArrayList<OrderFilter> filterList = createOrderFilterList();
-        for (OrderFilter f : filterList) {
-            combo.addItem(f);
-        }
-    }
+	protected AbstractListViewFilter[][] getFilters() {
+		return new AbstractListViewFilter[][]{
+				(AbstractListViewFilter[])createOrderNationFilterList().toArray(new AbstractListViewFilter[]{}),
+				(AbstractListViewFilter[])createOrderTypeFilterList().toArray(new AbstractListViewFilter[]{}),
+		};
+	}
 
-    protected JTable createTable() {
+	protected JTable createTable() {
         JTable table = TableUtils.createStandardSortableTable(tableModel);
         JTable newTable = new JOverseerTable(table.getModel()) {
 
@@ -199,15 +259,15 @@ public class OrderEditorListView extends ItemListView {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 if (isCellSelected(row, column)) {
-                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor)) {
+                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
                         c.setBackground(selectionBackground);
                     }
                 } else if ((row / 2) % 2 == 1) {
-                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor)) {
+                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
                         c.setBackground(Color.decode("#eeeeee"));
                     }
                 } else {
-                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor)) {
+                    if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
                         c.setBackground(normalBackground);
                     }
                 }
@@ -220,20 +280,22 @@ public class OrderEditorListView extends ItemListView {
         table = null;
         return newTable;
     }
+    
+    
 
 
     protected JComponent createControlImpl() {
         JComponent tableComp = super.createControlImpl();
 
-        TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(combo = new JComboBox(), "align=left");
-        combo.setPreferredSize(new Dimension(200, 24));
-        combo.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                setItems();
-            }
-        });
+//        TableLayoutBuilder tlb = new TableLayoutBuilder();
+//        tlb.cell(combo = new JComboBox(), "align=left");
+//        combo.setPreferredSize(new Dimension(200, 24));
+//        combo.addActionListener(new ActionListener() {
+//
+//            public void actionPerformed(ActionEvent e) {
+//                setItems();
+//            }
+//        });
 
 
         GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
@@ -337,10 +399,11 @@ public class OrderEditorListView extends ItemListView {
         }
         GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
 
-        tlb.row();
-        tlb.cell(tableComp);
-        tlb.row();
-        return tlb.getPanel();
+//        tlb.row();
+//        tlb.cell(tableComp);
+//        tlb.row();
+//        return tlb.getPanel();
+        return tableComp;
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -351,7 +414,8 @@ public class OrderEditorListView extends ItemListView {
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                setFilters();
+                //setFilters();
+            	refreshFilters();
                 TableColumn noAndCodeColumn = table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
                 Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
                 ListListModel orders = new ListListModel();
@@ -513,26 +577,18 @@ public class OrderEditorListView extends ItemListView {
      * 
      * @author Marios Skounakis
      */
-    private abstract class OrderFilter {
+    private abstract class OrderFilter extends AbstractListViewFilter {
 
-        String description;
 
         public abstract boolean acceptCharacter(Character c);
 
+        //dummy, basically ignored
+        public boolean accept(Object o) {
+        	return true;
+        }
+        
         public OrderFilter(String description) {
-            this.description = description;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public String toString() {
-            return getDescription();
+        	super(description);
         }
     }
 
@@ -578,6 +634,8 @@ public class OrderEditorListView extends ItemListView {
                     lbl.setBackground(paramErrorColor);
                 } else if (res.getLevel() == OrderValidationResult.WARNING){
                 	lbl.setBackground(paramWarningColor);
+                }else if (res.getLevel() == OrderValidationResult.INFO){
+                	lbl.setBackground(paramInfoColor);
                 }
                 lbl.setToolTipText(res.getMessage());
             } else {
@@ -621,6 +679,9 @@ public class OrderEditorListView extends ItemListView {
                     lbl.setBackground(paramErrorColor);
                 } else if (res.getLevel() == OrderValidationResult.WARNING) {
                 	lbl.setBackground(paramWarningColor);
+                }
+                else if (res.getLevel() == OrderValidationResult.INFO) {
+                	lbl.setBackground(paramInfoColor);
                 }
                 lbl.setToolTipText(res.getMessage());
             } else {

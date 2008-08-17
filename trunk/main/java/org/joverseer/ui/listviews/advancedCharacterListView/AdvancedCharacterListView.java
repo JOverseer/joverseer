@@ -110,12 +110,33 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
             public JPopupMenu getPopupMenu() {
                 CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                        "advancedCharacterListViewCommandGroup", new Object[] {new CopyToClipboardCommand()});
+                        "advancedCharacterListViewCommandGroup", new Object[] {
+                        		new CopyToClipboardCommand(),
+                        		new ToggleAttributeSortModeCommand((AdvancedCharacterTableModel)tableModel),
+                        		});
                 return group.createPopupMenu();
             }
         });
         comps.add(popupMenu);
         return comps.toArray(new JComponent[] {});
+    }
+    
+    class ToggleAttributeSortModeCommand extends ActionCommand {
+    	AdvancedCharacterTableModel model;
+    	
+		public ToggleAttributeSortModeCommand(AdvancedCharacterTableModel model) {
+			super("toggleAttributeSortModeCommand");
+			this.model = model;
+		}
+
+		protected void doExecuteCommand() {
+			if (CharacterAttributeWrapper.COMPARIZON_MODE == CharacterAttributeWrapper.COMPARE_BY_TOTAL_VALUE) {
+				CharacterAttributeWrapper.COMPARIZON_MODE = CharacterAttributeWrapper.COMPARE_BY_NET_VALUE;
+			} else {
+				CharacterAttributeWrapper.COMPARIZON_MODE = CharacterAttributeWrapper.COMPARE_BY_TOTAL_VALUE;
+			}
+			model.fireTableDataChanged();
+		}
     }
     
 	class CopyToClipboardCommand extends ActionCommand implements ClipboardOwner {

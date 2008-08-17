@@ -628,9 +628,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     	if (res.getLevel() == OrderValidationResult.ERROR) {
     		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
     		cont.addResult(or);
-    	} else {
+    	} else if (res.getLevel() == OrderValidationResult.WARNING) {
     		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
     		cont.addResult(or);
+    	} else if (res.getLevel() == OrderValidationResult.INFO) {
+    		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Info);
+    		cont.addResult(or);
+    		
     	}
     	
     }
@@ -660,6 +664,6 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
     public boolean getAutoSave() {
         String pval = PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave");
-        return pval.equals("yes");
+        return !pval.equals("no");
     }
 }

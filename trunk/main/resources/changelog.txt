@@ -1,7 +1,26 @@
 VERSION 1.0.3
 -------------
 
-22/07/2008
+18/08/2008
+
+	* Added the option to sort the Chars (adv) tab based on attribute net ranks instead of total ranks
+	
+	* Order Editor Auto Save
+		+ Changed the default to true - now orders are automatically saved as they are entered in the editor, user no longer needs to cick the save button
+		+ Fixed a bug that had caused the respective preference to disapear in the last few versions
+
+	* Fixed an issue with the LR map not being correct in the 2950 scenario
+	
+	* Fixed an issue that was causing unknown pops to not be shown when Nation Colors was set to Color/Allegiance in the Map Options view
+	
+	* Order validation
+		+ Fixed an issue with the validation errors of the 370 order
+		+ Characters not on capital issuing capital orders now give a warning instead of error (since capitals can change)
+		
+	* Added the missing starting armies for 2950 (Sinda + DS nations)
+	
+	* Added new filters to the orders information tab
+		+ The new filters were added to a new combobox so you can now choose both a nation and an order type filter
 
 	* Fixed an issue with the Chars (Adv) tab copy to clipboard function that caused the Health and Challenge column headers to be reversed
 

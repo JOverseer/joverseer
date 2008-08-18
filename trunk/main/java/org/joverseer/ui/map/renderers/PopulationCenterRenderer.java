@@ -30,7 +30,7 @@ import org.springframework.richclient.application.Application;
  * Renders PopulationCenter objects
  * 
  * @author Marios Skounakis
- */
+ */	
 public class PopulationCenterRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 

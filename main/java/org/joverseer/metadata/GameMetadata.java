@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
@@ -189,6 +190,21 @@ public class GameMetadata implements Serializable {
     }
 
     public Container getOrders() {
+    	if (orders != null) {
+    		OrderMetadata om = (OrderMetadata)orders.findFirstByProperty("number", 225);
+    		if (om.getSkillRequirement().equals("MS")) {
+    			GameMetadata gm = (GameMetadata)Application.instance().getApplicationContext().getBean("gameMetadata");
+    			gm.setGameType(getGameType());
+    			
+    			try {
+    			gm.load();
+    			orders = gm.getOrders(); 
+    			}
+    			catch (Exception exc) {
+    				// do nothing
+    			}
+    		}
+    	}
         return orders;
     }
 

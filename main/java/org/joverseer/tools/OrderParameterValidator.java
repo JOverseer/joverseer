@@ -146,6 +146,10 @@ public class OrderParameterValidator {
                 .findFirstByProperty("number", o.getOrderNo());
         if (om == null)
             return null;
+
+        OrderValidationResult ovr = checkForDuplicateSkillOrder(o);
+        if (ovr != null) return ovr;
+
         if (om.getRequirement().indexOf("At Capital") >= 0) {
             if (o.getOrderNo() < 800) {
                 PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(
@@ -158,8 +162,6 @@ public class OrderParameterValidator {
                 }
             }
         }
-        OrderValidationResult ovr = checkForDuplicateSkillOrder(o);
-        if (ovr != null) return ovr;
         return null;
     }
 

@@ -514,10 +514,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         Order o = (Order) getFormObject();
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
         o.setParameters(parametersInternal.getText());
+        //validateOrder();
         // throw an order changed event
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
-        validateOrder();
         // Point selectedHex = new Point(o.getCharacter().getX(), o.getCharacter().getY());
         // Application.instance().getApplicationContext().publishEvent(
         // new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));

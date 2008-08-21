@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Order;
+import org.joverseer.tools.OrderParameterValidator;
+import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
@@ -60,22 +63,61 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     public boolean appliesTo(Object obj) {
         return Order.class.isInstance(obj);
     }
-
-    public void setFormObject(Object object) {
-        super.setFormObject(object);
-        Order o = (Order)object;
-        if (o.getOrderNo() <= 0) {
-            orderText.setText("N/A");
-        } else {
-            orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
-            orderText.setCaretPosition(0);
-        }
-        orderText.setTransferHandler(new OrderExportTransferHandler(o));
-        OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
-        OrderResultTypeEnum orderResultType = container.getResultTypeForOrder(o);
+    
+    protected OrderResultTypeEnum addValidationResult(Order o, OrderValidationResult res, Integer paramI, OrderResultTypeEnum orderResultType, ArrayList<OrderResult> results) {
+    	if (res == null) return orderResultType;
+    	String e = "";
+    	if (paramI != null) {
+    		e = "Param " + paramI +": ";
+    	}
+    	e += res.getMessage();
+    	if (res.getLevel() == OrderValidationResult.ERROR) {
+    		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Error);
+    		results.add(or);
+    		return OrderResultTypeEnum.Error;
+    	} else if (res.getLevel() == OrderValidationResult.WARNING) {
+    		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Warning);
+    		results.add(or);
+    		if (orderResultType == null || orderResultType.getValue() < OrderResultTypeEnum.Warning.getValue()) {
+    			return OrderResultTypeEnum.Warning;
+    		}
+    	} else if (res.getLevel() == OrderValidationResult.INFO) {
+    		OrderResult or = new OrderResult(o, e, OrderResultTypeEnum.Info);
+    		results.add(or);
+    		if (orderResultType == null || orderResultType.getValue() < OrderResultTypeEnum.Info.getValue()) {
+    			return OrderResultTypeEnum.Info;
+    		}
+    	}
+    	return orderResultType;
+    }
+    
+    public void setOrderValidationResults(Order o) {
+    	OrderResultTypeEnum orderResultType = null;
+    	Icon ico = null;
+    	boolean joErrors = false;
+    	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        Icon ico = null;
-        if (orderResultType == null) {
+    	if (!o.isBlank()) {
+	    	
+	        OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
+	        orderResultType = container.getResultTypeForOrder(o);
+	        if (orderResultType != null) {
+	        	results = container.getResultsForOrder(o);
+	        } else {
+	        	// use parameter validator
+	        	OrderParameterValidator opv = new OrderParameterValidator();
+	        	OrderValidationResult ovr = opv.checkOrder(o);
+	        	orderResultType = addValidationResult(o, ovr, null, orderResultType, results);
+	        	for (int i=0; i<=o.getLastParamIndex(); i++) {
+	        		ovr = opv.checkParam(o, i);
+	        		if (ovr != null) {
+	        			orderResultType = addValidationResult(o, ovr, i, orderResultType, results);
+	        		}
+	        	}
+	        	joErrors = true;
+	        }
+    	}
+    	if (orderResultType == null) {
             ico = null;
         } else if (orderResultType == OrderResultTypeEnum.Info) {
             ico = new ImageIcon(imgSource.getImage("orderresult.info.icon"));
@@ -91,10 +133,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         orderResultIcon.setIcon(ico);
         if (ico != null) {
             String txt = "";
-            for (OrderResult result : container.getResultsForOrder(o)) {
+            for (OrderResult result : results) {
                 String resText = null;
                 resText = result.getType().toString();
-                txt += (txt.equals("") ? "" : "") + "<li>" + resText + ": " + result.getMessage() + "</li>";
+                txt += (txt.equals("") ? "" : "") + "<li>" + resText + (joErrors ? " [JO]" : "") + ": " + result.getMessage() + "</li>";
             }
             if (!txt.equals("")) {
                 txt = "<html><body><lu>" + txt + "</lu></body></html>";
@@ -105,6 +147,20 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         } else {
             orderResultIcon.setToolTipText(null);
         }
+    }
+
+    public void setFormObject(Object object) {
+        super.setFormObject(object);
+        Order o = (Order)object;
+        if (o.getOrderNo() <= 0) {
+            orderText.setText("N/A");
+        } else {
+            orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
+            orderText.setCaretPosition(0);
+        }
+        orderText.setTransferHandler(new OrderExportTransferHandler(o));
+        
+        setOrderValidationResults(o);
         
         OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
         draw.setSelected(ovd.contains(o));

@@ -33,6 +33,7 @@ import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -394,6 +395,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         scp = new JScrollPane(p);
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
+        
+        UIUtils.fixScrollPaneMouseScroll(scp);
+        
         return scp;
     }
     

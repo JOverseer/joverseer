@@ -308,22 +308,29 @@ public class OrderEditorListView extends ItemListView {
             // and shown only when appropriate
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
-                Order o = (Order) tableModel.getRow(((SortableTableModel) table.getModel())
-                        .convertSortedIndexToDataIndex(row));
-                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-                if (GraphicUtils.canRenderOrder(o)) {
-                    JCheckBox b = new JCheckBox();
-                    b.setSelected((Boolean) value);
-                    b.setHorizontalAlignment(JCheckBox.CENTER);
-                    System.out.println("row == table.getSelectedRow() = "
-                            + String.valueOf(row == table.getSelectedRow()));
-                    System.out.println("isSelected = " + String.valueOf(isSelected));
-                    b.setBackground(row == table.getSelectedRow() && isSelected ? selectionBackground
-                            : normalBackground);
-                    return b;
-                } else {
-                    return lbl;
-                }
+            	try {
+	                Order o = (Order) tableModel.getRow(((SortableTableModel) table.getModel())
+	                        .convertSortedIndexToDataIndex(row));
+	                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+	                if (GraphicUtils.canRenderOrder(o)) {
+	                    JCheckBox b = new JCheckBox();
+	                    b.setSelected((Boolean) value);
+	                    b.setHorizontalAlignment(JCheckBox.CENTER);
+	                    System.out.println("row == table.getSelectedRow() = "
+	                            + String.valueOf(row == table.getSelectedRow()));
+	                    System.out.println("isSelected = " + String.valueOf(isSelected));
+	                    b.setBackground(row == table.getSelectedRow() && isSelected ? selectionBackground
+	                            : normalBackground);
+	                    return b;
+	                } else {
+	                    return lbl;
+	                }	
+            	}
+            	catch (Exception exc) {
+            		// do nothing
+            		JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+            		return lbl;
+            	}
             }
 
         });
@@ -333,25 +340,32 @@ public class OrderEditorListView extends ItemListView {
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
-                ImageIcon ico = (ImageIcon) value;
-                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-                lbl.setIcon(ico);
-                if (ico != null) {
-                    OrderResultContainer container = (OrderResultContainer) Application.instance()
-                            .getApplicationContext().getBean("orderResultContainer");
-                    int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-                    Object obj = tableModel.getRow(idx);
-                    Order o = (Order) obj;
-                    String txt = "";
-                    for (OrderResult result : container.getResultsForOrder(o)) {
-                        txt += (txt.equals("") ? "" : "") + "<li>" + result.getType().toString() + ": "
-                                + result.getMessage() + "</li>";
-                    }
-                    txt = "<html><body><lu>" + txt + "</lu></body></html>";
-                    lbl.setToolTipText(txt);
-                }
-                lbl.setHorizontalAlignment(JLabel.CENTER);
-                return lbl;
+            	try {
+	                ImageIcon ico = (ImageIcon) value;
+	                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+	                lbl.setIcon(ico);
+	                if (ico != null) {
+	                    OrderResultContainer container = (OrderResultContainer) Application.instance()
+	                            .getApplicationContext().getBean("orderResultContainer");
+	                    int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+	                    Object obj = tableModel.getRow(idx);
+	                    Order o = (Order) obj;
+	                    String txt = "";
+	                    for (OrderResult result : container.getResultsForOrder(o)) {
+	                        txt += (txt.equals("") ? "" : "") + "<li>" + result.getType().toString() + ": "
+	                                + result.getMessage() + "</li>";
+	                    }
+	                    txt = "<html><body><lu>" + txt + "</lu></body></html>";
+	                    lbl.setToolTipText(txt);
+	                }
+	                lbl.setHorizontalAlignment(JLabel.CENTER);
+	                return lbl;
+            	}
+            	catch (Exception exc) {
+            		// do nothing
+            		JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+            		return lbl;
+            	}
             }
 
         });
@@ -361,21 +375,28 @@ public class OrderEditorListView extends ItemListView {
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
-                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
-                        column);
-                // find capital and compare
-                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-                Object obj = tableModel.getRow(idx);
-                Order o = (Order) obj;
-                Character c = o.getCharacter();
-                PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(
-                        TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] {"nationNo", "capital"},
-                        new Object[] {c.getNationNo(), Boolean.TRUE});
-                if (capital != null && c.getHexNo() == capital.getHexNo()) {
-                    lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
-                }
-                lbl.setHorizontalAlignment(JLabel.CENTER);
-                return lbl;
+            	try {
+	                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+	                        column);
+	                // find capital and compare
+	                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+	                Object obj = tableModel.getRow(idx);
+	                Order o = (Order) obj;
+	                Character c = o.getCharacter();
+	                PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(
+	                        TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] {"nationNo", "capital"},
+	                        new Object[] {c.getNationNo(), Boolean.TRUE});
+	                if (capital != null && c.getHexNo() == capital.getHexNo()) {
+	                    lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
+	                }
+	                lbl.setHorizontalAlignment(JLabel.CENTER);
+	                return lbl;
+            	}
+            	catch (Exception exc) {
+            		// do nothing
+            		JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+            		return lbl;
+            	}
             };
         });
 
@@ -410,6 +431,7 @@ public class OrderEditorListView extends ItemListView {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+            	refreshFilters();
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 setItems();

@@ -25,6 +25,7 @@ import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -129,7 +130,9 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
         
         lb.relatedGapRow();
         
-        return new JScrollPane(lb.getPanel());
+        scp = new JScrollPane(lb.getPanel());
+        UIUtils.fixScrollPaneMouseScroll(scp);
+        return scp;
     }
     
     public void refreshTableItems() {

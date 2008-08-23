@@ -278,7 +278,12 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
                 for (AbstractListViewFilter f : filterLists[i]) {
                     filters.get(i).addItem(f);
                 }
-                filters.get(i).updateUI();
+                try {
+                	filters.get(i).updateUI();
+                }
+                catch (Exception exc) {
+                	logger.error(exc);
+                }
             }
         }
     }

@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.ui.support.UIUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
@@ -96,12 +97,15 @@ public class InfoView extends AbstractView {
         lb.cell(createTableFromResource("classpath:metadata/info/climateProduction.csv", 600, 140), "align=left");
         lb.relatedGapRow();
         
-        lb.separator("Dragons");
+        lb.separator("Dragons (player collected information - i.e. not official)");
         lb.relatedGapRow();
         lb.cell(createTableFromResource("classpath:metadata/info/dragons2.csv", 850, 1100), "align=left");
         lb.relatedGapRow();
         
-        return new JScrollPane(lb.getPanel());
+        JScrollPane scp = new JScrollPane(lb.getPanel()); 
+        UIUtils.fixScrollPaneMouseScroll(scp);
+        
+        return scp;
     }
     
     /**

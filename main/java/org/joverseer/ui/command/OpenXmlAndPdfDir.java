@@ -10,6 +10,7 @@ import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
@@ -55,6 +56,12 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
     }
 
     public void run() {
+    	try {
+    		Thread.sleep(1000);
+    	}
+    	catch (Exception exc) {
+    		// do nothing
+    	}
         Game game = gh.getGame();
         if (game == null) {
             return;
@@ -189,6 +196,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
                     monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[]{file.getAbsolutePath()}), 100 * files.length);
                     Thread t = new Thread(thisObj);
                     t.start();
+                    //SwingUtilities.invokeLater(thisObj);
                 }
 
                 protected boolean onFinish() {

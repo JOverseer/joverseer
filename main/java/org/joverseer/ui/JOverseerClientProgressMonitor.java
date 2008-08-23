@@ -14,12 +14,16 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.progress.ProgressMonitor;
+
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
 
 
 /**
@@ -44,8 +48,10 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
     public JOverseerClientProgressMonitor(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
-
-    protected JComponent createFormControl() {
+    
+    
+    
+	protected JComponent createFormControl() {
         // todo fix layout
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         tlb.cell(taskName = new JLabel());
@@ -84,7 +90,17 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
     }
 
     public void done() {
-        getOkButton().setEnabled(true);
+    	try {
+    		Runnable r = new Runnable() {
+    			public void run() {
+					getOkButton().setEnabled(true);
+    			}
+    		};
+    		SwingUtilities.invokeLater(r);
+    	}
+    	catch (Exception exc) {
+    		logger.error(exc);
+    	}
     }
 
     public boolean isCanceled() {
@@ -96,23 +112,53 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
     }
 
     public void subTaskStarted(String string) {
-        llm.add(string);
-        int selIndex = llm.size() - 1;
-        taskSubtasks.setSelectedIndex(selIndex);
-        taskSubtasks.ensureIndexIsVisible(selIndex);
-        panel.updateUI();
+    	final String str = string;
+    	Runnable r = new Runnable() {
+			public void run() {
+		    	llm.add(str);
+		        int selIndex = llm.size() - 1;
+		        taskSubtasks.setSelectedIndex(selIndex);
+		        taskSubtasks.ensureIndexIsVisible(selIndex);
+		    	taskSubtasks.updateUI();
+		        panel.updateUI();
+			}
+    	};
+    	SwingUtilities.invokeLater(r);
     }
     
     public void taskStarted(String string, int i) {
-        getOkButton().setEnabled(false);
-        taskProgress.setMaximum(i);
-        taskName.setText(string);
-        panel.updateUI();
+        try {
+        	final String str = string;
+        	final int ii = i;
+        	Runnable r = new Runnable() {
+        		public void run() {
+		        	getOkButton().setEnabled(false);
+		        	taskProgress.setMaximum(ii);
+		        	taskName.setText(str);
+		        	panel.updateUI();
+        		}
+        	};
+        	SwingUtilities.invokeLater(r);
+    	}
+    	catch (Exception exc) {
+    		logger.error(exc);
+    	}
     }
     
     public void setGlobalMessage(String msg) {
-    	globalMessage.setText(msg);
-    	panel.updateUI();
+    	try {
+    		final String str = msg;
+        	Runnable r = new Runnable() {
+        		public void run() {
+		    		globalMessage.setText(str);
+		    		panel.updateUI();
+        		}
+        	};
+        	SwingUtilities.invokeLater(r);
+    	}
+    	catch (Exception exc) {
+    		logger.error(exc);
+    	}
     }
 
     /**
@@ -126,18 +172,29 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
      * - worked = 50 --> make progress = 100 + 50 -> 150
      * - worked = 100 --> make progress = 150 + 100 - 50 -> 200 
      */
-    public void worked(int i) {
-        if (lastWork > i) {
-            lastWork = 0;
-        }
-        if (workBuffer > i) {
-            workBuffer = workBuffer + i - lastWork;
-            lastWork = i;
-        } else {
-            workBuffer = i;
-        }
-        taskProgress.setValue(workBuffer);
-        panel.updateUI();
+    public void worked(int ii) {
+    	try {
+        	final int i = ii;
+        	Runnable r = new Runnable() {
+        		public void run() {
+			        if (lastWork > i) {
+			            lastWork = 0;
+			        }
+			        if (workBuffer > i) {
+			            workBuffer = workBuffer + i - lastWork;
+			            lastWork = i;
+			        } else {
+			            workBuffer = i;
+			        }
+			        taskProgress.setValue(workBuffer);
+			        panel.updateUI();
+        		}
+        	};
+            SwingUtilities.invokeLater(r);
+    	}
+    	catch (Exception exc) {
+    		logger.error(exc);
+    	}
     }
     
     /**

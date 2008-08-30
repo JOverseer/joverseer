@@ -12,7 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
+import org.joverseer.domain.SpellProficiency;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
@@ -43,11 +45,18 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     }
     
     protected void loadSpellCombo() {
-        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+    	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+    	Character c = getOrder().getCharacter();
         parameter.addItem("");
-        for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
+    	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
             if (si.getOrderNumber() == orderNo) {
-                parameter.addItem(si.getNumber() + " - " + si.getName());
+	        	 boolean found = false;
+	             for (SpellProficiency sp : c.getSpells()) {
+	                 if (sp.getSpellId() == si.getNumber()) {
+	                     found = true;
+	                 }
+	             }
+	             parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
             }
         }
     }

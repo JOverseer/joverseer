@@ -1,8 +1,17 @@
 package org.joverseer.ui.command;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -41,6 +50,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         form = new ParseOrdersForm(FormModelHelper.createFormModel(new String()));
         FormBackedDialogPage pg = new FormBackedDialogPage(form);
+        final ClipboardOwner clipboardOwner = form;
         TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
             protected boolean onFinish() {
                 loadOrders(form.getOrderText());
@@ -48,11 +58,24 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
             }
 
             protected Object[] getCommandGroupMembers() {
-                return new Object[]{new ActionCommand("parseOrdersCommand") {
-                    protected void doExecuteCommand() {
-                        form.setParseResults(parseOrders(form.getOrderText()));
-                    }
-                }, getFinishCommand(), getCancelCommand()};
+                return new Object[]{
+                		new ActionCommand("copyFromClipboardCommand") {
+                			protected void doExecuteCommand() {
+                		    	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                            	Transferable s = clipboard.getContents(clipboardOwner);
+                            	try {
+                            		form.setOrderText(s.getTransferData(DataFlavor.stringFlavor).toString());
+                            	}
+                            	catch (Exception e) {
+                            		// do nothing
+                            	}
+                			}
+                		},
+                		new ActionCommand("parseOrdersCommand") {
+                			protected void doExecuteCommand() {
+                				form.setParseResults(parseOrders(form.getOrderText()));
+                			}
+                		}, getFinishCommand(), getCancelCommand()};
             }
             
         };
@@ -80,7 +103,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 
     }
     
-    class ParseOrdersForm extends AbstractForm {
+    class ParseOrdersForm extends AbstractForm implements ClipboardOwner {
         JTextArea orderText;
         JTextArea parseResults;
         JScrollPane orderScp;
@@ -120,9 +143,14 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
                 }
             });
             tlb.cell(parseScp);
-            
+            tlb.row();
+
+           
             return tlb.getPanel();
         }
+        
+        public void lostOwnership(Clipboard clipboard, Transferable contents) {
+		}
         
         public void setParseResults(ArrayList<String> results) {
             String res = "";
@@ -136,6 +164,10 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         
         public String getOrderText() {
             return orderText.getText();
+        }
+        
+        public void setOrderText(String text) {
+        	orderText.setText(text);
         }
         
     }

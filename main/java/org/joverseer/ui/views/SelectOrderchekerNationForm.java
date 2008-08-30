@@ -35,6 +35,7 @@ public class SelectOrderchekerNationForm extends AbstractForm {
     }
 
     private void loadNationCombo() {
+    	Nation selectedNation = null;
         nationCombo.removeAllItems();
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g))
@@ -42,16 +43,21 @@ public class SelectOrderchekerNationForm extends AbstractForm {
         if (g.getTurn() == null)
             return;
         for (Nation n : (ArrayList<Nation>) g.getMetadata().getNations()) {
-            if (n.getNumber() == 0)
-                continue;
-            PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty(
-                    "nationNo", n.getNumber());
-            if (pi == null)
-                continue;
+            if (n.getNumber() == 0) continue;
+            PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n.getNumber());
+            if (pi == null) continue;
             nationCombo.addItem(n.getName());
+            if (n.getNumber().equals(g.getMetadata().getNationNo())) {
+            	selectedNation = n;
+            }
         }
-        if (nationCombo.getItemCount() > 0) {
-            nationCombo.setSelectedIndex(0);
+        
+        if (selectedNation == null) {
+        	if (nationCombo.getItemCount() > 0) {
+	            nationCombo.setSelectedIndex(0);
+	        }
+        } else {
+        	nationCombo.setSelectedItem(selectedNation.getName());
         }
     }
 

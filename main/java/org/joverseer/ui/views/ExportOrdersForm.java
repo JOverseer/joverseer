@@ -106,9 +106,12 @@ public class ExportOrdersForm extends AbstractForm {
     }
     
     protected JComponent createFormControl() {
+    	Game g = GameHolder.instance().getGame();
+    	
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.append(new JLabel("Nation :"));
         glb.append(nation = new JComboBox(getNationItems().toArray()));
+        
         nation.setPreferredSize(new Dimension(100, 24));
         nation.addActionListener(new ActionListener() {
 
@@ -186,6 +189,7 @@ public class ExportOrdersForm extends AbstractForm {
         });
                 
         nation.setSelectedIndex(0);
+    	nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
         
         return glb.getPanel();
     }

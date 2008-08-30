@@ -68,6 +68,9 @@ public class OrderTextReader {
                     if (chP.matcher(line).matches()) {
                         if (charId != null) {
                             addOrders(charId, location, charLine, orderText, orderLines, notes, pass);
+                            orderText = new String[]{null, null, null};
+                            orderLines = new int[]{0, 0, 0};
+                            notes = "";
                         }
                         int j1 = line.indexOf("(");
                         int j2 = line.indexOf(")");
@@ -91,7 +94,7 @@ public class OrderTextReader {
                         } else {
                             lineResults.add("Order line ignored.");
                         }
-                    } else if (!line.trim().equals("")) {
+                    } else if (!line.trim().equals("") && !line.trim().equals("--")) {
                         // comments
                         notes += (line.equals("") ? "" : "\n") + line;
                         lineResults.add("Order notes.");

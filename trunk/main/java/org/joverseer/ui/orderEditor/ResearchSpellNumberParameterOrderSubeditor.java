@@ -31,9 +31,7 @@ public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParam
                     found = true;
                 }
             }
-            if (!found) {
-                parameter.addItem(si.getNumber() + " - " + si.getName());
-            }
+            parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
         }
     }
 

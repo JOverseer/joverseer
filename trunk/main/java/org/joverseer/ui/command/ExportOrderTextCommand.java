@@ -87,9 +87,15 @@ public class ExportOrderTextCommand extends ActionCommand {
         }
         
         protected JComponent createFormControl() {
+        	Game g = GameHolder.instance().getGame();
+        	
             GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
             glb.append(new JLabel("Nation :"));
             glb.append(nation = new JComboBox(getNationItems().toArray()));
+
+            nation.setSelectedIndex(0);
+            nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+            
             nation.setPreferredSize(new Dimension(100, 24));
             glb.nextLine();
             
@@ -129,7 +135,6 @@ public class ExportOrderTextCommand extends ActionCommand {
                     clipboard.setContents(stringSelection, clipboardOwner);
                 }
             });
-            nation.setSelectedIndex(0);
             
             return glb.getPanel();
         }

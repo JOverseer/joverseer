@@ -1153,6 +1153,7 @@ public class TurnPdfReader implements Runnable {
 	            for (OrderResult orderResult : cw.getOrderResults()) {
 	                orderResult.updateGame(turn, nationNo, cw.getName());
 	            }
+	            cw.parseScoHexOrScoPop(game, infoSource, c);
         	}
         	catch (Exception exc) {
         		logger.error("failed to parse character " + cw.getName());

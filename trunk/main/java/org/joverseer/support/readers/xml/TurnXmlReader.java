@@ -70,6 +70,9 @@ public class TurnXmlReader implements Runnable{
         this.filename = filename;
     }
     
+    public TurnXmlReader(Game game) {
+        this.game = game;
+    }
     
 
     public TurnInfo getTurnInfo() {
@@ -504,122 +507,133 @@ public class TurnXmlReader implements Runnable{
     }
 
     private void updateArmies() throws Exception {
-        String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
-        Container chars = turn.getContainer(TurnElementsEnum.Character);
-        Container armies = turn.getContainer(TurnElementsEnum.Army);
         for (ArmyWrapper aw : (ArrayList<ArmyWrapper>) turnInfo.getArmies().getItems()) {
             Army newArmy;
             Army oldArmy;
             try {
                 newArmy = aw.getArmy();
-                if (!aw.getCommander().startsWith(UNKNOWN_MAP_ICON)) {
-                    // known army, try to find army with same commander name
-                    oldArmy = (Army) armies.findFirstByProperties(new String[]{"commanderName"}, new Object[]{newArmy.getCommanderName()});
-                    if (oldArmy == null) {
-                        // try to find unknown army with same allegience in same hex
-                        oldArmy = (Army) armies.findFirstByProperties(
-                                new String[]{"commanderName", "hexNo", "nationAllegiance"},
-                                new Object[]{UNKNOWN_MAP_ICON, newArmy.getHexNo(), newArmy.getNationAllegiance()});
-                        if (oldArmy != null) {
-                            int a = 1;
-                        }
-                    }
-                } else {
-                    // try to find unknown army of same allegiance in hex
-                    oldArmy = (Army) armies.findFirstByProperties(
-                            new String[]{"commanderName", "hexNo", "nationAllegiance"},
-                            new Object[]{newArmy.getCommanderName(), newArmy.getHexNo(), newArmy.getNationAllegiance()});
-                    if (oldArmy == null) {
-                        // try to find known army of same allegiance in hex
-                        oldArmy = (Army) armies.findFirstByProperties(
-                            new String[]{"hexNo", "nationAllegiance"},
-                            new Object[]{newArmy.getHexNo(), newArmy.getNationAllegiance()});
-                    }
-                }
-                newArmy.setInfoSource(infoSource);
-                logger.debug(String.format("Handling Army {3} at {0},{1} with information source {2}",
-                        String.valueOf(newArmy.getX()),
-                        String.valueOf(newArmy.getY()),
-                        newArmy.getInformationSource().toString(),
-                        newArmy.getCommanderName()));
-                if (oldArmy== null) {
-                    // look for "Unknown map icon" army at same hex with same allegiance
-                    ArrayList oldArmies = armies.findAllByProperties(new String[]{"x", "y"}, new Object[]{newArmy.getX(), newArmy.getY()});
-
-                    // no army found - add
-                    logger.debug("No Army found in turn, add.");
-                    if (newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) {
-                        // new army is Unknown
-                        // check that there is not already an army of the same allegiance that is known
-                        boolean bFound = false;
-                        for (Army oa : (ArrayList<Army>)oldArmies) {
-                            if (!oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") ||
-                                    oa.getNationAllegiance() == newArmy.getNationAllegiance()) {
-                                bFound = true;
-                            }
-                        }
-                        if (!bFound) { // if no known army, add
-                            armies.addItem(newArmy);
-                        }
-                    } else {
-                        for (Army oa : (ArrayList<Army>)oldArmies) {
-                            if (oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") &&
-                                    oa.getNationAllegiance() == newArmy.getNationAllegiance()) {
-                                armies.removeItem(oa);
-                            }
-                        }
-                        armies.addItem(newArmy);
-                    }
-
-                } else {
-                    // army found
-                    logger.debug("Army found in turn.");
-                    if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue() ||
-                    (newArmy.getInformationSource().getValue() == oldArmy.getInformationSource().getValue() &&
-                    		MetadataSource.class.isInstance(oldArmy.getInfoSource()))) 
-                    	// condition below was removed on 7 June 2008 because the new xml format files
-                    	// contain usually the same army twice, once with exhaustive info source and one with 
-                    	// "some" info source
-                    	// || newArmy.getNationNo() == turnInfo.getNationNo())
-                    {
-                        logger.debug("Replace.");
-                        armies.removeItem(oldArmy);
-                        armies.addItem(newArmy);
-                        if (newArmy.getSize() == ArmySizeEnum.unknown) {
-                            newArmy.setSize(oldArmy.getSize());
-                        }
-                    }
-                }
-
-                // look for commander
-                String commanderName = newArmy.getCommanderName();
-                // do not generate character for unknown armies
-                if (!commanderName.toUpperCase().startsWith("UNKNOWN ")) {
-                    String commanderId = Character.getIdFromName(commanderName);
-                    Character ch = (Character)chars.findFirstByProperty("id", commanderId);
-                    if (ch == null) {
-                        // no found, add
-                        Character cmd = new Character();
-                        cmd.setName(commanderName);
-                        cmd.setTitle(newArmy.getCommanderTitle());
-                        cmd.setId(commanderId);
-                        cmd.setNationNo(newArmy.getNationNo());
-                        cmd.setX(newArmy.getX());
-                        cmd.setY(newArmy.getY());
-                        DerivedFromArmyInfoSource is = new DerivedFromArmyInfoSource();
-                        InformationSourceEnum ise = InformationSourceEnum.some;
-                        cmd.setInformationSource(ise);
-                        cmd.setInfoSource(is);
-                        chars.addItem(cmd);
-                    }
+                addArmy(newArmy, turn, true);
+	        }
+	        catch (Exception exc) {
+	            throw exc;
+	        }
+        }
+    }
+    
+    public void addArmy(Army newArmy, Turn turn, boolean addCharacter) {
+    	String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
+        
+    	Container chars = turn.getContainer(TurnElementsEnum.Character);
+        Container armies = turn.getContainer(TurnElementsEnum.Army);
+        Army oldArmy;
+        if (!newArmy.getCommanderName().startsWith(UNKNOWN_MAP_ICON)) {
+            // known army, try to find army with same commander name
+            oldArmy = (Army) armies.findFirstByProperties(new String[]{"commanderName"}, new Object[]{newArmy.getCommanderName()});
+            if (oldArmy == null) {
+                // try to find unknown army with same allegience in same hex
+                oldArmy = (Army) armies.findFirstByProperties(
+                        new String[]{"commanderName", "hexNo", "nationAllegiance"},
+                        new Object[]{UNKNOWN_MAP_ICON, newArmy.getHexNo(), newArmy.getNationAllegiance()});
+                if (oldArmy != null) {
+                    int a = 1;
                 }
             }
-            catch (Exception exc) {
-                throw exc;
+        } else {
+            // try to find unknown army of same allegiance in hex
+            oldArmy = (Army) armies.findFirstByProperties(
+                    new String[]{"commanderName", "hexNo", "nationAllegiance"},
+                    new Object[]{newArmy.getCommanderName(), newArmy.getHexNo(), newArmy.getNationAllegiance()});
+            if (oldArmy == null) {
+                // try to find known army of same allegiance in hex
+                oldArmy = (Army) armies.findFirstByProperties(
+                    new String[]{"hexNo", "nationAllegiance"},
+                    new Object[]{newArmy.getHexNo(), newArmy.getNationAllegiance()});
+            }
+        }
+        newArmy.setInfoSource(infoSource);
+        logger.debug(String.format("Handling Army {3} at {0},{1} with information source {2}",
+                String.valueOf(newArmy.getX()),
+                String.valueOf(newArmy.getY()),
+                newArmy.getInformationSource().toString(),
+                newArmy.getCommanderName()));
+        if (oldArmy== null) {
+            // look for "Unknown map icon" army at same hex with same allegiance
+            ArrayList oldArmies = armies.findAllByProperties(new String[]{"x", "y"}, new Object[]{newArmy.getX(), newArmy.getY()});
+
+            // no army found - add
+            logger.debug("No Army found in turn, add.");
+            if (newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) {
+                // new army is Unknown
+                // check that there is not already an army of the same allegiance that is known
+                boolean bFound = false;
+                for (Army oa : (ArrayList<Army>)oldArmies) {
+                    if (!oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") ||
+                            oa.getNationAllegiance() == newArmy.getNationAllegiance()) {
+                        bFound = true;
+                    }
+                }
+                if (!bFound) { // if no known army, add
+                    armies.addItem(newArmy);
+                }
+            } else {
+                for (Army oa : (ArrayList<Army>)oldArmies) {
+                    if (oa.getCommanderName().toUpperCase().startsWith("UNKNOWN ") &&
+                            oa.getNationAllegiance() == newArmy.getNationAllegiance()) {
+                        armies.removeItem(oa);
+                    }
+                }
+                armies.addItem(newArmy);
+            }
+
+        } else {
+            // army found
+            logger.debug("Army found in turn.");
+            if (newArmy.getInformationSource().getValue() > oldArmy.getInformationSource().getValue() ||
+            (newArmy.getInformationSource().getValue() == oldArmy.getInformationSource().getValue() &&
+            		MetadataSource.class.isInstance(oldArmy.getInfoSource()))) 
+            	// condition below was removed on 7 June 2008 because the new xml format files
+            	// contain usually the same army twice, once with exhaustive info source and one with 
+            	// "some" info source
+            	// || newArmy.getNationNo() == turnInfo.getNationNo())
+            {
+                logger.debug("Replace.");
+                armies.removeItem(oldArmy);
+                armies.addItem(newArmy);
+                if (newArmy.getSize() == ArmySizeEnum.unknown) {
+                    newArmy.setSize(oldArmy.getSize());
+                }
             }
         }
 
+        if (addCharacter) {
+        	// look for commander
+        
+	        String commanderName = newArmy.getCommanderName();
+	        // do not generate character for unknown armies
+	        if (!commanderName.toUpperCase().startsWith("UNKNOWN ")) {
+	            String commanderId = Character.getIdFromName(commanderName);
+	            Character ch = (Character)chars.findFirstByProperty("id", commanderId);
+	            if (ch == null) {
+	                // no found, add
+	                Character cmd = new Character();
+	                cmd.setName(commanderName);
+	                cmd.setTitle(newArmy.getCommanderTitle());
+	                cmd.setId(commanderId);
+	                cmd.setNationNo(newArmy.getNationNo());
+	                cmd.setX(newArmy.getX());
+	                cmd.setY(newArmy.getY());
+	                DerivedFromArmyInfoSource is = new DerivedFromArmyInfoSource();
+	                InformationSourceEnum ise = InformationSourceEnum.some;
+	                cmd.setInformationSource(ise);
+	                cmd.setInfoSource(is);
+	                chars.addItem(cmd);
+	            }
+	        }
+        }
+    
     }
+
+    
 
     private void updateNationInfo() {
         Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);

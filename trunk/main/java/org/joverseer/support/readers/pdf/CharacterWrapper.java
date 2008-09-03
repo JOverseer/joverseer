@@ -1,7 +1,21 @@
 package org.joverseer.support.readers.pdf;
 
 import java.util.ArrayList;
+
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.HarborSizeEnum;
+import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.readers.xml.TurnXmlReader;
 
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
@@ -67,7 +81,7 @@ public class CharacterWrapper {
 	public void updateCharacter(Character c) {
             c.setOrderResults(getOrders());
             // update artifacts
-            int idx = getArtifacts().indexOf("√"); 
+            int idx = getArtifacts().indexOf("β��"); 
             if (idx > -1) {
                 // there is an artifact in use
                 int i = getArtifacts().lastIndexOf("#", idx);
@@ -116,6 +130,198 @@ public class CharacterWrapper {
             this.artifacts = artifacts;
         }
         
+        public void parseScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
+        	if (getOrders() == null) return;
+        	
+        	parseArmiesFromScoHexOrScoPop(game, infoSource, ch);
+        	parsePopCenterFromScoHexOrScoPop(game, infoSource, ch);
+        }
         
+        public void parsePopCenterFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
+        	String scoHex = "He was ordered to scout the hex.";
+        	int i = getOrders().indexOf(scoHex);
+        	if (i == -1) {
+        		scoHex = "He was ordered to scout the population center.";
+            	i = getOrders().indexOf(scoHex);
+        	}
+        	if (i > -1) {
+        		String p = getOrders().substring(i + scoHex.length());
+        		int j = p.indexOf("He was ordered", i + scoHex.length());
+        		if (j > -1) {
+        			p = p.substring(0, j);
+        		}
+        		
+        		String up = p.toUpperCase();
+        		
+        		PopulationCenterSizeEnum size = null;
+        		
+        		if (up.contains(" MAJOR TOWN ")) {
+        			size = PopulationCenterSizeEnum.majorTown;
+        		} else if (up.contains(" TOWN ")) {
+        			size = PopulationCenterSizeEnum.town;
+        		} else if (up.contains(" CITY ")) {
+        			size = PopulationCenterSizeEnum.city;
+        		} else if (up.contains(" CAMP ")) {
+        			size = PopulationCenterSizeEnum.camp;
+        		} else if (up.contains(" VILLAGE ")) {
+        			size = PopulationCenterSizeEnum.village;
+        		}else if (up.contains(" RUINS ")) {
+        			size = PopulationCenterSizeEnum.ruins;
+        		}
+        		
+        		FortificationSizeEnum fort = null;
+        		if (up.contains(" TOWER ")) {
+        			fort = FortificationSizeEnum.tower;
+        		} else if (up.contains(" FORT ")) {
+        			fort = FortificationSizeEnum.fort;
+        		} else if (up.contains(" CASTLE ")) {
+        			fort = FortificationSizeEnum.castle;
+        		} else if (up.contains(" KEEP ")) {
+        			fort = FortificationSizeEnum.keep;
+        		} else if (up.contains(" CITADEL ")) {
+        			fort = FortificationSizeEnum.citadel;
+        		} 
+        		
+        		String pcName = null;
+        		j = p.indexOf("named");
+        		if (j > -1) {
+        			int k = p.indexOf("is here");
+        			if (k > -1) {
+        				pcName = p.substring(j, k).trim();
+        			}
+        		}
+        		
+        		HarborSizeEnum harbor = null;
+        		if (up.contains(" PORT ")) {
+        			harbor = HarborSizeEnum.port;
+        		} else if (up.contains(" HARBOR ")) {
+        			harbor = HarborSizeEnum.harbor;
+        		}
+        		
+        		Integer nationNo = null;
+        		for (int ni=1; ni<=25; ni++) 
+        		{
+        			if (p.contains(game.getMetadata().getNationByNum(ni).getName())) {
+        				nationNo = ni;
+        			}
+        		}
+        		if (p.contains("un-owned")) {
+        			nationNo = 0;
+        		}
+        		
+        		Integer loyalty = null;
+        		String loyaltyStr = "loyalty = ";
+        		j = p.indexOf(loyaltyStr);
+        		if (j > -1) {
+        			int k = p.indexOf(".", j);
+        			if (k > -1) {
+        				try {
+        					loyalty = Integer.parseInt(p.substring(j + loyaltyStr.length(), k).trim());
+        				}
+        				catch (Exception exc) {
+        					// do nothing
+        				}
+        			}
+        		}
+        		
+        		PopulationCenter pc = (PopulationCenter)game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", ch.getHexNo());
+        		if (pc == null) {
+        			if (pcName != null) {
+        				pc = new PopulationCenter();
+        				pc.setHexNo(ch.getHexNo());
+        				pc.setName(pcName);
+        				pc.setFortification(FortificationSizeEnum.none);
+        				pc.setSize(size);
+        				pc.setInfoSource(infoSource);
+        				pc.setInformationSource(InformationSourceEnum.someMore);
+        				pc.setNationNo(0);
+        				game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
+        			}
+        		}
+        		if (pc != null && pc.getInformationSource().getValue() <= InformationSourceEnum.someMore.getValue()) {
+        			if (harbor != null) {
+        				pc.setHarbor(harbor);
+        			}
+        			if (nationNo != null) {
+        				pc.setNationNo(nationNo);
+        			}
+        			if (fort != null) {
+        				pc.setFortification(fort);
+        			}
+        			if (loyalty != null) {
+        				pc.setLoyalty(loyalty);
+        			}
+        		}
+        	}
+        }
+        
+        public void parseArmiesFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
+        	String foreignForcesPresent = "Foreign forces present:";
+        	int i = getOrders().indexOf(foreignForcesPresent);
+        	if (i == -1) {
+        		foreignForcesPresent = "Foreign armies present:";
+        		i = getOrders().indexOf(foreignForcesPresent);
+        	}
+        	if (i == -1) return;
+        	int j = getOrders().substring(i + foreignForcesPresent.length()).indexOf(".");
+        	
+        	String p = getOrders().substring(i + foreignForcesPresent.length());
+        	p = p.substring(0, j);
+        	String[] parts = p.split(" - ");
+        	for (String part : parts) { 
+        		Army a = null;
+        		boolean addCharacter = true;
+        		
+        		part = part.replace("-", "");
+        		int k = part.indexOf(" of the ");
+        		
+        		if (k > -1) { // name and nation
+        			String name = part.substring(0, k).trim();
+        			String nation = part.substring(k+8).trim();
+    				Nation n = game.getMetadata().getNationByName(nation);
+    				if (n != null) {
+    					a = new Army();
+        				a.setCommanderName(name);
+        				a.setCommanderTitle("");
+        				a.setInfoSource(infoSource);
+        				a.setInformationSource(InformationSourceEnum.someMore);
+        				a.setHexNo(String.valueOf(ch.getHexNo()));
+        				a.setSize(ArmySizeEnum.unknown);
+    					a.setNationNo(n.getNumber());
+    					a.setNationAllegiance(n.getAllegiance());
+    				}
+        		} else {
+        			// nation only
+        			String nation = part.trim();
+        			Nation n = game.getMetadata().getNationByName(nation);
+    				if (n != null) {
+    					a = new Army();
+        				a.setCommanderName(nation + " army");
+        				addCharacter = false;
+        				a.setCommanderTitle("");
+        				a.setInfoSource(infoSource);
+        				a.setInformationSource(InformationSourceEnum.someMore);
+        				a.setHexNo(String.valueOf(ch.getHexNo()));
+        				a.setSize(ArmySizeEnum.unknown);
+    					a.setNationNo(n.getNumber());
+    					a.setNationAllegiance(n.getAllegiance());
+    				}
+    				
+        		}
+        		
+        		if (a != null) {
+        			Army oldA = null;
+        			if (addCharacter) {
+        				oldA = (Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name);
+        			}
+        			if (oldA == null) {
+        				// add army
+        				new TurnXmlReader(game).addArmy(a, game.getTurn(), addCharacter);
+        			}
+        		}
+        	}
+        	
+        	
+        }
 
 }

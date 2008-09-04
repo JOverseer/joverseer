@@ -139,13 +139,18 @@ public class CharacterWrapper {
         
         public void parsePopCenterFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
         	String scoHex = "He was ordered to scout the hex.";
-        	int i = getOrders().indexOf(scoHex);
+        	String orders = getOrders();
+        	orders = orders.replace("\r\n", " ");
+        	while (orders.contains("  ")) {
+        		orders = orders.replace("  ", " ");
+        	}
+        	int i = orders.indexOf(scoHex);
         	if (i == -1) {
         		scoHex = "He was ordered to scout the population center.";
-            	i = getOrders().indexOf(scoHex);
+            	i = orders.indexOf(scoHex);
         	}
         	if (i > -1) {
-        		String p = getOrders().substring(i + scoHex.length());
+        		String p = orders.substring(i + scoHex.length());
         		int j = p.indexOf("He was ordered", i + scoHex.length());
         		if (j > -1) {
         			p = p.substring(0, j);
@@ -201,7 +206,8 @@ public class CharacterWrapper {
         		Integer nationNo = null;
         		for (int ni=1; ni<=25; ni++) 
         		{
-        			if (p.contains(game.getMetadata().getNationByNum(ni).getName())) {
+        			if (p.contains("is owned by " + game.getMetadata().getNationByNum(ni).getName()) ||
+        					p.contains("is owned by the " + game.getMetadata().getNationByNum(ni).getName())) {
         				nationNo = ni;
         			}
         		}
@@ -234,7 +240,7 @@ public class CharacterWrapper {
         				pc.setSize(size);
         				pc.setInfoSource(infoSource);
         				pc.setInformationSource(InformationSourceEnum.someMore);
-        				pc.setNationNo(0);
+        				pc.setNationNo(nationNo);
         				game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
         			}
         		}
@@ -257,15 +263,20 @@ public class CharacterWrapper {
         
         public void parseArmiesFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
         	String foreignForcesPresent = "Foreign forces present:";
-        	int i = getOrders().indexOf(foreignForcesPresent);
+        	String orders = getOrders();
+        	orders = orders.replace("\r\n", " ");
+        	while (orders.contains("  ")) {
+        		orders = orders.replace("  ", " ");
+        	}
+        	int i = orders.indexOf(foreignForcesPresent);
         	if (i == -1) {
         		foreignForcesPresent = "Foreign armies present:";
-        		i = getOrders().indexOf(foreignForcesPresent);
+        		i = orders.indexOf(foreignForcesPresent);
         	}
         	if (i == -1) return;
-        	int j = getOrders().substring(i + foreignForcesPresent.length()).indexOf(".");
+        	int j = orders.substring(i + foreignForcesPresent.length()).indexOf(".");
         	
-        	String p = getOrders().substring(i + foreignForcesPresent.length());
+        	String p = orders.substring(i + foreignForcesPresent.length());
         	p = p.substring(0, j);
         	String[] parts = p.split(" - ");
         	for (String part : parts) { 
@@ -273,11 +284,15 @@ public class CharacterWrapper {
         		boolean addCharacter = true;
         		
         		part = part.replace("-", "");
-        		int k = part.indexOf(" of the ");
-        		
+        		String parseString = " of the ";
+        		int k = part.indexOf(parseString);
+        		if (k == -1) {
+        			parseString = " of ";
+        			k = part.indexOf(parseString);
+        		}
         		if (k > -1) { // name and nation
         			String name = part.substring(0, k).trim();
-        			String nation = part.substring(k+8).trim();
+        			String nation = part.substring(k+parseString.length()).trim();
     				Nation n = game.getMetadata().getNationByName(nation);
     				if (n != null) {
     					a = new Army();
@@ -296,7 +311,7 @@ public class CharacterWrapper {
         			Nation n = game.getMetadata().getNationByName(nation);
     				if (n != null) {
     					a = new Army();
-        				a.setCommanderName(nation + " army");
+        				a.setCommanderName("Unknown (Map Icon)");
         				addCharacter = false;
         				a.setCommanderTitle("");
         				a.setInfoSource(infoSource);

@@ -730,7 +730,7 @@
 					<property name="domain">
 						<list>
 							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="noPrefValue"/>	
 						</list>
 					</property>
 				</bean>
@@ -752,6 +752,35 @@
 						<list>
 							<ref bean="yesPrefValue"/>
 							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.autoCheckForNewVersion</value>
+					</property>
+					<property name="description">
+						<value>Check for new version at startup</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value></value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value></value>
+								</property>
+								<property name="description">
+									<value>-</value>
+								</property>
+							</bean>								
 						</list>
 					</property>
 				</bean>

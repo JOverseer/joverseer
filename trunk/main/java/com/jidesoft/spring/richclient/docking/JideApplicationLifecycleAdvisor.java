@@ -9,6 +9,10 @@
 package com.jidesoft.spring.richclient.docking;
 
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -39,6 +43,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -140,16 +145,24 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
         
         String pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
         if (pval == null || pval.equals("")) {
-        	ConfirmationDialog dlg = new ConfirmationDialog("Automatic version check", "As of version 1.0.4 JOverseer comes with a mechanism to automatically check for new versions on the web site.\r\n Note that if you choose yes, JOverseer will try to connect to the internet to check for a new version.\n Do you wish to activate this check?")
+        	final MessageDialog dlg = new MessageDialog("Automatic version check", "As of version 1.0.4 JOverseer comes with a mechanism to automatically check for new versions on the web site.\r\n Note that if you choose yes, JOverseer will try to connect to the internet every time upon start-up to check for a new version.\n Do you wish to activate this check?")
         	{
-				protected void onAboutToShow() {
-					super.onAboutToShow();
-                	PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "no");
+				protected Object[] getCommandGroupMembers() {
+					return new Object[]{
+							new ActionCommand("actionYes") {
+	                			protected void doExecuteCommand() {
+	                            	PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "yes");
+	                            	getDialog().dispose();
+	                			}
+	                		},
+	                		new ActionCommand("actionNo") {
+	                			protected void doExecuteCommand() {
+	                				PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "no");
+	                				getDialog().dispose();
+	                			}
+                			}
+                		};
 				}
-
-				protected void onConfirm() {
-                	PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "yes");
-                }
             };
             dlg.showDialog();
         }
@@ -161,7 +174,10 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	        	if (newVersionExists) {
 	        		MessageDialog md = new MessageDialog(
 	        				"A new version is available!", 
-	        				"A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://code.google.com/p/joverseer/downloads/list'>http://code.google.com/p/joverseer/downloads/list</a>");
+	        				"A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://code.google.com/p/joverseer/downloads/list'>http://code.google.com/p/joverseer/downloads/list</a>")
+	        		{
+	        		
+	        		};
 	        		md.showDialog();
 	        	}
 	        }

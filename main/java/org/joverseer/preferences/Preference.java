@@ -2,6 +2,7 @@ package org.joverseer.preferences;
 
 import java.util.prefs.Preferences;
 
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -98,7 +99,7 @@ public class Preference {
         Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         prefs.put(prefix + "." + key, value);
         clearCache();
-        if (getLifecycleEvent() != null) {
+        if (getLifecycleEvent() != null && GameHolder.hasInitializedGame()) {
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(getLifecycleEvent(), this, this));
         }

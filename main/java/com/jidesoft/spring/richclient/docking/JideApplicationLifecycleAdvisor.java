@@ -29,6 +29,7 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
+import org.joverseer.support.versionCheck.VersionChecker;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.map.MapPanel;
@@ -40,6 +41,7 @@ import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
+import org.springframework.richclient.dialog.MessageDialog;
 
 import com.jidesoft.action.CommandBarFactory;
 import com.jidesoft.docking.DefaultDockableHolder;
@@ -134,6 +136,39 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
         super.onWindowOpened(arg0);
         if (PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes")) {
             GraphicUtils.showTipOfTheDay();
+        }
+        
+        String pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
+        if (pval == null || pval.equals("")) {
+        	ConfirmationDialog dlg = new ConfirmationDialog("Automatic version check", "As of version 1.0.4 JOverseer comes with a mechanism to automatically check for new versions on the web site.\r\n Note that if you choose yes, JOverseer will try to connect to the internet to check for a new version.\n Do you wish to activate this check?")
+        	{
+				protected void onAboutToShow() {
+					super.onAboutToShow();
+                	PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "no");
+				}
+
+				protected void onConfirm() {
+                	PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "yes");
+                }
+            };
+            dlg.showDialog();
+        }
+        pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
+        if (pval.equals("yes")) {
+	        VersionChecker versionChecker = new VersionChecker();
+	        try {
+	        	boolean newVersionExists = versionChecker.newVersionExists();
+	        	if (newVersionExists) {
+	        		MessageDialog md = new MessageDialog(
+	        				"A new version is available!", 
+	        				"A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://code.google.com/p/joverseer/downloads/list'>http://code.google.com/p/joverseer/downloads/list</a>");
+	        		md.showDialog();
+	        	}
+	        }
+	        catch (Exception exc) {
+	        	// do nothing
+	        	int a = 1;
+	        }
         }
     }
 

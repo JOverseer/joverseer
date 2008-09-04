@@ -1,6 +1,7 @@
 package org.joverseer.domain;
 
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -343,5 +344,22 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
      */
     public static boolean isAnchoredShips(Army a) {
         return a.getCommanderName().equals("[Anchored Ships]");
+    }
+    
+    public int getInformationAmount() {
+    	if (MetadataSource.class.isInstance(getInfoSource())) {
+    		return -1;
+    	}
+    	int infoAmount = 0;
+    	if (!getCommanderName().equals("Unknown (Map Icon)")) {
+    		infoAmount++;
+    	}
+    	if (getNationNo() > 0) {
+    		infoAmount++;
+    	}
+    	if (getElements().size() > 0) {
+    		return 10;
+    	}
+    	return infoAmount;
     }
 }

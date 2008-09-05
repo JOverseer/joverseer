@@ -12,6 +12,7 @@ import java.io.Serializable;
  *
  */
 public class InfoSource implements Serializable {
+	private static final long serialVersionUID = -6750884228545624412L;
     int turnNo;
 
     public int getTurnNo() {
@@ -20,5 +21,9 @@ public class InfoSource implements Serializable {
 
     public void setTurnNo(int turnNo) {
         this.turnNo = turnNo;
+    }
+    
+    public String getDescription() {
+    	return toString() + " Turn " + getTurnNo();
     }
 }

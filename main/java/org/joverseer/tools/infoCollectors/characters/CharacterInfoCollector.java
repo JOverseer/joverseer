@@ -16,6 +16,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
+import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
@@ -109,6 +110,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                     } else {
                         getStartStats(cw);
                         guessStatsFromTitle(cw, c, t.getTurnNo());
+                        guessStatsIfArmyCommander(cw, c, t.getTurnNo());
                         addHealthEstimate(cw, c);
                     }
                     if (i == game.getCurrentTurn() && c.getOrderResults() != null && !c.getOrderResults().equals("")) {
@@ -117,6 +119,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                     ret.addItem(cw);
                 } else {
                     guessStatsFromTitle(cw, c, t.getTurnNo());
+                    guessStatsIfArmyCommander(cw, c, t.getTurnNo());
                     addHealthEstimate(cw, c);
                 }
             }
@@ -232,6 +235,16 @@ public class CharacterInfoCollector implements ApplicationListener {
         int challenge = stats[3] + (stats[0] + stats[1] + stats[2]) / 4;
         cw.setAttribute(new CharacterAttributeWrapper("challenge", challenge, challenge, turnNo,
                 new ComputedInfoSource()));
+    }
+    
+    public static void guessStatsIfArmyCommander(AdvancedCharacterWrapper cw, Character c, int turnNo) {
+    	Game game = GameHolder.instance().getGame();
+    	if (game.getTurn(turnNo).getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", c.getName()) != null) {
+    		// character is army commander
+    		DerivedFromArmyInfoSource tis = new DerivedFromArmyInfoSource();
+            tis.setTurnNo(turnNo);
+    		cw.setAttributeMax(new CharacterAttributeWrapper("command", 10, 10, turnNo, tis));
+    	}
     }
 
     public static void guessStatsFromTitle(AdvancedCharacterWrapper cw, Character c, int turnNo) {

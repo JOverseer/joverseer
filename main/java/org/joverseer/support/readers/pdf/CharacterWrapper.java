@@ -137,13 +137,18 @@ public class CharacterWrapper {
         	parsePopCenterFromScoHexOrScoPop(game, infoSource, ch);
         }
         
-        public void parsePopCenterFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
-        	String scoHex = "He was ordered to scout the hex.";
+        public String getCleanOrders() {
         	String orders = getOrders();
         	orders = orders.replace("\r\n", " ");
         	while (orders.contains("  ")) {
         		orders = orders.replace("  ", " ");
         	}
+        	return orders;
+        }
+        
+        public void parsePopCenterFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
+        	String scoHex = "He was ordered to scout the hex.";
+        	String orders = getCleanOrders();
         	int i = orders.indexOf(scoHex);
         	if (i == -1) {
         		scoHex = "He was ordered to scout the population center.";
@@ -263,17 +268,14 @@ public class CharacterWrapper {
         
         public void parseArmiesFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
         	String foreignForcesPresent = "Foreign forces present:";
-        	String orders = getOrders();
-        	orders = orders.replace("\r\n", " ");
-        	while (orders.contains("  ")) {
-        		orders = orders.replace("  ", " ");
-        	}
+        	String orders = getCleanOrders();
         	int i = orders.indexOf(foreignForcesPresent);
         	if (i == -1) {
         		foreignForcesPresent = "Foreign armies present:";
         		i = orders.indexOf(foreignForcesPresent);
         	}
         	if (i == -1) return;
+        	
         	int j = orders.substring(i + foreignForcesPresent.length()).indexOf(".");
         	
         	String p = orders.substring(i + foreignForcesPresent.length());
@@ -337,6 +339,55 @@ public class CharacterWrapper {
         	}
         	
         	
+        }
+        
+        public void parseArmiesFromDivineNationForces(Game game, InfoSource infoSource, Character ch) {
+        	String orders = getCleanOrders();
+        	String dnf = "was ordered to cast a lore spell. Divine Nation Forces - ";
+        	int i = orders.indexOf(dnf);
+        	if (i == -1) return;
+    		String p = orders.substring(i + dnf.length());
+    		int k = p.indexOf(".");
+    		if (k == -1) return;
+    		p = p.substring(0, k);
+    		String split = " - ";
+    		k = p.indexOf(split);
+    		if (k == -1) return;
+			String firstPart = p.substring(0, k);
+			String armiesPart = p.substring(k + split.length());
+			int l = firstPart.indexOf("forces near");
+			String nation = firstPart.substring(0, l).trim();
+			Nation n = game.getMetadata().getNationByName(nation);
+			if (n == null) return;
+			
+			String[] armies = armiesPart.split(" at \\d{4}");
+			for (String army : armies) {
+				String name = army.trim();
+				if (name.length() < 5) continue;
+				String namePlusAt = name + " at ";
+				int namei = armiesPart.indexOf(namePlusAt);
+				String hexNoStr = armiesPart.substring(namei + namePlusAt.length(), namei + namePlusAt.length()+4);
+				int hexNo;
+				try {
+					hexNo = Integer.parseInt(hexNoStr);
+				}
+				catch (Exception e) {
+					continue;
+				}
+				Army oldArmy = (Army)(Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name);
+				if (oldArmy == null) {
+					Army a = new Army();
+    				a.setCommanderName(name);
+    				a.setCommanderTitle("");
+    				a.setInfoSource(infoSource);
+    				a.setInformationSource(InformationSourceEnum.someMore);
+    				a.setHexNo(String.valueOf(hexNo));
+    				a.setSize(ArmySizeEnum.unknown);
+					a.setNationNo(n.getNumber());
+					a.setNationAllegiance(n.getAllegiance());
+					new TurnXmlReader(game).addArmyBeta(a, game.getTurn());
+				}
+			}
         }
 
 }

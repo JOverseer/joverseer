@@ -45,6 +45,7 @@ import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
+import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
@@ -68,6 +69,7 @@ import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.controls.TableUtils;
@@ -430,6 +432,8 @@ public class CharacterViewer extends ObjectViewer {
                         v += "+";
                 } else if (RumorActionInfoSource.class.isInstance(is)) {
                         v += "+";
+                } else if (DerivedFromArmyInfoSource.class.isInstance(is)) {
+                    v += "+";
                 }
         }
         if (caw != null && caw.getTotalValue() != null) {
@@ -1010,6 +1014,7 @@ public class CharacterViewer extends ObjectViewer {
                         "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
                         "separator", new AddEditNoteCommand(c),
                         "separator", quickOrders,
+                        "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()),
                         //"separator", sendOrdersByChatCommand
                         });
         return group.createPopupMenu();
@@ -1043,5 +1048,4 @@ public class CharacterViewer extends ObjectViewer {
             n.setText(notes.getText());
         }
     }
-
 }

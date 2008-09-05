@@ -62,6 +62,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
     String orderResults;
     String encounter;
     
+   
     CharacterDeathReasonEnum deathReason = CharacterDeathReasonEnum.NotDead;
 
     public int getAgent() {
@@ -367,6 +368,6 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
 	public void setNumberOfOrders(int numberOfOrders) {
 		this.numberOfOrders = numberOfOrders;
 	}
-    
-    
+
+	
 }

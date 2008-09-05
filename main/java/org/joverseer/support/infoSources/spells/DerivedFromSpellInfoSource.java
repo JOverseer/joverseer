@@ -62,6 +62,16 @@ public class DerivedFromSpellInfoSource extends InfoSource {
         return null;
     }
     
+    
+    public String getDescription() {
+    	String str = "";
+    	str += getSpell() + " " + getCasterName();
+    	for (InfoSource dis : getOtherInfoSources()) {
+    		str += "\n" + dis.getDescription();
+    	}
+    	return str;
+    }
+    
     public boolean equals(Object obj) {
         if (this.getClass().isInstance(obj)) {
             DerivedFromSpellInfoSource is = (DerivedFromSpellInfoSource)obj;

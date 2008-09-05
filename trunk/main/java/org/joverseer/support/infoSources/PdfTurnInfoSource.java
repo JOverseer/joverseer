@@ -28,4 +28,5 @@ public class PdfTurnInfoSource extends TurnInfoSource {
     public String toString() {
     	return "PDF (" + GameHolder.instance().getGame().getMetadata().getNationByNum(getNationNo()).getShortName() + ")";
     }
+    
 }

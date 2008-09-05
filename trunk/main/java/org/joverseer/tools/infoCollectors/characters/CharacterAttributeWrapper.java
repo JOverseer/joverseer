@@ -1,5 +1,6 @@
 package org.joverseer.tools.infoCollectors.characters;
 
+import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.RumorActionInfoSource;
@@ -121,7 +122,10 @@ public class CharacterAttributeWrapper implements Comparable {
 			v += "+";
 		} else if (RumorActionInfoSource.class.isInstance(is)) {
 			v += "+";
+		} else if (DerivedFromArmyInfoSource.class.isInstance(is)) {
+			v += "+";
 		}
+		
 
 		if (getTotalValue() != null) {
 			if (!getTotalValue().toString().equals(getValue().toString())

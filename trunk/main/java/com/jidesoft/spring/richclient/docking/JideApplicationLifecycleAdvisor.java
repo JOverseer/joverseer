@@ -143,8 +143,11 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
             GraphicUtils.showTipOfTheDay();
         }
         
+        // automatic version checking
+        // get preference
         String pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
         if (pval == null || pval.equals("")) {
+        	// if preference is null, ask user if they want to activate version checking
         	final MessageDialog dlg = new MessageDialog("Automatic version check", "As of version 1.0.4 JOverseer comes with a mechanism to automatically check for new versions on the web site.\r\n Note that if you choose yes, JOverseer will try to connect to the internet every time upon start-up to check for a new version.\n Do you wish to activate this check?")
         	{
 				protected Object[] getCommandGroupMembers() {
@@ -166,6 +169,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
             };
             dlg.showDialog();
         }
+        // get preference value and do version checking if needed
         pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
         if (pval.equals("yes")) {
 	        VersionChecker versionChecker = new VersionChecker();

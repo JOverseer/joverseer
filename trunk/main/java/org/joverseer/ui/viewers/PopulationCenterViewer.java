@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.joverseer.domain.Army;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InfoSourceValue;
@@ -39,6 +40,7 @@ import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.UIUtils;
+import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditPopulationCenterForm;
@@ -376,7 +378,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "populationCenterCommandGroup",
                 new Object[] {toggleLostThisTurnCommand, "separator", editPopulationCenter, "separator",
-                        deletePopulationCenterCommand});
+                        deletePopulationCenterCommand, "separator", new ShowInfoSourcePopupCommand(((PopulationCenter)getFormObject()).getInfoSource())});
         return group.createPopupMenu();
     }
 

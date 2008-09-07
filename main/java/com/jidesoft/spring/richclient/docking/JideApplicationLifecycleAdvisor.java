@@ -16,14 +16,19 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.management.JMException;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.RepaintManager;
@@ -47,6 +52,8 @@ import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
+import org.springframework.richclient.exceptionhandling.DefaultRegisterableExceptionHandler;
+import org.springframework.richclient.exceptionhandling.RegisterableExceptionHandler;
 
 import com.jidesoft.action.CommandBarFactory;
 import com.jidesoft.docking.DefaultDockableHolder;
@@ -69,7 +76,29 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
         return getCommandGroup(name);
     }
 
-    public void onPostStartup() {
+	public RegisterableExceptionHandler getRegisterableExceptionHandler() {
+		RegisterableExceptionHandler handler = new DefaultRegisterableExceptionHandler() {
+			// customized exception handler for handling out of memory errors and giving
+			// a specialized message
+			public void uncaughtException(Thread arg0, Throwable arg1) {
+				if (OutOfMemoryError.class.isInstance(arg1)) {
+					JFrame parentFrame = (getApplication().getActiveWindow() == null) ? null : getApplication().getActiveWindow().getControl();
+					JOptionPane.showMessageDialog(parentFrame, "Not enough memory. This is often caused by running joverseer.jar directly. You should always run joverseer.bat and not joverseer.jar.", "Error", JOptionPane.ERROR_MESSAGE);
+					// clear game so that the program does not ask you if you want to close the program
+					GameHolder.instance().setGame(null);
+					// close program
+					Application.instance().close();
+				} else {
+					super.uncaughtException(arg0, arg1);
+				}
+			}
+			
+		};
+		
+		return handler;
+	}
+
+	public void onPostStartup() {
         initializeRepaintManager();
 
         if (JOverseerJIDEClient.cmdLineArgs == null || JOverseerJIDEClient.cmdLineArgs.length == 0
@@ -172,23 +201,43 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
         // get preference value and do version checking if needed
         pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
         if (pval.equals("yes")) {
-	        VersionChecker versionChecker = new VersionChecker();
-	        try {
-	        	boolean newVersionExists = versionChecker.newVersionExists();
-	        	if (newVersionExists) {
-	        		MessageDialog md = new MessageDialog(
-	        				"A new version is available!", 
-	        				"A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://code.google.com/p/joverseer/downloads/list'>http://code.google.com/p/joverseer/downloads/list</a>")
-	        		{
-	        		
-	        		};
-	        		md.showDialog();
-	        	}
-	        }
-	        catch (Exception exc) {
-	        	// do nothing
-	        	int a = 1;
-	        }
+        	// check once every week
+        	Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
+        	
+        	pval = prefs.get("lastVersionCheckDate", null);
+        	Date dt = null;
+    		try {
+    			dt = new SimpleDateFormat().parse(pval);
+    		}
+    		catch (Exception exc) {
+    			// do nothing
+    		}
+    		Calendar c = Calendar.getInstance();
+    		c.setTime(new Date());
+    		c.add(Calendar.DATE, -7);
+    		Date dateMinusOneWeek = c.getTime();
+    		if (dt == null || dateMinusOneWeek.after(dt) ) {
+        	
+		        VersionChecker versionChecker = new VersionChecker();
+		        try {
+		        	boolean newVersionExists = versionChecker.newVersionExists();
+		        	if (newVersionExists) {
+		        		MessageDialog md = new MessageDialog(
+		        				"A new version is available!", 
+		        				"A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://code.google.com/p/joverseer/downloads/list'>http://code.google.com/p/joverseer/downloads/list</a>")
+		        		{
+		        		
+		        		};
+		        		md.showDialog();
+		        	}
+		        	String str = new SimpleDateFormat().format(new Date());
+		        	prefs.put("lastVersionCheckDate", str);
+		        }
+		        catch (Exception exc) {
+		        	// do nothing
+		        	int a = 1;
+		        }
+    		}
         }
     }
 

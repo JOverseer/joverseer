@@ -53,7 +53,7 @@ public class VersionChecker {
 		String[] parts = versionString.split("\\.");
 		if (parts.length != 3) return -1;
 		int v = 0;
-		v = Integer.parseInt(parts[0]) * 1000 + Integer.parseInt(parts[1]) * 100 + Integer.parseInt(parts[2]);
+		v = Integer.parseInt(parts[0]) * 10000 + Integer.parseInt(parts[1]) * 100 + Integer.parseInt(parts[2]);
 		return v;
 	}
 }

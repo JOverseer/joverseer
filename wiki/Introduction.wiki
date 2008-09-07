@@ -57,8 +57,8 @@ JOverseer offers several other advanced features to help the player.
   * Lots of other cool stuff.
 
 ==Current Status==
-JOverseer is in nearing release. The latest version was 0.9.10. It has undergone 10 minor releases during which many of the original glitches were corrected.
+JOverseer first beta version was made available in May 2007. JOverseer was officially released on June 23, 2008. 
 
-Currently it supports 1650, 2950, BOFA and FA games.
+Currently it supports 1650, 2950, BOFA, Untold War and FA games.
 
 JOverseer is being developed by Marios Skounakis. 

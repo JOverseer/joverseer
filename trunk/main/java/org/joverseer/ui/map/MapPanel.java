@@ -101,7 +101,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
     int[] xPoints = new int[6];
     int[] yPoints = new int[6];
     Point location = new Point();
-
+    boolean outOfMemoryErrorThrown = false;
+    
     BufferedImage map = null;
     BufferedImage mapBaseItems = null;
     BufferedImage mapItems = null;
@@ -279,20 +280,29 @@ public class MapPanel extends JPanel implements MouseInputListener {
         }
         Game game = getGame();
         if (!Game.isInitialized(game)) return;
-
+        
+        Graphics2D g = null;
         BusyIndicator.showAt(this);
-        if (mapItemsBack == null) {
-            Dimension d = getMapDimension();
-            mapItemsBack = new BufferedImage((int)d.getWidth(), (int)d.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        try {
+		    if (mapItemsBack == null) {
+		        Dimension d = getMapDimension();
+		        mapItemsBack = new BufferedImage((int)d.getWidth(), (int)d.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		    }
+		    mapItems = mapItemsBack;
+		
+		    g = mapItems.createGraphics();
+		
+		    if (mapBaseItems == null) {
+		        createMapBaseItems();
+		    }
+		    g.drawImage(mapBaseItems, 0, 0, this);
         }
-        mapItems = mapItemsBack;
-
-        Graphics2D g = mapItems.createGraphics();
-
-        if (mapBaseItems == null) {
-            createMapBaseItems();
+        catch (OutOfMemoryError e) {
+        	if (!outOfMemoryErrorThrown) {
+        		outOfMemoryErrorThrown = true;
+        		throw e;
+        	}
         }
-        g.drawImage(mapBaseItems, 0, 0, this);
         Turn t = game.getTurn();
         Container mapItemsC = t.getContainer(TurnElementsEnum.MapItem);
         for (AbstractMapItem mi : (ArrayList<AbstractMapItem>)mapItemsC.items) {

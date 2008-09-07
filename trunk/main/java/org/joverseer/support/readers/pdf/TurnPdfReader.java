@@ -1155,6 +1155,7 @@ public class TurnPdfReader implements Runnable {
 	            }
 	            cw.parseScoHexOrScoPop(game, infoSource, c);
 	            cw.parseArmiesFromDivineNationForces(game, infoSource, c);
+	            cw.parseDivineCharsWithForces(game, infoSource, c);
         	}
         	catch (Exception exc) {
         		logger.error("failed to parse character " + cw.getName());

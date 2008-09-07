@@ -390,4 +390,44 @@ public class CharacterWrapper {
 			}
         }
 
+        public void parseDivineCharsWithForces(Game game, InfoSource infoSource, Character ch) {
+        	String orders = getCleanOrders();
+        	String dnf = "was ordered to cast a lore spell. Divine Characters w/Forces - ";
+        	int i = orders.indexOf(dnf);
+        	if (i == -1) return;
+    		String p = orders.substring(i + dnf.length());
+    		int k = p.indexOf(".");
+    		if (k == -1) return;
+    		p = p.substring(0, k);
+    		String commandedBy = "commanded by ";
+    		k = p.indexOf(commandedBy);
+    		int l = p.indexOf(" : - ");
+    		if (k == -1 || l == -1) return;
+    		String commanderName = p.substring(k + commandedBy.length(), l).trim();
+    		Army a = (Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", commanderName);
+    		if (a == null) return;
+    		String charsStr = p.substring(l+5);
+    		String[] chars = charsStr.split("-");
+    		for (String c : chars) {
+    			c = c.trim();
+    			if (!a.getCharacters().contains(c)) {
+    				a.getCharacters().add(c);
+    			}
+    			Character ec = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c);
+    			if (ec == null) {
+    				// add character
+    				ec = new Character();
+    				ec.setName(c);
+    				ec.setNationNo(a.getNationNo());
+    				ec.setInfoSource(infoSource);
+    				ec.setInformationSource(InformationSourceEnum.limited);
+    				ec.setHexNo(Integer.parseInt(a.getHexNo()));
+    				game.getTurn().getContainer(TurnElementsEnum.Character).addItem(ec);
+    			}
+    		}
+    		
+    		
+        }
+        
+
 }

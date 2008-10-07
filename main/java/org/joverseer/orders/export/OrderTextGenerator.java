@@ -31,7 +31,7 @@ public class OrderTextGenerator extends OrderFileGenerator {
     protected String exportOrder(Character c, Order o) {
         String ret = "";
         if (o == c.getOrders()[0]) {
-            ret += String.format("%s (%s) @ %04d (%s)\n", c.getName(), c.getId(), c.getHexNo(), getStatsLine(c));
+            ret += String.format("%s (%s) @ %04d (%s)\n", c.getName(), (c.getId() + "    ").substring(0, 5), c.getHexNo(), getStatsLine(c));
         }
 
         if (o.isBlank()) {

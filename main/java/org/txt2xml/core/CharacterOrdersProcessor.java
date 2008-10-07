@@ -19,7 +19,7 @@ public class CharacterOrdersProcessor extends Processor {
     int matchCount = 0;
     
     private String stripTail(String str) {
-        int i = str.lastIndexOf(". ");
+        int i = str.lastIndexOf(".");
         return str.substring(0, i+1);
     }
     

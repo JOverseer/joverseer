@@ -15,6 +15,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.readers.xml.TurnXmlReader;
 
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
@@ -128,6 +129,69 @@ public class CharacterWrapper {
         
         public void setArtifacts(String artifacts) {
             this.artifacts = artifacts;
+        }
+        
+        public void parsePopCenter(Game game, InfoSource infoSource, Character c) {
+        	String orders = getCleanOrders();
+        	if (orders == null) return;
+        	int i = orders.substring(0, orders.length()-1).lastIndexOf(".");
+        	if (i == -1) return;
+        	String lastLine = orders.substring(i+2);
+        	if (!lastLine.endsWith("is here.")) return;
+        	
+        	PopulationCenterSizeEnum size = null;
+        	FortificationSizeEnum fort = FortificationSizeEnum.none;
+        	if (lastLine.indexOf("Ruins") > -1) size = PopulationCenterSizeEnum.ruins;
+        	if (lastLine.indexOf("Camp") > -1) size = PopulationCenterSizeEnum.camp;
+        	if (lastLine.indexOf("Village") > -1) size = PopulationCenterSizeEnum.village;
+        	if (lastLine.indexOf("Town") > -1) size = PopulationCenterSizeEnum.town;
+        	if (lastLine.indexOf("Major Town") > -1) size = PopulationCenterSizeEnum.majorTown;
+        	if (lastLine.indexOf("City") > -1) size = PopulationCenterSizeEnum.city;
+        	
+        	if (lastLine.indexOf("Tower") > -1) fort = FortificationSizeEnum.tower;
+        	if (lastLine.indexOf("Fort") > -1) fort = FortificationSizeEnum.fort;
+        	if (lastLine.indexOf("Keep") > -1) fort = FortificationSizeEnum.keep;
+        	if (lastLine.indexOf("Castle") > -1) fort = FortificationSizeEnum.castle;
+        	if (lastLine.indexOf("Citadel") > -1) fort = FortificationSizeEnum.citadel;
+        	
+        	Integer nationNo = null;
+        	if (lastLine.indexOf("un-owned")>-1) nationNo = 0;
+        	if (nationNo == null) {
+        		for (int j=1; j<=25; j++) {
+        			Nation n = game.getMetadata().getNationByNum(j);
+        			if (lastLine.indexOf(n.getName()) > -1) {
+        				nationNo = j;
+        				break;
+        			}
+        		}
+        	}
+        	
+        	int j = lastLine.indexOf(" of ");
+        	int k = lastLine.indexOf(" flying ");
+        	if (k == -1) 
+    		{
+    			k = lastLine.indexOf(" is here.");
+    		}
+        	String name = lastLine.substring(j + 4, k);
+        	
+        	if (name != null && size != null && nationNo != null) {        	
+	        	PopulationCenter popCenter = new PopulationCenter();
+	        	popCenter.setName(name);
+	        	popCenter.setSize(size);
+	        	popCenter.setFortification(fort);
+	        	popCenter.setHarbor(HarborSizeEnum.none);
+	        	popCenter.setNationNo(nationNo);
+	        	popCenter.setInfoSource(new XmlTurnInfoSource(infoSource.getTurnNo(), 0));
+	        	popCenter.setHexNo(c.getHexNo());
+	        	popCenter.setInformationSource(InformationSourceEnum.detailed);
+	        	
+	        	PopulationCenter pc = (PopulationCenter)game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", c.getHexNo());
+	        	if (pc != null || pc.getInformationSource().getValue() <= popCenter.getInformationSource().getValue()) {
+	        		if (pc != null) game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).removeItem(pc);
+	        		game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(popCenter);
+	        	}
+        	}
+        	
         }
         
         public void parseScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
@@ -405,7 +469,10 @@ public class CharacterWrapper {
     		if (k == -1 || l == -1) return;
     		String commanderName = p.substring(k + commandedBy.length(), l).trim();
     		Army a = (Army)game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", commanderName);
-    		if (a == null) return;
+    		if (a == null) {
+    			return;
+    			// not easy to deduce army's nation or allegiance, so skipping the army altogether
+    		}
     		String charsStr = p.substring(l+5);
     		String[] chars = charsStr.split("-");
     		for (String c : chars) {

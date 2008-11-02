@@ -2,6 +2,7 @@ package org.joverseer.domain;
 
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -346,7 +347,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         return a.getCommanderName().equals("[Anchored Ships]");
     }
     
-    public int getInformationAmount() {
+    public int getInformationAmount(int turnNo) {
     	if (MetadataSource.class.isInstance(getInfoSource())) {
     		return -1;
     	}
@@ -360,6 +361,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     	if (getElements().size() > 0) {
     		return 10;
     	}
+    	if (infoAmount == 0 && turnNo == 0) {
+			return -2;
+    	}
+
     	return infoAmount;
     }
 }

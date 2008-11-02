@@ -19,6 +19,8 @@ import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.image.ImageSource;
 
+import com.jidesoft.spring.richclient.docking.view.ShowViewCommand;
+
 /**
  * A menu containing a collection of sub-menu items that each display a given view.
  * 
@@ -102,8 +104,10 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
                 CommandGroup cg = new CommandGroup(viewGroup);
                 Collections.sort(captions);
                 for(String caption : captions) {
-                    AbstractCommand cmd = viewMap.get(caption).createShowViewCommand(window);
+                	ViewDescriptor vd = (ViewDescriptor)viewMap.get(caption);
+                    AbstractCommand cmd = vd.createShowViewCommand(window);
                     cg.add(cmd);
+                	
                     Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
                     cmd.setIcon(ico);
                 }

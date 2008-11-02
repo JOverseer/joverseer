@@ -269,7 +269,7 @@
 			<value>Basic Intel</value>
 		</property>
 	</bean>
-	
+
 	<bean id="hexProductionListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		

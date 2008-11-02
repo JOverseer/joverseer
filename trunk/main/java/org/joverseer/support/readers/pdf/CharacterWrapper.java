@@ -186,7 +186,7 @@ public class CharacterWrapper {
 	        	popCenter.setInformationSource(InformationSourceEnum.detailed);
 	        	
 	        	PopulationCenter pc = (PopulationCenter)game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", c.getHexNo());
-	        	if (pc != null || pc.getInformationSource().getValue() <= popCenter.getInformationSource().getValue()) {
+	        	if (pc == null || pc.getInformationSource().getValue() < popCenter.getInformationSource().getValue()) {
 	        		if (pc != null) game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).removeItem(pc);
 	        		game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(popCenter);
 	        	}

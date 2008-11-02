@@ -559,6 +559,7 @@ public class TurnXmlReader implements Runnable{
     public void postProcessArmiesForHex(String hexNo, Turn turn, NationAllegianceEnum allegiance) {
     	String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
         Container armies = turn.getContainer(TurnElementsEnum.Army);
+        final Turn t = turn;
     	ArrayList<Army> armiesInHex = (ArrayList<Army>)armies.findAllByProperties(
     								new String[]{"hexNo", "nationAllegiance"},
     								new Object[]{ hexNo, allegiance});
@@ -569,7 +570,7 @@ public class TurnXmlReader implements Runnable{
 			public int compare(Object arg0, Object arg1) {
 				Army a1 = (Army)arg0;
 				Army a2 = (Army)arg1;
-				return - (a1.getInformationAmount() - a2.getInformationAmount());
+				return - (a1.getInformationAmount(t.getTurnNo()) - a2.getInformationAmount(t.getTurnNo()));
 			}});
     	
     	int i = 0;

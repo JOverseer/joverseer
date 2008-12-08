@@ -331,8 +331,15 @@ public class CharacterWrapper {
         }
         
         public void parseArmiesFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
-        	String foreignForcesPresent = "Foreign forces present:";
         	String orders = getCleanOrders();
+        	String scoutHex= "was ordered to scout the hex";
+        	String scoutPopCenter= "was ordered to scout the population center";
+        	
+        	if (orders.indexOf(scoutHex) == -1 && orders.indexOf(scoutPopCenter) == -1) return;
+        	
+        	String foreignForcesPresent = "Foreign forces present:";
+        	
+        	
         	int i = orders.indexOf(foreignForcesPresent);
         	if (i == -1) {
         		foreignForcesPresent = "Foreign armies present:";

@@ -1,3 +1,43 @@
+VERSION 1.0.4
+-------------
+
+10/11/2008
+
+	* Fixed a bug that was causing incorrect behavior in function Import Orders from Text when a character had a blank order
+
+	* The spell droplist in the Order Editor for the Order Research Spell now shows all spells (even known ones)
+		+ This is because you may want the character to forget the spell first and research it again in the same turn
+		
+	* Added "Paste" button to the Import Orders from Text form to paste the contents of the clipboard 	 
+
+	* The Orderchecker, Export Orders and Generate Order Report forms now open with the game's nation preselected in the drop down list
+
+	* Order Editor spell droplists - added an indication if spell is known or not
+	
+	* Added support for parsing the results of ScoHex and ScoPop orders 
+
+	* Added functionality for automatically checking for new versions on the web site. The new functionality:
+		+ Checks for new versions once every week
+		+ Can be disabled by the user
+	
+	* Added support for parsing the results for Divine Character with Forces Divine Nation Forces orders
+
+	* Added new exception handler to give informative error after java heap space error 
+		+ The new handler instructs the user to launch the application using joverseer.bat
+			
+	* Fixed a bug in the Export Order Report form that caused the trailing space from character ids only four letters long to be dropped
+	
+	* Fixed a bug that was causing the orders for manually added characters to not show up in the export order windows 	 
+
+	* Fixed an issue with the Order Validator when researching healing spells
+
+	* Fixed an issue with Orderchecker validation for the Pick Up Artifact order
+	
+	* The information reported in the PDF files for the characters' current location and the existense of a population center in that hex is now being parsed
+		+ This information was not available in the program before, causing occasional outdated information for some hexes
+		
+		
+
 VERSION 1.0.3
 -------------
 

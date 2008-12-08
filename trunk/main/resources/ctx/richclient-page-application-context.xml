@@ -49,7 +49,9 @@
 				<value>playerInfoListView</value>
 				<value>combatCalcView</value>
 				<value>mapEditorView</value>
+				<!--
 				<value>hexProductionListView</value>
+				-->
 			</list>
 		</property>
 		<property name="perspectives">

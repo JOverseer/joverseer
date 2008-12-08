@@ -1,7 +1,7 @@
 Minor Heal;E;120;2;Character ID;Same Hex;+20 Health;Healing Mastery
-Heal True;H;120;8;Character ID;Same Hex;100 Health ;Healing Mastery
 Major Heal;E;120;4;Character ID;Same Hex;+35 Health ;Healing Ways
 Greater Heal;A;120;6;Character ID;Same Hex;+50 Health ;Healing Ways
+Heal True;H;120;8;Character ID;Same Hex;100 Health ;Healing Mastery
 Barriers;E;225;102;;With Army;500 Defensive Points;Barrier Mastery
 Deflections;A;225;106;;With Army;1000 Defensive Points;Barrier Mastery
 Shields;H;225;112;;With Army;1750 Defensive Points;Barrier Mastery

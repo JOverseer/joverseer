@@ -719,7 +719,7 @@ public class Rule
             }
             String artifact = parentChar.getArtifactName(artifactNum);
             boolean hasArtifact = parentChar.hasArtifact(artifactNum, parentOrder.getOrder());
-            if(!hasArtifact)
+            if(!hasArtifact && convertParameter(0) != 3)
             {
                 parentOrder.addError(parentChar + " doesn't have " + (artifact != null ? artifact : "artifact #" + artifactNum) + ".");
             } else

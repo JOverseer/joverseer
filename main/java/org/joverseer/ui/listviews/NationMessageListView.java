@@ -2,6 +2,7 @@ package org.joverseer.ui.listviews;
 
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.filters.TextFilter;
 
 /**
  * List view for NationMessage objects
@@ -20,6 +21,17 @@ public class NationMessageListView extends ItemListView {
     protected AbstractListViewFilter[][] getFilters() {
     	return new AbstractListViewFilter[][]{NationFilter.createNationFilters()};
     }
+
+	@Override
+	protected AbstractListViewFilter getTextFilter(String txt) {
+		if (txt == null || txt.equals("")) return super.getTextFilter(txt);
+		return new TextFilter("Message", "message", txt);
+	}
+
+	@Override
+	protected boolean hasTextFilter() {
+		return true;
+	}
 
 
 }

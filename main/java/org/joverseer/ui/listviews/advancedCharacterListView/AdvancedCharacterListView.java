@@ -31,7 +31,9 @@ import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 import org.joverseer.ui.listviews.BaseItemListView;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
+import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.controls.JLabelButton;
@@ -59,11 +61,30 @@ public class AdvancedCharacterListView extends BaseItemListView {
         return new int[] {96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32};
     }
 
-    protected void setItems() {
+    protected boolean hasTextFilter() {
+    	return true;
+    }
+    
+    
+    
+	protected AbstractListViewFilter getTextFilter(String txt) {
+		if (txt == null || txt.equals("")) return super.getTextFilter(txt);
+		try {
+			int hexNo = Integer.parseInt(txt.trim());
+			return new HexFilter("", hexNo);
+		}
+		catch (Exception exc) {
+			// do nothing
+		}
+		return new TextFilter("Name", "name", txt);
+	}
+
+	protected void setItems() {
         ArrayList items = CharacterInfoCollector.instance().getWrappers();
         ArrayList filteredItems = new ArrayList();
+        AbstractListViewFilter activeFilter = getActiveFilter(); 
         for (Object o : items) {
-            if (getActiveFilter() == null || getActiveFilter().accept(o)) {
+            if (activeFilter == null || activeFilter.accept(o)) {
                 filteredItems.add(o);
             }
         }

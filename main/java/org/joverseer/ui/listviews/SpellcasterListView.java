@@ -11,10 +11,12 @@ import java.util.Arrays;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
@@ -60,6 +62,8 @@ public class SpellcasterListView extends BaseItemListView {
         }
         return widths;
     }
+    
+    
 
     /**
      * The available spell lists
@@ -152,6 +156,7 @@ public class SpellcasterListView extends BaseItemListView {
             SpellList sl = (SpellList) combo.getSelectedItem();
             if (sl == null)
                 return;
+            sl = getSpellsFromFilters();
             for (int i = 5; i < sl.getSpells().size() + 5; i++) {
                 TableColumn col = table.getColumnModel().getColumn(i);
                 col.setMaxWidth(100);
@@ -183,6 +188,21 @@ public class SpellcasterListView extends BaseItemListView {
                 setItems();
             }
         });
+        
+        tlb.cell(textFilterField = new JTextField(), "align=left");
+        textFilterField.setPreferredSize(new Dimension(200, 24));
+        textFilterField.setOpaque(true);
+        textFilterField.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+            	if (combo.getItemCount() > 0) {
+            		combo.setSelectedIndex(combo.getItemCount()-1);
+            	}
+                setItems();
+            }
+        });
+        textFilterField.setToolTipText("Enter comma separated list of spells");
+        
         JTableHeader header = table.getTableHeader();
         header.addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -241,6 +261,34 @@ public class SpellcasterListView extends BaseItemListView {
         tlb.row();
         return tlb.getPanel();
     }
+    
+    SpellList getSpellsFromFilters() {
+    	SpellList sl = (SpellList) combo.getSelectedItem();
+        ArrayList<Integer> spells = sl.getSpells();
+        ArrayList<String> spellDescrs = sl.getSpellDescrs();
+        ArrayList<Integer> retSpells = new ArrayList<Integer>();
+        ArrayList<String> retSpellDescrs = new ArrayList<String>();
+    	String txt = textFilterField.getText().trim();
+    	if (txt.equals("")) return sl; 
+		ArrayList<Integer> textSpells = new ArrayList<Integer>();
+		String[] parts = txt.split(",");
+		for (String p : parts) {
+			try {
+				int spellNo = Integer.parseInt(p.trim());
+				for (int i=0; i<spells.size(); i++) {
+					if (spells.get(i).equals(spellNo)) {
+						retSpells.add(spells.get(i));
+						retSpellDescrs.add(spellDescrs.get(i));
+					}
+				}
+			}
+			catch (Exception exc) {
+				// do nothing
+			}
+		}
+    	SpellList ret = new SpellList("Custom", retSpells, retSpellDescrs);
+    	return ret;
+    }
 
     protected void setItems() {
         if (combo == null)
@@ -250,6 +298,7 @@ public class SpellcasterListView extends BaseItemListView {
         SpellList sl = (SpellList) combo.getSelectedItem();
         if (sl == null)
             return;
+        sl = getSpellsFromFilters();
         ArrayList<Integer> spells = sl.getSpells();
         ArrayList items = new ArrayList();
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
@@ -328,6 +377,12 @@ public class SpellcasterListView extends BaseItemListView {
                 this.spells.add(spellNos[i]);
                 this.spellDescrs.add(spellDescrs[i]);
             }
+        }
+        
+        public SpellList(String name, ArrayList<Integer> spellNos, ArrayList<String> spellDescrs) {
+            this.name = name;
+            this.spells = spellNos;
+            this.spellDescrs = spellDescrs;
         }
 
         public String getName() {

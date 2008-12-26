@@ -15,7 +15,9 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
+import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.PopCenterInfoSourceTableCellRenderer;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
@@ -61,8 +63,26 @@ public class PopulationCenterListView extends ItemListView {
     			new PopupMenuCommand().getButton(new Object[]{
     					new GenericCopyToClipboardCommand(table)})};
 	}
+    
+    protected boolean hasTextFilter() {
+    	return true;
+    }
+    
+    
 
-    /**
+	protected AbstractListViewFilter getTextFilter(String txt) {
+		if (txt == null || txt.equals("")) return super.getTextFilter(txt);
+		try {
+			int hexNo = Integer.parseInt(txt.trim());
+			return new HexFilter("", hexNo);
+		}
+		catch (Exception exc) {
+			// do nothing
+		}
+		return new TextFilter("Name", "name", txt);
+	}
+
+	/**
      * Drag and drop exports:
      * - PopulationCenter[] array of all selected items
      * - PopulationCenter the first selected item

@@ -737,27 +737,6 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
-						<value>import.deletePopCentersIfCharPresent</value>
-					</property>
-					<property name="description">
-						<value>Smart Delete Pop Centers</value>
-					</property>
-					<property name="group">
-						<value>Import</value>
-					</property>
-					<property name="defaultValue">
-						<value>no</value>
-					</property>
-					<property name="domain">
-						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
-						</list>
-					</property>
-				</bean>
-				
-				<bean class="org.joverseer.preferences.Preference">
-					<property name="key">
 						<value>general.autoCheckForNewVersion</value>
 					</property>
 					<property name="description">

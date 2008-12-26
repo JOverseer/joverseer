@@ -1,7 +1,7 @@
 VERSION 1.0.4
 -------------
 
-10/11/2008
+26/12/2008
 
 	* Fixed a bug that was causing incorrect behavior in function Import Orders from Text when a character had a blank order
 

@@ -14,7 +14,7 @@
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="1.0.4"/>
-		<property name="buildId" value="2008-11-10"/>
+		<property name="buildId" value="2008-12-26"/>
 	</bean>
 	
 	<!--

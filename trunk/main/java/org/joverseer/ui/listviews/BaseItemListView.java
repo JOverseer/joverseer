@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -65,6 +66,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
     protected JTable table;
     protected ArrayList<JComboBox> filters = new ArrayList<JComboBox>();
+    protected JTextField textFilterField;
     protected Class tableModelClass;
     protected SelectHexCommandExecutor selectHexCommandExecutor = new SelectHexCommandExecutor();
     protected JPanel buttonPanel;
@@ -88,6 +90,13 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
      */
     protected ColumnToSort[] getDefaultSort() {
         return null;
+    }
+    
+    /**
+     * Return true if list view has a text filter where the user can type in
+     */
+    protected boolean hasTextFilter() {
+    	return false;
     }
 
     protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
@@ -141,10 +150,15 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return null;
     }
     
+    protected AbstractListViewFilter getTextFilter(String txt) {
+    	return new PositiveListViewFilter();
+    }
+    
     protected AbstractListViewFilter getActiveFilter() {
-        if (filters == null)
-            return null;
+    	AbstractListViewFilter textFilter = getTextFilter(textFilterField == null ? null : textFilterField.getText());
+        if (filters == null) return textFilter;
         AndFilter f = new AndFilter();
+        f.addFilter(textFilter);
         for (JComboBox filter : filters) {
             f.addFilter((AbstractListViewFilter) filter.getSelectedItem());
         }
@@ -179,6 +193,52 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         return new JComponent[] {};
     }
 
+    protected JPanel createFilterPanel() {
+    	
+        // create the filter combo
+        AbstractListViewFilter[][] filterLists = getFilters();
+        
+        boolean hasFilters = false;
+        TableLayoutBuilder lb = new TableLayoutBuilder();
+        if (filterLists != null) {
+            for (AbstractListViewFilter[] filterList : filterLists) {
+                JComboBox filter = new JComboBox(filterList);
+                filters.add(filter);
+                filter.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                        setItems();
+                    }
+                });
+                filter.setPreferredSize(new Dimension(150, 20));
+                filter.setOpaque(true);
+                lb.cell(filter, "colspec=left:150px");
+                lb.gapCol();
+            }
+            hasFilters = true;
+        }
+        if (hasTextFilter()) {
+        	hasFilters = true;
+        	textFilterField = new JTextField();
+        	textFilterField.setPreferredSize(new Dimension(150, 20));
+        	textFilterField.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    setItems();
+                }
+            });
+        	lb.cell(textFilterField, "colspec=left:150px");
+            lb.gapCol();
+        }
+
+        if (hasFilters) {
+        	JPanel p = lb.getPanel();
+	        p.setOpaque(true);
+	        
+	        return p;
+        }
+        return null;
+    }
+    
     /**
      * create the view...
      * 
@@ -204,29 +264,10 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         }
 
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-
-        // create the filter combo
-        AbstractListViewFilter[][] filterLists = getFilters();
-        if (filterLists != null) {
-            TableLayoutBuilder lb = new TableLayoutBuilder();
-            for (AbstractListViewFilter[] filterList : filterLists) {
-                JComboBox filter = new JComboBox(filterList);
-                filters.add(filter);
-                filter.addActionListener(new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        setItems();
-                    }
-                });
-                filter.setPreferredSize(new Dimension(150, 20));
-                filter.setOpaque(true);
-                lb.cell(filter, "colspec=left:150px");
-                lb.gapCol();
-            }
-            JPanel p = lb.getPanel();
-            p.setOpaque(true);
-            tlb.cell(p, "align=left");
-            tlb.row();
+        JPanel fp = createFilterPanel();
+        if (fp != null) {
+	        tlb.cell(fp, "align=left");
+	        tlb.row();
         }
 
         setItems();

@@ -24,7 +24,9 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
+import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
@@ -57,9 +59,25 @@ public class ArmyListView extends ItemListView {
         return new AbstractListViewFilter[][] {
                 filters.toArray(new AbstractListViewFilter[] {})};
     }
+    
+    
+	protected AbstractListViewFilter getTextFilter(String txt) {
+    	if (txt == null || txt.equals("")) return super.getTextFilter(txt);
+		try {
+			int hexNo = Integer.parseInt(txt.trim());
+			return new HexFilter("", hexNo);
+		}
+		catch (Exception exc) {
+			// do nothing
+		}
+		return new TextFilter("CommanderName", "commanderName", txt);
+	}
 
+	protected boolean hasTextFilter() {
+		return true;
+	}
 
-    protected JComponent createControlImpl() {
+	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
         TransferHandler handler = new GenericExportTransferHandler() {
 

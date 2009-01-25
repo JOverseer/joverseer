@@ -16,6 +16,7 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.RumorInfoSource;
+import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.springframework.richclient.table.BeanTableModel;
@@ -75,6 +76,9 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
             } else if (RumorActionInfoSource.class.isInstance(value)) {
             	RumorActionInfoSource aais = (RumorActionInfoSource)value;
             	strValue = aais.getReports();
+            } else if (UserInfoSource.class.isInstance(value)) {
+            	UserInfoSource uis = (UserInfoSource)value;
+            	strValue = "User T" + uis.getTurnNo();
             }
         }
         return strValue;

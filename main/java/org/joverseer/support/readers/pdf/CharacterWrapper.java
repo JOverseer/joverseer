@@ -141,18 +141,18 @@ public class CharacterWrapper {
         	
         	PopulationCenterSizeEnum size = null;
         	FortificationSizeEnum fort = FortificationSizeEnum.none;
-        	if (lastLine.indexOf("Ruins") > -1) size = PopulationCenterSizeEnum.ruins;
-        	if (lastLine.indexOf("Camp") > -1) size = PopulationCenterSizeEnum.camp;
-        	if (lastLine.indexOf("Village") > -1) size = PopulationCenterSizeEnum.village;
-        	if (lastLine.indexOf("Town") > -1) size = PopulationCenterSizeEnum.town;
-        	if (lastLine.indexOf("Major Town") > -1) size = PopulationCenterSizeEnum.majorTown;
-        	if (lastLine.indexOf("City") > -1) size = PopulationCenterSizeEnum.city;
+        	if (lastLine.indexOf("The Ruins") > -1) size = PopulationCenterSizeEnum.ruins;
+        	if (lastLine.indexOf("The Camp") > -1) size = PopulationCenterSizeEnum.camp;
+        	if (lastLine.indexOf("The Village") > -1) size = PopulationCenterSizeEnum.village;
+        	if (lastLine.indexOf("The Town") > -1) size = PopulationCenterSizeEnum.town;
+        	if (lastLine.indexOf("The Major Town") > -1) size = PopulationCenterSizeEnum.majorTown;
+        	if (lastLine.indexOf("The City") > -1) size = PopulationCenterSizeEnum.city;
         	
-        	if (lastLine.indexOf("Tower") > -1) fort = FortificationSizeEnum.tower;
-        	if (lastLine.indexOf("Fort") > -1) fort = FortificationSizeEnum.fort;
-        	if (lastLine.indexOf("Keep") > -1) fort = FortificationSizeEnum.keep;
-        	if (lastLine.indexOf("Castle") > -1) fort = FortificationSizeEnum.castle;
-        	if (lastLine.indexOf("Citadel") > -1) fort = FortificationSizeEnum.citadel;
+        	if (lastLine.indexOf("/Tower") > -1) fort = FortificationSizeEnum.tower;
+        	if (lastLine.indexOf("/Fort") > -1) fort = FortificationSizeEnum.fort;
+        	if (lastLine.indexOf("/Keep") > -1) fort = FortificationSizeEnum.keep;
+        	if (lastLine.indexOf("/Castle") > -1) fort = FortificationSizeEnum.castle;
+        	if (lastLine.indexOf("/Citadel") > -1) fort = FortificationSizeEnum.citadel;
         	
         	Integer nationNo = null;
         	if (lastLine.indexOf("un-owned")>-1) nationNo = 0;

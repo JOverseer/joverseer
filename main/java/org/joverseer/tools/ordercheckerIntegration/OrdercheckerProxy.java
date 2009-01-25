@@ -18,6 +18,7 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
@@ -317,7 +318,13 @@ public class OrdercheckerProxy {
             if (popCenter.getSize() == PopulationCenterSizeEnum.ruins) continue;
             PopCenter pc = new PopCenter(popCenter.getHexNo());
             pc.setCapital(popCenter.getCapital() ? 1 : 0);
-            pc.setDock(popCenter.getHarbor().getSize());
+            if (popCenter.getHarbor().equals(HarborSizeEnum.none)) {
+            	pc.setDock(0);
+            } else if (popCenter.getHarbor().equals(HarborSizeEnum.port)) {
+            	pc.setDock(2);
+            } else if (popCenter.getHarbor().equals(HarborSizeEnum.harbor)) {
+            	pc.setDock(1);
+            };
             pc.setName(popCenter.getName());
             pc.setFortification(popCenter.getFortification().getSize());
             pc.setSize(popCenter.getSize().getCode());

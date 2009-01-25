@@ -59,7 +59,7 @@ public class OrderTextReader {
                 int[] orderLines = new int[]{0, 0, 0};
                 String notes = "";
     
-                String charPattern = "^[\\p{L}\\?]+([\\-\\s'][\\p{L}\\?]+)*\\s+\\([\\w\\-\\s' ]{5}\\) @ \\d{4}.*";
+                String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s' ]{5}\\) @ \\d{4}.*";
                 String orderPattern = "^\\d{3}\\s{1,2}\\w{5,7}.*";
                 
                 Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
@@ -163,7 +163,7 @@ public class OrderTextReader {
                     if (!parts[0].equals("")) {
                         orderNo = Integer.parseInt(parts[0]);
                         for (int j=2; j<parts.length; j++) {
-                            String part = parts[j].trim().replace(" ", "");
+                            String part = parts[j].trim();//.replace(" ", "");
                             if (!part.equals("--") && !part.equals("")) {
                                     parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part; 
                             }

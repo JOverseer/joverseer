@@ -369,9 +369,10 @@ public class TurnXmlReader implements Runnable{
                     logger.debug("Pop Centre found in turn.");
                     // distinguish cases
                     if (oldPc != null && oldPc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() &&
+                    		XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) &&
                             ((XmlTurnInfoSource)oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo()) {
                         logger.debug("old pop too good - do not replace");
-                    } else if (newPc.getNationNo() == ((XmlTurnInfoSource)newPc.getInfoSource()).getNationNo()) {
+                    } else if (XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) && newPc.getNationNo() == ((XmlTurnInfoSource)newPc.getInfoSource()).getNationNo()) {
                         logger.debug("pop center of same nation - replace");
                         pcs.removeItem(oldPc);
                         pcs.addItem(newPc);

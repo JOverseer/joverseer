@@ -33,7 +33,7 @@ Wind Storms;A;225;230;;With Army;600-1000 Offensive Points;Wind Mastery
 Summon Wind Spirits;H;225;238;;With Army;750-1750 Offensive Points;Wind Mastery
 Fearful Hearts;A;225;244;;With Army;Subtract 10-20 Enemy morale;Dark Summons
 Summon Storms;A;225;246;;With Army;Enemy tactics = Standard;Dark Summons
-Fanaticism;A;225;248;;With Army;Caster�s Army morale +5-15;Dark Summons
+Fanaticism;A;225;248;;With Army;Caster'�s Army morale +5-15;Dark Summons
 Weakness;E;330;502;Character ID;Same Hex;Lose 1/3 net mage rank in health;Spirit Mastery
 Sickness;A;330;504;Character ID;Same Hex;Lose 1/2 net mage rank in health;Spirit Mastery
 Curses;H;330;506;Character ID;Adjacent Hex;Lose 1/2 net mage rank in health;Spirit Mastery

@@ -12,8 +12,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
@@ -73,7 +75,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
                 		},
                 		new ActionCommand("parseOrdersCommand") {
                 			protected void doExecuteCommand() {
-                				form.setParseResults(parseOrders(form.getOrderText()));
+                				form.setParseResults(parseOrders(form.getOrderText(), form.getOrderTextType()));
                 			}
                 		}, getFinishCommand(), getCancelCommand()};
             }
@@ -83,8 +85,13 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         dlg.showDialog();
     }
     
-    private ArrayList<String> parseOrders(String text) {
+    private ArrayList<String> parseOrders(String text, String textType) {
         OrderTextReader orderTextReader = new OrderTextReader();
+        if (textType.equals("Standard")) {
+        	orderTextReader.setTextType(OrderTextReader.STANDARD_ORDER_TEXT); 
+        } else if (textType.equals("Order Checker")) {
+        	orderTextReader.setTextType(OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+        }
         orderTextReader.setGame(GameHolder.instance().getGame());
         orderTextReader.setOrderText(text);
         orderTextReader.readOrders(0);
@@ -108,14 +115,14 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         JTextArea parseResults;
         JScrollPane orderScp;
         JScrollPane parseScp;
-        
+        JComboBox orderTextTypeCmb;
         private ParseOrdersForm(FormModel arg0) {
             super(arg0, "parseOrdersForm");
         }
 
         protected JComponent createFormControl() {
             TableLayoutBuilder tlb = new TableLayoutBuilder();
-            tlb.cell(new JLabel("Orders : "), "valign=top");
+            tlb.cell(new JLabel("Orders : "), "colspec=left:60px valign=top");
             tlb.gapCol();
             
             orderText = new JTextArea();
@@ -143,9 +150,20 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
                 }
             });
             tlb.cell(parseScp);
-            tlb.row();
+            tlb.relatedGapRow();
 
-           
+            orderTextTypeCmb = new JComboBox();
+            orderTextTypeCmb.setPreferredSize(new Dimension(200, 20));
+            orderTextTypeCmb.addItem("Standard");
+            orderTextTypeCmb.addItem("Order Checker");
+            tlb.cell(new JLabel("Type :"));
+            tlb.gapCol();
+            TableLayoutBuilder tlb2 = new TableLayoutBuilder();
+            tlb2.cell(orderTextTypeCmb, "colspan=1 colspec=left:100px");
+            tlb2.relatedGapRow();
+            tlb.cell(tlb2.getPanel(), "colspan=1");
+            tlb.row();
+            
             return tlb.getPanel();
         }
         
@@ -170,6 +188,9 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         	orderText.setText(text);
         }
         
+        public String getOrderTextType() {
+        	return orderTextTypeCmb.getSelectedItem().toString();
+        }
     }
     
     

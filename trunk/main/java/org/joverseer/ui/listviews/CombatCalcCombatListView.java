@@ -26,16 +26,27 @@ public class CombatCalcCombatListView extends ItemListView {
         return new int[]{250, 48, 150, 150};
     }
 
-    public JPopupMenu getPopupMenu() {
-        CommandGroup cg = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "combatPopupMenu",
-                new Object[]{
-                    new AddCombatCommand(),
-                    new EditSelectedCombatCommand(),
-                    new DeleteSelectedCombatCommand()
-                }
-                );
-        return cg.createPopupMenu();
+    @Override
+    public JPopupMenu getPopupMenu(boolean hasSelectedItem) {
+    	if (hasSelectedItem) {
+	        CommandGroup cg = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+	                "combatPopupMenu",
+	                new Object[]{
+	                    new AddCombatCommand(),
+	                    new EditSelectedCombatCommand(),
+	                    new DeleteSelectedCombatCommand()
+	                }
+	            );
+	        return cg.createPopupMenu();
+    	} else {
+    		CommandGroup cg = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+	                "combatPopupMenu",
+	                new Object[]{
+	                    new AddCombatCommand(),
+	                }
+	            );
+	        return cg.createPopupMenu();
+    	}
     }
 
     class AddCombatCommand extends ActionCommand {

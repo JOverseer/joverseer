@@ -295,6 +295,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         scrollPane.getViewport().setOpaque(true);
         scrollPane.getViewport().setBackground(table.getBackground());
         scrollPane.setPreferredSize(new Dimension(1200, 1200));
+        scrollPane.addMouseListener(this);
         tlb.cell(scrollPane);
 
         TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -354,15 +355,13 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     }
 
     public void showContextMenu(MouseEvent e) {
-        JPopupMenu pm = getPopupMenu();
+        JPopupMenu pm = getPopupMenu(table.getSelectedRowCount() != 0);
         if (pm == null)
             return;
-        if (table.getSelectedRowCount() == 0)
-            return;
-        pm.show(table, e.getX(), e.getY());
+        pm.show(e.getComponent(), e.getX(), e.getY());
     };
 
-    public JPopupMenu getPopupMenu() {
+    public JPopupMenu getPopupMenu(boolean hasSelectedItem) {
         return null;
     }
 

@@ -75,6 +75,14 @@ public class CharacterInfoCollector implements ApplicationListener {
         return (AdvancedCharacterWrapper)ret.findFirstByProperty("name", name);
     }
     
+    /**
+     * Computes the wrappers for the given turn
+     * In more detail:
+     * - Parse all characters and adds/updates the relevant character wrapper
+     * - Parse all companies and update character wrappers
+     * - Parse all armies and update army commanders and characters traveling with armies
+     * - Parse all enemy action rumors and update wrappers as needed
+     */
     public Container computeWrappersForTurn(int turnNo) {
         Container ret = new Container(new String[] {"name", "turnNo", "id"});
         if (!GameHolder.hasInitializedGame())

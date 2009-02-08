@@ -149,8 +149,9 @@ public class NotesListView extends ItemListView {
         return p;
     }
 
-
-    public JPopupMenu getPopupMenu() {
+    @Override
+    public JPopupMenu getPopupMenu(boolean hasSelectedItem) {
+    	if (!hasSelectedItem) return null;
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "noteCommandGroup", new Object[] {new EditNoteCommand(), new DeleteNoteCommand()});
         return group.createPopupMenu();

@@ -215,7 +215,7 @@ public class ArmyWrapper {
         }
 
         if (getCharsTravellingWith() != null && !getCharsTravellingWith().equals("")) {
-            String[] chars = getCharsTravellingWith().split(",");
+            String[] chars = getCharsTravellingWith().split("[,\\-]");
             if (chars.length > 0) {
                 for (String c : chars) {
                     a.getCharacters().add(c);

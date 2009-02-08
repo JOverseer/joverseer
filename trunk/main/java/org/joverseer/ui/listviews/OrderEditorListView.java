@@ -493,8 +493,9 @@ public class OrderEditorListView extends ItemListView {
         }
     }
 
-
-    public JPopupMenu getPopupMenu() {
+    @Override
+    public JPopupMenu getPopupMenu(boolean hasSelectedItem) {
+    	if (!hasSelectedItem) return null;
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "orderCommandGroup", new Object[] {editOrderAction, deleteOrderAction,
                 // sendOrderByChatAction,

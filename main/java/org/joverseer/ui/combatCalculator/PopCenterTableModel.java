@@ -22,15 +22,15 @@ public class PopCenterTableModel extends BeanTableModel {
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[]{"name", "nationNo", "loyalty", "size", "fort", "strengthOfAttackingArmies", "defense"};
+        return new String[]{"name", "nationNo", "loyalty", "size", "fort", "strengthOfAttackingArmies", "defense", "capturedStr"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class};
+        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class};
     }
     
     public int[] getColumnWidths() {
-        return new int[]{100, 48, 48, 80, 80, 80, 80};
+        return new int[]{60, 48, 48, 60, 60, 60, 60, 48};
     }
 
     protected Combat getCombat() {
@@ -44,5 +44,9 @@ public class PopCenterTableModel extends BeanTableModel {
         } else {
             return super.getValueAtInternal(arg0, arg1);
         }
+    }
+    
+    protected boolean isCellEditableInternal(Object arg0, int arg1) {
+        return false;
     }
 }

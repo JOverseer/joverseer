@@ -363,6 +363,19 @@ public class CombatForm extends AbstractForm {
         
         tlb.cell(scp);
         
+        lb = new TableLayoutBuilder();
+        ico = new ImageIcon(imgSource.getImage("edit.image"));
+        btn = new JButton(ico);
+        btn.setPreferredSize(new Dimension(20, 20));
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                new EditPopCenterCommand().doExecuteCommand();
+            }
+        });
+        lb.cell(btn, "colspec=left:30px");
+        lb.gapCol();
+        lb.relatedGapRow();
+        
         ico = new ImageIcon(imgSource.getImage("remove.icon"));
         btn = new JButton(ico);
         btn.setPreferredSize(new Dimension(20, 20));
@@ -371,9 +384,11 @@ public class CombatForm extends AbstractForm {
                 new RemovePopCenterCommand().doExecuteCommand();
             }
         });
-        tlb.cell(btn);
-        tlb.gapCol();
+        lb.cell(btn, "colspec=left:30px");
+        lb.gapCol();
+        lb.relatedGapRow();
         
+        tlb.cell(lb.getPanel());
         tlb.relatedGapRow();
         
         tlb.cell(new JLabel(" "));
@@ -425,6 +440,7 @@ public class CombatForm extends AbstractForm {
                 side2TableModel.fireTableCellUpdated(i, j);
             }
         }
+        popCenterTableModel.fireTableDataChanged();
     }
 
     protected void refreshArmies() {
@@ -867,8 +883,54 @@ public class CombatForm extends AbstractForm {
         			runCombat();
                 }
             };
+            md.showDialog();
 		}
     	
+    }
+    
+    class EditPopCenterCommand extends ActionCommand {
+
+        public EditPopCenterCommand() {
+            super();
+        }
+
+        protected void doExecuteCommand() {
+        	CombatPopCenter pc = null;
+        	if (popCenterTableModel.getRowCount() == 0) {
+        		pc = new CombatPopCenter();
+        	} else {
+        		pc = (CombatPopCenter)popCenterTableModel.getRow(0);
+        	}
+            FormModel formModel = FormModelHelper.createFormModel(pc);
+            final CombatPopCenterForm form = new CombatPopCenterForm(formModel);
+            FormBackedDialogPage page = new FormBackedDialogPage(form);
+
+            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+
+                protected void onAboutToShow() {
+                }
+
+                protected boolean onFinish() {
+                    form.commit();
+            		Combat c = (Combat) getFormObject();
+            		CombatPopCenter pc = (CombatPopCenter)form.getFormObject();
+            		if (popCenterTableModel.getRowCount() == 0) {
+            			c.setSide2Pc(pc);
+            			popCenterTableModel.addRow(pc);
+            			popCenterTableModel.fireTableDataChanged();
+            		}
+
+                    runCombat();
+                    return true;
+                }
+            };
+            MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+            dialog.setTitle("Edit population center");
+            dialog.showDialog();
+
+        }
+
+
     }
 
 }

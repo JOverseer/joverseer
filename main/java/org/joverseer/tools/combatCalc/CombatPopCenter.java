@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.support.NationMap;
 
 /**
  * Holds all the information pertinent to a population center within a land combat such as
@@ -91,6 +93,14 @@ public class CombatPopCenter implements Serializable {
     public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
+    
+    public Nation getNation() {
+        return NationMap.getNationFromNo(getNationNo());
+    }
+
+    public void setNation(Nation nation) {
+        setNationNo(nation.getNumber());
+    }
 
     
     public boolean isCaptured() {
@@ -112,6 +122,9 @@ public class CombatPopCenter implements Serializable {
         this.strengthOfAttackingArmies = strengthOfAttackingArmies;
     }
 
+    public String getCapturedStr() {
+    	return isCaptured() ? "y" : "n";
+    }
     
     
 }

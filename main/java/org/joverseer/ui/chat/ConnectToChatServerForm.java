@@ -22,22 +22,12 @@ public class ConnectToChatServerForm extends AbstractForm {
         
         //GraphicUtils.registerIntegerPropertyConverters(this, "port");
         
-        tlb.add("myIP");
-        tlb.row();
-
-        tlb.add("myPort");
-        tlb.row();
-
-        tlb.add("peerIP");
-        tlb.row();
-
-        tlb.add("peerPort");
-        tlb.row();
-
-
         tlb.add("username");
         tlb.row();
-        
+
+        tlb.add("password");
+        tlb.row();
+
         return tlb.getForm();
     }
     

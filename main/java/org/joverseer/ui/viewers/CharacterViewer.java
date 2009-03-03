@@ -1015,7 +1015,7 @@ public class CharacterViewer extends ObjectViewer {
                         "separator", new AddEditNoteCommand(c),
                         "separator", quickOrders,
                         "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()),
-                        //"separator", sendOrdersByChatCommand
+                        "separator", sendOrdersByChatCommand
                         });
         return group.createPopupMenu();
     }

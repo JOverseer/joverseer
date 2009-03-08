@@ -30,7 +30,9 @@ import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterTableModel;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
+import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.controls.JLabelButton;
@@ -91,6 +93,22 @@ public class AdvancedArtifactListView extends BaseItemListView {
         });
         comps.add(popupMenu);
         return comps.toArray(new JComponent[] {});
+    }
+    
+    protected AbstractListViewFilter getTextFilter(String txt) {
+		if (txt == null || txt.equals("")) return super.getTextFilter(txt);
+		try {
+			int hexNo = Integer.parseInt(txt.trim());
+			return new HexFilter("", hexNo);
+		}
+		catch (Exception exc) {
+			// do nothing
+		}
+		return new TextFilter("Name", "name", txt);
+	}
+    
+    protected boolean hasTextFilter() {
+    	return true;
     }
 
     protected AbstractListViewFilter[][] getFilters() {

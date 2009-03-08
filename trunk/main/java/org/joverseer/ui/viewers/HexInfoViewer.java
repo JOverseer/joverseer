@@ -41,6 +41,7 @@ import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
+import org.joverseer.ui.command.ShowCharacterPathMasteryRangeCommand;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
@@ -239,6 +240,7 @@ public class HexInfoViewer extends ObjectViewer {
     	Hex hex = (Hex)getFormObject();
         ActionCommand showCharacterLongStrideRangeCommand = new ShowCharacterLongStrideRangeCommand(hex.getHexNo());
         ActionCommand showCharacterFastStrideRangeCommand = new ShowCharacterFastStrideRangeCommand(hex.getHexNo());
+        ActionCommand showCharacterPathMasteryRangeCommand = new ShowCharacterPathMasteryRangeCommand(hex.getHexNo());
         ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(hex.getHexNo(), 12);
 
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
@@ -250,6 +252,7 @@ public class HexInfoViewer extends ObjectViewer {
                         showCharacterRangeOnMapCommand,
                         showCharacterLongStrideRangeCommand,
                         showCharacterFastStrideRangeCommand,
+                        showCharacterPathMasteryRangeCommand,
                         "separator",
                         showFedInfantryArmyRangeCommand,
                         showUnfedInfantryArmyRangeCommand,

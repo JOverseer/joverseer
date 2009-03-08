@@ -43,7 +43,9 @@
 				<value>nationStatisticsListView</value>
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
-				<value>chatWindowView</value>				
+				<!--
+				<value>chatWindowView</value>
+				-->				
 				<value>playerInfoListView</value>
 				<value>combatCalcView</value>
 				<value>mapEditorView</value>
@@ -296,6 +298,7 @@
 		</property>
 	</bean>
 
+<!--
 	<bean id="chatWindowView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		<property name="initMode">
@@ -320,6 +323,7 @@
 			<value>Collaboration</value>
 		</property>
 	</bean>
+	-->
 
 	<bean id="combatCalcView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">

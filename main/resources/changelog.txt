@@ -1,3 +1,37 @@
+VERSION 1.0.5
+-------------
+
+8/3/2009
+
+	* Added text filters to some of the information panes. The text filters can be used to filter information based on the text the user types.
+		+ Filters added to panes: Chars (adv), Arties (adv), Armies, PCs, Spellcasters, Nation Messages   	 
+		+ The text filters in the Spellcasters tab adds ability to find spellcaster by giving the desired spell id
+		 	 
+	* The shorthand notations for Nations were changed to be more clear. They now follow a standardized three letter pattern.
+	 	 
+	* Fixed an issue that was causing Ports and Harbors to be mixed up when passed to Orderchecker. 	 
+
+	* Parsing the pop center size and fort from the character's final location was sometimes mislead by the nation's name (especially in FA games). Fixed.
+	
+	* Fixed an issue with import orders from text which was failing on character names that include numbers 	 
+
+	* Added copy to clipboard option to the artifacts information tab
+	
+	* Added ability to parse and import order text reports generated using OrderChecker 	 
+
+	* Fixed an issue that was causing (in some cases) hidden pops to disappear when importing new turns
+	 	 
+	* Added the missing minor river between 2325 and 2225 in the 1650 scenario 	 
+
+	* Added option to draw character's range on map with Path Mastery spell
+	 	 
+	* Fixed a minor issue that was causing incorrect rendering of character ranges on map when the zoom was different than 1 in the map options view
+	
+	* Improved the behavior of the combat calculator with respect to managing population centers
+		+ The user can now define a new population center from within the combat calculator
+		+ The user can now remove the population center 
+
+
 VERSION 1.0.4
 -------------
 

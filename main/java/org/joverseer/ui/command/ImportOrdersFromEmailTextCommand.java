@@ -55,7 +55,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         final ClipboardOwner clipboardOwner = form;
         TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
             protected boolean onFinish() {
-                loadOrders(form.getOrderText());
+                loadOrders(form.getOrderText(), form.getOrderTextType());
                 return true;
             }
 
@@ -98,8 +98,13 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
         return orderTextReader.getLineResults();
     }
     
-    private void loadOrders(String text) {
+    private void loadOrders(String text, String textType) {
         OrderTextReader orderTextReader = new OrderTextReader();
+        if (textType.equals("Standard")) {
+        	orderTextReader.setTextType(OrderTextReader.STANDARD_ORDER_TEXT); 
+        } else if (textType.equals("Order Checker")) {
+        	orderTextReader.setTextType(OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+        }
         orderTextReader.setGame(GameHolder.instance().getGame());
         orderTextReader.setOrderText(text);
         orderTextReader.readOrders(1);

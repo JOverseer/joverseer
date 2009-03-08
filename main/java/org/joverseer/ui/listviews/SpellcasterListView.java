@@ -227,7 +227,7 @@ public class SpellcasterListView extends BaseItemListView {
                     // - spell description and details for spells
                     // - the string "Health drop effect for <spell>" for health effect columns
                     String toolTip = "";
-                    SpellList sl = (SpellList) combo.getSelectedItem();
+                    SpellList sl = getSpellsFromFilters();
                     if (sl != null) {
                         if (vColIndex - 5 >= 0 && vColIndex - 5 < sl.getSpells().size()) {
                             int spellId = sl.getSpells().get(vColIndex - 5);

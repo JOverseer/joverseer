@@ -63,6 +63,7 @@ import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
+import org.joverseer.ui.command.ShowCharacterPathMasteryRangeCommand;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
@@ -976,8 +977,10 @@ public class CharacterViewer extends ObjectViewer {
         ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(c.getHexNo(), 12);
         ActionCommand showCharacterLongStrideRangeCommand = new ShowCharacterLongStrideRangeCommand(c.getHexNo());
         ActionCommand showCharacterFastStrideRangeCommand = new ShowCharacterFastStrideRangeCommand(c.getHexNo());
+        ActionCommand showCharacterPathMasteryRangeCommand = new ShowCharacterPathMasteryRangeCommand(c.getHexNo());
         boolean hasFastStride = false;
         boolean hasLongStride = false;
+        boolean hasPathMastery = false;
         for (SpellProficiency sp : c.getSpells()) {
         	if (sp.getSpellId() == 304) {
         		hasFastStride = true;
@@ -985,9 +988,13 @@ public class CharacterViewer extends ObjectViewer {
         	if (sp.getSpellId() == 302) {
         		hasLongStride = true;
         	}
+        	if (sp.getSpellId() == 306) {
+        		hasPathMastery = true;
+        	}
         }
         showCharacterFastStrideRangeCommand.setEnabled(hasFastStride);
         showCharacterLongStrideRangeCommand.setEnabled(hasLongStride);
+        showCharacterPathMasteryRangeCommand.setEnabled(hasPathMastery);
         
         showArtifactsCommand.setEnabled(c != null);
         showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
@@ -1011,7 +1018,7 @@ public class CharacterViewer extends ObjectViewer {
                 "armyCommandGroup",
                 new Object[] {showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand,
                         "separator", editCharacterCommand,
-                        "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, "separator", deleteCharacterCommand,
+                        "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand,
                         "separator", new AddEditNoteCommand(c),
                         "separator", quickOrders,
                         "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()),

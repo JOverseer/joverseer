@@ -1,7 +1,7 @@
 VERSION 1.0.5
 -------------
 
-8/3/2009
+23/3/2009
 
 	* Added text filters to some of the information panes. The text filters can be used to filter information based on the text the user types.
 		+ Filters added to panes: Chars (adv), Arties (adv), Armies, PCs, Spellcasters, Nation Messages   	 
@@ -31,6 +31,7 @@ VERSION 1.0.5
 		+ The user can now define a new population center from within the combat calculator
 		+ The user can now remove the population center 
 
+	* UW scenario, fixed the terrain for hex 3105 from plains to mountain 
 
 VERSION 1.0.4
 -------------

@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.IHasMapLocation;
@@ -334,22 +335,39 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
-                refreshFilters();
-                setItems();
+            	SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+		                refreshFilters();
+		                setItems();
+					}
+            	});
             } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
                 // setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                refreshFilters();
-                setItems();
+            	SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+		                refreshFilters();
+		                setItems();
+					}
+            	});
             } else if (e.getEventType().equals(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle.toString())) {
-                String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
-                if (pval.equals("yes")) {
-                    table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-                } else {
-                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                }
+            	SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+		                String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
+		                if (pval.equals("yes")) {
+		                    table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		                } else {
+		                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		                }
+					}
+            	});
+
             } else if (e.getEventType().equals(LifecycleEventsEnum.ListviewRefreshItems.toString())) {
-                setItems();
+            	SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						setItems();
+					}
+            	});
             }
         }
     }

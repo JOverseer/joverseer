@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -343,6 +344,13 @@ public class SpellcasterListView extends BaseItemListView {
         // }
         // } catch (Exception exc) {};
     }
+    
+    protected void resetFilters() {
+    	combo.removeAllItems();
+        for (SpellList sl : (ArrayList<SpellList>) createSpellLists()) {
+            combo.addItem(sl);
+        }
+    }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
         super.onApplicationEvent(applicationEvent);
@@ -351,10 +359,11 @@ public class SpellcasterListView extends BaseItemListView {
             if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                combo.removeAllItems();
-                for (SpellList sl : (ArrayList<SpellList>) createSpellLists()) {
-                    combo.addItem(sl);
-                }
+                SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						resetFilters();
+					}
+                });
             }
         }
     }

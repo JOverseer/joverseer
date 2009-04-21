@@ -10,12 +10,15 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +27,9 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputListener;
 
@@ -90,7 +95,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  * 
  * @author Marios Skounakis
  */
-public class MapPanel extends JPanel implements MouseInputListener {
+public class MapPanel extends JPanel implements MouseInputListener, MouseWheelListener {
     protected javax.swing.event.EventListenerList listenerList =
             new javax.swing.event.EventListenerList();
 
@@ -126,6 +131,7 @@ public class MapPanel extends JPanel implements MouseInputListener {
 
     public MapPanel() {
         addMouseListener(this);
+        addMouseWheelListener(this);
         addMouseMotionListener(this);
         this.setTransferHandler(new HexNoTransferHandler("hex"));
         this.setDropTarget(new DropTarget(this, new MapPanelDropTargetAdapter()));
@@ -681,6 +687,8 @@ public class MapPanel extends JPanel implements MouseInputListener {
     {
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
+    
+    
 
     public void mouseClicked(MouseEvent e)
     {
@@ -978,5 +986,24 @@ public class MapPanel extends JPanel implements MouseInputListener {
         }
         
     }
+
+	public void mouseWheelMoved(MouseWheelEvent e) {
+        if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+        	if (e.getUnitsToScroll() < 0) {
+        		Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.ZoomIncreaseEvent.toString(), this, this));
+        	} else if (e.getUnitsToScroll() > 0) {
+        		Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.ZoomDecreaseEvent.toString(), this, this));
+        	}
+        } else {
+        	// get the JScrollPane for this container
+        	if (getParent() != null && getParent().getParent() != null) {
+        		for (MouseWheelListener mwl : getParent().getParent().getMouseWheelListeners()) {
+        			mwl.mouseWheelMoved(e);
+        		}
+        	}
+        }
+	}
     
 }

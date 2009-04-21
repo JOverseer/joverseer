@@ -181,6 +181,13 @@ public class OrderEditorListView extends ItemListView {
         };
         filterList.add(f);
         
+        f = new OrderFilter("Character Naming") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "725,728,731,734,737");
+            }
+        };
+        filterList.add(f);
+        
         return filterList;
     }
     

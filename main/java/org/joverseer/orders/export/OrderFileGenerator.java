@@ -2,6 +2,7 @@ package org.joverseer.orders.export;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -72,7 +73,7 @@ public class OrderFileGenerator {
                 pi.getAccountNo(),
                 pi.getSecret(),
                 pi.getPlayerName(),
-                dueDateParts[1], dueDateParts[0], dueDateParts[2],
+                dueDateParts[1], dueDateParts[0], (dueDateParts.length == 2 ? (Calendar.getInstance().get(Calendar.YEAR)) : dueDateParts[2]),
                 order285exists ? "YES" : "NO",
                 orderCount);
         ret += "\n\n";

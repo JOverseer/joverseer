@@ -368,6 +368,16 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
                         new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
 
             }
+            if (e.getEventType().equals(LifecycleEventsEnum.ZoomIncreaseEvent.toString())) {
+            	if (zoom.getSelectedIndex() < zoom.getItemCount()-1) {
+            		zoom.setSelectedIndex(zoom.getSelectedIndex()+1);
+            	}
+            }
+        	if (e.getEventType().equals(LifecycleEventsEnum.ZoomDecreaseEvent.toString())) {
+        		if (zoom.getSelectedIndex() > 0) {
+            		zoom.setSelectedIndex(zoom.getSelectedIndex()-1);
+            	}
+            }
         }
     }
 

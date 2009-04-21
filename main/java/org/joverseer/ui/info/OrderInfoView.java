@@ -23,7 +23,9 @@ public class OrderInfoView extends InfoView {
         lb.relatedGapRow();
         TableUtils.setTableColumnWidths(tables.get(0), new int[]{120, 64, 64, 120, 80, 120, 120, 80});
         
-        return new JScrollPane(lb.getPanel());
+        JScrollPane scp = new JScrollPane(lb.getPanel());
+        scp.getVerticalScrollBar().setUnitIncrement(40);
+        return scp;
     }
     
 

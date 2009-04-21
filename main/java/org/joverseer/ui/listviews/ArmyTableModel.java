@@ -75,7 +75,7 @@ public class ArmyTableModel extends ItemTableModel {
 			}
 		} else if (i==6) { 
 			if (army.getElements().size() > 0) {
-				return CombatUtils.getNakedHeavyInfantryEquivalent(army);
+				return CombatUtils.getNakedHeavyInfantryEquivalent(army, null);
 			} else {
 				return null;
 			}

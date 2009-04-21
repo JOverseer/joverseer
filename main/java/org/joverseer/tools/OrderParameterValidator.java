@@ -138,7 +138,7 @@ public class OrderParameterValidator {
         }
         return null;
     }
-
+    
     public OrderValidationResult checkOrder(Order o) {
         if (o.isBlank())
             return null;

@@ -53,7 +53,7 @@ public class CombatArmyTableModel extends BeanTableModel {
             if (getCombat() == null) {
                 return 0;
             } else {
-                return getCombat().computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d);
+                return getCombat().computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d, false);
             }
         } else if (arg1 == iCon) {
             if (getCombat() == null) {

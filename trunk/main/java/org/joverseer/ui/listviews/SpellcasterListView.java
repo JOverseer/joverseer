@@ -265,6 +265,7 @@ public class SpellcasterListView extends BaseItemListView {
     
     SpellList getSpellsFromFilters() {
     	SpellList sl = (SpellList) combo.getSelectedItem();
+    	if (sl == null) return null;
         ArrayList<Integer> spells = sl.getSpells();
         ArrayList<String> spellDescrs = sl.getSpellDescrs();
         ArrayList<Integer> retSpells = new ArrayList<Integer>();

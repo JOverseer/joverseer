@@ -77,18 +77,24 @@ public class Combat implements Serializable, IHasMapLocation {
         climate = ClimateEnum.Cool;
     }
     
-    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate) {
-        return computeNativeArmyStrength(ca, terrain, climate, null);
+    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, boolean againstPopCenter) {
+        return computeNativeArmyStrength(ca, terrain, climate, null, againstPopCenter);
     }
     
-    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride) {
+    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride, boolean againstPopCenter) {
         int strength = 0;
+        boolean wm = false;
         for (ArmyElement ae : ca.getElements()) {
             Integer s = InfoUtils.getTroopStrength(ae.getArmyElementType(), "Attack");
+            if (ae.getArmyElementType() == ArmyElementType.WarMachimes && againstPopCenter) {
+            	s = 200;
+            	wm = true;
+            }
             if (s == null)
                 continue;
-            int tacticMod = InfoUtils.getTroopTacticModifier(ae.getArmyElementType(), ca.getTactic());
-            int terrainMod = InfoUtils.getTroopTerrainModifier(ae.getArmyElementType(), terrain);
+            
+            int tacticMod = !wm ? InfoUtils.getTroopTacticModifier(ae.getArmyElementType(), ca.getTactic()) : 100;
+            int terrainMod = !wm ? InfoUtils.getTroopTerrainModifier(ae.getArmyElementType(), terrain) : 100;
             double mod = (double) (ae.getTraining() + ae.getWeapons() + tacticMod + terrainMod) / 400d;
             
             strength += s * ae.getNumber() * mod;
@@ -125,7 +131,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     public static int computeModifiedArmyStrength(HexTerrainEnum terrain, ClimateEnum climate, CombatArmy att,
             CombatArmy def) {
-        int s = computeNativeArmyStrength(att, terrain, climate);
+        int s = computeNativeArmyStrength(att, terrain, climate, false);
         int tacticVsTacticMod = InfoUtils.getTacticVsTacticModifier(att.getTactic(), def.getTactic());
         s = (int) (s * (double) tacticVsTacticMod / 100d);
         return s;
@@ -152,17 +158,18 @@ public class Combat implements Serializable, IHasMapLocation {
         for (int i=0; i<maxArmies; i++) {
             if (attackerSide == 0) {
                 if (side1[i] == null) continue;
-                int str = computeNativeArmyStrength(side1[i], terrain, climate);
+                int str = computeNativeArmyStrength(side1[i], terrain, climate, true);
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(side1Relations[i][maxAll-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                wms += side1[i].getWM().getNumber();
+                int wm = side1[i].getWM().getNumber(); 
+                wms += wm;
                 totalCon += computNativeArmyConstitution(side1[i]);
                 losses[i] = side1[i].getLosses();
             } else {
                 if (side2[i] == null) continue;
-                int str = computeNativeArmyStrength(side2[i], terrain, climate);
+                int str = computeNativeArmyStrength(side2[i], terrain, climate, true);
                 // adjust for relations
                 int relMod = CombatModifiers.getRelationModifier(side2Relations[i][maxAll-1]);
                 str = (int)(str * (double)relMod / 100d);

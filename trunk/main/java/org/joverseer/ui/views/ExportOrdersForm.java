@@ -82,6 +82,7 @@ public class ExportOrdersForm extends AbstractForm {
     
     boolean uncheckedOrders = false;
     boolean ordersWithErrors = false;
+    boolean ordersWithWarnings = false;
     boolean missingOrders = false;
     boolean duplicateSkillOrders = false;
     
@@ -159,7 +160,7 @@ public class ExportOrdersForm extends AbstractForm {
                     ordersOk = true;
                 }
                 catch (Exception exc) {
-                    orders.setText(exc.getMessage());
+                	orders.setText("Unexpected error generating order file.");
                     ordersOk = false;
                     logger.error(exc);
                 }
@@ -212,7 +213,13 @@ public class ExportOrdersForm extends AbstractForm {
         fileChooser.setApproveButtonText("Save");
         fileChooser.setSelectedFile(new File(fname));
         
-        String lastDir = GamePreference.getValueForPreference("orderDir", ExportOrdersForm.class);
+        String orderPathPref = PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder");
+        String lastDir = "";
+        if ("importDir".equals(orderPathPref)) {
+        	lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
+        } else {
+        	lastDir = GamePreference.getValueForPreference("orderDir", ExportOrdersForm.class);
+        }
         if (lastDir == null) {
             lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
         }
@@ -222,7 +229,9 @@ public class ExportOrdersForm extends AbstractForm {
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = fileChooser.getSelectedFile();
-                GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
+                if ("importDir".equals(orderPathPref)) {
+                	GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
+                }
                 FileWriter f = new FileWriter(file);
                 String txt = orders.getText();
                 txt = txt.replace("\n", System.getProperty("line.separator"));
@@ -362,6 +371,7 @@ public class ExportOrdersForm extends AbstractForm {
         ordersWithErrors = false;
         uncheckedOrders = false;
         duplicateSkillOrders = false;
+        ordersWithWarnings = false;
         
         OrderResultContainer orc = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
         OrderParameterValidator validator = new OrderParameterValidator();
@@ -373,20 +383,31 @@ public class ExportOrdersForm extends AbstractForm {
                     if (orc.getResultsForOrder(ch.getOrders()[i]).size() == 0) {
                         uncheckedOrders = true;
                     } else {
-                        if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Error ||
-                                orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Warning) {
+                        if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Error){
                             ordersWithErrors = true;
+                        } else if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Warning) {
+                        	ordersWithWarnings = true;
                         }
                     }
                     OrderValidationResult ovr = validator.checkForDuplicateSkillOrder(ch.getOrders()[i]);
                     if (ovr != null) {
                     	duplicateSkillOrders = true;
                     }
+                    ovr = validator.checkOrder(ch.getOrders()[i]);
+                    if (ovr != null && ovr.getLevel() == OrderValidationResult.ERROR) {
+                    	ordersWithErrors = true;
+                    }
+                    for (int j=0; j<=ch.getOrders()[i].getLastParamIndex(); j++) {
+                    	ovr = validator.checkParam(ch.getOrders()[i], j);
+                        if (ovr != null && ovr.getLevel() == OrderValidationResult.ERROR) {
+                        	ordersWithErrors = true;
+                        }	
+                    }
                 }
             }
         }
         
-        if (missingOrders || uncheckedOrders || ordersWithErrors || duplicateSkillOrders) return ORDERS_NOT_OK;
+        if (missingOrders || uncheckedOrders || ordersWithErrors || duplicateSkillOrders || ordersWithWarnings) return ORDERS_NOT_OK;
         return ORDERS_OK;
     }
     
@@ -404,8 +425,14 @@ public class ExportOrdersForm extends AbstractForm {
                 return false;
             }
             if (ordersWithErrors) {
+            	String strictErrorHandling = PreferenceRegistry.instance().getPreferenceValue("submitOrders.strictErrorHandling");
+            	if ("yes".equals(strictErrorHandling)) {
+            		MessageDialog dlg = new MessageDialog("Error", "Some orders have errors. Cannot export.");
+            		dlg.showDialog();
+            		return false;
+            	}
                 cancelExport = false;
-                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have been checked with Orderchecker and have errors or warnings. Continue with export?") {
+                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have errors ! There is a good chance your orders won't be processed correctly! Are you absolutely sure you want to export your orders?") {
                     protected void onCancel() {
                         super.onCancel();
                         cancelExport = true;
@@ -417,6 +444,21 @@ public class ExportOrdersForm extends AbstractForm {
                 };
                 dlg.showDialog();
                 if (cancelExport) return false;
+            } else if (ordersWithWarnings) {
+            	cancelExport = false;
+                ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have warnings! Are you sure you want to export your orders?") {
+                    protected void onCancel() {
+                        super.onCancel();
+                        cancelExport = true;
+                    }
+                    
+                    protected void onConfirm() {
+                    }
+                    
+                };
+                dlg.showDialog();
+                if (cancelExport) return false;
+            	
             }
             if (uncheckedOrders) {
                 ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have not been checked with Orderchecker. Continue with export?") {

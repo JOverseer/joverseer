@@ -22,5 +22,7 @@ public enum LifecycleEventsEnum {
     SelectCharEvent,
     SendOrdersByChat,
     NoteUpdated,
-    SetPalantirMapStyleEvent
+    SetPalantirMapStyleEvent,
+    ZoomIncreaseEvent,
+    ZoomDecreaseEvent
 }

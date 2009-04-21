@@ -204,6 +204,9 @@ public class OrderEditorTableModel extends ItemTableModel {
                 if (i == col) {
                     txt = (String) v;
                 }
+                if (txt.trim().equals("")) {
+                	txt = "";
+                }
                 if (txt == null || txt.equals("")) {
                     txt = "-";
                 }

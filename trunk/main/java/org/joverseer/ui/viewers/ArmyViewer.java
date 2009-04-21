@@ -18,6 +18,9 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmySizeEnum;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -44,6 +47,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
@@ -171,9 +175,13 @@ public class ArmyViewer extends ObjectViewer {
             
             String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents");
             if (pval != null && pval.equals("yes")) {
-            	int nhi = CombatUtils.getNakedHeavyInfantryEquivalent(army);
+            	Character commander = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName()); 
+            	int nhi = CombatUtils.getNakedHeavyInfantryEquivalent(army, commander);
             	if (nhi > 0) {
-            		extraInfo.setText(extraInfo.getText() + " (" + nhi + "enHI)");
+            		int nhi2 = CombatUtils.getNakedHeavyInfantryEquivalent2(army);
+            		int nhi3 = CombatUtils.getNakedHeavyInfantryEquivalent3(army);
+            		//extraInfo.setText(extraInfo.getText() + " (" + nhi + "/" + nhi2 + "/" + nhi3 + "enHI)");
+            		extraInfo.setText(extraInfo.getText() + " (" + nhi2 + "enHI)");
             	}
             }
         } else if (army.getTroopCount() > 0) {
@@ -248,6 +256,8 @@ public class ArmyViewer extends ObjectViewer {
                 		editArmyCommand, 
                 		deleteArmyCommand,
                 		"separator",
+                		new ShowCanCaptureAction(),
+                		"separator",
                 		new ShowInfoSourcePopupCommand(((Army)getFormObject()).getInfoSource())});
         return group.createPopupMenu();
     }
@@ -299,6 +309,33 @@ public class ArmyViewer extends ObjectViewer {
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
+        }
+    }
+    
+    private class ShowCanCaptureAction extends ActionCommand {
+
+        public ShowCanCaptureAction() {
+            super("showCanCaptureAction");
+        }
+
+        protected void doExecuteCommand() {
+            Army a = (org.joverseer.domain.Army) getFormObject();
+            String str = "";
+            for (PopulationCenterSizeEnum pcSize : PopulationCenterSizeEnum.values()) {
+            	for (int f = FortificationSizeEnum.values().length-1; f>=0; f--) {
+            		FortificationSizeEnum fort = FortificationSizeEnum.values()[f];
+	            	int i = CombatUtils.canCapturePopCenter(a, pcSize, fort);
+	            	if (i > -1) {
+	            		str = pcSize + "/" + fort + " at loyalty " + i + "\n" + str;
+	            	}
+	            	if (i == 100) break;
+            	}
+            }
+            if (!str.equals("")) {
+            	str = "Army can capture (assume Hated relations and no defending army):\n" + str;
+            	MessageDialog dlg = new MessageDialog("Army vs Pop Center", str);
+            	dlg.showDialog();
+            }
         }
     }
     

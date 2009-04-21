@@ -123,7 +123,7 @@ public class NationStatisticsListView extends BaseItemListView {
                         nsw.setTransports(nsw.getTransports() + ae.getNumber());
                     }
                 }
-                nsw.setArmyEHI(nsw.getArmyEHI() + CombatUtils.getNakedHeavyInfantryEquivalent(a));
+                nsw.setArmyEHI(nsw.getArmyEHI() + CombatUtils.getNakedHeavyInfantryEquivalent(a, null));
                 nsw.setTroopCount(nsw.getTroopCount() + a.computeNumberOfMen());
             }
 

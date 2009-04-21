@@ -650,10 +650,10 @@
 						<value>submitOrders.method</value>
 					</property>
 					<property name="description">
-						<value>Method</value>
+						<value>Autosubmit Method</value>
 					</property>
 					<property name="group">
-						<value>Auto Submit Orders</value>
+						<value>Submit Orders</value>
 					</property>
 					<property name="defaultValue">
 						<value>meturn</value>
@@ -679,15 +679,51 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.defaultFolder</value>
+					</property>
+					<property name="description">
+						<value>Order File Directory</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
+					</property>
+					<property name="defaultValue">
+						<value>importDir</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>importDir</value>
+								</property>
+								<property name="description">
+									<value>Turn Directory</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>orderDir</value>
+								</property>
+								<property name="description">
+									<value>Global Order Directory</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>submitOrders.recipientEmail</value>
 					</property>
 					<property name="description">
-						<value>Recipient Address</value>
+						<value>Autosubmit  Recipient Address</value>
 					</property>
 					<property name="group">
-						<value>Auto Submit Orders</value>
+						<value>Submit Orders</value>
 					</property>
 					<property name="type">
 						<value>text</value>
@@ -701,10 +737,10 @@
 						<value>submitOrders.url</value>
 					</property>
 					<property name="description">
-						<value>URL</value>
+						<value>Autosubmit  URL</value>
 					</property>
 					<property name="group">
-						<value>Auto Submit Orders</value>
+						<value>Submit Orders</value>
 					</property>
 					<property name="type">
 						<value>text</value>
@@ -721,7 +757,29 @@
 						<value>Autosave Game After Version Change</value>
 					</property>
 					<property name="group">
-						<value>Auto Submit Orders</value>
+						<value>Submit Orders</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>	
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.strictErrorHandling</value>
+					</property>
+					<property name="description">
+						<value>Strict Error Handling</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
 					</property>
 					<property name="defaultValue">
 						<value>yes</value>

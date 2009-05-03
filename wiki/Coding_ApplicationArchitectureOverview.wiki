@@ -1,0 +1,54 @@
+#Overview of the Application Architecture
+
+= Introduction =
+
+This page describes the high level architecture of the application from the developer's perspective.
+
+= Application Architecture =
+
+The application is mainly divided into two areas: the domain and logic code, and the user interface code. The domain contains the classes that hold the game information, and the basic application logic, such as importing files. The user interface holds all code relevant to rendering the ui.
+
+== Domain Model ==
+
+All information about the game is stored in the *Game* class (org.joverseer.game.Game). The game contains *metadata* information and *turn* information.
+
+The *metadata* is the background information, such as the map information (hexes, terrain, etc), nations (nation names, SNAs, etc), order information (order numbers, names, and validation info) and the starting information (starting characters, pop centers and armies).
+
+The *turn* information contains the actual game information for each turn of the game, such as characters, pop centers, armies, rumors, artifacts, etc.
+
+=== Metadata ===
+
+To do
+
+=== Turn Information ===
+
+The turn information is stored in the *Turn* class (org.joverseer.game.Turn). The turn stores the turn number, the turn date, the season, and a hashtable of containers, which hold the actual domain objects. 
+
+The container is an integral part of the application as it provides facilities for storing a list of objects, and searching and updating them efficiently. The container (org.joverseer.support.Container) basically stores an ArrayList of objects, and provides caching and the ability to find objects by one of their properties (e.g. findAllByProperty("hexNo", 3120) will returns all items stored in the container whose hexNo property is equal to 3120.
+
+The TurnElementsEnum enumerates all objects that are storable in the turn's containers (Characters, Population Centers, etc). All items are represented by a domain object (e.g. org.joverseer.domain.Character).
+
+The *GameHolder* class provides static access to the currently loaded game. So, to get all characters located at 3120 for the current turn of the game, one can do:
+GameHolder.instance().getTurn().findAllByProperty("hexNo", 3120)
+
+=== Interfaces ===
+
+There are some standard interfaces that all domain objects implement. These are:
+- IHasMapLocation --> the domain object is associated with a location (hex) on the map. Characters, Pop Centers, Armies, Combats, are some domain objects that implement this.
+- IHasTurnNumber --> the domain object is associated with a specific turn.
+- IBelongsToNation --> the domain object is associated with a specific nation.
+
+=== Information Sources ===
+
+The concept of information sources is used throughout the application to link a domain object or a piece of information to the source it was retrieved from. So, when a character is read from an xml file, the character is associated with a XmlTurnInfoSource. If a character is read from a pdf file, the character is associated with a PdfTurnInfoSource. If a character is created by the user, it is associated with a UserInfoSource.
+
+Most domain objects have an infoSource property.
+
+== Persistent Storage ==
+
+The game information is stored to the disk using the standard Java Serialization mechanism. No database is used. The Game is serialized to a disk file, and with it, all associated serializable information (metadata and turn information) is serialized.
+
+This approach was chosen for its simplicity, as it requires minimum additional coding in order to save and load the domain model. However it has a number of implications:
+- Game file size increases in a linear manner wrt to the number of turns and number of nations in the game.
+- Likewise save and load times increase linarly.
+- Finally, at any one time the program has to load the entire game information in memory in order to access the game data.

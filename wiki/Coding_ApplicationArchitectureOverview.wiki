@@ -97,4 +97,35 @@ The standard functionality also allows the developer to easily implement additio
 The application context is a concept introduced by the Spring Right Client framework. Basically it is a set of xml files where the basic objects and windows of the application are defined. For instance, the map renderers are defined in these xml files. Also, all windows are defined there.
 
 These xml files are located in the /resources/ctx folder. They are:
+ * jideApplicationContext.xml: Defines the basic application beans
+ * richclient-page-application-context.xml: Defines all the application views
+ * preferences-context.xml: Defines the user preferences
 
+Also, Spring externalizes most ui resources (images, labels and messages) to files. These are /resources/ui/messages.properties and /resources/ui/images.properties. 
+
+Also, the structure of the application menus is defined in /resources/ui/commands-context.xml.
+
+== Preferences ==
+
+JOverseer uses the standard Java preferences mechanism to store user preferences. In windows there are stored in the user's profile in the registry. However, JOverseer uses the org.joverseer.preferences package to wrap the standard mechanism.
+
+Access to preferences is via tha PreferenceRegistry singleton class. The set of preferences is declared in the preferences-context.xml, so that each preference has a name and a default value, which is returned if no value is found in the registry.
+
+Also, the PreferenceRegistry defines the required information to dynamically build the Preferences dialog which allows the user to set the preferences.
+
+
+== Application Events ==
+
+JOverseer heavily relies on Spring's Application Event mechanism for communication between different parts of the application. This allows for looser coupling of code.
+
+Spring's event mechanism provides an application wide event bus which allows events to be published to registered subscribers.
+
+Most important actions in JOverseer (such as loading a new game, changing the current turn, or editing an order) publish an event. This event is then handled by other components, each component doing whatever needs to be done.
+
+For instance, when an order is changed, the OrderChangedEvent is fired. This event is handled by:
+ * The MapView, to redraw the order, if needed
+ * The Current Hex View, to refresh the order information shown, if needed
+ * The Order Editor, to refresh the order being shown, if needed
+ * The Economy Calculator, to update the cost of orders, if needed
+
+The events are declared in org.joverseer.ui.LifecycleEventsEnum.

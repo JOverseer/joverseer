@@ -1,4 +1,4 @@
-#Overview of the Application Architecture
+#summary Overview of the Application Architecture
 
 = Introduction =
 

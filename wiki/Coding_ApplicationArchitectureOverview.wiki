@@ -34,9 +34,9 @@ The *GameHolder* class provides static access to the currently loaded game. So, 
 === Interfaces ===
 
 There are some standard interfaces that all domain objects implement. These are:
-- *IHasMapLocation* --> the domain object is associated with a location (hex) on the map. Characters, Pop Centers, Armies, Combats, are some domain objects that implement this.
-- *IHasTurnNumber* --> the domain object is associated with a specific turn.
-- *IBelongsToNation* --> the domain object is associated with a specific nation.
+ * *IHasMapLocation* --> the domain object is associated with a location (hex) on the map. Characters, Pop Centers, Armies, Combats, are some domain objects that implement this.
+ * *IHasTurnNumber* --> the domain object is associated with a specific turn.
+ * *IBelongsToNation* --> the domain object is associated with a specific nation.
 
 === Information Sources ===
 
@@ -49,6 +49,6 @@ Most domain objects have an infoSource property.
 The game information is stored to the disk using the standard Java Serialization mechanism. No database is used. The Game is serialized to a disk file, and with it, all associated serializable information (metadata and turn information) is serialized.
 
 This approach was chosen for its simplicity, as it requires minimum additional coding in order to save and load the domain model. However it has a number of implications:
-- Game file size increases in a linear manner wrt to the number of turns and number of nations in the game.
-- Likewise save and load times increase linarly.
-- Finally, at any one time the program has to load the entire game information in memory in order to access the game data.
+ * Game file size increases in a linear manner wrt to the number of turns and number of nations in the game.
+ * Likewise save and load times increase linarly.
+ * Finally, at any one time the program has to load the entire game information in memory in order to access the game data.

@@ -44,7 +44,7 @@ The concept of information sources is used throughout the application to link a 
 
 Most domain objects have an infoSource property.
 
-== Persistent Storage ==
+=== Persistent Storage ===
 
 The game information is stored to the disk using the standard Java Serialization mechanism. No database is used. The Game is serialized to a disk file, and with it, all associated serializable information (metadata and turn information) is serialized.
 
@@ -52,3 +52,49 @@ This approach was chosen for its simplicity, as it requires minimum additional c
  * Game file size increases in a linear manner wrt to the number of turns and number of nations in the game.
  * Likewise save and load times increase linarly.
  * Finally, at any one time the program has to load the entire game information in memory in order to access the game data.
+
+== Reading Turns ==
+
+Reading information from the files that contain the turn results is responsibility of the `org.joverseer.support.readers` package, and in particular of the `org.joverseer.support.readers.xml.TurnXmlReader` and `org.joverseer.support.readers.pdf.TurnPdfReader` (the former reads the xml files, the latter the pdf files). The Xml file reader uses Apache Digester to translate the xml into java objects, and then use these java objects to populate the game's domain model. The Pdf file reader first parses the pdf into an xml document, the uses Apache Digester to translate this xml document into java objects, and the use these objects to augment the information already read from the xml files. *The Xml reader must precede the Pdf reader, otherwise the results are undefined - the pdf reader only works properly if the turn is already populated with information from the xml files*.
+
+There is also the NewXmlReader, which was intended to read the new xml format, but is not finished (as neither is the new xml format).
+
+There is also the OrderFileReader and OrderTextReader, which parse order files or order reports and add the orders to the game information.
+
+== User Interface ==
+
+The user interface consists of mainly three parts:
+ # The Map
+ # The Current Hex View
+ # The Information Panes
+
+=== The Map ===
+
+The map is implemented by class *org.joverseer.ui.map.MapPanel* which extends JPanel.
+
+Integral to the workings of the map are the Renderers, in package org.joverseer.ui.map.renderers. Each renderer is responsible for drawing a specific type of objects on the map (i.e. the DefaultHexRenderer draws the hexes, the PopulationCenterRenderer draws the population centers). Additional renderers can be implemented to either replace the existing, or add new functionality.
+
+=== The Current Hex View ===
+
+The Current Hex View pane is implemented by class *org.joverseer.ui.viewers.CurrentHexDataViewer*. Its layout is predefined, however it delegates the rendering of the actual information shown to the viewers. There is one viewer for each type of information (i.e. the CharacterViewer is responsible for showing information about a character, the PopulationCenterViewer is responsinble for showing information about the pop center).
+
+Again new viewers can be implemented to replace or extend the existing ones.
+
+=== The Information Panes ===
+
+These are implemented in package org.joverseer.ui.listviews. Most of the information panes extend two base classes the provide the standard functionality that most information panes share. These two base classes are *ItemListView* and *ItemTableModel*. 
+The ItemListView implements a View, which is a Spring Rich Client concept, but which is basically a window which contains a panel with a table and some filters (the combo boxes on top), and buttons). The ItemTableModel is a BeanTableModel, which extends the standard Java Table Model to automatically operate on Java Beans (i.e. java objects).
+
+The standard functionality provided is:
+ * The ability to easily define filters. Filters are the combo boxes and text box on the top part of the information panes that let the user filter the information shown.
+ * The ability to double click on a line to center the map (provided the object implements the IHasMapLocation interface).
+ * The ability to show the nation either by number or by nation name (provided the object implements the IBelongsToNation interface).
+
+The standard functionality also allows the developer to easily implement additional information panes, by overriding some of the methods of ItemListView and ItemTableModel.
+
+== The Application Context ==
+
+The application context is a concept introduced by the Spring Right Client framework. Basically it is a set of xml files where the basic objects and windows of the application are defined. For instance, the map renderers are defined in these xml files. Also, all windows are defined there.
+
+These xml files are located in the /resources/ctx folder. They are:
+

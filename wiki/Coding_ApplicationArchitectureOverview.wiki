@@ -57,9 +57,9 @@ This approach was chosen for its simplicity, as it requires minimum additional c
 
 Reading information from the files that contain the turn results is responsibility of the `org.joverseer.support.readers` package, and in particular of the `org.joverseer.support.readers.xml.TurnXmlReader` and `org.joverseer.support.readers.pdf.TurnPdfReader` (the former reads the xml files, the latter the pdf files). The Xml file reader uses Apache Digester to translate the xml into java objects, and then use these java objects to populate the game's domain model. The Pdf file reader first parses the pdf into an xml document, the uses Apache Digester to translate this xml document into java objects, and the use these objects to augment the information already read from the xml files. *The Xml reader must precede the Pdf reader, otherwise the results are undefined - the pdf reader only works properly if the turn is already populated with information from the xml files*.
 
-There is also the NewXmlReader, which was intended to read the new xml format, but is not finished (as neither is the new xml format).
+There is also the `NewXmlReader`, which was intended to read the new xml format, but is not finished (as neither is the new xml format).
 
-There is also the OrderFileReader and OrderTextReader, which parse order files or order reports and add the orders to the game information.
+There is also the `OrderFileReader` and `OrderTextReader`, which parse order files or order reports and add the orders to the game information.
 
 == User Interface ==
 
@@ -72,25 +72,25 @@ The user interface consists of mainly three parts:
 
 The map is implemented by class *org.joverseer.ui.map.MapPanel* which extends JPanel.
 
-Integral to the workings of the map are the Renderers, in package org.joverseer.ui.map.renderers. Each renderer is responsible for drawing a specific type of objects on the map (i.e. the DefaultHexRenderer draws the hexes, the PopulationCenterRenderer draws the population centers). Additional renderers can be implemented to either replace the existing, or add new functionality.
+Integral to the workings of the map are the Renderers, in package `org.joverseer.ui.map.renderers`. Each renderer is responsible for drawing a specific type of objects on the map (i.e. the `DefaultHexRenderer` draws the hexes, the `PopulationCenterRenderer` draws the population centers). Additional renderers can be implemented to either replace the existing, or add new functionality.
 
 === The Current Hex View ===
 
-The Current Hex View pane is implemented by class *org.joverseer.ui.viewers.CurrentHexDataViewer*. Its layout is predefined, however it delegates the rendering of the actual information shown to the viewers. There is one viewer for each type of information (i.e. the CharacterViewer is responsible for showing information about a character, the PopulationCenterViewer is responsinble for showing information about the pop center).
+The Current Hex View pane is implemented by class *org.joverseer.ui.viewers.CurrentHexDataViewer*. Its layout is predefined, however it delegates the rendering of the actual information shown to the viewers. There is one viewer for each type of information (i.e. the `CharacterViewer` is responsible for showing information about a character, the `PopulationCenterViewer` is responsinble for showing information about the pop center).
 
 Again new viewers can be implemented to replace or extend the existing ones.
 
 === The Information Panes ===
 
-These are implemented in package org.joverseer.ui.listviews. Most of the information panes extend two base classes the provide the standard functionality that most information panes share. These two base classes are *ItemListView* and *ItemTableModel*. 
-The ItemListView implements a View, which is a Spring Rich Client concept, but which is basically a window which contains a panel with a table and some filters (the combo boxes on top), and buttons). The ItemTableModel is a BeanTableModel, which extends the standard Java Table Model to automatically operate on Java Beans (i.e. java objects).
+These are implemented in package `org.joverseer.ui.listviews`. Most of the information panes extend two base classes the provide the standard functionality that most information panes share. These two base classes are *`ItemListView`* and *`ItemTableModel`*. 
+The `ItemListView` implements a View, which is a Spring Rich Client concept, but which is basically a window which contains a panel with a table and some filters (the combo boxes on top), and buttons). The `ItemTableModel` is a `BeanTableModel`, which extends the standard Java Table Model to automatically operate on Java Beans (i.e. java objects).
 
 The standard functionality provided is:
  * The ability to easily define filters. Filters are the combo boxes and text box on the top part of the information panes that let the user filter the information shown.
  * The ability to double click on a line to center the map (provided the object implements the IHasMapLocation interface).
  * The ability to show the nation either by number or by nation name (provided the object implements the IBelongsToNation interface).
 
-The standard functionality also allows the developer to easily implement additional information panes, by overriding some of the methods of ItemListView and ItemTableModel.
+The standard functionality also allows the developer to easily implement additional information panes, by overriding some of the methods of `ItemListView` and `ItemTableModel`.
 
 == The Application Context ==
 
@@ -109,9 +109,9 @@ Also, the structure of the application menus is defined in /resources/ui/command
 
 JOverseer uses the standard Java preferences mechanism to store user preferences. In windows there are stored in the user's profile in the registry. However, JOverseer uses the org.joverseer.preferences package to wrap the standard mechanism.
 
-Access to preferences is via tha PreferenceRegistry singleton class. The set of preferences is declared in the preferences-context.xml, so that each preference has a name and a default value, which is returned if no value is found in the registry.
+Access to preferences is via tha `PreferenceRegistry` singleton class. The set of preferences is declared in the preferences-context.xml, so that each preference has a name and a default value, which is returned if no value is found in the registry.
 
-Also, the PreferenceRegistry defines the required information to dynamically build the Preferences dialog which allows the user to set the preferences.
+Also, the `PreferenceRegistry` defines the required information to dynamically build the Preferences dialog which allows the user to set the preferences.
 
 
 == Application Events ==
@@ -122,10 +122,10 @@ Spring's event mechanism provides an application wide event bus which allows eve
 
 Most important actions in JOverseer (such as loading a new game, changing the current turn, or editing an order) publish an event. This event is then handled by other components, each component doing whatever needs to be done.
 
-For instance, when an order is changed, the OrderChangedEvent is fired. This event is handled by:
- * The MapView, to redraw the order, if needed
+For instance, when an order is changed, the `OrderChangedEvent` is fired. This event is handled by:
+ * The Map View, to redraw the order, if needed
  * The Current Hex View, to refresh the order information shown, if needed
  * The Order Editor, to refresh the order being shown, if needed
  * The Economy Calculator, to update the cost of orders, if needed
 
-The events are declared in org.joverseer.ui.LifecycleEventsEnum.
+The events are declared in `org.joverseer.ui.LifecycleEventsEnum`.

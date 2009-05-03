@@ -24,19 +24,19 @@ To do
 
 The turn information is stored in the *Turn* class (org.joverseer.game.Turn). The turn stores the turn number, the turn date, the season, and a hashtable of containers, which hold the actual domain objects. 
 
-The container is an integral part of the application as it provides facilities for storing a list of objects, and searching and updating them efficiently. The container (org.joverseer.support.Container) basically stores an ArrayList of objects, and provides caching and the ability to find objects by one of their properties (e.g. findAllByProperty("hexNo", 3120) will returns all items stored in the container whose hexNo property is equal to 3120.
+The *container* is an integral part of the application as it provides facilities for storing a list of objects, and searching and updating them efficiently. The container (org.joverseer.support.Container) basically stores an ArrayList of objects, and provides caching and the ability to find objects by one of their properties (e.g. `findAllByProperty("hexNo", 3120)` will returns all items stored in the container whose hexNo property is equal to 3120).
 
-The TurnElementsEnum enumerates all objects that are storable in the turn's containers (Characters, Population Centers, etc). All items are represented by a domain object (e.g. org.joverseer.domain.Character).
+The *TurnElementsEnum* enumerates all objects that are storable in the turn's containers (Characters, Population Centers, etc). All items are represented by a domain object (e.g. org.joverseer.domain.Character).
 
-The *GameHolder* class provides static access to the currently loaded game. So, to get all characters located at 3120 for the current turn of the game, one can do:
-GameHolder.instance().getTurn().findAllByProperty("hexNo", 3120)
+The *GameHolder* class provides static access to the currently loaded game. So, to get all characters located at 3120 for the current turn of the game, one can use:
+`GameHolder.instance().getTurn().findAllByProperty("hexNo", 3120)`
 
 === Interfaces ===
 
 There are some standard interfaces that all domain objects implement. These are:
-- IHasMapLocation --> the domain object is associated with a location (hex) on the map. Characters, Pop Centers, Armies, Combats, are some domain objects that implement this.
-- IHasTurnNumber --> the domain object is associated with a specific turn.
-- IBelongsToNation --> the domain object is associated with a specific nation.
+- *IHasMapLocation* --> the domain object is associated with a location (hex) on the map. Characters, Pop Centers, Armies, Combats, are some domain objects that implement this.
+- *IHasTurnNumber* --> the domain object is associated with a specific turn.
+- *IBelongsToNation* --> the domain object is associated with a specific nation.
 
 === Information Sources ===
 

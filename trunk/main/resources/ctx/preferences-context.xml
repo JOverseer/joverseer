@@ -771,27 +771,7 @@
 					</property>
 				</bean>
 				
-				<bean class="org.joverseer.preferences.Preference">
-					<property name="key">
-						<value>submitOrders.strictErrorHandling</value>
-					</property>
-					<property name="description">
-						<value>Strict Error Handling</value>
-					</property>
-					<property name="group">
-						<value>Submit Orders</value>
-					</property>
-					<property name="defaultValue">
-						<value>yes</value>
-					</property>
-					
-					<property name="domain">
-						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>	
-						</list>
-					</property>
-				</bean>
+			
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">

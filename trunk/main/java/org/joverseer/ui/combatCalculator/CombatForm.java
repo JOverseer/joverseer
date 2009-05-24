@@ -18,6 +18,7 @@ import java.util.Locale;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -139,6 +140,21 @@ public class CombatForm extends AbstractForm {
         cb.setPreferredSize(new Dimension(100, 20));
         lb.cell(cb, "colspec=left:120px");
         cb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                commit();
+                runCombat();
+            }
+        });
+        lb.gapCol();
+        lb.gapCol();
+        lb.relatedGapRow();
+        
+        lb.cell(new JLabel("Attack PC :"), "colspec=left:80px");
+        lb.gapCol();
+        JCheckBox chkb = (JCheckBox)sbf.createBoundCheckBox("attackPopCenter").getControl();
+        chkb.setPreferredSize(new Dimension(100, 20));
+        lb.cell(chkb, "colspec=left:120px");
+        chkb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 commit();
                 runCombat();
@@ -427,7 +443,7 @@ public class CombatForm extends AbstractForm {
         if (side1TableModel.getRowCount() > 0 && side2TableModel.getRowCount() > 0) {
             round = 1;
         }
-        if (popCenterTableModel.getRows().size() > 0) {
+        if (c.getAttackPopCenter() && popCenterTableModel.getRows().size() > 0) {
             c.runPcBattle(0, round);
         }
         for (int i = 0; i < side1TableModel.getRowCount(); i++) {
@@ -466,10 +482,18 @@ public class CombatForm extends AbstractForm {
         }
         side2TableModel.setRows(sa);
 
+        sa = new ArrayList();
+        if (c.getSide2Pc() != null) {
+        	sa.add(c.getSide2Pc());
+        	
+        }
+        popCenterTableModel.setRows(sa);
+        
         runCombat();
 
         side1TableModel.fireTableDataChanged();
         side2TableModel.fireTableDataChanged();
+        popCenterTableModel.fireTableDataChanged();
     }
 
     class SwitchSideCommand extends ActionCommand {

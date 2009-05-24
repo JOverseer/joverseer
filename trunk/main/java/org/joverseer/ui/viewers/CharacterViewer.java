@@ -961,6 +961,7 @@ public class CharacterViewer extends ObjectViewer {
                     }
                     form.commit();
                     c.setId(Character.getIdFromName(c.getName()));
+                    GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).refreshItem(c);
                     Application.instance().getApplicationContext().publishEvent(
                             new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this, this));
                     return true;

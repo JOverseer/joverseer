@@ -10,6 +10,7 @@ import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.info.InfoUtils;
 import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
@@ -225,7 +226,18 @@ public class CombatWrapper {
 	    			game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(ae);
 	    		}
     			ae = new ArmyEstimate();
-
+    			Nation n = game.getMetadata().getNationByName(ca.getNation());
+    			if (n == null) {
+    				Character c = (Character)game.getMetadata().getCharacters().findFirstByProperty("name", commanderName);
+    				if (c != null) {
+    					ae.setNationNo(c.getNationNo());
+    				} else {
+    					c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", commanderName);
+    					if (c != null) ae.setNationNo(c.getNationNo());
+    				}
+    			} else {
+    				ae.setNationNo(n == null ? null : n.getNumber());
+    			}
 	    		ae.setCommanderName(commanderName);
 	    		ae.setCommanderTitle(commanderTitle);
 	    		ae.setHexNo(getHexNo());
@@ -241,8 +253,13 @@ public class CombatWrapper {
 	    		
 	    		// morale
 	    		String moraleRange = InfoUtils.getArmyMoraleRange(ca.getMorale());
-	    		ae.setMoraleRange(moraleRange);
-	    		ae.setMorale(getRangeAverage(moraleRange));
+	    		if (moraleRange != null) {
+	    			ae.setMoraleRange(moraleRange);
+	    			ae.setMorale(getRangeAverage(moraleRange));
+	    		} else {
+	    			ae.setMoraleRange("?");
+	    			ae.setMorale(30);
+	    		}
 	    		
 	    		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
 	    		

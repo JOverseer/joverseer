@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.FortificationSizeEnum;
@@ -24,6 +25,11 @@ import org.joverseer.tools.combatCalc.CombatPopCenter;
 
 //TODO Needs to be merged with some other methods - maybe combat utils
 public class CombatUtils {
+	
+	/**
+	 * Old way of computing enHI
+	 * Simply take into account number of troops per troop type, ignoring morale, training, weapons, etc
+	 */
     public static int getNakedHeavyInfantryEquivalent2(Army a) {
         int nhi = 0;
         for (ArmyElement ae : a.getElements()) {
@@ -47,6 +53,10 @@ public class CombatUtils {
         return nhi;
     }
     
+    /**
+     * Heuristic method for computing enHI
+     * Takes into account weapons, training, command total, morale, etc 
+     */
     public static int getNakedHeavyInfantryEquivalent(Army a, Character c) {
         int nhi = 0;
         for (ArmyElement ae : a.getElements()) {
@@ -75,13 +85,53 @@ public class CombatUtils {
         return nhi;
     }
     
+    public static int getNakedHeavyInfantryEquivalent(CombatArmy a) {
+        int nhi = 0;
+        for (ArmyElement ae : a.getElements()) {
+            double f = 0;
+            if (ae.getArmyElementType().equals(ArmyElementType.HeavyCavalry)) {
+                f = 1.6;
+            } else if (ae.getArmyElementType().equals(ArmyElementType.LightCavalry)) {
+                f = .8;
+            } else if (ae.getArmyElementType().equals(ArmyElementType.HeavyInfantry)) {
+                //nhi += ae.getNumber();
+            	f = 1;
+            } else if (ae.getArmyElementType().equals(ArmyElementType.LightInfantry)) {
+                f = .5;
+            } else if (ae.getArmyElementType().equals(ArmyElementType.Archers)) {
+                f = .4;
+            } else if (ae.getArmyElementType().equals(ArmyElementType.MenAtArms)) {
+                f = .2;
+            }  
+            int commandRank = a.getCommandRank();
+            double wf = (180d + ae.getWeapons() + ae.getTraining())/400d / (200d / 400d);
+            double cf = (a.getMorale() + commandRank + 100d)/200d / (160d/200d);
+            double af = (100d + ae.getArmor()) / 100d;
+            f = (f * wf * cf) + (2 * f * af);
+            f /= 3;
+            nhi += new Double(ae.getNumber() * f).intValue();
+        }
+        return nhi;
+    }
+    
+    /**
+     * Computes eNHI based on the combat calculator
+     */
     public static int getNakedHeavyInfantryEquivalent3(Army a) {
-        int nhi1 = getNakedHeavyInfantryEquivalent(a, null) * 3;
+    	return getNakedHeavyInfantryEquivalent3(new CombatArmy(a));
+    }
+    
+    public static int getNakedHeavyInfantryEquivalent3(ArmyEstimate a) {
+    	return getNakedHeavyInfantryEquivalent3(new CombatArmy(a));
+    }
+    
+    public static int getNakedHeavyInfantryEquivalent3(CombatArmy ca) {
+        int nhi1 = getNakedHeavyInfantryEquivalent(ca) * 3;
         int nhi2 = 0;
         
         while (true) {
         	int nhi = (nhi1 + nhi2) / 2;
-	        CombatArmy ca = new CombatArmy(a);
+	        ca.setLosses(0);
 	        CombatArmy ca2 = new CombatArmy();
 	        ArrayList<ArmyElement> aes = new ArrayList<ArmyElement>();
 	        ArmyElement ae =new ArmyElement(ArmyElementType.HeavyInfantry, nhi);

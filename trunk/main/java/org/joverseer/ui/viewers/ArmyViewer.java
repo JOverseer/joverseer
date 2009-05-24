@@ -181,7 +181,7 @@ public class ArmyViewer extends ObjectViewer {
             		int nhi2 = CombatUtils.getNakedHeavyInfantryEquivalent2(army);
             		int nhi3 = CombatUtils.getNakedHeavyInfantryEquivalent3(army);
             		//extraInfo.setText(extraInfo.getText() + " (" + nhi + "/" + nhi2 + "/" + nhi3 + "enHI)");
-            		extraInfo.setText(extraInfo.getText() + " (" + nhi2 + "enHI)");
+            		extraInfo.setText(extraInfo.getText() + " (" + nhi3 + "enHI)");
             	}
             }
         } else if (army.getTroopCount() > 0) {

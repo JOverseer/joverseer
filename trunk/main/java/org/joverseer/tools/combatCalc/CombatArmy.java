@@ -2,6 +2,8 @@ package org.joverseer.tools.combatCalc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -9,8 +11,10 @@ import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmyEstimateElement;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.ClimateEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
@@ -243,4 +247,19 @@ public class CombatArmy implements Serializable {
         setMorale(a.getMorale());
         setTactic(TacticEnum.Standard);
     }
+    
+    public void setBestTactic() {
+    	TacticEnum bestTactic = null;;
+    	int bestStr = -1;
+    	for (TacticEnum t : TacticEnum.values()) {
+    		setTactic(t);
+    		int str = Combat.computeNativeArmyStrength(this, HexTerrainEnum.plains, ClimateEnum.Cool, false);
+    		if (str > bestStr) {
+    			bestTactic = t;
+    			bestStr = str;
+    		}
+    	}
+    	setTactic(bestTactic);
+    }
+    
 }

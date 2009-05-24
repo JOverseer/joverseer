@@ -3,7 +3,10 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmyEstimateElement;
+import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
+import org.joverseer.domain.Character;
 
 /**
  * Table model for ArmyEstimate objects
@@ -12,24 +15,25 @@ import org.springframework.context.MessageSource;
  */
 public class ArmyEstimatesTableModel extends ItemTableModel {
 
-    public static int iLosses = 3;
-    public static int iNumber = 5;
-    public static int iType = 6;
-    public static int iWeapon = 7;
-    public static int iTraining = 9;
-    public static int iArmor = 8;
+    public static int iLosses = 4;
+    public static int iNumber = 6;
+    public static int iType = 7;
+    public static int iWeapon = 8;
+    public static int iTraining = 10;
+    public static int iArmor = 9;
+    public static int iNationNo = 1;
 
     public ArmyEstimatesTableModel(MessageSource messageSource) {
         super(ArmyEstimate.class, messageSource);
     }
 
     protected String[] createColumnPropertyNames() {
-        return new String[] {"hexNo", "commanderName", "commanderTitle", "losses", "moraleRange", "number", "type",
+        return new String[] {"hexNo", "nationNo", "commanderName", "commanderTitle", "losses", "moraleRange", "number", "type",
                 "weapon", "armor", "training"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] {String.class, String.class, String.class, String.class, String.class, String.class,
+        return new Class[] {String.class, String.class, String.class, String.class, String.class, String.class, String.class,
                 String.class, String.class, String.class, String.class};
     }
 

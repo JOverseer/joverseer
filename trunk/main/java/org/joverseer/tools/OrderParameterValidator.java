@@ -14,6 +14,7 @@ import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.StringUtils;
 import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
@@ -91,6 +92,25 @@ public class OrderParameterValidator {
         return orderEditorData;
     }
     
+    public OrderValidationResult checkForEncounter(Order o) {
+    	if (o.isBlank()) return null;
+    	Character c = o.getCharacter();
+    	String orderResults = c.getOrderResults();
+    	if (orderResults == null || orderResults.equals("")) return null;
+    	orderResults = StringUtils.removeAllNewline(orderResults);
+    	orderResults = StringUtils.removeExtraspaces(orderResults);
+    	if (orderResults.contains("had a special encounter. See Encounter Messages.")) {
+    		if (o.getOrderNo() == 285) return null;
+    		int i = o.getCharacter().getOrders()[0] == o ? 1 : 0;
+    		Order o1 = c.getOrders()[i];
+    		if (o1.isBlank()) return null;
+    		if (o1.getOrderNo() != 285) {
+    			return new OrderValidationResult(OrderValidationResult.WARNING, "Character has an encounter but no react encounter order.");
+    		}
+    	}
+    	return null;
+    }
+    
     public OrderValidationResult checkForDuplicateSkillOrder(Order o) {
         if (o.isBlank())
             return null;
@@ -148,6 +168,9 @@ public class OrderParameterValidator {
             return null;
 
         OrderValidationResult ovr = checkForDuplicateSkillOrder(o);
+        if (ovr != null) return ovr;
+        
+        ovr = checkForEncounter(o);
         if (ovr != null) return ovr;
 
         if (om.getRequirement().indexOf("At Capital") >= 0) {
@@ -324,7 +347,7 @@ public class OrderParameterValidator {
                 return new OrderValidationResult(OrderValidationResult.ERROR, "must be between 5 and 17 chars");
             }
         } else if (paramType.equals("dcid")) {
-            if (isCharId(paramValue) || isNumberOK(paramValue, 1, 99999)) {
+            if (isEmpty(paramValue) || isCharId(paramValue) || isNumberOK(paramValue, 1, 99999)) {
                 return null;
             } else {
                 return new OrderValidationResult(OrderValidationResult.ERROR, "must be 5 lowercase chars (including spaces) or a number between 1 and 99999");

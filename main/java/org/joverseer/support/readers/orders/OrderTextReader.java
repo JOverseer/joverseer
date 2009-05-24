@@ -53,7 +53,7 @@ public class OrderTextReader {
 
 	protected boolean isCharacterLine(String line) {
 		if (getTextType() == STANDARD_ORDER_TEXT) {
-			String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s' ]{5}\\) @ \\d{4}.*";
+			String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s' ]{3,5}\\) @ \\d{4}.*";
 			Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE
 					| Pattern.UNICODE_CASE);
 			return chP.matcher(line).matches();

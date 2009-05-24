@@ -7,12 +7,14 @@ import java.util.HashMap;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
+import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
@@ -57,6 +59,8 @@ public class Combat implements Serializable, IHasMapLocation {
     CombatPopCenter side2Pc = null;
     
     int rounds = 0;
+    
+    boolean attackPopCenter = true;
 
     int maxRounds;
     
@@ -76,6 +80,8 @@ public class Combat implements Serializable, IHasMapLocation {
         terrain = HexTerrainEnum.plains;
         climate = ClimateEnum.Cool;
     }
+    
+    
     
     public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, boolean againstPopCenter) {
         return computeNativeArmyStrength(ca, terrain, climate, null, againstPopCenter);
@@ -232,7 +238,7 @@ public class Combat implements Serializable, IHasMapLocation {
             addToLog("Total Side 2 con: " + side2Con);
             side1Con = Math.max(side1Con, 1);
             side2Con = Math.max(side2Con, 1);
-            if (side1Con == 1 || side2Con == 1) return;
+            //if (side1Con == 1 || side2Con == 1) return;
             
             addToLog("");
 
@@ -577,5 +583,37 @@ public class Combat implements Serializable, IHasMapLocation {
         this.side2Pc = side2Pc;
     }
 
+    public void loadTerrainAndClimateFromHex() {
+    	HexInfo hi = (HexInfo)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", getHexNo());
+    	if (hi != null) {
+    		setClimate(hi.getClimate());
+    	}
+    	Hex hex = GameHolder.instance().getGame().getMetadata().getHex(getHexNo());
+    	if (hex != null) {
+    		setTerrain(hex.getTerrain());
+    	}
+    }
+    
+    public void autoSetRelationsToHated() {
+    	
+    	for (int i=0; i<maxAll; i++) {
+    		for (int j=0; j<maxAll; j++) {
+    			side1Relations[i][j] = NationRelationsEnum.Hated;
+    			side2Relations[i][j] = NationRelationsEnum.Hated;
+    		}
+    	}
+    }
+
+
+
+	public boolean getAttackPopCenter() {
+		return attackPopCenter;
+	}
+
+
+
+	public void setAttackPopCenter(boolean attackPopCenter) {
+		this.attackPopCenter = attackPopCenter;
+	}
     
 }

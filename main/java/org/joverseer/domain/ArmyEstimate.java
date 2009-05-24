@@ -9,13 +9,14 @@ import java.util.ArrayList;
  * @author Marios Skounakis
  *
  */
-public class ArmyEstimate implements Serializable, IHasMapLocation {
+public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNation {
 	private static final long serialVersionUID = -3658619439763149556L;
 	String commanderName;
 	String commanderTitle;
 	ArrayList<String> lossesDescriptions = new ArrayList<String>();
 	ArrayList<String> lossesRanges = new ArrayList<String>();
 	ArrayList<Integer> losses = new ArrayList<Integer>();
+	Integer nationNo;
 	
 	String moraleDescription;
 	String moraleRange;
@@ -86,5 +87,22 @@ public class ArmyEstimate implements Serializable, IHasMapLocation {
 	public void setCommanderTitle(String commanderTitle) {
 		this.commanderTitle = commanderTitle;
 	}
+	
+	public int getEffectiveLosses() {
+		double losses = 100;
+		for (int li : getLosses()) {
+			double l = li; 
+			losses = losses * (100d - (double)l) / 100d;
+		}
+		return (int)losses;
+	}
+	public Integer getNationNo() {
+		return nationNo;
+	}
+	public void setNationNo(Integer nationNo) {
+		this.nationNo = nationNo;
+	}
+	
+	
 	
 }

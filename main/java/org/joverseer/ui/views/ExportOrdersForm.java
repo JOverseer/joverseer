@@ -425,12 +425,7 @@ public class ExportOrdersForm extends AbstractForm {
                 return false;
             }
             if (ordersWithErrors) {
-            	String strictErrorHandling = PreferenceRegistry.instance().getPreferenceValue("submitOrders.strictErrorHandling");
-            	if ("yes".equals(strictErrorHandling)) {
-            		MessageDialog dlg = new MessageDialog("Error", "Some orders have errors. Cannot export.");
-            		dlg.showDialog();
-            		return false;
-            	}
+            	
                 cancelExport = false;
                 ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have errors ! There is a good chance your orders won't be processed correctly! Are you absolutely sure you want to export your orders?") {
                     protected void onCancel() {

@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -17,29 +19,41 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.table.JTableHeader;
 
 import org.joverseer.domain.ArmyEstimate;
+import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.tools.CombatUtils;
+import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterTableModel;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.controls.JLabelButton;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.ActionCommand;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.grid.JideTable;
 import com.jidesoft.grid.MultilineTableCellRenderer;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
+import com.jidesoft.grid.SortableTableModel;
 
 /**
  * List view that shows ArmyEstimate objects
@@ -53,7 +67,7 @@ public class ArmyEstimatesListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {42, 80, 64, 130, 48, 48, 100, 120, 120, 120};
+        return new int[] {42, 42, 80, 64, 130, 48, 48, 100, 120, 120, 120};
     }
 
     /**
@@ -159,14 +173,25 @@ public class ArmyEstimatesListView extends ItemListView {
             restoreSorting.addMouseListener(new MouseAdapter() {
 
                 public void mouseClicked(MouseEvent arg0) {
-                    ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+                    //((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
                 }
 
             });
-            ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+            //((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
             restoreSorting.setToolTipText("Restore default sort order");
             tlb.cell(restoreSorting, "colspec=left:30px valign=top");
         }
+        
+        TableLayoutBuilder lb = new TableLayoutBuilder();
+        for (JComponent compo : getButtons()) {
+            lb.cell(compo, "colspec=left:30px valign=top");
+            lb.relatedGapRow();
+            lb.row();
+        }
+        JPanel pnl = lb.getPanel();
+        pnl.setBackground(Color.WHITE);
+        tlb.cell(pnl, "colspec=left:30px valign=top");
+        
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
 
@@ -178,6 +203,8 @@ public class ArmyEstimatesListView extends ItemListView {
 
         return p;
     }
+    
+    
 
     protected void startDragAndDropAction(MouseEvent e) {
         final ArmyEstimate[] selectedArmies = new ArmyEstimate[table.getSelectedRowCount()];
@@ -220,5 +247,61 @@ public class ArmyEstimatesListView extends ItemListView {
         handler.exportAsDrag(table, e, TransferHandler.COPY);
     }
 
+	@Override
+	protected JComponent[] getButtons() {
+		ArrayList<JComponent> comps = new ArrayList<JComponent>();
+        comps.addAll(Arrays.asList(super.getButtons()));
+        JLabelButton popupMenu = new JLabelButton();
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+        popupMenu.setIcon(ico);
+        popupMenu.addActionListener(new PopupMenuActionListener() {
+
+            public JPopupMenu getPopupMenu() {
+            	ArmyEstimate ae = null;
+            	int row = table.getSelectedRow();
+                if (row >= 0) {
+                    int idx = ((SortableTableModel) table.getModel()).getActualRowAt(row);
+                    if (idx < tableModel.getRowCount()) {
+	                    try {
+	                        Object obj = tableModel.getRow(idx);
+	                        ae = (ArmyEstimate) obj;
+	                    } catch (Exception exc) {
+	
+	                    }
+                    }
+                }
+                CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+                        "armyEstimatesListView", new Object[] {
+                        		new ShowENHICommand(ae),
+                        		});
+                return group.createPopupMenu();
+            }
+        });
+        comps.add(popupMenu);
+        return comps.toArray(new JComponent[] {});
+	}
+
+	
+	class ShowENHICommand extends ActionCommand {
+    	ArmyEstimate estimate;
+    	
+		public ShowENHICommand(ArmyEstimate estimate) {
+			super("ShowENHICommand");
+			this.estimate = estimate;
+		}
+
+		protected void doExecuteCommand() {
+			if (estimate != null) {
+				int enhi = new CombatUtils().getNakedHeavyInfantryEquivalent3(estimate);
+				String str = "enHI for " + estimate.getCommanderName() + "'s army is " + enhi + " for estimated losses of " + (100 - estimate.getEffectiveLosses()) + "%";
+				if (estimate.getMoraleRange().equals("?")) {
+					str += "\nJOverseer failed to parse the army's morale from the combat narration, and is assuming 30 morale.";
+				}
+				MessageDialog dlg = new MessageDialog("Estimated enHI", str);
+				dlg.showDialog();
+			}
+		}
+    }
 
 }

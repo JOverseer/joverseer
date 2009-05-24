@@ -422,6 +422,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
                 protected boolean onFinish() {
                     form.commit();
+                    GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).refreshItem(pc);
                     Application.instance().getApplicationContext().publishEvent(
                             new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
                     return true;

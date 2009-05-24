@@ -38,6 +38,7 @@ import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.tools.HexInfoHistory;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
+import org.joverseer.ui.command.CreateCombatForHexCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
@@ -260,7 +261,10 @@ public class HexInfoViewer extends ObjectViewer {
                         showUnfedCavalryArmyRangeCommand,
                         "separator",
                         new AddPopCenterCommand(),
-                        new AddEditNoteCommand(hex.getHexNo())
+                        new AddEditNoteCommand(hex.getHexNo()),
+                        "separator",
+                        new CreateCombatForHexCommand(hex.getHexNo())
+                
                         });
         return group.createPopupMenu();
     }

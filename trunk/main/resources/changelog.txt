@@ -1,3 +1,45 @@
+VERSION 1.0.6
+-------------
+
+14/6/2009
+
+	* Fixed an issue that was causing an application error when hovering the mouse over the column headers in the spellcasters tab, when no game was loaded.
+	
+	* The Game menu now has a shortcut (Alt - G) 
+	
+	* Add a filter to the Orders Information pane to find character naming orders (725, 728, etc)
+	
+	* Scrolling with the mouse wheel in the Order Info view now behaves better
+	
+	* The Orders Information pane will now trim parameters that contain only spaces to the empty string. This should reduce inadvertent errors.
+	
+	* When submitting orders, the program will now check for errors even if the user hasn't run OrderChecker. This should reduce order file errors.
+	
+	* When saving order files the program now automatically suggests the last turn import directory for the game. 
+		+ This can be changed from the Submit Orders --> Order File Directory preference.
+		
+	* Importing orders from text will now correctly read character IDs that are only 3 or 4 characters long (i.e. they are missing the trailing spaces). This should make importing from email messages easier.
+	
+	* Fixed an issue with changing a Character's location from the Edit Character option causing it to be drawn on the map incorrectly.
+	
+	* The 2nd parameter for the 330 order is now optional (it was mandatory up to now, giving an error if it was left blank).
+	
+	* Army Estimates Information pane 
+		+ Added a button to show the Naked Heavy Infantry Equivalent for the army, based on the average estimated losses.
+		+ Added a column for nation
+		+ Improved parsing of combats for fewer parsing errors
+	
+	* The program will now check if a character has an encounter but is not issuing 285 (react) orders and give a warning
+	
+	* The calculation for Naked HI Equivalent is now more accurate (it's based on the combat calc rather than an approximate formula).
+	
+	* In the Current Hex View, the army menu now has an option to show the army's Pop Center Attack Potential. This will open a popup window that shows what pop center size / fortifications the army can capture (assuming unopposed).
+	
+	* Improvements in Combat Calc:
+		+ Added option "Attack Pop Center"
+		+ Added an option in the Hex Info menu to open the combat calc and automatically load all armies and pop center in the hex. The combat is also automatically saved in the "Combats" information pane.
+		
+		
 VERSION 1.0.5
 -------------
 

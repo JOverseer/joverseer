@@ -60,7 +60,8 @@ public class LoadGame extends ActionCommand {
         }
     }
     
-    private void loadGame() {
+    
+    public void loadGame() {
         if (fname == null) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);

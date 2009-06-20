@@ -109,7 +109,15 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
                     menuBar.getMenu(i).setVisible(false);
                 }
             }
-            
+         if (JOverseerJIDEClient.cmdLineArgs != null && JOverseerJIDEClient.cmdLineArgs.length == 1 
+        		 && JOverseerJIDEClient.cmdLineArgs[0].endsWith(".jov")) {
+        	 String fname = JOverseerJIDEClient.cmdLineArgs[0];
+        	 File f = new File(fname);
+        	 if (f.exists()) {
+        		LoadGame lg = new LoadGame(fname);
+        	 	lg.loadGame();
+        	 }
+         }
             
         }
         JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();

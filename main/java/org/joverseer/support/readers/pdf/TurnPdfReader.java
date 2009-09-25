@@ -1049,8 +1049,8 @@ public class TurnPdfReader implements Runnable {
             };
             
             // for all games update powers
-            ArtifactInfo ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
-            if (ai != null && aw.getPower() != null && !aw.getPower().equals("")) {
+            ArtifactInfo artifactInfo = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+            if (artifactInfo != null && aw.getPower() != null && !aw.getPower().equals("")) {
                 // parse power
                 String power = aw.getPower();
                 if (power.startsWith("Increases")) {
@@ -1083,7 +1083,7 @@ public class TurnPdfReader implements Runnable {
                     power += "*"; // mark power as updated for this game
                 }
                 
-                ai.getPowers().set(0, power);
+                artifactInfo.setPower(0, power);
             }
             
             // update hidden artifacts

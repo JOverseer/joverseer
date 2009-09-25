@@ -13,12 +13,19 @@ import java.io.Serializable;
 
 public class ArtifactInfo implements Serializable {
     private static final long serialVersionUID = -2804713282789639647L;
+    public static final String EMPTY_POWER = "Unknown" ;
     String name;
     int no;
-    ArrayList powers = new ArrayList();
+    ArrayList<String> powers ;
     String alignment;
     String owner;
 
+    public ArtifactInfo() {
+    	powers = new ArrayList<String>(2) ;
+    	powers.add(EMPTY_POWER) ;
+    	powers.add(EMPTY_POWER) ;
+    }
+    
     public String getAlignment() {
         return alignment;
     }
@@ -51,11 +58,11 @@ public class ArtifactInfo implements Serializable {
         this.owner = owner;
     }
 
-    public ArrayList getPowers() {
+    public ArrayList<String> getPowers() {
         return powers;
     }
 
-    public void setPowers(ArrayList powers) {
+    public void setPowers(ArrayList<String> powers) {
         this.powers = powers;
     }
 
@@ -72,4 +79,13 @@ public class ArtifactInfo implements Serializable {
         }
         return powers.get(1).toString(); 
     }
+
+	public void setPower(int index, String updatedPower) {
+		if(powers.size() == 2) {
+			powers.set(index, updatedPower) ;
+		}
+		else if ( powers.size() < 2 ) {
+			powers.add(updatedPower) ;
+		}
+	}
 }

@@ -25,7 +25,7 @@ import com.jidesoft.plaf.LookAndFeelFactory;
  * The main class for the JOverseer gui client
  */
 public class JOverseerJIDEClient {
-	private static final String CONTEXT_ROOT = "/ctx";
+	private static final String CONTEXT_ROOT = "/ctx"; 
 	private static final String APPLICATION_CONTEXT = CONTEXT_ROOT + "/jideApplicationContext.xml";
 	private static final String PAGE_CONTEXT = CONTEXT_ROOT + "/richclient-page-application-context.xml";
         private static final String PREFERENCES_CONTEXT = CONTEXT_ROOT + "/preferences-context.xml";

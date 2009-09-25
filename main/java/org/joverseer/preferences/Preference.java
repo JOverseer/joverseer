@@ -4,7 +4,6 @@ import java.util.prefs.Preferences;
 
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerJIDEClient;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
 

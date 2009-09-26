@@ -175,13 +175,10 @@ public class ArmyViewer extends ObjectViewer {
             
             String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents");
             if (pval != null && pval.equals("yes")) {
-            	Character commander = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName()); 
-            	int nhi = CombatUtils.getNakedHeavyInfantryEquivalent(army, commander);
+            	Character commander = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName());
+            	int nhi = army.getENHI();
             	if (nhi > 0) {
-            		int nhi2 = CombatUtils.getNakedHeavyInfantryEquivalent2(army);
-            		int nhi3 = CombatUtils.getNakedHeavyInfantryEquivalent3(army);
-            		//extraInfo.setText(extraInfo.getText() + " (" + nhi + "/" + nhi2 + "/" + nhi3 + "enHI)");
-            		extraInfo.setText(extraInfo.getText() + " (" + nhi3 + "enHI)");
+            		extraInfo.setText(extraInfo.getText() + " (" + nhi + "enHI)");
             	}
             }
         } else if (army.getTroopCount() > 0) {

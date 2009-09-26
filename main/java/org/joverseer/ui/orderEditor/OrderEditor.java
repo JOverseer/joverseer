@@ -304,7 +304,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         glb.append(descriptionLabel = new JLabel("Description :"));
         glb.append(description = new JTextArea());
         descriptionLabel.setVerticalAlignment(JLabel.NORTH);
-        descriptionLabel.setVisible(false);
+        descriptionLabel.setVisible(true);
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
         description.setPreferredSize(new Dimension(200, 50));
@@ -312,7 +312,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         description.setBorder(parameters.getBorder());
         Font f = new Font(description.getFont().getName(), Font.ITALIC, description.getFont().getSize() - 1);
         description.setFont(f);
-        description.setVisible(false);
+        description.setVisible(true);
 
         glb.nextLine();
         glb.append(subeditorPanel = new JPanel(), 2, 1);
@@ -323,6 +323,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         myPanel = glb.getPanel();
         myPanel.setBackground(Color.white);
 
+        descriptionLabel.setVisible(true);
+        description.setVisible(true);
+        descriptionLabel.setVisible(false);
+        description.setVisible(false);
         return myPanel;
     }
 

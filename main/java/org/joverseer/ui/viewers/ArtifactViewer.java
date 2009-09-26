@@ -13,12 +13,15 @@ import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Artifact;
+import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.transferHandlers.ArtifactExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.CharacterExportTransferHandler;
 import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
@@ -77,9 +80,29 @@ public class ArtifactViewer extends ObjectViewer {
         artifactName.setBorder(null);
         artifactName.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                TransferHandler handler = artifactName.getTransferHandler();
-                handler.exportAsDrag(artifactName, e, TransferHandler.COPY);
+            	if (e.getClickCount() == 1) {
+            		TransferHandler handler = artifactName.getTransferHandler();
+                	handler.exportAsDrag(artifactName, e, TransferHandler.COPY);
+            	}
             }
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (arg0.getButton() ==  MouseEvent.BUTTON1 &&
+						arg0.getClickCount() == 2) {
+					Artifact a = (Artifact)getFormObject();
+                    if (a == null) return;
+                    ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", a.getNumber());
+                    if (ai == null) return;
+                    final String descr = "#" + ai.getNo() + " - " + ai.getName() + "\n" +
+                                    ai.getAlignment() + "\n" +
+                                    ai.getPower1() + ", " + ai.getPower2(); 
+                    MessageDialog dlg = new MessageDialog("Artifact Info", descr);
+                    dlg.showDialog();
+				}
+			}
+            
+            
         });
         
         glb.append(owner = new JTextField());

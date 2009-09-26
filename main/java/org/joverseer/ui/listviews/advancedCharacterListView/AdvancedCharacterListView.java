@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews.advancedCharacterListView;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -11,10 +13,13 @@ import java.util.Arrays;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -35,7 +40,9 @@ import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
+import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.richclient.application.Application;
@@ -58,7 +65,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32};
+        return new int[] {96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48};
     }
 
     protected boolean hasTextFilter() {
@@ -96,6 +103,51 @@ public class AdvancedCharacterListView extends BaseItemListView {
         table.setDefaultRenderer(CharacterAttributeWrapper.class, new CharacterAttributeWrapperTableCellRenderer(
                 tableModel));
         table.setDefaultRenderer(ArtifactWrapper.class, new ArtifactWrapperTableCellRenderer(tableModel));
+        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel) {
+
+            public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
+                    int arg4, int arg5) {
+                Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+                JLabel lbl = (JLabel) c;
+                Integer v = (Integer) arg1;
+                if (v == null || v.equals(0)) {
+                    lbl.setText("");
+                }
+                if (arg5 == 1) {
+                    // render capital with bold
+                    int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(arg4);
+                    Object obj = tableModel.getRow(idx);
+                    AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper)obj;
+                    PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ch.getNationNo(), Boolean.TRUE});
+                    if (capital != null && ch.getHexNo() == capital.getHexNo()) {
+                        lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
+                    }
+
+                }
+                
+                return c;
+            }
+
+        });
+        
+        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel) {
+            public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
+                    int arg4, int arg5) {
+                Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+                JLabel lbl = (JLabel) c;
+                
+                if (arg5 == 21) {
+                    String results = (String)arg1;
+                    if (results != null) {
+                        results = "<html><body>" + results.replace("\n", "<br>") + "</body></html>";
+                        lbl.setToolTipText(results);
+                    }
+                } else {
+                	lbl.setToolTipText("");
+                }
+                return c;
+            } 
+        });
         return c;
     }
 
@@ -240,6 +292,8 @@ public class AdvancedCharacterListView extends BaseItemListView {
         private String getRow(AdvancedCharacterWrapper aw) {
             Nation n = game.getMetadata().getNationByNum(aw.getNationNo());
             String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
+            String orderResults = aw.getOrderResults();
+            if (orderResults == null) orderResults = "";
             return aw.getHexNo() + DELIM + aw.getName() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM
                     + getStatText(aw.getCommand()) + DELIM + getStatText(aw.getAgent()) + DELIM
                     + getStatText(aw.getEmmisary()) + DELIM + getStatText(aw.getMage()) + DELIM
@@ -251,7 +305,8 @@ public class AdvancedCharacterListView extends BaseItemListView {
                     + getDeathReasonStr(aw.getDeathReason()) + DELIM 
                     + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource())+ DELIM
                     + aw.getTurnNo() + DELIM
-                    + (aw.getDragonPotential() == null ? "" : aw.getDragonPotential());
+                    + (aw.getDragonPotential() == null ? "" : aw.getDragonPotential()) + DELIM
+                    + orderResults.replace("\n", " ").replace("\r", " ");
         }
 
         public void lostOwnership(Clipboard arg0, Transferable arg1) {

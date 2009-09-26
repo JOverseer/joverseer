@@ -33,6 +33,8 @@ import org.joverseer.tools.CombatUtils;
 import org.joverseer.tools.infoCollectors.characters.CharacterAttributeWrapper;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterTableModel;
+import org.joverseer.ui.listviews.filters.AllegianceFilter;
+import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.JLabelButton;
@@ -69,6 +71,8 @@ public class ArmyEstimatesListView extends ItemListView {
     protected int[] columnWidths() {
         return new int[] {42, 42, 80, 64, 130, 48, 48, 100, 120, 120, 120};
     }
+    
+    
 
     /**
      * Implements its own createControlImpl without calling the base because I need to
@@ -93,24 +97,10 @@ public class ArmyEstimatesListView extends ItemListView {
 
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
-        // create the filter combo
-        AbstractListViewFilter[][] filterLists = getFilters();
-        if (filterLists != null) {
-            for (AbstractListViewFilter[] filterList : filterLists) {
-                JComboBox filter = new JComboBox(filterList);
-                filters.add(filter);
-                filter.addActionListener(new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        setItems();
-                    }
-                });
-                filter.setPreferredSize(new Dimension(150, 20));
-                filter.setOpaque(true);
-                tlb.cell(filter, "align=left");
-                tlb.gapCol();
-            }
-            tlb.row();
+        JPanel fp = createFilterPanel();
+        if (fp != null) {
+	        tlb.cell(fp, "align=left");
+	        tlb.row();
         }
 
         setItems();
@@ -303,5 +293,13 @@ public class ArmyEstimatesListView extends ItemListView {
 			}
 		}
     }
+
+
+	@Override
+	protected AbstractListViewFilter[][] getFilters() {
+        return new AbstractListViewFilter[][] {
+        		NationFilter.createNationFilters(),
+        		AllegianceFilter.createAllegianceFilters()};
+	}
 
 }

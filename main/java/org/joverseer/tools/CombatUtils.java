@@ -85,6 +85,9 @@ public class CombatUtils {
         return nhi;
     }
     
+    /**
+     * Heuristic enHI calculation
+     */
     public static int getNakedHeavyInfantryEquivalent(CombatArmy a) {
         int nhi = 0;
         for (ArmyElement ae : a.getElements()) {
@@ -121,13 +124,19 @@ public class CombatUtils {
     	return getNakedHeavyInfantryEquivalent3(new CombatArmy(a));
     }
     
+    /**
+     * Computes eNHI based on the combat calculator
+     */
     public static int getNakedHeavyInfantryEquivalent3(ArmyEstimate a) {
     	return getNakedHeavyInfantryEquivalent3(new CombatArmy(a));
     }
     
+    /**
+     * Computes eNHI based on the combat calculator
+     */
     public static int getNakedHeavyInfantryEquivalent3(CombatArmy ca) {
-        int nhi1 = getNakedHeavyInfantryEquivalent(ca) * 3;
-        int nhi2 = 0;
+        int nhi1 = getNakedHeavyInfantryEquivalent(ca) * 4 / 3;
+        int nhi2 = getNakedHeavyInfantryEquivalent(ca) / 4 * 3;
         
         while (true) {
         	int nhi = (nhi1 + nhi2) / 2;
@@ -144,7 +153,7 @@ public class CombatUtils {
 	        ca2.setCommandRank(30);
 	        
 	        Combat combat = new Combat();
-	        combat.setMaxRounds(10);
+	        combat.setMaxRounds(20);
 	        combat.addToSide(0, ca);
 	        combat.addToSide(1, ca2);
 	        combat.setClimate(ClimateEnum.Mild);
@@ -152,7 +161,7 @@ public class CombatUtils {
 	        
 	        combat.runArmyBattle();
 	        
-	        if ((ca.getLosses() > 95 && ca2.getLosses() > 95) || Math.abs(ca2.getLosses() - ca.getLosses()) < 1) {
+	        if ((ca.getLosses() > 98 && ca2.getLosses() > 98) || Math.abs(ca2.getLosses() - ca.getLosses()) < 1) {
 	        	return nhi;
 	        } else if (nhi1 - nhi2 < 2){
 	        	return nhi;

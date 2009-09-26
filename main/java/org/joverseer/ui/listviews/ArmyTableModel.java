@@ -27,7 +27,7 @@ public class ArmyTableModel extends ItemTableModel {
 	}
 
 	protected Class[] createColumnClasses() {
-		return new Class[]{Integer.class, String.class, String.class, String.class, Integer.class, String.class, Integer.class, Integer.class, String.class}; 
+		return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class}; 
 	}
 
 	protected Object getValueAtInternal(Object object, int i) {
@@ -74,11 +74,7 @@ public class ArmyTableModel extends ItemTableModel {
 				return null;
 			}
 		} else if (i==6) { 
-			if (army.getElements().size() > 0) {
-				return CombatUtils.getNakedHeavyInfantryEquivalent(army, null);
-			} else {
-				return null;
-			}
+			return army.getENHI();
 		} 
 		else if (i == 8) { 
 			String chars = "";

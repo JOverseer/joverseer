@@ -68,6 +68,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
         ViewDescriptor[] views = viewDescriptorRegistry.getViewDescriptors();
         ArrayList<String> viewGroups = new ArrayList<String>();
         
+        ImageSource imgSource = (ImageSource)Application.instance().getApplicationContext().getBean("imageSource");
         for (ViewDescriptor vd : views) {
             String group = "";
             if (JOverseerJideViewDescriptor.class.isInstance(vd)) {
@@ -99,7 +100,6 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
             ArrayList<String> captions = new ArrayList<String>();
             captions.addAll(viewMap.keySet());
 
-            ImageSource imgSource = (ImageSource)Application.instance().getApplicationContext().getBean("imageSource");
             if (!viewGroup.equals("")) {
                 CommandGroup cg = new CommandGroup(viewGroup);
                 Collections.sort(captions);
@@ -124,8 +124,30 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
                 }
                 addSeparator();
             }
-        }        
+            
+           
+        }    
         
+        // add a final menu that contains ALL VIEWS
+        CommandGroup allViews = new CommandGroup("All");
+        allViews.setLabel("All");
+        ArrayList<String> allCaptions = new ArrayList<String>();
+        for (ViewDescriptor vd : views) {
+        	allCaptions.add(vd.getCaption().replace("&", ""));
+        }
+        Collections.sort(allCaptions);
+        for (String c : allCaptions) {
+        	for (ViewDescriptor vd : views) {
+        		if (vd.getCaption().replace("&", "").equals(c)) {
+        			AbstractCommand cmd = vd.createShowViewCommand(window);
+                    allViews.add(cmd);
+                	
+                    Icon ico = new ImageIcon(imgSource.getImage(vd.getId() + ".icon"));
+                    cmd.setIcon(ico);
+        		}
+        	}
+        }
+        addInternal(allViews);
         
     }
     

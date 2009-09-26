@@ -2,9 +2,9 @@ Name;Char's allegiance;ALLE;NAME;DEMA;HAUG;MEEK;TEN;HUND;ONE;TWO;FLEE
 AIVNEC;FP;com;-;-;-;inj;com;com;-;-;-
 AIVNEC;Neut;-;-;-;-;inj;com;com;-;-;-
 AIVNEC;DS;REC;-;-;-;inj;com;com;-;-;-
-ANDO ANCA;FP;inj;inj;com;-;esc;-;-;-;-;com
-ANDO ANCA;Neut;inj;inj;-;-;esc;-;-;-;-;com
-ANDO ANCA;DS;inj;inj;-;-;esc;-;REC;-;-;com
+ANDO-ANCA;FP;inj;inj;com;-;esc;-;-;-;-;com
+ANDO-ANCA;Neut;inj;inj;-;-;esc;-;-;-;-;com
+ANDO-ANCA;DS;inj;inj;-;-;esc;-;REC;-;-;com
 ANGURTH;FP;com;-;com;inj;com;-;-;-;-;inj
 ANGURTH;Neut;com;-;com;inj;com;-;-;-;-;-
 ANGURTH;DS;-;-;-;REC;com;-;-;-;-;-

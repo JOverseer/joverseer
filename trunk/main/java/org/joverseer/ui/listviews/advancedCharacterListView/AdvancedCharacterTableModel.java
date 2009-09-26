@@ -22,16 +22,16 @@ public class AdvancedCharacterTableModel extends ItemTableModel {
     protected String[] createColumnPropertyNames() {
         return new String[] {"name", "hexNo", "nationNo", "command", "agent", "emmisary", "mage", "stealth", "health",
                 "challenge", "a0", "a1", "a2", "a3", "a4", "a5", "travellingWith", "deathReason", "infoSource",
-                "turnNo", "dragonPotential"};
+                "turnNo", "dragonPotential", "orderResults"};
     }
 
     protected Class[] createColumnClasses() {
-        return new Class[] {String.class, String.class, String.class, CharacterAttributeWrapper.class,
+        return new Class[] {String.class, Integer.class, String.class, CharacterAttributeWrapper.class,
                 CharacterAttributeWrapper.class, CharacterAttributeWrapper.class, CharacterAttributeWrapper.class,
                 CharacterAttributeWrapper.class, CharacterAttributeWrapper.class, CharacterAttributeWrapper.class,
                 ArtifactWrapper.class, ArtifactWrapper.class, ArtifactWrapper.class, ArtifactWrapper.class,
                 ArtifactWrapper.class, ArtifactWrapper.class, String.class, CharacterDeathReasonEnum.class,
-                InfoSource.class, String.class, Integer.class};
+                InfoSource.class, String.class, Integer.class, String.class};
     }
 
 }

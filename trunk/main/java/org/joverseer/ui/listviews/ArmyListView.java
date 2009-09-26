@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -13,20 +15,27 @@ import java.util.Arrays;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
+import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
+import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
@@ -53,11 +62,9 @@ public class ArmyListView extends ItemListView {
     }
 
     protected AbstractListViewFilter[][] getFilters() {
-    	ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-        filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-        filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
         return new AbstractListViewFilter[][] {
-                filters.toArray(new AbstractListViewFilter[] {})};
+        		NationFilter.createNationFilters(),
+        		AllegianceFilter.createAllegianceFilters()};
     }
     
     
@@ -77,26 +84,7 @@ public class ArmyListView extends ItemListView {
 		return true;
 	}
 
-	protected JComponent createControlImpl() {
-        JComponent c = super.createControlImpl();
-        TransferHandler handler = new GenericExportTransferHandler() {
-
-            protected Transferable createTransferable(JComponent arg0) {
-                try {
-                    Transferable t = new GenericTransferable(new DataFlavor[] {
-                            new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army[].class.getName()),
-                            new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName()),
-                            DataFlavor.stringFlavor}, new Object[] {new Object[] {}, new Object[] {}, "aaa"});
-                    return t;
-                } catch (Exception exc) {
-                    return null;
-                }
-
-            }
-        };
-        table.setTransferHandler(handler);
-        return c;
-    }
+	
 
     protected JComponent[] getButtons() {
     	return new JComponent[]{

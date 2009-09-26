@@ -228,7 +228,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     	if (agent != null) {
     		dragonPotential += Integer.parseInt(agent.toString());
     	}
-    	Object emissary = getMage() == null ? null : getEmmisary().getTotalValue();
+    	Object emissary = getEmmisary() == null ? null : getEmmisary().getTotalValue();
     	if (emissary != null) {
     		dragonPotential += Integer.parseInt(emissary.toString());
     	}

@@ -3,6 +3,7 @@ package org.joverseer.domain;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
+import org.joverseer.tools.CombatUtils;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +40,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     boolean navy;
     
     int morale;
+    Integer enHI;
 
     ArrayList<ArmyElement> elements = new ArrayList<ArmyElement>();
 
@@ -62,6 +64,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
 
     public void setCommanderName(String commanderName) {
         this.commanderName = commanderName;
+        enHI = null;
     }
 
     public InformationSourceEnum getInformationSource() {
@@ -130,6 +133,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     
     public void setMorale(int morale) {
         this.morale = morale;
+        enHI = null;
     }
 
     public int getX() {
@@ -180,6 +184,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
         if (e != null) {
             getElements().remove(e);
         }
+        enHI = null;
     }
     
     public void setElement(ArmyElementType type, int count) {
@@ -194,6 +199,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
             }
         }
         getElements().add(new ArmyElement(type, count));
+        enHI = null;
     }
 
     /**
@@ -366,5 +372,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     	}
 
     	return infoAmount;
+    }
+    
+    public Integer getENHI() {
+    	if (enHI == null) {
+    		enHI = CombatUtils.getNakedHeavyInfantryEquivalent3(this);
+    	}
+    	return enHI;
     }
 }

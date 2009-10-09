@@ -59,4 +59,6 @@ public class JideApplicationWindowCloseListener extends WindowAdapter{
 		}
 		window.close();
 	}
+	
+	
 }

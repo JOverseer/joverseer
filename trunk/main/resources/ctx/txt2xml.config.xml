@@ -313,20 +313,27 @@
    			<element>DoubleAgents</element>
    			<startString>lowing double agents:</startString>
    			<endString>You have</endString>
+   			<!--
    			<processor type="RepeatRegexMatch">
    				<element>DoubleAgent</element>
-   				<regex>(\p{L}+(?:[\s\-']\p{L}+)* of the \p{L}+(?:[\s\-]\p{L}+)* @ \d{4})</regex>
+   				<regex>(\p{L}+(?:[\s\-']\p{L}+)* of [the ]?\p{L}+(?:[\s\-]\p{L}+)* @ \d{4})</regex>
+   				-->
+   			<processor type="DoubleAgent">
+   				<element>DoubleAgent</element>
    				<processor type="RegexMatch">
    					<element>Character</element>
-   					<regex>(\p{L}+(?:[\s\-']\p{L}+)*) of th</regex>
+   					<regex>(\p{L}+(?:[\s\-']\p{L}+)*) of [the]*</regex>
    				</processor>
    				<processor type="RegexMatch">
    					<element>Nation</element>
-   					<regex>e (\p{L}+(?:[\s\-']\p{L}+)*) @</regex>
+   					<regex> (\p{L}+(?:[\s\-']\p{L}+)*) @</regex>
    				</processor>
    				<processor type="RegexMatch">
    					<element>Hex</element>
    					<regex>(\d{4})</regex>
+   				</processor>
+   				<processor type="Copy">
+   					<element>Orders</element>
    				</processor>
    			</processor>
 		</processor>

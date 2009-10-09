@@ -116,7 +116,10 @@
                             <value>separator</value>
                             <ref bean="recentGamesMenu"/>
                             <value>separator</value>
+                            <!-- 
                             <bean class="org.springframework.richclient.command.support.ExitCommand"/>
+                             -->
+                             <bean class="org.joverseer.ui.command.ExitCommand"/>
 			</list>
 		</property>
 	</bean>

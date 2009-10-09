@@ -445,8 +445,8 @@ public class TurnPdfReader implements Runnable {
             digester.addSetNext("txt2xml/Turn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.pdf.DoubleAgentWrapper");
             // parse properties
             digester.addRule("txt2xml/Turn/DoubleAgents/DoubleAgent",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Nation"},
-                            new String[]{"name", "hexNo", "nation"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Character", "Hex", "Nation", "Orders"},
+                            new String[]{"name", "hexNo", "nation", "orders"}));
             snpr.setAllowUnknownChildElements(true);
             
             // create container for hostages
@@ -529,8 +529,9 @@ public class TurnPdfReader implements Runnable {
             Thread t = new Thread(runnable);
             t.start();
             t.join(parseTimeoutInSecs * 1000);
+            //t.join();
             if (t.getState() != Thread.State.TERMINATED) {
-                t.stop();
+                //t.stop();
                 // do not update game
                 getMonitor().subTaskStarted("Error: Pdf parsing timer expired. Skipping...");
                 getMonitor().worked(100);
@@ -1181,6 +1182,10 @@ public class TurnPdfReader implements Runnable {
             Nation n = game.getMetadata().getNationByName(daw.getNation());
             if (n != null) {
                 c.setNationNo(n.getNumber());
+            }
+            // set order results if applicable
+            if (c.getOrderResults() == null || c.getOrderResults().equals("")) {
+            	c.setOrderResults(daw.getOrders());
             }
         }
                 

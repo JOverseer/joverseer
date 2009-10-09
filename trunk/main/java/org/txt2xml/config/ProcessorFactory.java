@@ -89,6 +89,7 @@ public class ProcessorFactory {
         defaults.put("LAOwner", "org.txt2xml.core.LocateArtifactWithOwnerResultProcessor");
         defaults.put("LATOwner", "org.txt2xml.core.LocateArtifactTrueWithOwnerResultProcessor");
         defaults.put("CharOrders", "org.txt2xml.core.CharacterOrdersProcessor");
+        defaults.put("DoubleAgent", "org.txt2xml.core.DoubleAgentProcessor");
 
         typeMap = new Properties(defaults);
 

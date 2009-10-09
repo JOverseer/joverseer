@@ -53,6 +53,7 @@ public class EditArmyForm extends AbstractForm {
     JTextField commandRank;
     JTextField morale;
     JTextField food;
+    JTextField hexNo;
     JComboBox nation;
     JTable elements;
     BeanTableModel elementTableModel;
@@ -84,6 +85,12 @@ public class EditArmyForm extends AbstractForm {
         
         lb.append(new JLabel("Nation"));
         lb.append(nation = new JComboBox(getNations().toArray()));
+        nation.setPreferredSize(new Dimension(120, 20));
+        
+        lb.nextLine();
+        
+        lb.append(new JLabel("HexNo"));
+        lb.append(hexNo = new JTextField());
         nation.setPreferredSize(new Dimension(120, 20));
         
         lb.nextLine();
@@ -169,7 +176,7 @@ public class EditArmyForm extends AbstractForm {
         commandRank.setEditable(false);
         morale.setText(String.valueOf(a.getMorale()));
         food.setText(String.valueOf(a.getFood()));
-        
+        hexNo.setText(a.getHexNo());
         elementList = new ArrayList<ArmyElement>();
         for (ArmyElementType aet : ArmyElementType.values()) {
             ArmyElement nae = new ArmyElement(aet, 0);
@@ -191,6 +198,11 @@ public class EditArmyForm extends AbstractForm {
         Army a = (Army)getFormObject();
         
         a.setCommanderName(commander.getText());
+        try {
+        	a.setHexNo(String.valueOf(Integer.parseInt(hexNo.getText())));
+        }
+        catch (Exception exc) {};
+
         try {
         	a.setMorale(Integer.parseInt(morale.getText()));
         }

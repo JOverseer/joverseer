@@ -81,6 +81,7 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 		    	configurer.setShowStatusBar(showStatusBar);
 		    	return configurer;
 		    }
+
 		};
 		JideApplicationWindowCloseListener closeListener = new JideApplicationWindowCloseListener(window,
 				dockableHolder.getDockingManager(), saveLayoutOnClose);

@@ -49,17 +49,17 @@ Most domain objects have an infoSource property.
 The game information is stored to the disk using the standard Java Serialization mechanism. No database is used. The Game is serialized to a disk file, and with it, all associated serializable information (metadata and turn information) is serialized.
 
 This approach was chosen for its simplicity, as it requires minimum additional coding in order to save and load the domain model. However it has a number of implications:
- * Game file size increases in a linear manner wrt to the number of turns and number of nations in the game.
- * Likewise save and load times increase linarly.
+ * Game file size increases in a linear manner with respect to the number of turns and number of nations in the game.
+ * Likewise save and load times increase linearly.
  * Finally, at any one time the program has to load the entire game information in memory in order to access the game data.
 
 == Reading Turns ==
 
-Reading information from the files that contain the turn results is responsibility of the `org.joverseer.support.readers` package, and in particular of the `org.joverseer.support.readers.xml.TurnXmlReader` and `org.joverseer.support.readers.pdf.TurnPdfReader` (the former reads the xml files, the latter the pdf files). The Xml file reader uses Apache Digester to translate the xml into java objects, and then use these java objects to populate the game's domain model. The Pdf file reader first parses the pdf into an xml document, the uses Apache Digester to translate this xml document into java objects, and the use these objects to augment the information already read from the xml files. *The Xml reader must precede the Pdf reader, otherwise the results are undefined - the pdf reader only works properly if the turn is already populated with information from the xml files*.
+Reading information from the files that contain the turn results is responsibility of the `org.joverseer.support.readers` package, and in particular of the `org.joverseer.support.readers.xml.TurnXmlReader` and `org.joverseer.support.readers.pdf.TurnPdfReader` (the former reads the xml files, the latter the pdf files). The Xml file reader uses Apache Digester to translate the xml into java objects, and then use these java objects to populate the game's domain model. The Pdf file reader first parses the pdf into an xml document, then uses Apache Digester to translate this xml document into java objects, and then uses these objects to augment the information already read from the xml files. *The Xml reader must precede the Pdf reader, otherwise the results are undefined - the pdf reader only works properly if the turn is already populated with information from the xml files*.
 
 There is also the `NewXmlReader`, which was intended to read the new xml format, but is not finished (as neither is the new xml format).
 
-There is also the `OrderFileReader` and `OrderTextReader`, which parse order files or order reports and add the orders to the game information.
+There is also the `OrderFileReader` and `OrderTextReader`, which parse order files or order reports and adds the orders to the game information.
 
 == User Interface ==
 

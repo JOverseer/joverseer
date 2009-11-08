@@ -58,7 +58,7 @@ public class ArmyListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {48, 64, 120, 64, 120, 48, 48, 48, 150};
+        return new int[] {48, 64, 120, 64, 120, 48, 48, 48, 150, 48};
     }
 
     protected AbstractListViewFilter[][] getFilters() {

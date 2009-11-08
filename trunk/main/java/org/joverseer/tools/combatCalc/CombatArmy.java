@@ -168,6 +168,10 @@ public class CombatArmy implements Serializable {
     public void setNation(Nation nation) {
         setNationNo(nation.getNumber());
     }
+    
+    public void addArmyElement(ArmyElement ae) {
+    	getElements().add(ae);
+    }
 
     
     public CombatArmy() {
@@ -260,6 +264,32 @@ public class CombatArmy implements Serializable {
     		}
     	}
     	setTactic(bestTactic);
+    }
+    
+    public String getCode() {
+    	String r = "";
+    	r = "CombatArmy ca = new CombatArmy();\n";
+    	r += "ca.setNationNo(" + getNationNo() + ");\n";
+    	r += "ca.setCommandRank(" + getCommandRank() + ");\n";
+    	r += "ca.setCommander('" + getCommander() + "');\n";
+    	r += "ca.setMorale(" + getMorale() + ");\n";
+    	r += "ca.setDefensiveAddOns(" + getDefensiveAddOns() + ");\n";
+    	r += "ca.setOffensiveAddOns(" + getOffensiveAddOns() + ");\n";
+    	r += "ArmyElement ae;\n";
+    	for (ArmyElementType aet : ArmyElementType.values()) {
+    		ArmyElement ae = getArmyElement(aet);
+    		if (ae != null && ae.getNumber() > 0) {
+    			r += "ae = new ArmyElement();\n";
+    			r += "ae.setArmyElementType(ArmyElementType." + ae.getArmyElementType() + ");\n";
+    			r += "ae.setNumber(" + ae.getNumber() + ");\n";
+    			r += "ae.setTraining(" + ae.getTraining() + ");\n";
+    			r += "ae.setWeapons(" + ae.getWeapons() + ");\n";
+    			r += "ae.setArmor(" + ae.getArmor() + ");\n";
+    			r += "ca.addElement(ae);\n";
+    		}
+    	}
+    	r = r.replace("'", "\"");
+    	return r;
     }
     
 }

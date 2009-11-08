@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
@@ -70,6 +71,9 @@ public class PopulationCenterRenderer extends ImageRenderer {
         BufferedImage pcImage = null;
         
         String capital = popCenter.getCapital() ? ".capital" : "";
+        if (popCenter.getSize().getCode() < PopulationCenterSizeEnum.majorTown.getCode()) {
+        	capital = "";
+        }
         pcImage = getImage(popCenter.getSize().toString() + capital + ".image");
 
         BufferedImage img = copyImage(pcImage);

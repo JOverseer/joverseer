@@ -380,4 +380,13 @@ public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
     	}
     	return enHI;
     }
+    
+    public Integer getMaintenance() {
+    	int cost = 0;
+    	for (ArmyElement ae : getElements()) {
+    		cost += ae.getMaintentance();
+    	}
+    	return cost;
+    
+    }
 }

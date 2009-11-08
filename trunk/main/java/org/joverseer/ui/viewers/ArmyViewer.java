@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.apache.commons.logging.Log;
+import org.apache.log4j.LogManager;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmySizeEnum;
@@ -31,6 +33,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
+import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
@@ -79,6 +82,7 @@ public class ArmyViewer extends ObjectViewer {
     ActionCommand toggleCavAction = new ToggleCavAction();
     ActionCommand deleteArmyCommand = new DeleteArmyCommand();
     ActionCommand editArmyCommand = new EditArmyCommand();
+    ActionCommand exportCombatArmyCodeCommand = new ExportCombatArmyCodeCommand();
 
     public ArmyViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
@@ -255,7 +259,12 @@ public class ArmyViewer extends ObjectViewer {
                 		"separator",
                 		new ShowCanCaptureAction(),
                 		"separator",
-                		new ShowInfoSourcePopupCommand(((Army)getFormObject()).getInfoSource())});
+                		new ShowInfoSourcePopupCommand(((Army)getFormObject()).getInfoSource()),
+                });
+        if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("general.developerOptions"))) {
+        	group.addSeparator();
+        	group.add(exportCombatArmyCodeCommand);
+        }
         return group.createPopupMenu();
     }
     
@@ -366,6 +375,22 @@ public class ArmyViewer extends ObjectViewer {
                     new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance()
                             .getSelectedHex(), this));
         }
+    }
+    
+    private class ExportCombatArmyCodeCommand extends ActionCommand {
+    	public ExportCombatArmyCodeCommand() {
+            super("exportCombatArmyCodeCommand");
+        }
+    	
+    	protected void doExecuteCommand() {
+            Army a = (Army)getFormObject();
+            CombatArmy ca = new CombatArmy(a);
+            LogManager.getLogger(this.getClass()).info("Exporting code for Combat Army under " + ca.getCommander());
+            LogManager.getLogger(this.getClass()).info(ca.getCode());
+            LogManager.getLogger(this.getClass()).info("Done exporting code for Combat Army under " + ca.getCommander());
+            MessageDialog dlg = new MessageDialog("Army code", ca.getCode());
+            dlg.showDialog();
+    	}
     }
 
     private class EditArmyCommand extends ActionCommand {

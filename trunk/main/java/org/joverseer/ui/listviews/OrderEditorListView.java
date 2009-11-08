@@ -181,6 +181,13 @@ public class OrderEditorListView extends ItemListView {
         };
         filterList.add(f);
         
+        f = new OrderFilter("Gold Transfers") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasGoldTransferOrder(c);
+            }
+        };
+        filterList.add(f);
+        
         f = new OrderFilter("Character Naming") {
             public boolean acceptCharacter(Character c) {
                 return characterHasOrderInList(c, "725,728,731,734,737");
@@ -199,6 +206,17 @@ public class OrderEditorListView extends ItemListView {
     			if (o.getOrderNo() == orderNo) return true;
     		}
     	}
+    	return false;
+    }
+    
+    protected boolean characterHasGoldTransferOrder(Character c) {
+		for (Order o : c.getOrders()) {
+			if (o.getOrderNo() == 948) {
+				if ("go".equals(o.getP2())) {
+					return true;
+				}
+			}
+		}
     	return false;
     }
 

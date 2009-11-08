@@ -624,6 +624,28 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>general.developerOptions</value>
+					</property>
+					<property name="description">
+						<value>Developer Options</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>orderEditor.autoSave</value>
 					</property>
 					<property name="description">

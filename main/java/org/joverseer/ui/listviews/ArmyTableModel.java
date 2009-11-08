@@ -23,11 +23,11 @@ public class ArmyTableModel extends ItemTableModel {
 	}
 
 	protected String[] createColumnPropertyNames() {
-		return new String[]{"hexNo", "nationNo", "commanderName", "size", "info", "totalTroops", "enHI", "food", "characters"};
+		return new String[]{"hexNo", "nationNo", "commanderName", "size", "info", "totalTroops", "enHI", "food", "characters", "maintenance"};
 	}
 
 	protected Class[] createColumnClasses() {
-		return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class}; 
+		return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class, Integer.class}; 
 	}
 
 	protected Object getValueAtInternal(Object object, int i) {

@@ -57,8 +57,13 @@ public class RelationsTableModel extends ItemTableModel {
         if (i == 2) {
             return ((NationRelations)object).getEliminated() ? "x" : "";
         }
-        if (i-2 == ((NationRelations)object).getNationNo()) return "";
-        switch (((NationRelations)object).getRelationsFor(i-2)) {
+        NationRelations nr = (NationRelations)object;
+        if (nr == null) return "";
+        if (i-2 == nr.getNationNo()) return "";
+        if (nr.getRelationsFor(i-2) == null) {
+        	return "";
+        }
+        switch (nr.getRelationsFor(i-2)) {
             case Friendly:
                 return "F";
             case Tolerated:

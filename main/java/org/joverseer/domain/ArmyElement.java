@@ -78,5 +78,21 @@ public class ArmyElement implements Serializable {
         this.weapons = weapons;
     }
 
-    
+    public int getMaintentance() {
+    	int cost = 0;
+    	if (getArmyElementType().equals(ArmyElementType.HeavyCavalry)) {
+    		cost = 6;
+    	} else if (getArmyElementType().equals(ArmyElementType.LightCavalry)) {
+    		cost = 3;
+    	} else if (getArmyElementType().equals(ArmyElementType.HeavyInfantry)) {
+    		cost = 4;
+    	} else if (getArmyElementType().equals(ArmyElementType.LightInfantry)) {
+    		cost = 2;
+    	} else if (getArmyElementType().equals(ArmyElementType.Archers)) {
+    		cost = 2;
+    	} else if (getArmyElementType().equals(ArmyElementType.MenAtArms)) {
+    		cost = 1;
+    	} 
+    	return getNumber() * cost;
+    }
 }

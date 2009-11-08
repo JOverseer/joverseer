@@ -14,6 +14,8 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.binding.form.FormModel;
+import org.springframework.binding.validation.ValidationListener;
+import org.springframework.binding.validation.ValidationResults;
 import org.springframework.binding.value.support.ValueHolder;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
@@ -60,8 +62,14 @@ public class EditPopulationCenterForm extends AbstractForm {
         formBuilder.row();
         formBuilder.add("hidden", new JCheckBox());
         formBuilder.row();
+        formBuilder.add("capital", new JCheckBox());
+        formBuilder.row();
         formBuilder.add("loyalty");
         formBuilder.row();
         return formBuilder.getForm();
     }
+
+	
+    
+    
 }

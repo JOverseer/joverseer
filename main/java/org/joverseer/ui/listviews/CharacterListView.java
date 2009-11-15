@@ -45,7 +45,7 @@ public class CharacterListView extends ItemListView {
                             32, 32, 32, 32, 
                             32, 32, 32, 32, 
                             32, 32, 32, 32, 
-                            32, 96, 96};
+                            32, 96, 96, 32};
     }
 
 

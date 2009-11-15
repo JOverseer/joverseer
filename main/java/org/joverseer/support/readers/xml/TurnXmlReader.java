@@ -26,8 +26,10 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
@@ -111,8 +113,8 @@ public class TurnXmlReader implements Runnable{
             digester.addObjectCreate("METurn", TurnInfo.class);
             // parse turn info attributes
             SetNestedPropertiesRule snpr = new SetNestedPropertiesRule();
-            snpr = new SetNestedPropertiesRule(new String[]{"GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account"},
-                    new String[]{"gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo"});
+            snpr = new SetNestedPropertiesRule(new String[]{"GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account", "NationCapitalHex"},
+                    new String[]{"gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo", "nationCapitalHex"});
             snpr.setAllowUnknownChildElements(true);
             digester.addRule("METurn/TurnInfo", snpr);
 
@@ -335,6 +337,13 @@ public class TurnXmlReader implements Runnable{
             PopulationCenter newPc;
             try {
                 newPc = pcw.getPopulationCenter();
+                if (newPc.getNationNo() == turnInfo.getNationNo()) {
+	                if (newPc.getHexNo() == turnInfo.getNationCapitalHex()) {
+	                	newPc.setCapital(true);
+	                } else {
+	                	newPc.setCapital(false);
+	                }
+                }
                 logger.debug(String.format("Handling Pop Centre at {0},{1} with information source {2}",
                         String.valueOf(newPc.getX()),
                         String.valueOf(newPc.getY()),
@@ -809,6 +818,71 @@ public class TurnXmlReader implements Runnable{
             }
             nationMessages.addItem(nm);
         }
+        if (game.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
+        	updateKSArtifactIDsFromNationMessages();
+        	updateKSArtifactIDsAndLocationsFromNationMessages();
+        }
+    }
+    
+    private void updateKSArtifactIDsFromNationMessages() {
+    	ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+    	String prefix = "The artefact going by the name of ";
+    	String middle = " has been identified as item #";
+    	for (String msg : (ArrayList<String>)nationMsgs) {
+    		if (msg.startsWith(prefix)) {
+    			int i = prefix.length();
+    			int j = msg.indexOf(middle);
+    			if (j > -1) {
+    				String artiName = msg.substring(i, j);
+    				String artiNo = msg.substring(j + middle.length(), msg.length()-1);
+    				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
+                    for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+                        if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+                            try {
+                            	ai.setNo(Integer.parseInt(artiNo));
+                            }
+                            catch (Exception exc) {
+                            	logger.error("Failed to parse artifact number " + artiNo + " from rumor " + msg);
+                            }
+                            break;
+                        }
+                    }
+    			}
+    		}
+    	}
+    }
+    
+    private void updateKSArtifactIDsAndLocationsFromNationMessages() {
+    	ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+    	String prefix = "The ";
+    	String middle = " was discovered to be ";
+    	String hex = " at ";
+    	for (String msg : (ArrayList<String>)nationMsgs) {
+    		if (msg.startsWith(prefix)) {
+    			int i = prefix.length();
+    			int j = msg.indexOf(middle);
+    			if (j > -1) {
+    				int k = msg.indexOf(",");
+    				String artiName = msg.substring(i, k);
+    				int l = msg.indexOf(",", k+1);
+    				String artiNo = msg.substring(k + 3, l);
+    				String artiHex = msg.substring(msg.length()-5, msg.length()-1);
+    				
+    				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
+                    for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+                        if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+                            try {
+                            	ai.setNo(Integer.parseInt(artiNo));
+                            }
+                            catch (Exception exc) {
+                            	logger.error("Failed to parse artifact number " + artiNo + " and location " + artiHex + " from rumor " + msg);
+                            }
+                            break;
+                        }
+                    }
+    			}
+    		}
+    	}
     }
 
 	public boolean getErrorOccured() {

@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author Marios Skounakis
  *
  */
-public class Army implements IBelongsToNation, IHasMapLocation, Serializable {
+public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, Serializable {
 
     private static final long serialVersionUID = 5781285200976386027L;
     Integer nationNo;

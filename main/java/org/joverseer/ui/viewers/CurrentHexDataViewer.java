@@ -304,6 +304,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     }
 
     private void refresh(Point p) {
+    	if (p.x == 0 && p.y == 0) return;
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null) return;
         GameMetadata gm = g.getMetadata();

@@ -88,11 +88,11 @@ public class ArtifactWrapper {
 		} else if (emissary > 0) {
 			return "Emissary " + agent;
 		} else if (mage > 0) {
-			return "Mage " + agent;
+			return "Mage " + mage;
 		} else if (stealth > 0) {
-			return "Stealth " + agent;
+			return "Stealth " + stealth;
 		} else if (combat > 0) {
-			return "Combat " + combat;
+			return "Combat " + combat * 10;
 		}
 		return "";
 	}

@@ -79,6 +79,7 @@ public class CharacterInfoCollector implements ApplicationListener {
      * Computes the wrappers for the given turn
      * In more detail:
      * - Parse all characters and adds/updates the relevant character wrapper
+     * - Parse all characters and use their hostages to update the relevant character wrapper (last turn only)
      * - Parse all companies and update character wrappers
      * - Parse all armies and update army commanders and characters traveling with armies
      * - Parse all enemy action rumors and update wrappers as needed
@@ -134,33 +135,54 @@ public class CharacterInfoCollector implements ApplicationListener {
             
             // only for latest turn
             if (i == game.getCurrentTurn()) {
-                    // assign companies 
-                    for (Company comp : (ArrayList<Company>)t.getContainer(TurnElementsEnum.Company).getItems()) {
-                        AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", comp.getCommander());
-                        if (cw != null) {
-                                cw.setCompany(comp);
-                        }
-                        for (String member : comp.getMembers()) {
-                                cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", member);
-                                if (cw != null) {
-                                        cw.setCompany(comp);
-                                }
-                        }
+            	for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+            		for (String hostageName : c.getHostages()) {
+            			AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", hostageName);
+            			if (cw != null) {
+            				cw.setHexNo(0);
+            				cw.setHostage(true, c.getName());
+            				cw.setTurnNo(i);
+            			} else {
+            				AdvancedCharacterWrapper ncw = new AdvancedCharacterWrapper();
+            				ncw.setName(hostageName);
+            				ncw.setId(Character.getIdFromName(hostageName));
+            				cw.setInfoSource(c.getInfoSource());
+            				ncw.setNationNo(0);
+            				ncw.setHexNo(0);
+            				ncw.setTurnNo(i);
+            				ncw.setHostage(true, c.getName());
+            				ret.addItem(ncw);
+            			}
+            		}
+            	}
+            	
+                // assign companies 
+                for (Company comp : (ArrayList<Company>)t.getContainer(TurnElementsEnum.Company).getItems()) {
+                    AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", comp.getCommander());
+                    if (cw != null) {
+                            cw.setCompany(comp);
                     }
-                    
-                    // assign armies
-                    for (Army army : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
-                        AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", army.getCommanderName());
-                        if (cw != null) {
-                                cw.setArmy(army);
-                        }
-                        for (String travellingWith : (ArrayList<String>)army.getCharacters()) {
-                                cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", travellingWith);
-                                if (cw != null) {
-                                        cw.setArmy(army);
-                                }
-                        }
+                    for (String member : comp.getMembers()) {
+                            cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", member);
+                            if (cw != null) {
+                                    cw.setCompany(comp);
+                            }
                     }
+                }
+                
+                // assign armies
+                for (Army army : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
+                    AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", army.getCommanderName());
+                    if (cw != null) {
+                            cw.setArmy(army);
+                    }
+                    for (String travellingWith : (ArrayList<String>)army.getCharacters()) {
+                            cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", travellingWith);
+                            if (cw != null) {
+                                    cw.setArmy(army);
+                            }
+                    }
+                }
             }
 
             Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers();

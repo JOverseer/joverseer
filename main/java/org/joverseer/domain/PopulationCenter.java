@@ -13,7 +13,7 @@ import java.util.HashMap;
  * 
  * @author Marios Skounakis
  */
-public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Serializable {
+public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, Serializable {
 
     private static final long serialVersionUID = 5077983571531270227L;
     String name;
@@ -216,4 +216,17 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, Seri
         }
         return newPc;
     }
+
+	public Integer getMaintenance() {
+		int cost = 0;
+		if (getHarbor().equals(HarborSizeEnum.harbor)) {
+			cost += 250;
+		} else if (getHarbor().equals(HarborSizeEnum.port)) {
+			cost += 500;
+		} 
+		cost += getFortification().getSize() * 500;
+		return cost;
+	}
+    
+    
 }

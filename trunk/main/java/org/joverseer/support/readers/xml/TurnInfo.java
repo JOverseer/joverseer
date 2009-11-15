@@ -23,6 +23,7 @@ public class TurnInfo {
     String accountNo;
     String securityCode;
     String dueDate;
+    int nationCapitalHex;
 
     public Container getCharacters() {
         return characters;
@@ -135,6 +136,14 @@ public class TurnInfo {
     public void setSecurityCode(String secutiryCode) {
         this.securityCode = secutiryCode;
     }
+
+	public int getNationCapitalHex() {
+		return nationCapitalHex;
+	}
+
+	public void setNationCapitalHex(int nationCapitalHex) {
+		this.nationCapitalHex = nationCapitalHex;
+	}
     
     
 

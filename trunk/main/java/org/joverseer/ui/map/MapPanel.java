@@ -621,6 +621,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
     }
 
     public void setSelectedHex(Point selectedHex) {
+    	if (selectedHex == null || (selectedHex.x == 0 && selectedHex.y == 0)) return;
         if (this.selectedHex == null || selectedHex.x != this.selectedHex.x || selectedHex.y != this.selectedHex.y) {
             this.selectedHex = selectedHex;
             //fireMyEvent(new SelectedHexChangedEvent(this));

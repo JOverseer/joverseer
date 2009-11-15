@@ -61,6 +61,8 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     int turnNo;
     InfoSource infoSource;
     String id;
+    boolean hostage = false;
+    String hostageHolderName = null;
     
     boolean isStartChar = false;
 
@@ -181,6 +183,8 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     public void setOrderResults(String orderResults) {
         this.orderResults = orderResults;
     }
+    
+    
 
     public int getTurnNo() {
         return turnNo;
@@ -314,6 +318,9 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     		}
     		return "Army: " + getArmy().getCommanderName() + (chars.equals("") ? "" : " - " + chars); 
     	}
+    	if (isHostage()) {
+    		return "Hostage of " + getHostageHolderName();
+    	}
     	return "";
     }
 
@@ -342,6 +349,21 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	public void setHealthEstimate(InfoSourceValue healthEstimate) {
 		this.healthEstimate = healthEstimate;
 	}
- 
+
+
+
+	public boolean isHostage() {
+		return hostage;
+	}
+
+
+	public String getHostageHolderName() {
+		return hostageHolderName;
+	}
+
+	public void setHostage(boolean hostage, String holder) {
+		this.hostage = hostage;
+		this.hostageHolderName = holder;
+	}
     
 }

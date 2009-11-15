@@ -92,7 +92,11 @@ public class ArmyElement implements Serializable {
     		cost = 2;
     	} else if (getArmyElementType().equals(ArmyElementType.MenAtArms)) {
     		cost = 1;
-    	} 
+    	} else if (getArmyElementType().equals(ArmyElementType.Warships)) {
+    		cost = 50;
+    	}else if (getArmyElementType().equals(ArmyElementType.Transports)) {
+    		cost = 50;
+    	}
     	return getNumber() * cost;
     }
 }

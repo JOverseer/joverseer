@@ -18,7 +18,7 @@ import sun.text.Normalizer;
  * @author Marios Skounakis
  *
  */
-public class Character implements IBelongsToNation, IHasMapLocation, Serializable {
+public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, Serializable {
 
     private static final long serialVersionUID = 2372359979734224557L;
     String id;
@@ -369,5 +369,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, Serializabl
 		this.numberOfOrders = numberOfOrders;
 	}
 
+	public Integer getMaintenance() {
+		return (getCommand() + getMage() + getAgent() + getEmmisary()) * 20;
+	}
+
+	
 	
 }

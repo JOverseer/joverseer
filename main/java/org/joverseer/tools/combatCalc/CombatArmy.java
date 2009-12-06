@@ -2,8 +2,6 @@ package org.joverseer.tools.combatCalc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -44,7 +42,7 @@ public class CombatArmy implements Serializable {
     int morale;
     int commandRank;
     TacticEnum tactic;
-    double losses;
+    double losses; // Stored as a percent of the original constitution?
 
 
     int offensiveAddOns;
@@ -82,6 +80,10 @@ public class CombatArmy implements Serializable {
         this.elements = elements;
     }
 
+    public void addElement(ArmyElement armyElement) {
+    	elements.add(armyElement) ;
+    }
+    
     public int getMorale() {
         return morale;
     }

@@ -27,7 +27,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     
     public MoveArmyOrderSubeditor(Order o) {
         super(o);
-    }
+        }
 
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         

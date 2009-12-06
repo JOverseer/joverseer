@@ -1,8 +1,6 @@
 package org.joverseer.tools.combatCalc;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -11,7 +9,6 @@ import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
@@ -19,8 +16,6 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
-
-import sun.security.action.GetLongAction;
 
 /**
  * Represents a land combat for the combat calculator.
@@ -37,8 +32,8 @@ import sun.security.action.GetLongAction;
  */
 public class Combat implements Serializable, IHasMapLocation {
     private static final long serialVersionUID = 6784272689637435343L;
-    static int maxArmies = 10;
-    static int maxAll = 11;
+    public static int MAX_ARMIES = 10;
+    public static int MAX_ALL = 11;
     
     HexTerrainEnum terrain;
     ClimateEnum climate;
@@ -46,14 +41,14 @@ public class Combat implements Serializable, IHasMapLocation {
     int hexNo;
     String description;
 
-    CombatArmy[] side1 = new CombatArmy[maxAll];
-    CombatArmy[] side2 = new CombatArmy[maxAll];
+    CombatArmy[] side1 = new CombatArmy[MAX_ALL];
+    CombatArmy[] side2 = new CombatArmy[MAX_ALL];
     
-    NationRelationsEnum[][] side1Relations = new NationRelationsEnum[maxAll][maxAll];
-    NationRelationsEnum[][] side2Relations = new NationRelationsEnum[maxAll][maxAll];
+    NationRelationsEnum[][] side1Relations = new NationRelationsEnum[MAX_ALL][MAX_ALL];
+    NationRelationsEnum[][] side2Relations = new NationRelationsEnum[MAX_ALL][MAX_ALL];
      
-    boolean[][] side1Attack = new boolean[maxAll][maxAll];
-    boolean[][] side2Attack = new boolean[maxAll][maxAll];
+    boolean[][] side1Attack = new boolean[MAX_ALL][MAX_ALL];
+    boolean[][] side2Attack = new boolean[MAX_ALL][MAX_ALL];
     
     CombatPopCenter side1Pc = null;
     CombatPopCenter side2Pc = null;
@@ -62,13 +57,13 @@ public class Combat implements Serializable, IHasMapLocation {
     
     boolean attackPopCenter = true;
 
-    int maxRounds;
+    private int maxRounds = 100 ; ; // Nice high number. Shouldn't ever get to this round.
     
     String log;
     
     public Combat() {
-        for (int i=0; i<maxAll; i++) {
-            for (int j=0; j<maxAll; j++) {
+        for (int i=0; i<MAX_ALL; i++) {
+            for (int j=0; j<MAX_ALL; j++) {
                 side1Relations[i][j] = NationRelationsEnum.Disliked;
                 side2Relations[i][j] = NationRelationsEnum.Disliked;
                 side1Attack[i][j] = true;
@@ -87,30 +82,30 @@ public class Combat implements Serializable, IHasMapLocation {
         return computeNativeArmyStrength(ca, terrain, climate, null, againstPopCenter);
     }
     
-    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride, boolean againstPopCenter) {
+    public static int computeNativeArmyStrength(CombatArmy army, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride, boolean againstPopCenter) {
         int strength = 0;
-        boolean wm = false;
-        for (ArmyElement ae : ca.getElements()) {
-            Integer s = InfoUtils.getTroopStrength(ae.getArmyElementType(), "Attack");
-            if (ae.getArmyElementType() == ArmyElementType.WarMachimes && againstPopCenter) {
-            	s = 200;
-            	wm = true;
+        boolean warMachinesPresent = false;
+        for (ArmyElement armyElement : army.getElements()) {
+            Integer warMachineStrength = InfoUtils.getTroopStrength(armyElement.getArmyElementType(), "Attack");
+            if (armyElement.getArmyElementType() == ArmyElementType.WarMachimes && againstPopCenter) {
+            	warMachineStrength = 200;
+            	warMachinesPresent = true;
             }
-            if (s == null)
+            if (warMachineStrength == null)
                 continue;
             
-            int tacticMod = !wm ? InfoUtils.getTroopTacticModifier(ae.getArmyElementType(), ca.getTactic()) : 100;
-            int terrainMod = !wm ? InfoUtils.getTroopTerrainModifier(ae.getArmyElementType(), terrain) : 100;
-            double mod = (double) (ae.getTraining() + ae.getWeapons() + tacticMod + terrainMod) / 400d;
+            int tacticMod = !warMachinesPresent ? InfoUtils.getTroopTacticModifier(armyElement.getArmyElementType(), army.getTactic()) : 100;
+            int terrainMod = !warMachinesPresent ? InfoUtils.getTroopTerrainModifier(armyElement.getArmyElementType(), terrain) : 100;
+            double mod = (double) (armyElement.getTraining() + armyElement.getWeapons() + tacticMod + terrainMod) / 400d;
             
-            strength += s * ae.getNumber() * mod;
+            strength += warMachineStrength * armyElement.getNumber() * mod;
         }
         //System.out.println("Str before mods: " + strength);
         strength = strength
-                * (ca.getCommandRank() + ca.getMorale() + CombatModifiers.getModifierFor(
-                        ca.getNationNo(), terrain, climate) * 2) / 400;
+                * (army.getCommandRank() + army.getMorale() + CombatModifiers.getModifierFor(
+                        army.getNationNo(), terrain, climate) * 2) / 400;
         if (lossesOverride == null) {
-            lossesOverride = ca.getLosses();
+            lossesOverride = army.getLosses();
         }
         strength = (int)(strength * (double)(100 - lossesOverride) / 100d);
         return strength;
@@ -120,19 +115,25 @@ public class Combat implements Serializable, IHasMapLocation {
         return computNativeArmyConstitution(ca, null);
     }
 
-    public static int computNativeArmyConstitution(CombatArmy ca, Double lossesOverride) {
-        int constit = 0;
-        for (ArmyElement ae : ca.getElements()) {
-            Integer s = InfoUtils.getTroopStrength(ae.getArmyElementType(), "Defense");
-            if (s == null)
+    /**
+     * 
+     * @param combatArmy
+     * @param lossesOverride - This reduces the constitution by a percentage. If set to 25 then the constitution is reduced by 25% to 75% of what it would otherwise be. 
+     * @return
+     */
+    public static int computNativeArmyConstitution(CombatArmy combatArmy, Double lossesOverride) {
+        int constitution = 0;
+        for (ArmyElement combatArmyElement : combatArmy.getElements()) {
+            Integer unitConstitution = InfoUtils.getTroopStrength(combatArmyElement.getArmyElementType(), "Defense");
+            if (unitConstitution == null)
                 continue;
-            constit += s * ae.getNumber() * (double) (100 + ae.getArmor()) / 100d;
+            constitution += unitConstitution * combatArmyElement.getNumber() * (double) (100 + combatArmyElement.getArmor()) / 100d;
         }
         if (lossesOverride == null) {
-            lossesOverride = ca.getLosses();
+            lossesOverride = combatArmy.getLosses();
         }
-        constit = (int)(constit * (double)(100 - lossesOverride) / 100d);
-        return constit;
+        constitution = (int)(constitution * (double)(100 - lossesOverride) / 100d);
+        return constitution;
     }
 
     public static int computeModifiedArmyStrength(HexTerrainEnum terrain, ClimateEnum climate, CombatArmy att,
@@ -156,48 +157,48 @@ public class Combat implements Serializable, IHasMapLocation {
         int defenderSide = (attackerSide == 0 ? 1 : 0);
         
         // compute str for attacker
-        int wms = 0;
+        int warMachines = 0;
         int attackerStr = 0;
         int totalCon = 0;
         CombatPopCenter pc = (attackerSide == 0 ? side2Pc : side1Pc);
-        double[] losses = new double[maxArmies];
-        for (int i=0; i<maxArmies; i++) {
+        double[] losses = new double[MAX_ARMIES];
+        for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
                 if (side1[i] == null) continue;
                 int str = computeNativeArmyStrength(side1[i], terrain, climate, true);
                 // adjust for relations
-                int relMod = CombatModifiers.getRelationModifier(side1Relations[i][maxAll-1]);
+                int relMod = CombatModifiers.getRelationModifier(side1Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
                 int wm = side1[i].getWM().getNumber(); 
-                wms += wm;
+                warMachines += wm;
                 totalCon += computNativeArmyConstitution(side1[i]);
                 losses[i] = side1[i].getLosses();
             } else {
                 if (side2[i] == null) continue;
                 int str = computeNativeArmyStrength(side2[i], terrain, climate, true);
                 // adjust for relations
-                int relMod = CombatModifiers.getRelationModifier(side2Relations[i][maxAll-1]);
+                int relMod = CombatModifiers.getRelationModifier(side2Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                wms += side2[i].getWM().getNumber();
+                warMachines += side2[i].getWM().getNumber();
                 totalCon += computNativeArmyConstitution(side2[i]);
                 losses[i] = side2[i].getLosses();
             }
         }
         
         // compute pop center defense and attack
-        int popCenterStr = computePopCenterStrength(pc, wms);
+        int popCenterStr = computePopCenterStrength(pc, warMachines);
         pc.setCaptured(popCenterStr <= attackerStr);
         pc.setStrengthOfAttackingArmies(attackerStr);
-        for (int i=0; i<maxArmies; i++) {
+        for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
                 if (side1[i] == null) continue;
-                double l = computeNewLossesFromPopCenter(side1[i], pc, side2Relations[maxAll - 1][i], totalCon, wms, round);
+                double l = computeNewLossesFromPopCenter(side1[i], pc, side2Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
                 side1[i].setLosses(side1[i].getLosses() + l);
             } else {
                 if (side2[i] == null) continue;
-                double l = computeNewLossesFromPopCenter(side2[i], pc, side1Relations[maxAll - 1][i], totalCon, wms, round);
+                double l = computeNewLossesFromPopCenter(side2[i], pc, side1Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
                 side2[i].setLosses(side2[i].getLosses() + l);
             }
         }
@@ -209,31 +210,31 @@ public class Combat implements Serializable, IHasMapLocation {
         log = "";
         do {
             addToLog("Starting round " + rounds);
-            double[] side1Losses = new double[maxArmies];
-            double[] side2Losses = new double[maxArmies];
+            double[] side1Losses = new double[MAX_ARMIES];
+            double[] side2Losses = new double[MAX_ARMIES];
 
             // compute constitution for each side
             int side1Con = 0;
             int side2Con = 0;
-            for (int i=0; i<maxArmies; i++) {
-                CombatArmy ca = side1[i];
-                if (ca == null) continue;
-                int constit = computNativeArmyConstitution(ca);
-                int sconstit = computNativeArmyConstitution(ca, 0d);
-                addToLog("Side 1, army " + i + " con: " + constit + "/" + sconstit);
-                side1Con += constit;
-                side1Losses[i] = ca.getLosses();
+            for (int i=0; i<MAX_ARMIES; i++) {
+                CombatArmy army = side1[i];
+                if (army == null) continue;
+                int currentConstitution = computNativeArmyConstitution(army);
+                int originalConstitution = computNativeArmyConstitution(army, 0d);
+                addToLog("Side 1, army " + i + " con: " + currentConstitution + "/" + originalConstitution);
+                side1Con += currentConstitution;
+                side1Losses[i] = army.getLosses();
             }
             addToLog("Total Side 1 con: " + side1Con);
             addToLog("");
-            for (int i=0; i<maxArmies; i++) {
-                CombatArmy ca = side2[i];
-                if (ca == null) continue;
-                int constit = computNativeArmyConstitution(ca);
-                int sconstit = computNativeArmyConstitution(ca, 0d);
+            for (int i=0; i<MAX_ARMIES; i++) {
+                CombatArmy army = side2[i];
+                if (army == null) continue;
+                int constit = computNativeArmyConstitution(army);
+                int sconstit = computNativeArmyConstitution(army, 0d);
                 addToLog("Side 2, army " + i + " con: " + constit + "/" + sconstit);
                 side2Con += constit;
-                side2Losses[i] = ca.getLosses();
+                side2Losses[i] = army.getLosses();
             }
             addToLog("Total Side 2 con: " + side2Con);
             side1Con = Math.max(side1Con, 1);
@@ -245,11 +246,11 @@ public class Combat implements Serializable, IHasMapLocation {
             boolean side1Alive = false;
             boolean side2Alive = false;
             // compute losses for each army
-            for (int i=0; i<maxArmies; i++) {
+            for (int i=0; i<MAX_ARMIES; i++) {
                 CombatArmy ca1 = side1[i];
                 if (ca1 == null) continue;
                 
-                for (int j=0; j<maxArmies; j++) {
+                for (int j=0; j<MAX_ARMIES; j++) {
                     CombatArmy ca2 = side2[j];
                     if (ca2 == null) continue;
                     
@@ -272,13 +273,13 @@ public class Combat implements Serializable, IHasMapLocation {
             }
             
             // assign losses to armies
-            for (int i=0; i<maxArmies; i++) {
+            for (int i=0; i<MAX_ARMIES; i++) {
                 CombatArmy ca1 = side1[i];
                 if (ca1 == null) continue;
                 ca1.setLosses(Math.min(side1Losses[i], 100));
                 addToLog("Side 1 army " + i + " new con : " + computNativeArmyConstitution(ca1));
             }
-            for (int i=0; i<maxArmies; i++) {
+            for (int i=0; i<MAX_ARMIES; i++) {
                 CombatArmy ca2 = side2[i];
                 if (ca2 == null) continue;
                 ca2.setLosses(Math.min(side2Losses[i], 100));
@@ -325,9 +326,9 @@ public class Combat implements Serializable, IHasMapLocation {
         addToLog("Defender loss factor: " + lossesFactor);
         attStr = (int)(attStr * lossesFactor) - defBonus;
         if (attStr < 0) attStr = 0;
-        double l = computeLosses(army, attStr);
-        addToLog("New losses: " + l);
-        return l;
+        double losses = computeLosses(army, attStr);
+        addToLog("New losses: " + losses);
+        return losses;
     }
     
     public double computeNewLosses(HexTerrainEnum terrain,
@@ -357,9 +358,9 @@ public class Combat implements Serializable, IHasMapLocation {
         addToLog("Defender loss factor: " + lossesFactor);
         attStr = (int)(attStr * lossesFactor) - defBonus;
         if (attStr < 0) attStr = 0;
-        double l = computeLosses(def, attStr);
-        addToLog("New losses: " + l);
-        return l;
+        double losses = computeLosses(def, attStr);
+        addToLog("New losses: " + losses);
+        return losses;
     }
 
     
@@ -596,8 +597,8 @@ public class Combat implements Serializable, IHasMapLocation {
     
     public void autoSetRelationsToHated() {
     	
-    	for (int i=0; i<maxAll; i++) {
-    		for (int j=0; j<maxAll; j++) {
+    	for (int i=0; i<MAX_ALL; i++) {
+    		for (int j=0; j<MAX_ALL; j++) {
     			side1Relations[i][j] = NationRelationsEnum.Hated;
     			side2Relations[i][j] = NationRelationsEnum.Hated;
     		}

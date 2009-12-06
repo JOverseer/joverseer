@@ -71,6 +71,7 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 
 		configureDockingManager(dockableHolder.getDockingManager());
 		dockableHolder.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
 		Lm.setParent(dockableHolder);
 		
 		JideApplicationWindow window = new JideApplicationWindow(dockableHolder){

@@ -1,4 +1,4 @@
-package org.joverseer.support.info;
+package org.joverseer.support.info ;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

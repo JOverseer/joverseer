@@ -119,7 +119,7 @@
                             <!-- 
                             <bean class="org.springframework.richclient.command.support.ExitCommand"/>
                              -->
-                             <bean class="org.joverseer.ui.command.ExitCommand"/>
+                             <bean class="com.jidesoft.spring.richclient.ExitCommand"/>
 			</list>
 		</property>
 	</bean>

@@ -51,11 +51,7 @@ public class JideApplicationWindowCloseListener extends WindowAdapter{
 	
 	public void windowClosing(WindowEvent event) {
 		if(saveLayoutOnClose){
-			Perspective perspective = ((JideApplicationPage)window.getPage()).getPerspectiveManager().getCurrentPerspective();
-			LayoutManager.savePageLayoutData(manager, window.getPage().getId(), perspective.getId());
-			if(log.isDebugEnabled()){
-				log.debug("Saving page layout for page "+window.getPage().getId()+" and perspective "+perspective.getId());
-			}
+			((JideApplicationWindow)window).saveLayoutData();
 		}
 		window.close();
 	}

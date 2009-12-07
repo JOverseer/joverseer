@@ -119,4 +119,12 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
 		}
 		perspective.switchPerspective(this, pageId, false);
 	}
+    
+    public void saveLayoutData() {
+    	Perspective perspective = ((JideApplicationPage)getPage()).getPerspectiveManager().getCurrentPerspective();
+		LayoutManager.savePageLayoutData(getDockingManager(), getPage().getId(), perspective.getId());
+		if(logger.isDebugEnabled()){
+			logger.debug("Saving page layout for page "+ getPage().getId()+" and perspective "+perspective.getId());
+		}
+    }
 }

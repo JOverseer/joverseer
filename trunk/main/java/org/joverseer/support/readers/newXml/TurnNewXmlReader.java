@@ -19,6 +19,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -153,6 +154,20 @@ public class TurnNewXmlReader implements Runnable {
             digester.addCallParam("METurn/NationRelations/NationRelation", 0);
             // add to container
             digester.addSetNext("METurn/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.newXml.NationRelationWrapper");
+            
+            // create container for SNAs
+            digester.addObjectCreate("METurn/SpecialNationAbilities", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/SpecialNationAbilities", "setSnas");
+            // create SNA wrapper
+            digester.addObjectCreate("METurn/SpecialNationAbilities/Ability", "org.joverseer.support.readers.newXml.SNAWrapper");
+            // set code
+            digester.addRule("METurn/SpecialNationAbilities/Ability", 
+            		snpr = new SetNestedPropertiesRule(new String[]{"Code", },
+                            new String[]{"code", }));
+            snpr.setAllowUnknownChildElements(true);
+            // add to container
+            digester.addSetNext("METurn/SpecialNationAbilities/Ability", "addItem", "org.joverseer.support.readers.newXml.SNAWrapper");
             
             
             // create container for Companies
@@ -383,6 +398,18 @@ public class TurnNewXmlReader implements Runnable {
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
+                getMonitor().worked(80);
+                getMonitor().subTaskStarted("Updating SNAs...");
+            }
+            try {
+                updateSNAs(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
                 getMonitor().worked(100);
             }
         }
@@ -581,5 +608,16 @@ public class TurnNewXmlReader implements Runnable {
         		logger.error(exc);
         	}
         }
+        
+        
 	}
+	
+	private void updateSNAs(Game game) {
+    	Container snaws = turnInfo.getSnas();
+    	ArrayList<SNAEnum> snas = new ArrayList<SNAEnum>();
+    	for (SNAWrapper snw : (ArrayList<SNAWrapper>)snaws.getItems()) {
+    		snas.add(SNAEnum.getSnaFromNumber(snw.getCode()));
+    	}
+        game.getMetadata().getNationByNum(nationNo).setSnas(snas);
+    }
 }

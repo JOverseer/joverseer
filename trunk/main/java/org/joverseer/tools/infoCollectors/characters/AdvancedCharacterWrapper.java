@@ -78,6 +78,8 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     String orderResults;
     InfoSourceValue healthEstimate;
     
+    boolean isChampion = false;
+    
     public Army getArmy() {
 		return army;
 	}
@@ -365,5 +367,19 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 		this.hostage = hostage;
 		this.hostageHolderName = holder;
 	}
+
+
+
+	public boolean isChampion() {
+		return isChampion;
+	}
+
+
+
+	public void setChampion(boolean isChampion) {
+		this.isChampion = isChampion;
+	}
+	
+	
     
 }

@@ -135,7 +135,15 @@ public class AdvancedCharacterListView extends BaseItemListView {
                     int arg4, int arg5) {
                 Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
                 JLabel lbl = (JLabel) c;
-                
+                if (arg5 == 0) {
+                	//check for champion
+                	int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(arg4);
+                    Object obj = tableModel.getRow(idx);
+                    AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper)obj;
+                    if (ch.isChampion()) {
+                    	lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
+                    }
+                }
                 if (arg5 == 21) {
                     String results = (String)arg1;
                     if (results != null) {
@@ -160,9 +168,13 @@ public class AdvancedCharacterListView extends BaseItemListView {
                 filters.toArray(new AbstractListViewFilter[] {}),
                 TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),
                 new AbstractListViewFilter[]{
-                    new DeathFilter("Not Dead & Dead", null),
+                    new DeathFilter("All", null),
                     new DeathFilter("Not Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.NotDead, null}),
                     new DeathFilter("Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed}),
+                    new HostageFilter("Hostage", true),
+                    new HostageFilter("Not Hostage", false),
+                    new ChampionFilter("Champion")
+                    
                 },
                 new AbstractListViewFilter[]{
                 	new ArmyCommanderFilter("", null),
@@ -312,6 +324,36 @@ public class AdvancedCharacterListView extends BaseItemListView {
         public void lostOwnership(Clipboard arg0, Transferable arg1) {
         }
     }
+	
+	class HostageFilter extends AbstractListViewFilter {
+		boolean hostage;
+		
+		public HostageFilter(String descr, boolean hostage) {
+			super(descr);
+			this.hostage = hostage;
+		}
+
+		@Override
+		public boolean accept(Object obj) {
+			return ((AdvancedCharacterWrapper)obj).isHostage() == hostage;
+		}
+		
+		
+	}
+	
+	class ChampionFilter extends AbstractListViewFilter {
+		
+		public ChampionFilter(String descr) {
+			super(descr);
+		}
+
+		@Override
+		public boolean accept(Object obj) {
+			return ((AdvancedCharacterWrapper)obj).isChampion();
+		}
+		
+		
+	}
 
     class DeathFilter extends AbstractListViewFilter {
         ArrayList<CharacterDeathReasonEnum> deathReasons = new ArrayList<CharacterDeathReasonEnum>();

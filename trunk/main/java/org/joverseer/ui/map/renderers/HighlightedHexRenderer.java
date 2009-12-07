@@ -50,10 +50,10 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
     }
     
     private void renderHHMI(Object obj, Graphics2D g, int x, int y) {
-    	Color color = Color.decode(getHighlightColor());
+    	HighlightHexesMapItem hmi = (HighlightHexesMapItem)obj;
+        Color color = Color.decode(getHighlightColor());
         Stroke currentStroke = g.getStroke();
         g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
-        HighlightHexesMapItem hmi = (HighlightHexesMapItem)obj;
         for (Integer hexNo : hmi.getHexesToHighlight()) {
             Point p = MapPanel.instance().getHexLocation(hexNo);
             Polygon polygon = new Polygon(xPoints, yPoints, 6);

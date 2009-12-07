@@ -14,6 +14,7 @@ import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
+import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
@@ -857,6 +858,7 @@ public class TurnXmlReader implements Runnable{
     	String prefix = "The ";
     	String middle = " was discovered to be ";
     	String hex = " at ";
+    	Container artis = turn.getContainer(TurnElementsEnum.Artifact);
     	for (String msg : (ArrayList<String>)nationMsgs) {
     		if (msg.startsWith(prefix)) {
     			int i = prefix.length();
@@ -865,21 +867,41 @@ public class TurnXmlReader implements Runnable{
     				int k = msg.indexOf(",");
     				String artiName = msg.substring(i, k);
     				int l = msg.indexOf(",", k+1);
-    				String artiNo = msg.substring(k + 3, l);
+    				String artiNoStr = msg.substring(k + 3, l);
     				String artiHex = msg.substring(msg.length()-5, msg.length()-1);
+    				Integer artiNo;
+    				try {
+    					artiNo = Integer.parseInt(artiNoStr);
+    				}
+    				catch (Exception exc) {
+    					artiNo = -1;
+    				}
+    				if (artiNo > -1) {
+    					String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
     				
-    				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
-                    for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
-                        if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
-                            try {
-                            	ai.setNo(Integer.parseInt(artiNo));
-                            }
-                            catch (Exception exc) {
-                            	logger.error("Failed to parse artifact number " + artiNo + " and location " + artiHex + " from rumor " + msg);
-                            }
-                            break;
-                        }
-                    }
+	                    for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+	                        if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+	                        	ai.setNo(artiNo);
+	                            break;
+	                        }
+	                    }
+	                    Artifact a = (Artifact)artis.findFirstByProperty("number", artiNo);
+	                    if (a == null) {
+	                    	a = new Artifact();
+	                    	a.setNumber(artiNo);
+	                    	a.setName(artiName);
+	                    	try {
+	                    		a.setHexNo(Integer.parseInt(artiHex));
+	                    	}
+	                    	catch (Exception exc) {
+	                    		
+	                    	}
+	                    	artis.addItem(a);
+	                    } else {
+	                    	a.setHexNo(Integer.parseInt(artiHex));
+	                    	artis.refreshItem(a);
+	                    }
+    				}
     			}
     		}
     	}

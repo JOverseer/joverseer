@@ -13,6 +13,7 @@ public class TurnInfo {
 	Container companies;
 	Container charMessages;
 	Container encounters;
+	Container snas;
 	
 	int turnNo = -1;
     int nationNo = -1;
@@ -162,6 +163,14 @@ public class TurnInfo {
 
 	public void setCompanies(Container companies) {
 		this.companies = companies;
+	}
+
+	public Container getSnas() {
+		return snas;
+	}
+
+	public void setSnas(Container snas) {
+		this.snas = snas;
 	}
 	
 	

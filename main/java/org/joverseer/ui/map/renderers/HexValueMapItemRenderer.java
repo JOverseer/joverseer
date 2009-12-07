@@ -32,7 +32,7 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class HexValueMapItemRenderer extends DefaultHexRenderer {
-    String highlightColor = "#ff3300";
+    String highlightColor = "#33AA00";
     int width = 2;
     
     public boolean appliesTo(Object obj) {
@@ -166,6 +166,7 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
     }
     
     public String getHighlightColor() {
+    	highlightColor = "#DDFF00";
         return highlightColor;
     }
 

@@ -13,6 +13,7 @@ import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
@@ -114,6 +115,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                     cw.setTurnNo(t.getTurnNo());
                     cw.setInfoSource(c.getInfoSource());
                     cw.setDeathReason(c.getDeathReason());
+                    cw.setChampion(c.getNumberOfOrders()==3);
                     if (c.getInformationSource() == InformationSourceEnum.exhaustive) {
                         addStats(cw, c, c.getInfoSource(), t.getTurnNo());
                     } else {
@@ -223,7 +225,8 @@ public class CharacterInfoCollector implements ApplicationListener {
         }
 
         for (ArtifactWrapper aw : (ArrayList<ArtifactWrapper>) ArtifactInfoCollector.instance().getWrappersForTurn(game.getCurrentTurn())) {
-            if (aw.getOwner() != null) {
+        	boolean skipMetadataInfoSource = game.getMetadata().getGameType().equals(GameTypeEnum.gameKS);
+            if (aw.getOwner() != null && (!skipMetadataInfoSource || !MetadataSource.class.isInstance(aw.getInfoSource()))) {
                 AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", aw.getOwner());
                 if (cw != null) {
                     cw.getArtifacts().add(aw);

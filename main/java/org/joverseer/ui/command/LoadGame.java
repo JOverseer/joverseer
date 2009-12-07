@@ -1,7 +1,9 @@
 package org.joverseer.ui.command;
 
 import java.awt.Point;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
@@ -118,6 +120,14 @@ public class LoadGame extends ActionCommand {
                 RecentGames rgs = new RecentGames();
                 rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath());
                 
+            }
+            catch (EOFException exc) {
+            	MessageDialog d = new MessageDialog("Error", "The game file is corrupt. This can be caused if you interrupt the program when saving the file, or if you didn't finish downloading the file from an online source.");
+                d.showDialog();
+            }
+            catch (FileNotFoundException exc) {
+            	MessageDialog d = new MessageDialog("Error", "JOverseer could not find the file '" + f.getAbsolutePath() + "'.");
+                d.showDialog();
             }
             catch (Exception exc) {
             	String msg;

@@ -20,9 +20,10 @@ public class RecentGames {
             String[] games = str.split("#");
             for (String game : games) {
                 int i = game.indexOf("!");
+                if (i==-1) continue;
                 RecentGameInfo rgi = new RecentGameInfo();
                 rgi.setNumber(Integer.parseInt(game.substring(0, i)));
-                rgi.setFile(game.substring(i+1));
+                rgi.setFile(game.substring(i+1).replace("!-!", "#"));
                 res.add(rgi);
             }
         }
@@ -40,7 +41,7 @@ public class RecentGames {
             if (!res.equals("")) {
                 res += "#";
             }
-            res += rgi.getNumber() + "!" + rgi.getFile();
+            res += rgi.getNumber() + "!" + rgi.getFile().replace("#", "!-!");
         }
         return res;
     }

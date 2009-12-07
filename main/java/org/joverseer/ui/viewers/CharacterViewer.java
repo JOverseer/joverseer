@@ -486,6 +486,7 @@ public class CharacterViewer extends ObjectViewer {
         if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
             txt += " (" + c.getDeathReason().toString() + ")";
         }
+        
         return txt;
     }
 

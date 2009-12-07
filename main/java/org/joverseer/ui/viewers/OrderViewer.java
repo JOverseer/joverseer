@@ -195,22 +195,26 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                     if (dtde.isDataFlavorSupported(new OrderDataFlavor())) {
                         Order no = (Order)t.getTransferData(new OrderDataFlavor());
                         Order o = (Order)getFormObject();
-                        
+
+                        // swap characters
                         org.joverseer.domain.Character c = o.getCharacter();
                         o.setCharacter(no.getCharacter());
                         no.setCharacter(c);
                         
-                        if (c.getOrders()[0] == o) {
-                            c.getOrders()[0] = no;
-                        } else {
-                            c.getOrders()[1] = no;
+                        // set order no to character c
+                        for (int i=0; i<c.getNumberOfOrders(); i++) {
+                        	if (c.getOrders()[i] == o) {
+                        		c.getOrders()[i] = no;
+                        	}
                         }
                         
-                        if (o.getCharacter().getOrders()[0] == no) {
-                            o.getCharacter().getOrders()[0] = o;
-                        } else {
-                            o.getCharacter().getOrders()[1] = o;
+                        // set order o to character o.getCharacter
+                        for (int i=0; i<o.getCharacter().getNumberOfOrders(); i++) {
+                        	if (o.getCharacter().getOrders()[i] == no) {
+                        		o.getCharacter().getOrders()[i] = o;
+                        	}
                         }
+                        
                         Application.instance().getApplicationContext().publishEvent(
                                 new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
 

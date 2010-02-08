@@ -125,7 +125,7 @@ public class TurnInitializer {
         }
         newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name", "hexNo", "nationNo"}));
         
-        Container armies = new Container(new String[]{"hexNo", "nationNo"});
+        Container armies = new Container(new String[]{"hexNo", "nationNo", "commanderName"});
         
         if (previousTurn == null) {
         	// get armies from metadata

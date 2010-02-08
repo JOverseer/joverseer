@@ -58,14 +58,22 @@ public class RunOrdercheckerCommand  extends ApplicationWindowAwareCommand{
         try {
             if (!ActiveGameChecker.checkActiveGameExists()) return;
             
-            if (GameHolder.instance().getGame().getMetadata().getGameType().equals(GameTypeEnum.gameUW)) {
-            	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                MessageDialog md = new MessageDialog(
-                ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
-                ms.getMessage("errorOrdercheckerDoesNotSupportUW", new String[]{}, Locale.getDefault()));
-                md.showDialog();
-                return;
-            }
+//            if (GameHolder.instance().getGame().getMetadata().getGameType().equals(GameTypeEnum.gameUW)) {
+//            	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+//                MessageDialog md = new MessageDialog(
+//                ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
+//                ms.getMessage("errorOrdercheckerDoesNotSupportUW", new String[]{}, Locale.getDefault()));
+//                md.showDialog();
+//                return;
+//            }
+//            if (GameHolder.instance().getGame().getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
+//            	MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
+//                MessageDialog md = new MessageDialog(
+//                ms.getMessage("errorDialog.title", new String[]{}, Locale.getDefault()),
+//                ms.getMessage("errorOrdercheckerDoesNotSupportKS", new String[]{}, Locale.getDefault()));
+//                md.showDialog();
+//                return;
+//            }
             
             // show a form so that the user selects the desired nation
             final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));

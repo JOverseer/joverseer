@@ -294,7 +294,7 @@ public class CharacterViewer extends ObjectViewer {
                 }
             }
             nationTextBox.setText(nationName);
-            
+            nationTextBox.setCaretPosition(0);
             if (showArtifacts && !showStartingInfo) {
                 ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts()
                         : startingChar != null ? startingChar.getArtifacts() : null);

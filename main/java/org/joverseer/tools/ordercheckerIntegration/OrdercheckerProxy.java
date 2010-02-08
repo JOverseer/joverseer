@@ -106,7 +106,13 @@ public class OrdercheckerProxy {
         } else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
             Main.main.getData().setGameType("Fourth Age");
             gt = "fa";
-        } 
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
+            Main.main.getData().setGameType("Untold War");
+            gt = "uw";
+        }else if (g.getMetadata().getGameType() == GameTypeEnum.gameKS) {
+            Main.main.getData().setGameType("Kin Strife");
+            gt = "ks";
+        }  
         ImportTerrainCsv terrain = new ImportTerrainCsv("bin/metadata/orderchecker/" + gt + ".game", Main.main.getMap());
         result = terrain.getMapInformation();
         if(!result)
@@ -305,6 +311,10 @@ public class OrdercheckerProxy {
             nation.setGameType("BOFA");
         } else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
             nation.setGameType("Fourth Age");
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
+            nation.setGameType("Untold War");
+        } else if (g.getMetadata().getGameType() == GameTypeEnum.gameKS) {
+            nation.setGameType("Kin Strife");
         } 
         
         nation.setSecret(Integer.parseInt(pi.getSecret()));

@@ -299,7 +299,7 @@ public class Combat implements Serializable, IHasMapLocation {
     }
     
     public int computePopCenterStrength(CombatPopCenter pc, int numberOfWarMachines) {
-        int popDef = new int[]{200, 500, 1000, 2500, 5000}[pc.getSize().getCode()-1];
+        int popDef = new int[]{0, 200, 500, 1000, 2500, 5000}[pc.getSize().getCode()];
         int fortDef = new int[]{0, 2000, 6000, 10000, 16000, 24000}[pc.getFort().getSize()];
         int wmStr = numberOfWarMachines * 200;
         fortDef = Math.max(fortDef - wmStr, 0);

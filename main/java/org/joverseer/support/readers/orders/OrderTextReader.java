@@ -260,7 +260,7 @@ public class OrderTextReader {
 						// orders[i].getParameter(orders[i].getLastParamIndex());
 						String paramZero = orders[i].getParameter(0);
 						if (paramZero.equals("no") || paramZero.equals("ev")) {
-							for (int ii = 0; ii < orders[i].getLastParamIndex() - 1; ii++) {
+							for (int ii = 0; ii < orders[i].getLastParamIndex(); ii++) {
 								orders[i].setParameter(ii, orders[i]
 										.getParameter(ii + 1));
 							}

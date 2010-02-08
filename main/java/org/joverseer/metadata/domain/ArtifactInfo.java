@@ -81,11 +81,10 @@ public class ArtifactInfo implements Serializable {
     }
 
 	public void setPower(int index, String updatedPower) {
-		if(powers.size() == 2) {
-			powers.set(index, updatedPower) ;
-		}
-		else if ( powers.size() < 2 ) {
-			powers.add(updatedPower) ;
+		if (powers.size() <= index) {
+			powers.add(updatedPower);
+		} else {
+			powers.set(index, updatedPower);
 		}
 	}
 }

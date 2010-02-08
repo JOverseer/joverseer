@@ -101,7 +101,9 @@ public class Container implements Serializable {
 
     public ArrayList findAllByProperties(String[] properties, Object[] values) {
         ArrayList ret = findByCache(properties[0], values[0]);
-        if (ret != null && ret.size() == 0) return ret;
+        if (ret != null && ret.size() == 0) {
+        	return ret;
+        }
         int si;
         if (ret == null) {
             si = 0;
@@ -109,15 +111,18 @@ public class Container implements Serializable {
         } else {
             si = 1;
         }
+        if (si == properties.length) return ret;
         BeanPropertyValueEqualsPredicate[] ps = new BeanPropertyValueEqualsPredicate[properties.length - si];
         for (int i=si; i<properties.length; i++) {
             ps[i-si] = new BeanPropertyValueEqualsPredicate(properties[i], values[i]);
         }
         AllPredicate p = new AllPredicate(ps);
-        ArrayList res = new ArrayList();
-        res.addAll(ret);
+        //ArrayList res = new ArrayList();
+        //res.addAll(ret);
+        ArrayList res = ret;
         if (ps.length > 0) {
-            CollectionUtils.filter(res, p);
+            //CollectionUtils.filter(res, p);
+        	return new ArrayList(CollectionUtils.select(res, p));
         }
         return res;
     }

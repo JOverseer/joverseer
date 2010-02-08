@@ -164,7 +164,7 @@ public class ArmyViewer extends ObjectViewer {
             return;
         GameMetadata gm = game.getMetadata();
         nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
-
+        nation.setCaretPosition(0);
         
         armySize.setText("Size: " + army.getSize().toString());
         armySize.setCaretPosition(0);

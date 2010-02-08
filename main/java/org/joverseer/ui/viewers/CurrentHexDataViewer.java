@@ -401,7 +401,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
             }
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
             	Point p = MapPanel.instance().getSelectedHex();
-                refresh(p);
+            	if (p != null) refresh(p);
             }
             if (e.getEventType().equals(LifecycleEventsEnum.RefreshHexItems.toString())) {
                 Point p = (Point)e.getObject();

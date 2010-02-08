@@ -52,9 +52,9 @@ public class ArtifactReader implements MetadataReader {
 	                artifact.setName(name);
 	                artifact.setOwner(owner);
 	                artifact.setAlignment(alignment);
-	                artifact.getPowers().add(power1);
+	                artifact.setPower(0, power1);
 	                if (!power2.equals("")) {
-	                    artifact.getPowers().add(power2);
+	                    artifact.setPower(1, power2);
 	                }
 	                artifacts.addItem(artifact);
             	}

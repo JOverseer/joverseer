@@ -47,6 +47,7 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditPopulationCenterForm;
@@ -78,6 +79,7 @@ public class HexInfoViewer extends ObjectViewer {
     JTextField hexNo;
     JTextField climate;
     JTextField turnInfo;
+    JTextField terrain;
     NotesViewer notesViewer;
     
     RemoveBridgeCommand removeBridgeNE = new RemoveBridgeNE();
@@ -115,6 +117,9 @@ public class HexInfoViewer extends ObjectViewer {
         lb.append(l = new JLabel("Hex No :"), 2, 1);
         lb.append(hexNo = new JTextField(), 2, 1);
         hexNo.setBorder(null);
+        lb.append(terrain = new JTextField(), 2, 1);
+        terrain.setPreferredSize(new Dimension(60, 12));
+        terrain.setBorder(null);
         lb.append(climate = new JTextField(), 2, 1);
         climate.setPreferredSize(new Dimension(50, 12));
         climate.setBorder(null);
@@ -133,7 +138,7 @@ public class HexInfoViewer extends ObjectViewer {
         });
         
         lb.nextLine();
-
+         
         lb.append(l = new JLabel("Latest info :"), 2, 1);
         lb.append(turnInfo = new JTextField(), 4, 1);
         turnInfo.setPreferredSize(new Dimension(80, 12));
@@ -143,6 +148,7 @@ public class HexInfoViewer extends ObjectViewer {
         lb.append(new JSeparator(), 5, 1);
         lb.nextLine();
 
+        
         lb.append(l = new JLabel("Inf"), 2, 1);
         Font f = new Font(l.getFont().getName(), Font.BOLD, l.getFont().getSize());
         l.setFont(f);
@@ -209,7 +215,8 @@ public class HexInfoViewer extends ObjectViewer {
             Game g = GameHolder.instance().getGame();
             HexInfo hi = (HexInfo)g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
             climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
-
+            terrain.setText(UIUtils.renderEnum(h.getTerrain()));
+            terrain.setCaretPosition(0);
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {
                 for (MovementDirection md : MovementDirection.values()) {

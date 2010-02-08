@@ -43,8 +43,8 @@
 				<value>nationStatisticsListView</value>
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
-				<value>pcChangesListView</value>
 				<!--
+				<value>pcChangesListView</value>
 				<value>chatWindowView</value>
 				-->				
 				<value>playerInfoListView</value>

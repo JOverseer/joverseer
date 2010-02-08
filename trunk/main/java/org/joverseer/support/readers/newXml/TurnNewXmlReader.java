@@ -431,14 +431,14 @@ public class TurnNewXmlReader implements Runnable {
         if (ews == null) return;
         Container encounters = game.getTurn().getContainer(TurnElementsEnum.Encounter);
         for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
+        	Encounter ne = ew.getEncounter();
+        	Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ne.getCharacter());
             Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{ew.getCharId(), Integer.parseInt(ew.getHex())});
             if (e != null) {
                 encounters.removeItem(e);
             }
-            e = ew.getEncounter();
-            Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", e.getCharacter());
-            e.setCharacter(c.getName());
-            encounters.addItem(e);
+            ne.setCharacter(c.getName());
+            encounters.addItem(ne);
         }
 	}
 	

@@ -122,7 +122,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         }
 
         nation.setText(gm.getNationByNum(nationNo).getShortName());
-
+        nation.setCaretPosition(0);
         sizeFort.setText(UIUtils.renderEnum(pc.getSize()));
         if (!pc.getFortification().equals(FortificationSizeEnum.none)) {
         	sizeFort.setText(sizeFort.getText() + " - " + UIUtils.renderEnum(pc.getFortification()));

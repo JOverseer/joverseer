@@ -1,9 +1,11 @@
 package org.joverseer.domain;
 
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.tools.CombatUtils;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -376,7 +378,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
     
     public Integer getENHI() {
     	if (enHI == null) {
-    		enHI = CombatUtils.getNakedHeavyInfantryEquivalent3(this);
+    		Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", getCommanderName());
+    		if (c != null) {
+    			enHI = CombatUtils.getNakedHeavyInfantryEquivalent(this, c);
+    		} else {
+    			enHI = CombatUtils.getNakedHeavyInfantryEquivalent2(this);
+    		}
     	}
     	return enHI;
     }

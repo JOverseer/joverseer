@@ -317,8 +317,10 @@ public class Data
     public static final int GAME_2950 = 1;
     public static final int GAME_1000 = 2;
     public static final int GAME_BOFA = 3;
+    public static final int GAME_UW = 4;
+    public static final int GAME_KS = 5;
     private static String gameDesc[] = {
-        "1650", "2950", "Fourth Age", "BOFA"
+        "1650", "2950", "Fourth Age", "BOFA", "Untold War", "Kin Strife"
     };
     public static final int NORMAL_FORMAT = 0;
     public static final int HTML_FORMAT = 1;
@@ -333,7 +335,7 @@ public class Data
     private static String dataDirectory = "data/";
     private static String rulesFile = "ruleset.csv";
     private static String terrainFiles[] = {
-        "1650.game", "2950.game", "fa.game", "bofa.game"
+        "1650.game", "2950.game", "fa.game", "bofa.game", "uw.game", "ks.game"
     };
     private String turnPath;
     private String ordersPath;

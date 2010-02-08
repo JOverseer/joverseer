@@ -211,7 +211,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
                 metadata.getGridCellWidth() * metadata.getHexSize(), 
                 metadata.getGridCellHeight() * metadata.getHexSize());
 	        if (img!= null) {
-	            g.drawImage(img, x, y, null);
+	        	g.drawImage(img, x, y, null);
 	            Polygon polygon = new Polygon(xPoints, yPoints, 6);
 	            polygon.translate(x, y);
 	            g.setColor(Color.black);

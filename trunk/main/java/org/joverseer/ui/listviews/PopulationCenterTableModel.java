@@ -6,6 +6,7 @@ import org.joverseer.domain.ProductEnum;
 import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.PopulationCenterLoyaltyEstimator;
+import org.joverseer.ui.support.UIUtils;
 import org.springframework.context.MessageSource;
 
 /**
@@ -17,6 +18,8 @@ public class PopulationCenterTableModel extends ItemTableModel {
     static int iProductStart = 8;
     static int iLostThisTurn = 7;
     static int iLoyalty = 5;
+    static int iSize = 3;
+    static int iFort = 4;
     
     public PopulationCenterTableModel(MessageSource messageSource) {
         super(PopulationCenter.class, messageSource);
@@ -39,11 +42,16 @@ public class PopulationCenterTableModel extends ItemTableModel {
             int p = pc.getProduction(pe) == null ? 0 : pc.getProduction(pe);
             return s + p == 0 ? null : s + p;
         }
-        if (i == iLostThisTurn) {
+        if (i == iSize) {
+        	PopulationCenter pc = (PopulationCenter)object;
+        	return UIUtils.renderEnum(pc.getSize());
+        } else if (i == iFort) {
+        	PopulationCenter pc = (PopulationCenter)object;
+        	return UIUtils.renderEnum(pc.getFortification());
+        } else if (i == iLostThisTurn) {
             PopulationCenter pc = (PopulationCenter)object;
             return pc.getLostThisTurn() ? "yes" : "";
-        }
-        if (i == iLoyalty) {
+        } else if (i == iLoyalty) {
             PopulationCenter pc = (PopulationCenter)object;
             
             if (pc.getLoyalty() > 0) {

@@ -45,22 +45,50 @@ public class CharacterMessageWrapper {
 	}
 	
 	public void updateCharacter(Character c, Game game) {
-		c.setOrderResults(getOrdersAsString());
+		String orders = getOrdersAsString();
+		c.setOrderResults(orders);
 		if (getAssassinated(c)) {
 			c.setDeathReason(CharacterDeathReasonEnum.Assassinated);
 		} else if (getCursed(c)) {
 			c.setDeathReason(CharacterDeathReasonEnum.Cursed);
 		} else if (getExecuted(c)) {
 			c.setDeathReason(CharacterDeathReasonEnum.Executed);
+		} else if (getMissing(c)) { // 2010-02-09 this is KS specific
+			c.setDeathReason(CharacterDeathReasonEnum.Missing);
 		}
 		if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
-			Integer hexNo = getOriginalLocation();
+			Integer hexNo;
+			if (c.getDeathReason().equals(CharacterDeathReasonEnum.Missing)) {
+				hexNo = getLastSeenLocation();
+			} else {
+				hexNo = getOriginalLocation();
+			}
 			if (hexNo != null) {
 				game.getTurn().getContainer(TurnElementsEnum.Character).removeItem(c);
 				c.setHexNo(hexNo);
 				game.getTurn().getContainer(TurnElementsEnum.Character).addItem(c);
 			}
 		}
+	}
+	
+	protected Integer getLastSeenLocation() {
+		// 2010 02 09 - KS Specific, parse "{Dervorin} has gone missing. She was last seen in the Mixed Forest at 1908. No one seems to know what has happened to her."
+		for (String line : (ArrayList<String>)lines) {
+			if (line.indexOf("was last seen ") > -1 && line.indexOf("was located in an unknown location") == -1) {
+				String[] sentences = line.split("\\.");
+				if (sentences.length > 1 && sentences[1].indexOf("was last seen")>-1) {
+					String hexNo = sentences[1].substring(sentences[1].length()-4, sentences[1].length());
+					try {
+						return Integer.parseInt(hexNo);
+					}
+					catch (Exception exc) {
+						// do nothing
+						return null;
+					}
+				}
+			}
+		}
+		return null;
 	}
 	
 	protected Integer getOriginalLocation() {
@@ -82,6 +110,13 @@ public class CharacterMessageWrapper {
 	protected boolean getAssassinated(Character c) {
 		for (String line : (ArrayList<String>)lines) {
 			if (line.indexOf(c.getName() + " was assassinated.")>-1) return true;
+		}
+		return false;
+	}
+	
+	protected boolean getMissing(Character c) {
+		for (String line : (ArrayList<String>)lines) {
+			if (line.indexOf(c.getName() + " has gone missing.")>-1) return true;
 		}
 		return false;
 	}

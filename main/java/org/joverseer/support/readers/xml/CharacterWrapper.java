@@ -2,6 +2,7 @@ package org.joverseer.support.readers.xml;
 
 import java.util.ArrayList;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.domain.InformationSourceEnum;
 
@@ -242,6 +243,9 @@ public class CharacterWrapper {
         character.setChallenge(getChallenge());
         if (getHealth() > 0) {
             character.setHealth(getHealth());
+        } else if (hexNo == 0) {
+        	// dead
+        	character.setDeathReason(CharacterDeathReasonEnum.Dead);
         }
         character.setNumberOfOrders(getOrdersAllowed());
         String artifactId;
@@ -285,7 +289,7 @@ public class CharacterWrapper {
                 break;
         }
         
-        if (getInformationSource() == 0) {
+        if (getInformationSource() == 0 && !getLocation().equals("DEAD")) {
             character.setHostage(getLocation().equals("HOST") || "0".equals(getLocation()) || "0000".equals(getLocation()));
         } 
         return character;

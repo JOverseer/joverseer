@@ -38,7 +38,7 @@ public class TurnInitializer {
         GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
         
         Container newNotes = newTurn.getContainer(TurnElementsEnum.Notes);
-
+        Container newChars = new Container(new String[]{"id", "name", "hexNo", "nationNo"});
         if (previousTurn != null) {
             // copy pcs
             Container oldPcs = previousTurn.getContainer(TurnElementsEnum.PopulationCenter);
@@ -61,6 +61,13 @@ public class TurnInitializer {
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)gmPCs.items) {
                 PopulationCenter newPc = pc.clone();
                 newPcs.addItem(newPc);
+            }
+            
+            // get starting chars from metadata
+            Container gmChars = gm.getStartDummyCharacters();
+            for (Character c : (ArrayList<Character>)gmChars.items) {
+                Character newC = c.clone();
+                newChars.addItem(newC);
             }
 
             // init relations from metadata
@@ -123,7 +130,7 @@ public class TurnInitializer {
                 newRelations.addItem(nr);
             }
         }
-        newTurn.getContainers().put(TurnElementsEnum.Character, new Container(new String[]{"id", "name", "hexNo", "nationNo"}));
+        newTurn.getContainers().put(TurnElementsEnum.Character, newChars);
         
         Container armies = new Container(new String[]{"hexNo", "nationNo", "commanderName"});
         

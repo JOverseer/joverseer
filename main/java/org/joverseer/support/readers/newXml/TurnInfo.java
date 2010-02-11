@@ -14,6 +14,8 @@ public class TurnInfo {
 	Container charMessages;
 	Container encounters;
 	Container snas;
+	Container anchoredShips;
+	Container battles;
 	
 	int turnNo = -1;
     int nationNo = -1;
@@ -32,6 +34,23 @@ public class TurnInfo {
 	}
 	
 	
+	
+
+	public Container getBattles() {
+		return battles;
+	}
+
+	public void setBattles(Container battles) {
+		this.battles = battles;
+	}
+
+	public Container getAnchoredShips() {
+		return anchoredShips;
+	}
+
+	public void setAnchoredShips(Container anchoredShips) {
+		this.anchoredShips = anchoredShips;
+	}
 
 	public Container getCharMessages() {
 		return charMessages;

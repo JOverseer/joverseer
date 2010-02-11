@@ -95,6 +95,7 @@ public class CharacterInfoCollector implements ApplicationListener {
             Turn t = game.getTurn(i);
             if (t == null) continue;
             for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+            	if (c.isStartInfoDummy()) continue;
                 ArrayList<AdvancedCharacterWrapper> matches = 
                     (ArrayList<AdvancedCharacterWrapper>)ret.findAllByProperty("id", c.getId());
                 

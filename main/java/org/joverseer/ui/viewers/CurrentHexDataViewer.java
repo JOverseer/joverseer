@@ -97,7 +97,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
         tlb.separator(" Characters ");
         tlb.row();
-        for (int i=0; i<30; i++) {
+        for (int i=0; i<50; i++) {
             CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()));
             characterViewers.add(vc);
             JPanel cp = new JPanel();

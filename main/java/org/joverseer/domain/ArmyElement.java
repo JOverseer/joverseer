@@ -99,4 +99,8 @@ public class ArmyElement implements Serializable {
     	}
     	return getNumber() * cost;
     }
+    
+    public int getRequiredTransportCapacity() {
+    	return (int)Math.ceil(getArmyElementType().getRequiredTransportCapacity() * (double)getNumber());
+    }
 }

@@ -34,6 +34,7 @@ public class GameMetadata implements Serializable {
     Container artifacts = new Container(new String[]{"no"});
     Container orders = new Container(new String[]{"number"});
     Container characters = new Container(new String[]{"id", "name"});
+    Container startDummyCharacters = new Container(new String[]{"id", "name"});
     Container populationCenters = new Container(new String[]{"hexNo"});
     Container nationMapRanges = new Container(new String[]{"nationNo"});
     Container spells = new Container(new String[]{"no"});
@@ -114,7 +115,15 @@ public class GameMetadata implements Serializable {
     
     
 
-    public boolean getNewXmlFormat() {
+    public Container getStartDummyCharacters() {
+		return startDummyCharacters;
+	}
+
+	public void setStartDummyCharacters(Container startDummyCharacters) {
+		this.startDummyCharacters = startDummyCharacters;
+	}
+
+	public boolean getNewXmlFormat() {
 		return newXmlFormat;
 	}
 
@@ -134,6 +143,7 @@ public class GameMetadata implements Serializable {
         out.writeObject(getGameNo());
         out.writeObject(getNationNo());
         out.writeObject(getNewXmlFormat());
+        out.writeObject(getStartDummyCharacters());
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -149,6 +159,12 @@ public class GameMetadata implements Serializable {
         setNationNo((Integer)in.readObject());
         try {
         	setNewXmlFormat((Boolean)in.readObject());
+        }
+        catch (Exception e) {
+        	// do nothing, this may have not been set
+        }
+        try {
+        	setStartDummyCharacters((Container)in.readObject());
         }
         catch (Exception e) {
         	// do nothing, this may have not been set

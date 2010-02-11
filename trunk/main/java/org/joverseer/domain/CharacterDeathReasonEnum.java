@@ -15,6 +15,7 @@ public enum CharacterDeathReasonEnum {
     Assassinated,
     Cursed,
     Executed,
-    Dead
+    Dead,
+    Missing
 
 }

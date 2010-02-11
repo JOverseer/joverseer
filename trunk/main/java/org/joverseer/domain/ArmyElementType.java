@@ -38,4 +38,18 @@ public enum ArmyElementType implements Serializable {
     public boolean isCavalry() {
         return type.equals("HC") || type.equals("LC");
     }
+    
+    public boolean isTroop() {
+    	return type.equals("HC") || type.equals("LC") || type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA");
+    }
+    
+    public boolean isInfantry() {
+    	return type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA");
+    }
+    
+    public double getRequiredTransportCapacity() {
+    	if (!isTroop()) return 0;
+    	if (isCavalry()) return 250 / 150;
+    	return 1;
+    }
 }

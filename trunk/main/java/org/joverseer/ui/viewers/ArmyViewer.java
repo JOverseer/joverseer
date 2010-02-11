@@ -19,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.log4j.LogManager;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.FortificationSizeEnum;
@@ -83,7 +84,7 @@ public class ArmyViewer extends ObjectViewer {
     ActionCommand deleteArmyCommand = new DeleteArmyCommand();
     ActionCommand editArmyCommand = new EditArmyCommand();
     ActionCommand exportCombatArmyCodeCommand = new ExportCombatArmyCodeCommand();
-
+    
     public ArmyViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
@@ -258,6 +259,7 @@ public class ArmyViewer extends ObjectViewer {
                 		deleteArmyCommand,
                 		"separator",
                 		new ShowCanCaptureAction(),
+                		new ShowRequiredTransportsCommand(),
                 		"separator",
                 		new ShowInfoSourcePopupCommand(((Army)getFormObject()).getInfoSource()),
                 });
@@ -389,6 +391,41 @@ public class ArmyViewer extends ObjectViewer {
             LogManager.getLogger(this.getClass()).info(ca.getCode());
             LogManager.getLogger(this.getClass()).info("Done exporting code for Combat Army under " + ca.getCommander());
             MessageDialog dlg = new MessageDialog("Army code", ca.getCode());
+            dlg.showDialog();
+    	}
+    }
+    
+    private class ShowRequiredTransportsCommand extends ActionCommand {
+    	public ShowRequiredTransportsCommand() {
+            super("showRequiredTransportsCommand");
+        }
+    	
+    	protected void doExecuteCommand() {
+            Army a = (Army)getFormObject();
+            int requiredTransportCapacity = 0;
+            for (ArmyElement ae : a.getElements()) {
+            	requiredTransportCapacity += ae.getRequiredTransportCapacity();
+            }
+            int requiredTransports = (int)Math.ceil((double)requiredTransportCapacity / 250d) ;
+            String msg = "The army requires " + requiredTransports + " transports.";
+            if (a.isNavy()) {
+            	int transports = a.getElement(ArmyElementType.Transports).getNumber();
+            	int transportInfCapacity = transports * 250;
+            	int transportCavCapacity = transports * 150;
+            	msg += "\n" +
+            			"The army current has " + transports + " transports and can carry a total of " + transportInfCapacity + " infantry or " + transportCavCapacity + "cavalry.";
+            	int freeInfCapacity = transportInfCapacity - requiredTransportCapacity;
+            	int freeCavCapacity = freeInfCapacity * 150 / 250;
+            	if (freeInfCapacity > 0) {
+            			msg += "\n" +
+            			"There is room for extra " + freeInfCapacity + " infantry or " + freeCavCapacity + " cavalry in the army's transports.";
+            	} else if (freeInfCapacity == 0) {
+            		msg += "\n" + "There is no room for extra troops in the army's transports.";
+            	} else if (freeInfCapacity < 0) {
+            		msg += "\n" + "The army's troops are too many to be carried by the army's transports.";
+            	}
+            }
+            MessageDialog dlg = new MessageDialog("Required Transports", msg);
             dlg.showDialog();
     	}
     }

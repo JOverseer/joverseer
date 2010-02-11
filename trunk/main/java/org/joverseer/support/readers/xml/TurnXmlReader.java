@@ -471,6 +471,17 @@ public class TurnXmlReader implements Runnable{
     
     private void updateChars() throws Exception {
         Container chars = turn.getContainer(TurnElementsEnum.Character);
+        if (turn.getTurnNo() == 0) {
+        	// remove all character's import from metadata for given nation
+        	ArrayList<Character> metadataChars = chars.findAllByProperty("nationNo", turnInfo.getNationNo());
+        	ArrayList<Character> toRemove = new ArrayList<Character>();
+        	for (Character c : metadataChars) {
+        		if (MetadataSource.class.isInstance(c.getInfoSource())) {
+        			toRemove.add(c);
+        		}
+        	}
+        	chars.removeAll(toRemove);
+        }
         for (CharacterWrapper cw : (ArrayList<CharacterWrapper>) turnInfo.getCharacters().getItems()) {
             Character newCharacter;
             Character oldCharacter;
@@ -591,6 +602,14 @@ public class TurnXmlReader implements Runnable{
     			if (a1.getCommanderName().equals(a2.getCommanderName())) {
     				// duplicate army
     				toRemoveB = true;
+    				// hack for KS - update army size 
+    				// this is needed because currently in KS when the army's composition is reported, size is unknown
+    				// and the army is reported again with size <> unknown but a larger InformationSource (i.e. less info)
+    				if (game.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
+	    				if (!a2.getSize().equals(ArmySizeEnum.unknown) && a1.getSize().equals(ArmySizeEnum.unknown)){
+	    					a1.setSize(a2.getSize());
+	    				}
+    				}
     			} else if (a2.getCommanderName().equals(UNKNOWN_MAP_ICON)) {
     				if (a1.getNationNo() > 0 && a2.getNationNo().equals(a1.getNationNo())) {
     					// duplicate nation

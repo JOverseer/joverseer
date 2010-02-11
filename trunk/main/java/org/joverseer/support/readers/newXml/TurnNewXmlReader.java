@@ -2,16 +2,21 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 
+import org.apache.commons.digester.CallParamRule;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Artifact;
+import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Encounter;
+import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -26,6 +31,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.springframework.richclient.progress.ProgressMonitor;
@@ -217,6 +223,49 @@ public class TurnNewXmlReader implements Runnable {
         	// add regiment to army
             digester.addSetNext("METurn/More/Armies/Army/Troops", "addRegiment", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
 
+            // create container for anchored ships
+            digester.addObjectCreate("METurn/AnchoredShips", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/AnchoredShips", "setAnchoredShips");
+            // create army wrapper
+            digester.addObjectCreate("METurn/AnchoredShips/Ships", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
+            // set hex no
+            digester.addSetProperties("METurn/AnchoredShips/Ships", "HexID", "hexId");
+            // set nested properties
+            digester.addRule("METurn/AnchoredShips/Ships",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Transports", "Warships"},
+                            new String[]{"transports", "warships"}));
+            snpr.setAllowUnknownChildElements(true);
+        	// add to container
+            digester.addSetNext("METurn/AnchoredShips/Ships", "addItem", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
+            
+            // create container for battles
+            digester.addObjectCreate("METurn/BattleReports", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/BattleReports", "setBattles");
+            // create battle wrapper
+            digester.addObjectCreate("METurn/BattleReports/BattleReport", "org.joverseer.support.readers.newXml.BattleWrapper");
+            // create line
+            digester.addObjectCreate("METurn/BattleReports/BattleReport/Lines/Line", "org.joverseer.support.readers.newXml.BattleLine");
+            // set text
+            digester.addCallMethod("METurn/BattleReports/BattleReport/Lines/Line", "setText", 1);
+            digester.addCallParam("METurn/BattleReports/BattleReport/Lines/Line", 0);
+            // set nested properties
+            digester.addRule("METurn/BattleReports/BattleReport/Lines/Line",
+                    snpr = new SetNestedPropertiesRule(new String[]{"CommanderReport", "SummaryReport"},
+                            new String[]{"commanderReport", "summaryReport"}));
+            snpr.setAllowUnknownChildElements(true);
+            // set nested properties
+            digester.addRule("METurn/BattleReports/BattleReport/Lines/Line/TroopReport/TroopRow",
+                    snpr = new SetNestedPropertiesRule(new String[]{"TroopType", "WeaponType", "Armor", "Formations"},
+                            new String[]{"troopType", "weaponType", "armor", "formation"}));
+            snpr.setAllowUnknownChildElements(true);
+            // add lines
+            digester.addSetNext("METurn/BattleReports/BattleReport/Lines/Line", "addLine", "org.joverseer.support.readers.newXml.BattleLine");
+            // add to container
+            digester.addSetNext("METurn/BattleReports/BattleReport", "addItem", "org.joverseer.support.readers.newXml.BattleWrapper");
+            
+            
             // character messages
             digester.addObjectCreate("METurn/More/Characters/CharacterMessages", "org.joverseer.support.Container");
             // add container to turn info
@@ -287,6 +336,7 @@ public class TurnNewXmlReader implements Runnable {
 			if (turnInfo == null) {
 				return;
 			}
+			turnInfo.setNationNo(nationNo);
 			updateGame(game);
 			game.setCurrentTurn(game.getMaxTurn());
 			Thread.sleep(100);
@@ -351,6 +401,18 @@ public class TurnNewXmlReader implements Runnable {
             }
             if (getMonitor() != null) {
                 getMonitor().worked(40);
+                getMonitor().subTaskStarted("Updating battles...");
+            }
+            try {
+                updateBattles(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(45);
                 getMonitor().subTaskStarted("Updating armies...");
             }
             try {
@@ -363,6 +425,18 @@ public class TurnNewXmlReader implements Runnable {
             }
             if (getMonitor() != null) {
                 getMonitor().worked(50);
+                getMonitor().subTaskStarted("Updating anchored ships...");
+            }
+            try {
+                updateAnchoredShips(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(55);
                 getMonitor().subTaskStarted("Updating characters...");
             }
             try {
@@ -433,7 +507,7 @@ public class TurnNewXmlReader implements Runnable {
         for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
         	Encounter ne = ew.getEncounter();
         	Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ne.getCharacter());
-            Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{ew.getCharId(), Integer.parseInt(ew.getHex())});
+            Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{c.getName(), Integer.parseInt(ew.getHex())});
             if (e != null) {
                 encounters.removeItem(e);
             }
@@ -455,6 +529,37 @@ public class TurnNewXmlReader implements Runnable {
 			}
 		}
         
+	}
+	
+	private void updateAnchoredShips(Game game) throws Exception {
+		String commanderName = "[Anchored Ships]";
+		Container asws = turnInfo.getAnchoredShips();
+		Container armies = turn.getContainer(TurnElementsEnum.Army);
+		if (asws == null) return;
+        for (AnchoredShipsWrapper asw : (ArrayList<AnchoredShipsWrapper>)asws.getItems()) {
+            String hexNo = String.valueOf(asw.getHexId());
+            Army a = (Army)armies.findFirstByProperties(new String[]{"commanderName", "hexNo", "nationNo"}, new Object[]{commanderName, hexNo, turnInfo.getNationNo()});
+            if (a == null) {
+                a = new Army();
+                a.setNavy(true);
+                a.setSize(ArmySizeEnum.unknown);
+                a.setCommanderName(commanderName);
+                a.setCommanderTitle("");
+                a.setHexNo(hexNo);
+                a.setNationNo(turnInfo.getNationNo());
+                NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
+                NationRelations nr = (NationRelations)game.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", turnInfo.getNationNo());
+                if (nr != null) {
+                    allegiance = nr.getAllegiance();
+                }
+                a.setNationAllegiance(allegiance);
+                a.setInformationSource(InformationSourceEnum.exhaustive);
+                a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
+                a.setElement(ArmyElementType.Transports, asw.getTransports());
+                a.setElement(ArmyElementType.Warships, asw.getWarships());
+                armies.addItem(a);
+            }
+        }        
 	}
 	
 	private void updateRelations(Game game) throws Exception {
@@ -506,6 +611,23 @@ public class TurnNewXmlReader implements Runnable {
         if (!problematicNations.equals("")) {
         	throw new Exception("Failed to update relations with nations " + problematicNations + " because the nation names were invalid.");
         }
+	}
+	
+	private void updateBattles(Game game) {
+		Container bws = turnInfo.getBattles();
+		Container combats = turn.getContainer(TurnElementsEnum.Combat);
+		for (BattleWrapper bw : (ArrayList<BattleWrapper>)bws.getItems()) {
+			bw.parse();
+			Combat c = (Combat)combats.findFirstByProperty("hexNo", bw.getHexNo());
+            if (c == null) {
+                c = new Combat();
+                c.setHexNo(bw.getHexNo());
+                c.addNarration(turnInfo.getNationNo(), bw.getText());
+                combats.addItem(c);
+            } else {
+                c.addNarration(turnInfo.getNationNo(), bw.getText());
+            }
+		}
 	}
 	
 	private void updateCompanies(Game game) {

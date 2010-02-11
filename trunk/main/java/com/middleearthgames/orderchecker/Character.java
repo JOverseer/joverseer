@@ -53,7 +53,7 @@ public class Character
     StateList finalLocation;
     StateList companyLeader;
     StateList newArtifacts;
-
+    
     public Character(String id)
     {
         this.id = null;

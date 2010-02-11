@@ -61,7 +61,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
     
     String orderResults;
     String encounter;
-    
+    boolean startInfoDummy = false;
    
     CharacterDeathReasonEnum deathReason = CharacterDeathReasonEnum.NotDead;
 
@@ -368,11 +368,51 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	public void setNumberOfOrders(int numberOfOrders) {
 		this.numberOfOrders = numberOfOrders;
 	}
+	
+	
+
+	public boolean isStartInfoDummy() {
+		return startInfoDummy;
+	}
+
+	public void setStartInfoDummy(boolean startInfoDummy) {
+		this.startInfoDummy = startInfoDummy;
+	}
 
 	public Integer getMaintenance() {
 		return (getCommand() + getMage() + getAgent() + getEmmisary()) * 20;
 	}
 
-	
+	public Character clone() {
+		Character c = new Character();
+		c.setName(getName());
+		c.setId(getId());
+		c.setNationNo(getNationNo());
+		c.setCommand(getCommand());
+		c.setCommandTotal(getCommandTotal());
+		c.setAgent(getAgent());
+		c.setAgentTotal(getAgentTotal());
+		c.setMage(getMage());
+		c.setMageTotal(getMageTotal());
+		c.setEmmisary(getEmmisary());
+		c.setEmmisaryTotal(getEmmisaryTotal());
+		c.setHealth(getHealth());
+		c.setChallenge(getChallenge());
+		c.setTitle(getTitle());
+		c.setHexNo(getHexNo());
+		c.setDeathReason(getDeathReason());
+		c.setNumberOfOrders(getNumberOfOrders());
+		c.setArtifactInUse(getArtifactInUse());
+		c.setStealth(getStealth());
+		c.setStealthTotal(getStealthTotal());
+		c.setInfoSource(getInfoSource());
+		c.setInformationSource(getInformationSource());
+		c.setStartInfoDummy(isStartInfoDummy());
+		c.setArtifacts((ArrayList<Integer>)getArtifacts().clone());
+		for (SpellProficiency sp : getSpells()) {
+			c.getSpells().add(new SpellProficiency(sp.getSpellId(), sp.getProficiency(), sp.getName()));
+		}
+		return c;
+	}
 	
 }

@@ -100,4 +100,5 @@ public class CharacterListView extends ItemListView {
         });
         return c;
     }
+   
 }

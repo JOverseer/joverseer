@@ -240,6 +240,7 @@
                 <bean class="org.joverseer.metadata.PopulationCenterReader"/>
                 <bean class="org.joverseer.metadata.OrderReader"/>
                 <bean class="org.joverseer.metadata.CharacterReader"/>
+                <bean class="org.joverseer.metadata.StartingCharacterReader"/>
                 <bean class="org.joverseer.metadata.NationMapRangeReader"/>
                 <bean class="org.joverseer.metadata.SpellReader"/>
 				<bean class="org.joverseer.metadata.DetailArmyReader"/>                

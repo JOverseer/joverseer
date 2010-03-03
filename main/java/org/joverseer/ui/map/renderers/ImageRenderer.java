@@ -81,7 +81,7 @@ public abstract class ImageRenderer implements Renderer {
                 	sw += 1d / bimg.getWidth();
                 }
                 if (sh < 1) {
-                	sh += 1d / bimg.getHeight();
+                	sh += 1d / bimg.getHeight();	
                 }
                 g2d.scale(sw, sh);
                 g2d.drawImage(img,0,0,null);

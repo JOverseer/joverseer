@@ -14,7 +14,7 @@
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="1.0.7"/>
-		<property name="buildId" value="2009-11-21"/>
+		<property name="buildId" value="2010-03-02"/>
 	</bean>
 	
 	<!--
@@ -328,6 +328,14 @@
    					</property>
    					<property name="resourcePath">
    						<value>classpath:metadata/info/characterTitles.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>climateProduction</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/climateProduction.csv</value>
    					</property>
    				</bean>
    				<bean class="org.joverseer.support.info.Info">

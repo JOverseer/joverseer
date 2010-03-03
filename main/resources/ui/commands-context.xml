@@ -141,6 +141,7 @@
 		</property>
 	</bean>    
 	
+	<!-- admin menu enabled by command parameter d -->
 	<bean id="adminMenu" 
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
@@ -150,6 +151,11 @@
                <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>               
                <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand"/>               
                <bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
+               <bean class="org.joverseer.ui.command.SaveToDbCommand"/>
+               <bean class="org.joverseer.ui.command.ExecuteOrdersCommand"/>
+               <bean class="org.joverseer.ui.command.GetDowngradeSuccessRateCommand"/>
+               <bean class="org.joverseer.ui.command.GetStealGoldSuccessRateCommand"/>
+               <bean class="org.joverseer.ui.command.GetCreateCampSuccessRateCommand"/>
             </list>
 	    </property>
     </bean>

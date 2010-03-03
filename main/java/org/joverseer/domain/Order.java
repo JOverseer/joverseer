@@ -146,7 +146,16 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
     }
     
     
-    
+    public int getParameterInt(int i) {
+    	String pv = getParameter(i);
+    	if (pv == null) return -1;
+    	try {
+    		return Integer.parseInt(pv);
+    	}
+    	catch (Exception exc) {
+    		return -1;
+    	}
+    }
     
     public String getNotes() {
         return notes;

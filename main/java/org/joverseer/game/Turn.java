@@ -1,8 +1,10 @@
 package org.joverseer.game;
 
 import org.joverseer.domain.SeasonEnum;
+import org.joverseer.support.Cloner;
 import org.joverseer.support.Container;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.io.Serializable;
@@ -66,6 +68,11 @@ public class Turn implements Serializable {
     
     public void setTurnDate(Date turnDate) {
         this.turnDate = turnDate;
+    }
+    
+
+    public Turn clone() {
+    	return (Turn)Cloner.clone(this);
     }
     
     

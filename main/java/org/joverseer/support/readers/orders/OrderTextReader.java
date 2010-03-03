@@ -205,12 +205,8 @@ public class OrderTextReader {
 			return;
 		}
 
-		if (pass == 1 && notes != null && !notes.equals("")) {
-			Note n = new Note();
-			n.setTarget(c);
-			n.setNationNo(c.getNationNo());
-			n.setText(notes.trim());
-			n.setTags("Order");
+		if (pass == 1) {
+			// clear old notes
 			for (Note nd : (ArrayList<Note>) getGame().getTurn().getContainer(
 					TurnElementsEnum.Notes).findAllByProperty("target", c)) {
 				if (nd.getTags().indexOf("Order") > -1) {
@@ -218,7 +214,16 @@ public class OrderTextReader {
 							.removeItem(nd);
 				}
 			}
-			getGame().getTurn().getContainer(TurnElementsEnum.Notes).addItem(n);
+			if (notes != null && !notes.equals("")) {
+				Note n = new Note();
+				n.setTarget(c);
+				n.setNationNo(c.getNationNo());
+				n.setText(notes.trim());
+				n.setTags("Order");
+				getGame().getTurn().getContainer(TurnElementsEnum.Notes).addItem(n);
+			}
+			
+			
 		}
 
 		chars++;

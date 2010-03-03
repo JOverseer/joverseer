@@ -267,6 +267,9 @@ public class NationReader implements MetadataReader {
                 }
                 addSNAs(n, (Object[])nations_BOFA[i][2]);
                 nations.add(n);
+                if (n.getNumber() < 10 || n.getNumber()>14) {
+                	n.setRemoved(true);
+                }
             }
         } else  if (gm.getGameType() == GameTypeEnum.gameUW) {
             for (int i=0; i<26; i++) {
@@ -282,6 +285,21 @@ public class NationReader implements MetadataReader {
                 }
                 addSNAs(n, (Object[])nations_UW[i][2]);
                 nations.add(n);
+                if (n.getNumber() == 1) n.setRemoved(true);
+                if (n.getNumber() == 4) n.setRemoved(true);
+                if (n.getNumber() == 6) n.setRemoved(true);
+                if (n.getNumber() == 7) n.setRemoved(true);
+                if (n.getNumber() == 9) n.setRemoved(true);
+                if (n.getNumber() == 14) n.setRemoved(true);
+                if (n.getNumber() == 15) n.setRemoved(true);
+                if (n.getNumber() == 16) n.setRemoved(true);
+                if (n.getNumber() == 17) n.setRemoved(true);
+                if (n.getNumber() == 19) n.setRemoved(true);
+                if (n.getNumber() == 20) n.setRemoved(true);
+                if (n.getNumber() == 21) n.setRemoved(true);
+                if (n.getNumber() == 22) n.setRemoved(true);
+                if (n.getNumber() == 23) n.setRemoved(true);
+                if (n.getNumber() == 25) n.setRemoved(true);
             }
         }else if (gm.getGameType() == GameTypeEnum.gameKS) {
             for (int i=0; i<26; i++) {
@@ -297,6 +315,11 @@ public class NationReader implements MetadataReader {
                 }
                 addSNAs(n, (Object[])nations_KS[i][2]);
                 nations.add(n);
+                boolean removed = false;
+                if (n.getNumber() > 6 && n.getNumber() < 11) removed = true;
+                if (n.getNumber() > 16 && n.getNumber() < 21) removed = true;
+                if (n.getNumber() > 22) removed = true;
+                n.setRemoved(removed);
             }
         }
         gm.setNations(nations);

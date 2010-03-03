@@ -74,7 +74,16 @@ public abstract class ImageRenderer implements Renderer {
                 int h = desiredHeight;
                 BufferedImage bufimg2 = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g2d = (Graphics2D) bufimg2.getGraphics();
-                g2d.scale((double) w / bimg.getWidth(), (double) h / bimg.getHeight());
+                
+                double sw = (double) w / bimg.getWidth();
+                double sh = (double) h / bimg.getHeight();
+                if (sw < 1) {
+                	sw += 1d / bimg.getWidth();
+                }
+                if (sh < 1) {
+                	sh += 1d / bimg.getHeight();
+                }
+                g2d.scale(sw, sh);
                 g2d.drawImage(img,0,0,null);
                 bimg = bufimg2; 
                 

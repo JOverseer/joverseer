@@ -49,7 +49,14 @@ public enum ArmyElementType implements Serializable {
     
     public double getRequiredTransportCapacity() {
     	if (!isTroop()) return 0;
-    	if (isCavalry()) return 250 / 150;
+    	if (isCavalry()) return 250d / 150d;
     	return 1;
+    }
+    
+    public static ArmyElementType getFromString(String type) {
+    	for (ArmyElementType aet : ArmyElementType.values()) {
+    		if (aet.getType().equals(type)) return aet;
+    	}
+    	return null;
     }
 }

@@ -103,4 +103,13 @@ public class ArmyElement implements Serializable {
     public int getRequiredTransportCapacity() {
     	return (int)Math.ceil(getArmyElementType().getRequiredTransportCapacity() * (double)getNumber());
     }
+    
+    public void mergeWith(ArmyElement ae) {
+    	if (ae == null) return;
+    	int totalNumber = ae.getNumber() + getNumber();
+    	setWeapons((getWeapons() * getNumber() + ae.getWeapons() * ae.getNumber()) / totalNumber);
+    	setArmor((getArmor() * getNumber() + ae.getArmor() * ae.getNumber()) / totalNumber);
+    	setTraining((getTraining() * getNumber() + ae.getTraining() * ae.getNumber()) / totalNumber);
+    	setNumber(totalNumber);
+    }
 }

@@ -203,6 +203,13 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
         getElements().add(new ArmyElement(type, count));
         enHI = null;
     }
+    
+    public void setElement(ArmyElement ae) {
+    	if (ae == null) return;
+    	ArmyElement e = getElement(ae.getArmyElementType());
+    	if (e != null) elements.remove(e);
+    	elements.add(ae);
+    }
 
     /**
      * Returns true if the army is fed, null if unknown, false if unfed.
@@ -307,10 +314,8 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
     public int computeNumberOfMen() {
         int ret = 0;
         for (ArmyElement ae : getElements()) {
-            if (ae.getArmyElementType() == ArmyElementType.WarMachimes ||
-                    ae.getArmyElementType() == ArmyElementType.Warships ||
-                    ae.getArmyElementType() == ArmyElementType.Transports) continue;
-            ret += ae.getNumber();
+            if (ae.getArmyElementType().isTroop())
+            	ret += ae.getNumber();
         }
         return ret;
     }
@@ -329,6 +334,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
         }
         return ret;
     }
+    
     
     /**
      * Deep clone for this army
@@ -374,6 +380,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
     	}
 
     	return infoAmount;
+    }
+    
+    public void resetENHI() { // used by engine
+    	enHI = null;
     }
     
     public Integer getENHI() {

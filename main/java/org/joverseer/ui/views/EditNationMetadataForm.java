@@ -86,9 +86,9 @@ public class EditNationMetadataForm extends AbstractForm {
         tlb.gapCol();
         tlb.cell(new JLabel("SNAs"));
         tlb.relatedGapRow();
-        
+        tlb.row();
         for (int i=0; i<25; i++) {
-            JTextField nationName = new JTextField();
+        	JTextField nationName = new JTextField();
             nationNames.add(nationName);
             nationName.setPreferredSize(new Dimension(200, 20));
             JLabel lbl = new JLabel();
@@ -175,9 +175,14 @@ public class EditNationMetadataForm extends AbstractForm {
 				}
             });
             
-            
             tlb.row();
         }
+        //trick to make sure line 25 is showing
+        tlb.relatedGapRow();
+        tlb.relatedGapRow();
+        tlb.relatedGapRow();
+        tlb.relatedGapRow();
+        tlb.row();
         return new JScrollPane(tlb.getPanel());
     }
 	

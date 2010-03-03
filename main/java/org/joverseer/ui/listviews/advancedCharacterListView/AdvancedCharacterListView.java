@@ -38,6 +38,7 @@ import org.joverseer.ui.listviews.BaseItemListView;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
+import org.joverseer.ui.listviews.filters.OrFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
@@ -83,7 +84,10 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		catch (Exception exc) {
 			// do nothing
 		}
-		return new TextFilter("Name", "name", txt);
+		OrFilter f = new OrFilter();
+		f.addFilter(new TextFilter("Name", "name", txt));
+		f.addFilter(new TextFilter("OrderResults", "orderResults", txt));
+		return f;
 	}
 
 	protected void setItems() {

@@ -18,7 +18,7 @@ import sun.text.Normalizer;
  * @author Marios Skounakis
  *
  */
-public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, Serializable {
+public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, IEngineObject, Serializable {
 
     private static final long serialVersionUID = 2372359979734224557L;
     String id;
@@ -65,6 +65,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
    
     CharacterDeathReasonEnum deathReason = CharacterDeathReasonEnum.NotDead;
 
+    boolean refusingChallenges = false; // engine
+    boolean inChallengeFight = false;
+    
     public int getAgent() {
         return agent;
     }
@@ -414,5 +417,27 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		}
 		return c;
 	}
+	
+	public void initialize() {
+		refusingChallenges = false;
+	}
+
+	public boolean isRefusingChallenges() {
+		return refusingChallenges;
+	}
+
+	public void setRefusingChallenges(boolean refusingChallenges) {
+		this.refusingChallenges = refusingChallenges;
+	}
+
+	public boolean isInChallengeFight() {
+		return inChallengeFight;
+	}
+
+	public void setInChallengeFight(boolean inChallengeFight) {
+		this.inChallengeFight = inChallengeFight;
+	}
+	
+	
 	
 }

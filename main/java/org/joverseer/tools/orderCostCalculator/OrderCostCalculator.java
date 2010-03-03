@@ -28,6 +28,8 @@ import org.joverseer.support.ProductContainer;
 
 //TODO finish
 public class OrderCostCalculator {
+	ProductContainer cont = new ProductContainer();
+	
     public int getOrderCost(Order o) {
         switch (o.getOrderNo()) {
             case 400:
@@ -113,7 +115,6 @@ public class OrderCostCalculator {
             Integer number = Integer.parseInt(o.getParameter(0));
             String weapons = o.getParameter(1);
             String armor = o.getParameter(2);
-            ProductContainer cont = new ProductContainer();
             if (troopType.equals("hc") || troopType.equals("lc")) {
                 cont.setProduct(ProductEnum.Mounts, number);
                 cont.setProduct(ProductEnum.Leather, number * 2);
@@ -141,7 +142,6 @@ public class OrderCostCalculator {
             int no = Integer.parseInt(o.getParameter(1));
             int bid = Integer.parseInt(o.getParameter(2));
             int cost = no * bid;
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, cost);
             cont.setProduct(pe, -no);
             return cost;
@@ -159,7 +159,6 @@ public class OrderCostCalculator {
             int no = Integer.parseInt(o.getParameter(1));
             ProductPrice pp = (ProductPrice)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
             int cost = no * pp.getBuyPrice();
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, cost);
             cont.setProduct(pe, -no);
             return cost;
@@ -177,7 +176,6 @@ public class OrderCostCalculator {
             int no = Integer.parseInt(o.getParameter(1));
             ProductPrice pp = (ProductPrice)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
             int gain = - no * pp.getSellPrice();
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, gain);
             cont.setProduct(pe, no);
             return gain;
@@ -197,7 +195,6 @@ public class OrderCostCalculator {
             ProductPrice pp = (ProductPrice)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
             int amt = (ne.getStores().getProduct(pe) + ne.getProduction().getProduct(pe)) * pct / 100;
             int gain = - amt * pp.getSellPrice();
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, gain);
             cont.setProduct(pe, amt);
             return gain;
@@ -208,25 +205,21 @@ public class OrderCostCalculator {
     }
 
     public int researchSpellCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 1000);
         return 1000;
     }
     
     public int nameNewMageCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 5000);
         return 5000;
     }
     
     public int nameNewEmissaryCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 5000);
         return 5000;
     }
     
     public int createCampCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 2000);
         return 2000;
     }
@@ -246,20 +239,17 @@ public class OrderCostCalculator {
         } else if (pc.getSize() == PopulationCenterSizeEnum.city) {
             cost = -1;
         } 
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, cost);
         return cost;
     }
     
     public int addHarborCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 2500);
         cont.setProduct(ProductEnum.Timber, 5000);
         return 2500;
     }
     
     public int improveHarborCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 4000);
         cont.setProduct(ProductEnum.Timber, 7500);
         return 4000;
@@ -268,7 +258,6 @@ public class OrderCostCalculator {
     public int bribeCost(Order o) {
         try {
             int no = Integer.parseInt(o.getParameter(1));
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, no);
             return no;
         }
@@ -280,7 +269,6 @@ public class OrderCostCalculator {
     public int offerRansomCost(Order o) {
         try {
             int no = Integer.parseInt(o.getParameter(1));
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, no);
             return no;
         }
@@ -290,7 +278,6 @@ public class OrderCostCalculator {
     }
     
     public int nameNewAgentCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 5000);
         return 5000;
     }
@@ -298,7 +285,6 @@ public class OrderCostCalculator {
     public int makeTransportsCost(Order o) {
         try {
             int no = Integer.parseInt(o.getParameter(0));
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, no * 1000);
             int f = 1;
             if (getMetadataNation(o).getSnas().contains(SNAEnum.ShipsWith500Timber)) {
@@ -316,7 +302,6 @@ public class OrderCostCalculator {
     public int makeWarshipsCost(Order o) {
         try {
             int no = Integer.parseInt(o.getParameter(0));
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Gold, no * 1000);
             int f = 1;
             if (getMetadataNation(o).getSnas().contains(SNAEnum.ShipsWith500Timber)) {
@@ -335,7 +320,6 @@ public class OrderCostCalculator {
     public int makeWarMachinesCost(Order o) {
         try {
             int no = Integer.parseInt(o.getParameter(0));
-            ProductContainer cont = new ProductContainer();
             cont.setProduct(ProductEnum.Timber, no * 500);
             return 0;
         }
@@ -345,7 +329,6 @@ public class OrderCostCalculator {
     }
     
     public int relocateCapitalCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 30000);
         return 30000;
     }
@@ -356,7 +339,6 @@ public class OrderCostCalculator {
         if (n != null && n.hasSna(SNAEnum.FreeHire)) {
             cost = 0;
         }
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, cost);
         
         // get troop type
@@ -392,19 +374,16 @@ public class OrderCostCalculator {
     }
     
     public int nameNewCommanderCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 5000);
         return 5000;
     }
     
     public int nameNewCharCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 10000);
         return 10000;
     }
     
     public int postCampCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         cont.setProduct(ProductEnum.Gold, 4000);
         return 4000;
     }
@@ -412,7 +391,6 @@ public class OrderCostCalculator {
     public int fortifyPopCenterCost(Order o) {
         PopulationCenter pc = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", o.getCharacter().getHexNo());
         if (pc == null) return -1;
-        ProductContainer cont = new ProductContainer();
         if (pc.getFortification() == FortificationSizeEnum.none) {
             cont.setProduct(ProductEnum.Gold, 1000);
             cont.setProduct(ProductEnum.Timber, 1000);
@@ -441,7 +419,6 @@ public class OrderCostCalculator {
     }
     
     public int buildBridgeCost(Order o) {
-        ProductContainer cont = new ProductContainer();
         Hex hex = GameHolder.instance().getGame().getMetadata().getHex(o.getCharacter().getHexNo());
         if (hex == null) {
             return -1;
@@ -501,4 +478,10 @@ public class OrderCostCalculator {
         }
         return n;
     }
+
+	public ProductContainer getContainer() {
+		return cont;
+	}
+    
+    
 }

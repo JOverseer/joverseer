@@ -3,6 +3,8 @@ package org.joverseer.support.info;
 import java.util.HashMap;
 
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ClimateEnum;
+import org.joverseer.domain.ProductEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.tools.combatCalc.TacticEnum;
@@ -184,5 +186,28 @@ public class InfoUtils {
     	return Integer.parseInt(obj.toString());
     }
 
+    public static String getCharacterTitle(String type, int rank) {
+    	if (rank == 0) return null;
+    	Info info = InfoRegistry.instance().getInfo("characterTitles");
+        if (info == null)
+            return null;
+    	int ci = info.getColumnIdx(type);
+    	String rankTitle = "100+";
+    	if (rank >= 100) {
+    		rankTitle = "100+";
+    	} else {
+    		int rankBase = (rank / 10) * 10;
+    		rankTitle = String.valueOf(rankBase) + "-" + String.valueOf(rankBase + 9); 
+    	}
+    	int ri = info.getRowIdx(rankTitle);
+    	return info.getValue(ri, ci);
+    }
     
+    public static int getClimateModifier(ProductEnum pr, ClimateEnum cl) {
+    	Info info = InfoRegistry.instance().getInfo("climateProduction");
+    	int ri = info.getRowIdx(String.valueOf(cl));
+    	int ci = info.getColumnIdx(String.valueOf(pr));
+    	if (ri == -1 || ci == -1) return 100;
+    	return Integer.parseInt(info.getValue(ri, ci));
+    }
 }

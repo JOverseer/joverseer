@@ -383,7 +383,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         pcTable.setDefaultEditor(Boolean.class, totalsTable.getDefaultEditor(Boolean.class));
         org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, getLostPCColumWidths());
         scp = new JScrollPane(pcTable);
-        scp.setPreferredSize(new Dimension(600, 120));
+        scp.setPreferredSize(new Dimension(600, 300));
         scp.getViewport().setBackground(Color.white);
         scp.getViewport().setOpaque(true);
         lb.cell(scp); 

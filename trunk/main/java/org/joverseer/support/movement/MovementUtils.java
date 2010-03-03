@@ -161,7 +161,7 @@ public class MovementUtils {
                 return -1;
             }
             else {
-                return movementCost;
+                return -2; // -2 means that you are consuming all of your remaining mps;
             }
         } else {
         	if (dest.getTerrain() == HexTerrainEnum.shore) {

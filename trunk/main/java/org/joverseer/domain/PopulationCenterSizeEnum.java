@@ -30,6 +30,12 @@ public enum PopulationCenterSizeEnum implements Serializable {
         return size;
     }
 
+    public static PopulationCenterSizeEnum getFromCode(int code) {
+    	for (PopulationCenterSizeEnum p : values()) {
+    		if (p.getCode() == code) return p;
+    	}
+    	return null;
+    }
 
     public String getLabel() {
         switch (size) {

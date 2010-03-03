@@ -515,7 +515,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     }
 
     private void saveOrder() {
-        Order o = (Order) getFormObject();
+    	Order o = (Order) getFormObject();
+    	if (orderCombo.getSelectedItem() == null) return;
         o.setNoAndCode(orderCombo.getSelectedItem().toString());
         o.setParameters(parametersInternal.getText());
         //validateOrder();

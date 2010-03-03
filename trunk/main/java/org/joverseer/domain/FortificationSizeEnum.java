@@ -27,5 +27,11 @@ public enum FortificationSizeEnum implements Serializable {
         return size;
     }
     
+    public static FortificationSizeEnum getFromSize(int size) {
+    	for (FortificationSizeEnum f : values()) {
+    		if (f.getSize() == size) return f;
+    	}
+    	return null;
+    }
     
 }

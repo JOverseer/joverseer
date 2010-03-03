@@ -294,4 +294,14 @@ public class CombatArmy implements Serializable {
     	return r;
     }
     
+    public int computeNumberOfTroops() {
+    	int ret = 0;
+    	for (ArmyElement ae : getElements()) {
+    		if (ae.getArmyElementType().isTroop()) {
+    			ret += ae.getNumber();
+    		}
+    	}
+    	return ret;
+    }
+    
 }

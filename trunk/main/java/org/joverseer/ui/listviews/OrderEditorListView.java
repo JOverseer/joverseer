@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -641,6 +642,15 @@ public class OrderEditorListView extends ItemListView {
     }
 
     public ColumnToSort[] getDefaultSort() {
+    	// set comparator to sort using the character ids
+    	((SortableTableModel)table.getModel()).setComparator(1, new Comparator<String>(){
+			public int compare(String o1, String o2) {
+				if (o1 != null && o2 != null) {
+					return Character.getIdFromName(o1).compareTo(Character.getIdFromName(o2));
+				}
+				return 0;
+			}
+    	});
         return new ColumnToSort[] {new ColumnToSort(0, 0, SortOrder.ASCENDING),
                 new ColumnToSort(0, 1, SortOrder.ASCENDING)};
     }

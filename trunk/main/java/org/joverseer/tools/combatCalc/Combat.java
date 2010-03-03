@@ -294,6 +294,11 @@ public class Combat implements Serializable, IHasMapLocation {
         System.out.println(log);
     }
     
+    public void runWholeCombat() {
+    	runArmyBattle();
+    	if (getAttackPopCenter() && getSide2Pc() != null) runPcBattle(0, 1);
+    }
+    
     public int computePopCenterStrength(CombatPopCenter pc) {
         return computePopCenterStrength(pc, 0);
     }
@@ -616,5 +621,7 @@ public class Combat implements Serializable, IHasMapLocation {
 	public void setAttackPopCenter(boolean attackPopCenter) {
 		this.attackPopCenter = attackPopCenter;
 	}
+	
+	
     
 }

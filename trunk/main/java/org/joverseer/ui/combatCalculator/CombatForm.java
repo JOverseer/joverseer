@@ -458,7 +458,7 @@ public class CombatForm extends AbstractForm {
         }
         popCenterTableModel.fireTableDataChanged();
     }
-
+    
     protected void refreshArmies() {
         Combat c = (Combat) getFormObject();
         ArrayList sa = new ArrayList();

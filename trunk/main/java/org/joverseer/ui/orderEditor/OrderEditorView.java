@@ -7,6 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.joverseer.domain.Order;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -43,6 +44,9 @@ public class OrderEditorView extends AbstractView implements ApplicationListener
             if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
                 GraphicUtils.showView("orderEditorView");
                 ((OrderEditor)f).giveFocus();
+            }
+            if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+                ((OrderEditor)f).setFormObject(new Order(null));
             }
         }
     }

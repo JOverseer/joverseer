@@ -87,4 +87,35 @@ public class ArtifactInfo implements Serializable {
 			powers.set(index, updatedPower);
 		}
 	}
+	
+	public String getBonusType() {
+		if (getPower1() == null) return null;
+		if (getPower1().startsWith("Command")) return "Command";
+		if (getPower1().startsWith("Mage")) return "Mage";
+		if (getPower1().startsWith("Agent")) return "Agent";
+		if (getPower1().startsWith("Emmisary")) return "Emissary";
+		if (getPower1().startsWith("Emissary")) return "Emissary";
+		if (getPower1().startsWith("Stealth")) return "Stealth";
+		if (getPower1().startsWith("Combat")) return "Combat";
+		return null;
+	}
+	
+	public int getBonusRank() {
+		if (getBonusType() == null) return 0;
+		String power1 = getPower1();
+		if (power1.endsWith("*")) {
+			power1 = power1.substring(0, power1.length()-1);
+		}
+		String[] ps = power1.split(" ");
+		try {
+			if (ps.length == 2) {
+				return Integer.parseInt(ps[1]);
+			}
+		}
+		catch (Exception exc) {
+			return 0;
+		}
+		return 0;
+		
+	}
 }

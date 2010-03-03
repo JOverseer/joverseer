@@ -29,4 +29,5 @@ public enum TurnElementsEnum implements Serializable {
     Notes,
     ArmyEstimate,
     CombatCalcCombats,
+    ChallengeFights,
 }

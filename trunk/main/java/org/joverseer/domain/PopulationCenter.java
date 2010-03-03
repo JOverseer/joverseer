@@ -13,7 +13,7 @@ import java.util.HashMap;
  * 
  * @author Marios Skounakis
  */
-public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, Serializable {
+public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, IEngineObject, Serializable {
 
     private static final long serialVersionUID = 5077983571531270227L;
     String name;
@@ -40,7 +40,12 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     ProductContainer stores = new ProductContainer();
 
     boolean lostThisTurn = false;
-
+    
+    int recruits; //used in Engine
+    int foodCapacity; // used in Engine
+    boolean improvedThisTurn = false; // used in Engine
+    boolean sieged = false; // used in Engine
+    
     public PopulationCenter() {
     }
 
@@ -218,6 +223,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
 	public Integer getMaintenance() {
+		if (getSize().equals(PopulationCenterSizeEnum.ruins)) return 0;
 		int cost = 0;
 		if (getHarbor().equals(HarborSizeEnum.harbor)) {
 			cost += 250;
@@ -227,6 +233,60 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 		cost += getFortification().getSize() * 500;
 		return cost;
 	}
-    
+
+	public int getRecruits() {
+		return recruits;
+	}
+
+	public void setRecruits(int recruits) {
+		this.recruits = recruits;
+	}
+
+	public int getFoodCapacity() {
+		return foodCapacity;
+	}
+
+	public void setFoodCapacity(int foodCapacity) {
+		this.foodCapacity = foodCapacity;
+	}
+
+	public boolean isImprovedThisTurn() {
+		return improvedThisTurn;
+	}
+
+	public void setImprovedThisTurn(boolean improvedThisTurn) {
+		this.improvedThisTurn = improvedThisTurn;
+	}
+	
+	
+
+
+	public boolean isSieged() {
+		return sieged;
+	}
+
+	public void setSieged(boolean sieged) {
+		this.sieged = sieged;
+	}
+
+	public void initialize() {
+		int recruits = getSize().getCode() * 100;
+		setRecruits(recruits);
+		int foodCapacity = 0; 
+		if (getSize().equals(PopulationCenterSizeEnum.camp)) {
+			foodCapacity = 100;
+		} else if (getSize().equals(PopulationCenterSizeEnum.village)) {
+			foodCapacity = 200;
+		} else if (getSize().equals(PopulationCenterSizeEnum.town)) {
+			foodCapacity = 1000;
+		} else if (getSize().equals(PopulationCenterSizeEnum.majorTown)) {
+			foodCapacity = 2500;
+		} else if (getSize().equals(PopulationCenterSizeEnum.city)) {
+			foodCapacity = 5000;
+		}  
+		setFoodCapacity(foodCapacity);
+		setImprovedThisTurn(false); // TODO move to dif method
+		setSieged(false);
+	}
     
 }

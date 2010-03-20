@@ -157,10 +157,11 @@ public class PopulationCenterRenderer extends ImageRenderer {
         Composite oc = g.getComposite();
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         g.fill(rr);
+        g.setComposite(oc);
         // draw char name
         g.setColor(Color.WHITE);
         g.drawString(str, xt + 1, yt + 1);
-
+        
     }
 
 

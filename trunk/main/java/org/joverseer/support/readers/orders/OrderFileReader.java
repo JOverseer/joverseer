@@ -123,6 +123,9 @@ public class OrderFileReader {
                     }
                     Character c = (Character) getGame().getTurn().getContainer(TurnElementsEnum.Character)
                             .findFirstByProperty("id", charName);
+                    if (c == null && charName.endsWith(" ")) {
+                    	c = (Character) getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charName.substring(0, 3));
+                    }
                     if (c != null) {
                         Order[] orders = c.getOrders();
                         orders[orderI].setOrderNo(orderNo);

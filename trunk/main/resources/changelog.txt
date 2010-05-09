@@ -1,86 +1,92 @@
 VERSION 1.0.7
 -------------
 
-2/3/2010
+9/5/2010
 
-	* Choosing the option "Show PC names" was not correctly setting the transparency, causing pc symbols to be drawn semi-transparent.
-
-	* Fixed an issue with importing AM/MEOW order files with characters with ids of length 4.
-
-	* Chars (adv) information pane:
-		+ now has a column with the character's order results.
-		+ fixed an issue that was causing incorrect computation of dragon potential for chars with emissary skill. Also causing the copy to clipboard to crash ocassionaly.
-		+ hex number shown in bold when it is the nation capital.
-		+ added new filter for hostages.
+	* Information Panes: 
+		o Chars (adv) information pane:
+			+ now has a column with the character's order results.
+			+ fixed an issue that was causing incorrect computation of dragon potential for chars with emissary skill. Also causing the copy to clipboard to crash ocassionaly.
+			+ hex number shown in bold when it is the nation capital.
+			+ added new filter for hostages.
+		o The Army information pane
+			+ now shows the correct enHI.
+			+ maintenance column was added.]
+		o Orders info pane
+			+ characters are sorted based on their id and not their name (solves sorting issues with accented characters).
+		o Army estimates info pane
+			+ the "Show Estimated EHI option" will now show the highest and lowest possible ehi in addition to the average that was currently being shown.
+			+ added nation and allegiance filters 
+		o Encounters info pane
+			+ added turn and nation columns and filters 
+		
+	* User Interface
+		o Added a new option in the Window menu that lists all the views in alphabetical order without grouping.
+		o The color of draw range was changed to yellow to avoid clashing with highlighted characters.
+		o Fixed an issue with saving the window layout when used exited the application from Game --> Exit.
+		o Double clicking on a character who does not have a hex (dead, hostage, etc), won't clear the map and current hex view any more
+		o The current game file is now shown on the title bar, after the turn.
+		o When the jov file is corrupt user gets an error message about GLIB input stream. Was made more user-fiendly and understandable.
+		
+	* Current Hex View
+		o Double-clicking on artifact name on the Current Hex Info pane will now popup a dialog with the artifact's details.
+		o Pop Centers:
+			+ Added an option to the Pop Center menu that shows how many EHI are required to capture it and how many EHI will be lost in the process.
+		o Hex Info:
+			+ Added new commands to plot navy ranges on the map to the hex info menu
+			+ The Terrain is now displayed in the Hex Info part of the Current Hex View pane 
+		o Armies:
+			+ Added option to display the required food per turn for an army    
+			
+	* Editing
+		o In the Edit Army Form, added the hex (so armies can now be moved)
+		o In the Edit Pop Center Form, added the ability to specify whether a pop center is a capital
+		
+	* Importing Turns and Orders
+		o Double agent reports are now parsed from the pdf files and show in the Order Reports (Character menu)
+		o Ando-Anca is now correctly recognized as a dragon
+		o Fixed an issue with pdf parsing that was causing some hostages not to be parsed at all.
+		o Fixed an issue with imported orders from OrderChecker text with respect to move army orders
+		o When importing orders from text, old order notes are now correctly cleared.
+		o Fixed an issue with artifacts that was causing error messages when importing turn files in some 4th age games. 
+		o Fixed an issue with importing AM/MEOW order files with characters with ids of length 4.
 	
-	* Added a new option in the Window menu that lists all the views in alphabetical order without grouping.
-
-	* Double agent reports are now parsed from the pdf files and show in the Order Reports (Character menu)
+	* Scenario Fixes
+		o 1650
+			+ fixed an issue with pop center 3220 of Easterlings which was declared twice in the starting information, causing issues.
+		o Untold War
+			+ fixed various mistakes on the UW scenario map
+			+ added experimental support for OrderChecker for the Untold War scenario.
+		o Kin Strife:
+			+ Fixed an issue with unexpected application error when using the Relations info pane.
+			+ Moved Quendi starting navy from 0411 (incorrect position) to 0511 (correct position)
+			+ Moved REL starting army from 3631 (incorrect position) to 3729 (correct position)
+			+ Moved Rhovanion starting army from 2618 (incorrect position) to 2619 (correct position)
+			+ Updated the short nation descriptions for KS to be more intuitive
+			+ Fixed an issue that was causing capitals to not be correctly updated in KS
+			+ Fixed an issue with reading artifact powers for owned artifacts.
+			+ Nation messages will now be parsed and artifact IDs gained via the setup options will be read.
+			+ SNAs will now be parsed from the XML files for KS
+			+ Champions are now rendered with bold name in the Chars (Adv) tab for KS
+			+ Added new filter to the Chars (adv) info pane for Champions
+			+ Fixed an issue with drag-drop'ing orders for champions which was causing non-consistent behavior
+			+ Added message that you cannot use Order Checker for the Kin Strife scenario
+			+ Added support for reading Anchored Ships in KS
+			+ Added support for reading Battle Reports in KS	
+			+ Corrected the Elendin army at 2438 to have 10 Wa and 12 Tr and not the other way around.
+			+ Corrected a typo in the name of the artifact Far Cutting in KS      	
 	
-	* Scenario 1650, fixed an issue with pop center 3220 of Easterlings which was declared twice in the starting information, causing issues.
+	* Other
+		o Fixed an issue that was causing pop centers to not be drawn if they were considered capitals and the size was smaller than MT.
+		o After "Delete Last Turn", the current hex info view is updated properly
+		o Fixed a small issue with navy move cost computation when navy was moving into a harbor/port.
+		o For new games, nations that are not active in the scenario are automatically marked as Removed in the Nation Metadata. 
+		o Improved speed when editing an order in the order editor - sometimes it was very slow.
+		o Editing the Economy Calc will no cause focus on the current cell to be lost.
+		o In the Economy Calc view the height of the Population Center table was increased to remove the inner scrollbar 
+		o Improved support for artifacts in the order editor - artifact name is now shown next to the artifact number 
+		o Choosing the option "Show PC names" was not correctly setting the transparency, causing pc symbols to be drawn semi-transparent.
 
-	* The color of draw range was changed to yellow to avoid clashing with highlighted characters.
-
-	* The Army information pane
-		+ now shows the correct enHI.
-		+ maintenance column was added.
-	
-	* Added nation and allegiance filters to Army Estimates information pane.
-	
-	* Double-click on artifact name on the Current Hex Info pane will now popup a dialog with the artifact's details.
-	
-	* Ando-Anca is now correctly recognized as a dragon
-
-	* Fixed an issue with artifacts that was causing error messages when importing turn files in some 4th age games. 
-
-	* Fixed an issue with saving the window layout when used exited the application from Game --> Exit.
-
-	* In the Edit Army Form, added the hex (so armies can now be moved)
-
-	* Added the ability to specify whether a pop center is a capital in the edit pop center screen.
-	
-	* Fixed an issue that was causing pop centers to not be drawn if they were considered capitals and the size was smaller than MT.
-	
-	* Kin Strife:
-		+ Fixed an issue with unexpected application error when using the Relations info pane.
-		+ Moved Quendi starting navy from 0411 (incorrect position) to 0511 (correct position)
-		+ Moved REL starting army from 3631 (incorrect position) to 3729 (correct position)
-		+ Moved Rhovanion starting army from 2618 (incorrect position) to 2619 (correct position)
-		+ Updated the short nation descriptions for KS to be more intuitive
-		+ Fixed an issue that was causing capitals to not be correctly updated in KS
-		+ Fixed an issue with reading artifact powers for owned artifacts.
-		+ Nation messages will now be parsed and artifact IDs gained via the setup options will be read.
-		+ SNAs will now be parsed from the XML files for KS
-		+ Champions are now rendered with bold name in the Chars (Adv) tab for KS
-		+ Added new filter to the Chars (adv) info pane for Champions
-		+ Fixed an issue with drag-drop'ing orders for champions which was causing non-consistent behavior
-		+ Added message that you cannot use Order Checker for the Kin Strife scenario
-		+ Added support for reading Anchored Ships in KS
-		+ Added support for reading Battle Reports in KS		
-
-	* When the jov file is corrupt user gets an error message about GLIB input stream. Was made more user-fiendly and understandable.
-
-	* Fixed an issue with pdf parsing that was causing some hostages not to be parsed at all.
-	
-	* Double clicking on a character who does not have a hex (dead, hostage, etc), won't clear the map and current hex view any more
-
-	* After "Delete Last Turn", the current hex info view is updated properly
-
-	* The Terrain is now displayed in the Hex Info part of the Current Hex View pane
-	
-	* Fixed an issue with imported orders from OrderChecker text with respect to move army orders
-
-	* Fixed some issues with the UW scenario map
-
-	* Fixed a small issue with navy move cost computation when navy was moving into a harbor/port.
-
-	* When importing orders from text, old order notes are now correctly cleared.
-
-	* In the orders info pane, characters are sorted based on their id and not their name (solves sorting issues with accented characters).
-
-	* Added experimental support for OrderChecker for the Untold War scenario.
-	
-	
 	
 
 VERSION 1.0.6

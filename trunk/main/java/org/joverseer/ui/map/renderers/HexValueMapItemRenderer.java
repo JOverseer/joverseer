@@ -17,6 +17,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementUtils;
+import org.joverseer.ui.domain.mapItems.AbstractRangeMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
 import org.joverseer.ui.domain.mapItems.HexInfoTurnReportMapItem;
@@ -37,24 +38,23 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
     
     public boolean appliesTo(Object obj) {
         return CharacterRangeMapItem.class.isInstance(obj) ||
-                ArmyRangeMapItem.class.isInstance(obj) ||
+        		AbstractRangeMapItem.class.isInstance(obj) ||
                 HexInfoTurnReportMapItem.class.isInstance(obj);
     }
 
     public void render(Object obj, Graphics2D g, int x, int y) {
         if (CharacterRangeMapItem.class.isInstance(obj)) {
             renderCharacterRangeMapItem(obj, g, x, y);
-        } else if (ArmyRangeMapItem.class.isInstance(obj)) {
-            renderArmyRangeMapItem(obj, g, x, y);
+        } else if (AbstractRangeMapItem.class.isInstance(obj)) {
+        	renderRangeMapItem(obj, g, x, y);
         } else if (HexInfoTurnReportMapItem.class.isInstance(obj)) {
             renderHexInfoTurnReportMapItem(obj, g, x, y);
         }
     }
 
-    private void renderArmyRangeMapItem (Object obj, Graphics2D g, int x, int y) {
-        ArmyRangeMapItem armi = (ArmyRangeMapItem)obj;
-        Army a = armi.getArmy();
-
+    private void renderRangeMapItem (Object obj, Graphics2D g, int x, int y) {
+        AbstractRangeMapItem armi = (AbstractRangeMapItem)obj;
+        
         String fontName = "Helvetica";
         int fontSize = 9;
         int fontStyle = Font.PLAIN;

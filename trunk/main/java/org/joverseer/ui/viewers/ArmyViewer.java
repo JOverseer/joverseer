@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.Icon;
@@ -248,25 +249,26 @@ public class ArmyViewer extends ObjectViewer {
     }
 
     private JPopupMenu createArmyPopupContextMenu() {
-        CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "armyCommandGroup", new Object[] {
-                		showArmyMovementRangeAction, 
-                		showArmyMovementIgnorePopsRangeAction, 
-                		toggleFedAction, 
-                		toggleCavAction, 
-                		"separator", 
-                		editArmyCommand, 
-                		deleteArmyCommand,
-                		"separator",
-                		new ShowCanCaptureAction(),
-                		new ShowRequiredTransportsCommand(),
-                		"separator",
-                		new ShowInfoSourcePopupCommand(((Army)getFormObject()).getInfoSource()),
-                });
+    	ArrayList commands = new ArrayList(Arrays.asList(
+        		toggleFedAction, 
+        		toggleCavAction, 
+        		editArmyCommand, 
+        		deleteArmyCommand,
+        		"separator", 
+        		showArmyMovementRangeAction, 
+        		showArmyMovementIgnorePopsRangeAction, 
+        		"separator",
+        		new ShowCanCaptureAction(),
+        		new ShowRequiredTransportsCommand(),
+        		new ShowRequiredFoodCommand(),
+        		"separator",
+        		new ShowInfoSourcePopupCommand(((Army)getFormObject()).getInfoSource())));
         if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("general.developerOptions"))) {
-        	group.addSeparator();
-        	group.add(exportCombatArmyCodeCommand);
+        	commands.add("separator");
+        	commands.add(exportCombatArmyCodeCommand);
         }
+        CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+                "armyCommandGroup", commands.toArray());
         return group.createPopupMenu();
     }
     
@@ -341,6 +343,7 @@ public class ArmyViewer extends ObjectViewer {
             }
             if (!str.equals("")) {
             	str = "Army can capture (assume Hated relations and no defending army):\n" + str;
+            	str += "Note: The numbers are rough estimates. To get accurate numbers it is advised to do the calculations by hand.";
             	MessageDialog dlg = new MessageDialog("Army vs Pop Center", str);
             	dlg.showDialog();
             }
@@ -406,7 +409,7 @@ public class ArmyViewer extends ObjectViewer {
             for (ArmyElement ae : a.getElements()) {
             	requiredTransportCapacity += ae.getRequiredTransportCapacity();
             }
-            int requiredTransports = (int)Math.ceil((double)requiredTransportCapacity / 250d) ;
+            int requiredTransports = a.getNumberOfRequiredTransports();
             String msg = "The army requires " + requiredTransports + " transports.";
             if (a.isNavy()) {
             	int transports = a.getElement(ArmyElementType.Transports).getNumber();
@@ -426,6 +429,21 @@ public class ArmyViewer extends ObjectViewer {
             	}
             }
             MessageDialog dlg = new MessageDialog("Required Transports", msg);
+            dlg.showDialog();
+    	}
+    }
+    
+    private class ShowRequiredFoodCommand extends ActionCommand {
+    	public ShowRequiredFoodCommand() {
+            super("showRequiredFoodCommand");
+        }
+    	
+    	protected void doExecuteCommand() {
+            Army a = (Army)getFormObject();
+            Integer food = a.computeFoodConsumption();
+            if (food == null) return;
+            String msg = "The army requires " + food + " food per turn.";
+            MessageDialog dlg = new MessageDialog("Required Food", msg);
             dlg.showDialog();
     	}
     }
@@ -470,6 +488,7 @@ public class ArmyViewer extends ObjectViewer {
     public void setShowColor(boolean showColor) {
         this.showColor = showColor;
     }
+
     
     
 }

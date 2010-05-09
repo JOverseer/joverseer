@@ -205,8 +205,8 @@ public class TurnNewXmlReader implements Runnable {
             digester.addSetProperties("METurn/More/Armies/Army", "Commander", "commander");
             // set nested properties
             digester.addRule("METurn/More/Armies/Army",
-                    snpr = new SetNestedPropertiesRule(new String[]{"Food", "Morale", "Warships", "Transports", "Warships", "Climate"},
-                            new String[]{"food", "morale", "warships", "transports", "warships"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"Food", "Morale", "Warships", "Transports", "Warships", "Climate", "Warmachines"},
+                            new String[]{"food", "morale", "warships", "transports", "warships", "climate", "warmachines"}));
             snpr.setAllowUnknownChildElements(true);
         	// add to container
             digester.addSetNext("METurn/More/Armies/Army", "addItem", "org.joverseer.support.readers.newXml.ArmyWrapper");

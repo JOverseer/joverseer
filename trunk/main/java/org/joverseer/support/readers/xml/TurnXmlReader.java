@@ -389,6 +389,12 @@ public class TurnXmlReader implements Runnable{
                     } else if (newPc.getNationNo() > 0) {
                         logger.debug("simply replace");
                     	pcs.removeItem(oldPc);
+                    	if (newPc.getInformationSource().getValue() < InformationSourceEnum.detailed.getValue()) {
+                        	// if information source is lacking, update harbor from old pop
+                        	if (newPc.getHarbor().getSize() == 0) {
+                        		newPc.setHarbor(oldPc.getHarbor());
+                        	}
+                        }
                     	pcs.addItem(newPc);
 //                        if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
 //                            newPc.setLoyalty(oldPc.getLoyalty());
@@ -401,6 +407,12 @@ public class TurnXmlReader implements Runnable{
                     	pcs.addItem(newPc);
                         if (newPc.getLoyalty() == 0 && oldPc.getLoyalty() > 0) {
                             //newPc.setLoyalty(oldPc.getLoyalty());
+                        }
+                        if (newPc.getInformationSource().getValue() < InformationSourceEnum.detailed.getValue()) {
+                        	// if information source is lacking, update harbor from old pop
+                        	if (newPc.getHarbor().getSize() == 0) {
+                        		newPc.setHarbor(oldPc.getHarbor());
+                        	}
                         }
                     	int prevTurnNo = oldPc.getInfoSource().getTurnNo();
                     	if (PopCenterXmlInfoSource.class.isInstance(oldPc.getInfoSource())) {
@@ -511,17 +523,23 @@ public class TurnXmlReader implements Runnable{
                         chars.addItem(newCharacter);
                     }
                 }
-                // if character is same nation, process PC existence in hex
-                // if a PC is found in the hex with info source from previous turn, the PC should be removed
-                // this works on the assumption that if a PC exists in the same hex as the character
-                // the PC will be reported in the turn
-                // Hidden pops are excluded from this check
-                PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", newCharacter.getHexNo());
-                if (pc != null) {
-                	if (pc.getInfoSource().getTurnNo() < turn.getTurnNo() && !pc.getHidden()) {
-                		logger.debug("Removing Pop Center " + pc.getName() + " at hex " + pc.getHexNo() + " because it was not reported in current turn and a character is present in the hex.");
-                		turn.getContainer(TurnElementsEnum.PopulationCenter).removeItem(pc);
-                	}
+                if (newCharacter.getNationNo() == turnInfo.getNationNo()) {
+		            // if character is same nation, process PC existence in hex
+		            // if a PC is found in the hex with info source from previous turn, the PC should be removed
+		            // this works on the assumption that if a PC exists in the same hex as the character
+		            // the PC will be reported in the turn
+		            // Hidden pops are excluded from this check
+		            PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", newCharacter.getHexNo());
+		            boolean hasPopCenter = false;
+		            if (pc != null) {
+		            	if (pc.getInfoSource().getTurnNo() < turn.getTurnNo() && !pc.getHidden()) {
+		            		logger.debug("Removing Pop Center " + pc.getName() + " at hex " + pc.getHexNo() + " because it was not reported in current turn and a character is present in the hex.");
+		            		turn.getContainer(TurnElementsEnum.PopulationCenter).removeItem(pc);
+		            	} else {
+		            		hasPopCenter = true;
+		            	}
+		            	 
+		            }
                 }
             }
             catch (Exception exc) {
@@ -870,58 +888,110 @@ public class TurnXmlReader implements Runnable{
     			}
     		}
     	}
+    	middle = " is artifact ";
+    	for (String msg : (ArrayList<String>)nationMsgs) {
+    		if (msg.contains(middle)) {
+    			if (msg.startsWith("The ")) {
+    				msg = msg.substring(4);
+    			}
+				int i = msg.indexOf(middle);
+				String artiName = msg.substring(0, i);
+				int j = msg.lastIndexOf(' ');
+				if (j == -1) continue;
+				String artiNoStr = msg.substring(j+1);
+				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
+				for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+                    if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+                        try {
+                        	ai.setNo(Integer.parseInt(artiNoStr));
+                        }
+                        catch (Exception exc) {
+                        	logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg);
+                        }
+                        break;
+                    }
+                }
+			
+    		}
+		}
     }
     
     private void updateKSArtifactIDsAndLocationsFromNationMessages() {
     	ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
     	String prefix = "The ";
-    	String middle = " was discovered to be ";
+    	String middle = " discovered to be ";
     	String hex = " at ";
     	Container artis = turn.getContainer(TurnElementsEnum.Artifact);
     	for (String msg : (ArrayList<String>)nationMsgs) {
-    		if (msg.startsWith(prefix)) {
+    		if (msg.contains(middle)) {
+    			if (msg.startsWith("The ")) {
+    				prefix = "The ";
+    			} else {
+    				prefix = "";
+    			}
     			int i = prefix.length();
     			int j = msg.indexOf(middle);
-    			if (j > -1) {
-    				int k = msg.indexOf(",");
-    				String artiName = msg.substring(i, k);
-    				int l = msg.indexOf(",", k+1);
+    			Integer artiNo = null;
+    			String artiName;
+				int k = msg.indexOf(",");
+				if (k > -1) {
+					artiName = msg.substring(i, k);
+				} else {
+					k = msg.indexOf(" was discovered");
+					if (k == -1) {
+						k = msg.indexOf(" were discovered");
+					}
+					if (k == -1) return;
+					artiName = msg.substring(i, k);
+				}
+				artiName = artiName.trim();
+				int l = msg.indexOf(",", k+1);
+				if (l > -1) {
     				String artiNoStr = msg.substring(k + 3, l);
-    				String artiHex = msg.substring(msg.length()-5, msg.length()-1);
-    				Integer artiNo;
+    				// special handling to allow for the rumor sentence having or missing the period at the end
+    				
     				try {
     					artiNo = Integer.parseInt(artiNoStr);
     				}
     				catch (Exception exc) {
     					artiNo = -1;
     				}
-    				if (artiNo > -1) {
-    					String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
-    				
-	                    for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
-	                        if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
-	                        	ai.setNo(artiNo);
-	                            break;
-	                        }
-	                    }
-	                    Artifact a = (Artifact)artis.findFirstByProperty("number", artiNo);
-	                    if (a == null) {
-	                    	a = new Artifact();
-	                    	a.setNumber(artiNo);
-	                    	a.setName(artiName);
-	                    	try {
-	                    		a.setHexNo(Integer.parseInt(artiHex));
-	                    	}
-	                    	catch (Exception exc) {
-	                    		
-	                    	}
-	                    	artis.addItem(a);
-	                    } else {
-	                    	a.setHexNo(Integer.parseInt(artiHex));
-	                    	artis.refreshItem(a);
-	                    }
-    				}
     			}
+				int endsWithPeriod = msg.endsWith(".") ? 1 : 0;
+				String artiHex = msg.substring(msg.length()-4-endsWithPeriod, msg.length()- endsWithPeriod);
+				
+				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
+			
+				ArtifactInfo ai = null;
+                for (ArtifactInfo iai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+                	String iaiName = AsciiUtils.convertNonAscii(iai.getName());
+                	System.out.println(iaiName + " - " + artiNameInAscii + " " + iaiName.equalsIgnoreCase(artiNameInAscii));
+                    if (iaiName.equalsIgnoreCase(artiNameInAscii)) {
+                    	ai = iai;
+                    	if (artiNo != null) ai.setNo(artiNo);
+                        break;
+                    }
+                }
+                if (ai != null) {
+                    Artifact a = (Artifact)artis.findFirstByProperty("name", ai.getName());
+                    if (a == null) {
+                    	a = new Artifact();
+                    	a.setNumber(0);
+                    	if (artiNo != null) a.setNumber(artiNo);
+                    	a.setName(artiName);
+                    	try {
+                    		a.setHexNo(Integer.parseInt(artiHex));
+                    	}
+                    	catch (Exception exc) {
+                    		
+                    	}
+                    	artis.addItem(a);
+                    } else {
+                    	a.setHexNo(Integer.parseInt(artiHex));
+                    	artis.refreshItem(a);
+                    }
+                }
+    			
     		}
     	}
     }

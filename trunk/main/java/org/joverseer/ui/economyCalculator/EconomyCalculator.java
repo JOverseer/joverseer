@@ -281,6 +281,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
         MarketTableModel mtm = new MarketTableModel();
         marketTable = new JOverseerTable(mtm);
+        mtm.setTable(marketTable);
         
         marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
         marketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -306,8 +307,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
         
         mtm.setTotalsModel(ettm);
-        
-        totalsTable = new JOverseerTable(ettm); 
+        totalsTable = new JOverseerTable(ettm);
+        ettm.setTable(totalsTable);
         totalsTable.getTableHeader().setVisible(false);
         for (int i=0; i<ettm.getColumnCount(); i++) {
             totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));

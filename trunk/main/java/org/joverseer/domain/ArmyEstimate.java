@@ -75,8 +75,13 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	public void setMoraleRange(String moraleRange) {
 		this.moraleRange = moraleRange;
 	}
-	public ArrayList<Integer> getLosses() {
-		return losses;
+	public ArrayList<Integer> getLosses(int lossOptimismFactor) {
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+		for (String lossesRange : getLossesRanges()) {
+			int l = getRangeAverage(lossesRange, lossOptimismFactor);
+			ret.add(l);
+		}
+		return ret;
 	}
 	public ArrayList<String> getLossesRanges() {
 		return lossesRanges;
@@ -88,9 +93,9 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 		this.commanderTitle = commanderTitle;
 	}
 	
-	public int getEffectiveLosses() {
+	public int getEffectiveLosses(int lossOptimismFactor) {
 		double losses = 100;
-		for (int li : getLosses()) {
+		for (int li : getLosses(lossOptimismFactor)) {
 			double l = li; 
 			losses = losses * (100d - (double)l) / 100d;
 		}
@@ -104,5 +109,54 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	}
 	
 	
-	
+	protected int getRangeAverage(String rangeString, int max, int lossOptimismFactor) {
+    	if (rangeString.indexOf("-") > -1) {
+	    	String[] parts = rangeString.split("-");
+	    	try {
+	    		int min = Integer.parseInt(parts[0]);
+	    		max = Integer.parseInt(parts[1]);
+	    		if (lossOptimismFactor == 0) {
+	    			return (int)Math.round(((double)min + (double)max) / 2d);
+	    		} else if (lossOptimismFactor == -1) {
+	    			return min;
+	    		} else if (lossOptimismFactor == 1) {
+	    			return max;
+	    		}
+	    		return 0;
+	    		
+	    	}
+	    	catch (Exception exc) {
+	    		exc.printStackTrace();
+	    	}
+	    	return 0;
+    	}
+    	if (rangeString.endsWith("+")) {
+    		String[] parts = rangeString.split("+");
+	    	try {
+	    		int min =Integer.parseInt(parts[0]);
+	    		if (lossOptimismFactor == 0) {
+	    			return (int)Math.round(((double)min + (double)max) / 2d);
+	    		} else if (lossOptimismFactor == -1) {
+	    			return min;
+	    		} else if (lossOptimismFactor == 1) {
+	    			return max;
+	    		}
+	    		return 0;
+	    	}
+	    	catch (Exception exc) {
+	    		exc.printStackTrace();
+	    	}
+	    	return 0;
+    	}
+    	try {
+    		return Integer.parseInt(rangeString);
+    	}
+    	catch (Exception exc) {
+    		exc.printStackTrace();
+    	}
+    	return 0;
+    }
+    protected int getRangeAverage(String rangeString, int lossOptimismFactor) {
+    	return getRangeAverage(rangeString, 100, lossOptimismFactor);
+    }	
 }

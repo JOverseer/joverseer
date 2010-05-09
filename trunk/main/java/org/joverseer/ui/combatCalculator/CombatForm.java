@@ -40,6 +40,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.CombatPopCenter;
+import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.ValueModel;
 import org.springframework.binding.value.support.ListListModel;
@@ -78,6 +79,7 @@ public class CombatForm extends AbstractForm {
         SwingBindingFactory sbf = (SwingBindingFactory)getBindingFactory();
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         
+        GraphicUtils.registerIntegerPropertyConverters(this, "hexNo");
         TableLayoutBuilder lb = new TableLayoutBuilder();
         lb.cell(new JLabel("Description :"), "colspec=left:80px");
         lb.gapCol();
@@ -121,7 +123,7 @@ public class CombatForm extends AbstractForm {
 
         lb.cell(new JLabel("Terrain :"), "colspec=left:80px");
         lb.gapCol();
-        JComboBox cb = (JComboBox)sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.landValues()))).getControl();
+        JComboBox cb = (JComboBox)sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.landValues())), "renderString").getControl();
         cb.setPreferredSize(new Dimension(100, 20));
         lb.cell(cb, "colspec=left:120px");
         cb.addActionListener(new ActionListener() {

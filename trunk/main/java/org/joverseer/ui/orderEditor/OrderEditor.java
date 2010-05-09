@@ -469,6 +469,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new SpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
                         } else if (paramType.equals("spz")) {
                             sub = new ResearchSpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
+                        } else if (paramType.equals("art")) {
+                        	sub = new ArtifactNumberParameterOrderSubeditor(paramDescription, o);
                         }
                         if (sub != null) {
                             sub.addComponents(tlb, subeditorComponents, o, paramNo);

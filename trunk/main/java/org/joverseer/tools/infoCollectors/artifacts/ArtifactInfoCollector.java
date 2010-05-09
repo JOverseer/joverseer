@@ -104,7 +104,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
             if (t == null) continue;
             for (Artifact a : (ArrayList<Artifact>)t.getContainer(TurnElementsEnum.Artifact).getItems()) {
                 ArtifactWrapper aw = (ArtifactWrapper)aws.findFirstByProperty("number", a.getNumber());
-                if (aw == null) {
+                if (aw == null || a.getNumber() == 0) {
                     // try to find by name
                     aw = (ArtifactWrapper)aws.findFirstByProperty("name", a.getName());
                     if (aw == null) {

@@ -170,7 +170,9 @@ public class Combat implements Serializable, IHasMapLocation {
                 int relMod = CombatModifiers.getRelationModifier(side1Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                int wm = side1[i].getWM().getNumber(); 
+                ArmyElement wmEl = side1[i].getWM(); 
+                int wm = 0;
+                if (wmEl != null) wmEl.getNumber(); 
                 warMachines += wm;
                 totalCon += computNativeArmyConstitution(side1[i]);
                 losses[i] = side1[i].getLosses();
@@ -552,6 +554,8 @@ public class Combat implements Serializable, IHasMapLocation {
     public void setHexNo(int hexNo) {
         this.hexNo = hexNo;
     }
+    
+    
     
     public int getArmyIndex(int side, CombatArmy a) {
         CombatArmy[] cas = (side == 0 ? side1 : side2);

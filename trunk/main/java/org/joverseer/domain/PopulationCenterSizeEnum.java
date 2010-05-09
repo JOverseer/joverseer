@@ -2,6 +2,8 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+import org.joverseer.ui.support.UIUtils;
+
 /**
  * Enumeration for population center sizes
  * 
@@ -54,5 +56,9 @@ public enum PopulationCenterSizeEnum implements Serializable {
         }
         return "";
     }
+    
+   public String getRenderString() {
+	   return UIUtils.enumToString(this);
+   }
 
 }

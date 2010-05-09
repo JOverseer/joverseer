@@ -42,6 +42,7 @@ public class CombatPopCenter implements Serializable {
         size = pc.getSize();
         fort = pc.getFortification();
         loyalty = pc.getLoyalty();
+        nationNo = pc.getNationNo();
     }
     
     public FortificationSizeEnum getFort() {

@@ -6,9 +6,11 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ApplicationEvent;
+import org.joverseer.domain.Order;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.map.MapMetadata;
+import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -121,8 +123,8 @@ public class MapView extends AbstractView  implements ApplicationListener {
                 mapPanel.invalidateMapItems();
                 mapPanel.updateUI();
             } else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
-                mapPanel.invalidateMapItems();
-                mapPanel.updateUI();
+        		mapPanel.invalidateMapItems();
+        		mapPanel.updateUI();
             } else if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
                 MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
                 mapPanel.setPreferredSize(new Dimension(

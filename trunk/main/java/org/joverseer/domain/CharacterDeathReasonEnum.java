@@ -1,5 +1,7 @@
 package org.joverseer.domain;
 
+import org.joverseer.ui.support.UIUtils;
+
 /**
  * Enumeration of character death reasons.
  * 
@@ -16,6 +18,9 @@ public enum CharacterDeathReasonEnum {
     Cursed,
     Executed,
     Dead,
-    Missing
+    Missing;
 
+    public String getRenderString() {
+ 	   return UIUtils.enumToString(this);
+    }
 }

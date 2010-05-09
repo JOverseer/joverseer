@@ -70,6 +70,7 @@ public class CreateGame extends ActionCommand {
                 game.setMaxTurn(0);
                 GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
                 gh.setGame(game);
+                gh.setFile(null);
 
                 Turn t0 = new Turn();
                 t0.setTurnNo(0);

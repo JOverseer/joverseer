@@ -510,7 +510,7 @@ public class OrderEditorListView extends ItemListView {
                 
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
-                setItems();
+                //setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems.toString())) {
                 setItems();
             } else if (e.getEventType().equals(LifecycleEventsEnum.RefreshOrders.toString())) {

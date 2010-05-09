@@ -86,6 +86,7 @@ public class LoadGame extends ActionCommand {
                 GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
                 Game g = Game.loadGame(f);
                 gh.setGame(g);
+                gh.setFile(fname);
 
                 MapMetadataUtils mmu = new MapMetadataUtils();
                 MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");

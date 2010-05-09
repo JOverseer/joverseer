@@ -1,5 +1,7 @@
 package org.joverseer.ui.economyCalculator;
 
+import javax.swing.JTable;
+
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
@@ -22,9 +24,13 @@ public class MarketTableModel extends BaseEconomyTableModel {
 
     // column widths
     int[] columnWidths = new int[] {170, 64, 64, 64, 64, 64, 64, 64};
-
+    JTable table;
     EconomyTotalsTableModel ettm;
 
+    public void setTable(JTable table) {
+    	this.table = table;
+    }
+    
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         String productCode = columnHeaders[columnIndex];
@@ -34,24 +40,28 @@ public class MarketTableModel extends BaseEconomyTableModel {
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            select(rowIndex, columnIndex);
         }
         if (rowIndex == 6) {
             ecd.setSellPct(product, (Integer) aValue);
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            select(rowIndex, columnIndex);
         }
         if (rowIndex == 9) {
             ecd.setBuyUnits(product, (Integer) aValue);
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            select(rowIndex, columnIndex);
         }
         if (rowIndex == 10) {
             ecd.setBidPrice(product, (Integer) aValue);
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            select(rowIndex, columnIndex);
         }
         if (rowIndex == 11) {
             if (aValue != null && aValue.toString().startsWith("-")) {
@@ -68,7 +78,18 @@ public class MarketTableModel extends BaseEconomyTableModel {
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            select(rowIndex, columnIndex);
         }
+    }
+    
+    protected void select(int rowIndex, int columnIndex) {
+    	try {
+    		table.setColumnSelectionInterval(columnIndex, columnIndex);
+    		table.setRowSelectionInterval(rowIndex, rowIndex);
+    	}
+    	catch (Exception exc) {
+    		// do nothing
+    	}
     }
 
     public int getColumnCount() {

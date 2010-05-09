@@ -373,21 +373,7 @@ public class CharacterViewer extends ObjectViewer {
             	}
             	
             }
-            order1.setFormObject(c.getOrders()[0]);
-            order2.setFormObject(c.getOrders()[1]);
-            order3.setFormObject(c.getOrders()[2]);
-            if (showOrders) {
-            	orderPanel.setVisible(true);
-            	if (c.getNumberOfOrders() == 3) {
-            		order3comp.setVisible(true);
-            	} else {
-            		order3comp.setVisible(false);
-            	}
-            	swapOrdersIconCmd.setVisible(true);
-            } else {
-            	orderPanel.setVisible(false);
-            	swapOrdersIconCmd.setVisible(false);
-            }
+            refreshOrders(c);
             
             if (getShowColor()) {
                 Turn t = g.getTurn();
@@ -420,6 +406,25 @@ public class CharacterViewer extends ObjectViewer {
             
             ArrayList<Note> notes = (ArrayList<Note>)g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
             notesViewer.setFormObject(notes);
+        }
+
+    }
+    
+    public void refreshOrders(Character c) {
+        order1.setFormObject(c.getOrders()[0]);
+        order2.setFormObject(c.getOrders()[1]);
+        order3.setFormObject(c.getOrders()[2]);
+        if (showOrders) {
+        	orderPanel.setVisible(true);
+        	if (c.getNumberOfOrders() == 3) {
+        		order3comp.setVisible(true);
+        	} else {
+        		order3comp.setVisible(false);
+        	}
+        	swapOrdersIconCmd.setVisible(true);
+        } else {
+        	orderPanel.setVisible(false);
+        	swapOrdersIconCmd.setVisible(false);
         }
 
     }

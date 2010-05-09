@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.ListSelectionModel;
 
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
@@ -12,16 +13,21 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.UIUtils;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.validation.ValidationListener;
 import org.springframework.binding.validation.ValidationResults;
+import org.springframework.binding.value.ValueModel;
+import org.springframework.binding.value.support.AbstractValueModel;
 import org.springframework.binding.value.support.ValueHolder;
+import org.springframework.binding.value.support.ValueModelWrapper;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
 import org.springframework.richclient.form.builder.TableFormBuilder;
+import org.springframework.richclient.list.ListSelectionValueModelAdapter;
 
 /**
  * Edit a pop center
@@ -53,12 +59,15 @@ public class EditPopulationCenterForm extends AbstractForm {
         b.setComparator(new PropertyComparator("number", true, true));
         formBuilder.add(b);
         formBuilder.row();
-        JComboBox cmb = new JComboBox(PopulationCenterSizeEnum.values());
-        formBuilder.add("size", cmb);
+        JComboBox cmb;
+        b = (ComboBoxBinding)sbf.createBoundComboBox("size", new ValueHolder(PopulationCenterSizeEnum.values()), "renderString");
+        formBuilder.add(b);
         formBuilder.row();
-        formBuilder.add("fortification", cmb = new JComboBox(FortificationSizeEnum.values()));
+        b = (ComboBoxBinding)sbf.createBoundComboBox("fortification", new ValueHolder(FortificationSizeEnum.values()), "renderString");
+        formBuilder.add(b);
         formBuilder.row();
-        formBuilder.add("harbor", cmb = new JComboBox(HarborSizeEnum.values()));
+        b = (ComboBoxBinding)sbf.createBoundComboBox("harbor", new ValueHolder(HarborSizeEnum.values()), "renderString");
+        formBuilder.add(b);
         formBuilder.row();
         formBuilder.add("hidden", new JCheckBox());
         formBuilder.row();

@@ -351,4 +351,54 @@ public class MovementUtils {
         }
         return rangeHexes;
     }
+    
+    public static HashMap calculateNavyRangeHexes(int startHexNo, boolean openSeas, boolean isFed) {
+    	Game game = GameHolder.instance().getGame();
+        HashMap<Integer, Integer> rangeHexes = new HashMap<Integer, Integer>();
+        LinkedList<Integer> hexesToProcess = new LinkedList<Integer>();
+        hexesToProcess.add(startHexNo);
+        int prevCost = 0;
+        while (hexesToProcess.size() > 0) {
+            int hexNo = (Integer)hexesToProcess.remove(0);
+            for (MovementDirection dir : MovementDirection.values()) {
+                int destHexNo = getHexNoAtDir(hexNo, dir);
+                Hex destHex = game.getMetadata().getHex(destHexNo);
+                if (destHex == null) continue;
+                if (destHex.getTerrain().equals(HexTerrainEnum.ocean)) {
+                	if (!openSeas) continue;
+                }
+                int cost = calculateMovementCostForNavy(hexNo, dir.getDir(), isFed, startHexNo);
+                if (cost == -1) continue;
+                if (hexNo == startHexNo) {
+                    prevCost = 0;
+                } else {
+                    prevCost = (Integer)rangeHexes.get(hexNo);
+                }
+                int totalCost;
+                if (cost == -2) 
+            	{
+                	if (prevCost >= 14) continue;
+                	totalCost = 14;
+            	} else {
+            		totalCost = cost + prevCost;
+            	}
+                if (totalCost > 0 && totalCost < 15) {
+                    if (destHexNo == startHexNo) continue;
+                    int currentCost = 100;
+                    if (rangeHexes.containsKey(destHexNo)) {
+                        currentCost = (Integer)rangeHexes.get(destHexNo);
+                        if (currentCost < totalCost) {
+                            continue;
+                        }
+                        rangeHexes.remove(destHexNo);
+                    }
+                    rangeHexes.put(destHexNo, totalCost);
+                    if (!hexesToProcess.contains(destHexNo)) {
+                        hexesToProcess.add(destHexNo);
+                    }
+                }
+            }
+        }
+        return rangeHexes;
+    }
 }

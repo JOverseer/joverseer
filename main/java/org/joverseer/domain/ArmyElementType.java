@@ -59,4 +59,13 @@ public enum ArmyElementType implements Serializable {
     	}
     	return null;
     }
+    
+    public int getSortOrder() {
+    	int i = 0;
+    	for (ArmyElementType aet : ArmyElementType.values()) {
+    		if (this.equals(aet)) return i;
+    		i++;
+    	}
+    	return i;
+    }
 }

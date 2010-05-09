@@ -18,6 +18,7 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -413,9 +414,14 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
                 refresh(p);
             }
             if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+            	Order o = (Order)e.getData();
                 for (int i=0; i<characterPanels.size(); i++) {
                     if (!characterPanels.get(i).isVisible()) continue;
-                    characterViewers.get(i).setFormObject(characterViewers.get(i).getFormObject());
+                    Character c = (Character)characterViewers.get(i).getFormObject();
+                    if (c == o.getCharacter()) {
+                    	characterViewers.get(i).refreshOrders(c);
+                    	break;
+                    }
                 }
             }
             if (e.getEventType().equals(LifecycleEventsEnum.SelectCharEvent.toString())) { 

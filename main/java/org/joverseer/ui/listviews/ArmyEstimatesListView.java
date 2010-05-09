@@ -283,8 +283,13 @@ public class ArmyEstimatesListView extends ItemListView {
 
 		protected void doExecuteCommand() {
 			if (estimate != null) {
-				int enhi = new CombatUtils().getNakedHeavyInfantryEquivalent3(estimate);
-				String str = "enHI for " + estimate.getCommanderName() + "'s army is " + enhi + " for estimated losses of " + (100 - estimate.getEffectiveLosses()) + "%";
+				String str = "Estimates for " + estimate.getCommanderName() + "'s army:";
+				int enhi = new CombatUtils().getNakedHeavyInfantryEquivalent3(estimate, 0);
+				str += "\nAvegare losses: " + enhi + " enHI for estimated losses of " + (100 - estimate.getEffectiveLosses(0)) + "%";
+				enhi = new CombatUtils().getNakedHeavyInfantryEquivalent3(estimate, -1);
+				str += "\nLowest losses: " + enhi + " enHI for estimated losses of " + (100 - estimate.getEffectiveLosses(-1)) + "%";
+				enhi = new CombatUtils().getNakedHeavyInfantryEquivalent3(estimate, 1);
+				str += "\nHighest losses: " + enhi + " enHI for estimated losses of " + (100 - estimate.getEffectiveLosses(1)) + "%";
 				if (estimate.getMoraleRange().equals("?")) {
 					str += "\nJOverseer failed to parse the army's morale from the combat narration, and is assuming 30 morale.";
 				}

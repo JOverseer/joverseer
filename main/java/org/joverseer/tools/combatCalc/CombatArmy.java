@@ -183,6 +183,27 @@ public class CombatArmy implements Serializable {
         }
         tactic = TacticEnum.Standard;
     }
+    
+    public CombatArmy(CombatArmy ca) {
+    	Game g = GameHolder.instance().getGame();
+        for (ArmyElementType aet : ArmyElementType.values()) {
+            ArmyElement ae = ca.getArmyElement(aet);
+            if (ae == null) {
+                ae = new ArmyElement(aet, 0);
+            }
+            ArmyElement nae = new ArmyElement(ae.getArmyElementType(), (int)(ae.getNumber() * (100 - ca.getLosses()) / 100));
+            nae.setWeapons(ae.getWeapons());
+            nae.setTraining(ae.getTraining());
+            nae.setArmor(ae.getArmor());
+            getElements().add(nae);
+        }
+        
+        setNationNo(ca.getNationNo());
+        setCommander(ca.getCommander());
+        setMorale(ca.getMorale());
+        setCommandRank(ca.getCommandRank());
+        setTactic(TacticEnum.Standard);
+    }
 
     public CombatArmy(Army a) {
         Game g = GameHolder.instance().getGame();
@@ -212,8 +233,12 @@ public class CombatArmy implements Serializable {
     }
     
     public CombatArmy(ArmyEstimate a) {
-    	double left = 1;
-    	for (int l : a.getLosses()) {
+    	this(a, 0);
+    }
+    
+    public CombatArmy(ArmyEstimate a, int lossOptimismFactor) {
+    	double left = 1d;
+    	for (int l : a.getLosses(lossOptimismFactor)) {
     		left *= (100d - (double)l) / 100d;
     	}
     	

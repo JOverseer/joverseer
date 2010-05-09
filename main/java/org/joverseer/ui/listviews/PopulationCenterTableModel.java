@@ -44,10 +44,10 @@ public class PopulationCenterTableModel extends ItemTableModel {
         }
         if (i == iSize) {
         	PopulationCenter pc = (PopulationCenter)object;
-        	return UIUtils.renderEnum(pc.getSize());
+        	return UIUtils.enumToString(pc.getSize());
         } else if (i == iFort) {
         	PopulationCenter pc = (PopulationCenter)object;
-        	return UIUtils.renderEnum(pc.getFortification());
+        	return UIUtils.enumToString(pc.getFortification());
         } else if (i == iLostThisTurn) {
             PopulationCenter pc = (PopulationCenter)object;
             return pc.getLostThisTurn() ? "yes" : "";

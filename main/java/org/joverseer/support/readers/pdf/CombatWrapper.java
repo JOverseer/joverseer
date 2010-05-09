@@ -247,7 +247,6 @@ public class CombatWrapper {
 		    			ae.getLossesDescriptions().add(l);
 		    			String lossesRange = InfoUtils.getArmyLossesRange(l);
 		    			ae.getLossesRanges().add(lossesRange);
-		    			ae.getLosses().add(getRangeAverage(lossesRange));
 		    		}
 	    		}
 	    		

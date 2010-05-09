@@ -19,6 +19,7 @@ public class ArtifactInfo implements Serializable {
     ArrayList<String> powers ;
     String alignment;
     String owner;
+    int currentlyHiddenPopCenter = -1;
 
     public ArtifactInfo() {
     	powers = new ArrayList<String>(2) ;
@@ -117,5 +118,13 @@ public class ArtifactInfo implements Serializable {
 		}
 		return 0;
 		
+	}
+	
+	public int getCurrentlyHiddenPopCenter() {
+		return currentlyHiddenPopCenter;
+	}
+
+	public void setCurrentlyHiddenPopCenter(int currentlyHiddenPopCenter) {
+		this.currentlyHiddenPopCenter = currentlyHiddenPopCenter;
 	}
 }

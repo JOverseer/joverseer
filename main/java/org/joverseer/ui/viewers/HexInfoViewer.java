@@ -45,6 +45,7 @@ import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
 import org.joverseer.ui.command.ShowCharacterPathMasteryRangeCommand;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
+import org.joverseer.ui.domain.mapItems.NavyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.UIUtils;
@@ -215,7 +216,7 @@ public class HexInfoViewer extends ObjectViewer {
             Game g = GameHolder.instance().getGame();
             HexInfo hi = (HexInfo)g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
             climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
-            terrain.setText(UIUtils.renderEnum(h.getTerrain()));
+            terrain.setText(UIUtils.enumToString(h.getTerrain()));
             terrain.setCaretPosition(0);
             int startHexNo = h.getColumn() * 100 + h.getRow();
             if (startHexNo > 0) {
@@ -266,6 +267,11 @@ public class HexInfoViewer extends ObjectViewer {
                         showUnfedInfantryArmyRangeCommand,
                         showFedCavalryArmyRangeCommand,
                         showUnfedCavalryArmyRangeCommand,
+                        "separator",
+                        new ShowFedNavyCoastalRangeCommand(),
+                        new ShowUnfedNavyCoastalRangeCommand(),
+                        new ShowFedNavyOpenSeasRangeCommand(),
+                        new ShowUnfedNavyOpenSeasRangeCommand(),
                         "separator",
                         new AddPopCenterCommand(),
                         new AddEditNoteCommand(hex.getHexNo()),
@@ -452,6 +458,51 @@ public class HexInfoViewer extends ObjectViewer {
         }
     }
     
+    public class ShowNavyRangeCommand extends ActionCommand {
+        boolean openSeas;
+        boolean fed;
+        
+        public ShowNavyRangeCommand(String arg0, boolean fed, boolean openSeas) {
+            super(arg0);
+            this.openSeas = openSeas;
+            this.fed = fed;
+        }
+
+        protected void doExecuteCommand() {
+            Hex hex = (Hex)getFormObject();
+            NavyRangeMapItem armi = new NavyRangeMapItem(hex.getHexNo(), fed, openSeas);
+            AbstractMapItem.add(armi);
+
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()
+                            .getSelectedHex(), this));
+        }
+    }
+    
+    public class ShowFedNavyCoastalRangeCommand extends ShowNavyRangeCommand {
+		public ShowFedNavyCoastalRangeCommand() {
+			super("showFedNavyCoastalRangeCommand", true, false);
+		}
+    }
+
+    public class ShowUnfedNavyCoastalRangeCommand extends ShowNavyRangeCommand {
+		public ShowUnfedNavyCoastalRangeCommand() {
+			super("showUnfedNavyCoastalRangeCommand", false, false);
+		}
+    }
+
+    public class ShowFedNavyOpenSeasRangeCommand extends ShowNavyRangeCommand {
+		public ShowFedNavyOpenSeasRangeCommand() {
+			super("showFedNavyOpenSeasRangeCommand", true, true);
+		}
+    }
+
+    public class ShowUnfedNavyOpenSeasRangeCommand extends ShowNavyRangeCommand {
+		public ShowUnfedNavyOpenSeasRangeCommand() {
+			super("showUnfedNavyOpenSeasRangeCommand", false, true);
+		}
+    }
+
     public class AddPopCenterCommand extends ActionCommand {
     	protected void doExecuteCommand() {
     		final PopulationCenter pc = new PopulationCenter();

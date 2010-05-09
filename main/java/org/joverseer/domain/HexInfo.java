@@ -76,9 +76,7 @@ public class HexInfo implements Serializable {
     }
     
     
-
-    
-    public ClimateEnum getClimate() {
+	public ClimateEnum getClimate() {
         return climate;
     }
 

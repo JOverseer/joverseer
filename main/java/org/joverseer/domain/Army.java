@@ -406,4 +406,19 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
     	return cost;
     
     }
+    
+	public int getNumberOfRequiredTransports() {
+		int requiredTransportCapacity = 0;
+		for (ArmyElement ae : getElements()) {
+	    	requiredTransportCapacity += ae.getRequiredTransportCapacity();
+	    }
+	    int requiredTransports = (int)Math.ceil((double)requiredTransportCapacity / 250d) ;
+	    return requiredTransports;
+	}
+	
+	public int getNumber(ArmyElementType aet) {
+		ArmyElement ae = getElement(aet);
+		if (ae == null) return 0;
+		return ae.getNumber();
+	}
 }

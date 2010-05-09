@@ -95,7 +95,7 @@ public class Artifact implements Serializable, IHasMapLocation {
     }
     
     
-    public String getInfoSourceDescr() {
+	public String getInfoSourceDescr() {
         String txt = "";
         if (DerivedFromSpellInfoSource.class.isInstance(infoSource)) {
             txt = ((DerivedFromSpellInfoSource)infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)infoSource).getCasterName();

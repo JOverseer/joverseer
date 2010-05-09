@@ -28,7 +28,8 @@ public class StatusBarUpdater implements ApplicationListener {
 
     private void refreshGameInfo() {
         String msg = null;
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder"); 
+        Game game = gh.getGame();
         if (game == null) {
             msg = "No active game.";
         } else {
@@ -38,6 +39,7 @@ public class StatusBarUpdater implements ApplicationListener {
             if (game.getTurn() != null && game.getTurn().getSeason() != null) {
                 msg = String.format("%1$s, %2$s, %3$td %3$tb %3$tY", msg, game.getTurn().getSeason(), game.getTurn().getTurnDate());
             }
+            if (gh.getFile() != null) msg += " - " + gh.getFile(); 
         }
         //Application.instance().getActiveWindow().getStatusBar().setMessage(msg);
         Application.instance().getActiveWindow().getControl().setTitle("JOverseer - " + msg);

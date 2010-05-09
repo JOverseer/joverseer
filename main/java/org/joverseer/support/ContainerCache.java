@@ -18,7 +18,7 @@ public class ContainerCache implements Serializable {
     private static final long serialVersionUID = -8253812529870087895L;
 	String propertyName;
     HashMap<Object, ArrayList> cache;
-    HashMap<Object, Object> reverseMap;
+    transient HashMap<Object, Object> reverseMap;
     
     public ContainerCache(String propertyName) {
         this.propertyName = propertyName;
@@ -29,6 +29,13 @@ public class ContainerCache implements Serializable {
     public String getPropertyName() {
         return propertyName;
     }
+    
+    private HashMap<Object, Object> getReverseMap() {
+    	if (reverseMap == null) {
+    		reconstructReverseMap();
+    	}
+    	return reverseMap;
+    }
 
     public void addItem(Object obj) {
         Object value = getPropertyValue(obj);
@@ -37,7 +44,7 @@ public class ContainerCache implements Serializable {
             objects = new ArrayList();
             cache.put(value, objects);
         }
-        reverseMap.put(obj, value);
+        getReverseMap().put(obj, value);
         objects.add(obj);
     }
     
@@ -53,7 +60,7 @@ public class ContainerCache implements Serializable {
     public void removeItem(Object obj) {
     	Object value = getPropertyValue(obj);
         try {
-        	value = reverseMap.get(obj);
+        	value = getReverseMap().get(obj);
         }
         catch (Exception e) {
 	        try {
@@ -86,14 +93,20 @@ public class ContainerCache implements Serializable {
     }
     
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(cache);
-        out.writeObject(propertyName);
-        
-    }
+    	out.defaultWriteObject();
+     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-    	cache = (HashMap)in.readObject();
-    	propertyName = (String)in.readObject();
+    	// for backwards compatibility with older versions (before 1.0.7)
+    	Object o1 = in.readObject();
+    	Object o2 = in.readObject();
+    	if (HashMap.class.isInstance(o1)) {
+    		cache = (HashMap)o1;
+    		propertyName = (String)o2;
+    	} else {
+    		propertyName = (String)o1;
+    		cache = (HashMap)o2;
+    	}
     	reconstructReverseMap();
     }
     

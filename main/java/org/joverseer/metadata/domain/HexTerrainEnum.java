@@ -1,6 +1,9 @@
 package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+
+import org.joverseer.ui.support.UIUtils;
 
 /**
  * Enumeration for hex terains
@@ -44,5 +47,27 @@ public enum HexTerrainEnum implements Serializable {
     
     public static HexTerrainEnum[] landValues() {
         return new HexTerrainEnum[]{plains, shore, forest, swamp, hillsNrough, mountains, desert};
+    }
+    
+    public static HexTerrainEnum[] openSeaValues() {
+        return new HexTerrainEnum[]{ocean, sea};
+    }
+    
+    public boolean isLand() {
+    	for (HexTerrainEnum hte : landValues()) {
+    		if (hte.equals(this)) return true;
+    	}
+    	return false;
+    }
+    
+    public boolean isOpenSea() {
+    	for (HexTerrainEnum hte : openSeaValues()) {
+    		if (hte.equals(this)) return true;
+    	}
+    	return false;
+    }
+    
+    public String getRenderString() {
+ 	   return UIUtils.enumToString(this);
     }
 }

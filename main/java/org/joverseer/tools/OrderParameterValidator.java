@@ -320,6 +320,12 @@ public class OrderParameterValidator {
             } else {
                 return new OrderValidationResult(OrderValidationResult.ERROR, "must be empty or between 1 and 999");
             }
+        } else if (paramType.equals("art")) {
+                if (isEmpty(paramValue) || isNumberOK(paramValue, 1, 999)) {
+                    return null;
+                } else {
+                    return new OrderValidationResult(OrderValidationResult.ERROR, "must be empty or between 1 and 999");
+                }
         } else if (paramType.equals("f")) {
             if (isEmpty(paramValue) || isNumberOK(paramValue, 1, 99999)) {
                 return null;

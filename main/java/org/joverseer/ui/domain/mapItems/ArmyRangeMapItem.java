@@ -14,10 +14,9 @@ import org.joverseer.support.movement.MovementUtils;
  * 
  * @author Marios Skounakis
  */
-public class ArmyRangeMapItem extends AbstractMapItem {
+public class ArmyRangeMapItem extends AbstractRangeMapItem {
     private static final long serialVersionUID = 7197917745582629886L;
     Army army;
-    HashMap rangeHexes;
     boolean cav;
     boolean fed;
     
@@ -39,10 +38,6 @@ public class ArmyRangeMapItem extends AbstractMapItem {
 
     public Army getArmy() {
         return army;
-    }
-
-    public HashMap getRangeHexes() {
-        return rangeHexes;
     }
 
     public String getDescription() {

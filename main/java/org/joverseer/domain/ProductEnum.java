@@ -1,5 +1,7 @@
 package org.joverseer.domain;
 
+import org.joverseer.ui.support.UIUtils;
+
 /**
  * Enumeration for products
  * 
@@ -32,4 +34,7 @@ public enum ProductEnum {
         return null;
     }
     
+    public String getRenderString() {
+ 	   return UIUtils.enumToString(this);
+    }
 }

@@ -2,6 +2,8 @@ package org.joverseer.ui.economyCalculator;
 
 import java.util.ArrayList;
 
+import javax.swing.JTable;
+
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
@@ -52,6 +54,12 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 
     int[] columnWidths = new int[] {170, 64, 128, 64, 128, 64};
 
+    JTable table;
+    
+    public void setTable(JTable table) {
+    	this.table = table;
+    }
+    
     public int getColumnCount() {
         return 6;
     }
@@ -139,6 +147,16 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return "";
     }
     
+    protected void select(int rowIndex, int columnIndex) {
+    	try {
+    		table.setColumnSelectionInterval(columnIndex, columnIndex);
+    		table.setRowSelectionInterval(rowIndex, rowIndex);
+    	}
+    	catch (Exception exc) {
+    		// do nothing
+    	}
+    }
+    
     /**
      * Computes the final gold for the nation
      * @return
@@ -169,20 +187,21 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
-
+            select(rowIndex, columnIndex);
         }
         if (columnIndex == 3 && rowIndex == 2) {
             setGoldProduction((Integer)aValue);
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
-
+            select(rowIndex, columnIndex);
         }
         if (columnIndex == 3 && rowIndex == 0) {
             setTaxRate((Integer)aValue);
             fireTableDataChanged();
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            select(rowIndex, columnIndex);
         }
     }
 

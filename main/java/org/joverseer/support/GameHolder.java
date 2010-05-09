@@ -10,6 +10,7 @@ import org.springframework.richclient.application.Application;
  */
 public class GameHolder {
     Game game;
+    String file;
 
     public Game getGame() {
         return game;
@@ -18,8 +19,18 @@ public class GameHolder {
     public void setGame(Game game) {
         this.game = game;
     }
+    
+    
 
-    public static boolean hasInitializedGame() {
+    public String getFile() {
+		return file;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public static boolean hasInitializedGame() {
         GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
         return Game.isInitialized(gh.getGame());
     }

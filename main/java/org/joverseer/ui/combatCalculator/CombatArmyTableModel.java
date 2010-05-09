@@ -1,6 +1,7 @@
 package org.joverseer.ui.combatCalculator;
 
 import org.joverseer.domain.ArmyElement;
+import org.joverseer.tools.CombatUtils;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.springframework.context.MessageSource;
@@ -48,6 +49,8 @@ public class CombatArmyTableModel extends BeanTableModel {
                     (int)Math.round(ae.getNumber() * (100 - ca.getLosses()) / 100) + ae.getArmyElementType().getType();
                 }
             }
+            int eHI = CombatUtils.getNakedHeavyInfantryEquivalent(new CombatArmy(ca));
+            if (eHI > 0) ret += " (" + eHI + "enHI)";
             return ret;
         } else if (arg1 == iStr) {
             if (getCombat() == null) {

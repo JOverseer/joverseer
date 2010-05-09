@@ -75,7 +75,7 @@ public class ArtifactViewer extends ObjectViewer {
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
         
         glb.append(artifactName = new JTextField());
-        artifactName.setPreferredSize(new Dimension(150, 12));
+        artifactName.setPreferredSize(new Dimension(150, 16));
         artifactName.setFont(GraphicUtils.getFont(artifactName.getFont().getName(), Font.BOLD, artifactName.getFont().getSize()));
         artifactName.setBorder(null);
         artifactName.addMouseListener(new MouseAdapter() {

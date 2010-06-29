@@ -1,6 +1,6 @@
 Dependencies for JOverseer
 --------------------------
-- junit
+- junit any version
 - log4j
 - apache commons beanutils
 - apache commons collections

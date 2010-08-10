@@ -240,6 +240,70 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
+						<value>currentHexView.showArmyEstimate</value>
+					</property>
+					<property name="description">
+						<value>Show estimate from last combat</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.showNumberOfFedTurnsForArmies</value>
+					</property>
+					<property name="description">
+						<value>Show number of fed turns for armies</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.autoUpdateEconCalcMarketFromOrders</value>
+					</property>
+					<property name="description">
+						<value>Buy/Sell Orders auto update Econ Calc</value>
+					</property>
+					<property name="group">
+						<value>Economy Calculator</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
 						<value>currentHexView.sortCharacters</value>
 					</property>
 					<property name="description">
@@ -568,7 +632,7 @@
 						<value>Market Sell Limit</value>
 					</property>
 					<property name="group">
-						<value>General</value>
+						<value>Economy Calculator</value>
 					</property>
 					<property name="type">
 						<value>text</value>
@@ -583,10 +647,10 @@
 						<value>general.strictMarketLimit</value>
 					</property>
 					<property name="description">
-						<value>Strict Market Limit</value>
+						<value>Market Sell Limit is Strict</value>
 					</property>
 					<property name="group">
-						<value>General</value>
+						<value>Economy Calculator</value>
 					</property>
 					<property name="defaultValue">
 						<value>no</value>
@@ -650,6 +714,28 @@
 					</property>
 					<property name="description">
 						<value>Auto Save</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>orderEditor.autoDraw</value>
+					</property>
+					<property name="description">
+						<value>Auto Draw When Editing</value>
 					</property>
 					<property name="group">
 						<value>Order Editor</value>

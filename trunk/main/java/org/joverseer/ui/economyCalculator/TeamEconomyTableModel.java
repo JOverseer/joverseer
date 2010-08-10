@@ -22,10 +22,10 @@ import org.joverseer.support.GameHolder;
  */
 public class TeamEconomyTableModel extends BaseEconomyTableModel {
     // what to show for each product 
-    public static String PROD_TOTAL = "total";
+    public static String PROD_TOTAL = "total (stores + production)";
     public static String PROD_PRODUCTION = "production";
     public static String PROD_STORES = "stores";
-    public static String PROD_GAIN = "max gain";
+    public static String PROD_GAIN = "max gain (if 100% is sold to market)";
     
     public static int iFinalGold = 15;
     public static int iMarket = 13;

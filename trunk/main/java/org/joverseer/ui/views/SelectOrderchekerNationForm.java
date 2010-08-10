@@ -63,7 +63,7 @@ public class SelectOrderchekerNationForm extends AbstractForm {
 
     protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(new JLabel("Select the nation for which to check orders:"));
+        tlb.cell(new JLabel("Select the nation to check:"));
         tlb.relatedGapRow();
         tlb.cell(nationCombo = new JComboBox(), "align=left");
         nationCombo.setPreferredSize(new Dimension(200, 20));

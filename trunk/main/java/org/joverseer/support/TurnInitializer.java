@@ -55,6 +55,12 @@ public class TurnInitializer {
                 newNr.setEliminated(n.getEliminated());
                 newRelations.addItem(newNr);
             }
+            // copy hex overrides
+            Container hexOverrides = gm.getHexOverrides(previousTurn.getTurnNo());
+            for (Hex h : (ArrayList<Hex>)hexOverrides.getItems()) {
+            	Hex nh = h.clone();
+            	gm.addHexOverride(newTurn.getTurnNo(), nh);
+            }
         } else {
             // get pcs from metadata
             Container gmPCs = gm.getPopulationCenters();

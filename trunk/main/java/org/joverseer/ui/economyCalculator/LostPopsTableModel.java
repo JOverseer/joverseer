@@ -3,6 +3,7 @@ package org.joverseer.ui.economyCalculator;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.UIUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
@@ -54,6 +55,17 @@ public class LostPopsTableModel extends BeanTableModel {
                 new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
 
     }
+
+	@Override
+	protected Object getValueAtInternal(Object row, int columnIndex) {
+		Object v = super.getValueAtInternal(row, columnIndex);
+		if (columnIndex == 2) {
+			return UIUtils.enumToString(v);
+		} else if (columnIndex == 3) {
+			return UIUtils.enumToString(v);
+		}
+		return v;
+	}
     
     
 }

@@ -37,7 +37,12 @@ public class EncounterWrapper {
 	public Encounter getEncounter() {
         Encounter e = new Encounter();
         e.setCharacter(getCharId());
-        e.setHexNo(Integer.parseInt(getHex()));
+        try {
+        	e.setHexNo(Integer.parseInt(getHex()));
+        }
+        catch (Exception exc) {
+        	return null;
+        }
         e.setDescription(getText());
         return e;
     }

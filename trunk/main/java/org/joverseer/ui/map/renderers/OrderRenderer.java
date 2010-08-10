@@ -65,10 +65,12 @@ public class OrderRenderer extends DefaultHexRenderer {
     }
 
     public boolean appliesTo(Object obj) {
-        return Order.class.isInstance(obj) && !((Order)obj).isBlank() && drawOrders() && getOrderVisualizationData().contains((Order)obj);
+        return Order.class.isInstance(obj) && 
+        		!((Order)obj).isBlank() && 
+        		drawOrders() && 
+        		(getOrderVisualizationData().contains((Order)obj) || getOrderVisualizationData().getOrderEditorOrder()==obj);
     }
 
-    
     public void render(Object obj, Graphics2D g, int x, int y) {
         render(obj, g, x, y, true);
     }
@@ -140,7 +142,7 @@ public class OrderRenderer extends DefaultHexRenderer {
     }
     
     private void renderStandAndDefendOrder(Order order, Graphics2D g) {
-        if (order.getParameter(0) == null) {
+        if (order.getParameter(0) == null || order.getParameter(0).equals("")) {
             return;
         }
         try {
@@ -158,10 +160,12 @@ public class OrderRenderer extends DefaultHexRenderer {
                     if (mds[0] != null && mds[2] != null && mds[1].getDir().equals(param)) {
                         break;
                     }
+                    if (param.equals("")) break;
                 }
                 if (mds[0] != null && mds[2] != null && mds[1].getDir().equals(param)) {
                     break;
                 }
+                if (param.equals("")) break;
             }
             
             for (MovementDirection md : mds) {
@@ -188,6 +192,28 @@ public class OrderRenderer extends DefaultHexRenderer {
         if (order.getParameter(0) == null) {
             return;
         }
+        
+        OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+        Object d = ovd.getAdditionalInfo(order, "displacement");
+        if (d == null) d = 0;
+        int df = (Integer)d;
+        int displacementX = 0;
+        int displacementY = 0;
+        if (df == 1) {
+        	displacementX = -11;
+        	displacementY = -10;
+        } else if (df == 2) {
+        	displacementX = 11;
+        	displacementY = -10;
+        } else if (df == 3) {
+        	displacementX = 11;
+        	displacementY = 10;
+        } else if (df == 4) {
+        	displacementX = -11;
+        	displacementY = 10;
+        }
+        
+        
         boolean isNavy = order.getOrderNo() == 830;
         try {
             int maxCost = (order.getOrderNo() == 850 ? 12 : 14);
@@ -207,7 +233,6 @@ public class OrderRenderer extends DefaultHexRenderer {
                 cav = army.computeCavalry();
                 fed = army.computeFed();
             } else {
-                OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
                 try {
                     cav = (Boolean)ovd.getAdditionalInfo(order, "cavalry");
                     fed = (Boolean)ovd.getAdditionalInfo(order, "fed");
@@ -235,6 +260,11 @@ public class OrderRenderer extends DefaultHexRenderer {
                 }
                 p1 = MapPanel.instance().getHexCenter(currentHexNo);
                 p2 = MapPanel.instance().getHexCenter(nextHexNo);
+            	p1.x += displacementX;
+            	p1.y += displacementY;
+                
+                p2.x += displacementX;
+                p2.y += displacementY;
                 g.setStroke(GraphicUtils.getDashStroke(3, 8));
                 int curCost = 0;
                 if (!isNavy) {

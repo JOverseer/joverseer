@@ -1,5 +1,6 @@
 package org.joverseer.ui.orderEditor;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -39,7 +43,11 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
             DecimalFormat f = new DecimalFormat();
             f.setDecimalSeparatorAlwaysShown(false);
             f.setGroupingUsed(false);
-            tlb.cell(parameter = new JFormattedTextField(f), "colspec=left:35px");
+            JPanel pnl = new JPanel();
+            //pnl.setBorder(new EmptyBorder(0, 0, 0, 0));
+            pnl.setBackground(Color.white);
+            TableLayoutBuilder tlb2 = new TableLayoutBuilder(pnl);
+            tlb2.cell(parameter = new JFormattedTextField(f), "colspec=left:35px");
             parameter.setText(o.getParameter(paramNo));
             parameter.setPreferredSize(new Dimension(30, 18));
             parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
@@ -70,11 +78,12 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
             
             artifactName = new JTextField();
             artifactName.setEditable(false);
-            artifactName.setPreferredSize(new Dimension(140, 18));
+            artifactName.setPreferredSize(new Dimension(145, 18));
             artifactName.setFocusable(false);
-            tlb.cell(artifactName, "colspec=left:140px");
+            tlb2.cell(artifactName, "colspec=left:160px rowspec=20px");
             updateArtifactNumber();
-            
+            tlb.cell(tlb2.getPanel(), "colspec=left:225px");
+            tlb.gapCol();
         }
         catch (Exception exc) {
             

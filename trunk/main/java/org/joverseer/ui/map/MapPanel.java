@@ -250,8 +250,16 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 //        	exc.printStackTrace();
 //        }
         
-
         for (Hex h : (Collection<Hex>)gm.getHexes()) {
+            setHexLocation(h.getColumn(), h.getRow());
+            for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
+                if (r.appliesTo(h)) {
+                    r.render(h, g, location.x, location.y);
+                }
+            }
+        }
+        Container hexOverrides = gm.getHexOverrides(game.getCurrentTurn());
+        for (Hex h : (ArrayList<Hex>)hexOverrides.getItems()) {
             setHexLocation(h.getColumn(), h.getRow());
             for (org.joverseer.ui.map.renderers.Renderer r : (Collection<org.joverseer.ui.map.renderers.Renderer>)metadata.getRenderers()) {
                 if (r.appliesTo(h)) {
@@ -395,6 +403,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
         }
         g.drawImage(map, 0, 0, this);
 
+        
+
+        
         try {
             ArrayList pcs = getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems();
             for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs) {

@@ -201,6 +201,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
                 CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                         "advancedCharacterListViewCommandGroup", new Object[] {
                         		new CopyToClipboardCommand(),
+                        		new CopyToClipboardCommandWithoutAnnotations(),
                         		new ToggleAttributeSortModeCommand((AdvancedCharacterTableModel)tableModel),
                         		});
                 return group.createPopupMenu();
@@ -228,9 +229,27 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		}
     }
     
-	class CopyToClipboardCommand extends ActionCommand implements ClipboardOwner {
+    class CopyToClipboardCommandWithoutAnnotations extends CopyToClipboardCommand {
 
-        String DELIM = "\t";
+		public CopyToClipboardCommandWithoutAnnotations() {
+			super("copyToClipboardCommandWithoutAnnotations", false);
+		}
+    	
+    }
+    
+	class CopyToClipboardCommand extends ActionCommand implements ClipboardOwner {
+		boolean useStatAnnotations = true;
+				
+		public CopyToClipboardCommand(){
+			this("copyToClipboardCommand", false);
+		}
+				
+        public CopyToClipboardCommand(String commandId, boolean useStatAnnotations) {
+			super(commandId);
+			this.useStatAnnotations = useStatAnnotations;
+		}
+
+		String DELIM = "\t";
         String NL = "\n";
         Game game;
 
@@ -238,10 +257,11 @@ public class AdvancedCharacterListView extends BaseItemListView {
             game = GameHolder.instance().getGame();
             String txt = "";
             for (int j=0; j<tableModel.getDataColumnCount(); j++) {
-            	txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
             	if (j == 2) {
-            		// duplicate column "nation"
+            		txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j] + " No";
             		txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+            	} else {
+            		txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];	
             	}
             }
             txt += NL;
@@ -257,7 +277,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
         private String getStatText(CharacterAttributeWrapper caw) {
             String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
-            if (caw != null && caw.getValue() != null) {
+            if (caw != null && caw.getValue() != null && useStatAnnotations) {
                 InfoSource is = caw.getInfoSource();
                 if (DerivedFromTitleInfoSource.class.isInstance(is)) {
                     v += "+";
@@ -274,7 +294,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
             if (v == null || v.equals("0"))
                 return v;
 
-            if (caw != null && caw.getInfoSource() != null) {
+            if (caw != null && caw.getInfoSource() != null && useStatAnnotations) {
                 InfoSource is = caw.getInfoSource();
                 if (MetadataSource.class.isInstance(is)) {
                     v += "*";
@@ -310,7 +330,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
             String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
             String orderResults = aw.getOrderResults();
             if (orderResults == null) orderResults = "";
-            return aw.getHexNo() + DELIM + aw.getName() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM
+            return aw.getName() + DELIM + aw.getHexNo() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM
                     + getStatText(aw.getCommand()) + DELIM + getStatText(aw.getAgent()) + DELIM
                     + getStatText(aw.getEmmisary()) + DELIM + getStatText(aw.getMage()) + DELIM
                     + getStatText(aw.getStealth()) + DELIM + getStatText(aw.getHealth()) + DELIM

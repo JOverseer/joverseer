@@ -41,7 +41,7 @@ public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
             DecimalFormat f = new DecimalFormat();
             f.setDecimalSeparatorAlwaysShown(false);
             f.setGroupingUsed(false);
-            tlb.cell(parameter = new JFormattedTextField(f), "colspec=left:150px");
+            tlb.cell(parameter = new JFormattedTextField(f), "colspec=left:220px");
             parameter.setText(o.getParameter(paramNo));
             parameter.setPreferredSize(new Dimension(50, 18));
             parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {

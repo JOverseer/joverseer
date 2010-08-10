@@ -10,6 +10,8 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 
+import com.jidesoft.swing.JideSwingUtilities.GetHandler;
+
 
 /**
  * Stores the economy calculator data for a given nation for this turn.
@@ -251,12 +253,6 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
         this.goldProduction = goldProduction;
     }
     
-    
-
-    
-    
-
-    
     public Integer getTaxRate() {
         return taxRate;
     }
@@ -264,6 +260,50 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
     
     public void setTaxRate(Integer taxRate) {
         this.taxRate = taxRate;
+    }
+    
+    public void updateMarketFromOrders() {
+    	for (ProductEnum p : ProductEnum.values()) {
+    		setSellPct(p, 0);
+    		setSellUnits(p, 0);
+    		setBuyUnits(p, 0);
+    		setBidUnits(p, 0);
+    		setBidPrice(p, 0);
+    	}
+    	for (Character c : (ArrayList<Character>)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo)) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
+                if (c.getOrders()[i].isBlank()) continue;
+                Order o = c.getOrders()[i];
+                int no = o.getOrderNo();
+                if (no != 310 && no != 315 && no != 320 && no != 325) continue;
+            	ProductEnum p = ProductEnum.getFromCode(o.getP0());
+            	Integer p1 = null;
+            	try {
+            		p1 = Integer.parseInt(o.getP1());
+            	}
+            	catch (Exception exc) {
+            		// nothing
+            	}
+            	if (p == null || p1 == null) continue;
+
+                if (no == 310) {
+                	try {
+                		setBidPrice(p, Integer.parseInt(o.getP2()));
+                		setBidUnits(p, p1);
+                	}
+                	catch (Exception exc) {
+                		// nothing
+                	}
+                } else if (no == 315) {
+                	setBuyUnits(p, p1);
+                } else if (no == 320) {
+                	setSellUnits(p, p1);
+                } else if (no == 325) {
+                	setSellPct(p, p1);
+                }
+            }
+            
+    	}
     }
 
     public boolean isInitialized() {

@@ -12,6 +12,9 @@ import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.tools.OrderParameterValidator;
+import org.joverseer.tools.OrderValidationResult;
+import org.springframework.util.StringUtils;
 
 /**
  * Reads orders from a text representation. The format supported is that used by
@@ -272,6 +275,34 @@ public class OrderTextReader {
 							orders[i].setParameter(orders[i]
 									.getLastParamIndex(), paramZero);
 						}
+					}
+					OrderParameterValidator opv = new OrderParameterValidator();
+					int j = 0;
+					Order o = orders[i];
+					while (j <= o.getLastParamIndex()) {
+						int length = o.getParameter(j).length(); 
+						// special handling for char id parameters that get messed up due to spaces (trailing or in the middle)
+						if (length < 5 && length > 1) {
+							OrderValidationResult ovr = opv.checkParam(o, j);
+							if (ovr != null && ovr.getMessage() != null && ovr.getMessage().startsWith("must be 5 lowercase chars")) {
+								// check next parameter - if string too, and error, concatenate
+								if (j+1 <= o.getLastParamIndex()) {
+									ovr = opv.checkParam(o, j+1);
+									if (ovr != null && ovr.getLevel() == OrderValidationResult.ERROR) {
+										o.setParameter(j, o.getParameter(j) + " " + o.getParameter(j+1));
+										for (int k=j+1; k<o.getLastParamIndex(); k++) {
+											o.setParameter(k, o.getParameter(k+1));
+										}
+										o.setParameter(o.getLastParamIndex(), "");
+									}
+								}
+								// if needed, append trailing spaces to make a 5-length char id
+								String txt = o.getParameter(j);
+								while (txt.length() < 5) txt += " ";
+								o.setParameter(j, txt);
+							}
+						}
+						j++;
 					}
 				}
 			}

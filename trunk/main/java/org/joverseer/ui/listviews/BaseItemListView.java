@@ -71,7 +71,10 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected Class tableModelClass;
     protected SelectHexCommandExecutor selectHexCommandExecutor = new SelectHexCommandExecutor();
     protected JPanel buttonPanel;
-
+    protected ArrayList filterOptionsCache = new ArrayList();
+    
+    protected boolean handleFilterEvents = true;
+    
     public BaseItemListView(Class tableModelClass) {
         this.tableModelClass = tableModelClass;
     }
@@ -208,7 +211,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
                 filter.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                        setItems();
+                        if (handleFilterEvents) setItems();
                     }
                 });
                 filter.setPreferredSize(new Dimension(150, 20));
@@ -224,7 +227,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
         	textFilterField.setPreferredSize(new Dimension(150, 20));
         	textFilterField.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    setItems();
+                	if (handleFilterEvents) setItems();
                 }
             });
         	lb.cell(textFilterField, "colspec=left:150px");
@@ -337,7 +340,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
             	SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
+						cacheFilterOptions();
 		                refreshFilters();
+		                tryRestoreFilterOptions();
 		                setItems();
 					}
             	});
@@ -346,7 +351,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             } else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
             	SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-		                refreshFilters();
+						refreshFilters();
 		                setItems();
 					}
             	});
@@ -429,5 +434,42 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     public void mouseMoved(MouseEvent e) {
     }
 
-
+    protected void cacheFilterOptions() {
+    	filterOptionsCache.clear();
+    	if (hasTextFilter()) {
+    		AbstractListViewFilter textFilter = getTextFilter(textFilterField == null ? null : textFilterField.getText());
+    		filterOptionsCache.add(textFilter.getDescription());
+    	}
+    	if (filters == null) return;
+        for (JComboBox filter : filters) {
+        	filterOptionsCache.add(filter.getSelectedItem());
+        }
+    }
+    
+    protected void tryRestoreFilterOptions() {
+    	try {
+    		
+    		if (filterOptionsCache == null) return;
+    		if (filterOptionsCache.size() == 0) return;
+    		handleFilterEvents = false;
+    		if (hasTextFilter() && textFilterField != null && filterOptionsCache.get(0)!=null) {
+    			textFilterField.setText(filterOptionsCache.get(0).toString());
+    		}
+    		if (filters != null) {
+    			for (int i=1; i<filterOptionsCache.size(); i++) {
+    				JComboBox filter = filters.get(i-1);
+    				filter.setSelectedItem(filterOptionsCache.get(i));
+    			}
+    			handleFilterEvents = true;
+    		}
+    	}
+    	catch (Exception exc) {
+    		// do nothing
+    		int a = 1;
+    		throw new RuntimeException(exc);
+    	}
+    	finally {
+    		handleFilterEvents = true;
+    	}
+    }
 }

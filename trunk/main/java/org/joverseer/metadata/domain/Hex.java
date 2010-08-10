@@ -77,11 +77,37 @@ public class Hex implements Serializable {
             elements.add(element);
         }
     }
+    
+    public void removeHexSideElement(HexSideEnum side, HexSideElementEnum element) {
+    	Collection elements = getHexSideElements(side);
+    	if (elements.contains(element)) {
+            elements.remove(element);
+        }
+    }
 
     public void clearHexSideElements() {
     	for (HexSideEnum hse : HexSideEnum.values()) {
     		((ArrayList)hexSideElements.get(hse)).clear();
     	}
+    }
+    
+    public ArrayList<HexSideEnum> getHexSidesWithElement(HexSideElementEnum element) {
+    	ArrayList<HexSideEnum> ret = new ArrayList<HexSideEnum>();
+    	for (HexSideEnum hs : HexSideEnum.values()) {
+    		if (getHexSideElements(hs).contains(element)) ret.add(hs);
+    	}
+    	return ret;
+    }
+    
+    public Hex clone() {
+    	Hex h = new Hex();
+    	h.setHexNo(getHexNo());
+    	h.setTerrain(terrain);
+    	for (HexSideEnum side : HexSideEnum.values()) {
+    		h.hexSideElements.put(side, ((ArrayList)getHexSideElements(side)).clone());
+    	}
+    	return h;
+    	
     }
 }
 

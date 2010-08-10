@@ -21,6 +21,7 @@ import org.apache.log4j.LogManager;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.FortificationSizeEnum;
@@ -202,6 +203,16 @@ public class ArmyViewer extends ObjectViewer {
         else {
             extraInfo.setVisible(false);
         }
+        if (army.getElements().size() == 0 && "yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showArmyEstimate"))) {
+	        ArmyEstimate estimate = (ArmyEstimate)game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", army.getCommanderName());
+	        if (estimate != null) {
+		        String troopInfo = estimate.getTroopInfo();
+		        if (!troopInfo.equals("")) {
+		        	extraInfo.setText(extraInfo.getText() + " [~" + troopInfo + "]");
+		        	extraInfo.setVisible(true);
+		        }
+	        }
+        }
         extraInfo.setCaretPosition(0);
         String foodStr = "";
         String foodTooltip = "";
@@ -211,6 +222,16 @@ public class ArmyViewer extends ObjectViewer {
         Boolean fed = army.computeFed();
 
         foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
+        if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNumberOfFedTurnsForArmies"))) {
+        	if (Boolean.TRUE.equals(fed)) {
+        		Integer food = army.getFood();
+        		Integer consumption = army.computeFoodConsumption();
+        		if (food != null && consumption != null && consumption > 0) {
+        			int turns = (food-1) / consumption;
+        			foodStr += " (" + turns + ")";
+        		}
+        	}
+        }
         if (fed != null && fed == true) {
         	foodTooltip = "Move orders treat this army as fed.";
         } else {
@@ -416,7 +437,7 @@ public class ArmyViewer extends ObjectViewer {
             	int transportInfCapacity = transports * 250;
             	int transportCavCapacity = transports * 150;
             	msg += "\n" +
-            			"The army current has " + transports + " transports and can carry a total of " + transportInfCapacity + " infantry or " + transportCavCapacity + "cavalry.";
+            			"The army current has " + transports + " transports and can carry a total of " + transportInfCapacity + " infantry or " + transportCavCapacity + " cavalry.";
             	int freeInfCapacity = transportInfCapacity - requiredTransportCapacity;
             	int freeCavCapacity = freeInfCapacity * 150 / 250;
             	if (freeInfCapacity > 0) {

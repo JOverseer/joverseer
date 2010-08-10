@@ -2,6 +2,9 @@ package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
 
+import org.joverseer.support.movement.MovementDirection;
+import org.joverseer.support.movement.MovementUtils;
+
 /**
  * Enumeration for the hex sides
  * 
@@ -33,5 +36,39 @@ public enum HexSideEnum implements Serializable {
             if (e.getSide() == i) return e;
         }
         return null;
+    }
+    
+    public int getHexNoAtSide(int currentHexNo) {
+    	if (TopLeft.equals(this)) {
+    		return MovementUtils.getHexNoAtDir(currentHexNo, MovementDirection.NorthWest);
+    	} else if (TopRight.equals(this)) {
+    		return MovementUtils.getHexNoAtDir(currentHexNo, MovementDirection.NorthEast);
+    	} else if (Right.equals(this)) {
+    		return MovementUtils.getHexNoAtDir(currentHexNo, MovementDirection.East);
+    	}else if (BottomRight.equals(this)) {
+    		return MovementUtils.getHexNoAtDir(currentHexNo, MovementDirection.SouthEast);
+    	}else if (BottomLeft.equals(this)) {
+    		return MovementUtils.getHexNoAtDir(currentHexNo, MovementDirection.SouthWest);
+    	} else if (Left.equals(this)) {
+    		return MovementUtils.getHexNoAtDir(currentHexNo, MovementDirection.West);
+    	}
+    	return -1;
+    }
+    
+    public HexSideEnum getOppositeSide() {
+    	if (TopLeft.equals(this)) {
+    		return BottomRight;
+    	} else if (TopRight.equals(this)) {
+    		return BottomLeft;
+    	} else if (Right.equals(this)) {
+    		return Left;
+    	}else if (BottomRight.equals(this)) {
+    		return TopLeft;
+    	}else if (BottomLeft.equals(this)) {
+    		return TopRight;
+    	} else if (Left.equals(this)) {
+    		return Right;
+    	}
+    	return null;
     }
 }

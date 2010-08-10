@@ -8,18 +8,22 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
+import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
@@ -90,14 +94,35 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
                 teamEconomyTableModel.fireTableDataChanged();
             }
         });
-        showProductAsCombo.setPreferredSize(new Dimension(100, 20));
+        showProductAsCombo.setPreferredSize(new Dimension(230, 20));
         
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         tlb.cell(new JLabel("products: "));
         tlb.gapCol();
-        tlb.cell(showProductAsCombo);
+        tlb.cell(showProductAsCombo, "colspec=left:230px");
+        tlb.gapCol();
         
         lb.cell(tlb.getPanel(), "align=left");
+        
+        JButton btn = new JButton("Update market and order cost");
+        btn.setToolTipText("Updates the market profit/cost and order cost for all nations");
+        btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!GameHolder.hasInitializedGame()) return;
+				OrderCostCalculator occ = new OrderCostCalculator();
+				Game g = GameHolder.instance().getGame();
+				for (EconomyCalculatorData ecd : (ArrayList<EconomyCalculatorData>)g.getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).getItems()) {
+					ecd.setOrdersCost(occ.getTotalOrderCostForNation(g.getTurn(), ecd.getNationNo()));
+					ecd.updateMarketFromOrders();
+				}
+				
+				teamEconomyTableModel.fireTableDataChanged();
+			}
+        });
+        lb.gapCol();
+        btn.setPreferredSize(new Dimension(200, 20));
+        lb.cell(btn, "colspec=right:200px valign=top");
+        
         lb.relatedGapRow();
         
         lb.separator("Team Products");

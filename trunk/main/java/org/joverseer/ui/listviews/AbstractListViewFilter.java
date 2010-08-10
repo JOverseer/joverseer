@@ -32,4 +32,17 @@ public abstract class AbstractListViewFilter {
     public String toString() {
         return getDescription();
     }
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (obj.getClass().equals(getClass()) && ((AbstractListViewFilter)obj).getDescription().equals(getDescription())) {
+			return true;
+		}
+		return super.equals(obj);
+	}
+    
+    
 }

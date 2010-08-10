@@ -85,6 +85,7 @@ public class LoadGame extends ActionCommand {
             try {
                 GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
                 Game g = Game.loadGame(f);
+                g.getMetadata().setGame(g);
                 gh.setGame(g);
                 gh.setFile(fname);
 

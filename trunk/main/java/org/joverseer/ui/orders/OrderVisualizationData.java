@@ -24,6 +24,7 @@ import org.joverseer.ui.support.dialogs.InputDialog;
 public class OrderVisualizationData {
     ArrayList<Order> orders = new ArrayList<Order>();
     HashMap<Order, HashMap<String, Object>> orderInfo = new HashMap<Order, HashMap<String, Object>>();
+    Order orderEditorOrder;
     
     public void addOrder(Order o) {
 
@@ -94,7 +95,21 @@ public class OrderVisualizationData {
         orderInfo.get(o).put(key, value);
     }
     
+    public void removeAdditionalInfo(Order o, String key) {
+        if (orderInfo.get(o) == null) return;
+        orderInfo.get(o).remove(key);
+    }
+    
     public Object getAdditionalInfo(Order o, String key) {
+    	if (!orderInfo.containsKey(o)) return null;
         return orderInfo.get(o).get(key);
+    }
+    
+    public Order getOrderEditorOrder() {
+    	return orderEditorOrder;
+    }
+    
+    public void setOrderEditorOrder(Order order) {
+    	orderEditorOrder = order;
     }
 }

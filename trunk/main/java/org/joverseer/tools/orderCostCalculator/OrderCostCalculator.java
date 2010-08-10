@@ -1,5 +1,8 @@
 package org.joverseer.tools.orderCostCalculator;
 
+import java.util.ArrayList;
+
+import org.joverseer.domain.Character;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.Order;
@@ -8,6 +11,7 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Hex;
@@ -29,6 +33,39 @@ import org.joverseer.support.ProductContainer;
 //TODO finish
 public class OrderCostCalculator {
 	ProductContainer cont = new ProductContainer();
+	
+	public int getTotalOrderCostForNation(Turn turn, int nationNo) {
+		int totalCost = 0;
+		for (Character c : (ArrayList<Character>)turn.getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo)) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
+                if (c.getOrders()[i].isBlank()) continue;
+                int no = c.getOrders()[i].getOrderNo();
+                if (no == 320 || no == 315 || no == 310 || no == 325) continue;
+                int cost = getOrderCost(c.getOrders()[i]);
+                if (cost > 0) {
+                    totalCost += cost;
+                }
+            }
+        }
+		return totalCost;
+	}
+	
+	public int getTotalTranCarOrderCostForNation(Turn turn, int nationNo) {
+		int totalCost = 0;
+		for (Character c : (ArrayList<Character>)turn.getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo)) {
+            for (int i=0; i<c.getNumberOfOrders(); i++) {
+                if (c.getOrders()[i].isBlank()) continue;
+                int no = c.getOrders()[i].getOrderNo();
+                if (no != 948) continue;
+                if (no == 320 || no == 315 || no == 310 || no == 325) continue;
+                int cost = getOrderCost(c.getOrders()[i]);
+                if (cost > 0) {
+                    totalCost += cost;
+                }
+            }
+        }
+		return totalCost;
+	}
 	
     public int getOrderCost(Order o) {
         switch (o.getOrderNo()) {

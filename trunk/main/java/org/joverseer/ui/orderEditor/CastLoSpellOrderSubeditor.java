@@ -66,7 +66,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
         this.tlb = tlb;
         this.components = components;
         tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(parameter = new JComboBox(), "colspec=left:180px");
+        tlb.cell(parameter = new JComboBox(), "colspec=left:230px");
         parameter.setPreferredSize(new Dimension(180, 18));
         tlb.row();
         tlb.cell(spellNo = new JTextField());

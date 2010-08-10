@@ -95,8 +95,14 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
                 loadNationCombo(true);
             } else if  (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
                 refreshAutocalcOrderCost();
+                if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) {
+                	((EconomyTotalsTableModel)totalsTable.getModel()).updateMarketFromOrders();
+                	refreshMarketLimitWarning();
+                	((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
+                    ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                }
                 refreshFinalGoldWarning();
-            }
+            } 
 
         }
     }
@@ -191,23 +197,10 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
      * Refreshes the autocalc order cost field
      */
     private void refreshAutocalcOrderCost() {
-        int totalCost = 0;
-        tranCarOrderCost = 0;
         OrderCostCalculator calc = new OrderCostCalculator();
-        for (Character c : (ArrayList<Character>)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", getSelectedNationNo())) {
-            for (int i=0; i<c.getNumberOfOrders(); i++) {
-                if (c.getOrders()[i].isBlank()) continue;
-                int no = c.getOrders()[i].getOrderNo();
-                if (no == 320 || no == 315 || no == 310 || no == 325) continue;
-                int cost = calc.getOrderCost(c.getOrders()[i]);
-                if (cost > 0) {
-                    totalCost += cost;
-                }
-                if (no == 948) {
-                	tranCarOrderCost += cost;
-                }
-            }
-        }
+        int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
+        tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
+        
         autocalcOrderCost.setText(String.valueOf(totalCost));
     }
     
@@ -324,7 +317,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         lb.cell(scp);
         
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(new JLabel("Autocalc order cost: "), "colspec=left:100px");
+        tlb.cell(new JLabel("Autocalc order cost: "), "colspec=left:110px");
         tlb.gapCol();
         autocalcOrderCost = new JLabel("0");
         tlb.cell(autocalcOrderCost, "align=left");
@@ -332,8 +325,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
         tlb.row();
         tlb.relatedGapRow();
         
-        JButton btn = new JButton("<- update");
-        btn.setPreferredSize(new Dimension(100, 24));
+        JButton btn = new JButton("<- update cost");
+        btn.setPreferredSize(new Dimension(130, 24));
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // when button clicked
@@ -344,11 +337,25 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
             }
         });
         tlb.cell(btn);
-        tlb.cell(new JLabel());
+        tlb.relatedGapRow();
+        btn = new JButton("<- update market");
+        btn.setPreferredSize(new Dimension(130, 24));
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	((EconomyTotalsTableModel)totalsTable.getModel()).updateMarketFromOrders();
+                ((AbstractTableModel)totalsTable.getModel()).fireTableDataChanged();
+                ((AbstractTableModel)marketTable.getModel()).fireTableDataChanged();
+                refreshMarketLimitWarning();
+                refreshFinalGoldWarning();
+            }
+        });
+        tlb.cell(btn);
+        tlb.relatedGapRow();
+        
         JPanel pnl = tlb.getPanel();
         pnl.setBackground(Color.white);
         lb.gapCol();
-        lb.cell(pnl, "valign=top");
+        lb.cell(pnl, "colspec=left:150px valign=top");
         lb.row();
         
         marketLimitWarning = new JLabel("Market limit warning!");

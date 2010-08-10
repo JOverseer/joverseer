@@ -27,6 +27,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
@@ -335,7 +336,15 @@ public class HexInfoViewer extends ObjectViewer {
                 }
             }
             if (hse != null) {
-                hex.getHexSideElements(side).remove(hse);
+                Game g = GameHolder.instance().getGame();
+                GameMetadata gm = g.getMetadata();
+            	Hex nh = hex.clone(); 
+                nh.getHexSideElements(side).remove(hse);
+                gm.addHexOverride(g.getCurrentTurn(), nh);
+                Hex neighbor = gm.getHex(side.getHexNoAtSide(hex.getHexNo())).clone();
+                neighbor.getHexSideElements(side.getOppositeSide()).remove(HexSideElementEnum.Bridge);
+                gm.addHexOverride(g.getCurrentTurn(), neighbor);
+                
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
 
@@ -401,13 +410,21 @@ public class HexInfoViewer extends ObjectViewer {
                 }
                 if (hsei == HexSideElementEnum.Road) {
                     hasRoad = true;
-                    if (hsei == HexSideElementEnum.MajorRiver) {
-                        hasMajorRiver = true;
-                    }
+                }
+                if (hsei == HexSideElementEnum.MajorRiver) {
+                    hasMajorRiver = true;
                 }
             }
             if (!hasMinorRiver && !(hasMajorRiver && hasRoad)) return;
-            hex.addHexSideElement(side, HexSideElementEnum.Bridge);
+            Hex nh = hex.clone();
+            nh.addHexSideElement(side, HexSideElementEnum.Bridge);
+            Game g = GameHolder.instance().getGame();
+            GameMetadata gm = g.getMetadata();
+            gm.addHexOverride(g.getCurrentTurn(), nh);
+            Hex neighbor = gm.getHex(side.getHexNoAtSide(nh.getHexNo()));
+            neighbor.addHexSideElement(side.getOppositeSide(), HexSideElementEnum.Bridge);
+            gm.addHexOverride(g.getCurrentTurn(), neighbor);
+            
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
         }

@@ -108,6 +108,17 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 		this.nationNo = nationNo;
 	}
 	
+	public String getTroopInfo() {
+		String ret = "";
+		for (ArmyEstimateElement aee : getRegiments()) {
+			int no = aee.getNumber() * getEffectiveLosses(0) / 100;
+			if (no > 0) {
+				ret += (ret.equals("") ? "" : " ") + no + aee.getType().getType();
+			}
+		}
+		return ret;
+	}
+	
 	
 	protected int getRangeAverage(String rangeString, int max, int lossOptimismFactor) {
     	if (rangeString.indexOf("-") > -1) {

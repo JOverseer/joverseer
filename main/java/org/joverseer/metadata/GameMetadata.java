@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
+import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.orders.OrderMetadata;
@@ -29,6 +31,8 @@ public class GameMetadata implements Serializable {
     String additionalNations;
     boolean newXmlFormat = false;
 
+    Game game;
+    
     ArrayList nations = new ArrayList();
     Container hexes = new Container(new String[]{"hexNo"});
     Container artifacts = new Container(new String[]{"no"});
@@ -39,7 +43,7 @@ public class GameMetadata implements Serializable {
     Container nationMapRanges = new Container(new String[]{"nationNo"});
     Container spells = new Container(new String[]{"no"});
     Container armies = new Container(new String[]{"hexNo"});
-    
+    HashMap<Integer, Container> hexOverrides = new HashMap<Integer, Container>();
     ArrayList readers = new ArrayList();
 
     String basePath;
@@ -50,6 +54,10 @@ public class GameMetadata implements Serializable {
 
     public void setGameType(GameTypeEnum gameType) {
         this.gameType = gameType;
+    }
+    
+    public void setGame(Game game) {
+    	this.game = game;
     }
 
     public String getAdditionalNations() {
@@ -71,9 +79,13 @@ public class GameMetadata implements Serializable {
         return hexes.getItems();
     }
     
-    public Hex getHex(int hexNo) {
+    protected Hex getHexFromMetadata(int hexNo) {
     	Hex h = (Hex)hexes.findFirstByProperties(new String[]{"hexNo"}, new Object[]{hexNo});
     	return h;
+    }
+    
+    public Hex getHex(int hexNo) {
+    	return getHexForTurn(game.getCurrentTurn(), hexNo);
     }
 
     public void setHexes(Collection hexes) {
@@ -144,6 +156,7 @@ public class GameMetadata implements Serializable {
         out.writeObject(getNationNo());
         out.writeObject(getNewXmlFormat());
         out.writeObject(getStartDummyCharacters());
+        out.writeObject(hexOverrides);
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -165,6 +178,12 @@ public class GameMetadata implements Serializable {
         }
         try {
         	setStartDummyCharacters((Container)in.readObject());
+        }
+        catch (Exception e) {
+        	// do nothing, this may have not been set
+        }
+        try {
+        	hexOverrides = (HashMap)in.readObject();
         }
         catch (Exception e) {
         	// do nothing, this may have not been set
@@ -289,6 +308,36 @@ public class GameMetadata implements Serializable {
     
     public void setSpells(Container spells) {
         this.spells = spells;
+    }
+    
+    public Container getHexOverrides(int turnNo) {
+    	if (hexOverrides == null) hexOverrides = new HashMap<Integer, Container>();
+    	if (hexOverrides.containsKey(turnNo)) {
+    		return hexOverrides.get(turnNo);
+    	}
+    	return new Container();
+    }
+    
+    public Hex getHexOverride(Container hexes, int hexNo) {
+    	return (Hex)hexes.findFirstByProperty("hexNo", hexNo);
+    }
+    
+    public Hex getHexForTurn(int turnNo, int hexNo) {
+    	Hex h = getHexOverride(getHexOverrides(turnNo), hexNo);
+    	if (h != null) return h;
+    	return getHexFromMetadata(hexNo);
+    }
+    
+    public void addHexOverride(int turnNo, Hex hex) {
+    	Container hc;
+    	if (!hexOverrides.containsKey(turnNo)) {
+    		hc = new Container(new String[]{"hexNo"});
+    		hexOverrides.put(turnNo, hc);
+    	}
+    	hc = getHexOverrides(turnNo);
+    	Hex h = getHexOverride(hc, hex.getHexNo());
+    	if (h != null) hc.removeItem(h);
+    	hc.addItem(hex);
     }
     
     public Resource getResource(String resourceName) {

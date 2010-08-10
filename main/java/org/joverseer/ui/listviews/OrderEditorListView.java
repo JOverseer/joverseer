@@ -196,6 +196,20 @@ public class OrderEditorListView extends ItemListView {
         };
         filterList.add(f);
         
+        f = new OrderFilter("Lore Spells") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "940");
+            }
+        };
+        filterList.add(f);
+        
+        f = new OrderFilter("Combat") {
+            public boolean acceptCharacter(Character c) {
+                return characterHasOrderInList(c, "230,235,240,250,255,498");
+            }
+        };
+        filterList.add(f);
+        
         return filterList;
     }
     

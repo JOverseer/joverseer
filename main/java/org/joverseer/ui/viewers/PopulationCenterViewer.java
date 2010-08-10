@@ -136,7 +136,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         	sizeFort.setText(sizeFort.getText() + " - " + UIUtils.enumToString(pc.getFortification()));
         }
         if (pc.getHarbor() != HarborSizeEnum.none) {
-            sizeFort.setText(sizeFort.getText() + " - " + pc.getHarbor().toString());
+            sizeFort.setText(sizeFort.getText() + " - " + UIUtils.enumToString(pc.getHarbor()));
         }
         sizeFort.setCaretPosition(0);
 
@@ -145,7 +145,7 @@ public class PopulationCenterViewer extends ObjectViewer {
         // turn where the pop center was not a ruin and report that production
         PopulationCenter pcForProduction = pc;
         Turn productionTurn = null;
-        if (pcForProduction.getSize() == PopulationCenterSizeEnum.ruins) {
+        if (!hasProduction(pcForProduction)) {
             for (int i = game.getMaxTurn() - 1; i >= 0; i--) {
                 productionTurn = game.getTurn(i);
                 if (productionTurn == null)
@@ -155,13 +155,7 @@ public class PopulationCenterViewer extends ObjectViewer {
                 if (pop == null)
                     continue;
                 if (pop.getSize() != PopulationCenterSizeEnum.ruins) {
-                    boolean hasProduction = false;
-                    for (ProductEnum p : ProductEnum.values()) {
-                        if (pop.getProduction(p) != null && pop.getProduction(p) > 0) {
-                            hasProduction = true;
-                        }
-                    }
-                    if (hasProduction) {
+                    if (hasProduction(pop)) {
                         pcForProduction = pop;
                         break;
                     }
@@ -255,6 +249,15 @@ public class PopulationCenterViewer extends ObjectViewer {
             }
             name.setForeground(col);
         }
+    }
+    
+    protected boolean hasProduction(PopulationCenter pop) {
+        for (ProductEnum p : ProductEnum.values()) {
+            if (pop.getProduction(p) != null && pop.getProduction(p) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void setStoresVisible(boolean visible) {

@@ -284,7 +284,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
         if (isCavalry() != null) {
             return isCavalry();
         }
-        if (getElements().size() == 0) return null;
+        if (getElements() == null || getElements().size() == 0) return null;
         // compute cavalry with respect to troop synthesis
         for (ArmyElement ae : getElements()) {
             if (ae.getArmyElementType() == ArmyElementType.WarMachimes) continue;
@@ -375,6 +375,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
     	if (getElements().size() > 0) {
     		return 10;
     	}
+    	if (getTroopCount() > 0) {
+    		infoAmount++;
+    	}
     	if (infoAmount == 0 && turnNo == 0) {
 			return -2;
     	}
@@ -384,6 +387,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
     
     public void resetENHI() { // used by engine
     	enHI = null;
+    }
+    
+    public void resetFed() {
+    	fed = null;
     }
     
     public Integer getENHI() {

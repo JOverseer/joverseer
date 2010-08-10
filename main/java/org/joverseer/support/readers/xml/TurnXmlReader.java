@@ -28,6 +28,9 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.AsciiUtils;
@@ -40,6 +43,7 @@ import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
+import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.tools.nationMessages.NationMessageParser;
 import org.omg.CORBA.UNKNOWN;
 import org.springframework.beans.support.PropertyComparator;
@@ -628,6 +632,7 @@ public class TurnXmlReader implements Runnable{
 	    					a1.setSize(a2.getSize());
 	    				}
     				}
+    				updateWithInfo(a1, a2);
     			} else if (a2.getCommanderName().equals(UNKNOWN_MAP_ICON)) {
     				if (a1.getNationNo() > 0 && a2.getNationNo().equals(a1.getNationNo())) {
     					// duplicate nation
@@ -648,6 +653,14 @@ public class TurnXmlReader implements Runnable{
     }
     
     
+    protected void updateWithInfo(Army a1, Army a2) {
+    	if (a1.getCommanderTitle() == null || a1.getCommanderTitle().equals("")) {
+    		a1.setCommanderTitle(a2.getCommanderTitle());
+    	}
+    	if (a1.getTroopCount() == 0 && a2.getTroopCount() > 0) {
+    		a1.setTroopCount(a2.getTroopCount());
+    	}
+    }
     
     public void addArmy(Army newArmy, Turn turn, boolean addCharacter) {
     	addArmyBeta(newArmy, turn);
@@ -859,7 +872,38 @@ public class TurnXmlReader implements Runnable{
         if (game.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
         	updateKSArtifactIDsFromNationMessages();
         	updateKSArtifactIDsAndLocationsFromNationMessages();
+        } else {
+        	updateHexOverridesFromBridgeSabotageRumors();
         }
+    }
+    
+    protected void updateHexOverridesFromBridgeSabotageRumors() {
+    	ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+    	String prefix = "A bridge was sabotaged at ";
+    	for (String msg : (ArrayList<String>)nationMsgs) {
+    		if (msg.startsWith(prefix)) {
+    			String pcName = msg.substring(prefix.length(), msg.length()-1);
+    			PopulationCenter pc = (PopulationCenter)game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", pcName);
+    			if (pc != null) {
+    				int hexNo = pc.getHexNo();
+    				Hex h = game.getMetadata().getHexForTurn(game.getCurrentTurn(), hexNo);
+    				ArrayList<HexSideEnum> bridgeHexSides = h.getHexSidesWithElement(HexSideElementEnum.Bridge);
+    				if (bridgeHexSides.size() == 1) {
+    					HexSideEnum hse = bridgeHexSides.get(0);
+    					Hex newHex = h.clone();
+    					newHex.removeHexSideElement(hse, HexSideElementEnum.Bridge);
+    					game.getMetadata().addHexOverride(game.getCurrentTurn(), newHex);
+    					
+    					// remove bridge from neighbor hex too
+    					int neighborHexNo = hse.getHexNoAtSide(hexNo);
+    					Hex neighborHex = game.getMetadata().getHexForTurn(game.getCurrentTurn(), neighborHexNo);
+    					Hex newNeighborHex = neighborHex.clone();
+    					newNeighborHex.removeHexSideElement(hse.getOppositeSide(), HexSideElementEnum.Bridge);
+    					game.getMetadata().addHexOverride(game.getCurrentTurn(), newNeighborHex);
+    				}
+    			}
+    		}
+    	}
     }
     
     private void updateKSArtifactIDsFromNationMessages() {

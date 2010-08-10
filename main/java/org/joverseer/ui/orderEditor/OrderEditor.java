@@ -11,10 +11,12 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -32,12 +34,15 @@ import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.orders.OrderVisualizationData;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.springframework.binding.value.support.ListListModel;
@@ -65,6 +70,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
     public static final String FORM_PAGE = "orderEditorForm";
     JComboBox orderCombo;
+    JCheckBox chkDraw;
     JTextField parameters;
     JTextField parametersInternal;
     JTextField character;
@@ -279,6 +285,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                     refreshOrder();
                     refreshDescription();
                     refreshSubeditor();
+                    refreshDrawCheck();
                     if (getAutoSave()) {
                         saveOrder();
                     }
@@ -286,6 +293,61 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
             }
         });
 
+        chkDraw = new JCheckBox("Draw");
+        chkDraw.setPreferredSize(new Dimension(60, 18));
+        chkDraw.setBackground(Color.white);
+        glb.append(chkDraw, 3, 1);
+        chkDraw.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+            	Order o = (Order)getFormObject();
+            	OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+            	if (!ovd.contains(o)) { 
+                    ovd.addOrder((Order)getFormObject());
+                } else {
+                    ovd.removeOrder((Order)getFormObject());
+                }
+                Application.instance().getApplicationContext().publishEvent(
+                                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+
+            }
+        });
+        chkDraw.setFocusable(false);
+        btn.setToolTipText("Draw");
+        
+        btn = new JButton();
+        btn.setPreferredSize(new Dimension(18, 18));
+        ico = new ImageIcon(imgSource.getImage("displace.icon"));
+        btn.setIcon(ico);
+        glb.append(btn);
+        btn.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+            	Order o = (Order)getFormObject();
+            	if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
+	            	OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+	            	if (!ovd.contains(o) && ovd.getOrderEditorOrder()!=o) { 
+	                    ovd.addOrder((Order)getFormObject());
+	                } 
+	            	Object d = ovd.getAdditionalInfo(o, "displacement");
+	            	if (d == null) {
+	            		d = 1;
+	            	} else {
+	            		d = ((Integer)d)+1;
+	            		if ((Integer)d>4) d = 0;
+	            	}
+	            	if (d.equals(0)) {
+	            		ovd.removeAdditionalInfo(o, "displacement");
+	            	} else {
+	            		ovd.setAdditionalInfo(o, "displacement", d);
+	            	}
+	                Application.instance().getApplicationContext().publishEvent(
+	                                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+            	}
+            }
+        });
+        btn.setToolTipText("Draw displaced");
+        
         glb.nextLine();
 
         glb.append(new JLabel("Parameters :"));
@@ -298,7 +360,6 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         parametersInternal = new JTextField();
         parametersInternal.setVisible(false);
         glb.append(parametersInternal);
-
         glb.nextLine();
 
         glb.append(descriptionLabel = new JLabel("Description :"));
@@ -338,10 +399,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
     private boolean refreshOrder() {
         Order o = (Order) getFormObject();
         if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) {
+        	int orderNo = getSelectedOrderNo().equals("") ? -1 : Integer.parseInt(getSelectedOrderNo());
             // exclude changes between
             // 830, 850, 860
             // 810, 820 and 870
-            String[] equivalentOrders = new String[] {",830,850,860,", ",810,820,870,"};
+            String[] equivalentOrders = new String[] {",830,850,860,", ",810,820,870,", ",230,240,250,255,"};
             boolean areEquivalent = false;
             for (int i = 0; i < equivalentOrders.length; i++) {
                 int j = equivalentOrders[i].indexOf("," + String.valueOf(o.getOrderNo()) + ",");
@@ -354,11 +416,28 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                 return false;
 
             o.setParameters("");
+            if (Arrays.binarySearch(new int[]{830, 850, 860}, orderNo) > -1) {
+            	o.setP0("no");
+            }
             parameters.setText(Order.getParametersAsString(o.getParameters()));
             parametersInternal.setText(o.getParameters());
             return true;
         }
         return false;
+    }
+    
+    public void refreshDrawCheck() {
+    	Order o = (Order)getFormObject();
+    	OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+    	chkDraw.setSelected(ovd.contains(o));
+    	Order no = new Order(o.getCharacter());
+    	try {
+    		no.setOrderNo(Integer.parseInt(getSelectedOrderNo()));
+    		chkDraw.setEnabled(GraphicUtils.canRenderOrder(no));
+    	}
+    	catch (Exception e) {
+    		chkDraw.setEnabled(false);
+    	}
     }
 
     private String getSelectedOrderNo() {
@@ -581,6 +660,16 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
         } else {
             character.setText(c.getName() + " - " + c.getHexNo());
         }
+        chkDraw.setEnabled(GraphicUtils.canRenderOrder(o));
+    	OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+        if (PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoDraw").equals("yes") &&
+        		PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave").equals("yes")) {
+	        ovd.setOrderEditorOrder(o);
+	        Application.instance().getApplicationContext().publishEvent(
+	                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+        } else {
+	        ovd.setOrderEditorOrder(null);
+        }
     }
 
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -590,10 +679,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                 refreshOrderCombo();
             } else if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
                 setFormObject(e.getObject());
+                refreshDrawCheck();
                 // OrderEditorView oev =
                 // (OrderEditorView)Application.instance().getApplicationContext().getBean("orderEditorView");
                 // mscoon
                 // DockingManager.display(DockingManager.getDockable("orderEditorView"));
+            } else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems)) {
+            	refreshDrawCheck();
             }
         }
     }

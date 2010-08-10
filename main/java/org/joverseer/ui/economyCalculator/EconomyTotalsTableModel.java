@@ -405,4 +405,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                         (double)ne.getTotalMaintenance() + (double)ne.getReserve());
         return (int)finalGold;
     }
+    
+    public void updateMarketFromOrders() {
+    	getEconomyCalculatorData().updateMarketFromOrders();
+    }
 }

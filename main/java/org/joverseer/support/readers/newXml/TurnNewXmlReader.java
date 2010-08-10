@@ -506,8 +506,10 @@ public class TurnNewXmlReader implements Runnable {
         Container encounters = game.getTurn().getContainer(TurnElementsEnum.Encounter);
         for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
         	Encounter ne = ew.getEncounter();
+        	if (ne == null) continue;
         	Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ne.getCharacter());
             Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{c.getName(), Integer.parseInt(ew.getHex())});
+            
             if (e != null) {
                 encounters.removeItem(e);
             }

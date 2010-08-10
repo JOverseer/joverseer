@@ -16,8 +16,10 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -101,25 +103,32 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	public void onPostStartup() {
         initializeRepaintManager();
 
-        if (JOverseerJIDEClient.cmdLineArgs == null || JOverseerJIDEClient.cmdLineArgs.length == 0
-                || !JOverseerJIDEClient.cmdLineArgs[0].equals("d")) {
-            JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
-            for (int i = 0; i < menuBar.getMenuCount(); i++) {
-                if (menuBar.getMenu(i).getText().equals("Admin")) {
-                    menuBar.getMenu(i).setVisible(false);
-                }
-            }
-         if (JOverseerJIDEClient.cmdLineArgs != null && JOverseerJIDEClient.cmdLineArgs.length == 1 
-        		 && JOverseerJIDEClient.cmdLineArgs[0].endsWith(".jov")) {
-        	 String fname = JOverseerJIDEClient.cmdLineArgs[0];
-        	 File f = new File(fname);
-        	 if (f.exists()) {
-        		LoadGame lg = new LoadGame(fname);
-        	 	lg.loadGame();
-        	 }
-         }
-            
+        boolean devOption = true;
+        if (JOverseerJIDEClient.cmdLineArgs == null || JOverseerJIDEClient.cmdLineArgs.length == 0) devOption = false;
+        if (devOption) {
+        	devOption = false;
+	        for (String c : JOverseerJIDEClient.cmdLineArgs) {
+	        	if (c.equals("d")) devOption = true;
+	        }
         }
+        if (devOption == false) {
+	        JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+	        for (int i = 0; i < menuBar.getMenuCount(); i++) {
+	            if (menuBar.getMenu(i).getText().equals("Admin")) {
+	                menuBar.getMenu(i).setVisible(false);
+	            }
+	        }
+        }
+	     if (JOverseerJIDEClient.cmdLineArgs != null && JOverseerJIDEClient.cmdLineArgs.length == 1 
+	    		 && JOverseerJIDEClient.cmdLineArgs[0].endsWith(".jov")) {
+	    	 String fname = JOverseerJIDEClient.cmdLineArgs[0];
+	    	 File f = new File(fname);
+	    	 if (f.exists()) {
+	    		LoadGame lg = new LoadGame(fname);
+	    	 	lg.loadGame();
+	    	 }
+	     }
+        
         JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
             // recent games

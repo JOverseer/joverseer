@@ -94,6 +94,7 @@
 		<property name="members">
 			<list>
                             <bean class="org.joverseer.ui.command.CreateGame"/>
+							<bean class="org.joverseer.ui.command.EditGameCommand"/>
                             <bean class="org.joverseer.ui.command.ChangeNationAllegiances"/>
 							<bean class="org.joverseer.ui.command.EditNationMetadataCommand"/>
 			                <value>separator</value>

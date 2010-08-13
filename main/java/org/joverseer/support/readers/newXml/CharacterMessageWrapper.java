@@ -1,10 +1,20 @@
 package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
+
+import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.NationMap;
+import org.joverseer.support.StringUtils;
+import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.readers.pdf.AssassinationResultWrapper;
 import org.joverseer.support.readers.pdf.ExecutionResultWrapper;
 import org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper;
@@ -14,6 +24,8 @@ import org.joverseer.support.readers.pdf.OrderResult;
 import org.joverseer.support.readers.pdf.RevealCharacterResultWrapper;
 import org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper;
 import org.joverseer.ui.domain.LocateArtifactResult;
+
+import com.sun.org.apache.bcel.internal.generic.IFNONNULL;
 
 public class CharacterMessageWrapper {
 	String charId;
@@ -124,7 +136,7 @@ public class CharacterMessageWrapper {
 	
 	protected boolean getCursed(Character c) {
 		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf("He was killed due to a mysterious and deadly curse.")>-1) return true;
+			if (line.indexOf("was killed due to a mysterious and deadly curse.")>-1) return true;
 		}
 		return false;
 	}
@@ -136,7 +148,7 @@ public class CharacterMessageWrapper {
 		return false;
 	}
 	
-	public ArrayList getOrderResults() {
+	public ArrayList getOrderResults(InfoSource infoSource) {
 		ArrayList ret = new ArrayList();
 		for (String line : (ArrayList<String>)lines) {
 			OrderResult or = null;
@@ -149,12 +161,73 @@ public class CharacterMessageWrapper {
 			if (or == null) or = getOwnedLATOrderResult(line);
 			if (or == null) or = getRCTOrderResult(line);
 			if (or == null) or = getRCOrderResult(line);
+			if (or == null) or = getReconResult(line, infoSource);
+			if (or == null) or = getScryResult(line, infoSource);
 			if (or != null) {
 				ret.add(or);
 			}
 		}
 		return ret;
 		
+	}
+	
+	protected OrderResult getScryResult(String line, InfoSource infoSource) {
+		return getReconResult(line, infoSource,"Scry Area - Foreign armies identified:", "None", " See report below");
+	}
+
+	protected OrderResult getReconResult(String line, InfoSource infoSource) {
+		return getReconResult(line, infoSource,"was ordered to recon the area. ", "No armies were found", " See Map below");
+	}
+	
+	protected OrderResult getReconResult(String line, InfoSource infoSource, String orderMessage, String noneMessage, String seeBelowMessage) {
+		try {
+			if (line.contains(orderMessage)) {
+				if (line.contains(noneMessage)) return null;
+				int i = line.indexOf(orderMessage);
+				line = line.substring(i + orderMessage.length()).trim();
+				i = line.toLowerCase().indexOf(seeBelowMessage.toLowerCase());
+				line = line.substring(0, i);
+				
+				ReconResultWrapper rrw = new ReconResultWrapper();
+				
+				ArrayList<String> parts = StringUtils.getParts(line, "(^)|(at \\d{4})", "at \\d{4}", false, true);
+				for (String part : parts) 
+				{
+					for (int j=0; j<26; j++) {
+						Nation n = NationMap.getNationFromNo(j);
+						String nn = StringUtils.getUniquePart(part, " " + n.getName(), " with about", true, false);
+						if (nn != null && nn.equals(n.getName())) {
+							part = part.replace(" of the " + n.getName(), "#nation#").replace(" of " + n.getName(), "#nation#");
+							String character = StringUtils.getUniquePart(part, "^", "#nation#", false, false);
+							String troops = StringUtils.getUniquePart(part, " with about ", " troops ", false, false);
+							String hex = StringUtils.getUniquePart(part, " troops at ", "(\\.)|$", false, false);
+							Army a = new Army();
+							a.setInformationSource(InformationSourceEnum.some);
+							a.setInfoSource(infoSource);
+							a.setCommanderName(character);
+							a.setCommanderTitle("");
+							a.setSize(ArmySizeEnum.unknown);
+							try {
+								a.setTroopCount(Integer.parseInt(troops));
+							}
+							catch (Exception e) {
+								a.setTroopCount(0);
+							}
+							a.setHexNo(hex);
+							a.setNationNo(n.getNumber());
+							a.setNationAllegiance(n.getAllegiance());
+							rrw.addArmy(a);
+							break;
+						}
+					}
+				}
+				return rrw;
+			}
+			return null;
+		}
+		catch (Exception exc) {
+			return null;
+		}
 	}
 	
 	protected OrderResult getRCTOrderResult(String line) {

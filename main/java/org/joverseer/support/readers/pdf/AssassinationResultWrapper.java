@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.pdf;
 
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -15,7 +16,7 @@ public class AssassinationResultWrapper implements OrderResult {
         int hexNo;
         String character;
         
-        public void updateGame(Turn turn, int nationNo, String orderCharacter) {
+        public void updateGame(Game game, Turn turn, int nationNo, String orderCharacter) {
             Character c = (Character)turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", character);
             if (c == null) {
                 c = new Character();

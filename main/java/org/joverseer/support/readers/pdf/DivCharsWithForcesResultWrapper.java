@@ -2,6 +2,7 @@ package org.joverseer.support.readers.pdf;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.spells.DerivedFromDivCharWithForcesInfoSource;
@@ -27,7 +28,7 @@ public class DivCharsWithForcesResultWrapper implements OrderResult {
         this.commander = commander;
     }
     
-    public void updateGame(Turn turn, int nationNo, String casterName) {
+    public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
         if (getCommander() == null || getCharacters() == null) return;
         // get army
         Army a = (Army)turn.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", getCommander());

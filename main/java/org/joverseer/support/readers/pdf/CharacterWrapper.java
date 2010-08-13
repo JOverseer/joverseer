@@ -405,7 +405,7 @@ public class CharacterWrapper {
         			}
         			if (oldA == null) {
         				// add army
-        				new TurnXmlReader(game).addArmy(a, game.getTurn(), addCharacter);
+        				TurnXmlReader.addArmy(a, game, game.getTurn(), addCharacter);
         			}
         		}
         	}
@@ -457,7 +457,7 @@ public class CharacterWrapper {
     				a.setSize(ArmySizeEnum.unknown);
 					a.setNationNo(n.getNumber());
 					a.setNationAllegiance(n.getAllegiance());
-					new TurnXmlReader(game).addArmyBeta(a, game.getTurn());
+					TurnXmlReader.addArmyBeta(a, game, game.getTurn());
 				}
 			}
         }

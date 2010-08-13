@@ -3,6 +3,7 @@ package org.joverseer.ui.viewers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.swing.Icon;
@@ -82,13 +83,13 @@ public class CombatViewer extends ObjectViewer {
     
     private JPopupMenu createCombatPopupContextMenu() {
         Combat c = (Combat)getFormObject();
-        Object[] narrationActions =  new Object[c.getNarrations().size()];
+        ArrayList narrationActions = new ArrayList();
         int i = 0;
         for (Integer nationNo : c.getNarrations().keySet()) {
-            narrationActions[i] = new ShowDescriptionCommand(nationNo);
+            narrationActions.add(new ShowDescriptionCommand(nationNo));
         }
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "combatCommandGroup", narrationActions);
+                "combatCommandGroup", narrationActions.toArray());
         return group.createPopupMenu();
     }
     
@@ -108,7 +109,7 @@ public class CombatViewer extends ObjectViewer {
     private class ShowDescriptionCommand extends ActionCommand {
         int nationNo;
         public ShowDescriptionCommand(int nationNo) {
-            super("showDescriptionCommand");
+            super("showDescriptionCommand" + nationNo);
             this.nationNo = nationNo;
             Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             Nation n = game.getMetadata().getNationByNum(nationNo);

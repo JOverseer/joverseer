@@ -67,7 +67,7 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     	String str = "";
     	str += getSpell() + " " + getCasterName();
     	for (InfoSource dis : getOtherInfoSources()) {
-    		str += "\n" + dis.getDescription();
+    		str += "," + dis.getDescription();
     	}
     	return str;
     }

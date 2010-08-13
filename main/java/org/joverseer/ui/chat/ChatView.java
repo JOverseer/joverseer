@@ -24,20 +24,20 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import net.sf.jml.MsnContact;
-import net.sf.jml.MsnMessenger;
-import net.sf.jml.MsnObject;
-import net.sf.jml.MsnSwitchboard;
-import net.sf.jml.MsnUserStatus;
-import net.sf.jml.event.MsnAdapter;
-import net.sf.jml.event.MsnMessageListener;
-import net.sf.jml.impl.MsnMessengerFactory;
-import net.sf.jml.message.MsnControlMessage;
-import net.sf.jml.message.MsnDatacastMessage;
-import net.sf.jml.message.MsnInstantMessage;
-import net.sf.jml.message.MsnMimeMessage;
-import net.sf.jml.message.MsnSystemMessage;
-import net.sf.jml.message.MsnUnknownMessage;
+//import net.sf.jml.MsnContact;
+//import net.sf.jml.MsnMessenger;
+//import net.sf.jml.MsnObject;
+//import net.sf.jml.MsnSwitchboard;
+//import net.sf.jml.MsnUserStatus;
+//import net.sf.jml.event.MsnAdapter;
+//import net.sf.jml.event.MsnMessageListener;
+//import net.sf.jml.impl.MsnMessengerFactory;
+//import net.sf.jml.message.MsnControlMessage;
+//import net.sf.jml.message.MsnDatacastMessage;
+//import net.sf.jml.message.MsnInstantMessage;
+//import net.sf.jml.message.MsnMimeMessage;
+//import net.sf.jml.message.MsnSystemMessage;
+//import net.sf.jml.message.MsnUnknownMessage;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Character;
@@ -73,17 +73,17 @@ public class ChatView extends AbstractView implements ApplicationListener {
     Socket clientSocket;
     
     boolean connected = false;
-    MsnMessenger messenger;
+    //MsnMessenger messenger;
     static Logger log = Logger.getLogger(ChatView.class);
     
     protected void setMessageEnabled(boolean v) {
         message.setEnabled(v);
     }
     
-    protected void initMessenger(MsnMessenger messenger) {
-		messenger.getOwner().setInitStatus(MsnUserStatus.ONLINE);
-		messenger.addListener(new PrettyMsnListener(this));
-	}
+//    protected void initMessenger(MsnMessenger messenger) {
+//		messenger.getOwner().setInitStatus(MsnUserStatus.ONLINE);
+//		messenger.addListener(new PrettyMsnListener(this));
+//	}
     
     protected JComponent createControl() {
     	final ChatView cv = this;
@@ -135,11 +135,11 @@ public class ChatView extends AbstractView implements ApplicationListener {
                     protected boolean onFinish() {
                         frm.commit();
                         try {
-                        	 messenger = MsnMessengerFactory.createMsnMessenger(conn.getUsername(),
-                        				conn.getPassword());
-                        	 initMessenger(messenger);
-                        	 messenger.login();
-                        	 setMessageEnabled(true);
+//                        	 messenger = MsnMessengerFactory.createMsnMessenger(conn.getUsername(),
+//                        				conn.getPassword());
+//                        	 initMessenger(messenger);
+//                        	 messenger.login();
+//                        	 setMessageEnabled(true);
                         }
                         catch (Exception exc) {
                             setMessageEnabled(false);
@@ -184,12 +184,12 @@ public class ChatView extends AbstractView implements ApplicationListener {
         message.setPreferredSize(new Dimension(400, 20));
         message.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	String str = message.getText();
-            	MsnInstantMessage reply = new MsnInstantMessage();
-                reply.setContent(str);
-                messenger.getActiveSwitchboards()[0].sendMessage(reply);
-                addMsg("you: " + str);
-                message.setText("");
+//            	String str = message.getText();
+//            	MsnInstantMessage reply = new MsnInstantMessage();
+//                reply.setContent(str);
+//                messenger.getActiveSwitchboards()[0].sendMessage(reply);
+//                addMsg("you: " + str);
+//                message.setText("");
             }
         });
         setMessageEnabled(false);
@@ -360,16 +360,16 @@ public class ChatView extends AbstractView implements ApplicationListener {
         //client.sendMessage(new OrderWrapper(o));
         OrderWrapper ow = new OrderWrapper(o);
         String str = "o: ";
-        MsnInstantMessage reply = new MsnInstantMessage();
-        str += ow.charId;
-        str += "##" + ow.getHexNo();
-        str += "##" + ow.orderIdx;
-        str += "##" + ow.orderNo;
-        str += "##" + ow.parameters;
-        
-        reply.setContent(str);
-        messenger.getActiveSwitchboards()[0].sendMessage(reply);
-        addMsg("you: " + str);
+//        MsnInstantMessage reply = new MsnInstantMessage();
+//        str += ow.charId;
+//        str += "##" + ow.getHexNo();
+//        str += "##" + ow.orderIdx;
+//        str += "##" + ow.orderNo;
+//        str += "##" + ow.parameters;
+//        
+//        reply.setContent(str);
+//        messenger.getActiveSwitchboards()[0].sendMessage(reply);
+//        addMsg("you: " + str);
         message.setText("");
     }
     
@@ -378,18 +378,18 @@ public class ChatView extends AbstractView implements ApplicationListener {
         for (Order o : os) {
             mow.getOrderWrappers().add(new OrderWrapper(o));
         }      
-        String str = "o: ";
-        OrderWrapper ow = mow.getOrderWrappers().get(0);
-        MsnInstantMessage reply = new MsnInstantMessage();
-        str += ow.charId;
-        str += "##" + ow.getHexNo();
-        str += "##" + ow.orderIdx;
-        str += "##" + ow.orderNo;
-        str += "##" + ow.parameters;
-        
-        reply.setContent(str);
-        messenger.getActiveSwitchboards()[0].sendMessage(reply);
-        addMsg("you: " + str);
+//        String str = "o: ";
+//        OrderWrapper ow = mow.getOrderWrappers().get(0);
+//        MsnInstantMessage reply = new MsnInstantMessage();
+//        str += ow.charId;
+//        str += "##" + ow.getHexNo();
+//        str += "##" + ow.orderIdx;
+//        str += "##" + ow.orderNo;
+//        str += "##" + ow.parameters;
+//        
+//        reply.setContent(str);
+//        messenger.getActiveSwitchboards()[0].sendMessage(reply);
+//        addMsg("you: " + str);
     }
     
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
@@ -413,126 +413,126 @@ public class ChatView extends AbstractView implements ApplicationListener {
     }
 
     
-    private static class PrettyMsnListener extends MsnAdapter {
-    	
-    	ChatView chatView;
-    	
-    	
-        public PrettyMsnListener(ChatView chatView) {
-			super();
-			this.chatView = chatView;
-		}
-
-		public void exceptionCaught(MsnMessenger messenger, Throwable throwable) {
-            log.error(messenger + throwable.toString(), throwable);
-        }
-
-        public void loginCompleted(MsnMessenger messenger) {
-            log.info(messenger + " login complete ");
-            chatView.addMsg("login complete");
-        }
-
-        public void logout(MsnMessenger messenger) {
-            log.info(messenger + " logout");
-        }
-
-        public void instantMessageReceived(MsnSwitchboard switchboard,
-                                           MsnInstantMessage message,
-                                           MsnContact friend) {
-        	
-        	String str = message.getContent();
-        	chatView.addMsg(friend.getFriendlyName() +": " + str);
-        	if (str.startsWith("o: ")) {
-        		OrderWrapper ow = new OrderWrapper();
-        		try {
-	        		str = str.substring(3);
-	        		String[] ps = str.split("##");
-	        		ow.charId = ps[0];
-	        		ow.hexNo = Integer.parseInt(ps[1]);
-	        		ow.orderIdx = Integer.parseInt(ps[2]);
-	        		ow.orderNo = Integer.parseInt(ps[3]);
-	        		ow.parameters = ps[4];
-	        		chatView.orderWrapperReceived(ow, friend.getFriendlyName());
-        		}
-        		catch (Exception exc) {
-        			chatView.addMsg("Failed to parse order. Error: "+ exc.getMessage());
-        		}
-        	}
-      
-        }
-
-        public void systemMessageReceived(MsnMessenger messenger,
-                                          MsnSystemMessage message) {
-            log.info(messenger + " recv system message " + message);
-        }
-
-        public void controlMessageReceived(MsnSwitchboard switchboard,
-                                           MsnControlMessage message,
-                                           MsnContact contact) {
-            log.info(switchboard + " recv control message from "
-                     + contact.getEmail());
-            message.setTypingUser(switchboard.getMessenger().getOwner().getEmail().getEmailAddress());
-            switchboard.sendMessage(message, false);
-        }
-
-        public void datacastMessageReceived(MsnSwitchboard switchboard,
-                                            MsnDatacastMessage message,
-                                            MsnContact friend) {
-            log.info(switchboard + " recv datacast message " + message);
-            switchboard.sendMessage(message, false);
-        }
-
-        public void unknownMessageReceived(MsnSwitchboard switchboard,
-                                           MsnUnknownMessage message,
-                                           MsnContact friend) {
-            log.info(switchboard + " recv unknown message " + message);
-        }
-
-        public void contactListInitCompleted(MsnMessenger messenger) {
-            log.info(messenger + " contact list init completeted");
-        }
-
-        public void contactListSyncCompleted(MsnMessenger messenger) {
-            log.info(messenger + " contact list sync completed");
-        }
-
-        public void contactStatusChanged(MsnMessenger messenger,
-                                         MsnContact friend) {
-            log.info(messenger + " friend " + friend.getEmail()
-                     + " status changed from " + friend.getOldStatus() + " to "
-                     + friend.getStatus());
-        }
-
-        public void ownerStatusChanged(MsnMessenger messenger) {
-            log.info(messenger + " status changed from "
-                     + messenger.getOwner().getOldStatus() + " to "
-                     + messenger.getOwner().getStatus());
-        }
-
-        public void contactAddedMe(MsnMessenger messenger, MsnContact friend) {
-            log.info(friend.getEmail() + " add " + messenger);
-        }
-
-        public void contactRemovedMe(MsnMessenger messenger, MsnContact friend) {
-            log.info(friend.getEmail() + " remove " + messenger);
-        }
-
-        public void switchboardClosed(MsnSwitchboard switchboard) {
-            log.info(switchboard + " closed");
-        }
-
-        public void switchboardStarted(MsnSwitchboard switchboard) {
-            log.info(switchboard + " started");
-        }
-
-        public void contactJoinSwitchboard(MsnSwitchboard switchboard,
-                                           MsnContact friend) {
-            log.info(friend.getEmail() + " join " + switchboard);
-        }
-
-        public void contactLeaveSwitchboard(MsnSwitchboard switchboard,
-                                            MsnContact friend) {
-            log.info(friend.getEmail() + " leave " + switchboard);
-        }
-	}
+//    private static class PrettyMsnListener extends MsnAdapter {
+//    	
+//    	ChatView chatView;
+//    	
+//    	
+//        public PrettyMsnListener(ChatView chatView) {
+//			super();
+//			this.chatView = chatView;
+//		}
+//
+//		public void exceptionCaught(MsnMessenger messenger, Throwable throwable) {
+//            log.error(messenger + throwable.toString(), throwable);
+//        }
+//
+//        public void loginCompleted(MsnMessenger messenger) {
+//            log.info(messenger + " login complete ");
+//            chatView.addMsg("login complete");
+//        }
+//
+//        public void logout(MsnMessenger messenger) {
+//            log.info(messenger + " logout");
+//        }
+//
+//        public void instantMessageReceived(MsnSwitchboard switchboard,
+//                                           MsnInstantMessage message,
+//                                           MsnContact friend) {
+//        	
+//        	String str = message.getContent();
+//        	chatView.addMsg(friend.getFriendlyName() +": " + str);
+//        	if (str.startsWith("o: ")) {
+//        		OrderWrapper ow = new OrderWrapper();
+//        		try {
+//	        		str = str.substring(3);
+//	        		String[] ps = str.split("##");
+//	        		ow.charId = ps[0];
+//	        		ow.hexNo = Integer.parseInt(ps[1]);
+//	        		ow.orderIdx = Integer.parseInt(ps[2]);
+//	        		ow.orderNo = Integer.parseInt(ps[3]);
+//	        		ow.parameters = ps[4];
+//	        		chatView.orderWrapperReceived(ow, friend.getFriendlyName());
+//        		}
+//        		catch (Exception exc) {
+//        			chatView.addMsg("Failed to parse order. Error: "+ exc.getMessage());
+//        		}
+//        	}
+//      
+//        }
+//
+//        public void systemMessageReceived(MsnMessenger messenger,
+//                                          MsnSystemMessage message) {
+//            log.info(messenger + " recv system message " + message);
+//        }
+//
+//        public void controlMessageReceived(MsnSwitchboard switchboard,
+//                                           MsnControlMessage message,
+//                                           MsnContact contact) {
+//            log.info(switchboard + " recv control message from "
+//                     + contact.getEmail());
+//            message.setTypingUser(switchboard.getMessenger().getOwner().getEmail().getEmailAddress());
+//            switchboard.sendMessage(message, false);
+//        }
+//
+//        public void datacastMessageReceived(MsnSwitchboard switchboard,
+//                                            MsnDatacastMessage message,
+//                                            MsnContact friend) {
+//            log.info(switchboard + " recv datacast message " + message);
+//            switchboard.sendMessage(message, false);
+//        }
+//
+//        public void unknownMessageReceived(MsnSwitchboard switchboard,
+//                                           MsnUnknownMessage message,
+//                                           MsnContact friend) {
+//            log.info(switchboard + " recv unknown message " + message);
+//        }
+//
+//        public void contactListInitCompleted(MsnMessenger messenger) {
+//            log.info(messenger + " contact list init completeted");
+//        }
+//
+//        public void contactListSyncCompleted(MsnMessenger messenger) {
+//            log.info(messenger + " contact list sync completed");
+//        }
+//
+//        public void contactStatusChanged(MsnMessenger messenger,
+//                                         MsnContact friend) {
+//            log.info(messenger + " friend " + friend.getEmail()
+//                     + " status changed from " + friend.getOldStatus() + " to "
+//                     + friend.getStatus());
+//        }
+//
+//        public void ownerStatusChanged(MsnMessenger messenger) {
+//            log.info(messenger + " status changed from "
+//                     + messenger.getOwner().getOldStatus() + " to "
+//                     + messenger.getOwner().getStatus());
+//        }
+//
+//        public void contactAddedMe(MsnMessenger messenger, MsnContact friend) {
+//            log.info(friend.getEmail() + " add " + messenger);
+//        }
+//
+//        public void contactRemovedMe(MsnMessenger messenger, MsnContact friend) {
+//            log.info(friend.getEmail() + " remove " + messenger);
+//        }
+//
+//        public void switchboardClosed(MsnSwitchboard switchboard) {
+//            log.info(switchboard + " closed");
+//        }
+//
+//        public void switchboardStarted(MsnSwitchboard switchboard) {
+//            log.info(switchboard + " started");
+//        }
+//
+//        public void contactJoinSwitchboard(MsnSwitchboard switchboard,
+//                                           MsnContact friend) {
+//            log.info(friend.getEmail() + " join " + switchboard);
+//        }
+//
+//        public void contactLeaveSwitchboard(MsnSwitchboard switchboard,
+//                                            MsnContact friend) {
+//            log.info(friend.getEmail() + " leave " + switchboard);
+//        }
+//	}
 }

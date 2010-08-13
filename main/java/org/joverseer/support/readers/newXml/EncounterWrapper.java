@@ -1,13 +1,14 @@
 package org.joverseer.support.readers.newXml;
 
 import org.joverseer.domain.Encounter;
+import org.joverseer.support.StringUtils;
 
 public class EncounterWrapper {
 	int reacting;
 	String hex;
-	String charId;
+	String charName;
 	String text;
-	
+	String header;
 	
 	public String getText() {
 		return text;
@@ -15,11 +16,11 @@ public class EncounterWrapper {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public String getCharId() {
-		return charId;
+	public String getCharName() {
+		return charName;
 	}
-	public void setCharId(String charId) {
-		this.charId = charId;
+	public void setCharName(String charName) {
+		this.charName = charName;
 	}
 	public String getHex() {
 		return hex;
@@ -34,9 +35,21 @@ public class EncounterWrapper {
 		this.reacting = reacting;
 	}
 	
+	public String getHeader() {
+		return header;
+	}
+	public void setHeader(String header) {
+		this.header = header;
+	}
 	public Encounter getEncounter() {
         Encounter e = new Encounter();
-        e.setCharacter(getCharId());
+        if (getHeader() == null) {
+        	return null;
+        }
+        charName = StringUtils.getUniquePart(getHeader(), "Encounter for ", " at" , false, false);
+        hex = StringUtils.getUniquePart(getHeader(), charName + " at ", "\\.", false, false);
+        
+        e.setCharacter(getCharName());
         try {
         	e.setHexNo(Integer.parseInt(getHex()));
         }

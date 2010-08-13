@@ -11,7 +11,8 @@ public class TurnInfo {
     Container popCentres;
     Container characters;
     Container armies;
-
+    Container nations;
+    
     NationInfoWrapper nationInfoWrapper;
     EconomyWrapper economy;
 
@@ -48,8 +49,18 @@ public class TurnInfo {
     public void setArmies(Container armies) {
         this.armies = armies;
     }
+    
+    
 
-    public int getGameNo() {
+    public Container getNations() {
+		return nations;
+	}
+
+	public void setNations(Container nations) {
+		this.nations = nations;
+	}
+
+	public int getGameNo() {
         return gameNo;
     }
 

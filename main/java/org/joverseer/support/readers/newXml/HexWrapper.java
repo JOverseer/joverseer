@@ -17,9 +17,36 @@ public class HexWrapper {
 	Integer majorRivers;
 	String popCenterName;
 	Integer popCenterSize;
+	Integer forts;
+	Integer ports;
 	
 	
 	
+	
+	public Integer getForts() {
+		return forts;
+	}
+
+
+
+	public void setForts(Integer forts) {
+		this.forts = forts;
+	}
+
+
+
+	public Integer getPorts() {
+		return ports;
+	}
+
+
+
+	public void setPorts(Integer ports) {
+		this.ports = ports;
+	}
+
+
+
 	public Integer getBridges() {
 		return bridges;
 	}
@@ -136,7 +163,6 @@ public class HexWrapper {
 		addElementToSides(hex, HexSideElementEnum.Road, getSidesFromInteger(getRoads()));
 		addElementToSides(hex, HexSideElementEnum.MinorRiver, getSidesFromInteger(getMinorRivers()));
 		addElementToSides(hex, HexSideElementEnum.MajorRiver, getSidesFromInteger(getMajorRivers()));
-		
 	}
 	
 	protected void addElementToSides(Hex hex, HexSideElementEnum element, ArrayList sides) {

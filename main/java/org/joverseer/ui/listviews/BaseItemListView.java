@@ -32,6 +32,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.filters.AndFilter;
+import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
@@ -437,8 +438,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     protected void cacheFilterOptions() {
     	filterOptionsCache.clear();
     	if (hasTextFilter()) {
-    		AbstractListViewFilter textFilter = getTextFilter(textFilterField == null ? null : textFilterField.getText());
-    		filterOptionsCache.add(textFilter.getDescription());
+    		filterOptionsCache.add(textFilterField.getText());
     	}
     	if (filters == null) return;
         for (JComboBox filter : filters) {

@@ -1,6 +1,7 @@
 package org.joverseer.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,6 +18,7 @@ public class Combat implements IHasMapLocation, Serializable {
     int y;
     
     HashMap<Integer, String> narrations = new HashMap<Integer, String>();
+    
     
     public int getX() {
         return x;
@@ -46,4 +48,19 @@ public class Combat implements IHasMapLocation, Serializable {
         narrations.put(nationNo, narration);
     }
     
+    public String getFirstNarration() {
+    	for (int i=0; i<26; i++) {
+    		String r = getNarrationForNation(i);
+    		if (r != null) return r;
+    	}
+    	return null;
+    }
+    
+    public int getFirstNarrationNation() {
+    	for (int i=0; i<26; i++) {
+    		String r = getNarrationForNation(i);
+    		if (r != null) return i;
+    	}
+    	return -1;
+    }
 }

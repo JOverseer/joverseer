@@ -24,4 +24,13 @@ public class NationMap {
         return null;
     }
 
+    public static Nation getNationFromName(String name) {
+        if (name == null) return null;
+        Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        if (Game.isInitialized(g)) {
+            GameMetadata gm = g.getMetadata();
+            return gm.getNationByName(name);
+        }
+        return null;
+    }
 }

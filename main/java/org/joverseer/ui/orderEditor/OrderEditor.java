@@ -518,7 +518,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
                             sub = new DropDownParameterOrderSubeditor(paramDescription, o,
                                     new String[] {"g", "e", "n"}, new String[] {"Good", "Evil", "Neutral"});
                         } else if (paramType.equals("nam")) {
-                            sub = new SingleParameterOrderSubeditor(paramDescription, o);
+                            sub = new SingleParameterOrderSubeditor(paramDescription, o, 160);
                         } else if (paramType.equals("rsp")) {
                             sub = new SingleParameterOrderSubeditor(paramDescription, o);
                         } else if (paramType.equals("a")) {

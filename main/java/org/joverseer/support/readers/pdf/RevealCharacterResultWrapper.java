@@ -1,6 +1,7 @@
 package org.joverseer.support.readers.pdf;
 
 import org.joverseer.domain.Character;
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
@@ -33,7 +34,7 @@ public class RevealCharacterResultWrapper implements OrderResult {
         this.hexNo = hexNo;
     }
     
-    public void updateGame(Turn turn, int nationNo, String casterName) {
+    public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
         Container chars = turn.getContainer(TurnElementsEnum.Character);
         Character c = (Character)chars.findFirstByProperty("name", getCharacterName());
         DerivedFromRevealCharacterInfoSource is1 = new DerivedFromRevealCharacterInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());

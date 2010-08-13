@@ -1,5 +1,7 @@
 package org.joverseer.support.readers.pdf;
 
+import java.util.ArrayList;
+
 import org.joverseer.support.Container;
 
 /**
@@ -10,10 +12,13 @@ import org.joverseer.support.Container;
 public class CombatArmy {
         String nation;
         String commanderName;
+        String commanderTitle;
         String losses;
         String morale;
         boolean survived;
+        String commanderOutcome;
         Container regiments = new Container();
+        ArrayList<String> attackedArmies = new ArrayList<String>();
         
         public String getCommanderName() {
             return commanderName;
@@ -64,6 +69,28 @@ public class CombatArmy {
 		public void setMorale(String morale) {
 			this.morale = morale;
 		}
+
+		public String getCommanderTitle() {
+			return commanderTitle;
+		}
+
+		public void setCommanderTitle(String commanderTitle) {
+			this.commanderTitle = commanderTitle;
+		}
+
+		public String getCommanderOutcome() {
+			return commanderOutcome;
+		}
+
+		public void setCommanderOutcome(String commanderOutcome) {
+			this.commanderOutcome = commanderOutcome;
+		}
+
+		public ArrayList<String> getAttackedArmies() {
+			return attackedArmies;
+		}
         
-        
+        public void AddAttackedArmy(String armyCommander) {
+        	attackedArmies.add(armyCommander);
+        }
     }

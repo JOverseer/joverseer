@@ -25,6 +25,7 @@ import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -52,6 +53,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -391,8 +393,22 @@ public class ArmyViewer extends ObjectViewer {
     }
     
     private class DeleteArmyCommand extends ActionCommand {
+    	boolean cancel = true;
         protected void doExecuteCommand() {
+        	cancel = true;
             Army a = (Army)getFormObject();
+            ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete army '" + a.getCommanderName() + "'?") {
+                protected void onCancel() {
+                    super.onCancel();
+                }
+                
+                protected void onConfirm() {
+                	cancel = false;
+                }
+                
+            };
+            cdlg.showDialog();
+            if (cancel) return;
             Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             Turn t = g.getTurn();
             Container armies = t.getContainer(TurnElementsEnum.Army);

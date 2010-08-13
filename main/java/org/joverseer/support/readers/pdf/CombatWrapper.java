@@ -11,9 +11,13 @@ import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
+import org.joverseer.support.NationMap;
+import org.joverseer.support.StringUtils;
 import org.joverseer.support.info.InfoUtils;
 import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
+
 
 
 /**
@@ -32,8 +36,25 @@ public class CombatWrapper {
     Container armies = new Container(); 
     HashMap<String, ArrayList<String>> characterWounds = new HashMap<String, ArrayList<String>>();
     HashMap<String, ArrayList<String>> armyLosses = new HashMap<String, ArrayList<String>>();
+    String popCenterOutcome;
+    String popName;
+    String popSize;
+    String popFort;
+    String popNation;
+    String popOutcomeNation;
+    boolean naval = false;
     
-    public int getHexNo() {
+    
+    
+    public boolean isNaval() {
+		return naval;
+	}
+
+	public void setNaval(boolean naval) {
+		this.naval = naval;
+	}
+
+	public int getHexNo() {
         return hexNo;
     }
     
@@ -61,7 +82,61 @@ public class CombatWrapper {
         this.armies = armies;
     }
     
-    private void addToList(String key, String value, HashMap<String, ArrayList<String>> map) {
+    
+    
+    public String getPopCenterOutcome() {
+		return popCenterOutcome;
+	}
+
+	public void setPopCenterOutcome(String popCenterOutcome) {
+		this.popCenterOutcome = popCenterOutcome;
+	}
+	
+	
+
+	public String getPopName() {
+		return popName;
+	}
+
+	public void setPopName(String popName) {
+		this.popName = popName;
+	}
+
+	public String getPopSize() {
+		return popSize;
+	}
+
+	public void setPopSize(String popSize) {
+		this.popSize = popSize;
+	}
+
+	public String getPopFort() {
+		return popFort;
+	}
+
+	public void setPopFort(String popFort) {
+		this.popFort = popFort;
+	}
+
+	public String getPopNation() {
+		return popNation;
+	}
+
+	public void setPopNation(String popNation) {
+		this.popNation = popNation;
+	}
+	
+	
+
+	public String getPopOutcomeNation() {
+		return popOutcomeNation;
+	}
+
+	public void setPopOutcomeNation(String popOutcomeNation) {
+		this.popOutcomeNation = popOutcomeNation;
+	}
+
+	private void addToList(String key, String value, HashMap<String, ArrayList<String>> map) {
     	ArrayList<String> list = map.get(key);
     	if (list == null) {
     		list = new ArrayList<String>();
@@ -71,9 +146,13 @@ public class CombatWrapper {
     }
 
     public void parse() {
+    	parse(getNarration());
+    }
+    
+    public void parse(String narration) {
     	System.out.println("Parsing battle at " + getHexNo());
     	// parse char results
-    	String txt = getNarration().replace("\n", " ").replace("\r", " ");
+    	String txt = narration.replace("\n", " ").replace("\r", " ");
     	while (txt.indexOf("  ") > -1) {
     		txt = txt.replace("  ", " ");
     	};
@@ -347,5 +426,202 @@ public class CombatWrapper {
     }
     protected int getRangeAverage(String rangeString) {
     	return getRangeAverage(rangeString, 100);
+    }
+    
+    public void parseNavalConflict(String narration) {
+    	setNaval(true);
+    	String army_start = "At the head of a fleet of";
+    	String report_start = "On that day in history";
+    	String army_end = army_start + "|" + report_start;
+    	String cleanNarration = StringUtils.removeExtraspaces(StringUtils.removeAllNewline(narration));
+    	ArrayList<String> armyTexts = StringUtils.getParts(cleanNarration, army_start, army_end, true, false);
+    	for (String armyText : armyTexts) {
+    		String commander = StringUtils.getUniquePart(armyText, "was ", " of the nation of ", false, false);
+    		String nation = StringUtils.getUniquePart(armyText, "of the nation of ", "\\.", false, false);
+    		String commanderTitle = StringUtils.getFirstWord(commander);
+    		String commanderName = StringUtils.stripFirstWord(commander);
+    		if (nation.startsWith("the ")) nation = StringUtils.stripFirstWord(nation);
+    		CombatArmy ca = new CombatArmy();
+    		ca.setCommanderName(commanderName);
+    		ca.setNation(nation);
+    		
+    		String survived = commanderName + "'s forces were victorious";
+    		String destroyed = commanderName + "'s forces were destroyed/routed";
+    		String commanderSurvived = commanderName + " appeared to have survived";
+    		String commanderKilled = commanderName + " was killed";
+    		String commanderCaptured = commanderName + " was captured";
+    		if (cleanNarration.contains(survived)) {
+    			ca.setSurvived(true);
+    		} else if (cleanNarration.contains(destroyed)) {
+    			ca.setSurvived(false);
+    		}
+    		if (cleanNarration.contains(commanderKilled)) {
+    			ca.setCommanderOutcome("killed");
+    		} else if (cleanNarration.contains(commanderCaptured)) {
+    			ca.setCommanderOutcome("captured");
+    		} else if (cleanNarration.contains(commanderSurvived)) {
+    			ca.setCommanderOutcome("survived");
+    		}
+    		
+    		armies.addItem(ca);
+    	}
+    	return;
+    }
+    
+    public void parseAll(String narration) {
+    	try {
+	    	armies.clear();
+	    	narration = narration.replace("…", "");
+	    	if (narration.contains("naval conflict")) {
+	    		parseNavalConflict(narration);
+	    		return;
+	    	}
+	    	String army_start = "At the head of a ";
+	    	String pop_start = "The Camp|The Village|The Town|The Major Town|The City";
+	    	String report_start = "(Report from )|(Against the forces)|(After the battle)";
+	    	String army_end = army_start + "|" + pop_start + "|" + report_start;
+	    	String army_rode = " army rode ";
+	    	String of_the_nation_of = " of the nation of ";
+	    	String behind_him = "Behind him the forming ranks were filled with:";
+	    	String battle_joined = "After the battle had joined";
+	    	String after_the_battle = "After the battle\\.";
+	    	ArrayList<String> armyTexts = StringUtils.getParts(narration, army_start, army_end, true, false);
+	    	
+	    	for (String armyText : armyTexts) {
+	    		CombatArmy ca = parseArmy(armyText);
+	    		if (ca != null) {
+	    			armies.addItem(ca);
+	    		}
+	    	}
+	    	
+	    	String popCenter = StringUtils.getUniquePart(narration, pop_start, report_start, true, false);
+	    	if (popCenter == null) {
+	    		popCenter = StringUtils.getUniquePart(narration, pop_start, "After the battle\\.\\.\\.\\. ", true, false);
+	    	}
+	    	
+	    	String outcomePart = StringUtils.getUniquePart(narration, after_the_battle, null, false, false);
+	    	if (outcomePart != null) {
+		    	outcomePart = StringUtils.removeAllNewline(outcomePart);
+		    	outcomePart = StringUtils.removeExtraspaces(outcomePart);
+		    	
+		    	String popOutcome = StringUtils.getUniquePart(outcomePart, "After the attack on the population center\\.", null, true, false);
+		    	String armyOutcome = outcomePart;
+		    	if (popOutcome != null) {
+		    		int i = outcomePart.indexOf(popOutcome);
+		    		armyOutcome = outcomePart.substring(0, i);
+		    	}
+		    	
+		    	for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {
+		    		String forces = ca.getCommanderName() + "'s forces";
+		    		String forceOutcome = StringUtils.getUniquePart(armyOutcome, forces, "\\.", true, true);
+		    		if (forceOutcome == null) {
+		    			ca.setSurvived(true);
+		    		} else if (forceOutcome.contains("victorious")) {
+		    			String losses = StringUtils.getUniquePart(forceOutcome, "suffered", "losses", false, false);
+		    			ca.setLosses(losses);
+		    			ca.setSurvived(true);
+		    		} else if (forceOutcome.contains("destroyed/routed")) {
+		    			ca.setSurvived(false);
+		    		} else if (forceOutcome.contains("found no enemy armies to fight.")) {
+		    			ca.setSurvived(true);
+		    		}
+		    		String commanderSurvived = ca.getCommanderName() + " appeared to have survived.";
+		    		String commanderCaptured = ca.getCommanderName() + " was captured.";
+		    		String commanderKilled = ca.getCommanderName() + " was killed.";
+		    		String commanderWounded = ca.getCommanderName() + " appeared to have survived but suffers from ";
+		    		if (armyOutcome == null) {
+		    			ca.setCommanderName("survived");
+		    		} else if (armyOutcome.contains(commanderSurvived)) {
+		    			ca.setCommanderOutcome("survived");
+		    		} else if (armyOutcome.contains(commanderCaptured)) {
+		    			ca.setCommanderOutcome("captured");
+		    		} else if (armyOutcome.contains(commanderKilled)) {
+		    			ca.setCommanderOutcome("killed");
+		    		} else if (armyOutcome.contains(commanderWounded)) {
+		    			String wounds = StringUtils.getUniquePart(armyOutcome, commanderWounded, "wounds\\.", false, false);
+		    			ca.setCommanderOutcome(wounds + " wounds");
+		    		}
+		    	}
+		    	
+		    	if (popCenter != null) 
+		    	{
+		    		popCenter = StringUtils.removeAllNewline(popCenter);
+		    		popCenter = StringUtils.removeExtraspaces(popCenter);
+		    		String popNationOriginal = StringUtils.getUniquePart(popCenter, "flying the flag of ", " is situated", false, false);
+		    		popName = StringUtils.getUniquePart(popCenter, pop_start, " flying", false, false);
+		    		if (popName.startsWith("of ")) popName = StringUtils.stripFirstWord(popName);
+		    		popSize = StringUtils.getUniquePart(popCenter, pop_start, " of", true, false);
+		    		if (popSize.startsWith("The ")) popSize = StringUtils.stripFirstWord(popSize);
+		    		popFort = StringUtils.getUniquePart(popCenter, "It is fortified by a ", "\\,", false, false);
+		    		if (popNationOriginal.startsWith("the ")) popNationOriginal = StringUtils.stripFirstWord(popNationOriginal);
+		    		popNation = popNationOriginal;
+		    		if (popOutcome == null) {
+		    			setPopCenterOutcome("not affected");
+		    		} else {
+			        	String destroyed = "has been reduced to a Ruins";
+			    		if (popOutcome.contains(destroyed)) {
+			    			setPopCenterOutcome("destroyed");
+			    		} else {
+			    			String newNation = StringUtils.getUniquePart(popOutcome, "now flies the flag of ", "\\.", false, false);
+			    			if (newNation != null) {
+				    			if (newNation.startsWith("the ")) newNation = StringUtils.stripFirstWord(newNation);
+				    			if (newNation.equals(popNationOriginal)) {
+				    				setPopCenterOutcome("not affected");
+				    			} else {
+				    				setPopCenterOutcome("captured");
+				    				setPopOutcomeNation(newNation);
+				    			}
+				    		} else {
+				    			setPopCenterOutcome("not affected");
+				    		}
+			    		}
+		    		}
+		    	}
+	    	}
+    	}
+    	catch (Exception e) {
+    		parseAll(narration);
+    	}
+    }
+    
+    protected CombatArmy parseArmy(String text) {
+    	String commanderName = StringUtils.getUniquePart(text, " army rode ", " of the nation of ", false, false).trim();
+    	int i = commanderName.indexOf(" ");
+    	String commanderTitle = commanderName.substring(0, i);
+    	commanderName = commanderName.substring(i + 1);
+    	String nation = StringUtils.getUniquePart(text, " of the nation of ", "\\.", false, false);
+    	if (nation.startsWith("the ")) nation = nation.substring(4);
+    	CombatArmy ca = new CombatArmy();
+    	ca.setCommanderName(commanderName);
+    	ca.setNation(nation);
+    	
+    	return ca;
+    }
+    
+    public ArrayList<CombatArmy> getCombatArmies(NationAllegianceEnum notOfAllegiance) {
+    	ArrayList<CombatArmy> ret = new ArrayList<CombatArmy>();
+    	for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {
+    		if (notOfAllegiance == null) {
+    			ret.add(ca);
+    			continue;
+    		}
+    		Nation n = NationMap.getNationFromName(ca.getNation());
+    		if (!notOfAllegiance.equals(n.getAllegiance())) {
+    			ret.add(ca);
+    		}
+    	}
+    	return ret;
+    }
+    
+    public ArrayList<Nation> getNations(NationAllegianceEnum notOfAllegiance) {
+    	ArrayList<Nation> ret = new ArrayList<Nation>();
+    	for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {
+    		Nation n = NationMap.getNationFromName(ca.getNation());
+    		if (ret.contains(n)) continue;
+    		if (notOfAllegiance == null || !notOfAllegiance.equals(n.getAllegiance())) {
+    			ret.add(n);
+    		}
+    	}
+    	return ret;
     }
 }

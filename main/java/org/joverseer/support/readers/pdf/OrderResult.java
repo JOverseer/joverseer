@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.pdf;
 
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 
 /**
@@ -8,5 +9,5 @@ import org.joverseer.game.Turn;
  * @author Marios Skounakis
  */
 public interface OrderResult {
-    public void updateGame(Turn turn, int nationNo, String character);
+    public void updateGame(Game game, Turn turn, int nationNo, String character);
 }

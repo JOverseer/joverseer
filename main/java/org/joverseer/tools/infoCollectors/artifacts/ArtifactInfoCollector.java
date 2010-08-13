@@ -99,7 +99,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
         }
         
         // loop over turns
-        for (int i=0; i<=g.getCurrentTurn(); i++) {
+        for (int i=0; i<=turnNo; i++) {
             Turn t = g.getTurn(i);
             if (t == null) continue;
             for (Artifact a : (ArrayList<Artifact>)t.getContainer(TurnElementsEnum.Artifact).getItems()) {

@@ -3,6 +3,7 @@ package org.joverseer.support.readers.pdf;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
@@ -15,7 +16,7 @@ import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 public class InfluenceOtherResultWrapper implements OrderResult {
 	String popCenter;
 	String loyalty;
-	public void updateGame(Turn turn, int nationNo, String character) {
+	public void updateGame(Game game, Turn turn, int nationNo, String character) {
 		PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", popCenter);
 		if (pc != null) {
 			if (pc.getInformationSource() == InformationSourceEnum.exhaustive || 

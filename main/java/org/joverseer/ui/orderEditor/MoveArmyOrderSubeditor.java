@@ -1,5 +1,6 @@
 package org.joverseer.ui.orderEditor;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Order;
@@ -66,7 +68,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
         
-        stlb.cell();
+        stlb.cell(new JLabel());
         
         stlb.cell(btn = new JButton("ne"));
         btn.addActionListener(new ActionListener() {
@@ -113,7 +115,17 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
         
-        stlb.cell();
+        //stlb.cell();
+        stlb.cell(btn = new JButton("<--"));
+        btn.setToolTipText("Back (delete last move)");
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                if (dirs.size() > 0) {
+                    dirs.remove(dirs.size()-1);
+                    updateEditor();
+                }
+            }
+        });
         
         stlb.cell(btn = new JButton("se"));
         btn.addActionListener(new ActionListener() {
@@ -123,20 +135,13 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
         
-        stlb.row();
+//        stlb.row();
         
-        stlb.cell(btn = new JButton("back"));
-        btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if (dirs.size() > 0) {
-                    dirs.remove(dirs.size()-1);
-                    updateEditor();
-                }
-            }
-        });
 
         tlb.cell(new JLabel(" "));
-        tlb.cell(stlb.getPanel());
+        JPanel pnl = stlb.getPanel();
+        pnl.setBackground(Color.white);
+        tlb.cell(pnl);
         
         components.add(directionParams);
         components.add(movementStyle);

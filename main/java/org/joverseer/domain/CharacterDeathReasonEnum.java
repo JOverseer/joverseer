@@ -18,6 +18,7 @@ public enum CharacterDeathReasonEnum {
     Cursed,
     Executed,
     Dead,
+    Challenged,
     Missing;
 
     public String getRenderString() {

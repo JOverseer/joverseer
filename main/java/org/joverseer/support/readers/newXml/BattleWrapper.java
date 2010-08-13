@@ -33,10 +33,11 @@ public class BattleWrapper {
 	
 	
 	public void parse() {
+		String report = "";
 		for (BattleLine line : battleLines) {
 			String txt = line.getText(); 
 			for (int i=0; i<line.getTroopTypes().size(); i++) {
-				txt += (txt.equals("") ? "" : "\n") + line.getTroopTypes().get(i) + " with " + line.getWeaponTypes().get(i) + " weapons, " + line.getArmors().get(i) + " armor, " + line.getFormations().get(i);
+				txt += (txt.equals("") ? "" : "\n") + "  " + line.getTroopTypes().get(i) + " with " + line.getWeaponTypes().get(i) + " weapons, " + line.getArmors().get(i) + " armor, " + line.getFormations().get(i);
 			}
 			for (int i=0; i<line.getCommanderReports().size(); i++) {
 				txt += (txt.equals("") ? "" : "\n") + line.getCommanderReports().get(i);
@@ -47,9 +48,14 @@ public class BattleWrapper {
 			if (getText() == null) {
 				setText("");
 			}
-			setText(getText() + (getText().equals("") ? "" : "\n") + txt);
+			
+			report += (report.equals("") ? "" : "\n") + txt;
 			lines.add(txt);
 		}
+		while (report.contains("\n\n\n")) {
+			report = report.replace("\n\n\n", "\n\n");
+		}
+		setText(report);
 		if (lines.size() == 0) return;
 		String first = lines.get(0).trim();
 		if (first.startsWith("Battle at ")) {

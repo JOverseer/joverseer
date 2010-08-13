@@ -31,6 +31,7 @@ import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.AsciiUtils;
@@ -191,6 +192,23 @@ public class TurnXmlReader implements Runnable{
             // add army to container
             digester.addSetNext("METurn/Armies/Army", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper");
 
+            // parse nations
+            // create nations container
+            digester.addObjectCreate("METurn/Nations", Container.class);
+            // add contianer to turn info
+            digester.addSetNext("METurn/Nations", "setNations");
+            // create nation object
+            digester.addObjectCreate("METurn/Nations/Nation", "org.joverseer.support.readers.xml.NationWrapper");
+            // set hexId
+            digester.addSetProperties("METurn/Nations/Nation", "ID", "id");
+            // set text
+            digester.addCallMethod("METurn/Nations/Nation", "setName", 1);
+            digester.addCallParam("METurn/Nations/Nation", 0);
+
+            // add nation to container
+            digester.addSetNext("METurn/Nations/Nation", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper");
+
+            
             // parse rumors
             // create nationinfo object
             digester.addObjectCreate("METurn/NationInfo", NationInfoWrapper.class);
@@ -295,6 +313,11 @@ public class TurnXmlReader implements Runnable{
             turn.getContainer(TurnElementsEnum.PlayerInfo).addItem(pi);
             
             infoSource = new XmlTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+            if (getMonitor() != null) {
+                getMonitor().worked(10);
+                getMonitor().subTaskStarted("Updating Nations...");
+            }
+            updateNations(game);
             if (getMonitor() != null) {
                 getMonitor().worked(50);
                 getMonitor().subTaskStarted("Updating PCs...");
@@ -559,7 +582,7 @@ public class TurnXmlReader implements Runnable{
             Army oldArmy;
             try {
                 newArmy = aw.getArmy();
-                addArmy(newArmy, turn, true);
+                addArmy(newArmy, game, turn, true);
 	        }
 	        catch (Exception exc) {
 	            throw exc;
@@ -567,13 +590,20 @@ public class TurnXmlReader implements Runnable{
         }
     }
     
-    public void addArmyBeta(Army newArmy, Turn turn) {
+    private void updateNations(Game g) throws Exception {
+    	for (NationWrapper nw : (ArrayList<NationWrapper>)turnInfo.getNations().getItems()) {
+    		Nation n = g.getMetadata().getNationByNum(nw.getId());
+    		n.setName(nw.getName());
+    	}
+    }
+    
+    public static void addArmyBeta(Army newArmy, Game game, Turn turn) {
 		
     	Container chars = turn.getContainer(TurnElementsEnum.Character);
         Container armies = turn.getContainer(TurnElementsEnum.Army);
         armies.addItem(newArmy);
         for (NationAllegianceEnum allegiance : NationAllegianceEnum.values()) {
-        	postProcessArmiesForHex(newArmy.getHexNo(), turn, allegiance);
+        	postProcessArmiesForHex(game, newArmy.getHexNo(), turn, allegiance);
         }
         // do not generate character for unknown armies
         if (!newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) {
@@ -597,7 +627,7 @@ public class TurnXmlReader implements Runnable{
         }
     }
     
-    public void postProcessArmiesForHex(String hexNo, Turn turn, NationAllegianceEnum allegiance) {
+    public static void postProcessArmiesForHex(Game game, String hexNo, Turn turn, NationAllegianceEnum allegiance) {
     	String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
         Container armies = turn.getContainer(TurnElementsEnum.Army);
         final Turn t = turn;
@@ -653,7 +683,7 @@ public class TurnXmlReader implements Runnable{
     }
     
     
-    protected void updateWithInfo(Army a1, Army a2) {
+    protected static void updateWithInfo(Army a1, Army a2) {
     	if (a1.getCommanderTitle() == null || a1.getCommanderTitle().equals("")) {
     		a1.setCommanderTitle(a2.getCommanderTitle());
     	}
@@ -662,8 +692,8 @@ public class TurnXmlReader implements Runnable{
     	}
     }
     
-    public void addArmy(Army newArmy, Turn turn, boolean addCharacter) {
-    	addArmyBeta(newArmy, turn);
+    public static void addArmy(Army newArmy, Game game, Turn turn, boolean addCharacter) {
+    	addArmyBeta(newArmy, game, turn);
     	String commanderName = newArmy.getCommanderName();
         
     }

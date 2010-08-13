@@ -119,6 +119,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                     cw.setChampion(c.getNumberOfOrders()==3);
                     if (c.getInformationSource() == InformationSourceEnum.exhaustive) {
                         addStats(cw, c, c.getInfoSource(), t.getTurnNo());
+                        if (c.getHostage() != null && c.getHostage()) cw.setHostage(c.getHostage(), "unknown");
                     } else {
                         getStartStats(cw);
                         guessStatsFromTitle(cw, c, t.getTurnNo());
@@ -142,7 +143,7 @@ public class CharacterInfoCollector implements ApplicationListener {
             		for (String hostageName : c.getHostages()) {
             			AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", hostageName);
             			if (cw != null) {
-            				cw.setHexNo(0);
+            				cw.setHexNo(c.getHexNo());
             				cw.setHostage(true, c.getName());
             				cw.setTurnNo(i);
             			} else {

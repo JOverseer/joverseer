@@ -2,6 +2,7 @@ package org.joverseer.support.readers.pdf;
 
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
@@ -21,7 +22,7 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
  */
 
 public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper {
-    public void updateGame(Turn turn, int nationNo, String casterName) {
+    public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
         int hexNo = getHexNo();
 
         if (getOwner() != null && !getOwner().equals("")) {

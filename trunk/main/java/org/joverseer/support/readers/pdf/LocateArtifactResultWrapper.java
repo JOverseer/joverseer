@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.pdf;
 
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
@@ -49,7 +50,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 		this.owner = owner;
 	}
 	
-	public void updateGame(Turn turn, int nationNo, String casterName) {
+	public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
 			Character c = null;
             if (getOwner() != null && !getOwner().equals("")) {
                 DerivedFromLocateArtifactInfoSource is1 = new DerivedFromLocateArtifactInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());

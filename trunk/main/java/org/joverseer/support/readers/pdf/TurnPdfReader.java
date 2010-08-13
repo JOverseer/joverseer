@@ -1152,7 +1152,7 @@ public class TurnPdfReader implements Runnable {
 	                cw.updateCharacter(c);
 	            }
 	            for (OrderResult orderResult : cw.getOrderResults()) {
-	                orderResult.updateGame(turn, nationNo, cw.getName());
+	                orderResult.updateGame(game, turn, nationNo, cw.getName());
 	            }
 	            cw.parsePopCenter(game, infoSource, c);
 	            cw.parseScoHexOrScoPop(game, infoSource, c);

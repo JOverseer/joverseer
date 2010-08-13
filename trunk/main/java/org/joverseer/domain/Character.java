@@ -298,6 +298,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
         return orderResults;
     }
 
+    public String getCleanOrderResults() {
+    	if (getOrderResults() == null) return "";
+    	return getOrderResults().replace("\r\n", "");
+    }
     
     public void setOrderResults(String orderResults) {
         this.orderResults = orderResults;
@@ -340,7 +344,11 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
     }    
     
     public void setNation(Nation nation) {
-        setNationNo(nation.getNumber());
+    	if (nation == null) {
+    		setNationNo(0);
+    	} else {
+    		setNationNo(nation.getNumber());
+    	}
     }
     
     public ArrayList<IStructuredOrderResult> getStructuredOrderResults() {
@@ -438,6 +446,37 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		this.inChallengeFight = inChallengeFight;
 	}
 	
+	public String getStatString() {
+		Character c = this;
+        String txt = "";
+        txt += getStatText("C", c.getCommand(), c.getCommandTotal());
+        txt += getStatText("A", c.getAgent(), c.getAgentTotal());
+        txt += getStatText("E", c.getEmmisary(), c.getEmmisaryTotal());
+        txt += getStatText("M", c.getMage(), c.getMageTotal());
+        txt += getStatText("S", c.getStealth(), c.getStealthTotal());
+        txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
+        if (c.getHealth() != null) {
+        	txt += " H" + c.getHealth();
+        } 
+        if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+            txt += " (" + c.getDeathReason().toString() + ")";
+        }
+        
+        return txt;
+    }
+
+    private String getStatText(String prefix, int skill, int skillTotal) {
+        if (skillTotal == 0 && skill == 0)
+            return "";
+        return prefix + skill + (skillTotal > skill ? "(" + skillTotal + ")" : "") + " ";
+    }
+    
+    public boolean isDead() {
+    	return getDeathReason() != null && !getDeathReason().equals(CharacterDeathReasonEnum.NotDead);
+    }
 	
-	
+    public void addHostage(String name) {
+    	if (!getHostages().contains(name)) getHostages().add(name);
+    }
+    
 }

@@ -56,6 +56,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -394,9 +395,22 @@ public class PopulationCenterViewer extends ObjectViewer {
     }
 
     private class DeletePopulationCenterCommand extends ActionCommand {
-
+    	boolean cancelAction;
         protected void doExecuteCommand() {
+        	cancelAction = true;
             PopulationCenter pc = (PopulationCenter) getFormObject();
+            ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete population center '" + pc.getName() + "'?") {
+                protected void onCancel() {
+                    super.onCancel();
+                }
+                
+                protected void onConfirm() {
+                	cancelAction = false;
+                }
+                
+            };
+            cdlg.showDialog();
+            if (cancelAction) return;
             Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             Turn t = g.getTurn();
             Container pcs = t.getContainer(TurnElementsEnum.PopulationCenter);

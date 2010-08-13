@@ -1,11 +1,13 @@
 package org.joverseer.domain;
 
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.NationMap;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -99,6 +101,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 
     public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
+    }
+    
+    public Nation getNation() {
+        return NationMap.getNationFromNo(getNationNo());
     }
 
     public boolean isNavy() {

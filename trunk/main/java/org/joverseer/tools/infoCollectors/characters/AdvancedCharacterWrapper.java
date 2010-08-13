@@ -23,6 +23,8 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
+import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
+import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
@@ -321,6 +323,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
     		return "Army: " + getArmy().getCommanderName() + (chars.equals("") ? "" : " - " + chars); 
     	}
     	if (isHostage()) {
+    		if (getHostageHolderName().equals("unknown")) return "Hostage";
     		return "Hostage of " + getHostageHolderName();
     	}
     	return "";
@@ -380,6 +383,54 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 		this.isChampion = isChampion;
 	}
 	
+	public String getStatString() {
+		AdvancedCharacterWrapper acw = this;
+		String txt = "";
+        txt += getStatTextFromCharacterWrapper("C", acw.getCommand());
+        txt += getStatTextFromCharacterWrapper("A", acw.getAgent());
+        txt += getStatTextFromCharacterWrapper("E", acw.getEmmisary());
+        txt += getStatTextFromCharacterWrapper("M", acw.getMage());
+        txt += getStatTextFromCharacterWrapper("S", acw.getStealth());
+        txt += getStatTextFromCharacterWrapper("Cr", acw.getChallenge());
+        String healthTxt = getStatTextFromCharacterWrapper("H", acw.getHealth());;
+        if (!healthTxt.equals("")) {
+        	txt += healthTxt;
+        } else if (acw.getHealthEstimate() != null) {
+        	InfoSourceValue isv = acw.getHealthEstimate();
+        	DerivedFromWoundsInfoSource dwis = (DerivedFromWoundsInfoSource)isv.getInfoSource();
+        	if (dwis.getTurnNo() + 2 >= acw.getTurnNo()) {
+        		txt += " " + isv.getValue() + "(t" + dwis.getTurnNo() + ") ";
+        	}
+        }
+        if (acw.getDeathReason() != null && acw.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+            txt += " (" + acw.getDeathReason().toString() + ")";
+        }
+        return txt;
+	}
 	
-    
+	private String getStatTextFromCharacterWrapper(String prefix, CharacterAttributeWrapper caw) {
+        String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
+        if (v.equals("0")) v = "";
+        if (caw != null && caw.getValue() != null) {
+                InfoSource is = caw.getInfoSource();
+                if (DerivedFromTitleInfoSource.class.isInstance(is)) {
+                        v += "+";
+                } else if (RumorActionInfoSource.class.isInstance(is)) {
+                        v += "+";
+                } else if (DerivedFromArmyInfoSource.class.isInstance(is)) {
+                    v += "+";
+                }
+        }
+        if (caw != null && caw.getTotalValue() != null) {
+                if (!caw.getTotalValue().toString().equals(
+                                caw.getValue().toString())
+                                && !caw.getTotalValue().toString().equals("0")) {
+                        v += "(" + caw.getTotalValue().toString() + ")";
+                }
+        }
+        if (!v.equals("")) {
+            v = prefix + v + " ";
+        }
+        return v;
+    }
 }

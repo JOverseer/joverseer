@@ -27,16 +27,23 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField parameter;
     String paramName;
+    int width = 60;
 
     public SingleParameterOrderSubeditor(String paramName, Order o) {
         super(o);
         this.paramName = paramName;
     }
     
+    public SingleParameterOrderSubeditor(String paramName, Order o, int width) {
+        super(o);
+        this.paramName = paramName;
+        this.width = width;
+    }
+    
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(paramName), "colspec=left:70px");
         tlb.cell(parameter = new JTextField(o.getParameter(paramNo)), "colspec=left:220px");
-        parameter.setPreferredSize(new Dimension(60, 18));
+        parameter.setPreferredSize(new Dimension(width, 18));
         attachAutoUpdateDocumentListener(parameter);
         components.add(parameter);
         //GraphicUtils.addOverwriteDropListener(parameter);

@@ -87,6 +87,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -198,7 +199,7 @@ public class CharacterViewer extends ObjectViewer {
         characterName.setTransferHandler(new CharacterExportTransferHandler(c));
         if (statsTextBox != null) {
             characterName.setCaretPosition(0);
-            String txt = getStatLine(c);
+            String txt = c.getStatString();
             
             if (txt.equals("")) {
                 // character is enemy
@@ -248,7 +249,7 @@ public class CharacterViewer extends ObjectViewer {
                         startingChar = (Character) startChars.findFirstByProperty("id", c.getId());
                         showStartingInfo = true;
                         if (startingChar != null) {
-                            txt = getStatLine(startingChar) + "(start info)";
+                            txt = startingChar.getStatString() + "(start info)";
                         }
                     }
                 }
@@ -429,77 +430,14 @@ public class CharacterViewer extends ObjectViewer {
 
     }
     
-    private String getStatTextFromCharacterWrapper(String prefix, CharacterAttributeWrapper caw) {
-        String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
-        if (v.equals("0")) v = "";
-        if (caw != null && caw.getValue() != null) {
-                InfoSource is = caw.getInfoSource();
-                if (DerivedFromTitleInfoSource.class.isInstance(is)) {
-                        v += "+";
-                } else if (RumorActionInfoSource.class.isInstance(is)) {
-                        v += "+";
-                } else if (DerivedFromArmyInfoSource.class.isInstance(is)) {
-                    v += "+";
-                }
-        }
-        if (caw != null && caw.getTotalValue() != null) {
-                if (!caw.getTotalValue().toString().equals(
-                                caw.getValue().toString())
-                                && !caw.getTotalValue().toString().equals("0")) {
-                        v += "(" + caw.getTotalValue().toString() + ")";
-                }
-        }
-        if (!v.equals("")) {
-            v = prefix + v + " ";
-        }
-        return v;
-    }
+    
     
     public String getStatLineFromCharacterWrapper(AdvancedCharacterWrapper acw) {
-        String txt = "";
-        txt += getStatTextFromCharacterWrapper("C", acw.getCommand());
-        txt += getStatTextFromCharacterWrapper("A", acw.getAgent());
-        txt += getStatTextFromCharacterWrapper("E", acw.getEmmisary());
-        txt += getStatTextFromCharacterWrapper("M", acw.getMage());
-        txt += getStatTextFromCharacterWrapper("S", acw.getStealth());
-        txt += getStatTextFromCharacterWrapper("Cr", acw.getChallenge());
-        String healthTxt = getStatTextFromCharacterWrapper("H", acw.getHealth());;
-        if (!healthTxt.equals("")) {
-        	txt += healthTxt;
-        } else if (acw.getHealthEstimate() != null) {
-        	InfoSourceValue isv = acw.getHealthEstimate();
-        	DerivedFromWoundsInfoSource dwis = (DerivedFromWoundsInfoSource)isv.getInfoSource();
-        	txt += " " + isv.getValue() + "(t" + dwis.getTurnNo() + ") ";
-        }
-        if (acw.getDeathReason() != null && acw.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
-            txt += " (" + acw.getDeathReason().toString() + ")";
-        }
-        return txt;
-    }
-
-    private String getStatLine(Character c) {
-        String txt = "";
-        txt += getStatText("C", c.getCommand(), c.getCommandTotal());
-        txt += getStatText("A", c.getAgent(), c.getAgentTotal());
-        txt += getStatText("E", c.getEmmisary(), c.getEmmisaryTotal());
-        txt += getStatText("M", c.getMage(), c.getMageTotal());
-        txt += getStatText("S", c.getStealth(), c.getStealthTotal());
-        txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
-        if (c.getHealth() != null) {
-        	txt += " H" + c.getHealth();
-        } 
-        if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
-            txt += " (" + c.getDeathReason().toString() + ")";
-        }
+    	return acw.getStatString();
         
-        return txt;
     }
 
-    private String getStatText(String prefix, int skill, int skillTotal) {
-        if (skillTotal == 0 && skill == 0)
-            return "";
-        return prefix + skill + (skillTotal > skill ? "(" + skillTotal + ")" : "") + " ";
-    }
+    
 
 
     protected JComponent createFormControl() {
@@ -554,8 +492,8 @@ public class CharacterViewer extends ObjectViewer {
             public void actionPerformed(ActionEvent arg0) {
                 showArtifacts = !showOrders;
                 showSpells = !showOrders;
+                showHostages = !showOrders;
                 showOrders = !showOrders;
-                showHostages = !showHostages;
                 reset((Character)getFormObject());
             }
             
@@ -928,8 +866,22 @@ public class CharacterViewer extends ObjectViewer {
     }
     
     private class DeleteCharacterCommand extends ActionCommand {
+    	boolean cancel = true;
         protected void doExecuteCommand() {
+        	cancel = true;
             Character c = (Character)getFormObject();
+            ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete character '" + c.getName() + "'?") {
+                protected void onCancel() {
+                    super.onCancel();
+                }
+                
+                protected void onConfirm() {
+                	cancel = false;
+                }
+                
+            };
+            cdlg.showDialog();
+            if (cancel) return;
             Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
             Turn t = g.getTurn();
             Container armies = t.getContainer(TurnElementsEnum.Army);

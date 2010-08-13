@@ -89,6 +89,22 @@ public class TurnNewXmlReader implements Runnable {
                             new String[]{"season", "alignment"}));
             snpr.setAllowUnknownChildElements(true);
 			
+            // create container for Hostages
+            digester.addObjectCreate("METurn/Hostages", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/Hostages", "setHostages");
+        	// create hostage wrapper
+            digester.addObjectCreate("METurn/Hostages/Hostage", "org.joverseer.support.readers.newXml.HostageWrapper");
+            // set id
+            digester.addSetProperties("METurn/Hostages/Hostage", "NameID", "nameId");
+            // set nested properties
+            digester.addRule("METurn/Hostages/Hostage",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Nation", "HeldBy", "Location"},
+                            new String[]{"nation", "heldBy", "location"}));
+            snpr.setAllowUnknownChildElements(true);
+            // add to container
+            digester.addSetNext("METurn/Hostages/Hostage", "addItem", "org.joverseer.support.readers.newXml.HostageWrapper");
+            
 			// create container for Non Hidden Artifactss
             digester.addObjectCreate("METurn/ArtifactInfo/NonHiddenArtifacts", "org.joverseer.support.Container");
             // add container to turn info
@@ -119,6 +135,25 @@ public class TurnNewXmlReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
             // add to container
             digester.addSetNext("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "addItem", "org.joverseer.support.readers.newXml.ArtifactWrapper");
+            
+            // create container for Recons
+            digester.addObjectCreate("METurn/Recons", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/Recons", "setRecons");
+        	// create recon wrapper 
+            digester.addObjectCreate("METurn/Recons/Recon", "org.joverseer.support.readers.newXml.ReconWrapper");
+            // add to container
+            digester.addSetNext("METurn/Recons/Recon", "addItem", "org.joverseer.support.readers.newXml.ReconWrapper");
+        	// create recon hex wrapper
+            digester.addObjectCreate("METurn/Recons/Recon/Hex", "org.joverseer.support.readers.newXml.HexWrapper");
+            // set nested properties
+            digester.addRule("METurn/Recons/Recon/Hex",
+                    snpr = new SetNestedPropertiesRule(new String[]{"HexID", "Terrain", "PopCenterSize", "Forts", "Ports", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers"},
+                    		new String[]{"hexID", "terrain", "popCenterSize", "forts", "ports", "roads", "bridges", "fords", "minorRivers", "majorRivers"}));
+            snpr.setAllowUnknownChildElements(true);
+            // add to recon wrapper
+            digester.addSetNext("METurn/Recons/Recon/Hex", "addHexWrapper", "org.joverseer.support.readers.newXml.HexWrapper");
+            
             
             // create container for Pop Centers
             digester.addObjectCreate("METurn/More/PopCentres", "org.joverseer.support.Container");
@@ -293,8 +328,8 @@ public class TurnNewXmlReader implements Runnable {
             digester.addSetProperties("METurn/EncounterMessages/Encounter", "Reacting", "reacting");
             // set nested properties
             digester.addRule("METurn/EncounterMessages/Encounter",
-                    snpr = new SetNestedPropertiesRule(new String[]{"EncounterText"},
-                            new String[]{"text"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"EncounterHeader", "EncounterText"},
+                            new String[]{"header","text"}));
             snpr.setAllowUnknownChildElements(true);
             // add to container
             digester.addSetNext("METurn/EncounterMessages/Encounter", "addItem", "org.joverseer.support.readers.newXml.EncounterWrapper");
@@ -308,8 +343,8 @@ public class TurnNewXmlReader implements Runnable {
             // set attributes
             // set nested properties
             digester.addRule("METurn/Hexes/Hex",
-                    snpr = new SetNestedPropertiesRule(new String[]{"HexID", "Terrain", "PopcenterName", "PopcenterSize", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers"},
-                            new String[]{"hexID", "terrain", "popCenterName", "popCenterSize", "roads", "bridges", "fords", "minorRivers", "majorRivers"}));
+                    snpr = new SetNestedPropertiesRule(new String[]{"HexID", "Terrain", "PopcenterName", "PopcenterSize", "Forts", "Ports", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers"},
+                            new String[]{"hexID", "terrain", "popCenterName", "popCenterSize", "forts", "ports", "roads", "bridges", "fords", "minorRivers", "majorRivers"}));
             snpr.setAllowUnknownChildElements(true);
             // add to container
             digester.addSetNext("METurn/Hexes/Hex", "addItem", "org.joverseer.support.readers.newXml.HexWrapper");
@@ -460,6 +495,18 @@ public class TurnNewXmlReader implements Runnable {
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
+                getMonitor().worked(65);
+                getMonitor().subTaskStarted("Updating hostages...");
+            }
+            try {
+                updateHostages(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
                 getMonitor().worked(70);
                 getMonitor().subTaskStarted("Updating hexes...");
             }
@@ -498,6 +545,10 @@ public class TurnNewXmlReader implements Runnable {
 		for (HexWrapper hw : (ArrayList<HexWrapper>)hws.getItems()) {
 			hw.updateGame(game);
 		}
+		Container rws = turnInfo.getRecons();
+		for (ReconWrapper rw : (ArrayList<ReconWrapper>)rws.getItems()) {
+			rw.updateGame(game);
+		}
 	}
 	
 	private void updateEncounters(Game game) throws Exception {
@@ -507,7 +558,10 @@ public class TurnNewXmlReader implements Runnable {
         for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
         	Encounter ne = ew.getEncounter();
         	if (ne == null) continue;
-        	Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ne.getCharacter());
+        	Character c = (Character)game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ne.getCharacter());
+        	if (c == null) {
+        		continue;
+        	}
             Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{c.getName(), Integer.parseInt(ew.getHex())});
             
             if (e != null) {
@@ -518,6 +572,13 @@ public class TurnNewXmlReader implements Runnable {
         }
 	}
 	
+	private void updateHostages(Game game) throws Exception {
+		Container hws = turnInfo.getHostages();
+		for (HostageWrapper hw : (ArrayList<HostageWrapper>)hws.getItems()) {
+			hw.updateGame(game, turn, infoSource);
+		}
+	}
+	
 	private void updateCharacterMessages(Game game) throws Exception {
 		Container nrws = turnInfo.getCharMessages();
 		Container cs = turn.getContainer(TurnElementsEnum.Character);
@@ -526,8 +587,8 @@ public class TurnNewXmlReader implements Runnable {
 			if (c != null) {
 				cmw.updateCharacter(c, game);
 			}
-			for (OrderResult or : (ArrayList<OrderResult>)cmw.getOrderResults()) {
-				or.updateGame(turn, turnInfo.nationNo, c.getName());
+			for (OrderResult or : (ArrayList<OrderResult>)cmw.getOrderResults(infoSource)) {
+				or.updateGame(game, turn, turnInfo.nationNo, c.getName());
 			}
 		}
         

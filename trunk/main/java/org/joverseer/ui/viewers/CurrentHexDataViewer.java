@@ -44,7 +44,7 @@ import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.docking.LayoutManager;
 import com.jidesoft.spring.richclient.docking.view.JideAbstractView;
 
-import quicktime.streaming.SettingsDialog;
+
 
 /**
  * Shows information for the current hex, using the various viewers in this package

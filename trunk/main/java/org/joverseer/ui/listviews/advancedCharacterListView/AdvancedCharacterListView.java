@@ -174,7 +174,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
                 new AbstractListViewFilter[]{
                     new DeathFilter("All", null),
                     new DeathFilter("Not Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.NotDead, null}),
-                    new DeathFilter("Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed}),
+                    new DeathFilter("Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged}),
                     new HostageFilter("Hostage", true),
                     new HostageFilter("Not Hostage", false),
                     new ChampionFilter("Champion")
@@ -326,7 +326,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
         }
 
         private String getRow(AdvancedCharacterWrapper aw) {
-            Nation n = game.getMetadata().getNationByNum(aw.getNationNo());
+            Nation n = aw.getNationNo() == null ? null : game.getMetadata().getNationByNum(aw.getNationNo());
             String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
             String orderResults = aw.getOrderResults();
             if (orderResults == null) orderResults = "";

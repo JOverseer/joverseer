@@ -240,7 +240,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
        
 
         private String getRow(ArtifactWrapper aw) {
-            Nation n = game.getMetadata().getNationByNum(aw.getNationNo());
+            Nation n = aw.getNationNo() == null ? null : game.getMetadata().getNationByNum(aw.getNationNo());
             String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
             return aw.getNumber() + DELIM + aw.getName() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM
                     + aw.getOwner() + DELIM + aw.getHexNo() + DELIM

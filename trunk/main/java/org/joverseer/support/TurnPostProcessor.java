@@ -3,7 +3,9 @@ package org.joverseer.support;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
@@ -117,6 +119,16 @@ public class TurnPostProcessor {
                 }
             }
         }
+		
+		// change CharacterDeathReasonEnum.Dead to Challenged where appropriate
+		for (Character c : (ArrayList<Character>)turn.getContainer(TurnElementsEnum.Character).findAllByProperty("deathReason", CharacterDeathReasonEnum.Dead)) {
+			for (Challenge ch : (ArrayList<Challenge>)turn.getContainer(TurnElementsEnum.Challenge).getItems()) {
+				if (ch.getLoser().equals(c.getName())) {
+					c.setDeathReason(CharacterDeathReasonEnum.Challenged);
+				}
+			}
+		}
+		
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
 	}

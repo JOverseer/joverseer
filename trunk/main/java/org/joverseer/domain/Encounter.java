@@ -2,6 +2,9 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+import org.joverseer.support.StringUtils;
+import org.joverseer.support.info.InfoUtils;
+
 
 /**
  * Stores the narration for a given encounter as found in the pdf turn results.
@@ -47,5 +50,27 @@ public class Encounter implements IHasMapLocation, Serializable {
         return getHexNo() % 100;
     }
     
+    public String getCleanDescription() {
+    	return StringUtils.removeExtraspaces(StringUtils.removeAllNewline(getDescription()));
+    }
     
+    public boolean isReacting() {
+    	String cleanDescr = getCleanDescription();
+    	return cleanDescr.contains("How will " + getCharacter() + " react") ||
+    			cleanDescr.contains("What word(s) or name will " + getCharacter() + " say");
+    }
+    
+    public boolean isDragon() {
+    	String cleanDescr = getCleanDescription();
+    	return cleanDescr.contains("Dragon");
+    }
+ 
+    public String getDragonName() {
+    	for (String p : StringUtils.getParts(getCleanDescription(), "\"", "\"", false, false)) {
+    		if (p == null) continue;
+    		p = p.replace(".", "").trim();
+    		if (InfoUtils.isDragon(p)) return p;
+    	}
+    	return null;
+    }
 }

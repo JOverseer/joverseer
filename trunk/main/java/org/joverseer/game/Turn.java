@@ -1,8 +1,14 @@
 package org.joverseer.game;
 
+import org.joverseer.domain.Army;
+import org.joverseer.domain.Challenge;
+import org.joverseer.domain.Encounter;
+import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Cloner;
 import org.joverseer.support.Container;
+import org.joverseer.domain.Character;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,5 +81,68 @@ public class Turn implements Serializable {
     	return (Turn)Cloner.clone(this);
     }
     
+    public ArrayList<Character> getAllCharacters() {
+    	return (ArrayList<Character>)getContainer(TurnElementsEnum.Character).getItems();
+    }
     
+    public Character getCharByName(String name) {
+    	return (Character)getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name);
+    }
+    
+    public Character getCharById(String id) {
+    	return (Character)getContainer(TurnElementsEnum.Character).findFirstByProperty("id", id);
+    }
+    
+    public PopulationCenter getCapital(int nationNo) {
+    	return (PopulationCenter)getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{nationNo, true});
+    }
+    
+    public PopulationCenter getPopCenter(int hexNo) {
+    	return (PopulationCenter)getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo);
+    }
+
+    public PopulationCenter getPopCenter(String name) {
+    	return (PopulationCenter)getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", name);
+    }
+    
+    public ArrayList<Character> getCharacters(int nationNo) {
+    	return (ArrayList<Character>)getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo);
+    }
+    
+    public ArrayList<Character> getCharactersAtHex(int hexNo) {
+    	return (ArrayList<Character>)getContainer(TurnElementsEnum.Character).findAllByProperty("hexNo", hexNo);
+    }
+    
+    public ArrayList<PopulationCenter> getPopCenters(int nationNo) {
+    	return (ArrayList<PopulationCenter>)getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo);
+    }
+    
+    public ArrayList<Army> getArmies(int hexNo) {
+    	String hexNoStr = String.valueOf(hexNo);
+    	if (hexNo < 1000) hexNoStr = "0" + hexNoStr;
+    	return (ArrayList<Army>)getContainer(TurnElementsEnum.Army).findAllByProperty("hexNo", hexNoStr);
+    }
+    
+    public Army getArmy(String commander) {
+    	return (Army)getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", commander);
+    }
+    
+    public Encounter getEncounter(int hexNo, String character) {
+    	return (Encounter)getContainer(TurnElementsEnum.Encounter).findFirstByProperties(new String[]{"hexNo", "character"}, new Object[]{hexNo, character});
+    }
+    
+    public Challenge findChallenge(String character) {
+    	for (Challenge c : (ArrayList<Challenge>)getContainer(TurnElementsEnum.Challenge).getItems()) {
+    		if (character.equals(c.getVictor()) || character.equals(c.getLoser())) return c;
+    	}
+    	return null;
+    }
+    
+    public ArrayList<NationMessage> getNationMessages() {
+    	return (ArrayList<NationMessage>)getContainer(TurnElementsEnum.NationMessage).getItems();
+    }
+    
+    public ArrayList<NationMessage> getNationMessages(int nationNo) {
+    	return (ArrayList<NationMessage>)getContainer(TurnElementsEnum.NationMessage).findAllByProperty("nationNo", nationNo);
+    }
 }

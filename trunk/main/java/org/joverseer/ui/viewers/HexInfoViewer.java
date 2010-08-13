@@ -253,12 +253,15 @@ public class HexInfoViewer extends ObjectViewer {
         ActionCommand showCharacterPathMasteryRangeCommand = new ShowCharacterPathMasteryRangeCommand(hex.getHexNo());
         ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(hex.getHexNo(), 12);
 
+        CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
+        		"hexInfoBridgeGroup",
+        		new Object[]{
+        				addBridgeNE, addBridgeE, addBridgeSE, addBridgeSW, addBridgeW, addBridgeNW, 
+                        "separator",
+                        removeBridgeNE, removeBridgeE, removeBridgeSE, removeBridgeSW, removeBridgeW, removeBridgeNW});
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
                 "hexInfoCommandGroup",
-                new Object[] {addBridgeNE, addBridgeE, addBridgeSE, addBridgeSW, addBridgeW, addBridgeNW, 
-                        "separator",
-                        removeBridgeNE, removeBridgeE, removeBridgeSE, removeBridgeSW, removeBridgeW, removeBridgeNW,
-                        "separator",
+                new Object[] {
                         showCharacterRangeOnMapCommand,
                         showCharacterLongStrideRangeCommand,
                         showCharacterFastStrideRangeCommand,
@@ -277,8 +280,10 @@ public class HexInfoViewer extends ObjectViewer {
                         new AddPopCenterCommand(),
                         new AddEditNoteCommand(hex.getHexNo()),
                         "separator",
-                        new CreateCombatForHexCommand(hex.getHexNo())
-                
+                        new CreateCombatForHexCommand(hex.getHexNo()),
+                        "separator",
+                        bridges
+                        
                         });
         return group.createPopupMenu();
     }
@@ -421,7 +426,7 @@ public class HexInfoViewer extends ObjectViewer {
             Game g = GameHolder.instance().getGame();
             GameMetadata gm = g.getMetadata();
             gm.addHexOverride(g.getCurrentTurn(), nh);
-            Hex neighbor = gm.getHex(side.getHexNoAtSide(nh.getHexNo()));
+            Hex neighbor = gm.getHex(side.getHexNoAtSide(nh.getHexNo())).clone();
             neighbor.addHexSideElement(side.getOppositeSide(), HexSideElementEnum.Bridge);
             gm.addHexOverride(g.getCurrentTurn(), neighbor);
             

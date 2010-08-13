@@ -16,6 +16,8 @@ public class TurnInfo {
 	Container snas;
 	Container anchoredShips;
 	Container battles;
+	Container hostages;
+	Container recons;
 	
 	int turnNo = -1;
     int nationNo = -1;
@@ -70,6 +72,14 @@ public class TurnInfo {
 
 	
 	
+	public Container getRecons() {
+		return recons;
+	}
+
+	public void setRecons(Container recons) {
+		this.recons = recons;
+	}
+
 	public Container getEncounters() {
 		return encounters;
 	}
@@ -95,6 +105,14 @@ public class TurnInfo {
 	}
 
 	
+
+	public Container getHostages() {
+		return hostages;
+	}
+
+	public void setHostages(Container hostages) {
+		this.hostages = hostages;
+	}
 
 	public Container getHiddenArtifacts() {
 		return hiddenArtifacts;

@@ -43,6 +43,7 @@
 				<value>nationStatisticsListView</value>
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
+				<value>turnReportView</value>
 				<!--
 				<value>pcChangesListView</value>
 				<value>chatWindowView</value>
@@ -483,31 +484,7 @@
 		</property>
 	</bean>
 	
-	<bean id="pcChangesListView" 
-		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
-		
-		<property name="initMode">
-			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
-		</property>
-		<property name="initSide">
-			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
-		</property>
-		<property name="initIndex">
-			<value>3</value>
-		</property>
-		<property name="viewClass">
-			<value>org.joverseer.ui.listviews.ChangedPCListView</value>
-		</property>
-		<property name="preferredWidth">
-			<value>650</value>
-		</property>
-		<property name="preferredHeight">
-			<value>250</value>
-		</property>
-		<property name="viewGroup">
-			<value>Advanced Intel</value>
-		</property>
-	</bean>
+	
 	
 	<bean id="advancedCharacterListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
@@ -523,6 +500,32 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="turnReportView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.TurnReportView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

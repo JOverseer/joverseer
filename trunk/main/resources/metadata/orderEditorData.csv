@@ -64,7 +64,7 @@
 ;;;;Commander;HC;LC;HI;LI;AR;MA;;
 357;TrShp;Misc;Other Commander ID (5 lowercase letters/spaces) + # of Warships + # of Transports transferred.;cid;ae;ae;;;;;;C
 ;;;;Commander;Warships;Transports;;;;;;
-360;TrArt;Misc;Other Character ID (5 lowercase letters/spaces) + 1-6 Artifact ID #�s (1 per cell);cid;art;art;art;art;art;art;;
+360;TrArt;Misc;Other Character ID (5 lowercase letters/spaces) + 1-6 Artifact ID #'s (1 per cell);cid;art;art;art;art;art;art;;
 ;;;;Character;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;
 363;TrHost;Misc;Other Character ID (5 lowercase letters/spaces) + 1-3 Hostage Character ID�s (1 per cell);cid;cid;xid;xid;;;;;
 ;;;;Character;Hostage;Hostage;Hostage;;;;;
@@ -114,6 +114,8 @@
 ;;;;Direction;;;;;;;;
 494;FortPop;Comm;;;;;;;;;C;C
 
+496;BldRoad;Comm;Direction from + Direction to;dir;dir;;;;;;C;C
+;;;;From;To;;;;;;;
 498;Threat;Comm;;;;;;;;;C;C
 
 500;Double;Emis;Target Character ID (5 lowercase letters/spaces) ;cid;;;;;;;E;E

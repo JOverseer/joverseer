@@ -224,6 +224,32 @@
 		</property>
 	</bean>
 	
+	<bean id="turnReportView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.TurnReportView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
 	<bean id="currentHexDataViewer" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		
@@ -512,32 +538,6 @@
 		</property>
 	</bean>
 	
-	<bean id="turnReportView" 
-		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
-		
-		<property name="initMode">
-			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
-		</property>
-		<property name="initSide">
-			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
-		</property>
-		<property name="initIndex">
-			<value>3</value>
-		</property>
-		<property name="viewClass">
-			<value> org.joverseer.ui.views.TurnReportView</value>
-		</property>
-		<property name="preferredWidth">
-			<value>650</value>
-		</property>
-		<property name="preferredHeight">
-			<value>500</value>
-		</property>
-		<property name="viewGroup">
-			<value>Advanced Intel</value>
-		</property>
-	</bean>
-
 	<bean id="armyListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		

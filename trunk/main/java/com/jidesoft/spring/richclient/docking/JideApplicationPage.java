@@ -131,6 +131,7 @@ public class JideApplicationPage extends DefaultApplicationPage {
         if (log.isDebugEnabled()) {
             log.debug("Adding view for " + viewDescriptor.getId());
         }
+        JideViewDescriptor jvd = (JideViewDescriptor)viewDescriptor;
         super.showView(viewDescriptor);
         registerPageComponent(viewDescriptor.getId());
     }
@@ -229,7 +230,10 @@ public class JideApplicationPage extends DefaultApplicationPage {
                 log.debug("Showing existing docked frame " + frameName);
             }
             DockContext currentContext = manager.getContextOf(frameName);
-            if (currentContext.isHidden()) {
+            
+            if (currentContext.isHidden() || 
+            		currentContext.getAvailablePreviousState() == null) // mscoon 15/8/2010 - added this clause because otherwise initially hidden views were not being shown
+            {
                 if (viewDescriptor.isFloatOnShow()) {
                     manager.floatFrame(frameName, viewDescriptor.getFloatBounds(), true);
                 } else {

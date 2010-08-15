@@ -7,11 +7,30 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
+import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.richclient.application.Application;
 
 
 public class BaseTurnProcessor {
     HashMap<String, AbstractTurnPhaseProcessor> phases = new HashMap<String, AbstractTurnPhaseProcessor>();
+    
+    public void run() {
+    	Game g = GameHolder.instance().getGame();
+    	Turn newTurn = copyTurn(g.getTurn());
+        newTurn.setTurnNo(g.getTurn().getTurnNo() + 1);
+        processTurn(newTurn);
+        try {
+            g.addTurn(newTurn);
+            Application.instance().getApplicationContext().publishEvent(
+                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, this));
+
+        }
+        catch (Exception exc) {}
+    }
     
     public Turn copyTurn(Turn t) {
         try {

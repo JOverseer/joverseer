@@ -1,5 +1,8 @@
 package org.joverseer.ui.command;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.orders.BaseTurnProcessor;
@@ -31,17 +34,19 @@ public class RunOrders extends ActionCommand {
     protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         Game g = GameHolder.instance().getGame();
-        BaseTurnProcessor btp = (BaseTurnProcessor)Application.instance().getApplicationContext().getBean("TurnProcessor");
-        Turn newTurn = btp.copyTurn(g.getTurn());
-        newTurn.setTurnNo(g.getTurn().getTurnNo() + 1);
-        btp.processTurn(newTurn);
         try {
-            g.addTurn(newTurn);
-            Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, this));
-
+        	Class c = Class.forName("org.joverseer.orders.BaseTurnProcessor");
+        	Constructor constructor = c.getConstructor();
+        	Object btp = constructor.newInstance();
+        	Method m = c.getDeclaredMethod("processGame");
+        	m.invoke(btp);
         }
-        catch (Exception exc) {}
+        catch (ClassNotFoundException e) {
+        	
+        }
+        catch (Exception e) {
+        	
+        }
     }
 
 }

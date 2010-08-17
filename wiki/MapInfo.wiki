@@ -5,9 +5,9 @@
 
 The map displays various kinds of information. More specifically, each hex displays:
 
-  * The terrain, using the background color of the hex
-
-  * The hex features, such as rivers, bridges and roads
+|| The terrain, using the background color of the hex || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.plains.jpg] ||
+|| The hex features, such as rivers, bridges and roads || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.hex-features.jpg] ||
+|| Not visible hexes (i.e. not reported on the map and not seen by recon/scry) are shown with dashed lines or a small "x" (depending on preferences) || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.unseen-hex-dashes.jpg] [http://joverseer.googlecode.com/svn/wiki/images/jov.map.unseen-hex-x.jpg]||
 
   * The population center size, fortifications and owner, if one exists
 
@@ -38,8 +38,6 @@ The map displays various kinds of information. More specifically, each hex displ
 The following figure shows some of this information:
 
 [http://joverseer.googlecode.com/svn/wiki/images/jov.map.hex-display.jpg]
-
-
 
 
 

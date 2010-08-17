@@ -13,10 +13,12 @@ The map displays various kinds of information. More specifically, each hex displ
 || Hidden population centers are shown with dashed lines || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.hidden-pop.jpg] ||
 || Capitals are denoted with small flags || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.pop-center-capital.jpg] ||
 || Ruins are shown, along with existing fortifications || http://joverseer.googlecode.com/svn/wiki/images/jov.map.ruins.jpg] ||
-|| Characters located in the hex are shown with small colored (according to nation) dots right below the hex number (three Dragon Lord and one Fire King characters at Dol Guldur) || http://joverseer.googlecode.com/svn/wiki/images/jov.map.characters.jpg] ||
-|| Dragons are depicted like characters, but with a black bottom right corner || http://joverseer.googlecode.com/svn/wiki/images/jov.map.dragon.jpg] ||
-
-  * The armies located in the hex
+|| Characters located in the hex are shown with small colored (according to nation) dots right below the hex number (three Dragon Lord and one Fire King characters at Dol Guldur) || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.characters.jpg] ||
+|| Dragons are depicted like characters, but with a black bottom right corner (dragon at an Ice King camp) || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.dragon.jpg] ||
+|| Armies are shown in the bottom part of the hex. FPs are shown at the left, DS at the right, Neutrals are shown on either side (one Eothraim and one Dark Leutenant army showing) || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.armies.jpg] ||
+|| Whenever possible, armies are depicted as infantry or cavalry (infantry and cavalry armies at Dol Guldur) || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.army-types.jpg] ||
+|| Navies are shown with a triangle in the bottom right corner || || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.navy.jpg] ||
+|| Anchored ships are also shown || [http://joverseer.googlecode.com/svn/wiki/images/jov.map.anchored-ships.jpg] ||
 
   * A red dot is shown in the bottom part of the hex to represent a rumor that concerns the hex
 

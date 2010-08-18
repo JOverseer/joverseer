@@ -411,6 +411,7 @@ public class OrdercheckerProxy {
         }
         
         for (Army army : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
+        	if (Army.isAnchoredShips(army)) continue;
             com.middleearthgames.orderchecker.Army a = new com.middleearthgames.orderchecker.Army(Integer.parseInt(army.getHexNo()));
             a.setCommander(army.getCommanderName());
             a.setNation(army.getNationNo());
@@ -484,11 +485,20 @@ public class OrdercheckerProxy {
             prefix = prefix.substring(0, i);
             if (prefix.equals("FOOD")) {
                 String commander = extractString(reqText, "Will ", "'s army be considered");
-                Army army = (Army)t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", commander);
-                if (army != null) {
-                    if (army.isFed() != null) {
-                        request.setSelected(army.isFed());
-                    }
+                if (commander != null) {
+	                Army army = t.getArmy(commander);
+	                if (army != null) {
+	                    if (army.computeFed() != null) {
+	                        request.setSelected(army.computeFed());
+	                    }
+	                }
+                } 
+                commander = extractString(reqText, "Will ", "'s army have 1 food");
+                if (commander != null) {
+                	Army a = t.getArmy(commander);
+                	if (a != null) {
+                		if (a.getFood() != null && a.getFood() > 0) request.setSelected(true);
+                	}
                 }
             } else if (prefix.equals("COMPANYCO")) {
                 String commander = extractString(reqText, "Is ", " a company commander?");

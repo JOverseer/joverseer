@@ -15,7 +15,7 @@ public class NationMessageListView extends ItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[]{64, 400};
+        return new int[]{64, 480};
     }
     
     protected AbstractListViewFilter[][] getFilters() {

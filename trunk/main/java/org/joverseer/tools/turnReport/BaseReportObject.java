@@ -17,6 +17,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
@@ -189,62 +190,15 @@ public class BaseReportObject implements IHasMapLocation, Comparable {
 				}
 			} else if (ps[0].equals("report")) {
 				String charId = ps[1].replace("_", " ");
-				final Character c = GameHolder.instance().getGame().getTurn().getCharById(charId);
+				Character c = GameHolder.instance().getGame().getTurn().getCharById(charId);
 				if (c != null) {
-					final OrderResultsForm f = new OrderResultsForm(FormModelHelper.createFormModel(c));
-		        	FormBackedDialogPage pg = new FormBackedDialogPage(f);
-		        	TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
-						protected boolean onFinish() {
-							return true;
-						}
-		
-						protected void onAboutToShow() {
-							super.onAboutToShow();
-							f.setFormObject(c);
-						}
-						
-						protected Object[] getCommandGroupMembers() {
-				                    return new AbstractCommand[] {
-				                            getFinishCommand()
-				                    };
-				                }
-
-		        	};
-		            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-		            dlg.setTitle(ms.getMessage("orderResultsDialog.title", new Object[]{}, Locale.getDefault()));
-		        	dlg.showDialog();
+					DialogsUtility.showCharacterOrderResults(c);
 				}
 			} else if (ps[0].equals("combat")) {
 				int hexNo = Integer.parseInt(ps[1]);
 				Combat c = (Combat)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", hexNo);
-				
-	            final String descr = c.getFirstNarration();
-	            if (descr == null) return;
-	            FormModel formModel = FormModelHelper.createFormModel(descr);
-	            final NarrationForm form = new NarrationForm(formModel);
-	            FormBackedDialogPage page = new FormBackedDialogPage(form);
-	            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-	                protected void onAboutToShow() {
-	                    form.setFormObject(descr);
-	                }
-
-	                protected boolean onFinish() {
-	                    return true;
-	                }
-
-	                protected Object[] getCommandGroupMembers() {
-	                    return new AbstractCommand[] {
-	                            getFinishCommand()
-	                    };
-	                }
-
-	            };
-	            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-	            Nation n = game.getMetadata().getNationByNum(c.getFirstNarrationNation());
+				if (c != null) DialogsUtility.showCombatNarration(c);
 	            
-	            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-	            dialog.setTitle(ms.getMessage("combatNarrationDialog.title", new Object[]{String.valueOf(c.getHexNo()), n.getName()}, Locale.getDefault()));
-	            dialog.showDialog();
 			} else if (ps[0].equals("enc")) {
 				String[] params = ps[1].split(","); 
 				int hexNo = Integer.parseInt(params[0]);
@@ -253,29 +207,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable {
 				
 				Character c = t.getCharById(charId);
 				Encounter encounter = t.getEncounter(hexNo, c.getName());
-				
-				final String descr = encounter.getDescription();
-	            FormModel formModel = FormModelHelper.createFormModel(descr);
-	            final NarrationForm form = new NarrationForm(formModel);
-	            FormBackedDialogPage page = new FormBackedDialogPage(form);
-	            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-	                protected void onAboutToShow() {
-	                    form.setFormObject(descr);
-	                }
-
-	                protected boolean onFinish() {
-	                    return true;
-	                }
-	                
-	                protected Object[] getCommandGroupMembers() {
-	                    return new AbstractCommand[] {
-	                            getFinishCommand()
-	                    };
-	                }
-	            };
-	            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-	            dialog.setTitle(ms.getMessage("encounterDialog.title", new Object[]{encounter.getCharacter(), String.valueOf(encounter.getHexNo())}, Locale.getDefault()));
-	            dialog.showDialog();
+				DialogsUtility.showEncounterDescription(encounter);
 			}
 			else if (ps[0].equals("challenge")) {
 				String[] params = ps[1].split(",");
@@ -291,29 +223,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable {
 					challenge = t.findChallenge(c.getName());
 				}
 				if (challenge == null) return;
-				
-				final String descr = challenge.getDescription();
-	            FormModel formModel = FormModelHelper.createFormModel(descr);
-	            final NarrationForm form = new NarrationForm(formModel);
-	            FormBackedDialogPage page = new FormBackedDialogPage(form);
-	            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-	                protected void onAboutToShow() {
-	                    form.setFormObject(descr);
-	                }
-
-	                protected boolean onFinish() {
-	                    return true;
-	                }
-	                
-	                protected Object[] getCommandGroupMembers() {
-	                    return new AbstractCommand[] {
-	                            getFinishCommand()
-	                    };
-	                }
-	            };
-	            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-	            dialog.setTitle(ms.getMessage("encounterDialog.title", new Object[]{challenge.getCharacter(), String.valueOf(challenge.getHexNo())}, Locale.getDefault()));
-	            dialog.showDialog();
+				DialogsUtility.showChallengeDescription(challenge);
 			}
 		}
 	}

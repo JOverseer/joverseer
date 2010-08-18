@@ -4,6 +4,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.NationMessage;
+import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Cloner;
@@ -144,5 +145,9 @@ public class Turn implements Serializable {
     
     public ArrayList<NationMessage> getNationMessages(int nationNo) {
     	return (ArrayList<NationMessage>)getContainer(TurnElementsEnum.NationMessage).findAllByProperty("nationNo", nationNo);
+    }
+    
+    public NationRelations getNationRelations(int nationNo) {
+    	return (NationRelations)getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
     }
 }

@@ -44,6 +44,7 @@ import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.richclient.application.Application;
@@ -203,6 +204,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
                         		new CopyToClipboardCommand(),
                         		new CopyToClipboardCommandWithoutAnnotations(),
                         		new ToggleAttributeSortModeCommand((AdvancedCharacterTableModel)tableModel),
+                        		new ShowResultsCommand(),
                         		});
                 return group.createPopupMenu();
             }
@@ -226,6 +228,19 @@ public class AdvancedCharacterListView extends BaseItemListView {
 				CharacterAttributeWrapper.COMPARIZON_MODE = CharacterAttributeWrapper.COMPARE_BY_TOTAL_VALUE;
 			}
 			model.fireTableDataChanged();
+		}
+    }
+    
+    class ShowResultsCommand extends ActionCommand {
+    	
+		public ShowResultsCommand() {
+		}
+
+		protected void doExecuteCommand() {
+			AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper)getSelectedObject();
+			if (acw.getOrderResults() == null) return;
+			Character c = GameHolder.instance().getGame().getTurn().getCharByName(acw.getName());
+			if (c != null) DialogsUtility.showCharacterOrderResults(c);
 		}
     }
     

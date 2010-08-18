@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
+import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.views.NarrationForm;
 import org.springframework.binding.form.FormModel;
@@ -99,28 +100,7 @@ public class EncounterViewer extends ObjectViewer {
     private class ShowDescriptionCommand extends ActionCommand {
         protected void doExecuteCommand() {
             Encounter e = (Encounter)getFormObject();
-            final String descr = e.getDescription();
-            FormModel formModel = FormModelHelper.createFormModel(descr);
-            final NarrationForm form = new NarrationForm(formModel);
-            FormBackedDialogPage page = new FormBackedDialogPage(form);
-            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                protected void onAboutToShow() {
-                    form.setFormObject(descr);
-                }
-
-                protected boolean onFinish() {
-                    return true;
-                }
-                
-                protected Object[] getCommandGroupMembers() {
-                    return new AbstractCommand[] {
-                            getFinishCommand()
-                    };
-                }
-            };
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            dialog.setTitle(ms.getMessage("encounterDialog.title", new Object[]{e.getCharacter(), String.valueOf(e.getHexNo())}, Locale.getDefault()));
-            dialog.showDialog();
+            DialogsUtility.showEncounterDescription(e);
         }
         
     }

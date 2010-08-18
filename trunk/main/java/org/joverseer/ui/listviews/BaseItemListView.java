@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.domain.Order;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
@@ -471,5 +472,21 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     	finally {
     		handleFilterEvents = true;
     	}
+    }
+    
+    public Object getSelectedObject() {
+    	int row = table.getSelectedRow();
+        if (row >= 0) {
+            int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
+            if (idx >= tableModel.getRowCount())
+                return null;
+            try {
+                Object obj = tableModel.getRow(idx);
+                return obj;
+            }
+            catch (Exception e) {
+            }
+        }
+        return null;
     }
 }

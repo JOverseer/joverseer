@@ -123,7 +123,7 @@ public class TurnPostProcessor {
 		// change CharacterDeathReasonEnum.Dead to Challenged where appropriate
 		for (Character c : (ArrayList<Character>)turn.getContainer(TurnElementsEnum.Character).findAllByProperty("deathReason", CharacterDeathReasonEnum.Dead)) {
 			for (Challenge ch : (ArrayList<Challenge>)turn.getContainer(TurnElementsEnum.Challenge).getItems()) {
-				if (ch.getLoser().equals(c.getName())) {
+				if (ch.getLoser() != null && ch.getLoser().equals(c.getName())) {
 					c.setDeathReason(CharacterDeathReasonEnum.Challenged);
 				}
 			}

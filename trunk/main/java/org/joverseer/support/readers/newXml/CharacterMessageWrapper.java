@@ -163,12 +163,25 @@ public class CharacterMessageWrapper {
 			if (or == null) or = getRCOrderResult(line);
 			if (or == null) or = getReconResult(line, infoSource);
 			if (or == null) or = getScryResult(line, infoSource);
+			if (or == null) or = getRAResult(line, infoSource);
 			if (or != null) {
 				ret.add(or);
 			}
 		}
 		return ret;
 		
+	}
+	
+	protected OrderResult getRAResult(String line, InfoSource infoSource) {
+		if (line.contains(" was ordered to cast a lore spell. Research Artifact -")) {
+			String artiName = StringUtils.getUniquePart(line, "Research Artifact - ", "#\\d{1,3}", false, false);
+			String artiNo = StringUtils.getUniquePart(line, artiName + " #", " is a ", false, false);
+			RAResultWrapper rrw = new RAResultWrapper();
+			rrw.setArtiName(artiName);
+			rrw.setArtiNo(artiNo);
+			return rrw;
+		}
+		return null;
 	}
 	
 	protected OrderResult getScryResult(String line, InfoSource infoSource) {

@@ -15,6 +15,10 @@
  */
 package com.jidesoft.spring.richclient.docking.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -131,4 +135,14 @@ public abstract class JideAbstractView extends AbstractView{
 			});
 		}
 	}
+	
+	
+	
+	@Override
+	protected JComponent createControl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

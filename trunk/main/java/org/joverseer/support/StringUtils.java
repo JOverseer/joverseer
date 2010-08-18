@@ -84,6 +84,25 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		return null;
 	}
 	
+	public static String getUniqueRegexMatch(String text, String pattern) {
+		ArrayList<String> ret = getRegexMatches(text, pattern);
+		if (ret.size() == 0) return null;
+		if (ret.size() > 1) throw new RuntimeException("Not Unique Match");
+		return ret.get(0);
+	}
+	
+	public static ArrayList<String> getRegexMatches(String text, String pattern) {
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(text);
+		ArrayList<String> ret = new ArrayList<String>();
+		int start = 0;
+		while (m.find(start)) {
+			ret.add(m.group(1));
+			start = m.end();
+		}
+		return ret;
+	}
+	
 	public static String stripFirstWord(String text) {
 		int i = text.indexOf(" ");
 		if (i > -1) return text.substring(i+1);

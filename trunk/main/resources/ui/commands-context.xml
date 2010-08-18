@@ -171,6 +171,7 @@
 		<property name="members">
 			<list>
 				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand"/>
+				<bean class="org.joverseer.ui.command.ShowMapHelpCommand"/>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand"/>
 				<value>separator</value>

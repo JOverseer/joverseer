@@ -118,4 +118,6 @@ public class JideViewDescriptor extends DefaultViewDescriptor implements Compara
 		ViewDescriptor castObj = (ViewDescriptor)o;
 		return this.getDisplayName().compareToIgnoreCase(castObj.getDisplayName());
 	}
+	
+	
 }

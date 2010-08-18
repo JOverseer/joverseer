@@ -7,6 +7,7 @@ import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
 
@@ -16,6 +17,7 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class NationStatisticsWrapper implements IBelongsToNation {
+	NationAllegianceEnum allegiance;
 	Integer nationNo;
 	int characters;
 	int charactersInCapital;
@@ -34,6 +36,14 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	Integer armyEHI = null;
 	int troopCount;
 	
+	
+	
+	public NationAllegianceEnum getAllegiance() {
+		return allegiance;
+	}
+	public void setAllegiance(NationAllegianceEnum allegiance) {
+		this.allegiance = allegiance;
+	}
 	public int getArmies() {
 		return armies;
 	}
@@ -47,7 +57,13 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	        if (!Game.isInitialized(g)) return 0;
 	        ArrayList items = new ArrayList();
 	        Turn t = g.getTurn();
-			for (Army a : (ArrayList<Army>) t.getContainer(TurnElementsEnum.Army).findAllByProperty("nationNo",getNationNo())) {
+	        ArrayList<Army> armies;
+	        if (allegiance == null) {
+	        	armies = (ArrayList<Army>) t.getContainer(TurnElementsEnum.Army).findAllByProperty("nationNo",getNationNo());
+	        } else {
+	        	armies = (ArrayList<Army>) t.getContainer(TurnElementsEnum.Army).findAllByProperty("nationAllegiance",getAllegiance());
+	        }
+			for (Army a : armies) {
 				armyEHI = a.getENHI() + armyEHI;
 			}
 		}
@@ -147,5 +163,19 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.warships = warships;
 	}
 	
-	
+	public void add(NationStatisticsWrapper nsw) {
+		armies += nsw.getArmies();
+		cities += nsw.getCities();
+		majorTowns += nsw.getMajorTowns();
+		towns += nsw.getTowns();
+		villages += nsw.getVillages();
+		camps += nsw.getCamps();
+		taxBase += nsw.getTaxBase();
+		characters += nsw.getCharacters();
+		navies += nsw.getNavies();
+		transports += nsw.getTransports();
+		warships += nsw.getWarships();
+		troopCount += nsw.getTroopCount();
+		
+	}
 }

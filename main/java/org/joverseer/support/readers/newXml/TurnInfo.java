@@ -18,6 +18,8 @@ public class TurnInfo {
 	Container battles;
 	Container hostages;
 	Container recons;
+	Container challenges;
+	Container doubleAgents;
 	
 	int turnNo = -1;
     int nationNo = -1;
@@ -37,6 +39,22 @@ public class TurnInfo {
 	
 	
 	
+
+	public Container getDoubleAgents() {
+		return doubleAgents;
+	}
+
+	public void setDoubleAgents(Container doubleAgents) {
+		this.doubleAgents = doubleAgents;
+	}
+
+	public Container getChallenges() {
+		return challenges;
+	}
+
+	public void setChallenges(Container challenges) {
+		this.challenges = challenges;
+	}
 
 	public Container getBattles() {
 		return battles;

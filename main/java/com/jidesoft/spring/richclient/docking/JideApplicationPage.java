@@ -30,6 +30,7 @@ import org.springframework.richclient.application.PageDescriptor;
 import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.application.ViewDescriptorRegistry;
 import org.springframework.richclient.application.support.DefaultApplicationPage;
+import org.springframework.richclient.application.support.DefaultViewDescriptor;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandManager;
 import org.springframework.richclient.image.IconSource;
@@ -309,6 +310,15 @@ public class JideApplicationPage extends DefaultApplicationPage {
             JideAbstractView view = (JideAbstractView) pageComponent;
             dockableFrame.setTitleBarComponent(view.getViewToolBar());
             dockableFrame.setJMenuBar(view.getViewMenuBar());
+            final DockableFrame ff = dockableFrame;
+            view.getDescriptor().addPropertyChangeListener("title", new PropertyChangeListener() {
+
+				public void propertyChange(PropertyChangeEvent evt) {
+					ff.setTitle(evt.getNewValue().toString());
+					ff.setTabTitle(pageComponent.getDisplayName());
+				}
+            	
+            });
         }
         return dockableFrame;
     }
@@ -381,5 +391,5 @@ public class JideApplicationPage extends DefaultApplicationPage {
         this.workspaceComponent = workspaceComponent;
     }
 
-
+    
 }

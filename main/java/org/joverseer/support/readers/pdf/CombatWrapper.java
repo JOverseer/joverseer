@@ -13,6 +13,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.StringUtils;
 import org.joverseer.support.info.InfoUtils;
@@ -288,11 +289,24 @@ public class CombatWrapper {
     		}
     	}
     	
+    	for (ArmyEstimate ae : getArmyEstimates()) {
+    		ArmyEstimate eae = (ArmyEstimate)game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName()); 
+    		if (eae != null) {
+    			game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
+    		}
+    		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+    	}
+    	
+    }
+    
+    public ArrayList<ArmyEstimate> getArmyEstimates() {
+    	ArrayList<ArmyEstimate> ret = new ArrayList<ArmyEstimate>();
+    	Game game = GameHolder.instance().getGame();
     	for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {
     		try {
     			String commander = ca.getCommanderName().trim();
-    			String commanderTitle = null;
-    			String commanderName = null;
+    			String commanderTitle = ca.getCommanderTitle();
+    			String commanderName = commander;
     			String[] commanderTitles = "Veteran,Hero,Commander,Captain,Lord,Regent,Warlord,General,Marshal,Lord Marshal".split(",");
     			for (String ct : commanderTitles) {
     				if (commander.startsWith(ct + " ")) {
@@ -300,11 +314,7 @@ public class CombatWrapper {
     					commanderName = commander.substring(ct.length() + 1).trim();
     				}
     			}
-	    		ArmyEstimate ae = (ArmyEstimate)game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", commanderName); 
-	    		if (ae != null) {
-	    			game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(ae);
-	    		}
-    			ae = new ArmyEstimate();
+	    		ArmyEstimate ae = new ArmyEstimate();
     			Nation n = game.getMetadata().getNationByName(ca.getNation());
     			if (n == null) {
     				Character c = (Character)game.getMetadata().getCharacters().findFirstByProperty("name", commanderName);
@@ -318,7 +328,7 @@ public class CombatWrapper {
     				ae.setNationNo(n == null ? null : n.getNumber());
     			}
 	    		ae.setCommanderName(commanderName);
-	    		ae.setCommanderTitle(commanderTitle);
+	    		ae.setCommanderTitle(commanderTitle == null ? "" : commanderTitle);
 	    		ae.setHexNo(getHexNo());
 	    		if (armyLosses.get(ae.getCommanderName()) != null) {
 		    		for (String l : armyLosses.get(ae.getCommanderName())) {
@@ -339,7 +349,7 @@ public class CombatWrapper {
 	    			ae.setMorale(30);
 	    		}
 	    		
-	    		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+	    		ret.add(ae);
 	    		
 	    		for (CombatArmyElement cae : (ArrayList<CombatArmyElement>)ca.regiments.getItems()) {
 	    			String descr = cae.getDescription();
@@ -388,11 +398,11 @@ public class CombatWrapper {
 	    		}
     		}
     		catch (Exception exc) {
-    			System.out.println("Error in combat " + getHexNo() + " turn " + turnNo + " nation " + nationNo);
+    			System.out.println("Error in combat " + getHexNo());
     			exc.printStackTrace();
     		}
     	}
-    		
+    	return ret;
     }
     
     protected int getRangeAverage(String rangeString, int max) {
@@ -441,16 +451,34 @@ public class CombatWrapper {
     		String commanderTitle = StringUtils.getFirstWord(commander);
     		String commanderName = StringUtils.stripFirstWord(commander);
     		if (nation.startsWith("the ")) nation = StringUtils.stripFirstWord(nation);
+    		
     		CombatArmy ca = new CombatArmy();
     		ca.setCommanderName(commanderName);
     		ca.setNation(nation);
     		
-    		String survived = commanderName + "'s forces were victorious";
+    		String warships = StringUtils.getUniqueRegexMatch(armyText, "(\\d+) warships");
+    		String transports = StringUtils.getUniqueRegexMatch(armyText, "(\\d+) transports");
+    		
+    		if (warships != null) {
+    			CombatArmyElement cae = new CombatArmyElement();
+    			cae.setDescription(warships + " Warships");
+    			ca.getRegiments().addItem(cae);
+    		}
+    		if (transports != null) {
+    			CombatArmyElement cae = new CombatArmyElement();
+    			cae.setDescription(transports + " Transports");
+    			ca.getRegiments().addItem(cae);
+    		}
+    		
+    		String survived = commanderName + "'s forces were victorious in the battle";
     		String destroyed = commanderName + "'s forces were destroyed/routed";
     		String commanderSurvived = commanderName + " appeared to have survived";
     		String commanderKilled = commanderName + " was killed";
     		String commanderCaptured = commanderName + " was captured";
     		if (cleanNarration.contains(survived)) {
+    			String lossesSentence = StringUtils.getUniquePart(cleanNarration, survived, "\\.", true, true);
+    			String losses = StringUtils.getUniquePart(lossesSentence, "but suffered ", " losses", false, false);
+    			addToList(ca.getCommanderName(), losses, armyLosses);
     			ca.setSurvived(true);
     		} else if (cleanNarration.contains(destroyed)) {
     			ca.setSurvived(false);
@@ -518,12 +546,14 @@ public class CombatWrapper {
 		    			ca.setSurvived(true);
 		    		} else if (forceOutcome.contains("victorious")) {
 		    			String losses = StringUtils.getUniquePart(forceOutcome, "suffered", "losses", false, false);
-		    			ca.setLosses(losses);
+		    			addToList(ca.getCommanderName(), losses, armyLosses);
 		    			ca.setSurvived(true);
 		    		} else if (forceOutcome.contains("destroyed/routed")) {
 		    			ca.setSurvived(false);
+		    			addToList(ca.getCommanderName(), "destroyed", armyLosses);
 		    		} else if (forceOutcome.contains("found no enemy armies to fight.")) {
 		    			ca.setSurvived(true);
+		    			addToList(ca.getCommanderName(), null, armyLosses);
 		    		}
 		    		String commanderSurvived = ca.getCommanderName() + " appeared to have survived.";
 		    		String commanderCaptured = ca.getCommanderName() + " was captured.";
@@ -575,6 +605,20 @@ public class CombatWrapper {
 				    			setPopCenterOutcome("not affected");
 				    		}
 			    		}
+			    		for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {
+			    			String forces = ca.getCommanderName() + "'s army ";
+			    			String forceOutcome = StringUtils.getUniquePart(popOutcome, forces, "\\.", true, true);
+				    		if (forceOutcome == null) {
+				    			ca.setSurvived(true);
+				    		} else if (forceOutcome.contains("survived")) {
+				    			String losses = StringUtils.getUniquePart(forceOutcome, "suffered", "losses", false, false);
+				    			addToList(ca.getCommanderName(), losses, armyLosses);
+				    			ca.setSurvived(true);
+				    		} else if (forceOutcome.contains("destroyed")) {
+				    			ca.setSurvived(false);
+				    			addToList(ca.getCommanderName(), "destroyed", armyLosses);
+				    		} 
+			    		}
 		    		}
 		    	}
 	    	}
@@ -593,8 +637,21 @@ public class CombatWrapper {
     	if (nation.startsWith("the ")) nation = nation.substring(4);
     	CombatArmy ca = new CombatArmy();
     	ca.setCommanderName(commanderName);
+    	ca.setCommanderTitle(commanderTitle);
     	ca.setNation(nation);
-    	
+    	String morale = StringUtils.getUniquePart(text, "The mount on which ", " battle lines", false, false);
+    	ca.setMorale(morale);
+    	for (String regiment : StringUtils.getParts(text, "  [\\d]+", "(\\n)|$", true, false)) {
+    		CombatArmyElement cae = new CombatArmyElement();
+    		ca.getRegiments().addItem(cae);
+    		String number = StringUtils.getFirstWord(regiment);
+    		regiment = StringUtils.stripFirstWord(regiment);
+    		String type = StringUtils.getUniquePart(regiment, "^", " with ", false, false);
+    		String weapons = StringUtils.getUniquePart(regiment, "with ", " weapons", false, false);
+    		String armor = StringUtils.getUniquePart(regiment, ",", " armor", false, false);
+    		String training = StringUtils.getUniquePart(regiment, " armor, ", "$", false, false);
+    		cae.setDescription(number + " " + type + "     " + weapons + "     " + armor + "    " + training);
+    	}
     	return ca;
     }
     

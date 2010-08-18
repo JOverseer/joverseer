@@ -10,8 +10,10 @@ import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Artifact;
+import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Character;
@@ -30,9 +32,12 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
+import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
+import org.joverseer.support.readers.newXml.DoubleAgentWrapper;
+import org.joverseer.support.readers.pdf.CombatWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.springframework.richclient.progress.ProgressMonitor;
 
@@ -104,6 +109,21 @@ public class TurnNewXmlReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
             // add to container
             digester.addSetNext("METurn/Hostages/Hostage", "addItem", "org.joverseer.support.readers.newXml.HostageWrapper");
+            
+            // create container for Double Agents
+            digester.addObjectCreate("METurn/DoubleAgents", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/DoubleAgents", "setDoubleAgents");
+        	// create hostage wrapper
+            digester.addObjectCreate("METurn/DoubleAgents/DoubleAgent", "org.joverseer.support.readers.newXml.DoubleAgentWrapper");            // set id
+            digester.addSetProperties("METurn/DoubleAgents/DoubleAgent", "NameID", "name");
+            // set nested properties
+            digester.addRule("METurn/DoubleAgents/DoubleAgent",
+                    snpr = new SetNestedPropertiesRule(new String[]{"Nation", "Line"},
+                            new String[]{"nation", "report"}));
+            snpr.setAllowUnknownChildElements(true);
+            // add to container
+            digester.addSetNext("METurn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.newXml.DoubleAgentWrapper");
             
 			// create container for Non Hidden Artifactss
             digester.addObjectCreate("METurn/ArtifactInfo/NonHiddenArtifacts", "org.joverseer.support.Container");
@@ -273,6 +293,18 @@ public class TurnNewXmlReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
         	// add to container
             digester.addSetNext("METurn/AnchoredShips/Ships", "addItem", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
+            
+            // create container for challenges
+            digester.addObjectCreate("METurn/Challenges", "org.joverseer.support.Container");
+            // add container to turn info
+            digester.addSetNext("METurn/Challenges", "setChallenges");
+            // create challenge wrappper
+            digester.addObjectCreate("METurn/Challenges/Challenge", "org.joverseer.support.readers.newXml.ChallengeWrapper");
+            // add line
+            digester.addCallMethod("METurn/Challenges/Challenge/Lines/Line", "addLine", 1);
+            digester.addCallParam("METurn/Challenges/Challenge/Lines/Line", 0);
+            // add to container
+            digester.addSetNext("METurn/Challenges/Challenge", "addItem", "org.joverseer.support.readers.newXml.ChallengeWrapper");
             
             // create container for battles
             digester.addObjectCreate("METurn/BattleReports", "org.joverseer.support.Container");
@@ -507,7 +539,31 @@ public class TurnNewXmlReader implements Runnable {
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
-                getMonitor().worked(70);
+                getMonitor().worked(75);
+                getMonitor().subTaskStarted("Updating double agents...");
+            }
+            try {
+                updateDoubleAgents(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(75);
+                getMonitor().subTaskStarted("Updating challenges...");
+            }
+            try {
+                updateChallenges(game);
+            }
+            catch (Exception exc) {
+                logger.error(exc);
+                errorOccured = true;
+                getMonitor().subTaskStarted("Error: " + exc.getMessage());
+            }
+            if (getMonitor() != null) {
+                getMonitor().worked(80);
                 getMonitor().subTaskStarted("Updating hexes...");
             }
             try {
@@ -519,7 +575,7 @@ public class TurnNewXmlReader implements Runnable {
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
-                getMonitor().worked(80);
+                getMonitor().worked(90);
                 getMonitor().subTaskStarted("Updating SNAs...");
             }
             try {
@@ -537,6 +593,25 @@ public class TurnNewXmlReader implements Runnable {
         catch (Exception exc) {
         	
         }
+	}
+	
+	private void updateChallenges(Game game) throws Exception {
+		Container challenges = turnInfo.getChallenges();
+		for (ChallengeWrapper cw : (ArrayList<ChallengeWrapper>)challenges.getItems()) {
+			cw.parse();
+			if (cw.getHexNo() > 0) {
+				Challenge c = turn.findChallenge(cw.getCharacter());
+				if (c != null) {
+					turn.getContainer(TurnElementsEnum.Challenge).removeItem(c);
+				}
+				c = new Challenge();
+				c.setHexNo(cw.getHexNo());
+				c.setCharacter(cw.getCharacter());
+				c.setDescription(cw.getDescription());
+				turn.getContainer(TurnElementsEnum.Challenge).addItem(c);
+			}
+			
+		}
 	}
 	
 	private void updateHexes(Game game) throws Exception {
@@ -579,6 +654,31 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 	
+	private void updateDoubleAgents(Game game) throws Exception {
+		Container daws = turnInfo.getDoubleAgents();
+		DoubleAgentInfoSource dais = new DoubleAgentInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+		Container cs = turn.getContainer(TurnElementsEnum.Character);
+        for (DoubleAgentWrapper daw : (ArrayList<DoubleAgentWrapper>)daws.getItems()) {
+            Character c = (Character)cs.findFirstByProperty("name", daw.getName());
+            if (c == null) {
+                // add character
+                c = daw.getCharacter();
+                c.setInfoSource(dais);
+                cs.addItem(c);
+            }
+            // set nation if applicable
+            Nation n = game.getMetadata().getNationByName(daw.getNation());
+            if (n != null) {
+                c.setNationNo(n.getNumber());
+            }
+            // set order results if applicable
+            if (c.getOrderResults() == null || c.getOrderResults().equals("")) {
+            	c.setOrderResults(daw.getReport());
+            }
+        }
+		
+	}
+	
 	private void updateCharacterMessages(Game game) throws Exception {
 		Container nrws = turnInfo.getCharMessages();
 		Container cs = turn.getContainer(TurnElementsEnum.Character);
@@ -586,9 +686,9 @@ public class TurnNewXmlReader implements Runnable {
 			Character c = (Character)cs.findFirstByProperty("id", cmw.getCharId());
 			if (c != null) {
 				cmw.updateCharacter(c, game);
-			}
-			for (OrderResult or : (ArrayList<OrderResult>)cmw.getOrderResults(infoSource)) {
-				or.updateGame(game, turn, turnInfo.nationNo, c.getName());
+				for (OrderResult or : (ArrayList<OrderResult>)cmw.getOrderResults(infoSource)) {
+					or.updateGame(game, turn, turnInfo.nationNo, c.getName());
+				}
 			}
 		}
         
@@ -690,6 +790,17 @@ public class TurnNewXmlReader implements Runnable {
             } else {
                 c.addNarration(turnInfo.getNationNo(), bw.getText());
             }
+            CombatWrapper cw = new CombatWrapper();
+            cw.setHexNo(bw.getHexNo());
+            cw.parseAll(bw.getText());
+        	for (ArmyEstimate ae : cw.getArmyEstimates()) {
+        		ArmyEstimate eae = (ArmyEstimate)game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName()); 
+        		if (eae != null) {
+        			game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
+        		}
+        		game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+        	}
+
 		}
 	}
 	

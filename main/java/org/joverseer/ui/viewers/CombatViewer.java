@@ -18,6 +18,7 @@ import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.views.NarrationForm;
 import org.springframework.binding.form.FormModel;
@@ -118,32 +119,7 @@ public class CombatViewer extends ObjectViewer {
 
         protected void doExecuteCommand() {
             Combat c = (org.joverseer.domain.Combat) getFormObject();
-            final String descr = c.getNarrationForNation(nationNo);
-            FormModel formModel = FormModelHelper.createFormModel(descr);
-            final NarrationForm form = new NarrationForm(formModel);
-            FormBackedDialogPage page = new FormBackedDialogPage(form);
-            TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                protected void onAboutToShow() {
-                    form.setFormObject(descr);
-                }
-
-                protected boolean onFinish() {
-                    return true;
-                }
-
-                protected Object[] getCommandGroupMembers() {
-                    return new AbstractCommand[] {
-                            getFinishCommand()
-                    };
-                }
-
-            };
-            Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-            Nation n = game.getMetadata().getNationByNum(nationNo);
-            
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            dialog.setTitle(ms.getMessage("combatNarrationDialog.title", new Object[]{String.valueOf(c.getHexNo()), String.valueOf(n.getName())}, Locale.getDefault()));
-            dialog.showDialog();
+            DialogsUtility.showCombatNarration(c, nationNo);
         }
         
     }

@@ -3,6 +3,8 @@ package org.joverseer.domain;
 import java.util.ArrayList;
 import java.io.Serializable;
 
+import org.pdfbox.examples.fdf.SetField;
+
 
 
 /**
@@ -21,6 +23,7 @@ public class HexInfo implements Serializable {
     int x;
     int y;
     boolean visible;
+    boolean friendlyCharacterPresent;
     boolean hasPopulationCenter;
     ClimateEnum climate;
 
@@ -49,7 +52,8 @@ public class HexInfo implements Serializable {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
-
+    
+    
     public int getX() {
         return x;
     }
@@ -102,7 +106,7 @@ public class HexInfo implements Serializable {
                 setHasPopulationCenter(true);
             }
         } else {
-            setVisible(hi.getVisible());
+        	setVisible(hi.getVisible());
             setHasPopulationCenter(hi.getHasPopulationCenter());
         }
         if (!getNationSources().contains(hi.getNationSources())) {

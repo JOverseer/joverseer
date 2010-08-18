@@ -2,6 +2,8 @@ package org.joverseer.ui.jide;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Icon;
 
@@ -11,6 +13,7 @@ import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.PageDescriptor;
+import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.image.IconSource;
 
 import com.jidesoft.docking.DockContext;
@@ -52,7 +55,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
                 
 		dockableFrame.setTitle(pageComponent.getDisplayName());
 		dockableFrame.setTabTitle(pageComponent.getDisplayName());
-                dockableFrame.setToolTipText(pageComponent.getDisplayName());
+        dockableFrame.setToolTipText(pageComponent.getDisplayName());
 		dockableFrame.setFrameIcon(icon);
 		if(viewDescriptor != null){
 			dockableFrame.getContext().setInitMode(viewDescriptor.getInitMode());
@@ -104,6 +107,18 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 			JideAbstractView view = (JideAbstractView)pageComponent;
 			dockableFrame.setTitleBarComponent(view.getViewToolBar());
 			dockableFrame.setJMenuBar(view.getViewMenuBar());
+			
+		}
+		if (pageComponent instanceof AbstractView) {
+			AbstractView view = (AbstractView)pageComponent;
+			final DockableFrame ff = dockableFrame;
+            view.getDescriptor().addPropertyChangeListener("displayName", new PropertyChangeListener() {
+
+				public void propertyChange(PropertyChangeEvent evt) {
+					ff.setTitle(evt.getNewValue().toString());
+				}
+            	
+            });
 		}
 		return dockableFrame;
 	}

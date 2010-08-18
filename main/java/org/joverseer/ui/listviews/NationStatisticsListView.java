@@ -8,12 +8,16 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.NationMap;
 import org.joverseer.tools.CombatUtils;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
@@ -32,7 +36,7 @@ public class NationStatisticsListView extends BaseItemListView {
     }
 
     protected int[] columnWidths() {
-        return new int[] {48, 52, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52};
+        return new int[] {32, 48, 52, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52};
     }
 
 
@@ -48,10 +52,22 @@ public class NationStatisticsListView extends BaseItemListView {
         if (!Game.isInitialized(g))
             return;
         ArrayList items = new ArrayList();
+        NationStatisticsWrapper fp = new NationStatisticsWrapper();
+        fp.setAllegiance(NationAllegianceEnum.FreePeople);
+        
+        NationStatisticsWrapper ds = new NationStatisticsWrapper();
+        ds.setAllegiance(NationAllegianceEnum.DarkServants);
+        
+        NationStatisticsWrapper ns = new NationStatisticsWrapper();
+        ns.setAllegiance(NationAllegianceEnum.Neutral);
+        
         Turn t = g.getTurn();
         for (int i = 1; i < 26; i++) {
-            //TODO move NationStatisticsWrapper creation to table model or other place
-            Integer capitalHex = null;
+        	NationRelations nr = t.getNationRelations(i);
+        	if (nr == null || nr.getEliminated()) continue;
+        	Nation n = NationMap.getNationFromNo(i);
+        	if (n.getRemoved()) continue;
+        	Integer capitalHex = null;
             PopulationCenter capital = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter)
                     .findFirstByProperties(new String[] {"nationNo", "capital"}, new Object[] {i, true});
             if (capital != null) {
@@ -124,15 +140,32 @@ public class NationStatisticsListView extends BaseItemListView {
                 }
                 nsw.setTroopCount(nsw.getTroopCount() + a.computeNumberOfMen());
             }
-
+            if (nr.getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
+            	fp.add(nsw);
+            } else if (nr.getAllegiance().equals(NationAllegianceEnum.DarkServants)) {
+            	ds.add(nsw);
+            } else {
+            	ns.add(nsw);
+            }
             items.add(nsw);
         }
+        boolean addFP = false;
+        boolean addDS = false;
+        boolean addNeutrals = false;
         ArrayList filteredItems = new ArrayList();
-        for (Object item : items) {
+        for (NationStatisticsWrapper item : (ArrayList<NationStatisticsWrapper>)items) {
             if (getActiveFilter() == null || getActiveFilter().accept(item)) {
                 filteredItems.add(item);
+                NationRelations nr = t.getNationRelations(item.getNationNo());
+                if (nr.getAllegiance().equals(NationAllegianceEnum.FreePeople)) addFP = true;
+                if (nr.getAllegiance().equals(NationAllegianceEnum.DarkServants)) addDS = true;
+                if (nr.getAllegiance().equals(NationAllegianceEnum.Neutral)) addNeutrals = true;
             }
         }
+        if (addFP) filteredItems.add(fp);
+        if (addDS) filteredItems.add(ds);
+        if (addNeutrals) filteredItems.add(ns);
+        
         tableModel.setRows(filteredItems);
     }
 

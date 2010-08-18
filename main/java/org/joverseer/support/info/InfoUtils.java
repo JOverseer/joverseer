@@ -134,6 +134,7 @@ public class InfoUtils {
     }
     
     public static String getArmyMoraleRange(String description) {
+    	if (description == null) return null;
     	Info info = InfoRegistry.instance().getInfo("armyMoraleDescriptions");
         if (info == null)
             return null;

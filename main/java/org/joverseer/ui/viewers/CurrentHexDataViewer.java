@@ -41,6 +41,7 @@ import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.jidesoft.docking.DockingManager;
+import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
 import com.jidesoft.spring.richclient.docking.LayoutManager;
 import com.jidesoft.spring.richclient.docking.view.JideAbstractView;
 
@@ -312,9 +313,14 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
     }
 
     private void refresh(Point p) {
-    	if (p.x == 0 && p.y == 0) {
+    	String hex = "";
+    	if ((p.x == 0 && p.y == 0) || p.x == -1) {
+    		((DefaultViewDescriptor)getDescriptor()).setTitle("Current Hex View - " + hex);
     		return;
     	}
+    	hex = String.valueOf(p.x * 100 + p.y);
+    	if (p.x < 10) hex = "0" + hex;
+    	((DefaultViewDescriptor)getDescriptor()).setTitle("Current Hex View - " + hex);
         Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (g == null) return;
         GameMetadata gm = g.getMetadata();

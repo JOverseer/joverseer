@@ -70,6 +70,7 @@ import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
@@ -768,29 +769,7 @@ public class CharacterViewer extends ObjectViewer {
     private class ShowResultsCommand extends ActionCommand {
 
         protected void doExecuteCommand() {
-        	final OrderResultsForm f = new OrderResultsForm(FormModelHelper.createFormModel(getFormObject()));
-        	FormBackedDialogPage pg = new FormBackedDialogPage(f);
-        	TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
-		protected boolean onFinish() {
-			return true;
-		}
-
-		protected void onAboutToShow() {
-			super.onAboutToShow();
-			f.setFormObject(getFormObject());
-		}
-		
-		protected Object[] getCommandGroupMembers() {
-                    return new AbstractCommand[] {
-                            getFinishCommand()
-                    };
-                }
-
-        	};
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-            dlg.setTitle(ms.getMessage("orderResultsDialog.title", new Object[]{}, Locale.getDefault()));
-        	dlg.showDialog();
-        	
+        	DialogsUtility.showCharacterOrderResults((Character)getFormObject());
         }
     }
 

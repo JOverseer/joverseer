@@ -15,14 +15,14 @@ public class NationStatisticsTableModel extends ItemTableModel {
 	}
 
 	protected String[] createColumnPropertyNames() {
-		return new String[]{"nationNo", 
+		return new String[]{"allegiance", "nationNo", 
 				"characters", "charactersInCapital", "commanders", 
 				"popCenters", "cities", "majorTowns", "towns", "villages", "camps", "taxBase", 
 				"armies", "navies", "warships", "transports", "armyEHI", "troopCount"};
 	}
 
 	protected Class[] createColumnClasses() {
-		return new Class[]{String.class, 
+		return new Class[]{String.class, String.class,  
 				Integer.class, Integer.class, Integer.class,
 				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class,
 				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class};

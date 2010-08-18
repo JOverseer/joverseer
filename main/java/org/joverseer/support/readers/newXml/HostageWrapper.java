@@ -57,6 +57,6 @@ public class HostageWrapper {
         	c.setNation(NationMap.getNationFromName(getNation()));
         }
         Character holder = t.getCharByName(getHeldBy());
-        holder.addHostage(c.getName());
+        if (holder != null) holder.addHostage(c.getName());
     }
 }

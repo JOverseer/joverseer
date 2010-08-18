@@ -389,3 +389,87 @@ WTR;9;5;Wood Elf archers w/long bows
 WTR;9;6;Wood Elf mercenaries w/hand axes
 WTR;10;1;Mixed Elven horseriders w/broadswords
 WTR;10;2;Mixed Elven horseriders w/shortswords
+KS;1;1;Loyalist Mounted Knights
+KS;1;2;Loyalist Mounted Skirmishers
+KS;1;3;Loyalist Knights
+KS;1;4;Loyalist Pikemen
+KS;1;5;Loyalist Archers
+KS;1;6;Loyalist Militia
+KS;2;1;Mounted Rebel Lancers
+KS;2;2;Mounted Rebel Scouts
+KS;2;3;Rebel Axemen
+KS;2;4;Rebel Pikemen
+KS;2;5;Rebel Archers
+KS;2;6;Rebel Reserves
+KS;3;1;Riders of Rhovanion
+KS;3;2;Mounted Trackers
+KS;3;3;Rangers of Mirkwood
+KS;3;4;Woodsmen of the North
+KS;3;5;Forest Wardens
+KS;3;6;Foresters
+KS;4;1;Plainsman Lancers
+KS;4;2;Plainsman Mounted Scouts
+KS;4;3;Swordsmen of the North
+KS;4;4;Plainsman Scouts
+KS;4;5;Northmen Archers
+KS;4;6;Camp Guards
+KS;5;1;Mounted Knights of the Old Realm
+KS;5;2;Mounted Scouts
+KS;5;3;Knights of the Old Realm
+KS;5;4;Rangers of the North
+KS;5;5;Wildsmen Hunters
+KS;5;6;Footmen of Arnor
+KS;6;1;Mounted Knights of Elbereth
+KS;6;2;Outriders of the Golden Woods
+KS;6;3;Elven Swordsmen
+KS;6;4;Elven Scouts
+KS;6;5;Archers of the Galadhrim
+KS;6;6;Elven Spears
+KS;11;1;Mounted Knights of the Royal Guard
+KS;11;2;Mounted Watchmen
+KS;11;3;Knights of the Watch
+KS;11;4;Swordsmen of Gondor
+KS;11;5;Royal Crossbowmen
+KS;11;6;City Guardsmen
+KS;12;1;Mounted Enforcers
+KS;12;2;Mounted Inquisitors
+KS;12;3;Crimson Blades
+KS;12;4;Dark Legions
+KS;12;5;Black Archers
+KS;12;6;Footmen of the Night
+KS;13;1;Mounted Knights of the Old Guard
+KS;13;2;Scouts of the Realm
+KS;13;3;Knights of Gondor
+KS;13;4;Axemen of Gondor
+KS;13;5;Gondorian Crossbowmen
+KS;13;6;Footmen of Gondor
+KS;14;1;Mumakhil Riders
+KS;14;2;Desert Riders
+KS;14;3;Whirling Blades of the Sun
+KS;14;4;Pikemen of the Sun
+KS;14;5;Black-feather Bowmen
+KS;14;6;Hordes of the Desert
+KS;15;1;Riders of the Crimson Sword
+KS;15;2;Mounted Raiders
+KS;15;3;Scimitars of the East
+KS;15;4;Nomad Skirmishers
+KS;15;5;Archers of the Poison Bite
+KS;15;6;Slaves
+KS;16;1;Dark Riders of the North
+KS;16;2;Warg Riders
+KS;16;3;Troll Footsoldiers
+KS;16;4;Orc Hordes
+KS;16;5;Goblin Archers
+KS;16;6;Hill-men Clansmen
+KS;21;1;Mounted Knights of the Swan
+KS;21;2;Mounted Scouts
+KS;21;3;Knights of Belfalas
+KS;21;4;Guards of the Fief
+KS;21;5;Royal Crossbowmen
+KS;21;6;Tower Watchmen
+KS;22;1;Mounted Axemen
+KS;22;2;Mounted Scouts
+KS;22;3;Axemen of the Mithril Blade
+KS;22;4;Hammer Guard
+KS;22;5;Crossbowmen of the Silver Seam
+KS;22;6;Dwarven Phalanx

@@ -173,11 +173,11 @@ public class AdvancedCharacterListView extends BaseItemListView {
                 filters.toArray(new AbstractListViewFilter[] {}),
                 TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),
                 new AbstractListViewFilter[]{
-                    new DeathFilter("All", null),
+                	new DeathFilter("All", null),
+                	new ActiveFilter("Active Only"),
                     new DeathFilter("Not Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.NotDead, null}),
                     new DeathFilter("Dead", new CharacterDeathReasonEnum[]{CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged}),
                     new HostageFilter("Hostage", true),
-                    new HostageFilter("Not Hostage", false),
                     new ChampionFilter("Champion")
                     
                 },
@@ -391,6 +391,24 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			return ((AdvancedCharacterWrapper)obj).isChampion();
 		}
 		
+		
+	}
+	
+	class ActiveFilter extends AbstractListViewFilter {
+
+		
+		public ActiveFilter(String description) {
+			super(description);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public boolean accept(Object obj) {
+			AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper)obj;
+			if (acw.isHostage()) return false;
+			if (acw.getDeathReason() != null && !acw.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) return false;
+			return true;
+		}
 		
 	}
 

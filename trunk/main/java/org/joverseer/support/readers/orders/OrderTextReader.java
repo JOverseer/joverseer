@@ -302,6 +302,18 @@ public class OrderTextReader {
 								o.setParameter(j, txt);
 							}
 						}
+						if (o.getOrderNo() == 725 || o.getOrderNo() == 728 || o.getOrderNo() == 731 || o.getOrderNo() == 734 || o.getOrderNo() == 737) {
+							// name order
+							// check if first the name is composed of multiple words
+							int paramNo = o.getOrderNo() == 725 ? 6 : 2;
+							while (o.getLastParamIndex() >= paramNo) {
+								o.setParameter(0, o.getParameter(0) + " " + o.getParameter(1));
+								for (int k=1; k<o.getLastParamIndex(); k++) {
+									o.setParameter(k, o.getParameter(k+1));
+								}
+								o.setParameter(o.getLastParamIndex(), "");
+							}
+						}
 						j++;
 					}
 				}

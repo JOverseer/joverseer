@@ -82,7 +82,11 @@ public class DialogsUtility {
 	}
 	
 	public static void showEncounterDescription(Encounter encounter) {
-		final String descr = encounter.getDescription();
+		String description = encounter.getDescription();
+		if (encounter.getCanInvestigate()) {
+			description += "\n\n(This is not an actual encounter but a report that the character can issue 290 \norders to investigate the encounter)";
+		}
+		final String descr = description;
         FormModel formModel = FormModelHelper.createFormModel(descr);
         final NarrationForm form = new NarrationForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);

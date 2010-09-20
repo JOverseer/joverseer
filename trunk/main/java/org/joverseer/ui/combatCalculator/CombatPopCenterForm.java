@@ -55,7 +55,7 @@ public class CombatPopCenterForm extends AbstractForm {
         tlb.cell(sbf.createBoundTextField("loyalty").getControl(), "align=left");
         tlb.relatedGapRow();
         
-        b = (ComboBoxBinding)sbf.createBoundComboBox("size", new ValueHolder(PopulationCenterSizeEnum.values()));
+        b = (ComboBoxBinding)sbf.createBoundComboBox("size", new ValueHolder(PopulationCenterSizeEnum.values()), "renderString");
         b.setComparator(new PropertyComparator("number", true, true));
         
         tlb.cell(new JLabel("Size :"), "align=left");
@@ -63,7 +63,7 @@ public class CombatPopCenterForm extends AbstractForm {
         tlb.cell(b.getControl(), "align=left");
         tlb.relatedGapRow();
 
-        b = (ComboBoxBinding)sbf.createBoundComboBox("fort", new ValueHolder(FortificationSizeEnum.values()));
+        b = (ComboBoxBinding)sbf.createBoundComboBox("fort", new ValueHolder(FortificationSizeEnum.values()), "renderString");
         b.setComparator(new PropertyComparator("number", true, true));
         
         tlb.cell(new JLabel("Fort :"), "align=left");

@@ -138,8 +138,7 @@ public class ArmyViewer extends ObjectViewer {
         travellingWith.setPreferredSize(new Dimension(150, 12));
 
         commanderName.setBorder(null);
-        commanderName
-                .setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
+        commanderName.setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
         nation.setBorder(null);
         armySize.setBorder(null);
         armyType.setBorder(null);

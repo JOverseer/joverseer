@@ -1,5 +1,6 @@
 package org.joverseer.ui.listviews.filters;
 
+import org.joverseer.support.AsciiUtils;
 import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
 
@@ -23,8 +24,10 @@ public class TextFilter extends AbstractListViewFilter {
         try {
             Object val = ReflectionUtils.retrieveField(obj, field);
             if (val == null) val = "";
-            if (value.equals("")) return val.toString().equals("");
-            if (val.toString().toUpperCase().indexOf(value.toUpperCase()) > -1) {
+            String str = val.toString();
+            if (value.equals("")) return str.equals("");
+            str = AsciiUtils.convertNonAscii(str);
+            if (str.toString().toUpperCase().indexOf(value.toUpperCase()) > -1) {
                 return true;
             }
             return false;

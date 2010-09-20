@@ -137,6 +137,8 @@ public class CharacterMessageWrapper {
 	protected boolean getCursed(Character c) {
 		for (String line : (ArrayList<String>)lines) {
 			if (line.indexOf("was killed due to a mysterious and deadly curse.")>-1) return true;
+			if (line.indexOf("was killed due to a mysterious and severe sickness.")>-1) return true;
+			if (StringUtils.getUniqueRegexMatch(line, "was killed due to a mysterious and \\w+ (weakness).") != null) return true;
 		}
 		return false;
 	}

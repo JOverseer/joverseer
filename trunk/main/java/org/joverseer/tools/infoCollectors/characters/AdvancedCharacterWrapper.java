@@ -433,4 +433,11 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
         }
         return v;
     }
+	
+	public void appendOrderResult(String text) {
+		String oc = getOrderResults();
+		if (oc == null) oc = "";
+		oc += (oc.equals("") ? "" : "\n") + text;
+		setOrderResults(oc);
+	}
 }

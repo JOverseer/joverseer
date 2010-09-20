@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.InformationSourceEnum;
@@ -22,8 +24,11 @@ import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.RumorActionInfoSource;
 import org.joverseer.support.infoSources.RumorInfoSource;
+import org.joverseer.support.readers.pdf.CombatArmy;
+import org.joverseer.support.readers.pdf.CombatWrapper;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -76,6 +81,19 @@ public class CharacterInfoCollector implements ApplicationListener {
         return (AdvancedCharacterWrapper)ret.findFirstByProperty("name", name);
     }
     
+    public AdvancedCharacterWrapper getLatestCharacter(String name, int maxTurnNo) {
+    	if (!GameHolder.hasInitializedGame()) {
+            return null;
+        }
+    	if (maxTurnNo == -1) maxTurnNo = GameHolder.instance().getGame().getCurrentTurn();
+    	while (maxTurnNo > 0) {
+    		AdvancedCharacterWrapper acw = getCharacterForTurn(name, maxTurnNo);
+    		if (acw != null) return acw;
+    		maxTurnNo--;
+    	}
+    	return null;
+    }
+    
     /**
      * Computes the wrappers for the given turn
      * In more detail:
@@ -107,7 +125,7 @@ public class CharacterInfoCollector implements ApplicationListener {
                         smallestTurnNo = cw.getTurnNo();
                     }
                 }
-                if (cw == null || c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+                if (cw == null) {
                     cw = new AdvancedCharacterWrapper();
                     cw.setId(c.getId());
                     cw.setName(c.getName());
@@ -126,8 +144,11 @@ public class CharacterInfoCollector implements ApplicationListener {
                         guessStatsIfArmyCommander(cw, c, t.getTurnNo());
                         addHealthEstimate(cw, c);
                     }
-                    if (i == game.getCurrentTurn() && c.getOrderResults() != null && !c.getOrderResults().equals("")) {
+                    if (c.getOrderResults() != null && !c.getOrderResults().equals("")) {
                         cw.setOrderResults(c.getOrderResults());
+                    }
+                    if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+                    	cw.setDeathReason(c.getDeathReason());
                     }
                     ret.addItem(cw);
                 } else {
@@ -135,6 +156,47 @@ public class CharacterInfoCollector implements ApplicationListener {
                     guessStatsIfArmyCommander(cw, c, t.getTurnNo());
                     addHealthEstimate(cw, c);
                 }
+            }
+            
+            for (Challenge challenge : (ArrayList<Challenge>)t.getContainer(TurnElementsEnum.Challenge).getItems()) 
+            {
+            	if (challenge.getLoser() != null) {
+            		AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper)ret.findFirstByProperty("name", challenge.getLoser());
+            		if (acw == null) {
+            			acw = new AdvancedCharacterWrapper();
+            			acw.setName(challenge.getLoser());
+            			acw.setId(Character.getIdFromName(acw.getName()));
+            			acw.setHexNo(challenge.getHexNo());
+            			acw.setTurnNo(t.getTurnNo());
+            			acw.setInfoSource(new PdfTurnInfoSource(t.getTurnNo(), 0));
+            			ret.addItem(acw);
+            		}
+        			if (acw.getDeathReason() == null || acw.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
+            			acw.setDeathReason(CharacterDeathReasonEnum.Challenged);
+            			acw.appendOrderResult("Killed in challenge at " + challenge.getHexNo() + " by " + challenge.getVictor() + ".");
+            		}
+            	}
+            }
+            
+            for (Combat combat : (ArrayList<Combat>)t.getContainer(TurnElementsEnum.Combat).getItems()) {
+            	CombatWrapper cw = new CombatWrapper();
+            	cw.parseAll(combat.getFirstNarration());
+            	for (String dc : cw.getKilledCharacters()) {
+            		AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper)ret.findFirstByProperty("name", dc);
+            		if (acw == null) {
+            			acw = new AdvancedCharacterWrapper();
+            			acw.setName(dc);
+            			acw.setId(Character.getIdFromName(acw.getName()));
+            			acw.setHexNo(combat.getHexNo());
+            			acw.setTurnNo(t.getTurnNo());
+            			acw.setInfoSource(new PdfTurnInfoSource(t.getTurnNo(), 0));
+            			ret.addItem(acw);
+            		}
+        			if (acw.getDeathReason() == null || acw.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
+            			acw.setDeathReason(CharacterDeathReasonEnum.Dead);
+            			acw.appendOrderResult("Killed in combat at " + acw.getHexNo());
+            		}
+            	}
             }
             
             // only for latest turn

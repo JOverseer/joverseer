@@ -19,9 +19,17 @@ public abstract class AbstractListViewFilter {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    
 
 
-    public AbstractListViewFilter(String description) {
+    public AbstractListViewFilter() {
+		super();
+	}
+
+
+
+	public AbstractListViewFilter(String description) {
         super();
         this.description = description;
     }

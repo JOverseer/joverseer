@@ -6,6 +6,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.Encounter;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
@@ -126,6 +127,25 @@ public class TurnPostProcessor {
 				if (ch.getLoser() != null && ch.getLoser().equals(c.getName())) {
 					c.setDeathReason(CharacterDeathReasonEnum.Challenged);
 				}
+			}
+		}
+		
+		// create encounters for caves that can be investigated
+		for (Character c : turn.getAllCharacters()) {
+			if (!c.hasOrderResults()) continue;
+			String cleanOrderResults = c.getCleanOrderResults();
+			String investigate = StringUtils.getUniquePart(cleanOrderResults, "has encountered [\\w\\s]+ which can be investigated" , "\\.", true, true); 
+			if (investigate != null) {
+				Encounter e = turn.getEncounter(c.getHexNo(), c.getName());
+				if (e != null) {
+					turn.getContainer(TurnElementsEnum.Encounter).removeItem(e);
+				}
+				e =	new Encounter();
+				e.setCanInvestigate(true);
+				e.setCharacter(c.getName());
+				e.setHexNo(c.getHexNo());
+				e.setDescription(c.getName() + " " + investigate);
+				turn.getContainer(TurnElementsEnum.Encounter).addItem(e);
 			}
 		}
 		

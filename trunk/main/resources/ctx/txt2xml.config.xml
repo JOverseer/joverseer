@@ -765,7 +765,7 @@
 	        			</processor>
         		<processor type="RegexMatch">
         			<element>Cursed</element>
-					<regex>()was killed due to a mysterious and deadly curse.</regex> 
+					<regex>()was killed due to a mysterious and (deadly curse|severe sickness|\w+ weakness).</regex> 
 				</processor>
 
         		<processor type="RegexMatch">

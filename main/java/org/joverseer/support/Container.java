@@ -96,7 +96,7 @@ public class Container implements Serializable {
         if (cache == null) return null;
         ArrayList ret = cache.retrieveItems(value);
         if (ret == null) return new ArrayList();
-        return ret;
+        return new ArrayList(ret);
     }
 
     public ArrayList findAllByProperties(String[] properties, Object[] values) {
@@ -124,7 +124,7 @@ public class Container implements Serializable {
             //CollectionUtils.filter(res, p);
         	return new ArrayList(CollectionUtils.select(res, p));
         }
-        return res;
+        return new ArrayList(res);
     }
 
     public Object findFirstByProperties(String[] properties, Object[] values) {

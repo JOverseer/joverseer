@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyEstimate;
@@ -70,7 +71,8 @@ public class CombatForm extends AbstractForm {
     JTable side1Table;
     JTable side2Table;
     PopCenterTableModel popCenterTableModel;
-
+    JTextField rounds;
+    
     public CombatForm(FormModel arg0) {
         super(arg0, FORM_ID);
     }
@@ -362,6 +364,7 @@ public class CombatForm extends AbstractForm {
         
         lb.cell(new JLabel(" "));
         lb.relatedGapRow();
+        
         lb.row();
         
         tlb.gapCol();
@@ -372,6 +375,15 @@ public class CombatForm extends AbstractForm {
         
         popCenterTableModel = new PopCenterTableModel(this, messageSource);
         JTable pcTable = TableUtils.createStandardSortableTable(popCenterTableModel);
+        pcTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && e.getButton() == 1) {
+                    int idx = side1Table.rowAtPoint(e.getPoint());
+                    side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+                    new EditPopCenterCommand().doExecuteCommand();
+                }
+            };
+        });
         org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, popCenterTableModel.getColumnWidths());
         scp = new JScrollPane(pcTable);
         scp.setPreferredSize(new Dimension(560, 48));
@@ -392,7 +404,6 @@ public class CombatForm extends AbstractForm {
         });
         lb.cell(btn, "colspec=left:30px");
         lb.gapCol();
-        lb.relatedGapRow();
         
         ico = new ImageIcon(imgSource.getImage("remove.icon"));
         btn = new JButton(ico);
@@ -407,6 +418,19 @@ public class CombatForm extends AbstractForm {
         lb.relatedGapRow();
         
         tlb.cell(lb.getPanel());
+        tlb.relatedGapRow();
+        
+        lb = new TableLayoutBuilder();
+        lb.cell(new JLabel("Rounds :"), "colspec=left:80px");
+        lb.gapCol();
+        rounds = (JTextField)sbf.createBoundTextField("rounds").getControl();
+        
+        rounds.setEditable(false);
+        lb.cell(rounds, "colspec=left:60px");
+        lb.gapCol();
+        
+        tlb.cell(lb.getPanel());
+        tlb.gapCol();
         tlb.relatedGapRow();
         
         tlb.cell(new JLabel(" "));
@@ -459,6 +483,7 @@ public class CombatForm extends AbstractForm {
             }
         }
         popCenterTableModel.fireTableDataChanged();
+        rounds.setText(String.valueOf(c.getRounds()));
     }
     
     protected void refreshArmies() {
@@ -496,6 +521,7 @@ public class CombatForm extends AbstractForm {
         side1TableModel.fireTableDataChanged();
         side2TableModel.fireTableDataChanged();
         popCenterTableModel.fireTableDataChanged();
+        
     }
 
     class SwitchSideCommand extends ActionCommand {
@@ -524,7 +550,7 @@ public class CombatForm extends AbstractForm {
                 }
             } else {
                 int idx1 = side2Table.getSelectedRow();
-                if (idx1 < -1)
+                if (idx1 < 0)
                     return;
                 int idx = ((SortableTableModel) side2Table.getModel()).convertSortedIndexToDataIndex(idx1);
                 CombatArmy ca = (CombatArmy) side2TableModel.getRow(idx);
@@ -652,8 +678,16 @@ public class CombatForm extends AbstractForm {
             popup.getContentPane().setLayout(new BorderLayout());
             TableLayoutBuilder tlb = new TableLayoutBuilder();
             final ArrayList<JComboBox> relations = new ArrayList<JComboBox>();
-            for (int i = 0; i < c.getSide2().length; i++) {
-                tlb.cell(new JLabel("Army " + (i + 1) + ": "));
+            CombatArmy[] enemySide;
+            if (side == 0) {
+            	enemySide = c.getSide2(); 
+            } else {
+            	enemySide = c.getSide1();
+            }
+            for (int i = 0; i < enemySide.length; i++) {
+            	String label = "Army " + (i + 1) + ": ";
+            	if (i == enemySide.length - 1) label = "Pop Center: ";
+                tlb.cell(new JLabel(label));
                 tlb.gapCol();
                 final JComboBox rel = new JComboBox(NationRelationsEnum.values());
                 if (side == 0) {

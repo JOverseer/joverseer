@@ -238,6 +238,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		protected void doExecuteCommand() {
 			AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper)getSelectedObject();
+			if (acw == null) return;
 			if (acw.getOrderResults() == null) return;
 			Character c = GameHolder.instance().getGame().getTurn().getCharByName(acw.getName());
 			if (c != null) DialogsUtility.showCharacterOrderResults(c);

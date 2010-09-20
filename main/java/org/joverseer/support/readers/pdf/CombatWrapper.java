@@ -670,6 +670,16 @@ public class CombatWrapper {
     	return ret;
     }
     
+    public ArrayList<String> getKilledCharacters() {
+    	ArrayList<String> ret = new ArrayList<String>();
+    	for (CombatArmy ca : getCombatArmies(null)) {
+    		if ("killed".equals(ca.getCommanderOutcome()) && ca.getCommanderName() != null) {
+    			ret.add(ca.getCommanderName());
+    		}
+    	}
+    	return ret;
+    }
+    
     public ArrayList<Nation> getNations(NationAllegianceEnum notOfAllegiance) {
     	ArrayList<Nation> ret = new ArrayList<Nation>();
     	for (CombatArmy ca : (ArrayList<CombatArmy>)armies.getItems()) {

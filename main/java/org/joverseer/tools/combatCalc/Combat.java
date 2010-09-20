@@ -78,7 +78,19 @@ public class Combat implements Serializable, IHasMapLocation {
     
     
     
-    public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, boolean againstPopCenter) {
+    public int getRounds() {
+		return rounds;
+	}
+
+
+
+	public void setRounds(int rounds) {
+		this.rounds = rounds;
+	}
+
+
+
+	public static int computeNativeArmyStrength(CombatArmy ca, HexTerrainEnum terrain, ClimateEnum climate, boolean againstPopCenter) {
         return computeNativeArmyStrength(ca, terrain, climate, null, againstPopCenter);
     }
     
@@ -176,6 +188,9 @@ public class Combat implements Serializable, IHasMapLocation {
                 warMachines += wm;
                 totalCon += computNativeArmyConstitution(side1[i]);
                 losses[i] = side1[i].getLosses();
+                if (round == 0) {
+                	attackerStr += side1[i].getOffensiveAddOns();
+                }
             } else {
                 if (side2[i] == null) continue;
                 int str = computeNativeArmyStrength(side2[i], terrain, climate, true);
@@ -186,6 +201,9 @@ public class Combat implements Serializable, IHasMapLocation {
                 warMachines += side2[i].getWM().getNumber();
                 totalCon += computNativeArmyConstitution(side2[i]);
                 losses[i] = side2[i].getLosses();
+                if (round == 0) {
+                	attackerStr += side2[i].getOffensiveAddOns();
+                }
             }
         }
         
@@ -197,11 +215,11 @@ public class Combat implements Serializable, IHasMapLocation {
             if (attackerSide == 0) {
                 if (side1[i] == null) continue;
                 double l = computeNewLossesFromPopCenter(side1[i], pc, side2Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
-                side1[i].setLosses(side1[i].getLosses() + l);
+                side1[i].setLosses(Math.min(side1[i].getLosses() + l, 100));
             } else {
                 if (side2[i] == null) continue;
                 double l = computeNewLossesFromPopCenter(side2[i], pc, side1Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
-                side2[i].setLosses(side2[i].getLosses() + l);
+                side2[i].setLosses(Math.min(side2[i].getLosses() + l, 100));
             }
         }
     }

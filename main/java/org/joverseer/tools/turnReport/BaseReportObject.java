@@ -112,6 +112,13 @@ public class BaseReportObject implements IHasMapLocation, Comparable {
 		setNotes(n);
 	}
 	
+	public void appendNotePart(String notePart) {
+		String n = getNotes();
+		if (n == null) n = "";
+		n += notePart;
+		setNotes(n);
+	}
+	
 	public String toString() {
 		return getHexNo() + " - " + getNationStr() + " - " + getName() + " - " + getModification() + " - " + getNotes();
 	}

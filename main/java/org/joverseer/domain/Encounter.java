@@ -17,8 +17,19 @@ public class Encounter implements IHasMapLocation, Serializable {
     String character;
     int hexNo;
     String description;
+    boolean canInvestigate = false;
     
-    public String getCharacter() {
+    
+    
+    public boolean getCanInvestigate() {
+		return canInvestigate;
+	}
+
+	public void setCanInvestigate(boolean canInvestigate) {
+		this.canInvestigate = canInvestigate;
+	}
+
+	public String getCharacter() {
         return character;
     }
     

@@ -12,6 +12,8 @@ import org.springframework.richclient.table.BeanTableModel;
 public class PopCenterTableModel extends BeanTableModel {
     public static int iDefense = 6;
     public static int iAttackerStr = 5;
+    public static int iSize = 3;
+    public static int iFort = 4;
     
     Form parentForm;
     
@@ -30,7 +32,7 @@ public class PopCenterTableModel extends BeanTableModel {
     }
     
     public int[] getColumnWidths() {
-        return new int[]{60, 48, 48, 60, 60, 60, 60, 48};
+        return new int[]{80, 48, 48, 48, 60, 120, 60, 60};
     }
 
     protected Combat getCombat() {
@@ -41,9 +43,13 @@ public class PopCenterTableModel extends BeanTableModel {
         CombatPopCenter pc = (CombatPopCenter)arg0;
         if (arg1 == iDefense) {
             return getCombat().computePopCenterStrength(pc);
+        } else if (arg1 == iSize) {
+        	return pc.getSize().getRenderString();
+        } else if (arg1 == iFort) {
+        	return pc.getFort().getRenderString();
         } else {
             return super.getValueAtInternal(arg0, arg1);
-        }
+        } 
     }
     
     protected boolean isCellEditableInternal(Object arg0, int arg1) {

@@ -132,6 +132,10 @@ public class Turn implements Serializable {
     	return (Encounter)getContainer(TurnElementsEnum.Encounter).findFirstByProperties(new String[]{"hexNo", "character"}, new Object[]{hexNo, character});
     }
     
+    public ArrayList<Encounter> getEncounters(String character) {
+    	return (ArrayList<Encounter>)getContainer(TurnElementsEnum.Encounter).findAllByProperty("character", character);
+    }
+    
     public Challenge findChallenge(String character) {
     	for (Challenge c : (ArrayList<Challenge>)getContainer(TurnElementsEnum.Challenge).getItems()) {
     		if (character.equals(c.getVictor()) || character.equals(c.getLoser())) return c;

@@ -124,7 +124,7 @@ public class CombatPopCenter implements Serializable {
     }
 
     public String getCapturedStr() {
-    	return isCaptured() ? "y" : "n";
+    	return isCaptured() ? "yes" : "no";
     }
     
     

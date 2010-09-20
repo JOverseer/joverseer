@@ -476,6 +476,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
     
     public Object getSelectedObject() {
     	int row = table.getSelectedRow();
+    	if (row < 0 && table.getRowCount() == 1) row = 0;
         if (row >= 0) {
             int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
             if (idx >= tableModel.getRowCount())
@@ -486,7 +487,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
             }
             catch (Exception e) {
             }
-        }
+        } 
         return null;
     }
 }

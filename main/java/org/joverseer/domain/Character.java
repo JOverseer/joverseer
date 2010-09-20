@@ -297,6 +297,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
     public String getOrderResults() {
         return orderResults;
     }
+    
+    public boolean hasOrderResults() {
+    	return getOrderResults() != null;
+    }
 
     public String getCleanOrderResults() {
     	if (getOrderResults() == null) return "";

@@ -307,6 +307,26 @@ public class TurnReportCollector {
 						cr.setModification(ObjectModificationType.Lost);
 					}
 				}
+				if (orderResults.contains("was ordered to guard the location")) {
+					ArrayList<String> captured = StringUtils.getParts(orderResults, " captured ", " and thwarted \\w+ theft mission\\.", false, false);
+					if (captured.size() > 0) {
+						CharacterReport cr = new CharacterReport(c);
+						if (pc != null) {
+							cr.setHexNo(pc.getHexNo());
+						}
+						ret.add(cr);
+						cr.setNotes("Guard loc");
+						for (String capt : captured) {
+							cr.appendNote("Captured " + capt);
+						}
+						cr.setModification(ObjectModificationType.Gained);
+					}
+					
+					if (orderResults.contains("and thwarted his theft mission") ||
+							orderResults.contains("and thwarted her theft mission")) {
+						
+					}
+				}
 				 
 			}
 		}
@@ -379,6 +399,15 @@ public class TurnReportCollector {
 							if (challenge != null) {
 								cr.appendNote("by " + getAdvCharWrapperStr(challenge.getVictor(),t));
 							}
+						} else if (c.getDeathReason().equals(CharacterDeathReasonEnum.Cursed)) {
+							String cod = c.getCleanOrderResults();
+							if (!cod.contains("was killed due to a mysterious and deadly curse")) {
+								if (cod.contains("was killed due to a mysterious and severe sickness")) {
+									cr.appendNotePart(" (sickness)");
+								} else if (StringUtils.getUniquePart(cod, "was killed due to a ", "weakness", false, false) != null) {
+									cr.appendNotePart(" (weakness)");
+								}
+							}
 						}
 						
 					}
@@ -413,6 +442,9 @@ public class TurnReportCollector {
 										if (nm.isKidnapRumor() && c.getName().equals(nm.getKidnapTarget())) {
 											cr.appendNote("by " + getAdvCharWrapperStr(nm.getKidnapAttacker(),t) + " (rumor)");
 										}
+									}
+									if (c.getCleanOrderResults().contains("The army commanded by " + c.getName() + " has been disbanded because no suitable commander was present.")) {
+										cr.appendNote("Army disbanded");
 									}
 								}
 								ret.add(cr);
@@ -549,48 +581,46 @@ public class TurnReportCollector {
 			}
 			if (pc.getCapital()) pr.appendNote("Capital");
 			if (nationChanged) {
-				if (!sizeChanged) {
-					for (Character pch : previous.getCharactersAtHex(pc.getHexNo())) {
-						Character c = (Character)turn.getCharByName(pch.getName());
-						if (c == null) continue;
-						String cleanOrderResults = c.getCleanOrderResults(); 
-						if (cleanOrderResults.contains(pc.getName() + " is now under our control")) {
-							if (cleanOrderResults.contains("to threaten the population center")) {
-								pr.appendNote(" Threatened");
-								break;
-							}
-							if (cleanOrderResults.contains("The loyalty was influenced/reduced at " + pc.getName())) {
-								pr.appendNote(" InfOthered");
-								break;
-							}
-						} 
-					} 
-					for (Character c : turn.getCharactersAtHex(pc.getHexNo())) {
-						String cleanOrderResults = c.getCleanOrderResults();
-						if (c.getNationNo().equals(ppc.getNationNo()) && cleanOrderResults.contains(" was ordered to transfer the ownership of the population center.")) {// " + pc.getName() + " is no longer under our control.")) {
-							pr.appendNote(" Transferred");
+				
+				for (Character pch : previous.getCharactersAtHex(pc.getHexNo())) {
+					Character c = (Character)turn.getCharByName(pch.getName());
+					if (c == null) continue;
+					String cleanOrderResults = c.getCleanOrderResults(); 
+					if (cleanOrderResults.contains(pc.getName() + " is now under our control")) {
+						if (cleanOrderResults.contains("to threaten the population center")) {
+							pr.appendNote(" Threatened");
 							break;
 						}
-					}
-					for (NationMessage nm : turn.getNationMessages(ppc.getNationNo())) {
-						if (nm.isInfOtherRumor() && nm.getInfoOtherPop().equals(pc.getName())) {
+						if (cleanOrderResults.contains("The loyalty was influenced/reduced at " + pc.getName())) {
 							pr.appendNote(" InfOthered");
 							break;
 						}
+					} 
+				} 
+				for (Character c : turn.getCharactersAtHex(pc.getHexNo())) {
+					String cleanOrderResults = c.getCleanOrderResults();
+					if (c.getNationNo().equals(ppc.getNationNo()) && cleanOrderResults.contains(" was ordered to transfer the ownership of the population center.")) {// " + pc.getName() + " is no longer under our control.")) {
+						pr.appendNote(" Transferred");
+						break;
 					}
-				} else {
-					Combat combat = (Combat)turn.getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", ppc.getHexNo());
-					if (combat != null) {
-						CombatWrapper cw = new CombatWrapper();
-						cw.parseAll(combat.getFirstNarration());
-						if (cw.getPopName().equals(ppc.getName())) {
-							if ("captured".equals(cw.getPopCenterOutcome())) {
-								pr.appendNote(" Captured");
-							}
+				}
+				for (NationMessage nm : turn.getNationMessages(ppc.getNationNo())) {
+					if (nm.isInfOtherRumor() && nm.getInfoOtherPop().equals(pc.getName())) {
+						pr.appendNote(" InfOthered");
+						break;
+					}
+				}
+				Combat combat = (Combat)turn.getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", ppc.getHexNo());
+				if (combat != null) {
+					CombatWrapper cw = new CombatWrapper();
+					cw.parseAll(combat.getFirstNarration());
+					if (cw.getPopName().equals(ppc.getName())) {
+						if ("captured".equals(cw.getPopCenterOutcome())) {
+							pr.appendNote(" Captured");
 						}
 					}
-					
 				}
+				
 				pr.appendNote(ppc.getNation().getShortName() + "→" + pc.getNation().getShortName());
 				pr.addNation(ppc.getNationNo());
 				if (sizeChanged) {
@@ -703,7 +733,11 @@ public class TurnReportCollector {
 				}
 				er.setModification(ObjectModificationType.Gained);
 			} else {
-				er.setNotes("Reacted");
+				if (e.getCanInvestigate()) {
+					er.setNotes("Can investigate");
+				} else {
+					er.setNotes("Reacted");
+				}
 				er.setModification(ObjectModificationType.Modified);
 			}
 			ret.add(er);

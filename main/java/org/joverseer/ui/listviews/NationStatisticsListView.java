@@ -83,11 +83,15 @@ public class NationStatisticsListView extends BaseItemListView {
 			for (Character c : t.getCharacters().findAllByProperty("nationNo", nsw.getNationNo())) {
 				if (c.getDeathReason() == CharacterDeathReasonEnum.NotDead) {
 					nsw.setCharacters(nsw.getCharacters() + 1);
-					if (capitalHex != null && c.getHexNo() == capitalHex) {
-						nsw.setCharactersInCapital(nsw.getCharactersInCapital() + 1);
-					}
-					if (c.getCommand() > 0) {
-						nsw.setCommanders(nsw.getCommanders() + 1);
+					if (c.getHostage() != null && c.getHostage()) {
+						nsw.setHostages(nsw.getHostages() + 1);
+					} else {
+						if (capitalHex != null && c.getHexNo() == capitalHex) {
+							nsw.setCharactersInCapital(nsw.getCharactersInCapital() + 1);
+						}
+						if (c.getCommand() > 0) {
+							nsw.setCommanders(nsw.getCommanders() + 1);
+						}
 					}
 				}
 			}

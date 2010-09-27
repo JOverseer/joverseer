@@ -624,7 +624,7 @@ public class CombatWrapper {
 	    	}
     	}
     	catch (Exception e) {
-    		parseAll(narration);
+    		//parseAll(narration);
     	}
     }
     

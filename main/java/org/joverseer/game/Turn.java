@@ -209,7 +209,7 @@ public class Turn implements Serializable {
 	}
 
 	public ArrayList<Encounter> getEncounters(String character) {
-		return getEncounters().findAllByProperty(new String[] { "character" }, new Object[] { character });
+		return getEncounters().findAllByProperties(new String[] { "character" }, new Object[] { character });
 	}
 
 	public Challenge findChallenge(String character) {

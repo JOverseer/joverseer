@@ -95,9 +95,9 @@ public class TurnReportCollector {
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>(); // dragons
-																				// in
-																				// friendly
-																				// armies
+		// in
+		// friendly
+		// armies
 		for (Army a : t.getArmies()) {
 			for (String cn : a.getCharacters()) {
 				if (InfoUtils.isDragon(cn)) {
@@ -485,16 +485,16 @@ public class TurnReportCollector {
 				if (pc.getNationNo() != nationNo)
 					continue;
 				PopulationCenter ppc = (PopulationCenter) p.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo()); // if
-																																							// previous
-																																							// pop
-																																							// was
-																																							// ruins,
-																																							// simulate
-																																							// that
-																																							// it
-																																							// did
-																																							// not
-																																							// exist
+				// previous
+				// pop
+				// was
+				// ruins,
+				// simulate
+				// that
+				// it
+				// did
+				// not
+				// exist
 				if (pc.getSize().equals(PopulationCenterSizeEnum.ruins))
 					continue;
 				if (ppc != null && ppc.getSize().equals(PopulationCenterSizeEnum.ruins))
@@ -517,16 +517,16 @@ public class TurnReportCollector {
 				if (ppc.getNationNo() != nationNo)
 					continue;
 				PopulationCenter pc = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", ppc.getHexNo()); // if
-																																							// previous
-																																							// pop
-																																							// was
-																																							// ruins,
-																																							// simulate
-																																							// that
-																																							// it
-																																							// did
-																																							// not
-																																							// exist
+				// previous
+				// pop
+				// was
+				// ruins,
+				// simulate
+				// that
+				// it
+				// did
+				// not
+				// exist
 				if (pc == null || pc.getSize().equals(PopulationCenterSizeEnum.ruins)) {
 					PopCenterReport pr = new PopCenterReport(ppc);
 					pr.setPc(pc);
@@ -615,13 +615,13 @@ public class TurnReportCollector {
 				for (Character c : turn.getCharactersAtHex(pc.getHexNo())) {
 					String cleanOrderResults = c.getCleanOrderResults();
 					if (c.getNationNo().equals(ppc.getNationNo()) && cleanOrderResults.contains(" was ordered to transfer the ownership of the population center.")) {// " + pc.getName() + "
-																																										// is
-																																										// no
-																																										// longer
-																																										// under
-																																										// our
-																																										// control."))
-																																										// {
+						// is
+						// no
+						// longer
+						// under
+						// our
+						// control."))
+						// {
 						pr.appendNote(" Transferred");
 						break;
 					}
@@ -1243,11 +1243,14 @@ public class TurnReportCollector {
 		ArrayList ret = new ArrayList();
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
-		for (Combat c : (ArrayList<Combat>) t.getContainer(TurnElementsEnum.Combat).getItems()) {			CombatWrapper cw = new CombatWrapper();
+		for (Combat c : (ArrayList<Combat>) t.getContainer(TurnElementsEnum.Combat).getItems()) {
+			CombatWrapper cw = new CombatWrapper();
 			CombatReport cr = null;
-			for (int i = 1; i < 26; i++) {				String r = c.getNarrationForNation(i);
+			for (int i = 1; i < 26; i++) {
+				String r = c.getNarrationForNation(i);
 				if (r != null) {
-					if (cr != null) {						cr.addNation(i);
+					if (cr != null) {
+						cr.addNation(i);
 						continue;
 					}
 					try {
@@ -1255,18 +1258,26 @@ public class TurnReportCollector {
 						ArrayList<Integer> nations = new ArrayList<Integer>();
 						ArrayList<Integer> winners = new ArrayList<Integer>();
 						String commanders = "";
-						for (CombatArmy ca : (ArrayList<CombatArmy>) cw.getArmies().getItems()) {							Nation n = NationMap.getNationFromName(ca.getNation());
+						for (CombatArmy ca : (ArrayList<CombatArmy>) cw.getArmies().getItems()) {
+							Nation n = NationMap.getNationFromName(ca.getNation());
 							int num = n.getNumber();
-							if (!nations.contains(num))								nations.add(num);							if (ca.isSurvived()) {
-								if (!winners.contains(num))									winners.add(num);							}
+							if (!nations.contains(num))
+								nations.add(num);
+							if (ca.isSurvived()) {
+								if (!winners.contains(num))
+									winners.add(num);
+							}
 							if (ca.getCommanderOutcome() != null && (ca.getCommanderOutcome().equals("captured") || ca.getCommanderOutcome().equals("killed"))) {
-								commanders += (commanders.equals("") ? "" : ",") + namePlusNation(ca.getCommanderName(), n) + " " + ca.getCommanderOutcome();							}
+								commanders += (commanders.equals("") ? "" : ",") + namePlusNation(ca.getCommanderName(), n) + " " + ca.getCommanderOutcome();
+							}
 						}
 						cr = new CombatReport(c);
 						String participants = "";
 						cr.addNation(i);
 						for (Integer num : nations) {
-							// cr.appendNote();							participants += (participants.equals("") ? "" : ",") + NationMap.getNationFromNo(num).getShortName();						}
+							// cr.appendNote();
+							participants += (participants.equals("") ? "" : ",") + NationMap.getNationFromNo(num).getShortName();
+						}
 						cr.setParticipants(participants);
 						if (cw.getPopName() != null) {
 							Nation n = NationMap.getNationFromName(cw.getPopNation());
@@ -1280,13 +1291,16 @@ public class TurnReportCollector {
 								winStr += (winStr.equals("") ? "" : ",") + n.getShortName();
 								winnerAllegiances.add(n.getAllegiance());
 							}
-							// cr.appendNote(" Won by:" + winStr);							cr.setWinners(winStr);
+							// cr.appendNote(" Won by:" + winStr);
+							cr.setWinners(winStr);
 						} else {
-							// cr.appendNote("No winners");							cr.setWinners("No winners");
+							// cr.appendNote("No winners");
+							cr.setWinners("No winners");
 						}
 						String popOutcome;
 						if (cw.getPopCenterOutcome() != null && !cw.getPopCenterOutcome().equals("not affected")) {
-							popOutcome = " PC " + cw.getPopCenterOutcome();							if (cw.getPopCenterOutcome().equals("captured")) {
+							popOutcome = " PC " + cw.getPopCenterOutcome();
+							if (cw.getPopCenterOutcome().equals("captured")) {
 								Nation nn = NationMap.getNationFromName(cw.getPopOutcomeNation());
 								if (nn != null) {
 									popOutcome += " by " + nn.getShortName();
@@ -1294,23 +1308,32 @@ public class TurnReportCollector {
 									popOutcome += " by " + cw.getPopOutcomeNation();
 								}
 							}
-							// cr.appendNote(popOutcome);							cr.setPopOutcome(popOutcome);
+							// cr.appendNote(popOutcome);
+							cr.setPopOutcome(popOutcome);
 						} else if (cw.getPopName() != null) {
 							popOutcome = " PC not affected";
-							// cr.appendNote(popOutcome);							cr.setPopOutcome(popOutcome);
+							// cr.appendNote(popOutcome);
+							cr.setPopOutcome(popOutcome);
 						}
-						if (cw.isNaval())							cr.appendNote("Naval combat");						if (!commanders.equals(""))							cr.appendNote(commanders);						if (winnerAllegiances.contains(gameNationAllegiance)) {
+						if (cw.isNaval())
+							cr.appendNote("Naval combat");
+						if (!commanders.equals(""))
+							cr.appendNote(commanders);
+						if (winnerAllegiances.contains(gameNationAllegiance)) {
 							cr.setModification(ObjectModificationType.Gained);
-						} else if (winnerAllegiances.size() > 0) {							cr.setModification(ObjectModificationType.Lost);
+						} else if (winnerAllegiances.size() > 0) {
+							cr.setModification(ObjectModificationType.Lost);
 						} else {
 							cr.setModification(ObjectModificationType.Modified);
 						}
 						ret.add(cr);
-					} catch (Exception e) {						int b = 1;
+					} catch (Exception e) {
+						int b = 1;
 						Logger.getLogger(TurnReportCollector.class).error(e);
 					}
 				}
 			}
+
 		}
 		return ret;
 	}

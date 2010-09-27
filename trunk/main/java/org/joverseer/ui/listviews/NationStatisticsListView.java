@@ -56,54 +56,8 @@ public class NationStatisticsListView extends BaseItemListView {
 		NationStatisticsWrapper fp = new NationStatisticsWrapper();
 		fp.setAllegiance(NationAllegianceEnum.FreePeople);
 
-    protected void setItems() {
-        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (!Game.isInitialized(g))
-            return;
-        ArrayList items = new ArrayList();
-        NationStatisticsWrapper fp = new NationStatisticsWrapper();
-        fp.setAllegiance(NationAllegianceEnum.FreePeople);
-        
-        NationStatisticsWrapper ds = new NationStatisticsWrapper();
-        ds.setAllegiance(NationAllegianceEnum.DarkServants);
-        
-        NationStatisticsWrapper ns = new NationStatisticsWrapper();
-        ns.setAllegiance(NationAllegianceEnum.Neutral);
-        
-        Turn t = g.getTurn();
-        for (int i = 1; i < 26; i++) {
-        	NationRelations nr = t.getNationRelations(i);
-        	if (nr == null || nr.getEliminated()) continue;
-        	Nation n = NationMap.getNationFromNo(i);
-        	if (n.getRemoved()) continue;
-        	Integer capitalHex = null;
-            PopulationCenter capital = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter)
-                    .findFirstByProperties(new String[] {"nationNo", "capital"}, new Object[] {i, true});
-            if (capital != null) {
-                capitalHex = capital.getHexNo();
-            }
-            NationStatisticsWrapper nsw = new NationStatisticsWrapper();
-            nsw.setNationNo(i);
-            nsw.setCharacters(0);
-            nsw.setCharactersInCapital(0);
-            nsw.setHostages(0);
-            nsw.setCommanders(0);
-            for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).findAllByProperty(
-                    "nationNo", nsw.getNationNo())) {
-                if (c.getDeathReason() == CharacterDeathReasonEnum.NotDead) {
-                    nsw.setCharacters(nsw.getCharacters() + 1);
-                    if (c.getHostage() != null && c.getHostage()) {
-                        nsw.setHostages(nsw.getHostages() + 1);
-	                } else {
-	                	if (capitalHex != null && c.getHexNo() == capitalHex) {
-	                        nsw.setCharactersInCapital(nsw.getCharactersInCapital() + 1);
-	                    }
-	                    if (c.getCommand() > 0) {
-	                        nsw.setCommanders(nsw.getCommanders() + 1);
-	                    }
-	                }
-                }
-            }
+		NationStatisticsWrapper ds = new NationStatisticsWrapper();
+		ds.setAllegiance(NationAllegianceEnum.DarkServants);
 
 		NationStatisticsWrapper ns = new NationStatisticsWrapper();
 		ns.setAllegiance(NationAllegianceEnum.Neutral);

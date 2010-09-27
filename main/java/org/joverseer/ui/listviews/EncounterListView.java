@@ -32,7 +32,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
-import org.joverseer.ui.support.UIUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
@@ -48,172 +47,183 @@ import com.jidesoft.grid.SortableTable;
 
 /**
  * List view for encounters
+ * 
  * @author Marios Skounakis
  */
 public class EncounterListView extends BaseItemListView {
-    public EncounterListView() {
-        super(EncounterTableModel.class);
-    }
+	public EncounterListView() {
+		super(EncounterTableModel.class);
+	}
 
-    protected int[] columnWidths() {
-        return new int[]{40, 40, 64, 96,
-                        370};
-    }
+	@Override
+	protected int[] columnWidths() {
+		return new int[] { 40, 40, 64, 96, 370 };
+	}
 
-    /**
-     * Overrides and ignores the base class implementation because 
-     * it needs a JideTable to use the MultiLineRenderer
-     */
-    protected JComponent createControlImpl() {
-        // fetch the messageSource instance from the application context
-        MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+	/**
+	 * Overrides and ignores the base class implementation because it needs a
+	 * JideTable to use the MultiLineRenderer
+	 */
+	@Override
+	protected JComponent createControlImpl() {
+		// fetch the messageSource instance from the application context
+		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 
-        // create the table model
-        try {
-            tableModel = (BeanTableModel) tableModelClass.getConstructor(new Class[] {MessageSource.class})
-                    .newInstance(new Object[] {messageSource});
-        } catch (InstantiationException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        }
+		// create the table model
+		try {
+			tableModel = (BeanTableModel) tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
+		} catch (InstantiationException e) {
+			e.printStackTrace(); // To change body of catch statement use File |
+			// Settings | File Templates.
+		} catch (IllegalAccessException e) {
+			e.printStackTrace(); // To change body of catch statement use File |
+			// Settings | File Templates.
+		} catch (InvocationTargetException e) {
+			e.printStackTrace(); // To change body of catch statement use File |
+			// Settings | File Templates.
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace(); // To change body of catch statement use File |
+			// Settings | File Templates.
+		}
 
-        TableLayoutBuilder tlb = new TableLayoutBuilder();
+		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
-        // create the filter combo
-        AbstractListViewFilter[][] filterLists = getFilters();
-        if (filterLists != null) {
-        	for (AbstractListViewFilter[] filterList : filterLists) {
-        		JComboBox filter = new JComboBox(filterList);
-	            filters.add(filter);
-	            filter.addActionListener(new ActionListener() {
-	
-	                public void actionPerformed(ActionEvent e) {
-	                    setItems();
-	                }
-	            });
-	            filter.setPreferredSize(new Dimension(150, 20));
-	            filter.setOpaque(true);
-	            tlb.cell(filter, "align=left");
-	            tlb.gapCol();
-        	}
-            tlb.row();
-        }
+		// create the filter combo
+		AbstractListViewFilter[][] filterLists = getFilters();
+		if (filterLists != null) {
+			for (AbstractListViewFilter[] filterList : filterLists) {
+				JComboBox filter = new JComboBox(filterList);
+				filters.add(filter);
+				filter.addActionListener(new ActionListener() {
 
-        setItems();
+					public void actionPerformed(ActionEvent e) {
+						setItems();
+					}
+				});
+				filter.setPreferredSize(new Dimension(150, 20));
+				filter.setOpaque(true);
+				tlb.cell(filter, "align=left");
+				tlb.gapCol();
+			}
+			tlb.row();
+		}
 
-        // create the JTable instance
-        table = TableUtils.createStandardSortableTable(tableModel);
-        table = new SortableTable(table.getModel()) {
-            protected void initTable() {
-                super.initTable();
-                setSortTableHeaderRenderer();
-            }
+		setItems();
 
-            protected SortTableHeaderRenderer createSortHeaderRenderer() {
-                return new SortTableHeaderRenderer(){
-                    protected void initComponents() {
-                        super.initComponents();
-                        _headerPanel.add(_titlePanel, BorderLayout.CENTER);
-                    }
+		// create the JTable instance
+		table = TableUtils.createStandardSortableTable(tableModel);
+		table = new SortableTable(table.getModel()) {
+			@Override
+			protected void initTable() {
+				super.initTable();
+				setSortTableHeaderRenderer();
+			}
 
-                    protected JLabel createLabel(String text) {
-                        return new JLabel(text, JLabel.LEADING);
-                    }
-                };
-            }
+			@Override
+			protected SortTableHeaderRenderer createSortHeaderRenderer() {
+				return new SortTableHeaderRenderer() {
+					@Override
+					protected void initComponents() {
+						super.initComponents();
+						_headerPanel.add(_titlePanel, BorderLayout.CENTER);
+					}
 
-            protected JTableHeader createDefaultTableHeader() {
-                return new JTableHeader(columnModel);
-            }   
-        };
-        ((JideTable)table).setRowResizable(true);
-        ((JideTable)table).setRowAutoResizes(true);
-        org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
+					@Override
+					protected JLabel createLabel(String text) {
+						return new JLabel(text, JLabel.LEADING);
+					}
+				};
+			}
 
-        String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
-        if (pval.equals("yes")) {
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        } else {
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        }
+			@Override
+			protected JTableHeader createDefaultTableHeader() {
+				return new JTableHeader(columnModel);
+			}
+		};
+		((JideTable) table).setRowResizable(true);
+		((JideTable) table).setRowAutoResizes(true);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
 
-        table.getTableHeader().setBackground(Color.WHITE);
-        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
-        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
-        table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
-        table.addMouseListener(this);
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.getViewport().setOpaque(true);
-        scrollPane.getViewport().setBackground(table.getBackground());
-        tlb.cell(scrollPane);
+		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
+		if (pval.equals("yes")) {
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		} else {
+			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		}
 
-        if (getDefaultSort() != null) {
-            ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-            Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
-            JLabel restoreSorting = new JLabel();
-            restoreSorting.setIcon(ico);
-            restoreSorting.setPreferredSize(new Dimension(16, 16));
-            restoreSorting.addMouseListener(new MouseAdapter() {
+		table.getTableHeader().setBackground(Color.WHITE);
+		table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
+		table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
+		table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
+		table.addMouseListener(this);
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.getViewport().setOpaque(true);
+		scrollPane.getViewport().setBackground(table.getBackground());
+		tlb.cell(scrollPane);
 
-                public void mouseClicked(MouseEvent arg0) {
-                    ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
-                }
+		if (getDefaultSort() != null) {
+			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
+			JLabel restoreSorting = new JLabel();
+			restoreSorting.setIcon(ico);
+			restoreSorting.setPreferredSize(new Dimension(16, 16));
+			restoreSorting.addMouseListener(new MouseAdapter() {
 
-            });
-            ((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
-            restoreSorting.setToolTipText("Restore default sort order");
-            tlb.cell(restoreSorting, "colspec=left:30px valign=top");
-        }
-        JPanel p = tlb.getPanel();
-        p.setBackground(Color.WHITE);
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+				}
 
-        MultilineTableCellRenderer r = new MultilineTableCellRenderer();
-        r.setWrapStyleWord(true);
-        r.setLineWrap(true);
-        table.setDefaultRenderer(String.class, r);
-        table.setDefaultRenderer(Integer.class, r);
-        table.setFont(new Font(table.getFont().getFamily(), Font.PLAIN, table.getFont().getSize()-1));
-        return p;
-    }
+			});
+			((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+			restoreSorting.setToolTipText("Restore default sort order");
+			tlb.cell(restoreSorting, "colspec=left:30px valign=top");
+		}
+		JPanel p = tlb.getPanel();
+		p.setBackground(Color.WHITE);
+
+		MultilineTableCellRenderer r = new MultilineTableCellRenderer();
+		r.setWrapStyleWord(true);
+		r.setLineWrap(true);
+		table.setDefaultRenderer(String.class, r);
+		table.setDefaultRenderer(Integer.class, r);
+		table.setFont(new Font(table.getFont().getFamily(), Font.PLAIN, table.getFont().getSize() - 1));
+		return p;
+	}
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-        filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-        return new AbstractListViewFilter[][] {
-                filters.toArray(new AbstractListViewFilter[] {}),
-                TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(),};
+		filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
+		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), };
 	}
 
 	@Override
 	protected void setItems() {
-		ArrayList items = new ArrayList();
+		ArrayList<Object> items = new ArrayList<Object>();
 		Game g = GameHolder.instance().getGame();
 		if (g != null) {
-			for (int i=0; i<=g.getMaxTurn(); i++) {
-				Turn t =  g.getTurn(i);
-				if (t == null) continue;
-				for (Encounter e : (ArrayList<Encounter>)t.getContainer(TurnElementsEnum.Encounter).getItems()) {
+			for (int i = 0; i <= g.getMaxTurn(); i++) {
+				Turn t = g.getTurn(i);
+				if (t == null)
+					continue;
+				for (Encounter e : t.getEncounters()) {
 					EncounterTableModel.EncounterWrapper ew = new EncounterTableModel.EncounterWrapper();
 					ew.setTurnNo(i);
 					ew.setCharacter(e.getCharacter());
 					ew.setDescription(e.getDescription());
 					ew.setHexNo(e.getHexNo());
-					Character c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ew.getCharacter());
+					Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ew.getCharacter());
 					ew.setNationNo(0);
-					if (c != null) ew.setNationNo(c.getNationNo());
-					if (getActiveFilter().accept(ew)) items.add(ew);
+					if (c != null)
+						ew.setNationNo(c.getNationNo());
+					if (getActiveFilter().accept(ew))
+						items.add(ew);
 				}
 			}
 		}
 		tableModel.setRows(items);
-		
-	}
 
+	}
 
 }

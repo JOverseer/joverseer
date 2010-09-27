@@ -7,38 +7,43 @@ import org.joverseer.domain.Company;
 public class CompanyWrapper {
 	int hexNo;
 	String commander;
-	ArrayList members = new ArrayList();
-	
+	ArrayList<String> members = new ArrayList<String>();
+
 	public String getCommander() {
 		return commander;
 	}
+
 	public void setCommander(String commander) {
 		this.commander = commander;
 	}
+
 	public int getHexNo() {
 		return hexNo;
 	}
+
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
-	public ArrayList getMembers() {
+
+	public ArrayList<String> getMembers() {
 		return members;
 	}
-	public void setMembers(ArrayList members) {
+
+	public void setMembers(ArrayList<String> members) {
 		this.members = members;
 	}
-	
+
 	public void addMember(String member) {
-    	getMembers().add(member);
-    }
-	
+		getMembers().add(member);
+	}
+
 	public Company getCompany() {
-        Company c = new Company();
-        c.setHexNo(hexNo);
-        c.setCommander(getCommander());
-        for (String m : (ArrayList<String>)getMembers()) {
-            c.addMember(m.trim());
-        }
-        return c;
-    }
+		Company c = new Company();
+		c.setHexNo(hexNo);
+		c.setCommander(getCommander());
+		for (String m : getMembers()) {
+			c.addMember(m.trim());
+		}
+		return c;
+	}
 }

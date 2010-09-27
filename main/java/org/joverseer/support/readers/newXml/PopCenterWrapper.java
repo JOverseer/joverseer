@@ -9,13 +9,13 @@ public class PopCenterWrapper {
 	boolean sieged;
 	String terrain;
 	String climate;
-	
-	ArrayList products = new ArrayList();
+
+	ArrayList<ProductionWrapper> products = new ArrayList<ProductionWrapper>();
 
 	public void addProduct(ProductionWrapper pw) {
 		products.add(pw);
 	}
-	
+
 	public String getClimate() {
 		return climate;
 	}
@@ -48,14 +48,14 @@ public class PopCenterWrapper {
 		this.terrain = terrain;
 	}
 
-	public ArrayList getProducts() {
+	public ArrayList<ProductionWrapper> getProducts() {
 		return products;
 	}
-	
+
 	public void updatePopCenter(PopulationCenter pc) {
-		for (ProductionWrapper pw : (ArrayList<ProductionWrapper>)products) {
+		for (ProductionWrapper pw : products) {
 			pw.updatePopCenter(pc);
 		}
 	}
-	
+
 }

@@ -8,59 +8,65 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.joverseer.domain.Army;
+import org.joverseer.domain.Character;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationMapRange;
+import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
 /**
- * Holds metadata about the game such as
- * 1. the game type and other game instance stuff
- * 2. information that depends on the game type, such as the hexes, the artifacts, etc
+ * Holds metadata about the game such as 1. the game type and other game
+ * instance stuff 2. information that depends on the game type, such as the
+ * hexes, the artifacts, etc
  * 
  * @author Marios Skounakis
  */
 public class GameMetadata implements Serializable {
 	private static final long serialVersionUID = 8007105168749869584L;
 	GameTypeEnum gameType;
-    int gameNo;
-    int nationNo;
-    String additionalNations;
-    boolean newXmlFormat = false;
+	int gameNo;
+	int nationNo;
+	String additionalNations;
+	boolean newXmlFormat = false;
 
-    Game game;
-    
-    ArrayList nations = new ArrayList();
-    Container hexes = new Container(new String[]{"hexNo"});
-    Container artifacts = new Container(new String[]{"no"});
-    Container orders = new Container(new String[]{"number"});
-    Container characters = new Container(new String[]{"id", "name"});
-    Container startDummyCharacters = new Container(new String[]{"id", "name"});
-    Container populationCenters = new Container(new String[]{"hexNo"});
-    Container nationMapRanges = new Container(new String[]{"nationNo"});
-    Container spells = new Container(new String[]{"no"});
-    Container armies = new Container(new String[]{"hexNo"});
-    HashMap<Integer, Container> hexOverrides = new HashMap<Integer, Container>();
-    ArrayList readers = new ArrayList();
+	Game game;
 
-    String basePath;
+	ArrayList<Nation> nations = new ArrayList<Nation>();
+	Container<Hex> hexes = new Container<Hex>(new String[] { "hexNo" });
+	Container<ArtifactInfo> artifacts = new Container<ArtifactInfo>(new String[] { "no" });
+	Container<OrderMetadata> orders = new Container<OrderMetadata>(new String[] { "number" });
+	Container<Character> characters = new Container<Character>(new String[] { "id", "name" });
+	Container<Character> startDummyCharacters = new Container<Character>(new String[] { "id", "name" });
+	Container<PopulationCenter> populationCenters = new Container<PopulationCenter>(new String[] { "hexNo" });
+	Container<NationMapRange> nationMapRanges = new Container<NationMapRange>(new String[] { "nationNo" });
+	Container<SpellInfo> spells = new Container<SpellInfo>(new String[] { "no" });
+	Container<Army> armies = new Container<Army>(new String[] { "hexNo" });
+	HashMap<Integer, Container<Hex>> hexOverrides = new HashMap<Integer, Container<Hex>>();
+	ArrayList<MetadataReader> readers = new ArrayList<MetadataReader>();
 
-    public GameTypeEnum getGameType() {
-        return gameType;
-    }
+	String basePath;
 
-    public void setGameType(GameTypeEnum gameType) {
-        this.gameType = gameType;
-    }
-    
-    public void setGame(Game game) {
-    	this.game = game;
-    }
+	public GameTypeEnum getGameType() {
+		return gameType;
+	}
 
-    public String getAdditionalNations() {
+	public void setGameType(GameTypeEnum gameType) {
+		this.gameType = gameType;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public String getAdditionalNations() {
 		return additionalNations;
 	}
 
@@ -75,63 +81,61 @@ public class GameMetadata implements Serializable {
 		}
 	}
 
-	public Collection getHexes() {
-        return hexes.getItems();
-    }
-    
-    protected Hex getHexFromMetadata(int hexNo) {
-    	Hex h = (Hex)hexes.findFirstByProperties(new String[]{"hexNo"}, new Object[]{hexNo});
-    	return h;
-    }
-    
-    public Hex getHex(int hexNo) {
-    	return getHexForTurn(game.getCurrentTurn(), hexNo);
-    }
+	public Collection<Hex> getHexes() {
+		return hexes.getItems();
+	}
 
-    public void setHexes(Collection hexes) {
-    	for (Object h : hexes) {
-    		this.hexes.addItem(h);
-    	}
-    }
+	protected Hex getHexFromMetadata(int hexNo) {
+		Hex h = hexes.findFirstByProperties(new String[] { "hexNo" }, new Object[] { hexNo });
+		return h;
+	}
 
-    public ArrayList getNations() {
-        return nations;
-    }
+	public Hex getHex(int hexNo) {
+		return getHexForTurn(game.getCurrentTurn(), hexNo);
+	}
 
-    public void setNations(Collection nations) {
-    	this.nations.clear();
-        this.nations.addAll(nations);
-    }
+	public void setHexes(Collection<Hex> hexes) {
+		for (Hex h : hexes) {
+			this.hexes.addItem(h);
+		}
+	}
 
-    public void load() throws IOException, MetadataReaderException {
-        for (MetadataReader r : (Collection<MetadataReader>)getReaders()) {
-            r.load(this);
-        }
-    }
+	public ArrayList<Nation> getNations() {
+		return nations;
+	}
 
-    public ArrayList getReaders() {
-        return readers;
-    }
+	public void setNations(Collection<Nation> nations) {
+		this.nations.clear();
+		this.nations.addAll(nations);
+	}
 
-    public void setReaders(ArrayList readers) {
-        this.readers = readers;
-    }
+	public void load() throws IOException, MetadataReaderException {
+		for (MetadataReader r : getReaders()) {
+			r.load(this);
+		}
+	}
 
-    public int getGameNo() {
-        return gameNo;
-    }
+	public ArrayList<MetadataReader> getReaders() {
+		return readers;
+	}
 
-    public void setGameNo(int gameNo) {
-        this.gameNo = gameNo;
-    }
-    
-    
+	public void setReaders(ArrayList<MetadataReader> readers) {
+		this.readers = readers;
+	}
 
-    public Container getStartDummyCharacters() {
+	public int getGameNo() {
+		return gameNo;
+	}
+
+	public void setGameNo(int gameNo) {
+		this.gameNo = gameNo;
+	}
+
+	public Container<Character> getStartDummyCharacters() {
 		return startDummyCharacters;
 	}
 
-	public void setStartDummyCharacters(Container startDummyCharacters) {
+	public void setStartDummyCharacters(Container<Character> startDummyCharacters) {
 		this.startDummyCharacters = startDummyCharacters;
 	}
 
@@ -144,219 +148,211 @@ public class GameMetadata implements Serializable {
 	}
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(getCharacters());
-        out.writeObject(getArtifacts());
-        out.writeObject(getSpells());
-        out.writeObject(getOrders());
-        out.writeObject(hexes);
-        out.writeObject(getNations());
-        out.writeObject(getNationMapRanges());
-        out.writeObject(getGameType());
-        out.writeObject(getGameNo());
-        out.writeObject(getNationNo());
-        out.writeObject(getNewXmlFormat());
-        out.writeObject(getStartDummyCharacters());
-        out.writeObject(hexOverrides);
-    }
+		out.writeObject(getCharacters());
+		out.writeObject(getArtifacts());
+		out.writeObject(getSpells());
+		out.writeObject(getOrders());
+		out.writeObject(hexes);
+		out.writeObject(getNations());
+		out.writeObject(getNationMapRanges());
+		out.writeObject(getGameType());
+		out.writeObject(getGameNo());
+		out.writeObject(getNationNo());
+		out.writeObject(getNewXmlFormat());
+		out.writeObject(getStartDummyCharacters());
+		out.writeObject(hexOverrides);
+	}
 
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        characters = (Container)in.readObject();
-        artifacts = (Container)in.readObject();
-        spells = (Container)in.readObject();
-        orders = (Container)in.readObject();
-        hexes = (Container)in.readObject();
-        nations = (ArrayList)in.readObject();
-        nationMapRanges = (Container)in.readObject();
-        setGameType((GameTypeEnum)in.readObject());
-        setGameNo((Integer)in.readObject());
-        setNationNo((Integer)in.readObject());
-        try {
-        	setNewXmlFormat((Boolean)in.readObject());
-        }
-        catch (Exception e) {
-        	// do nothing, this may have not been set
-        }
-        try {
-        	setStartDummyCharacters((Container)in.readObject());
-        }
-        catch (Exception e) {
-        	// do nothing, this may have not been set
-        }
-        try {
-        	hexOverrides = (HashMap)in.readObject();
-        }
-        catch (Exception e) {
-        	// do nothing, this may have not been set
-        }
-    }
+	@SuppressWarnings("unchecked")
+	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+		characters = (Container<Character>) in.readObject();
+		artifacts = (Container<ArtifactInfo>) in.readObject();
+		spells = (Container<SpellInfo>) in.readObject();
+		orders = (Container<OrderMetadata>) in.readObject();
+		hexes = (Container<Hex>) in.readObject();
+		nations = (ArrayList<Nation>) in.readObject();
+		nationMapRanges = (Container<NationMapRange>) in.readObject();
+		setGameType((GameTypeEnum) in.readObject());
+		setGameNo((Integer) in.readObject());
+		setNationNo((Integer) in.readObject());
+		try {
+			setNewXmlFormat((Boolean) in.readObject());
+		} catch (Exception e) {
+			// do nothing, this may have not been set
+		}
+		try {
+			setStartDummyCharacters((Container<Character>) in.readObject());
+		} catch (Exception e) {
+			// do nothing, this may have not been set
+		}
+		try {
+			hexOverrides = (HashMap) in.readObject();
+		} catch (Exception e) {
+			// do nothing, this may have not been set
+		}
+	}
 
-    public Nation getNationByNum(int number) {
-        for (Nation n : (ArrayList<Nation>)getNations()) {
-            if (n.getNumber() == number) {
-                return n;
-            }
-        }
-        return null;
-    }
+	public Nation getNationByNum(int number) {
+		for (Nation n : getNations()) {
+			if (n.getNumber() == number) {
+				return n;
+			}
+		}
+		return null;
+	}
 
-    public Nation getNationByName(String name) {
-       for (Nation n : (ArrayList<Nation>)getNations()) {
-            if (n.getName().equals(name)) {
-                return n;
-            }
-        }
-        return null;
-    }
+	public Nation getNationByName(String name) {
+		for (Nation n : getNations()) {
+			if (n.getName().equals(name)) {
+				return n;
+			}
+		}
+		return null;
+	}
 
-    public Container getArtifacts() {
-        return artifacts;
-    }
+	public Container<ArtifactInfo> getArtifacts() {
+		return artifacts;
+	}
 
-    public void setArtifacts(Container artifacts) {
-        this.artifacts = artifacts;
-    }
+	public void setArtifacts(Container<ArtifactInfo> artifacts) {
+		this.artifacts = artifacts;
+	}
 
-    public Container getPopulationCenters() {
-        return populationCenters;
-    }
+	public Container<PopulationCenter> getPopulationCenters() {
+		return populationCenters;
+	}
 
-    public void setPopulationCenters(Container populationCenters) {
-        this.populationCenters = populationCenters;
-    }
+	public void setPopulationCenters(Container<PopulationCenter> populationCenters) {
+		this.populationCenters = populationCenters;
+	}
 
-    public Container getOrders() {
-    	if (orders != null) {
-    		OrderMetadata om = (OrderMetadata)orders.findFirstByProperty("number", 225);
-    		if (om.getSkillRequirement().equals("MS")) {
-    			GameMetadata gm = (GameMetadata)Application.instance().getApplicationContext().getBean("gameMetadata");
-    			gm.setGameType(getGameType());
-    			
-    			try {
-    			gm.load();
-    			orders = gm.getOrders(); 
-    			}
-    			catch (Exception exc) {
-    				// do nothing
-    			}
-    		}
-    	}
-        return orders;
-    }
+	public Container<OrderMetadata> getOrders() {
+		if (orders != null) {
+			OrderMetadata om = orders.findFirstByProperty("number", 225);
+			if (om.getSkillRequirement().equals("MS")) {
+				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+				gm.setGameType(getGameType());
 
-    public void setOrders(Container orders) {
-        this.orders = orders;
-    }
+				try {
+					gm.load();
+					orders = gm.getOrders();
+				} catch (Exception exc) {
+					// do nothing
+				}
+			}
+		}
+		return orders;
+	}
 
-    public String getBasePath() {
-        File f = new File(basePath);
-        try {
-            if (f.exists()) return f.getCanonicalPath();
-            File cd = new File(".");
-            String p = cd.getCanonicalPath() + "/" + basePath;
-            return p;
-        }
-        catch (IOException exc) {
-            return basePath;
-        }
-    }
+	public void setOrders(Container<OrderMetadata> orders) {
+		this.orders = orders;
+	}
 
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
-    }
+	public String getBasePath() {
+		File f = new File(basePath);
+		try {
+			if (f.exists())
+				return f.getCanonicalPath();
+			File cd = new File(".");
+			String p = cd.getCanonicalPath() + "/" + basePath;
+			return p;
+		} catch (IOException exc) {
+			return basePath;
+		}
+	}
 
-    public Container getCharacters() {
-        return characters;
-    }
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
 
-    public void setCharacters(Container characters) {
-        this.characters = characters;
-    }
+	public Container<Character> getCharacters() {
+		return characters;
+	}
 
-    public int getNationNo() {
-        return nationNo;
-    }
+	public void setCharacters(Container<Character> characters) {
+		this.characters = characters;
+	}
 
-    public void setNationNo(int nationNo) {
-        this.nationNo = nationNo;
-    }
+	public int getNationNo() {
+		return nationNo;
+	}
 
+	public void setNationNo(int nationNo) {
+		this.nationNo = nationNo;
+	}
 
+	public Container<NationMapRange> getNationMapRanges() {
+		return nationMapRanges;
+	}
 
-    public Container getNationMapRanges() {
-        return nationMapRanges;
-    }
+	public void setNationMapRanges(Container<NationMapRange> nationMapRanges) {
+		this.nationMapRanges = nationMapRanges;
+	}
 
-    public void setNationMapRanges(Container nationMapRanges) {
-        this.nationMapRanges = nationMapRanges;
-    }
-
-
-    
-    
-    public Container getArmies() {
+	public Container<Army> getArmies() {
 		return armies;
 	}
 
-	public void setArmies(Container armies) {
+	public void setArmies(Container<Army> armies) {
 		this.armies = armies;
 	}
 
-	public Container getSpells() {
-        return spells;
-    }
+	public Container<SpellInfo> getSpells() {
+		return spells;
+	}
 
-    
-    public void setSpells(Container spells) {
-        this.spells = spells;
-    }
-    
-    public Container getHexOverrides(int turnNo) {
-    	if (hexOverrides == null) hexOverrides = new HashMap<Integer, Container>();
-    	if (hexOverrides.containsKey(turnNo)) {
-    		return hexOverrides.get(turnNo);
-    	}
-    	return new Container();
-    }
-    
-    public Hex getHexOverride(Container hexes, int hexNo) {
-    	return (Hex)hexes.findFirstByProperty("hexNo", hexNo);
-    }
-    
-    public Hex getHexForTurn(int turnNo, int hexNo) {
-    	Hex h = getHexOverride(getHexOverrides(turnNo), hexNo);
-    	if (h != null) return h;
-    	return getHexFromMetadata(hexNo);
-    }
-    
-    public void addHexOverride(int turnNo, Hex hex) {
-    	Container hc;
-    	if (!hexOverrides.containsKey(turnNo)) {
-    		hc = new Container(new String[]{"hexNo"});
-    		hexOverrides.put(turnNo, hc);
-    	}
-    	hc = getHexOverrides(turnNo);
-    	Hex h = getHexOverride(hc, hex.getHexNo());
-    	if (h != null) hc.removeItem(h);
-    	hc.addItem(hex);
-    }
-    
-    public Resource getResource(String resourceName) {
-        try {
-            Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
-            new InputStreamReader(r.getInputStream());
-            return r;
-        }
-        catch (Exception exc) {
-            try {
-                System.out.println(exc.getMessage());
-                Resource r = Application.instance().getApplicationContext().getResource("classpath:" + basePath + resourceName);
-                new InputStreamReader(r.getInputStream());
-                return r;
-            }
-            catch (Exception ex) {
-                System.out.println(ex.getMessage());
-                return null;
-            }
-        }
-    }
+	public void setSpells(Container<SpellInfo> spells) {
+		this.spells = spells;
+	}
+
+	public Container<Hex> getHexOverrides(int turnNo) {
+		if (hexOverrides == null)
+			hexOverrides = new HashMap<Integer, Container<Hex>>();
+		if (hexOverrides.containsKey(turnNo)) {
+			return hexOverrides.get(turnNo);
+		}
+		return new Container<Hex>();
+	}
+
+	public Hex getHexOverride(Container<Hex> hexes, int hexNo) {
+		return hexes.findFirstByProperty("hexNo", hexNo);
+	}
+
+	public Hex getHexForTurn(int turnNo, int hexNo) {
+		Hex h = getHexOverride(getHexOverrides(turnNo), hexNo);
+		if (h != null)
+			return h;
+		return getHexFromMetadata(hexNo);
+	}
+
+	public void addHexOverride(int turnNo, Hex hex) {
+		Container<Hex> hc;
+		if (!hexOverrides.containsKey(turnNo)) {
+			hc = new Container<Hex>(new String[] { "hexNo" });
+			hexOverrides.put(turnNo, hc);
+		}
+		hc = getHexOverrides(turnNo);
+		Hex h = getHexOverride(hc, hex.getHexNo());
+		if (h != null)
+			hc.removeItem(h);
+		hc.addItem(hex);
+	}
+
+	public Resource getResource(String resourceName) {
+		try {
+			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
+			new InputStreamReader(r.getInputStream());
+			return r;
+		} catch (Exception exc) {
+			try {
+				System.out.println(exc.getMessage());
+				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + basePath + resourceName);
+				new InputStreamReader(r.getInputStream());
+				return r;
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+				return null;
+			}
+		}
+	}
 }

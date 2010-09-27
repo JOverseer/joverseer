@@ -10,11 +10,9 @@ import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.StringUtils;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.readers.pdf.AssassinationResultWrapper;
 import org.joverseer.support.readers.pdf.ExecutionResultWrapper;
 import org.joverseer.support.readers.pdf.InfluenceOtherResultWrapper;
@@ -23,39 +21,39 @@ import org.joverseer.support.readers.pdf.LocateArtifactTrueResultWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.joverseer.support.readers.pdf.RevealCharacterResultWrapper;
 import org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper;
-import org.joverseer.ui.domain.LocateArtifactResult;
-
-import com.sun.org.apache.bcel.internal.generic.IFNONNULL;
 
 public class CharacterMessageWrapper {
 	String charId;
-	ArrayList lines = new ArrayList();
-	
+	ArrayList<String> lines = new ArrayList<String>();
+
 	public String getCharId() {
 		return charId;
 	}
+
 	public void setCharId(String charId) {
 		this.charId = charId;
 	}
-	public ArrayList getLines() {
+
+	public ArrayList<String> getLines() {
 		return lines;
 	}
-	public void setLines(ArrayList lines) {
+
+	public void setLines(ArrayList<String> lines) {
 		this.lines = lines;
 	}
-	
+
 	public void addLine(String line) {
 		lines.add(line);
 	}
-	
+
 	public String getOrdersAsString() {
 		String ret = "";
-		for (String line : (ArrayList<String>)lines) {
+		for (String line : lines) {
 			ret += (ret.equals("") ? "" : " ") + line;
 		}
 		return ret;
 	}
-	
+
 	public void updateCharacter(Character c, Game game) {
 		String orders = getOrdersAsString();
 		c.setOrderResults(orders);
@@ -82,18 +80,18 @@ public class CharacterMessageWrapper {
 			}
 		}
 	}
-	
+
 	protected Integer getLastSeenLocation() {
-		// 2010 02 09 - KS Specific, parse "{Dervorin} has gone missing. She was last seen in the Mixed Forest at 1908. No one seems to know what has happened to her."
-		for (String line : (ArrayList<String>)lines) {
+		// 2010 02 09 - KS Specific, parse
+		// "{Dervorin} has gone missing. She was last seen in the Mixed Forest at 1908. No one seems to know what has happened to her."
+		for (String line : lines) {
 			if (line.indexOf("was last seen ") > -1 && line.indexOf("was located in an unknown location") == -1) {
 				String[] sentences = line.split("\\.");
-				if (sentences.length > 1 && sentences[1].indexOf("was last seen")>-1) {
-					String hexNo = sentences[1].substring(sentences[1].length()-4, sentences[1].length());
+				if (sentences.length > 1 && sentences[1].indexOf("was last seen") > -1) {
+					String hexNo = sentences[1].substring(sentences[1].length() - 4, sentences[1].length());
 					try {
 						return Integer.parseInt(hexNo);
-					}
-					catch (Exception exc) {
+					} catch (Exception exc) {
 						// do nothing
 						return null;
 					}
@@ -102,15 +100,14 @@ public class CharacterMessageWrapper {
 		}
 		return null;
 	}
-	
+
 	protected Integer getOriginalLocation() {
-		for (String line : (ArrayList<String>)lines) {
+		for (String line : lines) {
 			if (line.indexOf("was located") > -1 && line.indexOf("was located in an unknown location") == -1) {
-				String hexNo = line.substring(line.length()-5, line.length() -1);
+				String hexNo = line.substring(line.length() - 5, line.length() - 1);
 				try {
 					return Integer.parseInt(hexNo);
-				}
-				catch (Exception exc) {
+				} catch (Exception exc) {
 					// do nothing
 					return null;
 				}
@@ -118,62 +115,76 @@ public class CharacterMessageWrapper {
 		}
 		return null;
 	}
-	
+
 	protected boolean getAssassinated(Character c) {
-		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf(c.getName() + " was assassinated.")>-1) return true;
+		for (String line : lines) {
+			if (line.indexOf(c.getName() + " was assassinated.") > -1)
+				return true;
 		}
 		return false;
 	}
-	
+
 	protected boolean getMissing(Character c) {
-		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf(c.getName() + " has gone missing.")>-1) return true;
+		for (String line : lines) {
+			if (line.indexOf(c.getName() + " has gone missing.") > -1)
+				return true;
 		}
 		return false;
 	}
-	
-	
+
 	protected boolean getCursed(Character c) {
-		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf("was killed due to a mysterious and deadly curse.")>-1) return true;
+		for (String line : lines) {
+			if (line.indexOf("was killed due to a mysterious and deadly curse.") > -1)
+				return true;
 			if (line.indexOf("was killed due to a mysterious and severe sickness.")>-1) return true;
 			if (StringUtils.getUniqueRegexMatch(line, "was killed due to a mysterious and \\w+ (weakness).") != null) return true;
 		}
 		return false;
 	}
-	
+
 	protected boolean getExecuted(Character c) {
-		for (String line : (ArrayList<String>)lines) {
-			if (line.indexOf(c.getName() + " was executed.")>-1) return true;
+		for (String line : lines) {
+			if (line.indexOf(c.getName() + " was executed.") > -1)
+				return true;
 		}
 		return false;
 	}
-	
-	public ArrayList getOrderResults(InfoSource infoSource) {
-		ArrayList ret = new ArrayList();
-		for (String line : (ArrayList<String>)lines) {
+
+	public ArrayList<OrderResult> getOrderResults(InfoSource infoSource) {
+		ArrayList<OrderResult> ret = new ArrayList<OrderResult>();
+		for (String line : lines) {
 			OrderResult or = null;
 			or = getAssassinationOrderResult(line);
-			if (or == null) or = getExecutionOrderResult(line);
-			if (or == null) or = getInfOtherOrderResult(line);
-			if (or == null) or = getLAOrderResult(line);
-			if (or == null) or = getOwnedLAOrderResult(line);
-			if (or == null) or = getLATOrderResult(line);
-			if (or == null) or = getOwnedLATOrderResult(line);
-			if (or == null) or = getRCTOrderResult(line);
-			if (or == null) or = getRCOrderResult(line);
-			if (or == null) or = getReconResult(line, infoSource);
-			if (or == null) or = getScryResult(line, infoSource);
-			if (or == null) or = getRAResult(line, infoSource);
+			if (or == null)
+				or = getExecutionOrderResult(line);
+			if (or == null)
+				or = getInfOtherOrderResult(line);
+			if (or == null)
+				or = getLAOrderResult(line);
+			if (or == null)
+				or = getOwnedLAOrderResult(line);
+			if (or == null)
+				or = getLATOrderResult(line);
+			if (or == null)
+				or = getOwnedLATOrderResult(line);
+			if (or == null)
+				or = getRCTOrderResult(line);
+			if (or == null)
+				or = getRCOrderResult(line);
+			if (or == null)
+				or = getReconResult(line, infoSource);
+			if (or == null)
+				or = getScryResult(line, infoSource);
+			if (or == null)
+				or = getRAResult(line, infoSource);
 			if (or != null) {
 				ret.add(or);
 			}
 		}
 		return ret;
-		
+
 	}
-	
+
 	protected OrderResult getRAResult(String line, InfoSource infoSource) {
 		if (line.contains(" was ordered to cast a lore spell. Research Artifact -")) {
 			String artiName = StringUtils.getUniquePart(line, "Research Artifact - ", "#\\d{1,3}", false, false);
@@ -185,30 +196,30 @@ public class CharacterMessageWrapper {
 		}
 		return null;
 	}
-	
+
 	protected OrderResult getScryResult(String line, InfoSource infoSource) {
-		return getReconResult(line, infoSource,"Scry Area - Foreign armies identified:", "None", " See report below");
+		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below");
 	}
 
 	protected OrderResult getReconResult(String line, InfoSource infoSource) {
-		return getReconResult(line, infoSource,"was ordered to recon the area. ", "No armies were found", " See Map below");
+		return getReconResult(line, infoSource, "was ordered to recon the area. ", "No armies were found", " See Map below");
 	}
-	
+
 	protected OrderResult getReconResult(String line, InfoSource infoSource, String orderMessage, String noneMessage, String seeBelowMessage) {
 		try {
 			if (line.contains(orderMessage)) {
-				if (line.contains(noneMessage)) return null;
+				if (line.contains(noneMessage))
+					return null;
 				int i = line.indexOf(orderMessage);
 				line = line.substring(i + orderMessage.length()).trim();
 				i = line.toLowerCase().indexOf(seeBelowMessage.toLowerCase());
 				line = line.substring(0, i);
-				
+
 				ReconResultWrapper rrw = new ReconResultWrapper();
-				
+
 				ArrayList<String> parts = StringUtils.getParts(line, "(^)|(at \\d{4})", "at \\d{4}", false, true);
-				for (String part : parts) 
-				{
-					for (int j=0; j<26; j++) {
+				for (String part : parts) {
+					for (int j = 0; j < 26; j++) {
 						Nation n = NationMap.getNationFromNo(j);
 						String nn = StringUtils.getUniquePart(part, " " + n.getName(), " with about", true, false);
 						if (nn != null && nn.equals(n.getName())) {
@@ -224,8 +235,7 @@ public class CharacterMessageWrapper {
 							a.setSize(ArmySizeEnum.unknown);
 							try {
 								a.setTroopCount(Integer.parseInt(troops));
-							}
-							catch (Exception e) {
+							} catch (Exception e) {
 								a.setTroopCount(0);
 							}
 							a.setHexNo(hex);
@@ -239,51 +249,37 @@ public class CharacterMessageWrapper {
 				return rrw;
 			}
 			return null;
-		}
-		catch (Exception exc) {
+		} catch (Exception exc) {
 			return null;
 		}
 	}
-	
+
 	protected OrderResult getRCTOrderResult(String line) {
-		String ptr[] = new String[]{
-				"He was ordered to cast a lore spell. Reveal Character True - ",
-				" is located ",
-				" at ",
-				"."};
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Reveal Character True - ", " is located at ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			RevealCharacterTrueResultWrapper rw = new RevealCharacterTrueResultWrapper();
 			rw.setCharacterName(matches[0]);
-			rw.setHexNo(Integer.parseInt(matches[2]));
+			rw.setHexNo(Integer.parseInt(matches[1]));
 			return rw;
 		}
 		return null;
 	}
-	
+
 	protected OrderResult getRCOrderResult(String line) {
-		String ptr[] = new String[]{
-				"He was ordered to cast a lore spell. Reveal Character - ",
-				" is located ",
-				" at or near ",
-				"."};
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Reveal Character - ", " is located at or near ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			RevealCharacterResultWrapper rw = new RevealCharacterResultWrapper();
 			rw.setCharacterName(matches[0]);
-			rw.setHexNo(Integer.parseInt(matches[2]));
+			rw.setHexNo(Integer.parseInt(matches[1]));
 			return rw;
 		}
 		return null;
 	}
-	
+
 	protected OrderResult getOwnedLAOrderResult(String line) {
-		String ptr[] = 
-			new String[]{"He was ordered to cast a lore spell. Locate Artifact - ", 
-						" #",
-						"is possessed by ", 
-						" at or near ",  
-						"."};
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact - ", " #", "is possessed by ", " at or near ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
@@ -297,12 +293,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected OrderResult getOwnedLATOrderResult(String line) {
-		String ptr[] = 
-			new String[]{"He was ordered to cast a lore spell. Locate Artifact True - ", 
-						" #",
-						"is possessed by ", 
-						" at ",  
-						"."};
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is possessed by ", " at ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
@@ -316,36 +307,26 @@ public class CharacterMessageWrapper {
 	}
 
 	public OrderResult getLAOrderResult(String line) {
-		String ptr[] = 
-			new String[]{"He was ordered to cast a lore spell. Locate Artifact - ", 
-						" #",
-						"is located", 
-						" at or near ",  
-						"."};
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact - ", " #", "is located at or near ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
 			or.setArtifactName(matches[0]);
 			or.setArtifactNo(Integer.parseInt(matches[1]));
-			or.setHexNo(Integer.parseInt(matches[3]));
+			or.setHexNo(Integer.parseInt(matches[2]));
 			return or;
 		}
 		return null;
 	}
 
 	public OrderResult getLATOrderResult(String line) {
-		String ptr[] = 
-			new String[]{"He was ordered to cast a lore spell. Locate Artifact True - ", 
-						" #",
-						"is located", 
-						" at ",  
-						"."};
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is located at ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);
 			or.setArtifactNo(Integer.parseInt(matches[1]));
-			or.setHexNo(Integer.parseInt(matches[3]));
+			or.setHexNo(Integer.parseInt(matches[2]));
 			return or;
 		}
 		return null;
@@ -355,29 +336,28 @@ public class CharacterMessageWrapper {
 		try {
 			int[] locations = new int[pattern.length];
 			int[] widths = new int[pattern.length];
-			for (int j=0; j<pattern.length; j++) {
+			for (int j = 0; j < pattern.length; j++) {
 				String p = pattern[j];
 				int startIndex = 0;
 				if (j > 0) {
-					startIndex = locations[j-1];
+					startIndex = locations[j - 1];
 				}
 				int i = line.indexOf(p, startIndex);
-				if (i == -1) return null;
+				if (i == -1)
+					return null;
 				locations[j] = i;
 				widths[j] = p.length();
 			}
 			String[] matches = new String[locations.length - 1];
-			for (int j=0; j<matches.length; j++) {
-				matches[j] = line.substring(locations[j] + widths[j], locations[j+1]).trim();
+			for (int j = 0; j < matches.length; j++) {
+				matches[j] = line.substring(locations[j] + widths[j], locations[j + 1]).trim();
 			}
 			return matches;
-		}
-		catch (Throwable e) {
-			int aa = 1;
+		} catch (Throwable e) {
 			return null;
 		}
 	}
-	
+
 	private OrderResult getExecutionOrderResult(String line) {
 		String ptr = "was ordered to execute a hostage.";
 		String ptr1 = " was executed.";
@@ -392,7 +372,7 @@ public class CharacterMessageWrapper {
 		}
 		return null;
 	}
-	
+
 	private OrderResult getInfOtherOrderResult(String line) {
 		String ptr = "was ordered to influence their population center loyalty. The loyalty was influenced/reduced at ";
 		String ptr1 = ". Current loyalty is perceived to be ";
@@ -404,7 +384,7 @@ public class CharacterMessageWrapper {
 			int s = i + ptr.length();
 			String popCenterName = line.substring(s, j).trim();
 			s = j + ptr1.length();
-			String loyalty = line.substring(s, j+k);
+			String loyalty = line.substring(s, j + k);
 			InfluenceOtherResultWrapper rw = new InfluenceOtherResultWrapper();
 			rw.setPopCenter(popCenterName);
 			rw.setLoyalty(loyalty);
@@ -412,7 +392,7 @@ public class CharacterMessageWrapper {
 		}
 		return null;
 	}
-	
+
 	private OrderResult getAssassinationOrderResult(String line) {
 		String ptr = "was ordered to assassinate a character.";
 		String ptr1 = "was assassinated.";

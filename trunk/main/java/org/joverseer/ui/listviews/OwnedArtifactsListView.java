@@ -20,63 +20,65 @@ import org.springframework.richclient.table.ColumnToSort;
  * @author Marios Skounakis
  */
 public class OwnedArtifactsListView extends ItemListView {
-    public OwnedArtifactsListView() {
-        super(TurnElementsEnum.Character, OwnedArtifactsTableModel.class);
-    }
+	public OwnedArtifactsListView() {
+		super(TurnElementsEnum.Character, OwnedArtifactsTableModel.class);
+	}
 
-    protected int[] columnWidths() {
-        return new int[]{32, 96, 48, 132, 48, 120, 120};
-    }
-    
-    @Override
-    protected ColumnToSort[] getDefaultSort() {
-        return new ColumnToSort[]{
-                new ColumnToSort(0, 2),
-                new ColumnToSort(1, 3),
-                new ColumnToSort(2, 0)
-        };
-    }
+	@Override
+	protected int[] columnWidths() {
+		return new int[] { 32, 96, 48, 132, 48, 120, 120 };
+	}
 
-    protected void setItems() {
-        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (!Game.isInitialized(g)) return;
-        Container items = g.getTurn().getContainer(turnElementType);
-        ArrayList artis = new ArrayList();
-        for (Character c : (ArrayList<Character>)items.getItems()) {
-            for (Integer id : c.getArtifacts()) {
-                ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", id);
-                if (ai == null) continue;
-                //TODO move OwnedArtifact creation outside this class
-                OwnedArtifact a = new OwnedArtifact();
-                a.setNationNo(c.getNationNo());
-                a.setName(ai.getName());
-                a.setNumber(ai.getNo());
-                a.setOwner(c.getName());
-                a.setHexNo(c.getHexNo());
-                a.setPower1(ai.getPower1());
-                a.setPower2(ai.getPower2());
-                artis.add(a);
-            }
-        }
-        for (Artifact ar : (ArrayList<Artifact>)g.getTurn().getContainer(TurnElementsEnum.Artifact).getItems()) {
-            if (ar.getOwner() != null && !ar.getOwner().equals("")) {
-                ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
-                if (ai == null) continue;
-                Nation n = g.getMetadata().getNationByName(ar.getOwner());
-                if (n == null) continue;
-//              TODO move OwnedArtifact creation outside this class
-                OwnedArtifact a = new OwnedArtifact();
-                a.setNationNo(n.getNumber());
-                a.setName(ai.getName());
-                a.setNumber(ai.getNo());
-                a.setOwner(ar.getOwner());
-                a.setHexNo(ar.getHexNo());
-                a.setPower1(ai.getPower1());
-                a.setPower2(ai.getPower2());
-                artis.add(a);
-            }
-        }
-        tableModel.setRows(artis);
-    }
+	@Override
+	protected ColumnToSort[] getDefaultSort() {
+		return new ColumnToSort[] { new ColumnToSort(0, 2), new ColumnToSort(1, 3), new ColumnToSort(2, 0) };
+	}
+
+	@Override
+	protected void setItems() {
+		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		if (!Game.isInitialized(g))
+			return;
+		Container items = g.getTurn().getContainer(turnElementType);
+		ArrayList<OwnedArtifact> artis = new ArrayList<OwnedArtifact>();
+		for (Character c : (ArrayList<Character>) items.getItems()) {
+			for (Integer id : c.getArtifacts()) {
+				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", id);
+				if (ai == null)
+					continue;
+				// TODO move OwnedArtifact creation outside this class
+				OwnedArtifact a = new OwnedArtifact();
+				a.setNationNo(c.getNationNo());
+				a.setName(ai.getName());
+				a.setNumber(ai.getNo());
+				a.setOwner(c.getName());
+				a.setHexNo(c.getHexNo());
+				a.setPower1(ai.getPower1());
+				a.setPower2(ai.getPower2());
+				artis.add(a);
+			}
+		}
+		for (Artifact ar : (ArrayList<Artifact>) g.getTurn().getContainer(TurnElementsEnum.Artifact).getItems()) {
+			if (ar.getOwner() != null && !ar.getOwner().equals("")) {
+				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
+				if (ai == null)
+					continue;
+				Nation n = g.getMetadata().getNationByName(ar.getOwner());
+				if (n == null)
+					continue;
+				// TODO move OwnedArtifact creation outside this class
+				OwnedArtifact a = new OwnedArtifact();
+				a.setNationNo(n.getNumber());
+				a.setName(ai.getName());
+				a.setNumber(ai.getNo());
+				a.setOwner(ar.getOwner());
+				a.setHexNo(ar.getHexNo());
+				a.setPower1(ai.getPower1());
+				a.setPower2(ai.getPower2());
+				artis.add(a);
+			}
+		}
+		tableModel.setRows(artis);
+	}
 
 }

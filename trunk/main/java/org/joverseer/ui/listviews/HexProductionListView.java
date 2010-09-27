@@ -9,105 +9,106 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 
 public class HexProductionListView extends ItemListView {
-	ArrayList averages = new ArrayList();
-	
-    public HexProductionListView() {
-        super(TurnElementsEnum.PopulationCenter, HexProductionTableModel.class);
-    }
+	ArrayList<HexProductionWrapper> averages = new ArrayList<HexProductionWrapper>();
 
-    protected int[] columnWidths() {
-        return new int[]{64, 64, 64, 
-        		64, 64, 64, 64, 64, 64, 64};
-    }
-    
-    
+	public HexProductionListView() {
+		super(TurnElementsEnum.PopulationCenter, HexProductionTableModel.class);
+	}
 
+	@Override
+	protected int[] columnWidths() {
+		return new int[] { 64, 64, 64, 64, 64, 64, 64, 64, 64, 64 };
+	}
+
+	@Override
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
 		filters.add(new AbstractListViewFilter("Terrain average") {
+			@Override
 			public boolean accept(Object obj) {
-				HexProductionWrapper hpw = (HexProductionWrapper)obj;
+				HexProductionWrapper hpw = (HexProductionWrapper) obj;
 				return hpw.getHexNo() == null && hpw.getClimate() == null;
 			}
-			
+
 		});
 		filters.add(new AbstractListViewFilter("Terrain/climate average") {
+			@Override
 			public boolean accept(Object obj) {
-				HexProductionWrapper hpw = (HexProductionWrapper)obj;
+				HexProductionWrapper hpw = (HexProductionWrapper) obj;
 				return hpw.getHexNo() == null && hpw.getClimate() != null;
 			}
-			
+
 		});
 		filters.add(new AbstractListViewFilter("Individual hexes") {
+			@Override
 			public boolean accept(Object obj) {
-				HexProductionWrapper hpw = (HexProductionWrapper)obj;
+				HexProductionWrapper hpw = (HexProductionWrapper) obj;
 				return hpw.getHexNo() != null && hpw.getHexNo() > 0;
 			}
-			
+
 		});
-		 return new AbstractListViewFilter[][] {
-	                filters.toArray(new AbstractListViewFilter[] {})};
+		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}) };
 	}
 
+	@Override
 	protected void setItems() {
 		averages.clear();
-		ArrayList items = new ArrayList();
-		HexProductionTableModel hptm = (HexProductionTableModel)tableModel;
-		if (GameHolder.instance().hasInitializedGame()) {
+		ArrayList<HexProductionWrapper> items = new ArrayList<HexProductionWrapper>();
+		if (GameHolder.hasInitializedGame()) {
 			Game game = GameHolder.instance().getGame();
-			for (PopulationCenter pc : (ArrayList<PopulationCenter>)game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+			for (PopulationCenter pc : game.getTurn().getPopulationCenters()) {
 				boolean hasProduction = false;
-	            for (ProductEnum p : ProductEnum.values()) {
-	                if (pc.getProduction(p) != null && pc.getProduction(p) > 0) {
-	                    hasProduction = true;
-	                }
-	            }
-	            if (hasProduction) {
-	            	HexProductionWrapper pw = new HexProductionWrapper(pc, game, game.getTurn());
-	            	if (getActiveFilter() != null && getActiveFilter().accept(pw)) {
-	            		items.add(pw);
-	            	}
-	            	addToAverage(pw);
-	            }
+				for (ProductEnum p : ProductEnum.values()) {
+					if (pc.getProduction(p) != null && pc.getProduction(p) > 0) {
+						hasProduction = true;
+					}
+				}
+				if (hasProduction) {
+					HexProductionWrapper pw = new HexProductionWrapper(pc, game, game.getTurn());
+					if (getActiveFilter() != null && getActiveFilter().accept(pw)) {
+						items.add(pw);
+					}
+					addToAverage(pw);
+				}
 			}
 		}
-		for (HexProductionWrapper av : (ArrayList<HexProductionWrapper>)averages) {
+		for (HexProductionWrapper av : averages) {
 			av.divideByCount();
 			if (getActiveFilter() != null && getActiveFilter().accept(av)) {
-        		items.add(av);
-        	}
+				items.add(av);
+			}
 		}
 		tableModel.setRows(items);
-		
+
 	}
-    
-    protected void addToAverage(HexProductionWrapper pw) {
-    	boolean foundTerrain = false;
-    	boolean foundClimate = false;
-    	for (HexProductionWrapper av : (ArrayList<HexProductionWrapper>)averages) {
-    		if (av.getTerrain() != null && av.getTerrain().equals(pw.getTerrain())) {
-    			if (av.getClimate() == null) {
-    				foundTerrain = true;
-    				av.add(pw);
-    			}
-    			if (av.getClimate() != null && av.getClimate().equals(pw.getClimate())) {
-    				foundClimate = true;
-    				av.add(pw);
-    			}
-    		}
-    	}
-    	if (!foundTerrain) {
-    		HexProductionWrapper av = new HexProductionWrapper();
-    		av.setTerrain(pw.getTerrain());
-    		av.add(pw);
-    		averages.add(av);
-    	}
-    	if (!foundClimate && pw.getClimate() != null) {
-    		HexProductionWrapper av = new HexProductionWrapper();
-    		av.setTerrain(pw.getTerrain());
-    		av.setClimate(pw.getClimate());
-    		av.add(pw);
-    		averages.add(av);
-    	}
-    }
+
+	protected void addToAverage(HexProductionWrapper pw) {
+		boolean foundTerrain = false;
+		boolean foundClimate = false;
+		for (HexProductionWrapper av : averages) {
+			if (av.getTerrain() != null && av.getTerrain().equals(pw.getTerrain())) {
+				if (av.getClimate() == null) {
+					foundTerrain = true;
+					av.add(pw);
+				}
+				if (av.getClimate() != null && av.getClimate().equals(pw.getClimate())) {
+					foundClimate = true;
+					av.add(pw);
+				}
+			}
+		}
+		if (!foundTerrain) {
+			HexProductionWrapper av = new HexProductionWrapper();
+			av.setTerrain(pw.getTerrain());
+			av.add(pw);
+			averages.add(av);
+		}
+		if (!foundClimate && pw.getClimate() != null) {
+			HexProductionWrapper av = new HexProductionWrapper();
+			av.setTerrain(pw.getTerrain());
+			av.setClimate(pw.getClimate());
+			av.add(pw);
+			averages.add(av);
+		}
+	}
 }

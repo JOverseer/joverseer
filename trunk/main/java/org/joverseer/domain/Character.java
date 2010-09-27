@@ -1,148 +1,143 @@
 package org.joverseer.domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import org.joverseer.domain.structuredOrderResults.IStructuredOrderResult;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.infoSources.InfoSource;
 
-import java.util.ArrayList;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-
-import sun.text.Normalizer;
-
 /**
  * Stores information about a character reported in the turn results.
  * 
  * @author Marios Skounakis
- *
+ * 
  */
 public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, IEngineObject, Serializable {
 
-    private static final long serialVersionUID = 2372359979734224557L;
-    String id;
-    String name;
-    String title;
+	private static final long serialVersionUID = 2372359979734224557L;
+	String id;
+	String name;
+	String title;
 
-    Integer nationNo;
+	Integer nationNo;
 
-    int command;
-    int commandTotal;
-    int agent;
-    int agentTotal;
-    int emmisary;
-    int emmisaryTotal;
-    int mage;
-    int mageTotal;
-    int stealth;
-    int stealthTotal;
-    int challenge;
-    Integer health;
-    InfoSourceValue healthEstimate;
-    ArrayList<IStructuredOrderResult> structuredOrderResults = new ArrayList<IStructuredOrderResult>();
-    
-    int x;
-    int y;
-    
-    Boolean isHostage = null;
+	int command;
+	int commandTotal;
+	int agent;
+	int agentTotal;
+	int emmisary;
+	int emmisaryTotal;
+	int mage;
+	int mageTotal;
+	int stealth;
+	int stealthTotal;
+	int challenge;
+	Integer health;
+	InfoSourceValue healthEstimate;
+	ArrayList<IStructuredOrderResult> structuredOrderResults = new ArrayList<IStructuredOrderResult>();
 
-    ArrayList<Integer> artifacts = new ArrayList<Integer>();
-    ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
-    ArrayList<String> hostages = new ArrayList<String>();
-    int artifactInUse;
-    
-    InformationSourceEnum informationSource;
-    InfoSource infoSource;
+	int x;
+	int y;
 
-    Order[] orders = new Order[]{new Order(this), new Order(this), new Order(this)};
-    
-    int numberOfOrders = 2;
-    
-    String orderResults;
-    String encounter;
-    boolean startInfoDummy = false;
-   
-    CharacterDeathReasonEnum deathReason = CharacterDeathReasonEnum.NotDead;
+	Boolean isHostage = null;
 
-    boolean refusingChallenges = false; // engine
-    boolean inChallengeFight = false;
-    
-    public int getAgent() {
-        return agent;
-    }
+	ArrayList<Integer> artifacts = new ArrayList<Integer>();
+	ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
+	ArrayList<String> hostages = new ArrayList<String>();
+	int artifactInUse;
 
-    public void setAgent(int agent) {
-        this.agent = agent;
-    }
+	InformationSourceEnum informationSource;
+	InfoSource infoSource;
 
-    public int getAgentTotal() {
-        return agentTotal;
-    }
+	Order[] orders = new Order[] { new Order(this), new Order(this), new Order(this) };
 
-    public void setAgentTotal(int agentTotal) {
-        this.agentTotal = agentTotal;
-    }
+	int numberOfOrders = 2;
 
-    public ArrayList<Integer> getArtifacts() {
-        return artifacts;
-    }
+	String orderResults;
+	String encounter;
+	boolean startInfoDummy = false;
 
-    public void setArtifacts(ArrayList<Integer> artifacts) {
-        this.artifacts = artifacts;
-    }
+	CharacterDeathReasonEnum deathReason = CharacterDeathReasonEnum.NotDead;
 
-    public int getChallenge() {
-        return challenge;
-    }
+	boolean refusingChallenges = false; // engine
+	boolean inChallengeFight = false;
 
-    public void setChallenge(int challenge) {
-        this.challenge = challenge;
-    }
+	public int getAgent() {
+		return agent;
+	}
 
-    public int getCommand() {
-        return command;
-    }
+	public void setAgent(int agent) {
+		this.agent = agent;
+	}
 
-    public void setCommand(int command) {
-        this.command = command;
-    }
+	public int getAgentTotal() {
+		return agentTotal;
+	}
 
-    public int getCommandTotal() {
-        return commandTotal;
-    }
+	public void setAgentTotal(int agentTotal) {
+		this.agentTotal = agentTotal;
+	}
 
-    public void setCommandTotal(int commandTotal) {
-        this.commandTotal = commandTotal;
-    }
+	public ArrayList<Integer> getArtifacts() {
+		return artifacts;
+	}
 
-    public int getEmmisary() {
-        return emmisary;
-    }
+	public void setArtifacts(ArrayList<Integer> artifacts) {
+		this.artifacts = artifacts;
+	}
 
-    public void setEmmisary(int emmisary) {
-        this.emmisary = emmisary;
-    }
+	public int getChallenge() {
+		return challenge;
+	}
 
-    public int getEmmisaryTotal() {
-        return emmisaryTotal;
-    }
+	public void setChallenge(int challenge) {
+		this.challenge = challenge;
+	}
 
-    public void setEmmisaryTotal(int emmisaryTotal) {
-        this.emmisaryTotal = emmisaryTotal;
-    }
+	public int getCommand() {
+		return command;
+	}
 
-    public Integer getHealth() {
-        return health;
-    }
+	public void setCommand(int command) {
+		this.command = command;
+	}
 
-    public void setHealth(Integer health) {
-        this.health = health;
-    }
-    
-    
+	public int getCommandTotal() {
+		return commandTotal;
+	}
 
-    public InfoSourceValue getHealthEstimate() {
+	public void setCommandTotal(int commandTotal) {
+		this.commandTotal = commandTotal;
+	}
+
+	public int getEmmisary() {
+		return emmisary;
+	}
+
+	public void setEmmisary(int emmisary) {
+		this.emmisary = emmisary;
+	}
+
+	public int getEmmisaryTotal() {
+		return emmisaryTotal;
+	}
+
+	public void setEmmisaryTotal(int emmisaryTotal) {
+		this.emmisaryTotal = emmisaryTotal;
+	}
+
+	public Integer getHealth() {
+		return health;
+	}
+
+	public void setHealth(Integer health) {
+		this.health = health;
+	}
+
+	public InfoSourceValue getHealthEstimate() {
 		return healthEstimate;
 	}
 
@@ -151,240 +146,231 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public String getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public InfoSource getInfoSource() {
-        return infoSource;
-    }
+	public InfoSource getInfoSource() {
+		return infoSource;
+	}
 
-    public void setInfoSource(InfoSource infoSource) {
-        this.infoSource = infoSource;
-    }
+	public void setInfoSource(InfoSource infoSource) {
+		this.infoSource = infoSource;
+	}
 
-    public int getMage() {
-        return mage;
-    }
+	public int getMage() {
+		return mage;
+	}
 
-    public void setMage(int mage) {
-        this.mage = mage;
-    }
+	public void setMage(int mage) {
+		this.mage = mage;
+	}
 
-    public int getMageTotal() {
-        return mageTotal;
-    }
+	public int getMageTotal() {
+		return mageTotal;
+	}
 
-    public void setMageTotal(int mageTotal) {
-        this.mageTotal = mageTotal;
-    }
+	public void setMageTotal(int mageTotal) {
+		this.mageTotal = mageTotal;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public ArrayList<SpellProficiency> getSpells() {
-        return spells;
-    }
+	public ArrayList<SpellProficiency> getSpells() {
+		return spells;
+	}
 
-    public void setSpells(ArrayList spells) {
-        this.spells = spells;
-    }
+	public void setSpells(ArrayList<SpellProficiency> spells) {
+		this.spells = spells;
+	}
 
-    public int getStealth() {
-        return stealth;
-    }
+	public int getStealth() {
+		return stealth;
+	}
 
-    public void setStealth(int stealth) {
-        this.stealth = stealth;
-    }
+	public void setStealth(int stealth) {
+		this.stealth = stealth;
+	}
 
-    public int getStealthTotal() {
-        return stealthTotal;
-    }
+	public int getStealthTotal() {
+		return stealthTotal;
+	}
 
-    public void setStealthTotal(int stealthTotal) {
-        this.stealthTotal = stealthTotal;
-    }
+	public void setStealthTotal(int stealthTotal) {
+		this.stealthTotal = stealthTotal;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
 
-    public InformationSourceEnum getInformationSource() {
-        return informationSource;
-    }
+	public InformationSourceEnum getInformationSource() {
+		return informationSource;
+	}
 
-    public void setInformationSource(InformationSourceEnum informationSource) {
-        this.informationSource = informationSource;
-    }
+	public void setInformationSource(InformationSourceEnum informationSource) {
+		this.informationSource = informationSource;
+	}
 
-    public Integer getNationNo() {
-        return nationNo;
-    }
+	public Integer getNationNo() {
+		return nationNo;
+	}
 
-    public void setNationNo(Integer nationNo) {
-        this.nationNo = nationNo;
-    }
+	public void setNationNo(Integer nationNo) {
+		this.nationNo = nationNo;
+	}
 
-    public int getHexNo() {
-        return getX() * 100 + getY();
-    }
+	public int getHexNo() {
+		return getX() * 100 + getY();
+	}
 
-    public void setHexNo(int hexNo) {
-        setX(hexNo / 100);
-        setY(hexNo % 100);
-    }
+	public void setHexNo(int hexNo) {
+		setX(hexNo / 100);
+		setY(hexNo % 100);
+	}
 
-    public Order[] getOrders() {
-    	if (orders.length == 2) {
-    		orders = new Order[]{orders[0], orders[1], new Order(this)};
-    	}
-        return orders;
-    }
+	public Order[] getOrders() {
+		if (orders.length == 2) {
+			orders = new Order[] { orders[0], orders[1], new Order(this) };
+		}
+		return orders;
+	}
 
-    public void setOrders(Order[] orders) {
-        this.orders = orders;
-    }
+	public void setOrders(Order[] orders) {
+		this.orders = orders;
+	}
 
-    public static String getIdFromName(String name) {
-        String id = name.toLowerCase().substring(0, Math.min(5, name.length()));
-        return AsciiUtils.convertNonAscii(id);
-    }
-    
-    public static String getSpacePaddedIdFromId(String id) {
-    	return id + "     ".substring(0, 5 - id.length());
-    }
+	public static String getIdFromName(String name) {
+		String id = name.toLowerCase().substring(0, Math.min(5, name.length()));
+		return AsciiUtils.convertNonAscii(id);
+	}
 
-    
-    public String getEncounter() {
-        return encounter;
-    }
+	public static String getSpacePaddedIdFromId(String id) {
+		return id + "     ".substring(0, 5 - id.length());
+	}
 
-    
-    public void setEncounter(String encounter) {
-        this.encounter = encounter;
-    }
+	public String getEncounter() {
+		return encounter;
+	}
 
-    
-    public String getOrderResults() {
-        return orderResults;
-    }
+	public void setEncounter(String encounter) {
+		this.encounter = encounter;
+	}
     
     public boolean hasOrderResults() {
     	return getOrderResults() != null;
     }
 
-    public String getCleanOrderResults() {
-    	if (getOrderResults() == null) return "";
-    	return getOrderResults().replace("\r\n", "");
-    }
-    
-    public void setOrderResults(String orderResults) {
-        this.orderResults = orderResults;
-    }
+	public String getOrderResults() {
+		return orderResults;
+	}
 
-    
-    public CharacterDeathReasonEnum getDeathReason() {
-        return deathReason;
-    }
+	public String getCleanOrderResults() {
+		if (getOrderResults() == null)
+			return "";
+		return getOrderResults().replace("\r\n", "");
+	}
 
-    
-    public void setDeathReason(CharacterDeathReasonEnum deathReason) {
-        this.deathReason = deathReason;
-    }
-    
-    public static void main(String[] args) {
-        System.out.println(Character.getIdFromName("Michèle"));
-    }
-    
-    public Boolean getHostage() {
-        return isHostage;
-    }
-    
-    public void setHostage(Boolean isHostage) {
-        this.isHostage = isHostage;
-    }
+	public void setOrderResults(String orderResults) {
+		this.orderResults = orderResults;
+	}
 
-    
-    public int getArtifactInUse() {
-        return artifactInUse;
-    }
+	public CharacterDeathReasonEnum getDeathReason() {
+		return deathReason;
+	}
 
-    
-    public void setArtifactInUse(int artifactInUse) {
-        this.artifactInUse = artifactInUse;
-    }
-    
-    public Nation getNation() {
-        return NationMap.getNationFromNo(getNationNo());
-    }    
-    
-    public void setNation(Nation nation) {
-    	if (nation == null) {
-    		setNationNo(0);
-    	} else {
-    		setNationNo(nation.getNumber());
-    	}
-    }
-    
-    public ArrayList<IStructuredOrderResult> getStructuredOrderResults() {
-    	if (structuredOrderResults == null) {
-    		structuredOrderResults = new ArrayList<IStructuredOrderResult>();
-    	}
-    	return structuredOrderResults;
-    }
+	public void setDeathReason(CharacterDeathReasonEnum deathReason) {
+		this.deathReason = deathReason;
+	}
 
-    
-    public ArrayList<String> getHostages() {
-        if (hostages == null) {
-            hostages = new ArrayList<String>();
-        }
-        return hostages;
-    }
+	public static void main(String[] args) {
+		System.out.println(Character.getIdFromName("Michèle"));
+	}
 
-    
-    public void setHostages(ArrayList<String> hostages) {
-        this.hostages = hostages;
-    }
+	public Boolean getHostage() {
+		return isHostage;
+	}
+
+	public void setHostage(Boolean isHostage) {
+		this.isHostage = isHostage;
+	}
+
+	public int getArtifactInUse() {
+		return artifactInUse;
+	}
+
+	public void setArtifactInUse(int artifactInUse) {
+		this.artifactInUse = artifactInUse;
+	}
+
+	public Nation getNation() {
+		return NationMap.getNationFromNo(getNationNo());
+	}
+
+	public void setNation(Nation nation) {
+		if (nation == null) {
+			setNationNo(0);
+		} else {
+			setNationNo(nation.getNumber());
+		}
+	}
+
+	public ArrayList<IStructuredOrderResult> getStructuredOrderResults() {
+		if (structuredOrderResults == null) {
+			structuredOrderResults = new ArrayList<IStructuredOrderResult>();
+		}
+		return structuredOrderResults;
+	}
+
+	public ArrayList<String> getHostages() {
+		if (hostages == null) {
+			hostages = new ArrayList<String>();
+		}
+		return hostages;
+	}
+
+	public void setHostages(ArrayList<String> hostages) {
+		this.hostages = hostages;
+	}
 
 	public int getNumberOfOrders() {
-		if (numberOfOrders == 0) numberOfOrders = 2;
+		if (numberOfOrders == 0)
+			numberOfOrders = 2;
 		return numberOfOrders;
 	}
 
 	public void setNumberOfOrders(int numberOfOrders) {
 		this.numberOfOrders = numberOfOrders;
 	}
-	
-	
 
 	public boolean isStartInfoDummy() {
 		return startInfoDummy;
@@ -398,6 +384,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		return (getCommand() + getMage() + getAgent() + getEmmisary()) * 20;
 	}
 
+	@Override
 	public Character clone() {
 		Character c = new Character();
 		c.setName(getName());
@@ -423,13 +410,13 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		c.setInfoSource(getInfoSource());
 		c.setInformationSource(getInformationSource());
 		c.setStartInfoDummy(isStartInfoDummy());
-		c.setArtifacts((ArrayList<Integer>)getArtifacts().clone());
+		c.setArtifacts((ArrayList<Integer>) getArtifacts().clone());
 		for (SpellProficiency sp : getSpells()) {
 			c.getSpells().add(new SpellProficiency(sp.getSpellId(), sp.getProficiency(), sp.getName()));
 		}
 		return c;
 	}
-	
+
 	public void initialize() {
 		refusingChallenges = false;
 	}
@@ -449,38 +436,39 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	public void setInChallengeFight(boolean inChallengeFight) {
 		this.inChallengeFight = inChallengeFight;
 	}
-	
+
 	public String getStatString() {
 		Character c = this;
-        String txt = "";
-        txt += getStatText("C", c.getCommand(), c.getCommandTotal());
-        txt += getStatText("A", c.getAgent(), c.getAgentTotal());
-        txt += getStatText("E", c.getEmmisary(), c.getEmmisaryTotal());
-        txt += getStatText("M", c.getMage(), c.getMageTotal());
-        txt += getStatText("S", c.getStealth(), c.getStealthTotal());
-        txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
-        if (c.getHealth() != null) {
-        	txt += " H" + c.getHealth();
-        } 
-        if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
-            txt += " (" + c.getDeathReason().toString() + ")";
-        }
-        
-        return txt;
-    }
+		String txt = "";
+		txt += getStatText("C", c.getCommand(), c.getCommandTotal());
+		txt += getStatText("A", c.getAgent(), c.getAgentTotal());
+		txt += getStatText("E", c.getEmmisary(), c.getEmmisaryTotal());
+		txt += getStatText("M", c.getMage(), c.getMageTotal());
+		txt += getStatText("S", c.getStealth(), c.getStealthTotal());
+		txt += getStatText("Cr", c.getChallenge(), c.getChallenge());
+		if (c.getHealth() != null) {
+			txt += " H" + c.getHealth();
+		}
+		if (c.getDeathReason() != null && c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
+			txt += " (" + c.getDeathReason().toString() + ")";
+		}
 
-    private String getStatText(String prefix, int skill, int skillTotal) {
-        if (skillTotal == 0 && skill == 0)
-            return "";
-        return prefix + skill + (skillTotal > skill ? "(" + skillTotal + ")" : "") + " ";
-    }
-    
-    public boolean isDead() {
-    	return getDeathReason() != null && !getDeathReason().equals(CharacterDeathReasonEnum.NotDead);
-    }
-	
-    public void addHostage(String name) {
-    	if (!getHostages().contains(name)) getHostages().add(name);
-    }
-    
+		return txt;
+	}
+
+	private String getStatText(String prefix, int skill, int skillTotal) {
+		if (skillTotal == 0 && skill == 0)
+			return "";
+		return prefix + skill + (skillTotal > skill ? "(" + skillTotal + ")" : "") + " ";
+	}
+
+	public boolean isDead() {
+		return getDeathReason() != null && !getDeathReason().equals(CharacterDeathReasonEnum.NotDead);
+	}
+
+	public void addHostage(String name) {
+		if (!getHostages().contains(name))
+			getHostages().add(name);
+	}
+
 }

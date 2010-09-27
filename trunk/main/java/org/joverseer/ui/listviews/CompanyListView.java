@@ -16,27 +16,30 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class CompanyListView extends BaseItemListView {
-    public CompanyListView() {
-        super(CompanyTableModel.class);
-    }
+	public CompanyListView() {
+		super(CompanyTableModel.class);
+	}
 
-    protected int[] columnWidths() {
-        return new int[]{40, 48, 64, 320};
-    }
+	@Override
+	protected int[] columnWidths() {
+		return new int[] { 40, 48, 64, 320 };
+	}
 
+	@Override
 	protected void setItems() {
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (!Game.isInitialized(g)) return;
-        Container items = g.getTurn().getContainer(TurnElementsEnum.Company);
-        ArrayList filteredItems = new ArrayList();
-        AbstractListViewFilter filter = getActiveFilter();
-        for (Company o : (ArrayList<Company>)items.getItems()) {
-        	CompanyWrapper cw = new CompanyWrapper(o);
-            if (filter == null || filter.accept(cw)) filteredItems.add(cw);
-        };
-        tableModel.setRows(filteredItems);
+		if (!Game.isInitialized(g))
+			return;
+		Container items = g.getTurn().getContainer(TurnElementsEnum.Company);
+		ArrayList<CompanyWrapper> filteredItems = new ArrayList<CompanyWrapper>();
+		AbstractListViewFilter filter = getActiveFilter();
+		for (Company o : (ArrayList<Company>) items.getItems()) {
+			CompanyWrapper cw = new CompanyWrapper(o);
+			if (filter == null || filter.accept(cw))
+				filteredItems.add(cw);
+		}
+		;
+		tableModel.setRows(filteredItems);
 	}
-    
-    
 
 }

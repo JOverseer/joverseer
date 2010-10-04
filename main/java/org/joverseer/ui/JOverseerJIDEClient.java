@@ -26,13 +26,15 @@ import com.jidesoft.plaf.LookAndFeelFactory;
  */
 public class JOverseerJIDEClient {
 	private static final String CONTEXT_ROOT = "/ctx"; 
+	//                                          F:\Programming\Projects\JOverseerDevelopment\main\resources\ctx
+//	private static final String CONTEXT_ROOT = "F:/Programming/Projects/JOverseerDevelopment/classes/ctx"; 
 	private static final String APPLICATION_CONTEXT = CONTEXT_ROOT + "/jideApplicationContext.xml";
 	private static final String PAGE_CONTEXT = CONTEXT_ROOT + "/richclient-page-application-context.xml";
     private static final String PREFERENCES_CONTEXT = CONTEXT_ROOT + "/preferences-context.xml";
 	private static final String STARTUP_CONTEXT = CONTEXT_ROOT + "/richclient-startup-context.xml";
 	
 	private static boolean testApplicationIsLaunched = false ;
-    public void Test() {};
+    public void Test() {/* unused */ } 
 
     public static String[] cmdLineArgs;
     
@@ -58,14 +60,8 @@ public class JOverseerJIDEClient {
             // Part of this configuration will indicate the initial page to be
             // displayed.
 
-            String rootContextDirectoryClassPath = "/ctx";
-
             // The startup context defines elements that should be available
             // quickly such as a splash screen image.
-
-            String startupContextPath = rootContextDirectoryClassPath + "/richclient-startup-context.xml";
-
-            String richclientApplicationContextPath = rootContextDirectoryClassPath + "/richclient-application-context.xml";
 
             // The ApplicationLauncher is responsible for loading the contexts,
             // presenting the splash screen, initializing the Application

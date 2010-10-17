@@ -112,7 +112,7 @@ public class TurnNewXmlReader implements Runnable {
 			// id
 			digester.addSetProperties("METurn/DoubleAgents/DoubleAgent", "NameID", "name");
 			// set nested properties
-			digester.addRule("METurn/DoubleAgents/DoubleAgent", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "Line" }, new String[] { "nation", "report" }));
+			digester.addRule("METurn/DoubleAgents/DoubleAgent", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "Line", "Location" }, new String[] { "nation", "report", "hexNo" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
 			digester.addSetNext("METurn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.newXml.DoubleAgentWrapper");
@@ -797,7 +797,7 @@ public class TurnNewXmlReader implements Runnable {
 				if (game.getMetadata().getGameType() == GameTypeEnum.gameFA || game.getMetadata().getGameType() == GameTypeEnum.gameKS) {
 					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
 					boolean found = false;
-					for (ArtifactInfo ai : (ArrayList<ArtifactInfo>) game.getMetadata().getArtifacts().getItems()) {
+					for (ArtifactInfo ai : game.getMetadata().getArtifacts().getItems()) {
 						if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
 							found = true;
 							ai.setNo(aw.getId());
@@ -815,7 +815,7 @@ public class TurnNewXmlReader implements Runnable {
 				;
 
 				// for all arties update powers
-				ArtifactInfo ai = (ArtifactInfo) game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getId());
+				ArtifactInfo ai = game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getId());
 				if (ai != null && aw.getPower() != null && !aw.getPower().equals("")) {
 					// parse power
 					// TODO handle open seas, scry etc

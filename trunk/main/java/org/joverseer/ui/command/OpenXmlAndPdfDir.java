@@ -6,11 +6,9 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
 
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
@@ -36,199 +34,196 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 /**
- * Reads xml and pdf turn files from a given directory (and all subdirectories). All files
- * must be for the same turn, and this turn must either be the latest turn of the game or
- * a turn larger than the last turn of the game.
+ * Reads xml and pdf turn files from a given directory (and all subdirectories).
+ * All files must be for the same turn, and this turn must either be the latest
+ * turn of the game or a turn larger than the last turn of the game.
  * 
  * Xml files are read first, then pdf files
  * 
  * @author Marios Skounakis
  */
 public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
-    File[] files;
-    JOverseerClientProgressMonitor monitor;
-    GameHolder gh;
-    TitledPageApplicationDialog dialog;
-    
-    public OpenXmlAndPdfDir() {
-        super("openXmlAndPdfDirCommand");
-        gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
-    }
+	File[] files;
+	JOverseerClientProgressMonitor monitor;
+	GameHolder gh;
+	TitledPageApplicationDialog dialog;
 
-    public void run() {
-    	try {
-    		Thread.sleep(1000);
-    	}
-    	catch (Exception exc) {
-    		// do nothing
-    	}
-        Game game = gh.getGame();
-        if (game == null) {
-            return;
-        }
-        int xmlCount = 0;
-        int pdfCount = 0;
-        boolean errorOccurred = false;
-        for (File f : files) {
-            if (f.getAbsolutePath().endsWith(".xml")) {
-                try {
-                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-                    xmlCount++;
-                    final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
-                    r.setMonitor(monitor);
-                    r.run();
-                    if (r.getErrorOccured()) {
-                    	errorOccurred = true;
-                    }
-                    if (game.getMetadata().getNewXmlFormat()) {
-	                    final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
-	                    xr.setMonitor(monitor);
-	                    xr.run();
-	                    if (xr.getErrorOccured()) {
-	                    	errorOccurred = true;
-	                    }
-                    }
-                }
-                catch (Exception exc) {
-                    int a = 1;
-                    monitor.subTaskStarted(exc.getMessage());
-                    // do nothing
-                    // todo fix
-                }
-            }
+	public OpenXmlAndPdfDir() {
+		super("openXmlAndPdfDirCommand");
+		gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+	}
 
-        }
-        
-        boolean warningOccurred = false;
-        if (!game.getMetadata().getNewXmlFormat()) {
-	        for (File f : files) {
-	            if (f.getAbsolutePath().endsWith(".pdf")) {
-	                try {
-	                    monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[]{f.getAbsolutePath()}));
-	                    pdfCount++;
-	                    final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-	                    r.setMonitor(monitor);
-	                    r.run();
-	                    if (r.getErrorOccurred()) {
-	                    	warningOccurred = true;
-	                    }
-	                }
-	                catch (Exception exc) {
-	                    int a = 1;
-	                    monitor.subTaskStarted(exc.getMessage());
-	                    // do nothing
-	                    // todo fix
-	                }
-	            }
-	        }
-        }        
-        monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
-        
-        TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
-        turnPostProcessor.postProcessTurn(game.getTurn(game.getMaxTurn()));
-        
-        String globalMsg = "";
-        if (errorOccurred) {
-        	globalMsg = "Serious errors occurred during the import. The game information may not be reliable.";
-        } else if (warningOccurred) {
-        	globalMsg = "Some small errors occurred during the import. All vital information was imported but some secondary information from the pdf files was not parsed successfully.";
-        } else {
-        	globalMsg = "Import was successful.";
-        }
-        monitor.setGlobalMessage(globalMsg);
-        Application.instance().getApplicationContext().publishEvent(
-                                        new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
-        
-        monitor.done();
-        dialog.setDescription("Processing finished.");
+	public void run() {
+		try {
+			Thread.sleep(1000);
+		} catch (Exception exc) {
+			// do nothing
+		}
+		Game game = gh.getGame();
+		if (game == null) {
+			return;
+		}
+		int xmlCount = 0;
+		int pdfCount = 0;
+		boolean errorOccurred = false;
+		for (File f : files) {
+			if (f.getAbsolutePath().endsWith(".xml")) {
+				try {
+					monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+					xmlCount++;
+					final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
+					r.setMonitor(monitor);
+					r.run();
+					if (r.getErrorOccured()) {
+						errorOccurred = true;
+					}
+					if (game.getMetadata().getNewXmlFormat()) {
+						final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
+						xr.setMonitor(monitor);
+						xr.run();
+						if (xr.getErrorOccured()) {
+							errorOccurred = true;
+						}
+					}
+				} catch (Exception exc) {
+					int a = 1;
+					monitor.subTaskStarted(exc.getMessage());
+					// do nothing
+					// todo fix
+				}
+			}
 
-    }
+		}
 
-    protected void doExecuteCommand() {
-        if (!ActiveGameChecker.checkActiveGameExists()) return;
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        
-        // check if allegiances have been set for all neurals
-        Game g = GameHolder.instance().getGame();
-        boolean neutralNationExists = false;
-        for (Nation n : (ArrayList<Nation>)g.getMetadata().getNations()) {
-        	if (n.getAllegiance().equals(NationAllegianceEnum.Neutral) &&
-        			!n.getEliminated() && !n.getRemoved()) {
-        		neutralNationExists = true;
-        	}
-        }
-        if (neutralNationExists) {
-	        ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[]{}, Locale.getDefault()),
-	                ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[]{}, Locale.getDefault())) {
-	            protected void onConfirm() {
-	                ChangeNationAllegiances cmd = new ChangeNationAllegiances();
-	                cmd.doExecuteCommand();
-	            }
-	        };
-	        dlg.setPreferredSize(new Dimension(500, 70));
-	        dlg.showDialog();
-        }
-        
+		boolean warningOccurred = false;
+		if (!game.getMetadata().getNewXmlFormat()) {
+			for (File f : files) {
+				if (f.getAbsolutePath().endsWith(".pdf")) {
+					try {
+						monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+						pdfCount++;
+						final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
+						r.setMonitor(monitor);
+						r.run();
+						if (r.getErrorOccurred()) {
+							warningOccurred = true;
+						}
+					} catch (Exception exc) {
+						int a = 1;
+						monitor.subTaskStarted(exc.getMessage());
+						// do nothing
+						// todo fix
+					}
+				}
+			}
+		}
+		monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
+		turnPostProcessor.postProcessTurn(game.getTurn(game.getMaxTurn()));
 
-        String lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
-        if (lastDir != null) {
-            fileChooser.setCurrentDirectory(new File(lastDir));
-        }
-        if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
-            final File file = fileChooser.getSelectedFile();
-            GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
-            final Runnable thisObj = this;
-            class XmlAndPdfFileFilter implements FileFilter {
-                public boolean accept(File file) {
-                    return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
-                }
-            }
-            //files = file.listFiles(new XmlAndPdfFileFilter());
-            files = getFilesRecursive(file, new XmlAndPdfFileFilter());
-            FormModel formModel = FormModelHelper.createFormModel(this);
-            monitor = new JOverseerClientProgressMonitor(formModel);
-            FormBackedDialogPage page = new FormBackedDialogPage(monitor);
-            dialog = new TitledPageApplicationDialog(page) {
-                protected void onAboutToShow() {
-                    monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[]{file.getAbsolutePath()}), 100 * files.length);
-                    Thread t = new Thread(thisObj);
-                    t.start();
-                    //SwingUtilities.invokeLater(thisObj);
-                }
+		String globalMsg = "";
+		if (errorOccurred) {
+			globalMsg = "Serious errors occurred during the import. The game information may not be reliable.";
+		} else if (warningOccurred) {
+			globalMsg = "Some small errors occurred during the import. All vital information was imported but some secondary information from the pdf files was not parsed successfully.";
+		} else {
+			globalMsg = "Import was successful.";
+		}
+		monitor.setGlobalMessage(globalMsg);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
 
-                protected boolean onFinish() {
-                    return true;
-                }
+		monitor.done();
+		dialog.setDescription("Processing finished.");
 
-                protected Object[] getCommandGroupMembers() {
-                    return new AbstractCommand[] {
-                            getFinishCommand()
-                    };
-                }
-            };
-            dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[]{}, Locale.getDefault()));
-            dialog.showDialog();
-        }
-    }
+	}
 
-    private File[] getFilesRecursive(File folder, FileFilter filter) {
-        ArrayList<File> ret = new ArrayList<File>();
-        File[] files = folder.listFiles(filter);
-        if (files.length > 0) {
-	        ret.addAll(Arrays.asList(files));
-	        FileFilter folderFilter = new FileFilter() {
-	            public boolean accept(File pathname) {
-	                return pathname.isDirectory();
-	            }
-	        };
-	        for (File subfolder : folder.listFiles(folderFilter)) {
-	            ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
-	        }
-        }
-        return ret.toArray(new File[]{});
-    }
-    
+	@Override
+	protected void doExecuteCommand() {
+		if (!ActiveGameChecker.checkActiveGameExists())
+			return;
+		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+
+		// check if allegiances have been set for all neurals
+		Game g = GameHolder.instance().getGame();
+		boolean neutralNationExists = false;
+		for (Nation n : g.getMetadata().getNations()) {
+			if (n.getAllegiance().equals(NationAllegianceEnum.Neutral) && !n.getEliminated() && !n.getRemoved()) {
+				neutralNationExists = true;
+			}
+		}
+		if (neutralNationExists) {
+			ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[] {}, Locale.getDefault())) {
+				@Override
+				protected void onConfirm() {
+					ChangeNationAllegiances cmd = new ChangeNationAllegiances();
+					cmd.doExecuteCommand();
+				}
+			};
+			dlg.setPreferredSize(new Dimension(500, 70));
+			dlg.showDialog();
+		}
+
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+		String lastDir = GamePreference.getValueForPreference("importDir", OpenGameDirTree.class);
+		if (lastDir != null) {
+			fileChooser.setCurrentDirectory(new File(lastDir));
+		}
+		if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
+			final File file = fileChooser.getSelectedFile();
+			GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
+			final Runnable thisObj = this;
+			class XmlAndPdfFileFilter implements FileFilter {
+				public boolean accept(File file) {
+					return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
+				}
+			}
+			// files = file.listFiles(new XmlAndPdfFileFilter());
+			files = getFilesRecursive(file, new XmlAndPdfFileFilter());
+			FormModel formModel = FormModelHelper.createFormModel(this);
+			monitor = new JOverseerClientProgressMonitor(formModel);
+			FormBackedDialogPage page = new FormBackedDialogPage(monitor);
+			dialog = new TitledPageApplicationDialog(page) {
+				@Override
+				protected void onAboutToShow() {
+					monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[] { file.getAbsolutePath() }), 100 * files.length);
+					Thread t = new Thread(thisObj);
+					t.start();
+					// SwingUtilities.invokeLater(thisObj);
+				}
+
+				@Override
+				protected boolean onFinish() {
+					return true;
+				}
+
+				@Override
+				protected Object[] getCommandGroupMembers() {
+					return new AbstractCommand[] { getFinishCommand() };
+				}
+			};
+			dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[] {}, Locale.getDefault()));
+			dialog.showDialog();
+		}
+	}
+
+	private File[] getFilesRecursive(File folder, FileFilter filter) {
+		ArrayList<File> ret = new ArrayList<File>();
+		File[] files = folder.listFiles(filter);
+		if (files.length > 0) {
+			ret.addAll(Arrays.asList(files));
+			FileFilter folderFilter = new FileFilter() {
+				public boolean accept(File pathname) {
+					return pathname.isDirectory();
+				}
+			};
+			for (File subfolder : folder.listFiles(folderFilter)) {
+				ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
+			}
+		}
+		return ret.toArray(new File[] {});
+	}
+
 }

@@ -2,14 +2,24 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
+import org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterTableModel;
+import org.joverseer.ui.support.controls.JLabelButton;
+import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.image.ImageSource;
 
 /**
  * List view that shows ArmySizeEstimate objects
@@ -67,4 +77,6 @@ public class ArmySizeEstimatesListView extends BaseItemListView {
 		tableModel.setRows(items);
 		tableModel.fireTableDataChanged();
 	}
+	
+	
 }

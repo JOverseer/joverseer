@@ -199,6 +199,11 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
                                 "name", charName);
                         Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty(
                                 "name", charName);
+                        boolean startChar = false;
+                        if (c == null) {
+                        	c = g.getMetadata().getCharacters().findFirstByProperty("name", charName);
+                        	if (c != null) startChar = true;
+                        }
                         int nationNo = 0;
                         String inactiveReason = "";
                         if (c != null) {
@@ -222,7 +227,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
                         if (thief == null) {
                             // if new character, create rumor wrapper
                             thief = new EnemyCharacterRumorWrapper();
-                            boolean startChar = g.getMetadata().getCharacters().findFirstByProperty("id",
+                            startChar = g.getMetadata().getCharacters().findFirstByProperty("id",
                                     Character.getIdFromName(charName)) != null;
                             thief.setName(charName);
                             thief.setTurnNo(t.getTurnNo());

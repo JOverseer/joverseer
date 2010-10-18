@@ -1,5 +1,7 @@
 package org.joverseer.tools.armySizeEstimator;
 
+import java.util.ArrayList;
+
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 
@@ -19,7 +21,7 @@ public class ArmySizeEstimate {
     int countKnown = 0;
     int countUnknown = 0;
     String type;
-
+ 
     public ArmySizeEstimate(String type, ArmySizeEnum size) {
         super();
         this.size = size;

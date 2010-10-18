@@ -126,7 +126,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             } else if (",402,410,".indexOf("," + spellId + ",") > -1) {
                 paramType = "alg";
             } else if (",412,418,428,".indexOf("," + spellId + ",") > -1) {
-                paramType = "b";
+                paramType = "art";
             } else if (",413,414,415,434,".indexOf("," + spellId + ",") > -1) {
                 paramType = "hex";
             }
@@ -155,6 +155,8 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 sub = new DropDownParameterOrderSubeditor("Product", getOrder(), new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold"});
             } else if (paramType.equals("alg")) {
                 sub = new DropDownParameterOrderSubeditor("Alleg", getOrder(), new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"});
+            }else if (paramType.equals("art")) {
+                sub = new ArtifactNumberParameterOrderSubeditor("Arti", getOrder());
             }
             TableLayoutBuilder tlb = new TableLayoutBuilder();
             sub.addComponents(tlb, components, getOrder(), 1);

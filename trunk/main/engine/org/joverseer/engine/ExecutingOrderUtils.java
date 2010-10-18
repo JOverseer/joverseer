@@ -3,11 +3,11 @@ package org.joverseer.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmySizeEnum;
-import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.IBelongsToNation;
@@ -17,6 +17,7 @@ import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.Character;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.domain.SpellProficiency;
@@ -25,6 +26,8 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.Hex;
+import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
@@ -35,64 +38,60 @@ import org.joverseer.support.infoSources.XmlTurnInfoSource;
 public class ExecutingOrderUtils {
 	public static boolean isCapitalHex(Turn turn, int nationNo, int hexNo) {
 		PopulationCenter pc = getPopCenter(turn, hexNo);
-		if (pc == null)
-			return false;
-		if (!checkNation(pc, nationNo))
-			return false;
+		if (pc == null) return false;
+		if (!checkNation(pc, nationNo)) return false;
 		return pc.getCapital();
 	}
-
+	
 	public static boolean checkNation(IBelongsToNation o, int nationNo) {
 		return o.getNationNo() == nationNo;
 	}
-
+	
 	public static boolean checkNation(IBelongsToNation a, IBelongsToNation b) {
 		return a.getNationNo().equals(b.getNationNo());
 	}
-
+	
 	public static PopulationCenter getPopCenter(Turn turn, int hexNo) {
-		PopulationCenter popCenter = (PopulationCenter) turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo);
+		PopulationCenter popCenter = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo);
 		return popCenter;
 	}
-
+	
 	public static Army getArmy(Turn turn, int hexNo, String commanderName) {
-		Army army = (Army) turn.getContainer(TurnElementsEnum.Army).findFirstByProperties(new String[] { "hexNo", "commanderName" }, new String[] { String.valueOf(hexNo), commanderName });
+		Army army = (Army)turn.getContainer(TurnElementsEnum.Army).findFirstByProperties(new String[]{"hexNo", "commanderName"}, new String[]{String.valueOf(hexNo), commanderName});
 		return army;
 	}
-
+	
 	public static ArrayList<Army> getArmies(Turn turn, int hexNo) {
-		return turn.getContainer(TurnElementsEnum.Army).findAllByProperty("hexNo", String.valueOf(hexNo));
+		return (ArrayList<Army>)turn.getContainer(TurnElementsEnum.Army).findAllByProperty("hexNo", String.valueOf(hexNo));
 	}
-
+	
 	public static Character getCharacter(Turn turn, String name) {
-		Character ret = (Character) turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name);
+		Character ret = (Character)turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name);
 		return ret;
 	}
-
+	
 	public static Character getCharacterById(Turn turn, String id) {
-		Character ret = (Character) turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("id", id);
+		Character ret = (Character)turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("id", id);
 		return ret;
 	}
-
+	
 	public static boolean checkSameHex(IHasMapLocation a, IHasMapLocation b) {
 		return a.getX() == b.getX() && a.getY() == b.getY();
 	}
-
+	
+	
 	public static Character getCommander(Turn turn, Army army, boolean checkSameHex) {
 		Character c = getCharacter(turn, army.getCommanderName());
-		if (c == null)
-			return null;
-		if (!checkSameHex || checkSameHex(c, army))
-			return c;
+		if (c == null) return null;
+		if (!checkSameHex || checkSameHex(c, army)) return c;
 		return null;
 	}
-
+	
 	public static ArrayList<Character> getCharsWithArmy(Turn turn, Army army, boolean includeCommander) {
 		ArrayList<Character> ret = new ArrayList<Character>();
-		for (String name : army.getCharacters()) {
+		for (String name : (ArrayList<String>)army.getCharacters()) {
 			Character c = getCharacter(turn, name.trim());
-			if (c != null)
-				ret.add(c);
+			if (c != null) ret.add(c);
 		}
 		Character commander = getCommander(turn, army, false);
 		if (commander != null) {
@@ -104,20 +103,20 @@ public class ExecutingOrderUtils {
 		}
 		return ret;
 	}
-
+	
 	public static void refreshCharacter(Turn turn, Character item) {
 		refreshItem(turn, TurnElementsEnum.Character, item);
 	}
-
+	
 	public static void refreshArmy(Turn turn, Army item) {
 		refreshItem(turn, TurnElementsEnum.Army, item);
 	}
-
+	
 	public static void refreshItem(Turn turn, TurnElementsEnum el, Object item) {
 		Container c = turn.getContainer(el);
 		c.refreshItem(item);
 	}
-
+	
 	public static void setArmyLocation(Turn turn, Army a, int hex) {
 		a.setHexNo(String.valueOf(hex));
 		refreshArmy(turn, a);
@@ -126,133 +125,126 @@ public class ExecutingOrderUtils {
 			refreshCharacter(turn, c);
 		}
 	}
-
+	
 	public static Company getCompany(Turn turn, String commander) {
-		Company comp = (Company) turn.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", commander);
+		Company comp = (Company)turn.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", commander);
 		return comp;
 	}
-
+	
 	public static ArrayList<Character> getCharsWithCompany(Turn turn, Company company, boolean includeCommander) {
 		ArrayList<Character> ret = new ArrayList<Character>();
 		for (String name : company.getMembers()) {
 			Character c = getCharacter(turn, name);
-			if (c == null)
-				continue;
-			if (!includeCommander && c.getName().equals(company.getCommander()))
-				continue;
+			if (c == null) continue;
+			if (!includeCommander && c.getName().equals(company.getCommander())) continue;
 			ret.add(c);
 		}
 		if (includeCommander) {
 			Character c = getCharacter(turn, company.getCommander());
-			if (!ret.contains(c))
-				ret.add(c);
+			if (!ret.contains(c)) ret.add(c);
 		}
 		return ret;
 	}
-
+	
 	public static boolean hasAvailableProduct(PopulationCenter pc, ProductEnum product, int amount) {
 		return getStores(pc, product) >= amount;
 	}
-
+	
 	public static int getStores(PopulationCenter pc, ProductEnum product) {
 		Integer s = pc.getStores(product);
-		if (s == null)
-			s = 0;
+		if (s == null) s = 0;
 		return s;
 	}
-
+	
 	public static int getProduction(PopulationCenter pc, ProductEnum product) {
 		Integer s = pc.getProduction(product);
-		if (s == null)
-			s = 0;
+		if (s == null) s = 0;
 		return s;
 	}
-
+	
 	public static void consumeProduct(PopulationCenter pc, ProductEnum product, int amount) {
 		int stores = getStores(pc, product);
 		int consume = Math.min(stores, amount);
 		stores -= consume;
 		pc.setStores(product, stores);
 	}
-
+	
 	public static NationEconomy getNationEconomy(Turn turn, int nationNo) {
-		return (NationEconomy) turn.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo);
+		return (NationEconomy)turn.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo);
 	}
-
+	
 	public static Company findCompany(Turn turn, Character c) {
-		for (Company comp : (ArrayList<Company>) turn.getContainer(TurnElementsEnum.Company).getItems()) {
+		for (Company comp : (ArrayList<Company>)turn.getContainer(TurnElementsEnum.Company).getItems()) {
 			for (String member : comp.getMembers()) {
-				if (member.equals(c.getName()))
-					return comp;
+				if (member.equals(c.getName())) return comp;
 			}
-			if (comp.getCommander().equals(c.getName()))
-				return comp;
+			if (comp.getCommander().equals(c.getName())) return comp;
 		}
 		return null;
 	}
-
+	
 	public static Army findArmy(Turn turn, Character c) {
-		for (Army army : (ArrayList<Army>) turn.getContainer(TurnElementsEnum.Army).getItems()) {
-			for (String member : army.getCharacters()) {
-				if (member.trim().equals(c.getName()))
-					return army;
+		for (Army army : (ArrayList<Army>)turn.getContainer(TurnElementsEnum.Army).getItems()) {
+			for (String member : (ArrayList<String>)army.getCharacters()) {
+				if (member.trim().equals(c.getName())) return army;
 			}
-			if (army.getCommanderName().equals(c.getName()))
-				return army;
+			if (army.getCommanderName().equals(c.getName())) return army;
 		}
 		return null;
 	}
-
+	
 	public static boolean notWithArmyOrCompany(Turn turn, Character c) {
 		return findCompany(turn, c) == null && findArmy(turn, c) == null;
 	}
-
+	
 	/**
-	 * Verifies that a has friendly relations to b (also returns true if a and b
-	 * are of same nation)
+	 * Verifies that a has friendly relations to b
+	 * (also returns true if a and b are of same nation)
 	 */
 	public static boolean checkFriendly(Turn t, IBelongsToNation a, IBelongsToNation b) {
 		try {
-			if (a.getNationNo() == b.getNationNo())
-				return true;
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", a.getNationNo());
-			if (nr == null)
-				return false;
+			if (a.getNationNo() == b.getNationNo()) return true;
+			NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", a.getNationNo());
+			if (nr == null) return false;
 			return NationRelationsEnum.Friendly.equals(nr.getRelationsFor(b.getNationNo()));
-		} catch (RuntimeException exc) {
+		}
+		catch (RuntimeException exc) {
 			throw exc;
 		}
 	}
-
+	
 	/**
 	 * Verifies that a has non hostile (friendly or tolerated) relations to b
 	 * (also returns true if a and b are of same nation)
 	 */
 	public static boolean checkNonHostile(Turn t, IBelongsToNation a, IBelongsToNation b) {
 		try {
-			if (a.getNationNo() == b.getNationNo() || a.getNationNo().equals(b.getNationNo()))
-				return true;
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", a.getNationNo());
-			return NationRelationsEnum.Friendly.equals(nr.getRelationsFor(b.getNationNo())) || NationRelationsEnum.Tolerated.equals(nr.getRelationsFor(b.getNationNo()));
-		} catch (RuntimeException exc) {
+			if (a.getNationNo() == b.getNationNo()) return true;
+			NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", a.getNationNo());
+			return NationRelationsEnum.Friendly.equals(nr.getRelationsFor(b.getNationNo())) ||
+				NationRelationsEnum.Tolerated.equals(nr.getRelationsFor(b.getNationNo()));
+		}
+		catch (RuntimeException exc) {
 			throw exc;
 		}
 	}
-
+	
 	/**
 	 * Verifies that a can attack b
 	 */
 	public static boolean canAttack(Turn t, IBelongsToNation a, IBelongsToNation b) {
 		try {
-			if (a.getNationNo() == b.getNationNo())
-				return false;
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", a.getNationNo());
-			return NationRelationsEnum.Neutral.equals(nr.getRelationsFor(b.getNationNo())) || NationRelationsEnum.Disliked.equals(nr.getRelationsFor(b.getNationNo())) || NationRelationsEnum.Hated.equals(nr.getRelationsFor(b.getNationNo()));
-		} catch (RuntimeException exc) {
+			if (a.getNationNo() == b.getNationNo()) return false;
+			NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", a.getNationNo());
+			return NationRelationsEnum.Neutral.equals(nr.getRelationsFor(b.getNationNo())) ||
+			NationRelationsEnum.Disliked.equals(nr.getRelationsFor(b.getNationNo())) ||
+			NationRelationsEnum.Hated.equals(nr.getRelationsFor(b.getNationNo()));
+		}
+		catch (RuntimeException exc) {
 			throw exc;
 		}
 	}
-
+	
 	public static Army createArmy(String commanderName, int nationNo, NationAllegianceEnum allegiance, int hexNo, InfoSource infoSource) {
 		Army army = new Army();
 		army.setSize(ArmySizeEnum.unknown);
@@ -266,48 +258,48 @@ public class ExecutingOrderUtils {
 		army.setMorale(10);
 		return army;
 	}
-
+	
 	public static Army createArmy(Character commander, InfoSource infoSource) {
 		return createArmy(commander.getName(), commander.getNationNo(), commander.getNation().getAllegiance(), commander.getHexNo(), infoSource);
 	}
-
+	
 	public static ProductPrice getProductPrice(Turn t, ProductEnum product) {
-		ProductPrice pp = (ProductPrice) t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", product);
+		ProductPrice pp = (ProductPrice)t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", product);
 		return pp;
 	}
 
 	public static int getTotalStoresForNation(Turn turn, ProductEnum product, int nationNo) {
 		int totalAmount = 0;
-		for (PopulationCenter pop : (ArrayList<PopulationCenter>) turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
+		for (PopulationCenter pop : (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
 			totalAmount += ExecutingOrderUtils.getStores(pop, product);
 		}
 		return totalAmount;
 	}
-
+	
 	public static int getTotalProductionForNation(Turn turn, ProductEnum product, int nationNo) {
 		int totalAmount = 0;
-		for (PopulationCenter pop : (ArrayList<PopulationCenter>) turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
+		for (PopulationCenter pop : (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
 			totalAmount += ExecutingOrderUtils.getProduction(pop, product);
 		}
 		return totalAmount;
 	}
-
+	
 	public static void consumeProductPercentageForNation(Turn turn, ProductEnum product, int pct, int nationNo) {
-		for (PopulationCenter pop : (ArrayList<PopulationCenter>) turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
+		for (PopulationCenter pop : (ArrayList<PopulationCenter>)turn.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
 			int a = ExecutingOrderUtils.getStores(pop, product);
 			a = a * pct / 100;
 			ExecutingOrderUtils.consumeProduct(pop, product, a);
 		}
 	}
-
+	
 	public static boolean atCapital(Turn turn, Character c) {
 		PopulationCenter pc = getPopCenter(turn, c.getHexNo());
 		return (pc != null && pc.getCapital() && checkNation(c, pc));
 	}
-
+	
 	public static void removeCharacterFromArmy(Turn turn, Army a, Character c) {
 		String toRemove = null;
-		for (String name : a.getCharacters()) {
+		for (String name : (ArrayList<String>)a.getCharacters()) {
 			if (name.trim().equals(c.getName())) {
 				toRemove = name;
 				break;
@@ -317,23 +309,20 @@ public class ExecutingOrderUtils {
 			a.getCharacters().remove(toRemove);
 		}
 	}
-
+	
 	public static void removeCharacterFromCompany(Turn turn, Company comp, Character c) {
-		if (comp.getMembers().contains(c.getName()))
-			comp.getMembers().remove(c.getName());
+		if (comp.getMembers().contains(c.getName())) comp.getMembers().remove(c.getName());
 	}
-
+	
 	public static void setCharacterTitle(Turn turn, Character c) {
 		String title = getCharacterTitle(turn, c);
-		if (title == null)
-			title = "";
+		if (title == null) title = "";
 		c.setTitle(title);
 	}
-
+	
 	public static String getCharacterTitle(Turn turn, Character c) {
 		String type = "Commander";
-		if (c == null)
-			return "Unknown character";
+		if (c == null) return "Unknown character";
 		int max = c.getCommand();
 		if (getArmy(turn, c.getHexNo(), c.getName()) == null) {
 			if (c.getCommand() < c.getAgent()) {
@@ -352,11 +341,11 @@ public class ExecutingOrderUtils {
 		String title = InfoUtils.getCharacterTitle(type, max);
 		return title;
 	}
-
+	
 	public static void removeArmy(Turn turn, Army a) {
 		turn.getContainer(TurnElementsEnum.Army).removeItem(a);
 	}
-
+	
 	public static void setCharacterStatTotals(Game game, Turn turn, Character c) {
 		int commandBonus = 0;
 		int mageBonus = 0;
@@ -364,16 +353,15 @@ public class ExecutingOrderUtils {
 		int emissaryBonus = 0;
 		int challengeBonus = 0;
 		int stealthBonus = 0;
-
+		
 		for (int artiNo : c.getArtifacts()) {
-			ArtifactInfo ai = game.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
+			ArtifactInfo ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
 			if (ai == null) {
 				throw new RuntimeException("ArtifactInfo " + artiNo + " not found.");
 			}
 			String bonusType = ai.getBonusType();
 			int rank = ai.getBonusRank();
-			if (bonusType == null)
-				continue;
+			if (bonusType == null) continue;
 			if ("Command".equals(bonusType)) {
 				commandBonus += rank;
 			} else if ("Emissary".equals(bonusType)) {
@@ -386,7 +374,7 @@ public class ExecutingOrderUtils {
 				stealthBonus += rank;
 			} else if ("Combat".equals(bonusType)) {
 				challengeBonus += rank / 50;
-			}
+			} 
 		}
 		if (c.getCommand() > 0) {
 			c.setCommandTotal(c.getCommand() + commandBonus);
@@ -413,13 +401,13 @@ public class ExecutingOrderUtils {
 		} else {
 			c.setStealthTotal(0);
 		}
-
+		
 		// compute challenge rank
 		int commandChallenge = c.getCommandTotal();
 		int mageChallenge = c.getMageTotal();
 		int agentChallenge = c.getAgentTotal() * 75 / 100;
 		int emissaryChallenge = c.getEmmisaryTotal() / 2;
-
+		
 		int max = commandChallenge;
 		if (mageChallenge > max) {
 			max = mageChallenge;
@@ -433,33 +421,30 @@ public class ExecutingOrderUtils {
 		int challenge = commandChallenge + mageChallenge + agentChallenge + emissaryChallenge;
 		challenge = max + (challenge - max) / 4;
 		c.setChallenge(challenge + challengeBonus);
-
+		
 	}
-
+	
 	public static void healCharacter(Turn turn, Character c) {
 		// TODO heals fast
 		Integer health = c.getHealth();
-		if (health == null)
-			return;
-		if (health == 0)
-			return;
-		if (health == 100)
-			return;
+		if (health == null) return;
+		if (health == 0) return;
+		if (health == 100) return;
 		int recover = Math.min(100 - health, 14);
 		// TODO add message
 		c.setHealth(health + recover);
 	}
-
+	
+	
 	public static int getSpellProficiency(Character c, int spellId) {
 		for (SpellProficiency sp : c.getSpells()) {
-			if (sp.getSpellId() == spellId)
-				return sp.getProficiency();
+			if (sp.getSpellId() == spellId) return sp.getProficiency();
 		}
 		return 0;
 	}
-
+	
 	/**
-	 * winner plunders dead char's artifacts
+	 *  winner plunders dead char's artifacts
 	 */
 	public static void plunderArtifacts(Turn turn, Character winner, Character dead) {
 		ArrayList<Integer> artis = new ArrayList<Integer>();
@@ -472,14 +457,13 @@ public class ExecutingOrderUtils {
 				count++;
 			}
 		}
-		// TODO rest of artifacts must fall on hex
-
+		//TODO rest of artifacts must fall on hex
+		
 		appendMessage(winner, "{char} recovered some artifacts from " + dead.getName() + "'s body.");
 	}
-
+	
 	public static void characterDied(Turn turn, Character c, CharacterDeathReasonEnum reason) {
-		if (reason == null)
-			reason = CharacterDeathReasonEnum.Dead;
+		if (reason == null) reason = CharacterDeathReasonEnum.Dead;
 		c.setDeathReason(reason);
 		Army a;
 		if ((a = getArmy(turn, c.getHexNo(), c.getName())) != null) {
@@ -515,72 +499,74 @@ public class ExecutingOrderUtils {
 			// disband the company
 			disbandCompany(turn, comp);
 			appendMessage(c, "{char}'s company was disbanded.");
-		} else if ((comp = findCompany(turn, c)) != null) {
+		} else if ((comp = findCompany(turn, c)) != null){
 			// remove the character from the company
 			removeCharacterFromCompany(turn, comp, c);
 		}
 	}
-
+	
+	
+	
 	public static void disbandArmy(Turn turn, Army a) {
 		turn.getContainer(TurnElementsEnum.Army).removeItem(a);
 	}
-
+	
 	public static void disbandCompany(Turn turn, Company comp) {
 		turn.getContainer(TurnElementsEnum.Company).removeItem(comp);
 	}
-
+	
 	public static void appendMessage(Character c, String message) {
 		String orderResults = c.getOrderResults();
-		if (orderResults == null)
-			orderResults = "";
+		if (orderResults == null) orderResults = "";
 		orderResults += (orderResults.equals("") ? "" : " ") + renderVariable(message, c);
 		c.setOrderResults(orderResults);
 	}
-
+	
 	public static String renderVariable(String message, Character c) {
 		message = message.replace("{char}", c.getName());
 		message = message.replace("{hex}", String.valueOf(c.getHexNo()));
 		return message;
 	}
-
+	
 	public static int getRevenue(Turn turn, PopulationCenter pc) {
 		int r = (pc.getSize().getCode() - 1) * 2500;
 		NationEconomy ne = getNationEconomy(turn, pc.getNationNo());
+		if (ne == null) return 0;
 		return r * ne.getTaxRate() / 100;
 	}
-
+	
 	public static int getAvailableGold(Turn turn, int nationNo) {
 		NationEconomy ne = getNationEconomy(turn, nationNo);
 		return ne.getAvailableGold();
 	}
-
+	
 	public static void consumeGold(Turn turn, int nationNo, int gold) {
 		NationEconomy ne = getNationEconomy(turn, nationNo);
 		ne.setAvailableGold(ne.getAvailableGold() - gold);
 	}
-
+	
 	public static int getMageBonus(Character c) {
 		return c.getMageTotal() - c.getMage();
 	}
-
+	
 	public static int spellCastRoll(Character c, SpellProficiency sp) {
 		int mb = getMageBonus(c);
 		int p = sp.getProficiency();
 		return Randomizer.roll(mb + p);
 	}
-
+	
 	public static boolean anchorShips(Turn turn, Army a) {
 		ArmyElement warships = a.getElement(ArmyElementType.Warships);
 		ArmyElement transports = a.getElement(ArmyElementType.Transports);
 		if (warships != null && warships.getNumber() > 0 || transports != null && transports.getNumber() > 0) {
-			Army anchoredShips = (Army) turn.getContainer(TurnElementsEnum.Army).findFirstByProperties(new String[] { "hexNo", "nationNo", "commanderName" }, new Object[] { a.getHexNo(), a.getNationNo(), "[Anchored Ships]" });
+			Army anchoredShips = (Army)turn.getContainer(TurnElementsEnum.Army).findFirstByProperties(new String[]{"hexNo", "nationNo", "commanderName"}, new Object[]{a.getHexNo(), a.getNationNo(), "[Anchored Ships]"});
 			if (anchoredShips == null) {
 				anchoredShips = new Army();
 				anchoredShips.setCommanderName("[Anchored Ships]");
 				anchoredShips.setCommanderTitle("");
 				anchoredShips.setHexNo(a.getHexNo());
 				anchoredShips.setNationAllegiance(a.getNationAllegiance());
-				anchoredShips.setInfoSource(new XmlTurnInfoSource(turn.getTurnNo(), a.getNationNo()));
+				anchoredShips.setInfoSource(new XmlTurnInfoSource(turn.getTurnNo(),a.getNationNo()));
 				anchoredShips.setInformationSource(InformationSourceEnum.exhaustive);
 				anchoredShips.setNationNo(a.getNationNo());
 				anchoredShips.setSize(ArmySizeEnum.unknown);
@@ -604,7 +590,7 @@ public class ExecutingOrderUtils {
 		}
 		return false;
 	}
-
+	
 	public static void addElement(Army army, ArmyElement ae) {
 		if (army.getElement(ae.getArmyElementType()) == null) {
 			army.setElement(ae);
@@ -620,11 +606,10 @@ public class ExecutingOrderUtils {
 			eae.setArmor(newArmor);
 		}
 	}
-
+	
 	public static void removeElementTroops(Army army, ArmyElementType type, int number) {
 		ArmyElement ae = army.getElement(type);
-		if (ae == null)
-			return;
+		if (ae == null) return;
 		ae.setNumber(ae.getNumber() - number);
 		if (ae.getNumber() < 0) {
 			ae.setNumber(0);
@@ -633,14 +618,13 @@ public class ExecutingOrderUtils {
 			army.removeElement(type);
 		}
 	}
-
+	
 	public static boolean hasSNA(Game game, int nationNo, SNAEnum sna) {
 		Nation n = game.getMetadata().getNationByNum(nationNo);
-		if (n == null)
-			return false;
+		if (n == null) return false;
 		return n.getSnas() != null && n.getSnas().contains(sna);
 	}
-
+	
 	public static void cleanupArmy(Turn turn, Army a) {
 		int totalTroops = 0;
 		for (ArmyElementType aet : ArmyElementType.values()) {
@@ -648,7 +632,7 @@ public class ExecutingOrderUtils {
 				a.removeElement(aet);
 			}
 			totalTroops += aet.isTroop() ? a.getNumber(aet) : 0;
-
+			
 		}
 		if (totalTroops < 100) {
 			// disband army
@@ -677,5 +661,10 @@ public class ExecutingOrderUtils {
 			}
 			turn.getContainer(TurnElementsEnum.Army).removeItem(a);
 		}
+	}
+	
+	public static boolean hasAvailableGold(Turn t, int nationNo, int gold) {
+		NationEconomy ne = getNationEconomy(t, nationNo);
+		return (ne.getAvailableGold() >= gold); 
 	}
 }

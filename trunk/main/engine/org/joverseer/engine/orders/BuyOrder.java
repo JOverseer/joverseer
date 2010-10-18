@@ -50,7 +50,7 @@ public class BuyOrder extends ExecutingOrder {
 		if (amount > pp.getMarketTotal()) {
 			trueAmount = pp.getMarketTotal();
 			if (trueAmount == 0) {
-				addMessage("{hex} could not buy any " + product + " because the market did not have any.");
+				addMessage("{char} could not buy any " + product + " because the market did not have any.");
 				return;
 			}
 		}
@@ -61,16 +61,23 @@ public class BuyOrder extends ExecutingOrder {
 			trueAmount = availableGold / buyPrice;
 			cost = trueAmount * buyPrice;
 			if (trueAmount == 0) {
-				addMessage("{hex} could not buy any " + product + " because there was insufficient gold in the nation's treasury.");
+				addMessage("{char} could not buy any " + product + " because there was insufficient gold in the nation's treasury.");
 				return;
 			}
 			addMessage("The amount bought was adjusted because there was insufficient gold.");
 		}
 		
 		ne.addAvailableGold(-cost);
-		int stores = ExecutingOrderUtils.getStores(getPop(), product);
-		stores += trueAmount;
-		getPop().setStores(product, stores);
+		if (loadArmyByMember(turn)) {
+			Integer food = getArmy().getFood();
+			if (food == null) food = 0;
+			food += trueAmount;
+			getArmy().setFood(food);
+		} else {
+			int stores = ExecutingOrderUtils.getStores(getPop(), product);
+			stores += trueAmount;
+			getPop().setStores(product, stores);
+		}
 		addMessage(trueAmount + " units of " + product + " were bought for " + cost + " gold.");
 	}
 	

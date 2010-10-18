@@ -1,6 +1,7 @@
 package org.joverseer.engine;
 
 import org.joverseer.domain.Order;
+import org.joverseer.engine.orders.AddDocksOrder;
 import org.joverseer.engine.orders.AnchorShipsOrder;
 import org.joverseer.engine.orders.AttackOrder;
 import org.joverseer.engine.orders.BuyOrder;
@@ -37,6 +38,7 @@ import org.joverseer.engine.orders.TransferArtifactsOrder;
 import org.joverseer.engine.orders.TransferCommandOrder;
 import org.joverseer.engine.orders.TransferFoodFromArmyToPopOrder;
 import org.joverseer.engine.orders.TransferFoodFromPopToArmyOrder;
+import org.joverseer.engine.orders.TransferPopOrder;
 import org.joverseer.engine.orders.TransferShipsOrder;
 import org.joverseer.engine.orders.TransferTroopsOrder;
 import org.joverseer.engine.orders.UseHidingArtifactOrder;
@@ -78,6 +80,8 @@ public class ExecutingOrderFactory {
 			return new FortifyPopOrder(order);
 		} else if (orderNo == 520) {
 			return new InfYourOrder(order);
+		} else if (orderNo == 530 || orderNo == 535) {
+			return new AddDocksOrder(order);
 		} else if (orderNo == 550) {
 			return new ImprovePopOrder(order);
 		} else if (orderNo == 555) {
@@ -120,6 +124,8 @@ public class ExecutingOrderFactory {
 			return new NatTranOrder(order);
 		} else if (orderNo == 948) {
 			return new TransCarOrder(order);
+		} else if (orderNo == 949) {
+			return new TransferPopOrder(order);
 		}
 		
 		return new DummyOrder(order);

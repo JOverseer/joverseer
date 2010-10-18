@@ -67,6 +67,7 @@ public class SplitArmyOrder extends ExecutingOrder {
 		int originTroops = getArmy().computeNumberOfMen();
 		
 		Army army = ExecutingOrderUtils.createArmy(getCharacter2(), getInfoSource(turn));
+		army.setFed(getArmy().isFed());
 		army.setMorale(30);
 		ArmyElement ae = splitArmyElement(getArmy(), ArmyElementType.HeavyCavalry, hc);
 		if (ae != null) army.setElement(ae);

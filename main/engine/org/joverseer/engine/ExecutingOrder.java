@@ -217,6 +217,8 @@ public abstract class ExecutingOrder implements Comparable {
 		msg = renderVariable(msg, "{endhex}", String.valueOf(getEndHex()));
 		msg = renderVariable(msg, "{starthex}", String.valueOf(getStartHex()));
 		msg = renderVariable(msg, "{order}", String.valueOf(getOrderNo()));
+		msg = renderVariable(msg, "{nation}", getCharacter().getNation().getName());
+		if (getCharacter2() != null) msg = renderVariable(msg, "{nation2}", getCharacter2().getNation().getName());
 		if (getCharacter2() != null) msg = renderVariable(msg, "{char2}", getCharacter2().getName());
 		if (getPop() != null) msg = renderVariable(msg, "{pc}", getPop().getName());
 		if (getPop2() != null) msg = renderVariable(msg, "{pc2}", getPop2().getName());

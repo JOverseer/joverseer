@@ -50,6 +50,45 @@ import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 
 public class TurnReportCollector {
+
+	public ArrayList<BaseReportObject> CollectNatSells(Turn t) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		ArrayList<Integer> friendlyNations = new ArrayList<Integer>();
+		for (PlayerInfo pi : t.getPlayerInfo()) {
+			friendlyNations.add(pi.getNationNo());
+			NationReport bro = new NationReport();
+			bro.setModification(ObjectModificationType.Gained);
+			bro.setNationNo(pi.getNationNo());
+			bro.setNotes("0");
+			ret.add(bro);
+		}
+		for (Character c : t.getAllCharacters()) {
+			if (!friendlyNations.contains(c.getNationNo()))
+				continue;
+			String cleanOrderResults = c.getCleanOrderResults();
+			for (String sell : StringUtils.getRegexMatches(cleanOrderResults, "(\\d+ \\w+ were sold for \\d+ Gold\\.)")) {
+				String gold = StringUtils.getUniquePart(sell, "sold for ", "Gold", false, false);
+				for (BaseReportObject bro : ret) {
+					if (bro.containsNation(c.getNationNo())) {
+						int natSell = Integer.parseInt(bro.getNotes());
+						natSell += Integer.parseInt(gold);
+						bro.setNotes(String.valueOf(natSell));
+					}
+				}
+			}
+		}
+		ArrayList<BaseReportObject> ret1 = new ArrayList<BaseReportObject>();
+		DecimalFormat df = new DecimalFormat("###,##0");
+		for (BaseReportObject bro : ret) {
+			if (bro.getNotes().equals("0"))
+				continue;
+			int gold = Integer.parseInt(bro.getNotes());
+			bro.setNotes(df.format(gold));
+			ret1.add(bro);
+		}
+		return ret1;
+	}
+
 	public ArrayList<BaseReportObject> CollectNonFriendlyChars(Turn t) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		ArrayList<Integer> friendlyNations = new ArrayList<Integer>();
@@ -1617,6 +1656,13 @@ public class TurnReportCollector {
 			try {
 				reports = CollectNations(t, p);
 				ret += renderCollection("Nations", "Relation, allegiance and tax rate changes", reports);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			ret += "<br/>";
+			try {
+				reports = CollectNatSells(t);
+				ret += renderCollection("Sells", "Gold sold per nation", reports);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 			}

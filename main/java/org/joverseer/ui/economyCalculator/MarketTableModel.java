@@ -1,11 +1,16 @@
 package org.joverseer.ui.economyCalculator;
 
+import java.text.DecimalFormat;
+
 import javax.swing.JTable;
 
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
+import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.richclient.application.Application;
@@ -175,6 +180,49 @@ public class MarketTableModel extends BaseEconomyTableModel {
         }
         return "";
     }
+    
+    public String getPriceHistory(int columnIndex, int numberOfTurns) {
+    	if (columnIndex == 0) return "";
+    	String productCode = columnHeaders[columnIndex];
+        ProductEnum product = ProductEnum.getFromCode(productCode);
+        return getPriceHistory(product, numberOfTurns);
+    }
+    
+    public String getPriceHistory(ProductEnum product, int numberOfTurns) {
+		if (!GameHolder.hasInitializedGame()) return null;
+		Game g = GameHolder.instance().getGame();
+		String ret = "<html><b>" + product + " price history" + "</b><br/><table><tr><th>Turn</th><th>Sell</th><th>Buy</th><th>Available</th></tr>";
+		int maxSellPrice = 0;
+		int minSellPrice = 1000;
+		int maxBuyPrice = 0;
+		int minBuyPrice = 1000;
+		int turnCount = 0;
+		DecimalFormat df = new DecimalFormat("###,###,##0");
+		for (int i=g.getCurrentTurn()-1; i>0; i--) {
+			Turn t = g.getTurn(i);
+			if (t == null) continue;
+			ProductPrice pp = t.getProductPrice(product);
+			if (turnCount < numberOfTurns) {
+				ret += "<tr><td align=center>" + i + "</td><td align=center>" + 
+							pp.getSellPrice() + "</td><td align=center>" + 
+							pp.getBuyPrice() + "</td><td align=center>" + 
+							df.format(pp.getMarketTotal()) + "</td></tr>";
+				
+			}
+			turnCount++;
+			maxSellPrice = Math.max(maxSellPrice, pp.getSellPrice());
+			minSellPrice = Math.min(minSellPrice, pp.getSellPrice());
+			maxBuyPrice = Math.max(maxBuyPrice, pp.getBuyPrice());
+			minBuyPrice = Math.min(minBuyPrice, pp.getBuyPrice());
+		}
+		if (turnCount > 0) {
+			ret += "</tr></table>" +
+					"Sell price range: " + minSellPrice + " - " + maxSellPrice + "<br/>" +
+					"Buy price range: " + minBuyPrice + " - " + maxBuyPrice + "<br/>" +
+					"</html>";
+		}
+		return ret;
+	}
 
     
     public EconomyTotalsTableModel getTotalsModel() {

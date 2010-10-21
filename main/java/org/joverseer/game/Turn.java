@@ -18,6 +18,7 @@ import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Cloner;
@@ -218,6 +219,10 @@ public class Turn implements Serializable {
 				return c;
 		}
 		return null;
+	}
+	
+	public ProductPrice getProductPrice(ProductEnum product) {
+		return getProductPrices().findFirstByProperty("product", product);
 	}
 
 	public ArrayList<NationMessage> getAllNationMessages() {

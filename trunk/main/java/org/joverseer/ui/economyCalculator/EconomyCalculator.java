@@ -23,7 +23,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.domain.ProductEnum;
+import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -428,6 +431,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lostPopsTableModel.setRows(items);
 		lostPopsTableModel.fireTableDataChanged();
 	}
+	
+	
 
 	/**
 	 * Renderer for the Market Table
@@ -450,6 +455,14 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			}
 			lbl.setHorizontalAlignment(JLabel.RIGHT);
 
+			if (row == 4) {
+				// sell price
+				setToolTipText(((MarketTableModel) marketTable.getModel()).getPriceHistory(column, 5));
+			} else if (row == 8) {
+				setToolTipText(((MarketTableModel) marketTable.getModel()).getPriceHistory(column, 5));
+			} else {
+				setToolTipText("");
+			}
 			return c;
 		}
 	}

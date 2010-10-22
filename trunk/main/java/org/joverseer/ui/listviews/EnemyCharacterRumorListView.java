@@ -26,31 +26,12 @@ public class EnemyCharacterRumorListView extends BaseItemListView {
 		return new int[] { 120, 64, 64, 64, 64, 64, 240, 120 };
 	}
 
-<<<<<<< .mine
-    protected void setItems() {
-        Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers(false);
-        ArrayList filteredItems = new ArrayList();
-        for (EnemyCharacterRumorWrapper w : (ArrayList<EnemyCharacterRumorWrapper>)thieves.getItems()) {
-        	if (getActiveFilter().accept(w)) filteredItems.add(w);
-        }
-        tableModel.setRows(filteredItems);
-        tableModel.fireTableDataChanged();
-    }
-    
-    protected JComponent[] getButtons() {
-    	return new JComponent[]{
-    			new PopupMenuCommand().getButton(new Object[]{
-    					new GenericCopyToClipboardCommand(table),
-    					//new ListViewDescriptionPopupCommand("enemyCharacterRumorListView")
-    					})};
-=======
 	@Override
 	protected JComponent createControlImpl() {
 		JComponent comp = super.createControlImpl();
 		// table.setDefaultRenderer(Boolean.class, new
 		// JTable().getDefaultRenderer(Boolean.class));
 		return comp;
->>>>>>> .r563
 	}
 
 	@Override

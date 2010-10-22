@@ -1,5 +1,6 @@
 package org.joverseer.ui.economyCalculator;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -23,10 +24,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
-import org.joverseer.domain.ProductEnum;
-import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -43,6 +41,8 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
+
+import com.jidesoft.popup.JidePopup;
 
 /**
  * The economy calculator view
@@ -178,7 +178,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			return;
 		int selectedIndex = 0;
 		int i = 0;
-		for (Nation n : (ArrayList<Nation>) g.getMetadata().getNations()) {
+		for (Nation n : g.getMetadata().getNations()) {
 			NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", n.getNumber());
 			// load only nations for which economy has been imported
 			if (ne == null)
@@ -298,6 +298,44 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
 
+		JButton priceHistory = new JButton();
+		priceHistory.setText("price history");
+		priceHistory.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				final JidePopup popup = new JidePopup();
+				popup.getContentPane().setLayout(new BorderLayout());
+				TableLayoutBuilder lb = new TableLayoutBuilder();
+				JButton closePopup = new JButton("Close");
+				closePopup.setPreferredSize(new Dimension(70, 20));
+				closePopup.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						popup.hidePopup();
+					}
+				});
+
+				JLabel lbl = new JLabel();
+				String priceHistory = ((MarketTableModel) marketTable.getModel()).getPriceHistory(marketTable.getSelectedColumn(), 15);
+				if (priceHistory == null || priceHistory.equals(""))
+					return;
+				lbl.setText(priceHistory);
+				lb.cell(lbl);
+				lb.relatedGapRow();
+				lb.cell(closePopup, "align=center");
+				lb.relatedGapRow();
+
+				JScrollPane scp = new JScrollPane(lb.getPanel());
+				scp.setPreferredSize(new Dimension(200, 300));
+				scp.getVerticalScrollBar().setUnitIncrement(16);
+				popup.getContentPane().add(scp);
+				popup.updateUI();
+				popup.setResizable(true);
+				popup.setMovable(true);
+				popup.showPopup();
+			}
+		});
+		lb.cell(priceHistory, "valign=top");
+
 		lb.row();
 		lb.relatedGapRow();
 
@@ -349,6 +387,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		tlb.relatedGapRow();
 		btn = new JButton("<- update market");
 		btn.setPreferredSize(new Dimension(130, 24));
+
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				((EconomyTotalsTableModel) totalsTable.getModel()).updateMarketFromOrders();
@@ -431,8 +470,6 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lostPopsTableModel.setRows(items);
 		lostPopsTableModel.fireTableDataChanged();
 	}
-	
-	
 
 	/**
 	 * Renderer for the Market Table
@@ -455,14 +492,6 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			}
 			lbl.setHorizontalAlignment(JLabel.RIGHT);
 
-			if (row == 4) {
-				// sell price
-				setToolTipText(((MarketTableModel) marketTable.getModel()).getPriceHistory(column, 5));
-			} else if (row == 8) {
-				setToolTipText(((MarketTableModel) marketTable.getModel()).getPriceHistory(column, 5));
-			} else {
-				setToolTipText("");
-			}
 			return c;
 		}
 	}

@@ -18,6 +18,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -215,7 +216,7 @@ public class CharacterViewer extends ObjectViewer {
 					if (showArtifacts) {
 						for (ArtifactWrapper aw : acw.getArtifacts()) {
 							// find artifact in metadata
-							ArtifactInfo a = (ArtifactInfo) g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+							ArtifactInfo a = g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
 							// copy into new object to change the name and add
 							// the turn - hack but for now it works
 							ArtifactInfo na = new ArtifactInfo();
@@ -287,7 +288,7 @@ public class CharacterViewer extends ObjectViewer {
 				ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
 				if (artifacts != null) {
 					for (Integer no : artifacts) {
-						ArtifactInfo arti = (ArtifactInfo) gm.getArtifacts().findFirstByProperty("no", no);
+						ArtifactInfo arti = gm.getArtifacts().findFirstByProperty("no", no);
 						if (arti == null) {
 							arti = new ArtifactInfo();
 							arti.setNo(no);
@@ -301,7 +302,8 @@ public class CharacterViewer extends ObjectViewer {
 			}
 
 			((BeanTableModel) artifactsTable.getModel()).setRows(artis);
-			artifactsTable.setPreferredSize(new Dimension(artifactsTable.getWidth(), 16 * artis.size()));
+			artifactsTable.setPreferredSize(new Dimension(180, 16 * artis.size()));
+			TableUtils.setTableColumnWidths(artifactsTable, new int[] { 10, 120, 40 });
 
 			ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
 			if (showSpells) {
@@ -309,7 +311,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 			((BeanTableModel) spellsTable.getModel()).setRows(spells);
 			spellsTable.setPreferredSize(new Dimension(spellsTable.getWidth(), 16 * spells.size()));
-
+			TableUtils.setTableColumnWidths(spellsTable, new int[] { 10, 120, 40 });
 			Container companies = game.getTurn().getContainer(TurnElementsEnum.Company);
 			Company company = (Company) companies.findFirstByProperty("commander", c.getName());
 			if (company != null) {
@@ -498,13 +500,14 @@ public class CharacterViewer extends ObjectViewer {
 
 			@Override
 			protected String[] createColumnPropertyNames() {
-				return new String[] { "no", "name" };
+				return new String[] { "no", "name", "stats" };
 			}
 
 			@Override
 			protected Class<?>[] createColumnClasses() {
-				return new Class[] { String.class, String.class };
+				return new Class[] { String.class, String.class, String.class };
 			}
+
 		};
 
 		artifactsTable.addMouseListener(new MouseAdapter() {
@@ -535,9 +538,16 @@ public class CharacterViewer extends ObjectViewer {
 
 		tableModel.setRowNumbers(false);
 		artifactsTable.setModel(tableModel);
-		TableUtils.setTableColumnWidths(artifactsTable, new int[] { 30, 120 });
+		TableUtils.setTableColumnWidths(artifactsTable, new int[] { 16, 100, 100 });
 		artifactsTable.setBorder(null);
 
+		glb.nextLine();
+		glb.append(new JLabel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(20, 4);
+			}
+		});
 		glb.nextLine();
 
 		glb.append(spellsTable = new JTable(), 2, 1);
@@ -551,7 +561,7 @@ public class CharacterViewer extends ObjectViewer {
 
 			@Override
 			protected Class<?>[] createColumnClasses() {
-				return new Class[] { Integer.class, String.class, String.class };
+				return new Class[] { String.class, String.class, String.class };
 			}
 		};
 		spellModel.setRowNumbers(false);
@@ -579,7 +589,7 @@ public class CharacterViewer extends ObjectViewer {
 						return;
 
 					Game g = GameHolder.instance().getGame();
-					SpellInfo si = (SpellInfo) g.getMetadata().getSpells().findFirstByProperty("number", sp.getSpellId());
+					SpellInfo si = g.getMetadata().getSpells().findFirstByProperty("number", sp.getSpellId());
 
 					String descr = si.getNumber() + " - " + si.getName() + "\n" + "Description: " + si.getDescription() + "\n" + "Difficulty: " + si.getDifficulty() + "\n" + "Required Info: " + si.getRequiredInfo() + "\n" + "Requirements: " + si.getRequirements() + "\n" + "Order: " + si.getOrderNumber();
 

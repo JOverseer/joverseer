@@ -17,24 +17,22 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**
- * Renderer for CharacterAttributeWrapper objects
- * Adds a tooltip to show detailed information
+ * Renderer for CharacterAttributeWrapper objects Adds a tooltip to show
+ * detailed information
  * 
  * @author Marios Skounakis
  */
-public class CharacterAttributeWrapperTableCellRenderer extends
-		AllegianceColorCellRenderer {
+public class CharacterAttributeWrapperTableCellRenderer extends AllegianceColorCellRenderer {
 
 	public CharacterAttributeWrapperTableCellRenderer(BeanTableModel tableModel) {
 		super(tableModel);
 		// TODO Auto-generated constructor stub
 	}
 
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column) {
+	@Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		CharacterAttributeWrapper caw = (CharacterAttributeWrapper) value;
-		String v = caw == null || caw.getValue() == null ? "" : caw.getValue()
-				.toString();
+		String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
 		if (caw != null && caw.getValue() != null) {
 			InfoSource is = caw.getInfoSource();
 			if (DerivedFromTitleInfoSource.class.isInstance(is)) {
@@ -44,32 +42,22 @@ public class CharacterAttributeWrapperTableCellRenderer extends
 			}
 		}
 		if (caw != null && caw.getTotalValue() != null) {
-			if (!caw.getTotalValue().toString().equals(
-					caw.getValue().toString())
-					&& !caw.getTotalValue().toString().equals("0")) {
+			if (!caw.getTotalValue().toString().equals(caw.getValue().toString()) && !caw.getTotalValue().toString().equals("0")) {
 				v += "(" + caw.getTotalValue().toString() + ")";
 			}
 		}
-		JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, v,
-				isSelected, hasFocus, row, column);
+		JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, v, isSelected, hasFocus, row, column);
 		String toolTip = "";
 		if (caw != null && caw.getValue() != null) {
-			toolTip = "t"
-					+ caw.getTurnNo()
-					+ " "
-					+ InfoSourceTableCellRenderer.getInfoSourceDescription(caw
-							.getInfoSource());
+			toolTip = "t" + caw.getTurnNo() + " " + InfoSourceTableCellRenderer.getInfoSourceDescription(caw.getInfoSource());
 
 			InfoSource is = caw.getInfoSource();
 			if (MetadataSource.class.isInstance(is)) {
-				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(),
-						Font.ITALIC, lbl.getFont().getSize()));
+				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.ITALIC, lbl.getFont().getSize()));
 			} else if (DerivedFromTitleInfoSource.class.isInstance(is)) {
-				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(),
-						Font.ITALIC, lbl.getFont().getSize()));
+				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.ITALIC, lbl.getFont().getSize()));
 			} else if (RumorActionInfoSource.class.isInstance(is)) {
-				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(),
-						Font.ITALIC, lbl.getFont().getSize()));
+				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.ITALIC, lbl.getFont().getSize()));
 			}
 		}
 		lbl.setToolTipText(toolTip);

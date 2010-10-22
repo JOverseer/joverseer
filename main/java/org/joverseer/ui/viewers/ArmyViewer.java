@@ -42,6 +42,7 @@ import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -341,7 +342,10 @@ public class ArmyViewer extends ObjectViewer {
 					FortificationSizeEnum fort = FortificationSizeEnum.values()[f];
 					int i = CombatUtils.canCapturePopCenter(a, pcSize, fort);
 					if (i > -1) {
-						str = pcSize + "/" + fort + " at loyalty " + i + "\n" + str;
+						String fortString = UIUtils.enumToString(fort);
+						if (fortString.equals("-"))
+							fortString = "None";
+						str = UIUtils.enumToString(pcSize) + "/" + fortString + " at loyalty " + i + "\n" + str;
 					}
 					if (i == 100)
 						break;

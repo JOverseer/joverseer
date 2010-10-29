@@ -19,6 +19,7 @@ import org.joverseer.domain.Encounter;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -341,6 +342,42 @@ public class TurnNewXmlReader implements Runnable {
 			// add to container
 			digester.addSetNext("METurn/Hexes/Hex", "addItem", "org.joverseer.support.readers.newXml.HexWrapper");
 
+			// create container for OrdersGiven
+			digester.addObjectCreate("METurn/OrdersGiven", "org.joverseer.support.Container");
+			// add container to turn info
+			digester.addSetNext("METurn/OrdersGiven", "setOrdersGiven");
+			// create OrdersGiven object
+			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar", "org.joverseer.support.readers.newXml.OrdersGiven");
+			// set attributes
+			digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar", "CharacterName", "characterName");
+			// add to container
+			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar", "addItem", "org.joverseer.support.readers.newXml.OrdersGiven");
+			// create OrderWrapper
+			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order", "org.joverseer.support.readers.newXml.OrderWrapper");
+			// add to OrdersGiven
+			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order", "addOrder", "org.joverseer.support.readers.newXml.OrderWrapper");
+			// set nested properties
+			digester.addRule("METurn/OrdersGiven/OrdersGivenToChar/Order", snpr = new SetNestedPropertiesRule(new String[] { "OrderNumber" }, new String[] { "orderNumber" }));
+			snpr.setAllowUnknownChildElements(true);
+			// create OrderParameterWrapper
+			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
+			// add to OrdersWrapper
+			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "addParameter", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
+			// set properties
+			digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "SeqNo", "seqNo");
+			// set text
+			digester.addCallMethod("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "setParameter", 1);
+			digester.addCallParam("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", 0);
+			// create OrderParameterWrapper
+			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "org.joverseer.support.readers.newXml.OrderMovementParameterWrapper");
+			// add to OrdersWrapper
+			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "addParameter", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
+			// set properties
+			digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "SeqNo", "seqNo");
+			// set text
+			digester.addCallMethod("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "setParameter", 1);
+			digester.addCallParam("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", 0);
+
 			turnInfo = (TurnInfo) digester.parse(fileName);
 		}
 
@@ -526,6 +563,17 @@ public class TurnNewXmlReader implements Runnable {
 			}
 			try {
 				updateSNAs(game);
+			} catch (Exception exc) {
+				logger.error(exc);
+				errorOccured = true;
+				getMonitor().subTaskStarted("Error: " + exc.getMessage());
+			}
+			if (getMonitor() != null) {
+				getMonitor().worked(95);
+				getMonitor().subTaskStarted("Updating Orders Given...");
+			}
+			try {
+				updateOrdersGiven(game);
 			} catch (Exception exc) {
 				logger.error(exc);
 				errorOccured = true;
@@ -782,6 +830,37 @@ public class TurnNewXmlReader implements Runnable {
 		for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) pcws.getItems()) {
 			PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", pcw.getHexNo());
 			pcw.updatePopCenter(pc);
+		}
+	}
+
+	private void updateOrdersGiven(Game game) {
+		Container ogs = turnInfo.getOrdersGiven();
+		Turn t = game.getTurn(game.getCurrentTurn() - 1);
+		if (t == null)
+			return;
+		for (OrdersGiven og : (ArrayList<OrdersGiven>) ogs.getItems()) {
+			Character c = t.getCharById(og.getCharacterName());
+			if (c != null) {
+				for (Order o : c.getOrders()) {
+					o.clear();
+				}
+				for (int i = 0; i < og.getOrders().size(); i++) {
+					OrderWrapper ow = og.getOrders().get(i);
+					try {
+						int orderNo = Integer.parseInt(ow.getOrderNumber());
+						Order o = c.getOrders()[i];
+						o.setOrderNo(orderNo);
+						for (int j = 0; j < ow.getParameters().size(); j++) {
+							String param = ow.getParameters().get(j);
+							if (param.equals("^"))
+								param = "-";
+							o.setParameter(j, param);
+						}
+					} catch (Exception e) {
+						// nothing
+					}
+				}
+			}
 		}
 	}
 

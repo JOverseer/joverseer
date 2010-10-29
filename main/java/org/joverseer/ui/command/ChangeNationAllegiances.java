@@ -20,31 +20,35 @@ import org.springframework.richclient.form.FormModelHelper;
  * @author Marios Skounakis
  */
 public class ChangeNationAllegiances extends ActionCommand {
-    
-    public ChangeNationAllegiances() {
-        super("changeNationAllegiancesCommand");
-    }
 
-    protected void doExecuteCommand() {
-    	if (!ActiveGameChecker.checkActiveGameExists()) return;
-        final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        FormModel formModel = FormModelHelper.createFormModel(g.getMetadata());
-        final EditNationAllegiancesForm form = new EditNationAllegiancesForm(formModel);
-        FormBackedDialogPage page = new FormBackedDialogPage(form);
+	public ChangeNationAllegiances() {
+		super("changeNationAllegiancesCommand");
+	}
 
-        TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
-                form.setFormObject(g.getMetadata());
-            }
+	@Override
+	protected void doExecuteCommand() {
+		if (!ActiveGameChecker.checkActiveGameExists())
+			return;
+		final Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		FormModel formModel = FormModelHelper.createFormModel(g.getMetadata());
+		final EditNationAllegiancesForm form = new EditNationAllegiancesForm(formModel);
+		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-            protected boolean onFinish() {
-                form.commit();
-                return true;
-            }
-        };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("changeNationAllegiancesDialog.title", new Object[]{}, Locale.getDefault()));
-        dialog.showDialog();
-    }
+		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+			@Override
+			protected void onAboutToShow() {
+				form.setFormObject(g);
+			}
+
+			@Override
+			protected boolean onFinish() {
+				form.commit();
+				return true;
+			}
+		};
+		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+		dialog.setTitle(ms.getMessage("changeNationAllegiancesDialog.title", new Object[] {}, Locale.getDefault()));
+		dialog.showDialog();
+	}
 
 }

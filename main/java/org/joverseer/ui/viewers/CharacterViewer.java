@@ -58,6 +58,8 @@ import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
 import org.joverseer.ui.command.ShowCharacterPathMasteryRangeCommand;
+import org.joverseer.ui.domain.mapItems.AbstractMapItem;
+import org.joverseer.ui.domain.mapItems.HexArrowMapItem;
 import org.joverseer.ui.listviews.ArtifactInfoTableModel;
 import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
@@ -387,6 +389,7 @@ public class CharacterViewer extends ObjectViewer {
 
 			ArrayList<Note> notes = g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
 			notesViewer.setFormObject(notes);
+			characterName.setCaretPosition(0);
 		}
 
 	}
@@ -769,8 +772,42 @@ public class CharacterViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			DialogsUtility.showCharacterOrderResults((Character) getFormObject());
+			HexArrowMapItem hami = null;
+			Character c = (Character) getFormObject();
+			Game g = GameHolder.instance().getGame();
+			Turn t = g.getTurn(g.getCurrentTurn() - 1);
+			if (t == null)
+				return;
+			Character pc = t.getCharByName(c.getName());
+			if (pc != null) {
+				hami = new HexArrowMapItem(pc.getHexNo(), c.getHexNo(), Color.black);
+				AbstractMapItem.add(hami);
+				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			}
+			DialogsUtility.showCharacterOrderResults(c);
+			if (hami != null) {
+				AbstractMapItem.remove(hami);
+				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			}
 		}
+	}
+
+	private class DrawStartLocationCommand extends ActionCommand {
+
+		@Override
+		protected void doExecuteCommand() {
+			Character c = (Character) getFormObject();
+			Game g = GameHolder.instance().getGame();
+			Turn t = g.getTurn(g.getCurrentTurn() - 1);
+			if (t == null)
+				return;
+			Character pc = t.getCharByName(c.getName());
+			if (pc != null) {
+				AbstractMapItem.add(new HexArrowMapItem(pc.getHexNo(), c.getHexNo(), Color.black));
+				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			}
+		}
+
 	}
 
 	private class AddRefuseChallengeCommand extends AddOrderCommand {
@@ -943,7 +980,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() });
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, new DrawStartLocationCommand(), "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
 		return group.createPopupMenu();
 	}
 

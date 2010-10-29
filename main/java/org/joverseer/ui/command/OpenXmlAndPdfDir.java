@@ -152,6 +152,9 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 				neutralNationExists = true;
 			}
 		}
+		if (g.containsParameter("StopAskingForAllegianceChanges") && "1".equals(g.getParameter("StopAskingForAllegianceChanges"))) {
+			neutralNationExists = false;
+		}
 		if (neutralNationExists) {
 			ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[] {}, Locale.getDefault())) {
 				@Override

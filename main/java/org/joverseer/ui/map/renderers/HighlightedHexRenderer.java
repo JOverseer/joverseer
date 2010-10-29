@@ -12,15 +12,12 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
-import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.domain.mapItems.HexArrowMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.domain.mapItems.TrackCharacterMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.drawing.Arrow;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 
 /**
  * Renders the highlighted hexes
@@ -28,129 +25,135 @@ import org.springframework.context.ApplicationListener;
  * @author Marios Skounakis
  */
 public class HighlightedHexRenderer extends DefaultHexRenderer {
-    String highlightColor = "#ff3300";
-    int width = 2;
-    
-    public boolean appliesTo(Object obj) {
-        return HighlightHexesMapItem.class.isInstance(obj) ||
-        	TrackCharacterMapItem.class.isInstance(obj);
-        
-    }
-    
-    public void render(Object obj, Graphics2D g, int x, int y) {
-        if (!appliesTo(obj)) {
-            throw new IllegalArgumentException(obj.toString());
-        }
+	String highlightColor = "#ff3300";
+	int width = 2;
 
-        if (metadata == null) {
-            init();
-        }
-        if (HighlightHexesMapItem.class.isInstance(obj)) renderHHMI(obj, g, x, y);
-        if (TrackCharacterMapItem.class.isInstance(obj)) renderTCMI(obj, g, x, y);
-    }
-    
-    private void renderHHMI(Object obj, Graphics2D g, int x, int y) {
-    	HighlightHexesMapItem hmi = (HighlightHexesMapItem)obj;
-        Color color = Color.decode(getHighlightColor());
-        Stroke currentStroke = g.getStroke();
-        g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
-        for (Integer hexNo : hmi.getHexesToHighlight()) {
-            Point p = MapPanel.instance().getHexLocation(hexNo);
-            Polygon polygon = new Polygon(xPoints, yPoints, 6);
-            polygon.translate(p.x, p.y);
-            g.setColor(color);
-            g.drawPolygon(polygon);
-        }
-        g.setStroke(currentStroke);
-    }
-    
-    private void renderTCMI(Object obj, Graphics2D g, int x, int y) {
-    	Color color = Color.decode(getHighlightColor());
-        Stroke currentStroke = g.getStroke();
-        g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
-        TrackCharacterMapItem hmi = (TrackCharacterMapItem)obj;
-        String tn = null;
-        for (int i=0; i<hmi.getHexes().size(); i++) {
-        	Integer hexNo = hmi.getHexes().get(i);
-        	Integer turnNo = hmi.getTurns().get(i);
-            Point p = MapPanel.instance().getHexLocation(hexNo);
-            Polygon polygon = new Polygon(xPoints, yPoints, 6);
-            polygon.translate(p.x, p.y);
-            g.setColor(color);
-            g.drawPolygon(polygon);
-            
-        	Point p2 = MapPanel.instance().getHexCenter(hexNo);
-        	Integer prevHexNo = -1;
-        	Point p1 = null;
-        	if (i > 0) {
-            	prevHexNo = hmi.getHexes().get(i-1);
-            	p1 = MapPanel.instance().getHexCenter(prevHexNo);
-            	if (!prevHexNo.equals(hexNo)) {
-            		// draw an arrow connecting the points
-                	g.drawLine(p2.x, p2.y, p1.x, p1.y);
-	            	double theta = Math.atan2((p2.y - p1.y) , (p2.x - p1.x));
-	                Shape a = Arrow.getArrowHead(p2.x, p2.y, 7, 11, theta);
-	                g.fill(a);
-            	}
-            }
-            
-        	tn = String.valueOf(turnNo);
-            for (int j=i-1; j>=0; j--) {
-            	if (hmi.getHexes().get(j).equals(hexNo)) {
-            		tn = hmi.getTurns().get(j) + "," + tn;
-            	} else {
-            		break;
-            	}
-            }
-        	drawString(g, tn, p2, p2);
-            
-        }
-        g.setStroke(currentStroke);
-    }
+	@Override
+	public boolean appliesTo(Object obj) {
+		return HighlightHexesMapItem.class.isInstance(obj) || TrackCharacterMapItem.class.isInstance(obj) || HexArrowMapItem.class.isInstance(obj);
 
-    private void drawString(Graphics2D g, String str, Point p1, Point p2) {
-        // calculate and prepare character name rendering
-        Point p = new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
-        Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9);
-        FontMetrics fm = g.getFontMetrics(f);
-        Rectangle2D bb = fm.getStringBounds(str, g);
-        Rectangle b = new Rectangle(((Double)bb.getX()).intValue(),
-                                        ((Double)bb.getY()).intValue(),
-                                        ((Double)bb.getWidth()).intValue(),
-                                        ((Double)bb.getHeight()).intValue());
-        int xt = p.x - new Double(b.getWidth() / 2).intValue();
-        int yt = p.y;
-        b.translate(xt, yt);
-        RoundRectangle2D rr = new RoundRectangle2D.Double(b.getX(), b.getY(), b.getWidth() + 2, b.getHeight() + 2, 3, 3);
-        g.setFont(f);
+	}
 
-        g.setColor(Color.BLACK);
-        // fill rectangle behind char name
-        g.fill(rr);
-        // draw char name
-        g.setColor(Color.WHITE);
-        g.drawString(str, xt + 1, yt + 1);
+	@Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
+		if (!appliesTo(obj)) {
+			throw new IllegalArgumentException(obj.toString());
+		}
 
-    }
-    
-    public String getHighlightColor() {
-        return highlightColor;
-    }
+		if (metadata == null) {
+			init();
+		}
+		if (HighlightHexesMapItem.class.isInstance(obj))
+			renderHHMI(obj, g, x, y);
+		if (TrackCharacterMapItem.class.isInstance(obj))
+			renderTCMI(obj, g, x, y);
+		if (HexArrowMapItem.class.isInstance(obj))
+			renderArrow(obj, g, x, y);
+	}
 
-    
-    public void setHighlightColor(String highlightColor) {
-        this.highlightColor = highlightColor;
-    }
+	private void renderArrow(Object obj, Graphics2D g, int x, int y) {
+		HexArrowMapItem hami = (HexArrowMapItem) obj;
+		Point p1 = MapPanel.instance().getHexCenter(hami.getOriginHex());
+		Point p2 = MapPanel.instance().getHexCenter(hami.getDestinationHex());
 
-    
-    public int getWidth() {
-        return width;
-    }
+		Arrow.renderArrow(p2, p1, Color.darkGray, GraphicUtils.getDashStroke(3, 8), g);
+	}
 
-    
-    public void setWidth(int width) {
-        this.width = width;
-    }
+	private void renderHHMI(Object obj, Graphics2D g, int x, int y) {
+		HighlightHexesMapItem hmi = (HighlightHexesMapItem) obj;
+		Color color = Color.decode(getHighlightColor());
+		Stroke currentStroke = g.getStroke();
+		g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
+		for (Integer hexNo : hmi.getHexesToHighlight()) {
+			Point p = MapPanel.instance().getHexLocation(hexNo);
+			Polygon polygon = new Polygon(xPoints, yPoints, 6);
+			polygon.translate(p.x, p.y);
+			g.setColor(color);
+			g.drawPolygon(polygon);
+		}
+		g.setStroke(currentStroke);
+	}
 
-    
+	private void renderTCMI(Object obj, Graphics2D g, int x, int y) {
+		Color color = Color.decode(getHighlightColor());
+		Stroke currentStroke = g.getStroke();
+		g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
+		TrackCharacterMapItem hmi = (TrackCharacterMapItem) obj;
+		String tn = null;
+		for (int i = 0; i < hmi.getHexes().size(); i++) {
+			Integer hexNo = hmi.getHexes().get(i);
+			Integer turnNo = hmi.getTurns().get(i);
+			Point p = MapPanel.instance().getHexLocation(hexNo);
+			Polygon polygon = new Polygon(xPoints, yPoints, 6);
+			polygon.translate(p.x, p.y);
+			g.setColor(color);
+			g.drawPolygon(polygon);
+
+			Point p2 = MapPanel.instance().getHexCenter(hexNo);
+			Integer prevHexNo = -1;
+			Point p1 = null;
+			if (i > 0) {
+				prevHexNo = hmi.getHexes().get(i - 1);
+				p1 = MapPanel.instance().getHexCenter(prevHexNo);
+				if (!prevHexNo.equals(hexNo)) {
+					// draw an arrow connecting the points
+					g.drawLine(p2.x, p2.y, p1.x, p1.y);
+					double theta = Math.atan2((p2.y - p1.y), (p2.x - p1.x));
+					Shape a = Arrow.getArrowHead(p2.x, p2.y, 7, 11, theta);
+					g.fill(a);
+				}
+			}
+
+			tn = String.valueOf(turnNo);
+			for (int j = i - 1; j >= 0; j--) {
+				if (hmi.getHexes().get(j).equals(hexNo)) {
+					tn = hmi.getTurns().get(j) + "," + tn;
+				} else {
+					break;
+				}
+			}
+			drawString(g, tn, p2, p2);
+
+		}
+		g.setStroke(currentStroke);
+	}
+
+	private void drawString(Graphics2D g, String str, Point p1, Point p2) {
+		// calculate and prepare character name rendering
+		Point p = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+		Font f = GraphicUtils.getFont("Microsoft Sans Serif", Font.PLAIN, 9);
+		FontMetrics fm = g.getFontMetrics(f);
+		Rectangle2D bb = fm.getStringBounds(str, g);
+		Rectangle b = new Rectangle(((Double) bb.getX()).intValue(), ((Double) bb.getY()).intValue(), ((Double) bb.getWidth()).intValue(), ((Double) bb.getHeight()).intValue());
+		int xt = p.x - new Double(b.getWidth() / 2).intValue();
+		int yt = p.y;
+		b.translate(xt, yt);
+		RoundRectangle2D rr = new RoundRectangle2D.Double(b.getX(), b.getY(), b.getWidth() + 2, b.getHeight() + 2, 3, 3);
+		g.setFont(f);
+
+		g.setColor(Color.BLACK);
+		// fill rectangle behind char name
+		g.fill(rr);
+		// draw char name
+		g.setColor(Color.WHITE);
+		g.drawString(str, xt + 1, yt + 1);
+
+	}
+
+	public String getHighlightColor() {
+		return highlightColor;
+	}
+
+	public void setHighlightColor(String highlightColor) {
+		this.highlightColor = highlightColor;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
 }

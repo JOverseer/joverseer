@@ -44,6 +44,7 @@
 				<value>teamEconomyView</value>
 				<value>notesListView</value>
 				<value>turnReportView</value>
+				<value>gameEncountersReportView</value>
 				<!--
 				<value>pcChangesListView</value>
 				<value>chatWindowView</value>
@@ -238,6 +239,31 @@
 		</property>
 		<property name="viewClass">
 			<value> org.joverseer.ui.views.TurnReportView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	<bean id="gameEncountersReportView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.GameEncounterReportView</value>
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

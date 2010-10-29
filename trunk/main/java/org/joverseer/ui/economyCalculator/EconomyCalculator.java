@@ -315,7 +315,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				});
 
 				JLabel lbl = new JLabel();
-				String priceHistory = ((MarketTableModel) marketTable.getModel()).getPriceHistory(marketTable.getSelectedColumn(), 15);
+				String priceHistory = ((MarketTableModel) marketTable.getModel()).getPriceHistory(marketTable.getSelectedColumn(), 10);
 				if (priceHistory == null || priceHistory.equals(""))
 					return;
 				lbl.setText(priceHistory);
@@ -325,7 +325,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				lb.relatedGapRow();
 
 				JScrollPane scp = new JScrollPane(lb.getPanel());
-				scp.setPreferredSize(new Dimension(200, 300));
+				scp.setPreferredSize(new Dimension(160, 328));
 				scp.getVerticalScrollBar().setUnitIncrement(16);
 				popup.getContentPane().add(scp);
 				popup.updateUI();
@@ -438,11 +438,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		pcTable.setDefaultRenderer(Boolean.class, totalsTable.getDefaultRenderer(Boolean.class));
 		pcTable.setDefaultEditor(Boolean.class, totalsTable.getDefaultEditor(Boolean.class));
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, getLostPCColumWidths());
-		scp = new JScrollPane(pcTable);
-		scp.setPreferredSize(new Dimension(600, 300));
-		scp.getViewport().setBackground(Color.white);
-		scp.getViewport().setOpaque(true);
-		lb.cell(scp);
+		pcTable.setMaximumSize(new Dimension(600, 1000));
+		lb.cell(pcTable, "align=left");
 
 		lb.row();
 

@@ -97,6 +97,9 @@ public class OrderEditorListView extends ItemListView {
 					acceptChar = acceptChar && ((OrderFilter) filter.getSelectedItem()).acceptCharacter(c);
 				}
 			}
+			AbstractListViewFilter textFilter = getTextFilter(textFilterField.getText());
+			if (textFilter != null)
+				acceptChar = acceptChar && ((OrderFilter) textFilter).acceptCharacter(c);
 			if (!acceptChar)
 				continue;
 			for (int i = 0; i < c.getNumberOfOrders(); i++) {
@@ -289,6 +292,27 @@ public class OrderEditorListView extends ItemListView {
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
 		return new AbstractListViewFilter[][] { createOrderNationFilterList().toArray(new AbstractListViewFilter[] {}), createOrderTypeFilterList().toArray(new AbstractListViewFilter[] {}), };
+	}
+
+	@Override
+	protected boolean hasTextFilter() {
+		return true;
+	}
+
+	@Override
+	protected AbstractListViewFilter getTextFilter(String txt) {
+		if (txt == null || txt.length() == 0)
+			return null;
+		boolean isHexNo = false;
+		try {
+			if (txt.length() == 4 && Integer.parseInt(txt) > 0) {
+				isHexNo = true;
+			}
+		} catch (Exception e) {
+		}
+		if (isHexNo)
+			return new OrderHexFilter("Hex", txt);
+		return new OrderTextFilter("Text", txt);
 	}
 
 	@Override
@@ -639,6 +663,53 @@ public class OrderEditorListView extends ItemListView {
 
 		public OrderFilter(String description) {
 			super(description);
+		}
+	}
+
+	public class OrderHexFilter extends OrderFilter {
+		String hexNo;
+
+		public OrderHexFilter(String description, String hexNo) {
+			super(description);
+			this.hexNo = hexNo;
+		}
+
+		@Override
+		public boolean acceptCharacter(Character c) {
+			OrderParameterValidator opv = new OrderParameterValidator();
+			for (Order o : c.getOrders()) {
+				if (o.isBlank())
+					continue;
+				for (int i = 0; i <= o.getLastParamIndex(); i++) {
+					if (o.getParameter(i).equals(hexNo))
+						return true;
+				}
+			}
+			return false;
+		}
+
+	}
+
+	public class OrderTextFilter extends OrderFilter {
+		String text;
+
+		public OrderTextFilter(String description, String text) {
+			super(description);
+			this.text = text;
+		}
+
+		@Override
+		public boolean acceptCharacter(Character c) {
+			OrderParameterValidator opv = new OrderParameterValidator();
+			for (Order o : c.getOrders()) {
+				if (o.isBlank())
+					continue;
+				for (int i = 0; i <= o.getLastParamIndex(); i++) {
+					if (o.getParameter(i).contains(text))
+						return true;
+				}
+			}
+			return false;
 		}
 	}
 

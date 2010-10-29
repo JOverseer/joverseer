@@ -19,19 +19,24 @@ public class ChallengeReport extends BaseReportObject {
 		this.challenge = challenge;
 		setHexNo(challenge.getHexNo());
 	}
-	
+
 	@Override
 	public String getLinks() {
 		String str = super.getLinks();
 		try {
-			str += " <a href='http://event?challenge=" +
-					Character.getIdFromName(challenge.getVictor()).replace(" ", "_") + "," +
-					Character.getIdFromName(challenge.getLoser()).replace(" ", "_")
-					+"'>Report</a>";
-		}
-		catch (Exception e) {
-			
+			str += " <a href='http://event?challenge=" + Character.getIdFromName(challenge.getVictor()).replace(" ", "_") + "," + Character.getIdFromName(challenge.getLoser()).replace(" ", "_") + "'>Report</a>";
+		} catch (Exception e) {
+
 		}
 		return str;
 	}
+
+	@Override
+	public String getExtraInfo() {
+		if (challenge.getVictorWounds() != null) {
+			return "Victor's wounds: " + challenge.getVictorWounds();
+		}
+		return super.getExtraInfo();
+	}
+
 }

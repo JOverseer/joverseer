@@ -209,6 +209,30 @@ public class Turn implements Serializable {
 		return (Encounter) getContainer(TurnElementsEnum.Encounter).findFirstByProperties(new String[] { "hexNo", "character" }, new Object[] { hexNo, character });
 	}
 
+	/**
+	 * Returns the encounter at hexNo that awaits a reaction
+	 */
+	public Encounter getReactingEncounter(int hexNo) {
+		ArrayList<Encounter> ret = getEncounters().findAllByProperty("hexNo", hexNo);
+		for (Encounter e : ret) {
+			if (e.isReacting())
+				return e;
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the encounter at hexNo that was an encounter reaction
+	 */
+	public Encounter getReactionEncounter(int hexNo) {
+		ArrayList<Encounter> ret = getEncounters().findAllByProperty("hexNo", hexNo);
+		for (Encounter e : ret) {
+			if (e.isReaction())
+				return e;
+		}
+		return null;
+	}
+
 	public ArrayList<Encounter> getEncounters(String character) {
 		return getEncounters().findAllByProperties(new String[] { "character" }, new Object[] { character });
 	}
@@ -220,7 +244,7 @@ public class Turn implements Serializable {
 		}
 		return null;
 	}
-	
+
 	public ProductPrice getProductPrice(ProductEnum product) {
 		return getProductPrices().findFirstByProperty("product", product);
 	}

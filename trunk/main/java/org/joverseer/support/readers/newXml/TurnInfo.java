@@ -20,15 +20,16 @@ public class TurnInfo {
 	Container recons;
 	Container challenges;
 	Container doubleAgents;
-	
+	Container ordersGiven;
+
 	int turnNo = -1;
-    int nationNo = -1;
-    String date;
-    String season;
-    String nationName;
-    boolean seasonChanging;
-    int alignment;
-	
+	int nationNo = -1;
+	String date;
+	String season;
+	String nationName;
+	boolean seasonChanging;
+	int alignment;
+
 	public int getAlignment() {
 		return alignment;
 	}
@@ -36,9 +37,6 @@ public class TurnInfo {
 	public void setAlignment(int alignment) {
 		this.alignment = alignment;
 	}
-	
-	
-	
 
 	public Container getDoubleAgents() {
 		return doubleAgents;
@@ -88,8 +86,6 @@ public class TurnInfo {
 		this.characters = characters;
 	}
 
-	
-	
 	public Container getRecons() {
 		return recons;
 	}
@@ -121,8 +117,6 @@ public class TurnInfo {
 	public void setPopCentres(Container popCentres) {
 		this.popCentres = popCentres;
 	}
-
-	
 
 	public Container getHostages() {
 		return hostages;
@@ -227,8 +221,13 @@ public class TurnInfo {
 	public void setSnas(Container snas) {
 		this.snas = snas;
 	}
-	
-	
-	
-	
+
+	public Container getOrdersGiven() {
+		return ordersGiven;
+	}
+
+	public void setOrdersGiven(Container ordersGiven) {
+		this.ordersGiven = ordersGiven;
+	}
+
 }

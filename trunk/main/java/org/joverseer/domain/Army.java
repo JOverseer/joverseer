@@ -128,7 +128,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	 */
 	public Integer computeFoodConsumption() {
 		if (getElements().size() == 0)
-			return null;
+			return 0;
 		int ret = 0;
 		for (ArmyElement ae : getElements()) {
 			ret += ae.getNumber() * ae.getArmyElementType().foodConsumption();

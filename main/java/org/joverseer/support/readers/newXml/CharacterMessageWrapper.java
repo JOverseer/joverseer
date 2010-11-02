@@ -136,8 +136,10 @@ public class CharacterMessageWrapper {
 		for (String line : lines) {
 			if (line.indexOf("was killed due to a mysterious and deadly curse.") > -1)
 				return true;
-			if (line.indexOf("was killed due to a mysterious and severe sickness.")>-1) return true;
-			if (StringUtils.getUniqueRegexMatch(line, "was killed due to a mysterious and \\w+ (weakness).") != null) return true;
+			if (line.indexOf("was killed due to a mysterious and severe sickness.") > -1)
+				return true;
+			if (StringUtils.getUniqueRegexMatch(line, "was killed due to a mysterious and \\w+ (weakness).") != null)
+				return true;
 		}
 		return false;
 	}
@@ -320,13 +322,13 @@ public class CharacterMessageWrapper {
 	}
 
 	public OrderResult getLATOrderResult(String line) {
-		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is located at ", "." };
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is located ", " at ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);
 			or.setArtifactNo(Integer.parseInt(matches[1]));
-			or.setHexNo(Integer.parseInt(matches[2]));
+			or.setHexNo(Integer.parseInt(matches[3]));
 			return or;
 		}
 		return null;

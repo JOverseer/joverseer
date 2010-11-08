@@ -752,6 +752,28 @@
 					</property>
 				</bean>
 				
+				bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>orderEditor.advancedValidation</value>
+					</property>
+					<property name="description">
+						<value>Advanced Validation</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">

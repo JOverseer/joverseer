@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -31,9 +32,19 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 
 	}
 
+	protected JPanel getCriteriaPanel() {
+		return null;
+	}
+
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
+		tlb.relatedGapRow();
+		JPanel pnl = getCriteriaPanel();
+		if (pnl != null) {
+			tlb.cell(pnl, "align=left");
+			tlb.relatedGapRow();
+		}
 		JButton btn = new JButton("Generate");
 		btn.setText("Generate");
 		btn.setPreferredSize(new Dimension(100, 20));

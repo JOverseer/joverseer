@@ -2,12 +2,14 @@ Type;Order no;Gold;Timber
 Bridge (major);490;5000;10000
 Bridge (minor);490;2500;5000
 Build Harbor;535;2500;5000
-BuildPort;530;4000;7500
+Build Port;530;4000;7500
 Hire Army;770;5000;-
 Hire Character;725;10000;-
 Hire Character;728-737;5000;-
 Move Capital;950;25000;-
-Resrch Spell;705;1000;-
+Research Spell;705;1000;-
 Transports;456;1000;1500
 War Machines;440;-;500
 Warships;452;1000;1500
+Move Turn Map (up to turn 12);942;5000;-
+Move Turn Map (after turn 12);942;3000;-

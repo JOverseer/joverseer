@@ -45,6 +45,7 @@
 				<value>notesListView</value>
 				<value>turnReportView</value>
 				<value>gameEncountersReportView</value>
+				<value>orderResultsView</value>
 				<!--
 				<value>pcChangesListView</value>
 				<value>chatWindowView</value>
@@ -272,7 +273,33 @@
 			<value>500</value>
 		</property>
 		<property name="viewGroup">
-			<value>Advanced Intel</value>
+			<value>Admin</value>
+		</property>
+	</bean>
+	
+	<bean id="orderResultsView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.OrderResultsView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Admin</value>
 		</property>
 	</bean>
 	

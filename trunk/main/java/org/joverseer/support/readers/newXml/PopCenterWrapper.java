@@ -12,6 +12,8 @@ public class PopCenterWrapper {
 
 	ArrayList<ProductionWrapper> products = new ArrayList<ProductionWrapper>();
 
+	ArrayList<String> foreignCharacters = new ArrayList<String>();
+
 	public void addProduct(ProductionWrapper pw) {
 		products.add(pw);
 	}
@@ -56,6 +58,17 @@ public class PopCenterWrapper {
 		for (ProductionWrapper pw : products) {
 			pw.updatePopCenter(pc);
 		}
+	}
+
+	public void addForeignCharacter(String name) {
+		if (name.endsWith(" -")) {
+			name = name.substring(0, name.length() - 2);
+		}
+		foreignCharacters.add(name);
+	}
+
+	public ArrayList<String> getForeignCharacters() {
+		return foreignCharacters;
 	}
 
 }

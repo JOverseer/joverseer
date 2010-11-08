@@ -183,6 +183,9 @@ public class TurnNewXmlReader implements Runnable {
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
 			digester.addSetNext("METurn/More/PopCentres/PopCentre/Product", "addProduct", "org.joverseer.support.readers.newXml.ProductionWrapper");
+			// add foreign characters
+			digester.addCallMethod("METurn/More/PopCentres/PopCentre/ForeignCharacters/ForeignCharacter", "addForeignCharacter", 1);
+			digester.addCallParam("METurn/More/PopCentres/PopCentre/ForeignCharacters/ForeignCharacter", 0);
 
 			// create container for Nation Relations
 			digester.addObjectCreate("METurn/NationRelations", "org.joverseer.support.Container");
@@ -830,6 +833,18 @@ public class TurnNewXmlReader implements Runnable {
 		for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) pcws.getItems()) {
 			PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", pcw.getHexNo());
 			pcw.updatePopCenter(pc);
+			for (String foreignCharacter : pcw.getForeignCharacters()) {
+				Character c = turn.getCharByName(foreignCharacter);
+				if (c == null) {
+					c = new Character();
+					c.setName(foreignCharacter);
+					c.setId(Character.getIdFromName(foreignCharacter));
+					c.setNationNo(0);
+					c.setInfoSource(infoSource);
+					c.setHexNo(pcw.getHexNo());
+					turn.getCharacters().addItem(c);
+				}
+			}
 		}
 	}
 

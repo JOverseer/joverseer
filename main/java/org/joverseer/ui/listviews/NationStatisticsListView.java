@@ -63,9 +63,9 @@ public class NationStatisticsListView extends BaseItemListView {
 		ns.setAllegiance(NationAllegianceEnum.Neutral);
 
 		Turn t = g.getTurn();
-		for (int i = 1; i < 26; i++) {
+		for (int i = 0; i < 26; i++) {
 			NationRelations nr = t.getNationRelations(i);
-			if (nr == null || nr.getEliminated())
+			if (nr != null && nr.getEliminated())
 				continue;
 			Nation n = NationMap.getNationFromNo(i);
 			if (n.getRemoved())
@@ -143,7 +143,9 @@ public class NationStatisticsListView extends BaseItemListView {
 				}
 				nsw.setTroopCount(nsw.getTroopCount() + a.computeNumberOfMen());
 			}
-			if (nr.getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
+			if (nr == null) {
+				// nothing
+			} else if (nr.getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
 				fp.add(nsw);
 			} else if (nr.getAllegiance().equals(NationAllegianceEnum.DarkServants)) {
 				ds.add(nsw);
@@ -160,6 +162,8 @@ public class NationStatisticsListView extends BaseItemListView {
 			if (getActiveFilter() == null || getActiveFilter().accept(item)) {
 				filteredItems.add(item);
 				NationRelations nr = t.getNationRelations(item.getNationNo());
+				if (nr == null)
+					continue;
 				if (nr.getAllegiance().equals(NationAllegianceEnum.FreePeople))
 					addFP = true;
 				if (nr.getAllegiance().equals(NationAllegianceEnum.DarkServants))

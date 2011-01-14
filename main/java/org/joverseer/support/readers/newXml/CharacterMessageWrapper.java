@@ -179,12 +179,50 @@ public class CharacterMessageWrapper {
 				or = getScryResult(line, infoSource);
 			if (or == null)
 				or = getRAResult(line, infoSource);
+			if (or == null)
+				or = getScoutHexResult(line, infoSource);
 			if (or != null) {
 				ret.add(or);
 			}
 		}
 		return ret;
 
+	}
+
+	protected OrderResult getScoutHexResult(String line, InfoSource infoSource) {
+		try {
+			if (line.contains("A scout of the hex was attempted.")) {
+				line = StringUtils.replaceNationNames(line);
+				ScoutHexResult result = new ScoutHexResult();
+				String climate = StringUtils.getUniquePart(line, "Climate is ", "Cool|Cold|Mild|Warm|Polar|Hot", false, true);
+				String foreignArmies = StringUtils.getUniquePart(line, "Foreign armies present:", "\\.", false, false);
+				if (foreignArmies != null) {
+					String[] fas = foreignArmies.split("\\-");
+					for (String fa : fas) {
+						if (fa.length() < 5)
+							continue;
+						String commanderName = StringUtils.getUniquePart(fa, "^", " of ", false, false);
+						String nation = StringUtils.getUniquePart(fa, " of ", "$", false, false);
+						nation = StringUtils.stripFirstWordCond(nation, "the");
+						Nation n = StringUtils.getFromNationCode(nation);
+						Army a = new Army();
+						a.setInformationSource(InformationSourceEnum.some);
+						a.setInfoSource(infoSource);
+						a.setCommanderName(commanderName);
+						a.setCommanderTitle("");
+						a.setSize(ArmySizeEnum.unknown);
+
+						a.setNationNo(n.getNumber());
+						a.setNationAllegiance(n.getAllegiance());
+						result.addArmy(a);
+					}
+				}
+				return result;
+			}
+			return null;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	protected OrderResult getRAResult(String line, InfoSource infoSource) {

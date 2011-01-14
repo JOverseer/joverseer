@@ -31,6 +31,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
+import org.joverseer.support.infoSources.DerivedFromOrderResultsInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
@@ -682,9 +683,10 @@ public class TurnNewXmlReader implements Runnable {
 		Container cs = turn.getContainer(TurnElementsEnum.Character);
 		for (CharacterMessageWrapper cmw : (ArrayList<CharacterMessageWrapper>) nrws.getItems()) {
 			Character c = (Character) cs.findFirstByProperty("id", cmw.getCharId());
+			InfoSource ifs = new DerivedFromOrderResultsInfoSource(turn.getTurnNo(), turnInfo.nationNo, c.getName());
 			if (c != null) {
 				cmw.updateCharacter(c, game);
-				for (OrderResult or : cmw.getOrderResults(infoSource)) {
+				for (OrderResult or : cmw.getOrderResults(ifs)) {
 					or.updateGame(game, turn, turnInfo.nationNo, c.getName());
 				}
 			}
@@ -841,6 +843,7 @@ public class TurnNewXmlReader implements Runnable {
 					c.setId(Character.getIdFromName(foreignCharacter));
 					c.setNationNo(0);
 					c.setInfoSource(infoSource);
+					c.setInformationSource(InformationSourceEnum.limited);
 					c.setHexNo(pcw.getHexNo());
 					turn.getCharacters().addItem(c);
 				}

@@ -317,7 +317,6 @@ public class TurnXmlReader implements Runnable {
 				getMonitor().worked(100);
 			}
 		} catch (Exception exc) {
-
 			if (getMonitor() != null) {
 				getMonitor().worked(100);
 				getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
@@ -511,10 +510,14 @@ public class TurnXmlReader implements Runnable {
 				} else {
 					// char found
 					logger.debug("Character found in turn.");
-					if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) || PdfTurnInfoSource.class.isInstance(oldCharacter.getInfoSource()) || DerivedFromSpellInfoSource.class.isInstance(oldCharacter.getInfoSource()) || (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue())) {
-						logger.debug("Replace.");
-						chars.removeItem(oldCharacter);
-						chars.addItem(newCharacter);
+					try {
+						if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) || PdfTurnInfoSource.class.isInstance(oldCharacter.getInfoSource()) || DerivedFromSpellInfoSource.class.isInstance(oldCharacter.getInfoSource()) || (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue())) {
+							logger.debug("Replace.");
+							chars.removeItem(oldCharacter);
+							chars.addItem(newCharacter);
+						}
+					} catch (Exception e) {
+						int a = 1;
 					}
 				}
 				if (newCharacter.getNationNo() == turnInfo.getNationNo()) {

@@ -5,7 +5,7 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sun.misc.Regexp;
+import org.joverseer.metadata.domain.Nation;
 
 /**
  * Class with string manipulation utilities
@@ -18,7 +18,7 @@ import sun.misc.Regexp;
  */
 
 public class StringUtils extends org.springframework.util.StringUtils {
-	
+
 	/**
 	 * Removes all new line (\r\n or \n) sequences from the given string
 	 */
@@ -41,56 +41,65 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		}
 		return str;
 	}
-	
+
 	public static String getUniquePart(String text, String start, String end, boolean includeStart, boolean includeEnd) {
 		ArrayList<String> ret = getParts(text, start, end, includeStart, includeEnd);
-		if (ret.size() == 0) return null;
-		if (ret.size() > 1) throw new RuntimeException("Not Unique Part");
+		if (ret.size() == 0)
+			return null;
+		if (ret.size() > 1)
+			throw new RuntimeException("Not Unique Part");
 		return ret.get(0);
 	}
-	
+
 	public static ArrayList<String> getParts(String text, String start, String end, boolean includeStart, boolean includeEnd) {
 		ArrayList<String> ret = new ArrayList<String>();
-		int i = 0; 
+		int i = 0;
 		do {
-		    MatchResult mrs = match(text, start, i);
-		    if (mrs == null) return ret;
-		    i = mrs.start();
-		    int j = i + mrs.group().length();
-		    int matchStart = i;
-		    if (!includeStart) matchStart += mrs.group().length();
-		    
-		    if (end == null) {
-		    	ret.add(text.substring(matchStart));
-		    	return ret;
-		    }
-		    MatchResult mre = match(text, end, j);
-		    if (mre == null) return ret;
-		    j = mre.start();
-		    int matchEnd = j;
-		    if (includeEnd) matchEnd += mre.group().length();
-		    
-		    String fragment = text.substring(matchStart, matchEnd).trim();
-		    ret.add(fragment);
-		    i = j;
+			MatchResult mrs = match(text, start, i);
+			if (mrs == null)
+				return ret;
+			i = mrs.start();
+			int j = i + mrs.group().length();
+			int matchStart = i;
+			if (!includeStart)
+				matchStart += mrs.group().length();
+
+			if (end == null) {
+				ret.add(text.substring(matchStart));
+				return ret;
+			}
+			MatchResult mre = match(text, end, j);
+			if (mre == null)
+				return ret;
+			j = mre.start();
+			int matchEnd = j;
+			if (includeEnd)
+				matchEnd += mre.group().length();
+
+			String fragment = text.substring(matchStart, matchEnd).trim();
+			ret.add(fragment);
+			i = j;
 		} while (i > -1);
 		return ret;
 	}
-	
+
 	protected static MatchResult match(String text, String pattern, int startIndex) {
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(text);
-		if (m.find(startIndex)) return m.toMatchResult();
+		if (m.find(startIndex))
+			return m.toMatchResult();
 		return null;
 	}
-	
+
 	public static String getUniqueRegexMatch(String text, String pattern) {
 		ArrayList<String> ret = getRegexMatches(text, pattern);
-		if (ret.size() == 0) return null;
-		if (ret.size() > 1) throw new RuntimeException("Not Unique Match");
+		if (ret.size() == 0)
+			return null;
+		if (ret.size() > 1)
+			throw new RuntimeException("Not Unique Match");
 		return ret.get(0);
 	}
-	
+
 	public static ArrayList<String> getRegexMatches(String text, String pattern) {
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(text);
@@ -102,18 +111,50 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		}
 		return ret;
 	}
-	
+
 	public static String stripFirstWord(String text) {
 		int i = text.indexOf(" ");
-		if (i > -1) return text.substring(i+1);
+		if (i > -1)
+			return text.substring(i + 1);
 		return text;
 	}
-	
+
+	public static String stripFirstWordCond(String text, String firstWord) {
+		try {
+			int i = text.indexOf(" ");
+			if (i > -1) {
+				if (!text.substring(0, i).equals(firstWord))
+					return text;
+				return text.substring(i).trim();
+			}
+			return text;
+		} catch (Exception e) {
+			int a = 1;
+		}
+		return text;
+	}
+
 	public static String getFirstWord(String text) {
 		int i = text.indexOf(" ");
-		if (i > -1) return text.substring(0, i);
+		if (i > -1)
+			return text.substring(0, i);
 		return "";
 	}
+
+	public static String replaceNationNames(String text) {
+		for (int i = 1; i <= 25; i++) {
+			Nation n = NationMap.getNationFromNo(i);
+			text = text.replace(n.getName(), "Nation_" + i);
+		}
+		return text;
+	}
+
+	public static int parseNationCode(String nation) {
+		nation = nation.replace("Nation_", "");
+		return Integer.parseInt(nation);
+	}
+
+	public static Nation getFromNationCode(String nation) {
+		return NationMap.getNationFromNo(parseNationCode(nation));
+	}
 }
-
-

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -19,49 +20,50 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class OrderResultsForm extends AbstractForm {
 
-    public static String FORM_PAGE = "orderResultsForm";
+	public static String FORM_PAGE = "orderResultsForm";
 
-    JTextField name;
-    JTextArea results;
+	JTextField name;
+	JTextArea results;
 
-    public OrderResultsForm(FormModel arg0) {
-        super(arg0, FORM_PAGE);
-    }
+	public OrderResultsForm(FormModel arg0) {
+		super(arg0, FORM_PAGE);
+	}
 
-    protected JComponent createFormControl() {
-        TableLayoutBuilder tlb = new TableLayoutBuilder();
-        JLabel lbl;
-        tlb.cell(lbl = new JLabel("Character :"));
-        lbl.setPreferredSize(new Dimension(50, 20));
-        name = new JTextField();
-        name.setEditable(false);
-        tlb.gapCol();
-        tlb.cell(name);
-        tlb.relatedGapRow();
-        tlb.row();
-        tlb.cell(lbl = new JLabel("Results :"), "valign=top");
-        lbl.setPreferredSize(new Dimension(50, 20));
-        tlb.gapCol();
-        tlb.cell(results = new JTextArea());
-        ;
-        results.setPreferredSize(new Dimension(500, 200));
-        results.setWrapStyleWord(true);
-        results.setLineWrap(true);
-        results.setEditable(false);
-        results.setBorder(name.getBorder());
-        return tlb.getPanel();
-    }
+	@Override
+	protected JComponent createFormControl() {
+		TableLayoutBuilder tlb = new TableLayoutBuilder();
+		JLabel lbl;
+		tlb.cell(lbl = new JLabel("Character :"));
+		lbl.setPreferredSize(new Dimension(50, 20));
+		name = new JTextField();
+		name.setEditable(false);
+		tlb.gapCol();
+		tlb.cell(name);
+		tlb.relatedGapRow();
+		tlb.row();
+		tlb.cell(lbl = new JLabel("Results :"), "valign=top");
+		lbl.setPreferredSize(new Dimension(50, 20));
+		tlb.gapCol();
+		results = new JTextArea();
+		results.setWrapStyleWord(true);
+		results.setLineWrap(true);
+		results.setEditable(false);
+		JScrollPane scp = new JScrollPane(results);
+		scp.setPreferredSize(new Dimension(500, 200));
+		tlb.cell(scp);
+		return tlb.getPanel();
+	}
 
-    public void setFormObject(Object arg0) {
-        super.setFormObject(arg0);
-        Character c = (Character) arg0;
-        name.setText(c.getName());
-        String result = c.getCleanOrderResults().replaceAll("\n", "");
-        result = result.replaceAll(" He was ordered", "\n\nHe was ordered");
-        result = result.replaceAll(" She was ordered", "\n\nShe was ordered");
-
-        results.setText(result);
-    }
-
+	@Override
+	public void setFormObject(Object arg0) {
+		super.setFormObject(arg0);
+		Character c = (Character) arg0;
+		name.setText(c.getName());
+		String result = c.getCleanOrderResults().replaceAll("\n", "");
+		result = result.replaceAll(" He was ordered", "\n\nHe was ordered");
+		result = result.replaceAll(" She was ordered", "\n\nShe was ordered");
+		results.setText(result);
+		results.setCaretPosition(0);
+	}
 
 }

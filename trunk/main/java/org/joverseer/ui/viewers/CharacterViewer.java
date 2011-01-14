@@ -792,24 +792,6 @@ public class CharacterViewer extends ObjectViewer {
 		}
 	}
 
-	private class DrawStartLocationCommand extends ActionCommand {
-
-		@Override
-		protected void doExecuteCommand() {
-			Character c = (Character) getFormObject();
-			Game g = GameHolder.instance().getGame();
-			Turn t = g.getTurn(g.getCurrentTurn() - 1);
-			if (t == null)
-				return;
-			Character pc = t.getCharByName(c.getName());
-			if (pc != null) {
-				AbstractMapItem.add(new HexArrowMapItem(pc.getHexNo(), c.getHexNo(), Color.black));
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
-			}
-		}
-
-	}
-
 	private class AddRefuseChallengeCommand extends AddOrderCommand {
 		public AddRefuseChallengeCommand() {
 			super(215, "");
@@ -980,7 +962,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() });
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, new DrawStartLocationCommand(), "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
 		return group.createPopupMenu();
 	}
 

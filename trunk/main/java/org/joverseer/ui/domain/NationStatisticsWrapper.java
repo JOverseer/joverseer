@@ -83,14 +83,15 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	public void setCharacters(int characters) {
 		this.characters = characters;
 	}
-	
-	
+
 	public int getHostages() {
 		return hostages;
 	}
+
 	public void setHostages(int hostages) {
 		this.hostages = hostages;
 	}
+
 	public int getCharactersInCapital() {
 		return charactersInCapital;
 	}
@@ -217,6 +218,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		transports += nsw.getTransports();
 		warships += nsw.getWarships();
 		troopCount += nsw.getTroopCount();
+		popCenters += nsw.getPopCenters();
 
 	}
 }

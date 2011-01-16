@@ -19,6 +19,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationLauncher;
 
+import com.jidesoft.plaf.LookAndFeelFactory;
+
 /**
  * The main class for the JOverseer gui client
  */
@@ -51,7 +53,7 @@ public class JOverseerJIDEClient {
 			_logger.info("JOverseer Client starting up");
 
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
-			// LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 
 			// LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);

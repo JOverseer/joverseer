@@ -381,6 +381,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				((EconomyTotalsTableModel) totalsTable.getModel()).setOrdersCost(Integer.parseInt(autocalcOrderCost.getText()));
 				((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
 				refreshFinalGoldWarning();
+				refreshTaxIncrease();
 			}
 		});
 		tlb.cell(btn);
@@ -395,6 +396,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
 				refreshMarketLimitWarning();
 				refreshFinalGoldWarning();
+				refreshTaxIncrease();
 			}
 		});
 		tlb.cell(btn);

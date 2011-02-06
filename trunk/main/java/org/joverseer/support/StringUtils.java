@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.support.info.InfoUtils;
 
 /**
  * Class with string manipulation utilities
@@ -40,6 +41,57 @@ public class StringUtils extends org.springframework.util.StringUtils {
 			str = str.replace("  ", " ");
 		}
 		return str;
+	}
+
+	public static String[] extractCharacterTitle(String text) {
+		String[] ret = null;
+		String foundResult = "";
+		ArrayList<String> charTitles = InfoUtils.getAllCharacterTitles();
+		for (int j = 0; j < charTitles.size(); j++) {
+			String title = charTitles.get(j);
+			if (text.contains(title)) {
+				if (!foundResult.equals("") && !foundResult.equals(title))
+					return null;
+				foundResult = title;
+				text = text.replace(title, "#title#");
+				if (ret == null)
+					ret = new String[2];
+				ret[0] = text;
+				ret[1] = title;
+			}
+		}
+		return ret;
+	}
+
+	public static String[] extractNation(String text) {
+		String[] ret = null;
+		String foundNation = "";
+		for (int j = 0; j < 26; j++) {
+			Nation n = NationMap.getNationFromNo(j);
+			String nationName = n.getName();
+			String nationNamePlusThe = "the " + n.getName();
+			if (text.contains(nationNamePlusThe)) {
+				if (!foundNation.equals("") && !foundNation.equals(nationName))
+					return null;
+				foundNation = nationName;
+				text = text.replace(nationNamePlusThe, "#nation#");
+				if (ret == null)
+					ret = new String[2];
+				ret[0] = text;
+				ret[1] = nationName;
+			}
+			if (text.contains(nationName)) {
+				if (!foundNation.equals("") && !foundNation.equals(nationName))
+					return null;
+				foundNation = nationName;
+				text = text.replace(nationName, "#nation#");
+				if (ret == null)
+					ret = new String[2];
+				ret[0] = text;
+				ret[1] = nationName;
+			}
+		}
+		return ret;
 	}
 
 	public static String getUniquePart(String text, String start, String end, boolean includeStart, boolean includeEnd) {

@@ -5,14 +5,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -21,8 +18,10 @@ import javax.swing.JTextField;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.ui.support.drawing.ColorPicker;
+import org.joverseer.ui.support.controls.ResourceButton;
+import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -81,17 +80,17 @@ public class EditNationMetadataForm extends AbstractForm {
 
 		tlb.cell(new JLabel(" "));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Name"));
+		tlb.cell(new ResourceLabel("standardFields.Name"));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Short Name"));
+		tlb.cell(new ResourceLabel("editNationMetadataForm.ShortName"));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Removed"));
+		tlb.cell(new ResourceLabel("editNationMetadataForm.Removed"));
 		tlb.gapCol();
-		tlb.cell(new JLabel("SNAs"));
+		tlb.cell(new ResourceLabel("editNationMetadataForm.SNAs"));
 		tlb.gapCol();
 		tlb.cell();
-		tlb.gapCol();
-		tlb.cell(new JLabel("Color"));
+		// tlb.gapCol();
+		// tlb.cell(new ResourceLabel("Color"));
 		tlb.relatedGapRow();
 		tlb.row();
 		for (int i = 0; i < 25; i++) {
@@ -100,7 +99,7 @@ public class EditNationMetadataForm extends AbstractForm {
 			nationName.setPreferredSize(new Dimension(170, 20));
 			JLabel lbl = new JLabel();
 			lbl.setPreferredSize(new Dimension(60, 24));
-			lbl.setText("Nation " + (i + 1) + " :");
+			lbl.setText(Application.instance().getApplicationContext().getMessage("editNationMetadataForm.NationLabel", new Object[] { (i + 1) }, null));
 			labels.add(lbl);
 			tlb.cell(lbl);
 			tlb.cell(nationName);
@@ -123,7 +122,7 @@ public class EditNationMetadataForm extends AbstractForm {
 			tlb.gapCol();
 			tlb.cell(nationSNAList);
 
-			JButton editNationSNAs = new JButton("Edit");
+			JButton editNationSNAs = new ResourceButton("standardActions.Edit");
 			editSNAButtons.add(editNationSNAs);
 			editNationSNAs.setPreferredSize(new Dimension(50, 16));
 			tlb.gapCol();
@@ -182,21 +181,22 @@ public class EditNationMetadataForm extends AbstractForm {
 			});
 			tlb.gapCol();
 
-			final JTextField color = new JTextField("Col");
-			// color.setBorder(new LineBorder(Color.black));
-			color.setPreferredSize(new Dimension(34, 16));
-			color.setHorizontalAlignment(JLabel.CENTER);
-			colorLabels.add(color);
-			color.addMouseListener(new MouseAdapter() {
-
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					super.mouseClicked(arg0);
-					JColorChooser.showDialog(color, "Choose Color", color.getBackground());
-				}
-
-			});
-			tlb.cell(color);
+			// final JTextField color = new JTextField("Col");
+			// // color.setBorder(new LineBorder(Color.black));
+			// color.setPreferredSize(new Dimension(34, 16));
+			// color.setHorizontalAlignment(JLabel.CENTER);
+			// colorLabels.add(color);
+			// color.addMouseListener(new MouseAdapter() {
+			//
+			// @Override
+			// public void mouseClicked(MouseEvent arg0) {
+			// super.mouseClicked(arg0);
+			// JColorChooser.showDialog(color, "Choose Color",
+			// color.getBackground());
+			// }
+			//
+			// });
+			// tlb.cell(color);
 
 			tlb.row();
 		}
@@ -246,9 +246,9 @@ public class EditNationMetadataForm extends AbstractForm {
 				}
 				removed.get(i - 1).setSelected(n.getRemoved());
 				updateSNATextFieldFromCheckBoxes(i - 1);
-				JTextField color = colorLabels.get(i - 1);
-				color.setBackground(ColorPicker.getInstance().getColor1(i));
-				color.setForeground(ColorPicker.getInstance().getColor2(i));
+				// JTextField color = colorLabels.get(i - 1);
+				// color.setBackground(ColorPicker.getInstance().getColor1(i));
+				// color.setForeground(ColorPicker.getInstance().getColor2(i));
 			} else {
 				labels.get(i - 1).setEnabled(false);
 				nationNames.get(i - 1).setEnabled(false);

@@ -95,7 +95,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 			return null;
 		// compute cavalry with respect to troop synthesis
 		for (ArmyElement ae : getElements()) {
-			if (ae.getArmyElementType() == ArmyElementType.WarMachimes)
+			if (!ae.getArmyElementType().isTroop())
 				continue;
 			if (!ae.getArmyElementType().isCavalry())
 				return false;

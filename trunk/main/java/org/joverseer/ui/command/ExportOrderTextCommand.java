@@ -14,7 +14,6 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -22,6 +21,8 @@ import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.controls.ResourceButton;
+import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -92,7 +93,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 			Game g = GameHolder.instance().getGame();
 
 			GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-			glb.append(new JLabel("Nation :"));
+			glb.append(new ResourceLabel("standardFields.Nation"));
 			glb.append(nation = new JComboBox(getNationItems().toArray()));
 
 			nation.setSelectedIndex(0);
@@ -109,7 +110,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 			glb.append(scp, 2, 1);
 
 			glb.nextLine();
-			JButton generate = new JButton("Generate");
+			JButton generate = new ResourceButton("exportOrderTextForm.BtnGenerate");
 			glb.append(generate, 1, 1);
 			glb.nextLine();
 			generate.addActionListener(new ActionListener() {
@@ -125,7 +126,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 				}
 			});
 
-			JButton ctc = new JButton("Copy to Clipboard");
+			JButton ctc = new ResourceButton("standardActions.CopyToClipboard");
 			glb.append(ctc, 1, 1);
 			glb.nextLine();
 			final ClipboardOwner clipboardOwner = this;

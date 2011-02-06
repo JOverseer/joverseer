@@ -46,6 +46,8 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.SaveGame;
+import org.joverseer.ui.support.controls.ResourceButton;
+import org.joverseer.ui.support.controls.ResourceLabel;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -109,7 +111,7 @@ public class ExportOrdersForm extends AbstractForm {
 		Game g = GameHolder.instance().getGame();
 
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-		glb.append(new JLabel("Nation :"));
+		glb.append(new ResourceLabel("standardFields.Nation"));
 		glb.append(nation = new JComboBox(getNationItems().toArray()));
 
 		nation.setPreferredSize(new Dimension(100, 24));
@@ -131,7 +133,7 @@ public class ExportOrdersForm extends AbstractForm {
 
 		glb.nextLine();
 
-		glb.append(new JLabel("Version :"));
+		glb.append(new ResourceLabel("ExportOrdersForm.Version"));
 		glb.append(version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 		version.setPreferredSize(new Dimension(20, 24));
 		glb.nextLine();
@@ -144,7 +146,7 @@ public class ExportOrdersForm extends AbstractForm {
 		glb.append(scp, 3, 1);
 
 		glb.nextLine();
-		JButton generate = new JButton("Generate");
+		JButton generate = new ResourceButton("ExportOrdersForm.BtnGenerate");
 		generate.setPreferredSize(new Dimension(100, 20));
 		glb.append(generate, 1, 1);
 		glb.nextLine();
@@ -158,13 +160,13 @@ public class ExportOrdersForm extends AbstractForm {
 					orderCheckResult = validateOrders();
 					ordersOk = true;
 				} catch (Exception exc) {
-					orders.setText("Unexpected error generating order file.");
+					orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
 					ordersOk = false;
 					logger.error(exc);
 				}
 			}
 		});
-		JButton save = new JButton("Save");
+		JButton save = new ResourceButton("standardActions.Save");
 		save.setPreferredSize(new Dimension(100, 20));
 		glb.append(save, 1, 1);
 
@@ -174,7 +176,7 @@ public class ExportOrdersForm extends AbstractForm {
 			}
 		});
 
-		JButton send = new JButton("Send");
+		JButton send = new ResourceButton("ExportOrdersForm.BtnSend");
 		send.setPreferredSize(new Dimension(100, 20));
 		glb.append(send, 1, 1);
 		glb.append(new JLabel(), 1, 1);
@@ -210,7 +212,7 @@ public class ExportOrdersForm extends AbstractForm {
 		String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		fileChooser.setApproveButtonText("Save");
+		fileChooser.setApproveButtonText(Application.instance().getApplicationContext().getMessage("standardActions.Save", null, null));
 		fileChooser.setSelectedFile(new File(fname));
 
 		String orderPathPref = PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder");
@@ -251,8 +253,8 @@ public class ExportOrdersForm extends AbstractForm {
 						Runtime.getRuntime().exec(cmd);
 						increaseVersionNumber(pi);
 
-						String msg = "Orders sent to Middle Earth Games (" + recipientEmail + ") by email and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
-						MessageDialog md = new MessageDialog("Turn Submitted", msg);
+						String msg = Application.instance().getApplicationContext().getMessage("ExportOrdersForm.OrdersSentByMailSuccessMessage", new Object[] { recipientEmail, fileChooser.getSelectedFile() }, null);
+						MessageDialog md = new MessageDialog(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.TurnSubmittedDialogTitle", null, null), msg);
 						md.showDialog();
 						pi.setOrdersSentOn(new Date());
 						autoSaveGameAccordingToPref();
@@ -262,16 +264,16 @@ public class ExportOrdersForm extends AbstractForm {
 						String email = prefs.get("useremail", "");
 						String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
 						InputDialog idlg = new InputDialog();
-						idlg.setTitle("Send turn");
-						idlg.init("Enter the email address where you want the confirmation email to be sent.");
+						idlg.setTitle(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.SendTurnInputDialogTitle", null, null));
+						idlg.init(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.SendTurnInputDialogMessage", null, null));
 						JTextField emailText = new JTextField();
-						idlg.addComponent("Email address :", emailText);
+						idlg.addComponent(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress", null, null), emailText);
 						idlg.setPreferredSize(new Dimension(400, 80));
 						emailText.setText(email);
 						do {
 							idlg.showDialog();
 							if (!idlg.getResult()) {
-								ErrorDialog md = new ErrorDialog("Send aborted.");
+								ErrorDialog md = new ErrorDialog("ExportOrdersForm.SendAbortedMessage");
 								md.showDialog();
 								return;
 							}
@@ -324,8 +326,8 @@ public class ExportOrdersForm extends AbstractForm {
 							increaseVersionNumber(pi);
 							filePost.releaseConnection();
 
-							msg = "Orders sent to Middle Earth Games and saved to file " + fileChooser.getSelectedFile() + ".\nYou should save your game now (to update the order version counter).";
-							MessageDialog md = new MessageDialog("Turn Submitted", msg);
+							msg = Application.instance().getApplicationContext().getMessage("ExportOrdersForm.OrdersSentByMETURNSuccessMessage", new Object[] { fileChooser.getSelectedFile() }, null);
+							MessageDialog md = new MessageDialog(ms.getMessage("ExportOrdersForm.TurnSubmittedDialogTitle", null, null), msg);
 							md.showDialog();
 							pi.setOrdersSentOn(new Date());
 							autoSaveGameAccordingToPref();
@@ -334,7 +336,8 @@ public class ExportOrdersForm extends AbstractForm {
 						}
 					}
 				} else {
-					MessageDialog md = new MessageDialog("Turn Exported", "The turn was succesfully exported to file " + fileChooser.getSelectedFile() + ".");
+					MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+					MessageDialog md = new MessageDialog(ms.getMessage("ExportOrdersForm.TurnExportedDialogTitle", null, null), ms.getMessage("ExportOrdersForm.TurnExportedDialogMessage", new Object[] { fileChooser.getSelectedFile() }, null));
 					md.showDialog();
 					autoSaveGameAccordingToPref();
 				}
@@ -406,21 +409,22 @@ public class ExportOrdersForm extends AbstractForm {
 
 	private boolean checkOrderValidity() {
 		cancelExport = false;
+		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 		if (orderCheckResult != ORDERS_OK) {
 			if (missingOrders) {
-				MessageDialog dlg = new MessageDialog("Error", "Some characters are missing orders. Cannot export.");
+				MessageDialog dlg = new MessageDialog(ms.getMessage("standardMessages.Error", null, null), ms.getMessage("ExportOrdersForm.error.CharactersMissingOrders", null, null));
 				dlg.showDialog();
 				return false;
 			}
 			if (duplicateSkillOrders) {
-				MessageDialog dlg = new MessageDialog("Error", "Some characters are trying to issue duplicate skill orders. Cannot export.");
+				MessageDialog dlg = new MessageDialog(ms.getMessage("standardMessages.Error", null, null), ms.getMessage("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders", null, null));
 				dlg.showDialog();
 				return false;
 			}
 			if (ordersWithErrors) {
 
 				cancelExport = false;
-				ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have errors ! There is a good chance your orders won't be processed correctly! Are you absolutely sure you want to export your orders?") {
+				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersWithErrors", null, null)) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
@@ -437,7 +441,7 @@ public class ExportOrdersForm extends AbstractForm {
 					return false;
 			} else if (ordersWithWarnings) {
 				cancelExport = false;
-				ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have warnings! Are you sure you want to export your orders?") {
+				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersWithWarnings", null, null)) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
@@ -455,7 +459,7 @@ public class ExportOrdersForm extends AbstractForm {
 
 			}
 			if (uncheckedOrders) {
-				ConfirmationDialog dlg = new ConfirmationDialog("Warning", "Some orders have not been checked with Orderchecker. Continue with export?") {
+				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC", null, null)) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();

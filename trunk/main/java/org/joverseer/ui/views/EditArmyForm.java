@@ -22,6 +22,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -50,14 +51,12 @@ public class EditArmyForm extends AbstractForm {
 
 		@Override
 		protected Class[] createColumnClasses() {
-			return new Class[] { String.class, Integer.class, Integer.class,
-					Integer.class, Integer.class };
+			return new Class[] { String.class, Integer.class, Integer.class, Integer.class, Integer.class };
 		}
 
 		@Override
 		protected String[] createColumnPropertyNames() {
-			return new String[] { "armyElementType.type", "number", "training",
-					"weapons", "armor" };
+			return new String[] { "armyElementType.type", "number", "training", "weapons", "armor" };
 		}
 
 	}
@@ -101,8 +100,7 @@ public class EditArmyForm extends AbstractForm {
 		}
 		;
 		try {
-			Nation n = GameHolder.instance().getGame().getMetadata()
-					.getNationByName(nation.getSelectedItem().toString());
+			Nation n = GameHolder.instance().getGame().getMetadata().getNationByName(nation.getSelectedItem().toString());
 			a.setNationNo(n.getNumber());
 			a.setNationAllegiance(n.getAllegiance());
 		} catch (Exception exc) {
@@ -120,43 +118,43 @@ public class EditArmyForm extends AbstractForm {
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
 
-		lb.append(new JLabel("Commander"));
+		lb.append(new ResourceLabel("editArmyForm.Commander"));
 		lb.append(commander = new JTextField());
 		commander.setPreferredSize(new Dimension(120, 20));
 
 		lb.nextLine();
 
-		lb.append(new JLabel("Nation"));
+		lb.append(new ResourceLabel("standardFields.Nation"));
 		lb.append(nation = new JComboBox(getNationNames().toArray()));
 		nation.setPreferredSize(new Dimension(120, 20));
 
 		lb.nextLine();
 
-		lb.append(new JLabel("HexNo"));
+		lb.append(new ResourceLabel("standardFields.HexNo"));
 		lb.append(hexNo = new JTextField());
 		nation.setPreferredSize(new Dimension(120, 20));
 
 		lb.nextLine();
 
-		lb.append(new JLabel("Command Rank"));
+		lb.append(new ResourceLabel("editArmyForm.CommandRank"));
 		lb.append(commandRank = new JTextField());
 		commandRank.setPreferredSize(new Dimension(60, 20));
 
 		lb.nextLine();
 
-		lb.append(new JLabel("Morale"));
+		lb.append(new ResourceLabel("editArmyForm.Morale"));
 		lb.append(morale = new JTextField());
 		morale.setPreferredSize(new Dimension(60, 20));
 
 		lb.nextLine();
 
-		lb.append(new JLabel("Food"));
+		lb.append(new ResourceLabel("editArmyForm.Food"));
 		lb.append(food = new JTextField());
 		food.setPreferredSize(new Dimension(60, 20));
 
 		lb.nextLine();
 
-		lb.append(new JLabel("Elements"));
+		lb.append(new ResourceLabel("editArmyForm.Elements"));
 		lb.nextLine();
 		JComponent panel = lb.getPanel();
 
@@ -166,9 +164,7 @@ public class EditArmyForm extends AbstractForm {
 		tlb.cell(pnl, "align=left");
 		tlb.relatedGapRow();
 
-		elements = new JTable(elementTableModel = new ArmyElementTableModel(
-				(MessageSource) Application.instance().getApplicationContext()
-						.getBean("messageSource")) {
+		elements = new JTable(elementTableModel = new ArmyElementTableModel((MessageSource) Application.instance().getApplicationContext().getBean("messageSource")) {
 			@Override
 			public boolean isCellEditable(int arg0, int arg1) {
 				if (arg1 == 0)
@@ -186,22 +182,17 @@ public class EditArmyForm extends AbstractForm {
 				super.setValueAt(arg0, arg1, arg2);
 			}
 		});
-		elements.setDefaultRenderer(Integer.class,
-				new DefaultTableCellRenderer() {
-					@Override
-					public Component getTableCellRendererComponent(
-							JTable table, Object value, boolean isSelected,
-							boolean hasFocus, int row, int column) {
-						if ((Integer) value == 0) {
-							value = null;
-						}
-						JLabel lbl = (JLabel) super
-								.getTableCellRendererComponent(table, value,
-										isSelected, hasFocus, row, column);
-						lbl.setHorizontalAlignment(JLabel.RIGHT);
-						return lbl;
-					}
-				});
+		elements.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				if ((Integer) value == 0) {
+					value = null;
+				}
+				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				lbl.setHorizontalAlignment(JLabel.RIGHT);
+				return lbl;
+			}
+		});
 		JScrollPane scp = new JScrollPane(elements);
 		scp.setPreferredSize(new Dimension(300, 180));
 		tlb.cell(scp);
@@ -211,8 +202,7 @@ public class EditArmyForm extends AbstractForm {
 
 	private ArrayList<String> getNationNames() {
 		Game g = GameHolder.instance().getGame();
-		ArrayList<NationRelations> nrs = g.getTurn().getContainer(
-				TurnElementsEnum.NationRelation).getItems();
+		ArrayList<NationRelations> nrs = g.getTurn().getContainer(TurnElementsEnum.NationRelation).getItems();
 		ArrayList<String> ret = new ArrayList<String>();
 		ret.add(g.getMetadata().getNationByNum(0).getName());
 		for (NationRelations nr : nrs) {
@@ -230,12 +220,9 @@ public class EditArmyForm extends AbstractForm {
 
 		commander.setText(a.getCommanderName());
 
-		nation.setSelectedItem(GameHolder.instance().getGame().getMetadata()
-				.getNationByNum(a.getNationNo()).getName());
+		nation.setSelectedItem(GameHolder.instance().getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
 
-		Character c = (Character) GameHolder.instance().getGame().getTurn()
-				.getContainer(TurnElementsEnum.Character).findFirstByProperty(
-						"name", a.getCommanderName());
+		Character c = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", a.getCommanderName());
 		if (c != null) {
 			commandRank.setText(String.valueOf(c.getCommandTotal()));
 		}

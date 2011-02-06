@@ -6,7 +6,11 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
+import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
@@ -181,12 +185,85 @@ public class CharacterMessageWrapper {
 				or = getRAResult(line, infoSource);
 			if (or == null)
 				or = getScoutHexResult(line, infoSource);
+			if (or == null)
+				or = getScoCharResult(line, infoSource);
+			if (or == null)
+				or = getScoutPopCenterResult(line, infoSource);
 			if (or != null) {
 				ret.add(or);
 			}
 		}
 		return ret;
 
+	}
+
+	protected OrderResult getScoutPopCenterResult(String line, InfoSource infoSource) {
+		try {
+			if (line.contains("A scout of the population center was attempted. ")) {
+				String size = StringUtils.getUniquePart(line, "A scout of the population center was attempted. ", " named ", false, false);
+				String name = StringUtils.getUniquePart(line, size + " named ", " - ", false, false);
+				boolean capital = line.contains(" - capital - ");
+				String nation = StringUtils.getUniquePart(line, "owned by ", " - ", false, false);
+				if (nation.startsWith("the "))
+					nation = StringUtils.stripFirstWord(nation);
+				String fort = StringUtils.getUniquePart(line, "fortified with ", " - ", false, false);
+				String loyalty = StringUtils.getUniquePart(line, "loyalty = ", "\\.", false, false);
+				if (name == null || size == null)
+					return null;
+				PopulationCenterSizeEnum pcSize = PopulationCenterSizeEnum.getFromLabel(size);
+				PopulationCenter pc = new PopulationCenter();
+				pc.setName(name);
+				pc.setSize(pcSize);
+				if (capital)
+					pc.setCapital(capital);
+				pc.setNationNo(NationMap.getNationFromName(nation).getNumber());
+				if (fort != null)
+					pc.setFortification(FortificationSizeEnum.getFromText(fort));
+				if (loyalty != null)
+					pc.setLoyalty(Integer.parseInt(loyalty));
+				pc.setInfoSource(infoSource);
+				pc.setInformationSource(InformationSourceEnum.detailed);
+				ScoutPopResult result = new ScoutPopResult();
+				result.setPopulationCenter(pc);
+
+				String production = StringUtils.getUniquePart(line, "Production - ", "\\.", false, false);
+				if (production != null) {
+					String[] ps = production.split("\\-");
+					for (String p : ps) {
+						String productStr = StringUtils.getUniquePart(p, "^", " : ", true, false);
+						String amtStr = StringUtils.getUniquePart(p, " : ", "$", false, true);
+						ProductEnum pe = ProductEnum.getFromText(productStr);
+						int amt = Integer.parseInt(amtStr);
+						pc.setProduction(pe, amt);
+					}
+				}
+
+				String stores = StringUtils.getUniquePart(line, "Stores - ", "\\.", false, false);
+				if (stores != null) {
+					String[] ps = stores.split("\\-");
+					for (String p : ps) {
+						String productStr = StringUtils.getUniquePart(p, "^", " : ", true, false);
+						String amtStr = StringUtils.getUniquePart(p, " : ", "$", false, true);
+						ProductEnum pe = ProductEnum.getFromText(productStr);
+						int amt = Integer.parseInt(amtStr);
+						pc.setStores(pe, amt);
+					}
+				}
+
+				String foreignArmies = StringUtils.getUniquePart(line, "Foreign armies present:", "\\.", false, false);
+				String[] armies = foreignArmies.split("\\-");
+				for (String army : armies) {
+					Nation n = NationMap.getNationFromName(army.trim());
+					if (n != null) {
+						result.addArmy(n.getName());
+					}
+				}
+				return result;
+			}
+			return null;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	protected OrderResult getScoutHexResult(String line, InfoSource infoSource) {
@@ -235,6 +312,45 @@ public class CharacterMessageWrapper {
 			return rrw;
 		}
 		return null;
+	}
+
+	protected OrderResult getScoCharResult(String line, InfoSource infoSource) {
+		try {
+			ScoutCharsResult result = new ScoutCharsResult();
+			String start = "A scout for characters was attempted. Found:";
+			int i = line.indexOf(start);
+			if (i < 0)
+				return null;
+			int j = line.indexOf(" One or more reports may be incorrect.");
+			if (j == -1)
+				j = line.indexOf(" Nothing else was reported at this time.", i);
+			if (j < 0)
+				return null;
+			String chars = line.substring(i + start.length(), j).trim();
+			String[] chs = chars.split("\\.");
+			for (String ch : chs) {
+				String[] chPlusNation = StringUtils.extractNation(ch);
+				if (chPlusNation != null) {
+					String[] chPlusTitle = StringUtils.extractCharacterTitle(chPlusNation[0]);
+					if (chPlusTitle != null) {
+						String charName = StringUtils.getUniquePart(chPlusTitle[0], "#title#", " - #nation#", false, false);
+						if (charName != null) {
+							Character newChar = new Character();
+							newChar.setName(charName);
+							newChar.setId(Character.getIdFromName(charName));
+							newChar.setTitle(chPlusTitle[1]);
+							newChar.setNationNo(NationMap.getNationFromName(chPlusNation[1]).getNumber());
+							newChar.setInfoSource(infoSource);
+							newChar.setInformationSource(InformationSourceEnum.limited);
+							result.addCharacter(newChar);
+						}
+					}
+				}
+			}
+			return result;
+		} catch (Exception exc) {
+			return null;
+		}
 	}
 
 	protected OrderResult getScryResult(String line, InfoSource infoSource) {
@@ -333,14 +449,14 @@ public class CharacterMessageWrapper {
 	}
 
 	protected OrderResult getOwnedLATOrderResult(String line) {
-		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is possessed by ", " at ", "." };
+		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is possessed by ", " in the ", " at ", "." };
 		String matches[] = matchPattern(line, ptr);
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);
 			or.setArtifactNo(Integer.parseInt(matches[1]));
 			or.setOwner(matches[2]);
-			or.setHexNo(Integer.parseInt(matches[3]));
+			or.setHexNo(Integer.parseInt(matches[4]));
 			return or;
 		}
 		return null;

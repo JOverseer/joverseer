@@ -1,5 +1,7 @@
 package org.joverseer.support.info;
 
+import java.util.ArrayList;
+
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.ProductEnum;
@@ -28,6 +30,19 @@ public class InfoUtils {
 		if (info.getRowIdx(charName.toUpperCase()) > -1)
 			return true;
 		return false;
+	}
+
+	public static ArrayList<String> getAllCharacterTitles() {
+		ArrayList<String> ret = new ArrayList<String>();
+		Info info = InfoRegistry.instance().getInfo("characterTitles");
+		if (info == null)
+			return null;
+		for (int i = 1; i < info.getColumnHeaders().size(); i++) {
+			for (int j = 1; j < info.getRowHeaders().size(); j++) {
+				ret.add(info.getValue(j, i));
+			}
+		}
+		return ret;
 	}
 
 	public static String getCharacterStatsFromTitle(String title) {

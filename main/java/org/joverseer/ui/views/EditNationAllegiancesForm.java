@@ -13,7 +13,9 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -44,21 +46,21 @@ public class EditNationAllegiancesForm extends AbstractForm {
 
 		tlb.cell(new JLabel(" "));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Allegiance"));
+		tlb.cell(new ResourceLabel("standardFields.Allegiance"));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Eliminated"));
-		tlb.gapCol();
-		tlb.cell(new JLabel(" "));
-		tlb.gapCol();
-		tlb.cell(new JLabel("Allegiance"));
-		tlb.gapCol();
-		tlb.cell(new JLabel("Eliminated"));
+		tlb.cell(new ResourceLabel("editNationAllegiancesForm.Eliminated"));
 		tlb.gapCol();
 		tlb.cell(new JLabel(" "));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Allegiance"));
+		tlb.cell(new ResourceLabel("standardFields.Allegiance"));
 		tlb.gapCol();
-		tlb.cell(new JLabel("Eliminated"));
+		tlb.cell(new ResourceLabel("editNationAllegiancesForm.Eliminated"));
+		tlb.gapCol();
+		tlb.cell(new JLabel(" "));
+		tlb.gapCol();
+		tlb.cell(new ResourceLabel("standardFields.Allegiance"));
+		tlb.gapCol();
+		tlb.cell(new ResourceLabel("editNationAllegiancesForm.Eliminated"));
 		tlb.gapCol();
 		tlb.relatedGapRow();
 
@@ -71,7 +73,7 @@ public class EditNationAllegiancesForm extends AbstractForm {
 					combo.setPreferredSize(new Dimension(100, 20));
 					JLabel lbl = new JLabel();
 					lbl.setPreferredSize(new Dimension(100, 24));
-					lbl.setText("Nation " + n + " :");
+					lbl.setText(Application.instance().getApplicationContext().getMessage("editNationAllegiancesForm.NationLabel", new Object[] { n }, null));
 					lbl.setHorizontalAlignment(JLabel.RIGHT);
 					labels.put(n, lbl);
 					tlb.cell(lbl);
@@ -96,7 +98,7 @@ public class EditNationAllegiancesForm extends AbstractForm {
 		tlb.relatedGapRow();
 		tlb.separator("");
 		tlb.relatedGapRow();
-		tlb.cell(new JLabel("Stop asking for neutral nations allegiance changes :"), "colspan=3");
+		tlb.cell(new ResourceLabel("editNationAllegiancesForm.StopAskingForAllegianceChanges"), "colspan=3");
 		tlb.gapCol();
 		tlb.cell(stopAsking = new JCheckBox(), "align=left");
 		tlb.gapCol();

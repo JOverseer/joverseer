@@ -318,6 +318,7 @@ public class TurnXmlReader implements Runnable {
 				getMonitor().worked(100);
 			}
 		} catch (Exception exc) {
+			exc.printStackTrace();
 			if (getMonitor() != null) {
 				getMonitor().worked(100);
 				getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
@@ -516,6 +517,9 @@ public class TurnXmlReader implements Runnable {
 			// pop has been lost
 			pop.setNationNo(0);
 			pop.setLoyalty(0);
+		}
+		for (PopulationCenter pop : new ArrayList<PopulationCenter>(potentiallyLostPops)) {
+			turn.getPopulationCenters().refreshItem(pop);
 		}
 	}
 

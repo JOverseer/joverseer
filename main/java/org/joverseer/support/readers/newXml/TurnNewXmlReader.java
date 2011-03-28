@@ -314,6 +314,9 @@ public class TurnNewXmlReader implements Runnable {
 			// add lines
 			digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", "addLine", 1);
 			digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", 0);
+			// add line for current position
+			digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line/CurrentLocation", "addLine", 1);
+			digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line/CurrentLocation", 0);
 			// add to container
 			digester.addSetNext("METurn/More/Characters/CharacterMessages/CharacterMessage", "addItem", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
 

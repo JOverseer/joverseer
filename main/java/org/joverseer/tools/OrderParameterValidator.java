@@ -2,16 +2,23 @@ package org.joverseer.tools;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.NationRelations;
+import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.StringUtils;
@@ -171,10 +178,6 @@ public class OrderParameterValidator {
 		if (ovr != null)
 			return ovr;
 
-		ovr = checkForEncounter(o);
-		if (ovr != null)
-			return ovr;
-
 		if (om.getRequirement().indexOf("At Capital") >= 0) {
 			if (o.getOrderNo() < 800) {
 				PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { o.getCharacter().getNationNo(), true });
@@ -186,6 +189,76 @@ public class OrderParameterValidator {
 			}
 		}
 
+		ovr = doAdvancedChecks(o);
+		if (ovr != null)
+			return ovr;
+
+		ovr = checkForEncounter(o);
+		if (ovr != null)
+			return ovr;
+
+		return null;
+	}
+
+	public OrderValidationResult doAdvancedChecks(Order o) {
+		if (!PreferenceRegistry.instance().advancedPreferencesOn())
+			return null;
+		Turn turn = GameHolder.instance().getGame().getTurn();
+		if (o.getOrderNo() == 615 || o.getOrderNo() == 620) {
+			Character target = turn.getCharById(o.getP0());
+			if (target != null && target.getNationNo() > 0) {
+				NationRelationsEnum nr = turn.getNationRelations(o.getCharacter().getNationNo()).getRelationsFor(target.getNationNo());
+				if (nr != null && !nr.equals(NationRelationsEnum.Hated)) {
+					return new OrderValidationResult(OrderValidationResult.INFO, "Warning: Relations to " + target.getNation().getShortName() + " not hated");
+				}
+			}
+		}
+		if (o.getOrderNo() == 690) {
+			PopulationCenter pc = turn.getPopCenter(o.getCharacter().getHexNo());
+			if (pc != null && pc.getNationNo() > 0) {
+				NationRelationsEnum nr = turn.getNationRelations(o.getCharacter().getNationNo()).getRelationsFor(pc.getNationNo());
+				if (nr != null && !nr.equals(NationRelationsEnum.Hated)) {
+					return new OrderValidationResult(OrderValidationResult.INFO, "Warning: Relations to " + pc.getNation().getShortName() + " not hated");
+				}
+			}
+
+		}
+		if (o.getOrderNo() == 230 || o.getOrderNo() == 235 || o.getOrderNo() == 255 || o.getOrderNo() == 250 || o.getOrderNo() == 498) {
+			Nation nation = o.getCharacter().getNation();
+			NationRelations nr = turn.getNationRelations(o.getCharacter().getNationNo());
+			ArrayList<Nation> dislikedNations = new ArrayList<Nation>();
+			ArrayList<String> dislikedNationsStr = new ArrayList<String>();
+			if (o.getOrderNo() != 498) {
+				ArrayList<Army> armies = turn.getArmies(o.getCharacter().getHexNo());
+				for (Army army : armies) {
+					if (army.getNationNo() > 0 && !army.getNationNo().equals(nation.getNumber())) {
+						NationRelationsEnum nre = nr.getRelationsFor(army.getNationNo());
+						if (nre != null && nre.equals(NationRelationsEnum.Disliked)) {
+							if (!dislikedNations.contains(army.getNation())) {
+								dislikedNations.add(army.getNation());
+								dislikedNationsStr.add(army.getNation().getShortName());
+							}
+						}
+					}
+				}
+			}
+			PopulationCenter pc = turn.getPopCenter(o.getCharacter().getHexNo());
+			if (pc != null && pc.getNationNo() > 0) {
+				NationRelationsEnum nre = nr.getRelationsFor(pc.getNationNo());
+				if (nre != null && nre.equals(NationRelationsEnum.Disliked)) {
+					// do not check if pc is in disliked nations
+					dislikedNations.add(pc.getNation());
+					dislikedNationsStr.add(pc.getNation().getShortName() + "(PC)");
+				}
+			}
+			if (dislikedNations.size() > 0) {
+				String dnstr = "";
+				for (String n : dislikedNationsStr) {
+					dnstr += (dnstr.equals("") ? "" : ", ") + n;
+				}
+				return new OrderValidationResult(OrderValidationResult.INFO, "Warning: Relations to " + dnstr + " not hated");
+			}
+		}
 		return null;
 	}
 

@@ -38,6 +38,7 @@ import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
@@ -315,9 +316,23 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				});
 
 				JLabel lbl = new JLabel();
-				String priceHistory = ((MarketTableModel) marketTable.getModel()).getPriceHistory(marketTable.getSelectedColumn(), 10);
-				if (priceHistory == null || priceHistory.equals(""))
+				int selCol = marketTable.getSelectedColumn();
+				String priceHistory = null;
+				if (selCol > -1) {
+					priceHistory = ((MarketTableModel) marketTable.getModel()).getPriceHistory(selCol, 10);
+				}
+				if (priceHistory == null || priceHistory.equals("")) {
+					Game g = GameHolder.instance().getGame();
+					if (!Game.isInitialized(g))
+						return;
+					String error = "You must select a product (click anywhere on a product column in the table to the left.";
+					if (g.getCurrentTurn() == 0) {
+						error = "Price history not available on Turn 0.";
+					}
+					MessageDialog dlg = new MessageDialog("Price History", error);
+					dlg.showDialog();
 					return;
+				}
 				lbl.setText(priceHistory);
 				lb.cell(lbl);
 				lb.relatedGapRow();

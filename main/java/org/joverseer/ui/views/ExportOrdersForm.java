@@ -35,6 +35,7 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
@@ -376,7 +377,9 @@ public class ExportOrdersForm extends AbstractForm {
 					missingOrders = true;
 				} else {
 					if (orc.getResultsForOrder(ch.getOrders()[i]).size() == 0) {
-						uncheckedOrders = true;
+						if (!g.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
+							uncheckedOrders = true;
+						}
 					} else {
 						if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Error) {
 							ordersWithErrors = true;

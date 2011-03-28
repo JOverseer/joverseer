@@ -3,6 +3,8 @@ package org.joverseer.support.readers.newXml;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Army;
+import org.joverseer.domain.ArmyElement;
+import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -159,6 +161,7 @@ public class CharacterMessageWrapper {
 	public ArrayList<OrderResult> getOrderResults(InfoSource infoSource) {
 		ArrayList<OrderResult> ret = new ArrayList<OrderResult>();
 		for (String line : lines) {
+			line = line.replace("\n", " ").replace("\n", " ");
 			OrderResult or = null;
 			or = getAssassinationOrderResult(line);
 			if (or == null)
@@ -189,9 +192,10 @@ public class CharacterMessageWrapper {
 				or = getScoCharResult(line, infoSource);
 			if (or == null)
 				or = getScoutPopCenterResult(line, infoSource);
-			if (or != null) {
+			if (or == null)
+				or = getScoArmyResult(line, infoSource);
+			if (or != null)
 				ret.add(or);
-			}
 		}
 		return ret;
 
@@ -285,8 +289,13 @@ public class CharacterMessageWrapper {
 						Army a = new Army();
 						a.setInformationSource(InformationSourceEnum.some);
 						a.setInfoSource(infoSource);
-						a.setCommanderName(commanderName);
-						a.setCommanderTitle("");
+						if (commanderName.equals("")) {
+							a.setCommanderName("Unknown (Map Icon)");
+							a.setCommanderTitle("");
+						} else {
+							a.setCommanderName(commanderName);
+							a.setCommanderTitle("");
+						}
 						a.setSize(ArmySizeEnum.unknown);
 
 						a.setNationNo(n.getNumber());
@@ -314,6 +323,65 @@ public class CharacterMessageWrapper {
 		return null;
 	}
 
+	protected OrderResult getScoArmyResult(String line, InfoSource infoSource) {
+		try {
+			String start = "A scout of the army was attempted. ";
+			int i = line.indexOf(start);
+			if (i < 0)
+				return null;
+			if (!line.contains("is located"))
+				return null;
+			String[] nat = StringUtils.extractNation(line);
+			line = nat[0];
+			String[] title = StringUtils.extractCharacterTitle(line);
+			line = title[0];
+			String commander = StringUtils.getUniquePart(line, "#title#", "of #nation#", false, false);
+			String hex = StringUtils.getUniquePart(line, " at ", ", travel", false, false);
+			String morale = StringUtils.getUniquePart(line, "Morale is ", "\\. ", false, false);
+			ReconResultWrapper result = new ReconResultWrapper();
+			Army a = new Army();
+			a.setInformationSource(InformationSourceEnum.some);
+			a.setInfoSource(infoSource);
+			a.setCommanderName(commander);
+			a.setCommanderTitle(title[1]);
+			a.setSize(ArmySizeEnum.unknown);
+			a.setHexNo(hex);
+			if (morale != null)
+				a.setMorale(Integer.parseInt(morale));
+			Nation n = NationMap.getNationFromName(nat[1]);
+			a.setNationNo(n.getNumber());
+			a.setNationAllegiance(n.getAllegiance());
+			int troopi = line.indexOf("Troops: ");
+			if (troopi > -1) {
+				String troops = line.substring(troopi + 7);
+				String hc = StringUtils.getUniquePart(troops, "Heavy Cavalry: ", " ", false, false);
+				String lc = StringUtils.getUniquePart(troops, "Light Cavalry: ", " ", false, false);
+				String hi = StringUtils.getUniquePart(troops, "Heavy Infantry: ", " ", false, false);
+				String li = StringUtils.getUniquePart(troops, "Light Infantry: ", " ", false, false);
+				String ar = StringUtils.getUniquePart(troops, "Archers: ", " ", false, false);
+				String ma = StringUtils.getUniquePart(troops.toLowerCase(), "men at arms: ", " ", false, false);
+				if (hc != null)
+					a.getElements().add(new ArmyElement(ArmyElementType.HeavyCavalry, Integer.parseInt(hc)));
+				if (lc != null)
+					a.getElements().add(new ArmyElement(ArmyElementType.LightCavalry, Integer.parseInt(hc)));
+				if (hi != null)
+					a.getElements().add(new ArmyElement(ArmyElementType.HeavyInfantry, Integer.parseInt(hc)));
+				if (li != null)
+					a.getElements().add(new ArmyElement(ArmyElementType.LightInfantry, Integer.parseInt(hc)));
+				if (ar != null)
+					a.getElements().add(new ArmyElement(ArmyElementType.Archers, Integer.parseInt(hc)));
+				if (ma != null)
+					a.getElements().add(new ArmyElement(ArmyElementType.MenAtArms, Integer.parseInt(hc)));
+			}
+			result.addArmy(a);
+
+			return result;
+		} catch (Exception e) {
+
+		}
+		return null;
+	}
+
 	protected OrderResult getScoCharResult(String line, InfoSource infoSource) {
 		try {
 			ScoutCharsResult result = new ScoutCharsResult();
@@ -329,17 +397,80 @@ public class CharacterMessageWrapper {
 			String chars = line.substring(i + start.length(), j).trim();
 			String[] chs = chars.split("\\.");
 			for (String ch : chs) {
-				String[] chPlusNation = StringUtils.extractNation(ch);
-				if (chPlusNation != null) {
-					String[] chPlusTitle = StringUtils.extractCharacterTitle(chPlusNation[0]);
-					if (chPlusTitle != null) {
-						String charName = StringUtils.getUniquePart(chPlusTitle[0], "#title#", " - #nation#", false, false);
+				ch = ch.trim();
+				String allegiance = null;
+				String gender = null;
+				boolean unknown = false;
+				if (ch.contains(" - Free People")) {
+					allegiance = "FP";
+					ch = ch.replace(" - Free People", " #allegiance#");
+				} else if (ch.contains(" - Dark Servant")) {
+					allegiance = "DS";
+					ch = ch.replace(" - Dark Servant", " #allegiance#");
+				}
+				if (ch.endsWith(" Male")) {
+					gender = "Male";
+					ch = ch.replace(" Male", "");
+				} else if (ch.endsWith(" Female")) {
+					gender = "Female";
+					ch = ch.replace(" Female", "");
+				}
+				if (ch.startsWith("An unknown")) {
+					if (ch.contains("Free People")) {
+						allegiance = "FP";
+					} else if (ch.contains("Dark Servant")) {
+						allegiance = "DS";
+					}
+					// Character newChar = new Character();
+					// newChar.setName("[Unknown " + allegiance + "/" + gender +
+					// "]");
+					// newChar.setId(Character.getIdFromName(newChar.getName()));
+					// newChar.setTitle("");
+					// newChar.setNationNo(0);
+					// newChar.setInfoSource(infoSource);
+					// newChar.setInformationSource(InformationSourceEnum.limited);
+					// result.addCharacter(newChar);
+				} else {
+					String[] chPlusNation = StringUtils.extractNation(ch);
+					if (chPlusNation != null) {
+						String[] chPlusTitle = StringUtils.extractCharacterTitle(chPlusNation[0]);
+						if (chPlusTitle != null) {
+							String charName = StringUtils.getUniquePart(chPlusTitle[0], "#title#", " - #nation#", false, false);
+							if (charName != null) {
+								Character newChar = new Character();
+								newChar.setName(charName);
+								newChar.setId(Character.getIdFromName(charName));
+								newChar.setTitle(chPlusTitle[1]);
+								newChar.setNationNo(NationMap.getNationFromName(chPlusNation[1]).getNumber());
+								newChar.setInfoSource(infoSource);
+								newChar.setInformationSource(InformationSourceEnum.limited);
+								result.addCharacter(newChar);
+							}
+						}
+
+					} else if (ch.contains("#allegiance#")) {
+						// todo parse simple name or generic description such as
+						// "dark servant male"
+						String charName = StringUtils.getUniquePart(ch, "^", "#allegiance#", false, false);
 						if (charName != null) {
 							Character newChar = new Character();
 							newChar.setName(charName);
 							newChar.setId(Character.getIdFromName(charName));
-							newChar.setTitle(chPlusTitle[1]);
-							newChar.setNationNo(NationMap.getNationFromName(chPlusNation[1]).getNumber());
+							newChar.setTitle("");
+							// todo set allegiance
+							newChar.setNationNo(0);
+							newChar.setInfoSource(infoSource);
+							newChar.setInformationSource(InformationSourceEnum.limited);
+							result.addCharacter(newChar);
+						}
+					} else {
+						String charName = ch;
+						if (charName != null) {
+							Character newChar = new Character();
+							newChar.setName(charName);
+							newChar.setId(Character.getIdFromName(charName));
+							newChar.setTitle("");
+							newChar.setNationNo(0);
 							newChar.setInfoSource(infoSource);
 							newChar.setInformationSource(InformationSourceEnum.limited);
 							result.addCharacter(newChar);

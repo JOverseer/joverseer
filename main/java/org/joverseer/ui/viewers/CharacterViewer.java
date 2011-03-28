@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -39,6 +40,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.Container;
@@ -277,15 +279,19 @@ public class CharacterViewer extends ObjectViewer {
 				return;
 			GameMetadata gm = game.getMetadata();
 			int nationNo = (showStartingInfo && startingChar != null ? startingChar.getNationNo() : c.getNationNo());
-			String nationName = gm.getNationByNum(nationNo).getShortName();
+			Nation charNation = gm.getNationByNum(nationNo);
+			String nationShortName = charNation.getShortName();
+			String nationName = charNation.getName();
 			if (nationNo == 0) {
 				// check if it is a dragon
 				if (InfoUtils.isDragon(c.getName())) {
-					nationName = "Dragon";
+					nationShortName = "Dragon";
+					nationName = "This character is a dragon";
 				}
 			}
-			nationTextBox.setText(nationName);
+			nationTextBox.setText(nationShortName);
 			nationTextBox.setCaretPosition(0);
+			nationTextBox.setToolTipText(nationName);
 			if (showArtifacts && !showStartingInfo) {
 				ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
 				if (artifacts != null) {
@@ -490,6 +496,8 @@ public class CharacterViewer extends ObjectViewer {
 		glb.append(companyMembersTextBox = new JTextField(), 3, 1);
 		companyMembersTextBox.setBorder(null);
 		companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
+		Font f = GraphicUtils.getFont(companyMembersTextBox.getFont().getName(), Font.ITALIC, 11);
+		companyMembersTextBox.setFont(f);
 		glb.nextLine();
 
 		glb.append(infoSourcesTextBox = new JTextField(), 2, 1);
@@ -962,7 +970,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() });
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
 		return group.createPopupMenu();
 	}
 
@@ -991,5 +999,29 @@ public class CharacterViewer extends ObjectViewer {
 		if (n != null) {
 			n.setText(notes.getText());
 		}
+	}
+
+	class ShowPreviousStatsCommand extends ActionCommand {
+
+		@Override
+		protected void doExecuteCommand() {
+			Character c = (Character) getFormObject();
+			Game g = GameHolder.instance().getGame();
+			int ct = g.getCurrentTurn();
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add("T" + ct + ": " + c.getStatString());
+			for (int i = g.getCurrentTurn() - 1; i >= Math.max(0, g.getCurrentTurn() - 10); i--) {
+				Turn t = g.getTurn(i);
+				if (t == null)
+					continue;
+				Character pc = t.getCharById(c.getId());
+				if (pc == null)
+					continue;
+				ret.add("T" + i + ": " + pc.getStatString());
+			}
+			String title = "Skill history for " + c.getName();
+			JOptionPane.showMessageDialog(getActiveWindow().getPage().getControl(), ret.toArray(), title, JOptionPane.INFORMATION_MESSAGE);
+		}
+
 	}
 }

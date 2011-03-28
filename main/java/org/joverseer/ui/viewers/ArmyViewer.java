@@ -29,6 +29,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
@@ -170,8 +171,10 @@ public class ArmyViewer extends ObjectViewer {
 		if (game == null)
 			return;
 		GameMetadata gm = game.getMetadata();
-		nation.setText(gm.getNationByNum(army.getNationNo()).getShortName());
+		Nation armyNation = army.getNation();
+		nation.setText(armyNation.getShortName());
 		nation.setCaretPosition(0);
+		nation.setToolTipText(armyNation.getName());
 
 		armySize.setText("Size: " + army.getSize().toString());
 		armySize.setCaretPosition(0);
@@ -182,7 +185,6 @@ public class ArmyViewer extends ObjectViewer {
 			for (ArmyElement element : army.getElements()) {
 				extraInfo.setText(extraInfo.getText() + (extraInfo.getText().equals("") ? "" : " ") + element.getDescription());
 			}
-
 			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents");
 			if (pval != null && pval.equals("yes")) {
 				Character commander = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName());
@@ -224,6 +226,11 @@ public class ArmyViewer extends ObjectViewer {
 		Boolean fed = army.computeFed();
 
 		foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
+		if (fed != null && fed == true) {
+			foodTooltip = "Move orders treat this army as fed.";
+		} else {
+			foodTooltip = "Move orders treat this army as unfed.";
+		}
 		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNumberOfFedTurnsForArmies"))) {
 			if (Boolean.TRUE.equals(fed)) {
 				Integer food = army.getFood();
@@ -231,13 +238,9 @@ public class ArmyViewer extends ObjectViewer {
 				if (food != null && consumption != null && consumption > 0) {
 					int turns = (food - 1) / consumption;
 					foodStr += " (" + turns + ")";
+					foodTooltip = "<html>Army has enough food for " + turns + " turns.<br/>" + foodTooltip + "</html>";
 				}
 			}
-		}
-		if (fed != null && fed == true) {
-			foodTooltip = "Move orders treat this army as fed.";
-		} else {
-			foodTooltip = "Move orders treat this army as unfed.";
 		}
 		food.setText(foodStr);
 		food.setToolTipText(foodTooltip);

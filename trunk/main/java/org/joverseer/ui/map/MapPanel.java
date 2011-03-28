@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
 import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputListener;
@@ -52,6 +53,10 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
+import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
+import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
+import org.joverseer.ui.command.ShowCharacterPathMasteryRangeCommand;
 import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
@@ -61,6 +66,7 @@ import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
 import org.joverseer.ui.views.MapEditorView;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.progress.BusyIndicator;
 
@@ -637,6 +643,12 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 			} else {
 			}
+		} else if (e.getButton() == MouseEvent.BUTTON3) {
+			Point h = getHexFromPoint(e.getPoint());
+			int hexNo = h.x * 100 + h.y;
+			CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("MapPanelContextMenu", new Object[] { new ShowCharacterMovementRangeCommand(hexNo, 12), new ShowCharacterLongStrideRangeCommand(hexNo), new ShowCharacterFastStrideRangeCommand(hexNo), new ShowCharacterPathMasteryRangeCommand(hexNo), "separator", });
+			JPopupMenu popup = group.createPopupMenu();
+			popup.show(this, e.getPoint().x, e.getPoint().y);
 		}
 	}
 

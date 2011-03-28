@@ -62,6 +62,12 @@ public class OrderResultsForm extends AbstractForm {
 		String result = c.getCleanOrderResults().replaceAll("\n", "");
 		result = result.replaceAll(" He was ordered", "\n\nHe was ordered");
 		result = result.replaceAll(" She was ordered", "\n\nShe was ordered");
+		result = result.replaceAll(" He is travelling", "\n\nHe is travelling");
+		result = result.replaceAll(" She is travelling", "\n\nShe is travelling");
+		result = result.replaceAll(" He is currently", "\n\nHe is currently");
+		result = result.replaceAll(" She is currently", "\n\nShe is currently");
+		result = result.replaceAll(" He commands a", "\n\nHe commands a");
+		result = result.replaceAll(" She commands a", "\n\nShe commands a");
 		results.setText(result);
 		results.setCaretPosition(0);
 	}

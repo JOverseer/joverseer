@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -53,6 +54,7 @@ import org.springframework.richclient.list.ComboBoxListModelAdapter;
 import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ColumnToSort;
+import org.springframework.richclient.table.ShuttleSortableTableModel;
 import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
@@ -74,6 +76,7 @@ public class OrderEditorListView extends ItemListView {
 	Color paramErrorColor = Color.decode("#ffff99");
 	Color paramWarningColor = Color.decode("#99ffff");
 	Color paramInfoColor = Color.decode("#99FF99");
+	HashMap<Character, Integer> characterIndices = new HashMap<Character, Integer>();
 
 	public OrderEditorListView() {
 		super(TurnElementsEnum.Character, OrderEditorTableModel.class);
@@ -116,6 +119,9 @@ public class OrderEditorListView extends ItemListView {
 		}
 		int column = table.getSelectedColumn();
 		tableModel.setRows(orders);
+
+		characterIndices.clear();
+
 		try {
 			if (o != null && o.equals(tableModel.getRow(row))) {
 				// if row is still showing same order, keep selection
@@ -330,14 +336,32 @@ public class OrderEditorListView extends ItemListView {
 					if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
 						c.setBackground(selectionBackground);
 					}
-				} else if ((row / 2) % 2 == 1) {
-					if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
-						c.setBackground(Color.decode("#eeeeee"));
-					}
 				} else {
 					if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
-						c.setBackground(normalBackground);
+						if (characterIndices.size() == 0) {
+							Character current = null;
+							int charIndex = -1;
+							for (int i = 0; i < this.getRowCount(); i++) {
+								int rowI = ((ShuttleSortableTableModel) this.getModel()).convertSortedIndexToDataIndex(i);
+								Order order = (Order) tableModel.getRow(rowI);
+								Character oc = order.getCharacter();
+								if (!oc.equals(current)) {
+									current = oc;
+									charIndex++;
+									characterIndices.put(oc, charIndex);
+								}
+							}
+						}
+						int rowI = ((ShuttleSortableTableModel) this.getModel()).convertSortedIndexToDataIndex(row);
+						Order order = (Order) tableModel.getRow(rowI);
+						int charIndex = characterIndices.get(order.getCharacter());
+						if (charIndex % 2 == 1) {
+							c.setBackground(Color.decode("#efefef"));
+						} else {
+							c.setBackground(normalBackground);
+						}
 					}
+
 				}
 				return c;
 			}

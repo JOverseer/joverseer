@@ -98,9 +98,10 @@ public class CombatViewer extends ObjectViewer {
 		String d = "";
 		for (Integer nationNo : c.getNarrations().keySet()) {
 			Nation n = game.getMetadata().getNationByNum(nationNo);
-			d += (!d.equals("") ? ", " : "") + n.getName();
+			d += (!d.equals("") ? ", " : "") + n.getShortName();
 		}
 		description.setText("Combat: " + d);
+		description.setCaretPosition(0);
 	}
 
 	private class ShowDescriptionCommand extends ActionCommand {

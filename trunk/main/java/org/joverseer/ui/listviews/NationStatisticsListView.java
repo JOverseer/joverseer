@@ -104,21 +104,27 @@ public class NationStatisticsListView extends BaseItemListView {
 			nsw.setCamps(0);
 			nsw.setTaxBase(0);
 			for (PopulationCenter pc : t.getPopulationCenters().findAllByProperty("nationNo", nsw.getNationNo())) {
-				nsw.setPopCenters(nsw.getPopCenters() + 1);
+				if (!pc.getNationNo().equals(nsw.getNationNo()))
+					continue;
 				if (pc.getSize() == PopulationCenterSizeEnum.city) {
 					nsw.setCities(nsw.getCities() + 1);
 					nsw.setTaxBase(nsw.getTaxBase() + 4);
+					nsw.setPopCenters(nsw.getPopCenters() + 1);
 				} else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
 					nsw.setMajorTowns(nsw.getMajorTowns() + 1);
 					nsw.setTaxBase(nsw.getTaxBase() + 3);
+					nsw.setPopCenters(nsw.getPopCenters() + 1);
 				} else if (pc.getSize() == PopulationCenterSizeEnum.town) {
 					nsw.setTowns(nsw.getTowns() + 1);
 					nsw.setTaxBase(nsw.getTaxBase() + 2);
+					nsw.setPopCenters(nsw.getPopCenters() + 1);
 				} else if (pc.getSize() == PopulationCenterSizeEnum.village) {
 					nsw.setVillages(nsw.getVillages() + 1);
 					nsw.setTaxBase(nsw.getTaxBase() + 1);
+					nsw.setPopCenters(nsw.getPopCenters() + 1);
 				} else if (pc.getSize() == PopulationCenterSizeEnum.camp) {
 					nsw.setCamps(nsw.getCamps() + 1);
+					nsw.setPopCenters(nsw.getPopCenters() + 1);
 				}
 			}
 

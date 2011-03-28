@@ -19,19 +19,37 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class OrderResultsView extends BaseHtmlReportView {
 	JTextField charName;
 	JTextField text;
+	JTextField turnFrom;
+	JTextField turnTo;
+	JTextField nationNo;
 
 	@Override
 	protected JPanel getCriteriaPanel() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel("Character"));
 		tlb.gapCol();
-		tlb.cell(charName = new JTextField(), "colspec=left:200");
-		charName.setPreferredSize(new Dimension(200, 20));
+		tlb.cell(charName = new JTextField(), "colspec=left:100");
+		charName.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel("Text"));
 		tlb.gapCol();
-		tlb.cell(text = new JTextField(), "colspec=left:200");
-		text.setPreferredSize(new Dimension(200, 20));
+		tlb.cell(text = new JTextField(), "colspec=left:100");
+		text.setPreferredSize(new Dimension(100, 20));
+		tlb.relatedGapRow();
+		tlb.cell(new JLabel("From turn"));
+		tlb.gapCol();
+		tlb.cell(turnFrom = new JTextField(), "colspec=left:100");
+		turnFrom.setPreferredSize(new Dimension(100, 20));
+		tlb.relatedGapRow();
+		tlb.cell(new JLabel("To turn"));
+		tlb.gapCol();
+		tlb.cell(turnTo = new JTextField(), "colspec=left:100");
+		turnTo.setPreferredSize(new Dimension(100, 20));
+		tlb.relatedGapRow();
+		tlb.cell(new JLabel("Nation"));
+		tlb.gapCol();
+		tlb.cell(nationNo = new JTextField(), "colspec=left:100");
+		nationNo.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		return tlb.getPanel();
 	}
@@ -65,14 +83,40 @@ public class OrderResultsView extends BaseHtmlReportView {
 
 		String charFilter = charName.getText();
 		String textFilter = text.getText();
+		String turnFromFilter = turnFrom.getText();
+		String turnToFilter = turnTo.getText();
+		String nationFilter = nationNo.getText();
+
+		int turnFromValue = -1;
+		try {
+			turnFromValue = Integer.parseInt(turnFromFilter);
+		} catch (Exception e) {
+			// nothing
+		}
+		int turnToValue = 1000;
+		try {
+			turnToValue = Integer.parseInt(turnToFilter);
+		} catch (Exception e) {
+			// nothing
+		}
+		int nationValue = -1;
+		try {
+			nationValue = Integer.parseInt(nationFilter);
+		} catch (Exception e) {
+			// nothing
+		}
 
 		Game game = GameHolder.instance().getGame();
 		for (int i = 0; i <= game.getCurrentTurn(); i++) {
+			if (i < turnFromValue || i > turnToValue)
+				continue;
 			Turn t = game.getTurn(i);
 			if (t == null)
 				continue;
 			ret += "<b><u>Turn " + i + "</u></b><p/>";
 			for (Character c : t.getCharacters()) {
+				if (nationValue > -1 && !c.getNationNo().equals(nationValue))
+					continue;
 				if (!c.getName().contains(charFilter))
 					continue;
 				String cor = c.getCleanOrderResults();

@@ -48,6 +48,7 @@ public class ScoutPopResult implements OrderResult {
 		for (String nation : foreignArmies) {
 			Army a = new Army();
 			a.setCommanderName("Unknown (Map Icon)");
+			a.setCommanderTitle("");
 			Nation n = NationMap.getNationFromName(nation);
 			a.setNationNo(n.getNumber());
 			a.setInformationSource(InformationSourceEnum.someMore);

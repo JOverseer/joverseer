@@ -49,6 +49,7 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 			renderTCMI(obj, g, x, y);
 		if (HexArrowMapItem.class.isInstance(obj))
 			renderArrow(obj, g, x, y);
+
 	}
 
 	private void renderArrow(Object obj, Graphics2D g, int x, int y) {

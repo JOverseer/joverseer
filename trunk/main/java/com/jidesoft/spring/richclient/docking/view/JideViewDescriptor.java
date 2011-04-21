@@ -23,15 +23,16 @@ import org.springframework.richclient.application.support.DefaultViewDescriptor;
 import com.jidesoft.docking.DockContext;
 
 /**
- * Extends the default view descriptor to add the ability to compare
- * the view descriptors, and thus produce alphabetical lists, and
- * support for the generation of a show view command. The ability to 
- * specify dockingframe init parameters is also handled. 
+ * Extends the default view descriptor to add the ability to compare the view
+ * descriptors, and thus produce alphabetical lists, and support for the
+ * generation of a show view command. The ability to specify dockingframe init
+ * parameters is also handled.
  * 
  * @author Jonny Wray
- *
+ * 
  */
-public class JideViewDescriptor extends DefaultViewDescriptor implements Comparable{
+@SuppressWarnings("unchecked")
+public class JideViewDescriptor extends DefaultViewDescriptor implements Comparable {
 
 	private boolean isWorkspace = false;
 	private int initMode = DockContext.STATE_FRAMEDOCKED;
@@ -39,75 +40,79 @@ public class JideViewDescriptor extends DefaultViewDescriptor implements Compara
 	private int initIndex = 0;
 	private boolean floatOnShow = false;
 	private Rectangle floatBounds = new Rectangle(100, 200, 200, 200);
-	
-	public void setFloatBounds(Rectangle floatBounds){
+
+	public void setFloatBounds(Rectangle floatBounds) {
 		this.floatBounds = floatBounds;
 	}
-	
-	public Rectangle getFloatBounds(){
+
+	public Rectangle getFloatBounds() {
 		return floatBounds;
 	}
-	
-	public void setFloatOnShow(boolean floatOnShow){
+
+	public void setFloatOnShow(boolean floatOnShow) {
 		this.floatOnShow = floatOnShow;
 	}
-	
-	public boolean isFloatOnShow(){
+
+	public boolean isFloatOnShow() {
 		return floatOnShow;
 	}
-	
+
 	/**
 	 * @return is the view to be treated as a JIDE workspace
 	 */
-	public boolean isWorkspace(){
+	public boolean isWorkspace() {
 		return isWorkspace;
 	}
-	
+
 	/**
 	 * Specify if the view is to be treated as a JIDE workspace
 	 * 
-	 * @param isWorkspace true if the view is to be treated as a JIDE workspace
+	 * @param isWorkspace
+	 *            true if the view is to be treated as a JIDE workspace
 	 */
-	public void setIsWorkspace(boolean isWorkspace){
+	public void setIsWorkspace(boolean isWorkspace) {
 		this.isWorkspace = isWorkspace;
 	}
-	
+
 	/**
 	 * Specify the initMode of the resultant DockableFrame
 	 * 
-	 * @param initMode the required initMode, as a constant from DockContext
+	 * @param initMode
+	 *            the required initMode, as a constant from DockContext
 	 */
-	public void setInitMode(int initMode){
+	public void setInitMode(int initMode) {
 		this.initMode = initMode;
 	}
-	
+
 	/**
 	 * Specify the initSide of the resultant DockableFrame
 	 * 
-	 * @param initSide the required initSide, as a constant from DockContext
+	 * @param initSide
+	 *            the required initSide, as a constant from DockContext
 	 */
-	public void setInitSide(int initSide){
+	public void setInitSide(int initSide) {
 		this.initSide = initSide;
 	}
-	
+
 	/**
 	 * Specify the initIndex of the resultant DockableFrame.
 	 * 
-	 * @param initIndex the required initIndex, usually 0 or 1.
+	 * @param initIndex
+	 *            the required initIndex, usually 0 or 1.
 	 */
-	public void setInitIndex(int initIndex){
+	public void setInitIndex(int initIndex) {
 		this.initIndex = initIndex;
 	}
-	
-	public int getInitMode(){
+
+	public int getInitMode() {
 		return initMode;
 	}
-	
-	public int getInitSide(){
+
+	public int getInitSide() {
 		return initSide;
 	}
-	
-	public int getInitIndex(){
+
+	public int getInitIndex() {
 		return initIndex;
 	}
 
@@ -115,9 +120,8 @@ public class JideViewDescriptor extends DefaultViewDescriptor implements Compara
 	 * Compares the display names of the view descriptors
 	 */
 	public int compareTo(Object o) {
-		ViewDescriptor castObj = (ViewDescriptor)o;
+		ViewDescriptor castObj = (ViewDescriptor) o;
 		return this.getDisplayName().compareToIgnoreCase(castObj.getDisplayName());
 	}
-	
-	
+
 }

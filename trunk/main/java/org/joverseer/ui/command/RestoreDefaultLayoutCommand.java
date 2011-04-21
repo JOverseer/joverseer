@@ -23,35 +23,32 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 
 import com.jidesoft.docking.DockingManager;
-import com.jidesoft.spring.richclient.docking.JideApplicationPage;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
-import com.jidesoft.spring.richclient.docking.LayoutManager;
-import com.jidesoft.spring.richclient.perspective.Perspective;
 
 /**
- * Restores the default layout of the main application window as stored in the default layout file
- *
+ * Restores the default layout of the main application window as stored in the
+ * default layout file
+ * 
  * @author Marios Skounakis
  */
 public class RestoreDefaultLayoutCommand extends ApplicationWindowAwareCommand {
 	private static final Log log = LogFactory.getLog(RestoreDefaultLayoutCommand.class);
 
-	private static final String ID = "restoreDefaultLayoutCommand"; 
+	private static final String ID = "restoreDefaultLayoutCommand";
 
-	public RestoreDefaultLayoutCommand(){
+	public RestoreDefaultLayoutCommand() {
 		super(ID);
 	}
 
+	@Override
 	protected void doExecuteCommand() {
 		log.debug("Execute command");
-		DockingManager manager = 
-			((JideApplicationWindow)getApplicationWindow()).getDockingManager(); 
-                Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
-                try {
-                    manager.loadLayoutFrom(r.getInputStream());
-                }
-                catch (Exception exc) {
-                    log.error("Failed to load original layout from layout file " + exc.getMessage());
-                }
+		DockingManager manager = ((JideApplicationWindow) getApplicationWindow()).getDockingManager();
+		Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
+		try {
+			manager.loadLayoutFrom(r.getInputStream());
+		} catch (Exception exc) {
+			log.error("Failed to load original layout from layout file " + exc.getMessage());
+		}
 	}
 }

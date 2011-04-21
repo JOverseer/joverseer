@@ -14,19 +14,15 @@ public class NationStatisticsTableModel extends ItemTableModel {
 		super(NationStatisticsWrapper.class, messageSource);
 	}
 
+	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[]{"allegiance", "nationNo", 
-				"characters", "charactersInCapital", "hostages", "commanders", 
-				"popCenters", "cities", "majorTowns", "towns", "villages", "camps", "taxBase", 
-				"armies", "navies", "warships", "transports", "armyEHI", "troopCount"};
+		return new String[] { "allegiance", "nationNo", "characters", "charactersInCapital", "hostages", "commanders", "popCenters", "cities", "majorTowns", "towns", "villages", "camps", "taxBase", "armies", "navies", "warships", "transports", "armyEHI", "troopCount" };
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[]{String.class, String.class,  
-				Integer.class, Integer.class, Integer.class, Integer.class,
-				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class,
-				Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class};
+		return new Class[] { String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 	}
-	
 
 }

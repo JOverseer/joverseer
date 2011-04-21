@@ -421,6 +421,7 @@ public class CharacterMessageWrapper {
 					} else if (ch.contains("Dark Servant")) {
 						allegiance = "DS";
 					}
+					// TODO handle these cases
 					// Character newChar = new Character();
 					// newChar.setName("[Unknown " + allegiance + "/" + gender +
 					// "]");

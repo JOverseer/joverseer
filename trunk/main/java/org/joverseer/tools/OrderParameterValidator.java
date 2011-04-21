@@ -39,11 +39,11 @@ import org.springframework.richclient.application.Application;
  */
 public class OrderParameterValidator {
 
-	Container orderEditorData = null;
+	Container<OrderEditorData> orderEditorData = null;
 
-	private Container getOrderEditorData() {
+	private Container<OrderEditorData> getOrderEditorData() {
 		if (orderEditorData == null) {
-			orderEditorData = new Container(new String[] { "orderNo" });
+			orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
 			try {
 				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
 				Resource resource = gm.getResource("orderEditorData.csv");
@@ -308,7 +308,7 @@ public class OrderParameterValidator {
 			}
 		}
 
-		OrderEditorData oed = (OrderEditorData) getOrderEditorData().findFirstByProperty("orderNo", o.getOrderNo());
+		OrderEditorData oed = getOrderEditorData().findFirstByProperty("orderNo", o.getOrderNo());
 		if (oed == null) {
 			return new OrderValidationResult(OrderValidationResult.ERROR, "OED not found");
 		}

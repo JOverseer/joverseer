@@ -11,7 +11,9 @@ import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.Encounter;
+import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.NationMessage;
 import org.joverseer.domain.NationRelations;
@@ -150,6 +152,10 @@ public class Turn implements Serializable {
 		return getContainerGeneric(TurnElementsEnum.MapItem);
 	}
 
+	public Container<HexInfo> getHexInfos() {
+		return getContainerGeneric(TurnElementsEnum.HexInfo);
+	}
+
 	public Container<ProductPrice> getProductPrices() {
 		return getContainerGeneric(TurnElementsEnum.ProductPrice);
 	}
@@ -159,15 +165,15 @@ public class Turn implements Serializable {
 	}
 
 	public ArrayList<Character> getAllCharacters() {
-		return getContainer(TurnElementsEnum.Character).getItems();
+		return getCharacters().getItems();
 	}
 
 	public Character getCharByName(String name) {
-		return (Character) getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name);
+		return getCharacters().findFirstByProperty("name", name);
 	}
 
 	public Character getCharById(String id) {
-		return (Character) getContainer(TurnElementsEnum.Character).findFirstByProperty("id", id);
+		return getCharacters().findFirstByProperty("id", id);
 	}
 
 	public PopulationCenter getCapital(int nationNo) {
@@ -183,22 +189,22 @@ public class Turn implements Serializable {
 	}
 
 	public ArrayList<Character> getCharacters(int nationNo) {
-		return getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo);
+		return getCharacters().findAllByProperty("nationNo", nationNo);
 	}
 
 	public ArrayList<Character> getCharactersAtHex(int hexNo) {
-		return getContainer(TurnElementsEnum.Character).findAllByProperty("hexNo", hexNo);
+		return getCharacters().findAllByProperty("hexNo", hexNo);
 	}
 
 	public ArrayList<PopulationCenter> getPopCenters(int nationNo) {
-		return getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo);
+		return getPopulationCenters().findAllByProperty("nationNo", nationNo);
 	}
 
 	public ArrayList<Army> getArmies(int hexNo) {
 		String hexNoStr = String.valueOf(hexNo);
 		if (hexNo < 1000)
 			hexNoStr = "0" + hexNoStr;
-		return getContainer(TurnElementsEnum.Army).findAllByProperty("hexNo", hexNoStr);
+		return getArmies().findAllByProperty("hexNo", hexNoStr);
 	}
 
 	public Army getArmy(String commander) {
@@ -250,14 +256,18 @@ public class Turn implements Serializable {
 	}
 
 	public ArrayList<NationMessage> getAllNationMessages() {
-		return getContainer(TurnElementsEnum.NationMessage).getItems();
+		return getNationMessages().getItems();
 	}
 
 	public ArrayList<NationMessage> getNationMessages(int nationNo) {
-		return getContainer(TurnElementsEnum.NationMessage).findAllByProperty("nationNo", nationNo);
+		return getNationMessages().findAllByProperty("nationNo", nationNo);
 	}
 
 	public NationRelations getNationRelations(int nationNo) {
-		return (NationRelations) getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+		return getNationRelations().findFirstByProperty("nationNo", nationNo);
+	}
+
+	public Container<EconomyCalculatorData> getEconomyCalculatorData() {
+		return getContainerGeneric(TurnElementsEnum.EconomyCalucatorData);
 	}
 }

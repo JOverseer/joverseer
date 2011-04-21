@@ -204,8 +204,8 @@ public class InfoView extends AbstractView {
 		}
 
 		@Override
-		protected Class[] createColumnClasses() {
-			Class[] classes = new Class[colNames.size()];
+		protected Class<?>[] createColumnClasses() {
+			Class<?>[] classes = new Class<?>[colNames.size()];
 			Arrays.fill(classes, String.class);
 			return classes;
 		}
@@ -226,7 +226,7 @@ public class InfoView extends AbstractView {
 		}
 
 		@Override
-		public Class getColumnClass(int arg0) {
+		public Class<?> getColumnClass(int arg0) {
 			return String.class;
 		}
 

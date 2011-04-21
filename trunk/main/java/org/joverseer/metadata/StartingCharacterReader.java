@@ -9,57 +9,56 @@ import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.springframework.core.io.Resource;
 
-public class StartingCharacterReader  implements MetadataReader {
-    String characterFilename = "startchars";
+public class StartingCharacterReader implements MetadataReader {
+	String characterFilename = "startchars";
 
-    public String getCharacterFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + characterFilename;
-    }
+	public String getCharacterFilename(GameMetadata gm) {
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + characterFilename;
+	}
 
-    public void load(GameMetadata gm) throws IOException, MetadataReaderException {
-    	gm.setStartDummyCharacters(loadCharacters(gm));
-    }
+	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
+		gm.setStartDummyCharacters(loadCharacters(gm));
+	}
 
-    private Container loadCharacters(GameMetadata gm) throws IOException, MetadataReaderException {
-        Container characters = new Container();
+	private Container<Character> loadCharacters(GameMetadata gm) throws IOException, MetadataReaderException {
+		Container<Character> characters = new Container<Character>();
 
-        MetadataSource ms = new MetadataSource();
+		MetadataSource ms = new MetadataSource();
 
-        try {
-            //Resource resource = Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
-            Resource resource = gm.getResource(gm.getGameType().toString() + "." + characterFilename);
+		try {
+			// Resource resource =
+			// Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + characterFilename);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
-            String ln;
-            while ((ln = reader.readLine()) != null) {
-            	if (ln.startsWith("#")) continue;
-                String[] parts = ln.split(";");
-                if (parts.length < 4) continue;
-                int nationNo = Integer.parseInt(parts[3]);
-                String charName = parts[1];
-                String id = charName.toLowerCase().substring(0, Math.min(5, charName.length()));
-                int hexNo = Integer.parseInt(parts[0]);
-                Character c = new Character();
-                c.setNationNo(nationNo);
-                c.setName(charName);
-                c.setId(id);
-                c.setHexNo(hexNo);
-                c.setInfoSource(ms);
-                c.setStartInfoDummy(true);
-                characters.addItem(c);
-            }
-        }
-        catch (IOException exc) {
-           // ignore, not implemented for all game types
-        }
-        catch (NullPointerException exc) {
-            // ignore, not implemented for all game types
-         }
-        catch (Exception exc) {
-            throw new MetadataReaderException("Error reading character metadata.", exc);
-        }
-        return characters;
-    }
+			String ln;
+			while ((ln = reader.readLine()) != null) {
+				if (ln.startsWith("#"))
+					continue;
+				String[] parts = ln.split(";");
+				if (parts.length < 4)
+					continue;
+				int nationNo = Integer.parseInt(parts[3]);
+				String charName = parts[1];
+				String id = charName.toLowerCase().substring(0, Math.min(5, charName.length()));
+				int hexNo = Integer.parseInt(parts[0]);
+				Character c = new Character();
+				c.setNationNo(nationNo);
+				c.setName(charName);
+				c.setId(id);
+				c.setHexNo(hexNo);
+				c.setInfoSource(ms);
+				c.setStartInfoDummy(true);
+				characters.addItem(c);
+			}
+		} catch (IOException exc) {
+			// ignore, not implemented for all game types
+		} catch (NullPointerException exc) {
+			// ignore, not implemented for all game types
+		} catch (Exception exc) {
+			throw new MetadataReaderException("Error reading character metadata.", exc);
+		}
+		return characters;
+	}
 }
-

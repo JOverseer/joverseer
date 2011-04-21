@@ -330,7 +330,7 @@ public class TurnXmlReader implements Runnable {
 
 	private void updatePCs() throws Exception {
 		Container<PopulationCenter> pcs = turn.getPopulationCenters();
-		for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) turnInfo.getPopCentres().getItems()) {
+		for (PopCenterWrapper pcw : turnInfo.getPopCentres().getItems()) {
 			PopCenterXmlInfoSource pcInfoSource = new PopCenterXmlInfoSource(infoSource.getTurnNo(), turnInfo.getNationNo(), infoSource.getTurnNo());
 			PopulationCenter newPc;
 			try {
@@ -536,7 +536,7 @@ public class TurnXmlReader implements Runnable {
 			}
 			chars.removeAll(toRemove);
 		}
-		for (CharacterWrapper cw : (ArrayList<CharacterWrapper>) turnInfo.getCharacters().getItems()) {
+		for (CharacterWrapper cw : turnInfo.getCharacters().getItems()) {
 			Character newCharacter;
 			Character oldCharacter;
 			try {
@@ -558,7 +558,7 @@ public class TurnXmlReader implements Runnable {
 							chars.addItem(newCharacter);
 						}
 					} catch (Exception e) {
-						int a = 1;
+
 					}
 				}
 				if (newCharacter.getNationNo() == turnInfo.getNationNo()) {
@@ -586,9 +586,8 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	private void updateArmies() throws Exception {
-		for (ArmyWrapper aw : (ArrayList<ArmyWrapper>) turnInfo.getArmies().getItems()) {
+		for (ArmyWrapper aw : turnInfo.getArmies().getItems()) {
 			Army newArmy;
-			Army oldArmy;
 			try {
 				newArmy = aw.getArmy();
 				addArmy(newArmy, game, turn, true);
@@ -599,7 +598,7 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	private void updateNations(Game g) throws Exception {
-		for (NationWrapper nw : (ArrayList<NationWrapper>) turnInfo.getNations().getItems()) {
+		for (NationWrapper nw : turnInfo.getNations().getItems()) {
 			Nation n = g.getMetadata().getNationByNum(nw.getId());
 			n.setName(nw.getName());
 		}
@@ -637,15 +636,15 @@ public class TurnXmlReader implements Runnable {
 
 	public static void postProcessArmiesForHex(Game game, String hexNo, Turn turn, NationAllegianceEnum allegiance) {
 		String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
-		Container armies = turn.getContainer(TurnElementsEnum.Army);
+		Container<Army> armies = turn.getArmies();
 		final Turn t = turn;
 		ArrayList<Army> armiesInHex = armies.findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { hexNo, allegiance });
 
-		Collections.sort(armiesInHex, new Comparator() {
+		Collections.sort(armiesInHex, new Comparator<Army>() {
 
-			public int compare(Object arg0, Object arg1) {
-				Army a1 = (Army) arg0;
-				Army a2 = (Army) arg1;
+			public int compare(Army arg0, Army arg1) {
+				Army a1 = arg0;
+				Army a2 = arg1;
 				return -(a1.getInformationAmount(t.getTurnNo()) - a2.getInformationAmount(t.getTurnNo()));
 			}
 		});
@@ -702,7 +701,6 @@ public class TurnXmlReader implements Runnable {
 
 	public static void addArmy(Army newArmy, Game game, Turn turn, boolean addCharacter) {
 		addArmyBeta(newArmy, game, turn);
-		String commanderName = newArmy.getCommanderName();
 
 	}
 
@@ -829,9 +827,9 @@ public class TurnXmlReader implements Runnable {
 	// }
 
 	private void updateNationInfo() {
-		Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
-		Container nationEconomies = turn.getContainer(TurnElementsEnum.NationEconomy);
-		NationEconomy oldNe = (NationEconomy) nationEconomies.findFirstByProperty("nationNo", turnInfo.getNationNo());
+		Container<PopulationCenter> pcs = turn.getPopulationCenters();
+		Container<NationEconomy> nationEconomies = turn.getNationEconomies();
+		NationEconomy oldNe = nationEconomies.findFirstByProperty("nationNo", turnInfo.getNationNo());
 		if (oldNe != null) {
 			nationEconomies.removeItem(oldNe);
 		}
@@ -841,11 +839,11 @@ public class TurnXmlReader implements Runnable {
 
 		turnInfo.getEconomy().updateProductPrices(turn);
 
-		Container hexInfos = turn.getContainer(TurnElementsEnum.HexInfo);
+		Container<HexInfo> hexInfos = turn.getHexInfos();
 
-		ArrayList newHexInfos = turnInfo.getNationInfoWrapper().getHexInfos(turnInfo.getNationNo());
-		for (HexInfo hi : (ArrayList<HexInfo>) newHexInfos) {
-			HexInfo oldHi = (HexInfo) hexInfos.findFirstByProperty("hexNo", hi.getHexNo());
+		ArrayList<HexInfo> newHexInfos = turnInfo.getNationInfoWrapper().getHexInfos(turnInfo.getNationNo());
+		for (HexInfo hi : newHexInfos) {
+			HexInfo oldHi = hexInfos.findFirstByProperty("hexNo", hi.getHexNo());
 			if (oldHi == null) {
 				hexInfos.addItem(hi);
 			} else {
@@ -855,7 +853,7 @@ public class TurnXmlReader implements Runnable {
 
 		// handle current nation pops
 		for (PopulationCenter pc : currentNationPops) {
-			HexInfo hi = (HexInfo) hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+			HexInfo hi = hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
 			HexInfo nhi = new HexInfo();
 			nhi.setVisible(true);
 			nhi.setHasPopulationCenter(true);
@@ -869,17 +867,17 @@ public class TurnXmlReader implements Runnable {
 		}
 
 		// remove PCs if HexInfo shows empty hex
-		ArrayList toRemove = new ArrayList();
+		ArrayList<PopulationCenter> toRemove = new ArrayList<PopulationCenter>();
 
 		String hiddenPopsPreferenceVal = PreferenceRegistry.instance().getPreferenceValue("map.hiddenPops");
 		boolean keepHiddenPops = hiddenPopsPreferenceVal == null || hiddenPopsPreferenceVal.equals("alwaysShow");
 
-		for (PopulationCenter pc : (ArrayList<PopulationCenter>) pcs.getItems()) {
+		for (PopulationCenter pc : pcs.getItems()) {
 			if (pc.getInfoSource().getTurnNo() == turnInfo.getTurnNo() && pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue() && !MetadataSource.class.isInstance(pc.getInfoSource()))
 				continue;
 			if (pc.getSize() == PopulationCenterSizeEnum.ruins)
 				continue;
-			HexInfo hi = (HexInfo) hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+			HexInfo hi = hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
 			if (hi.getVisible() && !hi.getHasPopulationCenter()) {
 				if (keepHiddenPops && pc.getHidden())
 					continue;
@@ -890,14 +888,14 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	private void updateNationMessages() {
-		Container nationMessages = turn.getContainer(TurnElementsEnum.NationMessage);
+		Container<NationMessage> nationMessages = turn.getNationMessages();
 		nationMessages.removeAllByProperties("nationNo", turnInfo.getNationNo());
 
 		NationMessageParser nmp = new NationMessageParser(turnInfo.getTurnNo());
 
-		ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+		ArrayList<String> nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
 		Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)");
-		for (String msg : (ArrayList<String>) nationMsgs) {
+		for (String msg : nationMsgs) {
 			NationMessage nm = new NationMessage();
 			nm.setMessage(msg);
 			nm.setNationNo(turnInfo.getNationNo());
@@ -926,9 +924,9 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	protected void updateHexOverridesFromBridgeSabotageRumors() {
-		ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+		ArrayList<String> nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
 		String prefix = "A bridge was sabotaged at ";
-		for (String msg : (ArrayList<String>) nationMsgs) {
+		for (String msg : nationMsgs) {
 			if (msg.startsWith(prefix)) {
 				String pcName = msg.substring(prefix.length(), msg.length() - 1);
 				PopulationCenter pc = (PopulationCenter) game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", pcName);
@@ -1008,12 +1006,11 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	private void updateKSArtifactIDsAndLocationsFromNationMessages() {
-		ArrayList nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
+		ArrayList<String> nationMsgs = turnInfo.getNationInfoWrapper().getRumors();
 		String prefix = "The ";
 		String middle = " discovered to be ";
-		String hex = " at ";
-		Container artis = turn.getContainer(TurnElementsEnum.Artifact);
-		for (String msg : (ArrayList<String>) nationMsgs) {
+		Container<Artifact> artis = turn.getArtifacts();
+		for (String msg : nationMsgs) {
 			if (msg.contains(middle)) {
 				if (msg.startsWith("The ")) {
 					prefix = "The ";
@@ -1021,7 +1018,6 @@ public class TurnXmlReader implements Runnable {
 					prefix = "";
 				}
 				int i = prefix.length();
-				int j = msg.indexOf(middle);
 				Integer artiNo = null;
 				String artiName;
 				int k = msg.indexOf(",");
@@ -1066,7 +1062,7 @@ public class TurnXmlReader implements Runnable {
 					}
 				}
 				if (ai != null) {
-					Artifact a = (Artifact) artis.findFirstByProperty("name", ai.getName());
+					Artifact a = artis.findFirstByProperty("name", ai.getName());
 					if (a == null) {
 						a = new Artifact();
 						a.setNumber(0);

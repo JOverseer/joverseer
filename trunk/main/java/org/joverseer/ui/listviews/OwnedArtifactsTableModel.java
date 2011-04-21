@@ -9,18 +9,19 @@ import org.springframework.context.MessageSource;
  * @author Marios Skounakis
  */
 public class OwnedArtifactsTableModel extends ItemTableModel {
-    public OwnedArtifactsTableModel(MessageSource messageSource) {
-        super(OwnedArtifact.class, messageSource);
-    }
+	public OwnedArtifactsTableModel(MessageSource messageSource) {
+		super(OwnedArtifact.class, messageSource);
+	}
 
-    protected String[] createColumnPropertyNames() {
-        return new String[] {"number", "name", "nationNo", "owner", "hexNo", "power1", "power2"};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "number", "name", "nationNo", "owner", "hexNo", "power1", "power2" };
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class};  
-    }
-
-	    
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class };
+	}
 
 }

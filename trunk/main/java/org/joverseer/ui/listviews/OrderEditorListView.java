@@ -700,7 +700,6 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		public boolean acceptCharacter(Character c) {
-			OrderParameterValidator opv = new OrderParameterValidator();
 			for (Order o : c.getOrders()) {
 				if (o.isBlank())
 					continue;
@@ -724,7 +723,6 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		public boolean acceptCharacter(Character c) {
-			OrderParameterValidator opv = new OrderParameterValidator();
 			for (Order o : c.getOrders()) {
 				if (o.isBlank())
 					continue;

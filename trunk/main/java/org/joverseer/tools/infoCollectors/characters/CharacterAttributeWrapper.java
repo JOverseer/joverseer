@@ -15,12 +15,11 @@ import org.joverseer.support.infoSources.RumorActionInfoSource;
  * @author Marios Skounakis
  * 
  */
-public class CharacterAttributeWrapper implements Comparable {
+public class CharacterAttributeWrapper implements Comparable<CharacterAttributeWrapper> {
 	public static int COMPARE_BY_TOTAL_VALUE = 1;
 	public static int COMPARE_BY_NET_VALUE = 2;
 	public static int COMPARIZON_MODE = COMPARE_BY_TOTAL_VALUE;
-	
-	
+
 	String attribute;
 
 	InfoSource infoSource;
@@ -31,16 +30,14 @@ public class CharacterAttributeWrapper implements Comparable {
 
 	int turnNo;
 
-	public CharacterAttributeWrapper(String attribute, Object value,
-			int turnNo, InfoSource infoSource) {
+	public CharacterAttributeWrapper(String attribute, Object value, int turnNo, InfoSource infoSource) {
 		this.attribute = attribute;
 		this.value = value;
 		this.turnNo = turnNo;
 		this.infoSource = infoSource;
 	}
 
-	public CharacterAttributeWrapper(String attribute, Object value,
-			Object totalValue, int turnNo, InfoSource infoSource) {
+	public CharacterAttributeWrapper(String attribute, Object value, Object totalValue, int turnNo, InfoSource infoSource) {
 		this.attribute = attribute;
 		this.value = value;
 		this.turnNo = turnNo;
@@ -88,10 +85,10 @@ public class CharacterAttributeWrapper implements Comparable {
 		this.totalValue = totalValue;
 	}
 
-	public int compareTo(Object o) {
-		if (o == null)
+	@SuppressWarnings("unchecked")
+	public int compareTo(CharacterAttributeWrapper caw) {
+		if (caw == null)
 			return 1;
-		CharacterAttributeWrapper caw = (CharacterAttributeWrapper) o;
 		if (COMPARIZON_MODE == COMPARE_BY_TOTAL_VALUE) {
 			Object v1 = getTotalValue();
 			Object v2 = caw.getTotalValue();
@@ -115,6 +112,7 @@ public class CharacterAttributeWrapper implements Comparable {
 		return 0;
 	}
 
+	@Override
 	public String toString() {
 		String v = getValue() == null ? "" : getValue().toString();
 		InfoSource is = getInfoSource();
@@ -125,11 +123,9 @@ public class CharacterAttributeWrapper implements Comparable {
 		} else if (DerivedFromArmyInfoSource.class.isInstance(is)) {
 			v += "+";
 		}
-		
 
 		if (getTotalValue() != null) {
-			if (!getTotalValue().toString().equals(getValue().toString())
-					&& !getTotalValue().toString().equals("0")) {
+			if (!getTotalValue().toString().equals(getValue().toString()) && !getTotalValue().toString().equals("0")) {
 				v += "(" + getTotalValue().toString() + ")";
 			}
 		}

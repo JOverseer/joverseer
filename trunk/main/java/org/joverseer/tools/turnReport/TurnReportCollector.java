@@ -205,14 +205,14 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectSpells(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (PlayerInfo pi : (ArrayList<PlayerInfo>) t.getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
+	public ArrayList<BaseReportObject> CollectSpells(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
 			int nationNo = pi.getNationNo();
-			for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+			for (Character c : t.getCharacters().getItems()) {
 				if (!c.getNationNo().equals(nationNo))
 					continue;
-				Character pc = (Character) p.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c.getName());
+				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				if (pc == null)
 					continue;
 				for (SpellProficiency sp : c.getSpells()) {
@@ -235,16 +235,16 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectAgentActions(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (PlayerInfo pi : (ArrayList<PlayerInfo>) t.getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
+	public ArrayList<BaseReportObject> CollectAgentActions(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
 			int nationNo = pi.getNationNo();
-			for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+			for (Character c : t.getCharacters().getItems()) {
 				if (!c.getNationNo().equals(nationNo))
 					continue;
 				if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead))
 					continue;
-				Character pc = (Character) p.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c.getName());
+				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				String orderResults = c.getCleanOrderResults();
 				String prefix = StringUtils.getFirstWord(orderResults);
 				String lprefix = prefix.toLowerCase();
@@ -362,11 +362,11 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList collectChallenges(Turn t, Turn p) {
+	public ArrayList<BaseReportObject> collectChallenges(Turn t, Turn p) {
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
-		ArrayList ret = new ArrayList();
-		for (Challenge challenge : (ArrayList<Challenge>) t.getContainer(TurnElementsEnum.Challenge).getItems()) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (Challenge challenge : t.getChallenges().getItems()) {
 			ChallengeReport cr = new ChallengeReport(challenge);
 			String victor = challenge.getVictor();
 			String loser = challenge.getLoser();
@@ -399,12 +399,12 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectCharacters(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (PlayerInfo pi : (ArrayList<PlayerInfo>) t.getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
+	public ArrayList<BaseReportObject> CollectCharacters(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
 			int nationNo = pi.getNationNo();
-			for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
-				Character pc = (Character) p.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c.getName());
+			for (Character c : t.getCharacters().getItems()) {
+				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				if (!c.getNationNo().equals(nationNo))
 					continue;
 				if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
@@ -516,24 +516,15 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectPopCenters(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (PlayerInfo pi : (ArrayList<PlayerInfo>) t.getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
+	public ArrayList<BaseReportObject> CollectPopCenters(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
 			int nationNo = pi.getNationNo();
-			for (PopulationCenter pc : (ArrayList<PopulationCenter>) t.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
+			for (PopulationCenter pc : t.getPopulationCenters().findAllByProperty("nationNo", nationNo)) {
 				if (pc.getNationNo() != nationNo)
 					continue;
-				PopulationCenter ppc = (PopulationCenter) p.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo()); // if
-				// previous
-				// pop
-				// was
-				// ruins,
-				// simulate
-				// that
-				// it
-				// did
-				// not
-				// exist
+				PopulationCenter ppc = p.getPopulationCenters().findFirstByProperty("hexNo", pc.getHexNo()); // if
+				// previous pop was ruins, simulate that it did not exist
 				if (pc.getSize().equals(PopulationCenterSizeEnum.ruins))
 					continue;
 				if (ppc != null && ppc.getSize().equals(PopulationCenterSizeEnum.ruins))
@@ -552,20 +543,11 @@ public class TurnReportCollector {
 						ret.add(pr);
 				}
 			}
-			for (PopulationCenter ppc : (ArrayList<PopulationCenter>) p.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
+			for (PopulationCenter ppc : p.getPopulationCenters().findAllByProperty("nationNo", nationNo)) {
 				if (ppc.getNationNo() != nationNo)
 					continue;
 				PopulationCenter pc = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", ppc.getHexNo()); // if
-				// previous
-				// pop
-				// was
-				// ruins,
-				// simulate
-				// that
-				// it
-				// did
-				// not
-				// exist
+				// previous pop was ruins, simulate that it did not exist
 				if (pc == null || pc.getSize().equals(PopulationCenterSizeEnum.ruins)) {
 					PopCenterReport pr = new PopCenterReport(ppc);
 					pr.setPc(pc);
@@ -616,7 +598,6 @@ public class TurnReportCollector {
 		boolean hiddenChanged = pc.getHidden() != ppc.getHidden();
 		boolean captured = !pc.getNation().getAllegiance().equals(ppc.getNation().getAllegiance()) || (nationChanged && (pc.getNationNo() == 0 || ppc.getNationNo() == 0));
 		boolean capturedByEnemy = pc.getNationNo() != nationNo;
-		boolean loyaltyReduced = pc.getLoyalty() < ppc.getLoyalty();
 		if (sizeChanged || fortChanged || nationChanged || hiddenChanged || captured) {
 			PopCenterReport pr = new PopCenterReport(pc);
 			pr.setPrevPc(ppc);
@@ -653,14 +634,7 @@ public class TurnReportCollector {
 				}
 				for (Character c : turn.getCharactersAtHex(pc.getHexNo())) {
 					String cleanOrderResults = c.getCleanOrderResults();
-					if (c.getNationNo().equals(ppc.getNationNo()) && cleanOrderResults.contains(" was ordered to transfer the ownership of the population center.")) {// " + pc.getName() + "
-						// is
-						// no
-						// longer
-						// under
-						// our
-						// control."))
-						// {
+					if (c.getNationNo().equals(ppc.getNationNo()) && cleanOrderResults.contains(" was ordered to transfer the ownership of the population center.")) {
 						pr.appendNote(" Transferred");
 						break;
 					}
@@ -772,9 +746,9 @@ public class TurnReportCollector {
 		return null;
 	}
 
-	public ArrayList collectEncounters(Turn t) {
-		ArrayList ret = new ArrayList();
-		for (Encounter e : (ArrayList<Encounter>) t.getContainer(TurnElementsEnum.Encounter).getItems()) {
+	public ArrayList<BaseReportObject> collectEncounters(Turn t) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (Encounter e : t.getEncounters().getItems()) {
 			Character c = t.getCharByName(e.getCharacter());
 			EncounterReport er = new EncounterReport();
 			er.setHexNo(e.getHexNo());
@@ -806,7 +780,7 @@ public class TurnReportCollector {
 			}
 			ret.add(er);
 		}
-		for (NationMessage nm : (ArrayList<NationMessage>) t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
+		for (NationMessage nm : t.getNationMessages().getItems()) {
 			if (nm.isEncounterRumor()) {
 				EncounterReport er = new EncounterReport();
 				String name = nm.getEncounterCharacter();
@@ -823,10 +797,10 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectCompanies(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (Company c : (ArrayList<Company>) t.getContainer(TurnElementsEnum.Company).getItems()) {
-			Company pc = (Company) p.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", c.getCommander());
+	public ArrayList<BaseReportObject> CollectCompanies(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (Company c : t.getCompanies().getItems()) {
+			Company pc = p.getCompanies().findFirstByProperty("commander", c.getCommander());
 			if (pc == null) {
 				CompanyReport cr = new CompanyReport();
 				cr.setHexNo(c.getHexNo());
@@ -869,7 +843,7 @@ public class TurnReportCollector {
 				}
 			}
 		}
-		for (Company pc : (ArrayList<Company>) p.getContainer(TurnElementsEnum.Company).getItems()) {
+		for (Company pc : p.getCompanies().getItems()) {
 			Company c = (Company) t.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", pc.getCommander());
 			if (c == null) {
 				CompanyReport cr = new CompanyReport();
@@ -892,8 +866,8 @@ public class TurnReportCollector {
 			ro.addNation(c.getNationNo());
 	}
 
-	public ArrayList<ArtifactReport> CollectArtifacts(Turn t, Turn p) {
-		ArrayList<ArtifactReport> ret = new ArrayList<ArtifactReport>();
+	public ArrayList<BaseReportObject> CollectArtifacts(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		Container<ArtifactWrapper> taws = ArtifactInfoCollector.instance().computeWrappersForTurn(t.getTurnNo());
 		Container<ArtifactWrapper> paws = ArtifactInfoCollector.instance().computeWrappersForTurn(p.getTurnNo());
 		for (ArtifactWrapper aw : taws.getItems()) {
@@ -976,12 +950,12 @@ public class TurnReportCollector {
 		return a.getOwner();
 	}
 
-	public ArrayList CollectTransports(Turn t, Turn p) {
+	public ArrayList<BaseReportObject> CollectTransports(Turn t, Turn p) {
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 
-		ArrayList ret = new ArrayList();
-		for (NationMessage nm : (ArrayList<NationMessage>) t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (NationMessage nm : t.getNationMessages().getItems()) {
 			if (nm.isFriendlyTransportMessage()) {
 				TransportReport tr = new TransportReport();
 				String msg = nm.getMessage();
@@ -1023,9 +997,9 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectGoldSteals(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (NationMessage nm : (ArrayList<NationMessage>) t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
+	public ArrayList<BaseReportObject> CollectGoldSteals(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (NationMessage nm : t.getNationMessages().getItems()) {
 			if (nm.isStealRumor()) {
 				StealGoldReport r = new StealGoldReport();
 				r.addNation(nm.getNationNo());
@@ -1038,18 +1012,17 @@ public class TurnReportCollector {
 				ret.add(r);
 			}
 		}
-		for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+		for (Character c : t.getCharacters().getItems()) {
 			String orderResults = c.getCleanOrderResults();
 			int i = orderResults.indexOf(" Gold was stolen at ");
 			if (i > -1) {
-				int k = orderResults.indexOf(".", i);
 				int j = i;
 				while (java.lang.Character.isDigit(orderResults.charAt(j - 1))) {
 					j--;
 				}
 				String amountStr = orderResults.substring(j, i);
 				StealGoldReport sgr = new StealGoldReport();
-				Character pc = (Character) p.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c.getName());
+				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				if (pc != null) {
 					sgr.setHexNo(pc.getHexNo());
 					PopulationCenter ppc = (PopulationCenter) p.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
@@ -1074,11 +1047,11 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectNations(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
-		for (PlayerInfo pi : (ArrayList<PlayerInfo>) t.getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
-			NationEconomy e = (NationEconomy) t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", pi.getNationNo());
-			NationEconomy pe = (NationEconomy) p.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", pi.getNationNo());
+	public ArrayList<BaseReportObject> CollectNations(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
+			NationEconomy e = t.getNationEconomies().findFirstByProperty("nationNo", pi.getNationNo());
+			NationEconomy pe = p.getNationEconomies().findFirstByProperty("nationNo", pi.getNationNo());
 			if (pe == null)
 				continue;
 			if (e.getTaxRate() != pe.getTaxRate()) {
@@ -1088,8 +1061,8 @@ public class TurnReportCollector {
 				er.setModification(ObjectModificationType.Modified);
 				ret.add(er);
 			}
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pi.getNationNo());
-			NationRelations pnr = (NationRelations) p.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pi.getNationNo());
+			NationRelations nr = t.getNationRelations().findFirstByProperty("nationNo", pi.getNationNo());
+			NationRelations pnr = p.getNationRelations().findFirstByProperty("nationNo", pi.getNationNo());
 			if (pnr == null)
 				continue;
 			if (nr.getEliminated() && !pnr.getEliminated()) {
@@ -1129,8 +1102,8 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList collectUpcomingCombats(Turn t) {
-		ArrayList ret = new ArrayList();
+	public ArrayList<BaseReportObject> collectUpcomingCombats(Turn t) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 		for (Object ho : GameHolder.instance().getGame().getMetadata().getHexes()) {
@@ -1153,7 +1126,7 @@ public class TurnReportCollector {
 			String neuts = "";
 			BaseReportObject bro = new BaseReportObject();
 			for (Army a : armies) {
-				if (a.isAnchoredShips(a))
+				if (Army.isAnchoredShips(a))
 					continue;
 				if (a.isNavy()) {
 					navies = true;
@@ -1278,11 +1251,11 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList CollectCombats(Turn t) {
-		ArrayList ret = new ArrayList();
+	public ArrayList<BaseReportObject> CollectCombats(Turn t) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
-		for (Combat c : (ArrayList<Combat>) t.getContainer(TurnElementsEnum.Combat).getItems()) {
+		for (Combat c : t.getCombats().getItems()) {
 			CombatWrapper cw = new CombatWrapper();
 			CombatReport cr = null;
 			for (int i = 1; i < 26; i++) {
@@ -1297,7 +1270,7 @@ public class TurnReportCollector {
 						ArrayList<Integer> nations = new ArrayList<Integer>();
 						ArrayList<Integer> winners = new ArrayList<Integer>();
 						String commanders = "";
-						for (CombatArmy ca : (ArrayList<CombatArmy>) cw.getArmies().getItems()) {
+						for (CombatArmy ca : cw.getArmies().getItems()) {
 							Nation n = NationMap.getNationFromName(ca.getNation());
 							int num = n.getNumber();
 							if (!nations.contains(num))
@@ -1367,7 +1340,6 @@ public class TurnReportCollector {
 						}
 						ret.add(cr);
 					} catch (Exception e) {
-						int b = 1;
 						Logger.getLogger(TurnReportCollector.class).error(e);
 					}
 				}
@@ -1391,8 +1363,8 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList collectBridges(Turn t, Turn p) {
-		ArrayList ret = new ArrayList();
+	public ArrayList<BaseReportObject> collectBridges(Turn t, Turn p) {
+		ArrayList<BridgeReport> ret = new ArrayList<BridgeReport>();
 		GameMetadata gm = GameHolder.instance().getGame().getMetadata();
 		ArrayList<Hex> thc = gm.getHexOverrides(t.getTurnNo()).getItems();
 		ArrayList<Hex> phc = gm.getHexOverrides(t.getTurnNo()).getItems();
@@ -1414,7 +1386,7 @@ public class TurnReportCollector {
 				if (cb != pb) {
 					int otherHex = hse.getHexNoAtSide(hexNo);
 					boolean found = false;
-					for (BridgeReport br : (ArrayList<BridgeReport>) ret) {
+					for (BridgeReport br : ret) {
 						if (br.getHexNo() == otherHex) {
 							found = true;
 							break;
@@ -1441,7 +1413,7 @@ public class TurnReportCollector {
 				}
 			}
 		}
-		for (NationMessage nm : (ArrayList<NationMessage>) t.getContainer(TurnElementsEnum.NationMessage).getItems()) {
+		for (NationMessage nm : t.getNationMessages().getItems()) {
 			if (nm.isBridgeSabotagedRumor()) {
 				String location = nm.getBridgeSabotagedLocation();
 				int hexNo = -1;
@@ -1465,7 +1437,10 @@ public class TurnReportCollector {
 				ret.add(br);
 			}
 		}
-		return ret;
+		ArrayList<BaseReportObject> ret2 = new ArrayList<BaseReportObject>();
+		for (BridgeReport br : ret)
+			ret2.add(br);
+		return ret2;
 	}
 
 	protected String getAdvCharWrapperStr(String name, Turn t) {
@@ -1504,11 +1479,11 @@ public class TurnReportCollector {
 		return name + "(" + n.getShortName() + ")";
 	}
 
-	public String renderCollection(String title, ArrayList reports) {
+	public String renderCollection(String title, ArrayList<BaseReportObject> reports) {
 		return renderCollection(title, null, reports);
 	}
 
-	public String renderCollection(String title, String comments, ArrayList reports) {
+	public String renderCollection(String title, String comments, ArrayList<BaseReportObject> reports) {
 		Collections.sort(reports);
 		String ret = "<b style='font-size:11pt'> " + title + "</b>";
 		if (comments != null)
@@ -1517,7 +1492,7 @@ public class TurnReportCollector {
 			return ret + "-" + "<br/>";
 		ret += "<table style='border-style:solid; border-width:1px' cellspacing=0 cellpadding=2>";
 		for (int i = 0; i < reports.size(); i++) {
-			BaseReportObject bro = (BaseReportObject) reports.get(i);
+			BaseReportObject bro = reports.get(i);
 			String color = "#DDFFDD";
 			if (bro.getModification().equals(ObjectModificationType.Lost))
 				color = "#FFDDDD";
@@ -1529,12 +1504,13 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public String renderStealsSummary(ArrayList steals) {
+	public String renderStealsSummary(ArrayList<BaseReportObject> steals) {
 		if (steals.size() == 0)
 			return "";
 		int goldGained = 0;
 		int goldLost = 0;
-		for (StealGoldReport sgr : (ArrayList<StealGoldReport>) steals) {
+		for (BaseReportObject bro : steals) {
+			StealGoldReport sgr = (StealGoldReport) bro;
 			if (sgr.getModification().equals(ObjectModificationType.Gained)) {
 				goldGained += sgr.getGold();
 			} else {
@@ -1545,12 +1521,13 @@ public class TurnReportCollector {
 		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "Total gold gained: " + df.format(goldGained) + "<br/>" + "Total gold lost: " + df.format(goldLost) + "</b></div>";
 	}
 
-	public String renderCharsSummary(ArrayList chars) {
+	public String renderCharsSummary(ArrayList<BaseReportObject> chars) {
 		if (chars.size() == 0)
 			return "";
 		int charsGained = 0;
 		int charsLost = 0;
-		for (CharacterReport cr : (ArrayList<CharacterReport>) chars) {
+		for (BaseReportObject bro : chars) {
+			CharacterReport cr = (CharacterReport) bro;
 			if (cr.getModification().equals(ObjectModificationType.Gained)) {
 				charsGained++;
 			} else if (cr.getModification().equals(ObjectModificationType.Lost)) {
@@ -1560,7 +1537,7 @@ public class TurnReportCollector {
 		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "New chars: " + charsGained + "<br/>" + "Lost chars: " + charsLost + "</b></div>";
 	}
 
-	public String renderPopsSummary(ArrayList pops) {
+	public String renderPopsSummary(ArrayList<BaseReportObject> pops) {
 		if (pops.size() == 0)
 			return "";
 		int campsCreated = 0;
@@ -1571,7 +1548,8 @@ public class TurnReportCollector {
 			losses.put(s, 0);
 		}
 		int taxBaseDelta = 0;
-		for (PopCenterReport pcr : (ArrayList<PopCenterReport>) pops) {
+		for (BaseReportObject bro : pops) {
+			PopCenterReport pcr = (PopCenterReport) bro;
 			if (pcr.getModification().equals(ObjectModificationType.Gained) && pcr.getPc() != null && pcr.getPc().getSize().equals(PopulationCenterSizeEnum.camp) && pcr.isCreated()) {
 				campsCreated++;
 			}
@@ -1651,7 +1629,7 @@ public class TurnReportCollector {
 			Turn p = g.getTurn(t.getTurnNo() - 1);
 			if (p == null)
 				return "";
-			ArrayList reports;
+			ArrayList<BaseReportObject> reports;
 			ret += "<div style='font-family:MS Sans Serif; font-size:11pt'>";
 			try {
 				reports = CollectNations(t, p);

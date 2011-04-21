@@ -1,10 +1,7 @@
 package org.joverseer.ui.command;
 
-import java.util.ArrayList;
-
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -16,42 +13,41 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 /**
- * Highlight all hexes which contain friendly pops that are in risk of degrading (loyalty <= 16)
+ * Highlight all hexes which contain friendly pops that are in risk of degrading
+ * (loyalty <= 16)
  * 
  * @author Marios Skounakis
  */
 public class HighlightDegradeCandidates extends ActionCommand {
-    int loyaltyThreshold = 17;
-    
-    public HighlightDegradeCandidates() {
-        super("highlightDegradeCandidatesCommand");
-    }
+	int loyaltyThreshold = 17;
 
-    protected void doExecuteCommand() {
-        if (!ActiveGameChecker.checkActiveGameExists()) return;
+	public HighlightDegradeCandidates() {
+		super("highlightDegradeCandidatesCommand");
+	}
 
-        HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
-        Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        Container pcs = game.getTurn().getContainer(TurnElementsEnum.PopulationCenter);
-        for (PopulationCenter pc : (ArrayList<PopulationCenter>)pcs.getItems()) {
-            if (pc.getLoyalty() > 0 && pc.getLoyalty() < getLoyaltyThreshold()) {
-                hhmi.addHex(pc.getHexNo());
-            }
-        }
-        AbstractMapItem.add(hhmi);
-        Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), hhmi, this));
-    }
+	@Override
+	protected void doExecuteCommand() {
+		if (!ActiveGameChecker.checkActiveGameExists())
+			return;
 
-    
-    public int getLoyaltyThreshold() {
-        return loyaltyThreshold;
-    }
+		HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
+		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Container<PopulationCenter> pcs = game.getTurn().getPopulationCenters();
+		for (PopulationCenter pc : pcs.getItems()) {
+			if (pc.getLoyalty() > 0 && pc.getLoyalty() < getLoyaltyThreshold()) {
+				hhmi.addHex(pc.getHexNo());
+			}
+		}
+		AbstractMapItem.add(hhmi);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), hhmi, this));
+	}
 
-    
-    public void setLoyaltyThreshold(int loyaltyThreshold) {
-        this.loyaltyThreshold = loyaltyThreshold;
-    }
-    
-    
+	public int getLoyaltyThreshold() {
+		return loyaltyThreshold;
+	}
+
+	public void setLoyaltyThreshold(int loyaltyThreshold) {
+		this.loyaltyThreshold = loyaltyThreshold;
+	}
+
 }

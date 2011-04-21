@@ -39,9 +39,9 @@ public class OwnedArtifactsListView extends ItemListView {
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 		if (!Game.isInitialized(g))
 			return;
-		Container items = g.getTurn().getContainer(turnElementType);
+		Container<Character> items = g.getTurn().getCharacters();
 		ArrayList<OwnedArtifact> artis = new ArrayList<OwnedArtifact>();
-		for (Character c : (ArrayList<Character>) items.getItems()) {
+		for (Character c : items.getItems()) {
 			for (Integer id : c.getArtifacts()) {
 				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", id);
 				if (ai == null)
@@ -58,7 +58,7 @@ public class OwnedArtifactsListView extends ItemListView {
 				artis.add(a);
 			}
 		}
-		for (Artifact ar : (ArrayList<Artifact>) g.getTurn().getContainer(TurnElementsEnum.Artifact).getItems()) {
+		for (Artifact ar : g.getTurn().getArtifacts().getItems()) {
 			if (ar.getOwner() != null && !ar.getOwner().equals("")) {
 				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
 				if (ai == null)

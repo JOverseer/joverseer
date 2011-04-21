@@ -9,16 +9,21 @@ import org.springframework.context.MessageSource;
  * @author Marios Skounakis
  */
 public class CompanyTableModel extends ItemTableModel {
-    public CompanyTableModel(MessageSource messageSource) {
-        super(CompanyWrapper.class, messageSource);
-    }
+	private static final long serialVersionUID = 1L;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"hexNo", "nationNo", "commander", "memberStr"};
-    }
+	public CompanyTableModel(MessageSource messageSource) {
+		super(CompanyWrapper.class, messageSource);
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "hexNo", "nationNo", "commander", "memberStr" };
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class };
+	}
 
 }

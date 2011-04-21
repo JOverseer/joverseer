@@ -9,26 +9,28 @@ import org.springframework.context.MessageSource;
  * @author Marios Skounakis
  */
 public class EnemyCharacterRumorTableModel extends ItemTableModel {
-    public EnemyCharacterRumorTableModel(MessageSource messageSource) {
-        super(EnemyCharacterRumorWrapper.class, messageSource);
-    }
+	public EnemyCharacterRumorTableModel(MessageSource messageSource) {
+		super(EnemyCharacterRumorWrapper.class, messageSource);
+	}
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"name", "nationNo", "turnNo", "lastTurnNo", "actionCount", "startChar", "reportedTurns", "inactiveReason"};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "name", "nationNo", "turnNo", "lastTurnNo", "actionCount", "startChar", "reportedTurns", "inactiveReason" };
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class, String.class, String.class};
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, Boolean.class, String.class, String.class };
+	}
 
 	@Override
 	protected Object getValueAtInternal(Object object, int i) {
 		if (getColumnPropertyNames()[i].equals("startChar")) {
-			EnemyCharacterRumorWrapper w = (EnemyCharacterRumorWrapper)object;
+			EnemyCharacterRumorWrapper w = (EnemyCharacterRumorWrapper) object;
 			return w.getStartChar() ? "yes" : "";
 		}
 		return super.getValueAtInternal(object, i);
 	}
 
-    
 }

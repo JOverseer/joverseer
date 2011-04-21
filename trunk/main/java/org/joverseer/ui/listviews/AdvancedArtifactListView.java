@@ -113,9 +113,9 @@ public class AdvancedArtifactListView extends BaseItemListView {
 	 */
 	class InfoSourceClassFilter extends AbstractListViewFilter {
 
-		Class[] classes;
+		Class<InfoSource>[] classes;
 
-		public InfoSourceClassFilter(String descr, Class[] classes) {
+		public InfoSourceClassFilter(String descr, Class<InfoSource>[] classes) {
 			super(descr);
 			this.classes = classes;
 		}
@@ -125,7 +125,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 			if (classes == null)
 				return true;
 			InfoSource is = ((ArtifactWrapper) obj).getInfoSource();
-			for (Class c : classes) {
+			for (Class<InfoSource> c : classes) {
 				if (c.isInstance(is))
 					return true;
 			}
@@ -189,6 +189,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 		return comps.toArray(new JComponent[] {});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();

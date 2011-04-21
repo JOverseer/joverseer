@@ -9,11 +9,14 @@ public class TurnReportTableModel extends ItemTableModel {
 		super(TurnReportItem.class, messageSource);
 	}
 
+	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[]{"nationNo", "hexNo", "description"};
+		return new String[] { "nationNo", "hexNo", "description" };
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[]{String.class, Integer.class, String.class};
+		return new Class[] { String.class, Integer.class, String.class };
 	}
 }

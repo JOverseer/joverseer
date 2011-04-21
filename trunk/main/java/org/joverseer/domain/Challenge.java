@@ -25,14 +25,18 @@ public class Challenge extends Encounter {
 		int i = Math.max(d.lastIndexOf('.'), d.lastIndexOf('!'));
 		String[] sentences = d.substring(0, i).split("[\\.\\!]");
 		if (sentences.length > 4) {
+			int si = 0;
+			if (sentences[0].endsWith(String.valueOf(getHexNo()))) {
+				si = 1;
+			}
 			// 3rd sentence lists the attacker
-			String char1 = StringUtils.getUniquePart(sentences[2], ", ", ",", false, false);
+			String char1 = StringUtils.getUniquePart(sentences[si + 2], ", ", ",", false, false);
 			// 4th sentence may list the defender or the attacker's artifact
-			String char2 = StringUtils.getUniquePart(sentences[3], "In answer, ", ",", false, false);
+			String char2 = StringUtils.getUniquePart(sentences[si + 3], "In answer, ", ",", false, false);
 			if (char2 == null) {
 				// 5th sentence will list the defender if 4th listed the
 				// attacker's artifact
-				char2 = StringUtils.getUniquePart(sentences[4], "In answer, ", ",", false, false);
+				char2 = StringUtils.getUniquePart(sentences[si + 4], "In answer, ", ",", false, false);
 			}
 			if (char1 != null && char2 != null) {
 				// last sentence lists the victor's wounds

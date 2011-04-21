@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.joverseer.domain.Company;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.CompanyWrapper;
@@ -30,10 +29,10 @@ public class CompanyListView extends BaseItemListView {
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 		if (!Game.isInitialized(g))
 			return;
-		Container items = g.getTurn().getContainer(TurnElementsEnum.Company);
+		Container<Company> items = g.getTurn().getCompanies();
 		ArrayList<CompanyWrapper> filteredItems = new ArrayList<CompanyWrapper>();
 		AbstractListViewFilter filter = getActiveFilter();
-		for (Company o : (ArrayList<Company>) items.getItems()) {
+		for (Company o : items.getItems()) {
 			CompanyWrapper cw = new CompanyWrapper(o);
 			if (filter == null || filter.accept(cw))
 				filteredItems.add(cw);

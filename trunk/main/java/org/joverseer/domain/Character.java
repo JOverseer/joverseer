@@ -285,10 +285,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	public void setEncounter(String encounter) {
 		this.encounter = encounter;
 	}
-    
-    public boolean hasOrderResults() {
-    	return getOrderResults() != null;
-    }
+
+	public boolean hasOrderResults() {
+		return getOrderResults() != null;
+	}
 
 	public String getOrderResults() {
 		return orderResults;
@@ -297,7 +297,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	public String getCleanOrderResults() {
 		if (getOrderResults() == null)
 			return "";
-		return getOrderResults().replace("\r\n", "");
+		return getOrderResults().replace("\r\n", " ").replace("\n", " ").replace("  ", " ");
 	}
 
 	public void setOrderResults(String orderResults) {

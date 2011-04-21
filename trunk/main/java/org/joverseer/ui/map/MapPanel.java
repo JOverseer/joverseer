@@ -21,6 +21,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -57,6 +58,14 @@ import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterMovementRangeCommand;
 import org.joverseer.ui.command.ShowCharacterPathMasteryRangeCommand;
+import org.joverseer.ui.command.range.ShowFedCavalryArmyRangeCommand;
+import org.joverseer.ui.command.range.ShowFedInfantryArmyRangeCommand;
+import org.joverseer.ui.command.range.ShowFedNavyCoastalRangeCommand;
+import org.joverseer.ui.command.range.ShowFedNavyOpenSeasRangeCommand;
+import org.joverseer.ui.command.range.ShowUnfedCavalryArmyRangeCommand;
+import org.joverseer.ui.command.range.ShowUnfedInfantryArmyRangeCommand;
+import org.joverseer.ui.command.range.ShowUnfedNavyCoastalRangeCommand;
+import org.joverseer.ui.command.range.ShowUnfedNavyOpenSeasRangeCommand;
 import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
@@ -309,13 +318,6 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				throw e;
 			}
 		}
-		for (AbstractMapItem mi : game.getTurn().getMapItems()) {
-			for (Renderer r : metadata.getRenderers()) {
-				if (r.appliesTo(mi)) {
-					r.render(mi, g, 0, 0);
-				}
-			}
-		}
 
 		try {
 			for (Character c : getGame().getTurn().getCharacters()) {
@@ -335,6 +337,15 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		} catch (Exception exc) {
 			logger.error("Error rendering orders " + exc.getMessage());
 		}
+
+		for (AbstractMapItem mi : game.getTurn().getMapItems()) {
+			for (Renderer r : metadata.getRenderers()) {
+				if (r.appliesTo(mi)) {
+					r.render(mi, g, 0, 0);
+				}
+			}
+		}
+
 		try {
 			for (Note n : getGame().getTurn().getNotes()) {
 				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
@@ -646,7 +657,27 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
 			Point h = getHexFromPoint(e.getPoint());
 			int hexNo = h.x * 100 + h.y;
-			CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("MapPanelContextMenu", new Object[] { new ShowCharacterMovementRangeCommand(hexNo, 12), new ShowCharacterLongStrideRangeCommand(hexNo), new ShowCharacterFastStrideRangeCommand(hexNo), new ShowCharacterPathMasteryRangeCommand(hexNo), "separator", });
+			Game g = GameHolder.instance().getGame();
+			Hex hex = g.getMetadata().getHex(hexNo);
+			ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(new ShowCharacterMovementRangeCommand(hexNo, 12), new ShowCharacterLongStrideRangeCommand(hexNo), new ShowCharacterFastStrideRangeCommand(hexNo), new ShowCharacterPathMasteryRangeCommand(hexNo)));
+
+			HexTerrainEnum terrain = hex.getTerrain();
+			if (terrain.isLand()) {
+				commands.add("separator");
+				commands.add(new ShowFedInfantryArmyRangeCommand(hexNo));
+				commands.add(new ShowUnfedInfantryArmyRangeCommand(hexNo));
+				commands.add(new ShowFedCavalryArmyRangeCommand(hexNo));
+				commands.add(new ShowUnfedCavalryArmyRangeCommand(hexNo));
+			}
+			if (MovementUtils.calculateNavyRangeHexes(hexNo, false, true).size() > 0) {
+				commands.add("separator");
+				commands.add(new ShowFedNavyCoastalRangeCommand(hexNo));
+				commands.add(new ShowUnfedNavyCoastalRangeCommand(hexNo));
+				commands.add(new ShowFedNavyOpenSeasRangeCommand(hexNo));
+				commands.add(new ShowUnfedNavyOpenSeasRangeCommand(hexNo));
+			}
+
+			CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("MapPanelContextMenu", commands.toArray());
 			JPopupMenu popup = group.createPopupMenu();
 			popup.show(this, e.getPoint().x, e.getPoint().y);
 		}
@@ -663,7 +694,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			setSelectedHex(hex);
 			this.updateUI();
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
-			HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+			HashMap<MapEditorOptionsEnum, Object> mapEditorOptions = (HashMap<MapEditorOptionsEnum, Object>) Application.instance().getApplicationContext().getBean("mapEditorOptions");
 			Boolean active = (Boolean) mapEditorOptions.get(MapEditorOptionsEnum.active);
 			if (active == null || !active)
 				return;

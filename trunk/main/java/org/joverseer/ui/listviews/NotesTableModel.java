@@ -12,34 +12,34 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class NotesTableModel extends ItemTableModel {
-    public static int iTarget = 1;
-    public static int iText = 4;
-    public static int iTags = 3;
-    
-    public NotesTableModel( MessageSource messageSource) {
-        super(Note.class, messageSource);
-    }
+	public static int iTarget = 1;
+	public static int iText = 4;
+	public static int iTags = 3;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"hexNo", "targetDescription", "nationNo", "tags", "text", "persistent"};
-    }
+	public NotesTableModel(MessageSource messageSource) {
+		super(Note.class, messageSource);
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "hexNo", "targetDescription", "nationNo", "tags", "text", "persistent" };
+	}
 
-    
-//    protected boolean isCellEditableInternal(Object object, int i) {
-//        return i == iText || i == iTags;
-//    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, Boolean.class };
+	}
 
-    protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
-        super.setValueAtInternal(arg0, arg1, arg2);
-        Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), this, this));
+	// protected boolean isCellEditableInternal(Object object, int i) {
+	// return i == iText || i == iTags;
+	// }
 
-    }
+	@Override
+	protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
+		super.setValueAtInternal(arg0, arg1, arg2);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), this, this));
 
-    
-    
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.joverseer.domain.FortificationSizeEnum;
+import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
@@ -150,7 +151,7 @@ public class MovementUtils {
 
 		// check start hex terrain
 		if (// start.getTerrain() != HexTerrainEnum.sea && start.getTerrain() !=
-			// HexTerrainEnum.ocean &&
+		// HexTerrainEnum.ocean &&
 		dest.getTerrain() != HexTerrainEnum.sea && dest.getTerrain() != HexTerrainEnum.ocean) {
 			// check connecting river
 			if (movementAlongMajorRiver(start, md))
@@ -171,16 +172,20 @@ public class MovementUtils {
 		if (dest.getTerrain() != HexTerrainEnum.shore && dest.getTerrain() != HexTerrainEnum.sea && dest.getTerrain() != HexTerrainEnum.ocean) {
 			// see if there is a pop center there
 			PopulationCenter pc = (PopulationCenter) g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", dest.getHexNo());
+			if (pc != null && pc.getSize().equals(PopulationCenterSizeEnum.ruins))
+				pc = null;
+			if (pc != null && pc.getHarbor() != null && pc.getHarbor().equals(HarborSizeEnum.none))
+				pc = null;
 			if (pc == null) {
 				return -1;
 			} else {
 				return -2; // -2 means that you are consuming all of your
-							// remaining mps;
+				// remaining mps;
 			}
 		} else {
 			if (dest.getTerrain() == HexTerrainEnum.shore) {
 				return -2; // -2 means that you are consuming all of your
-							// remaining mps
+				// remaining mps
 			}
 			return movementCost;
 		}

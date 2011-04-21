@@ -3,7 +3,6 @@ package org.joverseer.engine;
 import java.util.ArrayList;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.logging.Log;
 import org.apache.log4j.LogManager;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
@@ -20,9 +19,7 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 
-
-
-public abstract class ExecutingOrder implements Comparable {
+public abstract class ExecutingOrder implements Comparable<ExecutingOrder> {
 	Character character;
 	boolean executed = false;
 	Order order;
@@ -40,28 +37,22 @@ public abstract class ExecutingOrder implements Comparable {
 	boolean success = false;
 	SpellProficiency spellProficiency;
 	SpellInfo spellInfo;
-	
+
 	ArrayList<String> messages = new ArrayList<String>();
-	
+
 	public ExecutingOrder(Order order) {
 		super();
 		this.character = order.getCharacter();
 		this.order = order;
 	}
-	
-	
-	
+
 	public boolean isValid() {
 		return valid;
 	}
 
-
-
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
-
-
 
 	public InfoSource getInfoSource(Turn turn) {
 		return new XmlTurnInfoSource(turn.getTurnNo(), getNationNo());
@@ -82,12 +73,10 @@ public abstract class ExecutingOrder implements Comparable {
 	public void setCharacter(Character character) {
 		this.character = character;
 	}
-	
+
 	public String getName() {
 		return getCharacter().getName();
 	}
-	
-	
 
 	public int getStartHex() {
 		return startHex;
@@ -112,21 +101,19 @@ public abstract class ExecutingOrder implements Comparable {
 	public void setExecuted(boolean executed) {
 		this.executed = executed;
 	}
-	
+
 	public int getNationNo() {
 		return getCharacter().getNationNo();
 	}
-	
+
 	public int getHex() {
 		return getCharacter().getHexNo();
 	}
-	
+
 	public int getOrderNo() {
 		return getOrder().getOrderNo();
 	}
-	
-	
-	
+
 	public Company getCompany() {
 		return company;
 	}
@@ -142,8 +129,6 @@ public abstract class ExecutingOrder implements Comparable {
 	public void setPop(PopulationCenter populationCenter) {
 		this.populationCenter = populationCenter;
 	}
-	
-	
 
 	public PopulationCenter getPop2() {
 		return populationCenter2;
@@ -180,7 +165,7 @@ public abstract class ExecutingOrder implements Comparable {
 	public String getParameter(int i) {
 		return getOrder().getParameter(i);
 	}
-	
+
 	public int getParameterInt(int i) {
 		return getOrder().getParameterInt(i);
 	}
@@ -200,40 +185,42 @@ public abstract class ExecutingOrder implements Comparable {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
-	
+
 	public void setError(boolean error, String message) {
 		setError(error);
 		setErrorMessage(message);
 		addMessage(message);
 	}
-	
+
 	public void addMessage(String msg) {
 		messages.add(renderMessage(msg));
 	}
-	
+
 	public String renderMessage(String msg) {
 		msg = renderVariable(msg, "{char}", getCharacter().getName());
 		msg = renderVariable(msg, "{hex}", String.valueOf(getHex()));
 		msg = renderVariable(msg, "{endhex}", String.valueOf(getEndHex()));
 		msg = renderVariable(msg, "{starthex}", String.valueOf(getStartHex()));
 		msg = renderVariable(msg, "{order}", String.valueOf(getOrderNo()));
-		msg = renderVariable(msg, "{nation}", getCharacter().getNation().getName());
-		if (getCharacter2() != null) msg = renderVariable(msg, "{nation2}", getCharacter2().getNation().getName());
-		if (getCharacter2() != null) msg = renderVariable(msg, "{char2}", getCharacter2().getName());
-		if (getPop() != null) msg = renderVariable(msg, "{pc}", getPop().getName());
-		if (getPop2() != null) msg = renderVariable(msg, "{pc2}", getPop2().getName());
-		if (getSpellInfo() != null) msg = renderVariable(msg, "{spell}", getSpellInfo().getName());
-		
+		if (getCharacter2() != null)
+			msg = renderVariable(msg, "{char2}", getCharacter2().getName());
+		if (getPop() != null)
+			msg = renderVariable(msg, "{pc}", getPop().getName());
+		if (getPop2() != null)
+			msg = renderVariable(msg, "{pc2}", getPop2().getName());
+		if (getSpellInfo() != null)
+			msg = renderVariable(msg, "{spell}", getSpellInfo().getName());
+
 		String genderPrefix = "He";
 		msg = renderVariable(msg, "{gp}", genderPrefix);
 		msg = renderVariable(msg, "{gp2}", genderPrefix);
 		return msg;
 	}
-	
+
 	public String renderVariable(String msg, String variable, int value) {
 		return msg.replace(variable, String.valueOf(value));
 	}
-	
+
 	public String renderVariable(String msg, String variable, String value) {
 		return msg.replace(variable, value);
 	}
@@ -245,21 +232,20 @@ public abstract class ExecutingOrder implements Comparable {
 	public void execute(Game game, Turn turn) {
 		setStartHex(getHex());
 		try {
-			if (getCharacter().getHealth() > 0) doExecute(game, turn);
-		}
-		catch (ErrorException exc) {
+			if (getCharacter().getHealth() > 0)
+				doExecute(game, turn);
+		} catch (ErrorException exc) {
 			setError(true, exc.getMessage());
-		}
-		catch (RuntimeException exc) {
+		} catch (RuntimeException exc) {
 			LogManager.getLogger(getClass()).error("Unexpected error executing order " + getCharacter().getName() + " " + getOrderNo() + ":" + exc.getMessage());
 			LogManager.getLogger(getClass()).error(exc);
 			exc.printStackTrace();
 		}
 		appendOrderResults();
 	}
-	
+
 	public void consumeCost(Game game, Turn turn) throws ErrorException {
-		int cost = new OrderCostCalculator().getOrderCost(getOrder());
+		int cost = new OrderCostCalculator().getOrderCost(getOrder(), turn);
 		if (cost > 0) {
 			NationEconomy ne = ExecutingOrderUtils.getNationEconomy(turn, getNationNo());
 			int availableGold = ne.getAvailableGold();
@@ -270,7 +256,7 @@ public abstract class ExecutingOrder implements Comparable {
 			}
 		}
 	}
-	
+
 	public String getOrderResults() {
 		String ret = "";
 		for (String msg : getMessages()) {
@@ -278,54 +264,51 @@ public abstract class ExecutingOrder implements Comparable {
 		}
 		return ret;
 	}
-	
+
 	public void appendOrderResults() {
 		String cor = getCharacter().getOrderResults();
 		String or = getOrderResults();
-		if (or == null || or.equals("")) return;
+		if (or == null || or.equals(""))
+			return;
 		cor += (cor.equals("") ? "" : "  ") + or;
 		getCharacter().setOrderResults(cor);
 	}
-	
+
 	public abstract void doExecute(Game game, Turn turn) throws ErrorException;
-	
-	public void checkParamInt(int value, String msg) throws ErrorException
-	{
-		if (value < 0) throw new ErrorException(msg);
+
+	public void checkParamInt(int value, String msg) throws ErrorException {
+		if (value < 0)
+			throw new ErrorException(msg);
 	}
-	
+
 	public int getSequence() {
 		return getOrderNo();
 	}
 
-	public int compareTo(Object o) {
-		if (ExecutingOrder.class.isInstance(o)) {
-			ExecutingOrder eo = (ExecutingOrder)o;
-			return getSequence() - eo.getSequence();
-		}
-		return 0;
+	public int compareTo(ExecutingOrder eo) {
+		return getSequence() - eo.getSequence();
 	}
-	
+
 	public void clearMessages() {
 		messages.clear();
 	}
-	
+
 	public boolean loadArmyByCommander(Turn turn) {
 		return (army = ExecutingOrderUtils.getArmy(turn, getHex(), getName())) != null;
 	}
-	
+
 	public boolean loadArmy2ByCommander(Turn turn) {
 		return (army2 = ExecutingOrderUtils.getArmy(turn, getCharacter2().getHexNo(), getCharacter2().getName())) != null;
 	}
-	
+
 	public boolean loadArmyByMember(Turn turn) {
 		return (army = ExecutingOrderUtils.findArmy(turn, getCharacter())) != null;
 	}
-	
+
 	public boolean loadCompanyByCommander(Turn turn) {
 		return (company = ExecutingOrderUtils.getCompany(turn, getName())) != null;
 	}
-	
+
 	public boolean loadCompanyByMember(Turn turn) {
 		return (company = ExecutingOrderUtils.findCompany(turn, getCharacter())) != null;
 	}
@@ -333,40 +316,39 @@ public abstract class ExecutingOrder implements Comparable {
 	public boolean isArmyCommander(Turn turn) {
 		return ExecutingOrderUtils.getArmy(turn, getHex(), getName()) != null;
 	}
-	
+
 	public boolean isArmyCommander2(Turn turn) {
 		return ExecutingOrderUtils.getArmy(turn, getCharacter2().getHexNo(), getCharacter2().getName()) != null;
 	}
-	
+
 	public boolean isCompanyCommander(Turn turn) {
 		return ExecutingOrderUtils.getCompany(turn, getName()) != null;
 	}
-	
+
 	public boolean isCompanyCommander2(Turn turn) {
 		return ExecutingOrderUtils.getCompany(turn, getCharacter2().getName()) != null;
 	}
-	
+
 	public boolean loadPopCenter(Turn turn) {
 		return loadPopCenter(turn, getHex());
 	}
-	
+
 	public boolean loadPopCenter(Turn turn, int hexNo) {
 		return (populationCenter = ExecutingOrderUtils.getPopCenter(turn, hexNo)) != null;
 	}
-	
+
 	public boolean loadPopCenter2(Turn turn, int hexNo) {
 		return (populationCenter2 = ExecutingOrderUtils.getPopCenter(turn, hexNo)) != null;
 	}
-	
+
 	public boolean isAtCapital() {
 		return isPopCenterOfNation() && populationCenter.getCapital();
 	}
-	
+
 	public boolean isPopCenterOfNation() {
-		return populationCenter != null &&
-				ExecutingOrderUtils.checkNation(populationCenter, getCharacter());	
+		return populationCenter != null && ExecutingOrderUtils.checkNation(populationCenter, getCharacter());
 	}
-	
+
 	public boolean loadSpell(int spellId) {
 		for (SpellProficiency sp : getCharacter().getSpells()) {
 			if (sp.getSpellId() == spellId) {
@@ -374,23 +356,17 @@ public abstract class ExecutingOrder implements Comparable {
 				break;
 			}
 		}
-		spellInfo = (SpellInfo)GameHolder.instance().getGame().getMetadata().getSpells().findFirstByProperty("number", spellId);
+		spellInfo = GameHolder.instance().getGame().getMetadata().getSpells().findFirstByProperty("number", spellId);
 		return spellProficiency != null;
 	}
-	
-	
-	
+
 	public SpellProficiency getSpellProficiency() {
 		return spellProficiency;
 	}
 
-
-
 	public SpellInfo getSpellInfo() {
 		return spellInfo;
 	}
-
-
 
 	public boolean isCommander() {
 		boolean ret = getCharacter().getCommand() > 0;
@@ -399,7 +375,7 @@ public abstract class ExecutingOrder implements Comparable {
 		}
 		return ret;
 	}
-	
+
 	public boolean isEmissary() {
 		boolean ret = getCharacter().getEmmisary() > 0;
 		if (!ret) {
@@ -407,7 +383,7 @@ public abstract class ExecutingOrder implements Comparable {
 		}
 		return ret;
 	}
-	
+
 	public boolean isMage() {
 		boolean ret = getCharacter().getMage() > 0;
 		if (!ret) {
@@ -415,7 +391,7 @@ public abstract class ExecutingOrder implements Comparable {
 		}
 		return ret;
 	}
-	
+
 	public boolean isAgent() {
 		boolean ret = getCharacter().getAgent() > 0;
 		if (!ret) {
@@ -423,7 +399,7 @@ public abstract class ExecutingOrder implements Comparable {
 		}
 		return ret;
 	}
-	
+
 	public boolean isPopNotSieged() {
 		boolean ret = getPop().isSieged();
 		if (ret) {
@@ -431,64 +407,67 @@ public abstract class ExecutingOrder implements Comparable {
 		}
 		return !ret;
 	}
-	
+
 	public boolean isPopCenter2OfNation() {
 		return ExecutingOrderUtils.checkNation(populationCenter2, getCharacter());
 	}
-	
+
 	public boolean areCharsOfSameNation() {
 		return ExecutingOrderUtils.checkNation(getCharacter(), getCharacter2());
 	}
-	
+
 	public NationEconomy getNationEconomy(Turn turn) {
 		return ExecutingOrderUtils.getNationEconomy(turn, getNationNo());
 	}
 
 	public boolean loadCharacter2(Turn turn, String id) {
-		setCharacter2(ExecutingOrderUtils.getCharacterById(turn, id.trim()));
+		setCharacter2(ExecutingOrderUtils.getCharacterById(turn, id));
 		return getCharacter2() != null;
 	}
-	
+
 	public boolean areCharsAtSameHex() {
 		return ExecutingOrderUtils.checkSameHex(getCharacter(), getCharacter2());
 	}
-	
+
 	public void modifyProperty(Object obj, String propertyName, int delta, int min, int max) {
 		try {
 			Object v = PropertyUtils.getProperty(obj, propertyName);
-			Integer vi = (Integer)v;
-			if (vi == null) vi = 0;
+			Integer vi = (Integer) v;
+			if (vi == null)
+				vi = 0;
 			vi += delta;
-			if (vi < min) vi = min;
-			if (vi > max) vi = max;
+			if (vi < min)
+				vi = min;
+			if (vi > max)
+				vi = max;
 			PropertyUtils.setProperty(obj, propertyName, vi);
-		}
-		catch (Exception exc) {
+		} catch (Exception exc) {
 			throw new RuntimeException(exc);
 		}
 	}
-	
+
 	public void removeCharacter2FromGroups(Turn turn) {
 		Company c = ExecutingOrderUtils.findCompany(turn, getCharacter2());
-		if (c != null) ExecutingOrderUtils.removeCharacterFromCompany(turn, c, getCharacter2());
-		
+		if (c != null)
+			ExecutingOrderUtils.removeCharacterFromCompany(turn, c, getCharacter2());
+
 		Army a = ExecutingOrderUtils.findArmy(turn, getCharacter2());
-		if (a != null) ExecutingOrderUtils.removeCharacterFromArmy(turn, a, getCharacter2());
+		if (a != null)
+			ExecutingOrderUtils.removeCharacterFromArmy(turn, a, getCharacter2());
 	}
-	
+
 	public void removeCharacterFromGroups(Turn turn) {
 		Company c = ExecutingOrderUtils.findCompany(turn, getCharacter());
 		if (c != null) {
 			addMessage("{char} left the company has was with.");
 			ExecutingOrderUtils.removeCharacterFromCompany(turn, c, getCharacter());
 		}
-		
+
 		Army a = ExecutingOrderUtils.findArmy(turn, getCharacter());
 		if (a != null) {
 			addMessage("{char} left the army has was with.");
 			ExecutingOrderUtils.removeCharacterFromArmy(turn, a, getCharacter());
 		}
 	}
-	
-	
+
 }

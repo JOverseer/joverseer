@@ -27,26 +27,27 @@ public class PutArmyOnManoeuversOrder extends ExecutingOrder {
 			command = "the troops";
 			ch = getCharacter();
 		}
-		
+
 		if (army) {
-			addMessage("{char} was ordered to put the army on manoeuvers");
+			addMessage("{char} was ordered to put the army on manoeuvers.");
 		} else {
-			addMessage("{char} was ordered to put some troops on manoeuvers");
+			addMessage("{char} was ordered to put some troops on manoeuvers.");
 		}
-		
-		if (!isCommander()) return;
+
+		if (!isCommander())
+			return;
 		if (army) {
-			if(!loadArmyByCommander(turn)) {
-				addMessage("{gp} was unable to put "+ command + " because {gp} did not command an army.");
+			if (!loadArmyByCommander(turn)) {
+				addMessage("{gp} was unable to put " + command + " because {gp} did not command an army.");
 			}
 		} else if (!loadArmyByMember(turn)) {
-			addMessage("{gp} was unable to put "+ command + " because {gp} was not with an army.");
+			addMessage("{gp} was unable to put " + command + " because {gp} was not with an army.");
 		}
-		
-		//TODO check land
-		
+
+		// TODO check land
+
 		addMessage("{char} put " + command + " on manoeuvers.");
-		
+
 		int trmax;
 		int csmax;
 		if (army) {
@@ -56,10 +57,9 @@ public class PutArmyOnManoeuversOrder extends ExecutingOrder {
 			trmax = 10;
 			csmax = 7;
 		}
-		
-		
+
 		int r = Randomizer.roll(1, trmax);
-		
+
 		// improve troop taining
 		for (ArmyElement ae : getArmy().getElements()) {
 			if (ae.getArmyElementType().isTroop()) {
@@ -68,7 +68,7 @@ public class PutArmyOnManoeuversOrder extends ExecutingOrder {
 				}
 			}
 		}
-		
+
 		for (Character c : ExecutingOrderUtils.getCharsWithArmy(turn, getArmy(), true)) {
 			if (ch == null || ch == c) {
 				// improve char rank
@@ -80,7 +80,5 @@ public class PutArmyOnManoeuversOrder extends ExecutingOrder {
 			}
 		}
 	}
-	
-	
 
 }

@@ -6,7 +6,6 @@ import org.joverseer.engine.ExecutingOrder;
 import org.joverseer.engine.ExecutingOrderUtils;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.ui.command.AddEditNoteCommand;
 
 public class JoinArmyOrder extends ExecutingOrder {
 
@@ -24,8 +23,8 @@ public class JoinArmyOrder extends ExecutingOrder {
 			hexNo = getParameterInt(0);
 			id = getParameter(1);
 		}
-		
-		addMessage("{char} was ordered to join the army commanded by " + id +".");
+
+		addMessage("{char} was ordered to join the army commanded by " + id + ".");
 		if (isArmyCommander(turn)) {
 			addMessage("{char} could not join the army because {gp} is an army commander.");
 			return;
@@ -38,6 +37,15 @@ public class JoinArmyOrder extends ExecutingOrder {
 			addMessage("{char} could not join the army because no character with id " + id + " was found.");
 			return;
 		}
+
+		removeCharacterFromGroups(turn);
+
+		if (getOrderNo() != 785) {
+			getCharacter().setHexNo(hexNo);
+			addMessage("{char} moved to " + hexNo + ".");
+			ExecutingOrderUtils.refreshCharacter(turn, getCharacter());
+		}
+
 		if (!areCharsOfSameNation()) {
 			addMessage("{char} could not join the army because {char2} was not of the same nation.");
 			return;
@@ -52,18 +60,9 @@ public class JoinArmyOrder extends ExecutingOrder {
 			addMessage("{char} could not join the army because {char2} does not command an army.");
 			return;
 		}
-		
-		removeCharacterFromGroups(turn);
 
-		if (getOrderNo() != 785) {
-			getCharacter().setHexNo(hexNo);
-			ExecutingOrderUtils.refreshCharacter(turn, getCharacter());
-		}
-		
 		getArmy2().getCharacters().add(getName());
 		addMessage("{char} joined the army commanded by {char2}.");
 	}
-	
-	
 
 }

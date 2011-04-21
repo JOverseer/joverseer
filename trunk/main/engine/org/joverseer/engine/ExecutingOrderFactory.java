@@ -1,7 +1,6 @@
 package org.joverseer.engine;
 
 import org.joverseer.domain.Order;
-import org.joverseer.engine.orders.AddDocksOrder;
 import org.joverseer.engine.orders.AnchorShipsOrder;
 import org.joverseer.engine.orders.AttackOrder;
 import org.joverseer.engine.orders.BuyOrder;
@@ -31,6 +30,7 @@ import org.joverseer.engine.orders.PutArmyOnManoeuversOrder;
 import org.joverseer.engine.orders.ReconOrder;
 import org.joverseer.engine.orders.RecruitOrder;
 import org.joverseer.engine.orders.RefuseChallengesOrder;
+import org.joverseer.engine.orders.SellOrder;
 import org.joverseer.engine.orders.SplitArmyOrder;
 import org.joverseer.engine.orders.StealGoldOrder;
 import org.joverseer.engine.orders.TransCarOrder;
@@ -38,7 +38,6 @@ import org.joverseer.engine.orders.TransferArtifactsOrder;
 import org.joverseer.engine.orders.TransferCommandOrder;
 import org.joverseer.engine.orders.TransferFoodFromArmyToPopOrder;
 import org.joverseer.engine.orders.TransferFoodFromPopToArmyOrder;
-import org.joverseer.engine.orders.TransferPopOrder;
 import org.joverseer.engine.orders.TransferShipsOrder;
 import org.joverseer.engine.orders.TransferTroopsOrder;
 import org.joverseer.engine.orders.UseHidingArtifactOrder;
@@ -46,7 +45,7 @@ import org.joverseer.engine.orders.UseHidingArtifactOrder;
 public class ExecutingOrderFactory {
 	public ExecutingOrder createOrder(Order order) {
 		int orderNo = order.getOrderNo();
-		if (inList(orderNo, new int[]{180, 185})) {
+		if (inList(orderNo, new int[] { 180, 185 })) {
 			return new ChangeRelationsOrder(order);
 		} else if (orderNo == 215) {
 			return new RefuseChallengesOrder(order);
@@ -54,12 +53,14 @@ public class ExecutingOrderFactory {
 			return new IssueChallengeOrder(order);
 		} else if (orderNo == 225) {
 			return new CastCombatSpellOrder(order);
-		} else if (inList(orderNo, new int[]{230, 235, 250, 255})) {
+		} else if (inList(orderNo, new int[] { 230, 235, 250, 255 })) {
 			return new AttackOrder(order);
 		} else if (orderNo == 300) {
 			return new ChangeTaxRateOrder(order);
-		} else if (inList(orderNo, new int[]{310, 315})) {
+		} else if (inList(orderNo, new int[] { 310, 315 })) {
 			return new BuyOrder(order);
+		} else if (orderNo == 320) {
+			return new SellOrder(order);
 		} else if (orderNo == 325) {
 			return new NatSellOrder(order);
 		} else if (orderNo == 330) {
@@ -74,14 +75,12 @@ public class ExecutingOrderFactory {
 			return new TransferShipsOrder(order);
 		} else if (orderNo == 360) {
 			return new TransferArtifactsOrder(order);
-		} else if (inList(orderNo, new int[]{430, 435})) {
+		} else if (inList(orderNo, new int[] { 430, 435 })) {
 			return new PutArmyOnManoeuversOrder(order);
 		} else if (orderNo == 494) {
 			return new FortifyPopOrder(order);
 		} else if (orderNo == 520) {
 			return new InfYourOrder(order);
-		} else if (orderNo == 530 || orderNo == 535) {
-			return new AddDocksOrder(order);
 		} else if (orderNo == 550) {
 			return new ImprovePopOrder(order);
 		} else if (orderNo == 555) {
@@ -90,7 +89,7 @@ public class ExecutingOrderFactory {
 			return new GuardPopOrder(order);
 		} else if (orderNo == 690) {
 			return new StealGoldOrder(order);
-		} else if (inList(orderNo, new int[]{785, 870})) {
+		} else if (inList(orderNo, new int[] { 785, 870 })) {
 			return new JoinArmyOrder(order);
 		} else if (orderNo == 794) {
 			return new AnchorShipsOrder(order);
@@ -98,11 +97,11 @@ public class ExecutingOrderFactory {
 			return new PickupShipsOrder(order);
 		} else if (orderNo == 810) {
 			return new MoveCharacterOrder(order);
-		} else if (inList(orderNo, new int[]{725,728, 731, 734, 737})) {
+		} else if (inList(orderNo, new int[] { 725, 728, 731, 734, 737 })) {
 			return new NameCharacterOrder(order);
-		} else if (inList(orderNo, new int[]{830, 850, 860})) {
+		} else if (inList(orderNo, new int[] { 830, 850, 860 })) {
 			return new MoveArmyOrder(order);
-		} else if (inList(orderNo, new int[]{400, 404, 408, 412, 416, 420, 770})) {
+		} else if (inList(orderNo, new int[] { 400, 404, 408, 412, 416, 420, 770 })) {
 			return new RecruitOrder(order);
 		} else if (orderNo == 820) {
 			return new MoveCompanyOrder(order);
@@ -124,16 +123,15 @@ public class ExecutingOrderFactory {
 			return new NatTranOrder(order);
 		} else if (orderNo == 948) {
 			return new TransCarOrder(order);
-		} else if (orderNo == 949) {
-			return new TransferPopOrder(order);
 		}
-		
+
 		return new DummyOrder(order);
 	}
-	
+
 	protected boolean inList(int orderNo, int[] list) {
 		for (int n : list) {
-			if (n == orderNo) return true;
+			if (n == orderNo)
+				return true;
 		}
 		return false;
 	}

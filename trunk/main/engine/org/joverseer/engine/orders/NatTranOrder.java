@@ -1,7 +1,5 @@
 package org.joverseer.engine.orders;
 
-import java.util.ArrayList;
-
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
@@ -10,9 +8,8 @@ import org.joverseer.engine.ExecutingOrder;
 import org.joverseer.engine.ExecutingOrderUtils;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 
-public class NatTranOrder extends ExecutingOrder{
+public class NatTranOrder extends ExecutingOrder {
 
 	public NatTranOrder(Order order) {
 		super(order);
@@ -24,10 +21,11 @@ public class NatTranOrder extends ExecutingOrder{
 		checkParamInt(destination, "Invalid destination.");
 		String pr = getParameter(1);
 		ProductEnum product = ProductEnum.getFromCode(pr);
-		if (product == null) throw new ErrorException("Invalid product " + pr + ".");
+		if (product == null)
+			throw new ErrorException("Invalid product " + pr + ".");
 		int pct = getParameterInt(2);
 		checkParamInt(pct, "Invalid percentage.");
-		
+
 		addMessage("{char} was ordered to transfer " + product + ".");
 		if (!loadPopCenter2(turn, destination)) {
 			addMessage("There is no population center at " + destination + ".");
@@ -40,33 +38,33 @@ public class NatTranOrder extends ExecutingOrder{
 		if (!loadPopCenter(turn) || !isAtCapital()) {
 			addMessage("{char} was not able to perform the transfer because he was not at the capital.");
 		}
-		if (!isPopNotSieged()) return;
-		
+		if (!isPopNotSieged())
+			return;
+
+		int totalAmountToTransfer = 0;
+		int totalComission = 0;
 		// compute total amount in pops
-		// TODO handle sieged
-		int totalAmount = ExecutingOrderUtils.getTotalStoresForNation(turn, product, getNationNo());
-
-		int amountAlreadyInPop = ExecutingOrderUtils.getStores(getPop2(), product);
-
-		int totalAmountToTransfer = totalAmount - amountAlreadyInPop;
-		
-		// transfer amount
-		int transferAmount = totalAmountToTransfer * pct / 100;
-		
-		// commission
-		int commission = transferAmount / 10;
-		if (transferAmount + commission > totalAmount) {
-			transferAmount = totalAmountToTransfer - commission;
+		for (PopulationCenter pc : turn.getPopCenters(getNationNo())) {
+			if (pc == getPop())
+				continue;
+			int available = ExecutingOrderUtils.getStores(pc, product);
+			if (available == 0)
+				continue;
+			int toTransfer = available * pct / 100;
+			int commission = toTransfer / 10;
+			if (toTransfer + commission > available) {
+				toTransfer = available - commission;
+			}
+			totalAmountToTransfer += toTransfer;
+			totalComission += commission;
+			ExecutingOrderUtils.consumeProduct(pc, product, toTransfer + commission);
 		}
-		// compute the actual percentage consumed based on the commission and available amount
-		int realPct = (transferAmount + commission) * 100 / totalAmount;
-		// consume
-		ExecutingOrderUtils.consumeProductPercentageForNation(turn, product, realPct, getNationNo());
-		
+		int amountAlreadyInPop = ExecutingOrderUtils.getStores(getPop(), product);
+
 		// add
-		getPop2().setStores(product, transferAmount + amountAlreadyInPop);
-		addMessage((transferAmount + amountAlreadyInPop) + " " + product + " were transfered to {pc2}.");
-		
+		getPop2().setStores(product, totalAmountToTransfer + amountAlreadyInPop);
+		addMessage((totalAmountToTransfer + amountAlreadyInPop) + " " + product + " were transfered to {pc2}.");
+
 	}
 
 }

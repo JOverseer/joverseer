@@ -9,7 +9,6 @@ import org.joverseer.engine.ExecutingOrder;
 import org.joverseer.engine.ExecutingOrderUtils;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.SNAEnum;
 
 public class NameCharacterOrder extends ExecutingOrder {
@@ -27,7 +26,8 @@ public class NameCharacterOrder extends ExecutingOrder {
 		int e = 0;
 		int m = 0;
 		if (getOrderNo() == 725) {
-			if (!isCommander()) return;
+			if (!isCommander())
+				return;
 			c = getParameterInt(2);
 			checkParamInt(c, "Invalid command rank");
 			a = getParameterInt(3);
@@ -36,12 +36,13 @@ public class NameCharacterOrder extends ExecutingOrder {
 			checkParamInt(e, "Invalid emissary rank");
 			m = getParameterInt(5);
 			checkParamInt(m, "Invalid mage rank");
-			if (c + a + e+ m > 30) {
+			if (c + a + e + m > 30) {
 				throw new ErrorException("Total ranks > 30");
 			}
 		} else if (getOrderNo() == 728) {
 			int min = 30;
-			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.CommandersAt40)) min = 40;
+			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.CommandersAt40))
+				min = 40;
 			c = Math.min(min, getCharacter().getCommandTotal());
 			if (!isCommander()) {
 				addMessage("{char} failed to execute the order because {gp} is not a commander.");
@@ -53,16 +54,17 @@ public class NameCharacterOrder extends ExecutingOrder {
 				return;
 			}
 			int min = 30;
-			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.AgentsAt40)) min = 40;
+			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.AgentsAt40))
+				min = 40;
 			a = Math.min(min, getCharacter().getAgentTotal());
 		} else if (getOrderNo() == 734) {
-			if (!isEmissary()) 
-			{
+			if (!isEmissary()) {
 				addMessage("{char} failed to execute the order because {gp} is not an emissary.");
 				return;
 			}
 			int min = 30;
-			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.EmmisariesAt40)) min = 40;
+			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.EmmisariesAt40))
+				min = 40;
 			e = Math.min(min, getCharacter().getEmmisaryTotal());
 		} else if (getOrderNo() == 737) {
 			if (!isMage()) {
@@ -70,21 +72,22 @@ public class NameCharacterOrder extends ExecutingOrder {
 				return;
 			}
 			int min = 30;
-			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.MagesAt40)) min = 40;
+			if (ExecutingOrderUtils.hasSNA(game, getNationNo(), SNAEnum.MagesAt40))
+				min = 40;
 			m = Math.min(min, getCharacter().getMageTotal());
 		}
-		
+
 		loadPopCenter(turn);
 		addMessage("{char} was ordered to name a new character.");
 		if (!isAtCapital()) {
 			addMessage("{char} was unable top name a new character because he was not at the capital.");
 		}
-		
+
 		consumeCost(game, turn);
-		
+
 		Character newChar = new Character();
 		newChar.setNationNo(getNationNo());
-		
+
 		if (name == null || name.equals("")) {
 			name = getNewCharName(turn);
 		} else {
@@ -108,11 +111,11 @@ public class NameCharacterOrder extends ExecutingOrder {
 		newChar.setInformationSource(InformationSourceEnum.exhaustive);
 		newChar.setInfoSource(getInfoSource(turn));
 		newChar.setDeathReason(CharacterDeathReasonEnum.NotDead);
-		newChar.setId(newChar.getIdFromName(name));
-		turn.getContainer(TurnElementsEnum.Character).addItem(newChar);
+		newChar.setId(Character.getIdFromName(name));
+		turn.getCharacters().addItem(newChar);
 		addMessage("A new character named " + name + " was named.");
 	}
-	
+
 	protected boolean nameInUse(Turn turn, String name) {
 		return ExecutingOrderUtils.getCharacter(turn, name) != null;
 	}
@@ -128,5 +131,5 @@ public class NameCharacterOrder extends ExecutingOrder {
 			}
 		} while (true);
 	}
-	
+
 }

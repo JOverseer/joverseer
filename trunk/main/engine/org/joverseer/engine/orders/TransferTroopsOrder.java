@@ -25,9 +25,9 @@ public class TransferTroopsOrder extends ExecutingOrder {
 		int li = getParameterInt(4);
 		int ar = getParameterInt(5);
 		int ma = getParameterInt(6);
-		
+
 		addMessage("{char} was ordered to transfer some troops.");
-		if (!loadArmyByCommander(turn) || !loadArmyByMember(turn)) {
+		if (!loadArmyByCommander(turn) && !loadArmyByMember(turn)) {
 			addMessage("{char} was unable to transfer troops because he was not with an army.");
 			return;
 		}
@@ -47,8 +47,9 @@ public class TransferTroopsOrder extends ExecutingOrder {
 			addMessage("{char} was unable to transfer troops because to {char2} because {gp2} was not in the same hex.");
 			return;
 		}
-		if (!isCommander()) return;
-		
+		if (!isCommander())
+			return;
+
 		ArmyElement ae = splitArmyElement(getArmy(), ArmyElementType.HeavyCavalry, hc);
 		ArmyElement dae = getArmy2().getElement(ArmyElementType.HeavyCavalry);
 		if (dae == null) {
@@ -91,16 +92,18 @@ public class TransferTroopsOrder extends ExecutingOrder {
 		} else {
 			dae.mergeWith(ae);
 		}
-		
+
 		addMessage("Troops were transfered.");
 		ExecutingOrderUtils.cleanupArmy(turn, getArmy());
 	}
-	
+
 	protected ArmyElement splitArmyElement(Army origin, ArmyElementType aet, int splitNumber) {
 		ArmyElement ae = origin.getElement(aet);
-		if (ae == null) return null;
+		if (ae == null)
+			return null;
 		splitNumber = Math.min(ae.getNumber(), splitNumber);
-		if (splitNumber == 0) return null;
+		if (splitNumber == 0)
+			return null;
 		ArmyElement nae = new ArmyElement(aet, splitNumber);
 		nae.setTraining(ae.getTraining());
 		nae.setWeapons(ae.getWeapons());

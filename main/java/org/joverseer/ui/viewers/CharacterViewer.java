@@ -320,8 +320,8 @@ public class CharacterViewer extends ObjectViewer {
 			((BeanTableModel) spellsTable.getModel()).setRows(spells);
 			spellsTable.setPreferredSize(new Dimension(spellsTable.getWidth(), 16 * spells.size()));
 			TableUtils.setTableColumnWidths(spellsTable, new int[] { 10, 120, 40 });
-			Container companies = game.getTurn().getContainer(TurnElementsEnum.Company);
-			Company company = (Company) companies.findFirstByProperty("commander", c.getName());
+			Container<Company> companies = game.getTurn().getCompanies();
+			Company company = companies.findFirstByProperty("commander", c.getName());
 			if (company != null) {
 				String members = company.getMemberStr();
 
@@ -332,7 +332,7 @@ public class CharacterViewer extends ObjectViewer {
 			} else {
 				// check if he is travelling with a company or an army...
 				boolean found = false;
-				for (Company comp : (ArrayList<Company>) companies.getItems()) {
+				for (Company comp : companies.getItems()) {
 					if (comp.getMembers().contains(c.getName())) {
 						companyMembersTextBox.setVisible(true);
 						companyMembersTextBox.setText("In " + comp.getCommander() + "'s company");
@@ -344,7 +344,7 @@ public class CharacterViewer extends ObjectViewer {
 				}
 				if (!found) {
 					if (c.getNationNo() != null && c.getNationNo() > 0) {
-						ArrayList<Army> armies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperty("nationNo", c.getNationNo());
+						ArrayList<Army> armies = game.getTurn().getArmies().findAllByProperty("nationNo", c.getNationNo());
 						for (Army a : armies) {
 							if (a.getCharacters().contains(c.getName())) {
 								companyMembersTextBox.setVisible(true);
@@ -393,7 +393,7 @@ public class CharacterViewer extends ObjectViewer {
 				hostagesPane.setVisible(false);
 			}
 
-			ArrayList<Note> notes = g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
+			ArrayList<Note> notes = g.getTurn().getNotes().findAllByProperty("target", c);
 			notesViewer.setFormObject(notes);
 			characterName.setCaretPosition(0);
 		}
@@ -893,14 +893,14 @@ public class CharacterViewer extends ObjectViewer {
 				return;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			Turn t = g.getTurn();
-			Container armies = t.getContainer(TurnElementsEnum.Army);
-			Army a = (Army) armies.findFirstByProperty("commanderName", c.getName());
+			Container<Army> armies = t.getArmies();
+			Army a = armies.findFirstByProperty("commanderName", c.getName());
 			if (a != null) {
 				MessageDialog dlg = new MessageDialog("Error", "The character commands an army and cannot be deleted.\nDelete the army first if you want to delete the character.");
 				dlg.showDialog();
 				return;
 			}
-			Container characters = t.getContainer(TurnElementsEnum.Character);
+			Container<Character> characters = t.getCharacters();
 			characters.removeItem(c);
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
 		}
@@ -929,7 +929,7 @@ public class CharacterViewer extends ObjectViewer {
 					}
 					form.commit();
 					c.setId(Character.getIdFromName(c.getName()));
-					GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).refreshItem(c);
+					GameHolder.instance().getGame().getTurn().getCharacters().refreshItem(c);
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this, this));
 					return true;
 				}

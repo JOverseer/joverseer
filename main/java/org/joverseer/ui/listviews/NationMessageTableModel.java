@@ -1,7 +1,7 @@
 package org.joverseer.ui.listviews;
 
-import org.springframework.context.MessageSource;
 import org.joverseer.domain.NationMessage;
+import org.springframework.context.MessageSource;
 
 /**
  * Table model for NationMessage objects
@@ -9,15 +9,18 @@ import org.joverseer.domain.NationMessage;
  * @author Marios Skounakis
  */
 public class NationMessageTableModel extends ItemTableModel {
-    public NationMessageTableModel(MessageSource messageSource) {
-        super(NationMessage.class, messageSource);
-    }
+	public NationMessageTableModel(MessageSource messageSource) {
+		super(NationMessage.class, messageSource);
+	}
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"nationNo", "message"};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "nationNo", "message" };
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class};
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class };
+	}
 }

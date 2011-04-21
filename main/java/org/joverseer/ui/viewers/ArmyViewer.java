@@ -403,7 +403,7 @@ public class ArmyViewer extends ObjectViewer {
 				return;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			Turn t = g.getTurn();
-			Container armies = t.getContainer(TurnElementsEnum.Army);
+			Container<Army> armies = t.getArmies();
 			armies.removeItem(a);
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
 		}
@@ -497,7 +497,7 @@ public class ArmyViewer extends ObjectViewer {
 					Army a = (Army) getFormObject();
 					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 					Turn t = g.getTurn();
-					Container armies = t.getContainer(TurnElementsEnum.Army);
+					Container<Army> armies = t.getArmies();
 					armies.removeItem(a);
 					armies.addItem(a);
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));

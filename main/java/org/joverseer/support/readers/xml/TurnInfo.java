@@ -8,51 +8,49 @@ import org.joverseer.support.Container;
  * @author Marios Skounakis
  */
 public class TurnInfo {
-    Container popCentres;
-    Container characters;
-    Container armies;
-    Container nations;
-    
-    NationInfoWrapper nationInfoWrapper;
-    EconomyWrapper economy;
+	Container popCentres;
+	Container characters;
+	Container armies;
+	Container nations;
 
-    int gameNo;
-    int turnNo;
-    int nationNo;
-    String gameType;
-    String playerName;
-    String accountNo;
-    String securityCode;
-    String dueDate;
-    int nationCapitalHex;
+	NationInfoWrapper nationInfoWrapper;
+	EconomyWrapper economy;
 
-    public Container getCharacters() {
-        return characters;
-    }
+	int gameNo;
+	int turnNo;
+	int nationNo;
+	String gameType;
+	String playerName;
+	String accountNo;
+	String securityCode;
+	String dueDate;
+	int nationCapitalHex;
 
-    public void setCharacters(Container characters) {
-        this.characters = characters;
-    }
+	public Container<CharacterWrapper> getCharacters() {
+		return characters;
+	}
 
-    public Container getPopCentres() {
-        return popCentres;
-    }
+	public void setCharacters(Container characters) {
+		this.characters = characters;
+	}
 
-    public void setPopCentres(Container popCentres) {
-        this.popCentres = popCentres;
-    }
+	public Container<PopCenterWrapper> getPopCentres() {
+		return popCentres;
+	}
 
-    public Container getArmies() {
-        return armies;
-    }
+	public void setPopCentres(Container popCentres) {
+		this.popCentres = popCentres;
+	}
 
-    public void setArmies(Container armies) {
-        this.armies = armies;
-    }
-    
-    
+	public Container<ArmyWrapper> getArmies() {
+		return armies;
+	}
 
-    public Container getNations() {
+	public void setArmies(Container armies) {
+		this.armies = armies;
+	}
+
+	public Container<NationWrapper> getNations() {
 		return nations;
 	}
 
@@ -61,92 +59,84 @@ public class TurnInfo {
 	}
 
 	public int getGameNo() {
-        return gameNo;
-    }
+		return gameNo;
+	}
 
-    public void setGameNo(int gameNo) {
-        this.gameNo = gameNo;
-    }
+	public void setGameNo(int gameNo) {
+		this.gameNo = gameNo;
+	}
 
-    public String getGameType() {
-        return gameType;
-    }
+	public String getGameType() {
+		return gameType;
+	}
 
-    public void setGameType(String gameType) {
-        this.gameType = gameType;
-    }
+	public void setGameType(String gameType) {
+		this.gameType = gameType;
+	}
 
-    public int getNationNo() {
-        return nationNo;
-    }
+	public int getNationNo() {
+		return nationNo;
+	}
 
-    public void setNationNo(int nationNo) {
-        this.nationNo = nationNo;
-    }
+	public void setNationNo(int nationNo) {
+		this.nationNo = nationNo;
+	}
 
-    public int getTurnNo() {
-        return turnNo;
-    }
+	public int getTurnNo() {
+		return turnNo;
+	}
 
-    public void setTurnNo(int turnNo) {
-        this.turnNo = turnNo;
-    }
+	public void setTurnNo(int turnNo) {
+		this.turnNo = turnNo;
+	}
 
-    public NationInfoWrapper getNationInfoWrapper() {
-        return nationInfoWrapper;
-    }
+	public NationInfoWrapper getNationInfoWrapper() {
+		return nationInfoWrapper;
+	}
 
-    public void setNationInfoWrapper(NationInfoWrapper nationInfoWrapper) {
-        this.nationInfoWrapper = nationInfoWrapper;
-    }
+	public void setNationInfoWrapper(NationInfoWrapper nationInfoWrapper) {
+		this.nationInfoWrapper = nationInfoWrapper;
+	}
 
-    public EconomyWrapper getEconomy() {
-        return economy;
-    }
+	public EconomyWrapper getEconomy() {
+		return economy;
+	}
 
-    public void setEconomy(EconomyWrapper economy) {
-        this.economy = economy;
-    }
+	public void setEconomy(EconomyWrapper economy) {
+		this.economy = economy;
+	}
 
-    
-    public String getAccountNo() {
-        return accountNo;
-    }
+	public String getAccountNo() {
+		return accountNo;
+	}
 
-    
-    public void setAccountNo(String accountNo) {
-        this.accountNo = accountNo;
-    }
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
 
-    
-    public String getDueDate() {
-        return dueDate;
-    }
+	public String getDueDate() {
+		return dueDate;
+	}
 
-    
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
-    }
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
 
-    
-    public String getPlayerName() {
-        return playerName;
-    }
+	public String getPlayerName() {
+		return playerName;
+	}
 
-    
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
 
-    
-    public String getSecurityCode() {
-        return securityCode;
-    }
+	public String getSecurityCode() {
+		return securityCode;
+	}
 
-    
-    public void setSecurityCode(String secutiryCode) {
-        this.securityCode = secutiryCode;
-    }
+	public void setSecurityCode(String secutiryCode) {
+		this.securityCode = secutiryCode;
+	}
 
 	public int getNationCapitalHex() {
 		return nationCapitalHex;
@@ -155,7 +145,5 @@ public class TurnInfo {
 	public void setNationCapitalHex(int nationCapitalHex) {
 		this.nationCapitalHex = nationCapitalHex;
 	}
-    
-    
 
 }

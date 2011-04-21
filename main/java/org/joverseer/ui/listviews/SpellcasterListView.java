@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -21,7 +20,6 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -409,34 +407,5 @@ public class SpellcasterListView extends BaseItemListView {
 		public String toString() {
 			return getName();
 		}
-	}
-
-	/**
-	 * SpellList that is derived from one or more actual game Spell Lists You
-	 * give it the names of the Spell Lists you want and it retrieves the ids
-	 * and names from the game metadata SpellInfo
-	 */
-	private class SpellListFromSpellMetadata extends SpellList {
-
-		ArrayList<String> spellLists = new ArrayList<String>();;
-
-		public SpellListFromSpellMetadata(String name, String[] spellLists) {
-			super(name, new Integer[] {}, new String[] {});
-			this.spellLists.addAll(Arrays.asList(spellLists));
-			initSpells();
-		}
-
-		protected void initSpells() {
-			GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-
-			for (String spellList : spellLists) {
-				ArrayList<SpellInfo> sis = gm.getSpells().findAllByProperty("list", spellList);
-				for (SpellInfo si : sis) {
-					getSpells().add(si.getNumber());
-					getSpellDescrs().add(si.getName());
-				}
-			}
-		}
-
 	}
 }

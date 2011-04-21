@@ -8,79 +8,88 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.form.Form;
 import org.springframework.richclient.table.BeanTableModel;
 
-
 public class CombatArmyTableModel extends BeanTableModel {
-    public static int iTroops = 2;
-    public static int iStr = 3;
-    public static int iCon = 4;
-    public static int iLosses = 5;
-    
-    Form parentForm;
+	private static final long serialVersionUID = 1L;
+	public static int iTroops = 2;
+	public static int iStr = 3;
+	public static int iCon = 4;
+	public static int iLosses = 5;
 
-    public CombatArmyTableModel(Form parentForm, MessageSource arg1) {
-        super(CombatArmy.class, arg1);
-        this.parentForm = parentForm; 
-        setRowNumbers(false);
-    }
+	Form parentForm;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"commander", "nationNo", "troops", "strength", "constitution", "losses"};
-    }
+	public CombatArmyTableModel(Form parentForm, MessageSource arg1) {
+		super(CombatArmy.class, arg1);
+		this.parentForm = parentForm;
+		setRowNumbers(false);
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, String.class};
-    }
-    
-    public int[] getColumnWidths() {
-        return new int[]{100, 48, 200, 64, 64, 64};
-    }
-    
-    protected Combat getCombat() {
-        return (Combat)parentForm.getFormObject();
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "commander", "nationNo", "troops", "strength", "constitution", "losses" };
+	}
 
-    protected Object getValueAtInternal(Object arg0, int arg1) {
-        CombatArmy ca = (CombatArmy)arg0;
-        if (arg1 == iTroops) {
-            String ret = "";
-            for (ArmyElement ae : ca.getElements()) {
-                if (ae.getNumber() > 0) {
-                    ret += (ret.equals("") ? "" : " ") + 
-                    (int)Math.round(ae.getNumber() * (100 - ca.getLosses()) / 100) + ae.getArmyElementType().getType();
-                }
-            }
-            int eHI = CombatUtils.getNakedHeavyInfantryEquivalent(new CombatArmy(ca));
-            if (eHI > 0) ret += " (" + eHI + "enHI)";
-            return ret;
-        } else if (arg1 == iStr) {
-            if (getCombat() == null) {
-                return 0;
-            } else {
-                return getCombat().computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d, false);
-            }
-        } else if (arg1 == iCon) {
-            if (getCombat() == null) {
-                return 0;
-            } else {
-                return getCombat().computNativeArmyConstitution(ca, 0d);
-            }
-        } else if (arg1 == iCon) {
-            if (getCombat() == null) {
-                return 0;
-            } else {
-                return (int)Math.round(ca.getLosses());
-            }
-        } else if (arg1 == iLosses) {
-            return Math.round(ca.getLosses()) + "%";
-        }
-        return super.getValueAtInternal(arg0, arg1);
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class };
+	}
 
-    protected boolean isCellEditableInternal(Object arg0, int arg1) {
-        return false;
-    }
-    
-    
+	public int[] getColumnWidths() {
+		return new int[] { 100, 48, 200, 64, 64, 64 };
+	}
 
-    
+	protected Combat getCombat() {
+		return (Combat) parentForm.getFormObject();
+	}
+
+	@Override
+	protected Object getValueAtInternal(Object arg0, int arg1) {
+		CombatArmy ca = (CombatArmy) arg0;
+		if (arg1 == iTroops) {
+			String ret = "";
+			for (ArmyElement ae : ca.getElements()) {
+				if (ae.getNumber() > 0) {
+					ret += (ret.equals("") ? "" : " ") + (int) Math.round(ae.getNumber() * (100 - ca.getLosses()) / 100) + ae.getArmyElementType().getType();
+				}
+			}
+			int eHI = CombatUtils.getNakedHeavyInfantryEquivalent(new CombatArmy(ca));
+			if (eHI > 0)
+				ret += " (" + eHI + "enHI)";
+			return ret;
+		} else if (arg1 == iStr) {
+			if (getCombat() == null) {
+				return 0;
+			} else {
+				getCombat();
+				return Combat.computeNativeArmyStrength(ca, getCombat().getTerrain(), getCombat().getClimate(), 0d, false);
+			}
+		} else if (arg1 == iCon) {
+			if (getCombat() == null) {
+				return 0;
+			} else {
+				getCombat();
+				return Combat.computNativeArmyConstitution(ca, 0d);
+			}
+		} else if (arg1 == iCon) {
+			if (getCombat() == null) {
+				return 0;
+			} else {
+				return (int) Math.round(ca.getLosses());
+			}
+		} else if (arg1 == iLosses) {
+			return Math.round(ca.getLosses()) + "%";
+		}
+		return super.getValueAtInternal(arg0, arg1);
+	}
+
+	@Override
+	protected boolean isCellEditableInternal(Object arg0, int arg1) {
+		return false;
+	}
+
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		return super.getColumnClass(columnIndex);
+	}
+
 }

@@ -6,20 +6,26 @@ import org.springframework.context.MessageSource;
 
 /**
  * Table model for the AdvancedArtifactListView
+ * 
  * @author Marios Skounakis
  */
 public class AdvancedArtifactTableModel extends ItemTableModel {
 
-    public AdvancedArtifactTableModel(MessageSource messageSource) {
-        super(ArtifactWrapper.class, messageSource);
-    }
+	private static final long serialVersionUID = 1L;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"number", "name", "nationNo", "owner", "hexNo", "alignment", "power1", "power2", "turnNo", "infoSource"};
-    }
+	public AdvancedArtifactTableModel(MessageSource messageSource) {
+		super(ArtifactWrapper.class, messageSource);
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{Integer.class, String.class, String.class, String.class, Integer.class, String.class, String.class, String.class, Integer.class, InfoSource.class};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "number", "name", "nationNo", "owner", "hexNo", "alignment", "power1", "power2", "turnNo", "infoSource" };
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Class[] createColumnClasses() {
+		return new Class[] { Integer.class, String.class, String.class, String.class, Integer.class, String.class, String.class, String.class, Integer.class, InfoSource.class };
+	}
 
 }

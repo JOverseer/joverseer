@@ -5,18 +5,24 @@ import org.springframework.context.MessageSource;
 
 /**
  * Table model for Character objects
+ * 
  * @author Marios Skounakis
  */
 public class CharacterTableModel extends ItemTableModel {
-    public CharacterTableModel(MessageSource messageSource) {
-        super(Character.class, messageSource);
-    }
+	private static final long serialVersionUID = 1L;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[] {"hexNo", "name", "nationNo", "command", "commandTotal", "agent", "agentTotal", "emmisary", "emmisaryTotal", "mage", "mageTotal", "stealth", "stealthTotal", "challenge", "health", "infoSource", "orderResults", "maintenance"};
-    }
+	public CharacterTableModel(MessageSource messageSource) {
+		super(Character.class, messageSource);
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[] { Integer.class, String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class , Integer.class, InfoSource.class, String.class, Integer.class};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "hexNo", "name", "nationNo", "command", "commandTotal", "agent", "agentTotal", "emmisary", "emmisaryTotal", "mage", "mageTotal", "stealth", "stealthTotal", "challenge", "health", "infoSource", "orderResults", "maintenance" };
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { Integer.class, String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, InfoSource.class, String.class, Integer.class };
+	}
 }

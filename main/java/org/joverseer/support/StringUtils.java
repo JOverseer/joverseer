@@ -181,7 +181,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
 			}
 			return text;
 		} catch (Exception e) {
-			int a = 1;
 		}
 		return text;
 	}

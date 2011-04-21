@@ -36,9 +36,9 @@ public class EnemyCharacterRumorListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers(false);
-		ArrayList filteredItems = new ArrayList();
-		for (EnemyCharacterRumorWrapper w : (ArrayList<EnemyCharacterRumorWrapper>) thieves.getItems()) {
+		Container<EnemyCharacterRumorWrapper> thieves = EnemyCharacterRumorWrapper.getAgentWrappers(false);
+		ArrayList<EnemyCharacterRumorWrapper> filteredItems = new ArrayList<EnemyCharacterRumorWrapper>();
+		for (EnemyCharacterRumorWrapper w : thieves.getItems()) {
 			if (getActiveFilter().accept(w))
 				filteredItems.add(w);
 		}

@@ -34,7 +34,7 @@ public class OrderResultsForm extends AbstractForm {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		JLabel lbl;
 		tlb.cell(lbl = new JLabel("Character :"));
-		lbl.setPreferredSize(new Dimension(50, 20));
+		lbl.setPreferredSize(new Dimension(70, 20));
 		name = new JTextField();
 		name.setEditable(false);
 		tlb.gapCol();
@@ -42,7 +42,7 @@ public class OrderResultsForm extends AbstractForm {
 		tlb.relatedGapRow();
 		tlb.row();
 		tlb.cell(lbl = new JLabel("Results :"), "valign=top");
-		lbl.setPreferredSize(new Dimension(50, 20));
+		lbl.setPreferredSize(new Dimension(70, 20));
 		tlb.gapCol();
 		results = new JTextArea();
 		results.setWrapStyleWord(true);

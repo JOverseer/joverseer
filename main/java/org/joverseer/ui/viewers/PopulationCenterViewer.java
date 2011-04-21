@@ -414,7 +414,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				return;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			Turn t = g.getTurn();
-			Container pcs = t.getContainer(TurnElementsEnum.PopulationCenter);
+			Container<PopulationCenter> pcs = t.getPopulationCenters();
 			pcs.removeItem(pc);
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
 		}
@@ -514,7 +514,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				@Override
 				protected boolean onFinish() {
 					form.commit();
-					GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).refreshItem(pc);
+					GameHolder.instance().getGame().getTurn().getPopulationCenters().refreshItem(pc);
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
 					return true;
 				}

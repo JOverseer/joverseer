@@ -18,7 +18,7 @@ public enum PopulationCenterSizeEnum implements Serializable {
 		this.size = size;
 	}
 
-	public Class getType() {
+	public Class<PopulationCenterSizeEnum> getType() {
 		return PopulationCenterSizeEnum.class; // To change body of implemented
 		// methods use File | Settings |
 		// File Templates.

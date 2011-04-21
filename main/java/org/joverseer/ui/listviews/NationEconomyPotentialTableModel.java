@@ -10,21 +10,23 @@ import org.springframework.context.MessageSource;
  */
 public class NationEconomyPotentialTableModel extends ItemTableModel {
 
-    public NationEconomyPotentialTableModel(MessageSource messageSource) {
-        super(NationEconomyPotential.class, messageSource);
-    }
+	public NationEconomyPotentialTableModel(MessageSource messageSource) {
+		super(NationEconomyPotential.class, messageSource);
+	}
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"nationNo", "surplus", "reserve", "total", "oneNatSell", "oneNatSellProduct", "twoNatSells", "twoNatSellProduct", "charsInCapital"};  
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "nationNo", "surplus", "reserve", "total", "oneNatSell", "oneNatSellProduct", "twoNatSells", "twoNatSellProduct", "charsInCapital" };
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class,  String.class,  String.class,  String.class, String.class, String.class, String.class}; 
-    }
-    
-    public NationEconomyPotential getNewPotential() {
-        return new NationEconomyPotential();
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class };
+	}
 
-    
+	public NationEconomyPotential getNewPotential() {
+		return new NationEconomyPotential();
+	}
+
 }

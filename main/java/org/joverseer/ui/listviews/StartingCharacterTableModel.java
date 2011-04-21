@@ -4,7 +4,7 @@ import org.springframework.context.MessageSource;
 
 /**
  * Table model for starting character objects
- *  
+ * 
  * @author Marios Skounakis
  */
 public class StartingCharacterTableModel extends ItemTableModel {
@@ -13,14 +13,15 @@ public class StartingCharacterTableModel extends ItemTableModel {
 		super(Character.class, messageSource);
 	}
 
+	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[]{"name", "nationNo", "command", "commandTotal", "agent", "agentTotal", "emmisary", "emmisaryTotal", "mage", "mageTotal", "stealth", "stealthTotal", "challenge"};
+		return new String[] { "name", "nationNo", "command", "commandTotal", "agent", "agentTotal", "emmisary", "emmisaryTotal", "mage", "mageTotal", "stealth", "stealthTotal", "challenge" };
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[]{String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class};
+		return new Class[] { String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 	}
-	
-	
 
 }

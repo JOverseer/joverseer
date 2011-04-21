@@ -1,6 +1,5 @@
 package org.joverseer.ui.views;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +11,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
@@ -31,32 +28,33 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class MapEditorView extends AbstractView implements ApplicationListener {
-	
+
 	JTextArea log;
-	
+
 	public static MapEditorView instance = null;
-	
+
 	public MapEditorView() {
 		instance = this;
 	}
-	
+
+	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
-		
+
 		JLabel lbl;
-		
+
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel("Active :"), "colspec=left:70px");
 		final JCheckBox active = new JCheckBox();
 		active.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	    		HashMap mapEditorOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapEditorOptions");
-	    		mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
+				HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+				mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
 			}
 		});
 		tlb.gapCol();
 		tlb.cell(active, "colspec=left:20px");
-		
+
 		lb.cell(tlb.getPanel());
 		lb.gapCol();
 		lb.cell(new JLabel(" "), "colspec=left:100px");
@@ -65,9 +63,8 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		lb.row();
 		lb.cell(new JSeparator(), "colspan=5");
 		lb.row();
-		
+
 		ButtonGroup grp = new ButtonGroup();
-		
 
 		tlb = new TableLayoutBuilder();
 		for (HexTerrainEnum t : HexTerrainEnum.values()) {
@@ -77,17 +74,17 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			final HexTerrainEnum te = t;
 			rb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					HashMap mapEditorOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapEditorOptions");
-		    		mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
+					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+					mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
 				}
 			});
 			tlb.cell(rb, "colspec=left:20px");
 			grp.add(rb);
 			tlb.row();
 		}
-		
+
 		lb.cell(tlb.getPanel());
-		
+
 		tlb = new TableLayoutBuilder();
 		for (HexSideElementEnum e : HexSideElementEnum.values()) {
 			tlb.cell(new JLabel(e.toString()), "colspec=left:70px");
@@ -96,8 +93,8 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			final JRadioButton rb = new JRadioButton();
 			rb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					HashMap mapEditorOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapEditorOptions");
-		    		mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
+					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+					mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
 				}
 			});
 			tlb.cell(rb, "colspec=left:20px");
@@ -106,7 +103,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		}
 		lb.gapCol("20px");
 		lb.cell(tlb.getPanel());
-		
+
 		lb.gapCol("20px");
 		log = new JTextArea();
 		JScrollPane scp;
@@ -115,24 +112,23 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		scp.setPreferredSize(new Dimension(150, 150));
 		log.setEditable(false);
 		log.setWrapStyleWord(true);
-		//log.setBorder(new LineBorder(Color.black));
-		
+		// log.setBorder(new LineBorder(Color.black));
 
 		JPanel pnl = lb.getPanel();
 		pnl.setBorder(new EmptyBorder(5, 5, 5, 5));
 		return new JScrollPane(pnl);
-		
+
 	}
-	
+
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        if (applicationEvent instanceof JOverseerEvent) {
-            JOverseerEvent e = (JOverseerEvent) applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                
-            }
-        }
-    }
-	
+		if (applicationEvent instanceof JOverseerEvent) {
+			JOverseerEvent e = (JOverseerEvent) applicationEvent;
+			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+
+			}
+		}
+	}
+
 	public void log(String log) {
 		this.log.setText(log + "\n" + this.log.getText());
 		this.log.setCaretPosition(0);

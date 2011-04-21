@@ -9,16 +9,21 @@ import org.springframework.context.MessageSource;
  * @author Marios Skounakis
  */
 public class ArmySizeEstimatesTableModel extends ItemTableModel {
-    public ArmySizeEstimatesTableModel(MessageSource messageSource) {
-        super(ArmySizeEstimate.class, messageSource);
-    }
+	private static final long serialVersionUID = 1L;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"type", "size", "min", "max", "countKnown", "countUnknown"};
-    }
+	public ArmySizeEstimatesTableModel(MessageSource messageSource) {
+		super(ArmySizeEstimate.class, messageSource);
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "type", "size", "min", "max", "countKnown", "countUnknown" };
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class };
+	}
 
 }

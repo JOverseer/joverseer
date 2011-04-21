@@ -50,18 +50,18 @@ import org.springframework.richclient.application.Application;
  */
 public class CharacterInfoCollector implements ApplicationListener {
 
-	HashMap<Integer, Container> turnInfo = new HashMap<Integer, Container>();
+	HashMap<Integer, Container<AdvancedCharacterWrapper>> turnInfo = new HashMap<Integer, Container<AdvancedCharacterWrapper>>();
 
 	public static CharacterInfoCollector instance() {
 		return (CharacterInfoCollector) Application.instance().getApplicationContext().getBean("characterInfoCollector");
 	}
 
-	public ArrayList getWrappers() {
+	public ArrayList<AdvancedCharacterWrapper> getWrappers() {
 		return getWrappersForTurn(-1);
 	}
 
-	public ArrayList getWrappersForTurn(int turnNo) {
-		Container ret = new Container(new String[] { "name", "turnNo", "id" });
+	public ArrayList<AdvancedCharacterWrapper> getWrappersForTurn(int turnNo) {
+		Container<AdvancedCharacterWrapper> ret = new Container<AdvancedCharacterWrapper>(new String[] { "name", "turnNo", "id" });
 		if (!GameHolder.hasInitializedGame())
 			return ret.getItems();
 		Game game = GameHolder.instance().getGame();
@@ -78,8 +78,8 @@ public class CharacterInfoCollector implements ApplicationListener {
 			return null;
 		}
 		getWrappersForTurn(turnNo);
-		Container ret = turnInfo.get(turnNo);
-		return (AdvancedCharacterWrapper) ret.findFirstByProperty("name", name);
+		Container<AdvancedCharacterWrapper> ret = turnInfo.get(turnNo);
+		return ret.findFirstByProperty("name", name);
 	}
 
 	public AdvancedCharacterWrapper getLatestCharacter(String name, int maxTurnNo) {
@@ -106,8 +106,8 @@ public class CharacterInfoCollector implements ApplicationListener {
 	 * traveling with armies - Parse all enemy action rumors and update wrappers
 	 * as needed
 	 */
-	public Container computeWrappersForTurn(int turnNo) {
-		Container ret = new Container(new String[] { "name", "turnNo", "id" });
+	public Container<AdvancedCharacterWrapper> computeWrappersForTurn(int turnNo) {
+		Container<AdvancedCharacterWrapper> ret = new Container<AdvancedCharacterWrapper>(new String[] { "name", "turnNo", "id" });
 		if (!GameHolder.hasInitializedGame())
 			return ret;
 		Game game = GameHolder.instance().getGame();
@@ -117,7 +117,7 @@ public class CharacterInfoCollector implements ApplicationListener {
 			Turn t = game.getTurn(i);
 			if (t == null)
 				continue;
-			for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+			for (Character c : t.getAllCharacters()) {
 				if (c.isStartInfoDummy())
 					continue;
 				ArrayList<AdvancedCharacterWrapper> matches = ret.findAllByProperty("id", c.getId());
@@ -164,9 +164,9 @@ public class CharacterInfoCollector implements ApplicationListener {
 				}
 			}
 
-			for (Challenge challenge : (ArrayList<Challenge>) t.getContainer(TurnElementsEnum.Challenge).getItems()) {
+			for (Challenge challenge : t.getChallenges().getItems()) {
 				if (challenge.getLoser() != null) {
-					AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", challenge.getLoser());
+					AdvancedCharacterWrapper acw = ret.findFirstByProperty("name", challenge.getLoser());
 					if (acw == null) {
 						acw = new AdvancedCharacterWrapper();
 						acw.setName(challenge.getLoser());
@@ -183,11 +183,11 @@ public class CharacterInfoCollector implements ApplicationListener {
 				}
 			}
 
-			for (Combat combat : (ArrayList<Combat>) t.getContainer(TurnElementsEnum.Combat).getItems()) {
+			for (Combat combat : t.getCombats().getItems()) {
 				CombatWrapper cw = new CombatWrapper();
 				cw.parseAll(combat.getFirstNarration());
 				for (String dc : cw.getKilledCharacters()) {
-					AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", dc);
+					AdvancedCharacterWrapper acw = ret.findFirstByProperty("name", dc);
 					if (acw == null) {
 						acw = new AdvancedCharacterWrapper();
 						acw.setName(dc);
@@ -206,9 +206,9 @@ public class CharacterInfoCollector implements ApplicationListener {
 
 			// only for latest turn
 			if (i == game.getCurrentTurn()) {
-				for (Character c : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
+				for (Character c : t.getAllCharacters()) {
 					for (String hostageName : c.getHostages()) {
-						AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", hostageName);
+						AdvancedCharacterWrapper cw = ret.findFirstByProperty("name", hostageName);
 						if (cw != null) {
 							cw.setHexNo(c.getHexNo());
 							cw.setHostage(true, c.getName());
@@ -217,7 +217,7 @@ public class CharacterInfoCollector implements ApplicationListener {
 							AdvancedCharacterWrapper ncw = new AdvancedCharacterWrapper();
 							ncw.setName(hostageName);
 							ncw.setId(Character.getIdFromName(hostageName));
-							cw.setInfoSource(c.getInfoSource());
+							ncw.setInfoSource(c.getInfoSource());
 							ncw.setNationNo(0);
 							ncw.setHexNo(0);
 							ncw.setTurnNo(i);
@@ -228,13 +228,13 @@ public class CharacterInfoCollector implements ApplicationListener {
 				}
 
 				// assign companies
-				for (Company comp : (ArrayList<Company>) t.getContainer(TurnElementsEnum.Company).getItems()) {
-					AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", comp.getCommander());
+				for (Company comp : t.getCompanies().getItems()) {
+					AdvancedCharacterWrapper cw = ret.findFirstByProperty("name", comp.getCommander());
 					if (cw != null) {
 						cw.setCompany(comp);
 					}
 					for (String member : comp.getMembers()) {
-						cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", member);
+						cw = ret.findFirstByProperty("name", member);
 						if (cw != null) {
 							cw.setCompany(comp);
 						}
@@ -242,13 +242,13 @@ public class CharacterInfoCollector implements ApplicationListener {
 				}
 
 				// assign armies
-				for (Army army : (ArrayList<Army>) t.getContainer(TurnElementsEnum.Army).getItems()) {
-					AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", army.getCommanderName());
+				for (Army army : t.getArmies().getItems()) {
+					AdvancedCharacterWrapper cw = ret.findFirstByProperty("name", army.getCommanderName());
 					if (cw != null) {
 						cw.setArmy(army);
 					}
 					for (String travellingWith : army.getCharacters()) {
-						cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", travellingWith);
+						cw = ret.findFirstByProperty("name", travellingWith);
 						if (cw != null) {
 							cw.setArmy(army);
 						}
@@ -256,11 +256,11 @@ public class CharacterInfoCollector implements ApplicationListener {
 				}
 			}
 
-			Container thieves = EnemyCharacterRumorWrapper.getAgentWrappers();
-			for (EnemyCharacterRumorWrapper eaw : (ArrayList<EnemyCharacterRumorWrapper>) thieves.getItems()) {
+			Container<EnemyCharacterRumorWrapper> thieves = EnemyCharacterRumorWrapper.getAgentWrappers();
+			for (EnemyCharacterRumorWrapper eaw : thieves.getItems()) {
 				if (eaw.getTurnNo() != i)
 					continue;
-				AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", eaw.getName());
+				AdvancedCharacterWrapper cw = ret.findFirstByProperty("name", eaw.getName());
 				if (cw == null) {
 					cw = new AdvancedCharacterWrapper();
 					cw.setId(Character.getIdFromName(eaw.getName()));
@@ -293,14 +293,14 @@ public class CharacterInfoCollector implements ApplicationListener {
 		for (ArtifactWrapper aw : ArtifactInfoCollector.instance().getWrappersForTurn(game.getCurrentTurn())) {
 			boolean skipMetadataInfoSource = game.getMetadata().getGameType().equals(GameTypeEnum.gameKS);
 			if (aw.getOwner() != null && (!skipMetadataInfoSource || !MetadataSource.class.isInstance(aw.getInfoSource()))) {
-				AdvancedCharacterWrapper cw = (AdvancedCharacterWrapper) ret.findFirstByProperty("name", aw.getOwner());
+				AdvancedCharacterWrapper cw = ret.findFirstByProperty("name", aw.getOwner());
 				if (cw != null) {
 					cw.getArtifacts().add(aw);
 				}
 			}
 		}
 
-		for (AdvancedCharacterWrapper acw : (ArrayList<AdvancedCharacterWrapper>) ret.getItems()) {
+		for (AdvancedCharacterWrapper acw : ret.getItems()) {
 			if (acw.getChallenge() == null || acw.getChallenge().getInfoSource() == null || acw.getChallenge().getInfoSource().getTurnNo() < game.getCurrentTurn()) {
 				computeChallengeRank(acw, game.getCurrentTurn());
 			}

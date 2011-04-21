@@ -1,10 +1,7 @@
 package org.joverseer.ui.command;
 
-import java.util.ArrayList;
-
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
@@ -21,27 +18,27 @@ import org.springframework.richclient.command.ActionCommand;
  * 
  * @author Marios Skounakis
  */
-public class HighlightDragonsCommand  extends ActionCommand {
-    
-    public HighlightDragonsCommand() {
-        super("highlightDragonsCommand");
-    }
+public class HighlightDragonsCommand extends ActionCommand {
 
-    protected void doExecuteCommand() {
-        if (!ActiveGameChecker.checkActiveGameExists()) return;
+	public HighlightDragonsCommand() {
+		super("highlightDragonsCommand");
+	}
 
-        HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
-        Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        Container chars = game.getTurn().getContainer(TurnElementsEnum.Character);
-        for (Character c : (ArrayList<Character>)chars.getItems()) {
-            if (InfoUtils.isDragon(c.getName())) {
-                hhmi.addHex(c.getHexNo());
-            }
-        }
-        AbstractMapItem.add(hhmi);
-        Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), hhmi, this));
-    }
+	@Override
+	protected void doExecuteCommand() {
+		if (!ActiveGameChecker.checkActiveGameExists())
+			return;
 
+		HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
+		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Container<Character> chars = game.getTurn().getCharacters();
+		for (Character c : chars.getItems()) {
+			if (InfoUtils.isDragon(c.getName())) {
+				hhmi.addHex(c.getHexNo());
+			}
+		}
+		AbstractMapItem.add(hhmi);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), hhmi, this));
+	}
 
 }

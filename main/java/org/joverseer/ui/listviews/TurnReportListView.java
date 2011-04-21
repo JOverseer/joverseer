@@ -1,12 +1,12 @@
 package org.joverseer.ui.listviews;
 
 import java.util.ArrayList;
+
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.TurnReportItem;
 
@@ -16,21 +16,23 @@ public class TurnReportListView extends ItemListView {
 		super("abc", TurnReportTableModel.class);
 	}
 
+	@Override
 	protected int[] columnWidths() {
-		return new int[]{64, 32, 400};
+		return new int[] { 64, 32, 400 };
 	}
 
+	@Override
 	protected void setItems() {
 		Game g = GameHolder.instance().getGame();
-		
-		ArrayList items = new ArrayList();
-		
+
+		ArrayList<TurnReportItem> items = new ArrayList<TurnReportItem>();
+
 		Turn t = g.getTurn();
 		Turn prevTurn = g.getTurn(g.getCurrentTurn() - 1);
-		for (PlayerInfo pi : (ArrayList<PlayerInfo>)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
+		for (PlayerInfo pi : g.getTurn().getPlayerInfo().getItems()) {
 			int nationNo = pi.getNationNo();
-			for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", nationNo)) {
-				PopulationCenter prevTurnPop = (PopulationCenter)prevTurn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
+			for (PopulationCenter pc : t.getPopulationCenters().findAllByProperty("nationNo", nationNo)) {
+				PopulationCenter prevTurnPop = prevTurn.getPopulationCenters().findFirstByProperty("hexNo", pc.getHexNo());
 				if (prevTurnPop == null && pc.getSize().equals(PopulationCenterSizeEnum.camp)) {
 					TurnReportItem tri = new TurnReportItem();
 					tri.setNationNo(nationNo);
@@ -40,7 +42,7 @@ public class TurnReportListView extends ItemListView {
 				}
 			}
 		}
-		
+
 		tableModel.setRows(items);
 	}
 }

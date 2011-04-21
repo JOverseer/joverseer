@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.application.Application;
@@ -28,7 +27,7 @@ public abstract class AbstractMapItem implements Serializable {
 		Turn t = g.getTurn();
 		if (t == null)
 			return;
-		Container mapItems = t.getContainer(TurnElementsEnum.MapItem);
+		Container<AbstractMapItem> mapItems = t.getMapItems();
 		mapItems.addItem(mapItem);
 	}
 
@@ -39,7 +38,7 @@ public abstract class AbstractMapItem implements Serializable {
 		Turn t = g.getTurn();
 		if (t == null)
 			return;
-		Container mapItems = t.getContainer(TurnElementsEnum.MapItem);
+		Container<AbstractMapItem> mapItems = t.getMapItems();
 		mapItems.removeItem(mapItem);
 	}
 }

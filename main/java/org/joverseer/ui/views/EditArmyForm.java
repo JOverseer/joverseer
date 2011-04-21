@@ -40,6 +40,7 @@ import org.springframework.richclient.table.TableUtils;
 
 // TODO needs validation
 public class EditArmyForm extends AbstractForm {
+	@SuppressWarnings("unchecked")
 	class ArmyElementTableModel extends BeanTableModel {
 
 		private static final long serialVersionUID = 1L;

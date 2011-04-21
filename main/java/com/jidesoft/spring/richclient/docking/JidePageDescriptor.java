@@ -26,8 +26,8 @@ import org.springframework.richclient.application.support.AbstractPageDescriptor
 import com.jidesoft.spring.richclient.perspective.PerspectiveManager;
 
 /**
- * An implementation of a Spring RCP PageDescriptor that
- * describes a Spring Page within a JideApplicationWindow. 
+ * An implementation of a Spring RCP PageDescriptor that describes a Spring Page
+ * within a JideApplicationWindow.
  * 
  * @author Tom Corbin
  * @author Jonny Wray
@@ -36,63 +36,63 @@ import com.jidesoft.spring.richclient.perspective.PerspectiveManager;
 public class JidePageDescriptor extends AbstractPageDescriptor {
 	private static final Logger log = Logger.getLogger(JidePageDescriptor.class);
 
+	@SuppressWarnings("unchecked")
 	private List _viewDescriptors = new ArrayList();
-    private Object initialEditorContents = null;
+	private Object initialEditorContents = null;
 
-    private PerspectiveManager perspectiveManager = new PerspectiveManager();
-    
-	public PerspectiveManager getPerspectiveManager(){
-    	return perspectiveManager;
-    }
-    
-    /**
+	private final PerspectiveManager perspectiveManager = new PerspectiveManager();
+
+	public PerspectiveManager getPerspectiveManager() {
+		return perspectiveManager;
+	}
+
+	/**
 	 * The bean name is the default id
 	 */
-	public void setBeanName(String beanName){
+	@Override
+	public void setBeanName(String beanName) {
 		super.setBeanName(beanName);
 		perspectiveManager.setPageName(beanName);
 	}
-	
+
 	/**
 	 * Set a list of perspectives for the page described by this class
 	 * 
 	 * @param perspectives
 	 */
-	public void setPerspectives(List perspectives){
+	public void setPerspectives(List perspectives) {
 		perspectiveManager.setPerspectives(perspectives);
 	}
-	
-    /**
-     * This sets the editor object that should be opened when the
-     * application is started.
-     * 
-     * @param initialEditorContents
-     */
-    public void setInitialEditorContents(Object initialEditorContents){
-    	this.initialEditorContents = initialEditorContents;
-    }
-    
-    public Object getInitialEditorContents(){
-    	return initialEditorContents;
-    }
-	
-	
-	
+
 	/**
-	 * Builds the initial page layout by iterating the
-	 * collection of view descriptors.
+	 * This sets the editor object that should be opened when the application is
+	 * started.
+	 * 
+	 * @param initialEditorContents
+	 */
+	public void setInitialEditorContents(Object initialEditorContents) {
+		this.initialEditorContents = initialEditorContents;
+	}
+
+	public Object getInitialEditorContents() {
+		return initialEditorContents;
+	}
+
+	/**
+	 * Builds the initial page layout by iterating the collection of view
+	 * descriptors.
 	 */
 	public void buildInitialLayout(PageLayoutBuilder pageLayout) {
 		log.debug("Building initial layout");
 		for (Iterator iter = _viewDescriptors.iterator(); iter.hasNext();) {
 			String viewDescriptorId = (String) iter.next();
-			pageLayout.addView(viewDescriptorId); 
-			if(log.isDebugEnabled()){
-				log.debug("Added "+viewDescriptorId+" to page layout");
+			pageLayout.addView(viewDescriptorId);
+			if (log.isDebugEnabled()) {
+				log.debug("Added " + viewDescriptorId + " to page layout");
 			}
 		}
 	}
-	
+
 	public List getViewDescriptors() {
 		return _viewDescriptors;
 	}

@@ -3,6 +3,7 @@ package org.joverseer.preferences;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.springframework.richclient.application.Application;
 
@@ -17,6 +18,7 @@ import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
  */
 public class PreferenceRegistry {
 	ArrayList<Preference> allPreferences = new ArrayList<Preference>();
+	HashMap<String, Preference> preferenceMap = new HashMap<String, Preference>();
 	String prefix;
 
 	public ArrayList<Preference> getAllPreferences() {
@@ -25,6 +27,10 @@ public class PreferenceRegistry {
 
 	public void setAllPreferences(ArrayList<Preference> allPreferences) {
 		this.allPreferences = allPreferences;
+		preferenceMap.clear();
+		for (Preference p : allPreferences) {
+			preferenceMap.put(p.getKey(), p);
+		}
 	}
 
 	public String getPrefix() {
@@ -36,10 +42,8 @@ public class PreferenceRegistry {
 	}
 
 	public String getPreferenceValue(String preferenceKey) {
-		for (Preference p : allPreferences) {
-			if (p.getKey().equals(preferenceKey)) {
-				return p.getValue(getPrefix());
-			}
+		if (preferenceMap.containsKey(preferenceKey)) {
+			return preferenceMap.get(preferenceKey).getValue(getPrefix());
 		}
 		return "";
 	}

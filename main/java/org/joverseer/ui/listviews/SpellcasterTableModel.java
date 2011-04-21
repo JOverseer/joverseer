@@ -16,93 +16,98 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class SpellcasterTableModel extends ItemTableModel {
-   
-    ArrayList<Integer> spells = new ArrayList<Integer>();
-    ArrayList<String> spellDescrs = new ArrayList<String>();
-    
-    public SpellcasterTableModel(MessageSource messageSource) {
-        super(SpellcasterWrapper.class, messageSource);
-    }
-    
-    
 
-    protected String[] createColumnPropertyNames() {
-        String[] cols = new String[] {"character", "hexNo", "nationNo", "mageRank", "artifactBonus"};
-        List<String> colList = new ArrayList<String>();
-        colList.addAll(Arrays.asList((String[])cols));
-        for (int i=0; i<100; i++) {
-        	colList.add("spell");
-        }
-        return colList.toArray(new String[]{});
-    }
+	ArrayList<Integer> spells = new ArrayList<Integer>();
+	ArrayList<String> spellDescrs = new ArrayList<String>();
 
-    protected Class[] createColumnClasses() {
-    	Class[] cols = new Class[] {String.class, String.class, String.class, Integer.class, Integer.class};
-        List<Class> colList = new ArrayList<Class>();
-        colList.addAll(Arrays.asList((Class[])cols));
-        for (int i=0; i<100; i++) {
-        	colList.add(Integer.class);
-        }
-        return colList.toArray(new Class[]{});
-    }
-    
-    public String[] createColumnNames() {
-        String[] colNames = new String[105];
-        colNames[0] = "Character";
-        colNames[1] = "Hex";
-        colNames[2] = "Nation";
-        colNames[3] = "Mage Rank";
-        colNames[4] = "Bonus";
-        for (int i=0; i<100; i++) {
-            colNames[i + getSpellStartI()] = "Spell " + (i + 1);
-        }
-        //colNames[13] = "Orders";
-        return colNames;
-    }
-    
-    public String getColumnName(int arg0) {
-        Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (g == null || !Game.isInitialized(g) || arg0 < getSpellStartI()) {
-        	return super.getColumnName(arg0);
-        }
-        if (arg0 - getSpellStartI() < spells.size()) {
-            return spellDescrs.get(arg0 - getSpellStartI());
-        }
-//        if (arg0 == 13) {
-//        	return super.getColumnName(arg0);
-//        }
-        return "";
-    }
+	public SpellcasterTableModel(MessageSource messageSource) {
+		super(SpellcasterWrapper.class, messageSource);
+	}
 
-    protected Object getValueAtInternal(Object object, int i) {
-        if (i <  getSpellStartI()) return super.getValueAtInternal(object, i);
-        if (i - getSpellStartI() < spells.size()) {
-            int spellId = spells.get(i - getSpellStartI());
-            SpellcasterWrapper sw = (SpellcasterWrapper)object;
-            if (spellId > 1000) {
-                // spirit mastery health drop effect
-                if (spellId == 1502) {
-                    return sw.getMageRank() / 3;
-                } else {
-                    return sw.getMageRank() / 2;
-                }
-            } else {
-                return sw.getProficiency(spellId);
-            }
-        }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		String[] cols = new String[] { "character", "hexNo", "nationNo", "mageRank", "artifactBonus" };
+		List<String> colList = new ArrayList<String>();
+		colList.addAll(Arrays.asList(cols));
+		for (int i = 0; i < 100; i++) {
+			colList.add("spell");
+		}
+		return colList.toArray(new String[] {});
+	}
 
-        return "";
-    }
-    
-    public ArrayList<Integer> getSpells() {
-        return spells;
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		Class[] cols = new Class[] { String.class, String.class, String.class, Integer.class, Integer.class };
+		List<Class> colList = new ArrayList<Class>();
+		colList.addAll(Arrays.asList(cols));
+		for (int i = 0; i < 100; i++) {
+			colList.add(Integer.class);
+		}
+		return colList.toArray(new Class[] {});
+	}
 
-    public ArrayList<String> getSpellDescrs() {
-        return spellDescrs;
-    }
+	@Override
+	public String[] createColumnNames() {
+		String[] colNames = new String[105];
+		colNames[0] = "Character";
+		colNames[1] = "Hex";
+		colNames[2] = "Nation";
+		colNames[3] = "Mage Rank";
+		colNames[4] = "Bonus";
+		for (int i = 0; i < 100; i++) {
+			colNames[i + getSpellStartI()] = "Spell " + (i + 1);
+		}
+		// colNames[13] = "Orders";
+		return colNames;
+	}
 
-    int getSpellStartI() {
-        return 5;
-    }
+	@Override
+	public String getColumnName(int arg0) {
+		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		if (g == null || !Game.isInitialized(g) || arg0 < getSpellStartI()) {
+			return super.getColumnName(arg0);
+		}
+		if (arg0 - getSpellStartI() < spells.size()) {
+			return spellDescrs.get(arg0 - getSpellStartI());
+		}
+		// if (arg0 == 13) {
+		// return super.getColumnName(arg0);
+		// }
+		return "";
+	}
+
+	@Override
+	protected Object getValueAtInternal(Object object, int i) {
+		if (i < getSpellStartI())
+			return super.getValueAtInternal(object, i);
+		if (i - getSpellStartI() < spells.size()) {
+			int spellId = spells.get(i - getSpellStartI());
+			SpellcasterWrapper sw = (SpellcasterWrapper) object;
+			if (spellId > 1000) {
+				// spirit mastery health drop effect
+				if (spellId == 1502) {
+					return sw.getMageRank() / 3;
+				} else {
+					return sw.getMageRank() / 2;
+				}
+			} else {
+				return sw.getProficiency(spellId);
+			}
+		}
+
+		return "";
+	}
+
+	public ArrayList<Integer> getSpells() {
+		return spells;
+	}
+
+	public ArrayList<String> getSpellDescrs() {
+		return spellDescrs;
+	}
+
+	int getSpellStartI() {
+		return 5;
+	}
 }

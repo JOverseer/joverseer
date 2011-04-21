@@ -10,51 +10,47 @@ import org.springframework.richclient.table.BeanTableModel;
 
 /**
  * Table model for population centers for the Economy Calculator
- *  
+ * 
  * @author Marios Skounakis
  */
 public class LostPopsTableModel extends BeanTableModel {
-    int selectedNationNo = -1;
-    
-    public LostPopsTableModel() {
-        super(PopulationCenter.class, (MessageSource) Application.instance().getApplicationContext().getBean("messageSource"));
-        setRowNumbers(false);
-    }
+	int selectedNationNo = -1;
 
-    protected String[] createColumnPropertyNames() {
-        return new String[] {
-                "name", 
-                "hexNo",
-                "size",
-                "fortification",
-                "loyalty",
-                "lostThisTurn"};
-    }
-    
-    protected Class[] createColumnClasses() {
-        return new Class[]{String.class, String.class, String.class, String.class, String.class, Boolean.class};
-    }
+	public LostPopsTableModel() {
+		super(PopulationCenter.class, (MessageSource) Application.instance().getApplicationContext().getBean("messageSource"));
+		setRowNumbers(false);
+	}
 
-    
-    public int getSelectedNationNo() {
-        return selectedNationNo;
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "name", "hexNo", "size", "fortification", "loyalty", "lostThisTurn" };
+	}
 
-    
-    public void setSelectedNationNo(int selectedNationNo) {
-        this.selectedNationNo = selectedNationNo;
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { String.class, String.class, String.class, String.class, String.class, Boolean.class };
+	}
 
-    protected boolean isCellEditableInternal(Object arg0, int arg1) {
-        return arg1 == 5;
-    }
+	public int getSelectedNationNo() {
+		return selectedNationNo;
+	}
 
-    protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
-        super.setValueAtInternal(arg0, arg1, arg2);
-        Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+	public void setSelectedNationNo(int selectedNationNo) {
+		this.selectedNationNo = selectedNationNo;
+	}
 
-    }
+	@Override
+	protected boolean isCellEditableInternal(Object arg0, int arg1) {
+		return arg1 == 5;
+	}
+
+	@Override
+	protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
+		super.setValueAtInternal(arg0, arg1, arg2);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+
+	}
 
 	@Override
 	protected Object getValueAtInternal(Object row, int columnIndex) {
@@ -66,6 +62,5 @@ public class LostPopsTableModel extends BeanTableModel {
 		}
 		return v;
 	}
-    
-    
+
 }

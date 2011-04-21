@@ -18,50 +18,49 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class LocateArtifactResultTableModel extends ItemTableModel {
-    public LocateArtifactResultTableModel(MessageSource messageSource) {
-        super(LocateArtifactResult.class, messageSource);
-    }
+	public LocateArtifactResultTableModel(MessageSource messageSource) {
+		super(LocateArtifactResult.class, messageSource);
+	}
 
-    protected String[] createColumnPropertyNames() {
-        return new String[]{"turnNo", "hexNo", "spellName", "artifactNo", "artifactName", "owner", "artifactPowers"};
-    }
+	@Override
+	protected String[] createColumnPropertyNames() {
+		return new String[] { "turnNo", "hexNo", "spellName", "artifactNo", "artifactName", "owner", "artifactPowers" };
+	}
 
-    protected Class[] createColumnClasses() {
-        return new Class[]{Integer.class, Integer.class, String.class, Integer.class, String.class, String.class, String.class};
-    }
-    
-    public ArrayList<LocateArtifactResult> getResults(Artifact artifact) {
-    	ArrayList<LocateArtifactResult> lars = new ArrayList<LocateArtifactResult>();
-    	DerivedFromSpellInfoSource dfsis = (DerivedFromSpellInfoSource)artifact.getInfoSource();
-    	lars.add(getResult(artifact, dfsis));
-    	for (InfoSource is : dfsis.getOtherInfoSources()) {
-    		if (DerivedFromSpellInfoSource.class.isInstance(is)) {
-    			lars.add(getResult(artifact, (DerivedFromSpellInfoSource)is));
-    		}
-    	}
-    	return lars;
-    }
-    
-    public LocateArtifactResult getResult(Artifact artifact, DerivedFromSpellInfoSource dfsis) {
-        LocateArtifactResult lar = new LocateArtifactResult();
-        lar.setHexNo(dfsis.getHexNo());
-        lar.setArtifactName(artifact.getName());
-        lar.setArtifactNo(artifact.getNumber());
-        lar.setOwner(artifact.getOwner());
-        lar.setSpellName(dfsis.getSpell() + " - " + dfsis.getCasterName());
-        
-        Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        ArtifactInfo ai = (ArtifactInfo)g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());
-        if (ai != null) {
-            lar.setArtifactPowers(ai.getPower1() != null ? ai.getPower1() : "");
-            lar.setArtifactPowers(
-                    lar.getArtifactPowers() + 
-                        (lar.getArtifactPowers().equals("") && ai.getPower2() != null ? "" : ", ") +
-                        (ai.getPower2() != null ? ai.getPower2() : ""));
-        }
-        
-        return lar;
-    }
-    
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Class[] createColumnClasses() {
+		return new Class[] { Integer.class, Integer.class, String.class, Integer.class, String.class, String.class, String.class };
+	}
+
+	public ArrayList<LocateArtifactResult> getResults(Artifact artifact) {
+		ArrayList<LocateArtifactResult> lars = new ArrayList<LocateArtifactResult>();
+		DerivedFromSpellInfoSource dfsis = (DerivedFromSpellInfoSource) artifact.getInfoSource();
+		lars.add(getResult(artifact, dfsis));
+		for (InfoSource is : dfsis.getOtherInfoSources()) {
+			if (DerivedFromSpellInfoSource.class.isInstance(is)) {
+				lars.add(getResult(artifact, (DerivedFromSpellInfoSource) is));
+			}
+		}
+		return lars;
+	}
+
+	public LocateArtifactResult getResult(Artifact artifact, DerivedFromSpellInfoSource dfsis) {
+		LocateArtifactResult lar = new LocateArtifactResult();
+		lar.setHexNo(dfsis.getHexNo());
+		lar.setArtifactName(artifact.getName());
+		lar.setArtifactNo(artifact.getNumber());
+		lar.setOwner(artifact.getOwner());
+		lar.setSpellName(dfsis.getSpell() + " - " + dfsis.getCasterName());
+
+		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());
+		if (ai != null) {
+			lar.setArtifactPowers(ai.getPower1() != null ? ai.getPower1() : "");
+			lar.setArtifactPowers(lar.getArtifactPowers() + (lar.getArtifactPowers().equals("") && ai.getPower2() != null ? "" : ", ") + (ai.getPower2() != null ? ai.getPower2() : ""));
+		}
+
+		return lar;
+	}
 
 }

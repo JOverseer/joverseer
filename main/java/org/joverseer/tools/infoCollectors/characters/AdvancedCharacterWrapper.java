@@ -220,11 +220,11 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	private ArtifactWrapper getArtifact(int i) {
-		Collections.sort(artifacts, new Comparator() {
+		Collections.sort(artifacts, new Comparator<ArtifactWrapper>() {
 
-			public int compare(Object o1, Object o2) {
+			public int compare(ArtifactWrapper o1, ArtifactWrapper o2) {
 				try {
-					return ((ArtifactWrapper) o1).getNumber() - ((ArtifactWrapper) o2).getNumber();
+					return o1.getNumber() - o2.getNumber();
 				} catch (Exception exc) {
 				}
 				;

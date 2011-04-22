@@ -1,3 +1,72 @@
+VERSION 1.0.8
+-------------
+22/4/2011
+
+	* New XML Format - various improvements, most notably:
+		o Added parsing for Scout Army results
+		o Added parsing for Double Agents
+		o Added parsing for Challenges
+		o Added parsing for Hostages
+		o Added parsing for Characters reported on Pop Centers
+		o Added parsing for Combats
+				
+	* Kin Strife
+		o Fixed a minor bug with the Orders tab which was causing incorrect highlighting for champions
+		
+	* Current Hex View
+		o Added option "Show Skill History" to Character menu
+		o Rendering of Characters Artifacts and Spells has been revamped
+		o Fixed a minor issue that was causing hostages to not always show in Current Hex View
+		o Reorganized Hex Info menu - bridge commands moved to submenu  
+		o Added preference to show information from the Army Estimates info view in the Current Hex View, when the army's composition is not known 
+		o The bridge manipulation commands in the Hex Info menu now automatically update both involved hexes. 
+		
+	* Information Panes
+		o Orders: added text filter
+		o Chars (adv): Added filter option "Active Only"
+		o Improvements to the Enemy Action Rumors info pane
+		o Friendly hostages are now correctly shown in the Chars (adv) tab
+		o Fixed an issue with unexpected errors when copying to clipboard from Artifacts tab and Chars (adv) tab
+		o Added "Copy To Clipboard Without Stat Annotations" command to the Chars (adv) tab
+		o Added preference (in Current Hex View group) to show the number of turns armies have enough food for. Shown only for fed armies. 	
+		o The active filters in the information tabs will now be kept when you change the turn 
+		
+	* Order Editor
+		o Added preference OrderEditor -> Auto Draw 
+			+ when set to yes, causes the order in the order editor to be automatically drawn. 
+			+ applies only when preference Auto Save is set to yes.
+		o Added button to Order Editor to "displace" move army orders that are being drawn - displace means that they are rendered displaced wrt the hex center, so that multiple orders can be drawn clearly 
+		o Added checkbox to Order Editor to control whether an order is drawn or not 
+		
+	* Econo Calc
+		o Added preference that can be used to automatically update the econ calc from buy/sell orders 
+		o Added button to Team Econ View to update all nations with order costs and market profits/costs. 
+		o Added button "Update Market" to EconoCalc that updates the market from buy and sell orders 
+		o Added "Show Price History" option to Econo Calc
+		
+	* Import Orders from Text
+		o JOverseer will now correctly read two-word character ids instead of splitting them in two parameters
+		o JOverseer will now correctly append trailing spaces to character ids when applicable.
+						 
+	* Other
+		o Cost of order 942 "Move Turn Map" properly calculated
+		o Added the cost for order 942 "Move Turn Map" to the Info page
+		o The "Set Allegiances" dialog now has a "Stop Asking" checkbox which can be used to cause the program to stop asking for allegiance changes
+		o The "Set Allegiances" dialog has been revamped
+		o Combat Calc now shows the number of rounds the battle will last
+		o Added option in "Help" menu to open up a web site with help about them map
+		o Small improvements to OrderChecker integration
+		o Added confirmation before deleting Characters/Armies/Pop Centers
+		o Added "Edit Game" option in the Game menu which allows the user to change the game's default nation - useful when using someone else's jov file 
+		o Fixed Uruial outcome, FP + MEEK = ESCAPE
+		o Hex 3028 now has all major river hexsides
+		o Ford at 2706 SW removed
+		o Added the ability to remove docks or fortifications when editing a pop center 
+		o Fixed an issue with importing the same enemy army from multiple turns - sometime you didn't get the most information 
+		o Sabotaged bridges are now parsed from the nation messages. 
+		o Fixed saving bridge information - bridges information is now kept on a per-turn basis. 
+				 
+
 VERSION 1.0.7
 -------------
 

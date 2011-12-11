@@ -46,7 +46,6 @@ public class MapTooltipHolder {
 			if (obj == null) {
 				tooltipText = null;
 			} else {
-				System.out.println("Tooltip found " + obj);
 				if (Army.class.isInstance(obj)) {
 					tooltipText = ((Army) obj).getCommanderName();
 				} else if (Character.class.isInstance(obj)) {

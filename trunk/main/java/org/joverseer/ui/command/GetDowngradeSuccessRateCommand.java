@@ -16,7 +16,8 @@ public class GetDowngradeSuccessRateCommand extends ActionCommand {
         super("getDowngradeSuccessRateCommand");
     }
     
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	Game game = GameHolder.instance().getGame();
     	
     	for (int i=0; i<=game.getMaxTurn(); i++) {

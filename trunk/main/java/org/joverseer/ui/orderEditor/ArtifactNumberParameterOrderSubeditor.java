@@ -15,8 +15,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -37,8 +35,9 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
         this.paramName = paramName;
     }
     
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName), "colspec=left:70px");
+    @Override
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         try {
             DecimalFormat f = new DecimalFormat();
             f.setDecimalSeparatorAlwaysShown(false);
@@ -47,11 +46,12 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
             //pnl.setBorder(new EmptyBorder(0, 0, 0, 0));
             pnl.setBackground(Color.white);
             TableLayoutBuilder tlb2 = new TableLayoutBuilder(pnl);
-            tlb2.cell(parameter = new JFormattedTextField(f), "colspec=left:35px");
-            parameter.setText(o.getParameter(paramNo));
-            parameter.setPreferredSize(new Dimension(30, 18));
-            parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
-    			public void drop(DropTargetDropEvent dtde) {
+            tlb2.cell(this.parameter = new JFormattedTextField(f), "colspec=left:35px");
+            this.parameter.setText(o.getParameter(paramNo));
+            this.parameter.setPreferredSize(new Dimension(30, 18));
+            this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
+    			@Override
+				public void drop(DropTargetDropEvent dtde) {
     	                try {
     	                	Transferable t = dtde.getTransferable();
     	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
@@ -64,8 +64,8 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     	                	} else {
     	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
     	                	}
-    	                	parameter.setText(txt);
-    	                    parameter.requestFocus();
+    	                	ArtifactNumberParameterOrderSubeditor.this.parameter.setText(txt);
+    	                    ArtifactNumberParameterOrderSubeditor.this.parameter.requestFocus();
     	                    updateArtifactNumber();
     	                }
     	                catch (Exception exc) {
@@ -73,14 +73,14 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     	                }
     			}
             }));
-            attachAutoUpdateDocumentListener(parameter);
-            components.add(parameter);
+            attachAutoUpdateDocumentListener(this.parameter);
+            components.add(this.parameter);
             
-            artifactName = new JTextField();
-            artifactName.setEditable(false);
-            artifactName.setPreferredSize(new Dimension(145, 18));
-            artifactName.setFocusable(false);
-            tlb2.cell(artifactName, "colspec=left:160px rowspec=20px");
+            this.artifactName = new JTextField();
+            this.artifactName.setEditable(false);
+            this.artifactName.setPreferredSize(new Dimension(145, 18));
+            this.artifactName.setFocusable(false);
+            tlb2.cell(this.artifactName, "colspec=left:160px rowspec=20px");
             updateArtifactNumber();
             tlb.cell(tlb2.getPanel(), "colspec=left:225px");
             tlb.gapCol();
@@ -98,7 +98,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
 	}
     
     protected void updateArtifactNumber() {
-    	String artiNoStr = parameter.getText();
+    	String artiNoStr = this.parameter.getText();
     	String artiName = "";
     	try {
     		int artiNo = Integer.parseInt(artiNoStr);
@@ -111,10 +111,10 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     	catch (Exception exc) {
     		
     	}
-    	artifactName.setText(artiName);
+    	this.artifactName.setText(artiName);
     	if (!artiName.equals("")) {
-    		artifactName.setSelectionStart(0);
-    		artifactName.setSelectionEnd(0);
+    		this.artifactName.setSelectionStart(0);
+    		this.artifactName.setSelectionEnd(0);
     	}
     }
 }

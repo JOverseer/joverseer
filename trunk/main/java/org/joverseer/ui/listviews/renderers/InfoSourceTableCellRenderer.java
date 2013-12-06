@@ -84,7 +84,8 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
         return strValue;
     }
     
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String strValue = getInfoSourceDescription((InfoSource)value);
         return super.getTableCellRendererComponent(table, strValue, isSelected, hasFocus, row, column);
     }

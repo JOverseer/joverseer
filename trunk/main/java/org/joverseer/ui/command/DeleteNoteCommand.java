@@ -24,16 +24,17 @@ public class DeleteNoteCommand extends ActionCommand {
         this.note = note;
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        g.getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
+        g.getTurn().getContainer(TurnElementsEnum.Notes).removeItem(this.note);
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
         Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), note, this));
+                new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), this.note, this));
         Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), note, this));
+                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this.note, this));
 
     }
 

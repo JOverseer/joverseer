@@ -43,7 +43,7 @@ public class HighlightDegradeCandidates extends ActionCommand {
 	}
 
 	public int getLoyaltyThreshold() {
-		return loyaltyThreshold;
+		return this.loyaltyThreshold;
 	}
 
 	public void setLoyaltyThreshold(int loyaltyThreshold) {

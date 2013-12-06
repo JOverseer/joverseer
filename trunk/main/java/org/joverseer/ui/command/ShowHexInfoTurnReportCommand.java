@@ -18,7 +18,8 @@ public class ShowHexInfoTurnReportCommand extends ActionCommand {
         super("showHexInfoTurnReportCommand");
     }
     
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
 
         HexInfoTurnReportMapItem hitrmi = new HexInfoTurnReportMapItem();

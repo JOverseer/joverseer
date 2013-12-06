@@ -17,18 +17,20 @@ public class HostageInfoSource extends InfoSource {
     }
 
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
     }
 
-    public String getDescription() {
-        return String.valueOf(nationNo);
+    @Override
+	public String getDescription() {
+        return String.valueOf(this.nationNo);
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
     	return "Hostage";
     }
 }

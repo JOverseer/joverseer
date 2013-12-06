@@ -53,9 +53,9 @@ public class CombatViewer extends ObjectViewer {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
-		glb.append(description = new JTextField());
-		description.setPreferredSize(new Dimension(200, 12));
-		description.setBorder(null);
+		glb.append(this.description = new JTextField());
+		this.description.setPreferredSize(new Dimension(200, 12));
+		this.description.setBorder(null);
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 		JButton btnMenu = new JButton();
@@ -100,8 +100,8 @@ public class CombatViewer extends ObjectViewer {
 			Nation n = game.getMetadata().getNationByNum(nationNo);
 			d += (!d.equals("") ? ", " : "") + n.getShortName();
 		}
-		description.setText("Combat: " + d);
-		description.setCaretPosition(0);
+		this.description.setText("Combat: " + d);
+		this.description.setCaretPosition(0);
 	}
 
 	private class ShowDescriptionCommand extends ActionCommand {
@@ -118,7 +118,7 @@ public class CombatViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Combat c = (org.joverseer.domain.Combat) getFormObject();
-			DialogsUtility.showCombatNarration(c, nationNo);
+			DialogsUtility.showCombatNarration(c, this.nationNo);
 		}
 
 	}

@@ -48,7 +48,7 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
 
 	public JideApplicationWindow(DefaultDockableHolder dockableHolder){
         this(dockableHolder, Application.instance().getWindowManager().size());
-        logger.debug("Constructing JIDE Application Window");
+        this.logger.debug("Constructing JIDE Application Window");
 	}
 	
 	public JideApplicationWindow(DefaultDockableHolder dockableHolder, int number){
@@ -62,9 +62,10 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
      * the center part of the frame. The JIDE docking framework
      * actually sets these, via the DefaultDockableHolder.
      */
-    protected void applyStandardLayout(JFrame windowControl,
+    @Override
+	protected void applyStandardLayout(JFrame windowControl,
                                        ApplicationWindowConfigurer configurer) {
-    	logger.info("Applying standard layout");
+    	this.logger.info("Applying standard layout");
     	windowControl.setTitle(configurer.getTitle());
         windowControl.setIconImage(configurer.getImage());
         windowControl.setJMenuBar(createMenuBarControl());
@@ -76,6 +77,7 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
      * This returns null since it is not actually used as the applyStandardLayout has
      * been overridden to pass control for the standard layout to the JIDE framework
      */
+	@Override
 	protected JComponent createWindowContentPane() {
 		return null;
 	}
@@ -83,8 +85,9 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
 	/**
 	 * The window control is the JIDE dockable holder, so return that.
 	 */
-    protected JFrame createNewWindowControl() {
-		return (JFrame)dockableHolder;
+    @Override
+	protected JFrame createNewWindowControl() {
+		return (JFrame)this.dockableHolder;
     }
     
     /**
@@ -92,20 +95,21 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
      * applying the layout. Also updates the show view command menu
      * to list the views within the page.
      */
+	@Override
 	protected void setActivePage(ApplicationPage page) {
-		logger.debug("Setting active page to "+page.getId());
+		this.logger.debug("Setting active page to "+page.getId());
     	getPage().getControl(); 
     	loadLayoutData(page.getId());
     	((JideApplicationPage)getPage()).updateShowViewCommands();
 	}
 
     public DockingManager getDockingManager(){
-    	return dockableHolder.getDockingManager();
+    	return this.dockableHolder.getDockingManager();
     }
     
     public void loadLayoutData(String pageId) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Loading layout data for page "+pageId);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Loading layout data for page "+pageId);
 		}
 	/*
 	 * Logic: if the current perspective is either the null on (first time
@@ -114,7 +118,7 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
 		PerspectiveManager perspectiveManager = ((JideApplicationPage)getPage()).getPerspectiveManager();
 		Perspective perspective = perspectiveManager.getCurrentPerspective();
 		if(perspective == NullPerspective.NULL_PERSPECTIVE || 
-				!LayoutManager.isValidLayout(dockableHolder.getDockingManager(), pageId, perspective)){
+				!LayoutManager.isValidLayout(this.dockableHolder.getDockingManager(), pageId, perspective)){
 			perspective = perspectiveManager.getDefaultPerspective();
 		}
 		perspective.switchPerspective(this, pageId, false);
@@ -123,8 +127,8 @@ public class JideApplicationWindow extends AbstractApplicationWindow {
     public void saveLayoutData() {
     	Perspective perspective = ((JideApplicationPage)getPage()).getPerspectiveManager().getCurrentPerspective();
 		LayoutManager.savePageLayoutData(getDockingManager(), getPage().getId(), perspective.getId());
-		if(logger.isDebugEnabled()){
-			logger.debug("Saving page layout for page "+ getPage().getId()+" and perspective "+perspective.getId());
+		if(this.logger.isDebugEnabled()){
+			this.logger.debug("Saving page layout for page "+ getPage().getId()+" and perspective "+perspective.getId());
 		}
     }
 }

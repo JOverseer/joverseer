@@ -44,7 +44,7 @@ public class CombatWrapper {
 	boolean naval = false;
 
 	public boolean isNaval() {
-		return naval;
+		return this.naval;
 	}
 
 	public void setNaval(boolean naval) {
@@ -52,7 +52,7 @@ public class CombatWrapper {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -60,7 +60,7 @@ public class CombatWrapper {
 	}
 
 	public String getNarration() {
-		return narration;
+		return this.narration;
 	}
 
 	public void setNarration(String narration) {
@@ -68,7 +68,7 @@ public class CombatWrapper {
 	}
 
 	public Container<CombatArmy> getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	public void setArmies(Container<CombatArmy> armies) {
@@ -76,7 +76,7 @@ public class CombatWrapper {
 	}
 
 	public String getPopCenterOutcome() {
-		return popCenterOutcome;
+		return this.popCenterOutcome;
 	}
 
 	public void setPopCenterOutcome(String popCenterOutcome) {
@@ -84,7 +84,7 @@ public class CombatWrapper {
 	}
 
 	public String getPopName() {
-		return popName;
+		return this.popName;
 	}
 
 	public void setPopName(String popName) {
@@ -92,7 +92,7 @@ public class CombatWrapper {
 	}
 
 	public String getPopSize() {
-		return popSize;
+		return this.popSize;
 	}
 
 	public void setPopSize(String popSize) {
@@ -100,7 +100,7 @@ public class CombatWrapper {
 	}
 
 	public String getPopFort() {
-		return popFort;
+		return this.popFort;
 	}
 
 	public void setPopFort(String popFort) {
@@ -108,7 +108,7 @@ public class CombatWrapper {
 	}
 
 	public String getPopNation() {
-		return popNation;
+		return this.popNation;
 	}
 
 	public void setPopNation(String popNation) {
@@ -116,7 +116,7 @@ public class CombatWrapper {
 	}
 
 	public String getPopOutcomeNation() {
-		return popOutcomeNation;
+		return this.popOutcomeNation;
 	}
 
 	public void setPopOutcomeNation(String popOutcomeNation) {
@@ -136,10 +136,10 @@ public class CombatWrapper {
 		parse(getNarration());
 	}
 
-	public void parse(String narration) {
+	public void parse(String narration1) {
 		System.out.println("Parsing battle at " + getHexNo());
 		// parse char results
-		String txt = narration.replace("\n", " ").replace("\r", " ");
+		String txt = narration1.replace("\n", " ").replace("\r", " ");
 		while (txt.indexOf("  ") > -1) {
 			txt = txt.replace("  ", " ");
 		}
@@ -157,7 +157,7 @@ public class CombatWrapper {
 				String wounds = txt.substring(i + injured.length(), k);
 				System.out.println(charName + " suffered " + wounds + " wounds.");
 				wounds = wounds + " wounds";
-				addToList(charName, wounds, characterWounds);
+				addToList(charName, wounds, this.characterWounds);
 				i = i + injured.length();
 			}
 		} while (i > -1);
@@ -174,7 +174,7 @@ public class CombatWrapper {
 				String commanderName = txt.substring(j + 1, i).trim();
 				String aLosses = txt.substring(i + losses.length(), k);
 				System.out.println(commanderName + "'s had " + aLosses + " losses.");
-				addToList(commanderName, aLosses, armyLosses);
+				addToList(commanderName, aLosses, this.armyLosses);
 
 				i = i + losses.length();
 			}
@@ -195,7 +195,7 @@ public class CombatWrapper {
 				String commanderName = txt.substring(j + 1, i).trim();
 				String aLosses = txt.substring(i1 + losses1.length(), k);
 				System.out.println(commanderName + "'s had " + aLosses + " losses against the pop center.");
-				addToList(commanderName, aLosses, armyLosses);
+				addToList(commanderName, aLosses, this.armyLosses);
 
 				i = i1 + losses1.length();
 			} else {
@@ -214,7 +214,7 @@ public class CombatWrapper {
 				int j = txt.lastIndexOf(".", i);
 				String commanderName = txt.substring(j + 1, i).trim();
 				System.out.println(commanderName + "'s were destroyed.");
-				addToList(commanderName, "destroyed", armyLosses);
+				addToList(commanderName, "destroyed", this.armyLosses);
 				i = i + losses.length();
 			}
 		} while (i > -1);
@@ -229,14 +229,14 @@ public class CombatWrapper {
 				int j = txt.lastIndexOf(".", i);
 				String commanderName = txt.substring(j + 1, i).trim();
 				System.out.println(commanderName + "'s found no enemies to fight.");
-				addToList(commanderName, null, armyLosses);
+				addToList(commanderName, null, this.armyLosses);
 				i = i + losses.length();
 			}
 		} while (i > -1);
 	}
 
 	public void updateGame(Game game, int turnNo, int nationNo) {
-		for (String charName : characterWounds.keySet()) {
+		for (String charName : this.characterWounds.keySet()) {
 			Character c = (Character) game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", charName);
 			if (c == null) {
 				// do nothing
@@ -244,7 +244,7 @@ public class CombatWrapper {
 				if (c.getInformationSource() == InformationSourceEnum.exhaustive || c.getInformationSource() == InformationSourceEnum.detailed)
 					continue;
 				// update health
-				ArrayList<String> woundsDescrList = characterWounds.get(charName);
+				ArrayList<String> woundsDescrList = this.characterWounds.get(charName);
 				for (String woundsDescr : woundsDescrList) {
 					woundsDescr = woundsDescr.substring(0, 1).toUpperCase() + woundsDescr.substring(1);
 					String healthRange = InfoUtils.getHealthRangeFromWounds(woundsDescr);
@@ -273,7 +273,7 @@ public class CombatWrapper {
 	public ArrayList<ArmyEstimate> getArmyEstimates() {
 		ArrayList<ArmyEstimate> ret = new ArrayList<ArmyEstimate>();
 		Game game = GameHolder.instance().getGame();
-		for (CombatArmy ca : armies.getItems()) {
+		for (CombatArmy ca : this.armies.getItems()) {
 			try {
 				String commander = ca.getCommanderName().trim();
 				String commanderTitle = ca.getCommanderTitle();
@@ -302,8 +302,8 @@ public class CombatWrapper {
 				ae.setCommanderName(commanderName);
 				ae.setCommanderTitle(commanderTitle == null ? "" : commanderTitle);
 				ae.setHexNo(getHexNo());
-				if (armyLosses.get(ae.getCommanderName()) != null) {
-					for (String l : armyLosses.get(ae.getCommanderName())) {
+				if (this.armyLosses.get(ae.getCommanderName()) != null) {
+					for (String l : this.armyLosses.get(ae.getCommanderName())) {
 						if (l == null)
 							continue;
 						ae.getLossesDescriptions().add(l);
@@ -409,17 +409,17 @@ public class CombatWrapper {
 		return getRangeAverage(rangeString, 100);
 	}
 
-	public void parseNavalConflict(String narration) {
+	public void parseNavalConflict(String narration1) {
 		setNaval(true);
 		String army_start = "At the head of a fleet of";
 		String report_start = "On that day in history";
 		String army_end = army_start + "|" + report_start;
-		String cleanNarration = StringUtils.removeExtraspaces(StringUtils.removeAllNewline(narration));
+		String cleanNarration = StringUtils.removeExtraspaces(StringUtils.removeAllNewline(narration1));
 		ArrayList<String> armyTexts = StringUtils.getParts(cleanNarration, army_start, army_end, true, false);
 		for (String armyText : armyTexts) {
 			String commander = StringUtils.getUniquePart(armyText, "was ", " of the nation of ", false, false);
 			String nation = StringUtils.getUniquePart(armyText, "of the nation of ", "\\.", false, false);
-			String commanderTitle = StringUtils.getFirstWord(commander);
+			//String commanderTitle = StringUtils.getFirstWord(commander);
 			String commanderName = StringUtils.stripFirstWord(commander);
 			if (nation.startsWith("the "))
 				nation = StringUtils.stripFirstWord(nation);
@@ -450,7 +450,7 @@ public class CombatWrapper {
 			if (cleanNarration.contains(survived)) {
 				String lossesSentence = StringUtils.getUniquePart(cleanNarration, survived, "\\.", true, true);
 				String losses = StringUtils.getUniquePart(lossesSentence, "but suffered ", " losses", false, false);
-				addToList(ca.getCommanderName(), losses, armyLosses);
+				addToList(ca.getCommanderName(), losses, this.armyLosses);
 				ca.setSurvived(true);
 			} else if (cleanNarration.contains(destroyed)) {
 				ca.setSurvived(false);
@@ -463,17 +463,18 @@ public class CombatWrapper {
 				ca.setCommanderOutcome("survived");
 			}
 
-			armies.addItem(ca);
+			this.armies.addItem(ca);
 		}
 		return;
 	}
 
-	public void parseAll(String narration) {
+	@SuppressWarnings("unused")
+	public void parseAll(String narration1) {
 		try {
-			armies.clear();
-			narration = narration.replace("…", "");
-			if (narration.contains("naval conflict")) {
-				parseNavalConflict(narration);
+			this.armies.clear();
+			narration1 = narration1.replace("…", "");
+			if (narration1.contains("naval conflict")) {
+				parseNavalConflict(narration1);
 				return;
 			}
 			String army_start = "At the head of a ";
@@ -485,21 +486,21 @@ public class CombatWrapper {
 			String behind_him = "Behind him the forming ranks were filled with:";
 			String battle_joined = "After the battle had joined";
 			String after_the_battle = "After the battle\\.";
-			ArrayList<String> armyTexts = StringUtils.getParts(narration, army_start, army_end, true, false);
+			ArrayList<String> armyTexts = StringUtils.getParts(narration1, army_start, army_end, true, false);
 
 			for (String armyText : armyTexts) {
 				CombatArmy ca = parseArmy(armyText);
 				if (ca != null) {
-					armies.addItem(ca);
+					this.armies.addItem(ca);
 				}
 			}
 
-			String popCenter = StringUtils.getUniquePart(narration, pop_start, report_start, true, false);
+			String popCenter = StringUtils.getUniquePart(narration1, pop_start, report_start, true, false);
 			if (popCenter == null) {
-				popCenter = StringUtils.getUniquePart(narration, pop_start, "After the battle\\.\\.\\.\\. ", true, false);
+				popCenter = StringUtils.getUniquePart(narration1, pop_start, "After the battle\\.\\.\\.\\. ", true, false);
 			}
 
-			String outcomePart = StringUtils.getUniquePart(narration, after_the_battle, null, false, false);
+			String outcomePart = StringUtils.getUniquePart(narration1, after_the_battle, null, false, false);
 			if (outcomePart != null) {
 				outcomePart = StringUtils.removeAllNewline(outcomePart);
 				outcomePart = StringUtils.removeExtraspaces(outcomePart);
@@ -511,21 +512,21 @@ public class CombatWrapper {
 					armyOutcome = outcomePart.substring(0, i);
 				}
 
-				for (CombatArmy ca : armies.getItems()) {
+				for (CombatArmy ca : this.armies.getItems()) {
 					String forces = ca.getCommanderName() + "'s forces";
 					String forceOutcome = StringUtils.getUniquePart(armyOutcome, forces, "\\.", true, true);
 					if (forceOutcome == null) {
 						ca.setSurvived(true);
 					} else if (forceOutcome.contains("victorious")) {
 						String losses = StringUtils.getUniquePart(forceOutcome, "suffered", "losses", false, false);
-						addToList(ca.getCommanderName(), losses, armyLosses);
+						addToList(ca.getCommanderName(), losses, this.armyLosses);
 						ca.setSurvived(true);
 					} else if (forceOutcome.contains("destroyed/routed")) {
 						ca.setSurvived(false);
-						addToList(ca.getCommanderName(), "destroyed", armyLosses);
+						addToList(ca.getCommanderName(), "destroyed", this.armyLosses);
 					} else if (forceOutcome.contains("found no enemy armies to fight.")) {
 						ca.setSurvived(true);
-						addToList(ca.getCommanderName(), null, armyLosses);
+						addToList(ca.getCommanderName(), null, this.armyLosses);
 					}
 					String commanderSurvived = ca.getCommanderName() + " appeared to have survived.";
 					String commanderCaptured = ca.getCommanderName() + " was captured.";
@@ -549,16 +550,16 @@ public class CombatWrapper {
 					popCenter = StringUtils.removeAllNewline(popCenter);
 					popCenter = StringUtils.removeExtraspaces(popCenter);
 					String popNationOriginal = StringUtils.getUniquePart(popCenter, "flying the flag of ", " is situated", false, false);
-					popName = StringUtils.getUniquePart(popCenter, pop_start, " flying", false, false);
-					if (popName.startsWith("of "))
-						popName = StringUtils.stripFirstWord(popName);
-					popSize = StringUtils.getUniquePart(popCenter, pop_start, " of", true, false);
-					if (popSize.startsWith("The "))
-						popSize = StringUtils.stripFirstWord(popSize);
-					popFort = StringUtils.getUniquePart(popCenter, "It is fortified by a ", "\\,", false, false);
+					this.popName = StringUtils.getUniquePart(popCenter, pop_start, " flying", false, false);
+					if (this.popName.startsWith("of "))
+						this.popName = StringUtils.stripFirstWord(this.popName);
+					this.popSize = StringUtils.getUniquePart(popCenter, pop_start, " of", true, false);
+					if (this.popSize.startsWith("The "))
+						this.popSize = StringUtils.stripFirstWord(this.popSize);
+					this.popFort = StringUtils.getUniquePart(popCenter, "It is fortified by a ", "\\,", false, false);
 					if (popNationOriginal.startsWith("the "))
 						popNationOriginal = StringUtils.stripFirstWord(popNationOriginal);
-					popNation = popNationOriginal;
+					this.popNation = popNationOriginal;
 					if (popOutcome == null) {
 						setPopCenterOutcome("not affected");
 					} else {
@@ -580,18 +581,18 @@ public class CombatWrapper {
 								setPopCenterOutcome("not affected");
 							}
 						}
-						for (CombatArmy ca : armies.getItems()) {
+						for (CombatArmy ca : this.armies.getItems()) {
 							String forces = ca.getCommanderName() + "'s army ";
 							String forceOutcome = StringUtils.getUniquePart(popOutcome, forces, "\\.", true, true);
 							if (forceOutcome == null) {
 								ca.setSurvived(true);
 							} else if (forceOutcome.contains("survived")) {
 								String losses = StringUtils.getUniquePart(forceOutcome, "suffered", "losses", false, false);
-								addToList(ca.getCommanderName(), losses, armyLosses);
+								addToList(ca.getCommanderName(), losses, this.armyLosses);
 								ca.setSurvived(true);
 							} else if (forceOutcome.contains("destroyed")) {
 								ca.setSurvived(false);
-								addToList(ca.getCommanderName(), "destroyed", armyLosses);
+								addToList(ca.getCommanderName(), "destroyed", this.armyLosses);
 							}
 						}
 					}
@@ -632,7 +633,7 @@ public class CombatWrapper {
 
 	public ArrayList<CombatArmy> getCombatArmies(NationAllegianceEnum notOfAllegiance) {
 		ArrayList<CombatArmy> ret = new ArrayList<CombatArmy>();
-		for (CombatArmy ca : armies.getItems()) {
+		for (CombatArmy ca : this.armies.getItems()) {
 			if (notOfAllegiance == null) {
 				ret.add(ca);
 				continue;
@@ -657,7 +658,7 @@ public class CombatWrapper {
 
 	public ArrayList<Nation> getNations(NationAllegianceEnum notOfAllegiance) {
 		ArrayList<Nation> ret = new ArrayList<Nation>();
-		for (CombatArmy ca : armies.getItems()) {
+		for (CombatArmy ca : this.armies.getItems()) {
 			Nation n = NationMap.getNationFromName(ca.getNation());
 			if (ret.contains(n))
 				continue;

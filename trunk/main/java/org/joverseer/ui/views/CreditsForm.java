@@ -27,27 +27,29 @@ public class CreditsForm extends AbstractForm implements HyperlinkListener {
         super(arg0, PAGE_NAME);
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-        editor = new JEditorPane();
-        editor.setEditable(false);
-        editor.setPreferredSize(new Dimension(750, 500));
+        this.editor = new JEditorPane();
+        this.editor.setEditable(false);
+        this.editor.setPreferredSize(new Dimension(750, 500));
         try {
-            editor.setPage(((Resource)getFormObject()).getURL());
+            this.editor.setPage(((Resource)getFormObject()).getURL());
         }
         catch (Exception exc) {
             System.out.println(exc.getMessage());
         }
-        JScrollPane scp = new JScrollPane(editor); 
+        JScrollPane scp = new JScrollPane(this.editor); 
         scp.setPreferredSize(new Dimension(750, 500));
         glb.append(scp);
         glb.nextLine();
         return glb.getPanel();
     }
 
-    public void hyperlinkUpdate(HyperlinkEvent arg0) {
+    @Override
+	public void hyperlinkUpdate(HyperlinkEvent arg0) {
         try {
-            editor.setPage(arg0.getURL());
+            this.editor.setPage(arg0.getURL());
         }
         catch (Exception exc) {
             System.out.println(exc.getMessage());

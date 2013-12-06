@@ -7,7 +7,7 @@ public class RequiredParameterNumberCheck extends AbstractCheck {
     int parameterNumber;
     
     public int getParameterNumber() {
-        return parameterNumber;
+        return this.parameterNumber;
     }
     
     public void setParameterNumber(int parameterNumber) {
@@ -19,11 +19,13 @@ public class RequiredParameterNumberCheck extends AbstractCheck {
         this.parameterNumber = parameterNumber;
     }
 
-    public boolean check(Order o) {
+    @Override
+	public boolean check(Order o) {
         return o.getParameters().split(" ").length == getParameterNumber();
     }
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return "The required information for the order was not supplied.";
     }
     

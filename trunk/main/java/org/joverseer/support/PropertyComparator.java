@@ -8,11 +8,12 @@ public class PropertyComparator<X> implements Comparator<X> {
 	BeanComparator peer;
 
 	public PropertyComparator(String property) {
-		peer = new BeanComparator(property);
+		this.peer = new BeanComparator(property);
 	}
 
+	@Override
 	public int compare(X o1, X o2) {
-		return peer.compare(o1, o2);
+		return this.peer.compare(o1, o2);
 	}
 
 }

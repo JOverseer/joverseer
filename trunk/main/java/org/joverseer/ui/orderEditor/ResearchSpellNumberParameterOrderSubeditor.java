@@ -20,10 +20,11 @@ public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParam
         super(paramName, o, orderNo);
     }
 
-    protected void loadSpellCombo() {
+    @Override
+	protected void loadSpellCombo() {
         GameMetadata gm = GameHolder.instance().getGame().getMetadata();
         Character c = getOrder().getCharacter();
-        parameter.addItem("");
+        this.parameter.addItem("");
         for (SpellInfo si : (ArrayList<SpellInfo>) gm.getSpells().getItems()) {
             boolean found = false;
             for (SpellProficiency sp : c.getSpells()) {
@@ -31,7 +32,7 @@ public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParam
                     found = true;
                 }
             }
-            parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
+            this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
         }
     }
 

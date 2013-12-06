@@ -67,10 +67,10 @@ public class CharacterInfoCollector implements ApplicationListener {
 		Game game = GameHolder.instance().getGame();
 		if (turnNo == -1)
 			turnNo = game.getCurrentTurn();
-		if (!turnInfo.containsKey(turnNo)) {
-			turnInfo.put(turnNo, computeWrappersForTurn(turnNo));
+		if (!this.turnInfo.containsKey(turnNo)) {
+			this.turnInfo.put(turnNo, computeWrappersForTurn(turnNo));
 		}
-		return turnInfo.get(turnNo).getItems();
+		return this.turnInfo.get(turnNo).getItems();
 	}
 
 	public AdvancedCharacterWrapper getCharacterForTurn(String name, int turnNo) {
@@ -78,7 +78,7 @@ public class CharacterInfoCollector implements ApplicationListener {
 			return null;
 		}
 		getWrappersForTurn(turnNo);
-		Container<AdvancedCharacterWrapper> ret = turnInfo.get(turnNo);
+		Container<AdvancedCharacterWrapper> ret = this.turnInfo.get(turnNo);
 		return ret.findFirstByProperty("name", name);
 	}
 
@@ -417,11 +417,12 @@ public class CharacterInfoCollector implements ApplicationListener {
 		}
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				turnInfo.clear();
+				this.turnInfo.clear();
 			}
 		}
 	}

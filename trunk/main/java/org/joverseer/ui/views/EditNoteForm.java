@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
@@ -75,7 +76,7 @@ public class EditNoteForm extends AbstractForm {
 		area.setWrapStyleWord(true);
 		area.setBorder(null);
 		JScrollPane scp = (JScrollPane) formBuilder.addInScrollPane(tb)[1];
-		scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scp.setPreferredSize(new Dimension(350, 150));
 		return formBuilder.getForm();
 	}

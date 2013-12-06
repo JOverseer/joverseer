@@ -11,6 +11,7 @@ public class PositiveListViewFilter extends AbstractListViewFilter {
 		super(null);
 	}
 
+	@Override
 	public boolean accept(Object obj) {
 		return true;
 	}

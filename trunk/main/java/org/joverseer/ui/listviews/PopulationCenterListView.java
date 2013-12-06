@@ -43,16 +43,16 @@ public class PopulationCenterListView extends ItemListView {
 	@Override
 	protected JComponent createControlImpl() {
 		JComponent c = super.createControlImpl();
-		table.setDefaultRenderer(InfoSource.class, new PopCenterInfoSourceTableCellRenderer(tableModel));
+		this.table.setDefaultRenderer(InfoSource.class, new PopCenterInfoSourceTableCellRenderer(this.tableModel));
 		return c;
 	}
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-		filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-		filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}) };
+		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
+		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}) };
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class PopulationCenterListView extends ItemListView {
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(table) }) };
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table) }) };
 	}
 
 	@Override
@@ -90,15 +90,15 @@ public class PopulationCenterListView extends ItemListView {
 	 */
 	@Override
 	protected void startDragAndDropAction(MouseEvent e) {
-		final PopulationCenter[] selectedItems = new PopulationCenter[table.getSelectedRowCount()];
+		final PopulationCenter[] selectedItems = new PopulationCenter[this.table.getSelectedRowCount()];
 		String copyString = "";
-		for (int i = 0; i < table.getSelectedRowCount(); i++) {
-			int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(table.getSelectedRows()[i]);
-			PopulationCenter a = (PopulationCenter) tableModel.getRow(idx);
+		for (int i = 0; i < this.table.getSelectedRowCount(); i++) {
+			int idx = ((SortableTableModel) this.table.getModel()).convertSortedIndexToDataIndex(this.table.getSelectedRows()[i]);
+			PopulationCenter a = (PopulationCenter) this.tableModel.getRow(idx);
 			selectedItems[i] = a;
 			String ln = "";
-			for (int j = 0; j < table.getColumnCount(); j++) {
-				Object v = table.getValueAt(i, j);
+			for (int j = 0; j < this.table.getColumnCount(); j++) {
+				Object v = this.table.getValueAt(i, j);
 				if (v == null)
 					v = "";
 				ln += (ln.equals("") ? "" : "\t") + v;
@@ -121,8 +121,8 @@ public class PopulationCenterListView extends ItemListView {
 
 			}
 		};
-		table.setTransferHandler(handler);
-		handler.exportAsDrag(table, e, TransferHandler.COPY);
+		this.table.setTransferHandler(handler);
+		handler.exportAsDrag(this.table, e, TransferHandler.COPY);
 	}
 
 }

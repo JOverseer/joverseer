@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -95,12 +96,12 @@ public class OrderEditorListView extends ItemListView {
 		ArrayList<Order> orders = new ArrayList<Order>();
 		for (Character c : g.getTurn().getCharacters()) {
 			boolean acceptChar = true;
-			for (JComboBox filter : filters) {
+			for (JComboBox filter : this.filters) {
 				if (filter.getSelectedItem() != null) {
 					acceptChar = acceptChar && ((OrderFilter) filter.getSelectedItem()).acceptCharacter(c);
 				}
 			}
-			AbstractListViewFilter textFilter = getTextFilter(textFilterField.getText());
+			AbstractListViewFilter textFilter = getTextFilter(this.textFilterField.getText());
 			if (textFilter != null)
 				acceptChar = acceptChar && ((OrderFilter) textFilter).acceptCharacter(c);
 			if (!acceptChar)
@@ -110,23 +111,23 @@ public class OrderEditorListView extends ItemListView {
 			}
 		}
 
-		int row = table.getSelectedRow();
+		int row = this.table.getSelectedRow();
 		Object o = null;
 		try {
-			o = tableModel.getRow(row); // get the object for this row
+			o = this.tableModel.getRow(row); // get the object for this row
 		} catch (Exception e) {
 			// do nothing
 		}
-		int column = table.getSelectedColumn();
-		tableModel.setRows(orders);
+		int column = this.table.getSelectedColumn();
+		this.tableModel.setRows(orders);
 
-		characterIndices.clear();
+		this.characterIndices.clear();
 
 		try {
-			if (o != null && o.equals(tableModel.getRow(row))) {
+			if (o != null && o.equals(this.tableModel.getRow(row))) {
 				// if row is still showing same order, keep selection
-				table.setRowSelectionInterval(row, row);
-				table.setColumnSelectionInterval(column, column);
+				this.table.setRowSelectionInterval(row, row);
+				this.table.setColumnSelectionInterval(column, column);
 			}
 		} catch (Exception e) {
 			// do nothing
@@ -284,9 +285,9 @@ public class OrderEditorListView extends ItemListView {
 
 					@Override
 					public boolean acceptCharacter(Character c) {
-						Game g = GameHolder.instance().getGame();
-						GameMetadata gm = g.getMetadata();
-						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm.getNationByNum(c.getNationNo()).getName().equals(getDescription());
+						Game g1 = GameHolder.instance().getGame();
+						GameMetadata gm1 = g1.getMetadata();
+						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm1.getNationByNum(c.getNationNo()).getName().equals(getDescription());
 					}
 				};
 				filterList.add(f);
@@ -323,8 +324,8 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected JTable createTable() {
-		JTable table = TableUtils.createStandardSortableTable(tableModel);
-		JTable newTable = new JOverseerTable(table.getModel()) {
+		JTable table1 = TableUtils.createStandardSortableTable(this.tableModel);
+		JTable newTable = new JOverseerTable(table1.getModel()) {
 
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
@@ -333,32 +334,32 @@ public class OrderEditorListView extends ItemListView {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (isCellSelected(row, column)) {
-					if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
-						c.setBackground(selectionBackground);
+					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
+						c.setBackground(this.selectionBackground);
 					}
 				} else {
-					if (!c.getBackground().equals(paramErrorColor) && !c.getBackground().equals(paramWarningColor) && !c.getBackground().equals(paramInfoColor)) {
-						if (characterIndices.size() == 0) {
+					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
+						if (OrderEditorListView.this.characterIndices.size() == 0) {
 							Character current = null;
 							int charIndex = -1;
 							for (int i = 0; i < this.getRowCount(); i++) {
 								int rowI = ((ShuttleSortableTableModel) this.getModel()).convertSortedIndexToDataIndex(i);
-								Order order = (Order) tableModel.getRow(rowI);
+								Order order = (Order) OrderEditorListView.this.tableModel.getRow(rowI);
 								Character oc = order.getCharacter();
 								if (!oc.equals(current)) {
 									current = oc;
 									charIndex++;
-									characterIndices.put(oc, charIndex);
+									OrderEditorListView.this.characterIndices.put(oc, charIndex);
 								}
 							}
 						}
 						int rowI = ((ShuttleSortableTableModel) this.getModel()).convertSortedIndexToDataIndex(row);
-						Order order = (Order) tableModel.getRow(rowI);
-						int charIndex = characterIndices.get(order.getCharacter());
+						Order order = (Order) OrderEditorListView.this.tableModel.getRow(rowI);
+						int charIndex = OrderEditorListView.this.characterIndices.get(order.getCharacter());
 						if (charIndex % 2 == 1) {
 							c.setBackground(Color.decode("#efefef"));
 						} else {
-							c.setBackground(normalBackground);
+							c.setBackground(this.normalBackground);
 						}
 					}
 
@@ -367,9 +368,9 @@ public class OrderEditorListView extends ItemListView {
 			}
 
 		};
-		newTable.setColumnModel(table.getColumnModel());
-		newTable.setAutoResizeMode(table.getAutoResizeMode());
-		table = null;
+		newTable.setColumnModel(table1.getColumnModel());
+		newTable.setAutoResizeMode(table1.getAutoResizeMode());
+		table1 = null;
 		return newTable;
 	}
 
@@ -387,7 +388,7 @@ public class OrderEditorListView extends ItemListView {
 		// }
 		// });
 
-		GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
 
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
@@ -396,24 +397,24 @@ public class OrderEditorListView extends ItemListView {
 			// it is rendered with a check box
 			// and shown only when appropriate
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				try {
-					Order o = (Order) tableModel.getRow(((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row));
-					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+					Order o = (Order) OrderEditorListView.this.tableModel.getRow(((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row));
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					if (GraphicUtils.canRenderOrder(o)) {
 						JCheckBox b = new JCheckBox();
 						b.setSelected((Boolean) value);
-						b.setHorizontalAlignment(JCheckBox.CENTER);
-						System.out.println("row == table.getSelectedRow() = " + String.valueOf(row == table.getSelectedRow()));
+						b.setHorizontalAlignment(SwingConstants.CENTER);
+						System.out.println("row == table.getSelectedRow() = " + String.valueOf(row == table1.getSelectedRow()));
 						System.out.println("isSelected = " + String.valueOf(isSelected));
-						b.setBackground(row == table.getSelectedRow() && isSelected ? selectionBackground : normalBackground);
+						b.setBackground(row == table1.getSelectedRow() && isSelected ? this.selectionBackground : this.normalBackground);
 						return b;
 					} else {
 						return lbl;
 					}
 				} catch (Exception exc) {
 					// do nothing
-					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					return lbl;
 				}
 			}
@@ -422,18 +423,18 @@ public class OrderEditorListView extends ItemListView {
 
 		// specialized renderer for the icon returned by the orderResultType
 		// virtual field
-		GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				try {
 					ImageIcon ico = (ImageIcon) value;
-					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					lbl.setIcon(ico);
 					if (ico != null) {
 						OrderResultContainer container = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
-						int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-						Object obj = tableModel.getRow(idx);
+						int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
+						Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 						Order o = (Order) obj;
 						String txt = "";
 						for (OrderResult result : container.getResultsForOrder(o)) {
@@ -442,11 +443,11 @@ public class OrderEditorListView extends ItemListView {
 						txt = "<html><body><lu>" + txt + "</lu></body></html>";
 						lbl.setToolTipText(txt);
 					}
-					lbl.setHorizontalAlignment(JLabel.CENTER);
+					lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					return lbl;
 				} catch (Exception exc) {
 					// do nothing
-					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					return lbl;
 				}
 			}
@@ -454,26 +455,26 @@ public class OrderEditorListView extends ItemListView {
 		});
 
 		// renderer for hex - boldify capital hex
-		GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				try {
-					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
 					// find capital and compare
-					int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-					Object obj = tableModel.getRow(idx);
+					int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
+					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 					Order o = (Order) obj;
 					Character c = o.getCharacter();
 					PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { c.getNationNo(), Boolean.TRUE });
 					if (capital != null && c.getHexNo() == capital.getHexNo()) {
 						lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 					}
-					lbl.setHorizontalAlignment(JLabel.CENTER);
+					lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					return lbl;
 				} catch (Exception exc) {
 					// do nothing
-					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					return lbl;
 				}
 			};
@@ -482,20 +483,20 @@ public class OrderEditorListView extends ItemListView {
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				lbl.setHorizontalAlignment(JLabel.CENTER);
+			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
+				lbl.setHorizontalAlignment(SwingConstants.CENTER);
 				return lbl;
 			};
 		};
 
 		// render stats - center alignment
-		GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iStats, centerRenderer);
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iStats, centerRenderer);
 
 		for (int i = OrderEditorTableModel.iParamStart; i <= OrderEditorTableModel.iParamEnd; i++) {
-			GraphicUtils.setTableColumnRenderer(table, i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
+			GraphicUtils.setTableColumnRenderer(this.table, i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
 		}
-		GraphicUtils.setTableColumnRenderer(table, OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
 
 		// tlb.row();
 		// tlb.cell(tableComp);
@@ -516,7 +517,7 @@ public class OrderEditorListView extends ItemListView {
 			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
 				// setFilters();
 				refreshFilters();
-				TableColumn noAndCodeColumn = table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
+				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				ListListModel orders = new ListListModel();
 				orders.add(Order.NA);
@@ -538,12 +539,14 @@ public class OrderEditorListView extends ItemListView {
 
 				editor.addCellEditorListener(new CellEditorListener() {
 
-					public void editingCanceled(ChangeEvent e) {
-						table.requestFocus();
+					@Override
+					public void editingCanceled(ChangeEvent e1) {
+						OrderEditorListView.this.table.requestFocus();
 					}
 
-					public void editingStopped(ChangeEvent e) {
-						table.requestFocus();
+					@Override
+					public void editingStopped(ChangeEvent e1) {
+						OrderEditorListView.this.table.requestFocus();
 					}
 
 				});
@@ -574,7 +577,7 @@ public class OrderEditorListView extends ItemListView {
 	public JPopupMenu getPopupMenu(boolean hasSelectedItem) {
 		if (!hasSelectedItem)
 			return null;
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("orderCommandGroup", new Object[] { editOrderAction, deleteOrderAction,
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("orderCommandGroup", new Object[] { this.editOrderAction, this.deleteOrderAction,
 		// sendOrderByChatAction,
 				"separator", new DrawAllOrdersAction(), new UnDrawAllOrdersAction(),
 		// new SendAllOrdersByChatAction()
@@ -591,13 +594,13 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			int row = table.getSelectedRow();
+			int row = OrderEditorListView.this.table.getSelectedRow();
 			if (row >= 0) {
-				int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-				if (idx >= tableModel.getRowCount())
+				int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+				if (idx >= OrderEditorListView.this.tableModel.getRowCount())
 					return;
 				try {
-					Object obj = tableModel.getRow(idx);
+					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 					Order order = (Order) obj;
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
 				} catch (Exception exc) {
@@ -616,16 +619,16 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			int row = table.getSelectedRow();
+			int row = OrderEditorListView.this.table.getSelectedRow();
 			if (row >= 0) {
-				int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-				if (idx >= tableModel.getRowCount())
+				int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+				if (idx >= OrderEditorListView.this.tableModel.getRowCount())
 					return;
 				try {
-					Object obj = tableModel.getRow(idx);
+					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 					Order order = (Order) obj;
 					order.clear();
-					((BeanTableModel) table.getModel()).fireTableDataChanged();
+					((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
 				} catch (Exception exc) {
 					System.out.println(exc);
@@ -645,7 +648,7 @@ public class OrderEditorListView extends ItemListView {
 		@Override
 		protected void doExecuteCommand() {
 			OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
-			for (Object o : tableModel.getRows()) {
+			for (Object o : OrderEditorListView.this.tableModel.getRows()) {
 				Order order = (Order) o;
 				if (GraphicUtils.canRenderOrder(order)) {
 					ovd.addOrder(order);
@@ -704,7 +707,7 @@ public class OrderEditorListView extends ItemListView {
 				if (o.isBlank())
 					continue;
 				for (int i = 0; i <= o.getLastParamIndex(); i++) {
-					if (o.getParameter(i).equals(hexNo))
+					if (o.getParameter(i).equals(this.hexNo))
 						return true;
 				}
 			}
@@ -727,7 +730,7 @@ public class OrderEditorListView extends ItemListView {
 				if (o.isBlank())
 					continue;
 				for (int i = 0; i <= o.getLastParamIndex(); i++) {
-					if (o.getParameter(i).contains(text))
+					if (o.getParameter(i).contains(this.text))
 						return true;
 				}
 			}
@@ -738,7 +741,8 @@ public class OrderEditorListView extends ItemListView {
 	@Override
 	public ColumnToSort[] getDefaultSort() {
 		// set comparator to sort using the character ids
-		((SortableTableModel) table.getModel()).setComparator(1, new Comparator<String>() {
+		((SortableTableModel) this.table.getModel()).setComparator(1, new Comparator<String>() {
+			@Override
 			public int compare(String o1, String o2) {
 				if (o1 != null && o2 != null) {
 					return Character.getIdFromName(o1).compareTo(Character.getIdFromName(o2));
@@ -767,33 +771,33 @@ public class OrderEditorListView extends ItemListView {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-			Object obj = tableModel.getRow(idx);
+		public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
+			int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
+			Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 			Order o = (Order) obj;
 			OrderValidationResult res = null;
 			// TODO handle larger paramNos
-			if (paramNo < 9) {
-				res = validator.checkParam(o, paramNo);
+			if (this.paramNo < 9) {
+				res = OrderEditorListView.this.validator.checkParam(o, this.paramNo);
 			}
 
 			if (res != null) {
 				if (isSelected) {
-					lbl.setBackground(selectionBackground);
+					lbl.setBackground(this.selectionBackground);
 				} else if (res.getLevel() == OrderValidationResult.ERROR) {
-					lbl.setBackground(paramErrorColor);
+					lbl.setBackground(OrderEditorListView.this.paramErrorColor);
 				} else if (res.getLevel() == OrderValidationResult.WARNING) {
-					lbl.setBackground(paramWarningColor);
+					lbl.setBackground(OrderEditorListView.this.paramWarningColor);
 				} else if (res.getLevel() == OrderValidationResult.INFO) {
-					lbl.setBackground(paramInfoColor);
+					lbl.setBackground(OrderEditorListView.this.paramInfoColor);
 				}
 				lbl.setToolTipText(res.getMessage());
 			} else {
 				if (isSelected) {
-					lbl.setBackground(selectionBackground);
+					lbl.setBackground(this.selectionBackground);
 				} else {
-					lbl.setBackground(normalBackground);
+					lbl.setBackground(this.normalBackground);
 				}
 				lbl.setToolTipText(null);
 			}
@@ -817,28 +821,28 @@ public class OrderEditorListView extends ItemListView {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-			int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-			Object obj = tableModel.getRow(idx);
+		public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
+			int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
+			Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 			Order o = (Order) obj;
-			OrderValidationResult res = validator.checkOrder(o);
+			OrderValidationResult res = OrderEditorListView.this.validator.checkOrder(o);
 			if (res != null) {
 				if (isSelected) {
-					lbl.setBackground(selectionBackground);
+					lbl.setBackground(this.selectionBackground);
 				} else if (res.getLevel() == OrderValidationResult.ERROR) {
-					lbl.setBackground(paramErrorColor);
+					lbl.setBackground(OrderEditorListView.this.paramErrorColor);
 				} else if (res.getLevel() == OrderValidationResult.WARNING) {
-					lbl.setBackground(paramWarningColor);
+					lbl.setBackground(OrderEditorListView.this.paramWarningColor);
 				} else if (res.getLevel() == OrderValidationResult.INFO) {
-					lbl.setBackground(paramInfoColor);
+					lbl.setBackground(OrderEditorListView.this.paramInfoColor);
 				}
 				lbl.setToolTipText(res.getMessage());
 			} else {
 				if (isSelected) {
-					lbl.setBackground(selectionBackground);
+					lbl.setBackground(this.selectionBackground);
 				} else {
-					lbl.setBackground(normalBackground);
+					lbl.setBackground(this.normalBackground);
 				}
 				lbl.setToolTipText(null);
 			}

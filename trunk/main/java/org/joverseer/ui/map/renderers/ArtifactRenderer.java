@@ -17,24 +17,26 @@ import org.springframework.richclient.application.Application;
 public class ArtifactRenderer implements Renderer {
     MapMetadata mapMetadata = null;
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return org.joverseer.domain.Artifact.class.isInstance(obj);
     }
 
     private void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
-        if (mapMetadata == null) init();
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
+        if (this.mapMetadata == null) init();
 
         Artifact a = (Artifact)obj;
 
 
-        int w = mapMetadata.getGridCellWidth() / 3;
-        int h = mapMetadata.getGridCellHeight() / 3;
-        int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1/10;
-        int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 1 / 2 - h / 2;
+        int w = this.mapMetadata.getGridCellWidth() / 3;
+        int h = this.mapMetadata.getGridCellHeight() / 3;
+        int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1/10;
+        int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 1 / 2 - h / 2;
 
         Color color1 = ColorPicker.getInstance().getColor("artifactFG");
         Color color2 = ColorPicker.getInstance().getColor("artifactBorder");

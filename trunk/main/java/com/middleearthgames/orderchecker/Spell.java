@@ -29,31 +29,32 @@ class Spell
 
     int getSpellNumber()
     {
-        return spell;
+        return this.spell;
     }
 
     String getName()
     {
-        return name;
+        return this.name;
     }
 
     int getDifficulty()
     {
-        return difficulty;
+        return this.difficulty;
     }
 
     int getOrder()
     {
-        return order;
+        return this.order;
     }
 
     int getList()
     {
-        return list;
+        return this.list;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
-        return name + " (" + spell + ")";
+        return this.name + " (" + this.spell + ")";
     }
 }

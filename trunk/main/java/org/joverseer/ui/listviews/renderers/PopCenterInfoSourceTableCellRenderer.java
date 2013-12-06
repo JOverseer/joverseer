@@ -20,7 +20,8 @@ public class PopCenterInfoSourceTableCellRenderer extends AllegianceColorCellRen
         super(tableModel);
     }
 
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    @Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String strValue = "";
         if (InfoSource.class.isInstance(value)) {
             if (PopCenterXmlInfoSource.class.isInstance(value)) {

@@ -18,6 +18,7 @@ import org.joverseer.support.GameHolder;
  */
 public class ArmyAllegianceNameComparator implements Comparator<Army> {
 
+	@Override
 	public int compare(Army c1, Army c2) {
 		int i = compareAllegiance(c1, c2);
 		if (i == 0) {

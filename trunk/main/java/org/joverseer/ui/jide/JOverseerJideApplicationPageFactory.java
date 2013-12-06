@@ -11,7 +11,8 @@ import org.springframework.richclient.application.PageDescriptor;
  */
 public class JOverseerJideApplicationPageFactory implements ApplicationPageFactory {
 
-    public ApplicationPage createApplicationPage(ApplicationWindow window, PageDescriptor pageDescriptor) {
+    @Override
+	public ApplicationPage createApplicationPage(ApplicationWindow window, PageDescriptor pageDescriptor) {
 
         JOverseerJideApplicationPage page = new JOverseerJideApplicationPage(window, pageDescriptor);
         return page;

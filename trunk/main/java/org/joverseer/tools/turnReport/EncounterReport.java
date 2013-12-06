@@ -9,7 +9,7 @@ public class EncounterReport extends BaseReportObject {
 	
 	
 	public Encounter getEncounter() {
-		return encounter;
+		return this.encounter;
 	}
 
 
@@ -27,6 +27,7 @@ public class EncounterReport extends BaseReportObject {
 		return ret;
 	}
 
+	@Override
 	public String getHtmlString() {
 		return 	
 			//appendTd(getNationStr()) +

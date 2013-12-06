@@ -5,17 +5,34 @@
 
 package com.middleearthgames.orderchecker.gui;
 
-import com.middleearthgames.orderchecker.Character;
-import com.middleearthgames.orderchecker.Nation;
-import com.middleearthgames.orderchecker.io.Data;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Enumeration;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
+
+import com.middleearthgames.orderchecker.Character;
+import com.middleearthgames.orderchecker.Nation;
+import com.middleearthgames.orderchecker.io.Data;
 
 // Referenced classes of package com.middleearthgames.orderchecker.gui:
 //            OCTreeNode
@@ -26,53 +43,57 @@ class CharInfoDlg extends JDialog
     CharInfoDlg(JFrame frame, Nation nation, JTree tree, Data data)
     {
         super(frame, "Character Notes", true);
-        pane = new JPanel(new BorderLayout());
-        okButton = new JButton();
-        cancelButton = new JButton();
-        textIndex = 0;
+        this.pane = new JPanel(new BorderLayout());
+        this.okButton = new JButton();
+        this.cancelButton = new JButton();
+        this.textIndex = 0;
         this.nation = nation;
         this.tree = tree;
         this.data = data;
         JLabel label = new JLabel();
-        normalFont = label.getFont();
-        boldFont = new Font(normalFont.getName(), 1, normalFont.getSize());
+        this.normalFont = label.getFont();
+        this.boldFont = new Font(this.normalFont.getName(), 1, this.normalFont.getSize());
         layoutContents();
-        okButton.addActionListener(new ActionListener() {
+        this.okButton.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e)
+            @Override
+			public void actionPerformed(ActionEvent e)
             {
                 okActionPerformed();
             }
 
         }
 );
-        cancelButton.addActionListener(new ActionListener() {
+        this.cancelButton.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e)
+            @Override
+			public void actionPerformed(ActionEvent e)
             {
                 cancelActionPerformed();
             }
 
         }
 );
-        getContentPane().add(pane);
+        getContentPane().add(this.pane);
         pack();
-        getRootPane().setDefaultButton(okButton);
+        getRootPane().setDefaultButton(this.okButton);
         addKeyListener(new KeyAdapter() {
 
-            public void keyPressed(KeyEvent e)
+            @Override
+			public void keyPressed(KeyEvent e)
             {
                 if(e.getKeyCode() == 27)
-                    okButton.doClick();
+                    CharInfoDlg.this.okButton.doClick();
             }
 
         }
 );
         addWindowListener(new WindowAdapter() {
 
-            public void windowClosing(WindowEvent we)
+            @Override
+			public void windowClosing(WindowEvent we)
             {
-                cancelButton.doClick();
+                CharInfoDlg.this.cancelButton.doClick();
             }
 
         }
@@ -99,9 +120,9 @@ class CharInfoDlg extends JDialog
         textConstraint.fill = 1;
         textConstraint.weighty = 1.0D;
         textConstraint.weightx = 1.0D;
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)tree.getModel().getRoot();
-        textCharacters = new String[root.getChildCount()];
-        textNotes = new JTextArea[root.getChildCount()];
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)this.tree.getModel().getRoot();
+        this.textCharacters = new String[root.getChildCount()];
+        this.textNotes = new JTextArea[root.getChildCount()];
         for(Enumeration characters = root.children(); characters.hasMoreElements();)
         {
             OCTreeNode node = (OCTreeNode)characters.nextElement();
@@ -121,7 +142,7 @@ class CharInfoDlg extends JDialog
             for(int i = 0; i < content.length; i++)
             {
                 JLabel characterInfo = new JLabel();
-                characterInfo.setFont(boldFont);
+                characterInfo.setFont(this.boldFont);
                 characterInfo.setText(content[i]);
                 layoutConstraint.insets = new Insets(i != 0 ? 0 : 10, 0, 0, 0);
                 layoutManager.setConstraints(characterInfo, layoutConstraint);
@@ -132,7 +153,7 @@ class CharInfoDlg extends JDialog
             {
                 OCTreeNode order = (OCTreeNode)orders.nextElement();
                 JLabel orderInfo = new JLabel();
-                orderInfo.setFont(normalFont);
+                orderInfo.setFont(this.normalFont);
                 orderInfo.setText(order.toString());
                 layoutConstraint.insets = new Insets(0, 0, 0, 0);
                 layoutManager.setConstraints(orderInfo, layoutConstraint);
@@ -144,7 +165,7 @@ class CharInfoDlg extends JDialog
                     if(result.toString().length() > 4)
                     {
                         JLabel resultInfo = new JLabel();
-                        resultInfo.setFont(normalFont);
+                        resultInfo.setFont(this.normalFont);
                         resultInfo.setText(result.toString());
                         layoutConstraint.insets = new Insets(0, 20, 0, 0);
                         layoutManager.setConstraints(resultInfo, layoutConstraint);
@@ -158,14 +179,14 @@ class CharInfoDlg extends JDialog
             if(info != null)
             {
                 JLabel endInfo = new JLabel();
-                endInfo.setFont(normalFont);
+                endInfo.setFont(this.normalFont);
                 endInfo.setText(info);
                 layoutConstraint.insets = new Insets(0, 0, 0, 0);
                 layoutManager.setConstraints(endInfo, layoutConstraint);
                 mainPane.add(endInfo);
             }
-            String notes = data.getCharacterNotes(nation, character.getName());
-            textCharacters[textIndex] = character.getName();
+            String notes = this.data.getCharacterNotes(this.nation, character.getName());
+            this.textCharacters[this.textIndex] = character.getName();
             JTextArea charNotes = new JTextArea();
             charNotes.setEditable(true);
             charNotes.setLineWrap(true);
@@ -173,38 +194,38 @@ class CharInfoDlg extends JDialog
             charNotes.setRows(4);
             charNotes.setMargin(new Insets(0, 5, 0, 5));
             charNotes.setText(notes);
-            textNotes[textIndex] = charNotes;
+            this.textNotes[this.textIndex] = charNotes;
             JScrollPane textPane = new JScrollPane(charNotes);
             textPane.setBorder(new EtchedBorder(1));
             textConstraint.insets = new Insets(10, 0, 10, 0);
             layoutManager.setConstraints(textPane, textConstraint);
             mainPane.add(textPane);
-            textIndex++;
+            this.textIndex++;
         }
 
         JPanel buttonPane = new JPanel();
         buttonPane.setBorder(new EmptyBorder(20, 20, 20, 20));
-        okButton.setText("OK");
-        buttonPane.add(okButton);
-        cancelButton.setText("Cancel");
-        buttonPane.add(cancelButton);
-        java.awt.Dimension cancelSize = cancelButton.getPreferredSize();
-        okButton.setPreferredSize(cancelSize);
+        this.okButton.setText("OK");
+        buttonPane.add(this.okButton);
+        this.cancelButton.setText("Cancel");
+        buttonPane.add(this.cancelButton);
+        java.awt.Dimension cancelSize = this.cancelButton.getPreferredSize();
+        this.okButton.setPreferredSize(cancelSize);
         JScrollPane mainScrollPane = new JScrollPane(mainPane);
-        pane.add(mainScrollPane, "Center");
-        pane.add(buttonPane, "South");
+        this.pane.add(mainScrollPane, "Center");
+        this.pane.add(buttonPane, "South");
     }
 
     private void saveWindowState()
     {
-        data.setWindowSize(3, getSize());
-        data.setWindowLocation(3, getLocationOnScreen());
+        this.data.setWindowSize(3, getSize());
+        this.data.setWindowLocation(3, getLocationOnScreen());
     }
 
     private void okActionPerformed()
     {
-        for(int i = 0; i < textIndex; i++)
-            data.setCharacterNotes(nation, textCharacters[i], textNotes[i].getText());
+        for(int i = 0; i < this.textIndex; i++)
+            this.data.setCharacterNotes(this.nation, this.textCharacters[i], this.textNotes[i].getText());
 
         saveWindowState();
         dispose();

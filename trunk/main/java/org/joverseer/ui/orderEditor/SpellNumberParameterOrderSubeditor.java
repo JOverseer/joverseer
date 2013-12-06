@@ -47,26 +47,27 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     protected void loadSpellCombo() {
     	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     	Character c = getOrder().getCharacter();
-        parameter.addItem("");
+        this.parameter.addItem("");
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
-            if (si.getOrderNumber() == orderNo) {
+            if (si.getOrderNumber() == this.orderNo) {
 	        	 boolean found = false;
 	             for (SpellProficiency sp : c.getSpells()) {
 	                 if (sp.getSpellId() == si.getNumber()) {
 	                     found = true;
 	                 }
 	             }
-	             parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
+	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
             }
         }
     }
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(parameter = new JComboBox(), "colspec=left:180px");
-        parameter.setPreferredSize(new Dimension(180, 18));
-        parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
+        tlb.cell(this.parameter = new JComboBox(), "colspec=left:180px");
+        this.parameter.setPreferredSize(new Dimension(180, 18));
+        this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
+			@Override
 			public void drop(DropTargetDropEvent dtde) {
                 try {
                 	Transferable t = dtde.getTransferable();
@@ -81,7 +82,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
                 	} else {
                 		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
                 	}
-                	JComboBox cmb = (JComboBox)parameter;
+                	JComboBox cmb = (JComboBox)SpellNumberParameterOrderSubeditor.this.parameter;
                 	for (int i=0; i<cmb.getItemCount(); i++) {
                 		if (cmb.getItemAt(i).toString().startsWith(txt + " ")) {
                 			cmb.setSelectedIndex(i);
@@ -95,8 +96,8 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         }));
         
         tlb.row();
-        tlb.cell(spellNo = new JTextField());
-        spellNo.setVisible(false);
+        tlb.cell(this.spellNo = new JTextField());
+        this.spellNo.setVisible(false);
         tlb.row();
         
         loadSpellCombo();
@@ -104,22 +105,23 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         // find and preload current spell (from order)
         if (o.getParameter(paramNo) != null) {
             String spellId = o.getParameter(paramNo);
-            for (int i=0; i<parameter.getItemCount(); i++) {
-                if (parameter.getItemAt(i).toString().startsWith(spellId + " ")) {
-                    parameter.setSelectedIndex(i);
-                    spellNo.setText(o.getParameter(paramNo));
+            for (int i=0; i<this.parameter.getItemCount(); i++) {
+                if (this.parameter.getItemAt(i).toString().startsWith(spellId + " ")) {
+                    this.parameter.setSelectedIndex(i);
+                    this.spellNo.setText(o.getParameter(paramNo));
                     valueChanged();
                 }
             }
         }
-        components.add(spellNo);
-        parameter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if (parameter.getSelectedItem() != null) {
-                    String spId = parameter.getSelectedItem().toString();
-                    spellNo.setText(spId.substring(0, spId.indexOf(" ")));
+        components.add(this.spellNo);
+        this.parameter.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                if (SpellNumberParameterOrderSubeditor.this.parameter.getSelectedItem() != null) {
+                    String spId = SpellNumberParameterOrderSubeditor.this.parameter.getSelectedItem().toString();
+                    SpellNumberParameterOrderSubeditor.this.spellNo.setText(spId.substring(0, spId.indexOf(" ")));
                 } else {
-                    spellNo.setText("");
+                    SpellNumberParameterOrderSubeditor.this.spellNo.setText("");
                 }
                 updateEditor();
             }

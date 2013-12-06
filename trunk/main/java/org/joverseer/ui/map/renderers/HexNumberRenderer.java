@@ -21,10 +21,11 @@ public class HexNumberRenderer implements Renderer{
     }
 
     private void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Hex.class.isInstance(obj);
     }
     
@@ -36,18 +37,19 @@ public class HexNumberRenderer implements Renderer{
         return true;
     }
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
         if (!appliesTo(obj)) {
             throw new IllegalArgumentException(obj.toString());
         }
-        if (mapMetadata == null) {
+        if (this.mapMetadata == null) {
             init();
         }
 
         Hex hex = (Hex)obj;
-        if (!withinMapRange(hex.getColumn(), hex.getRow(), mapMetadata)) return;
+        if (!withinMapRange(hex.getColumn(), hex.getRow(), this.mapMetadata)) return;
 
-        Font f = new Font(fontName, fontStyle, mapMetadata.getGridCellWidth() < 10 ? 7 : fontSize);
+        Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
         String hexNo = String.valueOf(hex.getColumn());
         if (hex.getColumn() < 10) {
             hexNo = "0" + hexNo;
@@ -60,8 +62,8 @@ public class HexNumberRenderer implements Renderer{
         int w = ((Number)f.getStringBounds(hexNo, g.getFontRenderContext()).getWidth()).intValue();
 
         
-        x = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - w / 2 + x;
-        y = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() / 4 + y;
+        x = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - w / 2 + x;
+        y = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() / 4 + y;
 
         g.setFont(f);
         g.setColor(Color.black);
@@ -69,7 +71,7 @@ public class HexNumberRenderer implements Renderer{
     }
 
     public String getFontName() {
-        return fontName;
+        return this.fontName;
     }
 
     public void setFontName(String fontName) {
@@ -77,7 +79,7 @@ public class HexNumberRenderer implements Renderer{
     }
 
     public int getFontSize() {
-        return fontSize;
+        return this.fontSize;
     }
 
     public void setFontSize(int fontSize) {
@@ -85,7 +87,7 @@ public class HexNumberRenderer implements Renderer{
     }
 
     public int getFontStyle() {
-        return fontStyle;
+        return this.fontStyle;
     }
 
     public void setFontStyle(int fontStyle) {

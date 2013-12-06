@@ -5,13 +5,13 @@ public class NationRelationWrapper {
 	String relation;
 	
 	public int getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 	public void setNationNo(int nationNo) {
 		this.nationNo = nationNo;
 	}
 	public String getRelation() {
-		return relation;
+		return this.relation;
 	}
 	public void setRelation(String relation) {
 		this.relation = relation;

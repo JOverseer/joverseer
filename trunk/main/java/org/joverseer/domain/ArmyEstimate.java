@@ -26,16 +26,16 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	int hexNo;
 	
 	public String getCommanderName() {
-		return commanderName;
+		return this.commanderName;
 	}
 	public void setCommanderName(String commanderName) {
 		this.commanderName = commanderName;
 	}
 	public ArrayList<String> getLossesDescriptions() {
-		return lossesDescriptions;
+		return this.lossesDescriptions;
 	}
 	public ArrayList<ArmyEstimateElement> getRegiments() {
-		return regiments;
+		return this.regiments;
 	}
 	
 	public ArmyEstimateElement getRegiment(ArmyElementType t) {
@@ -46,31 +46,33 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	}
 	
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
+	@Override
 	public int getX() {
 		return getHexNo() / 100;
 	}
+	@Override
 	public int getY() {
 		return getHexNo() % 100;
 	}
 	public int getMorale() {
-		return morale;
+		return this.morale;
 	}
 	public void setMorale(int morale) {
 		this.morale = morale;
 	}
 	public String getMoraleDescription() {
-		return moraleDescription;
+		return this.moraleDescription;
 	}
 	public void setMoraleDescription(String moraleDescription) {
 		this.moraleDescription = moraleDescription;
 	}
 	public String getMoraleRange() {
-		return moraleRange;
+		return this.moraleRange;
 	}
 	public void setMoraleRange(String moraleRange) {
 		this.moraleRange = moraleRange;
@@ -84,26 +86,28 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 		return ret;
 	}
 	public ArrayList<String> getLossesRanges() {
-		return lossesRanges;
+		return this.lossesRanges;
 	}
 	public String getCommanderTitle() {
-		return commanderTitle;
+		return this.commanderTitle;
 	}
 	public void setCommanderTitle(String commanderTitle) {
 		this.commanderTitle = commanderTitle;
 	}
 	
 	public int getEffectiveLosses(int lossOptimismFactor) {
-		double losses = 100;
+		double losses1 = 100;
 		for (int li : getLosses(lossOptimismFactor)) {
 			double l = li; 
-			losses = losses * (100d - (double)l) / 100d;
+			losses1 = losses1 * (100d - (double)l) / 100d;
 		}
-		return (int)losses;
+		return (int)losses1;
 	}
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
@@ -136,7 +140,7 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	    		return 0;
 	    		
 	    	}
-	    	catch (Exception exc) {
+	    	catch (NumberFormatException exc) {
 	    		exc.printStackTrace();
 	    	}
 	    	return 0;
@@ -154,7 +158,7 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	    		}
 	    		return 0;
 	    	}
-	    	catch (Exception exc) {
+	    	catch (NumberFormatException exc) {
 	    		exc.printStackTrace();
 	    	}
 	    	return 0;

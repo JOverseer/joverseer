@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -51,11 +53,13 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
         super(formModel, FORM_PAGE);
     }
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Note.class.isInstance(obj);
     }
 
-    public void setFormObject(Object object) {
+    @Override
+	public void setFormObject(Object object) {
         super.setFormObject(object);
         for (int i = 0; i < 20; i++) {
             showNote(i);
@@ -66,21 +70,22 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
         ArrayList<Note> notes = (ArrayList<Note>) getFormObject();
         if (i < notes.size()) {
             setVisibleByIndex(i, true);
-            texts.get(i).setText(notes.get(i).getText());
-            texts.get(i).setCaretPosition(0);
-            int h = texts.get(i).getPreferredSize().height;
-            scps.get(i).setPreferredSize(new Dimension(260, Math.min(h, 36)));
+            this.texts.get(i).setText(notes.get(i).getText());
+            this.texts.get(i).setCaretPosition(0);
+            int h = this.texts.get(i).getPreferredSize().height;
+            this.scps.get(i).setPreferredSize(new Dimension(260, Math.min(h, 36)));
         } else {
             setVisibleByIndex(i, false);
         }
     }
 
     protected void setVisibleByIndex(int idx, boolean v) {
-        icons.get(idx).setVisible(v);
-        scps.get(idx).setVisible(v);
+        this.icons.get(idx).setVisible(v);
+        this.scps.get(idx).setVisible(v);
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("note.icon"));
@@ -88,11 +93,12 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
         for (int i = 0; i < 20; i++) {
             final JLabelButton l = new JLabelButton(ico);
             l.setPreferredSize(new Dimension(12, 12));
-            l.setVerticalAlignment(JLabel.TOP);
+            l.setVerticalAlignment(SwingConstants.TOP);
             l.addActionListener(new PopupMenuActionListener() {
 
-                public JPopupMenu getPopupMenu() {
-                    int idx = icons.indexOf(l);
+                @Override
+				public JPopupMenu getPopupMenu() {
+                    int idx = NotesViewer.this.icons.indexOf(l);
                     if (idx >= 0) {
                         return createPopupContextMenu(idx);
                     }
@@ -100,9 +106,9 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
                 }
                 
             });
-            icons.add(l);
+            this.icons.add(l);
 
-            tlb.cell(icons.get(i), "valign=top colspec=left:12px");
+            tlb.cell(this.icons.get(i), "valign=top colspec=left:12px");
 
             final JTextArea ta = new JTextArea();
             ta.setWrapStyleWord(true);
@@ -112,27 +118,32 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             ta.setFont(f);
             Color c = ColorPicker.getInstance().getColor("notes.text");
             ta.setForeground(c);
-            texts.add(ta);
+            this.texts.add(ta);
             ta.getDocument().addDocumentListener(new DocumentListener() {
 
-                public void changedUpdate(DocumentEvent arg0) {
+                @Override
+				public void changedUpdate(DocumentEvent arg0) {
                     updateNotes(ta);
                 }
 
-                public void insertUpdate(DocumentEvent arg0) {
+                @Override
+				public void insertUpdate(DocumentEvent arg0) {
                     updateNotes(ta);
                 }
 
-                public void removeUpdate(DocumentEvent arg0) {
+                @Override
+				public void removeUpdate(DocumentEvent arg0) {
                     updateNotes(ta);
                 }
             });
             ta.addFocusListener(new FocusListener() {
-                public void focusGained(FocusEvent e) {
+                @Override
+				public void focusGained(FocusEvent e) {
                 }
 
-                public void focusLost(FocusEvent e) {
-                    int idx = texts.indexOf(ta);
+                @Override
+				public void focusLost(FocusEvent e) {
+                    int idx = NotesViewer.this.texts.indexOf(ta);
                     if (idx >= 0) {
                         showNote(idx);
                     }
@@ -142,11 +153,11 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             JScrollPane notesPane = new JScrollPane(ta);
             // notesPane.setPreferredSize(new Dimension(240, 36));
             notesPane.setMaximumSize(new Dimension(270, 36));
-            notesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-            notesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            notesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+            notesPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
             notesPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
             notesPane.setBorder(null);
-            scps.add(notesPane);
+            this.scps.add(notesPane);
             tlb.cell(notesPane, "colspec=left:280px");
             tlb.row();
         }
@@ -155,11 +166,12 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
         return p;
     }
 
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
     }
     
     protected void updateNotes(JTextArea ta) {
-        int idx = texts.indexOf(ta);
+        int idx = this.texts.indexOf(ta);
         if (idx >= 0) {
             Note n = ((ArrayList<Note>)getFormObject()).get(idx);
             n.setText(ta.getText());

@@ -13,15 +13,15 @@ class OCWindows
 
     OCWindows()
     {
-        sizes = new Dimension[4];
-        locations = new Point[4];
+        this.sizes = new Dimension[4];
+        this.locations = new Point[4];
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension defaultSize = new Dimension(780, screenSize.height - 100);
+        Dimension defaultSize = new Dimension(WINDOW_DEFAULT_WIDTH, screenSize.height - WINDOW_HEIGHT_GAP);
         checkScreenSize(defaultSize);
         for(int i = 0; i < 4; i++)
         {
-            sizes[i] = new Dimension(defaultSize.width, defaultSize.height);
-            locations[i] = getScreenLocation(sizes[i]);
+            this.sizes[i] = new Dimension(defaultSize.width, defaultSize.height);
+            this.locations[i] = getScreenLocation(this.sizes[i]);
         }
 
     }
@@ -29,13 +29,13 @@ class OCWindows
     void writeObject(ObjectOutputStream out)
         throws IOException
     {
-        out.writeInt(1);
+        out.writeInt(VERSION);
         out.writeInt(4);
         for(int i = 0; i < 4; i++)
         {
             out.writeInt(i);
-            out.writeObject(sizes[i]);
-            out.writeObject(locations[i]);
+            out.writeObject(this.sizes[i]);
+            out.writeObject(this.locations[i]);
         }
 
     }
@@ -43,13 +43,14 @@ class OCWindows
     void readObject(ObjectInputStream in)
         throws IOException, ClassNotFoundException
     {
-        int version = in.readInt();
+        @SuppressWarnings("unused")
+		int version = in.readInt();
         int count = in.readInt();
         for(int i = 0; i < count; i++)
         {
             int index = in.readInt();
-            sizes[index] = (Dimension)in.readObject();
-            locations[index] = (Point)in.readObject();
+            this.sizes[index] = (Dimension)in.readObject();
+            this.locations[index] = (Point)in.readObject();
         }
 
     }
@@ -66,12 +67,12 @@ class OCWindows
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         if(screenSize.width < d.width)
         {
-            d.width = screenSize.width - 20;
+            d.width = screenSize.width - WINDOW_WIDTH_GAP;
             changed = true;
         }
         if(screenSize.height < d.height)
         {
-            d.height = screenSize.height - 100;
+            d.height = screenSize.height - WINDOW_HEIGHT_GAP;
             changed = true;
         }
         return changed;
@@ -79,25 +80,25 @@ class OCWindows
 
     Dimension getWindowSize(int w)
     {
-        if(w >= 0 && w < sizes.length)
-            return sizes[w];
+        if(w >= 0 && w < this.sizes.length)
+            return this.sizes[w];
         else
             throw new RuntimeException("invalid window for getWindowSize()");
     }
 
     Point getWindowLocation(int w)
     {
-        if(w >= 0 && w < locations.length)
-            return locations[w];
+        if(w >= 0 && w < this.locations.length)
+            return this.locations[w];
         else
             throw new RuntimeException("invalid window for getWindowLocation()");
     }
 
     void setWindowSize(int w, Dimension d)
     {
-        if(w >= 0 && w < sizes.length)
+        if(w >= 0 && w < this.sizes.length)
         {
-            sizes[w] = d;
+            this.sizes[w] = d;
             return;
         } else
         {
@@ -107,9 +108,9 @@ class OCWindows
 
     void setWindowLocation(int w, Point p)
     {
-        if(w >= 0 && w < locations.length)
+        if(w >= 0 && w < this.locations.length)
         {
-            locations[w] = p;
+            this.locations[w] = p;
             return;
         } else
         {

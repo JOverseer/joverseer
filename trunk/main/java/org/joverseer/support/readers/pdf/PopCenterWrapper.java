@@ -17,38 +17,38 @@ public class PopCenterWrapper {
         String climate;
 	
 	public String getDocks() {
-		return docks;
+		return this.docks;
 	}
 	public void setDocks(String docks) {
 		this.docks = docks;
 	}
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
 	public ProductAmountWrapper getProduction() {
-		return production;
+		return this.production;
 	}
 	public void setProduction(ProductAmountWrapper production) {
 		this.production = production;
 	}
 	public ProductAmountWrapper getStores() {
-		return stores;
+		return this.stores;
 	}
 	public void setStores(ProductAmountWrapper stores) {
 		this.stores = stores;
 	}
         
         public String getClimate() {
-            return climate;
+            return this.climate;
         }
         
         public void setClimate(String climate) {

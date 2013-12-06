@@ -18,7 +18,8 @@ public class GetStealGoldSuccessRateCommand  extends ActionCommand {
         super("getStealGoldSuccessRateCommand");
     }
     
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	Game game = GameHolder.instance().getGame();
 
     	System.out.println("turn;name;agent;agent total;pop size; pop fort; pop nation;relations;success;skill increase;gold");

@@ -12,20 +12,24 @@ public class ChangedPCInfo implements IHasMapLocation, IBelongsToNation {
 	PopulationCenterSizeEnum size;
 	String reason;
 	
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
+	@Override
 	public int getX() {
-		return x;
+		return this.x;
 	}
 	public void setX(int x) {
 		this.x = x;
 	}
+	@Override
 	public int getY() {
-		return y;
+		return this.y;
 	}
 	public void setY(int y) {
 		this.y = y;
@@ -40,19 +44,19 @@ public class ChangedPCInfo implements IHasMapLocation, IBelongsToNation {
         return getX() * 100 + getY();
     }
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
 	public PopulationCenterSizeEnum getSize() {
-		return size;
+		return this.size;
 	}
 	public void setSize(PopulationCenterSizeEnum size) {
 		this.size = size;
 	}
 	public String getReason() {
-		return reason;
+		return this.reason;
 	}
 	public void setReason(String reason) {
 		this.reason = reason;

@@ -47,6 +47,7 @@ public class JOverseerJIDEClient {
 	 * 
 	 * @param args
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		try {
 			cmdLineArgs = args;

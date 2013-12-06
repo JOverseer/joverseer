@@ -146,7 +146,7 @@ public class JOverseerDAO {
 				String sql = "insert into nations(na_ga_id, na_no, na_allegiance, na_name, na_short) values({gaid}, {no}, {alleg}, {name}, {short})";
 				StatementWrapper sw = new StatementWrapper(sql, conn);
 				sw.setInt("{gaid}", g.getMetadata().getGameNo());
-				sw.setInt("{no}", n.getNumber());
+				sw.setInt("{no}", n.getNumber().intValue());
 				sw.setString("{name}", n.getName());
 				sw.setString("{alleg}", n.getAllegiance().toString());
 				sw.setString("{short}", n.getShortName());
@@ -186,7 +186,7 @@ public class JOverseerDAO {
 			HexInfo hi = (HexInfo) turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo());
 			if (hi == null || hi.getClimate() == null)
 				return;
-			int pcmod = 100 - Math.max((pc.getSize().getCode() - 1) * 20, 0);
+			int pcmod = 100 - Math.max((pc.getSize().getCode().intValue() - 1) * 20, 0);
 
 			for (ProductEnum product : ProductEnum.values()) {
 				int climmod = InfoUtils.getClimateModifier(product, hi.getClimate());
@@ -200,12 +200,12 @@ public class JOverseerDAO {
 				Integer pr = pc.getProduction(product);
 				if (pr == null)
 					pr = 0;
-				sw.setInt("{amount}", pr);
+				sw.setInt("{amount}", pr.intValue());
 				sw.setString("{terrain}", String.valueOf(hex.getTerrain()));
 				sw.setString("{climate}", String.valueOf(hi.getClimate()));
-				sw.setInt("{pcsize}", pc.getSize().getCode());
+				sw.setInt("{pcsize}", pc.getSize().getCode().intValue());
 				sw.setInt("{mod}", mod);
-				sw.setInt("{unmodamt}", pr * 100 / mod);
+				sw.setInt("{unmodamt}", pr.intValue() * 100 / mod);
 				sw.execute();
 			}
 		} catch (Exception exc) {
@@ -216,7 +216,7 @@ public class JOverseerDAO {
 	public void SerializeHex(Connection conn, Game g, Turn turn, int hexNo) {
 		try {
 			Hex hex = g.getMetadata().getHex(hexNo);
-			HexInfo hi = (HexInfo) turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo);
+			HexInfo hi = (HexInfo) turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", new Integer(hexNo));
 			String sql = "insert into hexes(he_ga_id, he_tu_no, he_no, he_terrain, he_climate) values({gaid}, {tuno}, {hexno}, {terrain}, {climate});";
 			StatementWrapper sw = new StatementWrapper(sql, conn);
 			sw.setInt("{gaid}", g.getMetadata().getGameNo());
@@ -242,7 +242,7 @@ public class JOverseerDAO {
 			sw.setInt("{tuno}", turn.getTurnNo());
 			sw.setInt("{id}", 0);
 			sw.setInt("{hex}", c.getHexNo());
-			sw.setInt("{nation}", c.getNationNo());
+			sw.setInt("{nation}", c.getNationNo().intValue());
 			sw.setString("{nid}", c.getId());
 			sw.setString("{name}", c.getName());
 			sw.setInt("{c}", c.getCommand());
@@ -256,7 +256,7 @@ public class JOverseerDAO {
 			sw.setInt("{s}", c.getStealth());
 			sw.setInt("{st}", c.getStealthTotal());
 			sw.setInt("{ch}", c.getChallenge());
-			sw.setInt("{h}", c.getHealth() == null ? 0 : c.getHealth());
+			sw.setInt("{h}", c.getHealth() == null ? 0 : c.getHealth().intValue());
 			sw.execute();
 		} catch (Exception exc) {
 			throw new RuntimeException(exc);

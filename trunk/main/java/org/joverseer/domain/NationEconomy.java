@@ -31,7 +31,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     ProductContainer stores = new ProductContainer();
     
     public int getArmyMaintenance() {
-        return armyMaintenance;
+        return this.armyMaintenance;
     }
 
     public void setArmyMaintenance(int armyMaintenance) {
@@ -39,23 +39,25 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getCharMaintenance() {
-        return charMaintenance;
+        return this.charMaintenance;
     }
 
     public void setCharMaintenance(int charMaintenance) {
         this.charMaintenance = charMaintenance;
     }
 
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
 
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
     public int getPopMaintenance() {
-        return popMaintenance;
+        return this.popMaintenance;
     }
 
     public void setPopMaintenance(int popMaintenance) {
@@ -63,7 +65,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getReserve() {
-        return reserve;
+        return this.reserve;
     }
 
     public void setReserve(int reserve) {
@@ -71,7 +73,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getRevenue() {
-        return revenue;
+        return this.revenue;
     }
 
     public void setRevenue(int revenue) {
@@ -79,7 +81,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getSurplus() {
-        return surplus;
+        return this.surplus;
     }
 
     public void setSurplus(int surplus) {
@@ -87,7 +89,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getTaxBase() {
-        return taxBase;
+        return this.taxBase;
     }
 
     public void setTaxBase(int taxBase) {
@@ -95,7 +97,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getTaxRate() {
-        return taxRate;
+        return this.taxRate;
     }
 
     public void setTaxRate(int taxRate) {
@@ -103,7 +105,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
     public int getTotalMaintenance() {
-        return totalMaintenance;
+        return this.totalMaintenance;
     }
 
     public void setTotalMaintenance(int totalMaintenance) {
@@ -111,32 +113,32 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
     
     public Integer getProduction(ProductEnum p) {
-        return production.getProduct(p);
+        return this.production.getProduct(p);
     }
 
     public Integer getStores(ProductEnum p) {
-        return stores.getProduct(p);
+        return this.stores.getProduct(p);
     }
     
     public void setProduction(ProductEnum p, Integer amount) {
-        production.setProduct(p, amount);
+        this.production.setProduct(p, amount);
     }
 
     public void setStores(ProductEnum p, Integer amount) {
-        stores.setProduct(p, amount);
+        this.stores.setProduct(p, amount);
     }
     
     public ProductContainer getProduction() {
-        return production;
+        return this.production;
     }
     
     public ProductContainer getStores() {
-        return stores;
+        return this.stores;
     }
 
     
     public int getGoldProduction() {
-        return goldProduction;
+        return this.goldProduction;
     }
 
     
@@ -145,7 +147,7 @@ public class NationEconomy implements IBelongsToNation, Serializable {
     }
 
 	public int getAvailableGold() {
-		return availableGold;
+		return this.availableGold;
 	}
 
 	public void setAvailableGold(int availableGold) {

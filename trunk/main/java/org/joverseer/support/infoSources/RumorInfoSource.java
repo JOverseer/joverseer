@@ -7,6 +7,7 @@ package org.joverseer.support.infoSources;
  *
  */
 public class RumorInfoSource extends TurnInfoSource {
+	@Override
 	public String toString() {
     	return "Rumor";
     }

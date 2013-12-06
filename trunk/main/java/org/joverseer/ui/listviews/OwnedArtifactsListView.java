@@ -78,7 +78,7 @@ public class OwnedArtifactsListView extends ItemListView {
 				artis.add(a);
 			}
 		}
-		tableModel.setRows(artis);
+		this.tableModel.setRows(artis);
 	}
 
 }

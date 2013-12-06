@@ -13,12 +13,13 @@ public class TrackCharacterMapItem extends AbstractMapItem {
         this.description = descr;
     }
     
-    public String getDescription() {
-        return description;
+    @Override
+	public String getDescription() {
+        return this.description;
     }
 
 	public ArrayList<Integer> getHexes() {
-		return hexes;
+		return this.hexes;
 	}
 
 	public void setHexes(ArrayList<Integer> hexes) {
@@ -26,7 +27,7 @@ public class TrackCharacterMapItem extends AbstractMapItem {
 	}
 
 	public ArrayList<Integer> getTurns() {
-		return turns;
+		return this.turns;
 	}
 
 	public void setTurns(ArrayList<Integer> turns) {
@@ -34,7 +35,7 @@ public class TrackCharacterMapItem extends AbstractMapItem {
 	}
 
     public void addPoint(int hex, int turn) {
-    	hexes.add(hex);
-    	turns.add(turn);
+    	this.hexes.add(hex);
+    	this.turns.add(turn);
     }
 }

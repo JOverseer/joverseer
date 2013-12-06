@@ -29,7 +29,8 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
         super("importOrdersFromAutomagicFileCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
     	loadOrders();
     }
@@ -56,15 +57,16 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
                 // check game ok
                 if (!orderFileReader.checkGame()) {
                     ConfirmationDialog dlg = new ConfirmationDialog() {
-                        protected void onConfirm() {
-                            confirmed = true;
+                        @Override
+						protected void onConfirm() {
+                            ImportOrdersFromAutomagicFileCommand.this.confirmed = true;
                         }
                     };
                     MessageSource ms = (MessageSource)Application.instance().getApplicationContext().getBean("messageSource");
                     dlg.setConfirmationMessage(ms.getMessage("confirmInvalidAMFileImportDialog.message", new Object[]{}, Locale.getDefault()));
                     dlg.setTitle(ms.getMessage("confirmInvalidAMFileImportDialog.title", new Object[]{}, Locale.getDefault()));
                     dlg.showDialog();
-                    if (!confirmed) return;
+                    if (!this.confirmed) return;
                 }
                 orderFileReader.readOrders();
                 MessageDialog dlg = new MessageDialog("Import Orders", orderFileReader.getOrdersRead() + " orders were imported.");

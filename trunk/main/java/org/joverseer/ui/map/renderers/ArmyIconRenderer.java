@@ -21,8 +21,10 @@ import org.springframework.richclient.application.Application;
 public class ArmyIconRenderer extends ImageRenderer {
 	MapMetadata mapMetadata = null;
 
+	@SuppressWarnings("hiding")
 	static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
+	@Override
 	public boolean appliesTo(Object obj) {
 		String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
 		if (!pval.equals("simplified"))
@@ -31,11 +33,12 @@ public class ArmyIconRenderer extends ImageRenderer {
 	}
 
 	private void init() {
-		mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 	}
 
+	@Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-		if (mapMetadata == null)
+		if (this.mapMetadata == null)
 			init();
 
 		Army army = (Army) obj;
@@ -63,14 +66,14 @@ public class ArmyIconRenderer extends ImageRenderer {
 			changeColor(img, Color.black, color1);
 		}
 
-		int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 5 / 20;
-		int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 13 / 20;
+		int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 5 / 20;
+		int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 13 / 20;
 		int w = armyImage.getWidth();
 		// todo make decision based on allegiance, not nation no
 		if (army.getNationNo() > 10) {
-			dx = dx + mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - w;
+			dx = dx + this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - w;
 		} else {
-			dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - dx;
+			dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - dx;
 		}
 
 		g.drawImage(img, x + dx, y + dy, null);

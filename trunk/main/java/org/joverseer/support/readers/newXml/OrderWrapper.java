@@ -10,7 +10,7 @@ public class OrderWrapper {
 	ArrayList<OrderParameterWrapper> parameters = new ArrayList<OrderParameterWrapper>();
 
 	public int getOrderSet() {
-		return orderSet;
+		return this.orderSet;
 	}
 
 	public void setOrderSet(int orderSet) {
@@ -18,7 +18,7 @@ public class OrderWrapper {
 	}
 
 	public String getOrderNumber() {
-		return orderNumber;
+		return this.orderNumber;
 	}
 
 	public void setOrderNumber(String orderNumber) {
@@ -26,12 +26,13 @@ public class OrderWrapper {
 	}
 
 	public void addParameter(OrderParameterWrapper parameter) {
-		parameters.add(parameter);
+		this.parameters.add(parameter);
 	}
 
 	public ArrayList<String> getParameters() {
-		Collections.sort(parameters, new Comparator<OrderParameterWrapper>() {
+		Collections.sort(this.parameters, new Comparator<OrderParameterWrapper>() {
 
+			@Override
 			public int compare(OrderParameterWrapper o1, OrderParameterWrapper o2) {
 				if (o1.getType().equals("Movement") && o2.getType().equals("Additional"))
 					return -1;
@@ -42,7 +43,7 @@ public class OrderWrapper {
 
 		});
 		ArrayList<String> ret = new ArrayList<String>();
-		for (OrderParameterWrapper opw : parameters) {
+		for (OrderParameterWrapper opw : this.parameters) {
 			ret.add(opw.getParameter());
 		}
 		return ret;

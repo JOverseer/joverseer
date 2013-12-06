@@ -13,7 +13,8 @@ public class SpellInfoListView extends ItemListView {
         super("spells", SpellInfoTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[]{96, 32, 120, 32, 32, 96, 96, 150};
     }
 
@@ -22,6 +23,7 @@ public class SpellInfoListView extends ItemListView {
 		return new ColumnToSort[]{new ColumnToSort(0, 0), new ColumnToSort(1, 1)};
 	}
 
+	@Override
 	protected AbstractListViewFilter[][] getFilters() {
 		return new AbstractListViewFilter[][]{SpellListFilter.createNationFilters()};
 	}

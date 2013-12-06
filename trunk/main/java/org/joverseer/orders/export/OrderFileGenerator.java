@@ -1,10 +1,8 @@
 package org.joverseer.orders.export;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 
 import org.apache.commons.beanutils.BeanComparator;
 import org.joverseer.domain.Character;
@@ -21,7 +19,7 @@ public class OrderFileGenerator {
     Turn turn;
     
     public String generateOrderFile(Game g, Turn t, int nationNo) throws Exception {
-        turn = t;
+        this.turn = t;
         String ret = "";
         ArrayList<Character> chars = (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo);
         Collections.sort(chars, new BeanComparator("id"));

@@ -67,7 +67,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		String[] ret = null;
 		String foundNation = "";
 		for (int j = 0; j < 26; j++) {
-			Nation n = NationMap.getNationFromNo(j);
+			Nation n = NationMap.getNationFromNo(new Integer(j));
 			String nationName = n.getName();
 			String nationNamePlusThe = "the " + n.getName();
 			if (text.contains(nationNamePlusThe)) {
@@ -172,15 +172,11 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	public static String stripFirstWordCond(String text, String firstWord) {
-		try {
-			int i = text.indexOf(" ");
-			if (i > -1) {
-				if (!text.substring(0, i).equals(firstWord))
-					return text;
-				return text.substring(i).trim();
-			}
-			return text;
-		} catch (Exception e) {
+		int i = text.indexOf(" ");
+		if (i > -1) {
+			if (!text.substring(0, i).equals(firstWord))
+				return text;
+			return text.substring(i).trim();
 		}
 		return text;
 	}
@@ -194,7 +190,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
 	public static String replaceNationNames(String text) {
 		for (int i = 1; i <= 25; i++) {
-			Nation n = NationMap.getNationFromNo(i);
+			Nation n = NationMap.getNationFromNo(new Integer(i));
 			text = text.replace(n.getName(), "Nation_" + i);
 		}
 		return text;
@@ -206,6 +202,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	public static Nation getFromNationCode(String nation) {
-		return NationMap.getNationFromNo(parseNationCode(nation));
+		return NationMap.getNationFromNo(new Integer(parseNationCode(nation)));
 	}
 }

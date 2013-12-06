@@ -33,8 +33,9 @@ public class EncounterTableModel extends ItemTableModel {
 		String character;
 		String description;
 
+		@Override
 		public int getTurnNo() {
-			return turnNo;
+			return this.turnNo;
 		}
 
 		public void setTurnNo(int turnNo) {
@@ -42,23 +43,25 @@ public class EncounterTableModel extends ItemTableModel {
 		}
 
 		public int getHexNo() {
-			return hexNo;
+			return this.hexNo;
 		}
 
 		public void setHexNo(int hexNo) {
 			this.hexNo = hexNo;
 		}
 
+		@Override
 		public Integer getNationNo() {
-			return nationNo;
+			return this.nationNo;
 		}
 
+		@Override
 		public void setNationNo(Integer nationNo) {
 			this.nationNo = nationNo;
 		}
 
 		public String getCharacter() {
-			return character;
+			return this.character;
 		}
 
 		public void setCharacter(String character) {
@@ -66,17 +69,19 @@ public class EncounterTableModel extends ItemTableModel {
 		}
 
 		public String getDescription() {
-			return description;
+			return this.description;
 		}
 
 		public void setDescription(String description) {
 			this.description = description;
 		}
 
+		@Override
 		public int getX() {
 			return getHexNo() / 100;
 		}
 
+		@Override
 		public int getY() {
 			return getHexNo() % 100;
 		}

@@ -19,7 +19,7 @@ public class OrderResultContainer implements ApplicationListener {
 	Container<OrderResult> results = new Container<OrderResult>(new String[] { "order" });
 
 	public void addResult(OrderResult res) {
-		results.addItem(res);
+		this.results.addItem(res);
 	}
 
 	public void addAll(List<OrderResult> list) {
@@ -29,7 +29,7 @@ public class OrderResultContainer implements ApplicationListener {
 	}
 
 	public ArrayList<OrderResult> getResultsForOrder(Order o) {
-		return results.findAllByProperty("order", o);
+		return this.results.findAllByProperty("order", o);
 	}
 
 	public OrderResultTypeEnum getResultTypeForOrder(Order o) {
@@ -45,7 +45,7 @@ public class OrderResultContainer implements ApplicationListener {
 	public void removeResultsForOrder(Order o) {
 		ArrayList<OrderResult> ors = getResultsForOrder(o);
 		for (OrderResult r : ors) {
-			results.removeItem(r);
+			this.results.removeItem(r);
 		}
 	}
 

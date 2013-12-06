@@ -20,11 +20,11 @@ public enum HexSideElementEnum implements Serializable {
     int element;
 
     HexSideElementEnum(int el) {
-        element = el;
+        this.element = el;
     }
 
     public int getElement() {
-        return element;
+        return this.element;
     }
 
     public static HexSideElementEnum fromValue(int i) {

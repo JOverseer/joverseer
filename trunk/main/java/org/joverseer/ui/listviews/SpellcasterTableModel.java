@@ -68,8 +68,8 @@ public class SpellcasterTableModel extends ItemTableModel {
 		if (g == null || !Game.isInitialized(g) || arg0 < getSpellStartI()) {
 			return super.getColumnName(arg0);
 		}
-		if (arg0 - getSpellStartI() < spells.size()) {
-			return spellDescrs.get(arg0 - getSpellStartI());
+		if (arg0 - getSpellStartI() < this.spells.size()) {
+			return this.spellDescrs.get(arg0 - getSpellStartI());
 		}
 		// if (arg0 == 13) {
 		// return super.getColumnName(arg0);
@@ -81,8 +81,8 @@ public class SpellcasterTableModel extends ItemTableModel {
 	protected Object getValueAtInternal(Object object, int i) {
 		if (i < getSpellStartI())
 			return super.getValueAtInternal(object, i);
-		if (i - getSpellStartI() < spells.size()) {
-			int spellId = spells.get(i - getSpellStartI());
+		if (i - getSpellStartI() < this.spells.size()) {
+			int spellId = this.spells.get(i - getSpellStartI());
 			SpellcasterWrapper sw = (SpellcasterWrapper) object;
 			if (spellId > 1000) {
 				// spirit mastery health drop effect
@@ -100,11 +100,11 @@ public class SpellcasterTableModel extends ItemTableModel {
 	}
 
 	public ArrayList<Integer> getSpells() {
-		return spells;
+		return this.spells;
 	}
 
 	public ArrayList<String> getSpellDescrs() {
-		return spellDescrs;
+		return this.spellDescrs;
 	}
 
 	int getSpellStartI() {

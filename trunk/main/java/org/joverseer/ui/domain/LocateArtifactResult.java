@@ -20,7 +20,7 @@ public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
     String owner;
 
     public String getArtifactName() {
-        return artifactName;
+        return this.artifactName;
     }
 
     public void setArtifactName(String artifactName) {
@@ -28,7 +28,7 @@ public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
     }
 
     public int getArtifactNo() {
-        return artifactNo;
+        return this.artifactNo;
     }
 
     public void setArtifactNo(int artifactNo) {
@@ -36,7 +36,7 @@ public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
     }
 
     public String getArtifactPowers() {
-        return artifactPowers;
+        return this.artifactPowers;
     }
 
     public void setArtifactPowers(String artifactPowers) {
@@ -44,7 +44,7 @@ public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
     }
 
     public String getCaster() {
-        return caster;
+        return this.caster;
     }
 
     public void setCaster(String caster) {
@@ -52,7 +52,7 @@ public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
     }
 
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
 
     public void setHexNo(int hexNo) {
@@ -60,32 +60,35 @@ public class LocateArtifactResult implements IHasMapLocation, IHasTurnNumber {
     }
 
     public String getSpellName() {
-        return spellName;
+        return this.spellName;
     }
 
     public void setSpellName(String spellName) {
         this.spellName = spellName;
     }
 
-    public int getTurnNo() {
-        return turnNo;
+    @Override
+	public int getTurnNo() {
+        return this.turnNo;
     }
 
     public void setTurnNo(int turnNo) {
         this.turnNo = turnNo;
     }
 
-    public int getX() {
+    @Override
+	public int getX() {
         return getHexNo() / 100;
     }
 
-    public int getY() {
+    @Override
+	public int getY() {
         return getHexNo() % 100;
     }
 
 
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
 
 

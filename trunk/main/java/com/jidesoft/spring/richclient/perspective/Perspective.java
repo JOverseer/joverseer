@@ -57,7 +57,7 @@ public abstract class Perspective implements BeanNameAware{
 	 * @return
 	 */
 	public String getId(){
-		return id;
+		return this.id;
 	}
 	
 	/**

@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.JTableHeader;
 
 import org.joverseer.domain.Character;
@@ -71,7 +72,7 @@ public class EncounterListView extends BaseItemListView {
 
 		// create the table model
 		try {
-			tableModel = (BeanTableModel) tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
+			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
 		} catch (InstantiationException e) {
 			e.printStackTrace(); // To change body of catch statement use File |
 			// Settings | File Templates.
@@ -93,9 +94,10 @@ public class EncounterListView extends BaseItemListView {
 		if (filterLists != null) {
 			for (AbstractListViewFilter[] filterList : filterLists) {
 				JComboBox filter = new JComboBox(filterList);
-				filters.add(filter);
+				this.filters.add(filter);
 				filter.addActionListener(new ActionListener() {
 
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						setItems();
 					}
@@ -111,8 +113,8 @@ public class EncounterListView extends BaseItemListView {
 		setItems();
 
 		// create the JTable instance
-		table = TableUtils.createStandardSortableTable(tableModel);
-		table = new SortableTable(table.getModel()) {
+		this.table = TableUtils.createStandardSortableTable(this.tableModel);
+		this.table = new SortableTable(this.table.getModel()) {
 			@Override
 			protected void initTable() {
 				super.initTable();
@@ -125,40 +127,40 @@ public class EncounterListView extends BaseItemListView {
 					@Override
 					protected void initComponents() {
 						super.initComponents();
-						_headerPanel.add(_titlePanel, BorderLayout.CENTER);
+						this._headerPanel.add(this._titlePanel, BorderLayout.CENTER);
 					}
 
 					@Override
 					protected JLabel createLabel(String text) {
-						return new JLabel(text, JLabel.LEADING);
+						return new JLabel(text, SwingConstants.LEADING);
 					}
 				};
 			}
 
 			@Override
 			protected JTableHeader createDefaultTableHeader() {
-				return new JTableHeader(columnModel);
+				return new JTableHeader(this.columnModel);
 			}
 		};
-		((JideTable) table).setRowResizable(true);
-		((JideTable) table).setRowAutoResizes(true);
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
+		((JideTable) this.table).setRowResizable(true);
+		((JideTable) this.table).setRowAutoResizes(true);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
 
 		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
 		if (pval.equals("yes")) {
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		} else {
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
 
-		table.getTableHeader().setBackground(Color.WHITE);
-		table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
-		table.addMouseListener(this);
-		JScrollPane scrollPane = new JScrollPane(table);
+		this.table.getTableHeader().setBackground(Color.WHITE);
+		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.addMouseListener(this);
+		JScrollPane scrollPane = new JScrollPane(this.table);
 		scrollPane.getViewport().setOpaque(true);
-		scrollPane.getViewport().setBackground(table.getBackground());
+		scrollPane.getViewport().setBackground(this.table.getBackground());
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
@@ -171,11 +173,11 @@ public class EncounterListView extends BaseItemListView {
 
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+					((SortableTableModel) EncounterListView.this.table.getModel()).sortByColumns(getDefaultSort());
 				}
 
 			});
-			((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+			((SortableTableModel) this.table.getModel()).sortByColumns(getDefaultSort());
 			restoreSorting.setToolTipText("Restore default sort order");
 			tlb.cell(restoreSorting, "colspec=left:30px valign=top");
 		}
@@ -185,17 +187,17 @@ public class EncounterListView extends BaseItemListView {
 		MultilineTableCellRenderer r = new MultilineTableCellRenderer();
 		r.setWrapStyleWord(true);
 		r.setLineWrap(true);
-		table.setDefaultRenderer(String.class, r);
-		table.setDefaultRenderer(Integer.class, r);
-		table.setFont(new Font(table.getFont().getFamily(), Font.PLAIN, table.getFont().getSize() - 1));
+		this.table.setDefaultRenderer(String.class, r);
+		this.table.setDefaultRenderer(Integer.class, r);
+		this.table.setFont(new Font(this.table.getFont().getFamily(), Font.PLAIN, this.table.getFont().getSize() - 1));
 		return p;
 	}
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-		filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), };
+		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), };
 	}
 
 	@Override
@@ -222,7 +224,7 @@ public class EncounterListView extends BaseItemListView {
 				}
 			}
 		}
-		tableModel.setRows(items);
+		this.tableModel.setRows(items);
 
 	}
 

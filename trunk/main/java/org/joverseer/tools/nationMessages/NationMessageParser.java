@@ -21,17 +21,17 @@ public class NationMessageParser {
     int turnNo;
     
     NationMessagePattern[] patterns = new NationMessagePattern[]{
-            new NationMessagePattern(String.format("(%s) is no longer under our control.$", name), NationMessagePattern.NAMED_ELEMENT_PC), 
-            new NationMessagePattern(String.format(".*transported from the %s to (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC),
-            new NationMessagePattern(String.format("^There are rumors of a theft attempt involving %s at (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC),    
-            new NationMessagePattern(String.format("^There are rumors of a kidnap attempt involving (%s) and %s.$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
-            new NationMessagePattern(String.format("^There are rumors of a kidnap attempt involving %s and (%s).$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
-            new NationMessagePattern(String.format("^There are rumors of an assassination attempt involving (%s) and %s.$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
-            new NationMessagePattern(String.format("^There are rumors of an assassination attempt involving %s and (%s).$", name, name), NationMessagePattern.NAMED_ELEMENT_CHAR),
-            new NationMessagePattern(String.format(".*Gold was stolen at (%s)\\.$", name), NationMessagePattern.NAMED_ELEMENT_PC),
-            new NationMessagePattern(String.format("^The loyalty was influenced from the efforts or presence of %s at (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC),
-            new NationMessagePattern(String.format("^There are rumors of a sabotage attempt involving %s at (%s)\\.$", name, name), NationMessagePattern.NAMED_ELEMENT_PC),
-            new NationMessagePattern(String.format("^The loyalty was influenced/reduced at (%s)\\.$", name), NationMessagePattern.NAMED_ELEMENT_PC),
+            new NationMessagePattern(String.format("(%s) is no longer under our control.$", this.name), NationMessagePattern.NAMED_ELEMENT_PC), 
+            new NationMessagePattern(String.format(".*transported from the %s to (%s)\\.$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_PC),
+            new NationMessagePattern(String.format("^There are rumors of a theft attempt involving %s at (%s)\\.$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_PC),    
+            new NationMessagePattern(String.format("^There are rumors of a kidnap attempt involving (%s) and %s.$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_CHAR),
+            new NationMessagePattern(String.format("^There are rumors of a kidnap attempt involving %s and (%s).$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_CHAR),
+            new NationMessagePattern(String.format("^There are rumors of an assassination attempt involving (%s) and %s.$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_CHAR),
+            new NationMessagePattern(String.format("^There are rumors of an assassination attempt involving %s and (%s).$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_CHAR),
+            new NationMessagePattern(String.format(".*Gold was stolen at (%s)\\.$", this.name), NationMessagePattern.NAMED_ELEMENT_PC),
+            new NationMessagePattern(String.format("^The loyalty was influenced from the efforts or presence of %s at (%s)\\.$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_PC),
+            new NationMessagePattern(String.format("^There are rumors of a sabotage attempt involving %s at (%s)\\.$", this.name, this.name), NationMessagePattern.NAMED_ELEMENT_PC),
+            new NationMessagePattern(String.format("^The loyalty was influenced/reduced at (%s)\\.$", this.name), NationMessagePattern.NAMED_ELEMENT_PC),
     };
     
     
@@ -42,7 +42,7 @@ public class NationMessageParser {
     }
 
     public int getHexNo(String message) {
-        for (NationMessagePattern p : patterns) {
+        for (NationMessagePattern p : this.patterns) {
             int hexNo = p.getHexNo(message);
             if (hexNo > -1) return hexNo;
         }
@@ -66,7 +66,7 @@ public class NationMessageParser {
 
 
         public String getElementName() {
-            return elementName;
+            return this.elementName;
         }
 
         
@@ -75,7 +75,7 @@ public class NationMessageParser {
         }
 
         public String getNamedElementType() {
-            return namedElementType;
+            return this.namedElementType;
         }
         
         public void setNamedElementType(String namedElementType) {
@@ -83,7 +83,7 @@ public class NationMessageParser {
         }
         
         public String getPattern() {
-            return pattern;
+            return this.pattern;
         }
         
         public void setPattern(String pattern) {
@@ -97,7 +97,7 @@ public class NationMessageParser {
                 setElementName(m.group(1));
                 Game g = GameHolder.instance().getGame();
                 if (!Game.isInitialized(g)) return -1;
-                Turn t = g.getTurn(turnNo - 1);
+                Turn t = g.getTurn(NationMessageParser.this.turnNo - 1);
                 if (t == null) return -1;
                 if (getNamedElementType().equals(NAMED_ELEMENT_PC)) {
                     PopulationCenter pc = (PopulationCenter)t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", getElementName());

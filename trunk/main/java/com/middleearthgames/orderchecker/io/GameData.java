@@ -18,35 +18,35 @@ class GameData
 
     GameData()
     {
-        gameType = "";
-        alignments = new int[25];
-        checkBoxes = null;
-        lastTurnProcessed = 0;
-        characters = new Vector();
-        charNotes = new Vector();
+        this.gameType = "";
+        this.alignments = new int[25];
+        this.checkBoxes = null;
+        this.lastTurnProcessed = 0;
+        this.characters = new Vector();
+        this.charNotes = new Vector();
     }
 
     GameData(Nation nation)
     {
-        gameType = "";
-        alignments = new int[25];
-        checkBoxes = null;
-        lastTurnProcessed = 0;
-        characters = new Vector();
-        charNotes = new Vector();
-        game = nation.getGame();
-        gameType = nation.getGameType();
+        this.gameType = "";
+        this.alignments = new int[25];
+        this.checkBoxes = null;
+        this.lastTurnProcessed = 0;
+        this.characters = new Vector();
+        this.charNotes = new Vector();
+        this.game = nation.getGame();
+        this.gameType = nation.getGameType();
         for(int i = 0; i < 25; i++)
         {
             if(i >= 0 && i < 10)
             {
-                alignments[i] = 1;
+                this.alignments[i] = 1;
                 continue;
             }
             if(i >= 10 && i < 20)
-                alignments[i] = 2;
+                this.alignments[i] = 2;
             else
-                alignments[i] = 0;
+                this.alignments[i] = 0;
         }
 
     }
@@ -55,12 +55,12 @@ class GameData
         throws IOException
     {
         out.writeInt(4);
-        out.writeInt(game);
-        out.writeObject(alignments);
-        out.writeObject(characters);
-        out.writeObject(charNotes);
-        out.writeUTF(gameType);
-        out.writeInt(lastTurnProcessed);
+        out.writeInt(this.game);
+        out.writeObject(this.alignments);
+        out.writeObject(this.characters);
+        out.writeObject(this.charNotes);
+        out.writeUTF(this.gameType);
+        out.writeInt(this.lastTurnProcessed);
         saveCheckBoxes(out);
     }
 
@@ -68,16 +68,16 @@ class GameData
         throws IOException, ClassNotFoundException
     {
         int version = in.readInt();
-        game = in.readInt();
-        alignments = (int[])(int[])in.readObject();
+        this.game = in.readInt();
+        this.alignments = (int[])(int[])in.readObject();
         if(version < 4)
-            checkBoxes = (Vector)in.readObject();
-        characters = (Vector)in.readObject();
-        charNotes = (Vector)in.readObject();
+            this.checkBoxes = (Vector)in.readObject();
+        this.characters = (Vector)in.readObject();
+        this.charNotes = (Vector)in.readObject();
         if(version >= 2)
-            gameType = in.readUTF();
+            this.gameType = in.readUTF();
         if(version >= 3)
-            lastTurnProcessed = in.readInt();
+            this.lastTurnProcessed = in.readInt();
         if(version >= 4)
             loadCheckBoxes(in);
     }
@@ -85,11 +85,11 @@ class GameData
     private void saveCheckBoxes(ObjectOutputStream out)
         throws IOException
     {
-        int numCheckBoxes = checkBoxes.size();
+        int numCheckBoxes = this.checkBoxes.size();
         out.writeInt(numCheckBoxes);
         for(int i = 0; i < numCheckBoxes; i++)
         {
-            JCheckBox box = (JCheckBox)checkBoxes.get(i);
+            JCheckBox box = (JCheckBox)this.checkBoxes.get(i);
             String text = box.getText();
             boolean active = box.isSelected();
             out.writeUTF(text);
@@ -101,25 +101,25 @@ class GameData
     private void loadCheckBoxes(ObjectInputStream in)
         throws IOException, ClassNotFoundException
     {
-        checkBoxes = new Vector();
+        this.checkBoxes = new Vector();
         int numCheckBoxes = in.readInt();
         for(int i = 0; i < numCheckBoxes; i++)
         {
             String content = in.readUTF();
             boolean state = in.readBoolean();
             JCheckBox box = new JCheckBox(content, state);
-            checkBoxes.add(box);
+            this.checkBoxes.add(box);
         }
 
     }
 
     private int findCharacter(String name)
     {
-        if(characters != null)
+        if(this.characters != null)
         {
-            for(int i = 0; i < characters.size(); i++)
+            for(int i = 0; i < this.characters.size(); i++)
             {
-                String character = (String)characters.get(i);
+                String character = (String)this.characters.get(i);
                 if(character.equals(name))
                     return i;
             }
@@ -130,25 +130,25 @@ class GameData
 
     int getGame()
     {
-        return game;
+        return this.game;
     }
 
     String getGameType()
     {
-        return gameType;
+        return this.gameType;
     }
 
     int getNationAlignment(int index)
     {
-        if(index >= 0 && index < alignments.length)
-            return alignments[index];
+        if(index >= 0 && index < this.alignments.length)
+            return this.alignments[index];
         else
             return 0;
     }
 
     Vector getCheckBoxes()
     {
-        return checkBoxes;
+        return this.checkBoxes;
     }
 
     String getCharacterNotes(String name)
@@ -156,7 +156,7 @@ class GameData
         int index = findCharacter(name);
         if(index != -1)
         {
-            String notes = (String)charNotes.get(index);
+            String notes = (String)this.charNotes.get(index);
             return notes;
         } else
         {
@@ -166,31 +166,31 @@ class GameData
 
     void setGameType(String type)
     {
-        gameType = type;
+        this.gameType = type;
     }
 
     void setNationAlignment(int index, int alignment)
     {
-        if(index >= 0 && index < alignments.length)
-            alignments[index] = alignment;
+        if(index >= 0 && index < this.alignments.length)
+            this.alignments[index] = alignment;
     }
 
     void setCheckBoxes(Vector newList, int turn)
     {
-        if(checkBoxes == null || lastTurnProcessed != turn)
+        if(this.checkBoxes == null || this.lastTurnProcessed != turn)
         {
-            lastTurnProcessed = turn;
-            checkBoxes = (Vector)newList.clone();
+            this.lastTurnProcessed = turn;
+            this.checkBoxes = (Vector)newList.clone();
             return;
         }
         for(int i = 0; i < newList.size(); i++)
         {
             JCheckBox box = (JCheckBox)newList.get(i);
-            JCheckBox oldBox = Data.isDuplicateRequest(checkBoxes, box);
+            JCheckBox oldBox = Data.isDuplicateRequest(this.checkBoxes, box);
             if(oldBox != null)
                 oldBox.setSelected(box.isSelected());
             else
-                checkBoxes.add(box);
+                this.checkBoxes.add(box);
         }
 
     }
@@ -200,24 +200,26 @@ class GameData
         int index = findCharacter(name);
         if(index == -1)
         {
-            characters.add(name);
-            charNotes.add(notes);
+            this.characters.add(name);
+            this.charNotes.add(notes);
         } else
         {
-            charNotes.set(index, notes);
+            this.charNotes.set(index, notes);
         }
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         StringBuffer desc = new StringBuffer();
-        desc.append("Game #" + game);
-        if(gameType.length() > 0)
-            desc.append(", " + gameType);
+        desc.append("Game #" + this.game);
+        if(this.gameType.length() > 0)
+            desc.append(", " + this.gameType);
         return desc.toString();
     }
 
-    private static final int VERSION = 4;
+    @SuppressWarnings("unused")
+	private static final int VERSION = 4;
     private int game;
     private String gameType;
     private int alignments[];

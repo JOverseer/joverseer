@@ -26,7 +26,8 @@ public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
         super("importNotesFromPreviousTurnCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         Turn previousTurn = null;

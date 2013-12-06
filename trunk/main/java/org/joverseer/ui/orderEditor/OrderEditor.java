@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
@@ -68,6 +69,7 @@ import org.springframework.richclient.list.SortedListModel;
 public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	public static final String FORM_PAGE = "orderEditorForm";
+	static final int PREFERRED_TEXT_HEIGHT = 23; // was 18 but cuts off descenders
 	JComboBox orderCombo;
 	JCheckBox chkDraw;
 	JTextField parameters;
@@ -93,15 +95,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	}
 
 	public String getParameters() {
-		return parameters.getText();
+		return this.parameters.getText();
 	}
 
 	public Container<OrderEditorData> getOrderEditorData() {
-		if (orderEditorData == null) {
-			orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
+		if (this.orderEditorData == null) {
+			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
 			try {
-				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
-				Resource resource = gm.getResource("orderEditorData.csv");
+				GameMetadata gm1 = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+				Resource resource = gm1.getResource("orderEditorData.csv");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
 				String ln;
@@ -126,7 +128,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 						oed.getParamTypes().add(parts[10]);
 						oed.setMajorSkill(parts[11]);
 						oed.setSkill(parts[12]);
-						orderEditorData.addItem(oed);
+						this.orderEditorData.addItem(oed);
 						ln = reader.readLine();
 						if (ln == null) {
 							ln = "";
@@ -149,20 +151,20 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				}
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
-				orderEditorData = null;
+				this.orderEditorData = null;
 			}
 		}
-		return orderEditorData;
+		return this.orderEditorData;
 	}
 
 	private GameMetadata getGameMetadata() {
-		if (gm == null) {
+		if (this.gm == null) {
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			if (!Game.isInitialized(g))
 				return null;
-			gm = g.getMetadata();
+			this.gm = g.getMetadata();
 		}
-		return gm;
+		return this.gm;
 	}
 
 	/**
@@ -182,7 +184,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			}
 		}
 		SortedListModel slm = new SortedListModel(orders);
-		orderCombo.setModel(new ComboBoxListModelAdapter(slm));
+		this.orderCombo.setModel(new ComboBoxListModelAdapter(slm));
 	}
 
 	@Override
@@ -191,9 +193,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.setDefaultInsets(new Insets(5, 5, 0, 0));
 		glb.append(new JLabel("Character :"));
 
-		glb.append(character = new JTextField());
-		character.setEditable(false);
-		character.setPreferredSize(new Dimension(200, 18));
+		glb.append(this.character = new JTextField());
+		this.character.setEditable(false);
+		this.character.setPreferredSize(new Dimension(200, PREFERRED_TEXT_HEIGHT));
 
 		JButton btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
@@ -203,6 +205,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateParameters();
 				saveOrder();
@@ -217,6 +220,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectCharEvent.toString(), ((Order) getFormObject()).getCharacter(), this));
 
@@ -231,6 +235,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				clearOrder();
 			}
@@ -258,9 +263,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				descriptionLabel.setVisible(!descriptionLabel.isVisible());
-				description.setVisible(!description.isVisible());
+				OrderEditor.this.descriptionLabel.setVisible(!OrderEditor.this.descriptionLabel.isVisible());
+				OrderEditor.this.description.setVisible(!OrderEditor.this.description.isVisible());
 			}
 		});
 		btn.setToolTipText("Show / hide description");
@@ -272,15 +278,16 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		// orderCombo = new JComboBox();
 		// orderCombo.setEditable(true);
 		// new EditableComboBoxAutoCompletion(orderCombo);
-		orderCombo = new AutocompletionComboBox();
-		glb.append(orderCombo);
+		this.orderCombo = new AutocompletionComboBox();
+		glb.append(this.orderCombo);
 
-		orderCombo.setPreferredSize(new Dimension(70, 18));
-		orderCombo.addActionListener(new ActionListener() {
+		this.orderCombo.setPreferredSize(new Dimension(70, PREFERRED_TEXT_HEIGHT));
+		this.orderCombo.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (!currentOrderNoAndCode.equals(orderCombo.getSelectedItem())) {
-					currentOrderNoAndCode = orderCombo.getSelectedItem().toString();
+				if (!OrderEditor.this.currentOrderNoAndCode.equals(OrderEditor.this.orderCombo.getSelectedItem())) {
+					OrderEditor.this.currentOrderNoAndCode = OrderEditor.this.orderCombo.getSelectedItem().toString();
 					refreshOrder();
 					refreshDescription();
 					refreshSubeditor();
@@ -292,12 +299,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			}
 		});
 
-		chkDraw = new JCheckBox("Draw");
-		chkDraw.setPreferredSize(new Dimension(60, 18));
-		chkDraw.setBackground(Color.white);
-		glb.append(chkDraw, 3, 1);
-		chkDraw.addActionListener(new ActionListener() {
+		this.chkDraw = new JCheckBox("Draw");
+		this.chkDraw.setPreferredSize(new Dimension(60, 18));
+		this.chkDraw.setBackground(Color.white);
+		glb.append(this.chkDraw, 3, 1);
+		this.chkDraw.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
 				OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
@@ -310,7 +318,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 			}
 		});
-		chkDraw.setFocusable(false);
+		this.chkDraw.setFocusable(false);
 		btn.setToolTipText("Draw");
 
 		btn = new JButton();
@@ -320,6 +328,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
 				if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
@@ -349,41 +358,41 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.nextLine();
 
 		glb.append(new JLabel("Parameters :"));
-		glb.append(parameters = new JTextField());
-		parameters.setEditable(false);
-		parameters.setPreferredSize(new Dimension(70, 18));
+		glb.append(this.parameters = new JTextField());
+		this.parameters.setEditable(false);
+		this.parameters.setPreferredSize(new Dimension(70, PREFERRED_TEXT_HEIGHT));
 
-		parametersInternal = new JTextField();
-		parametersInternal.setVisible(false);
-		glb.append(parametersInternal);
+		this.parametersInternal = new JTextField();
+		this.parametersInternal.setVisible(false);
+		glb.append(this.parametersInternal);
 		glb.nextLine();
 
-		glb.append(descriptionLabel = new JLabel("Description :"));
-		glb.append(description = new JTextArea());
-		descriptionLabel.setVerticalAlignment(JLabel.NORTH);
-		descriptionLabel.setVisible(true);
-		description.setLineWrap(true);
-		description.setWrapStyleWord(true);
-		description.setPreferredSize(new Dimension(200, 50));
-		description.setEditable(false);
-		description.setBorder(parameters.getBorder());
-		Font f = new Font(description.getFont().getName(), Font.ITALIC, description.getFont().getSize() - 1);
-		description.setFont(f);
-		description.setVisible(true);
+		glb.append(this.descriptionLabel = new JLabel("Description :"));
+		glb.append(this.description = new JTextArea());
+		this.descriptionLabel.setVerticalAlignment(SwingConstants.NORTH);
+		this.descriptionLabel.setVisible(true);
+		this.description.setLineWrap(true);
+		this.description.setWrapStyleWord(true);
+		this.description.setPreferredSize(new Dimension(200, 50));
+		this.description.setEditable(false);
+		this.description.setBorder(this.parameters.getBorder());
+		Font f = new Font(this.description.getFont().getName(), Font.ITALIC, this.description.getFont().getSize() - 1);
+		this.description.setFont(f);
+		this.description.setVisible(true);
 
 		glb.nextLine();
-		glb.append(subeditorPanel = new JPanel(), 2, 1);
-		subeditorPanel.setBackground(Color.white);
+		glb.append(this.subeditorPanel = new JPanel(), 2, 1);
+		this.subeditorPanel.setBackground(Color.white);
 		glb.nextLine();
 
-		myPanel = glb.getPanel();
-		myPanel.setBackground(Color.white);
+		this.myPanel = glb.getPanel();
+		this.myPanel.setBackground(Color.white);
 
-		descriptionLabel.setVisible(true);
-		description.setVisible(true);
-		descriptionLabel.setVisible(false);
-		description.setVisible(false);
-		return myPanel;
+		this.descriptionLabel.setVisible(true);
+		this.description.setVisible(true);
+		this.descriptionLabel.setVisible(false);
+		this.description.setVisible(false);
+		return this.myPanel;
 	}
 
 	/**
@@ -414,8 +423,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			if (Arrays.binarySearch(new int[] { 830, 850, 860 }, orderNo) > -1) {
 				o.setP0("no");
 			}
-			parameters.setText(Order.getParametersAsString(o.getParameters()));
-			parametersInternal.setText(o.getParameters());
+			this.parameters.setText(Order.getParametersAsString(o.getParameters()));
+			this.parametersInternal.setText(o.getParameters());
 			return true;
 		}
 		return false;
@@ -424,18 +433,18 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	public void refreshDrawCheck() {
 		Order o = (Order) getFormObject();
 		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
-		chkDraw.setSelected(ovd.contains(o));
+		this.chkDraw.setSelected(ovd.contains(o));
 		Order no = new Order(o.getCharacter());
 		try {
 			no.setOrderNo(Integer.parseInt(getSelectedOrderNo()));
-			chkDraw.setEnabled(GraphicUtils.canRenderOrder(no));
+			this.chkDraw.setEnabled(GraphicUtils.canRenderOrder(no));
 		} catch (Exception e) {
-			chkDraw.setEnabled(false);
+			this.chkDraw.setEnabled(false);
 		}
 	}
 
 	private String getSelectedOrderNo() {
-		String noAndCode = orderCombo.getSelectedItem().toString();
+		String noAndCode = this.orderCombo.getSelectedItem().toString();
 		int i = noAndCode.indexOf(" ");
 		if (i > 0) {
 			return noAndCode.substring(0, i);
@@ -449,24 +458,24 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	 */
 	protected void refreshSubeditor() {
 		// clear the panel and the component array list
-		subeditorPanel.removeAll();
-		subeditorComponents.clear();
+		this.subeditorPanel.removeAll();
+		this.subeditorComponents.clear();
 		Order o = (Order) getFormObject();
 		boolean paramsEditable = true;
 		if (!getSelectedOrderNo().equals("") && getOrderEditorData() != null) {
 			OrderEditorData oed = getOrderEditorData().findFirstByProperty("orderNo", Integer.parseInt(getSelectedOrderNo()));
 			if (oed != null) {
 				paramsEditable = false;
-				TableLayoutBuilder tlb = new TableLayoutBuilder(subeditorPanel);
+				TableLayoutBuilder tlb = new TableLayoutBuilder(this.subeditorPanel);
 				int paramNo = 0;
 				if (oed.getOrderNo() == 850 || oed.getOrderNo() == 860 || oed.getOrderNo() == 830) {
 					AbstractOrderSubeditor sub = new MoveArmyOrderSubeditor(o);
-					sub.addComponents(tlb, subeditorComponents, o, 0);
+					sub.addComponents(tlb, this.subeditorComponents, o, 0);
 					sub.setEditor(this);
 				} else if (oed.getOrderNo() == 940) {
 					AbstractOrderSubeditor sub = new CastLoSpellOrderSubeditor(o);
 					sub.setEditor(this);
-					sub.addComponents(tlb, subeditorComponents, o, 0);
+					sub.addComponents(tlb, this.subeditorComponents, o, 0);
 				} else {
 					for (int i = 0; i < oed.getParamTypes().size(); i++) {
 						String paramType = oed.getParamTypes().get(i);
@@ -533,7 +542,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 							sub = new ArtifactNumberParameterOrderSubeditor(paramDescription, o);
 						}
 						if (sub != null) {
-							sub.addComponents(tlb, subeditorComponents, o, paramNo);
+							sub.addComponents(tlb, this.subeditorComponents, o, paramNo);
 							sub.setEditor(this);
 						}
 						paramNo++;
@@ -555,15 +564,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				// myPanel.invalidate();
 			}
 		}
-		parameters.setEditable(paramsEditable);
-		parameters.setFocusable(paramsEditable);
-		subeditorPanel.requestFocusInWindow();
+		this.parameters.setEditable(paramsEditable);
+		this.parameters.setFocusable(paramsEditable);
+		this.subeditorPanel.requestFocusInWindow();
 	}
 
 	private void refreshDescription() {
 		String txt = "";
 		try {
-			String selOrder = (String) orderCombo.getSelectedItem();
+			String selOrder = (String) this.orderCombo.getSelectedItem();
 			int i = selOrder.indexOf(' ');
 			int no = Integer.parseInt(selOrder.substring(0, i));
 			Container<OrderMetadata> orderMetadata = getGameMetadata().getOrders();
@@ -573,15 +582,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		} catch (Exception exc) {
 			// do nothing
 		}
-		description.setText(txt);
+		this.description.setText(txt);
 	}
 
 	private void saveOrder() {
 		Order o = (Order) getFormObject();
-		if (orderCombo.getSelectedItem() == null)
+		if (this.orderCombo.getSelectedItem() == null)
 			return;
-		o.setNoAndCode(orderCombo.getSelectedItem().toString());
-		o.setParameters(parametersInternal.getText());
+		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
+		o.setParameters(this.parametersInternal.getText());
 		// validateOrder();
 		// throw an order changed event
 		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
@@ -594,15 +603,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	}
 
 	private void clearOrder() {
-		orderCombo.setSelectedItem(Order.NA);
-		parameters.setText("");
-		parametersInternal.setText("");
+		this.orderCombo.setSelectedItem(Order.NA);
+		this.parameters.setText("");
+		this.parametersInternal.setText("");
 		refreshSubeditor();
 		refreshDescription();
 		Order o = (Order) getFormObject();
-		o.setNoAndCode(orderCombo.getSelectedItem().toString());
-		o.setParameters(parametersInternal.getText());
-		currentOrderNoAndCode = "";
+		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
+		o.setParameters(this.parametersInternal.getText());
+		this.currentOrderNoAndCode = "";
 		// throw an order changed event
 		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
 		// Point selectedHex = new Point(o.getCharacter().getX(),
@@ -615,8 +624,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	private void revertOrder() {
 		Order o = (Order) getFormObject();
-		o.setOrderNo(bkOrderNo);
-		o.setParameters(bkParams);
+		o.setOrderNo(this.bkOrderNo);
+		o.setParameters(this.bkParams);
 		setFormObject(o);
 		if (getAutoSave()) {
 			saveOrder();
@@ -627,27 +636,27 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	public void setFormObject(Object obj) {
 		super.setFormObject(obj);
 		Order o = (Order) obj;
-		bkOrderNo = o.getOrderNo();
-		bkParams = o.getParameters();
+		this.bkOrderNo = o.getOrderNo();
+		this.bkParams = o.getParameters();
 		refreshOrderCombo();
-		parameters.setText(Order.getParametersAsString(o.getParameters()));
-		parametersInternal.setText(o.getParameters());
+		this.parameters.setText(Order.getParametersAsString(o.getParameters()));
+		this.parametersInternal.setText(o.getParameters());
 		if (!o.isBlank()) {
-			orderCombo.setSelectedItem(o.getNoAndCode());
+			this.orderCombo.setSelectedItem(o.getNoAndCode());
 		} else {
-			orderCombo.setSelectedIndex(0);
+			this.orderCombo.setSelectedIndex(0);
 		}
 		refreshOrder();
 		refreshDescription();
 		refreshSubeditor();
-		currentOrderNoAndCode = o.getNoAndCode();
+		this.currentOrderNoAndCode = o.getNoAndCode();
 		Character c = o.getCharacter();
 		if (c == null) {
-			character.setText("");
+			this.character.setText("");
 		} else {
-			character.setText(c.getName() + " - " + c.getHexNo());
+			this.character.setText(c.getName() + " - " + c.getHexNo());
 		}
-		chkDraw.setEnabled(GraphicUtils.canRenderOrder(o));
+		this.chkDraw.setEnabled(GraphicUtils.canRenderOrder(o));
 		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
 		if (PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoDraw").equals("yes") && PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave").equals("yes")) {
 			ovd.setOrderEditorOrder(o);
@@ -657,6 +666,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		}
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
@@ -677,7 +687,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	public void updateParameters() {
 		String v = "";
-		for (JComponent c : subeditorComponents) {
+		for (JComponent c : this.subeditorComponents) {
 			String val = "";
 			if (JTextField.class.isInstance(c)) {
 				val = ((JTextField) c).getText();
@@ -693,8 +703,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			}
 			v += (v.equals("") ? "" : Order.DELIM) + val;
 		}
-		parametersInternal.setText(v);
-		parameters.setText(v.replace(Order.DELIM, " "));
+		this.parametersInternal.setText(v);
+		this.parameters.setText(v.replace(Order.DELIM, " "));
 		if (getAutoSave()) {
 			saveOrder();
 		}
@@ -738,11 +748,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	}
 
 	public ArrayList<JComponent> getSubeditorComponents() {
-		return subeditorComponents;
+		return this.subeditorComponents;
 	}
 
 	public void giveFocus() {
-		orderCombo.requestFocusInWindow();
+		this.orderCombo.requestFocusInWindow();
 	}
 
 	public boolean getAutoSave() {

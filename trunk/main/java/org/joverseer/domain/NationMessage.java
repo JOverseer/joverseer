@@ -28,31 +28,35 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     String message;
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
 
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
-    public int getX() {
-        return x;
+    @Override
+	public int getX() {
+        return this.x;
     }
 
     public void setX(int x) {
         this.x = x;
     }
 
-    public int getY() {
-        return y;
+    @Override
+	public int getY() {
+        return this.y;
     }
 
     public void setY(int y) {
@@ -60,7 +64,7 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     }
 
     public int getX2() {
-        return x2;
+        return this.x2;
     }
 
     public void setX2(int x2) {
@@ -68,7 +72,7 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     }
 
     public int getY2() {
-        return y2;
+        return this.y2;
     }
 
     public void setY2(int y2) {
@@ -85,7 +89,7 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     	try {
     		return Integer.parseInt(amount);
     	}
-    	catch (Exception e) {
+    	catch (NumberFormatException e) {
     		return 0;
     	}
     }
@@ -98,7 +102,7 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     	String nation = StringUtils.getUniquePart(getMessage(), "transported from ", "to", false, false);
     	if (nation.startsWith("the")) nation = StringUtils.stripFirstWord(nation);
     	Nation n = NationMap.getNationFromName(nation);
-    	if (n != null) return n.getNumber();
+    	if (n != null) return n.getNumber().intValue();
     	return 0;
     }
     
@@ -136,7 +140,7 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     	try {
     		return Integer.parseInt(hexNo);
     	}
-    	catch (Exception exc) {
+    	catch (NumberFormatException exc) {
     		return 0;
     	}
     }

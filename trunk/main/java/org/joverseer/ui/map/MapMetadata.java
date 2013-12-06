@@ -22,7 +22,7 @@ public class MapMetadata {
 	ArrayList<Renderer> renderers = new ArrayList<Renderer>();
 
 	public int getGridCellHeight() {
-		return gridCellHeight;
+		return this.gridCellHeight;
 	}
 
 	public void setGridCellHeight(int gridCellHeight) {
@@ -30,7 +30,7 @@ public class MapMetadata {
 	}
 
 	public int getGridCellWidth() {
-		return gridCellWidth;
+		return this.gridCellWidth;
 	}
 
 	public void setGridCellWidth(int gridCellWidth) {
@@ -38,7 +38,7 @@ public class MapMetadata {
 	}
 
 	public int getHexSize() {
-		return hexSize;
+		return this.hexSize;
 	}
 
 	public void setHexSize(int hexSize) {
@@ -46,7 +46,7 @@ public class MapMetadata {
 	}
 
 	public int getMaxMapColumn() {
-		return maxMapColumn;
+		return this.maxMapColumn;
 	}
 
 	public void setMaxMapColumn(int mapColumns) {
@@ -54,7 +54,7 @@ public class MapMetadata {
 	}
 
 	public int getMaxMapRow() {
-		return maxMapRow;
+		return this.maxMapRow;
 	}
 
 	public void setMaxMapRow(int mapRows) {
@@ -62,7 +62,7 @@ public class MapMetadata {
 	}
 
 	public int getMinMapColumn() {
-		return minMapColumn;
+		return this.minMapColumn;
 	}
 
 	public void setMinMapColumn(int minMapColumn) {
@@ -70,7 +70,7 @@ public class MapMetadata {
 	}
 
 	public int getMinMapRow() {
-		return minMapRow;
+		return this.minMapRow;
 	}
 
 	public void setMinMapRow(int minMapRow) {
@@ -82,7 +82,7 @@ public class MapMetadata {
 	}
 
 	public Collection<Renderer> getRenderers() {
-		return renderers;
+		return this.renderers;
 	}
 
 }

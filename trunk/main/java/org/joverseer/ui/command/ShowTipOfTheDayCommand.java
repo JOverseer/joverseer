@@ -14,7 +14,8 @@ public class ShowTipOfTheDayCommand extends ActionCommand {
         super("showTipOfTheDayCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         GraphicUtils.showTipOfTheDay();
     }
 

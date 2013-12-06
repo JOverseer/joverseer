@@ -48,8 +48,8 @@ public class PerspectiveManager {
 
 	public Perspective getDefaultPerspective() {
 
-		String id = MessageFormat.format(DEFAULT_PERSPECTIVE_KEY, new Object[] { pageName });
-		Iterator it = perspectives.iterator();
+		String id = MessageFormat.format(DEFAULT_PERSPECTIVE_KEY, new Object[] { this.pageName });
+		Iterator it = this.perspectives.iterator();
 		while (it.hasNext()) {
 			Perspective perspective = (Perspective) it.next();
 			if (id.equals(perspective.getId())) {
@@ -64,9 +64,9 @@ public class PerspectiveManager {
 	 * current perspective is defined.
 	 */
 	public Perspective getCurrentPerspective() {
-		String key = MessageFormat.format(CURRENT_PERSPECTIVE_KEY, new Object[] { pageName });
+		String key = MessageFormat.format(CURRENT_PERSPECTIVE_KEY, new Object[] { this.pageName });
 		String id = prefs.get(key, DEFAULT_PERSPECTIVE_KEY);
-		Iterator it = perspectives.iterator();
+		Iterator it = this.perspectives.iterator();
 		while (it.hasNext()) {
 			Perspective perspective = (Perspective) it.next();
 			if (id.equals(perspective.getId())) {
@@ -77,7 +77,7 @@ public class PerspectiveManager {
 	}
 
 	public void setCurrentPerspective(Perspective perspective) {
-		String key = MessageFormat.format(CURRENT_PERSPECTIVE_KEY, new Object[] { pageName });
+		String key = MessageFormat.format(CURRENT_PERSPECTIVE_KEY, new Object[] { this.pageName });
 		prefs.put(key, perspective.getId());
 	}
 }

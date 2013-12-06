@@ -17,15 +17,16 @@ class StateList extends Vector
 
         int getOrderNumber()
         {
-            return orderNumber;
+            return this.orderNumber;
         }
 
         Object getValue()
         {
-            return value;
+            return this.value;
         }
 
-        void setValue(Object value)
+        @SuppressWarnings("unused")
+		void setValue(Object value)
         {
             this.value = value;
         }
@@ -42,13 +43,14 @@ class StateList extends Vector
 
     StateList()
     {
-        defaultValue = null;
+        this.defaultValue = null;
     }
 
-    public void clear()
+    @Override
+	public void clear()
     {
         super.clear();
-        defaultValue = null;
+        this.defaultValue = null;
     }
 
     Object findValueByOrderNumber(int order)
@@ -76,20 +78,20 @@ class StateList extends Vector
             return info.getValue();
         } else
         {
-            return defaultValue;
+            return this.defaultValue;
         }
     }
 
     int[] getKeys()
     {
         int size = size();
-        if(defaultValue != null)
+        if(this.defaultValue != null)
         {
             size++;
         }
         int index = 0;
         int keys[] = new int[size];
-        if(defaultValue != null)
+        if(this.defaultValue != null)
         {
             keys[index] = 0;
             index++;
@@ -107,15 +109,15 @@ class StateList extends Vector
     Object[] getValues()
     {
         int size = size();
-        if(defaultValue != null)
+        if(this.defaultValue != null)
         {
             size++;
         }
         int index = 0;
         Object values[] = new Object[size];
-        if(defaultValue != null)
+        if(this.defaultValue != null)
         {
-            values[index] = defaultValue;
+            values[index] = this.defaultValue;
             index++;
         }
         for(int i = 0; i < size(); i++)
@@ -144,6 +146,6 @@ class StateList extends Vector
 
     void putDefaultValue(Object value)
     {
-        defaultValue = value;
+        this.defaultValue = value;
     }
 }

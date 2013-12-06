@@ -38,13 +38,13 @@
 package org.txt2xml.driver;
 
 import java.util.logging.Logger;
+
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
-import org.jdom.Document;
-import org.jdom.transform.JDOMResult;
+
 import org.txt2xml.core.Processor;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -58,7 +58,8 @@ import org.xml.sax.SAXException;
  */
 public class DomDriver extends SaxDriver {
     
-    private static final Logger LOG = Logger.getLogger(DomDriver.class.getName());
+    @SuppressWarnings("unused")
+	private static final Logger LOG = Logger.getLogger(DomDriver.class.getName());
     
     public DomDriver() {
         super();

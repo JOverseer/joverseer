@@ -27,11 +27,11 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
     }
 
     public Integer[] getPhaseOrderNumbers() {
-        return phaseOrderNumbers;
+        return this.phaseOrderNumbers;
     }
     
     public void setPhaseOrderNumbers(Integer[] orderNumbers) {
-        phaseOrderNumbers = orderNumbers;
+        this.phaseOrderNumbers = orderNumbers;
     }
 
     public ArrayList<OrderExecutionWrapper> getOrdersForPhase(Turn t) {
@@ -48,7 +48,8 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
         return orders;
     }
     
-    public void processPhase(Turn t) {
+    @Override
+	public void processPhase(Turn t) {
         getOrderScheduler().scheduleOrders(getOrdersForPhase(t));
         ArrayList<OrderExecutionWrapper> scheduledOrders = getOrderScheduler().getScheduledOrders();
         for (OrderExecutionWrapper oew : scheduledOrders) {
@@ -62,7 +63,7 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
 
     
     public BaseOrderScheduler getOrderScheduler() {
-        return orderScheduler;
+        return this.orderScheduler;
     }
 
     

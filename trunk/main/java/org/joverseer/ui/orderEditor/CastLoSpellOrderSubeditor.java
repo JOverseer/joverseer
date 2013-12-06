@@ -47,61 +47,62 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     protected void loadSpellCombo() {
     	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     	Character c = getOrder().getCharacter();
-        parameter.addItem("");
+        this.parameter.addItem("");
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
-            if (si.getOrderNumber() == orderNo) {
+            if (si.getOrderNumber() == this.orderNo) {
 	        	 boolean found = false;
 	             for (SpellProficiency sp : c.getSpells()) {
 	                 if (sp.getSpellId() == si.getNumber()) {
 	                     found = true;
 	                 }
 	             }
-	             parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
+	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
             }
         }
     }
 
     @Override
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        this.tlb = tlb;
-        this.components = components;
-        tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(parameter = new JComboBox(), "colspec=left:230px");
-        parameter.setPreferredSize(new Dimension(180, 18));
-        tlb.row();
-        tlb.cell(spellNo = new JTextField());
-        spellNo.setVisible(false);
-        tlb.row();
+    public void addComponents(TableLayoutBuilder tlb1, ArrayList<JComponent> components1, Order o, int paramNo) {
+        this.tlb = tlb1;
+        this.components = components1;
+        tlb1.cell(new JLabel(this.paramName), "colspec=left:70px");
+        tlb1.cell(this.parameter = new JComboBox(), "colspec=left:230px");
+        this.parameter.setPreferredSize(new Dimension(180, 18));
+        tlb1.row();
+        tlb1.cell(this.spellNo = new JTextField());
+        this.spellNo.setVisible(false);
+        tlb1.row();
         
         loadSpellCombo();
         
-        components.add(spellNo);
+        components1.add(this.spellNo);
         
-        tlb.row();
+        tlb1.row();
         
-        secondParamPanel = new JPanel();
-        secondParamPanel.setBackground(Color.white);
-        tlb.cell(secondParamPanel, "colspan=2");
-        tlb.row();
+        this.secondParamPanel = new JPanel();
+        this.secondParamPanel.setBackground(Color.white);
+        tlb1.cell(this.secondParamPanel, "colspan=2");
+        tlb1.row();
         
         // find and preload current spell (from order)
         if (o.getParameter(paramNo) != null) {
             String spellId = o.getParameter(paramNo);
-            for (int i=0; i<parameter.getItemCount(); i++) {
-                if (parameter.getItemAt(i).toString().startsWith(spellId + " ")) {
-                    parameter.setSelectedIndex(i);
-                    spellNo.setText(o.getParameter(paramNo));
+            for (int i=0; i<this.parameter.getItemCount(); i++) {
+                if (this.parameter.getItemAt(i).toString().startsWith(spellId + " ")) {
+                    this.parameter.setSelectedIndex(i);
+                    this.spellNo.setText(o.getParameter(paramNo));
                     refreshSecondParameter();
                 }
             }
         }
-        parameter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if (parameter.getSelectedItem() != null) {
-                    String spId = parameter.getSelectedItem().toString();
-                    spellNo.setText(spId.substring(0, spId.indexOf(" ")));
+        this.parameter.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                if (CastLoSpellOrderSubeditor.this.parameter.getSelectedItem() != null) {
+                    String spId = CastLoSpellOrderSubeditor.this.parameter.getSelectedItem().toString();
+                    CastLoSpellOrderSubeditor.this.spellNo.setText(spId.substring(0, spId.indexOf(" ")));
                 } else {
-                    spellNo.setText("");
+                    CastLoSpellOrderSubeditor.this.spellNo.setText("");
                 }
                 refreshSecondParameter();
                 updateEditor();
@@ -115,7 +116,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
      */
     private void refreshSecondParameter() {
         try {
-            int spellId = Integer.parseInt(spellNo.getText());
+            int spellId = Integer.parseInt(this.spellNo.getText());
             String paramType = "";
             if (",406,408,417,420,422,424,426,430,436,".indexOf("," + spellId + ",") > -1) {
                 paramType = "cid";
@@ -132,16 +133,16 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             }
             // a lot of hacking is going on here to adjust the components
             // and update the OrderEditor appropriately
-            if (currentComp != null) {
-                secondParamPanel.remove(currentCompPanel);
-                components.remove(currentComp);
+            if (this.currentComp != null) {
+                this.secondParamPanel.remove(this.currentCompPanel);
+                this.components.remove(this.currentComp);
             };
             AbstractOrderSubeditor sub = null;
-            if (currentType != null && !currentType.equals(paramType)) {
+            if (this.currentType != null && !this.currentType.equals(paramType)) {
                 getOrder().setParameter(1, "");
-                currentType = paramType;
+                this.currentType = paramType;
             } else {
-                currentType = paramType;
+                this.currentType = paramType;
             }
             if (paramType.equals("cid")) {
                 sub = new SingleParameterOrderSubeditor("Char", getOrder());
@@ -158,17 +159,17 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             }else if (paramType.equals("art")) {
                 sub = new ArtifactNumberParameterOrderSubeditor("Arti", getOrder());
             }
-            TableLayoutBuilder tlb = new TableLayoutBuilder();
-            sub.addComponents(tlb, components, getOrder(), 1);
-            tlb.row();
-            tlb.cell(new JLabel(" "));
-            tlb.row();
+            TableLayoutBuilder tlb1 = new TableLayoutBuilder();
+            sub.addComponents(tlb1, this.components, getOrder(), 1);
+            tlb1.row();
+            tlb1.cell(new JLabel(" "));
+            tlb1.row();
             sub.setEditor(getEditor());
-            currentComp = components.get(1);
-            currentCompPanel = tlb.getPanel();
-            currentCompPanel.setBackground(Color.white);
-            secondParamPanel.add(currentCompPanel);
-            secondParamPanel.updateUI();
+            this.currentComp = this.components.get(1);
+            this.currentCompPanel = tlb1.getPanel();
+            this.currentCompPanel.setBackground(Color.white);
+            this.secondParamPanel.add(this.currentCompPanel);
+            this.secondParamPanel.updateUI();
         }
         catch (Exception exc) {
             exc.printStackTrace();

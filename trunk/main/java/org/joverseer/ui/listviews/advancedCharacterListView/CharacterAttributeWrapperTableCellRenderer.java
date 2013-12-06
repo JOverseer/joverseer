@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
@@ -23,6 +24,11 @@ import org.springframework.richclient.table.BeanTableModel;
  * @author Marios Skounakis
  */
 public class CharacterAttributeWrapperTableCellRenderer extends AllegianceColorCellRenderer {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 44676726616369242L;
 
 	public CharacterAttributeWrapperTableCellRenderer(BeanTableModel tableModel) {
 		super(tableModel);
@@ -61,7 +67,7 @@ public class CharacterAttributeWrapperTableCellRenderer extends AllegianceColorC
 			}
 		}
 		lbl.setToolTipText(toolTip);
-		lbl.setHorizontalAlignment(JLabel.CENTER);
+		lbl.setHorizontalAlignment(SwingConstants.CENTER);
 		return lbl;
 	}
 

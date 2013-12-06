@@ -24,15 +24,16 @@ public class ToggleDrawAllOrdersCommand extends ActionCommand {
     }
     
     
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
     	Game g = GameHolder.instance().getGame();
     	Turn t = g.getTurn();
     	ArrayList<Character> chars = (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems();
 		OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
-		if (value) {
+		if (this.value) {
 			ovd.clear();
-			value = false;
+			this.value = false;
 		} else {
 	    	for (Character c : chars) {
 	    		for (Order o : c.getOrders()) {
@@ -41,7 +42,7 @@ public class ToggleDrawAllOrdersCommand extends ActionCommand {
 	    			}
 	    		}
 	    	}
-	    	value = true;
+	    	this.value = true;
 		}
 		Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));

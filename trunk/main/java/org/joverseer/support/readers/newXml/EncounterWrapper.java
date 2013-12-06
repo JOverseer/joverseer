@@ -11,32 +11,32 @@ public class EncounterWrapper {
 	String header;
 	
 	public String getText() {
-		return text;
+		return this.text;
 	}
 	public void setText(String text) {
 		this.text = text;
 	}
 	public String getCharName() {
-		return charName;
+		return this.charName;
 	}
 	public void setCharName(String charName) {
 		this.charName = charName;
 	}
 	public String getHex() {
-		return hex;
+		return this.hex;
 	}
 	public void setHex(String hex) {
 		this.hex = hex;
 	}
 	public int getReacting() {
-		return reacting;
+		return this.reacting;
 	}
 	public void setReacting(int reacting) {
 		this.reacting = reacting;
 	}
 	
 	public String getHeader() {
-		return header;
+		return this.header;
 	}
 	public void setHeader(String header) {
 		this.header = header;
@@ -46,8 +46,8 @@ public class EncounterWrapper {
         if (getHeader() == null) {
         	return null;
         }
-        charName = StringUtils.getUniquePart(getHeader(), "Encounter for ", " at" , false, false);
-        hex = StringUtils.getUniquePart(getHeader(), charName + " at ", "\\.", false, false);
+        this.charName = StringUtils.getUniquePart(getHeader(), "Encounter for ", " at" , false, false);
+        this.hex = StringUtils.getUniquePart(getHeader(), this.charName + " at ", "\\.", false, false);
         
         e.setCharacter(getCharName());
         try {

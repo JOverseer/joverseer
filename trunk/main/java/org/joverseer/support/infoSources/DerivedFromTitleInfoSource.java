@@ -16,13 +16,14 @@ public class DerivedFromTitleInfoSource extends TurnInfoSource {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
 	}
 	
+	@Override
 	public String toString() {
     	return "Title";
     }

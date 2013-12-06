@@ -31,14 +31,14 @@ public class InputDialog extends TitledPageApplicationDialog {
     }
     
     public void addComponent(String name, JComponent component) {
-        componentNames.add(name);
-        components.add(component);
+        this.componentNames.add(name);
+        this.components.add(component);
     }
     
     public JComponent getComponent(String name) {
-        for (int i=0; i<componentNames.size(); i++) {
-            if (componentNames.get(i).equals(name)) {
-                return components.get(i);
+        for (int i=0; i<this.componentNames.size(); i++) {
+            if (this.componentNames.get(i).equals(name)) {
+                return this.components.get(i);
             }
         }
         return null;
@@ -48,7 +48,7 @@ public class InputDialog extends TitledPageApplicationDialog {
         InputDialogForm frm = new InputDialogForm(this);
         setDialogPage(new FormBackedDialogPage(frm));
         setPreferredSize(new Dimension(400, 300));
-        descr = description;
+        this.descr = description;
     }
 
 
@@ -61,12 +61,13 @@ public class InputDialog extends TitledPageApplicationDialog {
             this.dlg = dlg;
         }
 
-        protected JComponent createFormControl() {
+        @Override
+		protected JComponent createFormControl() {
             TableLayoutBuilder tlb = new TableLayoutBuilder();
-            for (int i=0; i<componentNames.size(); i++) {
-                tlb.cell(new JLabel(componentNames.get(i)));
+            for (int i=0; i<InputDialog.this.componentNames.size(); i++) {
+                tlb.cell(new JLabel(InputDialog.this.componentNames.get(i)));
                 tlb.gapCol();
-                tlb.cell(components.get(i));
+                tlb.cell(InputDialog.this.components.get(i));
                 tlb.relatedGapRow();
             }
             return tlb.getPanel();
@@ -74,18 +75,20 @@ public class InputDialog extends TitledPageApplicationDialog {
     }
 
 
-    protected boolean onFinish() {
-        result = true;
+    @Override
+	protected boolean onFinish() {
+        this.result = true;
         return true;
     }
 
-    protected void onAboutToShow() {
+    @Override
+	protected void onAboutToShow() {
         super.onAboutToShow();
-        setDescription(descr);
+        setDescription(this.descr);
     }
 
     public boolean getResult() {
-        return result;
+        return this.result;
     }
     
 }

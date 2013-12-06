@@ -139,8 +139,8 @@ public class NationProductionListView extends BaseItemListView {
 				filteredItems.add(plw);
 			}
 		}
-		tableModel.setRows(filteredItems);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setRows(filteredItems);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class NationProductionListView extends BaseItemListView {
 		@Override
 		public boolean accept(Object obj) {
 			ProductLineWrapper plw = (ProductLineWrapper) obj;
-			return type == null || plw.getDescr().equals("Total Production") || plw.getDescr().equals("Sell Price") || plw.getDescr().equals("Buy Price") || plw.getDescr().equals(type);
+			return this.type == null || plw.getDescr().equals("Total Production") || plw.getDescr().equals("Sell Price") || plw.getDescr().equals("Buy Price") || plw.getDescr().equals(this.type);
 		}
 
 	}

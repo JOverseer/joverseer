@@ -11,9 +11,7 @@ import javax.swing.table.TableModel;
 
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
-import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.table.SortableTableModel;
 
 public class GenericCopyToClipboardCommand extends ActionCommand implements ClipboardOwner {
 	JTable table;
@@ -27,12 +25,13 @@ public class GenericCopyToClipboardCommand extends ActionCommand implements Clip
 		this.table = table;
 	}
 
+	@Override
 	protected void doExecuteCommand() {
-        game = GameHolder.instance().getGame();
+        this.game = GameHolder.instance().getGame();
         String txt = "";
-        TableModel tableModel = table.getModel();
+        TableModel tableModel = this.table.getModel();
         for (int j=0; j<tableModel.getColumnCount(); j++) {
-        	txt += (txt.equals("") ? "" : DELIM) + tableModel.getColumnName(j);
+        	txt += (txt.equals("") ? "" : this.DELIM) + tableModel.getColumnName(j);
         }
         
         for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -40,15 +39,16 @@ public class GenericCopyToClipboardCommand extends ActionCommand implements Clip
         	for (int j=0; j<tableModel.getColumnCount(); j++) {
         		Object v = tableModel.getValueAt(i, j);
         		if (v == null) v = "";
-        		row += (row.equals("") ? "" : DELIM) + v.toString();
+        		row += (row.equals("") ? "" : this.DELIM) + v.toString();
         	}
-        	txt += (txt.equals("") ? "" : NL) + row;
+        	txt += (txt.equals("") ? "" : this.NL) + row;
         }
         StringSelection stringSelection = new StringSelection(txt);
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, this);
     }
 
+	@Override
 	public void lostOwnership(Clipboard arg0, Transferable arg1) {
 		
 		

@@ -35,20 +35,20 @@ public class OrderResultsForm extends AbstractForm {
 		JLabel lbl;
 		tlb.cell(lbl = new JLabel("Character :"));
 		lbl.setPreferredSize(new Dimension(70, 20));
-		name = new JTextField();
-		name.setEditable(false);
+		this.name = new JTextField();
+		this.name.setEditable(false);
 		tlb.gapCol();
-		tlb.cell(name);
+		tlb.cell(this.name);
 		tlb.relatedGapRow();
 		tlb.row();
 		tlb.cell(lbl = new JLabel("Results :"), "valign=top");
 		lbl.setPreferredSize(new Dimension(70, 20));
 		tlb.gapCol();
-		results = new JTextArea();
-		results.setWrapStyleWord(true);
-		results.setLineWrap(true);
-		results.setEditable(false);
-		JScrollPane scp = new JScrollPane(results);
+		this.results = new JTextArea();
+		this.results.setWrapStyleWord(true);
+		this.results.setLineWrap(true);
+		this.results.setEditable(false);
+		JScrollPane scp = new JScrollPane(this.results);
 		scp.setPreferredSize(new Dimension(500, 200));
 		tlb.cell(scp);
 		return tlb.getPanel();
@@ -58,7 +58,7 @@ public class OrderResultsForm extends AbstractForm {
 	public void setFormObject(Object arg0) {
 		super.setFormObject(arg0);
 		Character c = (Character) arg0;
-		name.setText(c.getName());
+		this.name.setText(c.getName());
 		String result = c.getCleanOrderResults().replaceAll("\n", "");
 		result = result.replaceAll(" He was ordered", "\n\nHe was ordered");
 		result = result.replaceAll(" She was ordered", "\n\nShe was ordered");
@@ -68,8 +68,8 @@ public class OrderResultsForm extends AbstractForm {
 		result = result.replaceAll(" She is currently", "\n\nShe is currently");
 		result = result.replaceAll(" He commands a", "\n\nHe commands a");
 		result = result.replaceAll(" She commands a", "\n\nShe commands a");
-		results.setText(result);
-		results.setCaretPosition(0);
+		this.results.setText(result);
+		this.results.setCaretPosition(0);
 	}
 
 }

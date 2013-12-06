@@ -40,18 +40,19 @@ public class Container<X> implements Serializable, Iterable<X> {
 		}
 	}
 
+	@Override
 	public Iterator<X> iterator() {
-		return items.iterator();
+		return this.items.iterator();
 	}
 
 	public void addCache(String propertyName) {
-		assert (items.size() == 0);
-		caches.put(propertyName, new ContainerCache<X>(propertyName));
+		assert (this.items.size() == 0);
+		this.caches.put(propertyName, new ContainerCache<X>(propertyName));
 	}
 
 	public void addItem(X obj) {
-		items.add(obj);
-		for (ContainerCache<X> cc : caches.values()) {
+		this.items.add(obj);
+		for (ContainerCache<X> cc : this.caches.values()) {
 			cc.addItem(obj);
 		}
 	}
@@ -61,7 +62,7 @@ public class Container<X> implements Serializable, Iterable<X> {
 	}
 
 	public boolean contains(X obj) {
-		return items.contains(obj);
+		return this.items.contains(obj);
 	}
 
 	public ArrayList<X> findAllByProperties(String[] properties, Object[] values) {
@@ -72,7 +73,7 @@ public class Container<X> implements Serializable, Iterable<X> {
 		int si;
 		if (ret == null) {
 			si = 0;
-			ret = items;
+			ret = this.items;
 		} else {
 			si = 1;
 		}
@@ -100,7 +101,7 @@ public class Container<X> implements Serializable, Iterable<X> {
 	}
 
 	private ArrayList<X> findByCache(String propertyName, Object value) {
-		ContainerCache<X> cache = caches.get(propertyName);
+		ContainerCache<X> cache = this.caches.get(propertyName);
 		if (cache == null)
 			return null;
 		ArrayList<X> ret = cache.retrieveItems(value);
@@ -122,7 +123,7 @@ public class Container<X> implements Serializable, Iterable<X> {
 	}
 
 	public ArrayList<X> getItems() {
-		return items;
+		return this.items;
 	}
 
 	public void refreshItem(X obj) {
@@ -131,8 +132,8 @@ public class Container<X> implements Serializable, Iterable<X> {
 	}
 
 	public void removeAll(Collection<X> col) {
-		items.removeAll(col);
-		for (ContainerCache<X> cc : caches.values()) {
+		this.items.removeAll(col);
+		for (ContainerCache<X> cc : this.caches.values()) {
 			cc.removeAll(col);
 		}
 	}
@@ -149,16 +150,16 @@ public class Container<X> implements Serializable, Iterable<X> {
 	}
 
 	public void removeItem(X obj) {
-		if (items.contains(obj)) {
-			items.remove(obj);
-			for (ContainerCache<X> cc : caches.values()) {
+		if (this.items.contains(obj)) {
+			this.items.remove(obj);
+			for (ContainerCache<X> cc : this.caches.values()) {
 				cc.removeItem(obj);
 			}
 		}
 	}
 
 	public int size() {
-		return items.size();
+		return this.items.size();
 	}
 
 }

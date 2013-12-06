@@ -4,6 +4,8 @@ import javax.swing.JComboBox;
 
 public class EnumComboBox extends JComboBox {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void addItem(Object arg0) {
 		// TODO Auto-generated method stub

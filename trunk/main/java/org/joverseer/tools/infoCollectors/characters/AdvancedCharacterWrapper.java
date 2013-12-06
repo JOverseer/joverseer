@@ -61,11 +61,11 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	boolean isChampion = false;
 
 	public Army getArmy() {
-		return army;
+		return this.army;
 	}
 
 	public CharacterDeathReasonEnum getDeathReason() {
-		return deathReason;
+		return this.deathReason;
 	}
 
 	public void setDeathReason(CharacterDeathReasonEnum deathReason) {
@@ -77,7 +77,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public HashMap<String, CharacterAttributeWrapper> getAttributes() {
-		return attributes;
+		return this.attributes;
 	}
 
 	public void setAttributes(HashMap<String, CharacterAttributeWrapper> attributes) {
@@ -111,7 +111,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public Company getCompany() {
-		return company;
+		return this.company;
 	}
 
 	public void setCompany(Company company) {
@@ -119,7 +119,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -127,7 +127,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public InfoSource getInfoSource() {
-		return infoSource;
+		return this.infoSource;
 	}
 
 	public void setInfoSource(InfoSource infoSource) {
@@ -135,31 +135,34 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
 
 	public String getOrderResults() {
-		return orderResults;
+		return this.orderResults;
 	}
 
 	public void setOrderResults(String orderResults) {
 		this.orderResults = orderResults;
 	}
 
+	@Override
 	public int getTurnNo() {
-		return turnNo;
+		return this.turnNo;
 	}
 
 	public void setTurnNo(int turnNo) {
@@ -216,12 +219,13 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public ArrayList<ArtifactWrapper> getArtifacts() {
-		return artifacts;
+		return this.artifacts;
 	}
 
 	private ArtifactWrapper getArtifact(int i) {
-		Collections.sort(artifacts, new Comparator<ArtifactWrapper>() {
+		Collections.sort(this.artifacts, new Comparator<ArtifactWrapper>() {
 
+			@Override
 			public int compare(ArtifactWrapper o1, ArtifactWrapper o2) {
 				try {
 					return o1.getNumber() - o2.getNumber();
@@ -231,8 +235,8 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 				return 0;
 			}
 		});
-		if (artifacts.size() > i) {
-			return artifacts.get(i);
+		if (this.artifacts.size() > i) {
+			return this.artifacts.get(i);
 		}
 		return null;
 	}
@@ -262,17 +266,19 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	@Override
 	public int getX() {
 		return getHexNo() / 100;
 	}
 
+	@Override
 	public int getY() {
 		return getHexNo() % 100;
 	}
@@ -299,7 +305,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public boolean getStartChar() {
-		return isStartChar;
+		return this.isStartChar;
 	}
 
 	public void setStartChar(boolean isStartChar) {
@@ -307,7 +313,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public InfoSourceValue getHealthEstimate() {
-		return healthEstimate;
+		return this.healthEstimate;
 	}
 
 	public void setHealthEstimate(InfoSourceValue healthEstimate) {
@@ -315,11 +321,11 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public boolean isHostage() {
-		return hostage;
+		return this.hostage;
 	}
 
 	public String getHostageHolderName() {
-		return hostageHolderName;
+		return this.hostageHolderName;
 	}
 
 	public void setHostage(boolean hostage, String holder) {
@@ -328,7 +334,7 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	}
 
 	public boolean isChampion() {
-		return isChampion;
+		return this.isChampion;
 	}
 
 	public void setChampion(boolean isChampion) {

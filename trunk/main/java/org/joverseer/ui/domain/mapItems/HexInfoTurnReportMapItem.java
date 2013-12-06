@@ -21,17 +21,18 @@ public class HexInfoTurnReportMapItem extends AbstractMapItem {
     
     public HexInfoTurnReportMapItem() {
     	Game g = GameHolder.instance().getGame();
-    	hexes = new HashMap();
+    	this.hexes = new HashMap();
     	for (Hex h : (ArrayList<Hex>)g.getMetadata().getHexes()) {
     		int i = HexInfoHistory.getLatestHexInfoTurnNoForHex(h.getHexNo());
-    		hexes.put(h.getHexNo(), i);
+    		this.hexes.put(h.getHexNo(), i);
     	}
     }
     
 	public HashMap getHexes() {
-		return hexes;
+		return this.hexes;
 	}
 
+	@Override
 	public String getDescription() {
 		return String.format("Hex info turn report.", new Object[]{});
 	}

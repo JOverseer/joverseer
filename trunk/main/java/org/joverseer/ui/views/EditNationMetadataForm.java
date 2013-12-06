@@ -63,8 +63,8 @@ public class EditNationMetadataForm extends AbstractForm {
 	}
 
 	protected void updateSNATextFieldFromCheckBoxes(int i) {
-		JTextField nationSNATextBox = nationSNAs.get(i);
-		HashMap<SNAEnum, JCheckBox> checkboxes = snaCheckBoxes.get(popups.get(i));
+		JTextField nationSNATextBox = this.nationSNAs.get(i);
+		HashMap<SNAEnum, JCheckBox> checkboxes = this.snaCheckBoxes.get(this.popups.get(i));
 		nationSNATextBox.setText("");
 		for (SNAEnum sna : SNAEnum.values()) {
 			if (checkboxes.get(sna).isSelected()) {
@@ -95,16 +95,16 @@ public class EditNationMetadataForm extends AbstractForm {
 		tlb.row();
 		for (int i = 0; i < 25; i++) {
 			JTextField nationName = new JTextField();
-			nationNames.add(nationName);
+			this.nationNames.add(nationName);
 			nationName.setPreferredSize(new Dimension(170, 20));
 			JLabel lbl = new JLabel();
 			lbl.setPreferredSize(new Dimension(60, 24));
 			lbl.setText(Application.instance().getApplicationContext().getMessage("editNationMetadataForm.NationLabel", new Object[] { (i + 1) }, null));
-			labels.add(lbl);
+			this.labels.add(lbl);
 			tlb.cell(lbl);
 			tlb.cell(nationName);
 			JTextField nationShortName = new JTextField();
-			nationShortNames.add(nationShortName);
+			this.nationShortNames.add(nationShortName);
 			nationShortName.setPreferredSize(new Dimension(80, 20));
 			tlb.gapCol();
 			tlb.cell(nationShortName);
@@ -113,17 +113,17 @@ public class EditNationMetadataForm extends AbstractForm {
 			rem.setText("");
 			tlb.gapCol();
 			tlb.cell(rem, "align=center");
-			removed.add(rem);
+			this.removed.add(rem);
 
 			JTextField nationSNAList = new JTextField();
 			nationSNAList.setEditable(false);
-			nationSNAs.add(nationSNAList);
+			this.nationSNAs.add(nationSNAList);
 			nationSNAList.setPreferredSize(new Dimension(250, 20));
 			tlb.gapCol();
 			tlb.cell(nationSNAList);
 
 			JButton editNationSNAs = new ResourceButton("standardActions.Edit");
-			editSNAButtons.add(editNationSNAs);
+			this.editSNAButtons.add(editNationSNAs);
 			editNationSNAs.setPreferredSize(new Dimension(50, 16));
 			tlb.gapCol();
 			tlb.cell(editNationSNAs);
@@ -131,7 +131,7 @@ public class EditNationMetadataForm extends AbstractForm {
 			// create popup
 			popup.getContentPane().setLayout(new BorderLayout());
 			final HashMap<SNAEnum, JCheckBox> checkboxes = new HashMap<SNAEnum, JCheckBox>();
-			snaCheckBoxes.put(popup, checkboxes);
+			this.snaCheckBoxes.put(popup, checkboxes);
 			TableLayoutBuilder lb = new TableLayoutBuilder();
 			for (SNAEnum sna : SNAEnum.values()) {
 				JCheckBox checkBox = new JCheckBox(sna.getDescription());
@@ -140,9 +140,10 @@ public class EditNationMetadataForm extends AbstractForm {
 				checkboxes.put(sna, checkBox);
 				checkBox.addActionListener(new ActionListener() {
 					// checkbox value changed, update the textfield
+					@Override
 					public void actionPerformed(ActionEvent e) {
-						int i = popups.indexOf(popup);
-						updateSNATextFieldFromCheckBoxes(i);
+						int i1 = EditNationMetadataForm.this.popups.indexOf(popup);
+						updateSNATextFieldFromCheckBoxes(i1);
 					}
 				});
 			}
@@ -150,6 +151,7 @@ public class EditNationMetadataForm extends AbstractForm {
 			JButton closePopup = new JButton("Close");
 			closePopup.setPreferredSize(new Dimension(70, 20));
 			closePopup.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					popup.hidePopup();
 				}
@@ -161,21 +163,22 @@ public class EditNationMetadataForm extends AbstractForm {
 			scp.setPreferredSize(new Dimension(200, 300));
 			scp.getVerticalScrollBar().setUnitIncrement(16);
 			popup.getContentPane().add(scp);
-			popups.add(popup);
+			this.popups.add(popup);
 
 			// add action listener for showing the popup
 			editNationSNAs.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
-					int i = editSNAButtons.indexOf(e.getSource());
-					JidePopup popup = popups.get(i);
-					popup.updateUI();
-					popup.setOwner((Component) e.getSource());
-					popup.setResizable(true);
-					popup.setMovable(true);
-					if (popup.isPopupVisible()) {
-						popup.hidePopup();
+					int i1 = EditNationMetadataForm.this.editSNAButtons.indexOf(e.getSource());
+					JidePopup popup1 = EditNationMetadataForm.this.popups.get(i1);
+					popup1.updateUI();
+					popup1.setOwner((Component) e.getSource());
+					popup1.setResizable(true);
+					popup1.setMovable(true);
+					if (popup1.isPopupVisible()) {
+						popup1.hidePopup();
 					} else {
-						popup.showPopup();
+						popup1.showPopup();
 					}
 				}
 			});
@@ -216,10 +219,10 @@ public class EditNationMetadataForm extends AbstractForm {
 		for (int i = 1; i < 26; i++) {
 			if (i < gm.getNations().size()) {
 				Nation n = gm.getNations().get(i);
-				n.setName(nationNames.get(i - 1).getText());
-				n.setShortName(nationShortNames.get(i - 1).getText());
-				n.setRemoved(removed.get(i - 1).isSelected());
-				HashMap<SNAEnum, JCheckBox> checkboxes = snaCheckBoxes.get(popups.get(i - 1));
+				n.setName(this.nationNames.get(i - 1).getText());
+				n.setShortName(this.nationShortNames.get(i - 1).getText());
+				n.setRemoved(this.removed.get(i - 1).isSelected());
+				HashMap<SNAEnum, JCheckBox> checkboxes = this.snaCheckBoxes.get(this.popups.get(i - 1));
 				for (SNAEnum sna : SNAEnum.values()) {
 					if (checkboxes.get(sna).isSelected() && !n.getSnas().contains(sna)) {
 						n.getSnas().add(sna);
@@ -238,23 +241,23 @@ public class EditNationMetadataForm extends AbstractForm {
 		for (int i = 1; i < 26; i++) {
 			if (i < gm.getNations().size()) {
 				Nation n = gm.getNations().get(i);
-				nationNames.get(i - 1).setText(n.getName());
-				nationShortNames.get(i - 1).setText(n.getShortName());
-				HashMap<SNAEnum, JCheckBox> checkboxes = snaCheckBoxes.get(popups.get(i - 1));
+				this.nationNames.get(i - 1).setText(n.getName());
+				this.nationShortNames.get(i - 1).setText(n.getShortName());
+				HashMap<SNAEnum, JCheckBox> checkboxes = this.snaCheckBoxes.get(this.popups.get(i - 1));
 				for (SNAEnum sna : SNAEnum.values()) {
 					checkboxes.get(sna).setSelected(n.getSnas().contains(sna));
 				}
-				removed.get(i - 1).setSelected(n.getRemoved());
+				this.removed.get(i - 1).setSelected(n.getRemoved());
 				updateSNATextFieldFromCheckBoxes(i - 1);
 				// JTextField color = colorLabels.get(i - 1);
 				// color.setBackground(ColorPicker.getInstance().getColor1(i));
 				// color.setForeground(ColorPicker.getInstance().getColor2(i));
 			} else {
-				labels.get(i - 1).setEnabled(false);
-				nationNames.get(i - 1).setEnabled(false);
-				nationShortNames.get(i - 1).setEnabled(false);
-				removed.get(i - 1).setEnabled(false);
-				nationSNAs.get(i - 1).setEnabled(false);
+				this.labels.get(i - 1).setEnabled(false);
+				this.nationNames.get(i - 1).setEnabled(false);
+				this.nationShortNames.get(i - 1).setEnabled(false);
+				this.removed.get(i - 1).setEnabled(false);
+				this.nationSNAs.get(i - 1).setEnabled(false);
 			}
 		}
 	}

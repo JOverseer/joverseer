@@ -19,7 +19,7 @@ public class Encounter implements IHasMapLocation, Serializable {
 	boolean canInvestigate = false;
 
 	public boolean getCanInvestigate() {
-		return canInvestigate;
+		return this.canInvestigate;
 	}
 
 	public void setCanInvestigate(boolean canInvestigate) {
@@ -27,7 +27,7 @@ public class Encounter implements IHasMapLocation, Serializable {
 	}
 
 	public String getCharacter() {
-		return character;
+		return this.character;
 	}
 
 	public void setCharacter(String character) {
@@ -35,7 +35,7 @@ public class Encounter implements IHasMapLocation, Serializable {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -43,17 +43,19 @@ public class Encounter implements IHasMapLocation, Serializable {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
 
+	@Override
 	public int getX() {
 		return getHexNo() / 100;
 	}
 
+	@Override
 	public int getY() {
 		return getHexNo() % 100;
 	}
@@ -81,7 +83,7 @@ public class Encounter implements IHasMapLocation, Serializable {
 			if (p == null)
 				continue;
 			p = p.replace(".", "").trim();
-			if (InfoUtils.isDragon(p))
+			if (InfoUtils.isDragon(p).booleanValue())
 				return p;
 		}
 		return null;

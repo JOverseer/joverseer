@@ -22,19 +22,19 @@ public class PreferenceRegistry {
 	String prefix;
 
 	public ArrayList<Preference> getAllPreferences() {
-		return allPreferences;
+		return this.allPreferences;
 	}
 
 	public void setAllPreferences(ArrayList<Preference> allPreferences) {
 		this.allPreferences = allPreferences;
-		preferenceMap.clear();
+		this.preferenceMap.clear();
 		for (Preference p : allPreferences) {
-			preferenceMap.put(p.getKey(), p);
+			this.preferenceMap.put(p.getKey(), p);
 		}
 	}
 
 	public String getPrefix() {
-		return prefix;
+		return this.prefix;
 	}
 
 	public void setPrefix(String prefix) {
@@ -42,14 +42,14 @@ public class PreferenceRegistry {
 	}
 
 	public String getPreferenceValue(String preferenceKey) {
-		if (preferenceMap.containsKey(preferenceKey)) {
-			return preferenceMap.get(preferenceKey).getValue(getPrefix());
+		if (this.preferenceMap.containsKey(preferenceKey)) {
+			return this.preferenceMap.get(preferenceKey).getValue(getPrefix());
 		}
 		return "";
 	}
 
 	public void setPreferenceValue(String preferenceKey, String value) {
-		for (Preference p : allPreferences) {
+		for (Preference p : this.allPreferences) {
 			if (p.getKey().equals(preferenceKey)) {
 				p.setValue(getPrefix(), value);
 			}
@@ -57,7 +57,7 @@ public class PreferenceRegistry {
 	}
 
 	public void clearCaches() {
-		for (Preference p : allPreferences) {
+		for (Preference p : this.allPreferences) {
 			p.clearCache();
 		}
 	}
@@ -68,11 +68,12 @@ public class PreferenceRegistry {
 
 	public ArrayList<Preference> getPreferencesSortedByGroup() {
 		ArrayList<Preference> ret = new ArrayList<Preference>();
-		for (Preference p : allPreferences) {
+		for (Preference p : this.allPreferences) {
 			ret.add(p);
 		}
 
 		Collections.sort(ret, new Comparator<Preference>() {
+			@Override
 			public int compare(Preference p1, Preference p2) {
 				return (p1.getGroup() + "." + p1.getDescription()).compareTo(p2.getGroup() + "." + p2.getDescription());
 			}

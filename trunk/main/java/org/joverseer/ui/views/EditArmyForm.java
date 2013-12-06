@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.Army;
@@ -83,32 +84,32 @@ public class EditArmyForm extends AbstractForm {
 		super.commit();
 		Army a = (Army) getFormObject();
 
-		a.setCommanderName(commander.getText());
+		a.setCommanderName(this.commander.getText());
 		try {
-			a.setHexNo(String.valueOf(Integer.parseInt(hexNo.getText())));
+			a.setHexNo(String.valueOf(Integer.parseInt(this.hexNo.getText())));
 		} catch (Exception exc) {
 		}
 		;
 
 		try {
-			a.setMorale(Integer.parseInt(morale.getText()));
+			a.setMorale(Integer.parseInt(this.morale.getText()));
 		} catch (Exception exc) {
 		}
 		;
 		try {
-			a.setFood(Integer.parseInt(food.getText()));
+			a.setFood(Integer.parseInt(this.food.getText()));
 		} catch (Exception exc) {
 		}
 		;
 		try {
-			Nation n = GameHolder.instance().getGame().getMetadata().getNationByName(nation.getSelectedItem().toString());
+			Nation n = GameHolder.instance().getGame().getMetadata().getNationByName(this.nation.getSelectedItem().toString());
 			a.setNationNo(n.getNumber());
 			a.setNationAllegiance(n.getAllegiance());
 		} catch (Exception exc) {
 		}
 		;
 		a.getElements().clear();
-		for (ArmyElement ae : elementList) {
+		for (ArmyElement ae : this.elementList) {
 			if (ae.getNumber() > 0) {
 				a.getElements().add(ae);
 			}
@@ -120,38 +121,38 @@ public class EditArmyForm extends AbstractForm {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
 
 		lb.append(new ResourceLabel("editArmyForm.Commander"));
-		lb.append(commander = new JTextField());
-		commander.setPreferredSize(new Dimension(120, 20));
+		lb.append(this.commander = new JTextField());
+		this.commander.setPreferredSize(new Dimension(120, 20));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("standardFields.Nation"));
-		lb.append(nation = new JComboBox(getNationNames().toArray()));
-		nation.setPreferredSize(new Dimension(120, 20));
+		lb.append(this.nation = new JComboBox(getNationNames().toArray()));
+		this.nation.setPreferredSize(new Dimension(120, 20));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("standardFields.HexNo"));
-		lb.append(hexNo = new JTextField());
-		nation.setPreferredSize(new Dimension(120, 20));
+		lb.append(this.hexNo = new JTextField());
+		this.nation.setPreferredSize(new Dimension(120, 20));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("editArmyForm.CommandRank"));
-		lb.append(commandRank = new JTextField());
-		commandRank.setPreferredSize(new Dimension(60, 20));
+		lb.append(this.commandRank = new JTextField());
+		this.commandRank.setPreferredSize(new Dimension(60, 20));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("editArmyForm.Morale"));
-		lb.append(morale = new JTextField());
-		morale.setPreferredSize(new Dimension(60, 20));
+		lb.append(this.morale = new JTextField());
+		this.morale.setPreferredSize(new Dimension(60, 20));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("editArmyForm.Food"));
-		lb.append(food = new JTextField());
-		food.setPreferredSize(new Dimension(60, 20));
+		lb.append(this.food = new JTextField());
+		this.food.setPreferredSize(new Dimension(60, 20));
 
 		lb.nextLine();
 
@@ -165,7 +166,7 @@ public class EditArmyForm extends AbstractForm {
 		tlb.cell(pnl, "align=left");
 		tlb.relatedGapRow();
 
-		elements = new JTable(elementTableModel = new ArmyElementTableModel((MessageSource) Application.instance().getApplicationContext().getBean("messageSource")) {
+		this.elements = new JTable(this.elementTableModel = new ArmyElementTableModel((MessageSource) Application.instance().getApplicationContext().getBean("messageSource")) {
 			@Override
 			public boolean isCellEditable(int arg0, int arg1) {
 				if (arg1 == 0)
@@ -183,18 +184,18 @@ public class EditArmyForm extends AbstractForm {
 				super.setValueAt(arg0, arg1, arg2);
 			}
 		});
-		elements.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+		this.elements.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				if ((Integer) value == 0) {
 					value = null;
 				}
 				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				lbl.setHorizontalAlignment(JLabel.RIGHT);
+				lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 				return lbl;
 			}
 		});
-		JScrollPane scp = new JScrollPane(elements);
+		JScrollPane scp = new JScrollPane(this.elements);
 		scp.setPreferredSize(new Dimension(300, 180));
 		tlb.cell(scp);
 
@@ -219,19 +220,19 @@ public class EditArmyForm extends AbstractForm {
 			return;
 		Army a = (Army) arg0;
 
-		commander.setText(a.getCommanderName());
+		this.commander.setText(a.getCommanderName());
 
-		nation.setSelectedItem(GameHolder.instance().getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
+		this.nation.setSelectedItem(GameHolder.instance().getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
 
 		Character c = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", a.getCommanderName());
 		if (c != null) {
-			commandRank.setText(String.valueOf(c.getCommandTotal()));
+			this.commandRank.setText(String.valueOf(c.getCommandTotal()));
 		}
-		commandRank.setEditable(false);
-		morale.setText(String.valueOf(a.getMorale()));
-		food.setText(String.valueOf(a.getFood()));
-		hexNo.setText(a.getHexNo());
-		elementList = new ArrayList<ArmyElement>();
+		this.commandRank.setEditable(false);
+		this.morale.setText(String.valueOf(a.getMorale()));
+		this.food.setText(String.valueOf(a.getFood()));
+		this.hexNo.setText(a.getHexNo());
+		this.elementList = new ArrayList<ArmyElement>();
 		for (ArmyElementType aet : ArmyElementType.values()) {
 			ArmyElement nae = new ArmyElement(aet, 0);
 			ArmyElement ae = a.getElement(aet);
@@ -241,10 +242,10 @@ public class EditArmyForm extends AbstractForm {
 				nae.setWeapons(ae.getWeapons());
 				nae.setArmor(ae.getArmor());
 			}
-			elementList.add(nae);
+			this.elementList.add(nae);
 		}
-		elementTableModel.setRows(elementList);
-		TableUtils.sizeColumnsToFitRowData(elements);
+		this.elementTableModel.setRows(this.elementList);
+		TableUtils.sizeColumnsToFitRowData(this.elements);
 	}
 
 }

@@ -4,7 +4,7 @@ public class SNAWrapper {
 	Integer code;
 
 	public Integer getCode() {
-		return code;
+		return this.code;
 	}
 
 	public void setCode(Integer code) {

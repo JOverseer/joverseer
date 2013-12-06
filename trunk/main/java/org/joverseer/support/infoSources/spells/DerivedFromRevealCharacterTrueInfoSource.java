@@ -23,7 +23,8 @@ public class DerivedFromRevealCharacterTrueInfoSource extends DerivedFromSpellIn
         setHexNo(hexNo);
     }
     
-    public String getSpell() {
+    @Override
+	public String getSpell() {
         return "RCT";
     }
 }

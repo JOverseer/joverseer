@@ -24,15 +24,16 @@ public class PopulationCenterReader implements MetadataReader {
 	String populationCenterFilename = "pcs";
 
 	public String getPopulationCenterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + populationCenterFilename;
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.populationCenterFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<PopulationCenter> populationCenters = new Container<PopulationCenter>();
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + populationCenterFilename);
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.populationCenterFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
@@ -96,7 +97,7 @@ public class PopulationCenterReader implements MetadataReader {
 
 				PopulationCenter pc = new PopulationCenter();
 				pc.setName(name);
-				pc.setNationNo(nationNo);
+				pc.setNationNo(new Integer(nationNo));
 				pc.setSize(pcSize);
 				pc.setFortification(fortSize);
 				pc.setHarbor(harborSize);

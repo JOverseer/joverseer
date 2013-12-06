@@ -24,7 +24,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 	String artifactName;
 
 	public String getArtifactName() {
-		return artifactName;
+		return this.artifactName;
 	}
 
 	public void setArtifactName(String artifactName) {
@@ -32,7 +32,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 	}
 
 	public int getArtifactNo() {
-		return artifactNo;
+		return this.artifactNo;
 	}
 
 	public void setArtifactNo(int artifactNo) {
@@ -40,7 +40,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -48,13 +48,14 @@ public class LocateArtifactResultWrapper implements OrderResult {
 	}
 
 	public String getOwner() {
-		return owner;
+		return this.owner;
 	}
 
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
 
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
 		Character c = null;
 		if (getOwner() != null && !getOwner().equals("")) {
@@ -91,13 +92,13 @@ public class LocateArtifactResultWrapper implements OrderResult {
 
 		Artifact a = turn.getArtifacts().findFirstByProperty("number", getArtifactNo());
 
-		String artifactName = getArtifactName();
-		if (artifactName.equals("artifact")) {
+		String artifactName1 = getArtifactName();
+		if (artifactName1.equals("artifact")) {
 			// dummy name
 			// see if you can retrieve from ArtifactInfo
 			ArtifactInfo ai = GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", getArtifactNo());
 			if (ai != null) {
-				artifactName = ai.getName();
+				artifactName1 = ai.getName();
 			}
 		}
 
@@ -105,7 +106,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 			// artifact not found, add
 			a = new Artifact();
 			a.setNumber(getArtifactNo());
-			a.setName(artifactName);
+			a.setName(artifactName1);
 			a.setOwner(getOwner());
 			a.setHexNo(c == null ? getHexNo() : c.getHexNo());
 			a.setInfoSource(is1);
@@ -114,7 +115,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 			// artifact found, check info source
 			InfoSource is = a.getInfoSource();
 			if (a.getName().equals("artifact")) {
-				a.setName(artifactName);
+				a.setName(artifactName1);
 			}
 			if (TurnInfoSource.class.isInstance(is)) {
 				// turn import, do nothing

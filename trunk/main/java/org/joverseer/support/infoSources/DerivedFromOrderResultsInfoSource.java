@@ -5,7 +5,7 @@ public class DerivedFromOrderResultsInfoSource extends PdfTurnInfoSource {
 	String charName;
 
 	public String getCharName() {
-		return charName;
+		return this.charName;
 	}
 
 	public void setCharName(String charName) {

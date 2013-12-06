@@ -53,11 +53,11 @@ public class ImportTerrainCsv extends ImportCsv
             String locationString = param.substring(1, param.length() - 1);
             location = Integer.parseInt(locationString);
         }
-        catch(Exception ex)
+        catch(NumberFormatException ex)
         {
             return "Couldn't extract location from: " + param + ".\n" + "The terrain file appears to be invalid!";
         }
-        Hex hex = map.findHex(location);
+        Hex hex = this.map.findHex(location);
         boolean foundHex = true;
         if(hex == null)
         {
@@ -72,7 +72,7 @@ public class ImportTerrainCsv extends ImportCsv
         {
             terrain = Integer.parseInt(param);
         }
-        catch(Exception ex)
+        catch(NumberFormatException ex)
         {
             return "Couldn't extract the terrain type from:  " + param + ".\n" + "The terrain file appears to be invalid!";
         }
@@ -111,7 +111,7 @@ public class ImportTerrainCsv extends ImportCsv
             }
         }
         if(!foundHex)
-            map.addHex(hex);
+            this.map.addHex(hex);
         return null;
     }
 

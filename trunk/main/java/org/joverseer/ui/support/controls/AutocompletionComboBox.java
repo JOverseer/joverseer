@@ -27,14 +27,15 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
 
     int actionPerformedPolicy = ACTION_PERFORMED_ONLY_ON_ENTER;
 
-    protected void fireActionEvent() {
-        if (actionPerformedPolicy == ACTION_PERFORMED_ON_SELECTION_CHANGE) {
+    @Override
+	protected void fireActionEvent() {
+        if (this.actionPerformedPolicy == ACTION_PERFORMED_ON_SELECTION_CHANGE) {
             super.fireActionEvent();
         }
     }
 
     protected void fireActionEvent(boolean doFire) {
-        if (actionPerformedPolicy == ACTION_PERFORMED_ONLY_ON_ENTER) {
+        if (this.actionPerformedPolicy == ACTION_PERFORMED_ONLY_ON_ENTER) {
             super.fireActionEvent();
         }
     }
@@ -43,19 +44,22 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
 
         getEditor().getEditorComponent().addKeyListener(new KeyListener() {
 
-            public void keyPressed(KeyEvent e) {
+            @Override
+			public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     System.out.println("Autocomp combo received enter.");
                     fireActionEvent(true);
                 }
             }
 
-            public void keyReleased(KeyEvent e) {
+            @Override
+			public void keyReleased(KeyEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            public void keyTyped(KeyEvent e) {
+            @Override
+			public void keyTyped(KeyEvent e) {
                 // TODO Auto-generated method stub
 
             }
@@ -64,12 +68,14 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
 
         getEditor().getEditorComponent().addFocusListener(new FocusListener() {
 
-            public void focusGained(FocusEvent e) {
+            @Override
+			public void focusGained(FocusEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            public void focusLost(FocusEvent e) {
+            @Override
+			public void focusLost(FocusEvent e) {
                 fireActionEvent(true);
                 if (e.getOppositeComponent() != null) {
                     e.getOppositeComponent().requestFocus();
@@ -80,16 +86,19 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
 
         addPopupMenuListener(new PopupMenuListener() {
 
-            public void popupMenuCanceled(PopupMenuEvent e) {
+            @Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
                 // TODO Auto-generated method stub
 
             }
 
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            @Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 fireActionEvent(true);
             }
 
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            @Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 // TODO Auto-generated method stub
 
             }
@@ -118,7 +127,7 @@ public class AutocompletionComboBox extends AutoCompletionComboBox {
     }
 
     public int getActionPerformedPolicy() {
-        return actionPerformedPolicy;
+        return this.actionPerformedPolicy;
     }
 
     public void setActionPerformedPolicy(int actionPerformedPolicy) {

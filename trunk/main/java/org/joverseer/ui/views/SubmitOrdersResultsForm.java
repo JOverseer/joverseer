@@ -26,19 +26,20 @@ public class SubmitOrdersResultsForm extends AbstractForm {
         super(arg0, FORM_ID);
     }
 
-    protected JComponent createFormControl() {
-        htmlResponse = new JEditorPane();
-        htmlResponse.setContentType("text/html");
-        htmlResponse.setEditorKit(new HTMLEditorKit());
+    @Override
+	protected JComponent createFormControl() {
+        this.htmlResponse = new JEditorPane();
+        this.htmlResponse.setContentType("text/html");
+        this.htmlResponse.setEditorKit(new HTMLEditorKit());
 
-        htmlResponse.setPreferredSize(new Dimension(600, 500));
-        JScrollPane scp = new JScrollPane(htmlResponse);
+        this.htmlResponse.setPreferredSize(new Dimension(600, 500));
+        JScrollPane scp = new JScrollPane(this.htmlResponse);
 
         return scp;
     }
 
     public JEditorPane getJEditorPane() {
-        return htmlResponse;
+        return this.htmlResponse;
     }
 
 

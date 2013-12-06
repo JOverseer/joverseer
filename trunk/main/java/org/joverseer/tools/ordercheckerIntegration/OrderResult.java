@@ -13,7 +13,7 @@ public class OrderResult {
     OrderResultTypeEnum type;
     
     public String getMessage() {
-        return message;
+        return this.message;
     }
     
     public void setMessage(String message) {
@@ -21,7 +21,7 @@ public class OrderResult {
     }
     
     public Order getOrder() {
-        return order;
+        return this.order;
     }
     
     public void setOrder(Order order) {
@@ -29,7 +29,7 @@ public class OrderResult {
     }
     
     public OrderResultTypeEnum getType() {
-        return type;
+        return this.type;
     }
     
     public void setType(OrderResultTypeEnum type) {

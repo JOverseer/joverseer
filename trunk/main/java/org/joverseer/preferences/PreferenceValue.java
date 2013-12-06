@@ -14,7 +14,7 @@ public class PreferenceValue {
     String description;
     
     public String getDescription() {
-        return description;
+        return this.description;
     }
     
     public void setDescription(String description) {
@@ -22,7 +22,7 @@ public class PreferenceValue {
     }
     
     public String getKey() {
-        return key;
+        return this.key;
     }
     
     public void setKey(String key) {

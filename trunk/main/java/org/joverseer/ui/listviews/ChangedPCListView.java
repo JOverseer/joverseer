@@ -26,6 +26,8 @@ public class ChangedPCListView extends BaseItemListView {
 	}
 
 	protected ChangedPCInfo comparePCs(PopulationCenter oldPc, PopulationCenter newPc) {
+		if ((oldPc == null) && (newPc==null)) return null;
+		
 		ChangedPCInfo cpi = new ChangedPCInfo();
 		if (oldPc != null && newPc == null) {
 			cpi.setHexNo(oldPc.getHexNo());
@@ -33,7 +35,7 @@ public class ChangedPCListView extends BaseItemListView {
 			cpi.setNationNo(oldPc.getNationNo());
 			cpi.setReason("Disappeared");
 			return cpi;
-		}
+		}  
 		if (oldPc == null && newPc != null) {
 			cpi.setHexNo(newPc.getHexNo());
 			cpi.setSize(newPc.getSize());
@@ -94,7 +96,7 @@ public class ChangedPCListView extends BaseItemListView {
 			}
 
 		}
-		tableModel.setRows(items);
+		this.tableModel.setRows(items);
 
 	}
 

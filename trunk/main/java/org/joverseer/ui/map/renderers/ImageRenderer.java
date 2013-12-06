@@ -35,7 +35,7 @@ public abstract class ImageRenderer implements Renderer {
      * Provides caching for speed
      */
     protected BufferedImage getImage(String imgName) {
-        if (!images.containsKey(imgName)) {
+        if (!this.images.containsKey(imgName)) {
             try {
                 ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
                 Image img = imgSource.getImage(imgName);
@@ -44,14 +44,14 @@ public abstract class ImageRenderer implements Renderer {
                 g.drawImage(img, 0, 0, null);
                 g.dispose();
                 //img = makeColorTransparent(img, Color.white);
-                images.put(imgName, bimg);
+                this.images.put(imgName, bimg);
                 return bimg;
             }
             catch (Exception exc) {
                 logger.error(String.format("Error %s loading image %s.", exc.getMessage(), imgName));
             }
         }
-        return (BufferedImage) images.get(imgName);
+        return (BufferedImage) this.images.get(imgName);
     }
     
     /**
@@ -59,7 +59,7 @@ public abstract class ImageRenderer implements Renderer {
      * Provides caching for speed
      */
     protected BufferedImage getImage(String imgName, int desiredWidth, int desiredHeight) {
-        if (!images.containsKey(imgName)) {
+        if (!this.images.containsKey(imgName)) {
             try {
                 ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
                 Image img = imgSource.getImage(imgName);
@@ -88,14 +88,14 @@ public abstract class ImageRenderer implements Renderer {
                 bimg = bufimg2; 
                 
                 //img = makeColorTransparent(img, Color.white);
-                images.put(imgName, bimg);
+                this.images.put(imgName, bimg);
                 return bimg;
             }
             catch (Exception exc) {
                 logger.error(String.format("Error %s loading image %s.", exc.getMessage(), imgName));
             }
         }
-        return (BufferedImage) images.get(imgName);
+        return (BufferedImage) this.images.get(imgName);
     }
 
     /**
@@ -106,8 +106,9 @@ public abstract class ImageRenderer implements Renderer {
             // the color we are looking for... Alpha bits are set to opaque
             public int markerRGB = color.getRGB() | 0xFF000000;
 
-            public final int filterRGB(int x, int y, int rgb) {
-                if ((rgb | 0xFF000000) == markerRGB) {
+            @Override
+			public final int filterRGB(int x, int y, int rgb) {
+                if ((rgb | 0xFF000000) == this.markerRGB) {
                     // Mark the alpha bits as zero - transparent
                     return 0x00FFFFFF & rgb;
                 } else {

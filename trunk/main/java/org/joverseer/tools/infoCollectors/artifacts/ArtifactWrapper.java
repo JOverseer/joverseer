@@ -26,7 +26,7 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     String alignment;
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -34,23 +34,25 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public void setName(String name) {
         this.name = name;
     }
     
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
     
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(int number) {
@@ -58,7 +60,7 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     }
     
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
     
     public void setOwner(String owner) {
@@ -66,7 +68,7 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     }
     
     public String getPower1() {
-        return power1;
+        return this.power1;
     }
     
     public void setPower1(String power1) {
@@ -74,32 +76,35 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     }
     
     public String getPower2() {
-        return power2;
+        return this.power2;
     }
     
     public void setPower2(String power2) {
         this.power2 = power2;
     }
     
-    public int getTurnNo() {
-        return turnNo;
+    @Override
+	public int getTurnNo() {
+        return this.turnNo;
     }
     
     public void setTurnNo(int turnNo) {
         this.turnNo = turnNo;
     }
 
-    public int getX() {
+    @Override
+	public int getX() {
         return getHexNo() / 100;
     }
 
-    public int getY() {
+    @Override
+	public int getY() {
         return getHexNo() % 100;
     }
 
     
     public InfoSource getInfoSource() {
-        return infoSource;
+        return this.infoSource;
     }
 
     
@@ -108,7 +113,7 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     }
 
     public String getAlignment() {
-    	return alignment;
+    	return this.alignment;
     }
     
     public void setAlignment(String alignment) {

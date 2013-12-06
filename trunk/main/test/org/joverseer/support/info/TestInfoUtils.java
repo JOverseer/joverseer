@@ -16,6 +16,7 @@ public class TestInfoUtils extends TestCase {
 		assertEquals(16, troopStrength.intValue()) ;
 	}
 	
+	@Override
 	public void setUp() {
 		JOverseerJIDEClient.launchTestFramework() ;
 	}

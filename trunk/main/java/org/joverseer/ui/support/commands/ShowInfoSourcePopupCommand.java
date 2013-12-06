@@ -12,9 +12,10 @@ public class ShowInfoSourcePopupCommand extends ActionCommand {
 		this.infoSource = infoSource;
 	}
 
+	@Override
 	protected void doExecuteCommand() {
-		if (infoSource != null) {
-			MessageDialog dlg = new MessageDialog("Info Source", infoSource
+		if (this.infoSource != null) {
+			MessageDialog dlg = new MessageDialog("Info Source", this.infoSource
 					.getDescription());
 			dlg.showDialog();
 		}

@@ -55,7 +55,7 @@ public class GameMetadata implements Serializable {
 	String basePath;
 
 	public GameTypeEnum getGameType() {
-		return gameType;
+		return this.gameType;
 	}
 
 	public void setGameType(GameTypeEnum gameType) {
@@ -67,7 +67,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public String getAdditionalNations() {
-		return additionalNations;
+		return this.additionalNations;
 	}
 
 	public void setAdditionalNations(String additionalNations) {
@@ -82,16 +82,16 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Collection<Hex> getHexes() {
-		return hexes.getItems();
+		return this.hexes.getItems();
 	}
 
 	protected Hex getHexFromMetadata(int hexNo) {
-		Hex h = hexes.findFirstByProperties(new String[] { "hexNo" }, new Object[] { hexNo });
+		Hex h = this.hexes.findFirstByProperties(new String[] { "hexNo" }, new Object[] { new Integer(hexNo) });
 		return h;
 	}
 
 	public Hex getHex(int hexNo) {
-		return getHexForTurn(game.getCurrentTurn(), hexNo);
+		return getHexForTurn(this.game.getCurrentTurn(), hexNo);
 	}
 
 	public void setHexes(Collection<Hex> hexes) {
@@ -101,7 +101,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public ArrayList<Nation> getNations() {
-		return nations;
+		return this.nations;
 	}
 
 	public void setNations(Collection<Nation> nations) {
@@ -116,7 +116,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public ArrayList<MetadataReader> getReaders() {
-		return readers;
+		return this.readers;
 	}
 
 	public void setReaders(ArrayList<MetadataReader> readers) {
@@ -124,7 +124,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public int getGameNo() {
-		return gameNo;
+		return this.gameNo;
 	}
 
 	public void setGameNo(int gameNo) {
@@ -132,7 +132,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<Character> getStartDummyCharacters() {
-		return startDummyCharacters;
+		return this.startDummyCharacters;
 	}
 
 	public void setStartDummyCharacters(Container<Character> startDummyCharacters) {
@@ -140,7 +140,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public boolean getNewXmlFormat() {
-		return newXmlFormat;
+		return this.newXmlFormat;
 	}
 
 	public void setNewXmlFormat(boolean newXmlFormat) {
@@ -152,31 +152,31 @@ public class GameMetadata implements Serializable {
 		out.writeObject(getArtifacts());
 		out.writeObject(getSpells());
 		out.writeObject(getOrders());
-		out.writeObject(hexes);
+		out.writeObject(this.hexes);
 		out.writeObject(getNations());
 		out.writeObject(getNationMapRanges());
 		out.writeObject(getGameType());
-		out.writeObject(getGameNo());
-		out.writeObject(getNationNo());
-		out.writeObject(getNewXmlFormat());
+		out.writeObject(new Integer(getGameNo()));
+		out.writeObject(new Integer(getNationNo()));
+		out.writeObject(new Boolean(getNewXmlFormat()));
 		out.writeObject(getStartDummyCharacters());
-		out.writeObject(hexOverrides);
+		out.writeObject(this.hexOverrides);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-		characters = (Container<Character>) in.readObject();
-		artifacts = (Container<ArtifactInfo>) in.readObject();
-		spells = (Container<SpellInfo>) in.readObject();
-		orders = (Container<OrderMetadata>) in.readObject();
-		hexes = (Container<Hex>) in.readObject();
-		nations = (ArrayList<Nation>) in.readObject();
-		nationMapRanges = (Container<NationMapRange>) in.readObject();
+		this.characters = (Container<Character>) in.readObject();
+		this.artifacts = (Container<ArtifactInfo>) in.readObject();
+		this.spells = (Container<SpellInfo>) in.readObject();
+		this.orders = (Container<OrderMetadata>) in.readObject();
+		this.hexes = (Container<Hex>) in.readObject();
+		this.nations = (ArrayList<Nation>) in.readObject();
+		this.nationMapRanges = (Container<NationMapRange>) in.readObject();
 		setGameType((GameTypeEnum) in.readObject());
-		setGameNo((Integer) in.readObject());
-		setNationNo((Integer) in.readObject());
+		setGameNo(((Integer) in.readObject()).intValue());
+		setNationNo(((Integer) in.readObject()).intValue());
 		try {
-			setNewXmlFormat((Boolean) in.readObject());
+			setNewXmlFormat(((Boolean) in.readObject()).booleanValue());
 		} catch (Exception e) {
 			// do nothing, this may have not been set
 		}
@@ -186,7 +186,7 @@ public class GameMetadata implements Serializable {
 			// do nothing, this may have not been set
 		}
 		try {
-			hexOverrides = (HashMap) in.readObject();
+			this.hexOverrides = (HashMap) in.readObject();
 		} catch (Exception e) {
 			// do nothing, this may have not been set
 		}
@@ -194,7 +194,7 @@ public class GameMetadata implements Serializable {
 
 	public Nation getNationByNum(int number) {
 		for (Nation n : getNations()) {
-			if (n.getNumber() == number) {
+			if (n.getNumber().intValue() == number) {
 				return n;
 			}
 		}
@@ -211,7 +211,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<ArtifactInfo> getArtifacts() {
-		return artifacts;
+		return this.artifacts;
 	}
 
 	public void setArtifacts(Container<ArtifactInfo> artifacts) {
@@ -219,7 +219,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<PopulationCenter> getPopulationCenters() {
-		return populationCenters;
+		return this.populationCenters;
 	}
 
 	public void setPopulationCenters(Container<PopulationCenter> populationCenters) {
@@ -227,21 +227,21 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<OrderMetadata> getOrders() {
-		if (orders != null) {
-			OrderMetadata om = orders.findFirstByProperty("number", 225);
+		if (this.orders != null) {
+			OrderMetadata om = this.orders.findFirstByProperty("number", new Integer(225));
 			if (om.getSkillRequirement().equals("MS")) {
 				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
 				gm.setGameType(getGameType());
 
 				try {
 					gm.load();
-					orders = gm.getOrders();
+					this.orders = gm.getOrders();
 				} catch (Exception exc) {
 					// do nothing
 				}
 			}
 		}
-		return orders;
+		return this.orders;
 	}
 
 	public void setOrders(Container<OrderMetadata> orders) {
@@ -249,15 +249,15 @@ public class GameMetadata implements Serializable {
 	}
 
 	public String getBasePath() {
-		File f = new File(basePath);
+		File f = new File(this.basePath);
 		try {
 			if (f.exists())
 				return f.getCanonicalPath();
 			File cd = new File(".");
-			String p = cd.getCanonicalPath() + "/" + basePath;
+			String p = cd.getCanonicalPath() + "/" + this.basePath;
 			return p;
 		} catch (IOException exc) {
-			return basePath;
+			return this.basePath;
 		}
 	}
 
@@ -266,7 +266,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<Character> getCharacters() {
-		return characters;
+		return this.characters;
 	}
 
 	public void setCharacters(Container<Character> characters) {
@@ -274,7 +274,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public int getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	public void setNationNo(int nationNo) {
@@ -282,7 +282,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<NationMapRange> getNationMapRanges() {
-		return nationMapRanges;
+		return this.nationMapRanges;
 	}
 
 	public void setNationMapRanges(Container<NationMapRange> nationMapRanges) {
@@ -290,7 +290,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<Army> getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	public void setArmies(Container<Army> armies) {
@@ -298,7 +298,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<SpellInfo> getSpells() {
-		return spells;
+		return this.spells;
 	}
 
 	public void setSpells(Container<SpellInfo> spells) {
@@ -306,16 +306,17 @@ public class GameMetadata implements Serializable {
 	}
 
 	public Container<Hex> getHexOverrides(int turnNo) {
-		if (hexOverrides == null)
-			hexOverrides = new HashMap<Integer, Container<Hex>>();
-		if (hexOverrides.containsKey(turnNo)) {
-			return hexOverrides.get(turnNo);
+		if (this.hexOverrides == null)
+			this.hexOverrides = new HashMap<Integer, Container<Hex>>();
+		if (this.hexOverrides.containsKey(new Integer(turnNo))) {
+			return this.hexOverrides.get(new Integer(turnNo));
 		}
 		return new Container<Hex>();
 	}
 
+	@SuppressWarnings("hiding")
 	public Hex getHexOverride(Container<Hex> hexes, int hexNo) {
-		return hexes.findFirstByProperty("hexNo", hexNo);
+		return hexes.findFirstByProperty("hexNo", new Integer(hexNo));
 	}
 
 	public Hex getHexForTurn(int turnNo, int hexNo) {
@@ -327,9 +328,9 @@ public class GameMetadata implements Serializable {
 
 	public void addHexOverride(int turnNo, Hex hex) {
 		Container<Hex> hc;
-		if (!hexOverrides.containsKey(turnNo)) {
+		if (!this.hexOverrides.containsKey(new Integer(turnNo))) {
 			hc = new Container<Hex>(new String[] { "hexNo" });
-			hexOverrides.put(turnNo, hc);
+			this.hexOverrides.put(new Integer(turnNo), hc);
 		}
 		hc = getHexOverrides(turnNo);
 		Hex h = getHexOverride(hc, hex.getHexNo());
@@ -346,7 +347,7 @@ public class GameMetadata implements Serializable {
 		} catch (Exception exc) {
 			try {
 				System.out.println(exc.getMessage());
-				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + basePath + resourceName);
+				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + resourceName);
 				new InputStreamReader(r.getInputStream());
 				return r;
 			} catch (Exception ex) {

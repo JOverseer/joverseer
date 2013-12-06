@@ -1,7 +1,6 @@
 package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 
 import org.joverseer.ui.support.UIUtils;
 
@@ -29,7 +28,7 @@ public enum HexTerrainEnum implements Serializable {
 
 
     private HexTerrainEnum(int t) {
-        terrain = t;
+        this.terrain = t;
     }
 
     public static HexTerrainEnum fromValue(int i) {
@@ -42,7 +41,7 @@ public enum HexTerrainEnum implements Serializable {
     }
 
     public int getTerrain() {
-        return terrain;
+        return this.terrain;
     }
     
     public static HexTerrainEnum[] landValues() {

@@ -21,7 +21,7 @@ public class OrdercheckerPostprocessor {
 	OrdercheckerProxy proxy;
 
 	public OrdercheckerProxy getProxy() {
-		return proxy;
+		return this.proxy;
 	}
 
 	public void setProxy(OrdercheckerProxy proxy) {
@@ -30,7 +30,7 @@ public class OrdercheckerPostprocessor {
 
 	public void runChecks() {
 		Game g = GameHolder.instance().getGame();
-		int nationNo = proxy.getNationNo();
+		int nationNo = this.proxy.getNationNo();
 		ArrayList<Order> orders = new ArrayList<Order>();
 		ArrayList<Character> chars = g.getTurn().getContainer(TurnElementsEnum.Character).findAllByProperty("nationNo", nationNo);
 		for (Character c : chars) {

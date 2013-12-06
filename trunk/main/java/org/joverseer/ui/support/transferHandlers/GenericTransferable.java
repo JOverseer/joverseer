@@ -23,22 +23,25 @@ public class GenericTransferable implements Transferable {
         this.data = data;
     }
 
-    public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-        for (int i = 0; i < dataFlavors.length; i++) {
-            if (dataFlavors[i].equals(flavor)) {
-                return data[i];
+    @Override
+	public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+        for (int i = 0; i < this.dataFlavors.length; i++) {
+            if (this.dataFlavors[i].equals(flavor)) {
+                return this.data[i];
             }
         }
         return null;
     }
 
-    public DataFlavor[] getTransferDataFlavors() {
-        return dataFlavors;
+    @Override
+	public DataFlavor[] getTransferDataFlavors() {
+        return this.dataFlavors;
     }
 
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
-        for (int i = 0; i < dataFlavors.length; i++) {
-            if (dataFlavors[i].equals(flavor)) {
+    @Override
+	public boolean isDataFlavorSupported(DataFlavor flavor) {
+        for (int i = 0; i < this.dataFlavors.length; i++) {
+            if (this.dataFlavors[i].equals(flavor)) {
                 return true;
             }
         }

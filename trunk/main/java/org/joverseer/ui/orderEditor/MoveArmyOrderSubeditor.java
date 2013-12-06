@@ -31,39 +31,42 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         super(o);
         }
 
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+    @Override
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         
         tlb.cell(new JLabel("Style : "), "colspec=left:70px");
-        tlb.cell(movementStyle = new JComboBox(), "colspec=left:130px");
-        movementStyle.setPreferredSize(new Dimension(60, 18));
-        movementStyle.addItem("");
-        movementStyle.addItem("no");
-        movementStyle.addItem("ev");
-        movementStyle.setSelectedItem(o.getParameter(o.getLastParamIndex()));
-        movementStyle.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+        tlb.cell(this.movementStyle = new JComboBox(), "colspec=left:130px");
+        this.movementStyle.setPreferredSize(new Dimension(60, 18));
+        this.movementStyle.addItem("");
+        this.movementStyle.addItem("no");
+        this.movementStyle.addItem("ev");
+        this.movementStyle.setSelectedItem(o.getParameter(o.getLastParamIndex()));
+        this.movementStyle.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
                 updateEditor();
             }
         });
         
-        directionParams = new JTextField();
-        directionParams.setVisible(false);
+        this.directionParams = new JTextField();
+        this.directionParams.setVisible(false);
 
         String txt = "";
         for (int i=0; i<o.getLastParamIndex(); i++) {
             if (o.getParameter(i) == null) break;
-            dirs.add(o.getParameter(i));
+            this.dirs.add(o.getParameter(i));
             txt += (txt.equals("") ? "" : Order.DELIM) + o.getParameter(i);
         }
-        directionParams.setText(txt);
+        this.directionParams.setText(txt);
         
         tlb.row();
         TableLayoutBuilder stlb = new TableLayoutBuilder();
         JButton btn;
         stlb.cell(btn = new JButton("nw"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("nw");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("nw");
                 updateEditor();
             }
         });
@@ -72,8 +75,9 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         
         stlb.cell(btn = new JButton("ne"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("ne");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("ne");
                 updateEditor();
             }
         });
@@ -83,24 +87,27 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         
         stlb.cell(btn = new JButton("w"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("w");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("w");
                 updateEditor();
             }
         });
         
         stlb.cell(btn = new JButton("h"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("h");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("h");
                 updateEditor();
             }
         });
         
         stlb.cell(btn = new JButton("e"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("e");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("e");
                 updateEditor();
             }
         });
@@ -109,8 +116,9 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         
         stlb.cell(btn = new JButton("sw"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("sw");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("sw");
                 updateEditor();
             }
         });
@@ -119,9 +127,10 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         stlb.cell(btn = new JButton("<--"));
         btn.setToolTipText("Back (delete last move)");
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if (dirs.size() > 0) {
-                    dirs.remove(dirs.size()-1);
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                if (MoveArmyOrderSubeditor.this.dirs.size() > 0) {
+                    MoveArmyOrderSubeditor.this.dirs.remove(MoveArmyOrderSubeditor.this.dirs.size()-1);
                     updateEditor();
                 }
             }
@@ -129,8 +138,9 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         
         stlb.cell(btn = new JButton("se"));
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                dirs.add("se");
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                MoveArmyOrderSubeditor.this.dirs.add("se");
                 updateEditor();
             }
         });
@@ -143,21 +153,22 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         pnl.setBackground(Color.white);
         tlb.cell(pnl);
         
-        components.add(directionParams);
-        components.add(movementStyle);
+        components.add(this.directionParams);
+        components.add(this.movementStyle);
     }
     
     
 
-    public void updateEditor() {
-        while (dirs.size() > 14) {
-            dirs.remove(dirs.size()-1);
+    @Override
+	public void updateEditor() {
+        while (this.dirs.size() > 14) {
+            this.dirs.remove(this.dirs.size()-1);
         }
         String text = "";
-        for (String dir : dirs) {
+        for (String dir : this.dirs) {
             text += (text.equals("") ? "" : Order.DELIM) + dir;
         }
-        directionParams.setText(text);
+        this.directionParams.setText(text);
         getEditor().updateParameters();
     }
 }

@@ -35,7 +35,7 @@ public class Game implements Serializable {
 	HashMap<String, String> parameters = new HashMap<String, String>();
 
 	public GameMetadata getMetadata() {
-		return metadata;
+		return this.metadata;
 	}
 
 	public void setMetadata(GameMetadata metadata) {
@@ -43,7 +43,7 @@ public class Game implements Serializable {
 	}
 
 	public Container<Turn> getTurns() {
-		return turns;
+		return this.turns;
 	}
 
 	public void setTurns(Container<Turn> turns) {
@@ -51,7 +51,7 @@ public class Game implements Serializable {
 	}
 
 	public int getMaxTurn() {
-		return maxTurn;
+		return this.maxTurn;
 	}
 
 	public void setMaxTurn(int maxTurn) {
@@ -78,13 +78,13 @@ public class Game implements Serializable {
 		if (turn.getTurnNo() < getMaxTurn()) {
 			throw new Exception("Cannot add past turns to game.");
 		}
-		turns.addItem(turn);
+		this.turns.addItem(turn);
 		setMaxTurn(turn.getTurnNo());
 		setCurrentTurn(turn.getTurnNo());
 	}
 
 	public int getCurrentTurn() {
-		return currentTurn;
+		return this.currentTurn;
 	}
 
 	public void setCurrentTurn(int currentTurn) {
@@ -96,7 +96,7 @@ public class Game implements Serializable {
 	}
 
 	public HashMap<String, String> getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 
 	public void setParameters(HashMap<String, String> parameters) {
@@ -117,15 +117,15 @@ public class Game implements Serializable {
 	}
 
 	public String getParameter(String key) {
-		return parameters.get(key);
+		return this.parameters.get(key);
 	}
 
 	public void setParameter(String key, String value) {
-		parameters.put(key, value);
+		this.parameters.put(key, value);
 	}
 
 	public boolean containsParameter(String key) {
-		return parameters.containsKey(key);
+		return this.parameters.containsKey(key);
 	}
 
 }

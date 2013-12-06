@@ -13,38 +13,42 @@ public class TurnReportItem implements IBelongsToNation, IHasMapLocation {
 	
 	
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
 	public InfoSource getInfoSource() {
-		return infoSource;
+		return this.infoSource;
 	}
 	public void setInfoSource(InfoSource infoSource) {
 		this.infoSource = infoSource;
 	}
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
 	public Object getSourceItem() {
-		return sourceItem;
+		return this.sourceItem;
 	}
 	public void setSourceItem(Object sourceItem) {
 		this.sourceItem = sourceItem;
 	}
+	@Override
 	public int getX() {
 		return getHexNo() / 100;
 	}
+	@Override
 	public int getY() {
 		return getHexNo() % 100;
 	}

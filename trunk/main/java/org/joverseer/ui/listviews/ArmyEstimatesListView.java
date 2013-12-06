@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.table.JTableHeader;
 
@@ -76,7 +77,7 @@ public class ArmyEstimatesListView extends ItemListView {
 
 		// create the table model
 		try {
-			tableModel = (BeanTableModel) tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
+			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
 		} catch (InstantiationException e) {
 			e.printStackTrace(); // To change body of catch statement use File |
 									// Settings | File Templates.
@@ -102,8 +103,8 @@ public class ArmyEstimatesListView extends ItemListView {
 		setItems();
 
 		// create the JTable instance
-		table = TableUtils.createStandardSortableTable(tableModel);
-		table = new SortableTable(table.getModel()) {
+		this.table = TableUtils.createStandardSortableTable(this.tableModel);
+		this.table = new SortableTable(this.table.getModel()) {
 
 			@Override
 			protected void initTable() {
@@ -118,41 +119,41 @@ public class ArmyEstimatesListView extends ItemListView {
 					@Override
 					protected void initComponents() {
 						super.initComponents();
-						_headerPanel.add(_titlePanel, BorderLayout.CENTER);
+						this._headerPanel.add(this._titlePanel, BorderLayout.CENTER);
 					}
 
 					@Override
 					protected JLabel createLabel(String text) {
-						return new JLabel(text, JLabel.LEADING);
+						return new JLabel(text, SwingConstants.LEADING);
 					}
 				};
 			}
 
 			@Override
 			protected JTableHeader createDefaultTableHeader() {
-				return new JTableHeader(columnModel);
+				return new JTableHeader(this.columnModel);
 			}
 		};
-		((JideTable) table).setRowResizable(true);
-		((JideTable) table).setRowAutoResizes(true);
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
+		((JideTable) this.table).setRowResizable(true);
+		((JideTable) this.table).setRowAutoResizes(true);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
 
 		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
 		if (pval.equals("yes")) {
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		} else {
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		}
 
-		table.getTableHeader().setBackground(Color.WHITE);
-		table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
-		table.addMouseListener(this);
-		table.addMouseMotionListener(this);
-		JScrollPane scrollPane = new JScrollPane(table);
+		this.table.getTableHeader().setBackground(Color.WHITE);
+		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.addMouseListener(this);
+		this.table.addMouseMotionListener(this);
+		JScrollPane scrollPane = new JScrollPane(this.table);
 		scrollPane.getViewport().setOpaque(true);
-		scrollPane.getViewport().setBackground(table.getBackground());
+		scrollPane.getViewport().setBackground(this.table.getBackground());
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
@@ -192,23 +193,23 @@ public class ArmyEstimatesListView extends ItemListView {
 		MultilineTableCellRenderer r = new MultilineTableCellRenderer();
 		r.setWrapStyleWord(true);
 		r.setLineWrap(true);
-		table.setDefaultRenderer(String.class, r);
-		table.setDefaultRenderer(Integer.class, r);
+		this.table.setDefaultRenderer(String.class, r);
+		this.table.setDefaultRenderer(Integer.class, r);
 
 		return p;
 	}
 
 	@Override
 	protected void startDragAndDropAction(MouseEvent e) {
-		final ArmyEstimate[] selectedArmies = new ArmyEstimate[table.getSelectedRowCount()];
+		final ArmyEstimate[] selectedArmies = new ArmyEstimate[this.table.getSelectedRowCount()];
 		String copyString = "";
-		for (int i = 0; i < table.getSelectedRowCount(); i++) {
-			int idx = ((com.jidesoft.grid.SortableTableModel) table.getModel()).getActualRowAt(table.getSelectedRows()[i]);
-			ArmyEstimate a = (ArmyEstimate) tableModel.getRow(idx);
+		for (int i = 0; i < this.table.getSelectedRowCount(); i++) {
+			int idx = ((com.jidesoft.grid.SortableTableModel) this.table.getModel()).getActualRowAt(this.table.getSelectedRows()[i]);
+			ArmyEstimate a = (ArmyEstimate) this.tableModel.getRow(idx);
 			selectedArmies[i] = a;
 			String ln = "";
-			for (int j = 0; j < table.getColumnCount(); j++) {
-				Object v = table.getValueAt(i, j);
+			for (int j = 0; j < this.table.getColumnCount(); j++) {
+				Object v = this.table.getValueAt(i, j);
 				if (v == null)
 					v = "";
 				ln += (ln.equals("") ? "" : "\t") + v;
@@ -231,8 +232,8 @@ public class ArmyEstimatesListView extends ItemListView {
 
 			}
 		};
-		table.setTransferHandler(handler);
-		handler.exportAsDrag(table, e, TransferHandler.COPY);
+		this.table.setTransferHandler(handler);
+		handler.exportAsDrag(this.table, e, TransferHandler.COPY);
 	}
 
 	@Override
@@ -248,12 +249,12 @@ public class ArmyEstimatesListView extends ItemListView {
 			@Override
 			public JPopupMenu getPopupMenu() {
 				ArmyEstimate ae = null;
-				int row = table.getSelectedRow();
+				int row = ArmyEstimatesListView.this.table.getSelectedRow();
 				if (row >= 0) {
-					int idx = ((SortableTableModel) table.getModel()).getActualRowAt(row);
-					if (idx < tableModel.getRowCount()) {
+					int idx = ((SortableTableModel) ArmyEstimatesListView.this.table.getModel()).getActualRowAt(row);
+					if (idx < ArmyEstimatesListView.this.tableModel.getRowCount()) {
 						try {
-							Object obj = tableModel.getRow(idx);
+							Object obj = ArmyEstimatesListView.this.tableModel.getRow(idx);
 							ae = (ArmyEstimate) obj;
 						} catch (Exception exc) {
 
@@ -278,18 +279,18 @@ public class ArmyEstimatesListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			if (estimate != null) {
-				String str = "Estimates for " + estimate.getCommanderName() + "'s army:";
+			if (this.estimate != null) {
+				String str = "Estimates for " + this.estimate.getCommanderName() + "'s army:";
 				new CombatUtils();
-				int enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(estimate, 0);
-				str += "\nAvegare losses: " + enhi + " enHI for estimated losses of " + (100 - estimate.getEffectiveLosses(0)) + "%";
+				int enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(this.estimate, 0);
+				str += "\nAvegare losses: " + enhi + " enHI for estimated losses of " + (100 - this.estimate.getEffectiveLosses(0)) + "%";
 				new CombatUtils();
-				enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(estimate, -1);
-				str += "\nLowest losses: " + enhi + " enHI for estimated losses of " + (100 - estimate.getEffectiveLosses(-1)) + "%";
+				enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(this.estimate, -1);
+				str += "\nLowest losses: " + enhi + " enHI for estimated losses of " + (100 - this.estimate.getEffectiveLosses(-1)) + "%";
 				new CombatUtils();
-				enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(estimate, 1);
-				str += "\nHighest losses: " + enhi + " enHI for estimated losses of " + (100 - estimate.getEffectiveLosses(1)) + "%";
-				if (estimate.getMoraleRange().equals("?")) {
+				enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(this.estimate, 1);
+				str += "\nHighest losses: " + enhi + " enHI for estimated losses of " + (100 - this.estimate.getEffectiveLosses(1)) + "%";
+				if (this.estimate.getMoraleRange().equals("?")) {
 					str += "\nJOverseer failed to parse the army's morale from the combat narration, and is assuming 30 morale.";
 				}
 				MessageDialog dlg = new MessageDialog("Estimated enHI", str);

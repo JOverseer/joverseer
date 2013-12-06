@@ -18,16 +18,17 @@ public class NationMapRangeReader implements MetadataReader {
 	String nationMapFilename = "maps.csv";
 
 	public String getNationMapFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + nationMapFilename;
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.nationMapFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<NationMapRange> mapRanges = new Container<NationMapRange>();
 
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getNationMapFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + nationMapFilename);
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.nationMapFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 

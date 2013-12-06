@@ -22,35 +22,41 @@ public class CharacterExportTransferHandler extends TransferHandler {
 		this.character = character;
 	}
 
+	@Override
 	public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
 		return false;
 	}
 	
+	@Override
 	public int getSourceActions(JComponent c) {
         return COPY_OR_MOVE;
     }
 	
+	@Override
 	protected void exportDone(JComponent c, Transferable data, int action) {
     }
 
+	@Override
 	protected Transferable createTransferable(JComponent arg0) {
 		Transferable t = new Transferable() {
 
+			@Override
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 				try {
 					if (flavor.equals(new CharacterDataFlavor())) {
-						return character;
+						return CharacterExportTransferHandler.this.character;
 					}
 				}
 				catch (Exception exc) {
 					
 				};
 				if (flavor.equals(DataFlavor.stringFlavor)) {
-					return character.getName();
+					return CharacterExportTransferHandler.this.character.getName();
 				}
 				return null;
 			}
 
+			@Override
 			public DataFlavor[] getTransferDataFlavors() {
 				try {
 					return new DataFlavor[]{new CharacterDataFlavor(), DataFlavor.stringFlavor};
@@ -60,6 +66,7 @@ public class CharacterExportTransferHandler extends TransferHandler {
 				}
 			}
 
+			@Override
 			public boolean isDataFlavorSupported(DataFlavor flavor) {
 				for (DataFlavor f : getTransferDataFlavors()) {
 					if (flavor.equals(f)) return true;

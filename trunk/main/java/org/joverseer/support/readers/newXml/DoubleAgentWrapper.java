@@ -13,7 +13,7 @@ public class DoubleAgentWrapper {
 
 	
 	public String getNation() {
-		return nation;
+		return this.nation;
 	}
 
 	public void setNation(String nation) {
@@ -21,7 +21,7 @@ public class DoubleAgentWrapper {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -29,7 +29,7 @@ public class DoubleAgentWrapper {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -37,7 +37,7 @@ public class DoubleAgentWrapper {
 	}
 
 	public String getReport() {
-		return report;
+		return this.report;
 	}
 
 	public void setReport(String report) {

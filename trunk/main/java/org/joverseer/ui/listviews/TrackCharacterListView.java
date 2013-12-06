@@ -78,12 +78,13 @@ public class TrackCharacterListView extends BaseItemListView {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel("Character : "), "colspec=left:80px");
 		tlb.gapCol();
-		tlb.cell(character = new JTextField(), "colspec=left:150px");
-		character.setPreferredSize(new Dimension(200, 20));
-		character.setDragEnabled(true);
-		character.setOpaque(true);
+		tlb.cell(this.character = new JTextField(), "colspec=left:150px");
+		this.character.setPreferredSize(new Dimension(200, 20));
+		this.character.setDragEnabled(true);
+		this.character.setOpaque(true);
 		// accept char names and free text from drag & drop operations
-		character.setDropTarget(new DropTarget(character, new DropTargetAdapter() {
+		this.character.setDropTarget(new DropTarget(this.character, new DropTargetAdapter() {
+			@Override
 			public void drop(DropTargetDropEvent dtde) {
 				try {
 					Transferable t = dtde.getTransferable();
@@ -95,14 +96,15 @@ public class TrackCharacterListView extends BaseItemListView {
 					} else {
 						txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
 					}
-					character.setText(txt);
-					character.requestFocus();
+					TrackCharacterListView.this.character.setText(txt);
+					TrackCharacterListView.this.character.requestFocus();
 				} catch (Exception exc) {
 				}
 			}
 		}));
-		character.addActionListener(new ActionListener() {
+		this.character.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setItems();
 			}
@@ -115,6 +117,7 @@ public class TrackCharacterListView extends BaseItemListView {
 		tlb.cell(btn, "colspec=left:70px");
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setItems();
 			}
@@ -127,6 +130,7 @@ public class TrackCharacterListView extends BaseItemListView {
 		tlb.cell(btn, "align=left");
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				TrackCharacterMapItem tcmi = new TrackCharacterMapItem();
 				int lastTurn = -1;
@@ -147,8 +151,8 @@ public class TrackCharacterListView extends BaseItemListView {
 				}
 				;
 
-				for (int i = 0; i < tableModel.getRowCount(); i++) {
-					TrackCharacterInfo tci = (TrackCharacterInfo) tableModel.getRow(i);
+				for (int i = 0; i < TrackCharacterListView.this.tableModel.getRowCount(); i++) {
+					TrackCharacterInfo tci = (TrackCharacterInfo) TrackCharacterListView.this.tableModel.getRow(i);
 					if (tci.getTurnNo() != lastTurn && tci.getTurnNo() >= startTurn && tci.getHexNo() > 0) {
 						lastTurn = tci.getTurnNo();
 						tcmi.addPoint(tci.getHexNo(), tci.getTurnNo());
@@ -207,7 +211,7 @@ public class TrackCharacterListView extends BaseItemListView {
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
-		String charName = character.getText();
+		String charName = this.character.getText();
 		if (!charName.equals("")) {
 			for (Turn t : g.getTurns()) {
 				// find in characters
@@ -282,15 +286,15 @@ public class TrackCharacterListView extends BaseItemListView {
 					}
 				}
 			}
-			tableModel.setRows(items);
-			tableModel.fireTableDataChanged();
+			this.tableModel.setRows(items);
+			this.tableModel.fireTableDataChanged();
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && e.getButton() == 1) {
-			selectRowCommandExecutor.execute();
+			this.selectRowCommandExecutor.execute();
 		}
 		if (e.getClickCount() == 1 && e.getButton() == 3) {
 			showContextMenu(e);
@@ -307,13 +311,13 @@ public class TrackCharacterListView extends BaseItemListView {
 
 		@Override
 		public void execute() {
-			int row = table.getSelectedRow();
+			int row = TrackCharacterListView.this.table.getSelectedRow();
 			if (row >= 0) {
-				int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-				if (idx >= tableModel.getRowCount())
+				int idx = ((SortableTableModel) TrackCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+				if (idx >= TrackCharacterListView.this.tableModel.getRowCount())
 					return;
 				try {
-					Object obj = tableModel.getRow(idx);
+					Object obj = TrackCharacterListView.this.tableModel.getRow(idx);
 					TrackCharacterInfo tci = (TrackCharacterInfo) obj;
 					if (tci.getHexNo() > 0) {
 						Point selectedHex = new Point(tci.getX(), tci.getY());

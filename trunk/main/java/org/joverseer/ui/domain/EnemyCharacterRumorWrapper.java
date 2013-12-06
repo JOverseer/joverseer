@@ -43,7 +43,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	String inactiveReason;
 
 	public String getInactiveReason() {
-		return inactiveReason;
+		return this.inactiveReason;
 	}
 
 	public void setInactiveReason(String inactiveReason) {
@@ -51,7 +51,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	}
 
 	public int getActionCount() {
-		return actionCount;
+		return this.actionCount;
 	}
 
 	public void setActionCount(int actionCount) {
@@ -59,23 +59,25 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	}
 
 	public int getLastTurnNo() {
-		return lastTurnNo;
+		return this.lastTurnNo;
 	}
 
 	public void setLastTurnNo(int lastTurnNo) {
 		this.lastTurnNo = lastTurnNo;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -83,7 +85,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -91,7 +93,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	}
 
 	public String getReportedTurns() {
-		return reportedTurns;
+		return this.reportedTurns;
 	}
 
 	public void setReportedTurns(String reportedTurns) {
@@ -99,30 +101,32 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	}
 
 	public int getTurnNo() {
-		return turnNo;
+		return this.turnNo;
 	}
 
 	public void setTurnNo(int turnNo) {
 		this.turnNo = turnNo;
 	}
 
+	@Override
 	public int getX() {
-		return hexNo / 100;
+		return this.hexNo / 100;
 	}
 
+	@Override
 	public int getY() {
-		return hexNo % 100;
+		return this.hexNo % 100;
 	}
 
-	public void addReport(int turnNo, String rep) {
-		reportedTurns += (reportedTurns.equals("") ? "" : ", ") + rep;
-		if (lastTurnNo < turnNo)
-			lastTurnNo = turnNo;
-		actionCount++;
+	public void addReport(int turnNo1, String rep) {
+		this.reportedTurns += (this.reportedTurns.equals("") ? "" : ", ") + rep;
+		if (this.lastTurnNo < turnNo1)
+			this.lastTurnNo = turnNo1;
+		this.actionCount++;
 	}
 
 	public boolean getStartChar() {
-		return startChar;
+		return this.startChar;
 	}
 
 	public void setStartChar(boolean startChar) {
@@ -130,7 +134,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 	}
 
 	public String getCharType() {
-		return charType;
+		return this.charType;
 	}
 
 	public void setCharType(String charType) {

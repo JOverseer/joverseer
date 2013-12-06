@@ -18,7 +18,7 @@ public class OrderEditorData {
     String skill;
     
     public String getMajorSkill() {
-        return majorSkill;
+        return this.majorSkill;
     }
     
     public void setMajorSkill(String majorSkill) {
@@ -26,7 +26,7 @@ public class OrderEditorData {
     }
     
     public String getOrderDescr() {
-        return orderDescr;
+        return this.orderDescr;
     }
     
     public void setOrderDescr(String orderDescr) {
@@ -34,7 +34,7 @@ public class OrderEditorData {
     }
     
     public int getOrderNo() {
-        return orderNo;
+        return this.orderNo;
     }
     
     public void setOrderNo(int orderNo) {
@@ -42,7 +42,7 @@ public class OrderEditorData {
     }
     
     public String getOrderType() {
-        return orderType;
+        return this.orderType;
     }
     
     public void setOrderType(String orderType) {
@@ -50,7 +50,7 @@ public class OrderEditorData {
     }
     
     public String getParameterDescription() {
-        return parameterDescription;
+        return this.parameterDescription;
     }
     
     public void setParameterDescription(String parameterDescription) {
@@ -58,7 +58,7 @@ public class OrderEditorData {
     }
     
     public ArrayList<String> getParamTypes() {
-        return paramTypes;
+        return this.paramTypes;
     }
     
     public void setParamTypes(ArrayList<String> paramTypes) {
@@ -66,7 +66,7 @@ public class OrderEditorData {
     }
     
     public String getSkill() {
-        return skill;
+        return this.skill;
     }
     
     public void setSkill(String skill) {
@@ -74,7 +74,7 @@ public class OrderEditorData {
     }
 
     public ArrayList<String> getParamDescriptions() {
-    	return paramDescriptions;
+    	return this.paramDescriptions;
     }
     
     public void setParamDescriptions(ArrayList<String> paramDescriptions) {

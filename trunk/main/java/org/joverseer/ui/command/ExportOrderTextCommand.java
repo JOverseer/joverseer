@@ -83,7 +83,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 		}
 
 		private int getSelectedNationNo() {
-			String nationName = nation.getSelectedItem().toString();
+			String nationName = this.nation.getSelectedItem().toString();
 			Game g = GameHolder.instance().getGame();
 			return g.getMetadata().getNationByName(nationName).getNumber();
 		}
@@ -94,18 +94,18 @@ public class ExportOrderTextCommand extends ActionCommand {
 
 			GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 			glb.append(new ResourceLabel("standardFields.Nation"));
-			glb.append(nation = new JComboBox(getNationItems().toArray()));
+			glb.append(this.nation = new JComboBox(getNationItems().toArray()));
 
-			nation.setSelectedIndex(0);
-			nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+			this.nation.setSelectedIndex(0);
+			this.nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
 
-			nation.setPreferredSize(new Dimension(100, 24));
+			this.nation.setPreferredSize(new Dimension(100, 24));
 			glb.nextLine();
 
-			orders = new JTextArea();
-			orders.setWrapStyleWord(false);
-			orders.setLineWrap(false);
-			JScrollPane scp = new JScrollPane(orders);
+			this.orders = new JTextArea();
+			this.orders.setWrapStyleWord(false);
+			this.orders.setLineWrap(false);
+			JScrollPane scp = new JScrollPane(this.orders);
 			scp.setPreferredSize(new Dimension(500, 400));
 			glb.append(scp, 2, 1);
 
@@ -114,14 +114,15 @@ public class ExportOrderTextCommand extends ActionCommand {
 			glb.append(generate, 1, 1);
 			glb.nextLine();
 			generate.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					OrderTextGenerator gen = new OrderTextGenerator();
-					Game g = GameHolder.instance().getGame();
+					Game g1 = GameHolder.instance().getGame();
 					try {
-						orders.setText(gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo()));
-						orders.setCaretPosition(0);
+						ExportOrderTextForm.this.orders.setText(gen.generateOrderFile(g1, g1.getTurn(), getSelectedNationNo()));
+						ExportOrderTextForm.this.orders.setCaretPosition(0);
 					} catch (Exception exc) {
-						orders.setText(exc.getMessage());
+						ExportOrderTextForm.this.orders.setText(exc.getMessage());
 					}
 				}
 			});
@@ -131,8 +132,9 @@ public class ExportOrderTextCommand extends ActionCommand {
 			glb.nextLine();
 			final ClipboardOwner clipboardOwner = this;
 			ctc.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
-					StringSelection stringSelection = new StringSelection(orders.getText());
+					StringSelection stringSelection = new StringSelection(ExportOrderTextForm.this.orders.getText());
 					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					clipboard.setContents(stringSelection, clipboardOwner);
 				}
@@ -141,6 +143,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 			return glb.getPanel();
 		}
 
+		@Override
 		public void lostOwnership(Clipboard clipboard, Transferable contents) {
 		}
 

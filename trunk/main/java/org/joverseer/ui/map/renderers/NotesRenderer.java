@@ -16,24 +16,26 @@ public class NotesRenderer implements Renderer {
 
 	static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
+	@Override
 	public boolean appliesTo(Object obj) {
 		return Note.class.isInstance(obj);
 	}
 
 	private void init() {
-		mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 	}
 
+	@Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-		if (mapMetadata == null)
+		if (this.mapMetadata == null)
 			init();
 
 		// Note note = (Note)obj;
 
-		int w = mapMetadata.getGridCellWidth() / 3;
-		int h = mapMetadata.getGridCellHeight() / 3;
-		int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1 / 2 - w / 2 + w + 1;
-		int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 1 / 9;
+		int w = this.mapMetadata.getGridCellWidth() / 3;
+		int h = this.mapMetadata.getGridCellHeight() / 3;
+		int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1 / 2 - w / 2 + w + 1;
+		int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 1 / 9;
 
 		Color color1 = ColorPicker.getInstance().getColor("noteFG");
 		Color color2 = ColorPicker.getInstance().getColor("noteBorder");

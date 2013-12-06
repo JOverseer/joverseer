@@ -29,7 +29,7 @@ public class ArmyElement implements Serializable {
     }
 
     public int getNumber() {
-        return number;
+        return this.number;
     }
 
     public void setNumber(int number) {
@@ -37,7 +37,7 @@ public class ArmyElement implements Serializable {
     }
 
     public ArmyElementType getArmyElementType() {
-        return armyElementType;
+        return this.armyElementType;
     }
 
     public void setArmyElementType(ArmyElementType armyElementType) {
@@ -50,7 +50,7 @@ public class ArmyElement implements Serializable {
 
     
     public int getArmor() {
-        return armor;
+        return this.armor;
     }
 
     
@@ -60,7 +60,7 @@ public class ArmyElement implements Serializable {
 
     
     public int getTraining() {
-        return training;
+        return this.training;
     }
 
     
@@ -70,7 +70,7 @@ public class ArmyElement implements Serializable {
 
     
     public int getWeapons() {
-        return weapons;
+        return this.weapons;
     }
 
     

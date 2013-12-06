@@ -35,9 +35,9 @@ public class ColorPicker implements ApplicationListener {
     }
     
     private void initHashTables() {
-        color1 = new Hashtable();
-        color2 = new Hashtable();
-        colors = new Hashtable();
+        this.color1 = new Hashtable();
+        this.color2 = new Hashtable();
+        this.colors = new Hashtable();
     }
     
     public static ColorPicker getInstance() {
@@ -53,7 +53,7 @@ public class ColorPicker implements ApplicationListener {
 	        	key = nr.getAllegiance().toString();
 	        }
     	}
-        if (!color1.containsKey(key)) {
+        if (!this.color1.containsKey(key)) {
             String colorStr = null;
             GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
             try {
@@ -67,9 +67,9 @@ public class ColorPicker implements ApplicationListener {
         			colorStr = getColorSource().getMessage(key + ".color", null, Locale.getDefault());
             	}
             };
-            color1.put(key, Color.decode(colorStr));
+            this.color1.put(key, Color.decode(colorStr));
         }
-        return (Color)color1.get(key);
+        return (Color)this.color1.get(key);
     }
 
     public Color getColor2(int nationNo) {
@@ -81,7 +81,7 @@ public class ColorPicker implements ApplicationListener {
 	        	key = nr.getAllegiance().toString();
 	        }
     	}
-        if (!color2.containsKey(key)) {
+        if (!this.color2.containsKey(key)) {
             String colorStr = null;
             GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
             try {
@@ -95,20 +95,21 @@ public class ColorPicker implements ApplicationListener {
         			colorStr = getColorSource().getMessage(key + ".color2", null, Locale.getDefault());
             	}
             };
-            color2.put(key, Color.decode(colorStr));
+            this.color2.put(key, Color.decode(colorStr));
         }
-        return (Color)color2.get(key);
+        return (Color)this.color2.get(key);
     }
 
     public Color getColor(String color) {
-        if (!colors.containsKey(color)) {
+        if (!this.colors.containsKey(color)) {
             String colorStr = getColorSource().getMessage(color + ".color", null, Locale.getDefault());
-            colors.put(color, Color.decode(colorStr));
+            this.colors.put(color, Color.decode(colorStr));
         }
-        return (Color)colors.get(color);
+        return (Color)this.colors.get(color);
     }
 
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
@@ -118,10 +119,10 @@ public class ColorPicker implements ApplicationListener {
     }
 
     MessageSource getColorSource() {
-        if (colorSource == null) {
-            colorSource = (MessageSource) Application.instance().getApplicationContext().getBean("colorSource");
+        if (this.colorSource == null) {
+            this.colorSource = (MessageSource) Application.instance().getApplicationContext().getBean("colorSource");
         }
-        return colorSource;
+        return this.colorSource;
     }
     
 }

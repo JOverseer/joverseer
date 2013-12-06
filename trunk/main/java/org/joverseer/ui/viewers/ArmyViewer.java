@@ -103,10 +103,10 @@ public class ArmyViewer extends ObjectViewer {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
-		glb.append(commanderName = new JTextField());
-		commanderName.setPreferredSize(new Dimension(160, 12));
-		glb.append(nation = new JTextField());
-		nation.setPreferredSize(new Dimension(30, 12));
+		glb.append(this.commanderName = new JTextField());
+		this.commanderName.setPreferredSize(new Dimension(160, 12));
+		glb.append(this.nation = new JTextField());
+		this.nation.setPreferredSize(new Dimension(30, 12));
 
 		// button to show range of army on map
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
@@ -124,31 +124,31 @@ public class ArmyViewer extends ObjectViewer {
 		});
 
 		glb.nextLine();
-		glb.append(armySize = new JTextField(), 1, 1);
-		armySize.setPreferredSize(new Dimension(100, 12));
-		glb.append(armyType = new JTextField());
-		armyType.setPreferredSize(new Dimension(50, 12));
+		glb.append(this.armySize = new JTextField(), 1, 1);
+		this.armySize.setPreferredSize(new Dimension(100, 12));
+		glb.append(this.armyType = new JTextField());
+		this.armyType.setPreferredSize(new Dimension(50, 12));
 		glb.nextLine();
-		glb.append(extraInfo = new JTextField(), 2, 1);
-		extraInfo.setPreferredSize(new Dimension(150, 12));
+		glb.append(this.extraInfo = new JTextField(), 2, 1);
+		this.extraInfo.setPreferredSize(new Dimension(150, 12));
 		glb.nextLine();
-		glb.append(food = new JTextField());
-		food.setPreferredSize(new Dimension(100, 12));
-		glb.append(cav = new JTextField());
-		cav.setPreferredSize(new Dimension(40, 12));
+		glb.append(this.food = new JTextField());
+		this.food.setPreferredSize(new Dimension(100, 12));
+		glb.append(this.cav = new JTextField());
+		this.cav.setPreferredSize(new Dimension(40, 12));
 		glb.nextLine();
-		glb.append(travellingWith = new JTextField(), 2, 1);
-		travellingWith.setPreferredSize(new Dimension(150, 12));
+		glb.append(this.travellingWith = new JTextField(), 2, 1);
+		this.travellingWith.setPreferredSize(new Dimension(150, 12));
 
-		commanderName.setBorder(null);
-		commanderName.setFont(new Font(commanderName.getFont().getName(), Font.BOLD, commanderName.getFont().getSize()));
-		nation.setBorder(null);
-		armySize.setBorder(null);
-		armyType.setBorder(null);
-		extraInfo.setBorder(null);
-		food.setBorder(null);
-		cav.setBorder(null);
-		travellingWith.setBorder(null);
+		this.commanderName.setBorder(null);
+		this.commanderName.setFont(new Font(this.commanderName.getFont().getName(), Font.BOLD, this.commanderName.getFont().getSize()));
+		this.nation.setBorder(null);
+		this.armySize.setBorder(null);
+		this.armyType.setBorder(null);
+		this.extraInfo.setBorder(null);
+		this.food.setBorder(null);
+		this.cav.setBorder(null);
+		this.travellingWith.setBorder(null);
 
 		JPanel panel = glb.getPanel();
 		panel.setBackground(Color.white);
@@ -160,11 +160,11 @@ public class ArmyViewer extends ObjectViewer {
 		super.setFormObject(object);
 
 		Army army = (Army) object;
-		commanderName.setText((army.getCommanderTitle() + " " + GraphicUtils.parseName(army.getCommanderName())).trim());
+		this.commanderName.setText((army.getCommanderTitle() + " " + GraphicUtils.parseName(army.getCommanderName())).trim());
 
 		if (getShowColor()) {
 			Color c = ColorPicker.getInstance().getColor(army.getNationAllegiance().toString());
-			commanderName.setForeground(c);
+			this.commanderName.setForeground(c);
 		}
 
 		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
@@ -172,52 +172,52 @@ public class ArmyViewer extends ObjectViewer {
 			return;
 		GameMetadata gm = game.getMetadata();
 		Nation armyNation = army.getNation();
-		nation.setText(armyNation.getShortName());
-		nation.setCaretPosition(0);
-		nation.setToolTipText(armyNation.getName());
+		this.nation.setText(armyNation.getShortName());
+		this.nation.setCaretPosition(0);
+		this.nation.setToolTipText(armyNation.getName());
 
-		armySize.setText("Size: " + army.getSize().toString());
-		armySize.setCaretPosition(0);
-		armyType.setText(army.isNavy() ? "Navy" : "Army");
+		this.armySize.setText("Size: " + army.getSize().toString());
+		this.armySize.setCaretPosition(0);
+		this.armyType.setText(army.isNavy() ? "Navy" : "Army");
 		if (army.getElements().size() > 0) {
-			extraInfo.setText("");
-			extraInfo.setVisible(true);
+			this.extraInfo.setText("");
+			this.extraInfo.setVisible(true);
 			for (ArmyElement element : army.getElements()) {
-				extraInfo.setText(extraInfo.getText() + (extraInfo.getText().equals("") ? "" : " ") + element.getDescription());
+				this.extraInfo.setText(this.extraInfo.getText() + (this.extraInfo.getText().equals("") ? "" : " ") + element.getDescription());
 			}
 			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents");
 			if (pval != null && pval.equals("yes")) {
-				Character commander = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName());
+				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName());
 				int nhi = army.getENHI();
 				if (nhi > 0) {
-					extraInfo.setText(extraInfo.getText() + " (" + nhi + "enHI)");
+					this.extraInfo.setText(this.extraInfo.getText() + " (" + nhi + "enHI)");
 				}
 			}
 		} else if (army.getTroopCount() > 0) {
-			extraInfo.setVisible(true);
-			extraInfo.setText("~ " + army.getTroopCount() + " men");
+			this.extraInfo.setVisible(true);
+			this.extraInfo.setText("~ " + army.getTroopCount() + " men");
 		} else if (army.getSize() != ArmySizeEnum.unknown && !army.isNavy()) {
 			ArmySizeEstimate ae = (new ArmySizeEstimator()).getSizeEstimateForArmySize(army.getSize(), ArmySizeEstimate.ARMY_TYPE);
 			if (ae == null || ae.getMin() == null) {
-				extraInfo.setVisible(false);
+				this.extraInfo.setVisible(false);
 			} else {
-				extraInfo.setVisible(true);
-				extraInfo.setText("est. " + ae.getMin() + "-" + ae.getMax() + " men");
+				this.extraInfo.setVisible(true);
+				this.extraInfo.setText("est. " + ae.getMin() + "-" + ae.getMax() + " men");
 			}
 		} else {
-			extraInfo.setVisible(false);
+			this.extraInfo.setVisible(false);
 		}
 		if (army.getElements().size() == 0 && "yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showArmyEstimate"))) {
 			ArmyEstimate estimate = (ArmyEstimate) game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", army.getCommanderName());
 			if (estimate != null) {
 				String troopInfo = estimate.getTroopInfo();
 				if (!troopInfo.equals("")) {
-					extraInfo.setText(extraInfo.getText() + " [~" + troopInfo + "]");
-					extraInfo.setVisible(true);
+					this.extraInfo.setText(this.extraInfo.getText() + " [~" + troopInfo + "]");
+					this.extraInfo.setVisible(true);
 				}
 			}
 		}
-		extraInfo.setCaretPosition(0);
+		this.extraInfo.setCaretPosition(0);
 		String foodStr = "";
 		String foodTooltip = "";
 		if (army.getFood() != null) {
@@ -233,17 +233,17 @@ public class ArmyViewer extends ObjectViewer {
 		}
 		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNumberOfFedTurnsForArmies"))) {
 			if (Boolean.TRUE.equals(fed)) {
-				Integer food = army.getFood();
+				Integer food1 = army.getFood();
 				Integer consumption = army.computeFoodConsumption();
-				if (food != null && consumption != null && consumption > 0) {
-					int turns = (food - 1) / consumption;
+				if (food1 != null && consumption != null && consumption > 0) {
+					int turns = (food1 - 1) / consumption;
 					foodStr += " (" + turns + ")";
 					foodTooltip = "<html>Army has enough food for " + turns + " turns.<br/>" + foodTooltip + "</html>";
 				}
 			}
 		}
-		food.setText(foodStr);
-		food.setToolTipText(foodTooltip);
+		this.food.setText(foodStr);
+		this.food.setToolTipText(foodTooltip);
 		// armyMorale.setText("M: 0");
 
 		String cavString = "";
@@ -259,26 +259,26 @@ public class ArmyViewer extends ObjectViewer {
 			cavString = "Inf";
 			cavTooltip = "Move orders treat this army as infantry.";
 		}
-		cav.setText(cavString);
-		cav.setToolTipText(cavTooltip);
+		this.cav.setText(cavString);
+		this.cav.setToolTipText(cavTooltip);
 
 		if (army.getCharacters().size() > 0) {
-			travellingWith.setVisible(true);
+			this.travellingWith.setVisible(true);
 			String txt = "";
 			for (String cn : army.getCharacters()) {
 				txt += (txt.equals("") ? "" : ",") + cn;
 			}
-			travellingWith.setText("With army: " + txt);
+			this.travellingWith.setText("With army: " + txt);
 		} else {
-			travellingWith.setVisible(false);
+			this.travellingWith.setVisible(false);
 		}
 	}
 
 	private JPopupMenu createArmyPopupContextMenu() {
-		ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(toggleFedAction, toggleCavAction, editArmyCommand, deleteArmyCommand, "separator", showArmyMovementRangeAction, showArmyMovementIgnorePopsRangeAction, "separator", new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource())));
+		ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, this.deleteArmyCommand, "separator", this.showArmyMovementRangeAction, this.showArmyMovementIgnorePopsRangeAction, "separator", new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource())));
 		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("general.developerOptions"))) {
 			commands.add("separator");
-			commands.add(exportCombatArmyCodeCommand);
+			commands.add(this.exportCombatArmyCodeCommand);
 		}
 		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", commands.toArray());
 		return group.createPopupMenu();
@@ -307,7 +307,7 @@ public class ArmyViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			org.joverseer.domain.Army army = (org.joverseer.domain.Army) getFormObject();
-			ArmyRangeMapItem armi = new ArmyRangeMapItem(army, ignoreEnemyPops);
+			ArmyRangeMapItem armi = new ArmyRangeMapItem(army, this.ignoreEnemyPops);
 			AbstractMapItem.add(armi);
 
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
@@ -372,8 +372,8 @@ public class ArmyViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Army a = (org.joverseer.domain.Army) getFormObject();
-			Boolean cav = a.computeCavalry();
-			a.setCavalry(cav == null || cav != true ? true : false);
+			Boolean cav1 = a.computeCavalry();
+			a.setCavalry(cav1 == null || cav1 != true ? true : false);
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
 		}
@@ -384,7 +384,7 @@ public class ArmyViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			cancel = true;
+			this.cancel = true;
 			Army a = (Army) getFormObject();
 			ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete army '" + a.getCommanderName() + "'?") {
 				@Override
@@ -394,12 +394,12 @@ public class ArmyViewer extends ObjectViewer {
 
 				@Override
 				protected void onConfirm() {
-					cancel = false;
+					DeleteArmyCommand.this.cancel = false;
 				}
 
 			};
 			cdlg.showDialog();
-			if (cancel)
+			if (this.cancel)
 				return;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			Turn t = g.getTurn();
@@ -468,10 +468,10 @@ public class ArmyViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Army a = (Army) getFormObject();
-			Integer food = a.computeFoodConsumption();
-			if (food == null)
+			Integer food1 = a.computeFoodConsumption();
+			if (food1 == null)
 				return;
-			String msg = "The army requires " + food + " food per turn.";
+			String msg = "The army requires " + food1 + " food per turn.";
 			MessageDialog dlg = new MessageDialog("Required Food", msg);
 			dlg.showDialog();
 		}
@@ -494,12 +494,12 @@ public class ArmyViewer extends ObjectViewer {
 				@Override
 				protected boolean onFinish() {
 					form.commit();
-					Army a = (Army) getFormObject();
+					Army a1 = (Army) getFormObject();
 					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 					Turn t = g.getTurn();
 					Container<Army> armies = t.getArmies();
-					armies.removeItem(a);
-					armies.addItem(a);
+					armies.removeItem(a1);
+					armies.addItem(a1);
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
 					return true;
 				}
@@ -511,7 +511,7 @@ public class ArmyViewer extends ObjectViewer {
 	}
 
 	public boolean getShowColor() {
-		return showColor;
+		return this.showColor;
 	}
 
 	public void setShowColor(boolean showColor) {

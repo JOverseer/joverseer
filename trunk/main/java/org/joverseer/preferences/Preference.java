@@ -37,7 +37,7 @@ public class Preference {
     String defaultValue;
     
     public String getGroup() {
-        return group;
+        return this.group;
     }
     
     public void setGroup(String group) {
@@ -45,7 +45,7 @@ public class Preference {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
     
     public void setDescription(String description) {
@@ -53,7 +53,7 @@ public class Preference {
     }
     
     public PreferenceValue[] getDomain() {
-        return domain;
+        return this.domain;
     }
     
     public void setDomain(PreferenceValue[] domain) {
@@ -61,7 +61,7 @@ public class Preference {
     }
     
     public String getKey() {
-        return key;
+        return this.key;
     }
     
     public void setKey(String key) {
@@ -69,7 +69,7 @@ public class Preference {
     }
     
     public String getLifecycleEvent() {
-        return lifecycleEvent;
+        return this.lifecycleEvent;
     }
 
     
@@ -78,25 +78,25 @@ public class Preference {
     }
 
     public String getValue(String prefix) {
-        if (valueCache != null) {
-            return valueCache;
+        if (this.valueCache != null) {
+            return this.valueCache;
         }
         Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-        String value = prefs.get(prefix + "." + key, null);
+        String value = prefs.get(prefix + "." + this.key, null);
         if (value != null) {
-        	valueCache = value;
+        	this.valueCache = value;
         	
         	return value;
         } else {
-        	valueCache = getDefaultValue();
-        	setValue(prefix, valueCache);
+        	this.valueCache = getDefaultValue();
+        	setValue(prefix, this.valueCache);
             return getDefaultValue();
         }
     }
     
     public void setValue(String prefix, String value) {
         Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-        prefs.put(prefix + "." + key, value);
+        prefs.put(prefix + "." + this.key, value);
         clearCache();
         if (getLifecycleEvent() != null && GameHolder.hasInitializedGame()) {
             Application.instance().getApplicationContext().publishEvent(
@@ -105,12 +105,12 @@ public class Preference {
     }
     
     public void clearCache() {
-        valueCache = null;
+        this.valueCache = null;
     }
 
     
     public String getDefaultValue() {
-        return defaultValue;
+        return this.defaultValue;
     }
 
     
@@ -119,7 +119,7 @@ public class Preference {
     }
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

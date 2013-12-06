@@ -58,19 +58,20 @@ public class RegexMatchProcessor extends AbstractRegexProcessor {
     private int group;
     private boolean matched;
 
-    protected boolean findMatch() {
-        if (LOG.isLoggable(Level.FINER)) LOG.finer("group=" + group);
-        assert (chars != null);// : "Null text but asked to findMatch!";
-    	if (matcher == null) {
+    @Override
+	protected boolean findMatch() {
+        if (LOG.isLoggable(Level.FINER)) LOG.finer("group=" + this.group);
+        assert (this.chars != null);// : "Null text but asked to findMatch!";
+    	if (this.matcher == null) {
     		throw new IllegalStateException("No matcher for this Processor. Was a Pattern specified?");
     	}
 
-        if (! matched) {
+        if (! this.matched) {
             return false;
         }
         
-        ++group;
-        if (group > matcher.groupCount()) {
+        ++this.group;
+        if (this.group > this.matcher.groupCount()) {
             // Run out of matches?
             return false;
         } else {
@@ -78,34 +79,37 @@ public class RegexMatchProcessor extends AbstractRegexProcessor {
         }
     }
     
-    protected CharSequence getMatchedText() {
-        assert (matched);// : "Not matched but asked to getMatchedText!";
-        assert (group <= matcher.groupCount());// : "Fallen off end of matched groups but asked to getMatchedText!";
-        if (LOG.isLoggable(Level.FINER)) LOG.finer("getMatchedText: " + matcher.group(group));
-        return new SubCharSequence(chars, matcher.start(group), matcher.end(group) - matcher.start(group));
+    @Override
+	protected CharSequence getMatchedText() {
+        assert (this.matched);// : "Not matched but asked to getMatchedText!";
+        assert (this.group <= this.matcher.groupCount());// : "Fallen off end of matched groups but asked to getMatchedText!";
+        if (LOG.isLoggable(Level.FINER)) LOG.finer("getMatchedText: " + this.matcher.group(this.group));
+        return new SubCharSequence(this.chars, this.matcher.start(this.group), this.matcher.end(this.group) - this.matcher.start(this.group));
     }
 
-    protected CharSequence getRemainderText() {
-        assert (chars != null);// : "Null text but asked to getRemainderText!";
-        if (! matched) {
-            return chars;
+    @Override
+	protected CharSequence getRemainderText() {
+        assert (this.chars != null);// : "Null text but asked to getRemainderText!";
+        if (! this.matched) {
+            return this.chars;
         }
-        assert (matcher.end() <= chars.length());// : "Fallen off end of text but asked to getRemainderText! (end=" + matcher.end() + ", length=" + chars.length() + ")";
-        return new SubCharSequence(chars, matcher.end(), chars.length() - matcher.end());
+        assert (this.matcher.end() <= this.chars.length());// : "Fallen off end of text but asked to getRemainderText! (end=" + matcher.end() + ", length=" + chars.length() + ")";
+        return new SubCharSequence(this.chars, this.matcher.end(), this.chars.length() - this.matcher.end());
     }
 
     /**
      * Matches against the regex to find all matched groups
      * that will be stepped through in {@link #findMatch()}.
      */
-    protected void resetMatching() {
+    @Override
+	protected void resetMatching() {
         super.resetMatching();
-        assert (chars != null);// : "Null text but asked to resetMatching!";
-        if (matcher.find()) {
-            matched = true;
-            group = 0;
+        assert (this.chars != null);// : "Null text but asked to resetMatching!";
+        if (this.matcher.find()) {
+            this.matched = true;
+            this.group = 0;
         } else {
-            matched = false;
+            this.matched = false;
         }
     }
 }

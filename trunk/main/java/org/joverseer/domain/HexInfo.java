@@ -24,7 +24,7 @@ public class HexInfo implements Serializable {
 	ArrayList<Integer> nationSources = new ArrayList<Integer>();
 
 	public boolean getHasPopulationCenter() {
-		return hasPopulationCenter;
+		return this.hasPopulationCenter;
 	}
 
 	public void setHasPopulationCenter(boolean hasPopulationCenter) {
@@ -32,7 +32,7 @@ public class HexInfo implements Serializable {
 	}
 
 	public ArrayList<Integer> getNationSources() {
-		return nationSources;
+		return this.nationSources;
 	}
 
 	public void setNationSources(ArrayList<Integer> nationSources) {
@@ -40,7 +40,7 @@ public class HexInfo implements Serializable {
 	}
 
 	public boolean getVisible() {
-		return visible;
+		return this.visible;
 	}
 
 	public void setVisible(boolean visible) {
@@ -48,7 +48,7 @@ public class HexInfo implements Serializable {
 	}
 
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	public void setX(int x) {
@@ -56,7 +56,7 @@ public class HexInfo implements Serializable {
 	}
 
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	public void setY(int y) {
@@ -73,7 +73,7 @@ public class HexInfo implements Serializable {
 	}
 
 	public ClimateEnum getClimate() {
-		return climate;
+		return this.climate;
 	}
 
 	public void setClimate(ClimateEnum climate) {

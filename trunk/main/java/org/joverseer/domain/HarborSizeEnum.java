@@ -22,7 +22,7 @@ public enum HarborSizeEnum implements Serializable {
    }
     
     public int getSize() {
-        return size;
+        return this.size;
     }
     
     public String getRenderString() {

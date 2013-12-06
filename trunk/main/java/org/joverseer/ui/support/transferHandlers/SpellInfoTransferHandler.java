@@ -16,6 +16,7 @@ import org.joverseer.ui.support.dataFlavors.SpellInfoDataFlavor;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class SpellInfoTransferHandler extends TransferHandler {
 
     SpellInfo spellInfo;
@@ -25,36 +26,42 @@ public class SpellInfoTransferHandler extends TransferHandler {
         this.spellInfo = spellInfo;
     }
 
-    public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
+    @Override
+	public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
         return false;
     }
 
-    public int getSourceActions(JComponent c) {
+    @Override
+	public int getSourceActions(JComponent c) {
         return COPY_OR_MOVE;
     }
 
-    protected void exportDone(JComponent c, Transferable data, int action) {
+    @Override
+	protected void exportDone(JComponent c, Transferable data, int action) {
     }
 
-    protected Transferable createTransferable(JComponent arg0) {
+    @Override
+	protected Transferable createTransferable(JComponent arg0) {
         Transferable t = new Transferable() {
 
-            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            @Override
+			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
                 try {
                     if (flavor.equals(new SpellInfoDataFlavor())) {
-                        return spellInfo;
+                        return SpellInfoTransferHandler.this.spellInfo;
                     }
                 } catch (Exception exc) {
 
                 }
                 ;
                 if (flavor.equals(DataFlavor.stringFlavor)) {
-                    return spellInfo.getNumber();
+                    return SpellInfoTransferHandler.this.spellInfo.getNumber();
                 }
                 return null;
             }
 
-            public DataFlavor[] getTransferDataFlavors() {
+            @Override
+			public DataFlavor[] getTransferDataFlavors() {
                 try {
                     return new DataFlavor[] {new SpellInfoDataFlavor(), DataFlavor.stringFlavor};
                 } catch (Exception exc) {
@@ -62,7 +69,8 @@ public class SpellInfoTransferHandler extends TransferHandler {
                 }
             }
 
-            public boolean isDataFlavorSupported(DataFlavor flavor) {
+            @Override
+			public boolean isDataFlavorSupported(DataFlavor flavor) {
                 for (DataFlavor f : getTransferDataFlavors()) {
                     if (flavor.equals(f))
                         return true;

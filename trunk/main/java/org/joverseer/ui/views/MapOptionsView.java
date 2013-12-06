@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -55,12 +56,13 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		JLabel label;
 		lb.cell(label = new JLabel("Turn : "), "colspec=left:130px");
 		label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(cmbTurns = new JComboBox(), "colspec=left:100px");
+		lb.cell(this.cmbTurns = new JComboBox(), "colspec=left:100px");
 		lb.relatedGapRow();
 
-		cmbTurns.addActionListener(new ActionListener() {
+		this.cmbTurns.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Object obj = cmbTurns.getSelectedItem();
+				Object obj = MapOptionsView.this.cmbTurns.getSelectedItem();
 				if (obj == null)
 					return;
 				int turnNo = (Integer) obj;
@@ -69,7 +71,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 				if (g.getCurrentTurn() == turnNo)
 					return;
 				g.setCurrentTurn(turnNo);
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
@@ -78,44 +80,45 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 				}
 			}
 		});
-		cmbTurns.setPreferredSize(new Dimension(100, 16));
+		this.cmbTurns.setPreferredSize(new Dimension(100, 16));
 		lb.row();
 
 		// lb.append(new JLabel("  "));
 		lb.cell(label = new JLabel("Map : "));
-		lb.cell(cmbMaps = new JComboBox(), "align=left");
+		lb.cell(this.cmbMaps = new JComboBox(), "align=left");
 		lb.relatedGapRow();
-		cmbMaps.setPreferredSize(new Dimension(100, 16));
-		cmbMaps.addActionListener(new ActionListener() {
+		this.cmbMaps.setPreferredSize(new Dimension(100, 16));
+		this.cmbMaps.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Object obj = cmbMaps.getSelectedItem();
+				Object obj = MapOptionsView.this.cmbMaps.getSelectedItem();
 				if (obj == null)
 					return;
-				HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				String str = obj.toString();
 				if (str.equals("Current")) {
-					mapOptions.put(MapOptionsEnum.NationMap, null);
+					mapOptions1.put(MapOptionsEnum.NationMap, null);
 				} else if (str.equals("Dark Servants")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapDarkServants);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapDarkServants);
 				} else if (str.equals("Not Dark Servants")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotDarkServants);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotDarkServants);
 				} else if (str.equals("Free People")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapFreePeople);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapFreePeople);
 				} else if (str.equals("Not Free People")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotFreePeople);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotFreePeople);
 				} else if (str.equals("Neutrals")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNeutrals);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNeutrals);
 				} else if (str.equals("Not Neutrals")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotNeutrals);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNotNeutrals);
 				} else if (str.equals("None")) {
-					mapOptions.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNone);
+					mapOptions1.put(MapOptionsEnum.NationMap, MapOptionValuesEnum.NationMapNone);
 				} else {
 					int nationNo = g.getMetadata().getNationByName(str).getNumber();
-					mapOptions.put(MapOptionsEnum.NationMap, String.valueOf(nationNo));
+					mapOptions1.put(MapOptionsEnum.NationMap, String.valueOf(nationNo));
 				}
 				int turnNo = g.getCurrentTurn();
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
@@ -127,24 +130,25 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		// lb.append(new JLabel("  "));
 		lb.cell(label = new JLabel("Draw orders : "));
 		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(drawOrders = new JCheckBox(), "align=left");
-		drawOrders.setSelected(mapOptions.get(MapOptionsEnum.DrawOrders) != null && mapOptions.get(MapOptionsEnum.DrawOrders) == MapOptionValuesEnum.DrawOrdersOn);
+		lb.cell(this.drawOrders = new JCheckBox(), "align=left");
+		this.drawOrders.setSelected(mapOptions.get(MapOptionsEnum.DrawOrders) != null && mapOptions.get(MapOptionsEnum.DrawOrders) == MapOptionValuesEnum.DrawOrdersOn);
 		lb.relatedGapRow();
-		drawOrders.addActionListener(new ActionListener() {
+		this.drawOrders.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-				if (drawOrders.getModel().isSelected()) {
-					mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
+				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+				if (MapOptionsView.this.drawOrders.getModel().isSelected()) {
+					mapOptions1.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
 				} else {
-					mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOff);
+					mapOptions1.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOff);
 				}
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
 
@@ -155,22 +159,23 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 
 		lb.cell(label = new JLabel("Draw names on orders : "));
 		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(drawNamesOnOrders = new JCheckBox(), "align=left");
+		lb.cell(this.drawNamesOnOrders = new JCheckBox(), "align=left");
 		lb.relatedGapRow();
-		drawNamesOnOrders.addActionListener(new ActionListener() {
+		this.drawNamesOnOrders.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-				if (drawNamesOnOrders.getModel().isSelected()) {
-					mapOptions.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOn);
+				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+				if (MapOptionsView.this.drawNamesOnOrders.getModel().isSelected()) {
+					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOn);
 				} else {
-					mapOptions.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOff);
+					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOff);
 				}
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
@@ -182,22 +187,23 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 
 		lb.cell(label = new JLabel("Show PC names : "));
 		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(popCenterNames = new JCheckBox(), "align=left");
+		lb.cell(this.popCenterNames = new JCheckBox(), "align=left");
 		lb.relatedGapRow();
-		popCenterNames.addActionListener(new ActionListener() {
+		this.popCenterNames.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-				if (popCenterNames.getModel().isSelected()) {
-					mapOptions.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
+				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+				if (MapOptionsView.this.popCenterNames.getModel().isSelected()) {
+					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
 				} else {
-					mapOptions.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOff);
+					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOff);
 				}
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
@@ -210,22 +216,23 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		// lb.append(new JLabel("  "));
 		lb.cell(label = new JLabel("Show climate : "));
 		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(showClimate = new JCheckBox(), "align=left");
+		lb.cell(this.showClimate = new JCheckBox(), "align=left");
 		lb.relatedGapRow();
-		showClimate.addActionListener(new ActionListener() {
+		this.showClimate.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-				if (showClimate.getModel().isSelected()) {
-					mapOptions.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
+				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+				if (MapOptionsView.this.showClimate.getModel().isSelected()) {
+					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
 				} else {
-					mapOptions.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOff);
+					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOff);
 				}
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
@@ -236,47 +243,48 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		lb.row();
 		lb.cell(label = new JLabel("Zoom level : "));
 		ZoomOption[] zoomOptions = new ZoomOption[] { new ZoomOption("s1", 6, 6), new ZoomOption("s2", 7, 7), new ZoomOption("s3", 9, 9), new ZoomOption("s4", 11, 11), new ZoomOption("1", 13, 13), new ZoomOption("2", 15, 15), new ZoomOption("3", 17, 17), new ZoomOption("4", 19, 19), };
-		lb.cell(zoom = new JComboBox(zoomOptions), "align=left");
+		lb.cell(this.zoom = new JComboBox(zoomOptions), "align=left");
 		lb.relatedGapRow();
-		zoom.setPreferredSize(new Dimension(100, 16));
-		zoom.addActionListener(new ActionListener() {
+		this.zoom.setPreferredSize(new Dimension(100, 16));
+		this.zoom.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				ZoomOption opt = (ZoomOption) zoom.getSelectedItem();
+				ZoomOption opt = (ZoomOption) MapOptionsView.this.zoom.getSelectedItem();
 
 				if (opt == null)
 					return;
 				MapMetadata metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 				metadata.setGridCellHeight(opt.getHeight());
 				metadata.setGridCellWidth(opt.getWidth());
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
 			}
 		});
-		zoom.setSelectedIndex(4);
-
+		this.zoom.setSelectedIndex(4);
 		lb.row();
 		lb.cell(label = new JLabel("Nation colors : "));
-		lb.cell(nationColors = new JComboBox(new String[] { "Color/Nation", "Color/Allegiance" }), "align=left");
-		nationColors.setSelectedIndex(0);
+		lb.cell(this.nationColors = new JComboBox(new String[] { "Color/Nation", "Color/Allegiance" }), "align=left");
+		this.nationColors.setSelectedIndex(0);
 		lb.relatedGapRow();
-		nationColors.setPreferredSize(new Dimension(100, 16));
-		nationColors.addActionListener(new ActionListener() {
+		this.nationColors.setPreferredSize(new Dimension(100, 16));
+		this.nationColors.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String opt = (String) nationColors.getSelectedItem();
-				HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+				String opt = (String) MapOptionsView.this.nationColors.getSelectedItem();
+				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
 				if (opt == null)
 					return;
 				if (opt.equals("Color/Nation")) {
-					mapOptions.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsNation);
+					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsNation);
 				} else if (opt.equals("Color/Allegiance")) {
-					mapOptions.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);
+					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);
 				}
 				;
-				if (!fireEvents)
+				if (!MapOptionsView.this.fireEvents)
 					return;
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
@@ -292,82 +300,83 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 	}
 
 	public void resetGame() {
-		fireEvents = false;
-		cmbTurns.removeAllItems();
-		cmbMaps.removeAllItems();
+		this.fireEvents = false;
+		this.cmbTurns.removeAllItems();
+		this.cmbMaps.removeAllItems();
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 		if (g != null) {
-			ActionListener[] als = cmbTurns.getActionListeners();
+			ActionListener[] als = this.cmbTurns.getActionListeners();
 			for (ActionListener al : als) {
-				cmbTurns.removeActionListener(al);
+				this.cmbTurns.removeActionListener(al);
 			}
 			for (int i = 0; i <= g.getMaxTurn(); i++) {
 				if (g.getTurn(i) != null) {
-					cmbTurns.addItem(g.getTurn(i).getTurnNo());
+					this.cmbTurns.addItem(g.getTurn(i).getTurnNo());
 				}
 			}
 			for (ActionListener al : als) {
-				cmbTurns.addActionListener(al);
+				this.cmbTurns.addActionListener(al);
 			}
-			cmbTurns.setSelectedItem(g.getCurrentTurn());
-			cmbMaps.addItem("Current");
-			cmbMaps.addItem("Free People");
-			cmbMaps.addItem("Dark Servants");
-			cmbMaps.addItem("Neutrals");
+			this.cmbTurns.setSelectedItem(g.getCurrentTurn());
+			this.cmbMaps.addItem("Current");
+			this.cmbMaps.addItem("Free People");
+			this.cmbMaps.addItem("Dark Servants");
+			this.cmbMaps.addItem("Neutrals");
 			for (NationMapRange nmr : g.getMetadata().getNationMapRanges().getItems()) {
 				Nation n = g.getMetadata().getNationByNum(nmr.getNationNo());
-				cmbMaps.addItem(n.getName());
+				this.cmbMaps.addItem(n.getName());
 			}
-			cmbMaps.addItem("None");
-			cmbMaps.addItem("Not Free People");
-			cmbMaps.addItem("Not Dark Servants");
-			cmbMaps.addItem("Not Neutrals");
+			this.cmbMaps.addItem("None");
+			this.cmbMaps.addItem("Not Free People");
+			this.cmbMaps.addItem("Not Dark Servants");
+			this.cmbMaps.addItem("Not Neutrals");
 		}
-		fireEvents = true;
+		this.fireEvents = true;
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				fireEvents = false;
+				this.fireEvents = false;
 				resetGame();
-				fireEvents = true;
+				this.fireEvents = true;
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
-				fireEvents = false;
+				this.fireEvents = false;
 				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 				if (Game.isInitialized(g)) {
-					if (!cmbTurns.getSelectedItem().equals(g.getCurrentTurn())) {
-						cmbTurns.setSelectedItem(g.getCurrentTurn());
+					if (!this.cmbTurns.getSelectedItem().equals(g.getCurrentTurn())) {
+						this.cmbTurns.setSelectedItem(g.getCurrentTurn());
 					}
 				}
-				fireEvents = true;
+				this.fireEvents = true;
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString())) {
-				fireEvents = false;
+				this.fireEvents = false;
 
-				zoom.setSelectedIndex(2);
-				nationColors.setSelectedIndex(0);
-				showClimate.setSelected(false);
+				this.zoom.setSelectedIndex(2);
+				this.nationColors.setSelectedIndex(0);
+				this.showClimate.setSelected(false);
 				PreferenceRegistry.instance().setPreferenceValue("map.terrainGraphics", "simple");
 				PreferenceRegistry.instance().setPreferenceValue("map.fogOfWarStyle", "xs");
 				PreferenceRegistry.instance().setPreferenceValue("map.charsAndArmies", "simplified");
 				PreferenceRegistry.instance().setPreferenceValue("map.deadCharacters", "no");
 				PreferenceRegistry.instance().setPreferenceValue("map.showArmyType", "no");
 
-				fireEvents = true;
+				this.fireEvents = true;
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
 
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.ZoomIncreaseEvent.toString())) {
-				if (zoom.getSelectedIndex() < zoom.getItemCount() - 1) {
-					zoom.setSelectedIndex(zoom.getSelectedIndex() + 1);
+				if (this.zoom.getSelectedIndex() < this.zoom.getItemCount() - 1) {
+					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() + 1);
 				}
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.ZoomDecreaseEvent.toString())) {
-				if (zoom.getSelectedIndex() > 0) {
-					zoom.setSelectedIndex(zoom.getSelectedIndex() - 1);
+				if (this.zoom.getSelectedIndex() > 0) {
+					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() - 1);
 				}
 			}
 		}
@@ -387,19 +396,19 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 
 		@Override
 		public String toString() {
-			return description;
+			return this.description;
 		}
 
 		public String getDescription() {
-			return description;
+			return this.description;
 		}
 
 		public int getHeight() {
-			return height;
+			return this.height;
 		}
 
 		public int getWidth() {
-			return width;
+			return this.width;
 		}
 
 	}

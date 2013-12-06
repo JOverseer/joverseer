@@ -14,7 +14,7 @@ public class DerivedFromInfluenceOtherInfoSource extends PdfTurnInfoSource {
 	String loyaltyResult;
 
 	public String getLoyaltyResult() {
-		return loyaltyResult;
+		return this.loyaltyResult;
 	}
 
 	public void setLoyaltyResult(String loyaltyResult) {
@@ -22,7 +22,7 @@ public class DerivedFromInfluenceOtherInfoSource extends PdfTurnInfoSource {
 	}
 
 	public String getCharName() {
-		return charName;
+		return this.charName;
 	}
 
 	public void setCharName(String charName) {
@@ -35,6 +35,7 @@ public class DerivedFromInfluenceOtherInfoSource extends PdfTurnInfoSource {
 		this.loyaltyResult = loyaltyResult;
 	}
 	
+	@Override
 	public String toString() {
     	return "InfOther Rumor";
     }

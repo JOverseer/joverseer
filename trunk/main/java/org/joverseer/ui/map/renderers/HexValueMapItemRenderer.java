@@ -133,7 +133,7 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 		CharacterRangeMapItem crmi = (CharacterRangeMapItem) obj;
 		int hexNo = crmi.getHexNo();
 		int range = crmi.getRange();
-		if (metadata == null) {
+		if (this.metadata == null) {
 			init();
 		}
 		Color color = Color.decode(getHighlightColor());
@@ -145,14 +145,13 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 		ArrayList<Hex> hexes = (ArrayList<Hex>) gm.getHexes();
 		for (Hex h : hexes) {
 			int hn = h.getColumn() * 100 + h.getRow();
-			int d;
-			if ((d = MovementUtils.distance(hexNo, hn)) == range) {
+			if (MovementUtils.distance(hexNo, hn) == range) {
 				// draw each hex in range with special color
 				Point p = MapPanel.instance().getHexLocation(hn);
-				Polygon polygon = new Polygon(xPoints, yPoints, 6);
-				polygon.translate(p.x, p.y);
+				Polygon polygon1 = new Polygon(this.xPoints, this.yPoints, 6);
+				polygon1.translate(p.x, p.y);
 				g.setColor(color);
-				g.drawPolygon(polygon);
+				g.drawPolygon(polygon1);
 				// Point p = MapPanel.instance().getHexCenter(hn);
 				// Ellipse2D.Float e = new Ellipse2D.Float(p.x - 3, p.y - 3, 6,
 				// 6);
@@ -164,8 +163,8 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 	}
 
 	public String getHighlightColor() {
-		highlightColor = "#DDFF00";
-		return highlightColor;
+		this.highlightColor = "#DDFF00";
+		return this.highlightColor;
 	}
 
 	public void setHighlightColor(String highlightColor) {
@@ -173,7 +172,7 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 	}
 
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	public void setWidth(int width) {

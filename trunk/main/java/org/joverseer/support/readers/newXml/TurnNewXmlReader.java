@@ -61,7 +61,7 @@ public class TurnNewXmlReader implements Runnable {
 	}
 
 	public ProgressMonitor getMonitor() {
-		return monitor;
+		return this.monitor;
 	}
 
 	public void setMonitor(ProgressMonitor monitor) {
@@ -69,7 +69,7 @@ public class TurnNewXmlReader implements Runnable {
 	}
 
 	public boolean getErrorOccured() {
-		return errorOccured;
+		return this.errorOccured;
 	}
 
 	public void setErrorOccured(boolean errorOccured) {
@@ -80,346 +80,348 @@ public class TurnNewXmlReader implements Runnable {
 		try {
 			SetNestedPropertiesRule snpr;
 
-			digester = new Digester();
-			digester.setValidating(false);
-			digester.setRules(new RegexRules(new SimpleRegexMatcher()));
-			digester.addObjectCreate("METurn", TurnInfo.class);
+			this.digester = new Digester();
+			this.digester.setValidating(false);
+			this.digester.setRules(new RegexRules(new SimpleRegexMatcher()));
+			this.digester.addObjectCreate("METurn", TurnInfo.class);
 			// parse properties
 			// set season changing
-			digester.addSetProperties("METurn/More/TurnInfo/Season", "changing", "seasonChanging");
+			this.digester.addSetProperties("METurn/More/TurnInfo/Season", "changing", "seasonChanging");
 			// set nested properties
-			digester.addRule("METurn/More/TurnInfo", snpr = new SetNestedPropertiesRule(new String[] { "Season", "NationAlignment" }, new String[] { "season", "alignment" }));
+			this.digester.addRule("METurn/More/TurnInfo", snpr = new SetNestedPropertiesRule(new String[] { "Season", "NationAlignment" }, new String[] { "season", "alignment" }));
 			snpr.setAllowUnknownChildElements(true);
 
 			// create container for Hostages
-			digester.addObjectCreate("METurn/Hostages", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/Hostages", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/Hostages", "setHostages");
+			this.digester.addSetNext("METurn/Hostages", "setHostages");
 			// create hostage wrapper
-			digester.addObjectCreate("METurn/Hostages/Hostage", "org.joverseer.support.readers.newXml.HostageWrapper");
+			this.digester.addObjectCreate("METurn/Hostages/Hostage", "org.joverseer.support.readers.newXml.HostageWrapper");
 			// set id
-			digester.addSetProperties("METurn/Hostages/Hostage", "NameID", "nameId");
+			this.digester.addSetProperties("METurn/Hostages/Hostage", "NameID", "nameId");
 			// set nested properties
-			digester.addRule("METurn/Hostages/Hostage", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "HeldBy", "Location" }, new String[] { "nation", "heldBy", "location" }));
+			this.digester.addRule("METurn/Hostages/Hostage", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "HeldBy", "Location" }, new String[] { "nation", "heldBy", "location" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/Hostages/Hostage", "addItem", "org.joverseer.support.readers.newXml.HostageWrapper");
+			this.digester.addSetNext("METurn/Hostages/Hostage", "addItem", "org.joverseer.support.readers.newXml.HostageWrapper");
 
 			// create container for Double Agents
-			digester.addObjectCreate("METurn/DoubleAgents", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/DoubleAgents", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/DoubleAgents", "setDoubleAgents");
+			this.digester.addSetNext("METurn/DoubleAgents", "setDoubleAgents");
 			// create hostage wrapper
-			digester.addObjectCreate("METurn/DoubleAgents/DoubleAgent", "org.joverseer.support.readers.newXml.DoubleAgentWrapper"); // set
+			this.digester.addObjectCreate("METurn/DoubleAgents/DoubleAgent", "org.joverseer.support.readers.newXml.DoubleAgentWrapper"); // set
 			// id
-			digester.addSetProperties("METurn/DoubleAgents/DoubleAgent", "NameID", "name");
+			this.digester.addSetProperties("METurn/DoubleAgents/DoubleAgent", "NameID", "name");
 			// set nested properties
-			digester.addRule("METurn/DoubleAgents/DoubleAgent", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "Line", "Location" }, new String[] { "nation", "report", "hexNo" }));
+			this.digester.addRule("METurn/DoubleAgents/DoubleAgent", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "Line", "Location" }, new String[] { "nation", "report", "hexNo" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.newXml.DoubleAgentWrapper");
+			this.digester.addSetNext("METurn/DoubleAgents/DoubleAgent", "addItem", "org.joverseer.support.readers.newXml.DoubleAgentWrapper");
 
 			// create container for Non Hidden Artifactss
-			digester.addObjectCreate("METurn/ArtifactInfo/NonHiddenArtifacts", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/ArtifactInfo/NonHiddenArtifacts", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/ArtifactInfo/NonHiddenArtifacts", "setNonHiddenArtifacts");
+			this.digester.addSetNext("METurn/ArtifactInfo/NonHiddenArtifacts", "setNonHiddenArtifacts");
 			// create artifact wrapper
-			digester.addObjectCreate("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", "org.joverseer.support.readers.newXml.ArtifactWrapper");
+			this.digester.addObjectCreate("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", "org.joverseer.support.readers.newXml.ArtifactWrapper");
 			// set id
-			digester.addSetProperties("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", "ID", "id");
+			this.digester.addSetProperties("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", "ID", "id");
 			// set nested properties
-			digester.addRule("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", snpr = new SetNestedPropertiesRule(new String[] { "Name", "MageSkill", "CommandSkill", "EmmisarySkill", "AgentSkill", "StealthSkill", "CombatSkill", "Alignment", "Latent", "Item" }, new String[] { "name", "mage", "command", "emissary", "agent", "stealth", "combat", "alignment", "latent", "item" }));
+			this.digester.addRule("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", snpr = new SetNestedPropertiesRule(new String[] { "Name", "MageSkill", "CommandSkill", "EmmisarySkill", "AgentSkill", "StealthSkill", "CombatSkill", "Alignment", "Latent", "Item" }, new String[] { "name", "mage", "command", "emissary", "agent", "stealth", "combat", "alignment", "latent", "item" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", "addItem", "org.joverseer.support.readers.newXml.ArtifactWrapper");
+			this.digester.addSetNext("METurn/ArtifactInfo/NonHiddenArtifacts/Artifact", "addItem", "org.joverseer.support.readers.newXml.ArtifactWrapper");
 			// create container for Hidden Artifactss
-			digester.addObjectCreate("METurn/ArtifactInfo/HiddenArtifacts", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/ArtifactInfo/HiddenArtifacts", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/ArtifactInfo/HiddenArtifacts", "setHiddenArtifacts");
+			this.digester.addSetNext("METurn/ArtifactInfo/HiddenArtifacts", "setHiddenArtifacts");
 			// create artifact wrapper
-			digester.addObjectCreate("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "org.joverseer.support.readers.newXml.ArtifactWrapper");
+			this.digester.addObjectCreate("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "org.joverseer.support.readers.newXml.ArtifactWrapper");
 			// set id
-			digester.addSetProperties("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "ID", "id");
+			this.digester.addSetProperties("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "ID", "id");
 			// set nested properties
-			digester.addRule("METurn/ArtifactInfo/HiddenArtifacts/Artifact", snpr = new SetNestedPropertiesRule(new String[] { "Name", "MageSkill", "CommandSkill", "EmmisarySkill", "AgentSkill", "StealthSkill", "CombatSkill", "Alignment", "Latent", "Item" }, new String[] { "name", "mage", "command", "emissary", "agent", "stealth", "combat", "alignment", "latent", "item" }));
+			this.digester.addRule("METurn/ArtifactInfo/HiddenArtifacts/Artifact", snpr = new SetNestedPropertiesRule(new String[] { "Name", "MageSkill", "CommandSkill", "EmmisarySkill", "AgentSkill", "StealthSkill", "CombatSkill", "Alignment", "Latent", "Item" }, new String[] { "name", "mage", "command", "emissary", "agent", "stealth", "combat", "alignment", "latent", "item" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "addItem", "org.joverseer.support.readers.newXml.ArtifactWrapper");
+			this.digester.addSetNext("METurn/ArtifactInfo/HiddenArtifacts/Artifact", "addItem", "org.joverseer.support.readers.newXml.ArtifactWrapper");
 
 			// create container for Recons
-			digester.addObjectCreate("METurn/Recons", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/Recons", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/Recons", "setRecons");
+			this.digester.addSetNext("METurn/Recons", "setRecons");
 			// create recon wrapper
-			digester.addObjectCreate("METurn/Recons/Recon", "org.joverseer.support.readers.newXml.ReconWrapper");
+			this.digester.addObjectCreate("METurn/Recons/Recon", "org.joverseer.support.readers.newXml.ReconWrapper");
 			// add to container
-			digester.addSetNext("METurn/Recons/Recon", "addItem", "org.joverseer.support.readers.newXml.ReconWrapper");
+			this.digester.addSetNext("METurn/Recons/Recon", "addItem", "org.joverseer.support.readers.newXml.ReconWrapper");
 			// create recon hex wrapper
-			digester.addObjectCreate("METurn/Recons/Recon/Hex", "org.joverseer.support.readers.newXml.HexWrapper");
+			this.digester.addObjectCreate("METurn/Recons/Recon/Hex", "org.joverseer.support.readers.newXml.HexWrapper");
 			// set nested properties
-			digester.addRule("METurn/Recons/Recon/Hex", snpr = new SetNestedPropertiesRule(new String[] { "HexID", "Terrain", "PopCenterSize", "Forts", "Ports", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers" }, new String[] { "hexID", "terrain", "popCenterSize", "forts", "ports", "roads", "bridges", "fords", "minorRivers", "majorRivers" }));
+			this.digester.addRule("METurn/Recons/Recon/Hex", snpr = new SetNestedPropertiesRule(new String[] { "HexID", "Terrain", "PopCenterSize", "Forts", "Ports", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers" }, new String[] { "hexID", "terrain", "popCenterSize", "forts", "ports", "roads", "bridges", "fords", "minorRivers", "majorRivers" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to recon wrapper
-			digester.addSetNext("METurn/Recons/Recon/Hex", "addHexWrapper", "org.joverseer.support.readers.newXml.HexWrapper");
+			this.digester.addSetNext("METurn/Recons/Recon/Hex", "addHexWrapper", "org.joverseer.support.readers.newXml.HexWrapper");
 
 			// create container for Pop Centers
-			digester.addObjectCreate("METurn/More/PopCentres", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/More/PopCentres", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/More/PopCentres", "setPopCentres");
+			this.digester.addSetNext("METurn/More/PopCentres", "setPopCentres");
 			// create pop center wrapper
-			digester.addObjectCreate("METurn/More/PopCentres/PopCentre", "org.joverseer.support.readers.newXml.PopCenterWrapper");
+			this.digester.addObjectCreate("METurn/More/PopCentres/PopCentre", "org.joverseer.support.readers.newXml.PopCenterWrapper");
 			// set hex no
-			digester.addSetProperties("METurn/More/PopCentres/PopCentre", "HexID", "hexNo");
+			this.digester.addSetProperties("METurn/More/PopCentres/PopCentre", "HexID", "hexNo");
 			// set nested properties
-			digester.addRule("METurn/More/PopCentres/PopCentre", snpr = new SetNestedPropertiesRule(new String[] { "Sieged", "Terrain", "Climate" }, new String[] { "sieged", "terrain", "climate" }));
+			this.digester.addRule("METurn/More/PopCentres/PopCentre", snpr = new SetNestedPropertiesRule(new String[] { "Sieged", "Terrain", "Climate" }, new String[] { "sieged", "terrain", "climate" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/More/PopCentres/PopCentre", "addItem", "org.joverseer.support.readers.newXml.PopCenterWrapper");
+			this.digester.addSetNext("METurn/More/PopCentres/PopCentre", "addItem", "org.joverseer.support.readers.newXml.PopCenterWrapper");
 			// create production wrapper
-			digester.addObjectCreate("METurn/More/PopCentres/PopCentre/Product", "org.joverseer.support.readers.newXml.ProductionWrapper");
+			this.digester.addObjectCreate("METurn/More/PopCentres/PopCentre/Product", "org.joverseer.support.readers.newXml.ProductionWrapper");
 			// set type
-			digester.addSetProperties("METurn/More/PopCentres/PopCentre/Product", "type", "type");
+			this.digester.addSetProperties("METurn/More/PopCentres/PopCentre/Product", "type", "type");
 			// set nested properties
-			digester.addRule("METurn/More/PopCentres/PopCentre/Product", snpr = new SetNestedPropertiesRule(new String[] { "CurrentStores", "ExpProduction" }, new String[] { "currentStores", "expProduction" }));
+			this.digester.addRule("METurn/More/PopCentres/PopCentre/Product", snpr = new SetNestedPropertiesRule(new String[] { "CurrentStores", "ExpProduction" }, new String[] { "currentStores", "expProduction" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/More/PopCentres/PopCentre/Product", "addProduct", "org.joverseer.support.readers.newXml.ProductionWrapper");
+			this.digester.addSetNext("METurn/More/PopCentres/PopCentre/Product", "addProduct", "org.joverseer.support.readers.newXml.ProductionWrapper");
 			// add foreign characters
-			digester.addCallMethod("METurn/More/PopCentres/PopCentre/ForeignCharacters/ForeignCharacter", "addForeignCharacter", 1);
-			digester.addCallParam("METurn/More/PopCentres/PopCentre/ForeignCharacters/ForeignCharacter", 0);
+			this.digester.addCallMethod("METurn/More/PopCentres/PopCentre/ForeignCharacters/ForeignCharacter", "addForeignCharacter", 1);
+			this.digester.addCallParam("METurn/More/PopCentres/PopCentre/ForeignCharacters/ForeignCharacter", 0);
 
 			// create container for Nation Relations
-			digester.addObjectCreate("METurn/NationRelations", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/NationRelations", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/NationRelations", "setNationRelations");
+			this.digester.addSetNext("METurn/NationRelations", "setNationRelations");
 			// create nation relation wrapper
-			digester.addObjectCreate("METurn/NationRelations/NationRelation", "org.joverseer.support.readers.newXml.NationRelationWrapper");
+			this.digester.addObjectCreate("METurn/NationRelations/NationRelation", "org.joverseer.support.readers.newXml.NationRelationWrapper");
 			// set hex no
-			digester.addSetProperties("METurn/NationRelations/NationRelation", "ID", "nationNo");
+			this.digester.addSetProperties("METurn/NationRelations/NationRelation", "ID", "nationNo");
 			// set relation
-			digester.addCallMethod("METurn/NationRelations/NationRelation", "setRelation", 1);
-			digester.addCallParam("METurn/NationRelations/NationRelation", 0);
+			this.digester.addCallMethod("METurn/NationRelations/NationRelation", "setRelation", 1);
+			this.digester.addCallParam("METurn/NationRelations/NationRelation", 0);
 			// add to container
-			digester.addSetNext("METurn/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.newXml.NationRelationWrapper");
+			this.digester.addSetNext("METurn/NationRelations/NationRelation", "addItem", "org.joverseer.support.readers.newXml.NationRelationWrapper");
 
 			// create container for SNAs
-			digester.addObjectCreate("METurn/SpecialNationAbilities", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/SpecialNationAbilities", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/SpecialNationAbilities", "setSnas");
+			this.digester.addSetNext("METurn/SpecialNationAbilities", "setSnas");
 			// create SNA wrapper
-			digester.addObjectCreate("METurn/SpecialNationAbilities/Ability", "org.joverseer.support.readers.newXml.SNAWrapper");
+			this.digester.addObjectCreate("METurn/SpecialNationAbilities/Ability", "org.joverseer.support.readers.newXml.SNAWrapper");
 			// set code
-			digester.addRule("METurn/SpecialNationAbilities/Ability", snpr = new SetNestedPropertiesRule(new String[] { "Code", }, new String[] { "code", }));
+			this.digester.addRule("METurn/SpecialNationAbilities/Ability", snpr = new SetNestedPropertiesRule(new String[] { "Code", }, new String[] { "code", }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/SpecialNationAbilities/Ability", "addItem", "org.joverseer.support.readers.newXml.SNAWrapper");
+			this.digester.addSetNext("METurn/SpecialNationAbilities/Ability", "addItem", "org.joverseer.support.readers.newXml.SNAWrapper");
 
 			// create container for Companies
-			digester.addObjectCreate("METurn/Companies", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/Companies", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/Companies", "setCompanies");
+			this.digester.addSetNext("METurn/Companies", "setCompanies");
 			// create pop center wrapper
-			digester.addObjectCreate("METurn/Companies/Company", "org.joverseer.support.readers.newXml.CompanyWrapper");
+			this.digester.addObjectCreate("METurn/Companies/Company", "org.joverseer.support.readers.newXml.CompanyWrapper");
 			// set hex no
-			digester.addSetProperties("METurn/Companies/Company", "HexID", "hexNo");
+			this.digester.addSetProperties("METurn/Companies/Company", "HexID", "hexNo");
 			// set nested properties
-			digester.addRule("METurn/Companies/Company", snpr = new SetNestedPropertiesRule(new String[] { "CompanyCO" }, new String[] { "commander" }));
+			this.digester.addRule("METurn/Companies/Company", snpr = new SetNestedPropertiesRule(new String[] { "CompanyCO" }, new String[] { "commander" }));
 			snpr.setAllowUnknownChildElements(true);
 			// set members
-			digester.addCallMethod("METurn/Companies/Company/CompanyMember", "addMember", 1);
-			digester.addCallParam("METurn/Companies/Company/CompanyMember", 0);
+			this.digester.addCallMethod("METurn/Companies/Company/CompanyMember", "addMember", 1);
+			this.digester.addCallParam("METurn/Companies/Company/CompanyMember", 0);
 			// add to container
-			digester.addSetNext("METurn/Companies/Company", "addItem", "org.joverseer.support.readers.newXml.CompanyWrapper");
+			this.digester.addSetNext("METurn/Companies/Company", "addItem", "org.joverseer.support.readers.newXml.CompanyWrapper");
 
 			// create container for armies
-			digester.addObjectCreate("METurn/More/Armies", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/More/Armies", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/More/Armies", "setArmies");
+			this.digester.addSetNext("METurn/More/Armies", "setArmies");
 			// create army wrapper
-			digester.addObjectCreate("METurn/More/Armies/Army", "org.joverseer.support.readers.newXml.ArmyWrapper");
+			this.digester.addObjectCreate("METurn/More/Armies/Army", "org.joverseer.support.readers.newXml.ArmyWrapper");
 			// set commander
-			digester.addSetProperties("METurn/More/Armies/Army", "Commander", "commander");
+			this.digester.addSetProperties("METurn/More/Armies/Army", "Commander", "commander");
 			// set nested properties
-			digester.addRule("METurn/More/Armies/Army", snpr = new SetNestedPropertiesRule(new String[] { "Food", "Morale", "Warships", "Transports", "Warships", "Climate", "Warmachines" }, new String[] { "food", "morale", "warships", "transports", "warships", "climate", "warmachines" }));
+			this.digester.addRule("METurn/More/Armies/Army", snpr = new SetNestedPropertiesRule(new String[] { "Food", "Morale", "Warships", "Transports", "Warships", "Climate", "Warmachines" }, new String[] { "food", "morale", "warships", "transports", "warships", "climate", "warmachines" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/More/Armies/Army", "addItem", "org.joverseer.support.readers.newXml.ArmyWrapper");
+			this.digester.addSetNext("METurn/More/Armies/Army", "addItem", "org.joverseer.support.readers.newXml.ArmyWrapper");
 
 			// create army regiment wrapper
-			digester.addObjectCreate("METurn/More/Armies/Army/Troops", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
+			this.digester.addObjectCreate("METurn/More/Armies/Army/Troops", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
 			// set troop type
-			digester.addSetProperties("METurn/More/Armies/Army/Troops", "Type", "troopType");
+			this.digester.addSetProperties("METurn/More/Armies/Army/Troops", "Type", "troopType");
 			// set nested properties
-			digester.addRule("METurn/More/Armies/Army/Troops", snpr = new SetNestedPropertiesRule(new String[] { "Number", "Training", "Weapons", "Armor", "Description" }, new String[] { "number", "training", "weapons", "armor", "description" }));
+			this.digester.addRule("METurn/More/Armies/Army/Troops", snpr = new SetNestedPropertiesRule(new String[] { "Number", "Training", "Weapons", "Armor", "Description" }, new String[] { "number", "training", "weapons", "armor", "description" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add regiment to army
-			digester.addSetNext("METurn/More/Armies/Army/Troops", "addRegiment", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
+			this.digester.addSetNext("METurn/More/Armies/Army/Troops", "addRegiment", "org.joverseer.support.readers.newXml.ArmyRegimentWrapper");
 
 			// create container for anchored ships
-			digester.addObjectCreate("METurn/AnchoredShips", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/AnchoredShips", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/AnchoredShips", "setAnchoredShips");
+			this.digester.addSetNext("METurn/AnchoredShips", "setAnchoredShips");
 			// create army wrapper
-			digester.addObjectCreate("METurn/AnchoredShips/Ships", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
+			this.digester.addObjectCreate("METurn/AnchoredShips/Ships", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
 			// set hex no
-			digester.addSetProperties("METurn/AnchoredShips/Ships", "HexID", "hexId");
+			this.digester.addSetProperties("METurn/AnchoredShips/Ships", "HexID", "hexId");
 			// set nested properties
-			digester.addRule("METurn/AnchoredShips/Ships", snpr = new SetNestedPropertiesRule(new String[] { "Transports", "Warships" }, new String[] { "transports", "warships" }));
+			this.digester.addRule("METurn/AnchoredShips/Ships", snpr = new SetNestedPropertiesRule(new String[] { "Transports", "Warships" }, new String[] { "transports", "warships" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/AnchoredShips/Ships", "addItem", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
+			this.digester.addSetNext("METurn/AnchoredShips/Ships", "addItem", "org.joverseer.support.readers.newXml.AnchoredShipsWrapper");
 
 			// create container for challenges
-			digester.addObjectCreate("METurn/Challenges", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/Challenges", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/Challenges", "setChallenges");
+			this.digester.addSetNext("METurn/Challenges", "setChallenges");
 			// create challenge wrappper
-			digester.addObjectCreate("METurn/Challenges/Challenge", "org.joverseer.support.readers.newXml.ChallengeWrapper");
+			this.digester.addObjectCreate("METurn/Challenges/Challenge", "org.joverseer.support.readers.newXml.ChallengeWrapper");
 			// add line
-			digester.addCallMethod("METurn/Challenges/Challenge/Lines/Line", "addLine", 1);
-			digester.addCallParam("METurn/Challenges/Challenge/Lines/Line", 0);
+			this.digester.addCallMethod("METurn/Challenges/Challenge/Lines/Line", "addLine", 1);
+			this.digester.addCallParam("METurn/Challenges/Challenge/Lines/Line", 0);
 			// add to container
-			digester.addSetNext("METurn/Challenges/Challenge", "addItem", "org.joverseer.support.readers.newXml.ChallengeWrapper");
+			this.digester.addSetNext("METurn/Challenges/Challenge", "addItem", "org.joverseer.support.readers.newXml.ChallengeWrapper");
 
 			// create container for battles
-			digester.addObjectCreate("METurn/BattleReports", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/BattleReports", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/BattleReports", "setBattles");
+			this.digester.addSetNext("METurn/BattleReports", "setBattles");
 			// create battle wrapper
-			digester.addObjectCreate("METurn/BattleReports/BattleReport", "org.joverseer.support.readers.newXml.BattleWrapper");
+			this.digester.addObjectCreate("METurn/BattleReports/BattleReport", "org.joverseer.support.readers.newXml.BattleWrapper");
 			// create line
-			digester.addObjectCreate("METurn/BattleReports/BattleReport/Lines/Line", "org.joverseer.support.readers.newXml.BattleLine");
+			this.digester.addObjectCreate("METurn/BattleReports/BattleReport/Lines/Line", "org.joverseer.support.readers.newXml.BattleLine");
 			// set text
-			digester.addCallMethod("METurn/BattleReports/BattleReport/Lines/Line", "setText", 1);
-			digester.addCallParam("METurn/BattleReports/BattleReport/Lines/Line", 0);
+			this.digester.addCallMethod("METurn/BattleReports/BattleReport/Lines/Line", "setText", 1);
+			this.digester.addCallParam("METurn/BattleReports/BattleReport/Lines/Line", 0);
 			// set nested properties
-			digester.addRule("METurn/BattleReports/BattleReport/Lines/Line", snpr = new SetNestedPropertiesRule(new String[] { "CommanderReport", "SummaryReport" }, new String[] { "commanderReport", "summaryReport" }));
+			this.digester.addRule("METurn/BattleReports/BattleReport/Lines/Line", snpr = new SetNestedPropertiesRule(new String[] { "CommanderReport", "SummaryReport" }, new String[] { "commanderReport", "summaryReport" }));
 			snpr.setAllowUnknownChildElements(true);
 			// set nested properties
-			digester.addRule("METurn/BattleReports/BattleReport/Lines/Line/TroopReport/TroopRow", snpr = new SetNestedPropertiesRule(new String[] { "TroopType", "WeaponType", "Armor", "Formations" }, new String[] { "troopType", "weaponType", "armor", "formation" }));
+			this.digester.addRule("METurn/BattleReports/BattleReport/Lines/Line/TroopReport/TroopRow", snpr = new SetNestedPropertiesRule(new String[] { "TroopType", "WeaponType", "Armor", "Formations" }, new String[] { "troopType", "weaponType", "armor", "formation" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add lines
-			digester.addSetNext("METurn/BattleReports/BattleReport/Lines/Line", "addLine", "org.joverseer.support.readers.newXml.BattleLine");
+			this.digester.addSetNext("METurn/BattleReports/BattleReport/Lines/Line", "addLine", "org.joverseer.support.readers.newXml.BattleLine");
 			// add to container
-			digester.addSetNext("METurn/BattleReports/BattleReport", "addItem", "org.joverseer.support.readers.newXml.BattleWrapper");
+			this.digester.addSetNext("METurn/BattleReports/BattleReport", "addItem", "org.joverseer.support.readers.newXml.BattleWrapper");
 
 			// character messages
-			digester.addObjectCreate("METurn/More/Characters/CharacterMessages", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/More/Characters/CharacterMessages", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/More/Characters/CharacterMessages", "setCharMessages");
+			this.digester.addSetNext("METurn/More/Characters/CharacterMessages", "setCharMessages");
 			// create character message wrapper
-			digester.addObjectCreate("METurn/More/Characters/CharacterMessages/CharacterMessage", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
+			this.digester.addObjectCreate("METurn/More/Characters/CharacterMessages/CharacterMessage", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
 			// set char
-			digester.addSetProperties("METurn/More/Characters/CharacterMessages/CharacterMessage", "CharID", "charId");
+			this.digester.addSetProperties("METurn/More/Characters/CharacterMessages/CharacterMessage", "CharID", "charId");
 			// add lines
-			digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", "addLine", 1);
-			digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", 0);
+			this.digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", "addLine", 1);
+			this.digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line", 0);
 			// add line for current position
-			digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line/CurrentLocation", "addLine", 1);
-			digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line/CurrentLocation", 0);
+			this.digester.addCallMethod("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line/CurrentLocation", "addLine", 1);
+			this.digester.addCallParam("METurn/More/Characters/CharacterMessages/CharacterMessage/Lines/Line/CurrentLocation", 0);
 			// add to container
-			digester.addSetNext("METurn/More/Characters/CharacterMessages/CharacterMessage", "addItem", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
+			this.digester.addSetNext("METurn/More/Characters/CharacterMessages/CharacterMessage", "addItem", "org.joverseer.support.readers.newXml.CharacterMessageWrapper");
 
 			// create container for Encounters
-			digester.addObjectCreate("METurn/EncounterMessages", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/EncounterMessages", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/EncounterMessages", "setEncounters");
+			this.digester.addSetNext("METurn/EncounterMessages", "setEncounters");
 			// create encounter wrapper
-			digester.addObjectCreate("METurn/EncounterMessages/Encounter", "org.joverseer.support.readers.newXml.EncounterWrapper");
+			this.digester.addObjectCreate("METurn/EncounterMessages/Encounter", "org.joverseer.support.readers.newXml.EncounterWrapper");
 			// set attributes
-			digester.addSetProperties("METurn/EncounterMessages/Encounter", "CharID", "charId");
-			digester.addSetProperties("METurn/EncounterMessages/Encounter", "Hex", "hex");
-			digester.addSetProperties("METurn/EncounterMessages/Encounter", "Reacting", "reacting");
+			this.digester.addSetProperties("METurn/EncounterMessages/Encounter", "CharID", "charId");
+			this.digester.addSetProperties("METurn/EncounterMessages/Encounter", "Hex", "hex");
+			this.digester.addSetProperties("METurn/EncounterMessages/Encounter", "Reacting", "reacting");
 			// set nested properties
-			digester.addRule("METurn/EncounterMessages/Encounter", snpr = new SetNestedPropertiesRule(new String[] { "EncounterHeader", "EncounterText" }, new String[] { "header", "text" }));
+			this.digester.addRule("METurn/EncounterMessages/Encounter", snpr = new SetNestedPropertiesRule(new String[] { "EncounterHeader", "EncounterText" }, new String[] { "header", "text" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/EncounterMessages/Encounter", "addItem", "org.joverseer.support.readers.newXml.EncounterWrapper");
+			this.digester.addSetNext("METurn/EncounterMessages/Encounter", "addItem", "org.joverseer.support.readers.newXml.EncounterWrapper");
 
 			// create container for Hexes
-			digester.addObjectCreate("METurn/Hexes", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/Hexes", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/Hexes", "setHexes");
+			this.digester.addSetNext("METurn/Hexes", "setHexes");
 			// create hex wrapper
-			digester.addObjectCreate("METurn/Hexes/Hex", "org.joverseer.support.readers.newXml.HexWrapper");
+			this.digester.addObjectCreate("METurn/Hexes/Hex", "org.joverseer.support.readers.newXml.HexWrapper");
 			// set attributes
 			// set nested properties
-			digester.addRule("METurn/Hexes/Hex", snpr = new SetNestedPropertiesRule(new String[] { "HexID", "Terrain", "PopcenterName", "PopcenterSize", "Forts", "Ports", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers" }, new String[] { "hexID", "terrain", "popCenterName", "popCenterSize", "forts", "ports", "roads", "bridges", "fords", "minorRivers", "majorRivers" }));
+			this.digester.addRule("METurn/Hexes/Hex", snpr = new SetNestedPropertiesRule(new String[] { "HexID", "Terrain", "PopcenterName", "PopcenterSize", "Forts", "Ports", "Roads", "Bridges", "Fords", "MinorRivers", "MajorRivers" }, new String[] { "hexID", "terrain", "popCenterName", "popCenterSize", "forts", "ports", "roads", "bridges", "fords", "minorRivers", "majorRivers" }));
 			snpr.setAllowUnknownChildElements(true);
 			// add to container
-			digester.addSetNext("METurn/Hexes/Hex", "addItem", "org.joverseer.support.readers.newXml.HexWrapper");
+			this.digester.addSetNext("METurn/Hexes/Hex", "addItem", "org.joverseer.support.readers.newXml.HexWrapper");
 
 			// create container for OrdersGiven
-			digester.addObjectCreate("METurn/OrdersGiven", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/OrdersGiven", "org.joverseer.support.Container");
 			// add container to turn info
-			digester.addSetNext("METurn/OrdersGiven", "setOrdersGiven");
+			this.digester.addSetNext("METurn/OrdersGiven", "setOrdersGiven");
 			// create OrdersGiven object
-			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar", "org.joverseer.support.readers.newXml.OrdersGiven");
+			this.digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar", "org.joverseer.support.readers.newXml.OrdersGiven");
 			// set attributes
-			digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar", "CharacterName", "characterName");
+			this.digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar", "CharacterName", "characterName");
 			// add to container
-			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar", "addItem", "org.joverseer.support.readers.newXml.OrdersGiven");
+			this.digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar", "addItem", "org.joverseer.support.readers.newXml.OrdersGiven");
 			// create OrderWrapper
-			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order", "org.joverseer.support.readers.newXml.OrderWrapper");
+			this.digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order", "org.joverseer.support.readers.newXml.OrderWrapper");
 			// add to OrdersGiven
-			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order", "addOrder", "org.joverseer.support.readers.newXml.OrderWrapper");
+			this.digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order", "addOrder", "org.joverseer.support.readers.newXml.OrderWrapper");
 			// set nested properties
-			digester.addRule("METurn/OrdersGiven/OrdersGivenToChar/Order", snpr = new SetNestedPropertiesRule(new String[] { "OrderNumber" }, new String[] { "orderNumber" }));
+			this.digester.addRule("METurn/OrdersGiven/OrdersGivenToChar/Order", snpr = new SetNestedPropertiesRule(new String[] { "OrderNumber" }, new String[] { "orderNumber" }));
 			snpr.setAllowUnknownChildElements(true);
 			// create OrderParameterWrapper
-			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
+			this.digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
 			// add to OrdersWrapper
-			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "addParameter", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
+			this.digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "addParameter", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
 			// set properties
-			digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "SeqNo", "seqNo");
+			this.digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "SeqNo", "seqNo");
 			// set text
-			digester.addCallMethod("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "setParameter", 1);
-			digester.addCallParam("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", 0);
+			this.digester.addCallMethod("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", "setParameter", 1);
+			this.digester.addCallParam("METurn/OrdersGiven/OrdersGivenToChar/Order/Additional", 0);
 			// create OrderParameterWrapper
-			digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "org.joverseer.support.readers.newXml.OrderMovementParameterWrapper");
+			this.digester.addObjectCreate("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "org.joverseer.support.readers.newXml.OrderMovementParameterWrapper");
 			// add to OrdersWrapper
-			digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "addParameter", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
+			this.digester.addSetNext("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "addParameter", "org.joverseer.support.readers.newXml.OrderParameterWrapper");
 			// set properties
-			digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "SeqNo", "seqNo");
+			this.digester.addSetProperties("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "SeqNo", "seqNo");
 			// set text
-			digester.addCallMethod("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "setParameter", 1);
-			digester.addCallParam("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", 0);
+			this.digester.addCallMethod("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", "setParameter", 1);
+			this.digester.addCallParam("METurn/OrdersGiven/OrdersGivenToChar/Order/Movement", 0);
 
-			turnInfo = (TurnInfo) digester.parse(fileName);
+			this.turnInfo = (TurnInfo) this.digester.parse(fileName);
 		}
 
 		catch (Exception exc) {
-			// todo fix
+			// TODO fix
 			logger.error(exc);
 			throw new Exception("Error parsing Xml Turn file.", exc);
 		}
 	}
 
+	@Override
 	public void run() {
 		try {
-			readFile(filename);
+			readFile(this.filename);
 		} catch (Exception exc) {
-			monitor.subTaskStarted("Error : failed to read xml file (" + exc.getMessage() + ")");
-			errorOccured = true;
+			this.monitor.subTaskStarted("Error : failed to read xml file (" + exc.getMessage() + ")");
+			this.errorOccured = true;
 		}
 		try {
-			if (turnInfo == null) {
+			if (this.turnInfo == null) {
 				return;
 			}
-			turnInfo.setNationNo(nationNo);
-			updateGame(game);
-			game.setCurrentTurn(game.getMaxTurn());
+			this.turnInfo.setNationNo(this.nationNo);
+			updateGame(this.game);
+			this.game.setCurrentTurn(this.game.getMaxTurn());
 			Thread.sleep(100);
 		} catch (Exception exc) {
-			errorOccured = true;
+			this.errorOccured = true;
 		}
 	}
 
+	@SuppressWarnings("hiding")
 	public void updateGame(Game game) throws Exception {
 		try {
-			infoSource = new XmlExtraTurnInfoSource(game.getMaxTurn(), nationNo);
+			this.infoSource = new XmlExtraTurnInfoSource(game.getMaxTurn(), this.nationNo);
 
-			turn = game.getTurn(game.getMaxTurn());
+			this.turn = game.getTurn(game.getMaxTurn());
 
 			if (getMonitor() != null) {
 				getMonitor().worked(0);
@@ -429,7 +431,7 @@ public class TurnNewXmlReader implements Runnable {
 				updatePopCenters(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -440,7 +442,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateArtifacts(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -451,7 +453,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateRelations(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -462,7 +464,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateCompanies(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -473,7 +475,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateBattles(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -484,7 +486,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateArmies(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -495,7 +497,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateAnchoredShips(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -506,7 +508,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateCharacterMessages(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -517,7 +519,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateEncounters(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -528,7 +530,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateHostages(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -539,7 +541,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateDoubleAgents(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -550,7 +552,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateChallenges(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -561,7 +563,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateHexes(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -572,7 +574,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateSNAs(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -583,7 +585,7 @@ public class TurnNewXmlReader implements Runnable {
 				updateOrdersGiven(game);
 			} catch (Exception exc) {
 				logger.error(exc);
-				errorOccured = true;
+				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
 			if (getMonitor() != null) {
@@ -594,48 +596,48 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateChallenges(Game game) throws Exception {
-		Container challenges = turnInfo.getChallenges();
+	private void updateChallenges(Game game1) throws Exception {
+		Container challenges = this.turnInfo.getChallenges();
 		for (ChallengeWrapper cw : (ArrayList<ChallengeWrapper>) challenges.getItems()) {
 			cw.parse();
 			if (cw.getHexNo() > 0) {
-				Challenge c = turn.findChallenge(cw.getCharacter());
+				Challenge c = this.turn.findChallenge(cw.getCharacter());
 				if (c != null) {
-					turn.getContainer(TurnElementsEnum.Challenge).removeItem(c);
+					this.turn.getContainer(TurnElementsEnum.Challenge).removeItem(c);
 				}
 				c = new Challenge();
 				c.setHexNo(cw.getHexNo());
 				c.setCharacter(cw.getCharacter());
 				c.setDescription(cw.getDescription());
-				turn.getContainer(TurnElementsEnum.Challenge).addItem(c);
+				this.turn.getContainer(TurnElementsEnum.Challenge).addItem(c);
 			}
 
 		}
 	}
 
-	private void updateHexes(Game game) throws Exception {
-		Container hws = turnInfo.getHexes();
+	private void updateHexes(Game game1) throws Exception {
+		Container hws = this.turnInfo.getHexes();
 		if (hws == null)
 			return;
 		for (HexWrapper hw : (ArrayList<HexWrapper>) hws.getItems()) {
-			hw.updateGame(game);
+			hw.updateGame(game1);
 		}
-		Container rws = turnInfo.getRecons();
+		Container rws = this.turnInfo.getRecons();
 		for (ReconWrapper rw : (ArrayList<ReconWrapper>) rws.getItems()) {
-			rw.updateGame(game);
+			rw.updateGame(game1);
 		}
 	}
 
-	private void updateEncounters(Game game) throws Exception {
-		Container ews = turnInfo.getEncounters();
+	private void updateEncounters(Game game1) throws Exception {
+		Container ews = this.turnInfo.getEncounters();
 		if (ews == null)
 			return;
-		Container encounters = game.getTurn().getContainer(TurnElementsEnum.Encounter);
+		Container encounters = game1.getTurn().getContainer(TurnElementsEnum.Encounter);
 		for (EncounterWrapper ew : (ArrayList<EncounterWrapper>) ews.getItems()) {
 			Encounter ne = ew.getEncounter();
 			if (ne == null)
 				continue;
-			Character c = (Character) game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ne.getCharacter());
+			Character c = (Character) game1.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ne.getCharacter());
 			if (c == null) {
 				continue;
 			}
@@ -649,17 +651,17 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateHostages(Game game) throws Exception {
-		Container hws = turnInfo.getHostages();
+	private void updateHostages(Game game1) throws Exception {
+		Container hws = this.turnInfo.getHostages();
 		for (HostageWrapper hw : (ArrayList<HostageWrapper>) hws.getItems()) {
-			hw.updateGame(game, turn, infoSource);
+			hw.updateGame(game1, this.turn, this.infoSource);
 		}
 	}
 
-	private void updateDoubleAgents(Game game) throws Exception {
-		Container daws = turnInfo.getDoubleAgents();
-		DoubleAgentInfoSource dais = new DoubleAgentInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
-		Container cs = turn.getContainer(TurnElementsEnum.Character);
+	private void updateDoubleAgents(Game game1) throws Exception {
+		Container daws = this.turnInfo.getDoubleAgents();
+		DoubleAgentInfoSource dais = new DoubleAgentInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
+		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
 		for (DoubleAgentWrapper daw : (ArrayList<DoubleAgentWrapper>) daws.getItems()) {
 			Character c = (Character) cs.findFirstByProperty("name", daw.getName());
 			if (c == null) {
@@ -669,7 +671,7 @@ public class TurnNewXmlReader implements Runnable {
 				cs.addItem(c);
 			}
 			// set nation if applicable
-			Nation n = game.getMetadata().getNationByName(daw.getNation());
+			Nation n = game1.getMetadata().getNationByName(daw.getNation());
 			if (n != null) {
 				c.setNationNo(n.getNumber());
 			}
@@ -681,31 +683,31 @@ public class TurnNewXmlReader implements Runnable {
 
 	}
 
-	private void updateCharacterMessages(Game game) throws Exception {
-		Container nrws = turnInfo.getCharMessages();
-		Container cs = turn.getContainer(TurnElementsEnum.Character);
+	private void updateCharacterMessages(Game game1) throws Exception {
+		Container nrws = this.turnInfo.getCharMessages();
+		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
 		for (CharacterMessageWrapper cmw : (ArrayList<CharacterMessageWrapper>) nrws.getItems()) {
 			Character c = (Character) cs.findFirstByProperty("id", cmw.getCharId());
-			InfoSource ifs = new DerivedFromOrderResultsInfoSource(turn.getTurnNo(), turnInfo.nationNo, c.getName());
 			if (c != null) {
-				cmw.updateCharacter(c, game);
+				InfoSource ifs = new DerivedFromOrderResultsInfoSource(this.turn.getTurnNo(), this.turnInfo.nationNo, c.getName());
+				cmw.updateCharacter(c, game1);
 				for (OrderResult or : cmw.getOrderResults(ifs)) {
-					or.updateGame(game, turn, turnInfo.nationNo, c.getName());
+					or.updateGame(game1, this.turn, this.turnInfo.nationNo, c.getName());
 				}
 			}
 		}
 
 	}
 
-	private void updateAnchoredShips(Game game) throws Exception {
+	private void updateAnchoredShips(Game game1) throws Exception {
 		String commanderName = "[Anchored Ships]";
-		Container asws = turnInfo.getAnchoredShips();
-		Container<Army> armies = turn.getArmies();
+		Container asws = this.turnInfo.getAnchoredShips();
+		Container<Army> armies = this.turn.getArmies();
 		if (asws == null)
 			return;
 		for (AnchoredShipsWrapper asw : (Iterable<AnchoredShipsWrapper>) asws) {
 			String hexNo = String.valueOf(asw.getHexId());
-			Army a = armies.findFirstByProperties(new String[] { "commanderName", "hexNo", "nationNo" }, new Object[] { commanderName, hexNo, turnInfo.getNationNo() });
+			Army a = armies.findFirstByProperties(new String[] { "commanderName", "hexNo", "nationNo" }, new Object[] { commanderName, hexNo, this.turnInfo.getNationNo() });
 			if (a == null) {
 				a = new Army();
 				a.setNavy(true);
@@ -713,15 +715,15 @@ public class TurnNewXmlReader implements Runnable {
 				a.setCommanderName(commanderName);
 				a.setCommanderTitle("");
 				a.setHexNo(hexNo);
-				a.setNationNo(turnInfo.getNationNo());
+				a.setNationNo(this.turnInfo.getNationNo());
 				NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
-				NationRelations nr = (NationRelations) game.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", turnInfo.getNationNo());
+				NationRelations nr = (NationRelations) game1.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
 				if (nr != null) {
 					allegiance = nr.getAllegiance();
 				}
 				a.setNationAllegiance(allegiance);
 				a.setInformationSource(InformationSourceEnum.exhaustive);
-				a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
+				a.setInfoSource(new PdfTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo()));
 				a.setElement(ArmyElementType.Transports, asw.getTransports());
 				a.setElement(ArmyElementType.Warships, asw.getWarships());
 				armies.addItem(a);
@@ -729,31 +731,31 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateRelations(Game game) throws Exception {
-		Container nrws = turnInfo.getNationRelations();
+	private void updateRelations(Game game1) throws Exception {
+		Container nrws = this.turnInfo.getNationRelations();
 
-		Nation nation = game.getMetadata().getNationByNum(nationNo);
+		Nation nation = game1.getMetadata().getNationByNum(this.nationNo);
 		if (nation == null) {
-			throw new Exception("Failed to find nation with number " + nationNo);
+			throw new Exception("Failed to find nation with number " + this.nationNo);
 		}
-		Container<NationRelations> nrs = turn.getNationRelations();
-		NationRelations nr = nrs.findFirstByProperty("nationNo", nationNo);
+		Container<NationRelations> nrs = this.turn.getNationRelations();
+		NationRelations nr = nrs.findFirstByProperty("nationNo", this.nationNo);
 
-		if (turnInfo.getAlignment() == 1) {
+		if (this.turnInfo.getAlignment() == 1) {
 			nation.setAllegiance(NationAllegianceEnum.FreePeople);
-		} else if (turnInfo.getAlignment() == 2) {
+		} else if (this.turnInfo.getAlignment() == 2) {
 			nation.setAllegiance(NationAllegianceEnum.DarkServants);
-		} else if (turnInfo.getAlignment() == 3) {
+		} else if (this.turnInfo.getAlignment() == 3) {
 			nation.setAllegiance(NationAllegianceEnum.Neutral);
 		}
 		if (nr == null) {
-			throw new Exception("Failed to retrieve NationRelations object for nation " + nationNo);
+			throw new Exception("Failed to retrieve NationRelations object for nation " + this.nationNo);
 		}
 		nr.setAllegiance(nation.getAllegiance());
 
 		String problematicNations = "";
 		for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>) nrws.getItems()) {
-			Nation n = game.getMetadata().getNationByNum(nrw.getNationNo());
+			Nation n = game1.getMetadata().getNationByNum(nrw.getNationNo());
 			if (n == null) {
 				problematicNations += (problematicNations.equals("") ? "" : ", ") + nrw.getNationNo();
 			} else {
@@ -778,40 +780,40 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateBattles(Game game) {
-		Container bws = turnInfo.getBattles();
-		Container combats = turn.getContainer(TurnElementsEnum.Combat);
+	private void updateBattles(Game game1) {
+		Container bws = this.turnInfo.getBattles();
+		Container combats = this.turn.getContainer(TurnElementsEnum.Combat);
 		for (BattleWrapper bw : (ArrayList<BattleWrapper>) bws.getItems()) {
 			bw.parse();
 			Combat c = (Combat) combats.findFirstByProperty("hexNo", bw.getHexNo());
 			if (c == null) {
 				c = new Combat();
 				c.setHexNo(bw.getHexNo());
-				c.addNarration(turnInfo.getNationNo(), bw.getText());
+				c.addNarration(this.turnInfo.getNationNo(), bw.getText());
 				combats.addItem(c);
 			} else {
-				c.addNarration(turnInfo.getNationNo(), bw.getText());
+				c.addNarration(this.turnInfo.getNationNo(), bw.getText());
 			}
 			CombatWrapper cw = new CombatWrapper();
 			cw.setHexNo(bw.getHexNo());
 			cw.parseAll(bw.getText());
 			for (ArmyEstimate ae : cw.getArmyEstimates()) {
-				ArmyEstimate eae = (ArmyEstimate) game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
+				ArmyEstimate eae = (ArmyEstimate) game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
 				if (eae != null) {
-					game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
+					game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
 				}
-				game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+				game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
 			}
 
 		}
 	}
 
-	private void updateCompanies(Game game) {
-		Container cws = turnInfo.getCompanies();
-		Container cs = turn.getContainer(TurnElementsEnum.Company);
+	private void updateCompanies(Game game1) {
+		Container cws = this.turnInfo.getCompanies();
+		Container cs = this.turn.getContainer(TurnElementsEnum.Company);
 		for (CompanyWrapper cw : (ArrayList<CompanyWrapper>) cws.getItems()) {
 			Company newC = cw.getCompany();
-			newC.setInfoSource(infoSource);
+			newC.setInfoSource(this.infoSource);
 			Company oldC = (Company) cs.findFirstByProperty("commander", newC.getCommander());
 			if (oldC != null) {
 				cs.removeItem(oldC);
@@ -820,9 +822,9 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateArmies(Game game) {
-		Container aws = turnInfo.getArmies();
-		Container as = turn.getContainer(TurnElementsEnum.Army);
+	private void updateArmies(Game game1) {
+		Container aws = this.turnInfo.getArmies();
+		Container as = this.turn.getContainer(TurnElementsEnum.Army);
 		for (ArmyWrapper aw : (ArrayList<ArmyWrapper>) aws.getItems()) {
 			Army a = (Army) as.findFirstByProperty("commanderName", aw.getCommander());
 			if (a != null) {
@@ -831,32 +833,35 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updatePopCenters(Game game) {
-		Container pcws = turnInfo.getPopCentres();
-		Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
+	private void updatePopCenters(Game game1) throws Exception {
+		Container pcws = this.turnInfo.getPopCentres();
+		if (pcws == null) {
+			throw new Exception("Error: no PCs found... should you have set old XML format?");
+		}
+		Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
 		String pcsNotFound = "";
 		for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) pcws.getItems()) {
 			PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", pcw.getHexNo());
 			pcw.updatePopCenter(pc);
 			for (String foreignCharacter : pcw.getForeignCharacters()) {
-				Character c = turn.getCharByName(foreignCharacter);
+				Character c = this.turn.getCharByName(foreignCharacter);
 				if (c == null) {
 					c = new Character();
 					c.setName(foreignCharacter);
 					c.setId(Character.getIdFromName(foreignCharacter));
 					c.setNationNo(0);
-					c.setInfoSource(infoSource);
+					c.setInfoSource(this.infoSource);
 					c.setInformationSource(InformationSourceEnum.limited);
 					c.setHexNo(pcw.getHexNo());
-					turn.getCharacters().addItem(c);
+					this.turn.getCharacters().addItem(c);
 				}
 			}
 		}
 	}
 
-	private void updateOrdersGiven(Game game) {
-		Container ogs = turnInfo.getOrdersGiven();
-		Turn t = game.getTurn(game.getCurrentTurn() - 1);
+	private void updateOrdersGiven(Game game1) {
+		Container ogs = this.turnInfo.getOrdersGiven();
+		Turn t = game1.getTurn(game1.getCurrentTurn() - 1);
 		if (t == null)
 			return;
 		for (OrdersGiven og : (ArrayList<OrdersGiven>) ogs.getItems()) {
@@ -885,19 +890,19 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateArtifacts(Game game) {
-		Container aws0 = turnInfo.getNonHiddenArtifacts();
-		Container aws1 = turnInfo.getHiddenArtifacts();
+	private void updateArtifacts(Game game1) {
+		Container aws0 = this.turnInfo.getNonHiddenArtifacts();
+		Container aws1 = this.turnInfo.getHiddenArtifacts();
 		ArrayList<ArtifactWrapper> aws = new ArrayList<ArtifactWrapper>();
 		aws.addAll(aws0.getItems());
 		aws.addAll(aws1.getItems());
 		for (ArtifactWrapper aw : aws) {
 			// for FA game, update artifact numbers
 			try {
-				if (game.getMetadata().getGameType() == GameTypeEnum.gameFA || game.getMetadata().getGameType() == GameTypeEnum.gameKS) {
+				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA || game1.getMetadata().getGameType() == GameTypeEnum.gameKS) {
 					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
 					boolean found = false;
-					for (ArtifactInfo ai : game.getMetadata().getArtifacts().getItems()) {
+					for (ArtifactInfo ai : game1.getMetadata().getArtifacts().getItems()) {
 						if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
 							found = true;
 							ai.setNo(aw.getId());
@@ -909,13 +914,13 @@ public class TurnNewXmlReader implements Runnable {
 						ArtifactInfo ai = new ArtifactInfo();
 						ai.setName(aw.getName().trim());
 						ai.setNo(aw.getId());
-						game.getMetadata().getArtifacts().addItem(ai);
+						game1.getMetadata().getArtifacts().addItem(ai);
 					}
 				}
-				;
+				
 
 				// for all arties update powers
-				ArtifactInfo ai = game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getId());
+				ArtifactInfo ai = game1.getMetadata().getArtifacts().findFirstByProperty("no", aw.getId());
 				if (ai != null && aw.getPower() != null && !aw.getPower().equals("")) {
 					// parse power
 					// TODO handle open seas, scry etc
@@ -954,12 +959,13 @@ public class TurnNewXmlReader implements Runnable {
 
 	}
 
+	@SuppressWarnings("hiding")
 	private void updateSNAs(Game game) {
-		Container snaws = turnInfo.getSnas();
+		Container snaws = this.turnInfo.getSnas();
 		ArrayList<SNAEnum> snas = new ArrayList<SNAEnum>();
 		for (SNAWrapper snw : (ArrayList<SNAWrapper>) snaws.getItems()) {
-			snas.add(SNAEnum.getSnaFromNumber(snw.getCode()));
+			snas.add(SNAEnum.getSnaFromNumber(snw.getCode().intValue()));
 		}
-		game.getMetadata().getNationByNum(nationNo).setSnas(snas);
+		game.getMetadata().getNationByNum(this.nationNo).setSnas(snas);
 	}
 }

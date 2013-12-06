@@ -27,7 +27,7 @@ public class SpellInfo implements Serializable {
     String list;
     
     public String getDescription() {
-        return description;
+        return this.description;
     }
     
     public void setDescription(String description) {
@@ -35,7 +35,7 @@ public class SpellInfo implements Serializable {
     }
     
     public String getDifficulty() {
-        return difficulty;
+        return this.difficulty;
     }
     
     public void setDifficulty(String difficulty) {
@@ -43,7 +43,7 @@ public class SpellInfo implements Serializable {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public void setName(String name) {
@@ -51,7 +51,7 @@ public class SpellInfo implements Serializable {
     }
     
     public Integer getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(Integer number) {
@@ -59,7 +59,7 @@ public class SpellInfo implements Serializable {
     }
     
     public Integer getOrderNumber() {
-        return orderNumber;
+        return this.orderNumber;
     }
     
     public void setOrderNumber(Integer orderNumber) {
@@ -67,7 +67,7 @@ public class SpellInfo implements Serializable {
     }
     
     public String getRequiredInfo() {
-        return requiredInfo;
+        return this.requiredInfo;
     }
     
     public void setRequiredInfo(String requiredInfo) {
@@ -75,7 +75,7 @@ public class SpellInfo implements Serializable {
     }
     
     public String getRequirements() {
-        return requirements;
+        return this.requirements;
     }
     
     public void setRequirements(String requirements) {
@@ -85,7 +85,7 @@ public class SpellInfo implements Serializable {
     
     
     public String getList() {
-		return list;
+		return this.list;
 	}
 
 	public void setList(String list) {

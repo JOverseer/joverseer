@@ -24,7 +24,8 @@ public class ExportOrderResultsCommand extends ActionCommand {
         super("exportOrderResultsCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	try {
     		File f = new File("c:\\orders.out.txt");
     		FileWriter w = new FileWriter(f);

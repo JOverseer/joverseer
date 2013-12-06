@@ -116,7 +116,7 @@ public abstract class Processor {
      */
     public void generateXmlFragment(CharSequence text, ContentHandler contentHandler)
     throws SAXException {
-        if (LOG.isLoggable(Level.FINER)) LOG.finer("element=" + element + ", chars=" + text);
+        if (LOG.isLoggable(Level.FINER)) LOG.finer("element=" + this.element + ", chars=" + text);
         if (text == null) {
             throw new IllegalArgumentException("Can't generate XML for null text");
         }
@@ -135,7 +135,7 @@ public abstract class Processor {
         while (findMatch()) {
 
             // Start the XML Element
-            if (element != null) {
+            if (this.element != null) {
                 generateStartXmlElement();
             }
             
@@ -145,11 +145,11 @@ public abstract class Processor {
             } else {
                 getSubProcessor().parent = this;
                 CharSequence subChars = getMatchedText();
-                getSubProcessor().generateXmlFragment(subChars, handler);
+                getSubProcessor().generateXmlFragment(subChars, this.handler);
             }
             
             // End the XML Element
-            if (element != null) {
+            if (this.element != null) {
                 generateEndXmlElement();
             }
         }
@@ -169,8 +169,8 @@ public abstract class Processor {
      */
     protected void generateStartXmlElement() 
     throws SAXException {
-        assert (element != null && element.length() > 0);
-        handler.startElement("", element, element, NULL_ATTRIBUTES);
+        assert (this.element != null && this.element.length() > 0);
+        this.handler.startElement("", this.element, this.element, NULL_ATTRIBUTES);
    }
 
     /**
@@ -178,8 +178,8 @@ public abstract class Processor {
      */    
     protected void generateEndXmlElement() 
     throws SAXException {
-        assert (element != null && element.length() > 0);
-        handler.endElement("", element, element);
+        assert (this.element != null && this.element.length() > 0);
+        this.handler.endElement("", this.element, this.element);
     }
     
     /**
@@ -196,7 +196,7 @@ public abstract class Processor {
         for (int i = 0; i < match.length(); i++) {
 			 matchedChars[i] = match.charAt(i);
 		}
-        handler.characters(matchedChars, 0, matchedChars.length);
+        this.handler.characters(matchedChars, 0, matchedChars.length);
     }
     
     // ---------------- Abstract methods to be overriden in concrete subclasses
@@ -235,7 +235,7 @@ public abstract class Processor {
      * @return Returns a Processor
      */
     public Processor getNextProcessor() {
-        return nextProcessor;
+        return this.nextProcessor;
     }
 
     /**
@@ -251,7 +251,7 @@ public abstract class Processor {
      * Processor's matched text.
      */
     public Processor getSubProcessor() {
-        return subProcessor;
+        return this.subProcessor;
     }
 
     /**
@@ -266,7 +266,7 @@ public abstract class Processor {
      * @return the name of the element written by this Processor.
      */
     public String getElement() {
-        return element;
+        return this.element;
     }
 
     /**

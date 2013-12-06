@@ -18,7 +18,7 @@ public class ListViewDescriptionPopupCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		MessageDialog dlg = new MessageDialog(ms.getMessage("listViewDescriptionDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage(listViewName + ".description", new Object[] {}, Locale.getDefault()));
+		MessageDialog dlg = new MessageDialog(ms.getMessage("listViewDescriptionDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage(this.listViewName + ".description", new Object[] {}, Locale.getDefault()));
 		dlg.showDialog();
 	}
 }

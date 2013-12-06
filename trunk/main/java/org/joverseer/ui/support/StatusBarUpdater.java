@@ -15,7 +15,8 @@ import org.joverseer.metadata.GameMetadata;
  * @author: Marios Skounakis
  */
 public class StatusBarUpdater implements ApplicationListener {
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {

@@ -30,7 +30,7 @@ public class ArmyWrapper {
 	String charsTravellingWith;
 
 	public String getCharsTravellingWith() {
-		return charsTravellingWith;
+		return this.charsTravellingWith;
 	}
 
 	public void setCharsTravellingWith(String charsTravellingWith) {
@@ -38,7 +38,7 @@ public class ArmyWrapper {
 	}
 
 	public String getCommander() {
-		return commander;
+		return this.commander;
 	}
 
 	public void setCommander(String commander) {
@@ -46,7 +46,7 @@ public class ArmyWrapper {
 	}
 
 	public String getCommanderTitle() {
-		return commanderTitle;
+		return this.commanderTitle;
 	}
 
 	public void setCommanderTitle(String commanderTitle) {
@@ -54,7 +54,7 @@ public class ArmyWrapper {
 	}
 
 	public String getExtraInfo() {
-		return extraInfo;
+		return this.extraInfo;
 	}
 
 	public void setExtraInfo(String extraInfo) {
@@ -62,7 +62,7 @@ public class ArmyWrapper {
 	}
 
 	public int getHexID() {
-		return hexID;
+		return this.hexID;
 	}
 
 	public void setHexID(int hexID) {
@@ -70,7 +70,7 @@ public class ArmyWrapper {
 	}
 
 	public int getInformationSource() {
-		return informationSource;
+		return this.informationSource;
 	}
 
 	public void setInformationSource(int informationSource) {
@@ -78,7 +78,7 @@ public class ArmyWrapper {
 	}
 
 	public int getNation() {
-		return nation;
+		return this.nation;
 	}
 
 	public void setNation(int nation) {
@@ -86,7 +86,7 @@ public class ArmyWrapper {
 	}
 
 	public int getNationAllegience() {
-		return nationAllegience;
+		return this.nationAllegience;
 	}
 
 	public void setNationAllegience(int nationAllegience) {
@@ -94,7 +94,7 @@ public class ArmyWrapper {
 	}
 
 	public int getNavy() {
-		return navy;
+		return this.navy;
 	}
 
 	public void setNavy(int navy) {
@@ -102,7 +102,7 @@ public class ArmyWrapper {
 	}
 
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 
 	public void setSize(int size) {
@@ -110,7 +110,7 @@ public class ArmyWrapper {
 	}
 
 	public int getTroopCount() {
-		return troopCount;
+		return this.troopCount;
 	}
 
 	public void setTroopCount(int troopCount) {
@@ -201,9 +201,9 @@ public class ArmyWrapper {
 
 		switch (getNationAllegience()) {
 		case 0:
-			Nation nation = gm.getNationByNum(getNation());
-			if (nation != null) {
-				a.setNationAllegiance(nation.getAllegiance());
+			Nation nation1 = gm.getNationByNum(getNation());
+			if (nation1 != null) {
+				a.setNationAllegiance(nation1.getAllegiance());
 			}
 			break;
 		case 1:

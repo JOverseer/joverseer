@@ -28,7 +28,7 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
     
     public ShowCombatCalculatorCommand() {
         super("showCombatCalculatorCommand");
-        combat = null;
+        this.combat = null;
         
     }
     
@@ -38,30 +38,34 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
     }
     
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        if (combat == null) {
-            combat = new Combat();
-            combat.setMaxRounds(10);
-            g.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(combat);
+        if (this.combat == null) {
+            this.combat = new Combat();
+            this.combat.setMaxRounds(10);
+            g.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(this.combat);
         }
         final CombatForm form = CombatFormHolder.instance().getCombatForm();
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
-                form.setFormObject(combat);
+            @Override
+			protected void onAboutToShow() {
+                form.setFormObject(ShowCombatCalculatorCommand.this.combat);
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 form.commit();
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
                 return true;
             }
             
-            protected Object[] getCommandGroupMembers() {
+            @Override
+			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
                         getFinishCommand()
                 };

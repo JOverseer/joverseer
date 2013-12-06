@@ -75,7 +75,7 @@ public class RecentGames {
         String file;
         
         public int getNumber() {
-            return number;
+            return this.number;
         }
         
         public void setNumber(int number) {
@@ -84,7 +84,7 @@ public class RecentGames {
 
         
         public String getFile() {
-            return file;
+            return this.file;
         }
 
         

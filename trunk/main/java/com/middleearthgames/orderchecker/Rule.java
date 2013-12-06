@@ -5,14 +5,9 @@
 
 package com.middleearthgames.orderchecker;
 
-import java.io.PrintStream;
 import java.util.Vector;
-import javax.swing.JCheckBox;
 
-// Referenced classes of package com.middleearthgames.orderchecker:
-//            PopCenter, Army, Ruleset, Main, 
-//            Nation, Order, Character, Hex, 
-//            Map, SpellList, Spell
+import javax.swing.JCheckBox;
 
 public class Rule
     implements Cloneable
@@ -65,21 +60,22 @@ public class Rule
     public Rule(int order)
     {
         this.order = -1;
-        name = null;
-        parameters = new Vector();
-        spell = false;
-        spellRules = null;
-        additionalInfo = null;
-        stateProcessed = null;
-        done = false;
-        debugList = new Vector();
-        parentOrder = null;
-        parentChar = null;
-        phase = -1;
+        this.name = null;
+        this.parameters = new Vector();
+        this.spell = false;
+        this.spellRules = null;
+        this.additionalInfo = null;
+        this.stateProcessed = null;
+        this.done = false;
+        this.debugList = new Vector();
+        this.parentOrder = null;
+        this.parentChar = null;
+        this.phase = -1;
         this.order = order;
     }
 
-    protected Object clone()
+    @Override
+	protected Object clone()
         throws CloneNotSupportedException
     {
         return super.clone();
@@ -87,39 +83,39 @@ public class Rule
 
     void printStateInformation()
     {
-        for(int i = 0; i < debugList.size(); i++)
+        for(int i = 0; i < this.debugList.size(); i++)
         {
-            String entry = (String)debugList.get(i);
+            String entry = (String)this.debugList.get(i);
             System.out.println((i + 1) + ": " + entry);
         }
 
-        debugList.removeAllElements();
-        if(spellRules != null)
+        this.debugList.removeAllElements();
+        if(this.spellRules != null)
         {
-            spellRules.printStateInformation();
+            this.spellRules.printStateInformation();
         }
     }
 
     void getInfoRequests(Vector list)
     {
-        list.addAll(((java.util.Collection) (additionalInfo)));
-        if(spellRules != null)
+        list.addAll(((java.util.Collection) (this.additionalInfo)));
+        if(this.spellRules != null)
         {
-            spellRules.getInfoRequests(list);
+            this.spellRules.getInfoRequests(list);
         }
     }
 
     private void addAdditionalInfo(String msg, boolean state)
     {
         JCheckBox box = new JCheckBox(msg, state);
-        additionalInfo.add(((Object) (box)));
+        this.additionalInfo.add(((Object) (box)));
     }
 
     private boolean getAdditionalInfo()
     {
-        if(additionalInfo.size() > 0)
+        if(this.additionalInfo.size() > 0)
         {
-            JCheckBox box = (JCheckBox)additionalInfo.remove(0);
+            JCheckBox box = (JCheckBox)this.additionalInfo.remove(0);
             return box.isSelected();
         } else
         {
@@ -129,39 +125,39 @@ public class Rule
 
     boolean getDone()
     {
-        if(spellRules != null && !spellRules.getDone())
+        if(this.spellRules != null && !this.spellRules.getDone())
         {
             return false;
         } else
         {
-            return done;
+            return this.done;
         }
     }
 
     boolean getStateDone(int state)
     {
-        if(spellRules != null && !spellRules.getStateDone(state))
+        if(this.spellRules != null && !this.spellRules.getStateDone(state))
         {
             return false;
         } else
         {
-            return stateProcessed[state];
+            return this.stateProcessed[state];
         }
     }
 
     private void clearProcessState(int state)
     {
-        if(stateProcessed[state])
+        if(this.stateProcessed[state])
         {
-            stateProcessed[state] = false;
+            this.stateProcessed[state] = false;
         }
     }
 
     private void setProcessState(int state)
     {
-        if(!stateProcessed[state])
+        if(!this.stateProcessed[state])
         {
-            stateProcessed[state] = true;
+            this.stateProcessed[state] = true;
         }
     }
 
@@ -172,212 +168,212 @@ public class Rule
 
     private boolean waitForPartialState(int state)
     {
-        return !Main.main.getNation().isPartialStateDone(state, parentOrder.getOrder());
+        return !Main.main.getNation().isPartialStateDone(state, this.parentOrder.getOrder());
     }
 
-    String processRule(Order order, int phase)
+    String processRule(Order order1, int phase1)
     {
-        parentOrder = order;
-        parentChar = order.getParent();
-        this.phase = phase;
-        if(phase == 1)
+        this.parentOrder = order1;
+        this.parentChar = order1.getParent();
+        this.phase = phase1;
+        if(phase1 == 1)
         {
-            additionalInfo = new Vector();
-            stateProcessed = new boolean[7];
-            for(int i = 0; i < 7; i++)
+            this.additionalInfo = new Vector();
+            this.stateProcessed = new boolean[7];
+            for(int i = 0; i < STATE_NUM; i++)
             {
-                stateProcessed[i] = true;
+                this.stateProcessed[i] = true;
             }
 
         }
         String result;
-        if(spellRules != null && !spellRules.getDone())
+        if(this.spellRules != null && !this.spellRules.getDone())
         {
-            result = spellRules.processRules(parentOrder, phase);
+            result = this.spellRules.processRules(this.parentOrder, phase1);
             if(result != null && !result.equals("state"))
             {
                 return result;
             }
         }
-        if(done)
+        if(this.done)
         {
             return null;
         }
-        if(name.equalsIgnoreCase("ARMYMOVE"))
+        if(this.name.equalsIgnoreCase("ARMYMOVE"))
         {
             result = processArmyMove();
         } else
-        if(name.equalsIgnoreCase("ARMYORPC"))
+        if(this.name.equalsIgnoreCase("ARMYORPC"))
         {
             result = processArmyOrPc();
         } else
-        if(name.equalsIgnoreCase("ARMYSCOUT"))
+        if(this.name.equalsIgnoreCase("ARMYSCOUT"))
         {
             result = processScoutArmy();
         } else
-        if(name.equalsIgnoreCase("ARTIFACT"))
+        if(this.name.equalsIgnoreCase("ARTIFACT"))
         {
             result = processArtifact(-1, true, true);
         } else
-        if(name.equalsIgnoreCase("ARTYFIND"))
+        if(this.name.equalsIgnoreCase("ARTYFIND"))
         {
             result = processFindArtifact();
         } else
-        if(name.equalsIgnoreCase("ARTYLIST"))
+        if(this.name.equalsIgnoreCase("ARTYLIST"))
         {
             result = processArtifactList();
         } else
-        if(name.equalsIgnoreCase("ARTYNAME"))
+        if(this.name.equalsIgnoreCase("ARTYNAME"))
         {
             result = processArtifactName();
         } else
-        if(name.equalsIgnoreCase("CHARACTER"))
+        if(this.name.equalsIgnoreCase("CHARACTER"))
         {
             result = processCharacter(-1, -1, -1);
         } else
-        if(name.equalsIgnoreCase("CHARMOVE"))
+        if(this.name.equalsIgnoreCase("CHARMOVE"))
         {
             result = processCharacterMove();
         } else
-        if(name.equalsIgnoreCase("COMMANDER"))
+        if(this.name.equalsIgnoreCase("COMMANDER"))
         {
             result = processCommander();
         } else
-        if(name.equalsIgnoreCase("COMMANDERNOT"))
+        if(this.name.equalsIgnoreCase("COMMANDERNOT"))
         {
             result = processNotCommander();
         } else
-        if(name.equalsIgnoreCase("COMMANDXFER"))
+        if(this.name.equalsIgnoreCase("COMMANDXFER"))
         {
             result = processCommandTransfer();
         } else
-        if(name.equalsIgnoreCase("DOCK"))
+        if(this.name.equalsIgnoreCase("DOCK"))
         {
             result = processDock();
         } else
-        if(name.equalsIgnoreCase("ENEMYARMY"))
+        if(this.name.equalsIgnoreCase("ENEMYARMY"))
         {
             result = processEnemyArmy();
         } else
-        if(name.equalsIgnoreCase("FEATURE"))
+        if(this.name.equalsIgnoreCase("FEATURE"))
         {
             result = processFeature();
         } else
-        if(name.equalsIgnoreCase("FORT"))
+        if(this.name.equalsIgnoreCase("FORT"))
         {
             result = processFortification();
         } else
-        if(name.equalsIgnoreCase("HOSTAGE"))
+        if(this.name.equalsIgnoreCase("HOSTAGE"))
         {
             result = processHostage();
         } else
-        if(name.equalsIgnoreCase("IMPROVEPC"))
+        if(this.name.equalsIgnoreCase("IMPROVEPC"))
         {
             result = processImprovePopCenter();
         } else
-        if(name.equalsIgnoreCase("LAND"))
+        if(this.name.equalsIgnoreCase("LAND"))
         {
             result = processLand();
         } else
-        if(name.equalsIgnoreCase("MAGEAMT"))
+        if(this.name.equalsIgnoreCase("MAGEAMT"))
         {
             result = processMageAmount();
         } else
-        if(name.equalsIgnoreCase("NATION"))
+        if(this.name.equalsIgnoreCase("NATION"))
         {
             result = processNation();
         } else
-        if(name.equalsIgnoreCase("NAVYMOVE"))
+        if(this.name.equalsIgnoreCase("NAVYMOVE"))
         {
             result = processNavyMove();
         } else
-        if(name.equalsIgnoreCase("NEWCHAR"))
+        if(this.name.equalsIgnoreCase("NEWCHAR"))
         {
             result = processNewCharacter();
         } else
-        if(name.equalsIgnoreCase("ONERING"))
+        if(this.name.equalsIgnoreCase("ONERING"))
         {
             result = processOneRing();
         } else
-        if(name.equalsIgnoreCase("PC"))
+        if(this.name.equalsIgnoreCase("PC"))
         {
             result = processPC();
         } else
-        if(name.equalsIgnoreCase("PCSIZE"))
+        if(this.name.equalsIgnoreCase("PCSIZE"))
         {
             result = processPCSize();
         } else
-        if(name.equalsIgnoreCase("PCSTATE"))
+        if(this.name.equalsIgnoreCase("PCSTATE"))
         {
             result = processPCState();
         } else
-        if(name.equalsIgnoreCase("PRODUCTINFO"))
+        if(this.name.equalsIgnoreCase("PRODUCTINFO"))
         {
             result = processProductInfo();
         } else
-        if(name.equalsIgnoreCase("RANK"))
+        if(this.name.equalsIgnoreCase("RANK"))
         {
             result = processRank(-1, -1, -1, -1);
         } else
-        if(name.equalsIgnoreCase("SETCOMMAND"))
+        if(this.name.equalsIgnoreCase("SETCOMMAND"))
         {
             result = processSetCommander();
         } else
-        if(name.equalsIgnoreCase("SHIPS"))
+        if(this.name.equalsIgnoreCase("SHIPS"))
         {
             result = processShips();
         } else
-        if(name.equalsIgnoreCase("SIEGENOT"))
+        if(this.name.equalsIgnoreCase("SIEGENOT"))
         {
             result = processNotSieged();
         } else
-        if(name.equalsIgnoreCase("SPELLREQ"))
+        if(this.name.equalsIgnoreCase("SPELLREQ"))
         {
             result = processSpellReq();
         } else
-        if(name.equalsIgnoreCase("SPELL"))
+        if(this.name.equalsIgnoreCase("SPELL"))
         {
             result = processSpell();
         } else
-        if(name.equalsIgnoreCase("SPELLLIST"))
+        if(this.name.equalsIgnoreCase("SPELLLIST"))
         {
             result = processSpellList();
         } else
-        if(name.equalsIgnoreCase("STATUS"))
+        if(this.name.equalsIgnoreCase("STATUS"))
         {
             result = processStatus();
         } else
-        if(name.equalsIgnoreCase("THREATENPC"))
+        if(this.name.equalsIgnoreCase("THREATENPC"))
         {
             result = processThreatenPopCenter();
         } else
-        if(name.equalsIgnoreCase("TROOPAMT"))
+        if(this.name.equalsIgnoreCase("TROOPAMT"))
         {
             result = processTroopAmount(-1, -1, ((int []) (null)));
         } else
-        if(name.equalsIgnoreCase("TROOPRECRUIT"))
+        if(this.name.equalsIgnoreCase("TROOPRECRUIT"))
         {
             result = processTroopRecruit();
         } else
-        if(name.equalsIgnoreCase("TROOPTYPE"))
+        if(this.name.equalsIgnoreCase("TROOPTYPE"))
         {
             result = processTroopType();
         } else
-        if(name.equalsIgnoreCase("TROOPXFER"))
+        if(this.name.equalsIgnoreCase("TROOPXFER"))
         {
             result = processTroopTransfer();
         } else
-        if(name.equalsIgnoreCase("NONE"))
+        if(this.name.equalsIgnoreCase("NONE"))
         {
-            done = true;
+            this.done = true;
             return null;
         } else
         {
-            throw new RuntimeException("Unknown rule: " + name);
+            throw new RuntimeException("Unknown rule: " + this.name);
         }
-        if(result == null && phase > 1)
+        if(result == null && phase1 > 1)
         {
-            done = true;
+            this.done = true;
         }
         return result;
     }
@@ -389,44 +385,45 @@ public class Rule
 
     public void setSpellType()
     {
-        spell = true;
+        this.spell = true;
     }
 
     public void addParameter(Integer param)
     {
-        parameters.add(((Object) (param)));
+        this.parameters.add(((Object) (param)));
     }
 
     public int getOrder()
     {
-        return order;
+        return this.order;
     }
 
     String getName()
     {
-        return name;
+        return this.name;
     }
 
     boolean isSpellType()
     {
-        return spell;
+        return this.spell;
     }
 
     boolean isRuleComplete()
     {
-        return order != -1 && name != null;
+        return this.order != -1 && this.name != null;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
-        return name;
+        return this.name;
     }
 
     private String parameterCount(int expected, String desc)
     {
-        if(parameters.size() != expected)
+        if(this.parameters.size() != expected)
         {
-            return "Invalid parameter count for " + desc + ": " + order;
+            return "Invalid parameter count for " + desc + ": " + this.order;
         } else
         {
             return null;
@@ -436,7 +433,7 @@ public class Rule
     private int convertParameter(int index)
     {
         try {
-            Integer intValue = (Integer)parameters.get(index);
+            Integer intValue = (Integer)this.parameters.get(index);
             return intValue.intValue();
         }
         catch (Exception ex) {
@@ -455,29 +452,29 @@ public class Rule
         {
             return false;
         }
-        boolean owned = pc.getNation() == parentChar.getNation();
-        boolean enemy = Nation.isEnemy(parentChar.getNation(), pc.getNation());
+        boolean owned = pc.getNation() == this.parentChar.getNation();
+        boolean enemy = Nation.isEnemy(this.parentChar.getNation(), pc.getNation());
         boolean neutral = Nation.isNeutral(pc.getNation());
         if(owned || !enemy && !neutral)
         {
             if(pc.getEnemyArmyPresent())
             {
-                parentOrder.addWarning("Army/navy movement could be blocked if " + pc + " is captured.");
+                this.parentOrder.addWarning("Army/navy movement could be blocked if " + pc + " is captured.");
             }
             return false;
         }
-        if(pc.getPossibleCapture() < parentOrder.getOrder() && pc.getCapturingNation() == parentChar.getNation())
+        if(pc.getPossibleCapture() < this.parentOrder.getOrder() && pc.getCapturingNation() == this.parentChar.getNation())
         {
-            parentOrder.addWarning("Army/navy movement could be blocked if " + pc + " is not captured.");
+            this.parentOrder.addWarning("Army/navy movement could be blocked if " + pc + " is not captured.");
             return false;
         }
-        if(pc.getPossibleInfluence() < parentOrder.getOrder())
+        if(pc.getPossibleInfluence() < this.parentOrder.getOrder())
         {
-            parentOrder.addWarning("Army/navy movement could be blocked if " + pc + " is not captured.");
+            this.parentOrder.addWarning("Army/navy movement could be blocked if " + pc + " is not captured.");
             return false;
         } else
         {
-            parentOrder.addWarning(pc + " may block army/navy movement.");
+            this.parentOrder.addWarning(pc + " may block army/navy movement.");
             return true;
         }
     }
@@ -490,18 +487,18 @@ public class Rule
             return result;
         }
         boolean forced = convertParameter(0) == 1;
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(2);
             clearProcessState(4);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForProcessState(0))
             {
                 return "state";
             }
-            Army army = parentChar.getArmy(parentOrder.getOrder());
+            Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
             if(army == null)
             {
                 setProcessState(2);
@@ -510,9 +507,9 @@ public class Rule
             }
             if(army.getFoodRequirement() == 0)
             {
-                if(additionalInfo.size() == 0)
+                if(this.additionalInfo.size() == 0)
                 {
-                    String msg = "FOOD:Will " + parentChar + "'s army have 1 food?";
+                    String msg = "FOOD:Will " + this.parentChar + "'s army have 1 food?";
                     addAdditionalInfo(msg, false);
                     return "state";
                 }
@@ -526,16 +523,16 @@ public class Rule
             }
             setProcessState(2);
             setProcessState(4);
-            String evasiveString = parentOrder.getParameterString(1);
+            String evasiveString = this.parentOrder.getParameterString(1);
             boolean evasive = !evasiveString.equalsIgnoreCase("no");
-            boolean cavalry = army.isAllCavalry(parentOrder.getOrder());
+            boolean cavalry = army.isAllCavalry(this.parentOrder.getOrder());
             int maxMovement = ((int) (forced ? 14 : 12));
             int totalMovement = maxMovement;
-            int lastHex = parentChar.getLocation(parentOrder.getOrder());
+            int lastHex = this.parentChar.getLocation(this.parentOrder.getOrder());
             int currentHex = lastHex;
-            for(int param = 1; param < parentOrder.getNumberOfParameters() && currentHex > 0 && totalMovement >= 0; param++)
+            for(int param = 1; param < this.parentOrder.getNumberOfParameters() && currentHex > 0 && totalMovement >= 0; param++)
             {
-                String dirString = parentOrder.getParameterString(param + 1);
+                String dirString = this.parentOrder.getParameterString(param + 1);
                 int direction = Hex.convertDirection(dirString);
                 int points = 1;
                 if(dirString.equalsIgnoreCase("h"))
@@ -570,14 +567,14 @@ public class Rule
                 }
                 currentHex = Main.main.getMap().getAdjacentHex(currentHex, direction);
                 lastHex = currentHex;
-                if(param + 1 >= parentOrder.getNumberOfParameters())
+                if(param + 1 >= this.parentOrder.getNumberOfParameters())
                 {
                     continue;
                 }
                 willPCBlockMovement(currentHex);
                 if(Main.main.getNation().isEnemyArmyPresent(currentHex))
                 {
-                    parentOrder.addWarning("An enemy army is present at " + currentHex + " and may block movement.");
+                    this.parentOrder.addWarning("An enemy army is present at " + currentHex + " and may block movement.");
                 }
             }
 
@@ -586,30 +583,30 @@ public class Rule
             msg = msg + (evasive ? "Evasive, " : "Normal, ");
             if(currentHex == -1)
             {
-                parentOrder.addError("The army tried to move to an invalid hex!");
+                this.parentOrder.addError("The army tried to move to an invalid hex!");
                 if(totalMovement >= 0)
                 {
                     int movementSpent = maxMovement - totalMovement;
                     msg = msg + maxMovement + " points, " + movementSpent + " spent, ";
                 }
                 msg = msg + "stopped at " + Main.main.locationStr(lastHex) + ".";
-                parentOrder.addInfo(msg);
-                if(parentChar.isArmyCO(parentOrder.getOrder()))
+                this.parentOrder.addInfo(msg);
+                if(this.parentChar.isArmyCO(this.parentOrder.getOrder()))
                 {
-                    army.setNewLocation(lastHex, parentOrder.getOrder());
+                    army.setNewLocation(lastHex, this.parentOrder.getOrder());
                 }
             } else
             {
                 if(totalMovement < 0)
                 {
-                    parentOrder.addError("Maximum movement was exceeded!");
+                    this.parentOrder.addError("Maximum movement was exceeded!");
                 }
                 int movementSpent = maxMovement - totalMovement;
                 msg = msg + maxMovement + " points, " + movementSpent + " spent, stopped at " + Main.main.locationStr(currentHex) + ".";
-                parentOrder.addInfo(msg);
-                if(parentChar.isArmyCO(parentOrder.getOrder()))
+                this.parentOrder.addInfo(msg);
+                if(this.parentChar.isArmyCO(this.parentOrder.getOrder()))
                 {
-                    army.setNewLocation(currentHex, parentOrder.getOrder());
+                    army.setNewLocation(currentHex, this.parentOrder.getOrder());
                 }
             }
         }
@@ -624,24 +621,24 @@ public class Rule
             return result;
         }
         int type = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForProcessState(3))
             {
                 return "state";
             }
-            PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(parentChar.getLocation(parentOrder.getOrder()));
+            PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             boolean armyCheck = false;
             String qualifier = "";
             switch(type)
             {
             case 0: // '\0'
-                armyCheck = parentChar.isArmyCO(parentOrder.getOrder());
+                armyCheck = this.parentChar.isArmyCO(this.parentOrder.getOrder());
                 qualifier = "commanding";
                 break;
 
             case 1: // '\001'
-                Army army = parentChar.getArmy(parentOrder.getOrder());
+                Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
                 if(army != null)
                 {
                     armyCheck = true;
@@ -654,7 +651,7 @@ public class Rule
             }
             if(!armyCheck && pc == null)
             {
-                parentOrder.addError(parentChar + " needs to be " + qualifier + " an army or at an owned PC.");
+                this.parentOrder.addError(this.parentChar + " needs to be " + qualifier + " an army or at an owned PC.");
             }
         }
         return null;
@@ -669,9 +666,9 @@ public class Rule
         }
         int charParam = convertParameter(0);
         int maxDistance = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Character character = parentOrder.extractCharacter(charParam, true);
+            Character character = this.parentOrder.extractCharacter(charParam, true);
             if(character == null)
             {
                 return null;
@@ -680,15 +677,15 @@ public class Rule
             {
                 return "state";
             }
-            if(!character.isArmyCO(parentOrder.getOrder()))
+            if(!character.isArmyCO(this.parentOrder.getOrder()))
             {
-                parentOrder.addError(character + " is not commander of an army.");
+                this.parentOrder.addError(character + " is not commander of an army.");
             } else
             {
-                int distance = Hex.calcHexDistance(parentChar.getLocation(parentOrder.getOrder()), character.getLocation(parentOrder.getOrder()));
+                int distance = Hex.calcHexDistance(this.parentChar.getLocation(this.parentOrder.getOrder()), character.getLocation(this.parentOrder.getOrder()));
                 if(distance > maxDistance)
                 {
-                    parentOrder.addError(character + "'s army is too far away (" + distance + " hexes, maximum is " + maxDistance + ").");
+                    this.parentOrder.addError(character + "'s army is too far away (" + distance + " hexes, maximum is " + maxDistance + ").");
                 }
             }
         }
@@ -706,26 +703,26 @@ public class Rule
             }
             artifactParam = convertParameter(0);
         }
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(wait && waitForProcessState(5))
             {
                 return "state";
             }
-            int artifactNum = parentOrder.getParameterNumber(artifactParam);
+            int artifactNum = this.parentOrder.getParameterNumber(artifactParam);
             if(artifactNum == -1)
             {
                 return "Couldn't get artifact (" + artifactParam + ") for artifact check!";
             }
-            String artifact = parentChar.getArtifactName(artifactNum);
-            boolean hasArtifact = parentChar.hasArtifact(artifactNum, parentOrder.getOrder());
+            String artifact = this.parentChar.getArtifactName(artifactNum);
+            boolean hasArtifact = this.parentChar.hasArtifact(artifactNum, this.parentOrder.getOrder());
             if(!hasArtifact && convertParameter(0) != 3)
             {
-                parentOrder.addError(parentChar + " doesn't have " + (artifact != null ? artifact : "artifact #" + artifactNum) + ".");
+                this.parentOrder.addError(this.parentChar + " doesn't have " + (artifact != null ? artifact : "artifact #" + artifactNum) + ".");
             } else
             if(using && artifact != null)
             {
-                parentOrder.addHelp("Attempting to use " + artifact + ".");
+                this.parentOrder.addHelp("Attempting to use " + artifact + ".");
             }
         }
         return null;
@@ -739,37 +736,37 @@ public class Rule
             return result;
         }
         int artifactParam = convertParameter(0);
-        int artifact = parentOrder.getParameterNumber(artifactParam);
+        int artifact = this.parentOrder.getParameterNumber(artifactParam);
         if(artifact == -1)
         {
             return "Couldn't get artifact (" + artifactParam + ") for find artifact check!";
         }
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(5);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForPartialState(5))
             {
                 return "state";
             }
             setProcessState(5);
-            if(parentChar.getTotalMageRank() == 0)
+            if(this.parentChar.getTotalMageRank() == 0)
             {
-                parentOrder.addWarning(parentChar + " doesn't have Mage rank.");
+                this.parentOrder.addWarning(this.parentChar + " doesn't have Mage rank.");
             }
             if(artifact == 0)
             {
-                parentOrder.addWarning("Chance of success is much higher if artifact id # is known and provided.");
+                this.parentOrder.addWarning("Chance of success is much higher if artifact id # is known and provided.");
             } else
             {
-                String artifactName = parentChar.getArtifactName(artifact);
-                parentOrder.addHelp("Trying to find " + (artifactName != null ? artifactName : "artifact #" + artifact) + ".");
+                String artifactName = this.parentChar.getArtifactName(artifact);
+                this.parentOrder.addHelp("Trying to find " + (artifactName != null ? artifactName : "artifact #" + artifact) + ".");
             }
             int artiList[] = new int[1];
             artiList[0] = artifact;
-            parentChar.setNewArtifacts(artiList, parentOrder.getOrder());
+            this.parentChar.setNewArtifacts(artiList, this.parentOrder.getOrder());
         }
         return null;
     }
@@ -783,27 +780,27 @@ public class Rule
         }
         int type = convertParameter(0);
         int artifactParam = convertParameter(1);
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(5);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForPartialState(5))
             {
                 return "state";
             }
             setProcessState(5);
-            int numArtifacts = parentOrder.getNumberOfParameters() + 1;
+            int numArtifacts = this.parentOrder.getNumberOfParameters() + 1;
             int total = numArtifacts - artifactParam;
             if(total < 1)
             {
-                parentOrder.addError("No artifacts have been specified.");
+                this.parentOrder.addError("No artifacts have been specified.");
                 return null;
             }
             if(total > 6)
             {
-                parentOrder.addError("Only 6 artifacts can be specified.");
+                this.parentOrder.addError("Only 6 artifacts can be specified.");
                 return null;
             }
             int addList[] = new int[total];
@@ -815,7 +812,7 @@ public class Rule
                 {
                     return result;
                 }
-                int artifact = parentOrder.getParameterNumber(i);
+                int artifact = this.parentOrder.getParameterNumber(i);
                 addList[i - artifactParam] = artifact;
                 delList[i - artifactParam] = -1 * artifact;
             }
@@ -824,7 +821,7 @@ public class Rule
             info.append("Affects ");
             for(int i = 0; i < addList.length; i++)
             {
-                String artifactName = parentChar.getArtifactName(addList[i]);
+                String artifactName = this.parentChar.getArtifactName(addList[i]);
                 if(artifactName != null)
                 {
                     info.append(artifactName + ", ");
@@ -832,25 +829,25 @@ public class Rule
             }
 
             info.delete(info.length() - 2, info.length());
-            parentOrder.addHelp(info.toString());
+            this.parentOrder.addHelp(info.toString());
             switch(type)
             {
             case 1: // '\001'
-                Character character = parentOrder.extractCharacter(type, false);
+                Character character = this.parentOrder.extractCharacter(type, false);
                 if(character == null)
                 {
                     return null;
                 }
-                character.setNewArtifacts(addList, parentOrder.getOrder());
-                parentChar.setNewArtifacts(delList, parentOrder.getOrder());
+                character.setNewArtifacts(addList, this.parentOrder.getOrder());
+                this.parentChar.setNewArtifacts(delList, this.parentOrder.getOrder());
                 break;
 
             case 2: // '\002'
-                parentChar.setNewArtifacts(delList, parentOrder.getOrder());
+                this.parentChar.setNewArtifacts(delList, this.parentOrder.getOrder());
                 break;
 
             case 3: // '\003'
-                parentChar.setNewArtifacts(addList, parentOrder.getOrder());
+                this.parentChar.setNewArtifacts(addList, this.parentOrder.getOrder());
                 break;
 
             default:
@@ -868,17 +865,17 @@ public class Rule
             return result;
         }
         int artifactParam = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int artifactNum = parentOrder.getParameterNumber(artifactParam);
+            int artifactNum = this.parentOrder.getParameterNumber(artifactParam);
             if(artifactNum == -1)
             {
                 return "Couldn't get artifact (" + artifactParam + ") for ARTYNAME!";
             }
-            String artifact = parentChar.getArtifactName(artifactNum);
+            String artifact = this.parentChar.getArtifactName(artifactNum);
             if(artifact != null)
             {
-                parentOrder.addHelp("Affects " + artifact + ".");
+                this.parentOrder.addHelp("Affects " + artifact + ".");
             }
         }
         return null;
@@ -897,10 +894,10 @@ public class Rule
             charLoc = convertParameter(1);
             state = convertParameter(2);
         }
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Character character = parentOrder.extractCharacter(charParam, true);
-            int location = parentOrder.extractLocation(charLoc, true);
+            Character character = this.parentOrder.extractCharacter(charParam, true);
+            int location = this.parentOrder.extractLocation(charLoc, true);
             if(character == null || location == -1)
             {
                 return null;
@@ -909,19 +906,19 @@ public class Rule
             {
                 return "state";
             }
-            if(character.getLocation(parentOrder.getOrder()) != location && state != 4)
+            if(character.getLocation(this.parentOrder.getOrder()) != location && state != 4)
             {
-                if(character.getLocation(parentOrder.getOrder()) != 0)
+                if(character.getLocation(this.parentOrder.getOrder()) != 0)
                 {
-                    parentOrder.addError(character + " is not at " + Main.main.locationStr(location) + ".");
+                    this.parentOrder.addError(character + " is not at " + Main.main.locationStr(location) + ".");
                 }
             } else
             if(state == 4)
             {
-                int distance = Hex.calcHexDistance(character.getLocation(parentOrder.getOrder()), location);
+                int distance = Hex.calcHexDistance(character.getLocation(this.parentOrder.getOrder()), location);
                 if(distance > 1)
                 {
-                    parentOrder.addError(character + " is not at or adjacent to " + Main.main.locationStr(location) + ".");
+                    this.parentOrder.addError(character + " is not at or adjacent to " + Main.main.locationStr(location) + ".");
                 }
             }
             String sourceNation = Main.main.getNation().getNationName(Main.main.getNation().getNation());
@@ -931,7 +928,7 @@ public class Rule
             case 0: // '\0'
                 if(character.getNation() != Main.main.getNation().getNation())
                 {
-                    parentOrder.addError(character + " belongs to " + targetNation + ".");
+                    this.parentOrder.addError(character + " belongs to " + targetNation + ".");
                 }
                 break;
 
@@ -942,29 +939,29 @@ public class Rule
             case 4: // '\004'
                 if(character.getNation() == Main.main.getNation().getNation())
                 {
-                    parentOrder.addError(character + " belongs to your nation.");
+                    this.parentOrder.addError(character + " belongs to your nation.");
                 }
                 break;
 
             case 3: // '\003'
                 Main.main.getNation();
-                if(!Nation.isFriend(parentChar.getNation(), character.getNation()))
+                if(!Nation.isFriend(this.parentChar.getNation(), character.getNation()))
                 {
-                    parentOrder.addError(targetNation + " is not a friendly nation.");
+                    this.parentOrder.addError(targetNation + " is not a friendly nation.");
                 }
                 break;
 
             case 5: // '\005'
                 if(character.getNation() != Main.main.getNation().getNation())
                 {
-                    parentOrder.addWarning(sourceNation + " and " + targetNation + " must have friendly relations with each other.");
+                    this.parentOrder.addWarning(sourceNation + " and " + targetNation + " must have friendly relations with each other.");
                 }
                 break;
 
             case 6: // '\006'
                 if(character.getNation() != Main.main.getNation().getNation())
                 {
-                    parentOrder.addWarning("You must have friendly relations with " + targetNation + ".");
+                    this.parentOrder.addWarning("You must have friendly relations with " + targetNation + ".");
                 }
                 break;
 
@@ -985,7 +982,7 @@ public class Rule
         int locParam = convertParameter(0);
         int max = convertParameter(1);
         int type = convertParameter(2);
-        if(phase == 1)
+        if(this.phase == 1)
         {
             if(type < 0 || type > 5)
             {
@@ -997,7 +994,7 @@ public class Rule
                 clearProcessState(3);
             }
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(type != 1)
             {
@@ -1020,7 +1017,7 @@ public class Rule
             {
                 if(type != 2 && type != 5)
                 {
-                    parentChar.setArmy(((Army) (null)), parentOrder.getOrder());
+                    this.parentChar.setArmy(((Army) (null)), this.parentOrder.getOrder());
                 } else
                 {
                     int charParam = 2;
@@ -1028,16 +1025,16 @@ public class Rule
                     {
                         charParam = 1;
                     }
-                    Character character = parentOrder.extractCharacter(charParam, false);
+                    Character character = this.parentOrder.extractCharacter(charParam, false);
                     if(character != null)
                     {
-                        int location = parentOrder.extractLocation(locParam, false);
-                        if(character.getLocation(parentOrder.getOrder()) == location)
+                        int location = this.parentOrder.extractLocation(locParam, false);
+                        if(character.getLocation(this.parentOrder.getOrder()) == location)
                         {
-                            Army army = character.getArmy(parentOrder.getOrder());
+                            Army army = character.getArmy(this.parentOrder.getOrder());
                             if(army != null)
                             {
-                                parentChar.setArmy(army, parentOrder.getOrder());
+                                this.parentChar.setArmy(army, this.parentOrder.getOrder());
                             }
                         }
                     }
@@ -1051,34 +1048,34 @@ public class Rule
                     location = Main.main.getNation().getCapital();
                 } else
                 {
-                    location = parentOrder.getParameterNumber(locParam);
+                    location = this.parentOrder.getParameterNumber(locParam);
                     if(location == -1)
                     {
-                        parentOrder.addError("Could not determine destination location.");
+                        this.parentOrder.addError("Could not determine destination location.");
                         return null;
                     }
                 }
-                int distance = Hex.calcHexDistance(parentChar.getLocation(parentOrder.getOrder()), location);
+                int distance = Hex.calcHexDistance(this.parentChar.getLocation(this.parentOrder.getOrder()), location);
                 if(distance == 0 && type != 1)
                 {
-                    parentOrder.addWarning(parentChar + " is already at the destination location.");
+                    this.parentOrder.addWarning(this.parentChar + " is already at the destination location.");
                 } else
                 if(distance > max && max > 0)
                 {
                     if(type != 1)
                     {
-                        parentOrder.addError("Can not move " + distance + " hexes, maximum is " + max + ".");
+                        this.parentOrder.addError("Can not move " + distance + " hexes, maximum is " + max + ".");
                     } else
                     if(type == 1)
                     {
-                        parentOrder.addError(distance + " hexes " + "is too far, maximum is " + max + ".");
+                        this.parentOrder.addError(distance + " hexes " + "is too far, maximum is " + max + ".");
                     }
                 } else
                 if(type != 1)
                 {
-                    parentChar.setNewLocation(location, parentOrder.getOrder());
+                    this.parentChar.setNewLocation(location, this.parentOrder.getOrder());
                     String plural = distance != 1 ? " hexes " : " hex ";
-                    parentOrder.addInfo("Moved " + distance + plural + "to " + Main.main.locationStr(location) + ".");
+                    this.parentOrder.addInfo("Moved " + distance + plural + "to " + Main.main.locationStr(location) + ".");
                 }
             }
         }
@@ -1096,9 +1093,9 @@ public class Rule
         int charLoc = convertParameter(1);
         int status = convertParameter(2);
         int CO = convertParameter(3);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Character character = parentOrder.extractCharacter(charParam, true);
+            Character character = this.parentOrder.extractCharacter(charParam, true);
             if(character == null)
             {
                 return null;
@@ -1109,7 +1106,7 @@ public class Rule
             }
             if(character.getTotalCommandRank() > 0 && (CO == 4 || CO == 5))
             {
-                if(additionalInfo.size() == 0)
+                if(this.additionalInfo.size() == 0)
                 {
                     String msg = "COMPANYCO:Is " + character + " a company commander?";
                     addAdditionalInfo(msg, false);
@@ -1117,12 +1114,12 @@ public class Rule
                 }
                 character.setCompanyCO(getAdditionalInfo(), 0);
             }
-            boolean companyCO = character.isCompanyCO(parentOrder.getOrder());
+            boolean companyCO = character.isCompanyCO(this.parentOrder.getOrder());
             processCharacter(charParam, charLoc, status);
-            boolean armyCO = character.isArmyCO(parentOrder.getOrder());
+            boolean armyCO = character.isArmyCO(this.parentOrder.getOrder());
             boolean navyCO = false;
             boolean withArmy = false;
-            Army army = character.getArmy(parentOrder.getOrder());
+            Army army = character.getArmy(this.parentOrder.getOrder());
             if(army != null && armyCO && army.isNavy())
             {
                 armyCO = false;
@@ -1130,14 +1127,14 @@ public class Rule
             }
             if(!armyCO && !navyCO)
             {
-                withArmy = character.isCommanderInArmy(parentOrder.getOrder());
+                withArmy = character.isCommanderInArmy(this.parentOrder.getOrder());
             }
             switch(CO)
             {
             case 0: // '\0'
                 if(!armyCO)
                 {
-                    parentOrder.addError(character + " is not an army CO.");
+                    this.parentOrder.addError(character + " is not an army CO.");
                 }
                 break;
 
@@ -1147,52 +1144,52 @@ public class Rule
                     break;
                 }
                 Hex hex = null;
-                int location = parentOrder.extractLocation(charLoc, false);
+                int location = this.parentOrder.extractLocation(charLoc, false);
                 if(location != -1)
                 {
                     hex = Main.main.getMap().findHex(location);
                 }
                 if(hex != null && Main.main.getMap().adjacentToWater(hex))
                 {
-                    parentOrder.addWarning(character + " is an army CO doing navy movement.");
+                    this.parentOrder.addWarning(character + " is an army CO doing navy movement.");
                 } else
                 {
-                    parentOrder.addError(character + " is not a navy CO.");
+                    this.parentOrder.addError(character + " is not a navy CO.");
                 }
                 break;
 
             case 2: // '\002'
                 if(!armyCO && !navyCO)
                 {
-                    parentOrder.addError(character + " is not an army or navy CO.");
+                    this.parentOrder.addError(character + " is not an army or navy CO.");
                 }
                 break;
 
             case 3: // '\003'
                 if(!armyCO && !navyCO && !withArmy)
                 {
-                    parentOrder.addError(character + " is not with an army or navy.");
+                    this.parentOrder.addError(character + " is not with an army or navy.");
                 }
                 break;
 
             case 4: // '\004'
                 if(!companyCO)
                 {
-                    parentOrder.addError(character + " is not a company CO.");
+                    this.parentOrder.addError(character + " is not a company CO.");
                 }
                 break;
 
             case 5: // '\005'
                 if(!armyCO && !navyCO && !companyCO)
                 {
-                    parentOrder.addError(character + " is not an army, " + "navy, or company commander.");
+                    this.parentOrder.addError(character + " is not an army, " + "navy, or company commander.");
                 }
                 break;
 
             case 6: // '\006'
-                if(character.getArmy(parentOrder.getOrder()) == null)
+                if(character.getArmy(this.parentOrder.getOrder()) == null)
                 {
-                    parentOrder.addError(character + " is not with an army.");
+                    this.parentOrder.addError(character + " is not with an army.");
                 }
                 break;
 
@@ -1201,13 +1198,13 @@ public class Rule
                 {
                     break;
                 }
-                boolean land = parentOrder.onLand(charLoc);
+                boolean land = this.parentOrder.onLand(charLoc);
                 if(navyCO && land)
                 {
-                    parentOrder.addWarning(character + " is a navy CO doing army movement.");
+                    this.parentOrder.addWarning(character + " is a navy CO doing army movement.");
                 } else
                 {
-                    parentOrder.addError(character + " is not an army CO.");
+                    this.parentOrder.addError(character + " is not an army CO.");
                 }
                 break;
 
@@ -1229,9 +1226,9 @@ public class Rule
         int charLoc = convertParameter(1);
         int status = convertParameter(2);
         int CO = convertParameter(3);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Character character = parentOrder.extractCharacter(charParam, false);
+            Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
                 return null;
@@ -1242,7 +1239,7 @@ public class Rule
             }
             if(character.getTotalCommandRank() > 0 && (CO == 4 || CO == 5))
             {
-                if(additionalInfo.size() == 0)
+                if(this.additionalInfo.size() == 0)
                 {
                     String msg = "COMPANYCO:Is " + character + " a company commander?";
                     addAdditionalInfo(msg, false);
@@ -1250,12 +1247,12 @@ public class Rule
                 }
                 character.setCompanyCO(getAdditionalInfo(), 0);
             }
-            boolean companyCO = character.isCompanyCO(parentOrder.getOrder());
+            boolean companyCO = character.isCompanyCO(this.parentOrder.getOrder());
             processCharacter(charParam, charLoc, status);
-            boolean armyCO = character.isArmyCO(parentOrder.getOrder());
+            boolean armyCO = character.isArmyCO(this.parentOrder.getOrder());
             boolean navyCO = false;
             boolean withArmy = false;
-            Army army = character.getArmy(parentOrder.getOrder());
+            Army army = character.getArmy(this.parentOrder.getOrder());
             if(army != null && armyCO && army.isNavy())
             {
                 armyCO = false;
@@ -1263,49 +1260,49 @@ public class Rule
             }
             if(!armyCO && !navyCO)
             {
-                withArmy = character.isCommanderInArmy(parentOrder.getOrder());
+                withArmy = character.isCommanderInArmy(this.parentOrder.getOrder());
             }
             switch(CO)
             {
             case 0: // '\0'
                 if(armyCO)
                 {
-                    parentOrder.addError(character + " is an army CO.");
+                    this.parentOrder.addError(character + " is an army CO.");
                 }
                 break;
 
             case 1: // '\001'
                 if(navyCO)
                 {
-                    parentOrder.addError(character + " is a navy CO.");
+                    this.parentOrder.addError(character + " is a navy CO.");
                 }
                 break;
 
             case 2: // '\002'
                 if(armyCO || navyCO)
                 {
-                    parentOrder.addError(character + " is an army or navy CO.");
+                    this.parentOrder.addError(character + " is an army or navy CO.");
                 }
                 break;
 
             case 4: // '\004'
                 if(companyCO)
                 {
-                    parentOrder.addError(character + " is a company CO.");
+                    this.parentOrder.addError(character + " is a company CO.");
                 }
                 break;
 
             case 5: // '\005'
                 if(armyCO || navyCO || companyCO)
                 {
-                    parentOrder.addError(character + " is an army, " + "navy, or company commander.");
+                    this.parentOrder.addError(character + " is an army, " + "navy, or company commander.");
                 }
                 break;
 
             case 6: // '\006'
-                if(character.getArmy(parentOrder.getOrder()) == null || armyCO || navyCO)
+                if(character.getArmy(this.parentOrder.getOrder()) == null || armyCO || navyCO)
                 {
-                    parentOrder.addError(character + " is not with an army or is the commander of it.");
+                    this.parentOrder.addError(character + " is not with an army or is the commander of it.");
                 }
                 break;
 
@@ -1325,30 +1322,30 @@ public class Rule
             return result;
         }
         int charParam = convertParameter(0);
-        Character character = parentOrder.extractCharacter(charParam, false);
+        Character character = this.parentOrder.extractCharacter(charParam, false);
         if(character == null)
         {
             return null;
         }
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(0);
             clearProcessState(6);
             clearProcessState(3);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            if(parentChar.getTotalCommandRank() > 0)
+            if(this.parentChar.getTotalCommandRank() > 0)
             {
-                if(additionalInfo.size() == 0)
+                if(this.additionalInfo.size() == 0)
                 {
-                    String msg = "COMPANYCO:Is " + parentChar + " a company commander?";
+                    String msg = "COMPANYCO:Is " + this.parentChar + " a company commander?";
                     addAdditionalInfo(msg, false);
                     return "state";
                 }
-                parentChar.setCompanyCO(getAdditionalInfo(), 0);
+                this.parentChar.setCompanyCO(getAdditionalInfo(), 0);
             }
-            boolean companyCO = parentChar.isCompanyCO(parentOrder.getOrder());
+            boolean companyCO = this.parentChar.isCompanyCO(this.parentOrder.getOrder());
             if(waitForPartialState(0) || waitForPartialState(6) || waitForPartialState(3))
             {
                 return "state";
@@ -1358,35 +1355,35 @@ public class Rule
             setProcessState(3);
             if(companyCO)
             {
-                parentChar.setCompanyCO(false, parentOrder.getOrder());
-                character.setCompanyCO(true, parentOrder.getOrder());
+                this.parentChar.setCompanyCO(false, this.parentOrder.getOrder());
+                character.setCompanyCO(true, this.parentOrder.getOrder());
                 return null;
             }
-            Army sourceArmy = parentChar.getArmy(parentOrder.getOrder());
+            Army sourceArmy = this.parentChar.getArmy(this.parentOrder.getOrder());
             Army destinationArmy = null;
-            if(character.isArmyCO(parentOrder.getOrder() + 1))
+            if(character.isArmyCO(this.parentOrder.getOrder() + 1))
             {
-                destinationArmy = character.getArmy(parentOrder.getOrder() + 1);
+                destinationArmy = character.getArmy(this.parentOrder.getOrder() + 1);
             }
             if(sourceArmy == null)
             {
-                parentOrder.addError(parentChar + " is not an army/navy or company CO.");
+                this.parentOrder.addError(this.parentChar + " is not an army/navy or company CO.");
                 return null;
             }
             if(destinationArmy == null)
             {
-                character.setArmy(sourceArmy, parentOrder.getOrder());
-                sourceArmy.setArmyCommander(character, parentOrder.getOrder());
+                character.setArmy(sourceArmy, this.parentOrder.getOrder());
+                sourceArmy.setArmyCommander(character, this.parentOrder.getOrder());
             } else
             {
-                int currentSourceTroops[] = sourceArmy.getTroopContent(parentOrder.getOrder());
-                destinationArmy.setTroopContent(currentSourceTroops, parentOrder.getOrder());
-                sourceArmy.disbandArmy(destinationArmy, parentOrder.getOrder(), false);
+                int currentSourceTroops[] = sourceArmy.getTroopContent(this.parentOrder.getOrder());
+                destinationArmy.setTroopContent(currentSourceTroops, this.parentOrder.getOrder());
+                sourceArmy.disbandArmy(destinationArmy, this.parentOrder.getOrder(), false);
             }
-            String stays = parentOrder.getParameterString(charParam + 1);
+            String stays = this.parentOrder.getParameterString(charParam + 1);
             if(stays == null)
             {
-                parentOrder.addError("Join army was not specified.");
+                this.parentOrder.addError("Join army was not specified.");
             } else
             {
                 char stayFlag = stays.charAt(0);
@@ -1394,19 +1391,19 @@ public class Rule
                 {
                 case 78: // 'N'
                 case 110: // 'n'
-                    parentChar.setArmy(((Army) (null)), parentOrder.getOrder());
+                    this.parentChar.setArmy(((Army) (null)), this.parentOrder.getOrder());
                     break;
 
                 case 89: // 'Y'
                 case 121: // 'y'
                     if(destinationArmy != null)
                     {
-                        parentChar.setArmy(destinationArmy, parentOrder.getOrder());
+                        this.parentChar.setArmy(destinationArmy, this.parentOrder.getOrder());
                     }
                     break;
 
                 default:
-                    parentOrder.addError("Invalid join army parameter specified.");
+                    this.parentOrder.addError("Invalid join army parameter specified.");
                     break;
                 }
             }
@@ -1422,53 +1419,53 @@ public class Rule
             return result;
         }
         int type = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForProcessState(4))
             {
                 return "state";
             }
-            PopCenter pc = Main.main.getNation().findPopulationCenter(parentChar.getLocation(parentOrder.getOrder()));
-            String location = Main.main.locationStr(parentChar.getLocation(parentOrder.getOrder()));
+            PopCenter pc = Main.main.getNation().findPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
+            String location = Main.main.locationStr(this.parentChar.getLocation(this.parentOrder.getOrder()));
             switch(type)
             {
             case 0: // '\0'
                 if(pc == null || pc.getDock() != 1)
                 {
-                    parentOrder.addError(location + " does not have a harbor.");
+                    this.parentOrder.addError(location + " does not have a harbor.");
                 }
                 break;
 
             case 1: // '\001'
                 if(pc == null || pc.getDock() != 2)
                 {
-                    parentOrder.addError(location + " does not have a port.");
+                    this.parentOrder.addError(location + " does not have a port.");
                 }
                 break;
 
             case 2: // '\002'
-                Hex locHex = Main.main.getMap().findHex(parentChar.getLocation(parentOrder.getOrder()));
+                Hex locHex = Main.main.getMap().findHex(this.parentChar.getLocation(this.parentOrder.getOrder()));
                 if(locHex == null)
                 {
                     return "Could not find location " + location + " for DOCK!";
                 }
                 if(locHex.getTerrain() != 2 && (pc == null || pc.getDock() == 0))
                 {
-                    parentOrder.addError(location + " does not have a shore, harbor, or dock.");
+                    this.parentOrder.addError(location + " does not have a shore, harbor, or dock.");
                 }
                 break;
 
             case 3: // '\003'
                 if(pc != null && pc.getDock() != 0)
                 {
-                    parentOrder.addError(pc + " already has a harbor or port.");
+                    this.parentOrder.addError(pc + " already has a harbor or port.");
                 }
                 break;
 
             case 4: // '\004'
                 if(pc == null || pc.getDock() == 0)
                 {
-                    parentOrder.addError(location + " doesn't have a harbor or port.");
+                    this.parentOrder.addError(location + " doesn't have a harbor or port.");
                 }
                 break;
 
@@ -1488,9 +1485,9 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int type = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
@@ -1501,10 +1498,10 @@ public class Rule
                 {
                     if(Main.main.getNation().isNeutralArmyPresent(location))
                     {
-                        parentOrder.addWarning("Army belonging to a neutral nation is present at " + Main.main.locationStr(location) + ".");
+                        this.parentOrder.addWarning("Army belonging to a neutral nation is present at " + Main.main.locationStr(location) + ".");
                     } else
                     {
-                        parentOrder.addError("An enemy army is not present at " + Main.main.locationStr(location) + ".");
+                        this.parentOrder.addError("An enemy army is not present at " + Main.main.locationStr(location) + ".");
                     }
                 }
             } else
@@ -1512,11 +1509,11 @@ public class Rule
             {
                 if(Main.main.getNation().isEnemyArmyPresent(location))
                 {
-                    parentOrder.addError("An enemy army is present at " + Main.main.locationStr(location) + ".");
+                    this.parentOrder.addError("An enemy army is present at " + Main.main.locationStr(location) + ".");
                 } else
                 if(Main.main.getNation().isNeutralArmyPresent(location))
                 {
-                    parentOrder.addWarning("Possible enemy force is present at " + Main.main.locationStr(location) + ".");
+                    this.parentOrder.addWarning("Possible enemy force is present at " + Main.main.locationStr(location) + ".");
                 }
             } else
             {
@@ -1537,9 +1534,9 @@ public class Rule
         int dirParam = convertParameter(1);
         int type = convertParameter(2);
         int logic = convertParameter(3);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
@@ -1547,7 +1544,7 @@ public class Rule
             Hex hex = Main.main.getMap().findHex(location);
             if(hex == null)
             {
-                parentOrder.addError("Invalid location of " + Main.main.locationStr(location) + " specified.");
+                this.parentOrder.addError("Invalid location of " + Main.main.locationStr(location) + " specified.");
                 return null;
             }
             int direction = -1;
@@ -1556,14 +1553,14 @@ public class Rule
                 direction = 0;
             } else
             {
-                String dirString = parentOrder.getParameterString(dirParam);
+                String dirString = this.parentOrder.getParameterString(dirParam);
                 if(dirString != null)
                 {
                     direction = Hex.convertDirection(dirString);
                 }
                 if(direction == -1)
                 {
-                    parentOrder.addError("Could not determine direction.");
+                    this.parentOrder.addError("Could not determine direction.");
                     return null;
                 }
             }
@@ -1572,7 +1569,7 @@ public class Rule
             case 9: // '\t'
                 if(hex.hasFeature(3, direction) && !hex.hasFeature(5, direction))
                 {
-                    parentOrder.addError("A deep river is present while a road is not.");
+                    this.parentOrder.addError("A deep river is present while a road is not.");
                 }
                 break;
 
@@ -1580,12 +1577,12 @@ public class Rule
                 boolean adjacent = Main.main.getMap().adjacentToWater(hex) | hex.hasFeature(3);
                 if(adjacent && logic == 1)
                 {
-                    parentOrder.addError("Location " + Main.main.locationStr(location) + " is adjacent to water.");
+                    this.parentOrder.addError("Location " + Main.main.locationStr(location) + " is adjacent to water.");
                     break;
                 }
                 if(!adjacent && logic == 0)
                 {
-                    parentOrder.addError("Location " + Main.main.locationStr(location) + " is not adjacent to water.");
+                    this.parentOrder.addError("Location " + Main.main.locationStr(location) + " is not adjacent to water.");
                 }
                 break;
 
@@ -1596,12 +1593,12 @@ public class Rule
             case 5: // '\005'
                 if(!hex.hasFeature(type, direction) && logic == 0)
                 {
-                    parentOrder.addError("Location " + Main.main.locationStr(location) + " does not have a " + Hex.featureDescription(type) + ".");
+                    this.parentOrder.addError("Location " + Main.main.locationStr(location) + " does not have a " + Hex.featureDescription(type) + ".");
                     break;
                 }
                 if(hex.hasFeature(type, direction) && logic == 1)
                 {
-                    parentOrder.addError("Location " + Main.main.locationStr(location) + " has a " + Hex.featureDescription(type) + ".");
+                    this.parentOrder.addError("Location " + Main.main.locationStr(location) + " has a " + Hex.featureDescription(type) + ".");
                 }
                 break;
 
@@ -1623,9 +1620,9 @@ public class Rule
             return result;
         }
         int type = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            PopCenter pc = Main.main.getNation().findPopulationCenter(parentChar.getLocation(parentOrder.getOrder()));
+            PopCenter pc = Main.main.getNation().findPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             if(pc != null)
             {
                 switch(type)
@@ -1633,14 +1630,14 @@ public class Rule
                 case 0: // '\0'
                     if(pc.getFortification() == 0)
                     {
-                        parentOrder.addError(pc + " has no fortifications.");
+                        this.parentOrder.addError(pc + " has no fortifications.");
                     }
                     break;
 
                 case 1: // '\001'
                     if(pc.getFortification() == 5)
                     {
-                        parentOrder.addError(pc + " already has a citadel.");
+                        this.parentOrder.addError(pc + " already has a citadel.");
                     }
                     break;
 
@@ -1661,21 +1658,21 @@ public class Rule
         }
         int charParam = convertParameter(0);
         int type = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             String charName = "";
-            Character character = parentOrder.extractCharacter(charParam, false);
+            Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character != null)
             {
                 charName = character.getName();
             } else
             {
-                charName = parentOrder.getParameterString(charParam);
+                charName = this.parentOrder.getParameterString(charParam);
                 if(charName == null)
                 {
-                    if(phase == 1)
+                    if(this.phase == 1)
                     {
-                        parentOrder.addError("Couldn't get character for parameter " + charParam + ".");
+                        this.parentOrder.addError("Couldn't get character for parameter " + charParam + ".");
                     }
                     return null;
                 }
@@ -1683,7 +1680,7 @@ public class Rule
             boolean hostage = false;
             if(character == null)
             {
-                if(additionalInfo.size() == 0)
+                if(this.additionalInfo.size() == 0)
                 {
                     String msg = "HOSTAGE:Is \"" + charName + "\" a hostage?";
                     addAdditionalInfo(msg, false);
@@ -1691,7 +1688,7 @@ public class Rule
                 }
                 hostage = getAdditionalInfo();
             } else
-            if(character.getLocation(parentOrder.getOrder()) == 0)
+            if(character.getLocation(this.parentOrder.getOrder()) == 0)
             {
                 hostage = true;
             }
@@ -1700,14 +1697,14 @@ public class Rule
             case 0: // '\0'
                 if(hostage)
                 {
-                    parentOrder.addError(charName + " is a hostage.");
+                    this.parentOrder.addError(charName + " is a hostage.");
                 }
                 break;
 
             case 1: // '\001'
                 if(!hostage)
                 {
-                    parentOrder.addError(charName + " is not a hostage.");
+                    this.parentOrder.addError(charName + " is not a hostage.");
                 }
                 break;
 
@@ -1720,22 +1717,22 @@ public class Rule
 
     private String processImprovePopCenter()
     {
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(parentChar.getLocation(parentOrder.getOrder()));
+            PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             if(pc != null)
             {
                 int requirement = pc.improvementRequirement();
-                int total = pc.getLoyalty() + parentChar.getTotalEmissaryRank();
+                int total = pc.getLoyalty() + this.parentChar.getTotalEmissaryRank();
                 if(total < requirement - 5)
                 {
-                    parentOrder.addWarning("Loyalty plus emissary rank may be too low to improve " + pc + ".");
+                    this.parentOrder.addWarning("Loyalty plus emissary rank may be too low to improve " + pc + ".");
                 }
-                String msg = parentChar + " [E" + parentChar.getTotalEmissaryRank() + "], ";
+                String msg = this.parentChar + " [E" + this.parentChar.getTotalEmissaryRank() + "], ";
                 msg = msg + pc + " loyalty " + pc.getLoyalty() + ", ";
                 msg = msg + "Total is " + total + ", ";
                 msg = msg + "Recommended is " + requirement + ".";
-                parentOrder.addInfo(msg);
+                this.parentOrder.addInfo(msg);
             }
         }
         return null;
@@ -1749,20 +1746,20 @@ public class Rule
             return result;
         }
         int locParam = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(locParam == 0 && waitForProcessState(4))
             {
                 return "state";
             }
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
             }
-            if(!parentOrder.onLand(locParam))
+            if(!this.parentOrder.onLand(locParam))
             {
-                parentOrder.addError("Location " + location + " is shallow or deep water.");
+                this.parentOrder.addError("Location " + location + " is shallow or deep water.");
             }
         }
         return null;
@@ -1778,14 +1775,14 @@ public class Rule
         int amtParam = convertParameter(0);
         int max = convertParameter(1);
         int type = convertParameter(2);
-        if(phase == 1)
+        if(this.phase == 1)
         {
             if(type == 2)
             {
                 clearProcessState(0);
             }
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(type == 2)
             {
@@ -1795,13 +1792,13 @@ public class Rule
                 }
                 setProcessState(0);
             }
-            int quantity = parentOrder.getParameterNumber(amtParam);
+            int quantity = this.parentOrder.getParameterNumber(amtParam);
             if(quantity == -1)
             {
-                parentOrder.addError("Could not determine the quantity.");
+                this.parentOrder.addError("Could not determine the quantity.");
                 return null;
             }
-            int maxQuantity = parentChar.getNaturalMageRank() * max;
+            int maxQuantity = this.parentChar.getNaturalMageRank() * max;
             if(quantity > maxQuantity)
             {
                 String commodity = "";
@@ -1822,17 +1819,17 @@ public class Rule
                 default:
                     return "Invalid commodity type (" + type + ") for MAGEAMT!";
                 }
-                parentOrder.addError("Maximum of " + maxQuantity + " " + commodity + " was exceeded.");
+                this.parentOrder.addError("Maximum of " + maxQuantity + " " + commodity + " was exceeded.");
                 quantity = maxQuantity;
             }
             if(type == 2)
             {
-                Army army = parentChar.getArmy(parentOrder.getOrder());
+                Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
                 if(army != null)
                 {
                     int amounts[] = new int[6];
                     amounts[5] = quantity;
-                    army.setTroopContent(amounts, parentOrder.getOrder());
+                    army.setTroopContent(amounts, this.parentOrder.getOrder());
                 }
             }
         }
@@ -1848,19 +1845,19 @@ public class Rule
         }
         int type = convertParameter(0);
         int param = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int nationNumber = parentOrder.getParameterNumber(param);
+            int nationNumber = this.parentOrder.getParameterNumber(param);
             if(nationNumber == -1)
             {
-                parentOrder.addError("Could not determine nation for order.");
+                this.parentOrder.addError("Could not determine nation for order.");
                 return null;
             }
             String nationName = Main.main.getNation().getNationName(nationNumber);
             Main.main.getNation();
             if(Nation.isNeutral(nationNumber) && type != 2)
             {
-                parentOrder.addWarning(nationName + " is a neutral nation.");
+                this.parentOrder.addWarning(nationName + " is a neutral nation.");
                 return null;
             }
             String nationMsg = nationName + " (";
@@ -1882,14 +1879,14 @@ public class Rule
             default:
                 return "Invalid nation alignment (" + alignment + ") for NATION!";
             }
-            parentOrder.addHelp(nationMsg);
+            this.parentOrder.addHelp(nationMsg);
             switch(type)
             {
             case 0: // '\0'
                 Main.main.getNation();
-                if(Nation.isEnemy(parentChar.getNation(), nationNumber))
+                if(Nation.isEnemy(this.parentChar.getNation(), nationNumber))
                 {
-                    parentOrder.addError(nationName + " is an enemy nation.");
+                    this.parentOrder.addError(nationName + " is an enemy nation.");
                 }
                 break;
 
@@ -1898,9 +1895,9 @@ public class Rule
 
             case 1: // '\001'
                 Main.main.getNation();
-                if(Nation.isFriend(parentChar.getNation(), nationNumber))
+                if(Nation.isFriend(this.parentChar.getNation(), nationNumber))
                 {
-                    parentOrder.addError(nationName + " is an allied nation.");
+                    this.parentOrder.addError(nationName + " is an allied nation.");
                 }
                 break;
 
@@ -1913,18 +1910,18 @@ public class Rule
 
     private String processNavyMove()
     {
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(2);
             clearProcessState(4);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForProcessState(0))
             {
                 return "state";
             }
-            Army army = parentChar.getArmy(parentOrder.getOrder());
+            Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
             if(army == null)
             {
                 setProcessState(2);
@@ -1932,9 +1929,9 @@ public class Rule
                 return null;
             }
             boolean requiredTransports = false;
-            if(additionalInfo.size() == 0)
+            if(this.additionalInfo.size() == 0)
             {
-                int amounts[] = army.getTroopContent(parentOrder.getOrder());
+                int amounts[] = army.getTroopContent(this.parentOrder.getOrder());
                 int cavalry = amounts[0] + amounts[1];
                 int grunts = amounts[2] + amounts[3] + amounts[4] + amounts[5];
                 int cavships = cavalry != 0 ? cavalry / 150 : 0;
@@ -1948,11 +1945,11 @@ public class Rule
                     gruntships++;
                 }
                 int ships = cavships + gruntships;
-                String msg = "NAVY:Does " + parentChar + "'s navy have enough " + "transports? (needs " + ships + ")";
+                String msg = "NAVY:Does " + this.parentChar + "'s navy have enough " + "transports? (needs " + ships + ")";
                 addAdditionalInfo(msg, false);
                 if(army.getFoodRequired() == 0)
                 {
-                    msg = "FOOD:Will " + parentChar + "'s navy have 1 food?";
+                    msg = "FOOD:Will " + this.parentChar + "'s navy have 1 food?";
                     addAdditionalInfo(msg, false);
                 }
                 return "state";
@@ -1972,18 +1969,18 @@ public class Rule
             setProcessState(4);
             if(!requiredTransports)
             {
-                parentOrder.addError("The navy does not have enough transports to move.");
+                this.parentOrder.addError("The navy does not have enough transports to move.");
                 return null;
             }
-            String evasiveString = parentOrder.getParameterString(1);
+            String evasiveString = this.parentOrder.getParameterString(1);
             boolean evasive = !evasiveString.equalsIgnoreCase("no");
             int maxMovement = 14;
             int totalMovement = maxMovement;
-            int currentHex = parentChar.getLocation(parentOrder.getOrder());
+            int currentHex = this.parentChar.getLocation(this.parentOrder.getOrder());
             int lastHex = currentHex;
-            for(int param = 1; param < parentOrder.getNumberOfParameters() && currentHex > 0 && totalMovement >= 0; param++)
+            for(int param = 1; param < this.parentOrder.getNumberOfParameters() && currentHex > 0 && totalMovement >= 0; param++)
             {
-                String dirString = parentOrder.getParameterString(param + 1);
+                String dirString = this.parentOrder.getParameterString(param + 1);
                 int direction = Hex.convertDirection(dirString);
                 int points = 1;
                 if(dirString.equalsIgnoreCase("h"))
@@ -2024,14 +2021,14 @@ public class Rule
                 }
                 currentHex = Main.main.getMap().getAdjacentHex(currentHex, direction);
                 lastHex = currentHex;
-                if(param + 1 >= parentOrder.getNumberOfParameters())
+                if(param + 1 >= this.parentOrder.getNumberOfParameters())
                 {
                     continue;
                 }
                 willPCBlockMovement(currentHex);
                 if(Main.main.getNation().isEnemyArmyPresent(currentHex))
                 {
-                    parentOrder.addWarning("An enemy army is present at " + currentHex + " and may block movement.");
+                    this.parentOrder.addWarning("An enemy army is present at " + currentHex + " and may block movement.");
                 }
             }
 
@@ -2041,10 +2038,10 @@ public class Rule
             {
                 if(currentHex == -1)
                 {
-                    parentOrder.addError("The navy tried to move into an invalid hex!");
+                    this.parentOrder.addError("The navy tried to move into an invalid hex!");
                 } else
                 {
-                    parentOrder.addWarning("The navy can only move onto a shore hex or hex with a harbor/port or major river.");
+                    this.parentOrder.addWarning("The navy can only move onto a shore hex or hex with a harbor/port or major river.");
                 }
                 if(totalMovement >= 0)
                 {
@@ -2052,23 +2049,23 @@ public class Rule
                     msg = msg + maxMovement + " points, " + movementSpent + " spent, ";
                 }
                 msg = msg + "stopped at " + Main.main.locationStr(lastHex) + ".";
-                parentOrder.addInfo(msg);
-                if(parentChar.isArmyCO(parentOrder.getOrder()))
+                this.parentOrder.addInfo(msg);
+                if(this.parentChar.isArmyCO(this.parentOrder.getOrder()))
                 {
-                    army.setNewLocation(lastHex, parentOrder.getOrder());
+                    army.setNewLocation(lastHex, this.parentOrder.getOrder());
                 }
             } else
             {
                 if(totalMovement < 0)
                 {
-                    parentOrder.addError("Maximum movement was exceeded!");
+                    this.parentOrder.addError("Maximum movement was exceeded!");
                 }
                 int movementSpent = maxMovement - totalMovement;
                 msg = msg + maxMovement + " points, " + movementSpent + " spent, stopped at " + Main.main.locationStr(currentHex) + ".";
-                parentOrder.addInfo(msg);
-                if(parentChar.isArmyCO(parentOrder.getOrder()))
+                this.parentOrder.addInfo(msg);
+                if(this.parentChar.isArmyCO(this.parentOrder.getOrder()))
                 {
-                    army.setNewLocation(currentHex, parentOrder.getOrder());
+                    army.setNewLocation(currentHex, this.parentOrder.getOrder());
                 }
             }
         }
@@ -2084,12 +2081,12 @@ public class Rule
         }
         int param = convertParameter(0);
         int type = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(type >= 0 && type < 4)
             {
                 processRank(0, type, 0, 0);
-                int rankValue = parentChar.getNaturalRank(type);
+                int rankValue = this.parentChar.getNaturalRank(type);
                 if(rankValue > 0)
                 {
                     int maxRank = Main.main.getNation().getMaxRank(type);
@@ -2097,7 +2094,7 @@ public class Rule
                     {
                         rankValue = maxRank;
                     }
-                    parentOrder.addHelp("Creating new " + Character.getRankName(type) + " character with rank " + rankValue + ".");
+                    this.parentOrder.addHelp("Creating new " + Character.getRankName(type) + " character with rank " + rankValue + ".");
                 }
             } else
             if(type == 4)
@@ -2107,21 +2104,21 @@ public class Rule
                 int ranks[] = new int[4];
                 for(int i = 0; i < 4; i++)
                 {
-                    ranks[i] = parentOrder.getParameterNumber(param + i);
+                    ranks[i] = this.parentOrder.getParameterNumber(param + i);
                     sum += ranks[i];
                     if(ranks[i] == -1)
                     {
-                        parentOrder.addError("Could not determine one of the ranks.");
+                        this.parentOrder.addError("Could not determine one of the ranks.");
                         return null;
                     }
                     if(ranks[i] > 0 && ranks[i] < 10)
                     {
-                        parentOrder.addError(Character.getRankName(i) + " rank less " + "than 10 specified.");
+                        this.parentOrder.addError(Character.getRankName(i) + " rank less " + "than 10 specified.");
                         return null;
                     }
                     if(ranks[i] > 30)
                     {
-                        parentOrder.addError(Character.getRankName(i) + " rank of more " + "than 30 specified.");
+                        this.parentOrder.addError(Character.getRankName(i) + " rank of more " + "than 30 specified.");
                         return null;
                     }
                     if(ranks[i] > 0)
@@ -2132,11 +2129,11 @@ public class Rule
 
                 if(sum != 30)
                 {
-                    parentOrder.addError("Spend 30 points on ranks, current total is " + sum + ".");
+                    this.parentOrder.addError("Spend 30 points on ranks, current total is " + sum + ".");
                 } else
                 {
                     desc.delete(desc.length() - 2, desc.length());
-                    parentOrder.addHelp("Creating new character: " + desc + ".");
+                    this.parentOrder.addHelp("Creating new character: " + desc + ".");
                 }
             }
         }
@@ -2145,35 +2142,35 @@ public class Rule
 
     private String processOneRing()
     {
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForProcessState(4) || waitForProcessState(5))
             {
                 return "state";
             }
-            if(parentChar.getLocation(parentOrder.getOrder()) != 3423)
+            if(this.parentChar.getLocation(this.parentOrder.getOrder()) != 3423)
             {
-                parentOrder.addError(parentChar + " is not at hex 3423.");
+                this.parentOrder.addError(this.parentChar + " is not at hex 3423.");
                 return null;
             }
-            String artifact = parentChar.getArtifactName(14);
-            boolean hasArtifact = parentChar.hasArtifact(14, parentOrder.getOrder());
+            String artifact = this.parentChar.getArtifactName(14);
+            boolean hasArtifact = this.parentChar.hasArtifact(14, this.parentOrder.getOrder());
             if(!hasArtifact)
             {
-                parentOrder.addError(parentChar + " does not have " + (artifact != null ? artifact : "the ring") + ".");
+                this.parentOrder.addError(this.parentChar + " does not have " + (artifact != null ? artifact : "the ring") + ".");
             } else
-            if(Nation.getNationAlignment(parentChar.getNation()) == 1)
+            if(Nation.getNationAlignment(this.parentChar.getNation()) == 1)
             {
-                parentOrder.addHelp(parentChar + " is attempting to destroy " + (artifact != null ? artifact : "the ring") + ".");
+                this.parentOrder.addHelp(this.parentChar + " is attempting to destroy " + (artifact != null ? artifact : "the ring") + ".");
             } else
             {
-                parentOrder.addHelp(parentChar + " is attempting to transfer " + (artifact != null ? artifact : "the ring") + " to Sauron.");
+                this.parentOrder.addHelp(this.parentChar + " is attempting to transfer " + (artifact != null ? artifact : "the ring") + " to Sauron.");
             }
-            for(int i = 0; i < parentChar.getOrderCount(); i++)
+            for(int i = 0; i < this.parentChar.getOrderCount(); i++)
             {
-                if(parentChar.getOrder(i) != 990)
+                if(this.parentChar.getOrder(i) != 990)
                 {
-                    parentOrder.addError("Both orders must be order 990.");
+                    this.parentOrder.addError("Both orders must be order 990.");
                     return null;
                 }
             }
@@ -2191,7 +2188,7 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int state = convertParameter(1);
-        if(phase != 1 && phase == 2)
+        if(this.phase != 1 && this.phase == 2)
         {
             if(waitForProcessState(1))
             {
@@ -2201,7 +2198,7 @@ public class Rule
             {
                 return "state";
             }
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
@@ -2211,13 +2208,13 @@ public class Rule
             {
                 if(state != 4)
                 {
-                    parentOrder.addError("No population center is present at location " + Main.main.locationStr(location) + ".");
+                    this.parentOrder.addError("No population center is present at location " + Main.main.locationStr(location) + ".");
                 } else
                 {
                     pc = new PopCenter(location);
                     pc.setNewPC();
-                    pc.setName("NEW PC (Created by " + parentChar.getName() + ")");
-                    pc.setNation(parentChar.getNation());
+                    pc.setName("NEW PC (Created by " + this.parentChar.getName() + ")");
+                    pc.setNation(this.parentChar.getNation());
                     pc.setFortification(0);
                     pc.setSize(1);
                     pc.setDock(0);
@@ -2227,8 +2224,8 @@ public class Rule
                 }
                 return null;
             }
-            boolean owned = pc.getNation() == parentChar.getNation();
-            boolean enemy = Nation.isEnemy(parentChar.getNation(), pc.getNation());
+            boolean owned = pc.getNation() == this.parentChar.getNation();
+            boolean enemy = Nation.isEnemy(this.parentChar.getNation(), pc.getNation());
             boolean neutral = Nation.isNeutral(pc.getNation());
             String possibleLoss = "Enemy troops are present at " + pc + " which could result in it being captured or destroyed.";
             String possibleCombatGain = pc + " is not owned by your nation " + "but may be captured due to combat.";
@@ -2241,21 +2238,21 @@ public class Rule
                 {
                     if(pc.getEnemyArmyPresent())
                     {
-                        parentOrder.addWarning(possibleLoss);
+                        this.parentOrder.addWarning(possibleLoss);
                     }
                     break;
                 }
-                if(pc.getPossibleCapture() < parentOrder.getOrder() && pc.getCapturingNation() == parentChar.getNation())
+                if(pc.getPossibleCapture() < this.parentOrder.getOrder() && pc.getCapturingNation() == this.parentChar.getNation())
                 {
-                    parentOrder.addWarning(possibleCombatGain);
+                    this.parentOrder.addWarning(possibleCombatGain);
                     break;
                 }
-                if(pc.getPossibleInfluence() < parentOrder.getOrder())
+                if(pc.getPossibleInfluence() < this.parentOrder.getOrder())
                 {
-                    parentOrder.addWarning(possibleInfluenceGain);
+                    this.parentOrder.addWarning(possibleInfluenceGain);
                 } else
                 {
-                    parentOrder.addError(pc + " is not owned by your nation.");
+                    this.parentOrder.addError(pc + " is not owned by your nation.");
                 }
                 break;
 
@@ -2265,35 +2262,35 @@ public class Rule
             case 1: // '\001'
                 if(!owned && pc.getHidden())
                 {
-                    parentOrder.addError(pc + " is hidden and not owned by you.");
+                    this.parentOrder.addError(pc + " is hidden and not owned by you.");
                 }
                 break;
 
             case 2: // '\002'
                 if(pc.getHidden())
                 {
-                    parentOrder.addError(pc + " is hidden.");
+                    this.parentOrder.addError(pc + " is hidden.");
                     break;
                 }
                 if(owned)
                 {
                     if(pc.getEnemyArmyPresent())
                     {
-                        parentOrder.addWarning(possibleLoss);
+                        this.parentOrder.addWarning(possibleLoss);
                     } else
                     {
-                        parentOrder.addError(pc + " is owned by your nation.");
+                        this.parentOrder.addError(pc + " is owned by your nation.");
                     }
                     break;
                 }
-                if(pc.getPossibleCapture() < parentOrder.getOrder() && pc.getCapturingNation() == parentChar.getNation())
+                if(pc.getPossibleCapture() < this.parentOrder.getOrder() && pc.getCapturingNation() == this.parentChar.getNation())
                 {
-                    parentOrder.addWarning(possibleCombatGain);
+                    this.parentOrder.addWarning(possibleCombatGain);
                     break;
                 }
-                if(pc.getPossibleInfluence() < parentOrder.getOrder())
+                if(pc.getPossibleInfluence() < this.parentOrder.getOrder())
                 {
-                    parentOrder.addWarning(possibleInfluenceGain);
+                    this.parentOrder.addWarning(possibleInfluenceGain);
                 }
                 break;
 
@@ -2304,70 +2301,70 @@ public class Rule
                 }
                 if(pc.getHidden())
                 {
-                    parentOrder.addError(pc + " is hidden.");
+                    this.parentOrder.addError(pc + " is hidden.");
                     break;
                 }
                 if(neutral)
                 {
-                    parentOrder.addWarning(pc + " belongs to a neutral.");
+                    this.parentOrder.addWarning(pc + " belongs to a neutral.");
                 } else
                 {
-                    parentOrder.addError(pc + " does not belong to an enemy.");
+                    this.parentOrder.addError(pc + " does not belong to an enemy.");
                 }
                 break;
 
             case 4: // '\004'
-                if(pc.getPossibleDestruction() < parentOrder.getOrder())
+                if(pc.getPossibleDestruction() < this.parentOrder.getOrder())
                 {
-                    parentOrder.addWarning(possibleDestruction);
+                    this.parentOrder.addWarning(possibleDestruction);
                     break;
                 }
                 if(pc.getEnemyArmyPresent())
                 {
-                    parentOrder.addWarning(possibleDestruction);
+                    this.parentOrder.addWarning(possibleDestruction);
                 } else
                 {
-                    parentOrder.addError("A population center, " + pc + ", is already here.");
+                    this.parentOrder.addError("A population center, " + pc + ", is already here.");
                 }
                 break;
 
             case 7: // '\007'
-                if(pc.isNationsCapital(parentChar.getNation()))
+                if(pc.isNationsCapital(this.parentChar.getNation()))
                 {
-                    parentOrder.addError(pc + " is your capital.");
+                    this.parentOrder.addError(pc + " is your capital.");
                     break;
                 }
                 if(pc.getHidden())
                 {
-                    parentOrder.addError(pc + " is hidden.");
+                    this.parentOrder.addError(pc + " is hidden.");
                     break;
                 }
                 if(owned)
                 {
                     if(pc.getEnemyArmyPresent())
                     {
-                        parentOrder.addWarning(possibleLoss);
+                        this.parentOrder.addWarning(possibleLoss);
                     }
                     break;
                 }
-                if(pc.getPossibleCapture() < parentOrder.getOrder() && pc.getCapturingNation() == parentChar.getNation())
+                if(pc.getPossibleCapture() < this.parentOrder.getOrder() && pc.getCapturingNation() == this.parentChar.getNation())
                 {
-                    parentOrder.addWarning(possibleCombatGain);
+                    this.parentOrder.addWarning(possibleCombatGain);
                     break;
                 }
-                if(pc.getPossibleInfluence() < parentOrder.getOrder())
+                if(pc.getPossibleInfluence() < this.parentOrder.getOrder())
                 {
-                    parentOrder.addWarning(possibleInfluenceGain);
+                    this.parentOrder.addWarning(possibleInfluenceGain);
                 } else
                 {
-                    parentOrder.addError(pc + " is not owned by your nation.");
+                    this.parentOrder.addError(pc + " is not owned by your nation.");
                 }
                 break;
 
             case 8: // '\b'
-                if(!pc.isNationsCapital(parentChar.getNation()))
+                if(!pc.isNationsCapital(this.parentChar.getNation()))
                 {
-                    parentOrder.addError(pc + " is not your capital.");
+                    this.parentOrder.addError(pc + " is not your capital.");
                 }
                 break;
 
@@ -2380,10 +2377,10 @@ public class Rule
                 }
                 if(pc.getHidden())
                 {
-                    parentOrder.addError(pc + " is hidden and not owned by you.");
+                    this.parentOrder.addError(pc + " is hidden and not owned by you.");
                 } else
                 {
-                    parentOrder.addWarning(targetNation + " must have " + "friendly relations with your nation.");
+                    this.parentOrder.addWarning(targetNation + " must have " + "friendly relations with your nation.");
                 }
                 break;
 
@@ -2405,9 +2402,9 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int type = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
@@ -2422,21 +2419,21 @@ public class Rule
             case 8: // '\b'
                 if(pc.getSize() != 3 && pc.getSize() != 4 && pc.getSize() != 5)
                 {
-                    parentOrder.addError(pc + " needs to be a town, major town, " + "or city.");
+                    this.parentOrder.addError(pc + " needs to be a town, major town, " + "or city.");
                 }
                 break;
 
             case 9: // '\t'
                 if(pc.getSize() != 4 && pc.getSize() != 5)
                 {
-                    parentOrder.addError(pc + " needs to be a major town or city.");
+                    this.parentOrder.addError(pc + " needs to be a major town or city.");
                 }
                 break;
 
             case 10: // '\n'
                 if(pc.getSize() == 1)
                 {
-                    parentOrder.addError(pc + " needs to be larger than a camp.");
+                    this.parentOrder.addError(pc + " needs to be larger than a camp.");
                 }
                 break;
 
@@ -2447,7 +2444,7 @@ public class Rule
             case 5: // '\005'
                 if(pc.getSize() != type)
                 {
-                    parentOrder.addError(pc + " is not a " + PopCenter.getSizeName(type) + ".");
+                    this.parentOrder.addError(pc + " is not a " + PopCenter.getSizeName(type) + ".");
                 }
                 break;
 
@@ -2469,18 +2466,18 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int state = convertParameter(1);
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(1);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForPartialState(1))
             {
                 return "state";
             }
             setProcessState(1);
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
@@ -2493,15 +2490,15 @@ public class Rule
             switch(state)
             {
             case 0: // '\0'
-                pc.setPossibleDestruction(parentOrder.getOrder());
+                pc.setPossibleDestruction(this.parentOrder.getOrder());
                 break;
 
             case 1: // '\001'
-                pc.setPossibleCapture(parentOrder.getOrder());
+                pc.setPossibleCapture(this.parentOrder.getOrder());
                 break;
 
             case 2: // '\002'
-                pc.setPossibleInfluence(parentOrder.getOrder());
+                pc.setPossibleInfluence(this.parentOrder.getOrder());
                 break;
 
             default:
@@ -2523,14 +2520,14 @@ public class Rule
         int productParam = convertParameter(2);
         int numParam = convertParameter(3);
         int units = convertParameter(4);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             int destination = 0;
             if(destParam > 0)
             {
-                destination = parentOrder.getParameterNumber(destParam);
+                destination = this.parentOrder.getParameterNumber(destParam);
             }
-            String product = parentOrder.getParameterString(productParam);
+            String product = this.parentOrder.getParameterString(productParam);
             boolean bFound = false;
             if(product != null)
             {
@@ -2547,16 +2544,16 @@ public class Rule
             if(product == null || !bFound)
             {
                 product = null;
-                parentOrder.addError("Could not determine the product being transfered.");
+                this.parentOrder.addError("Could not determine the product being transfered.");
             }
-            int quantity = parentOrder.getParameterNumber(numParam);
+            int quantity = this.parentOrder.getParameterNumber(numParam);
             if(quantity == -1)
             {
-                parentOrder.addError("Could not determine quantity for the transfer.");
+                this.parentOrder.addError("Could not determine quantity for the transfer.");
             }
             if(quantity <= 100 && units == 0)
             {
-                parentOrder.addWarning("# of units is expected, make sure you are not specifying a percentage.");
+                this.parentOrder.addWarning("# of units is expected, make sure you are not specifying a percentage.");
             }
             String msg;
             switch(type)
@@ -2601,7 +2598,7 @@ public class Rule
                 msg = msg + " to " + Main.main.locationStr(destination);
             }
             msg = msg + ".";
-            parentOrder.addHelp(msg);
+            this.parentOrder.addHelp(msg);
         }
         return null;
     }
@@ -2624,9 +2621,9 @@ public class Rule
                 return "Invalid type (" + type + ") for RANK!";
             }
         }
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Character character = parentOrder.extractCharacter(charParam, false);
+            Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
                 return null;
@@ -2637,7 +2634,7 @@ public class Rule
             case 0: // '\0'
                 if(character.getTotalCommandRank() == 0)
                 {
-                    parentOrder.addError(character + " has no command rank.");
+                    this.parentOrder.addError(character + " has no command rank.");
                 }
                 if(min > 0 && character.getTotalCommandRank() < min)
                 {
@@ -2648,7 +2645,7 @@ public class Rule
             case 1: // '\001'
                 if(character.getTotalAgentRank() == 0)
                 {
-                    parentOrder.addError(character + " has no agent rank.");
+                    this.parentOrder.addError(character + " has no agent rank.");
                 }
                 if(min > 0 && character.getTotalAgentRank() < min)
                 {
@@ -2659,7 +2656,7 @@ public class Rule
             case 2: // '\002'
                 if(character.getTotalEmissaryRank() == 0)
                 {
-                    parentOrder.addError(character + " has no emissary rank.");
+                    this.parentOrder.addError(character + " has no emissary rank.");
                 }
                 if(min > 0 && character.getTotalEmissaryRank() < min)
                 {
@@ -2670,7 +2667,7 @@ public class Rule
             case 3: // '\003'
                 if(character.getTotalMageRank() == 0)
                 {
-                    parentOrder.addError(character + " has no mage rank.");
+                    this.parentOrder.addError(character + " has no mage rank.");
                 }
                 if(min > 0 && character.getTotalMageRank() < min)
                 {
@@ -2685,10 +2682,10 @@ public class Rule
             {
                 if(type == 0)
                 {
-                    parentOrder.addWarning(character + " should have at least a " + errorMsg + " rank of " + min + ".");
+                    this.parentOrder.addWarning(character + " should have at least a " + errorMsg + " rank of " + min + ".");
                 } else
                 {
-                    parentOrder.addWarning("New PC will have low loyalty if " + errorMsg + " rank is less than " + min + ".");
+                    this.parentOrder.addWarning("New PC will have low loyalty if " + errorMsg + " rank is less than " + min + ".");
                 }
             }
         }
@@ -2705,7 +2702,7 @@ public class Rule
         int charParam = convertParameter(0);
         int type = convertParameter(1);
         int logic = convertParameter(2);
-        if(phase == 1)
+        if(this.phase == 1)
         {
             if(logic != 0 && logic != 1)
             {
@@ -2714,7 +2711,7 @@ public class Rule
             clearProcessState(0);
             clearProcessState(6);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForPartialState(0) || waitForPartialState(6))
             {
@@ -2722,7 +2719,7 @@ public class Rule
             }
             setProcessState(0);
             setProcessState(6);
-            Character character = parentOrder.extractCharacter(charParam, false);
+            Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
                 return null;
@@ -2735,17 +2732,17 @@ public class Rule
                 {
                     return "Invalid logic (" + logic + ") for army SETCOMMAND!";
                 }
-                Army army = character.getArmy(parentOrder.getOrder());
+                Army army = character.getArmy(this.parentOrder.getOrder());
                 if(army != null)
                 {
-                    army.disbandArmy(((Army) (null)), parentOrder.getOrder(), true);
+                    army.disbandArmy(((Army) (null)), this.parentOrder.getOrder(), true);
                 }
                 break;
 
             case 1: // '\001'
-                if(character.isCompanyCO(parentOrder.getOrder()) && logic == 0 || !character.isCompanyCO(parentOrder.getOrder()) && logic == 1)
+                if(character.isCompanyCO(this.parentOrder.getOrder()) && logic == 0 || !character.isCompanyCO(this.parentOrder.getOrder()) && logic == 1)
                 {
-                    character.setCompanyCO(!character.isCompanyCO(parentOrder.getOrder()), parentOrder.getOrder());
+                    character.setCompanyCO(!character.isCompanyCO(this.parentOrder.getOrder()), this.parentOrder.getOrder());
                 } else
                 {
                     warn21 = 1;
@@ -2775,26 +2772,26 @@ public class Rule
         int warParam = convertParameter(1);
         int tranParam = convertParameter(2);
         int status = convertParameter(3);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int location = parentOrder.extractLocation(locParam, true);
+            int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
                 return null;
             }
-            int warships = parentOrder.getParameterNumber(warParam);
-            int transports = parentOrder.getParameterNumber(tranParam);
+            int warships = this.parentOrder.getParameterNumber(warParam);
+            int transports = this.parentOrder.getParameterNumber(tranParam);
             if(warships == -1 || transports == -1)
             {
-                parentOrder.addError("Could not determine the number of required ships.");
+                this.parentOrder.addError("Could not determine the number of required ships.");
                 return null;
             }
-            if(additionalInfo.size() == 0)
+            if(this.additionalInfo.size() == 0)
             {
                 String msg;
                 if(status == 1)
                 {
-                    msg = "NAVY:Does " + parentChar + "'s army/navy have ";
+                    msg = "NAVY:Does " + this.parentChar + "'s army/navy have ";
                 } else
                 {
                     msg = "NAVY:Does hex " + location + " have ";
@@ -2805,7 +2802,7 @@ public class Rule
             }
             if(!getAdditionalInfo())
             {
-                parentOrder.addError("The required number of ships are not present.");
+                this.parentOrder.addError("The required number of ships are not present.");
             }
         }
         return null;
@@ -2820,12 +2817,12 @@ public class Rule
         }
         int locParam = convertParameter(0);
         int type = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             int location = Main.main.getNation().getCapital();
             if(type == 0)
             {
-                location = parentOrder.extractLocation(locParam, true);
+                location = this.parentOrder.extractLocation(locParam, true);
                 if(location == -1)
                 {
                     return null;
@@ -2838,7 +2835,7 @@ public class Rule
             }
             if(Main.main.getNation().isEnemyArmyPresent(pc.getNation(), location))
             {
-                parentOrder.addWarning(pc + " risks possibility of siege from " + "enemy armies that are present.");
+                this.parentOrder.addWarning(pc + " risks possibility of siege from " + "enemy armies that are present.");
             }
         }
         return null;
@@ -2852,36 +2849,36 @@ public class Rule
             return result;
         }
         int spellParam = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int spellNumber = parentOrder.getParameterNumber(spellParam);
+            int spellNumber = this.parentOrder.getParameterNumber(spellParam);
             if(spellNumber == -1)
             {
-                parentOrder.addError("Could not determine spell number.");
+                this.parentOrder.addError("Could not determine spell number.");
                 return null;
             }
-            Spell spell = Main.main.getSpellList().findSpell(spellNumber);
-            if(spell == null)
+            Spell spell1 = Main.main.getSpellList().findSpell(spellNumber);
+            if(spell1 == null)
             {
-                parentOrder.addError("Spell " + spellNumber + " does not exist.");
+                this.parentOrder.addError("Spell " + spellNumber + " does not exist.");
                 return null;
             }
             boolean hasPrereq = Main.main.getNation().hasSpellPrereq(spellNumber);
             if(!hasPrereq)
             {
-                hasPrereq = Main.main.getSpellList().hasSpellRequisite(parentChar, spell);
+                hasPrereq = Main.main.getSpellList().hasSpellRequisite(this.parentChar, spell1);
             }
             if(!hasPrereq)
             {
-                parentOrder.addError(parentChar + " does not have the " + "prerequisite for " + spell + ".");
+                this.parentOrder.addError(this.parentChar + " does not have the " + "prerequisite for " + spell1 + ".");
             } else
             {
-                parentOrder.addHelp(parentChar + " has the prerequisite for " + spell + ".");
-                if(Main.main.getSpellList().isSpellInLostList(spell.getSpellNumber()))
+                this.parentOrder.addHelp(this.parentChar + " has the prerequisite for " + spell1 + ".");
+                if(Main.main.getSpellList().isSpellInLostList(spell1.getSpellNumber()))
                 {
-                    parentOrder.addWarning(spell + " is part of a lost list.");
+                    this.parentOrder.addWarning(spell1 + " is part of a lost list.");
                 }
-                parentChar.addSpell(new Integer(spell.getSpellNumber()), spell.getName());
+                this.parentChar.addSpell(new Integer(spell1.getSpellNumber()), spell1.getName());
             }
         }
         return null;
@@ -2895,44 +2892,44 @@ public class Rule
             return result;
         }
         int spellParam = convertParameter(0);
-        int spellNumber = parentOrder.getParameterNumber(spellParam);
-        if(phase == 1)
+        int spellNumber = this.parentOrder.getParameterNumber(spellParam);
+        if(this.phase == 1)
         {
             if(spellNumber == -1)
             {
-                parentOrder.addError("Could not determine spell number.");
+                this.parentOrder.addError("Could not determine spell number.");
                 return null;
             }
             Ruleset spellSet = Main.main.getRuleSet().getRulesForOrder(spellNumber, true);
             if(spellSet.size() > 0)
             {
-                spellRules = spellSet;
-                spellRules.processRules(parentOrder, phase);
+                this.spellRules = spellSet;
+                this.spellRules.processRules(this.parentOrder, this.phase);
             }
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Spell spell = Main.main.getSpellList().findSpell(spellNumber);
-            if(spell == null)
+            Spell spell1 = Main.main.getSpellList().findSpell(spellNumber);
+            if(spell1 == null)
             {
-                parentOrder.addError("Spell " + spellNumber + " does not exist.");
+                this.parentOrder.addError("Spell " + spellNumber + " does not exist.");
                 return null;
             }
-            String spellInfo = parentChar.isSpellKnown(spellNumber);
+            String spellInfo = this.parentChar.isSpellKnown(spellNumber);
             if(spellInfo == null)
             {
-                parentOrder.addError(parentChar + " does not know " + spell + ".");
+                this.parentOrder.addError(this.parentChar + " does not know " + spell1 + ".");
             } else
             {
-                parentOrder.addHelp("Attempting to cast " + spellInfo + ".");
+                this.parentOrder.addHelp("Attempting to cast " + spellInfo + ".");
             }
-            if(spell.getOrder() != parentOrder.getOrder())
+            if(spell1.getOrder() != this.parentOrder.getOrder())
             {
-                parentOrder.addError(spell + " requires order " + spell.getOrder() + " for casting.");
+                this.parentOrder.addError(spell1 + " requires order " + spell1.getOrder() + " for casting.");
             }
-            if(!Main.main.getRuleSet().doesSpellHaveRules(spell.getSpellNumber()))
+            if(!Main.main.getRuleSet().doesSpellHaveRules(spell1.getSpellNumber()))
             {
-                parentOrder.addWarning("No rules exist for " + spell + ".");
+                this.parentOrder.addWarning("No rules exist for " + spell1 + ".");
             }
         }
         return null;
@@ -2946,33 +2943,33 @@ public class Rule
             return result;
         }
         int spellParam = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int numSpells = parentOrder.getNumberOfParameters() + 1;
+            int numSpells = this.parentOrder.getNumberOfParameters() + 1;
             for(int i = spellParam; i < numSpells; i++)
             {
-                int spellNumber = parentOrder.getParameterNumber(i);
+                int spellNumber = this.parentOrder.getParameterNumber(i);
                 if(spellNumber == -1)
                 {
-                    parentOrder.addError("Could not determine spell number (param " + i + ").");
+                    this.parentOrder.addError("Could not determine spell number (param " + i + ").");
                     return null;
                 }
-                Spell spell = Main.main.getSpellList().findSpell(spellNumber);
-                if(spell == null)
+                Spell spell1 = Main.main.getSpellList().findSpell(spellNumber);
+                if(spell1 == null)
                 {
-                    parentOrder.addError("Spell " + spellNumber + " does not exist.");
+                    this.parentOrder.addError("Spell " + spellNumber + " does not exist.");
                     continue;
                 }
-                if(parentChar.isSpellKnown(spellNumber) == null)
+                if(this.parentChar.isSpellKnown(spellNumber) == null)
                 {
-                    parentOrder.addError(parentChar + " does not know " + spell + ".");
+                    this.parentOrder.addError(this.parentChar + " does not know " + spell1 + ".");
                 }
             }
 
             int total = numSpells - spellParam;
             if(total > 6)
             {
-                parentOrder.addError("Only 6 spells can be specified.");
+                this.parentOrder.addError("Only 6 spells can be specified.");
             }
         }
         return null;
@@ -2986,9 +2983,9 @@ public class Rule
             return result;
         }
         int charParam = convertParameter(0);
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            Character character = parentOrder.extractCharacter(charParam, false);
+            Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
                 return null;
@@ -2997,9 +2994,9 @@ public class Rule
             {
                 return "state";
             }
-            if(character.isArmyCO(parentOrder.getOrder()) && !parentChar.isCommanderInArmy(parentOrder.getOrder()))
+            if(character.isArmyCO(this.parentOrder.getOrder()) && !this.parentChar.isCommanderInArmy(this.parentOrder.getOrder()))
             {
-                parentOrder.addError(parentChar + " needs to be in an army " + "since " + character + " is an army/navy commander.");
+                this.parentOrder.addError(this.parentChar + " needs to be in an army " + "since " + character + " is an army/navy commander.");
             }
         }
         return null;
@@ -3008,18 +3005,18 @@ public class Rule
     private String processThreatenPopCenter()
     {
         boolean bDisabled = true;
-        if(phase == 2 && !bDisabled)
+        if(this.phase == 2 && !bDisabled)
         {
             if(waitForProcessState(4) || waitForProcessState(0) || waitForProcessState(2))
             {
                 return "state";
             }
-            int location = parentChar.getLocation(parentOrder.getOrder());
-            int troops = Main.main.getNation().totalTroopsAtLocation(location, parentOrder.getOrder());
+            int location = this.parentChar.getLocation(this.parentOrder.getOrder());
+            int troops = Main.main.getNation().totalTroopsAtLocation(location, this.parentOrder.getOrder());
             PopCenter pc = Main.main.getNation().findPopulationCenter(location);
             if(pc != null && troops >= 100 && pc.getSize() > 1)
             {
-                int chance = parentChar.getTotalCommandRank();
+                int chance = this.parentChar.getTotalCommandRank();
                 int troopsRequired = pc.threatenRequirement();
                 if(troopsRequired > 0)
                 {
@@ -3043,7 +3040,7 @@ public class Rule
                     msg = msg + " - PC loyalty";
                 }
                 msg = msg + ".";
-                parentOrder.addInfo(msg);
+                this.parentOrder.addInfo(msg);
             }
         }
         return null;
@@ -3067,14 +3064,14 @@ public class Rule
             }
 
         }
-        if(phase == 1)
+        if(this.phase == 1)
         {
             if(retire == 1)
             {
                 clearProcessState(0);
             }
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(retire == 1)
             {
@@ -3091,13 +3088,13 @@ public class Rule
             Army army = null;
             if(type == 0)
             {
-                army = parentChar.getArmy(parentOrder.getOrder());
+                army = this.parentChar.getArmy(this.parentOrder.getOrder());
             } else
             if(type == 1)
             {
-                if(parentChar.isCommanderInArmy(parentOrder.getOrder()))
+                if(this.parentChar.isCommanderInArmy(this.parentOrder.getOrder()))
                 {
-                    army = parentChar.getArmy(parentOrder.getOrder());
+                    army = this.parentChar.getArmy(this.parentOrder.getOrder());
                 }
             } else
             {
@@ -3110,16 +3107,16 @@ public class Rule
             int amount[] = new int[6];
             for(int i = 0; i < 6; i++)
             {
-                amount[i] = parentOrder.getParameterNumber(amountParam[i]);
-                if(amount[i] == -1 && phase == 1)
+                amount[i] = this.parentOrder.getParameterNumber(amountParam[i]);
+                if(amount[i] == -1 && this.phase == 1)
                 {
-                    parentOrder.addError("Could not get " + Army.getTroopName(i) + " troop amount.");
+                    this.parentOrder.addError("Could not get " + Army.getTroopName(i) + " troop amount.");
                     return null;
                 }
             }
 
             String desc = "";
-            int troops[] = army.getTroopContent(parentOrder.getOrder());
+            int troops[] = army.getTroopContent(this.parentOrder.getOrder());
             int totalTroops = 0;
             for(int i = 0; i < 6; i++)
             {
@@ -3129,7 +3126,7 @@ public class Rule
                 }
                 if(troops[i] < amount[i])
                 {
-                    parentOrder.addError("There aren't " + amount[i] + " " + Army.getTroopName(i) + " in the army.");
+                    this.parentOrder.addError("There aren't " + amount[i] + " " + Army.getTroopName(i) + " in the army.");
                     amount[i] = troops[i];
                 }
                 desc = desc + amount[i] + " " + Army.getTroopName(i) + ", ";
@@ -3140,7 +3137,7 @@ public class Rule
             {
                 desc = desc.substring(0, desc.length() - 2);
                 desc = desc + " affected.";
-                parentOrder.addHelp(desc);
+                this.parentOrder.addHelp(desc);
             }
             if(retire == 1)
             {
@@ -3149,7 +3146,7 @@ public class Rule
                     amount[i] *= -1;
                 }
 
-                army.setTroopContent(amount, parentOrder.getOrder());
+                army.setTroopContent(amount, this.parentOrder.getOrder());
             } else
             if(retire != 0)
             {
@@ -3172,30 +3169,30 @@ public class Rule
         int foodParam = convertParameter(3);
         if(typeParam > 0)
         {
-            String typeString = parentOrder.getParameterString(typeParam);
+            String typeString = this.parentOrder.getParameterString(typeParam);
             type = Army.findTroopType(typeString);
         }
         if((type < 0 || type > 5) && typeParam > 0)
         {
-            return "Invalid type " + type + " in TROOPAMT, order " + order + "!";
+            return "Invalid type " + type + " in TROOPAMT, order " + this.order + "!";
         }
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(0);
             clearProcessState(3);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
-            int amount = parentOrder.getParameterNumber(amountParam);
+            int amount = this.parentOrder.getParameterNumber(amountParam);
             if(amount == -1)
             {
-                parentOrder.addError("Could not determine amount of troops.");
+                this.parentOrder.addError("Could not determine amount of troops.");
             }
             if(type < 0 || type > 5)
             {
-                parentOrder.addError("Invalid troop type was specified.");
+                this.parentOrder.addError("Invalid troop type was specified.");
             }
-            PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(parentChar.getLocation(parentOrder.getOrder()));
+            PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             if(amount == -1 || type < 0 || type > 5 || pc == null)
             {
                 setProcessState(0);
@@ -3204,7 +3201,7 @@ public class Rule
             }
             if(type == 0 || type == 1)
             {
-                if(additionalInfo.size() == 0)
+                if(this.additionalInfo.size() == 0)
                 {
                     String msg = "TROOP:Does " + pc + " have " + amount + " mounts and " + amount * 2 + " leather?";
                     addAdditionalInfo(msg, false);
@@ -3212,7 +3209,7 @@ public class Rule
                 }
                 if(!getAdditionalInfo())
                 {
-                    parentOrder.addError(pc + " doesn't have enough mounts " + "and/or leather for cavalry.");
+                    this.parentOrder.addError(pc + " doesn't have enough mounts " + "and/or leather for cavalry.");
                 }
             }
             if(waitForPartialState(0) || waitForPartialState(3))
@@ -3224,17 +3221,17 @@ public class Rule
             int amounts[] = new int[6];
             amounts[type] = amount;
             Army army = null;
-            if(parentChar.isCommanderInArmy(parentOrder.getOrder()))
+            if(this.parentChar.isCommanderInArmy(this.parentOrder.getOrder()))
             {
-                army = parentChar.getArmy(parentOrder.getOrder());
-                army.setTroopContent(amounts, parentOrder.getOrder());
+                army = this.parentChar.getArmy(this.parentOrder.getOrder());
+                army.setTroopContent(amounts, this.parentOrder.getOrder());
             } else
             {
-                army = new Army(parentChar.getLocation(parentOrder.getOrder()));
-                army.setNewArmy(parentChar, amounts, parentOrder.getOrder());
+                army = new Army(this.parentChar.getLocation(this.parentOrder.getOrder()));
+                army.setNewArmy(this.parentChar, amounts, this.parentOrder.getOrder());
                 if(foodParam > 0)
                 {
-                    int food = parentOrder.getParameterNumber(foodParam);
+                    int food = this.parentOrder.getParameterNumber(foodParam);
                     if(food != -1)
                     {
                         army.setFoodRequired(1);
@@ -3246,11 +3243,11 @@ public class Rule
             int left = pc.reduceTroopLimit(amount);
             if(left > 0)
             {
-                parentOrder.addWarning(pc + " still has " + left + " troops available.");
+                this.parentOrder.addWarning(pc + " still has " + left + " troops available.");
             } else
             if(left < 0)
             {
-                parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops() + " available.");
+                this.parentOrder.addError(pc + " is out of troops!  Maximum " + pc.getMaximumTroops() + " available.");
             }
         }
         return null;
@@ -3265,42 +3262,42 @@ public class Rule
         }
         int charParam = convertParameter(0);
         int typeParam = convertParameter(1);
-        if(phase == 2)
+        if(this.phase == 2)
         {
             if(waitForProcessState(3) || waitForProcessState(0))
             {
                 return "state";
             }
-            Character character = parentOrder.extractCharacter(charParam, true);
+            Character character = this.parentOrder.extractCharacter(charParam, true);
             if(character == null)
             {
                 return null;
             }
             int type = -1;
-            String typeString = parentOrder.getParameterString(typeParam);
+            String typeString = this.parentOrder.getParameterString(typeParam);
             if(typeString != null)
             {
                 type = Army.findTroopType(typeString);
             }
             if(type == -1)
             {
-                parentOrder.addError("Could not determine troop type (" + typeString + ").");
+                this.parentOrder.addError("Could not determine troop type (" + typeString + ").");
                 return null;
             }
             Army army = null;
-            if(character.isCommanderInArmy(parentOrder.getOrder()))
+            if(character.isCommanderInArmy(this.parentOrder.getOrder()))
             {
-                army = character.getArmy(parentOrder.getOrder());
+                army = character.getArmy(this.parentOrder.getOrder());
             }
             if(army == null)
             {
-                parentOrder.addError(character + " is not a commander in an army.");
+                this.parentOrder.addError(character + " is not a commander in an army.");
                 return null;
             }
-            int troops[] = army.getTroopContent(parentOrder.getOrder());
+            int troops[] = army.getTroopContent(this.parentOrder.getOrder());
             if(troops[type] == 0)
             {
-                parentOrder.addError("There are no " + Army.getTroopName(type) + " in the army.");
+                this.parentOrder.addError("There are no " + Army.getTroopName(type) + " in the army.");
             }
         }
         return null;
@@ -3321,12 +3318,12 @@ public class Rule
             amountParam[i] = convertParameter(i + 2);
         }
 
-        if(phase == 1)
+        if(this.phase == 1)
         {
             clearProcessState(0);
             clearProcessState(3);
         } else
-        if(phase == 2)
+        if(this.phase == 2)
         {
             processTroopAmount(type, 1, amountParam);
             if(waitForPartialState(3))
@@ -3337,31 +3334,31 @@ public class Rule
             Army srcArmy = null;
             if(type == 0)
             {
-                srcArmy = parentChar.getArmy(parentOrder.getOrder());
+                srcArmy = this.parentChar.getArmy(this.parentOrder.getOrder());
             } else
-            if(parentChar.isCommanderInArmy(parentOrder.getOrder()))
+            if(this.parentChar.isCommanderInArmy(this.parentOrder.getOrder()))
             {
-                srcArmy = parentChar.getArmy(parentOrder.getOrder());
+                srcArmy = this.parentChar.getArmy(this.parentOrder.getOrder());
             }
             if(srcArmy == null)
             {
                 return null;
             }
-            Character character = parentOrder.extractCharacter(charParam, false);
+            Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
                 return null;
             }
             Army destArmy = null;
-            if(character.isArmyCO(parentOrder.getOrder() + 1))
+            if(character.isArmyCO(this.parentOrder.getOrder() + 1))
             {
-                destArmy = character.getArmy(parentOrder.getOrder() + 1);
+                destArmy = character.getArmy(this.parentOrder.getOrder() + 1);
             }
-            int currentTroops[] = srcArmy.getTroopContent(parentOrder.getOrder());
+            int currentTroops[] = srcArmy.getTroopContent(this.parentOrder.getOrder());
             int amount[] = new int[6];
             for(int i = 0; i < 6; i++)
             {
-                amount[i] = parentOrder.getParameterNumber(amountParam[i]);
+                amount[i] = this.parentOrder.getParameterNumber(amountParam[i]);
                 if(amount[i] == -1)
                 {
                     return null;
@@ -3374,12 +3371,12 @@ public class Rule
 
             if(destArmy == null)
             {
-                destArmy = new Army(character.getLocation(parentOrder.getOrder()));
-                destArmy.setNewArmy(character, amount, parentOrder.getOrder());
+                destArmy = new Army(character.getLocation(this.parentOrder.getOrder()));
+                destArmy.setNewArmy(character, amount, this.parentOrder.getOrder());
                 Main.main.getNation().addArmy(destArmy);
             } else
             {
-                destArmy.setTroopContent(amount, parentOrder.getOrder());
+                destArmy.setTroopContent(amount, this.parentOrder.getOrder());
             }
             int totalSplit = 0;
             for(int i = 0; i < 6; i++)
@@ -3390,21 +3387,21 @@ public class Rule
                 }
             }
 
-            int srcTroops = srcArmy.getTotalTroops(parentOrder.getOrder()) - totalSplit;
+            int srcTroops = srcArmy.getTotalTroops(this.parentOrder.getOrder()) - totalSplit;
             if(srcTroops < 100)
             {
                 if(srcTroops > 0)
                 {
-                    parentOrder.addError(parentChar + " will have less than 100 " + "troops left after the split.");
+                    this.parentOrder.addError(this.parentChar + " will have less than 100 " + "troops left after the split.");
                 } else
                 {
-                    parentOrder.addWarning(parentChar + " is disbanding the army." + " All baggage will be lost.");
+                    this.parentOrder.addWarning(this.parentChar + " is disbanding the army." + " All baggage will be lost.");
                 }
-                srcArmy.disbandArmy(((Army) (null)), parentOrder.getOrder() + 1, true);
+                srcArmy.disbandArmy(((Army) (null)), this.parentOrder.getOrder() + 1, true);
             }
             if(totalSplit < 100)
             {
-                parentOrder.addError("The new army won't have 100 troops after the split.");
+                this.parentOrder.addError("The new army won't have 100 troops after the split.");
             }
         }
         return null;

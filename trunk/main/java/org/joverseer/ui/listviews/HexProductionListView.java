@@ -22,8 +22,8 @@ public class HexProductionListView extends ItemListView {
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-		filters.add(new AbstractListViewFilter("Terrain average") {
+		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+		filters1.add(new AbstractListViewFilter("Terrain average") {
 			@Override
 			public boolean accept(Object obj) {
 				HexProductionWrapper hpw = (HexProductionWrapper) obj;
@@ -31,7 +31,7 @@ public class HexProductionListView extends ItemListView {
 			}
 
 		});
-		filters.add(new AbstractListViewFilter("Terrain/climate average") {
+		filters1.add(new AbstractListViewFilter("Terrain/climate average") {
 			@Override
 			public boolean accept(Object obj) {
 				HexProductionWrapper hpw = (HexProductionWrapper) obj;
@@ -39,7 +39,7 @@ public class HexProductionListView extends ItemListView {
 			}
 
 		});
-		filters.add(new AbstractListViewFilter("Individual hexes") {
+		filters1.add(new AbstractListViewFilter("Individual hexes") {
 			@Override
 			public boolean accept(Object obj) {
 				HexProductionWrapper hpw = (HexProductionWrapper) obj;
@@ -47,12 +47,12 @@ public class HexProductionListView extends ItemListView {
 			}
 
 		});
-		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}) };
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}) };
 	}
 
 	@Override
 	protected void setItems() {
-		averages.clear();
+		this.averages.clear();
 		ArrayList<HexProductionWrapper> items = new ArrayList<HexProductionWrapper>();
 		if (GameHolder.hasInitializedGame()) {
 			Game game = GameHolder.instance().getGame();
@@ -72,20 +72,20 @@ public class HexProductionListView extends ItemListView {
 				}
 			}
 		}
-		for (HexProductionWrapper av : averages) {
+		for (HexProductionWrapper av : this.averages) {
 			av.divideByCount();
 			if (getActiveFilter() != null && getActiveFilter().accept(av)) {
 				items.add(av);
 			}
 		}
-		tableModel.setRows(items);
+		this.tableModel.setRows(items);
 
 	}
 
 	protected void addToAverage(HexProductionWrapper pw) {
 		boolean foundTerrain = false;
 		boolean foundClimate = false;
-		for (HexProductionWrapper av : averages) {
+		for (HexProductionWrapper av : this.averages) {
 			if (av.getTerrain() != null && av.getTerrain().equals(pw.getTerrain())) {
 				if (av.getClimate() == null) {
 					foundTerrain = true;
@@ -101,14 +101,14 @@ public class HexProductionListView extends ItemListView {
 			HexProductionWrapper av = new HexProductionWrapper();
 			av.setTerrain(pw.getTerrain());
 			av.add(pw);
-			averages.add(av);
+			this.averages.add(av);
 		}
 		if (!foundClimate && pw.getClimate() != null) {
 			HexProductionWrapper av = new HexProductionWrapper();
 			av.setTerrain(pw.getTerrain());
 			av.setClimate(pw.getClimate());
 			av.add(pw);
-			averages.add(av);
+			this.averages.add(av);
 		}
 	}
 }

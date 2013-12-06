@@ -13,27 +13,29 @@ public class RequiresSkillCheck extends AbstractCheck {
     
     public RequiresSkillCheck(String req) {
         super();
-        skillReq=req;
+        this.skillReq=req;
     }
 
-    public boolean check(Order o) {
-        if (skillReq.equals(COMMAND_SKILL)) {
+    @Override
+	public boolean check(Order o) {
+        if (this.skillReq.equals(COMMAND_SKILL)) {
             return o.getCharacter().getCommandTotal() > 0;
         }
-        if (skillReq.equals(AGENT_SKILL)) {
+        if (this.skillReq.equals(AGENT_SKILL)) {
             return o.getCharacter().getAgentTotal() > 0;
         }
-        if (skillReq.equals(MAGE_SKILL)) {
+        if (this.skillReq.equals(MAGE_SKILL)) {
             return o.getCharacter().getMageTotal() > 0;
         }
-        if (skillReq.equals(EMISSARY_SKILL)) {
+        if (this.skillReq.equals(EMISSARY_SKILL)) {
             return o.getCharacter().getEmmisaryTotal() > 0;
         }
         return true;
     }
 
-    public String getMessage() {
-        return "The order requires " + skillReq + ".";
+    @Override
+	public String getMessage() {
+        return "The order requires " + this.skillReq + ".";
     }
     
 }

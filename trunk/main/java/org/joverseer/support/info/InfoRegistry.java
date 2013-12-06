@@ -15,7 +15,7 @@ public class InfoRegistry {
 
     
     public ArrayList<Info> getInfos() {
-        return infos;
+        return this.infos;
     }
 
     
@@ -24,7 +24,7 @@ public class InfoRegistry {
     }
     
     public Info getInfo(String key) {
-        for (Info i : infos) {
+        for (Info i : this.infos) {
             if (i.getKey().equals(key)) return i;
         }
         return null;

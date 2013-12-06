@@ -18,13 +18,13 @@ public class InfoSourceValue implements Serializable {
 	InfoSource infoSource;
 	
 	public InfoSource getInfoSource() {
-		return infoSource;
+		return this.infoSource;
 	}
 	public void setInfoSource(InfoSource infoSource) {
 		this.infoSource = infoSource;
 	}
 	public Object getValue() {
-		return value;
+		return this.value;
 	}
 	public void setValue(Object value) {
 		this.value = value;

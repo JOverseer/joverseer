@@ -109,8 +109,8 @@ public class PopulationCenterViewer extends ObjectViewer {
 		if (game == null)
 			return;
 
-		name.setText(GraphicUtils.parseName(pc.getName()));
-		name.setCaretPosition(0);
+		this.name.setText(GraphicUtils.parseName(pc.getName()));
+		this.name.setCaretPosition(0);
 		GameMetadata gm = game.getMetadata();
 
 		int nationNo = 0;
@@ -123,26 +123,26 @@ public class PopulationCenterViewer extends ObjectViewer {
 			InfoSourceValue isv = PopulationCenterLoyaltyEstimator.getLoyaltyEstimateForPopCenter(pc);
 			if (isv != null) {
 				String txt = isv.getValue() + " (t" + ((DerivedFromInfluenceOtherInfoSource) isv.getInfoSource()).getTurnNo() + ")";
-				loyalty.setText(txt);
+				this.loyalty.setText(txt);
 			} else {
-				loyalty.setText(String.valueOf(loyaltyNo));
+				this.loyalty.setText(String.valueOf(loyaltyNo));
 			}
 		} else {
-			loyalty.setText(String.valueOf(loyaltyNo));
+			this.loyalty.setText(String.valueOf(loyaltyNo));
 		}
 
 		Nation pcNation = gm.getNationByNum(nationNo);
-		nation.setText(pcNation.getShortName());
-		nation.setCaretPosition(0);
-		nation.setToolTipText(pcNation.getName());
-		sizeFort.setText(UIUtils.enumToString(pc.getSize()));
+		this.nation.setText(pcNation.getShortName());
+		this.nation.setCaretPosition(0);
+		this.nation.setToolTipText(pcNation.getName());
+		this.sizeFort.setText(UIUtils.enumToString(pc.getSize()));
 		if (!pc.getFortification().equals(FortificationSizeEnum.none)) {
-			sizeFort.setText(sizeFort.getText() + " - " + UIUtils.enumToString(pc.getFortification()));
+			this.sizeFort.setText(this.sizeFort.getText() + " - " + UIUtils.enumToString(pc.getFortification()));
 		}
 		if (pc.getHarbor() != HarborSizeEnum.none) {
-			sizeFort.setText(sizeFort.getText() + " - " + UIUtils.enumToString(pc.getHarbor()));
+			this.sizeFort.setText(this.sizeFort.getText() + " - " + UIUtils.enumToString(pc.getHarbor()));
 		}
-		sizeFort.setCaretPosition(0);
+		this.sizeFort.setCaretPosition(0);
 
 		// show production
 		// if the pop center is a ruin, search in past turns and find the first
@@ -166,13 +166,13 @@ public class PopulationCenterViewer extends ObjectViewer {
 			}
 		}
 		if (pcForProduction != pc) {
-			productionDescription.setText(String.format("Production shown as of turn %s (%s):", productionTurn.getTurnNo(), pcForProduction.getSize()));
-			productionDescription.setVisible(true);
+			this.productionDescription.setText(String.format("Production shown as of turn %s (%s):", productionTurn.getTurnNo(), pcForProduction.getSize()));
+			this.productionDescription.setVisible(true);
 			setStoresVisible(false);
 			setProductionLabelsVisible(true);
 			setProductionVisible(true);
 		} else {
-			productionDescription.setVisible(false);
+			this.productionDescription.setVisible(false);
 			// see if we have any production
 			boolean hasProduction = false;
 			for (ProductEnum pe : ProductEnum.values()) {
@@ -185,7 +185,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		}
 
 		for (ProductEnum p : ProductEnum.values()) {
-			JTextField tf = production.get(p);
+			JTextField tf = this.production.get(p);
 			Integer amt = pcForProduction.getProduction(p);
 			String amtStr;
 			if (amt == null || amt == 0) {
@@ -195,7 +195,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			}
 			tf.setText(amtStr);
 
-			tf = stores.get(p);
+			tf = this.stores.get(p);
 			amt = pcForProduction.getStores(p);
 			if (amt == null || amt == 0) {
 				amtStr = "  -";
@@ -207,10 +207,10 @@ public class PopulationCenterViewer extends ObjectViewer {
 		}
 
 		if (pc.getLostThisTurn()) {
-			lostThisTurn.setText("Exp. to be lost this turn.");
-			lostThisTurn.setVisible(true);
+			this.lostThisTurn.setText("Exp. to be lost this turn.");
+			this.lostThisTurn.setVisible(true);
 		} else {
-			lostThisTurn.setVisible(false);
+			this.lostThisTurn.setVisible(false);
 		}
 		String turnInfoStr = "";
 		if (pc.getSize() != PopulationCenterSizeEnum.ruins) {
@@ -225,8 +225,8 @@ public class PopulationCenterViewer extends ObjectViewer {
 				}
 			}
 		}
-		turnInfo.setText(turnInfoStr);
-		turnInfo.setVisible(!turnInfoStr.equals(""));
+		this.turnInfo.setText(turnInfoStr);
+		this.turnInfo.setVisible(!turnInfoStr.equals(""));
 		// else if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource())
 		// &&
 		// ((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo() <
@@ -249,7 +249,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			} else {
 				col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
 			}
-			name.setForeground(col);
+			this.name.setForeground(col);
 		}
 	}
 
@@ -263,19 +263,19 @@ public class PopulationCenterViewer extends ObjectViewer {
 	}
 
 	protected void setStoresVisible(boolean visible) {
-		for (JTextField f : stores.values()) {
+		for (JTextField f : this.stores.values()) {
 			f.setVisible(visible);
 		}
 	}
 
 	protected void setProductionVisible(boolean visible) {
-		for (JTextField f : production.values()) {
+		for (JTextField f : this.production.values()) {
 			f.setVisible(visible);
 		}
 	}
 
 	protected void setProductionLabelsVisible(boolean visible) {
-		for (JLabel lbl : productionLabels) {
+		for (JLabel lbl : this.productionLabels) {
 			lbl.setVisible(visible);
 		}
 	}
@@ -294,14 +294,14 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 		JComponent c;
 
-		glb.append(name = new JTextField());
-		c = name;
+		glb.append(this.name = new JTextField());
+		c = this.name;
 		c.setPreferredSize(new Dimension(100, 12));
 		c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
 		c.setBorder(null);
 
-		glb.append(sizeFort = new JTextField());
-		c = sizeFort;
+		glb.append(this.sizeFort = new JTextField());
+		c = this.sizeFort;
 		c.setPreferredSize(new Dimension(120, 12));
 		c.setBorder(null);
 
@@ -322,25 +322,25 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 		glb.nextLine();
 
-		glb.append(nation = new JTextField());
-		c = nation;
+		glb.append(this.nation = new JTextField());
+		c = this.nation;
 		c.setBorder(null);
 
-		glb.append(loyalty = new JTextField());
-		loyalty.setBorder(null);
+		glb.append(this.loyalty = new JTextField());
+		this.loyalty.setBorder(null);
 		glb.nextLine();
 
-		glb.append(productionDescription = new JTextField(), 2, 1);
-		productionDescription.setBorder(null);
-		Font f = GraphicUtils.getFont(productionDescription.getFont().getName(), Font.ITALIC, 11);
-		productionDescription.setFont(f);
+		glb.append(this.productionDescription = new JTextField(), 2, 1);
+		this.productionDescription.setBorder(null);
+		Font f = GraphicUtils.getFont(this.productionDescription.getFont().getName(), Font.ITALIC, 11);
+		this.productionDescription.setFont(f);
 		glb.nextLine();
 		f = GraphicUtils.getFont("Arial", Font.PLAIN, 9);
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		for (ProductEnum p : ProductEnum.values()) {
 			JLabel label = new JLabel(" " + p.getCode());
-			productionLabels.add(label);
+			this.productionLabels.add(label);
 			label.setPreferredSize(new Dimension(28, 12));
 			label.setFont(f);
 			tlb.cell(label);
@@ -352,7 +352,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			tf.setPreferredSize(new Dimension(28, 16));
 			tf.setFont(f);
 			tlb.cell(tf);
-			production.put(p, tf);
+			this.production.put(p, tf);
 		}
 		tlb.row();
 		for (ProductEnum p : ProductEnum.values()) {
@@ -361,20 +361,20 @@ public class PopulationCenterViewer extends ObjectViewer {
 			tf.setPreferredSize(new Dimension(28, 16));
 			tf.setFont(f);
 			tlb.cell(tf);
-			stores.put(p, tf);
+			this.stores.put(p, tf);
 		}
 		tlb.row();
 
-		tlb.cell(lostThisTurn = new JTextField());
-		lostThisTurn.setBorder(null);
-		lostThisTurn.setFont(GraphicUtils.getFont(lostThisTurn.getFont().getName(), Font.ITALIC, lostThisTurn.getFont().getSize()));
-		lostThisTurn.setPreferredSize(new Dimension(100, 12));
+		tlb.cell(this.lostThisTurn = new JTextField());
+		this.lostThisTurn.setBorder(null);
+		this.lostThisTurn.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
+		this.lostThisTurn.setPreferredSize(new Dimension(100, 12));
 
 		tlb.row();
-		tlb.cell(turnInfo = new JTextField());
-		turnInfo.setBorder(null);
-		turnInfo.setFont(GraphicUtils.getFont(lostThisTurn.getFont().getName(), Font.ITALIC, lostThisTurn.getFont().getSize()));
-		turnInfo.setPreferredSize(new Dimension(100, 12));
+		tlb.cell(this.turnInfo = new JTextField());
+		this.turnInfo.setBorder(null);
+		this.turnInfo.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
+		this.turnInfo.setPreferredSize(new Dimension(100, 12));
 
 		JPanel pnl = tlb.getPanel();
 		pnl.setBackground(Color.white);
@@ -386,7 +386,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 	}
 
 	private JPopupMenu createPopulationCenterPopupContextMenu() {
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("populationCenterCommandGroup", new Object[] { toggleLostThisTurnCommand, "separator", editPopulationCenter, deletePopulationCenterCommand, "separator", new ShowCaptureInformationCommand(), "separator", new ShowInfoSourcePopupCommand(((PopulationCenter) getFormObject()).getInfoSource()) });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("populationCenterCommandGroup", new Object[] { this.toggleLostThisTurnCommand, "separator", this.editPopulationCenter, this.deletePopulationCenterCommand, "separator", new ShowCaptureInformationCommand(), "separator", new ShowInfoSourcePopupCommand(((PopulationCenter) getFormObject()).getInfoSource()) });
 		return group.createPopupMenu();
 	}
 
@@ -395,7 +395,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			cancelAction = true;
+			this.cancelAction = true;
 			PopulationCenter pc = (PopulationCenter) getFormObject();
 			ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete population center '" + pc.getName() + "'?") {
 				@Override
@@ -405,12 +405,12 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 				@Override
 				protected void onConfirm() {
-					cancelAction = false;
+					DeletePopulationCenterCommand.this.cancelAction = false;
 				}
 
 			};
 			cdlg.showDialog();
-			if (cancelAction)
+			if (this.cancelAction)
 				return;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			Turn t = g.getTurn();
@@ -427,25 +427,25 @@ public class PopulationCenterViewer extends ObjectViewer {
 			PopulationCenter pc = (PopulationCenter) getFormObject();
 			if (pc.getSize().equals(PopulationCenterSizeEnum.ruins))
 				return;
-			int loyalty = pc.getLoyalty();
+			int loyalty1 = pc.getLoyalty();
 			boolean estimateLoyalty = false;
-			if (loyalty == 0) {
+			if (loyalty1 == 0) {
 				estimateLoyalty = true;
 				if (pc.getSize().equals(PopulationCenterSizeEnum.camp)) {
-					loyalty = 20;
+					loyalty1 = 20;
 				} else if (pc.getSize().equals(PopulationCenterSizeEnum.village)) {
-					loyalty = 35;
+					loyalty1 = 35;
 				} else if (pc.getSize().equals(PopulationCenterSizeEnum.town)) {
-					loyalty = 50;
+					loyalty1 = 50;
 				} else if (pc.getSize().equals(PopulationCenterSizeEnum.majorTown)) {
-					loyalty = 70;
+					loyalty1 = 70;
 				} else if (pc.getSize().equals(PopulationCenterSizeEnum.city)) {
-					loyalty = 90;
+					loyalty1 = 90;
 				}
 			}
 
 			CombatPopCenter combatPc = new CombatPopCenter(pc);
-			combatPc.setLoyalty(loyalty);
+			combatPc.setLoyalty(loyalty1);
 
 			Combat combat = new Combat();
 			combat.setSide2Pc(combatPc);
@@ -462,7 +462,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				climate = ClimateEnum.Mild;
 			}
 
-			CombatArmy ca = CombatUtils.findCombatArmyRequiredToCapturePopCenter(pc.getSize(), pc.getFortification(), loyalty, climate, hex.getTerrain());
+			CombatArmy ca = CombatUtils.findCombatArmyRequiredToCapturePopCenter(pc.getSize(), pc.getFortification(), loyalty1, climate, hex.getTerrain());
 			if (ca == null)
 				return;
 			int captureEHI = ca.getHI().getNumber();
@@ -473,7 +473,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			msg += "\n- " + captureEHI + " enHI are required to capture this pop center.";
 			msg += "\n- " + lostEHI + " enHI will be lost by the attacking army.";
 			if (estimateLoyalty) {
-				msg += "\n * Because the loyalty of this pop center is unknown, an estimate of " + loyalty + " was used.";
+				msg += "\n * Because the loyalty of this pop center is unknown, an estimate of " + loyalty1 + " was used.";
 			}
 			if (estimateClimate) {
 				msg += "\n * Because the climate is unknown, Mild climate was used.";
@@ -526,7 +526,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 	}
 
 	public boolean getShowColor() {
-		return showColor;
+		return this.showColor;
 	}
 
 	public void setShowColor(boolean showColor) {

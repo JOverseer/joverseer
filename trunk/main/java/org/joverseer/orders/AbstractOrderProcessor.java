@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.orders.checks.AbstractCheck;
 
@@ -44,7 +43,7 @@ public abstract class AbstractOrderProcessor {
     }
     
     public ArrayList<AbstractCheck> getChecks() {
-        return checks;
+        return this.checks;
     }
 
     
@@ -53,7 +52,7 @@ public abstract class AbstractOrderProcessor {
     }
     
     public void addCheck(AbstractCheck check) {
-        checks.add(check);
+        this.checks.add(check);
     }
     
 }

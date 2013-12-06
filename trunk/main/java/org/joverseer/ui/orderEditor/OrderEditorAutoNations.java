@@ -30,26 +30,27 @@ public class OrderEditorAutoNations implements ApplicationListener {
     }
     
     public void addNation(int n) {
-        if (!nations.contains(n)) {
-            nations.add(n);
+        if (!this.nations.contains(n)) {
+            this.nations.add(n);
         }
     }
     
     public void removeNation(int n) {
-        if (nations.contains(n)) {
-            nations.remove((Object)n);
+        if (this.nations.contains(n)) {
+            this.nations.remove((Object)n);
         }
     }
     
     public boolean containsNation(int n) {
-        return nations.contains(n);
+        return this.nations.contains(n);
     }
 
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                nations.clear();
+                this.nations.clear();
             }
         }
         

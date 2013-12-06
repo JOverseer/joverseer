@@ -31,17 +31,19 @@ public class RelationsListView extends ItemListView {
     }
     
     
-    protected JComponent createControlImpl() {
+    @Override
+	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
-        table.setDefaultRenderer(String.class, new RelationsTableCellRenderer(tableModel));
+        this.table.setDefaultRenderer(String.class, new RelationsTableCellRenderer(this.tableModel));
         // set combo box editor for the relations
-        table.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox(new String[]{"F", "T", "N", "D", "H"})));
+        this.table.setDefaultEditor(String.class, new DefaultCellEditor(new JComboBox(new String[]{"F", "T", "N", "D", "H"})));
         return c;
     }
 
 
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[]{48, 80, 58,
                         32, 32, 32, 32, 32, 
                         32, 32, 32, 32, 32,
@@ -50,22 +52,24 @@ public class RelationsListView extends ItemListView {
                         32, 32, 32, 32, 32};
     }
 
-    protected void setItems() {
+    @Override
+	protected void setItems() {
         super.setItems();
         try {
             for (int i=1; i<26; i++) {
-                table.getColumnModel().getColumn(i+2).setHeaderValue(tableModel.getColumnName(i+2));
+                this.table.getColumnModel().getColumn(i+2).setHeaderValue(this.tableModel.getColumnName(i+2));
             }
         } catch (Exception exc) {};
     }
     
     
     
-    protected AbstractListViewFilter[][] getFilters() {
-    	ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-        filters.addAll(Arrays.asList(NationFilter.createAllAndAllImportedNationFilters()));
-        filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-        return new AbstractListViewFilter[][]{filters.toArray(new AbstractListViewFilter[]{})};
+    @Override
+	protected AbstractListViewFilter[][] getFilters() {
+    	ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+        filters1.addAll(Arrays.asList(NationFilter.createAllAndAllImportedNationFilters()));
+        filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+        return new AbstractListViewFilter[][]{filters1.toArray(new AbstractListViewFilter[]{})};
     }
 
 
@@ -75,8 +79,9 @@ public class RelationsListView extends ItemListView {
 			super(tableModel);
 		}
 
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        @Override
+		public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             if (column < 3) return c;
             MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");
             String relation = value.toString();

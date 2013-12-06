@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import org.joverseer.domain.NationMessage;
 import org.joverseer.game.Game;
@@ -33,21 +34,23 @@ public class NationMessageViewer extends ObjectViewer {
         super(formModel, FORM_PAGE);
     }
     
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return NationMessage.class.isInstance(obj);
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
-        rumor = new JTextArea(2, 1);
+        this.rumor = new JTextArea(2, 1);
         //rumor.setPreferredSize(new Dimension(220, 80));
-        rumor.setLineWrap(true);
-        rumor.setWrapStyleWord(true);
-        JScrollPane scp = new JScrollPane(rumor);
+        this.rumor.setLineWrap(true);
+        this.rumor.setWrapStyleWord(true);
+        JScrollPane scp = new JScrollPane(this.rumor);
         scp.setPreferredSize(new Dimension(240, 36));
-        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scp.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
         //rumor.setBorder(null);
         scp.setBorder(null);
@@ -62,14 +65,15 @@ public class NationMessageViewer extends ObjectViewer {
         return p;
     }
 
-    public void setFormObject(Object obj) {
+    @Override
+	public void setFormObject(Object obj) {
         NationMessage nm = (NationMessage)obj;
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         if (game == null) return;
         GameMetadata gm = game.getMetadata();
         String nationName = gm.getNationByNum(nm.getNationNo()).getShortName();
-        rumor.setText(nm.getMessage() + " [" + nationName + "]");
-        rumor.setCaretPosition(0);
+        this.rumor.setText(nm.getMessage() + " [" + nationName + "]");
+        this.rumor.setCaretPosition(0);
         //nation.setText();
     }
 }

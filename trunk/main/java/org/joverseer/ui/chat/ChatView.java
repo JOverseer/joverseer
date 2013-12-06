@@ -15,29 +15,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
-
-//import net.sf.jml.MsnContact;
-//import net.sf.jml.MsnMessenger;
-//import net.sf.jml.MsnObject;
-//import net.sf.jml.MsnSwitchboard;
-//import net.sf.jml.MsnUserStatus;
-//import net.sf.jml.event.MsnAdapter;
-//import net.sf.jml.event.MsnMessageListener;
-//import net.sf.jml.impl.MsnMessengerFactory;
-//import net.sf.jml.message.MsnControlMessage;
-//import net.sf.jml.message.MsnDatacastMessage;
-//import net.sf.jml.message.MsnInstantMessage;
-//import net.sf.jml.message.MsnMimeMessage;
-//import net.sf.jml.message.MsnSystemMessage;
-//import net.sf.jml.message.MsnUnknownMessage;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Character;
@@ -57,6 +42,20 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+//import net.sf.jml.MsnContact;
+//import net.sf.jml.MsnMessenger;
+//import net.sf.jml.MsnObject;
+//import net.sf.jml.MsnSwitchboard;
+//import net.sf.jml.MsnUserStatus;
+//import net.sf.jml.event.MsnAdapter;
+//import net.sf.jml.event.MsnMessageListener;
+//import net.sf.jml.impl.MsnMessengerFactory;
+//import net.sf.jml.message.MsnControlMessage;
+//import net.sf.jml.message.MsnDatacastMessage;
+//import net.sf.jml.message.MsnInstantMessage;
+//import net.sf.jml.message.MsnMimeMessage;
+//import net.sf.jml.message.MsnSystemMessage;
+//import net.sf.jml.message.MsnUnknownMessage;
 
 
 
@@ -77,7 +76,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
     static Logger log = Logger.getLogger(ChatView.class);
     
     protected void setMessageEnabled(boolean v) {
-        message.setEnabled(v);
+        this.message.setEnabled(v);
     }
     
 //    protected void initMessenger(MsnMessenger messenger) {
@@ -85,27 +84,28 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //		messenger.addListener(new PrettyMsnListener(this));
 //	}
     
-    protected JComponent createControl() {
-    	final ChatView cv = this;
+    @Override
+	protected JComponent createControl() {
+    	//final ChatView cv = this;
         
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         
-        MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+        //MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 
 //        text = new JTextArea();
 //        text.setWrapStyleWord(true);
 //        text.setLineWrap(true);
-        text = new JTextPane();
-        doc = text.getStyledDocument();
+        this.text = new JTextPane();
+        this.doc = this.text.getStyledDocument();
         
         Style def = StyleContext.getDefaultStyleContext().
         getStyle(StyleContext.DEFAULT_STYLE);
-        Style regular = doc.addStyle("regular", def);
+        Style regular = this.doc.addStyle("regular", def);
         StyleConstants.setFontFamily(def, "SansSerif");
-        Style s = doc.addStyle("button", regular);
+        Style s = this.doc.addStyle("button", regular);
         StyleConstants.setAlignment(s, StyleConstants.ALIGN_CENTER);
 
-        JScrollPane scp = new JScrollPane(text);
+        JScrollPane scp = new JScrollPane(this.text);
         scp.setPreferredSize(new Dimension(400, 100));
         tlb.cell(scp, "align=left rowSpec=fill:default:grow colspec=left:410px");
         tlb.gapCol();
@@ -116,8 +116,9 @@ public class ChatView extends AbstractView implements ApplicationListener {
         lb.cell(startChat);
         startChat.addActionListener(new ActionListener() {
             
-            public void actionPerformed(ActionEvent e) {
-                if (connected) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
+                if (ChatView.this.connected) {
                     ErrorDialog dlg = new ErrorDialog("Already connected. You must disconnect first.");
                     dlg.showDialog();
                     return;
@@ -129,10 +130,11 @@ public class ChatView extends AbstractView implements ApplicationListener {
                 FormBackedDialogPage page = new FormBackedDialogPage(frm);
 
                 TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-                    protected void onAboutToShow() {
-                    }
+//                    protected void onAboutToShow() {
+//                    }
 
-                    protected boolean onFinish() {
+                    @Override
+					protected boolean onFinish() {
                         frm.commit();
                         try {
 //                        	 messenger = MsnMessengerFactory.createMsnMessenger(conn.getUsername(),
@@ -169,7 +171,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
         JButton disconnect = new JButton("D");
         lb.cell(disconnect);
         disconnect.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
             	disconnect();
             }
         });
@@ -180,10 +183,11 @@ public class ChatView extends AbstractView implements ApplicationListener {
         tlb.relatedGapRow();
         tlb.relatedGapRow();
         
-        message = new JTextField();
-        message.setPreferredSize(new Dimension(400, 20));
-        message.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        this.message = new JTextField();
+        this.message.setPreferredSize(new Dimension(400, 20));
+        this.message.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent e) {
 //            	String str = message.getText();
 //            	MsnInstantMessage reply = new MsnInstantMessage();
 //                reply.setContent(str);
@@ -193,7 +197,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
             }
         });
         setMessageEnabled(false);
-        tlb.cell(message, "align=left");
+        tlb.cell(this.message, "align=left");
 //        tlb.gapCol();
 //        JButton send = new JButton("Send");
 //        tlb.cell(send);
@@ -223,7 +227,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
         button.setCursor(Cursor.getDefaultCursor());
         button.setMargin(new Insets(0,0,0,0));
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 Order o = c.getOrders()[ow.getOrderIdx()];
                 o.setOrderNo(ow.getOrderNo());
                 o.setParameters(ow.getParameters());
@@ -248,7 +253,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
         button.setCursor(Cursor.getDefaultCursor());
         button.setMargin(new Insets(0,0,0,0));
         button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 Application.instance().getApplicationContext().publishEvent(
                       new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), new Point(c.getX(), c.getY()), this));
             }
@@ -271,14 +277,16 @@ public class ChatView extends AbstractView implements ApplicationListener {
             addMsg(msgStr);
             
             JButton btn = getAcceptButtonForOrderWrapper(ow);
-            Style s= doc.addStyle("button", doc.getStyle("regular"));
+            Style s= this.doc.addStyle("button", this.doc.getStyle("regular"));
             StyleConstants.setComponent(s, btn);
             final Style ns = s;
-            try {
-                doc.insertString(doc.getLength(), " ", ns);
-                text.setCaretPosition(doc.getLength()-1);
-            }
-            catch (Exception exc) {};
+                try {
+					this.doc.insertString(this.doc.getLength(), " ", ns);
+	                this.text.setCaretPosition(this.doc.getLength()-1);
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 //            btn = getSelectCharButtonForOrderWrapper(ow);
 //            StyleConstants.setComponent(s, btn);
 //            try {
@@ -310,7 +318,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
             btn.setCursor(Cursor.getDefaultCursor());
             btn.setMargin(new Insets(0,0,0,0));
             btn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
+                @Override
+				public void actionPerformed(ActionEvent e) {
                     for (OrderWrapper ow : mow.getOrderWrappers()) {
                         JButton b = getAcceptButtonForOrderWrapper(ow);  
                         if (b == null) continue;
@@ -318,14 +327,16 @@ public class ChatView extends AbstractView implements ApplicationListener {
                     }
                 }
             });
-            Style s= doc.getStyle("button");
+            Style s= this.doc.getStyle("button");
             StyleConstants.setComponent(s, btn);
             final Style ns = s;
             try {
-                doc.insertString(doc.getLength(), " ", ns);
-                text.setCaretPosition(doc.getLength()-1);
-            }
-            catch (Exception exc) {};
+            	this.doc.insertString(this.doc.getLength(), " ", ns);
+                this.text.setCaretPosition(this.doc.getLength()-1);
+			} catch (BadLocationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             addMsg("");
 
         }
@@ -344,8 +355,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
         try {
             final String m = msg;
             try {
-                doc.insertString(doc.getLength(), "\n" + m, doc.getStyle("regular"));
-                text.setCaretPosition(doc.getLength()-1);
+                this.doc.insertString(this.doc.getLength(), "\n" + m, this.doc.getStyle("regular"));
+                this.text.setCaretPosition(this.doc.getLength()-1);
             }
             catch (Exception exc) {
                 exc.printStackTrace();
@@ -358,8 +369,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
     
     public void sendOrder(Order o) {
         //client.sendMessage(new OrderWrapper(o));
-        OrderWrapper ow = new OrderWrapper(o);
-        String str = "o: ";
+//        OrderWrapper ow = new OrderWrapper(o);
+//        String str = "o: ";
 //        MsnInstantMessage reply = new MsnInstantMessage();
 //        str += ow.charId;
 //        str += "##" + ow.getHexNo();
@@ -370,7 +381,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //        reply.setContent(str);
 //        messenger.getActiveSwitchboards()[0].sendMessage(reply);
 //        addMsg("you: " + str);
-        message.setText("");
+        this.message.setText("");
     }
     
     public void sendOrders(ArrayList<Order> os) {
@@ -392,7 +403,8 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //        addMsg("you: " + str);
     }
     
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.SendOrdersByChat.toString())) {
@@ -407,7 +419,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
     }
     
     protected void disconnect() {
-    	connected = false;
+    	this.connected = false;
         setMessageEnabled(false);
         messageReceived("Disconnected from server.");
     }

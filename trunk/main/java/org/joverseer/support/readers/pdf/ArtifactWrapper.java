@@ -13,7 +13,7 @@ public class ArtifactWrapper {
     String power;
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -21,7 +21,7 @@ public class ArtifactWrapper {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public void setName(String name) {
@@ -29,7 +29,7 @@ public class ArtifactWrapper {
     }
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(int number) {
@@ -38,7 +38,7 @@ public class ArtifactWrapper {
 
     
     public String getPower() {
-        return power;
+        return this.power;
     }
 
     

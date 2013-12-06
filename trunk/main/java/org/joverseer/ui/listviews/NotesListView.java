@@ -43,17 +43,19 @@ public class NotesListView extends ItemListView {
     }
 
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[] {42, 96, 64, 96, 300, 64};
     }
 
     //TODO issues with the cell renderers - need multiline or not?
-    protected JComponent createControlImpl() {
+    @Override
+	protected JComponent createControlImpl() {
         MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 
         // create the table model
         try {
-            tableModel = (BeanTableModel) tableModelClass.getConstructor(new Class[] {MessageSource.class})
+            this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] {MessageSource.class})
                     .newInstance(new Object[] {messageSource});
         } catch (InstantiationException e) {
             e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
@@ -72,10 +74,11 @@ public class NotesListView extends ItemListView {
         if (filterLists != null) {
             for (AbstractListViewFilter[] filterList : filterLists) {
                 JComboBox filter = new JComboBox(filterList);
-                filters.add(filter);
+                this.filters.add(filter);
                 filter.addActionListener(new ActionListener() {
 
-                    public void actionPerformed(ActionEvent e) {
+                    @Override
+					public void actionPerformed(ActionEvent e) {
                         setItems();
                     }
                 });
@@ -90,7 +93,7 @@ public class NotesListView extends ItemListView {
         setItems();
 
         // create the JTable instance
-        table = TableUtils.createStandardSortableTable(tableModel);
+        this.table = TableUtils.createStandardSortableTable(this.tableModel);
 //        table = new SortableTable(table.getModel()) {
 //
 //            protected void initTable() {
@@ -118,20 +121,20 @@ public class NotesListView extends ItemListView {
 //        };
 //        ((JideTable) table).setRowResizable(true);
 //        ((JideTable) table).setRowAutoResizes(true);
-        org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
+        org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
 
         String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
         if (pval.equals("yes")) {
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         } else {
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         }
 
-        table.getTableHeader().setBackground(Color.WHITE);
-        table.addMouseListener(this);
-        JScrollPane scrollPane = new JScrollPane(table);
+        this.table.getTableHeader().setBackground(Color.WHITE);
+        this.table.addMouseListener(this);
+        JScrollPane scrollPane = new JScrollPane(this.table);
         scrollPane.getViewport().setOpaque(true);
-        scrollPane.getViewport().setBackground(table.getBackground());
+        scrollPane.getViewport().setBackground(this.table.getBackground());
         tlb.cell(scrollPane);
 
         JPanel p = tlb.getPanel();
@@ -159,15 +162,16 @@ public class NotesListView extends ItemListView {
     
     class DeleteNoteCommand extends ActionCommand {
 
-        protected void doExecuteCommand() {
-            int row = table.getSelectedRow();
+        @Override
+		protected void doExecuteCommand() {
+            int row = NotesListView.this.table.getSelectedRow();
             if (row >= 0) {
                 //int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
-                int idx = ((ShuttleSortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
-                if (idx >= tableModel.getRowCount())
+                int idx = ((ShuttleSortableTableModel)NotesListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= NotesListView.this.tableModel.getRowCount())
                     return;
                 try {
-                    Object obj = tableModel.getRow(idx);
+                    Object obj = NotesListView.this.tableModel.getRow(idx);
                     Note note = (Note) obj;
                     GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
                     Application.instance().getApplicationContext().publishEvent(
@@ -183,15 +187,16 @@ public class NotesListView extends ItemListView {
 
     class EditNoteCommand extends ActionCommand {
 
-        protected void doExecuteCommand() {
-            int row = table.getSelectedRow();
+        @Override
+		protected void doExecuteCommand() {
+            int row = NotesListView.this.table.getSelectedRow();
             if (row >= 0) {
                 //int idx = ((SortableTableModel) table.getModel()).getRowAt(row);
-                int idx = ((ShuttleSortableTableModel)table.getModel()).convertSortedIndexToDataIndex(row);
-                if (idx >= tableModel.getRowCount())
+                int idx = ((ShuttleSortableTableModel)NotesListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= NotesListView.this.tableModel.getRowCount())
                     return;
                 try {
-                    Object obj = tableModel.getRow(idx);
+                    Object obj = NotesListView.this.tableModel.getRow(idx);
                     Note note = (Note) obj;
                     new AddEditNoteCommand(note).execute();
                 } catch (Exception exc) {
@@ -202,7 +207,8 @@ public class NotesListView extends ItemListView {
         
     }
 
-    protected AbstractListViewFilter[][] getFilters() {
+    @Override
+	protected AbstractListViewFilter[][] getFilters() {
         return new AbstractListViewFilter[][]{
                 NationFilter.createNationFilters(),
                 new AbstractListViewFilter[]{

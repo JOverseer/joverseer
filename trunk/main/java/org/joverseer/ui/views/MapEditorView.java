@@ -14,6 +14,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.joverseer.metadata.domain.HexSideElementEnum;
@@ -47,6 +48,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		tlb.cell(new JLabel("Active :"), "colspec=left:70px");
 		final JCheckBox active = new JCheckBox();
 		active.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
 				mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
@@ -73,6 +75,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			final JRadioButton rb = new JRadioButton();
 			final HexTerrainEnum te = t;
 			rb.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
@@ -92,7 +95,8 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			final HexSideElementEnum se = e;
 			final JRadioButton rb = new JRadioButton();
 			rb.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+				@Override
+				public void actionPerformed(ActionEvent e1) {
 					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
 				}
@@ -105,13 +109,13 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		lb.cell(tlb.getPanel());
 
 		lb.gapCol("20px");
-		log = new JTextArea();
+		this.log = new JTextArea();
 		JScrollPane scp;
-		lb.cell(scp = new JScrollPane(log));
-		scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		lb.cell(scp = new JScrollPane(this.log));
+		scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scp.setPreferredSize(new Dimension(150, 150));
-		log.setEditable(false);
-		log.setWrapStyleWord(true);
+		this.log.setEditable(false);
+		this.log.setWrapStyleWord(true);
 		// log.setBorder(new LineBorder(Color.black));
 
 		JPanel pnl = lb.getPanel();
@@ -120,6 +124,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
@@ -129,8 +134,8 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		}
 	}
 
-	public void log(String log) {
-		this.log.setText(log + "\n" + this.log.getText());
+	public void log(String message) {
+		this.log.setText(message + "\n" + this.log.getText());
 		this.log.setCaretPosition(0);
 	}
 }

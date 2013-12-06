@@ -12,7 +12,7 @@ public class StringEnclosedMatchProcessor extends Processor {
     String currentEndString = null;
 
     public String getEndString() {
-        return endString;
+        return this.endString;
     }
 
     public void setEndString(String endString) {
@@ -20,7 +20,7 @@ public class StringEnclosedMatchProcessor extends Processor {
     }
 
     public String getStartString() {
-        return startString;
+        return this.startString;
     }
 
 
@@ -29,83 +29,87 @@ public class StringEnclosedMatchProcessor extends Processor {
     }
 
     public String[] getEndStrings() {
-        return endString.split("\\|");
+        return this.endString.split("\\|");
     }
     
     public String[] getStartStrings() {
-        return startString.split("\\|");
+        return this.startString.split("\\|");
     }
 
 
-    protected boolean findMatch() {
-        assert (chars != null);// : "Null text but asked to findMatch!";
-        String str = chars.toString();
-        if (removeNewLines) {
+    @SuppressWarnings("null")
+	@Override
+	protected boolean findMatch() {
+        assert (this.chars != null);// : "Null text but asked to findMatch!";
+        String str = this.chars.toString();
+        if (this.removeNewLines) {
         	str = str.replace("\n", "").replace("\r", "");
         }
-        int currentStart = matchStart;
+        int currentStart = this.matchStart;
         String[] startStrings = getStartStrings();
         String foundStartString = null;
-        // find fist match
+        // find first match
         int idx = -1;
-        for (String startString : startStrings) {
-        	if (startString.equals("^")) {
-        		matchStart = matchEnd;
+        for (String startString1 : startStrings) {
+        	if (startString1.equals("^")) {
+        		this.matchStart = this.matchEnd;
         	} else {
-        		matchStart = str.indexOf(startString, matchEnd);
+        		this.matchStart = str.indexOf(startString1, this.matchEnd);
         	}
-            if (matchStart > -1 && (matchStart <= idx || idx == -1)) {
-                idx = matchStart;
-                foundStartString = startString;
+            if (this.matchStart > -1 && (this.matchStart <= idx || idx == -1)) {
+                idx = this.matchStart;
+                foundStartString = startString1;
             }
         }
         if (idx == -1) {
             return false;
         }
-        matchStart = idx;
+        this.matchStart = idx;
         
         String[] endStrings = getEndStrings();
         idx = -1;
-        for (String endString : endStrings) {
-            if (endString.equals("$")) {
-                matchEnd = str.length() - 1;
+        for (String endString1 : endStrings) {
+            if (endString1.equals("$")) {
+                this.matchEnd = str.length() - 1;
             } else {
-                matchEnd = str.indexOf(endString, matchStart + foundStartString.length());
+                this.matchEnd = str.indexOf(endString1, this.matchStart + foundStartString.length());
             }
-            if (matchEnd > -1 && (matchEnd <= idx || idx == -1)) {
-                idx = matchEnd;
-                currentEndString = endString;
+            if (this.matchEnd > -1 && (this.matchEnd <= idx || idx == -1)) {
+                idx = this.matchEnd;
+                this.currentEndString = endString1;
             }
         }
         if (idx > -1) {
-            matchEnd = idx;
+            this.matchEnd = idx;
             return true;
         }
-        matchEnd = currentStart;
+        this.matchEnd = currentStart;
         return false;
     }
 
-    protected CharSequence getMatchedText() {
-        int matchStart = this.matchStart;
-        int matchEnd = this.matchEnd;
-        if (!includeStart) {
-            matchStart = matchStart + startString.length();
+    @Override
+	protected CharSequence getMatchedText() {
+        int matchStart1 = this.matchStart;
+        int matchEnd1 = this.matchEnd;
+        if (!this.includeStart) {
+            matchStart1 = matchStart1 + this.startString.length();
         }
-        if (includeEnd) {
-            if (!currentEndString.equals("$")) {
-                matchEnd = matchEnd + currentEndString.length();
+        if (this.includeEnd) {
+            if (!this.currentEndString.equals("$")) {
+                matchEnd1 = matchEnd1 + this.currentEndString.length();
             }
         }
-        return chars.subSequence(matchStart, matchEnd);
+        return this.chars.subSequence(matchStart1, matchEnd1);
     }
 
-    protected CharSequence getRemainderText() {
-        return chars.subSequence(matchEnd, chars.length());
+    @Override
+	protected CharSequence getRemainderText() {
+        return this.chars.subSequence(this.matchEnd, this.chars.length());
     }
 
     
     public boolean isIncludeEnd() {
-        return includeEnd;
+        return this.includeEnd;
     }
 
     
@@ -115,7 +119,7 @@ public class StringEnclosedMatchProcessor extends Processor {
 
     
     public boolean isIncludeStart() {
-        return includeStart;
+        return this.includeStart;
     }
 
     
@@ -123,14 +127,15 @@ public class StringEnclosedMatchProcessor extends Processor {
         this.includeStart = includeStart;
     }
 
-    protected void resetMatching() {
+    @Override
+	protected void resetMatching() {
         super.resetMatching();
-        matchStart = 0;
-        matchEnd = 0;
+        this.matchStart = 0;
+        this.matchEnd = 0;
     }
 
 	public boolean getRemoveNewLines() {
-		return removeNewLines;
+		return this.removeNewLines;
 	}
 
 	public void setRemoveNewLines(boolean removeNewLines) {

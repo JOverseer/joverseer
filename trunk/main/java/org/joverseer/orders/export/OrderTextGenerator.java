@@ -28,7 +28,8 @@ public class OrderTextGenerator extends OrderFileGenerator {
         return stats;
     }
     
-    protected String exportOrder(Character c, Order o) {
+    @Override
+	protected String exportOrder(Character c, Order o) {
         String ret = "";
         if (o == c.getOrders()[0]) {
             ret += String.format("%s (%s) @ %04d (%s)\n", c.getName(), (c.getId() + "    ").substring(0, 5), c.getHexNo(), getStatsLine(c));
@@ -46,7 +47,7 @@ public class OrderTextGenerator extends OrderFileGenerator {
         }
         if (o == c.getOrders()[1]) {
             // export comments
-            ArrayList<Note> notes = (ArrayList<Note>)turn.getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
+            ArrayList<Note> notes = (ArrayList<Note>)this.turn.getContainer(TurnElementsEnum.Notes).findAllByProperty("target", c);
             for (Note n : notes) {
                 if (n.getTags() != null && n.getTags().indexOf("Order") > -1) {
                     ret += "\n" + n.getText();
@@ -56,11 +57,13 @@ public class OrderTextGenerator extends OrderFileGenerator {
         return ret;
     }
 
-    protected String getFileFooter() {
+    @Override
+	protected String getFileFooter() {
         return "";
     }
 
-    protected String getFileHeader(Game g, Turn t, int nationNo, ArrayList<Character> chars) throws Exception {
+    @Override
+	protected String getFileHeader(Game g, Turn t, int nationNo, ArrayList<Character> chars) throws Exception {
         return String.format("Orders for Game %s, Turn %s, Nation %s\n\n", g.getMetadata().getGameNo(), t.getTurnNo(), nationNo);
     }
     

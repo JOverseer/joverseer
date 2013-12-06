@@ -13,7 +13,7 @@ public class NationRelationWrapper {
 
 
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     public void setNationNo(int nationNo) {
@@ -21,7 +21,7 @@ public class NationRelationWrapper {
     }
 
     public String getNation() {
-        return nation;
+        return this.nation;
     }
 
     public void setNation(String nation) {
@@ -29,7 +29,7 @@ public class NationRelationWrapper {
     }
 
     public String getRelation() {
-        return relation;
+        return this.relation;
     }
 
     public void setRelation(String relation) {

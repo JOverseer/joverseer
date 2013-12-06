@@ -32,43 +32,44 @@ class Artifact
 
     int getArtifactNumber()
     {
-        return artifact;
+        return this.artifact;
     }
 
     String getName()
     {
-        return name;
+        return this.name;
     }
 
     int getGame()
     {
-        return game;
+        return this.game;
     }
 
     int getAlignment()
     {
-        return alignment;
+        return this.alignment;
     }
 
     String getProperties()
     {
-        return properties;
+        return this.properties;
     }
 
     private String alignmentString()
     {
-        if(alignment >= 0 && alignment < 3)
+        if(this.alignment >= 0 && this.alignment < 3)
         {
-            return alignmentAbbrev[alignment];
+            return alignmentAbbrev[this.alignment];
         } else
         {
             return "";
         }
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
-        return name + " (#" + artifact + "," + alignmentString() + "," + properties + ")";
+        return this.name + " (#" + this.artifact + "," + alignmentString() + "," + this.properties + ")";
     }
 
 }

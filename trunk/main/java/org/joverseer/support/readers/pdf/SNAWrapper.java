@@ -9,7 +9,7 @@ public class SNAWrapper {
 
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
 
     

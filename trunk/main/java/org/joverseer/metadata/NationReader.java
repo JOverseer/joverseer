@@ -28,8 +28,37 @@ public class NationReader implements MetadataReader {
 			{ "Ice King", "IcK", new Object[] { SNAEnum.StealthBonus, SNAEnum.AgentsAt40, SNAEnum.AccessToSmnStrms, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM } }, { "Quiet Avenger", "QAv", new Object[] { SNAEnum.ScoutReconAtDouble, SNAEnum.UncoverSecretsAt40, SNAEnum.CommandersAt40, SNAEnum.EmmisariesAt40, SNAEnum.WarshipsAtStr4 } }, { "Fire King", "FiK", new Object[] { SNAEnum.FreeHire, SNAEnum.ArmiesAt40Morale, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM, SNAEnum.AccessToFntcsm, SNAEnum.AccessToCjrHds } }, { "Long Rider", "LoR", new Object[] { SNAEnum.CommandersAt40, SNAEnum.AccessToCjrMts, SNAEnum.AccessToCjrMts, SNAEnum.NoMoraleLossOnFM, SNAEnum.WarshipsAtStr4 } }, { "Dark Lieutenants", "DkL", new Object[] { SNAEnum.BetterMoraleAtNoFood, SNAEnum.CommandersAt40, SNAEnum.AccessToFrflHrts, SNAEnum.AccessToCjrHds } }, { "Corsairs", "Cor", new Object[] { SNAEnum.ShipsWith750Timber, SNAEnum.OpenSeasMvmnt, SNAEnum.ChallengeBonus, SNAEnum.WarshipsAtStr5 } },
 			{ "Haradwaith", "Har", new Object[] { SNAEnum.FreeHire, SNAEnum.MAAt25Training, SNAEnum.UncoverSecretsAt40, SNAEnum.ChallengeBonus, SNAEnum.WarshipsAtStr5 } }, { "Dunlendings", "Dun", new Object[] { SNAEnum.ChallengeBonus, SNAEnum.ScoutReconAtDouble, SNAEnum.AgentsAt40 } }, { "Rhudaur", "Rhu", new Object[] { SNAEnum.FreeHire, SNAEnum.MAAt25Training, SNAEnum.CommandersAt40, SNAEnum.ChallengeBonus } }, { "Easterlings", "Eas", new Object[] { SNAEnum.CommandersAt40, SNAEnum.ChallengeBonus, SNAEnum.BetterMoraleAtNoFood, SNAEnum.NoMoraleLossOnFM } }, };
 
-	Object[][] nations_BOFA = new Object[][] { { "Unknown", "Un", new Object[] {} }, { "North Kingdom", "NKi", new Object[] {} }, { "South Kingdom", "SKi", new Object[] {} }, { "Unplayed Nat III", "UN3", new Object[] {} }, { "Unplayed Nat IV", "UN4", new Object[] {} }, { "Unplayed V", "UN5", new Object[] {} }, { "Unplayed VI", "UN6", new Object[] {} }, { "Unplayed VII", "UN7", new Object[] {} }, { "Unplayed VIII", "UN8", new Object[] {} }, { "Unplayed IX", "UN8", new Object[] {} }, { "Goblins", "Gob", new Object[] { SNAEnum.FreeHire, SNAEnum.TroopsAt20Training, SNAEnum.NoMoraleLossOnFM, SNAEnum.ArmiesAt40Morale } }, { "Warg Riders", "WaR", new Object[] { SNAEnum.FreeHire, SNAEnum.NoMoraleLossOnFM, SNAEnum.BetterMoraleAtNoFood } }, { "Elves", "Elv", new Object[] { SNAEnum.FreeHire, SNAEnum.NoMoraleLossOnFM, SNAEnum.TroopsAt25Training } }, { "Dwarves", "Dwa", new Object[] { SNAEnum.FreeHire, SNAEnum.ScoutReconAt50, SNAEnum.HIAt30Training, SNAEnum.NoMoraleLossOnFM } },
-			{ "Northmen", "Nor", new Object[] { SNAEnum.FreeHire, SNAEnum.ScoutReconPlus20, SNAEnum.NoMoraleLossOnFM, SNAEnum.BuySellBonus, SNAEnum.FortificationsWithHalfTimber } }, { "Unplayed XV", "UN15", new Object[] {} }, { "Unplayed XVI", "UN16", new Object[] {} }, { "Unplayed XVII", "UN17", new Object[] {} }, { "Unplayed XVIII", "UN18", new Object[] {} }, { "Unplayed XIX", "UN19", new Object[] {} }, { "Unplayed XX", "UN20", new Object[] {} }, { "Unplayed XXI", "UN21", new Object[] {} }, { "Unplayed XXII", "UN22", new Object[] {} }, { "Unplayed XXIII", "UN23", new Object[] {} }, { "Unplayed XXIV", "UN24", new Object[] {} }, { "Unplayed XXV", "UN25", new Object[] {} } };
+	Object[][] nations_BOFA = new Object[][] {
+			{ "Unknown", "Un", new Object[] {} },
+			{ "Goblins", "Gob", new Object[] { SNAEnum.FreeHire, SNAEnum.TroopsAt20Training, SNAEnum.NoMoraleLossOnFM, SNAEnum.ArmiesAt40Morale } },
+			{ "Warg Riders", "WaR", new Object[] { SNAEnum.FreeHire, SNAEnum.NoMoraleLossOnFM, SNAEnum.BetterMoraleAtNoFood } },
+			{ "Elves", "Elv", new Object[] { SNAEnum.FreeHire, SNAEnum.NoMoraleLossOnFM, SNAEnum.TroopsAt25Training } },
+			{ "Dwarves", "Dwa", new Object[] { SNAEnum.FreeHire, SNAEnum.ScoutReconAt50, SNAEnum.HIAt30Training, SNAEnum.NoMoraleLossOnFM } },
+			{ "Northmen", "Nor", new Object[] { SNAEnum.FreeHire, SNAEnum.ScoutReconPlus20, SNAEnum.NoMoraleLossOnFM, SNAEnum.BuySellBonus, SNAEnum.FortificationsWithHalfTimber } },
+			{ "Unplayed VI", "UN6", new Object[] {} },
+			{ "Unplayed VII", "UN7", new Object[] {} },
+			{ "Unplayed VIII", "UN8", new Object[] {} },
+			{ "Unplayed X", "UN9", new Object[] {} },
+			{ "Unplayed IX", "UN10", new Object[] {} },
+			{ "Unplayed XI", "UN11", new Object[] {} },
+			{ "Unplayed XII", "UN12", new Object[] {} },
+			{ "Unplayed XIII", "UN13", new Object[] {} },
+			{ "Unplayed XIV", "UN14", new Object[] {} },
+			{ "Unplayed XV", "UN15", new Object[] {} },
+			{ "Unplayed XVI", "UN16", new Object[] {} },
+			{ "Unplayed XVII", "UN17", new Object[] {} },
+			{ "Unplayed XVIII", "UN18", new Object[] {} },
+			{ "Unplayed XIX", "UN19", new Object[] {} },
+			{ "Unplayed XX", "UN20", new Object[] {} },
+			{ "Unplayed XXI", "UN21", new Object[] {} },
+			{ "Unplayed XXII", "UN22", new Object[] {} },
+			{ "Unplayed XXIII", "UN23", new Object[] {} },
+			{ "Unplayed XXIV", "UN24", new Object[] {} },
+			{ "Unplayed XXV", "UN25", new Object[] {} } };
+
+// old BOFA:
+//	Object[][] nations_BOFA = new Object[][] { { "Unknown", "Un", new Object[] {} }, { "North Kingdom", "NKi", new Object[] {} }, { "South Kingdom", "SKi", new Object[] {} }, { "Unplayed Nat III", "UN3", new Object[] {} }, { "Unplayed Nat IV", "UN4", new Object[] {} }, { "Unplayed V", "UN5", new Object[] {} }, { "Unplayed VI", "UN6", new Object[] {} }, { "Unplayed VII", "UN7", new Object[] {} }, { "Unplayed VIII", "UN8", new Object[] {} }, { "Unplayed IX", "UN8", new Object[] {} }, { "Goblins", "Gob", new Object[] { SNAEnum.FreeHire, SNAEnum.TroopsAt20Training, SNAEnum.NoMoraleLossOnFM, SNAEnum.ArmiesAt40Morale } }, { "Warg Riders", "WaR", new Object[] { SNAEnum.FreeHire, SNAEnum.NoMoraleLossOnFM, SNAEnum.BetterMoraleAtNoFood } }, { "Elves", "Elv", new Object[] { SNAEnum.FreeHire, SNAEnum.NoMoraleLossOnFM, SNAEnum.TroopsAt25Training } }, { "Dwarves", "Dwa", new Object[] { SNAEnum.FreeHire, SNAEnum.ScoutReconAt50, SNAEnum.HIAt30Training, SNAEnum.NoMoraleLossOnFM } },
+//			{ "Northmen", "Nor", new Object[] { SNAEnum.FreeHire, SNAEnum.ScoutReconPlus20, SNAEnum.NoMoraleLossOnFM, SNAEnum.BuySellBonus, SNAEnum.FortificationsWithHalfTimber } }, { "Unplayed XV", "UN15", new Object[] {} }, { "Unplayed XVI", "UN16", new Object[] {} }, { "Unplayed XVII", "UN17", new Object[] {} }, { "Unplayed XVIII", "UN18", new Object[] {} }, { "Unplayed XIX", "UN19", new Object[] {} }, { "Unplayed XX", "UN20", new Object[] {} }, { "Unplayed XXI", "UN21", new Object[] {} }, { "Unplayed XXII", "UN22", new Object[] {} }, { "Unplayed XXIII", "UN23", new Object[] {} }, { "Unplayed XXIV", "UN24", new Object[] {} }, { "Unplayed XXV", "UN25", new Object[] {} } };
 
 	Object[][] nations_1000 = new Object[][] { { "Unknown", "Un", new Object[] {} }, { "North Kingdom", "NKi", new Object[] {} }, { "South Kingdom", "SKi", new Object[] {} }, { "Nation I", "N01", new Object[] {} }, { "Nation II", "N02", new Object[] {} }, { "Nation III", "N03", new Object[] {} }, { "Nation IV", "N04", new Object[] {} }, { "Nation V", "N05", new Object[] {} }, { "Nation VI", "N06", new Object[] {} }, { "Nation VII", "N07", new Object[] {} }, { "Nation VIII", "N08", new Object[] {} }, { "Nation IX", "N09", new Object[] {} }, { "Nation X", "N10", new Object[] {} }, { "Nation XI", "N11", new Object[] {} }, { "Nation XII", "N12", new Object[] {} }, { "Nation XIII", "N13", new Object[] {} }, { "Nation XIV", "N14", new Object[] {} }, { "Nation XV", "N15", new Object[] {} }, { "Nation XVI", "N16", new Object[] {} }, { "Nation XVII", "N17", new Object[] {} }, { "Nation XVIII", "N18", new Object[] {} }, { "Nation XIX", "N19", new Object[] {} },
 			{ "Nation XX", "N20", new Object[] {} }, { "Nation XXI", "N21", new Object[] {} }, { "Nation XXII", "N22", new Object[] {} }, { "Nation XXIII", "N23", new Object[] {} }, { "Nation XXIV", "N24", new Object[] {} }, { "Unplayed XXII", "N25", new Object[] {} }, };
@@ -49,138 +78,135 @@ public class NationReader implements MetadataReader {
 		}
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		ArrayList<Nation> nations = new ArrayList<Nation>();
+		int number;
 		if (gm.getGameType() == GameTypeEnum.game2950) {
 			for (int i = 0; i < 26; i++) {
-				String shortName = (String) nations_2950[i][1];
-				String name = (String) nations_2950[i][0];
+				String shortName = (String) this.nations_2950[i][1];
+				String name = (String) this.nations_2950[i][0];
 				Nation n = new Nation(i, name, shortName);
-				if (n.getNumber() <= 10) {
+				number = n.getNumber().intValue();
+				if (number <= 10) {
 					n.setAllegiance(NationAllegianceEnum.FreePeople);
-				} else if (n.getNumber() <= 20) {
+				} else if (number <= 20) {
 					n.setAllegiance(NationAllegianceEnum.DarkServants);
 				} else {
 					n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) nations_2950[i][2]);
+				addSNAs(n, (Object[]) this.nations_2950[i][2]);
 				nations.add(n);
 			}
 		} else if (gm.getGameType() == GameTypeEnum.game1650) {
 			for (int i = 0; i < 26; i++) {
-				String shortName = (String) nations_1650[i][1];
-				String name = (String) nations_1650[i][0];
+				String shortName = (String) this.nations_1650[i][1];
+				String name = (String) this.nations_1650[i][0];
 				Nation n = new Nation(i, name, shortName);
-				if (n.getNumber() <= 10) {
+				number = n.getNumber().intValue();
+				if (number <= 10) {
 					n.setAllegiance(NationAllegianceEnum.FreePeople);
-				} else if (n.getNumber() <= 20) {
+				} else if (number <= 20) {
 					n.setAllegiance(NationAllegianceEnum.DarkServants);
 				} else {
 					n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) nations_1650[i][2]);
+				addSNAs(n, (Object[]) this.nations_1650[i][2]);
 				nations.add(n);
 			}
 		} else if (gm.getGameType() == GameTypeEnum.gameFA) {
 			// TODO fix
 			for (int i = 0; i < 26; i++) {
-				String shortName = (String) nations_1000[i][1];
-				String name = (String) nations_1000[i][0];
+				String shortName = (String) this.nations_1000[i][1];
+				String name = (String) this.nations_1000[i][0];
 				Nation n = new Nation(i, name, shortName);
-				if (n.getNumber() <= 10) {
+				number = n.getNumber().intValue();
+				if (number <= 10) {
 					n.setAllegiance(NationAllegianceEnum.FreePeople);
-				} else if (n.getNumber() <= 20) {
+				} else if (number <= 20) {
 					n.setAllegiance(NationAllegianceEnum.DarkServants);
 				} else {
 					n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) nations_1000[i][2]);
+				addSNAs(n, (Object[]) this.nations_1000[i][2]);
 				nations.add(n);
 			}
 		} else if (gm.getGameType() == GameTypeEnum.gameBOFA) {
 			for (int i = 0; i < 26; i++) {
-				String shortName = (String) nations_BOFA[i][1];
-				String name = (String) nations_BOFA[i][0];
+				String shortName = (String) this.nations_BOFA[i][1];
+				String name = (String) this.nations_BOFA[i][0];
 				Nation n = new Nation(i, name, shortName);
-				if (n.getNumber() >= 10 && n.getNumber() <= 11) {
-					n.setAllegiance(NationAllegianceEnum.DarkServants);
-				} else if (n.getNumber() >= 12 && n.getNumber() <= 14) {
+				number = n.getNumber().intValue();
+/* old BOFA
+ 				if (number >= 10 && number <= 11) {
+ 					n.setAllegiance(NationAllegianceEnum.DarkServants);
+				} else if (number >= 12 && number <= 14) {
 					n.setAllegiance(NationAllegianceEnum.FreePeople);
 				} else {
 					n.setRemoved(true);
 					n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) nations_BOFA[i][2]);
+*/
+ 				if ((number == 1) || (number == 2)) {
+ 					n.setAllegiance(NationAllegianceEnum.DarkServants);
+				} else if (number >= 3 && number <= 5) {
+					n.setAllegiance(NationAllegianceEnum.FreePeople);
+				} else {
+					n.setRemoved(true);
+					n.setAllegiance(NationAllegianceEnum.Neutral);
+				}
+
+ 				addSNAs(n, (Object[]) this.nations_BOFA[i][2]);
 				nations.add(n);
-				if (n.getNumber() < 10 || n.getNumber() > 14) {
+/* old BOFA
+				if (number < 10 || number > 14) {
 					n.setRemoved(true);
 				}
+*/				
 			}
 		} else if (gm.getGameType() == GameTypeEnum.gameUW) {
 			for (int i = 0; i < 26; i++) {
-				String shortName = (String) nations_UW[i][1];
-				String name = (String) nations_UW[i][0];
+				String shortName = (String) this.nations_UW[i][1];
+				String name = (String) this.nations_UW[i][0];
 				Nation n = new Nation(i, name, shortName);
-				if (n.getNumber() <= 10) {
+				number = n.getNumber().intValue();
+				if (number <= 10) {
 					n.setAllegiance(NationAllegianceEnum.FreePeople);
-				} else if (n.getNumber() <= 20 || n.getNumber() == 24) {
+				} else if (number <= 20 || number == 24) {
 					n.setAllegiance(NationAllegianceEnum.DarkServants);
 				} else {
 					n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) nations_UW[i][2]);
+				addSNAs(n, (Object[]) this.nations_UW[i][2]);
 				nations.add(n);
-				if (n.getNumber() == 1)
+				switch (number) {
+				case  1: case 4: case 6: case 7: case 9:
+				case 14: case 15: case 16: case 17: case 19:
+				case 20: case 21: case 22: case 23: case 25:
 					n.setRemoved(true);
-				if (n.getNumber() == 4)
-					n.setRemoved(true);
-				if (n.getNumber() == 6)
-					n.setRemoved(true);
-				if (n.getNumber() == 7)
-					n.setRemoved(true);
-				if (n.getNumber() == 9)
-					n.setRemoved(true);
-				if (n.getNumber() == 14)
-					n.setRemoved(true);
-				if (n.getNumber() == 15)
-					n.setRemoved(true);
-				if (n.getNumber() == 16)
-					n.setRemoved(true);
-				if (n.getNumber() == 17)
-					n.setRemoved(true);
-				if (n.getNumber() == 19)
-					n.setRemoved(true);
-				if (n.getNumber() == 20)
-					n.setRemoved(true);
-				if (n.getNumber() == 21)
-					n.setRemoved(true);
-				if (n.getNumber() == 22)
-					n.setRemoved(true);
-				if (n.getNumber() == 23)
-					n.setRemoved(true);
-				if (n.getNumber() == 25)
-					n.setRemoved(true);
+				}
 			}
 		} else if (gm.getGameType() == GameTypeEnum.gameKS) {
 			for (int i = 0; i < 26; i++) {
-				String shortName = (String) nations_KS[i][1];
-				String name = (String) nations_KS[i][0];
+				String shortName = (String) this.nations_KS[i][1];
+				String name = (String) this.nations_KS[i][0];
 				Nation n = new Nation(i, name, shortName);
-				if (n.getNumber() <= 10) {
+				number = n.getNumber().intValue();
+				if (number <= 10) {
 					n.setAllegiance(NationAllegianceEnum.FreePeople);
-				} else if (n.getNumber() <= 20) {
+				} else if (number <= 20) {
 					n.setAllegiance(NationAllegianceEnum.DarkServants);
 				} else {
 					n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) nations_KS[i][2]);
+				addSNAs(n, (Object[]) this.nations_KS[i][2]);
 				nations.add(n);
 				boolean removed = false;
-				if (n.getNumber() > 6 && n.getNumber() < 11)
+				if (number > 6 && number < 11)
 					removed = true;
-				if (n.getNumber() > 16 && n.getNumber() < 21)
+				if (number > 16 && number < 21)
 					removed = true;
-				if (n.getNumber() > 22)
+				if (number > 22)
 					removed = true;
 				n.setRemoved(removed);
 			}

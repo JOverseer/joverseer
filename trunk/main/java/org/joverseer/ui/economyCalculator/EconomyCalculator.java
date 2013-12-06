@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -68,12 +69,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	JLabel taxIncrease;
 	BeanTableModel lostPopsTableModel;
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString())) {
-				((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
-				((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
+				((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+				((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
 				refreshMarketLimitWarning();
 				refreshTaxIncrease();
 				refreshAutocalcOrderCost();
@@ -81,8 +83,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
 				loadNationCombo(false);
 				try {
-					((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
-					((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
+					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
 					refreshMarketLimitWarning();
 					refreshTaxIncrease();
 					refreshAutocalcOrderCost();
@@ -91,16 +93,16 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 					exc.printStackTrace();
 				}
 			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				((MarketTableModel) marketTable.getModel()).setGame(null);
-				((EconomyTotalsTableModel) totalsTable.getModel()).setGame(null);
+				((MarketTableModel) this.marketTable.getModel()).setGame(null);
+				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
 				loadNationCombo(true);
 			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
 				refreshAutocalcOrderCost();
 				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) {
-					((EconomyTotalsTableModel) totalsTable.getModel()).updateMarketFromOrders();
+					((EconomyTotalsTableModel) this.totalsTable.getModel()).updateMarketFromOrders();
 					refreshMarketLimitWarning();
-					((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
-					((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
+					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
 				}
 				refreshFinalGoldWarning();
 			}
@@ -124,33 +126,33 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * Refreshes the market limit warning message
 	 */
 	private void refreshMarketLimitWarning() {
-		int marketProfits = ((MarketTableModel) marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
+		int marketProfits = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
 		if (marketProfits >= getMarketLimitWarningThreshhold()) {
-			marketLimitWarning.setText("Market limit warning!");
-			marketLimitWarning.setVisible(true);
+			this.marketLimitWarning.setText("Market limit warning!");
+			this.marketLimitWarning.setVisible(true);
 		} else {
-			marketLimitWarning.setVisible(false);
+			this.marketLimitWarning.setVisible(false);
 		}
 	}
 
 	private void refreshFinalGoldWarning() {
-		int finalGold = ((EconomyTotalsTableModel) totalsTable.getModel()).getFinalGold();
+		int finalGold = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getFinalGold();
 		if (finalGold >= 0) {
-			finalGoldWarning.setVisible(false);
+			this.finalGoldWarning.setVisible(false);
 		} else {
 			// check orders cost
-			int ordersCost = ((MarketTableModel) marketTable.getModel()).getEconomyCalculatorData().getOrdersCost();
+			int ordersCost = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getOrdersCost();
 			if (ordersCost > 0) {
 				// find cost for TranCar orders
 				if (ordersCost < -finalGold) {
-					finalGoldWarning.setVisible(true);
-					finalGoldWarning.setText("Danger - negative final gold without including order cost!");
-				} else if (tranCarOrderCost < -finalGold) {
-					finalGoldWarning.setVisible(true);
-					finalGoldWarning.setText("Negative final gold. Some of your orders may not be executed.");
+					this.finalGoldWarning.setVisible(true);
+					this.finalGoldWarning.setText("Danger - negative final gold without including order cost!");
+				} else if (this.tranCarOrderCost < -finalGold) {
+					this.finalGoldWarning.setVisible(true);
+					this.finalGoldWarning.setText("Negative final gold. Some of your orders may not be executed.");
 				} else {
-					finalGoldWarning.setVisible(true);
-					finalGoldWarning.setText("Negative final gold. Some of your TranCar (948) orders may be adjusted.");
+					this.finalGoldWarning.setVisible(true);
+					this.finalGoldWarning.setText("Negative final gold. Some of your TranCar (948) orders may be adjusted.");
 				}
 			}
 		}
@@ -161,17 +163,17 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * Refreshes the tax increase message
 	 */
 	private void refreshTaxIncrease() {
-		int taxIncreaseAmt = ((EconomyTotalsTableModel) totalsTable.getModel()).getTaxIncrease();
+		int taxIncreaseAmt = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getTaxIncrease();
 		if (taxIncreaseAmt == 0) {
-			taxIncrease.setVisible(false);
+			this.taxIncrease.setVisible(false);
 		} else {
-			taxIncrease.setVisible(true);
-			taxIncrease.setText("Your taxes will go up by " + taxIncreaseAmt + "%!");
+			this.taxIncrease.setVisible(true);
+			this.taxIncrease.setText("Your taxes will go up by " + taxIncreaseAmt + "%!");
 		}
 	}
 
 	private void loadNationCombo(boolean autoFocusOnGameNation) {
-		nationCombo.removeAllItems();
+		this.nationCombo.removeAllItems();
 		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
@@ -184,14 +186,14 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			// load only nations for which economy has been imported
 			if (ne == null)
 				continue;
-			nationCombo.addItem(n.getName());
+			this.nationCombo.addItem(n.getName());
 			if (autoFocusOnGameNation && n.getNumber() == g.getMetadata().getNationNo()) {
 				selectedIndex = i;
 			}
 			i++;
 		}
-		if (nationCombo.getItemCount() > 0) {
-			nationCombo.setSelectedIndex(selectedIndex);
+		if (this.nationCombo.getItemCount() > 0) {
+			this.nationCombo.setSelectedIndex(selectedIndex);
 		}
 
 	}
@@ -202,16 +204,16 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	private void refreshAutocalcOrderCost() {
 		OrderCostCalculator calc = new OrderCostCalculator();
 		int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
-		tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
+		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
 
-		autocalcOrderCost.setText(String.valueOf(totalCost));
+		this.autocalcOrderCost.setText(String.valueOf(totalCost));
 	}
 
 	private int getSelectedNationNo() {
 		Game g = GameHolder.instance().getGame();
-		if (nationCombo.getSelectedItem() == null)
+		if (this.nationCombo.getSelectedItem() == null)
 			return -1;
-		Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
+		Nation n = g.getMetadata().getNationByName(this.nationCombo.getSelectedItem().toString());
 		return n.getNumber();
 	}
 
@@ -225,35 +227,37 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.row();
 		lb.relatedGapRow();
 
-		lb.cell(nationCombo = new JComboBox(), "align=left");
-		nationCombo.setPreferredSize(new Dimension(200, 24));
-		nationCombo.addActionListener(new ActionListener() {
+		lb.cell(this.nationCombo = new JComboBox(), "align=left");
+		this.nationCombo.setPreferredSize(new Dimension(200, 24));
+		this.nationCombo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// when selected nation changed
 				// refresh all tables and warnings
 				Game g = GameHolder.instance().getGame();
-				if (nationCombo.getSelectedItem() == null)
+				if (EconomyCalculator.this.nationCombo.getSelectedItem() == null)
 					return;
-				Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
-				((MarketTableModel) marketTable.getModel()).setNationNo(n.getNumber());
-				((EconomyTotalsTableModel) totalsTable.getModel()).setNationNo(n.getNumber());
-				((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
-				((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
+				Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
+				((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).setNationNo(n.getNumber());
+				((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).setNationNo(n.getNumber());
+				((AbstractTableModel) EconomyCalculator.this.marketTable.getModel()).fireTableDataChanged();
+				((AbstractTableModel) EconomyCalculator.this.totalsTable.getModel()).fireTableDataChanged();
 				refreshPcs(n.getNumber());
 				refreshMarketLimitWarning();
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
-				sellBonus.setSelected(((EconomyTotalsTableModel) totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
+				EconomyCalculator.this.sellBonus.setSelected(((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
 			}
 		});
 		lb.row();
 
-		lb.cell(sellBonus = new JCheckBox(), "align=left");
-		sellBonus.setText("sell bonus: ");
-		sellBonus.setHorizontalTextPosition(JCheckBox.LEFT);
-		sellBonus.setBackground(Color.white);
-		sellBonus.addActionListener(new ActionListener() {
+		lb.cell(this.sellBonus = new JCheckBox(), "align=left");
+		this.sellBonus.setText("sell bonus: ");
+		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.sellBonus.setBackground(Color.white);
+		this.sellBonus.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// when sell bonus changed
 				// update the economy calculator data for this nation
@@ -261,13 +265,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				Game g = GameHolder.instance().getGame();
 				if (!Game.isInitialized(g))
 					return;
-				if (nationCombo.getSelectedItem() == null)
+				if (EconomyCalculator.this.nationCombo.getSelectedItem() == null)
 					return;
-				if (((MarketTableModel) marketTable.getModel()).getEconomyCalculatorData() == null)
+				if (((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).getEconomyCalculatorData() == null)
 					return;
-				((MarketTableModel) marketTable.getModel()).getEconomyCalculatorData().setSellBonus(sellBonus.isSelected());
-				((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
-				((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
+				((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).getEconomyCalculatorData().setSellBonus(EconomyCalculator.this.sellBonus.isSelected());
+				((AbstractTableModel) EconomyCalculator.this.marketTable.getModel()).fireTableDataChanged();
+				((AbstractTableModel) EconomyCalculator.this.totalsTable.getModel()).fireTableDataChanged();
 				refreshMarketLimitWarning();
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
@@ -282,18 +286,18 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.relatedGapRow();
 
 		MarketTableModel mtm = new MarketTableModel();
-		marketTable = new JOverseerTable(mtm);
-		mtm.setTable(marketTable);
+		this.marketTable = new JOverseerTable(mtm);
+		mtm.setTable(this.marketTable);
 
-		marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
-		marketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.marketTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
+		this.marketTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		for (int i = 0; i < mtm.getColumnCount(); i++) {
-			marketTable.getColumnModel().getColumn(i).setPreferredWidth(mtm.getColumnWidth(i));
+			this.marketTable.getColumnModel().getColumn(i).setPreferredWidth(mtm.getColumnWidth(i));
 		}
-		marketTable.setDefaultRenderer(Integer.class, new MarketRenderer());
-		marketTable.setDefaultRenderer(String.class, new MarketRenderer());
-		marketTable.setBackground(Color.white);
-		JScrollPane scp = new JScrollPane(marketTable);
+		this.marketTable.setDefaultRenderer(Integer.class, new MarketRenderer());
+		this.marketTable.setDefaultRenderer(String.class, new MarketRenderer());
+		this.marketTable.setBackground(Color.white);
+		JScrollPane scp = new JScrollPane(this.marketTable);
 		scp.setPreferredSize(new Dimension(600, 226));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
@@ -303,25 +307,27 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		priceHistory.setText("price history");
 		priceHistory.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JidePopup popup = new JidePopup();
 				popup.getContentPane().setLayout(new BorderLayout());
-				TableLayoutBuilder lb = new TableLayoutBuilder();
+				TableLayoutBuilder lb1 = new TableLayoutBuilder();
 				JButton closePopup = new JButton("Close");
 				closePopup.setPreferredSize(new Dimension(70, 20));
 				closePopup.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+					@Override
+					public void actionPerformed(ActionEvent e1) {
 						popup.hidePopup();
 					}
 				});
 
 				JLabel lbl = new JLabel();
-				int selCol = marketTable.getSelectedColumn();
-				String priceHistory = null;
+				int selCol = EconomyCalculator.this.marketTable.getSelectedColumn();
+				String priceHistory1 = null;
 				if (selCol > -1) {
-					priceHistory = ((MarketTableModel) marketTable.getModel()).getPriceHistory(selCol, 10);
+					priceHistory1 = ((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).getPriceHistory(selCol, 10);
 				}
-				if (priceHistory == null || priceHistory.equals("")) {
+				if (priceHistory1 == null || priceHistory1.equals("")) {
 					Game g = GameHolder.instance().getGame();
 					if (!Game.isInitialized(g))
 						return;
@@ -333,16 +339,16 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 					dlg.showDialog();
 					return;
 				}
-				lbl.setText(priceHistory);
-				lb.cell(lbl);
-				lb.relatedGapRow();
-				lb.cell(closePopup, "align=center");
-				lb.relatedGapRow();
+				lbl.setText(priceHistory1);
+				lb1.cell(lbl);
+				lb1.relatedGapRow();
+				lb1.cell(closePopup, "align=center");
+				lb1.relatedGapRow();
 
-				JScrollPane scp = new JScrollPane(lb.getPanel());
-				scp.setPreferredSize(new Dimension(160, 328));
-				scp.getVerticalScrollBar().setUnitIncrement(16);
-				popup.getContentPane().add(scp);
+				JScrollPane scp1 = new JScrollPane(lb1.getPanel());
+				scp1.setPreferredSize(new Dimension(160, 328));
+				scp1.getVerticalScrollBar().setUnitIncrement(16);
+				popup.getContentPane().add(scp1);
 				popup.updateUI();
 				popup.setResizable(true);
 				popup.setMovable(true);
@@ -361,17 +367,17 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
 
 		mtm.setTotalsModel(ettm);
-		totalsTable = new JOverseerTable(ettm);
-		ettm.setTable(totalsTable);
-		totalsTable.getTableHeader().setVisible(false);
+		this.totalsTable = new JOverseerTable(ettm);
+		ettm.setTable(this.totalsTable);
+		this.totalsTable.getTableHeader().setVisible(false);
 		for (int i = 0; i < ettm.getColumnCount(); i++) {
-			totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));
+			this.totalsTable.getColumnModel().getColumn(i).setPreferredWidth(ettm.getColumnWidth(i));
 		}
-		totalsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		totalsTable.setDefaultRenderer(String.class, new TotalsRenderer());
-		totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
-		totalsTable.setBackground(Color.white);
-		scp = new JScrollPane(totalsTable);
+		this.totalsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		this.totalsTable.setDefaultRenderer(String.class, new TotalsRenderer());
+		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
+		this.totalsTable.setBackground(Color.white);
+		scp = new JScrollPane(this.totalsTable);
 		scp.setPreferredSize(new Dimension(600, 90));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
@@ -380,8 +386,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel("Autocalc order cost: "), "colspec=left:110px");
 		tlb.gapCol();
-		autocalcOrderCost = new JLabel("0");
-		tlb.cell(autocalcOrderCost, "align=left");
+		this.autocalcOrderCost = new JLabel("0");
+		tlb.cell(this.autocalcOrderCost, "align=left");
 
 		tlb.row();
 		tlb.relatedGapRow();
@@ -389,12 +395,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		JButton btn = new JButton("<- update cost");
 		btn.setPreferredSize(new Dimension(130, 24));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// when button clicked
 				// update the economy calculator data with the autocalc order
 				// cost value
-				((EconomyTotalsTableModel) totalsTable.getModel()).setOrdersCost(Integer.parseInt(autocalcOrderCost.getText()));
-				((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
+				((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).setOrdersCost(Integer.parseInt(EconomyCalculator.this.autocalcOrderCost.getText()));
+				((AbstractTableModel) EconomyCalculator.this.totalsTable.getModel()).fireTableDataChanged();
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
 			}
@@ -405,10 +412,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		btn.setPreferredSize(new Dimension(130, 24));
 
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				((EconomyTotalsTableModel) totalsTable.getModel()).updateMarketFromOrders();
-				((AbstractTableModel) totalsTable.getModel()).fireTableDataChanged();
-				((AbstractTableModel) marketTable.getModel()).fireTableDataChanged();
+				((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).updateMarketFromOrders();
+				((AbstractTableModel) EconomyCalculator.this.totalsTable.getModel()).fireTableDataChanged();
+				((AbstractTableModel) EconomyCalculator.this.marketTable.getModel()).fireTableDataChanged();
 				refreshMarketLimitWarning();
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
@@ -423,24 +431,24 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.cell(pnl, "colspec=left:150px valign=top");
 		lb.row();
 
-		marketLimitWarning = new JLabel("Market limit warning!");
-		marketLimitWarning.setFont(GraphicUtils.getFont(marketLimitWarning.getFont().getName(), Font.BOLD, marketLimitWarning.getFont().getSize()));
-		marketLimitWarning.setForeground(Color.red);
-		lb.cell(marketLimitWarning);
+		this.marketLimitWarning = new JLabel("Market limit warning!");
+		this.marketLimitWarning.setFont(GraphicUtils.getFont(this.marketLimitWarning.getFont().getName(), Font.BOLD, this.marketLimitWarning.getFont().getSize()));
+		this.marketLimitWarning.setForeground(Color.red);
+		lb.cell(this.marketLimitWarning);
 		lb.row();
 		lb.relatedGapRow();
 
-		finalGoldWarning = new JLabel("Final gold warning!");
-		finalGoldWarning.setFont(GraphicUtils.getFont(finalGoldWarning.getFont().getName(), Font.BOLD, marketLimitWarning.getFont().getSize()));
-		finalGoldWarning.setForeground(Color.red);
-		lb.cell(finalGoldWarning);
+		this.finalGoldWarning = new JLabel("Final gold warning!");
+		this.finalGoldWarning.setFont(GraphicUtils.getFont(this.finalGoldWarning.getFont().getName(), Font.BOLD, this.marketLimitWarning.getFont().getSize()));
+		this.finalGoldWarning.setForeground(Color.red);
+		lb.cell(this.finalGoldWarning);
 		lb.row();
 		lb.relatedGapRow();
 
-		taxIncrease = new JLabel("Your taxes will go up.");
-		taxIncrease.setFont(GraphicUtils.getFont(taxIncrease.getFont().getName(), Font.BOLD, taxIncrease.getFont().getSize()));
-		taxIncrease.setForeground(Color.red);
-		lb.cell(taxIncrease);
+		this.taxIncrease = new JLabel("Your taxes will go up.");
+		this.taxIncrease.setFont(GraphicUtils.getFont(this.taxIncrease.getFont().getName(), Font.BOLD, this.taxIncrease.getFont().getSize()));
+		this.taxIncrease.setForeground(Color.red);
+		lb.cell(this.taxIncrease);
 		lb.row();
 
 		lb.relatedGapRow();
@@ -448,15 +456,15 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.row();
 		lb.relatedGapRow();
 
-		lostPopsTableModel = new LostPopsTableModel();
+		this.lostPopsTableModel = new LostPopsTableModel();
 		// pcTable = new JTable(lostPopsTableModel);
-		pcTable = TableUtils.createStandardSortableTable(lostPopsTableModel);
-		pcTable.setBackground(Color.white);
-		pcTable.setDefaultRenderer(Boolean.class, totalsTable.getDefaultRenderer(Boolean.class));
-		pcTable.setDefaultEditor(Boolean.class, totalsTable.getDefaultEditor(Boolean.class));
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, getLostPCColumWidths());
-		pcTable.setMaximumSize(new Dimension(600, 1000));
-		lb.cell(pcTable, "align=left");
+		this.pcTable = TableUtils.createStandardSortableTable(this.lostPopsTableModel);
+		this.pcTable.setBackground(Color.white);
+		this.pcTable.setDefaultRenderer(Boolean.class, this.totalsTable.getDefaultRenderer(Boolean.class));
+		this.pcTable.setDefaultEditor(Boolean.class, this.totalsTable.getDefaultEditor(Boolean.class));
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, getLostPCColumWidths());
+		this.pcTable.setMaximumSize(new Dimension(600, 1000));
+		lb.cell(this.pcTable, "align=left");
 
 		lb.row();
 
@@ -481,8 +489,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				}
 			}
 		}
-		lostPopsTableModel.setRows(items);
-		lostPopsTableModel.fireTableDataChanged();
+		this.lostPopsTableModel.setRows(items);
+		this.lostPopsTableModel.fireTableDataChanged();
 	}
 
 	/**
@@ -498,13 +506,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (!isSelected && column > 0) {
-				c.setBackground(rowColors[row]);
+				c.setBackground(this.rowColors[row]);
 			}
 			JLabel lbl = ((JLabel) c);
 			if (hasFocus) {
 				lbl.setBorder(BorderFactory.createLineBorder(Color.red, 1));
 			}
-			lbl.setHorizontalAlignment(JLabel.RIGHT);
+			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 
 			return c;
 		}
@@ -522,7 +530,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel lbl = ((JLabel) c);
-			lbl.setHorizontalAlignment(JLabel.RIGHT);
+			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 			if (row == 3 && column == 5 || row == 0 && column == 5) { // final
 				// gold
 				// or

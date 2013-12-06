@@ -25,7 +25,7 @@ public class SpellProficiency implements Serializable {
     }
 
     public int getProficiency() {
-        return proficiency;
+        return this.proficiency;
     }
 
     public void setProficiency(int proficiency) {
@@ -33,7 +33,7 @@ public class SpellProficiency implements Serializable {
     }
 
     public int getSpellId() {
-        return spellId;
+        return this.spellId;
     }
 
     public void setSpellId(int spellId) {
@@ -41,7 +41,7 @@ public class SpellProficiency implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {

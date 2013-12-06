@@ -1,7 +1,5 @@
 package org.joverseer.ui.domain.mapItems;
 
-import java.util.HashMap;
-
 import org.joverseer.domain.Army;
 import org.joverseer.support.movement.MovementUtils;
 
@@ -21,32 +19,33 @@ public class ArmyRangeMapItem extends AbstractRangeMapItem {
     boolean fed;
     
     public ArmyRangeMapItem(int hexNo, boolean cav, boolean fed) {
-        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed, true, null);
+        this.rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed, true, null);
         this.cav = cav;
         this.fed = fed;
     }
     
     public ArmyRangeMapItem(Army a, boolean ignoreEnemyPops) {
-        army = a;
-        int hexNo = Integer.parseInt(army.getHexNo());
-        Boolean cav = a.computeCavalry();
-        if (cav == null) cav = false;
-        Boolean fed = a.computeFed();
-        if (fed == null) fed = false;
-        rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav, fed, ignoreEnemyPops, army.getNationAllegiance());
+        this.army = a;
+        int hexNo = Integer.parseInt(this.army.getHexNo());
+        Boolean cav1 = a.computeCavalry();
+        if (cav1 == null) cav1 = false;
+        Boolean fed1 = a.computeFed();
+        if (fed1 == null) fed1 = false;
+        this.rangeHexes = MovementUtils.calculateArmyRangeHexes(hexNo, cav1, fed1, ignoreEnemyPops, this.army.getNationAllegiance());
     }
 
     public Army getArmy() {
-        return army;
+        return this.army;
     }
 
-    public String getDescription() {
+    @Override
+	public String getDescription() {
         return String.format("Range for army {0} located at {1}.", new Object[]{getArmy().getCommanderName(), getArmy().getHexNo()});
     }
 
     
     public boolean isCav() {
-        return cav;
+        return this.cav;
     }
 
     
@@ -55,8 +54,9 @@ public class ArmyRangeMapItem extends AbstractRangeMapItem {
     }
 
     
-    public boolean isFed() {
-        return fed;
+    @Override
+	public boolean isFed() {
+        return this.fed;
     }
 
     

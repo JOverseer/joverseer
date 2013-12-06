@@ -6,19 +6,19 @@ public class AnchoredShipsWrapper {
 	int warships;
 	
 	public int getHexId() {
-		return hexId;
+		return this.hexId;
 	}
 	public void setHexId(int hexId) {
 		this.hexId = hexId;
 	}
 	public int getTransports() {
-		return transports;
+		return this.transports;
 	}
 	public void setTransports(int transports) {
 		this.transports = transports;
 	}
 	public int getWarships() {
-		return warships;
+		return this.warships;
 	}
 	public void setWarships(int warships) {
 		this.warships = warships;

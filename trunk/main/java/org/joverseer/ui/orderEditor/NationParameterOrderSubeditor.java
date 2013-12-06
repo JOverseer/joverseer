@@ -34,34 +34,35 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(parameter = new JComboBox(), "colspec=left:150px");
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
+        tlb.cell(this.parameter = new JComboBox(), "colspec=left:150px");
         GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-        parameter.addItem("");
-        parameter.setPreferredSize(new Dimension(120, 18));
+        this.parameter.addItem("");
+        this.parameter.setPreferredSize(new Dimension(120, 18));
         tlb.row();
-        tlb.cell(nationNo = new JTextField());
-        nationNo.setVisible(false);
+        tlb.cell(this.nationNo = new JTextField());
+        this.nationNo.setVisible(false);
         tlb.row();
         
         for (Nation n : (ArrayList<Nation>)gm.getNations()) {
             if (n.getNumber() > 0) {
-                parameter.addItem(n.getName());
+                this.parameter.addItem(n.getName());
             }
         }
 
         String nno = o.getParameter(paramNo);
         if (nno != null && !nno.equals("")) {
-            parameter.setSelectedIndex(Integer.parseInt(nno));
-            nationNo.setText(nno);
+            this.parameter.setSelectedIndex(Integer.parseInt(nno));
+            this.nationNo.setText(nno);
         }
-        parameter.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                nationNo.setText(parameter.getSelectedItem() == null || parameter.getSelectedIndex() == 0 ? "" : String.valueOf(parameter.getSelectedIndex()));
+        this.parameter.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent arg0) {
+                NationParameterOrderSubeditor.this.nationNo.setText(NationParameterOrderSubeditor.this.parameter.getSelectedItem() == null || NationParameterOrderSubeditor.this.parameter.getSelectedIndex() == 0 ? "" : String.valueOf(NationParameterOrderSubeditor.this.parameter.getSelectedIndex()));
                 updateEditor();
             }
         }); 
         
-        components.add(nationNo);
+        components.add(this.nationNo);
     }
 }

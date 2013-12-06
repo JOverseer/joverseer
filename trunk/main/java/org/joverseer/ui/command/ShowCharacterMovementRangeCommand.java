@@ -23,8 +23,9 @@ public class ShowCharacterMovementRangeCommand extends ActionCommand {
 		this.range = range;
 	}
 	
+	@Override
 	protected void doExecuteCommand() {
-        CharacterRangeMapItem crmi = new CharacterRangeMapItem(hexNo, range);
+        CharacterRangeMapItem crmi = new CharacterRangeMapItem(this.hexNo, this.range);
         AbstractMapItem.add(crmi);
         Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance()

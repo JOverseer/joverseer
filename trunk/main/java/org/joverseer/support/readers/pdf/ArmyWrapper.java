@@ -24,7 +24,7 @@ public class ArmyWrapper {
 	Container<ArmyElementWrapper> elements = new Container<ArmyElementWrapper>();
 
 	public String getCommander() {
-		return commander;
+		return this.commander;
 	}
 
 	public void setCommander(String commander) {
@@ -32,7 +32,7 @@ public class ArmyWrapper {
 	}
 
 	public int getFood() {
-		return food;
+		return this.food;
 	}
 
 	public void setFood(int food) {
@@ -40,7 +40,7 @@ public class ArmyWrapper {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -48,7 +48,7 @@ public class ArmyWrapper {
 	}
 
 	public String getClimate() {
-		return climate;
+		return this.climate;
 	}
 
 	public void setClimate(String climate) {
@@ -56,7 +56,7 @@ public class ArmyWrapper {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -64,7 +64,7 @@ public class ArmyWrapper {
 	}
 
 	public String getMorale() {
-		return morale;
+		return this.morale;
 	}
 
 	public void setMorale(String morale) {
@@ -72,7 +72,7 @@ public class ArmyWrapper {
 	}
 
 	public int getTransports() {
-		return transports;
+		return this.transports;
 	}
 
 	public void setTransports(int transports) {
@@ -80,7 +80,7 @@ public class ArmyWrapper {
 	}
 
 	public int getWarMachines() {
-		return warMachines;
+		return this.warMachines;
 	}
 
 	public void setWarMachines(int warMachines) {
@@ -88,7 +88,7 @@ public class ArmyWrapper {
 	}
 
 	public int getWarships() {
-		return warships;
+		return this.warships;
 	}
 
 	public void setWarships(int warships) {
@@ -96,13 +96,13 @@ public class ArmyWrapper {
 	}
 
 	public void updateArmy(Army army) {
-		army.setFood(food);
+		army.setFood(this.food);
 		try {
-			army.setMorale(Integer.parseInt(morale));
+			army.setMorale(Integer.parseInt(this.morale));
 		} catch (Exception exc) {
 		}
 		;
-		army.setNavy(type.toUpperCase().equals("NAVY"));
+		army.setNavy(this.type.toUpperCase().equals("NAVY"));
 		army.setElement(ArmyElementType.Warships, getWarships());
 		army.setElement(ArmyElementType.Transports, getTransports());
 		army.setElement(ArmyElementType.WarMachimes, getWarMachines());
@@ -118,25 +118,25 @@ public class ArmyWrapper {
 		}
 	}
 
-	private ArmyElementType getArmyElementType(String type) {
-		type = type.trim();
-		if (type.startsWith("Heavy Cavalry"))
+	private ArmyElementType getArmyElementType(String type1) {
+		type1 = type1.trim();
+		if (type1.startsWith("Heavy Cavalry"))
 			return ArmyElementType.HeavyCavalry;
-		if (type.startsWith("Light Cavalry"))
+		if (type1.startsWith("Light Cavalry"))
 			return ArmyElementType.LightCavalry;
-		if (type.startsWith("Heavy Infantry"))
+		if (type1.startsWith("Heavy Infantry"))
 			return ArmyElementType.HeavyInfantry;
-		if (type.startsWith("Light Infantry"))
+		if (type1.startsWith("Light Infantry"))
 			return ArmyElementType.LightInfantry;
-		if (type.startsWith("Archers"))
+		if (type1.startsWith("Archers"))
 			return ArmyElementType.Archers;
-		if (type.startsWith("Men at Arms") || type.startsWith("Men-at-Arms"))
+		if (type1.startsWith("Men at Arms") || type1.startsWith("Men-at-Arms"))
 			return ArmyElementType.MenAtArms;
 		return null;
 	}
 
 	public Container<ArmyElementWrapper> getArmyElements() {
-		return elements;
+		return this.elements;
 	}
 
 	public void setArmyElements(Container elements) {

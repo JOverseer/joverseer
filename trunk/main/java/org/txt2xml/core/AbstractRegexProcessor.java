@@ -57,16 +57,17 @@ public abstract class AbstractRegexProcessor extends Processor {
     protected Matcher matcher;
     protected int multiline = 1;
     
-    protected void resetMatching() {
-	    assert (chars != null); // : "No chars but asked to resetMatching!";
-	    if (pattern == null) {
+    @Override
+	protected void resetMatching() {
+	    assert (this.chars != null); // : "No chars but asked to resetMatching!";
+	    if (this.pattern == null) {
 	        throw new IllegalStateException("Can't match because no pattern set");
 	    }
-	    matcher = pattern.matcher(chars);
+	    this.matcher = this.pattern.matcher(this.chars);
     }
 
     public String getRegex() {
-        return regex;
+        return this.regex;
     }
 
     public void setRegex(String regex) {
@@ -79,20 +80,20 @@ public abstract class AbstractRegexProcessor extends Processor {
     }
     
     private void compileRegex() {
-    	if (multiline == 1) {
-    		pattern = Pattern.compile(regex, Pattern.MULTILINE);
+    	if (this.multiline == 1) {
+    		this.pattern = Pattern.compile(this.regex, Pattern.MULTILINE);
     	} else {
-    		pattern = Pattern.compile(regex);
+    		this.pattern = Pattern.compile(this.regex);
     	}
     }
     
     public int getMultiline() {
-    	return multiline;
+    	return this.multiline;
     }
     
     public void setMultiline(int m) {
     	this.multiline = m;
-    	if (regex != null) {
+    	if (this.regex != null) {
     		compileRegex();
     	}
     }

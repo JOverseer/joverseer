@@ -12,14 +12,15 @@ public class ReconResultWrapper implements OrderResult {
 
 	ArrayList<Army> armies = new ArrayList<Army>(); 
 	
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
-		for (Army a : armies) {
+		for (Army a : this.armies) {
 			TurnXmlReader.addArmy(a, game, turn, true);
 		}
 	}
 	
 	public void addArmy(Army a) {
-		armies.add(a);
+		this.armies.add(a);
 	}
 
 }

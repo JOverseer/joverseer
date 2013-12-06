@@ -6,6 +6,7 @@ import java.awt.Font;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.binding.form.FormModel;
@@ -27,23 +28,25 @@ public class NarrationForm extends AbstractForm {
         super(formModel, FORM_PAGE);
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        textArea = new JTextArea();
-        textArea.setLineWrap(true);
-        textArea.setEditable(false);
-        textArea.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
-        tlb.cell(textArea);
-        JScrollPane scp = new JScrollPane(textArea);
+        this.textArea = new JTextArea();
+        this.textArea.setLineWrap(true);
+        this.textArea.setEditable(false);
+        this.textArea.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
+        tlb.cell(this.textArea);
+        JScrollPane scp = new JScrollPane(this.textArea);
         scp.setPreferredSize(new Dimension(820, 450));
-        scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         return scp;
     }
     
-    public void setFormObject(Object obj) {
+    @Override
+	public void setFormObject(Object obj) {
         super.setFormObject(obj);
-        textArea.setText((String)obj);
-        textArea.setCaretPosition(0);
+        this.textArea.setText((String)obj);
+        this.textArea.setCaretPosition(0);
     }
 }

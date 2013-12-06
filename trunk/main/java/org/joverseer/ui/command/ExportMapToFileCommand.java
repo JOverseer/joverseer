@@ -31,7 +31,8 @@ public class ExportMapToFileCommand  extends ActionCommand {
         super("exportMapToFileCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
     	BufferedImage map = MapPanel.instance().getMap();
     	if (map == null) return;
@@ -46,10 +47,12 @@ public class ExportMapToFileCommand  extends ActionCommand {
         Game game = GameHolder.instance().getGame();
         fileChooser.setSelectedFile(new File("game" + game.getMetadata().getGameNo() + "t" + game.getCurrentTurn() + ".jpeg"));
         fileChooser.setFileFilter(new FileFilter() {
+			@Override
 			public boolean accept(File f) {
 				return f.isDirectory() || f.getAbsolutePath().endsWith(".jpeg");
 			}
 
+			@Override
 			public String getDescription() {
 				return "jpeg files";
 			}

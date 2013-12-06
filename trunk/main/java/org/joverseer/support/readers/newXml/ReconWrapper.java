@@ -8,7 +8,7 @@ public class ReconWrapper {
 	ArrayList<HexWrapper> hexWrappers = new ArrayList<HexWrapper>();
 
 	public ArrayList<HexWrapper> getHexWrappers() {
-		return hexWrappers;
+		return this.hexWrappers;
 	}
 
 	public void setHexWrappers(ArrayList<HexWrapper> hexWrappers) {
@@ -16,7 +16,7 @@ public class ReconWrapper {
 	}
 	
 	public void addHexWrapper(HexWrapper rhw) {
-		hexWrappers.add(rhw);
+		this.hexWrappers.add(rhw);
 	}
 	
 	public void updateGame(Game game) {

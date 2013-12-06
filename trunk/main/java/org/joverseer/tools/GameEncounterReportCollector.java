@@ -94,7 +94,7 @@ public class GameEncounterReportCollector {
 		}
 
 		public Encounter getReacting() {
-			return reacting;
+			return this.reacting;
 		}
 
 		public void setReacting(Encounter reacting) {
@@ -102,7 +102,7 @@ public class GameEncounterReportCollector {
 		}
 
 		public Encounter getReaction() {
-			return reaction;
+			return this.reaction;
 		}
 
 		public void setReaction(Encounter reacted) {
@@ -110,7 +110,7 @@ public class GameEncounterReportCollector {
 		}
 
 		public Character getReactionCharacter() {
-			return reactionCharacter;
+			return this.reactionCharacter;
 		}
 
 		public void setReactionCharacter(Character reactionCharacter) {
@@ -123,7 +123,7 @@ public class GameEncounterReportCollector {
 		ArrayList<EncounterPair> pairs = new ArrayList<EncounterPair>();
 
 		public void add(EncounterPair pair) {
-			pairs.add(pair);
+			this.pairs.add(pair);
 		}
 	}
 

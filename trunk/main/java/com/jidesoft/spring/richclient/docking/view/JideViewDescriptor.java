@@ -46,7 +46,7 @@ public class JideViewDescriptor extends DefaultViewDescriptor implements Compara
 	}
 
 	public Rectangle getFloatBounds() {
-		return floatBounds;
+		return this.floatBounds;
 	}
 
 	public void setFloatOnShow(boolean floatOnShow) {
@@ -54,14 +54,14 @@ public class JideViewDescriptor extends DefaultViewDescriptor implements Compara
 	}
 
 	public boolean isFloatOnShow() {
-		return floatOnShow;
+		return this.floatOnShow;
 	}
 
 	/**
 	 * @return is the view to be treated as a JIDE workspace
 	 */
 	public boolean isWorkspace() {
-		return isWorkspace;
+		return this.isWorkspace;
 	}
 
 	/**
@@ -105,20 +105,21 @@ public class JideViewDescriptor extends DefaultViewDescriptor implements Compara
 	}
 
 	public int getInitMode() {
-		return initMode;
+		return this.initMode;
 	}
 
 	public int getInitSide() {
-		return initSide;
+		return this.initSide;
 	}
 
 	public int getInitIndex() {
-		return initIndex;
+		return this.initIndex;
 	}
 
 	/**
 	 * Compares the display names of the view descriptors
 	 */
+	@Override
 	public int compareTo(Object o) {
 		ViewDescriptor castObj = (ViewDescriptor) o;
 		return this.getDisplayName().compareToIgnoreCase(castObj.getDisplayName());

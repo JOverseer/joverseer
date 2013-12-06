@@ -16,8 +16,9 @@ import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 public class InfluenceOtherResultWrapper implements OrderResult {
 	String popCenter;
 	String loyalty;
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
-		PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", popCenter);
+		PopulationCenter pc = (PopulationCenter)turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", this.popCenter);
 		if (pc != null) {
 			if (pc.getInformationSource() == InformationSourceEnum.exhaustive || 
 					pc.getInformationSource() == InformationSourceEnum.detailed) return;
@@ -30,13 +31,13 @@ public class InfluenceOtherResultWrapper implements OrderResult {
 	}
 	
 	public String getLoyalty() {
-		return loyalty;
+		return this.loyalty;
 	}
 	public void setLoyalty(String loyalty) {
 		this.loyalty = loyalty;
 	}
 	public String getPopCenter() {
-		return popCenter;
+		return this.popCenter;
 	}
 	public void setPopCenter(String popCenter) {
 		this.popCenter = popCenter;

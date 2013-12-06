@@ -21,7 +21,8 @@ public class DerivedFromRevealCharacterInfoSource extends DerivedFromSpellInfoSo
         setHexNo(hexNo);
     }
     
-    public String getSpell() {
+    @Override
+	public String getSpell() {
         return "RC";
     }
 }

@@ -15,10 +15,11 @@ public class ApplicationEventLogger implements ApplicationListener {
 
     Log log = LogFactory.getLog(ApplicationEventLogger.class);
 
-    public void onApplicationEvent(ApplicationEvent arg0) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent arg0) {
         if (arg0 instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) arg0;
-            log.info("** Event " + e.getEventType());
+            this.log.info("** Event " + e.getEventType());
         }
     }
 

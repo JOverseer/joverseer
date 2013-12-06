@@ -9,37 +9,31 @@ public class ProductionWrapper {
 	int expProduction;
 	
 	public String getCurrentStores() {
-		return currentStores;
+		return this.currentStores;
 	}
 	public void setCurrentStores(String currentStores) {
 		this.currentStores = currentStores;
 	}
 	public int getExpProduction() {
-		return expProduction;
+		return this.expProduction;
 	}
 	public void setExpProduction(int expProduction) {
 		this.expProduction = expProduction;
 	}
 	public String getType() {
-		return type;
+		return this.type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
 	
 	public void updatePopCenter(PopulationCenter pc) {
+		ProductEnum pe = ProductEnum.getFromCode(getType());
+		pc.setProduction(pe, new Integer(getExpProduction()));
 		try {
-			ProductEnum pe = ProductEnum.getFromCode(getType());
-			pc.setProduction(pe, getExpProduction());
-			try {
-				pc.setStores(pe, Integer.parseInt(getCurrentStores()));
-			}
-			catch (Exception e) {
-				pc.setStores(pe, 0);
-			}
-		}
-		catch (Exception e) {
-			//TODO add log message
+			pc.setStores(pe, new Integer(Integer.parseInt(getCurrentStores())));
+		} catch (NumberFormatException e) {
+			pc.setStores(pe, new Integer(0));
 		}
 	}
 }

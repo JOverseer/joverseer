@@ -1,6 +1,5 @@
 package org.joverseer.metadata;
 
-import java.util.HashMap;
 
 /**
  * Enumeration for SNAs. 
@@ -57,7 +56,7 @@ public enum SNAEnum {
     }
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -65,7 +64,7 @@ public enum SNAEnum {
 	}
 
 	public int getNumber() {
-		return number;
+		return this.number;
 	}
 
 	public void setNumber(int number) {

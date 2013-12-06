@@ -1,7 +1,5 @@
 package org.joverseer.tools.armySizeEstimator;
 
-import java.util.ArrayList;
-
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 
@@ -30,8 +28,8 @@ public class ArmySizeEstimate {
     
     public void addArmy(Army a) {
         if (a.getSize() != getSize()) return;
-        if (a.isNavy() && !type.equals(NAVY_TYPE)) return;
-        if (!a.isNavy() && !type.equals(ARMY_TYPE)) return;
+        if (a.isNavy() && !this.type.equals(NAVY_TYPE)) return;
+        if (!a.isNavy() && !this.type.equals(ARMY_TYPE)) return;
         int troops = a.computeNumberOfMen();
         if (troops == 0) {
         	troops = a.getTroopCount();
@@ -40,22 +38,22 @@ public class ArmySizeEstimate {
             troops = a.computeNumberOfShips();
         }
         if (troops > 0) {
-            if (min == null) {
-                min = troops;
+            if (this.min == null) {
+                this.min = troops;
             }
-            if (max == null) {
-                max = troops;
+            if (this.max == null) {
+                this.max = troops;
             }
-            min = Math.min(min, troops);
-            max = Math.max(max, troops);
-            countKnown++;
+            this.min = Math.min(this.min, troops);
+            this.max = Math.max(this.max, troops);
+            this.countKnown++;
         } else {
-            countUnknown++;
+            this.countUnknown++;
         }
     }
 
     public int getCountKnown() {
-        return countKnown;
+        return this.countKnown;
     }
     
     public void setCountKnown(int countKnown) {
@@ -63,7 +61,7 @@ public class ArmySizeEstimate {
     }
     
     public int getCountUnknown() {
-        return countUnknown;
+        return this.countUnknown;
     }
     
     public void setCountUnknown(int countUknown) {
@@ -71,7 +69,7 @@ public class ArmySizeEstimate {
     }
     
     public Integer getMax() {
-        return max;
+        return this.max;
     }
     
     public void setMax(Integer max) {
@@ -79,7 +77,7 @@ public class ArmySizeEstimate {
     }
     
     public Integer getMin() {
-        return min;
+        return this.min;
     }
     
     public void setMin(Integer min) {
@@ -87,7 +85,7 @@ public class ArmySizeEstimate {
     }
     
     public ArmySizeEnum getSize() {
-        return size;
+        return this.size;
     }
     
     public void setSize(ArmySizeEnum size) {
@@ -96,7 +94,7 @@ public class ArmySizeEstimate {
 
     
     public String getType() {
-        return type;
+        return this.type;
     }
 
     

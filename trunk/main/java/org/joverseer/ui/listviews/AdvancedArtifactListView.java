@@ -61,10 +61,10 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 		@Override
 		public boolean accept(Object obj) {
-			if (powerStr == null)
+			if (this.powerStr == null)
 				return true;
 			ArtifactWrapper aw = (ArtifactWrapper) obj;
-			return (aw.getPower1().indexOf(powerStr) > -1 || aw.getPower2().indexOf(powerStr) > -1);
+			return (aw.getPower1().indexOf(this.powerStr) > -1 || aw.getPower2().indexOf(this.powerStr) > -1);
 		}
 	}
 
@@ -76,20 +76,20 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			game = GameHolder.instance().getGame();
+			this.game = GameHolder.instance().getGame();
 			String txt = "";
-			for (int j = 0; j < tableModel.getDataColumnCount(); j++) {
-				txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+			for (int j = 0; j < AdvancedArtifactListView.this.tableModel.getDataColumnCount(); j++) {
+				txt += (txt.equals("") ? "" : this.DELIM) + AdvancedArtifactListView.this.tableModel.getDataColumnHeaders()[j];
 				if (j == 2) {
 					// duplicate column "nation"
-					txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+					txt += (txt.equals("") ? "" : this.DELIM) + AdvancedArtifactListView.this.tableModel.getDataColumnHeaders()[j];
 				}
 			}
-			txt += NL;
-			for (int i = 0; i < tableModel.getRowCount(); i++) {
-				int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(i);
-				ArtifactWrapper aw = (ArtifactWrapper) tableModel.getRow(idx);
-				txt += getRow(aw) + NL;
+			txt += this.NL;
+			for (int i = 0; i < AdvancedArtifactListView.this.tableModel.getRowCount(); i++) {
+				int idx = ((SortableTableModel) AdvancedArtifactListView.this.table.getModel()).convertSortedIndexToDataIndex(i);
+				ArtifactWrapper aw = (ArtifactWrapper) AdvancedArtifactListView.this.tableModel.getRow(idx);
+				txt += getRow(aw) + this.NL;
 			}
 			StringSelection stringSelection = new StringSelection(txt);
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -97,11 +97,12 @@ public class AdvancedArtifactListView extends BaseItemListView {
 		}
 
 		private String getRow(ArtifactWrapper aw) {
-			Nation n = aw.getNationNo() == null ? null : game.getMetadata().getNationByNum(aw.getNationNo());
+			Nation n = aw.getNationNo() == null ? null : this.game.getMetadata().getNationByNum(aw.getNationNo());
 			String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
-			return aw.getNumber() + DELIM + aw.getName() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM + aw.getOwner() + DELIM + aw.getHexNo() + DELIM + aw.getAlignment() + DELIM + aw.getPower1() + DELIM + aw.getPower2() + DELIM + aw.getTurnNo() + DELIM + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource()) + NL;
+			return aw.getNumber() + this.DELIM + aw.getName() + this.DELIM + aw.getNationNo() + this.DELIM + nationName + this.DELIM + aw.getOwner() + this.DELIM + aw.getHexNo() + this.DELIM + aw.getAlignment() + this.DELIM + aw.getPower1() + this.DELIM + aw.getPower2() + this.DELIM + aw.getTurnNo() + this.DELIM + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource()) + this.NL;
 		}
 
+		@Override
 		public void lostOwnership(Clipboard arg0, Transferable arg1) {
 		}
 	}
@@ -122,10 +123,10 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 		@Override
 		public boolean accept(Object obj) {
-			if (classes == null)
+			if (this.classes == null)
 				return true;
 			InfoSource is = ((ArtifactWrapper) obj).getInfoSource();
-			for (Class<InfoSource> c : classes) {
+			for (Class<InfoSource> c : this.classes) {
 				if (c.isInstance(is))
 					return true;
 			}
@@ -150,9 +151,9 @@ public class AdvancedArtifactListView extends BaseItemListView {
 		@Override
 		public boolean accept(Object obj) {
 			ArtifactWrapper aw = (ArtifactWrapper) obj;
-			if (owned == null)
+			if (this.owned == null)
 				return true;
-			if (owned) {
+			if (this.owned) {
 				return aw.getOwner() != null && !aw.getOwner().equals("");
 			} else {
 				return aw.getOwner() == null || aw.getOwner().equals("");
@@ -192,12 +193,12 @@ public class AdvancedArtifactListView extends BaseItemListView {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-		filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-		filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-		filters.add(new OwnedArtifactFilter("Owned", true));
-		filters.add(new OwnedArtifactFilter("Not Owned", false));
-		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new InfoSourceClassFilter("All sources", null), new InfoSourceClassFilter("LA/LAT", new Class[] { DerivedFromLocateArtifactInfoSource.class, DerivedFromLocateArtifactTrueInfoSource.class }), new InfoSourceClassFilter("Xml/Pdf", new Class[] { XmlTurnInfoSource.class }), new InfoSourceClassFilter("Starting", new Class[] { MetadataSource.class }), },
+		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
+		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+		filters1.add(new OwnedArtifactFilter("Owned", true));
+		filters1.add(new OwnedArtifactFilter("Not Owned", false));
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new InfoSourceClassFilter("All sources", null), new InfoSourceClassFilter("LA/LAT", new Class[] { DerivedFromLocateArtifactInfoSource.class, DerivedFromLocateArtifactTrueInfoSource.class }), new InfoSourceClassFilter("Xml/Pdf", new Class[] { XmlTurnInfoSource.class }), new InfoSourceClassFilter("Starting", new Class[] { MetadataSource.class }), },
 				new AbstractListViewFilter[] { new ArtifactPowerFilter("All Powers", null), new ArtifactPowerFilter("Combat", "Combat "), new ArtifactPowerFilter("Agent", "Agent "), new ArtifactPowerFilter("Command", "Command "), new ArtifactPowerFilter("Stealth", "Stealth "), new ArtifactPowerFilter("Mage", "Mage "), new ArtifactPowerFilter("Emissary", "Emissary "), new ArtifactPowerFilter("Scrying", "Scry"), new ArtifactPowerFilter("Curse", "Spirit Mastery"), new ArtifactPowerFilter("Conjuring", "Conjuring Ways"), new ArtifactPowerFilter("Teleport", " Teleport") } };
 	}
 
@@ -232,6 +233,6 @@ public class AdvancedArtifactListView extends BaseItemListView {
 				filteredItems.add(obj);
 			}
 		}
-		tableModel.setRows(filteredItems);
+		this.tableModel.setRows(filteredItems);
 	}
 }

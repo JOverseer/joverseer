@@ -26,7 +26,7 @@ public class EconomyWrapper {
 	ArrayList<ProductWrapper> products = new ArrayList<ProductWrapper>();
 
 	public ArrayList<ProductWrapper> getProducts() {
-		return products;
+		return this.products;
 	}
 
 	public void setProducts(ArrayList<ProductWrapper> products) {
@@ -34,7 +34,7 @@ public class EconomyWrapper {
 	}
 
 	public int getArmyMaint() {
-		return armyMaint;
+		return this.armyMaint;
 	}
 
 	public void setArmyMaint(int armyMaint) {
@@ -42,7 +42,7 @@ public class EconomyWrapper {
 	}
 
 	public int getCharMaint() {
-		return charMaint;
+		return this.charMaint;
 	}
 
 	public void setCharMaint(int charMaint) {
@@ -50,7 +50,7 @@ public class EconomyWrapper {
 	}
 
 	public int getPopMaint() {
-		return popMaint;
+		return this.popMaint;
 	}
 
 	public void setPopMaint(int popMaint) {
@@ -58,7 +58,7 @@ public class EconomyWrapper {
 	}
 
 	public int getReserve() {
-		return reserve;
+		return this.reserve;
 	}
 
 	public void setReserve(int reserve) {
@@ -66,7 +66,7 @@ public class EconomyWrapper {
 	}
 
 	public int getRevenue() {
-		return revenue;
+		return this.revenue;
 	}
 
 	public void setRevenue(int revenue) {
@@ -74,7 +74,7 @@ public class EconomyWrapper {
 	}
 
 	public int getSurplus() {
-		return surplus;
+		return this.surplus;
 	}
 
 	public void setSurplus(int surplus) {
@@ -82,7 +82,7 @@ public class EconomyWrapper {
 	}
 
 	public int getTaxBase() {
-		return taxBase;
+		return this.taxBase;
 	}
 
 	public void setTaxBase(int taxBase) {
@@ -90,7 +90,7 @@ public class EconomyWrapper {
 	}
 
 	public int getTaxRate() {
-		return taxRate;
+		return this.taxRate;
 	}
 
 	public void setTaxRate(int taxRate) {
@@ -98,7 +98,7 @@ public class EconomyWrapper {
 	}
 
 	public int getTotalMaint() {
-		return totalMaint;
+		return this.totalMaint;
 	}
 
 	public void setTotalMaint(int totalMaint) {
@@ -106,7 +106,7 @@ public class EconomyWrapper {
 	}
 
 	public void addProduct(ProductWrapper product) {
-		products.add(product);
+		this.products.add(product);
 	}
 
 	public NationEconomy getNationEconomy() {
@@ -121,7 +121,7 @@ public class EconomyWrapper {
 		ne.setReserve(getReserve());
 		ne.setSurplus(getSurplus());
 
-		for (ProductWrapper pw : products) {
+		for (ProductWrapper pw : this.products) {
 			pw.updateNationEconomy(ne);
 		}
 		return ne;
@@ -129,7 +129,7 @@ public class EconomyWrapper {
 
 	public void updateProductPrices(Turn t) {
 		Container<ProductPrice> prices = t.getProductPrices();
-		for (ProductWrapper pw : products) {
+		for (ProductWrapper pw : this.products) {
 			pw.updateProductPrice(prices);
 		}
 	}

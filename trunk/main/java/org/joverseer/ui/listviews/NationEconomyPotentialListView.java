@@ -23,17 +23,19 @@ public class NationEconomyPotentialListView extends BaseItemListView {
         super(NationEconomyPotentialTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[]{100, 64, 64, 64, 64, 48, 64, 48, 64};
     }
 
-    protected void setItems() {
+    @Override
+	protected void setItems() {
         Game g = GameHolder.instance().getGame();
         ArrayList<NationEconomyPotential> potentials = new ArrayList<NationEconomyPotential>();
         if (Game.isInitialized(g)) {
             for (NationEconomy ne : (ArrayList<NationEconomy>)g.getTurn().getContainer(TurnElementsEnum.NationEconomy).getItems()) {
                 //TODO move NationEconomyPotential creation to TableModel or other place out of here
-                NationEconomyPotential nep = ((NationEconomyPotentialTableModel)tableModel).getNewPotential();
+                NationEconomyPotential nep = ((NationEconomyPotentialTableModel)this.tableModel).getNewPotential();
                 nep.setNationNo(ne.getNationNo());
                 nep.setSurplus(ne.getSurplus());
                 nep.setTotal(ne.getReserve()+ ne.getSurplus());
@@ -75,7 +77,7 @@ public class NationEconomyPotentialListView extends BaseItemListView {
                 
             }
         }
-        tableModel.setRows(potentials);
+        this.tableModel.setRows(potentials);
     }
 
 }

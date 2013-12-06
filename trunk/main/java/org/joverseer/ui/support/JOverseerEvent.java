@@ -12,7 +12,7 @@ public class JOverseerEvent extends LifecycleApplicationEvent {
     }
 
     public Object getSender() {
-        return sender;
+        return this.sender;
     }
 
     public Object getData() {

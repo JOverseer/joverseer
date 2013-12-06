@@ -24,11 +24,11 @@ public enum HexSideEnum implements Serializable {
     private final int side;
 
     HexSideEnum(int s) {
-        side = s;
+        this.side = s;
     }
 
     public int getSide() {
-        return side;
+        return this.side;
     }
 
     public static HexSideEnum fromValue(int i) {

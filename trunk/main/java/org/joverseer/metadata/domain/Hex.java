@@ -25,12 +25,12 @@ public class Hex implements Serializable {
 
 	public Hex() {
 		for (HexSideEnum side : HexSideEnum.values()) {
-			hexSideElements.put(side, new ArrayList<HexSideElementEnum>());
+			this.hexSideElements.put(side, new ArrayList<HexSideElementEnum>());
 		}
 	}
 
 	public int getColumn() {
-		return column;
+		return this.column;
 	}
 
 	public void setColumn(int column) {
@@ -38,7 +38,7 @@ public class Hex implements Serializable {
 	}
 
 	public int getRow() {
-		return row;
+		return this.row;
 	}
 
 	public void setRow(int row) {
@@ -50,12 +50,12 @@ public class Hex implements Serializable {
 	}
 
 	public void setHexNo(int hexNo) {
-		column = hexNo / 100;
-		row = hexNo % 100;
+		this.column = hexNo / 100;
+		this.row = hexNo % 100;
 	}
 
 	public HexTerrainEnum getTerrain() {
-		return terrain;
+		return this.terrain;
 	}
 
 	public void setTerrain(HexTerrainEnum terrain) {
@@ -63,7 +63,7 @@ public class Hex implements Serializable {
 	}
 
 	public ArrayList<HexSideElementEnum> getHexSideElements(HexSideEnum side) {
-		return hexSideElements.get(side);
+		return this.hexSideElements.get(side);
 	}
 
 	public void addHexSideElement(HexSideEnum side, HexSideElementEnum element) {
@@ -82,7 +82,7 @@ public class Hex implements Serializable {
 
 	public void clearHexSideElements() {
 		for (HexSideEnum hse : HexSideEnum.values()) {
-			hexSideElements.get(hse).clear();
+			this.hexSideElements.get(hse).clear();
 		}
 	}
 
@@ -100,7 +100,7 @@ public class Hex implements Serializable {
 	public Hex clone() {
 		Hex h = new Hex();
 		h.setHexNo(getHexNo());
-		h.setTerrain(terrain);
+		h.setTerrain(this.terrain);
 		for (HexSideEnum side : HexSideEnum.values()) {
 			h.hexSideElements.put(side, (ArrayList<HexSideElementEnum>) getHexSideElements(side).clone());
 		}

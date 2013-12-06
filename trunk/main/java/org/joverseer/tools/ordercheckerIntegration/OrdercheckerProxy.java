@@ -143,9 +143,9 @@ public class OrdercheckerProxy {
 		JTree tree = (JTree) ReflectionUtils.retrieveField(main.getWindow(), "tree");
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
 			@Override
-			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+			public Component getTreeCellRendererComponent(JTree tree1, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus1) {
 				try {
-					super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+					super.getTreeCellRendererComponent(tree1, value, sel, expanded, leaf, row, hasFocus1);
 					if (value != root) {
 						OCTreeNode node = (OCTreeNode) value;
 						setFont(node.getActiveFont());
@@ -261,8 +261,8 @@ public class OrdercheckerProxy {
 		}
 	}
 
-	public void updateOrdercheckerGameData(int nationNo) throws Exception {
-		setNationNo(nationNo);
+	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
+		setNationNo(nationNo1);
 		Main.mainFrame = new JFrame();
 		final Main main = new Main();
 		Main.main = main;
@@ -276,10 +276,10 @@ public class OrdercheckerProxy {
 		Game g = GameHolder.instance().getGame();
 		Turn t = g.getTurn();
 
-		PlayerInfo pi = (PlayerInfo) t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+		PlayerInfo pi = (PlayerInfo) t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo1);
 
 		Nation nation = new Nation();
-		nation.SetNation(nationNo);
+		nation.SetNation(nationNo1);
 		nation.setGame(g.getMetadata().getGameNo());
 		nation.setTurn(t.getTurnNo());
 		// TODO complete
@@ -325,7 +325,7 @@ public class OrdercheckerProxy {
 			pc.setLoyalty(popCenter.getLoyalty());
 			nation.addPopulationCenter(pc);
 
-			if (popCenter.getCapital() && popCenter.getNationNo() == nationNo) {
+			if (popCenter.getCapital() && popCenter.getNationNo() == nationNo1) {
 				nation.setCapital(popCenter.getHexNo());
 			}
 		}
@@ -389,8 +389,8 @@ public class OrdercheckerProxy {
 				for (int i = 0; i <= lastParam; i++) {
 					mo.addParameter(params.get(i));
 				}
-				orderMap.put(mo, o);
-				reverseOrderMap.put(o, mo);
+				this.orderMap.put(mo, o);
+				this.reverseOrderMap.put(o, mo);
 				mc.addOrder(mo);
 			}
 		}
@@ -503,7 +503,7 @@ public class OrdercheckerProxy {
 	}
 
 	public HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> getOrderMap() {
-		return orderMap;
+		return this.orderMap;
 	}
 
 	public void setOrderMap(HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> orderMap) {
@@ -534,7 +534,7 @@ public class OrdercheckerProxy {
 	}
 
 	public HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> getReverseOrderMap() {
-		return reverseOrderMap;
+		return this.reverseOrderMap;
 	}
 
 	public void setReverseOrderMap(HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> reverseOrderMap) {
@@ -542,7 +542,7 @@ public class OrdercheckerProxy {
 	}
 
 	public int getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	public void setNationNo(int nationNo) {

@@ -18,11 +18,12 @@ public enum GameTypeEnum {
     private final String myName;
 
     private GameTypeEnum(String name) {
-        myName = name;
+        this.myName = name;
     }
 
-    public String toString() {
-        return myName;
+    @Override
+	public String toString() {
+        return this.myName;
     }
 
 }

@@ -17,7 +17,8 @@ public class GetCreateCampSuccessRateCommand extends ActionCommand {
         super("getCreateCampSuccessRateCommand");
     }
     
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	Game game = GameHolder.instance().getGame();
     	
     	for (int i=0; i<=game.getMaxTurn(); i++) {

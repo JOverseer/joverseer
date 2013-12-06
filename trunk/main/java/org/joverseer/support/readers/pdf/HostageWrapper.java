@@ -15,7 +15,7 @@ public class HostageWrapper {
     int hexNo;
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -23,7 +23,7 @@ public class HostageWrapper {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public void setName(String name) {
@@ -31,7 +31,7 @@ public class HostageWrapper {
     }
     
     public String getNation() {
-        return nation;
+        return this.nation;
     }
     
     public void setNation(String nation) {
@@ -39,7 +39,7 @@ public class HostageWrapper {
     }
     
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
 
     

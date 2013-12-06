@@ -27,7 +27,7 @@ public class HexProductionWrapper {
 	int count = 0;
 	
 	public int getBronze() {
-		return bronze;
+		return this.bronze;
 	}
 
 
@@ -39,7 +39,7 @@ public class HexProductionWrapper {
 
 
 	public ClimateEnum getClimate() {
-		return climate;
+		return this.climate;
 	}
 
 
@@ -51,7 +51,7 @@ public class HexProductionWrapper {
 
 
 	public int getFood() {
-		return food;
+		return this.food;
 	}
 
 
@@ -63,7 +63,7 @@ public class HexProductionWrapper {
 
 
 	public int getGold() {
-		return gold;
+		return this.gold;
 	}
 
 
@@ -75,7 +75,7 @@ public class HexProductionWrapper {
 
 
 	public Integer getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 
@@ -87,7 +87,7 @@ public class HexProductionWrapper {
 
 
 	public int getLeather() {
-		return leather;
+		return this.leather;
 	}
 
 
@@ -99,7 +99,7 @@ public class HexProductionWrapper {
 
 
 	public int getMithril() {
-		return mithril;
+		return this.mithril;
 	}
 
 
@@ -111,7 +111,7 @@ public class HexProductionWrapper {
 
 
 	public int getMounts() {
-		return mounts;
+		return this.mounts;
 	}
 
 
@@ -123,7 +123,7 @@ public class HexProductionWrapper {
 
 
 	public int getSteel() {
-		return steel;
+		return this.steel;
 	}
 
 
@@ -135,7 +135,7 @@ public class HexProductionWrapper {
 
 
 	public HexTerrainEnum getTerrain() {
-		return terrain;
+		return this.terrain;
 	}
 
 
@@ -147,7 +147,7 @@ public class HexProductionWrapper {
 
 
 	public int getTimber() {
-		return timber;
+		return this.timber;
 	}
 
 
@@ -198,18 +198,18 @@ public class HexProductionWrapper {
 		setMounts(getMounts() + pw.getMounts());
 		setMithril(getMithril() + pw.getMithril());
 		setGold(getGold() + pw.getGold());
-		count++;
+		this.count++;
 	}
 
 	public void divideByCount() {
-		setLeather(getLeather() / count);
-		setBronze(getBronze() / count);
-		setSteel(getSteel() / count);
-		setFood(getFood() / count);
-		setTimber(getTimber() / count);
-		setMounts(getMounts() / count);
-		setMithril(getMithril() / count);
-		setGold(getGold() / count);
+		setLeather(getLeather() / this.count);
+		setBronze(getBronze() / this.count);
+		setSteel(getSteel() / this.count);
+		setFood(getFood() / this.count);
+		setTimber(getTimber() / this.count);
+		setMounts(getMounts() / this.count);
+		setMithril(getMithril() / this.count);
+		setGold(getGold() / this.count);
 	}
 
 }

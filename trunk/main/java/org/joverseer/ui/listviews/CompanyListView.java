@@ -38,7 +38,7 @@ public class CompanyListView extends BaseItemListView {
 				filteredItems.add(cw);
 		}
 		;
-		tableModel.setRows(filteredItems);
+		this.tableModel.setRows(filteredItems);
 	}
 
 }

@@ -11,7 +11,7 @@ public abstract class AbstractListViewFilter {
     
     
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
 
@@ -37,7 +37,8 @@ public abstract class AbstractListViewFilter {
 
     public abstract boolean accept(Object obj);
     
-    public String toString() {
+    @Override
+	public String toString() {
         return getDescription();
     }
 

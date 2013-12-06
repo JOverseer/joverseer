@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -33,7 +32,8 @@ public class CreateGame extends ActionCommand {
         super("createGameCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         final NewGame ng = new NewGame();
         FormModel formModel = FormModelHelper.createFormModel(ng);
         final NewGameForm form = new NewGameForm(formModel);
@@ -41,11 +41,13 @@ public class CreateGame extends ActionCommand {
 
         final MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
                 setDescription(ms.getMessage(form.getId() + ".description", null, Locale.getDefault()));
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 form.commit();
                 Game game = new Game();
                 GameMetadata gm = (GameMetadata)Application.instance().getApplicationContext().getBean("gameMetadata");

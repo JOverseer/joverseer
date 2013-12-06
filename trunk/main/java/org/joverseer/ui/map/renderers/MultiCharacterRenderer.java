@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
@@ -16,8 +15,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
-import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
-import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -31,16 +28,18 @@ import org.springframework.richclient.application.Application;
 public class MultiCharacterRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Character.class.isInstance(obj);
     }
 
     protected void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
-        if (mapMetadata == null) init();
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
+        if (this.mapMetadata == null) init();
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         Turn turn = game.getTurn();
 
@@ -84,10 +83,10 @@ public class MultiCharacterRenderer implements Renderer {
         int ii = i % 12;
         int jj = i / 12;
 
-        int dx = mapMetadata.getGridCellWidth() * 1 / 4;
-        int dy = mapMetadata.getGridCellHeight();
-        int w = mapMetadata.getGridCellWidth() / 3;
-        int h = mapMetadata.getGridCellHeight() / 3;
+        int dx = this.mapMetadata.getGridCellWidth() * 1 / 4;
+        int dy = this.mapMetadata.getGridCellHeight();
+        int w = this.mapMetadata.getGridCellWidth() / 3;
+        int h = this.mapMetadata.getGridCellHeight() / 3;
 
         //todo make decision based on allegiance, not nation no
 //      if (c.getNationNo() > 10) {

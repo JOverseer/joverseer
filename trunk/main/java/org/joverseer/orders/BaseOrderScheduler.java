@@ -7,11 +7,11 @@ public class BaseOrderScheduler {
     ArrayList<OrderExecutionWrapper> scheduledOrders = new ArrayList<OrderExecutionWrapper>();
     
     public void scheduleOrders(ArrayList<OrderExecutionWrapper> orders) {
-        scheduledOrders.clear();
-        scheduledOrders.addAll(orders);
+        this.scheduledOrders.clear();
+        this.scheduledOrders.addAll(orders);
     }
     
     public ArrayList<OrderExecutionWrapper> getScheduledOrders() {
-        return scheduledOrders;
+        return this.scheduledOrders;
     }
 }

@@ -42,26 +42,28 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 
 	ArrayList<EconomyCalculatorData> items = new ArrayList<EconomyCalculatorData>();
 
+	@Override
 	public int getColumnCount() {
-		return columnNames.length;
+		return this.columnNames.length;
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		return columnNames[column];
+		return this.columnNames[column];
 	}
 
 	public int getColumnWidth(int column) {
-		return columnWidths[column];
+		return this.columnWidths[column];
 	}
 
 	@Override
 	public Class<?> getColumnClass(int column) {
-		return classes[column];
+		return this.classes[column];
 	}
 
+	@Override
 	public int getRowCount() {
-		return items.size();
+		return this.items.size();
 	}
 
 	public void setRows(List<EconomyCalculatorData> items) {
@@ -70,15 +72,15 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	}
 
 	protected EconomyCalculatorData getEconomyCalculatorData(int row) {
-		return items.get(row);
+		return this.items.get(row);
 	}
 
-	protected NationEconomy getNationEconomy(int nationNo) {
-		return (NationEconomy) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo);
+	protected NationEconomy getNationEconomy(int nationNo1) {
+		return (NationEconomy) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo1);
 	}
 
 	public String getShowProductsAs() {
-		return showProductsAs;
+		return this.showProductsAs;
 	}
 
 	public void setShowProductsAs(String showProductsAs) {
@@ -86,18 +88,19 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	}
 
 	protected int getProduct(EconomyCalculatorData ecd, ProductEnum p) {
-		if (showProductsAs.equals(PROD_TOTAL)) {
+		if (this.showProductsAs.equals(PROD_TOTAL)) {
 			return ecd.getTotal(p);
-		} else if (showProductsAs.equals(PROD_GAIN)) {
+		} else if (this.showProductsAs.equals(PROD_GAIN)) {
 			return ecd.getTotal(p) * ecd.getSellPrice(p);
-		} else if (showProductsAs.equals(PROD_STORES)) {
+		} else if (this.showProductsAs.equals(PROD_STORES)) {
 			return ecd.getStores(p);
-		} else if (showProductsAs.equals(PROD_PRODUCTION)) {
+		} else if (this.showProductsAs.equals(PROD_PRODUCTION)) {
 			return ecd.getProduction(p);
 		}
 		return ecd.getTotal(p);
 	}
 
+	@Override
 	public Object getValueAt(int row, int col) {
 		if (row == getRowCount() - 1) {
 			// totals

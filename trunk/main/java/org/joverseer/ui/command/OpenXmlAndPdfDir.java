@@ -50,36 +50,37 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
 	public OpenXmlAndPdfDir() {
 		super("openXmlAndPdfDirCommand");
-		gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+		this.gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
 	}
 
+	@Override
 	public void run() {
 		try {
 			Thread.sleep(1000);
 		} catch (Exception exc) {
 			// do nothing
 		}
-		Game game = gh.getGame();
+		Game game = this.gh.getGame();
 		if (game == null) {
 			return;
 		}
 		int xmlCount = 0;
 		int pdfCount = 0;
 		boolean errorOccurred = false;
-		for (File f : files) {
+		for (File f : this.files) {
 			if (f.getAbsolutePath().endsWith(".xml")) {
 				try {
-					monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+					this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
 					xmlCount++;
 					final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
-					r.setMonitor(monitor);
+					r.setMonitor(this.monitor);
 					r.run();
 					if (r.getErrorOccured()) {
 						errorOccurred = true;
 					}
 					if (game.getMetadata().getNewXmlFormat()) {
 						final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
-						xr.setMonitor(monitor);
+						xr.setMonitor(this.monitor);
 						xr.run();
 						if (xr.getErrorOccured()) {
 							errorOccurred = true;
@@ -87,7 +88,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 					}
 				} catch (Exception exc) {
 					int a = 1;
-					monitor.subTaskStarted(exc.getMessage());
+					this.monitor.subTaskStarted(exc.getMessage());
 					// do nothing
 					// todo fix
 				}
@@ -97,27 +98,27 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
 		boolean warningOccurred = false;
 		if (!game.getMetadata().getNewXmlFormat()) {
-			for (File f : files) {
+			for (File f : this.files) {
 				if (f.getAbsolutePath().endsWith(".pdf")) {
 					try {
-						monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+						this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
 						pdfCount++;
 						final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-						r.setMonitor(monitor);
+						r.setMonitor(this.monitor);
 						r.run();
 						if (r.getErrorOccurred()) {
 							warningOccurred = true;
 						}
 					} catch (Exception exc) {
 						int a = 1;
-						monitor.subTaskStarted(exc.getMessage());
+						this.monitor.subTaskStarted(exc.getMessage());
 						// do nothing
 						// todo fix
 					}
 				}
 			}
 		}
-		monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
+		this.monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
 
 		TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
 		turnPostProcessor.postProcessTurn(game.getTurn(game.getMaxTurn()));
@@ -130,11 +131,11 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		} else {
 			globalMsg = "Import was successful.";
 		}
-		monitor.setGlobalMessage(globalMsg);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
+		this.monitor.setGlobalMessage(globalMsg);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this.gh.getGame(), this));
 
-		monitor.done();
-		dialog.setDescription("Processing finished.");
+		this.monitor.done();
+		this.dialog.setDescription("Processing finished.");
 
 	}
 
@@ -144,7 +145,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			return;
 		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 
-		// check if allegiances have been set for all neurals
+		// check if allegiances have been set for all neutrals
 		Game g = GameHolder.instance().getGame();
 		boolean neutralNationExists = false;
 		for (Nation n : g.getMetadata().getNations()) {
@@ -179,19 +180,20 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
 			final Runnable thisObj = this;
 			class XmlAndPdfFileFilter implements FileFilter {
-				public boolean accept(File file) {
-					return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
+				@Override
+				public boolean accept(File file1) {
+					return !file1.isDirectory() && (file1.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file1.getName()));
 				}
 			}
 			// files = file.listFiles(new XmlAndPdfFileFilter());
-			files = getFilesRecursive(file, new XmlAndPdfFileFilter());
+			this.files = getFilesRecursive(file, new XmlAndPdfFileFilter());
 			FormModel formModel = FormModelHelper.createFormModel(this);
-			monitor = new JOverseerClientProgressMonitor(formModel);
-			FormBackedDialogPage page = new FormBackedDialogPage(monitor);
-			dialog = new TitledPageApplicationDialog(page) {
+			this.monitor = new JOverseerClientProgressMonitor(formModel);
+			FormBackedDialogPage page = new FormBackedDialogPage(this.monitor);
+			this.dialog = new TitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
-					monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[] { file.getAbsolutePath() }), 100 * files.length);
+					OpenXmlAndPdfDir.this.monitor.taskStarted(String.format("Importing Directory '%s'.", new Object[] { file.getAbsolutePath() }), 100 * OpenXmlAndPdfDir.this.files.length);
 					Thread t = new Thread(thisObj);
 					t.start();
 					// SwingUtilities.invokeLater(thisObj);
@@ -207,17 +209,18 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 					return new AbstractCommand[] { getFinishCommand() };
 				}
 			};
-			dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[] {}, Locale.getDefault()));
-			dialog.showDialog();
+			this.dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[] {}, Locale.getDefault()));
+			this.dialog.showDialog();
 		}
 	}
 
 	private File[] getFilesRecursive(File folder, FileFilter filter) {
 		ArrayList<File> ret = new ArrayList<File>();
-		File[] files = folder.listFiles(filter);
-		if (files.length > 0) {
-			ret.addAll(Arrays.asList(files));
+		File[] files1 = folder.listFiles(filter);
+		if (files1.length > 0) {
+			ret.addAll(Arrays.asList(files1));
 			FileFilter folderFilter = new FileFilter() {
+				@Override
 				public boolean accept(File pathname) {
 					return pathname.isDirectory();
 				}

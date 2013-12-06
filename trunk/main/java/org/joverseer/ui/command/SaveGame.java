@@ -32,7 +32,8 @@ public class SaveGame extends ActionCommand {
         super("SaveGameCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!GameHolder.hasInitializedGame()) {
             // show error, cannot import when game not initialized
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);

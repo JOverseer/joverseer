@@ -15,7 +15,7 @@ public class OrderExecutionWrapper {
     }
 
     public Character getCharacter() {
-        return character;
+        return this.character;
     }
     
     public void setCharacter(Character character) {
@@ -23,7 +23,7 @@ public class OrderExecutionWrapper {
     }
     
     public int getOrderNo() {
-        return orderNo;
+        return this.orderNo;
     }
     
     public void setOrderNo(int orderNo) {

@@ -13,11 +13,12 @@ public class ScoutCharsResult implements OrderResult {
 
 	ArrayList<Character> characters = new ArrayList<Character>();
 
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
 		Character c = turn.getCharByName(character);
 		int hexNo = c.getHexNo();
 		InfoSource is = new PdfTurnInfoSource(turn.getTurnNo(), nationNo);
-		for (Character ch : characters) {
+		for (Character ch : this.characters) {
 			if (turn.getCharById(ch.getId()) != null)
 				continue;
 			ch.setInfoSource(is);
@@ -28,7 +29,7 @@ public class ScoutCharsResult implements OrderResult {
 	}
 
 	public void addCharacter(Character c) {
-		characters.add(c);
+		this.characters.add(c);
 	}
 
 }

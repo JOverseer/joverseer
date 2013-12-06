@@ -11,7 +11,7 @@ package com.jidesoft.spring.richclient.docking;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.DefaultKeyboardFocusManager;
-import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
@@ -30,7 +30,6 @@ import org.springframework.richclient.application.PageDescriptor;
 import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.application.ViewDescriptorRegistry;
 import org.springframework.richclient.application.support.DefaultApplicationPage;
-import org.springframework.richclient.application.support.DefaultViewDescriptor;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandManager;
 import org.springframework.richclient.image.IconSource;
@@ -67,7 +66,7 @@ public class JideApplicationPage extends DefaultApplicationPage {
             log.info("Constructing Application page " + pageDescriptor.getId());
         }
         this.window = (JideApplicationWindow) window;
-        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner",
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner",
                 new FocusOwnerChangeListener());
     }
 
@@ -76,25 +75,27 @@ public class JideApplicationPage extends DefaultApplicationPage {
     }
 
 
-    public JComponent createControl() {
-        if (control == null) {
+    @Override
+	public JComponent createControl() {
+        if (this.control == null) {
             this.getPageDescriptor().buildInitialLayout(this);
-            DockingManager manager = window.getDockingManager();
-            control = manager.getDockedFrameContainer();
+            DockingManager manager = this.window.getDockingManager();
+            this.control = manager.getDockedFrameContainer();
             Object initialEditorContents = ((JidePageDescriptor) getPageDescriptor()).getInitialEditorContents();
             if (initialEditorContents != null) {
                 openEditor(initialEditorContents);
             }
         }
-        return control;
+        return this.control;
     }
 
 
-    protected void doRemovePageComponent(PageComponent pageComponent) {
+    @Override
+	protected void doRemovePageComponent(PageComponent pageComponent) {
         if (log.isDebugEnabled()) {
             log.debug("Removing " + pageComponent.getId());
         }
-        DockingManager manager = window.getDockingManager();
+        DockingManager manager = this.window.getDockingManager();
         manager.removeFrame(pageComponent.getId());
     }
 
@@ -110,15 +111,16 @@ public class JideApplicationPage extends DefaultApplicationPage {
 
         for (int i = 0; i < views.length; i++) {
             String id = views[i].getId();
-            CommandManager commandManager = window.getCommandManager();
+            CommandManager commandManager = this.window.getCommandManager();
             if (commandManager.containsActionCommand(id)) {
                 ActionCommand command = commandManager.getActionCommand(id);
-                command.setVisible(pageViews.contains(views[i].getId()));
+                command.setVisible(this.pageViews.contains(views[i].getId()));
             }
         }
     }
 
-    protected boolean giveFocusTo(PageComponent pageComponent) {
+    @Override
+	protected boolean giveFocusTo(PageComponent pageComponent) {
         if (log.isDebugEnabled()) {
             log.debug("Giving focus to " + pageComponent.getId());
         }
@@ -128,7 +130,8 @@ public class JideApplicationPage extends DefaultApplicationPage {
         return true;
     }
 
-    public void showView(ViewDescriptor viewDescriptor) {
+    @Override
+	public void showView(ViewDescriptor viewDescriptor) {
         if (log.isDebugEnabled()) {
             log.debug("Adding view for " + viewDescriptor.getId());
         }
@@ -137,7 +140,8 @@ public class JideApplicationPage extends DefaultApplicationPage {
         registerPageComponent(viewDescriptor.getId());
     }
 
-    public void addView(String viewDescriptorId) {
+    @Override
+	public void addView(String viewDescriptorId) {
         showView(viewDescriptorId);
     }
 
@@ -202,11 +206,11 @@ public class JideApplicationPage extends DefaultApplicationPage {
                 registerWorkspaceView(pageComponent);
             } else {
                 registerNormalView(pageComponent, viewDescriptor);
-                pageViews.add(viewDescriptorId);
+                this.pageViews.add(viewDescriptorId);
             }
         } else {
             registerNormalView(pageComponent, null);
-            pageViews.add(viewDescriptorId);
+            this.pageViews.add(viewDescriptorId);
         }
     }
 
@@ -215,16 +219,16 @@ public class JideApplicationPage extends DefaultApplicationPage {
         if (log.isInfoEnabled()) {
             log.info("Registering workspace view " + pageComponent.getId());
         }
-        DockingManager manager = window.getDockingManager();
+        DockingManager manager = this.window.getDockingManager();
         manager.getWorkspace().add(pageComponent.getControl());
-        workspaceComponent = pageComponent;
+        this.workspaceComponent = pageComponent;
     }
 
     private void registerNormalView(PageComponent pageComponent, JideViewDescriptor viewDescriptor) {
         if (log.isInfoEnabled()) {
             log.info("Registering view " + pageComponent.getId());
         }
-        DockingManager manager = window.getDockingManager();
+        DockingManager manager = this.window.getDockingManager();
         String frameName = pageComponent.getId();
         if (manager.getAllFrameNames().contains(frameName)) {
             if (log.isDebugEnabled()) {
@@ -276,22 +280,25 @@ public class JideApplicationPage extends DefaultApplicationPage {
         }
         dockableFrame.addDockableFrameListener(new DockableFrameAdapter() {
 
-            public void dockableFrameRemoved(DockableFrameEvent event) {
+            @Override
+			public void dockableFrameRemoved(DockableFrameEvent event) {
                 if (log.isDebugEnabled()) {
                     log.debug("Frame removed event on " + pageComponent.getId());
                 }
                 fireClosed(pageComponent);
             }
 
-            public void dockableFrameActivated(DockableFrameEvent e) {
+            @Override
+			public void dockableFrameActivated(DockableFrameEvent e) {
                 if (log.isDebugEnabled()) {
                     log.debug("Frame activated event on " + pageComponent.getId());
                 }
-                fireFocusLost(workspaceComponent);
+                fireFocusLost(JideApplicationPage.this.workspaceComponent);
                 fireFocusGained(pageComponent);
             }
 
-            public void dockableFrameDeactivated(DockableFrameEvent e) {
+            @Override
+			public void dockableFrameDeactivated(DockableFrameEvent e) {
                 if (log.isDebugEnabled()) {
                     log.debug("Frame deactivated event on " + pageComponent.getId());
                 }
@@ -313,6 +320,7 @@ public class JideApplicationPage extends DefaultApplicationPage {
             final DockableFrame ff = dockableFrame;
             view.getDescriptor().addPropertyChangeListener("title", new PropertyChangeListener() {
 
+				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					ff.setTitle(evt.getNewValue().toString());
 					ff.setTabTitle(pageComponent.getDisplayName());
@@ -327,21 +335,25 @@ public class JideApplicationPage extends DefaultApplicationPage {
      * These next four methods change the access from protected to public allowing non children to fire these events.
      * This is needs to allow the Jide events to translate into spring events
      */
-    public void fireClosed(PageComponent component) {
+    @Override
+	public void fireClosed(PageComponent component) {
         super.fireClosed(component);
     }
 
-    public void fireOpened(PageComponent component) {
+    @Override
+	public void fireOpened(PageComponent component) {
         super.fireOpened(component);
     }
 
-    public void fireFocusLost(PageComponent component) {
+    @Override
+	public void fireFocusLost(PageComponent component) {
         if (component != null) {
             super.fireFocusLost(component);
         }
     }
 
-    public void fireFocusGained(PageComponent component) {
+    @Override
+	public void fireFocusGained(PageComponent component) {
         if (component != null) {
             super.fireFocusGained(component);
         }
@@ -356,7 +368,8 @@ public class JideApplicationPage extends DefaultApplicationPage {
      */
     private class FocusOwnerChangeListener implements PropertyChangeListener {
 
-        public void propertyChange(PropertyChangeEvent evt) {
+        @Override
+		public void propertyChange(PropertyChangeEvent evt) {
             DefaultKeyboardFocusManager manager = (DefaultKeyboardFocusManager) evt.getSource();
             Component focusOwner = manager.getFocusOwner();
             Workspace workspace = (Workspace) getDockableWorkspace(focusOwner);
@@ -384,7 +397,7 @@ public class JideApplicationPage extends DefaultApplicationPage {
     }
 
     protected PageComponent getWorkspaceComponent() {
-        return workspaceComponent;
+        return this.workspaceComponent;
     }
 
     protected void setWorkspaceComponent(PageComponent workspaceComponent) {

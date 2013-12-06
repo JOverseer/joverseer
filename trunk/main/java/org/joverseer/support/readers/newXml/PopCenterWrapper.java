@@ -15,11 +15,11 @@ public class PopCenterWrapper {
 	ArrayList<String> foreignCharacters = new ArrayList<String>();
 
 	public void addProduct(ProductionWrapper pw) {
-		products.add(pw);
+		this.products.add(pw);
 	}
 
 	public String getClimate() {
-		return climate;
+		return this.climate;
 	}
 
 	public void setClimate(String climate) {
@@ -27,7 +27,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -35,7 +35,7 @@ public class PopCenterWrapper {
 	}
 
 	public boolean isSieged() {
-		return sieged;
+		return this.sieged;
 	}
 
 	public void setSieged(boolean sieged) {
@@ -43,7 +43,7 @@ public class PopCenterWrapper {
 	}
 
 	public String getTerrain() {
-		return terrain;
+		return this.terrain;
 	}
 
 	public void setTerrain(String terrain) {
@@ -51,11 +51,11 @@ public class PopCenterWrapper {
 	}
 
 	public ArrayList<ProductionWrapper> getProducts() {
-		return products;
+		return this.products;
 	}
 
 	public void updatePopCenter(PopulationCenter pc) {
-		for (ProductionWrapper pw : products) {
+		for (ProductionWrapper pw : this.products) {
 			pw.updatePopCenter(pc);
 		}
 	}
@@ -64,11 +64,11 @@ public class PopCenterWrapper {
 		if (name.endsWith(" -")) {
 			name = name.substring(0, name.length() - 2);
 		}
-		foreignCharacters.add(name);
+		this.foreignCharacters.add(name);
 	}
 
 	public ArrayList<String> getForeignCharacters() {
-		return foreignCharacters;
+		return this.foreignCharacters;
 	}
 
 }

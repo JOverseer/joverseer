@@ -40,14 +40,16 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.width = width;
     }
     
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName), "colspec=left:70px");
-        tlb.cell(parameter = new JTextField(o.getParameter(paramNo)), "colspec=left:220px");
-        parameter.setPreferredSize(new Dimension(width, 18));
-        attachAutoUpdateDocumentListener(parameter);
-        components.add(parameter);
+    @Override
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
+        tlb.cell(this.parameter = new JTextField(o.getParameter(paramNo)), "colspec=left:220px");
+        this.parameter.setPreferredSize(new Dimension(this.width, PREFERRED_HEIGHT));
+        attachAutoUpdateDocumentListener(this.parameter);
+        components.add(this.parameter);
         //GraphicUtils.addOverwriteDropListener(parameter);
-        parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
+        this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
+			@Override
 			public void drop(DropTargetDropEvent dtde) {
 	                try {
 	                	Transferable t = dtde.getTransferable();
@@ -62,8 +64,8 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
 	                	} else {
 	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
 	                	}
-	                	parameter.setText(txt);
-	                    parameter.requestFocus();
+	                	SingleParameterOrderSubeditor.this.parameter.setText(txt);
+	                    SingleParameterOrderSubeditor.this.parameter.requestFocus();
 	                }
 	                catch (Exception exc) {
 	                    

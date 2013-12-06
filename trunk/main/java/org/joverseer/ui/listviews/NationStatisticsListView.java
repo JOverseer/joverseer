@@ -41,10 +41,10 @@ public class NationStatisticsListView extends BaseItemListView {
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-		filters.addAll(Arrays.asList(NationFilter.createNationFilters(true)));
-		filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}) };
+		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+		filters1.addAll(Arrays.asList(NationFilter.createNationFilters(true)));
+		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}) };
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class NationStatisticsListView extends BaseItemListView {
 		if (addNeutrals)
 			filteredItems.add(ns);
 
-		tableModel.setRows(filteredItems);
+		this.tableModel.setRows(filteredItems);
 	}
 
 }

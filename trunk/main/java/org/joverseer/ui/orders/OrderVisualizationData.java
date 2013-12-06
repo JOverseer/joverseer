@@ -45,12 +45,12 @@ public class OrderVisualizationData {
                 dlg.init(txt);
                 dlg.showDialog();
                 if (dlg.getResult()) {
-                    orders.add(order);
+                    this.orders.add(order);
                     setAdditionalInfo(order, "cavalry", cavalry.isSelected());
                     setAdditionalInfo(order, "fed", fed.isSelected());
                 }
             } else {
-                orders.add(o);
+                this.orders.add(o);
             }
         } else if (o.getOrderNo() == 925 || o.getOrderNo() == 910) {
         	InputDialog dlg = new InputDialog();
@@ -67,49 +67,49 @@ public class OrderVisualizationData {
             dlg.init(txt);
             dlg.showDialog();
             if (dlg.getResult()) {
-                orders.add(o);
+                this.orders.add(o);
                 setAdditionalInfo(o, "hexNo", hexNo.getText());
             }
         } else {
-            orders.add(o);
+            this.orders.add(o);
         }
     }
 
     public void clear() {
-        orders.clear();
+        this.orders.clear();
     }
 
     public boolean contains(Order o) {
-        return orders.contains(o);
+        return this.orders.contains(o);
     }
     
     public void removeOrder(Order o) {
-        orders.remove(o);
-        orderInfo.remove(o);
+        this.orders.remove(o);
+        this.orderInfo.remove(o);
     }
     
     public void setAdditionalInfo(Order o, String key, Object value) {
-        if (orderInfo.get(o) == null) {
-            orderInfo.put(o, new HashMap<String, Object>());
+        if (this.orderInfo.get(o) == null) {
+            this.orderInfo.put(o, new HashMap<String, Object>());
         }
-        orderInfo.get(o).put(key, value);
+        this.orderInfo.get(o).put(key, value);
     }
     
     public void removeAdditionalInfo(Order o, String key) {
-        if (orderInfo.get(o) == null) return;
-        orderInfo.get(o).remove(key);
+        if (this.orderInfo.get(o) == null) return;
+        this.orderInfo.get(o).remove(key);
     }
     
     public Object getAdditionalInfo(Order o, String key) {
-    	if (!orderInfo.containsKey(o)) return null;
-        return orderInfo.get(o).get(key);
+    	if (!this.orderInfo.containsKey(o)) return null;
+        return this.orderInfo.get(o).get(key);
     }
     
     public Order getOrderEditorOrder() {
-    	return orderEditorOrder;
+    	return this.orderEditorOrder;
     }
     
     public void setOrderEditorOrder(Order order) {
-    	orderEditorOrder = order;
+    	this.orderEditorOrder = order;
     }
 }

@@ -38,7 +38,7 @@ public class CharacterWrapper {
 	ArrayList<OrderResult> orderResults = new ArrayList<OrderResult>();
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -46,7 +46,7 @@ public class CharacterWrapper {
 	}
 
 	public ArrayList<OrderResult> getOrderResults() {
-		return orderResults;
+		return this.orderResults;
 	}
 
 	public void setOrderResults(ArrayList<OrderResult> orderResults) {
@@ -54,7 +54,7 @@ public class CharacterWrapper {
 	}
 
 	public String getOrders() {
-		return orders;
+		return this.orders;
 	}
 
 	public void setOrders(String orders) {
@@ -62,11 +62,11 @@ public class CharacterWrapper {
 	}
 
 	public void addOrderResult(OrderResult result) {
-		orderResults.add(result);
+		this.orderResults.add(result);
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -88,7 +88,7 @@ public class CharacterWrapper {
 	}
 
 	public boolean getAssassinated() {
-		return assassinated;
+		return this.assassinated;
 	}
 
 	public void setAssassinatedOn() {
@@ -96,7 +96,7 @@ public class CharacterWrapper {
 	}
 
 	public boolean getCursed() {
-		return cursed;
+		return this.cursed;
 	}
 
 	public void setCursedOn() {
@@ -104,7 +104,7 @@ public class CharacterWrapper {
 	}
 
 	public boolean getExecuted() {
-		return executed;
+		return this.executed;
 	}
 
 	public void setExecutedOn() {
@@ -112,7 +112,7 @@ public class CharacterWrapper {
 	}
 
 	public String getArtifacts() {
-		return artifacts;
+		return this.artifacts;
 	}
 
 	public void setArtifacts(String artifacts) {
@@ -120,13 +120,13 @@ public class CharacterWrapper {
 	}
 
 	public void parsePopCenter(Game game, InfoSource infoSource, Character c) {
-		String orders = getCleanOrders();
-		if (orders == null)
+		String orders1 = getCleanOrders();
+		if (orders1 == null)
 			return;
-		int i = orders.substring(0, orders.length() - 1).lastIndexOf(".");
+		int i = orders1.substring(0, orders1.length() - 1).lastIndexOf(".");
 		if (i == -1)
 			return;
-		String lastLine = orders.substring(i + 2);
+		String lastLine = orders1.substring(i + 2);
 		if (!lastLine.endsWith("is here."))
 			return;
 
@@ -174,11 +174,11 @@ public class CharacterWrapper {
 		if (k == -1) {
 			k = lastLine.indexOf(" is here.");
 		}
-		String name = lastLine.substring(j + 4, k);
+		String name1 = lastLine.substring(j + 4, k);
 
-		if (name != null && size != null && nationNo != null) {
+		if (name1 != null && size != null && nationNo != null) {
 			PopulationCenter popCenter = new PopulationCenter();
-			popCenter.setName(name);
+			popCenter.setName(name1);
 			popCenter.setSize(size);
 			popCenter.setFortification(fort);
 			popCenter.setHarbor(HarborSizeEnum.none);
@@ -207,24 +207,24 @@ public class CharacterWrapper {
 	}
 
 	public String getCleanOrders() {
-		String orders = getOrders();
-		orders = orders.replace("\r\n", " ");
-		while (orders.contains("  ")) {
-			orders = orders.replace("  ", " ");
+		String orders1 = getOrders();
+		orders1 = orders1.replace("\r\n", " ");
+		while (orders1.contains("  ")) {
+			orders1 = orders1.replace("  ", " ");
 		}
-		return orders;
+		return orders1;
 	}
 
 	public void parsePopCenterFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
 		String scoHex = "He was ordered to scout the hex.";
-		String orders = getCleanOrders();
-		int i = orders.indexOf(scoHex);
+		String orders1 = getCleanOrders();
+		int i = orders1.indexOf(scoHex);
 		if (i == -1) {
 			scoHex = "He was ordered to scout the population center.";
-			i = orders.indexOf(scoHex);
+			i = orders1.indexOf(scoHex);
 		}
 		if (i > -1) {
-			String p = orders.substring(i + scoHex.length());
+			String p = orders1.substring(i + scoHex.length());
 			int j = p.indexOf("He was ordered", i + scoHex.length());
 			if (j > -1) {
 				p = p.substring(0, j);
@@ -333,26 +333,26 @@ public class CharacterWrapper {
 	}
 
 	public void parseArmiesFromScoHexOrScoPop(Game game, InfoSource infoSource, Character ch) {
-		String orders = getCleanOrders();
+		String orders1 = getCleanOrders();
 		String scoutHex = "was ordered to scout the hex";
 		String scoutPopCenter = "was ordered to scout the population center";
 
-		if (orders.indexOf(scoutHex) == -1 && orders.indexOf(scoutPopCenter) == -1)
+		if (orders1.indexOf(scoutHex) == -1 && orders1.indexOf(scoutPopCenter) == -1)
 			return;
 
 		String foreignForcesPresent = "Foreign forces present:";
 
-		int i = orders.indexOf(foreignForcesPresent);
+		int i = orders1.indexOf(foreignForcesPresent);
 		if (i == -1) {
 			foreignForcesPresent = "Foreign armies present:";
-			i = orders.indexOf(foreignForcesPresent);
+			i = orders1.indexOf(foreignForcesPresent);
 		}
 		if (i == -1)
 			return;
 
-		int j = orders.substring(i + foreignForcesPresent.length()).indexOf(".");
+		int j = orders1.substring(i + foreignForcesPresent.length()).indexOf(".");
 
-		String p = orders.substring(i + foreignForcesPresent.length());
+		String p = orders1.substring(i + foreignForcesPresent.length());
 		p = p.substring(0, j);
 		String[] parts = p.split(" - ");
 		for (String part : parts) {
@@ -367,12 +367,12 @@ public class CharacterWrapper {
 				k = part.indexOf(parseString);
 			}
 			if (k > -1) { // name and nation
-				String name = part.substring(0, k).trim();
+				String name1 = part.substring(0, k).trim();
 				String nation = part.substring(k + parseString.length()).trim();
 				Nation n = game.getMetadata().getNationByName(nation);
 				if (n != null) {
 					a = new Army();
-					a.setCommanderName(name);
+					a.setCommanderName(name1);
 					a.setCommanderTitle("");
 					a.setInfoSource(infoSource);
 					a.setInformationSource(InformationSourceEnum.someMore);
@@ -403,7 +403,7 @@ public class CharacterWrapper {
 			if (a != null) {
 				Army oldA = null;
 				if (addCharacter) {
-					oldA = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name);
+					oldA = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", this.name);
 				}
 				if (oldA == null) {
 					// add army
@@ -415,12 +415,12 @@ public class CharacterWrapper {
 	}
 
 	public void parseArmiesFromDivineNationForces(Game game, InfoSource infoSource, Character ch) {
-		String orders = getCleanOrders();
+		String orders1 = getCleanOrders();
 		String dnf = "was ordered to cast a lore spell. Divine Nation Forces - ";
-		int i = orders.indexOf(dnf);
+		int i = orders1.indexOf(dnf);
 		if (i == -1)
 			return;
-		String p = orders.substring(i + dnf.length());
+		String p = orders1.substring(i + dnf.length());
 		int k = p.indexOf(".");
 		if (k == -1)
 			return;
@@ -439,26 +439,26 @@ public class CharacterWrapper {
 
 		String[] armies = armiesPart.split(" at \\d{4}");
 		for (String army : armies) {
-			String name = army.trim();
-			if (name.length() < 5)
+			String name1 = army.trim();
+			if (name1.length() < 5)
 				continue;
-			String namePlusAt = name + " at ";
+			String namePlusAt = name1 + " at ";
 			int namei = armiesPart.indexOf(namePlusAt);
 			String hexNoStr = armiesPart.substring(namei + namePlusAt.length(), namei + namePlusAt.length() + 4);
-			int hexNo;
+			int hexNo1;
 			try {
-				hexNo = Integer.parseInt(hexNoStr);
+				hexNo1 = Integer.parseInt(hexNoStr);
 			} catch (Exception e) {
 				continue;
 			}
-			Army oldArmy = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name);
+			Army oldArmy = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name1);
 			if (oldArmy == null) {
 				Army a = new Army();
-				a.setCommanderName(name);
+				a.setCommanderName(name1);
 				a.setCommanderTitle("");
 				a.setInfoSource(infoSource);
 				a.setInformationSource(InformationSourceEnum.someMore);
-				a.setHexNo(String.valueOf(hexNo));
+				a.setHexNo(String.valueOf(hexNo1));
 				a.setSize(ArmySizeEnum.unknown);
 				a.setNationNo(n.getNumber());
 				a.setNationAllegiance(n.getAllegiance());
@@ -468,12 +468,12 @@ public class CharacterWrapper {
 	}
 
 	public void parseDivineCharsWithForces(Game game, InfoSource infoSource, Character ch) {
-		String orders = getCleanOrders();
+		String orders1 = getCleanOrders();
 		String dnf = "was ordered to cast a lore spell. Divine Characters w/Forces - ";
-		int i = orders.indexOf(dnf);
+		int i = orders1.indexOf(dnf);
 		if (i == -1)
 			return;
-		String p = orders.substring(i + dnf.length());
+		String p = orders1.substring(i + dnf.length());
 		int k = p.indexOf(".");
 		if (k == -1)
 			return;

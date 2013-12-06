@@ -16,13 +16,14 @@ public class RumorActionInfoSource extends InfoSource {
 	}
 
 	public String getReports() {
-		return reports;
+		return this.reports;
 	}
 
 	public void setReports(String reports) {
 		this.reports = reports;
 	}
 	
+	@Override
 	public String toString() {
     	return "Rumor";
     }

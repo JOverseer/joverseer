@@ -17,7 +17,7 @@ public class ProductPrice implements Serializable{
     
     
     public int getMarketTotal() {
-        return marketTotal;
+        return this.marketTotal;
     }
 
     
@@ -26,7 +26,7 @@ public class ProductPrice implements Serializable{
     }
 
     public int getBuyPrice() {
-        return buyPrice;
+        return this.buyPrice;
     }
     
     public void setBuyPrice(int buyPrice) {
@@ -34,7 +34,7 @@ public class ProductPrice implements Serializable{
     }
     
     public ProductEnum getProduct() {
-        return product;
+        return this.product;
     }
     
     public void setProduct(ProductEnum product) {
@@ -42,7 +42,7 @@ public class ProductPrice implements Serializable{
     }
     
     public int getSellPrice() {
-        return sellPrice;
+        return this.sellPrice;
     }
     
     public void setSellPrice(int sellPrice) {

@@ -16,7 +16,7 @@ public abstract class AbstractCheck {
     public abstract String getMessage();
     
     public int getParamNo() {
-        return paramNo;
+        return this.paramNo;
     }
 
     

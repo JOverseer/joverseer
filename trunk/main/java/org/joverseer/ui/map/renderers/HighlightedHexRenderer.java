@@ -40,7 +40,7 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 			throw new IllegalArgumentException(obj.toString());
 		}
 
-		if (metadata == null) {
+		if (this.metadata == null) {
 			init();
 		}
 		if (HighlightHexesMapItem.class.isInstance(obj))
@@ -67,10 +67,10 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 		g.setStroke(GraphicUtils.getBasicStroke(getWidth()));
 		for (Integer hexNo : hmi.getHexesToHighlight()) {
 			Point p = MapPanel.instance().getHexLocation(hexNo);
-			Polygon polygon = new Polygon(xPoints, yPoints, 6);
-			polygon.translate(p.x, p.y);
+			Polygon polygon1 = new Polygon(this.xPoints, this.yPoints, 6);
+			polygon1.translate(p.x, p.y);
 			g.setColor(color);
-			g.drawPolygon(polygon);
+			g.drawPolygon(polygon1);
 		}
 		g.setStroke(currentStroke);
 	}
@@ -85,10 +85,10 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 			Integer hexNo = hmi.getHexes().get(i);
 			Integer turnNo = hmi.getTurns().get(i);
 			Point p = MapPanel.instance().getHexLocation(hexNo);
-			Polygon polygon = new Polygon(xPoints, yPoints, 6);
-			polygon.translate(p.x, p.y);
+			Polygon polygon1 = new Polygon(this.xPoints, this.yPoints, 6);
+			polygon1.translate(p.x, p.y);
 			g.setColor(color);
-			g.drawPolygon(polygon);
+			g.drawPolygon(polygon1);
 
 			Point p2 = MapPanel.instance().getHexCenter(hexNo);
 			Integer prevHexNo = -1;
@@ -142,7 +142,7 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 	}
 
 	public String getHighlightColor() {
-		return highlightColor;
+		return this.highlightColor;
 	}
 
 	public void setHighlightColor(String highlightColor) {
@@ -150,7 +150,7 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 	}
 
 	public int getWidth() {
-		return width;
+		return this.width;
 	}
 
 	public void setWidth(int width) {

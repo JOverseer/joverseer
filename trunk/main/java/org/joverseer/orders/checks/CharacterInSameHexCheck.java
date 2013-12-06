@@ -6,12 +6,14 @@ import org.joverseer.orders.OrderUtils;
 
 
 public class CharacterInSameHexCheck extends AbstractCheck {
-    public boolean check(Order o) {
+    @Override
+	public boolean check(Order o) {
         Character c = (Character)OrderUtils.getCharacterFromId(o.getParameter(getParamNo()));
         return (c.getHexNo() == o.getCharacter().getHexNo());
     }
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return "Character {0} was not in the same hex.";
     }
 

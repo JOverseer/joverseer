@@ -22,6 +22,7 @@ import org.joverseer.support.GameHolder;
  */
 public class CharacterDeathAllegianceNameComparator implements Comparator<Character> {
 
+	@Override
 	public int compare(Character c1, Character c2) {
 		int i;
 		i = compareDeath(c1, c2);

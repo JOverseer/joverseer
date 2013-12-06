@@ -46,7 +46,7 @@ public class Turn implements Serializable {
 	Hashtable<TurnElementsEnum, Container<?>> containers = new Hashtable<TurnElementsEnum, Container<?>>();
 
 	public int getTurnNo() {
-		return turnNo;
+		return this.turnNo;
 	}
 
 	public void setTurnNo(int turnNo) {
@@ -54,7 +54,7 @@ public class Turn implements Serializable {
 	}
 
 	public Hashtable<TurnElementsEnum, Container<?>> getContainers() {
-		return containers;
+		return this.containers;
 	}
 
 	public void setContainers(Hashtable<TurnElementsEnum, Container<?>> containers) {
@@ -80,7 +80,7 @@ public class Turn implements Serializable {
 	}
 
 	public SeasonEnum getSeason() {
-		return season;
+		return this.season;
 	}
 
 	public void setSeason(SeasonEnum season) {
@@ -88,7 +88,7 @@ public class Turn implements Serializable {
 	}
 
 	public Date getTurnDate() {
-		return turnDate;
+		return this.turnDate;
 	}
 
 	public void setTurnDate(Date turnDate) {

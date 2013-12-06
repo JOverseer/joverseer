@@ -31,12 +31,12 @@ public class Nation implements Serializable {
 
     public Nation(int number, String name, String shortName) {
         this.name = name;
-        this.number = number;
+        this.number = new Integer(number);
         this.shortName = shortName;
     }
 
     public String getShortName() {
-        return shortName;
+        return this.shortName;
     }
 
     public void setShortName(String shortName) {
@@ -44,7 +44,7 @@ public class Nation implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -52,7 +52,7 @@ public class Nation implements Serializable {
     }
 
     public Integer getNumber() {
-        return number;
+        return this.number;
     }
 
     public void setNumber(Integer number) {
@@ -60,7 +60,7 @@ public class Nation implements Serializable {
     }
 
     public NationAllegianceEnum getAllegiance() {
-        return allegiance;
+        return this.allegiance;
     }
 
     public void setAllegiance(NationAllegianceEnum allegiance) {
@@ -69,7 +69,7 @@ public class Nation implements Serializable {
 
     
     public ArrayList<SNAEnum> getSnas() {
-        return snas;
+        return this.snas;
     }
 
     
@@ -83,7 +83,7 @@ public class Nation implements Serializable {
 
     
     public boolean getRemoved() {
-        return removed;
+        return this.removed;
     }
 
     
@@ -93,7 +93,7 @@ public class Nation implements Serializable {
 
     
     public boolean getEliminated() {
-        return eliminated;
+        return this.eliminated;
     }
 
     

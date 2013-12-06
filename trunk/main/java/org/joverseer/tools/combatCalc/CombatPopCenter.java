@@ -31,22 +31,22 @@ public class CombatPopCenter implements Serializable {
     int strengthOfAttackingArmies;
     
     public CombatPopCenter() {
-        size = PopulationCenterSizeEnum.town;
-        fort = FortificationSizeEnum.none;
-        loyalty = 50;
+        this.size = PopulationCenterSizeEnum.town;
+        this.fort = FortificationSizeEnum.none;
+        this.loyalty = 50;
     }
     
     public CombatPopCenter(PopulationCenter pc) {
-        name = pc.getName();
-        hexNo = pc.getHexNo();
-        size = pc.getSize();
-        fort = pc.getFortification();
-        loyalty = pc.getLoyalty();
-        nationNo = pc.getNationNo();
+        this.name = pc.getName();
+        this.hexNo = pc.getHexNo();
+        this.size = pc.getSize();
+        this.fort = pc.getFortification();
+        this.loyalty = pc.getLoyalty();
+        this.nationNo = pc.getNationNo();
     }
     
     public FortificationSizeEnum getFort() {
-        return fort;
+        return this.fort;
     }
     
     public void setFort(FortificationSizeEnum fort) {
@@ -54,7 +54,7 @@ public class CombatPopCenter implements Serializable {
     }
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -62,7 +62,7 @@ public class CombatPopCenter implements Serializable {
     }
     
     public int getLoyalty() {
-        return loyalty;
+        return this.loyalty;
     }
     
     public void setLoyalty(int loyalty) {
@@ -70,7 +70,7 @@ public class CombatPopCenter implements Serializable {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public void setName(String name) {
@@ -78,7 +78,7 @@ public class CombatPopCenter implements Serializable {
     }
     
     public PopulationCenterSizeEnum getSize() {
-        return size;
+        return this.size;
     }
     
     public void setSize(PopulationCenterSizeEnum size) {
@@ -87,7 +87,7 @@ public class CombatPopCenter implements Serializable {
 
     
     public Integer getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     
@@ -105,7 +105,7 @@ public class CombatPopCenter implements Serializable {
 
     
     public boolean isCaptured() {
-        return captured;
+        return this.captured;
     }
 
     
@@ -115,7 +115,7 @@ public class CombatPopCenter implements Serializable {
 
     
     public int getStrengthOfAttackingArmies() {
-        return strengthOfAttackingArmies;
+        return this.strengthOfAttackingArmies;
     }
 
     

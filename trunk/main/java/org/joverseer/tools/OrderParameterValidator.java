@@ -42,8 +42,8 @@ public class OrderParameterValidator {
 	Container<OrderEditorData> orderEditorData = null;
 
 	private Container<OrderEditorData> getOrderEditorData() {
-		if (orderEditorData == null) {
-			orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
+		if (this.orderEditorData == null) {
+			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
 			try {
 				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
 				Resource resource = gm.getResource("orderEditorData.csv");
@@ -71,7 +71,7 @@ public class OrderParameterValidator {
 						oed.getParamTypes().add(parts[10]);
 						oed.setMajorSkill(parts[11]);
 						oed.setSkill(parts[12]);
-						orderEditorData.addItem(oed);
+						this.orderEditorData.addItem(oed);
 						ln = reader.readLine();
 						if (ln == null) {
 							ln = "";
@@ -94,10 +94,10 @@ public class OrderParameterValidator {
 				}
 			} catch (Exception exc) {
 				System.out.println(exc.getMessage());
-				orderEditorData = null;
+				this.orderEditorData = null;
 			}
 		}
-		return orderEditorData;
+		return this.orderEditorData;
 	}
 
 	public OrderValidationResult checkForEncounter(Order o) {

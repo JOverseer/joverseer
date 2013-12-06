@@ -33,7 +33,7 @@ public class CharacterReport extends BaseReportObject implements IBelongsToNatio
 	}
 
 	public AdvancedCharacterWrapper getCharacterWrapper() {
-		return characterWrapper;
+		return this.characterWrapper;
 	}
 
 	public void setCharacterWrapper(AdvancedCharacterWrapper characterWrapper) {
@@ -41,7 +41,7 @@ public class CharacterReport extends BaseReportObject implements IBelongsToNatio
 	}
 
 	public Character getCharacter() {
-		return character;
+		return this.character;
 	}
 
 	public void setCharacter(Character character) {

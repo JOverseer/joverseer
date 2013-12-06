@@ -23,7 +23,7 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 			return null;
 		if (getGame().getTurn() == null)
 			return null;
-		Turn t = game.getTurn();
+		Turn t = this.game.getTurn();
 		Container<NationEconomy> nes = t.getNationEconomies();
 		NationEconomy ne = nes.findFirstByProperty("nationNo", getNationNo());
 		return ne;
@@ -34,7 +34,7 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 			return null;
 		if (getGame().getTurn() == null)
 			return null;
-		Turn t = game.getTurn();
+		Turn t = this.game.getTurn();
 		Container<EconomyCalculatorData> nes = t.getEconomyCalculatorData();
 		EconomyCalculatorData ecd = nes.findFirstByProperty("nationNo", getNationNo());
 		if (ecd == null) {
@@ -46,18 +46,18 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 	}
 
 	protected Game getGame() {
-		if (game == null) {
-			game = GameHolder.instance().getGame();
+		if (this.game == null) {
+			this.game = GameHolder.instance().getGame();
 		}
-		return game;
+		return this.game;
 	}
 
 	public void setGame(Game g) {
-		game = g;
+		this.game = g;
 	}
 
 	protected Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	protected void setNationNo(int nationNo) {

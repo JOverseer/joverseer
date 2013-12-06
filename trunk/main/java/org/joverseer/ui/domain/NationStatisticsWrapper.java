@@ -37,7 +37,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	int troopCount;
 
 	public NationAllegianceEnum getAllegiance() {
-		return allegiance;
+		return this.allegiance;
 	}
 
 	public void setAllegiance(NationAllegianceEnum allegiance) {
@@ -45,7 +45,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	public void setArmies(int armies) {
@@ -53,23 +53,23 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getArmyEHI() {
-		if (armyEHI == null) {
-			armyEHI = 0;
+		if (this.armyEHI == null) {
+			this.armyEHI = 0;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			if (!Game.isInitialized(g))
 				return 0;
 			Turn t = g.getTurn();
-			ArrayList<Army> armies;
-			if (allegiance == null) {
-				armies = t.getArmies().findAllByProperty("nationNo", getNationNo());
+			ArrayList<Army> armies1;
+			if (this.allegiance == null) {
+				armies1 = t.getArmies().findAllByProperty("nationNo", getNationNo());
 			} else {
-				armies = t.getArmies().findAllByProperty("nationAllegiance", getAllegiance());
+				armies1 = t.getArmies().findAllByProperty("nationAllegiance", getAllegiance());
 			}
-			for (Army a : armies) {
-				armyEHI = a.getENHI() + armyEHI;
+			for (Army a : armies1) {
+				this.armyEHI = a.getENHI() + this.armyEHI;
 			}
 		}
-		return armyEHI;
+		return this.armyEHI;
 	}
 
 	public void setArmyEHI(int armyEHI) {
@@ -77,7 +77,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getCharacters() {
-		return characters;
+		return this.characters;
 	}
 
 	public void setCharacters(int characters) {
@@ -85,7 +85,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getHostages() {
-		return hostages;
+		return this.hostages;
 	}
 
 	public void setHostages(int hostages) {
@@ -93,7 +93,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getCharactersInCapital() {
-		return charactersInCapital;
+		return this.charactersInCapital;
 	}
 
 	public void setCharactersInCapital(int charactersInCapital) {
@@ -101,23 +101,25 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getCommanders() {
-		return commanders;
+		return this.commanders;
 	}
 
 	public void setCommanders(int commanders) {
 		this.commanders = commanders;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
 
 	public int getPopCenters() {
-		return popCenters;
+		return this.popCenters;
 	}
 
 	public void setPopCenters(int popCenters) {
@@ -125,7 +127,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getTaxBase() {
-		return taxBase;
+		return this.taxBase;
 	}
 
 	public void setTaxBase(int taxBase) {
@@ -133,7 +135,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getTroopCount() {
-		return troopCount;
+		return this.troopCount;
 	}
 
 	public void setTroopCount(int troopCount) {
@@ -141,7 +143,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getCities() {
-		return cities;
+		return this.cities;
 	}
 
 	public void setCities(int cities) {
@@ -149,7 +151,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getMajorTowns() {
-		return majorTowns;
+		return this.majorTowns;
 	}
 
 	public void setMajorTowns(int majorTowns) {
@@ -157,7 +159,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getCamps() {
-		return camps;
+		return this.camps;
 	}
 
 	public void setCamps(int camps) {
@@ -165,7 +167,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getTowns() {
-		return towns;
+		return this.towns;
 	}
 
 	public void setTowns(int towns) {
@@ -173,7 +175,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getVillages() {
-		return villages;
+		return this.villages;
 	}
 
 	public void setVillages(int villages) {
@@ -181,7 +183,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getNavies() {
-		return navies;
+		return this.navies;
 	}
 
 	public void setNavies(int navies) {
@@ -189,7 +191,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getTransports() {
-		return transports;
+		return this.transports;
 	}
 
 	public void setTransports(int transports) {
@@ -197,7 +199,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public int getWarships() {
-		return warships;
+		return this.warships;
 	}
 
 	public void setWarships(int warships) {
@@ -205,20 +207,20 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	}
 
 	public void add(NationStatisticsWrapper nsw) {
-		armies += nsw.getArmies();
-		cities += nsw.getCities();
-		majorTowns += nsw.getMajorTowns();
-		towns += nsw.getTowns();
-		villages += nsw.getVillages();
-		camps += nsw.getCamps();
-		taxBase += nsw.getTaxBase();
-		characters += nsw.getCharacters();
-		hostages += nsw.getHostages();
-		navies += nsw.getNavies();
-		transports += nsw.getTransports();
-		warships += nsw.getWarships();
-		troopCount += nsw.getTroopCount();
-		popCenters += nsw.getPopCenters();
+		this.armies += nsw.getArmies();
+		this.cities += nsw.getCities();
+		this.majorTowns += nsw.getMajorTowns();
+		this.towns += nsw.getTowns();
+		this.villages += nsw.getVillages();
+		this.camps += nsw.getCamps();
+		this.taxBase += nsw.getTaxBase();
+		this.characters += nsw.getCharacters();
+		this.hostages += nsw.getHostages();
+		this.navies += nsw.getNavies();
+		this.transports += nsw.getTransports();
+		this.warships += nsw.getWarships();
+		this.troopCount += nsw.getTroopCount();
+		this.popCenters += nsw.getPopCenters();
 
 	}
 }

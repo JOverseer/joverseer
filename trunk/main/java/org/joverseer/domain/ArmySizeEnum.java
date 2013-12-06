@@ -19,10 +19,10 @@ public enum ArmySizeEnum implements Serializable {
     int size;
 
     private ArmySizeEnum(int s) {
-        size = s;
+        this.size = s;
     }
 
     public int getSize() {
-    	return size;
+    	return this.size;
     }
 }

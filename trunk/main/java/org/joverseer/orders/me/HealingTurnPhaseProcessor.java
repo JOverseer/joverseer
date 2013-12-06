@@ -17,20 +17,23 @@ public class HealingTurnPhaseProcessor extends AbstractTurnPhaseProcessor {
     int healthRecoveryPerTurn = 14;
     
     public int getHealthRecoveryPerTurn() {
-        return healthRecoveryPerTurn;
+        return this.healthRecoveryPerTurn;
     }
     
     public void setHealthRecoveryPerTurn(int healthRecoveryPerTurn) {
         this.healthRecoveryPerTurn = healthRecoveryPerTurn;
     }
 
-    public void processPhase(Turn t) {
+    @Override
+	public void processPhase(Turn t) {
         for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
-            if (c.getHealth() != null && c.getHealth() > 0 && c.getHealth() < 100) {
-                
-                int healAmt = Math.min(100 - c.getHealth(), getHealthRecoveryPerTurn());
-                c.setHealth(healAmt + c.getHealth());
-                OrderUtils.appendOrderResult(c, String.format("{0} physically healed for {1} health points.", c.getName(), healAmt));
+            if (c.getHealth() != null) {
+            	int health = c.getHealth().intValue();
+            	if (health > 0 && health < 100) {
+            		int healAmt = Math.min(100 - health, getHealthRecoveryPerTurn());
+            		c.setHealth(new Integer(healAmt + health));
+            		OrderUtils.appendOrderResult(c, String.format("{0} physically healed for {1} health points.", c.getName(), new Integer(healAmt)));
+            	}
             }
         }
     }

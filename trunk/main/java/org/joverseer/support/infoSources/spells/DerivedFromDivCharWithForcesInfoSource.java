@@ -20,7 +20,8 @@ public class DerivedFromDivCharWithForcesInfoSource extends DerivedFromSpellInfo
         setCasterName(casterName);
     }
     
-    public String getSpell() {
+    @Override
+	public String getSpell() {
         return "DCWF";
     }
     

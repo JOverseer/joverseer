@@ -22,7 +22,8 @@ public class DerivedFromLocateArtifactInfoSource extends DerivedFromSpellInfoSou
         setHexNo(hexNo);
     }
     
-    public String getSpell() {
+    @Override
+	public String getSpell() {
         return "LA";
     }
 }

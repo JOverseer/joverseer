@@ -22,6 +22,6 @@ public enum NationAllegianceEnum implements Serializable {
    }
     
    public int getAllegiance() {
-       return allegiance;
+       return this.allegiance;
    }
 }

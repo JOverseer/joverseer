@@ -60,7 +60,7 @@ public class BaseTurnProcessor {
     }
     
     public HashMap<String, AbstractTurnPhaseProcessor> getPhases() {
-        return phases;
+        return this.phases;
     }
     
     public void setPhases(HashMap<String, AbstractTurnPhaseProcessor> phases) {

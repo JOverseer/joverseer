@@ -27,7 +27,7 @@ public class TurnInfo {
 	int nationCapitalHex;
 
 	public Container<CharacterWrapper> getCharacters() {
-		return characters;
+		return this.characters;
 	}
 
 	public void setCharacters(Container characters) {
@@ -35,7 +35,7 @@ public class TurnInfo {
 	}
 
 	public Container<PopCenterWrapper> getPopCentres() {
-		return popCentres;
+		return this.popCentres;
 	}
 
 	public void setPopCentres(Container popCentres) {
@@ -43,7 +43,7 @@ public class TurnInfo {
 	}
 
 	public Container<ArmyWrapper> getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	public void setArmies(Container armies) {
@@ -51,7 +51,7 @@ public class TurnInfo {
 	}
 
 	public Container<NationWrapper> getNations() {
-		return nations;
+		return this.nations;
 	}
 
 	public void setNations(Container nations) {
@@ -59,7 +59,7 @@ public class TurnInfo {
 	}
 
 	public int getGameNo() {
-		return gameNo;
+		return this.gameNo;
 	}
 
 	public void setGameNo(int gameNo) {
@@ -67,7 +67,7 @@ public class TurnInfo {
 	}
 
 	public String getGameType() {
-		return gameType;
+		return this.gameType;
 	}
 
 	public void setGameType(String gameType) {
@@ -75,7 +75,7 @@ public class TurnInfo {
 	}
 
 	public int getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	public void setNationNo(int nationNo) {
@@ -83,7 +83,7 @@ public class TurnInfo {
 	}
 
 	public int getTurnNo() {
-		return turnNo;
+		return this.turnNo;
 	}
 
 	public void setTurnNo(int turnNo) {
@@ -91,7 +91,7 @@ public class TurnInfo {
 	}
 
 	public NationInfoWrapper getNationInfoWrapper() {
-		return nationInfoWrapper;
+		return this.nationInfoWrapper;
 	}
 
 	public void setNationInfoWrapper(NationInfoWrapper nationInfoWrapper) {
@@ -99,7 +99,7 @@ public class TurnInfo {
 	}
 
 	public EconomyWrapper getEconomy() {
-		return economy;
+		return this.economy;
 	}
 
 	public void setEconomy(EconomyWrapper economy) {
@@ -107,7 +107,7 @@ public class TurnInfo {
 	}
 
 	public String getAccountNo() {
-		return accountNo;
+		return this.accountNo;
 	}
 
 	public void setAccountNo(String accountNo) {
@@ -115,7 +115,7 @@ public class TurnInfo {
 	}
 
 	public String getDueDate() {
-		return dueDate;
+		return this.dueDate;
 	}
 
 	public void setDueDate(String dueDate) {
@@ -123,7 +123,7 @@ public class TurnInfo {
 	}
 
 	public String getPlayerName() {
-		return playerName;
+		return this.playerName;
 	}
 
 	public void setPlayerName(String playerName) {
@@ -131,7 +131,7 @@ public class TurnInfo {
 	}
 
 	public String getSecurityCode() {
-		return securityCode;
+		return this.securityCode;
 	}
 
 	public void setSecurityCode(String secutiryCode) {
@@ -139,7 +139,7 @@ public class TurnInfo {
 	}
 
 	public int getNationCapitalHex() {
-		return nationCapitalHex;
+		return this.nationCapitalHex;
 	}
 
 	public void setNationCapitalHex(int nationCapitalHex) {

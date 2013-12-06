@@ -46,9 +46,9 @@ public class Hex
     public Hex(int location)
     {
         this.location = -1;
-        terrain = -1;
-        directions = new Vector();
-        features = new Vector();
+        this.terrain = -1;
+        this.directions = new Vector();
+        this.features = new Vector();
         this.location = location;
     }
 
@@ -56,34 +56,34 @@ public class Hex
     {
         if(direction.equalsIgnoreCase("ne"))
         {
-            return 1;
+            return DIRECTION_NE;//1
         }
         if(direction.equalsIgnoreCase("e"))
         {
-            return 2;
+            return DIRECTION_E;
         }
         if(direction.equalsIgnoreCase("se"))
         {
-            return 3;
+            return DIRECTION_SE;
         }
         if(direction.equalsIgnoreCase("sw"))
         {
-            return 4;
+            return DIRECTION_SW;
         }
         if(direction.equalsIgnoreCase("w"))
         {
-            return 5;
+            return DIRECTION_W;
         }
         if(direction.equalsIgnoreCase("nw"))
         {
-            return 6;
+            return DIRECTION_NW;
         }
-        return !direction.equalsIgnoreCase("H") ? -1 : 7;
+        return !direction.equalsIgnoreCase("H") ? -1 : DIRECTION_HOLD;
     }
 
     static String featureDescription(int feature)
     {
-        if(feature < 1 || feature >= 6)
+        if(feature < 1 || feature >= MAX_FEATURES)
         {
             return null;
         } else
@@ -109,15 +109,15 @@ public class Hex
 
     boolean hasFeature(int feature, int direction)
     {
-        int size = features.size();
+        int size = this.features.size();
         for(int i = 0; i < size; i++)
         {
-            Integer value = (Integer)features.get(i);
+            Integer value = (Integer)this.features.get(i);
             if(value.intValue() != feature)
             {
                 continue;
             }
-            Integer dirValue = (Integer)directions.get(i);
+            Integer dirValue = (Integer)this.directions.get(i);
             if(dirValue.intValue() == direction)
             {
                 return true;
@@ -129,10 +129,10 @@ public class Hex
 
     boolean hasFeature(int feature)
     {
-        int size = features.size();
+        int size = this.features.size();
         for(int i = 0; i < size; i++)
         {
-            Integer value = (Integer)features.get(i);
+            Integer value = (Integer)this.features.get(i);
             if(value.intValue() == feature)
             {
                 return true;
@@ -148,7 +148,7 @@ public class Hex
         int y = this.location - x * 100;
         switch(direction)
         {
-        case 1: // '\001'
+        case DIRECTION_NE: // '\001'
             if(y % 2 == 0)
             {
                 x++;
@@ -156,11 +156,11 @@ public class Hex
             y--;
             break;
 
-        case 2: // '\002'
+        case DIRECTION_E: // '\002'
             x++;
             break;
 
-        case 3: // '\003'
+        case DIRECTION_SE: // '\003'
             if(y % 2 == 0)
             {
                 x++;
@@ -168,7 +168,7 @@ public class Hex
             y++;
             break;
 
-        case 4: // '\004'
+        case DIRECTION_SW: // '\004'
             if(y % 2 == 1)
             {
                 x--;
@@ -176,11 +176,11 @@ public class Hex
             y++;
             break;
 
-        case 5: // '\005'
+        case DIRECTION_W: // '\005'
             x--;
             break;
 
-        case 6: // '\006'
+        case DIRECTION_NW: // '\006'
             if(y % 2 == 1)
             {
                 x--;
@@ -196,8 +196,8 @@ public class Hex
             return -1;
         } else
         {
-            int location = x * 100 + y;
-            return location;
+            int location1 = x * 100 + y;
+            return location1;
         }
     }
 
@@ -208,27 +208,27 @@ public class Hex
 
     public void addDirection(Integer direction)
     {
-        directions.add(((Object) (direction)));
+        this.directions.add(((Object) (direction)));
     }
 
     public void addFeature(Integer feature)
     {
-        features.add(((Object) (feature)));
+        this.features.add(((Object) (feature)));
     }
 
     int getLocation()
     {
-        return location;
+        return this.location;
     }
 
     int getTerrain()
     {
-        return terrain;
+        return this.terrain;
     }
 
     boolean isHexComplete()
     {
-        return location != -1 && terrain != -1 && directions.size() == features.size();
+        return this.location != -1 && this.terrain != -1 && this.directions.size() == this.features.size();
     }
 
 }

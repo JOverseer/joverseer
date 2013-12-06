@@ -1,54 +1,54 @@
-"2802",0,3,0,10,2,0,"Lag Mithrin",40,False,True,1,False
-"2902",0,3,0,10,2,0,"Lag Scorba",40,False,True,1,False
-"2904",0,4,1,10,2,0,"Thiach",75,False,True,1,False
-"3002",0,4,2,10,2,0,"Yalumea",75,True,True,1,False
-"3003",0,2,0,10,2,0,"Rhandir",40,False,True,1,False
-"3103",0,4,0,10,2,0,"Valaina",50,False,True,1,False
-"3104",0,4,0,10,2,0,"Lag Agul",75,False,True,1,False
-"3203",0,2,0,10,2,0,"Lag Kajfa",40,False,True,1,False
-"3207",0,1,0,10,2,0,"Lag Deras",40,False,True,1,False
-"3303",0,2,1,10,2,0,"Veasse",40,False,True,1,False
-"3405",0,1,0,10,2,0,"Karagas",40,False,True,1,False
-"2604",0,2,1,11,2,0,"Lag Kanil",40,False,True,1,False
-"2606",0,5,3,11,2,0,"Mirkwood Fortress",75,True,True,1,False
-"2703",0,3,1,11,2,0,"Maranwe",50,False,True,1,False
-"2708",0,1,0,11,2,0,"Lag Krazul",40,False,True,1,False
-"2807",0,2,0,11,2,0,"Lamina",40,False,True,1,False
-"2808",0,1,0,11,2,0,"Lag Siif",40,False,True,1,False
-"2809",0,3,1,11,2,0,"Sarn Goriwin",50,False,True,1,False
-"2811",0,1,0,11,2,0,"Snagarl",40,False,True,1,False
-"3004",0,2,0,11,2,0,"Lag Praaj",40,False,True,1,False
-"3011",0,1,0,11,2,0,"Angrest",40,False,True,1,False
-"2608",0,2,1,12,1,0,"Quilari",40,False,True,1,False
-"2706",0,1,0,12,1,0,"Elentiniel",40,False,True,1,False
-"2707",0,1,0,12,1,0,"Faltision",40,False,True,1,False
-"2806",0,3,1,12,1,0,"Kelume",50,False,True,1,False
-"2906",0,3,1,12,1,0,"Tuilindo",50,False,True,1,False
-"2907",0,1,0,12,1,0,"Erelinden",40,False,True,1,False
-"2908",0,4,1,12,1,0,"Mithrond",75,True,True,1,True
-"2909",0,1,0,12,1,0,"Tol Pantir",40,False,True,1,False
-"2912",0,4,2,12,1,0,"Crug Abarr",75,False,True,1,False
-"3010",0,3,1,12,1,0,"Hen Gwirion",50,False,True,1,False
-"3107",0,1,3,13,1,0,"The Lonely Mountain",1,False,True,1,False
-"3506",0,3,1,13,1,0,"Naugrim",50,False,True,1,False
-"3606",0,1,1,13,1,0,"Thraktal",40,False,True,1,False
-"3607",0,3,2,13,1,0,"Caras Galan",50,False,True,1,False
-"3707",0,4,4,13,1,0,"Iron Hold",90,True,True,1,False
-"3806",0,2,2,13,1,0,"Amon Ferin",50,False,True,1,False
-"3807",0,3,1,13,1,0,"Goronwe",50,False,True,1,False
-"3907",0,4,1,13,1,0,"Dain's Respite",90,False,True,1,False
-"2610",0,1,0,14,1,0,"Beorn's Homestead",40,False,True,1,True
-"2810",0,1,0,14,1,0,"Amon Gastal",40,False,True,1,False
-"2910",0,1,0,14,1,0,"Asalkai",40,False,True,1,False
-"3007",0,2,0,14,1,0,"Buhr Gasug",40,False,True,1,False
-"3009",0,2,1,14,1,0,"Tol Ithluin",40,False,True,1,False
-"3105",0,3,0,14,1,0,"Buhr Edhel",50,False,True,1,False
-"3109",0,4,2,14,1,0,"Esgaroth",75,True,True,1,False
-"3110",0,2,0,14,1,0,"Mijesec",40,False,True,1,False
-"3206",0,1,0,14,1,0,"Ered Minrath",40,False,True,1,False
-"3209",0,1,0,14,1,0,"Akhulsa",40,False,True,1,False
-"3211",0,4,2,14,1,0,"Nuath",75,False,True,1,False
-"3310",0,1,0,14,1,0,"Haldarion",40,False,True,1,False
-"3311",0,2,0,14,1,0,"Buhr Martis",40,False,True,1,False
-"3409",0,1,0,14,1,0,"Nimloth",40,False,True,1,False
-"3411",0,1,0,14,1,0,"Bethadal",40,False,True,1,False
+"2802",0,3,0,1,2,0,"Lag Mithrin",40,False,True,1,False
+"2902",0,3,0,1,2,0,"Lag Scorba",40,False,True,1,False
+"2904",0,4,1,1,2,0,"Thiach",75,False,True,1,False
+"3002",0,4,2,1,2,0,"Yalumea",75,True,True,1,False
+"3003",0,2,0,1,2,0,"Rhandir",40,False,True,1,False
+"3103",0,4,0,1,2,0,"Valaina",50,False,True,1,False
+"3104",0,4,0,1,2,0,"Lag Agul",75,False,True,1,False
+"3203",0,2,0,1,2,0,"Lag Kajfa",40,False,True,1,False
+"3207",0,1,0,1,2,0,"Lag Deras",40,False,True,1,False
+"3303",0,2,1,1,2,0,"Veasse",40,False,True,1,False
+"3405",0,1,0,1,2,0,"Karagas",40,False,True,1,False
+"2604",0,2,1,2,2,0,"Lag Kanil",40,False,True,1,False
+"2606",0,5,3,2,2,0,"Mirkwood Fortress",75,True,True,1,False
+"2703",0,3,1,2,2,0,"Maranwe",50,False,True,1,False
+"2708",0,1,0,2,2,0,"Lag Krazul",40,False,True,1,False
+"2807",0,2,0,2,2,0,"Lamina",40,False,True,1,False
+"2808",0,1,0,2,2,0,"Lag Siif",40,False,True,1,False
+"2809",0,3,1,2,2,0,"Sarn Goriwin",50,False,True,1,False
+"2811",0,1,0,2,2,0,"Snagarl",40,False,True,1,False
+"3004",0,2,0,2,2,0,"Lag Praaj",40,False,True,1,False
+"3011",0,1,0,2,2,0,"Angrest",40,False,True,1,False
+"2608",0,2,1,3,1,0,"Quilari",40,False,True,1,False
+"2706",0,1,0,3,1,0,"Elentiniel",40,False,True,1,False
+"2707",0,1,0,3,1,0,"Faltision",40,False,True,1,False
+"2806",0,3,1,3,1,0,"Kelume",50,False,True,1,False
+"2906",0,3,1,3,1,0,"Tuilindo",50,False,True,1,False
+"2907",0,1,0,3,1,0,"Erelinden",40,False,True,1,False
+"2908",0,4,1,3,1,0,"Mithrond",75,True,True,1,True
+"2909",0,1,0,3,1,0,"Tol Pantir",40,False,True,1,False
+"2912",0,4,2,3,1,0,"Crug Abarr",75,False,True,1,False
+"3010",0,3,1,3,1,0,"Hen Gwirion",50,False,True,1,False
+"3107",0,1,3,4,1,0,"The Lonely Mountain",1,False,True,1,False
+"3506",0,3,1,4,1,0,"Naugrim",50,False,True,1,False
+"3606",0,1,1,4,1,0,"Thraktal",40,False,True,1,False
+"3607",0,3,2,4,1,0,"Caras Galan",50,False,True,1,False
+"3707",0,4,4,4,1,0,"Iron Hold",90,True,True,1,False
+"3806",0,2,2,4,1,0,"Amon Ferin",50,False,True,1,False
+"3807",0,3,1,4,1,0,"Goronwe",50,False,True,1,False
+"3907",0,4,1,4,1,0,"Dain's Respite",90,False,True,1,False
+"2610",0,1,0,5,1,0,"Beorn's Homestead",40,False,True,1,True
+"2810",0,1,0,5,1,0,"Amon Gastal",40,False,True,1,False
+"2910",0,1,0,5,1,0,"Asalkai",40,False,True,1,False
+"3007",0,2,0,5,1,0,"Buhr Gasug",40,False,True,1,False
+"3009",0,2,1,5,1,0,"Tol Ithluin",40,False,True,1,False
+"3105",0,3,0,5,1,0,"Buhr Edhel",50,False,True,1,False
+"3109",0,4,2,5,1,0,"Esgaroth",75,True,True,1,False
+"3110",0,2,0,5,1,0,"Mijesec",40,False,True,1,False
+"3206",0,1,0,5,1,0,"Ered Minrath",40,False,True,1,False
+"3209",0,1,0,5,1,0,"Akhulsa",40,False,True,1,False
+"3211",0,4,2,5,1,0,"Nuath",75,False,True,1,False
+"3310",0,1,0,5,1,0,"Haldarion",40,False,True,1,False
+"3311",0,2,0,5,1,0,"Buhr Martis",40,False,True,1,False
+"3409",0,1,0,5,1,0,"Nimloth",40,False,True,1,False
+"3411",0,1,0,5,1,0,"Bethadal",40,False,True,1,False

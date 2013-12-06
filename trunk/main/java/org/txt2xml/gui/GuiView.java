@@ -46,6 +46,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+
+import org.scopemvc.controller.basic.BasicController;
 import org.scopemvc.core.Control;
 import org.scopemvc.view.swing.SLabel;
 import org.scopemvc.view.swing.SMenuItem;
@@ -85,15 +87,18 @@ public class GuiView extends SPanel {
         setPreferredSize(new Dimension(640, 480));
     }
 
-    public String getTitle() {
+    @Override
+	public String getTitle() {
         return "txt2xml";
     }
 
-    public Control getCloseControl() {
-        return new Control(GuiController.EXIT_CONTROL_ID);
+    @Override
+	public Control getCloseControl() {
+        return new Control(BasicController.EXIT_CONTROL_ID);
     }
 
-    public JMenuBar getMenuBar() {
+    @Override
+	public JMenuBar getMenuBar() {
         JMenu menu = new JMenu("File");
         menu.add(new SMenuItem(GuiController.LOAD_SOURCE, this, KeyStroke.getKeyStroke("ctrl O")));
         menu.add(new SMenuItem(GuiController.LOAD_CONFIG, this, KeyStroke.getKeyStroke("ctrl L")));
@@ -101,7 +106,7 @@ public class GuiView extends SPanel {
         menu.add(new SMenuItem(GuiController.SAVE_CONFIG, this, KeyStroke.getKeyStroke("ctrl L")));
         menu.add(new SMenuItem(GuiController.PROCESS, this, KeyStroke.getKeyStroke("ctrl P")));
         menu.addSeparator();
-        menu.add(new SMenuItem(GuiController.EXIT_CONTROL_ID, this, KeyStroke.getKeyStroke("ctrl Q")));
+        menu.add(new SMenuItem(BasicController.EXIT_CONTROL_ID, this, KeyStroke.getKeyStroke("ctrl Q")));
 
         JMenuBar menubar = new JMenuBar();
         menubar.add(menu);

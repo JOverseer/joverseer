@@ -14,7 +14,7 @@ public class JOverseerJideViewDescriptor extends JideViewDescriptor {
     String viewGroup;
 
     public int getPreferredHeight() {
-        return preferredHeight;
+        return this.preferredHeight;
     }
 
     public void setPreferredHeight(int preferredHeight) {
@@ -22,7 +22,7 @@ public class JOverseerJideViewDescriptor extends JideViewDescriptor {
     }
 
     public int getPreferredWidth() {
-        return preferredWidth;
+        return this.preferredWidth;
     }
 
     public void setPreferredWidth(int preferredWidth) {
@@ -30,7 +30,7 @@ public class JOverseerJideViewDescriptor extends JideViewDescriptor {
     }
 
     public String getViewGroup() {
-        return viewGroup;
+        return this.viewGroup;
     }
 
     public void setViewGroup(String viewGroup) {

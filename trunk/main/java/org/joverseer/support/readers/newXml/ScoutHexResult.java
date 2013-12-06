@@ -13,9 +13,10 @@ public class ScoutHexResult implements OrderResult {
 
 	ArrayList<Army> armies = new ArrayList<Army>();
 
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
 		Character c = turn.getCharByName(character);
-		for (Army a : armies) {
+		for (Army a : this.armies) {
 			a.setX(c.getX());
 			a.setY(c.getY());
 			TurnXmlReader.addArmy(a, game, turn, true);
@@ -23,7 +24,7 @@ public class ScoutHexResult implements OrderResult {
 	}
 
 	public void addArmy(Army a) {
-		armies.add(a);
+		this.armies.add(a);
 	}
 
 }

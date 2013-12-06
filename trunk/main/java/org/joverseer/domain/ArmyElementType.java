@@ -26,25 +26,25 @@ public enum ArmyElementType implements Serializable {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
     
     public int foodConsumption() {
-        if (type.equals("HC") || type.equals("LC")) return 2;
-        if (type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA")) return 1;
+        if (this.type.equals("HC") || this.type.equals("LC")) return 2;
+        if (this.type.equals("HI") || this.type.equals("LI") || this.type.equals("AR") || this.type.equals("MA")) return 1;
         return 0;
     }
     
     public boolean isCavalry() {
-        return type.equals("HC") || type.equals("LC");
+        return this.type.equals("HC") || this.type.equals("LC");
     }
     
     public boolean isTroop() {
-    	return type.equals("HC") || type.equals("LC") || type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA");
+    	return this.type.equals("HC") || this.type.equals("LC") || this.type.equals("HI") || this.type.equals("LI") || this.type.equals("AR") || this.type.equals("MA");
     }
     
     public boolean isInfantry() {
-    	return type.equals("HI") || type.equals("LI") || type.equals("AR") || type.equals("MA");
+    	return this.type.equals("HI") || this.type.equals("LI") || this.type.equals("AR") || this.type.equals("MA");
     }
     
     public double getRequiredTransportCapacity() {

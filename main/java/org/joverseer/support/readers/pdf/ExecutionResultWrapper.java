@@ -15,12 +15,13 @@ import org.joverseer.support.infoSources.PdfTurnInfoSource;
 public class ExecutionResultWrapper implements OrderResult {
     String character;
     
-    public void updateGame(Game game, Turn turn, int nationNo, String orderCharacter) {
-        Character c = (Character)turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", character);
+    @Override
+	public void updateGame(Game game, Turn turn, int nationNo, String orderCharacter) {
+        Character c = (Character)turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", this.character);
         if (c == null) {
             c = new Character();
-            c.setName(character);
-            c.setId(Character.getIdFromName(character));
+            c.setName(this.character);
+            c.setId(Character.getIdFromName(this.character));
             c.setNationNo(0);
             c.setInfoSource(new PdfTurnInfoSource(turn.getTurnNo(), nationNo));
             turn.getContainer(TurnElementsEnum.Character).addItem(c);
@@ -30,7 +31,7 @@ public class ExecutionResultWrapper implements OrderResult {
 
     
     public String getCharacter() {
-        return character;
+        return this.character;
     }
 
     

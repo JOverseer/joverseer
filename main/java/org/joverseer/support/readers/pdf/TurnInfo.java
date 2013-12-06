@@ -29,7 +29,7 @@ public class TurnInfo {
     String nationName;
 
     public String getAllegiance() {
-        return allegiance;
+        return this.allegiance;
     }
 
     public void setAllegiance(String allegiance) {
@@ -37,7 +37,7 @@ public class TurnInfo {
     }
 
     public Container getNationRelations() {
-        return nationRelations;
+        return this.nationRelations;
     }
 
     public void setNationRelations(Container nationRelations) {
@@ -45,7 +45,7 @@ public class TurnInfo {
     }
 
     public Container getPopulationCenters() {
-        return populationCenters;
+        return this.populationCenters;
     }
 
     public void setPopulationCenters(Container populationCenters) {
@@ -53,7 +53,7 @@ public class TurnInfo {
     }
 
     public Container getCharacters() {
-        return characters;
+        return this.characters;
     }
 
     public void setCharacters(Container characters) {
@@ -62,7 +62,7 @@ public class TurnInfo {
 
 
     public Container getCompanies() {
-        return companies;
+        return this.companies;
     }
 
 
@@ -72,7 +72,7 @@ public class TurnInfo {
 
     
     public int getTurnNo() {
-        return turnNo;
+        return this.turnNo;
     }
 
     
@@ -82,7 +82,7 @@ public class TurnInfo {
 
     
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     
@@ -92,7 +92,7 @@ public class TurnInfo {
 
     
     public Container getCombats() {
-        return combats;
+        return this.combats;
     }
 
     
@@ -102,7 +102,7 @@ public class TurnInfo {
 
     
     public Container getArmies() {
-        return armies;
+        return this.armies;
     }
 
     
@@ -112,7 +112,7 @@ public class TurnInfo {
 
     
     public Container getEncounters() {
-        return encounters;
+        return this.encounters;
     }
 
     
@@ -122,7 +122,7 @@ public class TurnInfo {
 
     
     public Container getDoubleAgents() {
-        return doubleAgents;
+        return this.doubleAgents;
     }
 
     
@@ -132,7 +132,7 @@ public class TurnInfo {
 
     
     public Container getChallenges() {
-        return challenges;
+        return this.challenges;
     }
 
     
@@ -142,7 +142,7 @@ public class TurnInfo {
 
     
     public String getDate() {
-        return date;
+        return this.date;
     }
     
     public void setDate(String date) {
@@ -150,7 +150,7 @@ public class TurnInfo {
     }
     
     public String getSeason() {
-        return season;
+        return this.season;
     }
     
     public void setSeason(String season) {
@@ -159,7 +159,7 @@ public class TurnInfo {
 
     
     public Container getHostages() {
-        return hostages;
+        return this.hostages;
     }
 
     
@@ -169,7 +169,7 @@ public class TurnInfo {
 
     
     public String getNationName() {
-        return nationName;
+        return this.nationName;
     }
 
     
@@ -179,7 +179,7 @@ public class TurnInfo {
 
     
     public Container getSnas() {
-        return snas;
+        return this.snas;
     }
 
     
@@ -189,7 +189,7 @@ public class TurnInfo {
 
     
     public Container getArtifacts() {
-        return artifacts;
+        return this.artifacts;
     }
 
     
@@ -199,7 +199,7 @@ public class TurnInfo {
 
     
     public Container getAnchoredShips() {
-        return anchoredShips;
+        return this.anchoredShips;
     }
 
     

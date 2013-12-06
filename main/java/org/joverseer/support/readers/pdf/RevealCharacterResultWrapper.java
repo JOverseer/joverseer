@@ -19,7 +19,7 @@ public class RevealCharacterResultWrapper implements OrderResult {
 	int hexNo;
 
 	public String getCharacterName() {
-		return characterName;
+		return this.characterName;
 	}
 
 	public void setCharacterName(String characterName) {
@@ -27,13 +27,14 @@ public class RevealCharacterResultWrapper implements OrderResult {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
 
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
 		Container<Character> chars = turn.getCharacters();
 		Character c = chars.findFirstByProperty("name", getCharacterName());

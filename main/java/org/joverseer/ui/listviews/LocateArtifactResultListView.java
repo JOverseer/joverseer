@@ -44,7 +44,7 @@ public class LocateArtifactResultListView extends BaseItemListView {
 				continue;
 			for (Artifact arti : g.getTurn(ti).getArtifacts()) {
 				if (DerivedFromSpellInfoSource.class.isInstance(arti.getInfoSource())) {
-					for (LocateArtifactResult lar : ((LocateArtifactResultTableModel) tableModel).getResults(arti)) {
+					for (LocateArtifactResult lar : ((LocateArtifactResultTableModel) this.tableModel).getResults(arti)) {
 						lar.setTurnNo(ti);
 						results.add(lar);
 					}
@@ -59,8 +59,8 @@ public class LocateArtifactResultListView extends BaseItemListView {
 				items.add(lar);
 			}
 		}
-		tableModel.setRows(items);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setRows(items);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	@Override

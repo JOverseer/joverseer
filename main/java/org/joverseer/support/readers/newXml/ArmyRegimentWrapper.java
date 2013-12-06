@@ -8,37 +8,37 @@ public class ArmyRegimentWrapper {
 	int weapons;
 	int armor;
 	public int getArmor() {
-		return armor;
+		return this.armor;
 	}
 	public void setArmor(int armor) {
 		this.armor = armor;
 	}
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	public int getNumber() {
-		return number;
+		return this.number;
 	}
 	public void setNumber(int number) {
 		this.number = number;
 	}
 	public int getTraining() {
-		return training;
+		return this.training;
 	}
 	public void setTraining(int training) {
 		this.training = training;
 	}
 	public String getTroopType() {
-		return troopType;
+		return this.troopType;
 	}
 	public void setTroopType(String troopType) {
 		this.troopType = troopType;
 	}
 	public int getWeapons() {
-		return weapons;
+		return this.weapons;
 	}
 	public void setWeapons(int weapons) {
 		this.weapons = weapons;

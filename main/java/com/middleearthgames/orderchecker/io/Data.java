@@ -20,16 +20,16 @@ public class Data
 
     public Data()
     {
-        turnPath = "";
-        ordersPath = "";
-        gameType = 1;
-        exportFormat = 0;
-        sortFormat = 0;
-        endOfTurnInfo = true;
-        showCharInfo = true;
-        showAllResults = false;
-        gameData = new Vector();
-        windowSizes = new OCWindows();
+        this.turnPath = "";
+        this.ordersPath = "";
+        this.gameType = 1;
+        this.exportFormat = 0;
+        this.sortFormat = 0;
+        this.endOfTurnInfo = true;
+        this.showCharInfo = true;
+        this.showAllResults = false;
+        this.gameData = new Vector();
+        this.windowSizes = new OCWindows();
     }
 
     public static JCheckBox isDuplicateRequest(Vector list, JCheckBox request)
@@ -48,68 +48,69 @@ public class Data
         throws IOException
     {
         out.writeInt(7);
-        out.writeUTF(turnPath);
-        out.writeUTF(ordersPath);
-        out.writeInt(gameType);
-        out.writeInt(gameData.size());
-        for(int i = 0; i < gameData.size(); i++)
+        out.writeUTF(this.turnPath);
+        out.writeUTF(this.ordersPath);
+        out.writeInt(this.gameType);
+        out.writeInt(this.gameData.size());
+        for(int i = 0; i < this.gameData.size(); i++)
         {
-            GameData data = (GameData)gameData.get(i);
+            GameData data = (GameData)this.gameData.get(i);
             data.writeObject(out);
         }
 
-        windowSizes.writeObject(out);
-        out.writeInt(exportFormat);
-        out.writeInt(sortFormat);
-        out.writeBoolean(endOfTurnInfo);
-        out.writeBoolean(showCharInfo);
-        out.writeBoolean(showAllResults);
+        this.windowSizes.writeObject(out);
+        out.writeInt(this.exportFormat);
+        out.writeInt(this.sortFormat);
+        out.writeBoolean(this.endOfTurnInfo);
+        out.writeBoolean(this.showCharInfo);
+        out.writeBoolean(this.showAllResults);
     }
 
     public void readObject(ObjectInputStream in)
         throws IOException, ClassNotFoundException
     {
         int version = in.readInt();
-        turnPath = in.readUTF();
-        ordersPath = in.readUTF();
+        this.turnPath = in.readUTF();
+        this.ordersPath = in.readUTF();
         if(version < 6)
         {
-            String rulesPath = in.readUTF();
+            @SuppressWarnings("unused")
+			String rulesPath = in.readUTF();
             String terrainPath = in.readUTF();
             for(int i = 0; i < terrainFiles.length; i++)
                 if(terrainPath.equalsIgnoreCase(terrainFiles[i]))
-                    gameType = i;
+                    this.gameType = i;
 
         } else
         {
-            gameType = in.readInt();
+            this.gameType = in.readInt();
         }
         int count = in.readInt();
         for(int i = 0; i < count; i++)
         {
             GameData data = new GameData();
             data.readObject(in);
-            gameData.add(data);
+            this.gameData.add(data);
         }
 
-        windowSizes.readObject(in);
+        this.windowSizes.readObject(in);
         if(version >= 2)
-            exportFormat = in.readInt();
+            this.exportFormat = in.readInt();
         if(version >= 7)
-            sortFormat = in.readInt();
+            this.sortFormat = in.readInt();
         if(version >= 3)
-            endOfTurnInfo = in.readBoolean();
+            this.endOfTurnInfo = in.readBoolean();
         if(version >= 4)
-            showCharInfo = in.readBoolean();
+            this.showCharInfo = in.readBoolean();
         if(version >= 5)
-            showAllResults = in.readBoolean();
+            this.showAllResults = in.readBoolean();
     }
 
     private GameData findGame(Nation nation)
     {
-        for(int i = 0; i < gameData.size(); i++)
+        for(int i = 0; i < this.gameData.size(); i++)
         {
-            GameData data = (GameData)gameData.get(i);
+            GameData data = (GameData)this.gameData.get(i);
             if(data.getGame() == nation.getGame())
             {
                 if(data.getGameType().length() == 0)
@@ -119,23 +120,23 @@ public class Data
         }
 
         GameData newGame = new GameData(nation);
-        gameData.add(newGame);
+        this.gameData.add(newGame);
         return newGame;
     }
 
     public String getTurnResultsPath()
     {
-        return turnPath;
+        return this.turnPath;
     }
 
     public String getOrdersPath()
     {
-        return ordersPath;
+        return this.ordersPath;
     }
 
     public int getGameType()
     {
-        return gameType;
+        return this.gameType;
     }
 
     public String[] getGameDescriptions()
@@ -145,7 +146,7 @@ public class Data
 
     public String getGameDescription()
     {
-        return gameDesc[gameType];
+        return gameDesc[this.gameType];
     }
 
     public String getRulesPath()
@@ -155,7 +156,7 @@ public class Data
 
     public String getTerrainPath()
     {
-        return dataDirectory + terrainFiles[gameType];
+        return dataDirectory + terrainFiles[this.gameType];
     }
 
     
@@ -170,7 +171,7 @@ public class Data
 
     public Vector getGames()
     {
-        return gameData;
+        return this.gameData;
     }
 
     public int getNationAlignment(int number, Nation nation)
@@ -193,44 +194,44 @@ public class Data
 
     public int getExportFormat()
     {
-        return exportFormat;
+        return this.exportFormat;
     }
 
     public int getSortFormat()
     {
-        return sortFormat;
+        return this.sortFormat;
     }
 
     public boolean getEndOfTurnInfo()
     {
-        return endOfTurnInfo;
+        return this.endOfTurnInfo;
     }
 
     public boolean getShowCharNotes()
     {
-        return showCharInfo;
+        return this.showCharInfo;
     }
 
     public boolean getShowAllInfo()
     {
-        return showAllResults;
+        return this.showAllResults;
     }
 
     public void setTurnResultsPath(String path)
     {
-        turnPath = path;
+        this.turnPath = path;
     }
 
     public void setOrdersPath(String path)
     {
-        ordersPath = path;
+        this.ordersPath = path;
     }
 
     public void setGameType(String type)
     {
         for(int i = 0; i < gameDesc.length; i++)
             if(type.equals(gameDesc[i]))
-                gameType = i;
+                this.gameType = i;
 
     }
 
@@ -254,27 +255,27 @@ public class Data
 
     public void setExportFormat(int format)
     {
-        exportFormat = format;
+        this.exportFormat = format;
     }
 
     public void setSortFormat(int format)
     {
-        sortFormat = format;
+        this.sortFormat = format;
     }
 
     public void setEndOfTurnInfo(boolean value)
     {
-        endOfTurnInfo = value;
+        this.endOfTurnInfo = value;
     }
 
     public void setShowCharNotes(boolean value)
     {
-        showCharInfo = value;
+        this.showCharInfo = value;
     }
 
     public void setShowAllInfo(boolean value)
     {
-        showAllResults = value;
+        this.showAllResults = value;
     }
 
     public static Point getScreenLocation(Dimension d)
@@ -289,30 +290,31 @@ public class Data
 
     public Dimension getWindowSize(int w)
     {
-        return windowSizes.getWindowSize(w);
+        return this.windowSizes.getWindowSize(w);
     }
 
     public Point getWindowLocation(int w)
     {
-        return windowSizes.getWindowLocation(w);
+        return this.windowSizes.getWindowLocation(w);
     }
 
     public void setWindowSize(int w, Dimension d)
     {
-        windowSizes.setWindowSize(w, d);
+        this.windowSizes.setWindowSize(w, d);
     }
 
     public void setWindowLocation(int w, Point p)
     {
-        windowSizes.setWindowLocation(w, p);
+        this.windowSizes.setWindowLocation(w, p);
     }
 
-    private static final int VERSION = 7;
+    @SuppressWarnings("unused")
+	private static final int VERSION = 7;
     public static final int NEUTRAL = 0;
     public static final int FREE_PEOPLE = 1;
     public static final int DARK_SERVANT = 2;
     public static final int TOTAL_NATIONS = 25;
-    private static final int GAME_TYPES = 4;
+    //private static final int GAME_TYPES = 4;
     public static final int GAME_1650 = 0;
     public static final int GAME_2950 = 1;
     public static final int GAME_1000 = 2;

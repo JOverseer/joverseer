@@ -12,16 +12,16 @@ abstract class ImportCsv
 
     protected ImportCsv(String filename)
     {
-        tokenPosition = 0;
-        tokens = null;
+        this.tokenPosition = 0;
+        this.tokens = null;
         this.filename = filename;
     }
 
     protected boolean openFile()
     {
         try {
-            File inputFile = new File(filename);
-            reader = new BufferedReader(new FileReader(inputFile));
+            File inputFile = new File(this.filename);
+            this.reader = new BufferedReader(new FileReader(inputFile));
             return true;
         }
         catch (Exception ex) {
@@ -33,8 +33,8 @@ abstract class ImportCsv
     {
         try
         {
-            if(reader != null)
-                reader.close();
+            if(this.reader != null)
+                this.reader.close();
         }
         catch(Exception ex) { }
     }
@@ -42,7 +42,7 @@ abstract class ImportCsv
     protected String readLine()
     {
         try {
-            String line = reader.readLine();
+            String line = this.reader.readLine();
             return line;
         }
         catch (Exception ex) {
@@ -54,13 +54,13 @@ abstract class ImportCsv
     {
         if(init)
         {
-            tokenPosition = 0;
-            tokens = line.split(",");
+            this.tokenPosition = 0;
+            this.tokens = line.split(",");
         }
-        if(tokenPosition >= tokens.length)
+        if(this.tokenPosition >= this.tokens.length)
             return null;
-        String token = tokens[tokenPosition];
-        tokenPosition++;
+        String token = this.tokens[this.tokenPosition];
+        this.tokenPosition++;
         if(token.length() == 0)
             return null;
         else
@@ -69,7 +69,7 @@ abstract class ImportCsv
 
     protected void forceTokenAdvance()
     {
-        tokenPosition++;
+        this.tokenPosition++;
     }
 
     private String filename;

@@ -13,9 +13,10 @@ public class StartingCharacterReader implements MetadataReader {
 	String characterFilename = "startchars";
 
 	public String getCharacterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + characterFilename;
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.characterFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		gm.setStartDummyCharacters(loadCharacters(gm));
 	}
@@ -28,7 +29,7 @@ public class StartingCharacterReader implements MetadataReader {
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + characterFilename);
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.characterFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
@@ -44,7 +45,7 @@ public class StartingCharacterReader implements MetadataReader {
 				String id = charName.toLowerCase().substring(0, Math.min(5, charName.length()));
 				int hexNo = Integer.parseInt(parts[0]);
 				Character c = new Character();
-				c.setNationNo(nationNo);
+				c.setNationNo(new Integer(nationNo));
 				c.setName(charName);
 				c.setId(id);
 				c.setHexNo(hexNo);

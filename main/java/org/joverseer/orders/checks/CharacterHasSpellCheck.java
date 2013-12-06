@@ -9,7 +9,8 @@ import org.joverseer.orders.OrderUtils;
 public class CharacterHasSpellCheck extends AbstractCheck  {
     int charParamNo;
     
-    public boolean check(Order o) {
+    @Override
+	public boolean check(Order o) {
         Integer spellId = Integer.parseInt(o.getParameter(getParamNo()));
         Character c = (Character)OrderUtils.getCharacterFromId(o.getParameter(getCharParamNo()));
         for (SpellProficiency sp : c.getSpells()) {
@@ -18,7 +19,8 @@ public class CharacterHasSpellCheck extends AbstractCheck  {
         return false;
     }
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return "The character was unable to cast spell {0} because it is not a known spell.";
     }
 
@@ -33,7 +35,7 @@ public class CharacterHasSpellCheck extends AbstractCheck  {
 
     
     public int getCharParamNo() {
-        return charParamNo;
+        return this.charParamNo;
     }
 
     

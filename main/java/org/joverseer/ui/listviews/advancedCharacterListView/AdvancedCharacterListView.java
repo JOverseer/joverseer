@@ -89,13 +89,13 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		@Override
 		public boolean accept(Object obj) {
-			if (isArmyCommander == null)
+			if (this.isArmyCommander == null)
 				return true;
 			Turn turn = GameHolder.instance().getGame().getTurn();
 			if (turn.getContainer(TurnElementsEnum.Army).findAllByProperty("commanderName", ((AdvancedCharacterWrapper) obj).getName()).size() > 0) {
-				return isArmyCommander;
+				return this.isArmyCommander;
 			} else {
-				return !isArmyCommander;
+				return !this.isArmyCommander;
 			}
 		}
 	}
@@ -133,21 +133,21 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			game = GameHolder.instance().getGame();
+			this.game = GameHolder.instance().getGame();
 			String txt = "";
-			for (int j = 0; j < tableModel.getDataColumnCount(); j++) {
+			for (int j = 0; j < AdvancedCharacterListView.this.tableModel.getDataColumnCount(); j++) {
 				if (j == 2) {
-					txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j] + " No";
-					txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+					txt += (txt.equals("") ? "" : this.DELIM) + AdvancedCharacterListView.this.tableModel.getDataColumnHeaders()[j] + " No";
+					txt += (txt.equals("") ? "" : this.DELIM) + AdvancedCharacterListView.this.tableModel.getDataColumnHeaders()[j];
 				} else {
-					txt += (txt.equals("") ? "" : DELIM) + tableModel.getDataColumnHeaders()[j];
+					txt += (txt.equals("") ? "" : this.DELIM) + AdvancedCharacterListView.this.tableModel.getDataColumnHeaders()[j];
 				}
 			}
-			txt += NL;
-			for (int i = 0; i < tableModel.getRowCount(); i++) {
-				int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(i);
-				AdvancedCharacterWrapper aw = (AdvancedCharacterWrapper) tableModel.getRow(idx);
-				txt += getRow(aw) + NL;
+			txt += this.NL;
+			for (int i = 0; i < AdvancedCharacterListView.this.tableModel.getRowCount(); i++) {
+				int idx = ((SortableTableModel) AdvancedCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(i);
+				AdvancedCharacterWrapper aw = (AdvancedCharacterWrapper) AdvancedCharacterListView.this.tableModel.getRow(idx);
+				txt += getRow(aw) + this.NL;
 			}
 			StringSelection stringSelection = new StringSelection(txt);
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -158,7 +158,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			if (aw == null)
 				return "";
 			String txt = String.valueOf(aw.getNumber());
-			if (aw.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
+			if (aw.getInfoSource().getTurnNo() < this.game.getCurrentTurn()) {
 				txt += " (t" + aw.getInfoSource().getTurnNo() + ")";
 			}
 			return txt;
@@ -173,17 +173,17 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		}
 
 		private String getRow(AdvancedCharacterWrapper aw) {
-			Nation n = aw.getNationNo() == null ? null : game.getMetadata().getNationByNum(aw.getNationNo());
+			Nation n = aw.getNationNo() == null ? null : this.game.getMetadata().getNationByNum(aw.getNationNo());
 			String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
 			String orderResults = aw.getOrderResults();
 			if (orderResults == null)
 				orderResults = "";
-			return aw.getName() + DELIM + aw.getHexNo() + DELIM + aw.getNationNo() + DELIM + nationName + DELIM + getStatText(aw.getCommand()) + DELIM + getStatText(aw.getAgent()) + DELIM + getStatText(aw.getEmmisary()) + DELIM + getStatText(aw.getMage()) + DELIM + getStatText(aw.getStealth()) + DELIM + getStatText(aw.getHealth()) + DELIM + getStatText(aw.getChallenge()) + DELIM + getArtifactText(aw.getA0()) + DELIM + getArtifactText(aw.getA1()) + DELIM + getArtifactText(aw.getA2()) + DELIM + getArtifactText(aw.getA3()) + DELIM + getArtifactText(aw.getA4()) + DELIM + getArtifactText(aw.getA5()) + DELIM + aw.getTravellingWith() + DELIM + getDeathReasonStr(aw.getDeathReason()) + DELIM + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource()) + DELIM + aw.getTurnNo() + DELIM + (aw.getDragonPotential() == null ? "" : aw.getDragonPotential()) + DELIM + orderResults.replace("\n", " ").replace("\r", " ");
+			return aw.getName() + this.DELIM + aw.getHexNo() + this.DELIM + aw.getNationNo() + this.DELIM + nationName + this.DELIM + getStatText(aw.getCommand()) + this.DELIM + getStatText(aw.getAgent()) + this.DELIM + getStatText(aw.getEmmisary()) + this.DELIM + getStatText(aw.getMage()) + this.DELIM + getStatText(aw.getStealth()) + this.DELIM + getStatText(aw.getHealth()) + this.DELIM + getStatText(aw.getChallenge()) + this.DELIM + getArtifactText(aw.getA0()) + this.DELIM + getArtifactText(aw.getA1()) + this.DELIM + getArtifactText(aw.getA2()) + this.DELIM + getArtifactText(aw.getA3()) + this.DELIM + getArtifactText(aw.getA4()) + this.DELIM + getArtifactText(aw.getA5()) + this.DELIM + aw.getTravellingWith() + this.DELIM + getDeathReasonStr(aw.getDeathReason()) + this.DELIM + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource()) + this.DELIM + aw.getTurnNo() + this.DELIM + (aw.getDragonPotential() == null ? "" : aw.getDragonPotential()) + this.DELIM + orderResults.replace("\n", " ").replace("\r", " ");
 		}
 
 		private String getStatText(CharacterAttributeWrapper caw) {
 			String v = caw == null || caw.getValue() == null ? "" : caw.getValue().toString();
-			if (caw != null && caw.getValue() != null && useStatAnnotations) {
+			if (caw != null && caw.getValue() != null && this.useStatAnnotations) {
 				InfoSource is = caw.getInfoSource();
 				if (DerivedFromTitleInfoSource.class.isInstance(is)) {
 					v += "+";
@@ -199,7 +199,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			if (v == null || v.equals("0"))
 				return v;
 
-			if (caw != null && caw.getInfoSource() != null && useStatAnnotations) {
+			if (caw != null && caw.getInfoSource() != null && this.useStatAnnotations) {
 				InfoSource is = caw.getInfoSource();
 				if (MetadataSource.class.isInstance(is)) {
 					v += "*";
@@ -212,6 +212,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			return v;
 		}
 
+		@Override
 		public void lostOwnership(Clipboard arg0, Transferable arg1) {
 		}
 	}
@@ -238,7 +239,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		@Override
 		public boolean accept(Object obj) {
-			return deathReasons == null || deathReasons.contains(((AdvancedCharacterWrapper) obj).getDeathReason());
+			return this.deathReasons == null || this.deathReasons.contains(((AdvancedCharacterWrapper) obj).getDeathReason());
 		}
 	}
 
@@ -252,7 +253,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		@Override
 		public boolean accept(Object obj) {
-			return ((AdvancedCharacterWrapper) obj).isHostage() == hostage;
+			return ((AdvancedCharacterWrapper) obj).isHostage() == this.hostage;
 		}
 
 	}
@@ -288,7 +289,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			} else {
 				CharacterAttributeWrapper.COMPARIZON_MODE = CharacterAttributeWrapper.COMPARE_BY_TOTAL_VALUE;
 			}
-			model.fireTableDataChanged();
+			this.model.fireTableDataChanged();
 		}
 	}
 
@@ -301,25 +302,26 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		return new int[] { 96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48 };
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	protected JComponent createControlImpl() {
 		JComponent c = super.createControlImpl();
-		table.setDefaultRenderer(CharacterAttributeWrapper.class, new CharacterAttributeWrapperTableCellRenderer(tableModel));
-		table.setDefaultRenderer(ArtifactWrapper.class, new ArtifactWrapperTableCellRenderer(tableModel));
-		table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel) {
+		this.table.setDefaultRenderer(CharacterAttributeWrapper.class, new CharacterAttributeWrapperTableCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(ArtifactWrapper.class, new ArtifactWrapperTableCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel) {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
-				Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
-				JLabel lbl = (JLabel) c;
+				Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+				JLabel lbl = (JLabel) c1;
 				Integer v = (Integer) arg1;
 				if (v == null || v.equals(0)) {
 					lbl.setText("");
 				}
 				if (arg5 == 1) {
 					// render capital with bold
-					int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(arg4);
-					Object obj = tableModel.getRow(idx);
+					int idx = ((SortableTableModel) AdvancedCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
+					Object obj = AdvancedCharacterListView.this.tableModel.getRow(idx);
 					AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper) obj;
 					PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ch.getNationNo(), Boolean.TRUE });
 					if (capital != null && ch.getHexNo() == capital.getHexNo()) {
@@ -328,20 +330,20 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 				}
 
-				return c;
+				return c1;
 			}
 
 		});
 
-		table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel) {
+		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel) {
 			@Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
-				Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
-				JLabel lbl = (JLabel) c;
+				Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+				JLabel lbl = (JLabel) c1;
 				if (arg5 == 0) {
 					// check for champion
-					int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(arg4);
-					Object obj = tableModel.getRow(idx);
+					int idx = ((SortableTableModel) AdvancedCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
+					Object obj = AdvancedCharacterListView.this.tableModel.getRow(idx);
 					AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper) obj;
 					if (ch.isChampion()) {
 						lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
@@ -356,7 +358,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 				} else {
 					lbl.setToolTipText("");
 				}
-				return c;
+				return c1;
 			}
 		});
 		return c;
@@ -374,7 +376,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 			@Override
 			public JPopupMenu getPopupMenu() {
-				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("advancedCharacterListViewCommandGroup", new Object[] { new CopyToClipboardCommand(), new CopyToClipboardCommandWithoutAnnotations(), new ToggleAttributeSortModeCommand((AdvancedCharacterTableModel) tableModel), new ShowResultsCommand(), });
+				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("advancedCharacterListViewCommandGroup", new Object[] { new CopyToClipboardCommand(), new CopyToClipboardCommandWithoutAnnotations(), new ToggleAttributeSortModeCommand((AdvancedCharacterTableModel) AdvancedCharacterListView.this.tableModel), new ShowResultsCommand(), });
 				return group.createPopupMenu();
 			}
 		});
@@ -384,10 +386,10 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-		filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-		filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-		return new AbstractListViewFilter[][] { filters.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new DeathFilter("All", null), new ActiveFilter("Active Only"), new DeathFilter("Not Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.NotDead, null }), new DeathFilter("Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged }), new HostageFilter("Hostage", true), new ChampionFilter("Champion")
+		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
+		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new DeathFilter("All", null), new ActiveFilter("Active Only"), new DeathFilter("Not Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.NotDead, null }), new DeathFilter("Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged }), new HostageFilter("Hostage", true), new ChampionFilter("Champion")
 
 		}, new AbstractListViewFilter[] { new ArmyCommanderFilter("", null), new ArmyCommanderFilter("Army commander", true), new ArmyCommanderFilter("Not army commander", false) }, };
 	}
@@ -423,7 +425,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 				filteredItems.add(o);
 			}
 		}
-		tableModel.setRows(filteredItems);
+		this.tableModel.setRows(filteredItems);
 	}
 
 }

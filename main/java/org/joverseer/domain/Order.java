@@ -32,17 +32,20 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	Character character;
 
 	public Order(Character c) {
-		character = c;
+		this.character = c;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
 
+	@Override
 	public int getX() {
 		return getCharacter().getX();
 	}
@@ -50,6 +53,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	public void setX(int x) {
 	}
 
+	@Override
 	public int getY() {
 		return getCharacter().getY();
 	}
@@ -58,7 +62,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	}
 
 	public int getOrderNo() {
-		return orderNo;
+		return this.orderNo;
 	}
 
 	public void setOrderNo(int orderNo) {
@@ -66,7 +70,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	}
 
 	public String getParameters() {
-		return parameters;
+		return this.parameters;
 	}
 
 	public void setParameters(String parameters) {
@@ -74,7 +78,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	}
 
 	public Character getCharacter() {
-		return character;
+		return this.character;
 	}
 
 	public void setCharacter(Character character) {
@@ -93,7 +97,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		String no = noAndDescr.substring(0, i);
 		try {
 			setOrderNo(Integer.parseInt(no));
-		} catch (Exception exc) {
+		} catch (NumberFormatException exc) {
 			clear();
 		}
 	}
@@ -118,7 +122,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		GameMetadata gm = g.getMetadata();
 		if (gm == null)
 			return null;
-		OrderMetadata om = gm.getOrders().findFirstByProperty("number", getOrderNo());
+		OrderMetadata om = gm.getOrders().findFirstByProperty("number", new Integer(getOrderNo()));
 		return om;
 	}
 
@@ -135,7 +139,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	}
 
 	public boolean isBlank() {
-		return orderNo <= 0;
+		return this.orderNo <= 0;
 	}
 
 	public String getParameter(int i) {
@@ -152,13 +156,13 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 			return -1;
 		try {
 			return Integer.parseInt(pv);
-		} catch (Exception exc) {
+		} catch (NumberFormatException exc) {
 			return -1;
 		}
 	}
 
 	public String getNotes() {
-		return notes;
+		return this.notes;
 	}
 
 	public void setNotes(String notes) {
@@ -169,9 +173,9 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	 * Clears the order
 	 */
 	public void clear() {
-		orderNo = -1;
-		parameters = "";
-		notes = "";
+		this.orderNo = -1;
+		this.parameters = "";
+		this.notes = "";
 	}
 
 	public static String getParametersAsString(String params) {
@@ -187,7 +191,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	}
 
 	public void setParameter(int idx, String param) {
-		String[] params = parameters.split(Order.DELIM);
+		String[] params = this.parameters.split(Order.DELIM);
 		if (idx < params.length) {
 			params[idx] = param;
 			setParameters(paramStringFromArray(params));

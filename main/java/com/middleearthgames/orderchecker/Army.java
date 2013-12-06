@@ -5,7 +5,6 @@
 
 package com.middleearthgames.orderchecker;
 
-import java.io.PrintStream;
 import java.util.Vector;
 
 // Referenced classes of package com.middleearthgames.orderchecker:
@@ -41,16 +40,16 @@ public class Army
     public Army(int location)
     {
         this.location = -1;
-        nation = -1;
-        troops = -1;
-        commander = null;
-        extraInfo = null;
-        navy = false;
-        charsWith = null;
-        troopContent = new StateList();
-        armyCommander = new StateList();
-        foodRequired = 0;
-        hasEnoughFood = false;
+        this.nation = -1;
+        this.troops = -1;
+        this.commander = null;
+        this.extraInfo = null;
+        this.navy = false;
+        this.charsWith = null;
+        this.troopContent = new StateList();
+        this.armyCommander = new StateList();
+        this.foodRequired = 0;
+        this.hasEnoughFood = false;
         this.location = location;
     }
 
@@ -80,20 +79,20 @@ public class Army
 
     void initStateInformation()
     {
-        troopContent.clear();
-        troopContent.putDefaultValue(((Object) (getTroopContent())));
-        Character character = Main.main.getNation().findCharacterByFullName(commander);
-        armyCommander.putDefaultValue(((Object) (character)));
-        foodRequired = 0;
-        hasEnoughFood = false;
+        this.troopContent.clear();
+        this.troopContent.putDefaultValue(((Object) (getTroopContent())));
+        Character character = Main.main.getNation().findCharacterByFullName(this.commander);
+        this.armyCommander.putDefaultValue(((Object) (character)));
+        this.foodRequired = 0;
+        this.hasEnoughFood = false;
     }
 
     void printStateInformation(int order)
     {
-        if(nation == Main.main.getNation().getNation() || Nation.isEnemy(nation, Main.main.getNation().getNation()))
+        if(this.nation == Main.main.getNation().getNation() || Nation.isEnemy(this.nation, Main.main.getNation().getNation()))
         {
             String desc = "ARMY, " + order + ": " + getArmyDescription(((Character) (null)), order);
-            desc = desc + ", food = " + foodRequired + ", has enough = " + hasEnoughFood;
+            desc = desc + ", food = " + this.foodRequired + ", has enough = " + this.hasEnoughFood;
             System.out.println(desc);
         }
     }
@@ -139,23 +138,23 @@ public class Army
     public String getArmyDescription(Character character, int order)
     {
         StringBuffer armyDesc = new StringBuffer();
-        Character armyCommander = getArmyCommander(order);
-        if(armyCommander == null)
+        Character armyCommander1 = getArmyCommander(order);
+        if(armyCommander1 == null)
         {
             armyDesc.append("Army Disbanded with ");
         } else
-        if(armyCommander == character)
+        if(armyCommander1 == character)
         {
             armyDesc.append("Commands Army with ");
         } else
         {
-            armyDesc.append("In " + armyCommander.getName() + "'s Army with ");
+            armyDesc.append("In " + armyCommander1.getName() + "'s Army with ");
         }
         Vector characters = Main.main.getNation().findCharactersByArmy(this, order);
         for(int i = 0; i < characters.size(); i++)
         {
             Character armyChar = (Character)characters.get(i);
-            if(character != armyChar && armyChar != armyCommander)
+            if(character != armyChar && armyChar != armyCommander1)
             {
                 armyDesc.append(armyChar.getName() + ", ");
             }
@@ -181,34 +180,34 @@ public class Army
 
     boolean isCharacterInArmy(String name)
     {
-        if(charsWith == null)
+        if(this.charsWith == null)
         {
             return false;
         } else
         {
-            int index = charsWith.indexOf(name);
+            int index = this.charsWith.indexOf(name);
             return index != -1;
         }
     }
 
     Character getCharacterIdInArmy(String id)
     {
-        if(commander == null)
+        if(this.commander == null)
         {
             return null;
         }
         String charName = "";
-        if(commander.length() >= 5)
+        if(this.commander.length() >= 5)
         {
-            charName = commander.substring(0, 5);
+            charName = this.commander.substring(0, 5);
         }
         if(!charName.equalsIgnoreCase(id))
         {
-            if(charsWith == null)
+            if(this.charsWith == null)
             {
                 return null;
             }
-            String charList[] = charsWith.split(" - ");
+            String charList[] = this.charsWith.split(" - ");
             for(int i = 0; i < charList.length && !charName.equalsIgnoreCase(id); i++)
             {
                 if(charList[i].length() >= 5)
@@ -222,8 +221,8 @@ public class Army
         {
             Character newChar = new Character(id);
             newChar.setName(id);
-            newChar.setNation(nation);
-            newChar.setNewLocation(location, 0);
+            newChar.setNation(this.nation);
+            newChar.setNewLocation(this.location, 0);
             newChar.setArmy(this, 0);
             return newChar;
         } else
@@ -253,15 +252,15 @@ public class Army
         {
             try
             {
-                int index = extraInfo.indexOf(troopTypes[type]);
+                int index = this.extraInfo.indexOf(troopTypes[type]);
                 if(index != -1)
                 {
-                    int begin = extraInfo.lastIndexOf(' ', index);
-                    String amountString = extraInfo.substring(begin + 1, index);
+                    int begin = this.extraInfo.lastIndexOf(' ', index);
+                    String amountString = this.extraInfo.substring(begin + 1, index);
                     amounts[type] = Integer.parseInt(amountString);
                 }
             }
-            catch(Exception ex) { }
+            catch(NumberFormatException ex) { }
         }
 
         return amounts;
@@ -270,8 +269,8 @@ public class Army
     int[] getTroopContent(int order)
     {
         int amounts[] = new int[6];
-        int keys[] = troopContent.getKeys();
-        Object values[] = troopContent.getValues();
+        int keys[] = this.troopContent.getKeys();
+        Object values[] = this.troopContent.getValues();
         if(keys.length == 0)
         {
             throw new RuntimeException("getTroopContent(): no troops found");
@@ -286,10 +285,10 @@ public class Army
             {
                 continue;
             }
-            int troops[] = (int[])(int[])values[i];
+            int troops1[] = (int[])(int[])values[i];
             for(int j = 0; j < 6; j++)
             {
-                amounts[j] += troops[j];
+                amounts[j] += troops1[j];
             }
 
         }
@@ -307,11 +306,11 @@ public class Army
         int totalFood = 0;
         for(int i = 0; i < 6; i++)
         {
-            int troops = amounts[i];
-            totalFood += troops;
+            int troops1 = amounts[i];
+            totalFood += troops1;
             if(i == 0 || i == 1)
             {
-                totalFood += troops;
+                totalFood += troops1;
             }
         }
 
@@ -335,7 +334,7 @@ public class Army
 
     public void setExtraInfo(String info)
     {
-        extraInfo = info;
+        this.extraInfo = info;
     }
 
     public void setNavy(int navy)
@@ -351,7 +350,7 @@ public class Army
 
     public void setCharactersWith(String name)
     {
-        charsWith = name;
+        this.charsWith = name;
     }
 
     void setTroopContent(int amounts[], int order)
@@ -362,28 +361,28 @@ public class Army
             change[i] = amounts[i];
         }
 
-        troopContent.put(order, ((Object) (change)));
+        this.troopContent.put(order, ((Object) (change)));
     }
 
     void setArmyCommander(Character character, int order)
     {
-        armyCommander.put(order, ((Object) (character)));
+        this.armyCommander.put(order, ((Object) (character)));
     }
 
     void setFoodRequired(int amount)
     {
-        foodRequired = amount;
+        this.foodRequired = amount;
     }
 
     void setHasEnoughFood(boolean value)
     {
-        hasEnoughFood = value;
+        this.hasEnoughFood = value;
     }
 
     void setNewArmy(Character commander, int amounts[], int order)
     {
-        int troops[] = new int[6];
-        setTroopContent(troops, 0);
+        int troops1[] = new int[6];
+        setTroopContent(troops1, 0);
         setArmyCommander(((Character) (null)), 0);
         setArmyCommander(commander, order);
         commander.setArmy(this, order);
@@ -393,22 +392,22 @@ public class Army
 
     public int getNation()
     {
-        return nation;
+        return this.nation;
     }
 
     int getLocation()
     {
-        return location;
+        return this.location;
     }
 
     public String getCommander()
     {
-        return commander;
+        return this.commander;
     }
 
     int getTroops()
     {
-        return troops;
+        return this.troops;
     }
 
     int getTotalTroops(int order)
@@ -429,28 +428,28 @@ public class Army
 
     boolean isNavy()
     {
-        return navy;
+        return this.navy;
     }
 
     Character getArmyCommander(int order)
     {
-        Character commander = (Character)armyCommander.findValueByOrderNumber(order);
-        return commander;
+        Character commander1 = (Character)this.armyCommander.findValueByOrderNumber(order);
+        return commander1;
     }
 
     int getFoodRequired()
     {
-        return foodRequired;
+        return this.foodRequired;
     }
 
     boolean getHasEnoughFood()
     {
-        return hasEnoughFood;
+        return this.hasEnoughFood;
     }
 
     boolean IsArmyComplete()
     {
-        return location != -1 && nation != -1 && troops != -1 && commander != null;
+        return this.location != -1 && this.nation != -1 && this.troops != -1 && this.commander != null;
     }
 
 }

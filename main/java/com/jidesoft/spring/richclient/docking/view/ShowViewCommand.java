@@ -19,8 +19,6 @@ import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 
-import com.jidesoft.docking.DockContext;
-
 /**
  * Slight modification of the Spring RCP ShowViewCommand to
  * use the viewDescriptor.getId as the id for the show view
@@ -48,8 +46,9 @@ public class ShowViewCommand extends ApplicationWindowAwareCommand {
         this.viewDescriptor = viewDescriptor;
     }
 
-    protected void doExecuteCommand() {
-        getApplicationWindow().getPage().showView(viewDescriptor);
+    @Override
+	protected void doExecuteCommand() {
+        getApplicationWindow().getPage().showView(this.viewDescriptor);
     }
 
 

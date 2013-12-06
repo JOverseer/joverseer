@@ -13,7 +13,7 @@ public class GameHolder {
     String file;
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public void setGame(Game game) {
@@ -23,7 +23,7 @@ public class GameHolder {
     
 
     public String getFile() {
-		return file;
+		return this.file;
 	}
 
 	public void setFile(String file) {

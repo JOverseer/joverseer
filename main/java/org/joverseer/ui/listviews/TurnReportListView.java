@@ -43,6 +43,6 @@ public class TurnReportListView extends ItemListView {
 			}
 		}
 
-		tableModel.setRows(items);
+		this.tableModel.setRows(items);
 	}
 }

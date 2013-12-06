@@ -8,7 +8,7 @@ public class ReportItem {
     ReportItemDetailEnum detail;
     
     public ReportItemDetailEnum getDetail() {
-        return detail;
+        return this.detail;
     }
     
     public void setDetail(ReportItemDetailEnum detail) {
@@ -16,7 +16,7 @@ public class ReportItem {
     }
     
     public Object getItem() {
-        return item;
+        return this.item;
     }
     
     public void setItem(Object item) {
@@ -24,7 +24,7 @@ public class ReportItem {
     }
     
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
     
     public void setNationNo(int nationNo) {
@@ -32,7 +32,7 @@ public class ReportItem {
     }
 
     public Object getSource() {
-        return source;
+        return this.source;
     }
     
     public void setSource(Object source) {

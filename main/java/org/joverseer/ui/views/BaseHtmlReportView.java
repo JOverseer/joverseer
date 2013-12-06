@@ -51,23 +51,25 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 		tlb.cell(btn, "align=left");
 		btn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!GameHolder.hasInitializedGame()) {
-					editor.setText("");
+					BaseHtmlReportView.this.editor.setText("");
 					return;
 				}
-				editor.setText(getReportContents());
+				BaseHtmlReportView.this.editor.setText(getReportContents());
 			}
 
 		});
 		tlb.relatedGapRow();
 
-		editor = new JEditorPane();
-		editor.setEditable(false);
-		editor.setContentType("text/html");
-		editor.setText("");
-		editor.addHyperlinkListener(new HyperlinkListener() {
+		this.editor = new JEditorPane();
+		this.editor.setEditable(false);
+		this.editor.setContentType("text/html");
+		this.editor.setText("");
+		this.editor.addHyperlinkListener(new HyperlinkListener() {
 
+			@Override
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == EventType.ACTIVATED) {
 					String s = e.getURL().toString();
@@ -76,18 +78,19 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 			}
 
 		});
-		tlb.cell(editor);
+		tlb.cell(this.editor);
 		JScrollPane scp = new JScrollPane(tlb.getPanel());
 		scp.setPreferredSize(new Dimension(240, 1500));
 		scp.getVerticalScrollBar().setUnitIncrement(32);
 		return scp;
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString()) || e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				editor.setText("");
+				this.editor.setText("");
 			}
 		}
 	}

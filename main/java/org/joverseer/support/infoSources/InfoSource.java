@@ -16,7 +16,7 @@ public class InfoSource implements Serializable {
     int turnNo;
 
     public int getTurnNo() {
-        return turnNo;
+        return this.turnNo;
     }
 
     public void setTurnNo(int turnNo) {

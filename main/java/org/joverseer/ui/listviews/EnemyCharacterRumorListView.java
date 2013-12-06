@@ -42,13 +42,13 @@ public class EnemyCharacterRumorListView extends BaseItemListView {
 			if (getActiveFilter().accept(w))
 				filteredItems.add(w);
 		}
-		tableModel.setRows(filteredItems);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setRows(filteredItems);
+		this.tableModel.fireTableDataChanged();
 	}
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(table),
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table),
 		// new ListViewDescriptionPopupCommand("enemyCharacterRumorListView")
 				}) };
 	}

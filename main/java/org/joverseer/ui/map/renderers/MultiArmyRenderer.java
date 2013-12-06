@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.joverseer.domain.Army;
 import org.joverseer.game.Game;
@@ -14,8 +13,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
-import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -32,14 +29,15 @@ import org.springframework.richclient.application.Application;
 public class MultiArmyRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
     
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
         if (pval.equals("simplified")) return false;
         return Army.class.isInstance(obj);
     }
 
     private void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
     private boolean isArmyFp(Army army) {
@@ -48,8 +46,9 @@ public class MultiArmyRenderer extends ImageRenderer {
         return (army.getNationAllegiance() == NationAllegianceEnum.FreePeople);
     }
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
-        if (mapMetadata == null) init();
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
+        if (this.mapMetadata == null) init();
 
         Army army = (Army)obj;
         
@@ -73,8 +72,8 @@ public class MultiArmyRenderer extends ImageRenderer {
                 i++;
             }
         }
-        int maxFirstLine = mapMetadata.getGridCellWidth() < 10 ? 2 : 3;
-        int maxSecondLine = mapMetadata.getGridCellWidth() < 10 ? 1 : 2;
+        int maxFirstLine = this.mapMetadata.getGridCellWidth() < 10 ? 2 : 3;
+        int maxSecondLine = this.mapMetadata.getGridCellWidth() < 10 ? 1 : 2;
         // render up to five armies
         if (i >= maxFirstLine) {
             j = 1;
@@ -129,13 +128,13 @@ public class MultiArmyRenderer extends ImageRenderer {
 
         int w = 9;
         int h = 9;
-        int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1 / 5;
-        int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 13 / 20 + h * j;
+        int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1 / 5;
+        int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 13 / 20 + h * j;
 
         if (isArmyFp(army)) {
-            dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 - (w) * (i + 1) - 1;
+            dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - (w) * (i + 1) - 1;
         } else {
-            dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() / 2 + (w) * i + 1;
+            dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 + (w) * i + 1;
         }
         g.drawImage(img, x + dx, y + dy, null);
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(x + dx, y+dy, img.getWidth(), img.getHeight()), army);

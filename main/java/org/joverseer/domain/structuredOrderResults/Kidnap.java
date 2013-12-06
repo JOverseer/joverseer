@@ -10,7 +10,7 @@ public class Kidnap implements IStructuredOrderResult {
 	String target;
 
 	public String getTarget() {
-		return target;
+		return this.target;
 	}
 
 	public void setTarget(String target) {

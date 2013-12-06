@@ -99,6 +99,7 @@ public class CombatForm extends AbstractForm {
 		JButton updateButton = new JButton("Refresh");
 		updateButton.setPreferredSize(new Dimension(70, 20));
 		updateButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					commit();
@@ -128,6 +129,7 @@ public class CombatForm extends AbstractForm {
 		cb.setPreferredSize(new Dimension(100, 20));
 		lb.cell(cb, "colspec=left:120px");
 		cb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				commit();
 				runCombat();
@@ -143,6 +145,7 @@ public class CombatForm extends AbstractForm {
 		cb.setPreferredSize(new Dimension(100, 20));
 		lb.cell(cb, "colspec=left:120px");
 		cb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				commit();
 				runCombat();
@@ -158,6 +161,7 @@ public class CombatForm extends AbstractForm {
 		chkb.setPreferredSize(new Dimension(100, 20));
 		lb.cell(chkb, "colspec=left:120px");
 		chkb.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				commit();
 				runCombat();
@@ -171,15 +175,15 @@ public class CombatForm extends AbstractForm {
 		tlb.relatedGapRow();
 
 		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
-		side1TableModel = new CombatArmyTableModel(this, messageSource);
-		side1Table = TableUtils.createStandardSortableTable(side1TableModel);
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(side1Table, side1TableModel.getColumnWidths());
-		side1Table.addMouseListener(new MouseAdapter() {
+		this.side1TableModel = new CombatArmyTableModel(this, messageSource);
+		this.side1Table = TableUtils.createStandardSortableTable(this.side1TableModel);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side1Table, this.side1TableModel.getColumnWidths());
+		this.side1Table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 1 && e.getButton() == 3) {
-					int idx = side1Table.rowAtPoint(e.getPoint());
-					side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
 					showContextMenu(0, e);
 				}
 			}
@@ -187,15 +191,15 @@ public class CombatForm extends AbstractForm {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2 && e.getButton() == 1) {
-					int idx = side1Table.rowAtPoint(e.getPoint());
-					side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
 					new EditSelectedArmyCommand(0).doExecuteCommand();
 				}
 			};
 		});
-		side1Table.setDropTarget(new DropTarget(side1Table, new AddArmyDropTargetAdapter(0)));
+		this.side1Table.setDropTarget(new DropTarget(this.side1Table, new AddArmyDropTargetAdapter(0)));
 
-		JScrollPane scp = new JScrollPane(side1Table);
+		JScrollPane scp = new JScrollPane(this.side1Table);
 		scp.setPreferredSize(new Dimension(560, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
 		tlb.cell(scp);
@@ -209,6 +213,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Edit Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new EditSelectedArmyCommand(0).doExecuteCommand();
 			}
@@ -221,6 +226,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Add New Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new AddArmyCommand(0).doExecuteCommand();
 			}
@@ -233,6 +239,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Remove Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new RemoveSelectedArmyCommand(0).doExecuteCommand();
 			}
@@ -245,6 +252,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Switch Sides (Sends Army to other side)");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new SwitchSideCommand(0).doExecuteCommand();
 			}
@@ -257,6 +265,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Change Relations for Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new EditSelectedArmyRelationsCommand(0).doExecuteCommand();
 			}
@@ -275,15 +284,15 @@ public class CombatForm extends AbstractForm {
 
 		tlb.relatedGapRow();
 
-		side2TableModel = new CombatArmyTableModel(this, messageSource);
-		side2Table = TableUtils.createStandardSortableTable(side2TableModel);
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(side2Table, side2TableModel.getColumnWidths());
-		side2Table.addMouseListener(new MouseAdapter() {
+		this.side2TableModel = new CombatArmyTableModel(this, messageSource);
+		this.side2Table = TableUtils.createStandardSortableTable(this.side2TableModel);
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side2Table, this.side2TableModel.getColumnWidths());
+		this.side2Table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 1 && e.getButton() == 3) {
-					int idx = side2Table.rowAtPoint(e.getPoint());
-					side2Table.getSelectionModel().setSelectionInterval(idx, idx);
+					int idx = CombatForm.this.side2Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side2Table.getSelectionModel().setSelectionInterval(idx, idx);
 					showContextMenu(1, e);
 				}
 			};
@@ -291,15 +300,15 @@ public class CombatForm extends AbstractForm {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2 && e.getButton() == 1) {
-					int idx = side2Table.rowAtPoint(e.getPoint());
-					side2Table.getSelectionModel().setSelectionInterval(idx, idx);
+					int idx = CombatForm.this.side2Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side2Table.getSelectionModel().setSelectionInterval(idx, idx);
 					new EditSelectedArmyCommand(1).doExecuteCommand();
 				}
 			};
 		});
-		side2Table.setDropTarget(new DropTarget(side2Table, new AddArmyDropTargetAdapter(1)));
+		this.side2Table.setDropTarget(new DropTarget(this.side2Table, new AddArmyDropTargetAdapter(1)));
 
-		scp = new JScrollPane(side2Table);
+		scp = new JScrollPane(this.side2Table);
 		scp.setPreferredSize(new Dimension(560, 130));
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(1)));
 		tlb.cell(scp);
@@ -310,6 +319,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Edit Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new EditSelectedArmyCommand(1).doExecuteCommand();
 			}
@@ -322,6 +332,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Add New Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new AddArmyCommand(1).doExecuteCommand();
 			}
@@ -333,6 +344,7 @@ public class CombatForm extends AbstractForm {
 		btn = new JButton(ico);
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new RemoveSelectedArmyCommand(1).doExecuteCommand();
 			}
@@ -345,6 +357,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Switch Sides (Sends Army to other side)");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new SwitchSideCommand(1).doExecuteCommand();
 			}
@@ -357,6 +370,7 @@ public class CombatForm extends AbstractForm {
 		btn.setToolTipText("Change Relations for Army");
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new EditSelectedArmyRelationsCommand(1).doExecuteCommand();
 			}
@@ -377,19 +391,19 @@ public class CombatForm extends AbstractForm {
 
 		tlb.relatedGapRow();
 
-		popCenterTableModel = new PopCenterTableModel(this, messageSource);
-		JTable pcTable = TableUtils.createStandardSortableTable(popCenterTableModel);
+		this.popCenterTableModel = new PopCenterTableModel(this, messageSource);
+		JTable pcTable = TableUtils.createStandardSortableTable(this.popCenterTableModel);
 		pcTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2 && e.getButton() == 1) {
-					int idx = side1Table.rowAtPoint(e.getPoint());
-					side1Table.getSelectionModel().setSelectionInterval(idx, idx);
+					int idx = CombatForm.this.side1Table.rowAtPoint(e.getPoint());
+					CombatForm.this.side1Table.getSelectionModel().setSelectionInterval(idx, idx);
 					new EditPopCenterCommand().doExecuteCommand();
 				}
 			};
 		});
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, popCenterTableModel.getColumnWidths());
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(pcTable, this.popCenterTableModel.getColumnWidths());
 		scp = new JScrollPane(pcTable);
 		scp.setPreferredSize(new Dimension(560, 48));
 
@@ -403,6 +417,7 @@ public class CombatForm extends AbstractForm {
 		btn = new JButton(ico);
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new EditPopCenterCommand().doExecuteCommand();
 			}
@@ -414,6 +429,7 @@ public class CombatForm extends AbstractForm {
 		btn = new JButton(ico);
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new RemovePopCenterCommand().doExecuteCommand();
 			}
@@ -428,10 +444,10 @@ public class CombatForm extends AbstractForm {
 		lb = new TableLayoutBuilder();
 		lb.cell(new JLabel("Rounds :"), "colspec=left:80px");
 		lb.gapCol();
-		rounds = (JTextField) sbf.createBoundTextField("rounds").getControl();
+		this.rounds = (JTextField) sbf.createBoundTextField("rounds").getControl();
 
-		rounds.setEditable(false);
-		lb.cell(rounds, "colspec=left:60px");
+		this.rounds.setEditable(false);
+		lb.cell(this.rounds, "colspec=left:60px");
 		lb.gapCol();
 
 		tlb.cell(lb.getPanel());
@@ -472,24 +488,24 @@ public class CombatForm extends AbstractForm {
 		}
 		c.runArmyBattle();
 		int round = 0;
-		if (side1TableModel.getRowCount() > 0 && side2TableModel.getRowCount() > 0) {
+		if (this.side1TableModel.getRowCount() > 0 && this.side2TableModel.getRowCount() > 0) {
 			round = 1;
 		}
-		if (c.getAttackPopCenter() && popCenterTableModel.getRows().size() > 0) {
+		if (c.getAttackPopCenter() && this.popCenterTableModel.getRows().size() > 0) {
 			c.runPcBattle(0, round);
 		}
-		for (int i = 0; i < side1TableModel.getRowCount(); i++) {
-			for (int j = 0; j < side1TableModel.getColumnCount(); j++) {
-				side1TableModel.fireTableCellUpdated(i, j);
+		for (int i = 0; i < this.side1TableModel.getRowCount(); i++) {
+			for (int j = 0; j < this.side1TableModel.getColumnCount(); j++) {
+				this.side1TableModel.fireTableCellUpdated(i, j);
 			}
 		}
-		for (int i = 0; i < side2TableModel.getRowCount(); i++) {
-			for (int j = 0; j < side2TableModel.getColumnCount(); j++) {
-				side2TableModel.fireTableCellUpdated(i, j);
+		for (int i = 0; i < this.side2TableModel.getRowCount(); i++) {
+			for (int j = 0; j < this.side2TableModel.getColumnCount(); j++) {
+				this.side2TableModel.fireTableCellUpdated(i, j);
 			}
 		}
-		popCenterTableModel.fireTableDataChanged();
-		rounds.setText(String.valueOf(c.getRounds()));
+		this.popCenterTableModel.fireTableDataChanged();
+		this.rounds.setText(String.valueOf(c.getRounds()));
 	}
 
 	protected void refreshArmies() {
@@ -499,13 +515,13 @@ public class CombatForm extends AbstractForm {
 			if (ca != null)
 				sa.add(ca);
 		}
-		int selidx = side1Table.getSelectedRow();
-		side1TableModel.setRows(sa);
+		int selidx = this.side1Table.getSelectedRow();
+		this.side1TableModel.setRows(sa);
 		if (selidx > -1) {
 			while (selidx >= sa.size()) {
 				selidx--;
 			}
-			side1Table.getSelectionModel().setSelectionInterval(selidx, selidx);
+			this.side1Table.getSelectionModel().setSelectionInterval(selidx, selidx);
 		}
 
 		sa = new ArrayList<Object>();
@@ -513,20 +529,20 @@ public class CombatForm extends AbstractForm {
 			if (ca != null)
 				sa.add(ca);
 		}
-		side2TableModel.setRows(sa);
+		this.side2TableModel.setRows(sa);
 
 		sa = new ArrayList<Object>();
 		if (c.getSide2Pc() != null) {
 			sa.add(c.getSide2Pc());
 
 		}
-		popCenterTableModel.setRows(sa);
+		this.popCenterTableModel.setRows(sa);
 
 		runCombat();
 
-		side1TableModel.fireTableDataChanged();
-		side2TableModel.fireTableDataChanged();
-		popCenterTableModel.fireTableDataChanged();
+		this.side1TableModel.fireTableDataChanged();
+		this.side2TableModel.fireTableDataChanged();
+		this.popCenterTableModel.fireTableDataChanged();
 
 	}
 
@@ -542,30 +558,30 @@ public class CombatForm extends AbstractForm {
 		@Override
 		protected void doExecuteCommand() {
 			Combat combat = (Combat) getFormObject();
-			if (side == 0) {
-				int idx1 = side1Table.getSelectedRow();
+			if (this.side == 0) {
+				int idx1 = CombatForm.this.side1Table.getSelectedRow();
 				if (idx1 < 0)
 					return;
-				int idx = ((SortableTableModel) side1Table.getModel()).convertSortedIndexToDataIndex(idx1);
-				CombatArmy ca = (CombatArmy) side1TableModel.getRow(idx);
+				int idx = ((SortableTableModel) CombatForm.this.side1Table.getModel()).convertSortedIndexToDataIndex(idx1);
+				CombatArmy ca = (CombatArmy) CombatForm.this.side1TableModel.getRow(idx);
 				if (combat.addToSide(1, ca)) {
 					combat.removeFromSide(0, ca);
-					removeItemSelectionFromTable(side1Table, idx1);
-					side1TableModel.remove(idx);
-					side2TableModel.addRow(ca);
+					removeItemSelectionFromTable(CombatForm.this.side1Table, idx1);
+					CombatForm.this.side1TableModel.remove(idx);
+					CombatForm.this.side2TableModel.addRow(ca);
 					runCombat();
 				}
 			} else {
-				int idx1 = side2Table.getSelectedRow();
+				int idx1 = CombatForm.this.side2Table.getSelectedRow();
 				if (idx1 < 0)
 					return;
-				int idx = ((SortableTableModel) side2Table.getModel()).convertSortedIndexToDataIndex(idx1);
-				CombatArmy ca = (CombatArmy) side2TableModel.getRow(idx);
+				int idx = ((SortableTableModel) CombatForm.this.side2Table.getModel()).convertSortedIndexToDataIndex(idx1);
+				CombatArmy ca = (CombatArmy) CombatForm.this.side2TableModel.getRow(idx);
 				if (combat.addToSide(0, ca)) {
 					combat.removeFromSide(1, ca);
-					removeItemSelectionFromTable(side2Table, idx1);
-					side2TableModel.remove(idx);
-					side1TableModel.addRow(ca);
+					removeItemSelectionFromTable(CombatForm.this.side2Table, idx1);
+					CombatForm.this.side2TableModel.remove(idx);
+					CombatForm.this.side1TableModel.addRow(ca);
 					runCombat();
 				}
 			}
@@ -585,11 +601,11 @@ public class CombatForm extends AbstractForm {
 		protected void doExecuteCommand() {
 			CombatArmy ca = new CombatArmy();
 			Combat combat = (Combat) getFormObject();
-			if (combat.addToSide(side, ca)) {
-				if (side == 0) {
-					side1TableModel.addRow(ca);
+			if (combat.addToSide(this.side, ca)) {
+				if (this.side == 0) {
+					CombatForm.this.side1TableModel.addRow(ca);
 				} else {
-					side2TableModel.addRow(ca);
+					CombatForm.this.side2TableModel.addRow(ca);
 				}
 				runCombat();
 			}
@@ -609,24 +625,24 @@ public class CombatForm extends AbstractForm {
 		protected void doExecuteCommand() {
 			final Combat combat = (Combat) getFormObject();
 			int idx = -1;
-			if (side == 0) {
-				idx = side1Table.getSelectedRow();
+			if (this.side == 0) {
+				idx = CombatForm.this.side1Table.getSelectedRow();
 			} else {
-				idx = side2Table.getSelectedRow();
+				idx = CombatForm.this.side2Table.getSelectedRow();
 			}
 			if (idx < 0)
 				return;
-			if (side == 0) {
+			if (this.side == 0) {
 				final int idx1 = idx;
 				ConfirmationDialog md = new ConfirmationDialog("Remove army?", "Remove selected army from side 1?") {
 
 					@Override
 					protected void onConfirm() {
-						int idx = ((SortableTableModel) side1Table.getModel()).convertSortedIndexToDataIndex(idx1);
-						CombatArmy ca = (CombatArmy) side1TableModel.getRow(idx);
+						int idx2 = ((SortableTableModel) CombatForm.this.side1Table.getModel()).convertSortedIndexToDataIndex(idx1);
+						CombatArmy ca = (CombatArmy) CombatForm.this.side1TableModel.getRow(idx2);
 						if (combat.removeFromSide(0, ca)) {
-							removeItemSelectionFromTable(side1Table, idx1);
-							side1TableModel.remove(idx);
+							removeItemSelectionFromTable(CombatForm.this.side1Table, idx1);
+							CombatForm.this.side1TableModel.remove(idx2);
 							runCombat();
 						}
 					}
@@ -639,11 +655,11 @@ public class CombatForm extends AbstractForm {
 
 					@Override
 					protected void onConfirm() {
-						int idx = ((SortableTableModel) side2Table.getModel()).convertSortedIndexToDataIndex(idx1);
-						CombatArmy ca = (CombatArmy) side2TableModel.getRow(idx);
+						int idx2 = ((SortableTableModel) CombatForm.this.side2Table.getModel()).convertSortedIndexToDataIndex(idx1);
+						CombatArmy ca = (CombatArmy) CombatForm.this.side2TableModel.getRow(idx2);
 						if (combat.removeFromSide(1, ca)) {
-							removeItemSelectionFromTable(side2Table, idx1);
-							side2TableModel.remove(idx);
+							removeItemSelectionFromTable(CombatForm.this.side2Table, idx1);
+							CombatForm.this.side2TableModel.remove(idx2);
 							runCombat();
 						}
 					}
@@ -666,29 +682,29 @@ public class CombatForm extends AbstractForm {
 		@Override
 		protected void doExecuteCommand() {
 			int idx = -1;
-			if (side == 0) {
-				idx = side1Table.getSelectedRow();
+			if (this.side == 0) {
+				idx = CombatForm.this.side1Table.getSelectedRow();
 			} else {
-				idx = side2Table.getSelectedRow();
+				idx = CombatForm.this.side2Table.getSelectedRow();
 			}
 			if (idx < 0)
 				return;
 			CombatArmy ca = null;
-			if (side == 0) {
-				ca = (CombatArmy) side1TableModel.getRow(((SortableTableModel) side1Table.getModel()).convertSortedIndexToDataIndex(idx));
+			if (this.side == 0) {
+				ca = (CombatArmy) CombatForm.this.side1TableModel.getRow(((SortableTableModel) CombatForm.this.side1Table.getModel()).convertSortedIndexToDataIndex(idx));
 			} else {
-				ca = (CombatArmy) side2TableModel.getRow(((SortableTableModel) side2Table.getModel()).convertSortedIndexToDataIndex(idx));
+				ca = (CombatArmy) CombatForm.this.side2TableModel.getRow(((SortableTableModel) CombatForm.this.side2Table.getModel()).convertSortedIndexToDataIndex(idx));
 			}
 			if (ca == null)
 				return;
 			final Combat c = (Combat) getFormObject();
-			final int armyIdx = c.getArmyIndex(side, ca);
+			final int armyIdx = c.getArmyIndex(this.side, ca);
 			final JidePopup popup = new JidePopup();
 			popup.getContentPane().setLayout(new BorderLayout());
 			TableLayoutBuilder tlb = new TableLayoutBuilder();
 			final ArrayList<JComboBox> relations = new ArrayList<JComboBox>();
 			CombatArmy[] enemySide;
-			if (side == 0) {
+			if (this.side == 0) {
 				enemySide = c.getSide2();
 			} else {
 				enemySide = c.getSide1();
@@ -700,7 +716,7 @@ public class CombatForm extends AbstractForm {
 				tlb.cell(new JLabel(label));
 				tlb.gapCol();
 				final JComboBox rel = new JComboBox(NationRelationsEnum.values());
-				if (side == 0) {
+				if (this.side == 0) {
 					rel.setSelectedItem(c.getSide1Relations()[armyIdx][i]);
 				} else {
 					rel.setSelectedItem(c.getSide2Relations()[armyIdx][i]);
@@ -713,12 +729,13 @@ public class CombatForm extends AbstractForm {
 				relations.add(rel);
 				rel.addActionListener(new ActionListener() {
 
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						int i = relations.indexOf(rel);
-						if (side == 0) {
-							c.getSide1Relations()[armyIdx][i] = (NationRelationsEnum) rel.getSelectedItem();
+						int i1 = relations.indexOf(rel);
+						if (EditSelectedArmyRelationsCommand.this.side == 0) {
+							c.getSide1Relations()[armyIdx][i1] = (NationRelationsEnum) rel.getSelectedItem();
 						} else {
-							c.getSide2Relations()[armyIdx][i] = (NationRelationsEnum) rel.getSelectedItem();
+							c.getSide2Relations()[armyIdx][i1] = (NationRelationsEnum) rel.getSelectedItem();
 						}
 					}
 				});
@@ -727,6 +744,7 @@ public class CombatForm extends AbstractForm {
 			closePopup.setPreferredSize(new Dimension(70, 20));
 			closePopup.addActionListener(new ActionListener() {
 
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					popup.hidePopup();
 					runCombat();
@@ -740,7 +758,7 @@ public class CombatForm extends AbstractForm {
 			scp.getVerticalScrollBar().setUnitIncrement(16);
 			popup.getContentPane().add(scp);
 			popup.updateUI();
-			popup.setOwner((side == 0 ? side1Table : side2Table));
+			popup.setOwner((this.side == 0 ? CombatForm.this.side1Table : CombatForm.this.side2Table));
 			popup.setResizable(true);
 			popup.setMovable(true);
 			if (popup.isPopupVisible()) {
@@ -763,18 +781,18 @@ public class CombatForm extends AbstractForm {
 		@Override
 		protected void doExecuteCommand() {
 			int idx = -1;
-			if (side == 0) {
-				idx = side1Table.getSelectedRow();
+			if (this.side == 0) {
+				idx = CombatForm.this.side1Table.getSelectedRow();
 			} else {
-				idx = side2Table.getSelectedRow();
+				idx = CombatForm.this.side2Table.getSelectedRow();
 			}
 			if (idx < 0)
 				return;
 			CombatArmy ca = null;
-			if (side == 0) {
-				ca = (CombatArmy) side1TableModel.getRow(((SortableTableModel) side1Table.getModel()).convertSortedIndexToDataIndex(idx));
+			if (this.side == 0) {
+				ca = (CombatArmy) CombatForm.this.side1TableModel.getRow(((SortableTableModel) CombatForm.this.side1Table.getModel()).convertSortedIndexToDataIndex(idx));
 			} else {
-				ca = (CombatArmy) side2TableModel.getRow(((SortableTableModel) side2Table.getModel()).convertSortedIndexToDataIndex(idx));
+				ca = (CombatArmy) CombatForm.this.side2TableModel.getRow(((SortableTableModel) CombatForm.this.side2Table.getModel()).convertSortedIndexToDataIndex(idx));
 			}
 			if (ca == null)
 				return;
@@ -806,7 +824,7 @@ public class CombatForm extends AbstractForm {
 	protected void showContextMenu(int side, MouseEvent e) {
 		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("contextMenu", new Object[] { new AddArmyCommand(side), new EditSelectedArmyCommand(side), new EditSelectedArmyRelationsCommand(side), new RemoveSelectedArmyCommand(side), new SwitchSideCommand(side) });
 		JPopupMenu pm = group.createPopupMenu();
-		pm.show((side == 0 ? side1Table : side2Table), e.getX(), e.getY());
+		pm.show((side == 0 ? this.side1Table : this.side2Table), e.getX(), e.getY());
 	}
 
 	public void addArmy(Army a) {
@@ -821,9 +839,9 @@ public class CombatForm extends AbstractForm {
 		CombatArmy ca = new CombatArmy(a);
 		if (c.addToSide(side, ca)) {
 			if (side == 0) {
-				side1TableModel.addRow(ca);
+				this.side1TableModel.addRow(ca);
 			} else {
-				side2TableModel.addRow(ca);
+				this.side2TableModel.addRow(ca);
 			}
 			runCombat();
 		}
@@ -841,6 +859,7 @@ public class CombatForm extends AbstractForm {
 			this.side = side;
 		}
 
+		@Override
 		public void drop(DropTargetDropEvent e) {
 			Transferable t = e.getTransferable();
 			try {
@@ -854,42 +873,42 @@ public class CombatForm extends AbstractForm {
 					Army[] armies = (Army[]) t.getTransferData(armyArrayFlavor);
 					for (Army a : armies) {
 						CombatArmy ca = new CombatArmy(a);
-						c.addToSide(side, ca);
-						if (side == 0) {
-							side1TableModel.addRow(ca);
+						c.addToSide(this.side, ca);
+						if (this.side == 0) {
+							CombatForm.this.side1TableModel.addRow(ca);
 						} else {
-							side2TableModel.addRow(ca);
+							CombatForm.this.side2TableModel.addRow(ca);
 						}
 					}
 					runCombat();
 				} else if (t.isDataFlavorSupported(armyFlavor)) {
 					CombatArmy ca = new CombatArmy((Army) t.getTransferData(armyFlavor));
-					c.addToSide(side, ca);
-					if (side == 0) {
-						side1TableModel.addRow(ca);
+					c.addToSide(this.side, ca);
+					if (this.side == 0) {
+						CombatForm.this.side1TableModel.addRow(ca);
 					} else {
-						side2TableModel.addRow(ca);
+						CombatForm.this.side2TableModel.addRow(ca);
 					}
 					runCombat();
 				} else if (t.isDataFlavorSupported(armyEstimateArrayFlavor)) {
 					ArmyEstimate[] armies = (ArmyEstimate[]) t.getTransferData(armyEstimateArrayFlavor);
 					for (ArmyEstimate a : armies) {
 						CombatArmy ca = new CombatArmy(a);
-						c.addToSide(side, ca);
-						if (side == 0) {
-							side1TableModel.addRow(ca);
+						c.addToSide(this.side, ca);
+						if (this.side == 0) {
+							CombatForm.this.side1TableModel.addRow(ca);
 						} else {
-							side2TableModel.addRow(ca);
+							CombatForm.this.side2TableModel.addRow(ca);
 						}
 					}
 					runCombat();
 				} else if (t.isDataFlavorSupported(armyEstimateFlavor)) {
 					CombatArmy ca = new CombatArmy((ArmyEstimate) t.getTransferData(armyEstimateFlavor));
-					c.addToSide(side, ca);
-					if (side == 0) {
-						side1TableModel.addRow(ca);
+					c.addToSide(this.side, ca);
+					if (this.side == 0) {
+						CombatForm.this.side1TableModel.addRow(ca);
 					} else {
-						side2TableModel.addRow(ca);
+						CombatForm.this.side2TableModel.addRow(ca);
 					}
 					runCombat();
 				}
@@ -905,6 +924,7 @@ public class CombatForm extends AbstractForm {
 			super();
 		}
 
+		@Override
 		public void drop(DropTargetDropEvent e) {
 			Transferable t = e.getTransferable();
 			try {
@@ -918,8 +938,8 @@ public class CombatForm extends AbstractForm {
 					cpc.setLoyalty(pc.getLoyalty());
 					cpc.setFort(pc.getFortification());
 					cpc.setSize(pc.getSize());
-					popCenterTableModel.getRows().clear();
-					popCenterTableModel.addRow(cpc);
+					CombatForm.this.popCenterTableModel.getRows().clear();
+					CombatForm.this.popCenterTableModel.addRow(cpc);
 					Combat c = (Combat) getFormObject();
 					c.setSide2Pc(cpc);
 					runCombat();
@@ -939,8 +959,8 @@ public class CombatForm extends AbstractForm {
 				@Override
 				protected void onConfirm() {
 					c.setSide2Pc(null);
-					popCenterTableModel.getRows().clear();
-					popCenterTableModel.fireTableDataChanged();
+					CombatForm.this.popCenterTableModel.getRows().clear();
+					CombatForm.this.popCenterTableModel.fireTableDataChanged();
 					runCombat();
 				}
 			};
@@ -958,10 +978,10 @@ public class CombatForm extends AbstractForm {
 		@Override
 		protected void doExecuteCommand() {
 			CombatPopCenter pc = null;
-			if (popCenterTableModel.getRowCount() == 0) {
+			if (CombatForm.this.popCenterTableModel.getRowCount() == 0) {
 				pc = new CombatPopCenter();
 			} else {
-				pc = (CombatPopCenter) popCenterTableModel.getRow(0);
+				pc = (CombatPopCenter) CombatForm.this.popCenterTableModel.getRow(0);
 			}
 			FormModel formModel = FormModelHelper.createFormModel(pc);
 			final CombatPopCenterForm form = new CombatPopCenterForm(formModel);
@@ -977,11 +997,11 @@ public class CombatForm extends AbstractForm {
 				protected boolean onFinish() {
 					form.commit();
 					Combat c = (Combat) getFormObject();
-					CombatPopCenter pc = (CombatPopCenter) form.getFormObject();
-					if (popCenterTableModel.getRowCount() == 0) {
-						c.setSide2Pc(pc);
-						popCenterTableModel.addRow(pc);
-						popCenterTableModel.fireTableDataChanged();
+					CombatPopCenter pc1 = (CombatPopCenter) form.getFormObject();
+					if (CombatForm.this.popCenterTableModel.getRowCount() == 0) {
+						c.setSide2Pc(pc1);
+						CombatForm.this.popCenterTableModel.addRow(pc1);
+						CombatForm.this.popCenterTableModel.fireTableDataChanged();
 					}
 
 					runCombat();

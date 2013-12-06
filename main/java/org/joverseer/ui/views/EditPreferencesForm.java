@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -38,7 +39,7 @@ public class EditPreferencesForm extends AbstractForm {
 	@Override
 	protected JComponent createFormControl() {
 		JTabbedPane tabPane = new JTabbedPane();
-		tabPane.setTabPlacement(JTabbedPane.LEFT);
+		tabPane.setTabPlacement(SwingConstants.LEFT);
 		TableLayoutBuilder tlb = null;
 		String group = "";
 
@@ -74,13 +75,13 @@ public class EditPreferencesForm extends AbstractForm {
 						combo.setSelectedItem(pv.getDescription());
 					}
 				}
-				components.put(p.getKey(), combo);
+				this.components.put(p.getKey(), combo);
 				tlb.cell(combo, "colspec=left:200px");
 			} else {
 				JTextField tf = new JTextField();
 				tf.setPreferredSize(new Dimension(190, 20));
 				tf.setText(reg.getPreferenceValue(p.getKey()));
-				components.put(p.getKey(), tf);
+				this.components.put(p.getKey(), tf);
 				tlb.cell(tf, "colspec=left:200px");
 			}
 
@@ -106,7 +107,7 @@ public class EditPreferencesForm extends AbstractForm {
 		PreferenceRegistry reg = (PreferenceRegistry) getFormObject();
 		ArrayList<Preference> prefs = reg.getPreferencesSortedByGroup();
 		for (Preference p : prefs) {
-			JComponent c = components.get(p.getKey());
+			JComponent c = this.components.get(p.getKey());
 			if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
 				JComboBox combo = (JComboBox) c;
 				if (combo.getSelectedItem() != null) {

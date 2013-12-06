@@ -37,7 +37,8 @@ public class ImportOrdersCsv extends ImportCsv
             line = readLine();
             gameStr = getToken(line, true);
             numberStr = getToken(line, false);
-            String accountStr = getToken(line, false);
+            @SuppressWarnings("unused")
+			String accountStr = getToken(line, false);
             secretStr = getToken(line, false);
             int game;
             int number;
@@ -45,19 +46,17 @@ public class ImportOrdersCsv extends ImportCsv
             game = Integer.parseInt(gameStr);
             number = Integer.parseInt(numberStr);
             secret = Integer.parseInt(secretStr);
-            if(nation.getGame() != game || nation.getNation() != number)
-                return "The turn results file is for game " + nation.getGame() + ", nation " + nation.getNation() + ".\n" + "The orders file is for game " + game + ", nation " + number + ".";
-            if(nation.getSecret() != secret)
+            if(this.nation.getGame() != game || this.nation.getNation() != number)
+                return "The turn results file is for game " + this.nation.getGame() + ", nation " + this.nation.getNation() + ".\n" + "The orders file is for game " + game + ", nation " + number + ".";
+            if(this.nation.getSecret() != secret)
                 return "The game and nation are correct, but the orders file appears to be for a different turn.";
         }        
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             return "The game number, turn number, or secret code could not be determined from the order file.";
             //return "Game number could not be read from orders file.\nInvalid file?";
         }
         for(line = readLine(); line != null && !line.equalsIgnoreCase("ENDMEAUTOINPUT"); line = readLine())
         {
-            if(line == null)
-                continue;
             String result = parseLine(line);
             if(result != null)
                 return result;
@@ -73,7 +72,7 @@ public class ImportOrdersCsv extends ImportCsv
         param = getToken(line, true);
         if(param == null)
             return null;
-        character = nation.findCharacterById(param);
+        character = this.nation.findCharacterById(param);
         if(character == null)
             return "Could not find character: " + param;
         try {
@@ -89,7 +88,7 @@ public class ImportOrdersCsv extends ImportCsv
             character.addOrder(order);
             return null;
         }
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             return "Could not convert " + param + " to an order number for " + character + "!";
         }
     }

@@ -18,56 +18,59 @@ public class ExtraInfoDlg extends JDialog
     public ExtraInfoDlg(JFrame frame, Nation nation, Data data, Vector requests)
     {
         super(frame, "OrderChecker Setup", true);
-        okButton = new JButton();
-        tabbedPane = new JTabbedPane();
-        alignments = new JComboBox[25];
+        this.okButton = new JButton();
+        this.tabbedPane = new JTabbedPane();
+        this.alignments = new JComboBox[25];
         this.nation = nation;
         this.data = data;
-        contents = requests;
-        if(contents.size() > 0)
+        this.contents = requests;
+        if(this.contents.size() > 0)
         {
             layoutInformationRequests();
             setInitialStates();
         }
         layoutNationAlignment();
         layoutParsingResults();
-        okButton.setText("OK");
-        okButton.addActionListener(new ActionListener() {
+        this.okButton.setText("OK");
+        this.okButton.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e)
+            @Override
+			public void actionPerformed(ActionEvent e)
             {
                 okActionPerformed();
             }
 
         }
 );
-        tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        JScrollPane scrollPane = new JScrollPane(tabbedPane);
+        this.tabbedPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JScrollPane scrollPane = new JScrollPane(this.tabbedPane);
         Container pane = getContentPane();
         pane.setLayout(new BorderLayout());
         pane.add(scrollPane, "Center");
-        pane.add(okButton, "South");
+        pane.add(this.okButton, "South");
         pack();
         java.awt.Dimension prefer = getPreferredSize();
         Data.checkScreenSize(prefer);
         setSize(prefer);
         setLocation(Data.getScreenLocation(prefer));
-        getRootPane().setDefaultButton(okButton);
+        getRootPane().setDefaultButton(this.okButton);
         addKeyListener(new KeyAdapter() {
 
-            public void keyPressed(KeyEvent e)
+            @Override
+			public void keyPressed(KeyEvent e)
             {
                 if(e.getKeyCode() == 27)
-                    okButton.doClick();
+                    ExtraInfoDlg.this.okButton.doClick();
             }
 
         }
 );
         addWindowListener(new WindowAdapter() {
 
-            public void windowClosing(WindowEvent we)
+            @Override
+			public void windowClosing(WindowEvent we)
             {
-                okButton.doClick();
+                ExtraInfoDlg.this.okButton.doClick();
             }
 
         }
@@ -84,7 +87,7 @@ public class ExtraInfoDlg extends JDialog
         layoutConstraint.insets = new Insets(10, 10, 0, 10);
         layoutConstraint.gridwidth = 0;
         layoutConstraint.anchor = 17;
-        int size = contents.size();
+        int size = this.contents.size();
         boolean added[] = new boolean[size];
         String currentTag = null;
         for(int i = 0; i < size; i++)
@@ -97,7 +100,7 @@ public class ExtraInfoDlg extends JDialog
                 layoutManager.setConstraints(separator, layoutConstraint);
                 pane.add(separator);
             }
-            JCheckBox newItem = (JCheckBox)contents.get(i);
+            JCheckBox newItem = (JCheckBox)this.contents.get(i);
             currentTag = getTag(newItem);
             removeTag(newItem);
             layoutManager.setConstraints(newItem, layoutConstraint);
@@ -107,7 +110,7 @@ public class ExtraInfoDlg extends JDialog
             {
                 if(added[j])
                     continue;
-                JCheckBox newItem2 = (JCheckBox)contents.get(j);
+                JCheckBox newItem2 = (JCheckBox)this.contents.get(j);
                 if(!getTag(newItem2).equals(currentTag))
                     continue;
                 removeTag(newItem2);
@@ -122,7 +125,7 @@ public class ExtraInfoDlg extends JDialog
 
         }
 
-        tabbedPane.add("Additional Information", pane);
+        this.tabbedPane.add("Additional Information", pane);
     }
 
     private void layoutNationAlignment()
@@ -142,8 +145,8 @@ public class ExtraInfoDlg extends JDialog
                 {
                     JLabel nationName = new JLabel();
                     int nationIndex = i + (col - 1) * 10;
-                    nationName.setText(nation.getNationName(nationIndex + 1));
-                    alignments[nationIndex] = getAlignmentField(nationIndex);
+                    nationName.setText(this.nation.getNationName(nationIndex + 1));
+                    this.alignments[nationIndex] = getAlignmentField(nationIndex);
                     layoutConstraint.gridwidth = 1;
                     layoutConstraint.anchor = 13;
                     layoutConstraint.insets = new Insets(10, 10, 0, 10);
@@ -152,14 +155,14 @@ public class ExtraInfoDlg extends JDialog
                     layoutConstraint.gridwidth = endOfRow ? 0 : 1;
                     layoutConstraint.anchor = 17;
                     layoutConstraint.insets = new Insets(10, 0, 0, col == 3 ? 10 : 20);
-                    layoutManager.setConstraints(alignments[nationIndex], layoutConstraint);
-                    pane.add(alignments[nationIndex]);
+                    layoutManager.setConstraints(this.alignments[nationIndex], layoutConstraint);
+                    pane.add(this.alignments[nationIndex]);
                 }
             }
 
         }
 
-        tabbedPane.add("Nations", pane);
+        this.tabbedPane.add("Nations", pane);
     }
 
     private void layoutParsingResults()
@@ -167,20 +170,20 @@ public class ExtraInfoDlg extends JDialog
         JPanel pane = new JPanel();
         pane.setLayout(new BorderLayout());
         StringBuffer line = new StringBuffer();
-        line.append("<p><b><u>" + nation.getNationName(nation.getNation()) + ", Game " + nation.getGame() + ", Turn " + nation.getTurn() + "</u></b><p>");
-        line.append("Characters imported: " + nation.getCharacterCount() + "<br>");
-        line.append("Population centers imported: " + nation.getPopulationCenterCount() + "<br>");
-        line.append("Armies imported: " + nation.getArmyCount() + "<p>");
-        line.append("<b>Data from " + nation.getNationParsed().size() + " other nations successfully imported</b>:<br><center>");
-        if(nation.getNationParsed().size() == 0)
+        line.append("<p><b><u>" + this.nation.getNationName(this.nation.getNation()) + ", Game " + this.nation.getGame() + ", Turn " + this.nation.getTurn() + "</u></b><p>");
+        line.append("Characters imported: " + this.nation.getCharacterCount() + "<br>");
+        line.append("Population centers imported: " + this.nation.getPopulationCenterCount() + "<br>");
+        line.append("Armies imported: " + this.nation.getArmyCount() + "<p>");
+        line.append("<b>Data from " + this.nation.getNationParsed().size() + " other nations successfully imported</b>:<br><center>");
+        if(this.nation.getNationParsed().size() == 0)
         {
             line.append("None<br>");
         } else
         {
-            for(int i = 0; i < nation.getNationParsed().size(); i++)
+            for(int i = 0; i < this.nation.getNationParsed().size(); i++)
             {
-                Integer nationNumber = (Integer)nation.getNationParsed().get(i);
-                line.append(nation.getNationName(nationNumber.intValue()) + "<br>");
+                Integer nationNumber = (Integer)this.nation.getNationParsed().get(i);
+                line.append(this.nation.getNationName(nationNumber.intValue()) + "<br>");
             }
 
         }
@@ -190,7 +193,7 @@ public class ExtraInfoDlg extends JDialog
         textPane.setEditable(false);
         textPane.setText(line.toString());
         textPane.setCaretPosition(0);
-        tabbedPane.add("Parsing Results", textPane);
+        this.tabbedPane.add("Parsing Results", textPane);
     }
 
     private String getTag(JCheckBox box)
@@ -209,34 +212,34 @@ public class ExtraInfoDlg extends JDialog
 
     private void okActionPerformed()
     {
-        int size = contents.size();
+        int size = this.contents.size();
         for(int i = 0; i < size; i++)
         {
-            JCheckBox newItem = (JCheckBox)contents.get(i);
+            JCheckBox newItem = (JCheckBox)this.contents.get(i);
             int index = firstInstanceInList(newItem);
             if(index < i)
             {
-                JCheckBox master = (JCheckBox)contents.get(index);
+                JCheckBox master = (JCheckBox)this.contents.get(index);
                 newItem.setSelected(master.isSelected());
             }
         }
 
         for(int i = 0; i < 25; i++)
         {
-            int alignment = alignments[i].getSelectedIndex();
-            data.setNationAlignment(i, alignment, nation);
+            int alignment = this.alignments[i].getSelectedIndex();
+            this.data.setNationAlignment(i, alignment, this.nation);
         }
 
-        data.setCheckBoxes(contents, nation);
+        this.data.setCheckBoxes(this.contents, this.nation);
         dispose();
     }
 
     private int firstInstanceInList(JCheckBox box)
     {
-        int size = contents.size();
+        int size = this.contents.size();
         for(int i = 0; i < size; i++)
         {
-            JCheckBox component = (JCheckBox)contents.get(i);
+            JCheckBox component = (JCheckBox)this.contents.get(i);
             if(component.getText().equals(box.getText()))
                 return i;
         }
@@ -249,7 +252,7 @@ public class ExtraInfoDlg extends JDialog
         JComboBox box = new JComboBox(new String[] {
             "Neutral", "Free People", "Dark Servant"
         });
-        int alignment = data.getNationAlignment(index, nation);
+        int alignment = this.data.getNationAlignment(index, this.nation);
         if(alignment != -1)
             box.setSelectedIndex(alignment);
         return box;
@@ -257,12 +260,12 @@ public class ExtraInfoDlg extends JDialog
 
     private void setInitialStates()
     {
-        Vector previousContents = data.getCheckBoxes(nation);
+        Vector previousContents = this.data.getCheckBoxes(this.nation);
         if(previousContents == null)
             return;
-        for(int i = 0; i < contents.size(); i++)
+        for(int i = 0; i < this.contents.size(); i++)
         {
-            JCheckBox box = (JCheckBox)contents.get(i);
+            JCheckBox box = (JCheckBox)this.contents.get(i);
             JCheckBox previousBox = Data.isDuplicateRequest(previousContents, box);
             if(previousBox != null)
                 box.setSelected(previousBox.isSelected());

@@ -52,8 +52,9 @@ public class JLabelButton extends JLabel {
 
     private void init() {
         addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent arg0) {
-                for (ActionListener a : actionListeners) {
+            @Override
+			public void mouseClicked(MouseEvent arg0) {
+                for (ActionListener a : JLabelButton.this.actionListeners) {
                     a.actionPerformed(new ActionEvent(arg0.getSource(), 0, ""));
                 }
             }
@@ -63,7 +64,7 @@ public class JLabelButton extends JLabel {
     }
     
     public void addActionListener(ActionListener a) {
-        actionListeners.add(a);
+        this.actionListeners.add(a);
     }
 
     

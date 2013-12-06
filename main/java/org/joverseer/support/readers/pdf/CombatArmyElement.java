@@ -10,7 +10,7 @@ public class CombatArmyElement {
 
     
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     

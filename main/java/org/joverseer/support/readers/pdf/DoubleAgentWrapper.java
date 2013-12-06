@@ -17,7 +17,7 @@ public class DoubleAgentWrapper {
     String orders;
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -26,7 +26,7 @@ public class DoubleAgentWrapper {
 
     
     public String getName() {
-        return name;
+        return this.name;
     }
 
     
@@ -38,7 +38,7 @@ public class DoubleAgentWrapper {
     
     
     public String getNation() {
-        return nation;
+        return this.nation;
     }
 
     
@@ -61,7 +61,7 @@ public class DoubleAgentWrapper {
     }
 
 	public String getOrders() {
-		return orders;
+		return this.orders;
 	}
 
 	public void setOrders(String orders) {

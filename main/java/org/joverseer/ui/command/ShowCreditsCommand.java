@@ -23,21 +23,25 @@ public class ShowCreditsCommand  extends ActionCommand {
         super("ShowCreditsCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         Resource res = Application.instance().getApplicationContext().getResource("classpath:ui/credits.htm");
         FormModel formModel = FormModelHelper.createFormModel(res);
         final CreditsForm form = new CreditsForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 return true;
             }
 
-            protected Object[] getCommandGroupMembers() {
+            @Override
+			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
                         getFinishCommand()
                 };

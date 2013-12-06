@@ -7,7 +7,7 @@ public class OrdersGiven {
 	ArrayList<OrderWrapper> orders = new ArrayList<OrderWrapper>();
 
 	public String getCharacterName() {
-		return characterName;
+		return this.characterName;
 	}
 
 	public void setCharacterName(String characterName) {
@@ -15,10 +15,10 @@ public class OrdersGiven {
 	}
 
 	public ArrayList<OrderWrapper> getOrders() {
-		return orders;
+		return this.orders;
 	}
 
 	public void addOrder(OrderWrapper ow) {
-		orders.add(ow);
+		this.orders.add(ow);
 	}
 }

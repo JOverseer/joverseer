@@ -64,22 +64,22 @@ public class Combat implements Serializable, IHasMapLocation {
     public Combat() {
         for (int i=0; i<MAX_ALL; i++) {
             for (int j=0; j<MAX_ALL; j++) {
-                side1Relations[i][j] = NationRelationsEnum.Disliked;
-                side2Relations[i][j] = NationRelationsEnum.Disliked;
-                side1Attack[i][j] = true;
-                side2Attack[i][j] = true;
+                this.side1Relations[i][j] = NationRelationsEnum.Disliked;
+                this.side2Relations[i][j] = NationRelationsEnum.Disliked;
+                this.side1Attack[i][j] = true;
+                this.side2Attack[i][j] = true;
             }
-            side1[i] = null;
-            side2[i] = null;
+            this.side1[i] = null;
+            this.side2[i] = null;
         }
-        terrain = HexTerrainEnum.plains;
-        climate = ClimateEnum.Cool;
+        this.terrain = HexTerrainEnum.plains;
+        this.climate = ClimateEnum.Cool;
     }
     
     
     
     public int getRounds() {
-		return rounds;
+		return this.rounds;
 	}
 
 
@@ -162,47 +162,47 @@ public class Combat implements Serializable, IHasMapLocation {
     }
     
     protected void addToLog(String msg) {
-        log += msg + "\n";
+        this.log += msg + "\n";
     }
     
     public void runPcBattle(int attackerSide, int round) {
-        int defenderSide = (attackerSide == 0 ? 1 : 0);
+//        int defenderSide = (attackerSide == 0 ? 1 : 0);
         
         // compute str for attacker
         int warMachines = 0;
         int attackerStr = 0;
         int totalCon = 0;
-        CombatPopCenter pc = (attackerSide == 0 ? side2Pc : side1Pc);
+        CombatPopCenter pc = (attackerSide == 0 ? this.side2Pc : this.side1Pc);
         double[] losses = new double[MAX_ARMIES];
         for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
-                if (side1[i] == null) continue;
-                int str = computeNativeArmyStrength(side1[i], terrain, climate, true);
+                if (this.side1[i] == null) continue;
+                int str = computeNativeArmyStrength(this.side1[i], this.terrain, this.climate, true);
                 // adjust for relations
-                int relMod = CombatModifiers.getRelationModifier(side1Relations[i][MAX_ALL-1]);
+                int relMod = CombatModifiers.getRelationModifier(this.side1Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                ArmyElement wmEl = side1[i].getWM(); 
+                ArmyElement wmEl = this.side1[i].getWM(); 
                 int wm = 0;
                 if (wmEl != null) wmEl.getNumber(); 
                 warMachines += wm;
-                totalCon += computNativeArmyConstitution(side1[i]);
-                losses[i] = side1[i].getLosses();
+                totalCon += computNativeArmyConstitution(this.side1[i]);
+                losses[i] = this.side1[i].getLosses();
                 if (round == 0) {
-                	attackerStr += side1[i].getOffensiveAddOns();
+                	attackerStr += this.side1[i].getOffensiveAddOns();
                 }
             } else {
-                if (side2[i] == null) continue;
-                int str = computeNativeArmyStrength(side2[i], terrain, climate, true);
+                if (this.side2[i] == null) continue;
+                int str = computeNativeArmyStrength(this.side2[i], this.terrain, this.climate, true);
                 // adjust for relations
-                int relMod = CombatModifiers.getRelationModifier(side2Relations[i][MAX_ALL-1]);
+                int relMod = CombatModifiers.getRelationModifier(this.side2Relations[i][MAX_ALL-1]);
                 str = (int)(str * (double)relMod / 100d);
                 attackerStr += str;
-                warMachines += side2[i].getWM().getNumber();
-                totalCon += computNativeArmyConstitution(side2[i]);
-                losses[i] = side2[i].getLosses();
+                warMachines += this.side2[i].getWM().getNumber();
+                totalCon += computNativeArmyConstitution(this.side2[i]);
+                losses[i] = this.side2[i].getLosses();
                 if (round == 0) {
-                	attackerStr += side2[i].getOffensiveAddOns();
+                	attackerStr += this.side2[i].getOffensiveAddOns();
                 }
             }
         }
@@ -213,23 +213,23 @@ public class Combat implements Serializable, IHasMapLocation {
         pc.setStrengthOfAttackingArmies(attackerStr);
         for (int i=0; i<MAX_ARMIES; i++) {
             if (attackerSide == 0) {
-                if (side1[i] == null) continue;
-                double l = computeNewLossesFromPopCenter(side1[i], pc, side2Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
-                side1[i].setLosses(Math.min(side1[i].getLosses() + l, 100));
+                if (this.side1[i] == null) continue;
+                double l = computeNewLossesFromPopCenter(this.side1[i], pc, this.side2Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
+                this.side1[i].setLosses(Math.min(this.side1[i].getLosses() + l, 100));
             } else {
-                if (side2[i] == null) continue;
-                double l = computeNewLossesFromPopCenter(side2[i], pc, side1Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
-                side2[i].setLosses(Math.min(side2[i].getLosses() + l, 100));
+                if (this.side2[i] == null) continue;
+                double l = computeNewLossesFromPopCenter(this.side2[i], pc, this.side1Relations[MAX_ALL - 1][i], totalCon, warMachines, round);
+                this.side2[i].setLosses(Math.min(this.side2[i].getLosses() + l, 100));
             }
         }
     }
 
     public void runArmyBattle() {
-        rounds = 0;
+        this.rounds = 0;
         boolean finished = false;
-        log = "";
+        this.log = "";
         do {
-            addToLog("Starting round " + rounds);
+            addToLog("Starting round " + this.rounds);
             double[] side1Losses = new double[MAX_ARMIES];
             double[] side2Losses = new double[MAX_ARMIES];
 
@@ -237,7 +237,7 @@ public class Combat implements Serializable, IHasMapLocation {
             int side1Con = 0;
             int side2Con = 0;
             for (int i=0; i<MAX_ARMIES; i++) {
-                CombatArmy army = side1[i];
+                CombatArmy army = this.side1[i];
                 if (army == null) continue;
                 int currentConstitution = computNativeArmyConstitution(army);
                 int originalConstitution = computNativeArmyConstitution(army, 0d);
@@ -248,7 +248,7 @@ public class Combat implements Serializable, IHasMapLocation {
             addToLog("Total Side 1 con: " + side1Con);
             addToLog("");
             for (int i=0; i<MAX_ARMIES; i++) {
-                CombatArmy army = side2[i];
+                CombatArmy army = this.side2[i];
                 if (army == null) continue;
                 int constit = computNativeArmyConstitution(army);
                 int sconstit = computNativeArmyConstitution(army, 0d);
@@ -267,17 +267,17 @@ public class Combat implements Serializable, IHasMapLocation {
             boolean side2Alive = false;
             // compute losses for each army
             for (int i=0; i<MAX_ARMIES; i++) {
-                CombatArmy ca1 = side1[i];
+                CombatArmy ca1 = this.side1[i];
                 if (ca1 == null) continue;
                 
                 for (int j=0; j<MAX_ARMIES; j++) {
-                    CombatArmy ca2 = side2[j];
+                    CombatArmy ca2 = this.side2[j];
                     if (ca2 == null) continue;
                     
                     // losses for ca1
                     addToLog("");
                     addToLog("Computing Losses for 2," + j + " attacking 1," + i);
-                    side1Losses[i] += computeNewLosses(terrain, climate, ca2, ca1, side2Relations[j][i], side1Con, rounds);
+                    side1Losses[i] += computeNewLosses(this.terrain, this.climate, ca2, ca1, this.side2Relations[j][i], side1Con, this.rounds);
                     if (side1Losses[i] < 99.5) {
                         side1Alive = true;
                     }
@@ -285,7 +285,7 @@ public class Combat implements Serializable, IHasMapLocation {
                     // losses for ca2
                     addToLog("");
                     addToLog("Computing Losses for 1," + i + " attacking 2," + j);
-                    side2Losses[j] += computeNewLosses(terrain, climate, ca1, ca2, side1Relations[i][j], side2Con, rounds);
+                    side2Losses[j] += computeNewLosses(this.terrain, this.climate, ca1, ca2, this.side1Relations[i][j], side2Con, this.rounds);
                     if (side2Losses[j] < 99.5) {
                         side2Alive = true;
                     }
@@ -294,24 +294,24 @@ public class Combat implements Serializable, IHasMapLocation {
             
             // assign losses to armies
             for (int i=0; i<MAX_ARMIES; i++) {
-                CombatArmy ca1 = side1[i];
+                CombatArmy ca1 = this.side1[i];
                 if (ca1 == null) continue;
                 ca1.setLosses(Math.min(side1Losses[i], 100));
                 addToLog("Side 1 army " + i + " new con : " + computNativeArmyConstitution(ca1));
             }
             for (int i=0; i<MAX_ARMIES; i++) {
-                CombatArmy ca2 = side2[i];
+                CombatArmy ca2 = this.side2[i];
                 if (ca2 == null) continue;
                 ca2.setLosses(Math.min(side2Losses[i], 100));
                 addToLog("Side 2 army " + i + " new con : " + computNativeArmyConstitution(ca2));
             }        
             
-            rounds++;
-            finished = !(side1Alive && side2Alive) || rounds >= maxRounds;
+            this.rounds++;
+            finished = !(side1Alive && side2Alive) || this.rounds >= this.maxRounds;
             addToLog("");
             addToLog("");
         } while (!finished);
-        System.out.println(log);
+        System.out.println(this.log);
     }
     
     public void runWholeCombat() {
@@ -356,8 +356,8 @@ public class Combat implements Serializable, IHasMapLocation {
         return losses;
     }
     
-    public double computeNewLosses(HexTerrainEnum terrain,
-                                            ClimateEnum climate,
+    public double computeNewLosses(HexTerrainEnum terrain1,
+                                            ClimateEnum climate1,
                                             CombatArmy att,
                                             CombatArmy def,
                                             NationRelationsEnum relations,
@@ -365,7 +365,7 @@ public class Combat implements Serializable, IHasMapLocation {
                                             int round) {
         int relMod = CombatModifiers.getRelationModifier(relations);
         int defCon = computNativeArmyConstitution(def);
-        int attStr = computeModifiedArmyStrength(terrain, climate, att, def);
+        int attStr = computeModifiedArmyStrength(terrain1, climate1, att, def);
         addToLog("Relations mod: " + relMod);
         addToLog("Attacker modified str: " + attStr);
         int attBonus = 0;
@@ -390,7 +390,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public ClimateEnum getClimate() {
-        return climate;
+        return this.climate;
     }
 
     
@@ -400,7 +400,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public CombatArmy[] getSide1() {
-        return side1;
+        return this.side1;
     }
 
     
@@ -410,7 +410,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public boolean[][] getSide1Attack() {
-        return side1Attack;
+        return this.side1Attack;
     }
 
     
@@ -420,7 +420,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public NationRelationsEnum[][] getSide1Relations() {
-        return side1Relations;
+        return this.side1Relations;
     }
 
     
@@ -430,7 +430,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public CombatArmy[] getSide2() {
-        return side2;
+        return this.side2;
     }
 
     
@@ -440,7 +440,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public boolean[][] getSide2Attack() {
-        return side2Attack;
+        return this.side2Attack;
     }
 
     
@@ -450,7 +450,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public NationRelationsEnum[][] getSide2Relations() {
-        return side2Relations;
+        return this.side2Relations;
     }
 
     
@@ -460,7 +460,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public HexTerrainEnum getTerrain() {
-        return terrain;
+        return this.terrain;
     }
 
     
@@ -470,17 +470,17 @@ public class Combat implements Serializable, IHasMapLocation {
 
     public boolean addToSide(int side, CombatArmy ca) {
         if (side == 0) {
-            for (int i=0; i<side1.length; i++) {
-                if (side1[i] == null) {
-                    side1[i] = ca;
+            for (int i=0; i<this.side1.length; i++) {
+                if (this.side1[i] == null) {
+                    this.side1[i] = ca;
                     return true;
                 }
             }
             return false;
         } else {
-            for (int i=0; i<side2.length; i++) {
-                if (side2[i] == null) {
-                    side2[i] = ca;
+            for (int i=0; i<this.side2.length; i++) {
+                if (this.side2[i] == null) {
+                    this.side2[i] = ca;
                     return true;
                 }
             }
@@ -492,26 +492,26 @@ public class Combat implements Serializable, IHasMapLocation {
     public boolean removeFromSide(int side, CombatArmy ca) {
         boolean found = false;
         if (side == 0) {
-            for (int i=0; i<side1.length; i++) {
-                if (side1[i] == ca) {
-                    side1[i] = null;
+            for (int i=0; i<this.side1.length; i++) {
+                if (this.side1[i] == ca) {
+                    this.side1[i] = null;
                     found = true;
                 }
-                if (i > 0 && side1[i-1] == null && side1[i] != null) {
-                    side1[i-1] = side1[i];
-                    side1[i] = null;
+                if (i > 0 && this.side1[i-1] == null && this.side1[i] != null) {
+                    this.side1[i-1] = this.side1[i];
+                    this.side1[i] = null;
                 }
             }
             return found;
         } else {
-            for (int i=0; i<side2.length; i++) {
-                if (side2[i] == ca) {
-                    side2[i] = null;
+            for (int i=0; i<this.side2.length; i++) {
+                if (this.side2[i] == ca) {
+                    this.side2[i] = null;
                     found = true;
                 }
-                if (i > 0 && side2[i-1] == null && side2[i] != null) {
-                    side2[i-1] = side2[i];
-                    side2[i] = null;
+                if (i > 0 && this.side2[i-1] == null && this.side2[i] != null) {
+                    this.side2[i-1] = this.side2[i];
+                    this.side2[i] = null;
                 }
             }
             return found;
@@ -522,7 +522,7 @@ public class Combat implements Serializable, IHasMapLocation {
     public NationAllegianceEnum estimateAllegianceForSide(int side) {
         NationAllegianceEnum ret = null;
         Game g = GameHolder.instance().getGame();
-        CombatArmy[] cas = (side == 0 ? side1 : side2);
+        CombatArmy[] cas = (side == 0 ? this.side1 : this.side2);
         for (CombatArmy ca : cas) {
             if (ca == null) continue;
             if (ca.getNationNo() > 0) {
@@ -545,7 +545,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public int getMaxRounds() {
-        return maxRounds;
+        return this.maxRounds;
     }
 
     
@@ -555,7 +555,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     
@@ -565,7 +565,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
 
     
@@ -576,24 +576,26 @@ public class Combat implements Serializable, IHasMapLocation {
     
     
     public int getArmyIndex(int side, CombatArmy a) {
-        CombatArmy[] cas = (side == 0 ? side1 : side2);
+        CombatArmy[] cas = (side == 0 ? this.side1 : this.side2);
         for (int i=0; i<cas.length; i++) {
             if (cas[i] == a) return i;
         }
         return -1;
     }
     
-    public int getX() {
+    @Override
+	public int getX() {
     	return getHexNo() / 100;
     }
     
-    public int getY() {
+    @Override
+	public int getY() {
     	return getHexNo() % 100;
     }
 
     
     public CombatPopCenter getSide1Pc() {
-        return side1Pc;
+        return this.side1Pc;
     }
 
     
@@ -603,7 +605,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
     
     public CombatPopCenter getSide2Pc() {
-        return side2Pc;
+        return this.side2Pc;
     }
 
     
@@ -626,8 +628,8 @@ public class Combat implements Serializable, IHasMapLocation {
     	
     	for (int i=0; i<MAX_ALL; i++) {
     		for (int j=0; j<MAX_ALL; j++) {
-    			side1Relations[i][j] = NationRelationsEnum.Hated;
-    			side2Relations[i][j] = NationRelationsEnum.Hated;
+    			this.side1Relations[i][j] = NationRelationsEnum.Hated;
+    			this.side2Relations[i][j] = NationRelationsEnum.Hated;
     		}
     	}
     }
@@ -635,7 +637,7 @@ public class Combat implements Serializable, IHasMapLocation {
 
 
 	public boolean getAttackPopCenter() {
-		return attackPopCenter;
+		return this.attackPopCenter;
 	}
 
 

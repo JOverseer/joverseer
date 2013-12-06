@@ -2,7 +2,6 @@ package org.joverseer.ui.support;
 
 import javax.swing.JScrollPane;
 
-import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.springframework.richclient.application.Application;
 
 public class UIUtils {

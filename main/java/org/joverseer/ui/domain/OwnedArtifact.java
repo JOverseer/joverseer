@@ -17,16 +17,18 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation {
     String power1;
     String power2;
     
-    public int getX() {
-        return hexNo / 100;
+    @Override
+	public int getX() {
+        return this.hexNo / 100;
     }
     
-    public int getY() {
-        return hexNo % 100;
+    @Override
+	public int getY() {
+        return this.hexNo % 100;
     }
 
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -34,23 +36,25 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation {
     }
     
     public String getName() {
-        return name;
+        return this.name;
     }
     
     public void setName(String name) {
         this.name = name;
     }
     
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
     
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(int number) {
@@ -58,7 +62,7 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation {
     }
     
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
     
     public void setOwner(String owner) {
@@ -66,7 +70,7 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation {
     }
 
     public String getPower1() {
-        return power1;
+        return this.power1;
     }
 
     
@@ -76,7 +80,7 @@ public class OwnedArtifact implements IHasMapLocation, IBelongsToNation {
 
     
     public String getPower2() {
-        return power2;
+        return this.power2;
     }
 
     

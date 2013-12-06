@@ -23,13 +23,13 @@ public class OrderValidationResult {
 
 
 	public int getLevel() {
-		return level;
+		return this.level;
 	}
 	public void setLevel(int level) {
 		this.level = level;
 	}
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 	public void setMessage(String message) {
 		this.message = message;

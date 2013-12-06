@@ -22,32 +22,34 @@ public class NationRelations implements IBelongsToNation, Serializable {
     boolean eliminated = false;
     boolean removed = false;
 
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
 
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
     public NationAllegianceEnum getAllegiance() {
-        return allegiance;
+        return this.allegiance;
     }
 
     public void setAllegiance(NationAllegianceEnum allegiance) {
         this.allegiance = allegiance;
     }
 
-    public NationRelationsEnum getRelationsFor(int nationNo) {
-        return relations[nationNo];
+    public NationRelationsEnum getRelationsFor(int nationNo1) {
+        return this.relations[nationNo1];
     }
 
     public void setRelationsFor(int nationNo, NationRelationsEnum relation) {
-        relations[nationNo] = relation;
+        this.relations[nationNo] = relation;
     }
     
     public boolean getEliminated() {
-        return eliminated;
+        return this.eliminated;
     }
     
     public void setEliminated(boolean eliminated) {
@@ -56,7 +58,8 @@ public class NationRelations implements IBelongsToNation, Serializable {
     
     
 
-    public NationRelations clone() {
+    @Override
+	public NationRelations clone() {
         NationRelations c = new NationRelations();
         c.setNationNo(getNationNo());
         c.setEliminated(getEliminated());

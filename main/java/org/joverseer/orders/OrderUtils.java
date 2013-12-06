@@ -2,9 +2,6 @@ package org.joverseer.orders;
 
 import java.util.Random;
 
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.domain.Character;
@@ -64,7 +61,7 @@ public class OrderUtils {
             sum += v;
             System.out.println(v);
         }
-        System.out.println(new Double(sum) / total);
+        System.out.println(((double)sum) / total);
     }
     
     

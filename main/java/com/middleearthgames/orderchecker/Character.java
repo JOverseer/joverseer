@@ -5,11 +5,14 @@
 
 package com.middleearthgames.orderchecker;
 
-import com.middleearthgames.orderchecker.gui.OCTreeNode;
-import java.io.PrintStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Vector;
+
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import com.middleearthgames.orderchecker.gui.OCTreeNode;
 
 // Referenced classes of package com.middleearthgames.orderchecker:
 //            StateList, Order, Army, Main, 
@@ -57,30 +60,30 @@ public class Character
     public Character(String id)
     {
         this.id = null;
-        name = null;
-        location = -1;
-        nation = -1;
-        command = -1;
-        totalCommand = -1;
-        agent = -1;
-        totalAgent = -1;
-        emissary = -1;
-        totalEmissary = -1;
-        mage = -1;
-        totalMage = -1;
-        stealth = -1;
-        totalStealth = -1;
-        challenge = -1;
-        health = -1;
-        artifacts = new Vector();
-        artiInfo = new Vector();
-        spells = new Vector();
-        spellInfo = new Vector();
-        orders = new Vector();
-        army = new StateList();
-        finalLocation = new StateList();
-        companyLeader = new StateList();
-        newArtifacts = new StateList();
+        this.name = null;
+        this.location = -1;
+        this.nation = -1;
+        this.command = -1;
+        this.totalCommand = -1;
+        this.agent = -1;
+        this.totalAgent = -1;
+        this.emissary = -1;
+        this.totalEmissary = -1;
+        this.mage = -1;
+        this.totalMage = -1;
+        this.stealth = -1;
+        this.totalStealth = -1;
+        this.challenge = -1;
+        this.health = -1;
+        this.artifacts = new Vector();
+        this.artiInfo = new Vector();
+        this.spells = new Vector();
+        this.spellInfo = new Vector();
+        this.orders = new Vector();
+        this.army = new StateList();
+        this.finalLocation = new StateList();
+        this.companyLeader = new StateList();
+        this.newArtifacts = new StateList();
         this.id = id;
     }
 
@@ -101,19 +104,19 @@ public class Character
         switch(type)
         {
         case 0: // '\0'
-            rank = command;
+            rank = this.command;
             break;
 
         case 1: // '\001'
-            rank = agent;
+            rank = this.agent;
             break;
 
         case 2: // '\002'
-            rank = emissary;
+            rank = this.emissary;
             break;
 
         case 3: // '\003'
-            rank = mage;
+            rank = this.mage;
             break;
 
         default:
@@ -124,41 +127,41 @@ public class Character
 
     void initStateInformation()
     {
-        army.clear();
-        Army startArmy = Main.main.getNation().findCharacterInArmy(name);
+        this.army.clear();
+        Army startArmy = Main.main.getNation().findCharacterInArmy(this.name);
         if(startArmy != null)
         {
-            army.putDefaultValue(((Object) (startArmy)));
+            this.army.putDefaultValue(((Object) (startArmy)));
         }
-        finalLocation.clear();
-        companyLeader.clear();
-        newArtifacts.clear();
-        int size = artifacts.size();
+        this.finalLocation.clear();
+        this.companyLeader.clear();
+        this.newArtifacts.clear();
+        int size = this.artifacts.size();
         if(size > 0)
         {
             int artiList[] = new int[size];
             for(int i = 0; i < size; i++)
             {
-                Integer artifact = (Integer)artifacts.get(i);
+                Integer artifact = (Integer)this.artifacts.get(i);
                 artiList[i] = artifact.intValue();
             }
 
             Arrays.sort(artiList);
-            newArtifacts.putDefaultValue(((Object) (artiList)));
+            this.newArtifacts.putDefaultValue(((Object) (artiList)));
         }
     }
 
     void printStateInformation(int order)
     {
-        if(nation != Main.main.getNation().getNation())
+        if(this.nation != Main.main.getNation().getNation())
         {
             return;
         }
         String armyDesc = "NO";
-        Army army = getArmy(order);
-        if(army != null)
+        Army army1 = getArmy(order);
+        if(army1 != null)
         {
-            armyDesc = army.getArmyCommander(order).getName();
+            armyDesc = army1.getArmyCommander(order).getName();
         }
         String desc = "CHARACTER, " + order + ": " + getName() + ", Location " + getLocation(order) + ", company = " + isCompanyCO(order) + ", army = " + armyDesc;
         System.out.println(desc);
@@ -166,21 +169,21 @@ public class Character
 
     public String getEndOfTurnInfo()
     {
-        Army army = getArmy(9999);
-        int location = getLocation(9999);
-        if(army == null && getArmy(0) == null && location == getLocation(0))
+        Army army1 = getArmy(9999);
+        int location1 = getLocation(9999);
+        if(army1 == null && getArmy(0) == null && location1 == getLocation(0))
         {
             return null;
         }
         StringBuffer desc = new StringBuffer();
-        desc.append("End of Turn: Location " + Main.main.locationStr(location));
+        desc.append("End of Turn: Location " + Main.main.locationStr(location1));
         if(isCompanyCO(9999))
         {
             desc.append(", Company CO");
         }
-        if(army != null)
+        if(army1 != null)
         {
-            String armyDesc = army.getArmyDescription(this, 9999);
+            String armyDesc = army1.getArmyDescription(this, 9999);
             desc.append(", " + armyDesc);
         }
         return desc.toString();
@@ -190,11 +193,11 @@ public class Character
     {
         if(phase == 1)
         {
-            Collections.sort(((java.util.List) (orders)));
+            Collections.sort(((java.util.List) (this.orders)));
         }
-        for(int i = 0; i < orders.size(); i++)
+        for(int i = 0; i < this.orders.size(); i++)
         {
-            Order charOrder = (Order)orders.get(i);
+            Order charOrder = (Order)this.orders.get(i);
             boolean bInserted = false;
             for(int j = 0; j < orderList.size() && !bInserted; j++)
             {
@@ -218,10 +221,10 @@ public class Character
     {
         OCTreeNode charNode = new OCTreeNode(tree, ((Object) (this)), true);
         parent.add(((javax.swing.tree.MutableTreeNode) (charNode)));
-        int size = orders.size();
+        int size = this.orders.size();
         for(int i = 0; i < size; i++)
         {
-            Order order = (Order)orders.get(i);
+            Order order = (Order)this.orders.get(i);
             order.addTreeNodes(tree, charNode);
         }
 
@@ -229,10 +232,10 @@ public class Character
 
     void getInfoRequests(Vector list)
     {
-        int size = orders.size();
+        int size = this.orders.size();
         for(int i = 0; i < size; i++)
         {
-            Order order = (Order)orders.get(i);
+            Order order = (Order)this.orders.get(i);
             order.getInfoRequests(list);
         }
 
@@ -245,13 +248,13 @@ public class Character
 
     String isSpellKnown(int spellNum)
     {
-        int size = spells.size();
+        int size = this.spells.size();
         for(int i = 0; i < size; i++)
         {
-            Integer spell = (Integer)spells.get(i);
+            Integer spell = (Integer)this.spells.get(i);
             if(spell.intValue() == spellNum)
             {
-                return (String)spellInfo.get(i);
+                return (String)this.spellInfo.get(i);
             }
         }
 
@@ -260,8 +263,8 @@ public class Character
 
     boolean hasArtifact(int artifactNum, int order)
     {
-        int keys[] = newArtifacts.getKeys();
-        Object values[] = newArtifacts.getValues();
+        int keys[] = this.newArtifacts.getKeys();
+        Object values[] = this.newArtifacts.getValues();
         if(keys.length == 0)
         {
             return false;
@@ -298,12 +301,12 @@ public class Character
         {
             return artifact.toString();
         }
-        for(int i = 0; i < artifacts.size(); i++)
+        for(int i = 0; i < this.artifacts.size(); i++)
         {
-            Integer artifactVal = (Integer)artifacts.get(i);
+            Integer artifactVal = (Integer)this.artifacts.get(i);
             if(artifactVal.intValue() == artifactNum)
             {
-                return (String)artiInfo.get(i);
+                return (String)this.artiInfo.get(i);
             }
         }
 
@@ -313,27 +316,27 @@ public class Character
     public String getAttributes()
     {
         StringBuffer attributes = new StringBuffer();
-        String attribute = checkAttribute("C", command, totalCommand);
+        String attribute = checkAttribute("C", this.command, this.totalCommand);
         if(attribute != null)
         {
             attributes.append(attribute + ", ");
         }
-        attribute = checkAttribute("A", agent, totalAgent);
+        attribute = checkAttribute("A", this.agent, this.totalAgent);
         if(attribute != null)
         {
             attributes.append(attribute + ", ");
         }
-        attribute = checkAttribute("E", emissary, totalEmissary);
+        attribute = checkAttribute("E", this.emissary, this.totalEmissary);
         if(attribute != null)
         {
             attributes.append(attribute + ", ");
         }
-        attribute = checkAttribute("M", mage, totalMage);
+        attribute = checkAttribute("M", this.mage, this.totalMage);
         if(attribute != null)
         {
             attributes.append(attribute + ", ");
         }
-        attribute = checkAttribute("St", stealth, totalStealth);
+        attribute = checkAttribute("St", this.stealth, this.totalStealth);
         if(attribute != null)
         {
             attributes.append(attribute + ", ");
@@ -373,57 +376,57 @@ public class Character
 
     public void setCommandRank(int rank)
     {
-        command = rank;
+        this.command = rank;
     }
 
     public void setTotalCommandRank(int rank)
     {
-        totalCommand = rank;
+        this.totalCommand = rank;
     }
 
     public void setAgentRank(int rank)
     {
-        agent = rank;
+        this.agent = rank;
     }
 
     public void setTotalAgentRank(int rank)
     {
-        totalAgent = rank;
+        this.totalAgent = rank;
     }
 
     public void setEmissaryRank(int rank)
     {
-        emissary = rank;
+        this.emissary = rank;
     }
 
     public void setTotalEmissaryRank(int rank)
     {
-        totalEmissary = rank;
+        this.totalEmissary = rank;
     }
 
     public void setMageRank(int rank)
     {
-        mage = rank;
+        this.mage = rank;
     }
 
     public void setTotalMageRank(int rank)
     {
-        totalMage = rank;
+        this.totalMage = rank;
     }
 
     public void setStealth(int rank)
     {
-        stealth = rank;
+        this.stealth = rank;
     }
 
     public void setTotalStealth(int rank)
     {
-        totalStealth = rank;
+        this.totalStealth = rank;
     }
 
     public void setChallenge(int rank)
     {
-        challenge = rank;
+        this.challenge = rank;
     }
 
     public void setHealth(int health)
@@ -433,19 +436,19 @@ public class Character
 
     public void addArtifact(Integer artifact, String info)
     {
-        artifacts.add(((Object) (artifact)));
-        artiInfo.add(((Object) (info)));
+        this.artifacts.add(((Object) (artifact)));
+        this.artiInfo.add(((Object) (info)));
     }
 
     public void addSpell(Integer spell, String info)
     {
-        spells.add(((Object) (spell)));
-        spellInfo.add(((Object) (info)));
+        this.spells.add(((Object) (spell)));
+        this.spellInfo.add(((Object) (info)));
     }
 
     public void addOrder(Order order)
     {
-        orders.add(((Object) (order)));
+        this.orders.add(((Object) (order)));
     }
 
     void setArmy(Army army, int order)
@@ -455,102 +458,102 @@ public class Character
 
     void setNewLocation(int location, int order)
     {
-        finalLocation.put(order, ((Object) (new Integer(location))));
+        this.finalLocation.put(order, ((Object) (new Integer(location))));
     }
 
     void setCompanyCO(boolean state, int order)
     {
-        companyLeader.put(order, ((Object) (new Boolean(state))));
+        this.companyLeader.put(order, ((Object) (new Boolean(state))));
     }
 
     void setNewArtifacts(int artifactList[], int order)
     {
         Arrays.sort(artifactList);
-        newArtifacts.put(order, ((Object) (artifactList)));
+        this.newArtifacts.put(order, ((Object) (artifactList)));
     }
 
     public String getId()
     {
-        return id;
+        return this.id;
     }
 
     public int getNation()
     {
-        return nation;
+        return this.nation;
     }
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public int getLocation(int order)
     {
-        Integer location = (Integer)finalLocation.findValueByOrderNumber(order);
-        if(location == null)
+        Integer location1 = (Integer)this.finalLocation.findValueByOrderNumber(order);
+        if(location1 == null)
         {
             return this.location;
         } else
         {
-            return location.intValue();
+            return location1.intValue();
         }
     }
 
     boolean getLocationChange()
     {
-        return !finalLocation.isEmpty();
+        return !this.finalLocation.isEmpty();
     }
 
     int getNaturalCommandRank()
     {
-        return command;
+        return this.command;
     }
 
     int getTotalCommandRank()
     {
-        return totalCommand;
+        return this.totalCommand;
     }
 
     int getNaturalAgentRank()
     {
-        return agent;
+        return this.agent;
     }
 
     int getTotalAgentRank()
     {
-        return totalAgent;
+        return this.totalAgent;
     }
 
     int getNaturalEmissaryRank()
     {
-        return emissary;
+        return this.emissary;
     }
 
     int getTotalEmissaryRank()
     {
-        return totalEmissary;
+        return this.totalEmissary;
     }
 
     int getNaturalMageRank()
     {
-        return mage;
+        return this.mage;
     }
 
     int getTotalMageRank()
     {
-        return totalMage;
+        return this.totalMage;
     }
 
     int getOrderCount()
     {
-        return orders.size();
+        return this.orders.size();
     }
 
     int getOrder(int index)
     {
-        if(index >= 0 && index < orders.size())
+        if(index >= 0 && index < this.orders.size())
         {
-            return ((Integer)orders.get(index)).intValue();
+            return ((Integer)this.orders.get(index)).intValue();
         } else
         {
             return -1;
@@ -559,7 +562,7 @@ public class Character
 
     int getSpellCount()
     {
-        return spells.size();
+        return this.spells.size();
     }
 
     int[] getSpells()
@@ -571,7 +574,7 @@ public class Character
             list = new int[size];
             for(int i = 0; i < size; i++)
             {
-                Integer value = (Integer)spells.get(i);
+                Integer value = (Integer)this.spells.get(i);
                 list[i] = value.intValue();
             }
     
@@ -584,19 +587,19 @@ public class Character
 
     public Army getArmy(int order)
     {
-        Army army = (Army)this.army.findValueByOrderNumber(order);
-        return army;
+        Army anotherArmy = (Army)this.army.findValueByOrderNumber(order);
+        return anotherArmy;
     }
 
     boolean isArmyCO(int order)
     {
-        Army army = getArmy(order);
-        return army != null && army.getArmyCommander(order) == this;
+        Army army1 = getArmy(order);
+        return army1 != null && army1.getArmyCommander(order) == this;
     }
 
     boolean isCompanyCO(int order)
     {
-        Boolean companyCO = (Boolean)companyLeader.findValueByOrderNumber(order);
+        Boolean companyCO = (Boolean)this.companyLeader.findValueByOrderNumber(order);
         if(companyCO == null)
         {
             return false;
@@ -608,23 +611,25 @@ public class Character
 
     boolean isCharacterComplete()
     {
-        return name != null && location != -1 && command != -1 && totalCommand != -1 && agent != -1 && totalAgent != -1 && emissary != -1 && totalEmissary != -1 && mage != -1 && totalMage != -1 && stealth != -1 && totalStealth != -1 && challenge != -1 && health != -1 && nation != -1 && id != null;
+        return this.name != null && this.location != -1 && this.command != -1 && this.totalCommand != -1 && this.agent != -1 && this.totalAgent != -1 && this.emissary != -1 && this.totalEmissary != -1 && this.mage != -1 && this.totalMage != -1 && this.stealth != -1 && this.totalStealth != -1 && this.challenge != -1 && this.health != -1 && this.nation != -1 && this.id != null;
     }
 
-    public int compareTo(Object object)
+    @Override
+	public int compareTo(Object object)
     {
         Character character = (Character)object;
-        return id.compareTo(character.id);
+        return this.id.compareTo(character.id);
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
-        return name;
+        return this.name;
     }
 
     
     public Vector getOrders() {
-        return orders;
+        return this.orders;
     }
 
 }

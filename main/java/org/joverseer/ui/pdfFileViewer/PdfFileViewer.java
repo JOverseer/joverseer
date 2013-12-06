@@ -43,27 +43,29 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
     JPanel panel;
     JTextField search;
 
-    protected JComponent createControl() {
+    @Override
+	protected JComponent createControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
         TableLayoutBuilder lb = new TableLayoutBuilder();
-        lb.cell(nationCombo = new JComboBox(), "align=left");
-        nationCombo.setPreferredSize(new Dimension(200, 24));
-        nationCombo.addActionListener(new ActionListener() {
+        lb.cell(this.nationCombo = new JComboBox(), "align=left");
+        this.nationCombo.setPreferredSize(new Dimension(200, 24));
+        this.nationCombo.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 Game g = GameHolder.instance().getGame();
-                if (nationCombo.getSelectedItem() == null)
+                if (PdfFileViewer.this.nationCombo.getSelectedItem() == null)
                     return;
-                Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
+                Nation n = g.getMetadata().getNationByName(PdfFileViewer.this.nationCombo.getSelectedItem().toString());
                 PdfTurnText ptt = (PdfTurnText) g.getTurn().getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
                         "nationNo", n.getNumber());
                 if (ptt == null) {
-                    text.setText("");
+                    PdfFileViewer.this.text.setText("");
                 } else {
-                    text.setText(ptt.getText());
-                    text.setCaretPosition(0);
-                    lastSearchIdx = 0;
+                    PdfFileViewer.this.text.setText(ptt.getText());
+                    PdfFileViewer.this.text.setCaretPosition(0);
+                    PdfFileViewer.this.lastSearchIdx = 0;
                 }
 
 
@@ -74,15 +76,16 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
         JLabel lbl = new JLabel("Find :");
         lb.cell(lbl);
         lb.gapCol();
-        search = new JTextField();
-        search.setPreferredSize(new Dimension(100, 20));
-        lb.cell(search);
+        this.search = new JTextField();
+        this.search.setPreferredSize(new Dimension(100, 20));
+        lb.cell(this.search);
         lb.gapCol();
         JButton btnSearch = new JButton("Next");
         lb.cell(btnSearch);
         btnSearch.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 doSearch();
             }
 
@@ -91,20 +94,20 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
         tlb.cell(lb.getPanel(), "align=left");
         tlb.row();
 
-        text = new JTextArea();
+        this.text = new JTextArea();
         // text.setLineWrap(true);
         // text.setWrapStyleWord(true);
-        text.setFont(GraphicUtils.getFont("Monaco ", Font.PLAIN, 11));
-        tlb.cell(new JScrollPane(text));
+        this.text.setFont(GraphicUtils.getFont("Monaco ", Font.PLAIN, 11));
+        tlb.cell(new JScrollPane(this.text));
 
-        panel = tlb.getPanel();
-        panel.setPreferredSize(new Dimension(1200, 1200));
-        return panel;
+        this.panel = tlb.getPanel();
+        this.panel.setPreferredSize(new Dimension(1200, 1200));
+        return this.panel;
 
     }
 
     private void loadNationCombo() {
-        nationCombo.removeAllItems();
+        this.nationCombo.removeAllItems();
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g))
             return;
@@ -116,14 +119,15 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
             // load only nations for which economy has been imported
             if (ne == null)
                 continue;
-            nationCombo.addItem(n.getName());
+            this.nationCombo.addItem(n.getName());
         }
-        if (nationCombo.getItemCount() > 0) {
-            nationCombo.setSelectedIndex(0);
+        if (this.nationCombo.getItemCount() > 0) {
+            this.nationCombo.setSelectedIndex(0);
         }
     }
 
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
@@ -137,26 +141,26 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
     }
 
     private void initSearch() {
-        searchString = null;
-        lastSearchIdx = 0;
+        this.searchString = null;
+        this.lastSearchIdx = 0;
     }
 
     private void doSearch() {
-        if (!search.getText().equals(searchString)) {
-            lastSearchIdx = 0;
-            searchString = search.getText();
+        if (!this.search.getText().equals(this.searchString)) {
+            this.lastSearchIdx = 0;
+            this.searchString = this.search.getText();
         }
-        int i = text.getText().indexOf(searchString, lastSearchIdx + searchString.length());
+        int i = this.text.getText().indexOf(this.searchString, this.lastSearchIdx + this.searchString.length());
         if (i > -1) {
-            lastSearchIdx = i;
-            text.setCaretPosition(lastSearchIdx);
-            text.setSelectionStart(lastSearchIdx);
-            text.setSelectionEnd(lastSearchIdx + searchString.length());
-            text.requestFocusInWindow();
+            this.lastSearchIdx = i;
+            this.text.setCaretPosition(this.lastSearchIdx);
+            this.text.setSelectionStart(this.lastSearchIdx);
+            this.text.setSelectionEnd(this.lastSearchIdx + this.searchString.length());
+            this.text.requestFocusInWindow();
         } else {
-            lastSearchIdx = 0;
-            text.setSelectionStart(-1);
-            text.setSelectionEnd(-1);
+            this.lastSearchIdx = 0;
+            this.text.setSelectionStart(-1);
+            this.text.setSelectionEnd(-1);
         }
     }
 

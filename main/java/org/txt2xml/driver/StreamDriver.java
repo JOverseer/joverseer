@@ -58,7 +58,8 @@ import org.xml.sax.SAXException;
  */
 public class StreamDriver extends SaxDriver {
     
-    private static final Logger LOG = Logger.getLogger(StreamDriver.class.getName());
+    @SuppressWarnings("unused")
+	private static final Logger LOG = Logger.getLogger(StreamDriver.class.getName());
     
     private Properties outputProperties;
 
@@ -78,9 +79,9 @@ public class StreamDriver extends SaxDriver {
      * @see javax.xml.transform.OutputKeys
      */
     public void useDebugOutputProperties() {
-        outputProperties = new Properties();
-        outputProperties.put(OutputKeys.METHOD, "xml");
-        outputProperties.put(OutputKeys.INDENT, "yes");
+        this.outputProperties = new Properties();
+        this.outputProperties.put(OutputKeys.METHOD, "xml");
+        this.outputProperties.put(OutputKeys.INDENT, "yes");
     }
 
     /**
@@ -92,8 +93,8 @@ public class StreamDriver extends SaxDriver {
     throws SAXException, TransformerConfigurationException, IOException {
         TransformerFactory tFactory = TransformerFactory.newInstance();
         TransformerHandler trans = ((SAXTransformerFactory)tFactory).newTransformerHandler();
-        if (outputProperties != null) {
-            trans.getTransformer().setOutputProperties(outputProperties);
+        if (this.outputProperties != null) {
+            trans.getTransformer().setOutputProperties(this.outputProperties);
         }
         trans.setResult(new StreamResult(stream));
         try {
@@ -113,7 +114,7 @@ public class StreamDriver extends SaxDriver {
      * Transformer that serializes XML to an OutputStream
 	 */
 	public Properties getOutputProperties() {
-		return outputProperties;
+		return this.outputProperties;
 	}
 
 	/**

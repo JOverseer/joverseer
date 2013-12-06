@@ -2,10 +2,6 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 
-import org.joverseer.domain.Challenge;
-import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.StringUtils;
 
 public class ChallengeWrapper {
@@ -14,11 +10,11 @@ public class ChallengeWrapper {
 	String character;
 	
 	public void addLine(String line) {
-		lines.add(line);
+		this.lines.add(line);
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -26,7 +22,7 @@ public class ChallengeWrapper {
 	}
 
 	public String getCharacter() {
-		return character;
+		return this.character;
 	}
 
 	public void setCharacter(String character) {
@@ -35,7 +31,7 @@ public class ChallengeWrapper {
 	
 	public String getDescription() {
 		String ret = "";
-		for (String l : lines) {
+		for (String l : this.lines) {
 			if (!l.endsWith(".")) l = l + ".";
 			ret += (ret.equals("") ? "" : "\n") + l;
 		}
@@ -43,14 +39,14 @@ public class ChallengeWrapper {
 	}
 	
 	public void parse() {
-		if (lines.size() > 1) {
-			String header = lines.get(0);
+		if (this.lines.size() > 1) {
+			String header = this.lines.get(0);
 			setCharacter(StringUtils.getUniquePart(header, "Challenge from ", " at \\d\\d\\d\\d(\\.)?$", false, false));
 			String hex = StringUtils.getUniquePart(header, "Challenge from " + getCharacter() + " at ", "(\\.)?$", false, false);
 			try {
 				setHexNo(Integer.parseInt(hex));
 			}
-			catch (Exception e) {
+			catch (NumberFormatException e) {
 				
 			}
 		}

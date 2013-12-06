@@ -8,7 +8,7 @@ public class ValidSpellCheck extends AbstractCheck {
 
     
     public String getValidSpells() {
-        return validSpells;
+        return this.validSpells;
     }
 
     
@@ -16,8 +16,9 @@ public class ValidSpellCheck extends AbstractCheck {
         this.validSpells = validSpells;
     }
 
-    public boolean check(Order o) {
-        String[] spells = validSpells.split(",");
+    @Override
+	public boolean check(Order o) {
+        String[] spells = this.validSpells.split(",");
         for (String sp : spells) {
             if (sp.trim().equals(o.getParameter(getParamNo()))) return true;
         }
@@ -25,7 +26,8 @@ public class ValidSpellCheck extends AbstractCheck {
     }
 
 
-    public String getMessage() {
+    @Override
+	public String getMessage() {
         return "Spell {0} was not a valid spell for this order.";
     }
 

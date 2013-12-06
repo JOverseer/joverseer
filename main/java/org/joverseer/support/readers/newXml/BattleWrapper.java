@@ -11,7 +11,7 @@ public class BattleWrapper {
 	
 	
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -19,7 +19,7 @@ public class BattleWrapper {
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public void setText(String text) {
@@ -27,14 +27,14 @@ public class BattleWrapper {
 	}
 	
 	public void addLine(BattleLine line) {
-		battleLines.add(line);
+		this.battleLines.add(line);
 	}
 	
 	
 	
 	public void parse() {
 		String report = "";
-		for (BattleLine line : battleLines) {
+		for (BattleLine line : this.battleLines) {
 			String txt = line.getText(); 
 			for (int i=0; i<line.getTroopTypes().size(); i++) {
 				txt += (txt.equals("") ? "" : "\n") + "  " + line.getTroopTypes().get(i) + " with " + line.getWeaponTypes().get(i) + " weapons, " + line.getArmors().get(i) + " armor, " + line.getFormations().get(i);
@@ -50,14 +50,14 @@ public class BattleWrapper {
 			}
 			
 			report += (report.equals("") ? "" : "\n") + txt;
-			lines.add(txt);
+			this.lines.add(txt);
 		}
 		while (report.contains("\n\n\n")) {
 			report = report.replace("\n\n\n", "\n\n");
 		}
 		setText(report);
-		if (lines.size() == 0) return;
-		String first = lines.get(0).trim();
+		if (this.lines.size() == 0) return;
+		String first = this.lines.get(0).trim();
 		if (first.startsWith("Battle at ")) {
 			String hex = first.substring(first.length() - 4, first.length());
 			setHexNo(Integer.parseInt(hex));

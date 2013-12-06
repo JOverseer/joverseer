@@ -48,7 +48,7 @@ import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.scopemvc.core.ModelChangeEvent;
+import org.scopemvc.core.ModelChangeTypes;
 import org.scopemvc.core.Selector;
 import org.scopemvc.model.basic.BasicModel;
 import org.txt2xml.config.ProcessorFactory;
@@ -82,7 +82,7 @@ public class GuiModel extends BasicModel {
     // ----------------------------- Accessors
     
     public String getSourceText() {
-        return sourceText;
+        return this.sourceText;
     }
     
     /**
@@ -90,12 +90,12 @@ public class GuiModel extends BasicModel {
      */
     public void setSourceText(String sourceText) {
         this.sourceText = sourceText;
-        fireModelChange(ModelChangeEvent.VALUE_CHANGED, SOURCE_TEXT);
+        fireModelChange(ModelChangeTypes.VALUE_CHANGED, SOURCE_TEXT);
 		process();
     }
     
     public String getConfigText() {
-        return configText;
+        return this.configText;
     }
     
     /**
@@ -103,26 +103,26 @@ public class GuiModel extends BasicModel {
      */
     public void setConfigText(String configText) {
         this.configText = configText;
-        fireModelChange(ModelChangeEvent.VALUE_CHANGED, CONFIG_TEXT);
+        fireModelChange(ModelChangeTypes.VALUE_CHANGED, CONFIG_TEXT);
         process();
     }
     
     public String getDestText() {
-        return destText;
+        return this.destText;
     }
     
     protected void setDestText(String destText) {
         this.destText = destText;
-        fireModelChange(ModelChangeEvent.VALUE_CHANGED, DEST_TEXT);
+        fireModelChange(ModelChangeTypes.VALUE_CHANGED, DEST_TEXT);
     }
 
     protected void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-        fireModelChange(ModelChangeEvent.VALUE_CHANGED, ERROR_MESSAGE);
+        fireModelChange(ModelChangeTypes.VALUE_CHANGED, ERROR_MESSAGE);
     }
     
     public String getErrorMessage() {
-        return errorMessage;
+        return this.errorMessage;
     }
     
     // --------------------------- Applying Processor
@@ -145,7 +145,7 @@ public class GuiModel extends BasicModel {
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
             StreamDriver driver = new StreamDriver(processor);
             driver.useDebugOutputProperties();
-            driver.generateXmlDocument(sourceText, outStream);
+            driver.generateXmlDocument(this.sourceText, outStream);
             outStream.close();
             
             // Put the result into dest text
@@ -161,7 +161,7 @@ public class GuiModel extends BasicModel {
     public void loadSourceFromFile(File file) {
         try {
             this.sourceFile = file;
-            setSourceText(loadTextFromFile(sourceFile));
+            setSourceText(loadTextFromFile(this.sourceFile));
         } catch(Exception e) {
             setErrorMessage(e.getLocalizedMessage());
         }
@@ -170,7 +170,7 @@ public class GuiModel extends BasicModel {
     public void loadConfigFromFile(File file) {
         try {
             this.configFile = file;
-            setConfigText(loadTextFromFile(configFile));
+            setConfigText(loadTextFromFile(this.configFile));
         } catch(Exception e) {
             setErrorMessage(e.getLocalizedMessage());
         }
@@ -200,7 +200,7 @@ public class GuiModel extends BasicModel {
     
     public void saveSourceToFile() {
         try {
-            saveTextToFile(sourceFile, getSourceText());
+            saveTextToFile(this.sourceFile, getSourceText());
         } catch(Exception e) {
             setErrorMessage(e.getLocalizedMessage());
         }
@@ -208,7 +208,7 @@ public class GuiModel extends BasicModel {
     
     public void saveConfigToFile() {
         try {
-            saveTextToFile(configFile, getConfigText());
+            saveTextToFile(this.configFile, getConfigText());
         } catch(Exception e) {
             setErrorMessage(e.getLocalizedMessage());
         }

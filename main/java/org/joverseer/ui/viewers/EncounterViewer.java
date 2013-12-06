@@ -50,9 +50,9 @@ public class EncounterViewer extends ObjectViewer {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
-		glb.append(description = new JTextField());
-		description.setPreferredSize(new Dimension(200, 12));
-		description.setBorder(null);
+		glb.append(this.description = new JTextField());
+		this.description.setPreferredSize(new Dimension(200, 12));
+		this.description.setBorder(null);
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 		JButton btnMenu = new JButton();
@@ -76,7 +76,7 @@ public class EncounterViewer extends ObjectViewer {
 	}
 
 	private JPopupMenu createEncounterPopupContextMenu() {
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("encounterCommandGroup", new Object[] { showDescriptionCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("encounterCommandGroup", new Object[] { this.showDescriptionCommand });
 		return group.createPopupMenu();
 	}
 
@@ -89,8 +89,8 @@ public class EncounterViewer extends ObjectViewer {
 			type = "Challenge: ";
 		}
 		String d = type + e.getCharacter();
-		description.setText(d);
-		description.setCaretPosition(0);
+		this.description.setText(d);
+		this.description.setCaretPosition(0);
 	}
 
 	private class ShowDescriptionCommand extends ActionCommand {

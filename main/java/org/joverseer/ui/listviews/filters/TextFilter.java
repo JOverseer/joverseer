@@ -19,15 +19,16 @@ public class TextFilter extends AbstractListViewFilter {
         this.value = value;
     }
 
-    public boolean accept(Object obj) {
-        if (value == null) return true;
+    @Override
+	public boolean accept(Object obj) {
+        if (this.value == null) return true;
         try {
-            Object val = ReflectionUtils.retrieveField(obj, field);
+            Object val = ReflectionUtils.retrieveField(obj, this.field);
             if (val == null) val = "";
             String str = val.toString();
-            if (value.equals("")) return str.equals("");
+            if (this.value.equals("")) return str.equals("");
             str = AsciiUtils.convertNonAscii(str);
-            if (str.toString().toUpperCase().indexOf(value.toUpperCase()) > -1) {
+            if (str.toString().toUpperCase().indexOf(this.value.toUpperCase()) > -1) {
                 return true;
             }
             return false;
@@ -40,7 +41,7 @@ public class TextFilter extends AbstractListViewFilter {
 
     
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     

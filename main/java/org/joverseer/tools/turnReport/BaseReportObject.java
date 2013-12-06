@@ -27,7 +27,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	ArrayList<Integer> nations = new ArrayList<Integer>();
 
 	public String getName() {
-		return name == null ? "" : name;
+		return this.name == null ? "" : this.name;
 	}
 
 	public void setName(String name) {
@@ -35,7 +35,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	}
 
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	public void setNationNo(Integer nationNo) {
@@ -46,12 +46,12 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 		addNation(nationNo);
 	}
 
-	public boolean containsNation(int nationNo) {
-		return nations.contains(nationNo);
+	public boolean containsNation(int nationNo1) {
+		return this.nations.contains(nationNo1);
 	}
 
 	public ObjectModificationType getModification() {
-		return modification;
+		return this.modification;
 	}
 
 	public void setModification(ObjectModificationType modification) {
@@ -59,7 +59,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -67,7 +67,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	}
 
 	public String getNotes() {
-		return notes == null ? "" : notes;
+		return this.notes == null ? "" : this.notes;
 	}
 
 	public void setNotes(String notes) {
@@ -75,35 +75,37 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	}
 
 	public ArrayList<Integer> getNations() {
-		return nations;
+		return this.nations;
 	}
 
 	public void setNations(ArrayList<Integer> nations) {
 		this.nations = nations;
 	}
 
+	@Override
 	public int getX() {
 		return getHexNo() / 100;
 	}
 
+	@Override
 	public int getY() {
 		return getHexNo() % 100;
 	}
 
-	public void removeNation(int nationNo) {
-		if (this.nationNo == nationNo)
+	public void removeNation(int nationNo1) {
+		if (this.nationNo == nationNo1)
 			this.nationNo = 0;
-		if (nations.contains(nationNo))
-			nations.remove(nationNo);
+		if (this.nations.contains(nationNo1))
+			this.nations.remove(nationNo1);
 	}
 
-	public void addNation(int nationNo) {
-		if (nationNo == 0)
+	public void addNation(int nationNo1) {
+		if (nationNo1 == 0)
 			return;
-		if (!nations.contains(nationNo))
-			nations.add(nationNo);
+		if (!this.nations.contains(nationNo1))
+			this.nations.add(nationNo1);
 		if (this.nationNo == 0)
-			this.nationNo = nationNo;
+			this.nationNo = nationNo1;
 	}
 
 	public void appendNote(String note) {
@@ -129,10 +131,10 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 
 	public String getNationsStr() {
 		String ret = "";
-		for (int nationNo : getNations()) {
-			if (nationNo == 0)
+		for (int nationNo1 : getNations()) {
+			if (nationNo1 == 0)
 				continue;
-			Nation n = NationMap.getNationFromNo(nationNo);
+			Nation n = NationMap.getNationFromNo(nationNo1);
 			ret += (ret.equals("") ? "" : ",") + n.getShortName();
 		}
 		return ret;
@@ -145,6 +147,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 		return n.getShortName();
 	}
 
+	@Override
 	public int compareTo(Object o) {
 		if (BaseReportObject.class.isInstance(o)) {
 			BaseReportObject ro = (BaseReportObject) o;

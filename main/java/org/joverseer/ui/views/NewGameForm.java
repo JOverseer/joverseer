@@ -28,23 +28,24 @@ public class NewGameForm extends AbstractForm {
         this.edit = edit;
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         TableFormBuilder tlb = new TableFormBuilder(getBindingFactory());
         JComboBox cmb;
         tlb.add("gameType", cmb = new JComboBox(GameTypeEnum.values()));
         cmb.setEditable(false);
-        cmb.setEnabled(!edit);
+        cmb.setEnabled(!this.edit);
         tlb.row();
         JTextField txt;
         tlb.add("nationNo");
         tlb.row();
         tlb.add("number", txt = new JTextField());
-        txt.setEnabled(!edit);
+        txt.setEnabled(!this.edit);
         tlb.row();
         JCheckBox chk;
         //tlb.add("additionalNations");
         tlb.add("newXmlFormat", chk = new JCheckBox());
-        chk.setEnabled(!edit);
+        chk.setEnabled(!this.edit);
         return tlb.getForm();
     }
     

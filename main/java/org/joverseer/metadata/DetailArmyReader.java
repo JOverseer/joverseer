@@ -27,15 +27,16 @@ public class DetailArmyReader implements MetadataReader {
 	String armyFilename = "startarmies";
 
 	public String getPopulationCenterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + armyFilename;
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.armyFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<Army> armies = new Container<Army>();
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + armyFilename);
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.armyFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
@@ -65,7 +66,7 @@ public class DetailArmyReader implements MetadataReader {
 					army.setCommanderName(commander);
 					army.setCommanderTitle("");
 					army.setNationAllegiance(allegiance);
-					army.setNationNo(nationNo);
+					army.setNationNo(new Integer(nationNo));
 					army.setMorale(morale);
 					army.setSize(size);
 					army.setNavy(navy);

@@ -15,7 +15,7 @@ public class HexArrowMapItem extends AbstractMapItem {
 	}
 
 	public int getOriginHex() {
-		return originHex;
+		return this.originHex;
 	}
 
 	public void setOriginHex(int originHex) {
@@ -23,7 +23,7 @@ public class HexArrowMapItem extends AbstractMapItem {
 	}
 
 	public int getDestinationHex() {
-		return destinationHex;
+		return this.destinationHex;
 	}
 
 	public void setDestinationHex(int destinationHex) {
@@ -31,7 +31,7 @@ public class HexArrowMapItem extends AbstractMapItem {
 	}
 
 	public Color getColor() {
-		return color;
+		return this.color;
 	}
 
 	public void setColor(Color color) {

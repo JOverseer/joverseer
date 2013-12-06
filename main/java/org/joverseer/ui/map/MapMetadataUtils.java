@@ -16,7 +16,7 @@ public class MapMetadataUtils {
             metadata.setMinMapColumn(25);
             metadata.setMinMapRow(1);
             metadata.setMaxMapColumn(40);
-            metadata.setMaxMapRow(13);
+            metadata.setMaxMapRow(15);
             Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
 

@@ -14,85 +14,85 @@ public class ArtifactWrapper {
 	String item;
 	
 	public int getAgent() {
-		return agent;
+		return this.agent;
 	}
 	public void setAgent(int agent) {
 		this.agent = agent;
 	}
 	public String getAlignment() {
-		return alignment;
+		return this.alignment;
 	}
 	public void setAlignment(String alignment) {
 		this.alignment = alignment;
 	}
 	public int getCombat() {
-		return combat;
+		return this.combat;
 	}
 	public void setCombat(int combat) {
 		this.combat = combat;
 	}
 	public int getCommand() {
-		return command;
+		return this.command;
 	}
 	public void setCommand(int command) {
 		this.command = command;
 	}
 	public int getEmissary() {
-		return emissary;
+		return this.emissary;
 	}
 	public void setEmissary(int emissary) {
 		this.emissary = emissary;
 	}
 	public int getId() {
-		return id;
+		return this.id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
 	public String getItem() {
-		return item;
+		return this.item;
 	}
 	public void setItem(String item) {
 		this.item = item;
 	}
 	public String getLatent() {
-		return latent;
+		return this.latent;
 	}
 	public void setLatent(String latent) {
 		this.latent = latent;
 	}
 	public int getMage() {
-		return mage;
+		return this.mage;
 	}
 	public void setMage(int mage) {
 		this.mage = mage;
 	}
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
 	public int getStealth() {
-		return stealth;
+		return this.stealth;
 	}
 	public void setStealth(int stealth) {
 		this.stealth = stealth;
 	}
 	
 	public String getPower() {
-		if (command > 0) {
-			return "Command " + command;
-		} else if (agent > 0) {
-			return "Agent " + agent;
-		} else if (emissary > 0) {
-			return "Emissary " + emissary;
-		} else if (mage > 0) {
-			return "Mage " + mage;
-		} else if (stealth > 0) {
-			return "Stealth " + stealth;
-		} else if (combat > 0) {
-			return "Combat " + combat * 50;
+		if (this.command > 0) {
+			return "Command " + this.command;
+		} else if (this.agent > 0) {
+			return "Agent " + this.agent;
+		} else if (this.emissary > 0) {
+			return "Emissary " + this.emissary;
+		} else if (this.mage > 0) {
+			return "Mage " + this.mage;
+		} else if (this.stealth > 0) {
+			return "Stealth " + this.stealth;
+		} else if (this.combat > 0) {
+			return "Combat " + this.combat * 50;
 		}
 		return "";
 	}

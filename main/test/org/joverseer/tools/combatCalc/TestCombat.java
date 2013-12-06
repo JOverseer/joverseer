@@ -1,15 +1,11 @@
 package org.joverseer.tools.combatCalc;
 
-import org.joverseer.ui.JOverseerJIDEClient;
-
 import junit.framework.TestCase;
 
 import org.joverseer.domain.ArmyElement;
-import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.NationRelationsEnum;
-import org.joverseer.tools.combatCalc.Combat;
-import org.joverseer.tools.combatCalc.CombatArmy;
+import org.joverseer.ui.JOverseerJIDEClient;
 
 public class TestCombat  extends TestCase  {
 
@@ -39,7 +35,7 @@ Grasty won and was left with 283HC, 283LC, 395HI, 283LI, 283AR, 283MA
  */
 	public void testArmyBattleOneOnOne() {
 		Combat combat = new Combat() ;
-		final int maxAll = Combat.MAX_ALL ;
+//		final int maxAll = Combat.MAX_ALL ;
 		combat.setClimate(ClimateEnum.Hot) ;
 		combat.setHexNo(2928) ;
 		combat.setDescription("Test of One on One combat") ;
@@ -241,6 +237,7 @@ Grasty won and was left with 283HC, 283LC, 395HI, 283LI, 283AR, 283MA
 //	    assertEquals(0, resultingNorthGondorArmy.getHC().getNumber()) ;		fail("nothing to test") ;
 //	}
 	
+	@Override
 	public void setUp() {
 		JOverseerJIDEClient.launchTestFramework() ;
 	}

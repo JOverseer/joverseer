@@ -18,7 +18,8 @@ public class CharIdTransferHandler extends StringTransferHandler {
         super(arg0);
     }
 
-    protected String exportString(JComponent c) {
+    @Override
+	protected String exportString(JComponent c) {
         String v = super.exportString(c);
         Game g = GameHolder.instance().getGame();
         Character ch = (Character)g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", v);

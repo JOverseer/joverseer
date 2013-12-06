@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
@@ -26,7 +27,8 @@ public class ArtifactWrapperTableCellRenderer extends AllegianceColorCellRendere
                 super(tableModel);
         }
         
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        @Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 ArtifactWrapper aw = (ArtifactWrapper)value;
                 String aid = "";
                 if (aw != null) {
@@ -45,7 +47,7 @@ public class ArtifactWrapperTableCellRenderer extends AllegianceColorCellRendere
                         } 
                 }
                 lbl.setToolTipText(toolTip);
-                lbl.setHorizontalAlignment(JLabel.CENTER);
+                lbl.setHorizontalAlignment(SwingConstants.CENTER);
                 return lbl;
         }
 

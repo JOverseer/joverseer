@@ -13,7 +13,7 @@ public class DivCharsWithForcesResultWrapper implements OrderResult {
     String characters;
     
     public String getCharacters() {
-        return characters;
+        return this.characters;
     }
     
     public void setCharacters(String characters) {
@@ -21,14 +21,15 @@ public class DivCharsWithForcesResultWrapper implements OrderResult {
     }
     
     public String getCommander() {
-        return commander;
+        return this.commander;
     }
     
     public void setCommander(String commander) {
         this.commander = commander;
     }
     
-    public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
+    @Override
+	public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
         if (getCommander() == null || getCharacters() == null) return;
         // get army
         Army a = (Army)turn.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", getCommander());

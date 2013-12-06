@@ -736,11 +736,7 @@ public class TurnReportCollector {
 		if (pc.getLoyalty() < 16) {
 			PopCenterReport pr = new PopCenterReport(pc);
 			pr.setModification(ObjectModificationType.Modified);
-			if (ppc != null) {
-				pr.setNotes("Loyalty: " + ppc.getLoyalty() + "→" + pc.getLoyalty() + " (at risk)");
-			} else {
-				pr.setNotes("Loyalty: " + pc.getLoyalty() + " (at risk)");
-			}
+			pr.setNotes("Loyalty: " + ppc.getLoyalty() + "→" + pc.getLoyalty() + " (at risk)");
 			return pr;
 		}
 		return null;

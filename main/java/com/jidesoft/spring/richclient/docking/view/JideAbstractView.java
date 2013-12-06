@@ -15,9 +15,6 @@
  */
 package com.jidesoft.spring.richclient.docking.view;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
@@ -65,17 +62,17 @@ public abstract class JideAbstractView extends AbstractView{
 	}
 	
 	public String getToolBarCommandGroupName(){
-		if(toolBarCommandGroupName == null){
+		if(this.toolBarCommandGroupName == null){
 			return getId() + TOOLBAR_SUFFIX;
  		}
-		return toolBarCommandGroupName;
+		return this.toolBarCommandGroupName;
 	}
 
 	public String getMenuBarCommandGroupName(){
-		if(menuBarCommandGroupName == null){
+		if(this.menuBarCommandGroupName == null){
 			return getId() + MENU_SUFFIX;
  		}
-		return menuBarCommandGroupName;
+		return this.menuBarCommandGroupName;
 	}
 
 	
@@ -128,6 +125,7 @@ public abstract class JideAbstractView extends AbstractView{
 		}
 		else{
 			SwingUtilities.invokeLater(new Runnable(){
+				@Override
 				public void run() {
 					getActiveWindow().getPage().showView(getId());
 				}

@@ -24,7 +24,8 @@ public class EditNationMetadataCommand extends ActionCommand {
         super("editNationMetadataCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
         final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         FormModel formModel = FormModelHelper.createFormModel(g.getMetadata());
@@ -32,11 +33,13 @@ public class EditNationMetadataCommand extends ActionCommand {
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
                 form.setFormObject(g.getMetadata());
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 form.commit();
                 return true;
             }

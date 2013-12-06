@@ -18,9 +18,10 @@ public class ArtifactReader implements MetadataReader {
 	String artifactFilename = "arties.csv";
 
 	public String getArtifactFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + artifactFilename;
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.artifactFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		gm.setArtifacts(loadArtifacts(gm));
 	}
@@ -31,7 +32,7 @@ public class ArtifactReader implements MetadataReader {
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getArtifactFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + artifactFilename);
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.artifactFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
@@ -57,13 +58,13 @@ public class ArtifactReader implements MetadataReader {
 						artifact.setPower(1, power2);
 					}
 					artifacts.addItem(artifact);
-				} catch (Exception e) {
+				} catch (NumberFormatException e) {
 					throw e;
 				}
 			}
 		} catch (IOException exc) {
 			throw exc;
-		} catch (Exception exc) {
+		} catch (NumberFormatException exc) {
 			throw new MetadataReaderException("Error reading artifact metadata.", exc);
 		}
 		return artifacts;

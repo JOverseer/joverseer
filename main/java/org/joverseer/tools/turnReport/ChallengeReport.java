@@ -7,7 +7,7 @@ public class ChallengeReport extends BaseReportObject {
 	Challenge challenge;
 
 	public Challenge getChallenge() {
-		return challenge;
+		return this.challenge;
 	}
 
 	public void setChallenge(Challenge challenge) {
@@ -24,7 +24,7 @@ public class ChallengeReport extends BaseReportObject {
 	public String getLinks() {
 		String str = super.getLinks();
 		try {
-			str += " <a href='http://event?challenge=" + Character.getIdFromName(challenge.getVictor()).replace(" ", "_") + "," + Character.getIdFromName(challenge.getLoser()).replace(" ", "_") + "'>Report</a>";
+			str += " <a href='http://event?challenge=" + Character.getIdFromName(this.challenge.getVictor()).replace(" ", "_") + "," + Character.getIdFromName(this.challenge.getLoser()).replace(" ", "_") + "'>Report</a>";
 		} catch (Exception e) {
 
 		}
@@ -33,8 +33,8 @@ public class ChallengeReport extends BaseReportObject {
 
 	@Override
 	public String getExtraInfo() {
-		if (challenge.getVictorWounds() != null) {
-			return "Victor's wounds: " + challenge.getVictorWounds();
+		if (this.challenge.getVictorWounds() != null) {
+			return "Victor's wounds: " + this.challenge.getVictorWounds();
 		}
 		return super.getExtraInfo();
 	}

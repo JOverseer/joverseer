@@ -26,10 +26,11 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class OrderEditorView extends AbstractView implements ApplicationListener{
     Form f;
     
-    protected JComponent createControl() {
-        f = (Form)Application.instance().getApplicationContext().getBean("orderEditor");
+    @Override
+	protected JComponent createControl() {
+        this.f = (Form)Application.instance().getApplicationContext().getBean("orderEditor");
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(f.getControl(), "align=left");
+        tlb.cell(this.f.getControl(), "align=left");
         JPanel p = tlb.getPanel();
         p.setBackground(Color.white);
         JScrollPane scp = new JScrollPane(p);
@@ -38,19 +39,20 @@ public class OrderEditorView extends AbstractView implements ApplicationListener
         return scp;
     }
     
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
             if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
                 GraphicUtils.showView("orderEditorView");
-                ((OrderEditor)f).giveFocus();
+                ((OrderEditor)this.f).giveFocus();
             }
             if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-                ((OrderEditor)f).setFormObject(new Order(null));
+                ((OrderEditor)this.f).setFormObject(new Order(null));
             }
             else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems.toString())) {
-            	if (e.getSender() != f) {
-            		((OrderEditor)f).refreshDrawCheck();
+            	if (e.getSender() != this.f) {
+            		((OrderEditor)this.f).refreshDrawCheck();
             	}
             }
         }

@@ -11,7 +11,7 @@ public class AnchoredShipsWrapper {
     int hexNo;
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -19,7 +19,7 @@ public class AnchoredShipsWrapper {
     }
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(int number) {
@@ -27,7 +27,7 @@ public class AnchoredShipsWrapper {
     }
     
     public String getType() {
-        return type;
+        return this.type;
     }
     
     public void setType(String type) {

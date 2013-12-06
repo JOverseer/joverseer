@@ -1,6 +1,7 @@
 package org.joverseer.support.info ;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,12 +26,12 @@ public class Info {
     ArrayList<ArrayList<String>> values = new ArrayList<ArrayList<String>>(); 
     
     public ArrayList<String> getColumnHeaders() {
-        return values.get(0);
+        return this.values.get(0);
     }
     
     public ArrayList<String> getRowHeaders() {
         ArrayList<String> ret = new ArrayList<String>();
-        for (ArrayList<String> l : values) {
+        for (ArrayList<String> l : this.values) {
             ret.add(l.get(0));
         }
         return ret;
@@ -60,12 +61,12 @@ public class Info {
     }
     
     public String getValue(int row, int col) {
-        return values.get(row).get(col);
+        return this.values.get(row).get(col);
     }
 
     
     public String getKey() {
-        return key;
+        return this.key;
     }
 
     
@@ -75,7 +76,7 @@ public class Info {
 
     
     public String getResourcePath() {
-        return resourcePath;
+        return this.resourcePath;
     }
 
     
@@ -95,18 +96,19 @@ public class Info {
                 String[] parts = ln.split(";");
                 ArrayList<String> l = new ArrayList<String>();
                 l.addAll(Arrays.asList(parts));
-                values.add(l);
+                this.values.add(l);
             }
         } catch (Exception exc) {
             exc.printStackTrace();
-            values.clear();
+            this.values.clear();
         }
         finally {
             if (reader != null) {
-                try {
-                    reader.close();
-                }
-                catch (Exception exc) {};
+                 try {
+					reader.close();
+				} catch (IOException e) {
+					// There's not a lot we can do about it.
+				}
             }
         }
     }

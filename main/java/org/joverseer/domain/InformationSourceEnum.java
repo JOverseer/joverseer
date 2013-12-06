@@ -22,6 +22,6 @@ public enum InformationSourceEnum implements Serializable {
     }
 
     public int getValue() {
-        return value;
+        return this.value;
     }
 }

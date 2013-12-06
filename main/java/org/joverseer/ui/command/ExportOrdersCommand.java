@@ -23,17 +23,20 @@ public class ExportOrdersCommand extends ActionCommand {
         super("ExportOrdersCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         FormModel formModel = FormModelHelper.createFormModel(new Army());
         final ExportOrdersForm form = new ExportOrdersForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 return true;
             }
         };

@@ -23,7 +23,7 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper {
 	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
-		int hexNo = getHexNo();
+		int hexNo1 = getHexNo();
 
 		if (getOwner() != null && !getOwner().equals("")) {
 			DerivedFromLocateArtifactTrueInfoSource is1 = new DerivedFromLocateArtifactTrueInfoSource(turn.getTurnNo(), nationNo, casterName, getHexNo());
@@ -33,7 +33,7 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
 				c = new Character();
 				c.setName(getOwner());
 				c.setId(Character.getIdFromName(getOwner()));
-				c.setHexNo(hexNo);
+				c.setHexNo(hexNo1);
 				c.setInfoSource(is1);
 				c.setNationNo(0);
 				turn.getCharacters().addItem(c);
@@ -48,7 +48,7 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
 					// check if it is LA or RC
 					if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) || DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
 						// replace info source and hexNo
-						c.setHexNo(hexNo);
+						c.setHexNo(hexNo1);
 						c.setInfoSource(is1);
 					} else {
 						// info source is LAT or RCT
@@ -65,13 +65,13 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
 		Container<Artifact> artis = turn.getArtifacts();
 		Artifact a = artis.findFirstByProperty("number", getArtifactNo());
 
-		String artifactName = getArtifactName();
-		if (artifactName.equals("artifact")) {
+		String artifactName1 = getArtifactName();
+		if (artifactName1.equals("artifact")) {
 			// dummy name
 			// see if you can retrieve from ArtifactInfo
 			ArtifactInfo ai = GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", getArtifactNo());
 			if (ai != null) {
-				artifactName = ai.getName();
+				artifactName1 = ai.getName();
 			}
 		}
 
@@ -79,7 +79,7 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
 			// artifact not found, add
 			a = new Artifact();
 			a.setNumber(getArtifactNo());
-			a.setName(artifactName);
+			a.setName(artifactName1);
 			a.setOwner(getOwner());
 			a.setHexNo(getHexNo());
 			a.setInfoSource(is1);
@@ -88,7 +88,7 @@ public class LocateArtifactTrueResultWrapper extends LocateArtifactResultWrapper
 			// artifact found, check info source
 			InfoSource is = a.getInfoSource();
 			if (a.getName().equals("artifact")) {
-				a.setName(artifactName);
+				a.setName(artifactName1);
 			}
 			if (TurnInfoSource.class.isInstance(is)) {
 				// turn import, do nothing

@@ -1,23 +1,22 @@
 package org.joverseer.support;
 
-import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
-import org.joverseer.domain.Note;
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.domain.PopulationCenter;
+import org.joverseer.game.Turn;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.springframework.richclient.application.Application;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Utility class that initializes a new turn. Based on the existence of not of a previous turn

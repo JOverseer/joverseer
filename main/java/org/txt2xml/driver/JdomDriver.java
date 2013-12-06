@@ -53,7 +53,8 @@ import org.xml.sax.SAXException;
  */
 public class JdomDriver extends SaxDriver {
     
-    private static final Logger LOG = Logger.getLogger(JdomDriver.class.getName());
+    @SuppressWarnings("unused")
+	private static final Logger LOG = Logger.getLogger(JdomDriver.class.getName());
     
     public JdomDriver() {
         super();

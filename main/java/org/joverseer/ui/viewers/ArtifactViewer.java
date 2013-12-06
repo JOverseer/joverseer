@@ -19,7 +19,6 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.transferHandlers.ArtifactExportTransferHandler;
-import org.joverseer.ui.support.transferHandlers.CharacterExportTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
@@ -41,48 +40,52 @@ public class ArtifactViewer extends ObjectViewer {
         super(formModel, FORM_PAGE);
     }
     
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Artifact.class.isInstance(obj);
     }
     
-    public void setFormObject(Object obj) {
+    @Override
+	public void setFormObject(Object obj) {
         super.setFormObject(obj);
 
         Artifact a = (Artifact)obj;
-        artifactName.setTransferHandler(new ArtifactExportTransferHandler(a));
-        artifactName.setText("#" + String.valueOf(a.getNumber()) + " " + a.getName());
-        artifactName.setCaretPosition(0);
-        owner.setText(a.getOwner() != null ? a.getOwner() : "unclaimed");
+        this.artifactName.setTransferHandler(new ArtifactExportTransferHandler(a));
+        this.artifactName.setText("#" + String.valueOf(a.getNumber()) + " " + a.getName());
+        this.artifactName.setCaretPosition(0);
+        this.owner.setText(a.getOwner() != null ? a.getOwner() : "unclaimed");
         // show info sources, if needed
         InfoSource is = a.getInfoSource();
         if (DerivedFromSpellInfoSource.class.isInstance(is)) {
             DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource)is;
             String infoSourcesStr = sis.getSpell() + " at " + sis.getHexNo();
-            infoSource.setVisible(true);
+            this.infoSource.setVisible(true);
             for (InfoSource dsis : sis.getOtherInfoSources()) {
                 if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
                     infoSourcesStr += ", " + ((DerivedFromSpellInfoSource)dsis).getSpell() + " at " + ((DerivedFromSpellInfoSource)dsis).getHexNo();
                 }
             }
-            infoSource.setText(infoSourcesStr);
+            this.infoSource.setText(infoSourcesStr);
         } else {
-            infoSource.setVisible(false);
+            this.infoSource.setVisible(false);
         }
     }
     
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
         
-        glb.append(artifactName = new JTextField());
-        artifactName.setPreferredSize(new Dimension(150, 16));
-        artifactName.setFont(GraphicUtils.getFont(artifactName.getFont().getName(), Font.BOLD, artifactName.getFont().getSize()));
-        artifactName.setBorder(null);
-        artifactName.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+        glb.append(this.artifactName = new JTextField());
+        this.artifactName.setPreferredSize(new Dimension(150, 16));
+        this.artifactName.setFont(GraphicUtils.getFont(this.artifactName.getFont().getName(), Font.BOLD, this.artifactName.getFont().getSize()));
+        this.artifactName.setBorder(null);
+        this.artifactName.addMouseListener(new MouseAdapter() {
+            @Override
+			public void mousePressed(MouseEvent e) {
             	if (e.getClickCount() == 1) {
-            		TransferHandler handler = artifactName.getTransferHandler();
-                	handler.exportAsDrag(artifactName, e, TransferHandler.COPY);
+            		TransferHandler handler = ArtifactViewer.this.artifactName.getTransferHandler();
+                	handler.exportAsDrag(ArtifactViewer.this.artifactName, e, TransferHandler.COPY);
             	}
             }
 
@@ -105,15 +108,15 @@ public class ArtifactViewer extends ObjectViewer {
             
         });
         
-        glb.append(owner = new JTextField());
-        owner.setPreferredSize(new Dimension(70, 12));
-        owner.setBorder(null);
+        glb.append(this.owner = new JTextField());
+        this.owner.setPreferredSize(new Dimension(70, 12));
+        this.owner.setBorder(null);
         
         glb.nextLine();
         
-        glb.append(infoSource = new JTextField(), 2, 1);
-        infoSource.setPreferredSize(new Dimension(100, 12));
-        infoSource.setBorder(null);
+        glb.append(this.infoSource = new JTextField(), 2, 1);
+        this.infoSource.setPreferredSize(new Dimension(100, 12));
+        this.infoSource.setBorder(null);
         
         JPanel panel = glb.getPanel();
         panel.setBackground(Color.white);

@@ -2,24 +2,15 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
-import org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterTableModel;
-import org.joverseer.ui.support.controls.JLabelButton;
-import org.joverseer.ui.support.controls.PopupMenuActionListener;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.image.ImageSource;
 
 /**
  * List view that shows ArmySizeEstimate objects
@@ -39,15 +30,15 @@ public class ArmySizeEstimatesListView extends BaseItemListView {
 	@Override
 	protected JComponent createControlImpl() {
 		JComponent comp = super.createControlImpl();
-		table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+		this.table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
 				try {
 					if (value == null || (Integer) value <= 0) {
 						lbl.setText("");
 					}
-					lbl.setHorizontalAlignment(JLabel.RIGHT);
+					lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 				} catch (Exception exc) {
 				}
 				;
@@ -74,8 +65,8 @@ public class ArmySizeEstimatesListView extends BaseItemListView {
 		if (idx > -1) {
 			items.add(idx, new ArmySizeEstimate("", null));
 		}
-		tableModel.setRows(items);
-		tableModel.fireTableDataChanged();
+		this.tableModel.setRows(items);
+		this.tableModel.fireTableDataChanged();
 	}
 	
 	

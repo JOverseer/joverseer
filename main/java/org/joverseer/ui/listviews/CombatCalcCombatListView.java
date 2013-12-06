@@ -22,7 +22,8 @@ public class CombatCalcCombatListView extends ItemListView {
         super(TurnElementsEnum.CombatCalcCombats, CombatCalcCombatTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[]{250, 48, 150, 150};
     }
 
@@ -50,7 +51,8 @@ public class CombatCalcCombatListView extends ItemListView {
     }
 
     class AddCombatCommand extends ActionCommand {
-        protected void doExecuteCommand() {
+        @Override
+		protected void doExecuteCommand() {
             Combat c = new Combat();
             c.setMaxRounds(20);
             new ShowCombatCalculatorCommand(c).execute();
@@ -61,14 +63,15 @@ public class CombatCalcCombatListView extends ItemListView {
     }
     
     class EditSelectedCombatCommand extends ActionCommand {
-        protected void doExecuteCommand() {
-            int row = table.getSelectedRow();
+        @Override
+		protected void doExecuteCommand() {
+            int row = CombatCalcCombatListView.this.table.getSelectedRow();
             if (row >= 0) {
-                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-                if (idx >= tableModel.getRowCount())
+                int idx = ((SortableTableModel) CombatCalcCombatListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= CombatCalcCombatListView.this.tableModel.getRowCount())
                     return;
                 try {
-                    Object obj = tableModel.getRow(idx);
+                    Object obj = CombatCalcCombatListView.this.tableModel.getRow(idx);
                     Combat c = (Combat) obj;
                     new ShowCombatCalculatorCommand(c).execute();
                 } catch (Exception exc) {
@@ -80,14 +83,15 @@ public class CombatCalcCombatListView extends ItemListView {
     }
     
     class DeleteSelectedCombatCommand extends ActionCommand {
-        protected void doExecuteCommand() {
-            int row = table.getSelectedRow();
+        @Override
+		protected void doExecuteCommand() {
+            int row = CombatCalcCombatListView.this.table.getSelectedRow();
             if (row >= 0) {
-                int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-                if (idx >= tableModel.getRowCount())
+                int idx = ((SortableTableModel) CombatCalcCombatListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+                if (idx >= CombatCalcCombatListView.this.tableModel.getRowCount())
                     return;
                 try {
-                    Object obj = tableModel.getRow(idx);
+                    Object obj = CombatCalcCombatListView.this.tableModel.getRow(idx);
                     Combat c = (Combat) obj;
                     GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).removeItem(c);
                     setItems();

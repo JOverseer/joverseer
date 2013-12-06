@@ -25,15 +25,18 @@ public class DialogsUtility {
 		final OrderResultsForm f = new OrderResultsForm(FormModelHelper.createFormModel(c));
     	FormBackedDialogPage pg = new FormBackedDialogPage(f);
     	TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
+			@Override
 			protected boolean onFinish() {
 				return true;
 			}
 
+			@Override
 			protected void onAboutToShow() {
 				super.onAboutToShow();
 				f.setFormObject(c);
 			}
 			
+			@Override
 			protected Object[] getCommandGroupMembers() {
 	                    return new AbstractCommand[] {
 	                            getFinishCommand()
@@ -58,15 +61,18 @@ public class DialogsUtility {
         final NarrationForm form = new NarrationForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
                 form.setFormObject(narration);
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 return true;
             }
 
-            protected Object[] getCommandGroupMembers() {
+            @Override
+			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
                         getFinishCommand()
                 };
@@ -91,15 +97,18 @@ public class DialogsUtility {
         final NarrationForm form = new NarrationForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
                 form.setFormObject(descr);
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 return true;
             }
             
-            protected Object[] getCommandGroupMembers() {
+            @Override
+			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
                         getFinishCommand()
                 };

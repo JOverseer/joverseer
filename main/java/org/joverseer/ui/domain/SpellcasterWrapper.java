@@ -19,7 +19,7 @@ public class SpellcasterWrapper implements IHasMapLocation, IBelongsToNation {
     HashMap<Integer, Integer> proficiency = new HashMap<Integer, Integer>();
     
     public String getCharacter() {
-        return character;
+        return this.character;
     }
     
     public void setCharacter(String character) {
@@ -27,7 +27,7 @@ public class SpellcasterWrapper implements IHasMapLocation, IBelongsToNation {
     }
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -39,24 +39,26 @@ public class SpellcasterWrapper implements IHasMapLocation, IBelongsToNation {
     }
     
     public Integer getProficiency(int spellNo) {
-        return proficiency.get(spellNo);
+        return this.proficiency.get(spellNo);
     }
 
-    public int getX() {
+    @Override
+	public int getX() {
         return getHexNo() / 100;
     }
 
-    public int getY() {
+    @Override
+	public int getY() {
         return getHexNo() % 100;
     }
     
     public HashMap<Integer, Integer> getProficiencies() {
-        return proficiency;
+        return this.proficiency;
     }
 
     
     public int getArtifactBonus() {
-        return artifactBonus;
+        return this.artifactBonus;
     }
 
     
@@ -65,18 +67,20 @@ public class SpellcasterWrapper implements IHasMapLocation, IBelongsToNation {
     }
 
     
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
 
     
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
     
     public Integer getMageRank() {
-        return mageRank;
+        return this.mageRank;
     }
 
     

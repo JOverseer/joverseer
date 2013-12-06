@@ -36,20 +36,23 @@ public class PopulationCenterRenderer extends ImageRenderer {
     MapMetadata mapMetadata = null;
 
     
-    static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
+    @SuppressWarnings("hiding")
+	static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return PopulationCenter.class.isInstance(obj);
     }
 
     private void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
 
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
-        if (mapMetadata == null) init();
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
+        if (this.mapMetadata == null) init();
 
         PopulationCenter popCenter = (PopulationCenter)obj;
 
@@ -59,8 +62,8 @@ public class PopulationCenterRenderer extends ImageRenderer {
         }
 
 
-        Point hexCenter = new Point(x + mapMetadata.getHexSize() / 2 * mapMetadata.getGridCellWidth(),
-                                    y + mapMetadata.getHexSize() / 2 * mapMetadata.getGridCellHeight());
+        Point hexCenter = new Point(x + this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellWidth(),
+                                    y + this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellHeight());
 
         // docks
         if (popCenter.getHarbor() != HarborSizeEnum.none) {

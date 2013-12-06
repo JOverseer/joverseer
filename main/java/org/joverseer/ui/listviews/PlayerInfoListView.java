@@ -21,14 +21,17 @@ public class PlayerInfoListView extends ItemListView {
         super(TurnElementsEnum.PlayerInfo, PlayerInfoTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[]{64, 160, 64, 80, 200, 120};
     }
 
-    protected JComponent createControlImpl() {
+    @Override
+	protected JComponent createControlImpl() {
         JComponent comp = super.createControlImpl();
-        table.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        this.table.setDefaultRenderer(Date.class, new DefaultTableCellRenderer() {
+            @Override
+			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 SimpleDateFormat sdf = new SimpleDateFormat(); 
                 Date d = (Date)value;
                 if (d == null) {
@@ -36,7 +39,7 @@ public class PlayerInfoListView extends ItemListView {
                 } else {
                     value = sdf.format(d);
                 }
-                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                return super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             }
             
         });

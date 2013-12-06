@@ -111,7 +111,7 @@ public class TurnPdfReader implements Runnable {
         Writer output = null;
         ByteArrayOutputStream outs = null;
         try {
-            document = PDDocument.load(filename);
+            this.document = PDDocument.load(this.filename);
 
 
             if (encoding != null) {
@@ -122,12 +122,12 @@ public class TurnPdfReader implements Runnable {
             stripper = new PDFTextStripper();
             stripper.setStartPage(startPage);
             stripper.setEndPage(endPage);
-            stripper.writeText(document, output);
+            stripper.writeText(this.document, output);
             ret = new String(outs.toByteArray(), "UTF-8");
-            contents = ret;
+            this.contents = ret;
             
             //tempPdfTextFile = new File(pdfFile + ".txt");
-            FileWriter out = new FileWriter(pdfTextFile.getCanonicalPath());
+            FileWriter out = new FileWriter(this.pdfTextFile.getCanonicalPath());
             out.write(ret);
             out.close();
         }
@@ -140,8 +140,8 @@ public class TurnPdfReader implements Runnable {
             if (output != null) {
                 output.close();
             }
-            if (document != null) {
-                document.close();
+            if (this.document != null) {
+                this.document.close();
             }
         }
         return ret;
@@ -149,8 +149,8 @@ public class TurnPdfReader implements Runnable {
     
     private void cleanup() {
         if (!deleteFilesWhenFinished) return;
-        pdfTextFile.delete();
-        xmlFile.delete();
+        this.pdfTextFile.delete();
+        this.xmlFile.delete();
     }
 
     public void pdf2xml() throws Throwable {
@@ -159,7 +159,7 @@ public class TurnPdfReader implements Runnable {
             Resource r = Application.instance().getApplicationContext().getResource("classpath:ctx/txt2xml.config.xml");
             //Processor processor = ProcessorFactory.getInstance().createProcessor(new FileReader("bin/ctx/txt2xml.config.xml"));
             Processor processor = ProcessorFactory.getInstance().createProcessor(new InputStreamReader(r.getInputStream()));
-            FileOutputStream outStream = new FileOutputStream(xmlFile.getAbsolutePath());
+            FileOutputStream outStream = new FileOutputStream(this.xmlFile.getAbsolutePath());
             StreamDriver driver = new StreamDriver(processor);
             driver.useDebugOutputProperties();
             
@@ -491,7 +491,7 @@ public class TurnPdfReader implements Runnable {
                             new String[]{"number", "hexNo", "type"}));
             snpr.setAllowUnknownChildElements(true);
 
-            turnInfo = (TurnInfo)digester.parse("file:///" + xmlFile.getCanonicalPath());
+            this.turnInfo = (TurnInfo)digester.parse("file:///" + this.xmlFile.getCanonicalPath());
 //            Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
 //            Matcher m = p.matcher(xmlFile.getCanonicalPath());
 //            m.matches();
@@ -507,13 +507,15 @@ public class TurnPdfReader implements Runnable {
     	}
     }
     
-    public void run() {
+    @Override
+	public void run() {
         try {
-            File f = new File(filename);
-            pdfTextFile = File.createTempFile(f.getName(), ".pdf.txt");
-            xmlFile = File.createTempFile(f.getName(), ".pdf.txt.xml");
+            File f = new File(this.filename);
+            this.pdfTextFile = File.createTempFile(f.getName(), ".pdf.txt");
+            this.xmlFile = File.createTempFile(f.getName(), ".pdf.txt.xml");
             Runnable runnable = new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     try {
                         pdf2xml();
                     }
@@ -541,8 +543,8 @@ public class TurnPdfReader implements Runnable {
                     getMonitor().subTaskStarted("Parsing Pdf file...");
                 }
                 readFile();
-                updateGame(game);
-                game.setCurrentTurn(game.getMaxTurn());
+                updateGame(this.game);
+                this.game.setCurrentTurn(this.game.getMaxTurn());
             }
             Thread.sleep(100);
         }
@@ -556,22 +558,22 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public void updateGame(Game game) throws Exception {
-    	if (turnInfo == null) {
-    		errorOccurred = true;
+    public void updateGame(Game game1) throws Exception {
+    	if (this.turnInfo == null) {
+    		this.errorOccurred = true;
     		throw new Exception("Failed to parse pdf file.");
     	}
-        if (turnInfo.getTurnNo() < game.getMaxTurn()) {
+        if (this.turnInfo.getTurnNo() < game1.getMaxTurn()) {
             //todo fix
-        	errorOccurred = true;
+        	this.errorOccurred = true;
             throw new Exception("Can only import pdfs for last turn.");
         }
         
         
         try {
-            turn = game.getTurn(game.getMaxTurn());
+            this.turn = game1.getTurn(game1.getMaxTurn());
             // check to see if corresponding XML has been imported
-            PlayerInfo pi = (PlayerInfo)turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", turnInfo.getNationNo());
+            PlayerInfo pi = (PlayerInfo)this.turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
             if (pi == null) {
             	if (getMonitor() != null) {
                     getMonitor().worked(100);
@@ -585,35 +587,35 @@ public class TurnPdfReader implements Runnable {
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error updating turn data : '" + exc.getMessage() + "'.");
             }
             
-            infoSource = new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
+            this.infoSource = new PdfTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
             
             // add text
-            PdfTurnText ptt = (PdfTurnText)turn.getContainer(TurnElementsEnum.PdfText).findFirstByProperty("nationNo", turnInfo.getNationNo());
+            PdfTurnText ptt = (PdfTurnText)this.turn.getContainer(TurnElementsEnum.PdfText).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
             if (ptt != null) {
-                turn.getContainer(TurnElementsEnum.PdfText).removeItem(ptt);
+                this.turn.getContainer(TurnElementsEnum.PdfText).removeItem(ptt);
             }
             ptt = new PdfTurnText();
-            ptt.setNationNo(turnInfo.getNationNo());
-            ptt.setText(contents);
-            turn.getContainer(TurnElementsEnum.PdfText).addItem(ptt);
+            ptt.setNationNo(this.turnInfo.getNationNo());
+            ptt.setText(this.contents);
+            this.turn.getContainer(TurnElementsEnum.PdfText).addItem(ptt);
             
             if (getMonitor() != null) {
                 getMonitor().worked(50);
                 getMonitor().subTaskStarted("Updating nation relations...");
             }
             try {
-                if (game.getMetadata().getGameType() == GameTypeEnum.gameFA && turn.getTurnNo() == 0) {
-                    updateNationMetadata(game);
+                if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA && this.turn.getTurnNo() == 0) {
+                    updateNationMetadata(game1);
                 }
-                updateNationRelations(game);
+                updateNationRelations(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -621,10 +623,10 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating population centers...");
             }
             try {
-                updatePcs(game);
+                updatePcs(game1);
             }
             catch (Exception exc) {
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -632,27 +634,27 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating characters...");
             }
             try {
-                updateCharacters(game);
+                updateCharacters(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
-                updateDoubleAgents(game);
+                updateDoubleAgents(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
-                updateHostages(game);
+                updateHostages(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-                errorOccurred = true;
+                this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -660,19 +662,19 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating armies...");
             }
             try {
-                updateArmies(game);
+                updateArmies(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
-                updateAnchoredShips(game);
+                updateAnchoredShips(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-                errorOccurred = true;
+                this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -680,11 +682,11 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating companies...");
             }
             try {
-                updateCompanies(game);
+                updateCompanies(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -692,11 +694,11 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating artifacts...");
             }
             try {
-                updateArtifacts(game);
+                updateArtifacts(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-                errorOccurred = true;
+                this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             if (getMonitor() != null) {
@@ -704,27 +706,27 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().subTaskStarted("Updating combats, encounters, challenges...");
             }
             try {
-                updateCombats(game);
+                updateCombats(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
-                updateEncounters(game);
+                updateEncounters(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
             try {
-                updateClimates(game);
+                updateClimates(game1);
             }
             catch (Exception exc) {
                 logger.error(exc);
-            	errorOccurred = true;
+            	this.errorOccurred = true;
                 getMonitor().subTaskStarted("Error: " + exc.getMessage());
             }
         }
@@ -734,21 +736,21 @@ public class TurnPdfReader implements Runnable {
                 getMonitor().worked(100);
                 getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
             }
-        	errorOccurred = true;
+        	this.errorOccurred = true;
             throw new Exception("Error updating game from Pdf file.", exc);
         }
     }
     
-    private void updateNationMetadata(Game game) throws Exception {
-        for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)turnInfo.getNationRelations().getItems()) {
+    private void updateNationMetadata(Game game1) throws Exception {
+        for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)this.turnInfo.getNationRelations().getItems()) {
             if (nrw.getNationNo() > 0) {
-                Nation n = game.getMetadata().getNationByNum(nrw.getNationNo());
+                Nation n = game1.getMetadata().getNationByNum(nrw.getNationNo());
                 if (n != null) {
                     n.setName(nrw.getNation().trim());
                     String[] shortNames = createNationShortNames(n.getName().trim());
                     for (String s : shortNames) {
                         boolean duplicate = false;
-                        for (Nation nn : (ArrayList<Nation>)game.getMetadata().getNations()) {
+                        for (Nation nn : (ArrayList<Nation>)game1.getMetadata().getNations()) {
                             if (nn == n) continue;
                             if (nn.getShortName().equals(s)) {
                                 duplicate = true;
@@ -763,13 +765,13 @@ public class TurnPdfReader implements Runnable {
             }
         }
         // do current nation
-        Nation n = game.getMetadata().getNationByNum(turnInfo.getNationNo());
+        Nation n = game1.getMetadata().getNationByNum(this.turnInfo.getNationNo());
         if (n != null) {
-            n.setName(turnInfo.getNationName().trim());
-            String[] shortNames = createNationShortNames(turnInfo.getNationName().trim());
+            n.setName(this.turnInfo.getNationName().trim());
+            String[] shortNames = createNationShortNames(this.turnInfo.getNationName().trim());
             for (String s : shortNames) {
                 boolean duplicate = false;
-                for (Nation nn : (ArrayList<Nation>)game.getMetadata().getNations()) {
+                for (Nation nn : (ArrayList<Nation>)game1.getMetadata().getNations()) {
                     if (nn == n) continue;
                     if (nn.getShortName().equals(s)) {
                         duplicate = true;
@@ -784,7 +786,7 @@ public class TurnPdfReader implements Runnable {
         
         //update SNAs
         if (n != null) {
-        	for (SNAWrapper nw : (ArrayList<SNAWrapper>)turnInfo.getSnas().getItems()) {
+        	for (SNAWrapper nw : (ArrayList<SNAWrapper>)this.turnInfo.getSnas().getItems()) {
         		SNAEnum sna = SNAEnum.getSnaFromNumber(nw.getNumber());
         		if (sna != null) {
         			n.getSnas().add(sna);
@@ -820,15 +822,15 @@ public class TurnPdfReader implements Runnable {
     private void updateTurnData() throws Exception {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-            turn.setTurnDate(sdf.parse(turnInfo.getDate()));
-            if (turnInfo.getSeason().equals("Spring")) {
-                turn.setSeason(SeasonEnum.Spring);
-            } else if (turnInfo.getSeason().equals("Summer")) {
-                turn.setSeason(SeasonEnum.Summer);
-            } else if (turnInfo.getSeason().equals("Fall")) {
-                turn.setSeason(SeasonEnum.Fall);
-            } else if (turnInfo.getSeason().equals("Winter")) {
-                turn.setSeason(SeasonEnum.Winter);
+            this.turn.setTurnDate(sdf.parse(this.turnInfo.getDate()));
+            if (this.turnInfo.getSeason().equals("Spring")) {
+                this.turn.setSeason(SeasonEnum.Spring);
+            } else if (this.turnInfo.getSeason().equals("Summer")) {
+                this.turn.setSeason(SeasonEnum.Summer);
+            } else if (this.turnInfo.getSeason().equals("Fall")) {
+                this.turn.setSeason(SeasonEnum.Fall);
+            } else if (this.turnInfo.getSeason().equals("Winter")) {
+                this.turn.setSeason(SeasonEnum.Winter);
             }
         }
         catch (Exception exc) {
@@ -836,10 +838,10 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    private void updateEncounters(Game game) {
-        Container ews = turnInfo.getEncounters();
+    private void updateEncounters(Game game1) {
+        Container ews = this.turnInfo.getEncounters();
         if (ews == null) return;
-        Container encounters = game.getTurn().getContainer(TurnElementsEnum.Encounter);
+        Container encounters = game1.getTurn().getContainer(TurnElementsEnum.Encounter);
         for (EncounterWrapper ew : (ArrayList<EncounterWrapper>)ews.getItems()) {
             Encounter e = (Encounter)encounters.findFirstByProperties(new String[]{"character", "hexNo"}, new Object[]{ew.getCharacter(), ew.getHexNo()});
             if (e != null) {
@@ -849,9 +851,9 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    private void updateArmies(Game game) {
-        Container armies = game.getTurn().getContainer(TurnElementsEnum.Army);
-        Container aws = turnInfo.getArmies();
+    private void updateArmies(Game game1) {
+        Container armies = game1.getTurn().getContainer(TurnElementsEnum.Army);
+        Container aws = this.turnInfo.getArmies();
         if (aws == null) return;
         for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
             Army a = (Army)armies.findFirstByProperty("commanderName", aw.getCommander());
@@ -861,14 +863,14 @@ public class TurnPdfReader implements Runnable {
         }
     }
       
-    private void updateAnchoredShips(Game game) {
+    private void updateAnchoredShips(Game game1) {
         String commanderName = "[Anchored Ships]";
-        Container armies = game.getTurn().getContainer(TurnElementsEnum.Army);
-        Container asws = turnInfo.getAnchoredShips();
+        Container armies = game1.getTurn().getContainer(TurnElementsEnum.Army);
+        Container asws = this.turnInfo.getAnchoredShips();
         if (asws == null) return;
         for (AnchoredShipsWrapper asw : (ArrayList<AnchoredShipsWrapper>)asws.getItems()) {
             String hexNo = String.valueOf(asw.getHexNo());
-            Army a = (Army)armies.findFirstByProperties(new String[]{"commanderName", "hexNo", "nationNo"}, new Object[]{commanderName, hexNo, turnInfo.getNationNo()});
+            Army a = (Army)armies.findFirstByProperties(new String[]{"commanderName", "hexNo", "nationNo"}, new Object[]{commanderName, hexNo, this.turnInfo.getNationNo()});
             if (a == null) {
                 a = new Army();
                 a.setNavy(true);
@@ -876,15 +878,15 @@ public class TurnPdfReader implements Runnable {
                 a.setCommanderName(commanderName);
                 a.setCommanderTitle("");
                 a.setHexNo(hexNo);
-                a.setNationNo(turnInfo.getNationNo());
+                a.setNationNo(this.turnInfo.getNationNo());
                 NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
-                NationRelations nr = (NationRelations)game.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", turnInfo.getNationNo());
+                NationRelations nr = (NationRelations)game1.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
                 if (nr != null) {
                     allegiance = nr.getAllegiance();
                 }
                 a.setNationAllegiance(allegiance);
                 a.setInformationSource(InformationSourceEnum.exhaustive);
-                a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
+                a.setInfoSource(new PdfTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo()));
                 armies.addItem(a);
             }
             if (asw.getType().equalsIgnoreCase("warships")) {
@@ -895,10 +897,10 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public void updateCombats(Game game) throws Exception {
-        Container combats = game.getTurn().getContainer(TurnElementsEnum.Combat);
-        Container challenges = game.getTurn().getContainer(TurnElementsEnum.Challenge);
-        Container cws = turnInfo.getCombats();
+    public void updateCombats(Game game1) throws Exception {
+        Container combats = game1.getTurn().getContainer(TurnElementsEnum.Combat);
+        Container challenges = game1.getTurn().getContainer(TurnElementsEnum.Challenge);
+        Container cws = this.turnInfo.getCombats();
         if (cws == null) return;
         for (CombatWrapper cw : (ArrayList<CombatWrapper>)cws.getItems()) {
             if (ChallengeWrapper.class.isInstance(cw)) {
@@ -913,14 +915,14 @@ public class TurnPdfReader implements Runnable {
                 if (c == null) {
                     c = new Combat();
                     c.setHexNo(cw.getHexNo());
-                    c.addNarration(turnInfo.getNationNo(), cw.getNarration());
+                    c.addNarration(this.turnInfo.getNationNo(), cw.getNarration());
                     combats.addItem(c);
                 } else {
-                    c.addNarration(turnInfo.getNationNo(), cw.getNarration());
+                    c.addNarration(this.turnInfo.getNationNo(), cw.getNarration());
                 }
             }
             try {
-                cw.updateGame(game, turnInfo.getTurnNo(), turnInfo.getNationNo());
+                cw.updateGame(game1, this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
             }
             catch (Exception exc) {
                 throw new Exception("Failed to parse combat at " + cw.getHexNo());
@@ -928,29 +930,29 @@ public class TurnPdfReader implements Runnable {
         }
     }
 
-    private void updateNationRelations(Game game) throws Exception {
-        Nation nation = game.getMetadata().getNationByNum(turnInfo.getNationNo());
+    private void updateNationRelations(Game game1) throws Exception {
+        Nation nation = game1.getMetadata().getNationByNum(this.turnInfo.getNationNo());
         if (nation == null) {
-        	throw new Exception("Failed to find nation with number " + turnInfo.getNationNo());
+        	throw new Exception("Failed to find nation with number " + this.turnInfo.getNationNo());
         }
-        Container nrs = turn.getContainer(TurnElementsEnum.NationRelation);
-        NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", turnInfo.getNationNo());
-        if (turnInfo.getAllegiance().equals("Free People")) {
+        Container nrs = this.turn.getContainer(TurnElementsEnum.NationRelation);
+        NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+        if (this.turnInfo.getAllegiance().equals("Free People")) {
             nation.setAllegiance(NationAllegianceEnum.FreePeople);
-        } else if (turnInfo.getAllegiance().equals("Dark Servant")) {
+        } else if (this.turnInfo.getAllegiance().equals("Dark Servant")) {
             nation.setAllegiance(NationAllegianceEnum.DarkServants);
-        } else if (turnInfo.getAllegiance().equals("Neutral")) {
+        } else if (this.turnInfo.getAllegiance().equals("Neutral")) {
             nation.setAllegiance(NationAllegianceEnum.Neutral);
         } 
         if (nr == null) {
-        	throw new Exception("Failed to retrieve NationRelations object for nation " + turnInfo.getNationNo());
+        	throw new Exception("Failed to retrieve NationRelations object for nation " + this.turnInfo.getNationNo());
         }
         nr.setAllegiance(nation.getAllegiance());
         
-        Container nrws = turnInfo.getNationRelations();
+        Container nrws = this.turnInfo.getNationRelations();
         String problematicNations = "";
         for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)nrws.getItems()) {
-        	Nation n = game.getMetadata().getNationByName(nrw.getNation());
+        	Nation n = game1.getMetadata().getNationByName(nrw.getNation());
         	if (n == null) {
         		problematicNations += (problematicNations.equals("") ? "" : ", ") + nrw.getNation();
         	} else {
@@ -975,9 +977,9 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public void updatePcs(Game game) throws Exception {
-        Container pcws = turnInfo.getPopulationCenters();
-        Container pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
+    public void updatePcs(Game game1) throws Exception {
+        Container pcws = this.turnInfo.getPopulationCenters();
+        Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
         String pcsNotFound = "";
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
             //PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("name", pcw.getName());
@@ -1005,9 +1007,9 @@ public class TurnPdfReader implements Runnable {
         return null;
     }
     
-    public void updateClimates(Game game) throws Exception {
-        Container pcws = turnInfo.getPopulationCenters();
-        Container his = turn.getContainer(TurnElementsEnum.HexInfo);
+    public void updateClimates(Game game1) throws Exception {
+        Container pcws = this.turnInfo.getPopulationCenters();
+        Container his = this.turn.getContainer(TurnElementsEnum.HexInfo);
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
             HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", pcw.getHexNo());
             ClimateEnum climate = translateClimate(pcw.getClimate());
@@ -1016,7 +1018,7 @@ public class TurnPdfReader implements Runnable {
             }
         }
         
-        Container aws = turnInfo.getArmies();
+        Container aws = this.turnInfo.getArmies();
         for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
             HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", aw.getHexNo());
             ClimateEnum climate = translateClimate(aw.getClimate());
@@ -1026,14 +1028,14 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public void updateArtifacts(Game game) throws Exception {
-        Container aws = turnInfo.getArtifacts();
+    public void updateArtifacts(Game game1) throws Exception {
+        Container aws = this.turnInfo.getArtifacts();
         for (ArtifactWrapper aw : (ArrayList<ArtifactWrapper>)aws.getItems()) {
             // for FA game, update artifact numbers
-            if (game.getMetadata().getGameType() == GameTypeEnum.gameFA) {
+            if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA) {
                 String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
                 boolean found = false;
-                for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game.getMetadata().getArtifacts().getItems()) {
+                for (ArtifactInfo ai : (ArrayList<ArtifactInfo>)game1.getMetadata().getArtifacts().getItems()) {
                     if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
                         found = true;
                         ai.setNo(aw.getNumber());
@@ -1045,12 +1047,12 @@ public class TurnPdfReader implements Runnable {
                     ArtifactInfo ai = new ArtifactInfo();
                     ai.setName(aw.getName().trim());
                     ai.setNo(aw.getNumber());
-                    game.getMetadata().getArtifacts().addItem(ai);
+                    game1.getMetadata().getArtifacts().addItem(ai);
                 }
             };
             
             // for all games update powers
-            ArtifactInfo artifactInfo = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+            ArtifactInfo artifactInfo = (ArtifactInfo)game1.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
             if (artifactInfo != null && aw.getPower() != null && !aw.getPower().equals("")) {
                 // parse power
                 String power = aw.getPower();
@@ -1089,23 +1091,23 @@ public class TurnPdfReader implements Runnable {
             
             // update hidden artifacts
             if (aw.getHexNo() > 0) {
-                Artifact a = (Artifact)game.getTurn().getContainer(TurnElementsEnum.Artifact).findFirstByProperty("number", aw.getNumber());
+                Artifact a = (Artifact)game1.getTurn().getContainer(TurnElementsEnum.Artifact).findFirstByProperty("number", aw.getNumber());
                 if (a == null) {
                     a = new Artifact();
                     a.setNumber(aw.getNumber());
                     a.setName(aw.getName().trim());
                     a.setHexNo(aw.getHexNo());
-                    a.setOwner(turnInfo.getNationName());
-                    a.setInfoSource(new PdfTurnInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo()));
-                    game.getTurn().getContainer(TurnElementsEnum.Artifact).addItem(a);
+                    a.setOwner(this.turnInfo.getNationName());
+                    a.setInfoSource(new PdfTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo()));
+                    game1.getTurn().getContainer(TurnElementsEnum.Artifact).addItem(a);
                 }
             }
         }
     }
     
-    public void updateCharacters(Game game) throws Exception {
-        Container cws = turnInfo.getCharacters();
-        Container cs = turn.getContainer(TurnElementsEnum.Character);
+    public void updateCharacters(Game game1) throws Exception {
+        Container cws = this.turnInfo.getCharacters();
+        Container cs = this.turn.getContainer(TurnElementsEnum.Character);
         for (CharacterWrapper cw : (ArrayList<CharacterWrapper>)cws.getItems()) {
         	try {
 	            Character c = (Character)cs.findFirstByProperty("name", cw.getName());
@@ -1124,7 +1126,7 @@ public class TurnPdfReader implements Runnable {
 	                if (deathReason == null) {
 	                    // check last turn
 	                    // if charname existed, we can add him as dead
-	                    Turn t = game.getTurn(turnInfo.getTurnNo() - 1);
+	                    Turn t = game1.getTurn(this.turnInfo.getTurnNo() - 1);
 	                    if (t != null) {
 	                        c = (Character)t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", cw.getName());
 	                        if (c != null) {
@@ -1139,11 +1141,11 @@ public class TurnPdfReader implements Runnable {
 	                    c = new Character();
 	                    c.setName(cw.getName());
 	                    c.setId(Character.getIdFromName(cw.getName()));
-	                    c.setNationNo(turnInfo.getNationNo());
+	                    c.setNationNo(this.turnInfo.getNationNo());
 	                    c.setHealth(0);
 	                    c.setDeathReason(deathReason);
 	                    c.setHexNo(cw.getHexNo());
-	                    c.setInfoSource(infoSource);
+	                    c.setInfoSource(this.infoSource);
 	                    c.setInformationSource(InformationSourceEnum.exhaustive);
 	                    cs.addItem(c);
 	                }
@@ -1152,12 +1154,12 @@ public class TurnPdfReader implements Runnable {
 	                cw.updateCharacter(c);
 	            }
 	            for (OrderResult orderResult : cw.getOrderResults()) {
-	                orderResult.updateGame(game, turn, nationNo, cw.getName());
+	                orderResult.updateGame(game1, this.turn, this.nationNo, cw.getName());
 	            }
-	            cw.parsePopCenter(game, infoSource, c);
-	            cw.parseScoHexOrScoPop(game, infoSource, c);
-	            cw.parseArmiesFromDivineNationForces(game, infoSource, c);
-	            cw.parseDivineCharsWithForces(game, infoSource, c);
+	            cw.parsePopCenter(game1, this.infoSource, c);
+	            cw.parseScoHexOrScoPop(game1, this.infoSource, c);
+	            cw.parseArmiesFromDivineNationForces(game1, this.infoSource, c);
+	            cw.parseDivineCharsWithForces(game1, this.infoSource, c);
         	}
         	catch (Exception exc) {
         		logger.error("failed to parse character " + cw.getName());
@@ -1166,10 +1168,10 @@ public class TurnPdfReader implements Runnable {
         }
     }
     
-    public void updateDoubleAgents(Game game) throws Exception {
-        DoubleAgentInfoSource dais = new DoubleAgentInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
-        Container daws = turnInfo.getDoubleAgents();
-        Container cs = turn.getContainer(TurnElementsEnum.Character);
+    public void updateDoubleAgents(Game game1) throws Exception {
+        DoubleAgentInfoSource dais = new DoubleAgentInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
+        Container daws = this.turnInfo.getDoubleAgents();
+        Container cs = this.turn.getContainer(TurnElementsEnum.Character);
         for (DoubleAgentWrapper daw : (ArrayList<DoubleAgentWrapper>)daws.getItems()) {
             Character c = (Character)cs.findFirstByProperty("name", daw.getName());
             if (c == null) {
@@ -1179,7 +1181,7 @@ public class TurnPdfReader implements Runnable {
                 cs.addItem(c);
             }
             // set nation if applicable
-            Nation n = game.getMetadata().getNationByName(daw.getNation());
+            Nation n = game1.getMetadata().getNationByName(daw.getNation());
             if (n != null) {
                 c.setNationNo(n.getNumber());
             }
@@ -1191,10 +1193,10 @@ public class TurnPdfReader implements Runnable {
                 
     }
     
-    public void updateHostages(Game game) throws Exception {
-        HostageInfoSource dais = new HostageInfoSource(turnInfo.getTurnNo(), turnInfo.getNationNo());
-        Container hws = turnInfo.getHostages();
-        Container cs = turn.getContainer(TurnElementsEnum.Character);
+    public void updateHostages(Game game1) throws Exception {
+        HostageInfoSource dais = new HostageInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
+        Container hws = this.turnInfo.getHostages();
+        Container cs = this.turn.getContainer(TurnElementsEnum.Character);
         for (HostageWrapper hw : (ArrayList<HostageWrapper>)hws.getItems()) {
             Character c = (Character)cs.findFirstByProperty("name", hw.getName());
             if (c == null) {
@@ -1207,7 +1209,7 @@ public class TurnPdfReader implements Runnable {
            
             // set nation if applicable
             if (hw.getNation() != null) {
-                Nation n = game.getMetadata().getNationByName(hw.getNation());
+                Nation n = game1.getMetadata().getNationByName(hw.getNation());
                 if (n != null) {
                     c.setNationNo(n.getNumber());
                 }
@@ -1224,13 +1226,13 @@ public class TurnPdfReader implements Runnable {
                 
     }
     
-    public void updateCompanies(Game game) throws Exception {
-        Container cws = turnInfo.getCompanies();
+    public void updateCompanies(Game game1) throws Exception {
+        Container cws = this.turnInfo.getCompanies();
         if (cws == null) return;
-        Container cs = turn.getContainer(TurnElementsEnum.Company);
+        Container cs = this.turn.getContainer(TurnElementsEnum.Company);
         for (CompanyWrapper cw : (ArrayList<CompanyWrapper>)cws.getItems()) {
             Company newC = cw.getCompany();
-            newC.setInfoSource(infoSource);
+            newC.setInfoSource(this.infoSource);
             Company oldC = (Company)cs.findFirstByProperty("commander", newC.getCommander());
             if (oldC != null) {
                 cs.removeItem(oldC);
@@ -1246,7 +1248,7 @@ public class TurnPdfReader implements Runnable {
 
     
     public ProgressMonitor getMonitor() {
-        return monitor;
+        return this.monitor;
     }
 
     
@@ -1255,7 +1257,7 @@ public class TurnPdfReader implements Runnable {
     }
 
 	public boolean getErrorOccurred() {
-		return errorOccurred;
+		return this.errorOccurred;
 	}
 
 	public void setErrorOccurred(boolean errorOccurred) {

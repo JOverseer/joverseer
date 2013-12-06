@@ -98,9 +98,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 			if (!ae.getArmyElementType().isTroop())
 				continue;
 			if (!ae.getArmyElementType().isCavalry())
-				return false;
+				return Boolean.FALSE;
 		}
-		return true;
+		return Boolean.TRUE;
 	}
 
 	/**
@@ -128,12 +128,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	 */
 	public Integer computeFoodConsumption() {
 		if (getElements().size() == 0)
-			return 0;
+			return new Integer(0);
 		int ret = 0;
 		for (ArmyElement ae : getElements()) {
 			ret += ae.getNumber() * ae.getArmyElementType().foodConsumption();
 		}
-		return ret;
+		return new Integer(ret);
 	}
 
 	/**
@@ -164,15 +164,15 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public ArrayList<String> getCharacters() {
-		return characters;
+		return this.characters;
 	}
 
 	public String getCommanderName() {
-		return commanderName;
+		return this.commanderName;
 	}
 
 	public String getCommanderTitle() {
-		return commanderTitle;
+		return this.commanderTitle;
 	}
 
 	public ArmyElement getElement(ArmyElementType type) {
@@ -185,26 +185,26 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public ArrayList<ArmyElement> getElements() {
-		return elements;
+		return this.elements;
 	}
 
 	public Integer getENHI() {
-		if (enHI == null) {
+		if (this.enHI == null) {
 			Character c = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", getCommanderName());
 			if (c != null) {
-				enHI = CombatUtils.getNakedHeavyInfantryEquivalent(this, c);
+				this.enHI = new Integer(CombatUtils.getNakedHeavyInfantryEquivalent(this, c));
 			} else {
-				enHI = CombatUtils.getNakedHeavyInfantryEquivalent2(this);
+				this.enHI = new Integer(CombatUtils.getNakedHeavyInfantryEquivalent2(this));
 			}
 		}
-		return enHI;
+		return this.enHI;
 	}
 
 	/**
 	 * Gets the value for the amount of food for this army. Null if unknown.
 	 */
 	public Integer getFood() {
-		return food;
+		return this.food;
 	}
 
 	public String getHexNo() {
@@ -219,7 +219,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 		if (!getCommanderName().equals("Unknown (Map Icon)")) {
 			infoAmount++;
 		}
-		if (getNationNo() > 0) {
+		if (getNationNo().intValue() > 0) {
 			infoAmount++;
 		}
 		if (getElements().size() > 0) {
@@ -236,24 +236,25 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public InformationSourceEnum getInformationSource() {
-		return informationSource;
+		return this.informationSource;
 	}
 
 	public InfoSource getInfoSource() {
-		return infoSource;
+		return this.infoSource;
 	}
 
+	@Override
 	public Integer getMaintenance() {
 		int cost = 0;
 		for (ArmyElement ae : getElements()) {
-			cost += ae.getMaintentance();
+			cost = ae.getMaintentance();
 		}
-		return cost;
+		return new Integer(cost);
 
 	}
 
 	public int getMorale() {
-		return morale;
+		return this.morale;
 	}
 
 	public Nation getNation() {
@@ -261,11 +262,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public NationAllegianceEnum getNationAllegiance() {
-		return nationAllegiance;
+		return this.nationAllegiance;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	public int getNumber(ArmyElementType aet) {
@@ -285,37 +287,39 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public ArmySizeEnum getSize() {
-		return size;
+		return this.size;
 	}
 
 	public int getTroopCount() {
-		return troopCount;
+		return this.troopCount;
 	}
 
+	@Override
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
+	@Override
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	/**
 	 * Override for cavalry
 	 */
 	public Boolean isCavalry() {
-		return cavalry;
+		return this.cavalry;
 	}
 
 	/**
 	 * Returns true if the army is fed, null if unknown, false if unfed.
 	 */
 	public Boolean isFed() {
-		return fed;
+		return this.fed;
 	}
 
 	public boolean isNavy() {
-		return navy;
+		return this.navy;
 	}
 
 	public void removeElement(ArmyElementType type) {
@@ -329,15 +333,15 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 		if (e != null) {
 			getElements().remove(e);
 		}
-		enHI = null;
+		this.enHI = null;
 	}
 
 	public void resetENHI() { // used by engine
-		enHI = null;
+		this.enHI = null;
 	}
 
 	public void resetFed() {
-		fed = null;
+		this.fed = null;
 	}
 
 	/**
@@ -353,7 +357,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 
 	public void setCommanderName(String commanderName) {
 		this.commanderName = commanderName;
-		enHI = null;
+		this.enHI = null;
 	}
 
 	public void setCommanderTitle(String commanderTitle) {
@@ -365,8 +369,8 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 			return;
 		ArmyElement e = getElement(ae.getArmyElementType());
 		if (e != null)
-			elements.remove(e);
-		elements.add(ae);
+			this.elements.remove(e);
+		this.elements.add(ae);
 	}
 
 	public void setElement(ArmyElementType type, int count) {
@@ -381,11 +385,11 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 			}
 		}
 		getElements().add(new ArmyElement(type, count));
-		enHI = null;
+		this.enHI = null;
 	}
 
 	public void setFed(boolean fed) {
-		this.fed = fed;
+		this.fed = new Boolean(fed);
 	}
 
 	public void setFood(Integer food) {
@@ -408,13 +412,14 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 
 	public void setMorale(int morale) {
 		this.morale = morale;
-		enHI = null;
+		this.enHI = null;
 	}
 
 	public void setNationAllegiance(NationAllegianceEnum nationAllegiance) {
 		this.nationAllegiance = nationAllegiance;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}

@@ -12,7 +12,7 @@ public class DerivedFromWoundsInfoSource extends PdfTurnInfoSource {
 	String woundsDescription;
 
 	public String getWoundsDescription() {
-		return woundsDescription;
+		return this.woundsDescription;
 	}
 
 	public void setWoundsDescription(String woundsDescription) {
@@ -23,6 +23,7 @@ public class DerivedFromWoundsInfoSource extends PdfTurnInfoSource {
 		super(turnNo, nationNo);
 	}
 	
+	@Override
 	public String toString() {
     	return "Wounds";
     }

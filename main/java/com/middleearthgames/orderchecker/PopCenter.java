@@ -62,15 +62,15 @@ public class PopCenter
     public PopCenter(int location)
     {
         this.location = -1;
-        name = null;
-        nation = -1;
-        fortification = -1;
-        size = -1;
-        dock = -1;
-        capital = false;
-        loyalty = -1;
-        hidden = false;
-        newpc = false;
+        this.name = null;
+        this.nation = -1;
+        this.fortification = -1;
+        this.size = -1;
+        this.dock = -1;
+        this.capital = false;
+        this.loyalty = -1;
+        this.hidden = false;
+        this.newpc = false;
         this.location = location;
     }
 
@@ -87,91 +87,91 @@ public class PopCenter
 
     boolean isNationsCapital(int nationNumber)
     {
-        return capital && nationNumber == nation;
+        return this.capital && nationNumber == this.nation;
     }
 
     public void mergePopulationCenter(PopCenter pc)
     {
-        if(nation <= 0 && pc.getNation() > 0)
+        if(this.nation <= 0 && pc.getNation() > 0)
         {
-            name = pc.getName();
-            nation = pc.getNation();
+            this.name = pc.getName();
+            this.nation = pc.getNation();
         }
-        if(fortification <= 0 && pc.getFortification() > 0)
+        if(this.fortification <= 0 && pc.getFortification() > 0)
         {
-            fortification = pc.getFortification();
+            this.fortification = pc.getFortification();
         }
-        if(size <= 0 && pc.getSize() > 0)
+        if(this.size <= 0 && pc.getSize() > 0)
         {
-            size = pc.getSize();
+            this.size = pc.getSize();
         }
-        if(dock <= 0 && pc.getDock() > 0)
+        if(this.dock <= 0 && pc.getDock() > 0)
         {
-            dock = pc.getDock();
+            this.dock = pc.getDock();
         }
-        if(!capital && pc.getCapital())
+        if(!this.capital && pc.getCapital())
         {
-            capital = true;
+            this.capital = true;
         }
-        if(loyalty <= 0 && pc.getLoyalty() > 0)
+        if(this.loyalty <= 0 && pc.getLoyalty() > 0)
         {
-            loyalty = pc.getLoyalty();
+            this.loyalty = pc.getLoyalty();
         }
-        if(!hidden && pc.getHidden())
+        if(!this.hidden && pc.getHidden())
         {
-            hidden = true;
+            this.hidden = true;
         }
     }
 
     void initStateInformation()
     {
-        troopsAvailable = getMaximumTroops();
-        possibleDestruction = 9999;
-        possibleCapture = 9999;
-        possibleInfluence = 9999;
-        enemyArmyPresent = Main.main.getNation().isEnemyArmyPresent(nation, location);
-        capturingNation = Main.main.getNation().capturingNation(this, 0);
+        this.troopsAvailable = getMaximumTroops();
+        this.possibleDestruction = 9999;
+        this.possibleCapture = 9999;
+        this.possibleInfluence = 9999;
+        this.enemyArmyPresent = Main.main.getNation().isEnemyArmyPresent(this.nation, this.location);
+        this.capturingNation = Main.main.getNation().capturingNation(this, 0);
     }
 
     int improvementRequirement()
     {
-        return improveReq[size];
+        return improveReq[this.size];
     }
 
     int threatenRequirement()
     {
-        return threatenReq[size];
+        return threatenReq[this.size];
     }
 
     int getMaximumTroops()
     {
-        return size * 100;
+        return this.size * 100;
     }
 
     int reduceTroopLimit(int amount)
     {
-        troopsAvailable -= amount;
-        return troopsAvailable;
+        this.troopsAvailable -= amount;
+        return this.troopsAvailable;
     }
 
     int getFoodProvided()
     {
-        return food[size];
+        return food[this.size];
     }
 
     void setPossibleDestruction(int value)
     {
-        possibleDestruction = value;
+        this.possibleDestruction = value;
     }
 
     void setPossibleCapture(int value)
     {
-        possibleCapture = value;
+        this.possibleCapture = value;
     }
 
     void setPossibleInfluence(int value)
     {
-        possibleInfluence = value;
+        this.possibleInfluence = value;
     }
 
     public void setName(String name)
@@ -186,7 +186,7 @@ public class PopCenter
 
     public void setFortification(int fort)
     {
-        fortification = fort;
+        this.fortification = fort;
     }
 
     public void setSize(int size)
@@ -228,109 +228,110 @@ public class PopCenter
 
     public void setNewPC()
     {
-        newpc = true;
+        this.newpc = true;
     }
 
     public int getNation()
     {
-        return nation;
+        return this.nation;
     }
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public int getLocation()
     {
-        return location;
+        return this.location;
     }
 
     int getFortification()
     {
-        return fortification;
+        return this.fortification;
     }
 
     int getSize()
     {
-        return size;
+        return this.size;
     }
 
     int getDock()
     {
-        return dock;
+        return this.dock;
     }
 
     boolean getCapital()
     {
-        return capital;
+        return this.capital;
     }
 
     int getLoyalty()
     {
-        return loyalty;
+        return this.loyalty;
     }
 
     boolean getHidden()
     {
-        return hidden;
+        return this.hidden;
     }
 
     int getPossibleDestruction()
     {
-        return possibleDestruction;
+        return this.possibleDestruction;
     }
 
     int getPossibleCapture()
     {
-        return possibleCapture;
+        return this.possibleCapture;
     }
 
     int getPossibleInfluence()
     {
-        return possibleInfluence;
+        return this.possibleInfluence;
     }
 
     boolean getEnemyArmyPresent()
     {
-        return enemyArmyPresent;
+        return this.enemyArmyPresent;
     }
 
     int getCapturingNation()
     {
-        return capturingNation;
+        return this.capturingNation;
     }
 
     boolean isPopCenterComplete()
     {
-        return location != -1 && name != null && nation != -1 && fortification != -1 && size != -1 && dock != -1 && loyalty != -1;
+        return this.location != -1 && this.name != null && this.nation != -1 && this.fortification != -1 && this.size != -1 && this.dock != -1 && this.loyalty != -1;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
-        String locStr = String.valueOf(location);
+        String locStr = String.valueOf(this.location);
         if(locStr.length() == 3)
         {
             locStr = "0" + locStr;
         }
-        if(newpc)
+        if(this.newpc)
         {
             return locStr;
         }
-        String desc = name + " (" + locStr + ", ";
-        if(location == Main.main.getNation().getCapital())
+        String desc = this.name + " (" + locStr + ", ";
+        if(this.location == Main.main.getNation().getCapital())
         {
             desc = desc + "Capital";
         } else
         {
-            desc = desc + sizeName[size];
-            if(fortification != 0)
+            desc = desc + sizeName[this.size];
+            if(this.fortification != 0)
             {
-                desc = desc + "/" + fortName[fortification];
+                desc = desc + "/" + fortName[this.fortification];
             }
-            if(nation != Main.main.getNation().getNation())
+            if(this.nation != Main.main.getNation().getNation())
             {
-                desc = desc + ", " + Main.main.getNation().getNationName(nation);
+                desc = desc + ", " + Main.main.getNation().getNationName(this.nation);
             }
         }
         desc = desc + ")";

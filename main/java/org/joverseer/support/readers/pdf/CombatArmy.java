@@ -21,7 +21,7 @@ public class CombatArmy {
 	ArrayList<String> attackedArmies = new ArrayList<String>();
 
 	public String getCommanderName() {
-		return commanderName;
+		return this.commanderName;
 	}
 
 	public void setCommanderName(String commanderName) {
@@ -29,7 +29,7 @@ public class CombatArmy {
 	}
 
 	public String getLosses() {
-		return losses;
+		return this.losses;
 	}
 
 	public void setLosses(String losses) {
@@ -37,7 +37,7 @@ public class CombatArmy {
 	}
 
 	public String getNation() {
-		return nation;
+		return this.nation;
 	}
 
 	public void setNation(String nation) {
@@ -45,7 +45,7 @@ public class CombatArmy {
 	}
 
 	public boolean isSurvived() {
-		return survived;
+		return this.survived;
 	}
 
 	public void setSurvived(boolean survived) {
@@ -53,7 +53,7 @@ public class CombatArmy {
 	}
 
 	public Container<CombatArmyElement> getRegiments() {
-		return regiments;
+		return this.regiments;
 	}
 
 	public void setRegiments(Container<CombatArmyElement> regiments) {
@@ -61,7 +61,7 @@ public class CombatArmy {
 	}
 
 	public String getMorale() {
-		return morale;
+		return this.morale;
 	}
 
 	public void setMorale(String morale) {
@@ -69,7 +69,7 @@ public class CombatArmy {
 	}
 
 	public String getCommanderTitle() {
-		return commanderTitle;
+		return this.commanderTitle;
 	}
 
 	public void setCommanderTitle(String commanderTitle) {
@@ -77,7 +77,7 @@ public class CombatArmy {
 	}
 
 	public String getCommanderOutcome() {
-		return commanderOutcome;
+		return this.commanderOutcome;
 	}
 
 	public void setCommanderOutcome(String commanderOutcome) {
@@ -85,10 +85,10 @@ public class CombatArmy {
 	}
 
 	public ArrayList<String> getAttackedArmies() {
-		return attackedArmies;
+		return this.attackedArmies;
 	}
 
 	public void AddAttackedArmy(String armyCommander) {
-		attackedArmies.add(armyCommander);
+		this.attackedArmies.add(armyCommander);
 	}
 }

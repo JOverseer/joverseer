@@ -20,7 +20,7 @@ public enum FortificationSizeEnum implements Serializable {
 	}
 
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 
 	public static FortificationSizeEnum getFromSize(int size) {

@@ -28,7 +28,7 @@ public class CharacterRangeMapItem extends AbstractMapItem {
     }
 
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
 
     public void setHexNo(int hexNo) {
@@ -36,14 +36,15 @@ public class CharacterRangeMapItem extends AbstractMapItem {
     }
 
     public int getRange() {
-        return range;
+        return this.range;
     }
 
     public void setRange(int range) {
         this.range = range;
     }
 
-    public String getDescription() {
-        return String.format("{0} hexes range from hex {1}.", new Object[] {range, hexNo});
+    @Override
+	public String getDescription() {
+        return String.format("{0} hexes range from hex {1}.", new Object[] {this.range, this.hexNo});
     }
 }

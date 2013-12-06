@@ -22,7 +22,7 @@ public class BattleLine {
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public void setText(String text) {
@@ -46,27 +46,27 @@ public class BattleLine {
 	}
 
 	public ArrayList<String> getTroopTypes() {
-		return troopTypes;
+		return this.troopTypes;
 	}
 
 	public ArrayList<String> getWeaponTypes() {
-		return weaponTypes;
+		return this.weaponTypes;
 	}
 
 	public ArrayList<String> getArmors() {
-		return armors;
+		return this.armors;
 	}
 
 	public ArrayList<String> getFormations() {
-		return formations;
+		return this.formations;
 	}
 
 	public ArrayList<String> getCommanderReports() {
-		return commanderReports;
+		return this.commanderReports;
 	}
 
 	public ArrayList<String> getSummaryReports() {
-		return summaryReports;
+		return this.summaryReports;
 	}
 	
 	

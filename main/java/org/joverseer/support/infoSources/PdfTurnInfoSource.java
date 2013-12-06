@@ -18,14 +18,15 @@ public class PdfTurnInfoSource extends TurnInfoSource {
     }
 
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     public void setNationNo(int nationNo) {
         this.nationNo = nationNo;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
     	return "PDF (" + GameHolder.instance().getGame().getMetadata().getNationByNum(getNationNo()).getShortName() + ")";
     }
     

@@ -3,17 +3,12 @@ package org.joverseer.ui.command;
 import java.util.Locale;
 
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.TurnInitializer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
-import org.joverseer.ui.map.MapMetadata;
-import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.NewGameForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -28,7 +23,8 @@ public class EditGameCommand extends ActionCommand {
         super("editGameCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
     	final Game g = GameHolder.instance().getGame();
         final NewGame ng = new NewGame();
@@ -42,11 +38,13 @@ public class EditGameCommand extends ActionCommand {
 
         final MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
                 setDescription(ms.getMessage(form.getId() + ".description", null, Locale.getDefault()));
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 form.commit();
                 
                 GameMetadata gm = g.getMetadata();

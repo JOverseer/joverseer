@@ -95,7 +95,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			Icon ico = null;
 			if (orderResultType != null) {
 				ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-				if (orderResultType == null) {
+				if (imgSource == null) {
 					ico = null;
 				} else if (orderResultType == OrderResultTypeEnum.Info) {
 					ico = new ImageIcon(imgSource.getImage("orderresult.info.icon"));

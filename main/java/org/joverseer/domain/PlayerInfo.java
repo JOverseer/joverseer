@@ -23,7 +23,7 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     Date ordersSentOn = null;
     
     public String getAccountNo() {
-        return accountNo;
+        return this.accountNo;
     }
     
     public void setAccountNo(String accountNo) {
@@ -31,23 +31,25 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     }
     
     public String getDueDate() {
-        return dueDate;
+        return this.dueDate;
     }
     
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
     
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
     
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
     
     public String getPlayerName() {
-        return playerName;
+        return this.playerName;
     }
     
     public void setPlayerName(String playerName) {
@@ -55,7 +57,7 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     }
     
     public String getSecret() {
-        return secret;
+        return this.secret;
     }
     
     public void setSecret(String secret) {
@@ -64,7 +66,7 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 
     
     public int getTurnVersion() {
-        return turnVersion;
+        return this.turnVersion;
     }
 
     
@@ -74,7 +76,7 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 
     
     public String getLastOrderFile() {
-        return lastOrderFile;
+        return this.lastOrderFile;
     }
 
     
@@ -84,7 +86,7 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 
     
     public Date getOrdersSentOn() {
-        return ordersSentOn;
+        return this.ordersSentOn;
     }
 
     

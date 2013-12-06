@@ -24,23 +24,25 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
     public NationEconomyPotential() {};
     
     public int getCharsInCapital() {
-        return charsInCapital;
+        return this.charsInCapital;
     }
     
     public void setCharsInCapital(int charsInCapital) {
         this.charsInCapital = charsInCapital;
     }
     
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
     
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
     
     public int getOneNatSell() {
-        return oneNatSell;
+        return this.oneNatSell;
     }
     
     public void setOneNatSell(int oneNatSell) {
@@ -48,7 +50,7 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
     }
     
     public int getReserve() {
-        return reserve;
+        return this.reserve;
     }
     
     public void setReserve(int reserve) {
@@ -56,7 +58,7 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
     }
     
     public int getSurplus() {
-        return surplus;
+        return this.surplus;
     }
     
     public void setSurplus(int surplus) {
@@ -64,7 +66,7 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
     }
     
     public int getTotal() {
-        return total;
+        return this.total;
     }
     
     public void setTotal(int total) {
@@ -72,7 +74,7 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
     }
     
     public int getTwoNatSells() {
-        return twoNatSells;
+        return this.twoNatSells;
     }
     
     public void setTwoNatSells(int twoNatSells) {
@@ -81,7 +83,7 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
 
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
 
     
@@ -89,17 +91,19 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
         this.hexNo = hexNo;
     }
 
-    public int getX() {
+    @Override
+	public int getX() {
         return getHexNo() / 100;
     }
 
-    public int getY() {
+    @Override
+	public int getY() {
         return getHexNo() % 100;
     }
 
     
     public ProductEnum getOneNatSellProduct() {
-        return oneNatSellProduct;
+        return this.oneNatSellProduct;
     }
 
     
@@ -109,7 +113,7 @@ public class NationEconomyPotential implements IBelongsToNation, IHasMapLocation
 
     
     public ProductEnum getTwoNatSellProduct() {
-        return twoNatSellProduct;
+        return this.twoNatSellProduct;
     }
 
     

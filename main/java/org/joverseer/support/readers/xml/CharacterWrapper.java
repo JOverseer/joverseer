@@ -36,7 +36,7 @@ public class CharacterWrapper {
 	ArrayList<String> spells = new ArrayList<String>();
 
 	public int getAgent() {
-		return agent;
+		return this.agent;
 	}
 
 	public void setAgent(int agent) {
@@ -44,7 +44,7 @@ public class CharacterWrapper {
 	}
 
 	public ArrayList<String> getArtifacts() {
-		return artifacts;
+		return this.artifacts;
 	}
 
 	public void setArtifacts(ArrayList<String> artifacts) {
@@ -52,7 +52,7 @@ public class CharacterWrapper {
 	}
 
 	public int getChallenge() {
-		return challenge;
+		return this.challenge;
 	}
 
 	public void setChallenge(int challenge) {
@@ -60,7 +60,7 @@ public class CharacterWrapper {
 	}
 
 	public int getCommand() {
-		return command;
+		return this.command;
 	}
 
 	public void setCommand(int command) {
@@ -68,7 +68,7 @@ public class CharacterWrapper {
 	}
 
 	public int getEmmisary() {
-		return emmisary;
+		return this.emmisary;
 	}
 
 	public void setEmmisary(int emmisary) {
@@ -76,7 +76,7 @@ public class CharacterWrapper {
 	}
 
 	public int getHealth() {
-		return health;
+		return this.health;
 	}
 
 	public void setHealth(int health) {
@@ -84,7 +84,7 @@ public class CharacterWrapper {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -92,7 +92,7 @@ public class CharacterWrapper {
 	}
 
 	public int getInformationSource() {
-		return informationSource;
+		return this.informationSource;
 	}
 
 	public void setInformationSource(int informationSource) {
@@ -100,7 +100,7 @@ public class CharacterWrapper {
 	}
 
 	public String getLocation() {
-		return location;
+		return this.location;
 	}
 
 	public void setLocation(String location) {
@@ -108,7 +108,7 @@ public class CharacterWrapper {
 	}
 
 	public int getMage() {
-		return mage;
+		return this.mage;
 	}
 
 	public void setMage(int mage) {
@@ -116,7 +116,7 @@ public class CharacterWrapper {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -124,7 +124,7 @@ public class CharacterWrapper {
 	}
 
 	public int getNation() {
-		return nation;
+		return this.nation;
 	}
 
 	public void setNation(int nation) {
@@ -132,7 +132,7 @@ public class CharacterWrapper {
 	}
 
 	public ArrayList<String> getSpells() {
-		return spells;
+		return this.spells;
 	}
 
 	public void setSpells(ArrayList<String> spells) {
@@ -140,7 +140,7 @@ public class CharacterWrapper {
 	}
 
 	public int getStealth() {
-		return stealth;
+		return this.stealth;
 	}
 
 	public void setStealth(int stealth) {
@@ -148,7 +148,7 @@ public class CharacterWrapper {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -156,7 +156,7 @@ public class CharacterWrapper {
 	}
 
 	public int getTotalAgent() {
-		return totalAgent;
+		return this.totalAgent;
 	}
 
 	public void setTotalAgent(int totalAgent) {
@@ -164,7 +164,7 @@ public class CharacterWrapper {
 	}
 
 	public int getTotalCommand() {
-		return totalCommand;
+		return this.totalCommand;
 	}
 
 	public void setTotalCommand(int totalCommand) {
@@ -172,7 +172,7 @@ public class CharacterWrapper {
 	}
 
 	public int getTotalEmmisary() {
-		return totalEmmisary;
+		return this.totalEmmisary;
 	}
 
 	public void setTotalEmmisary(int totalEmmisary) {
@@ -180,7 +180,7 @@ public class CharacterWrapper {
 	}
 
 	public int getTotalMage() {
-		return totalMage;
+		return this.totalMage;
 	}
 
 	public void setTotalMage(int totalMage) {
@@ -188,7 +188,7 @@ public class CharacterWrapper {
 	}
 
 	public int getTotalStealth() {
-		return totalStealth;
+		return this.totalStealth;
 	}
 
 	public void setTotalStealth(int totalStealth) {
@@ -196,7 +196,7 @@ public class CharacterWrapper {
 	}
 
 	public int getOrdersAllowed() {
-		return ordersAllowed;
+		return this.ordersAllowed;
 	}
 
 	public void setOrdersAllowed(int ordersAllowed) {
@@ -204,11 +204,11 @@ public class CharacterWrapper {
 	}
 
 	public void addArtifact(String artifact) {
-		artifacts.add(artifact);
+		this.artifacts.add(artifact);
 	}
 
 	public void addSpell(String spell) {
-		spells.add(spell);
+		this.spells.add(spell);
 	}
 
 	public Character getCharacter() {
@@ -247,28 +247,28 @@ public class CharacterWrapper {
 		}
 		character.setNumberOfOrders(getOrdersAllowed());
 		String artifactId;
-		ArrayList<Integer> artifacts = new ArrayList<Integer>();
+		ArrayList<Integer> artifacts1 = new ArrayList<Integer>();
 		for (String artifact : getArtifacts()) {
 			int i = artifact.indexOf(' ');
 			artifactId = artifact.substring(1, i);
-			artifacts.add(Integer.parseInt(artifactId));
+			artifacts1.add(Integer.parseInt(artifactId));
 		}
-		character.setArtifacts(artifacts);
+		character.setArtifacts(artifacts1);
 
 		String spellId;
 		String proficiency;
-		String name;
-		ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
+		String name1;
+		ArrayList<SpellProficiency> spells1 = new ArrayList<SpellProficiency>();
 		for (String spell : getSpells()) {
 			int i = spell.indexOf(' ');
 			spellId = spell.substring(1, i);
 			int idx1 = spell.indexOf("(");
 			int idx2 = spell.indexOf(")");
 			proficiency = spell.substring(idx1 + 1, idx2);
-			name = spell.substring(i + 1, idx1);
-			spells.add(new SpellProficiency(Integer.parseInt(spellId), Integer.parseInt(proficiency), name));
+			name1 = spell.substring(i + 1, idx1);
+			spells1.add(new SpellProficiency(Integer.parseInt(spellId), Integer.parseInt(proficiency), name1));
 		}
-		character.setSpells(spells);
+		character.setSpells(spells1);
 		switch (getInformationSource()) {
 		case 0:
 			character.setInformationSource(InformationSourceEnum.exhaustive);

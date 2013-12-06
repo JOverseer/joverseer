@@ -20,7 +20,7 @@ public class StringTransferHandler extends TransferHandler {
 
 	public StringTransferHandler(String arg0) {
 		super(arg0);
-		property = arg0;
+		this.property = arg0;
 	}
 
 	protected void importString(JComponent c, String str) {
@@ -34,7 +34,7 @@ public class StringTransferHandler extends TransferHandler {
 	protected String getValue(JComponent c) {
 		try {
 			Object o;
-			Method m = c.getClass().getMethod("get" + property.substring(0, 1).toUpperCase() + property.substring(1));
+			Method m = c.getClass().getMethod("get" + this.property.substring(0, 1).toUpperCase() + this.property.substring(1));
 			o = m.invoke(c, (Object) null);
 			String v = o.toString();
 			return v;

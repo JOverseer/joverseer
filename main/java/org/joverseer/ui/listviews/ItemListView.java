@@ -40,7 +40,7 @@ public abstract class ItemListView extends BaseItemListView {
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			if (!Game.isInitialized(g))
 				return;
-			Container<?> items = g.getTurn().getContainer(turnElementType);
+			Container<?> items = g.getTurn().getContainer(this.turnElementType);
 			ArrayList<Object> filteredItems = new ArrayList<Object>();
 			AbstractListViewFilter filter = getActiveFilter();
 			for (Object o : items.getItems()) {
@@ -48,14 +48,14 @@ public abstract class ItemListView extends BaseItemListView {
 					filteredItems.add(o);
 			}
 			;
-			tableModel.setRows(filteredItems);
+			this.tableModel.setRows(filteredItems);
 		} else {
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			if (!Game.isInitialized(g))
 				return;
 			GameMetadata gm = g.getMetadata();
 			try {
-				Container<?> items = (Container<?>) PropertyUtils.getProperty(gm, metadataProperty);
+				Container<?> items = (Container<?>) PropertyUtils.getProperty(gm, this.metadataProperty);
 				ArrayList<Object> filteredItems = new ArrayList<Object>();
 				AbstractListViewFilter filter = getActiveFilter();
 				for (Object o : items.getItems()) {
@@ -63,10 +63,10 @@ public abstract class ItemListView extends BaseItemListView {
 						filteredItems.add(o);
 				}
 				;
-				tableModel.setRows(filteredItems);
+				this.tableModel.setRows(filteredItems);
 			} catch (Exception exc) {
 				// todo fix
-				tableModel.setRows(new ArrayList<Object>());
+				this.tableModel.setRows(new ArrayList<Object>());
 			}
 		}
 		// tableModel.fireTableDataChanged();

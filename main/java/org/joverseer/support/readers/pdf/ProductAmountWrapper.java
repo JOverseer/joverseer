@@ -16,49 +16,49 @@ public class ProductAmountWrapper {
 	String mounts;
 	
 	public String getBronze() {
-		return bronze;
+		return this.bronze;
 	}
 	public void setBronze(String bronze) {
 		this.bronze = bronze;
 	}
 	public String getFood() {
-		return food;
+		return this.food;
 	}
 	public void setFood(String food) {
 		this.food = food;
 	}
 	public String getGold() {
-		return gold;
+		return this.gold;
 	}
 	public void setGold(String gold) {
 		this.gold = gold;
 	}
 	public String getLeather() {
-		return leather;
+		return this.leather;
 	}
 	public void setLeather(String leather) {
 		this.leather = leather;
 	}
 	public String getMithril() {
-		return mithril;
+		return this.mithril;
 	}
 	public void setMithril(String mithril) {
 		this.mithril = mithril;
 	}
 	public String getMounts() {
-		return mounts;
+		return this.mounts;
 	}
 	public void setMounts(String mounts) {
 		this.mounts = mounts;
 	}
 	public String getSteel() {
-		return steel;
+		return this.steel;
 	}
 	public void setSteel(String steel) {
 		this.steel = steel;
 	}
 	public String getTimber() {
-		return timber;
+		return this.timber;
 	}
 	public void setTimber(String timber) {
 		this.timber = timber;

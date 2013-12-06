@@ -23,13 +23,15 @@ public class HealingSpellOrderProcessor extends AbstractSpellOrderProcessor {
         addCheck(new CharacterInSameHexCheck(1));
     }
     
-    public boolean appliesTo(Character c, int orderNo) {
+    @Override
+	public boolean appliesTo(Character c, int orderNo) {
         return getOrder(c, orderNo).getOrderNo() == 120;
     }
     
     
 
-    public void processOrderImpl(Turn t, Character c, int orderNo) {
+    @Override
+	public void processOrderImpl(Turn t, Character c, int orderNo) {
         Order o = getOrder(c, orderNo);
         String targetId = getSpellTarget(o);
         int spellNo = getSpellNo(o);

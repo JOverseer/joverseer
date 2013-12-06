@@ -29,6 +29,7 @@ import org.springframework.richclient.application.PageDescriptor;
  */
 public class JideApplicationPageFactory implements ApplicationPageFactory {
 
+	@Override
 	public ApplicationPage createApplicationPage(ApplicationWindow window, PageDescriptor pageDescriptor) {
 		
 		JideApplicationPage page = new JideApplicationPage(window,  pageDescriptor);

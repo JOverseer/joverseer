@@ -24,7 +24,7 @@ public class PopCenterReport extends BaseReportObject implements IBelongsToNatio
 	
 	
 	public PopulationCenter getPrevPc() {
-		return prevPc;
+		return this.prevPc;
 	}
 
 	public void setPrevPc(PopulationCenter prevPc) {
@@ -32,7 +32,7 @@ public class PopCenterReport extends BaseReportObject implements IBelongsToNatio
 	}
 
 	public boolean isCreated() {
-		return created;
+		return this.created;
 	}
 
 	public void setCreated(boolean created) {
@@ -40,7 +40,7 @@ public class PopCenterReport extends BaseReportObject implements IBelongsToNatio
 	}
 
 	public PopulationCenter getPc() {
-		return pc;
+		return this.pc;
 	}
 
 	public void setPc(PopulationCenter pc) {
@@ -49,20 +49,20 @@ public class PopCenterReport extends BaseReportObject implements IBelongsToNatio
 
 	@Override
 	public String getExtraInfo() {
-		if (pc != null && !getModification().equals(ObjectModificationType.Lost)) {
-			String ret = pc.getSize().getRenderString();
-			if (!pc.getFortification().equals(FortificationSizeEnum.none)) {
-				ret += "/" + pc.getFortification().getRenderString();
+		if (this.pc != null && !getModification().equals(ObjectModificationType.Lost)) {
+			String ret = this.pc.getSize().getRenderString();
+			if (!this.pc.getFortification().equals(FortificationSizeEnum.none)) {
+				ret += "/" + this.pc.getFortification().getRenderString();
 			}
-			if (pc.getLoyalty() > 0) {
-				ret += "/" + pc.getLoyalty();
+			if (this.pc.getLoyalty() > 0) {
+				ret += "/" + this.pc.getLoyalty();
 			}
 			return ret;
 		}
-		if (prevPc != null) {
-			String ret = prevPc.getSize().getRenderString();
-			if (!prevPc.getFortification().equals(FortificationSizeEnum.none)) {
-				ret += "/" + prevPc.getFortification().getRenderString();
+		if (this.prevPc != null) {
+			String ret = this.prevPc.getSize().getRenderString();
+			if (!this.prevPc.getFortification().equals(FortificationSizeEnum.none)) {
+				ret += "/" + this.prevPc.getFortification().getRenderString();
 			}
 			return "was " + ret;
 		}

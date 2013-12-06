@@ -31,7 +31,7 @@ public class TurnInfo {
 	int alignment;
 
 	public int getAlignment() {
-		return alignment;
+		return this.alignment;
 	}
 
 	public void setAlignment(int alignment) {
@@ -39,7 +39,7 @@ public class TurnInfo {
 	}
 
 	public Container getDoubleAgents() {
-		return doubleAgents;
+		return this.doubleAgents;
 	}
 
 	public void setDoubleAgents(Container doubleAgents) {
@@ -47,7 +47,7 @@ public class TurnInfo {
 	}
 
 	public Container getChallenges() {
-		return challenges;
+		return this.challenges;
 	}
 
 	public void setChallenges(Container challenges) {
@@ -55,7 +55,7 @@ public class TurnInfo {
 	}
 
 	public Container getBattles() {
-		return battles;
+		return this.battles;
 	}
 
 	public void setBattles(Container battles) {
@@ -63,7 +63,7 @@ public class TurnInfo {
 	}
 
 	public Container getAnchoredShips() {
-		return anchoredShips;
+		return this.anchoredShips;
 	}
 
 	public void setAnchoredShips(Container anchoredShips) {
@@ -71,7 +71,7 @@ public class TurnInfo {
 	}
 
 	public Container getCharMessages() {
-		return charMessages;
+		return this.charMessages;
 	}
 
 	public void setCharMessages(Container charMessages) {
@@ -79,7 +79,7 @@ public class TurnInfo {
 	}
 
 	public Container getCharacters() {
-		return characters;
+		return this.characters;
 	}
 
 	public void setCharacters(Container characters) {
@@ -87,7 +87,7 @@ public class TurnInfo {
 	}
 
 	public Container getRecons() {
-		return recons;
+		return this.recons;
 	}
 
 	public void setRecons(Container recons) {
@@ -95,7 +95,7 @@ public class TurnInfo {
 	}
 
 	public Container getEncounters() {
-		return encounters;
+		return this.encounters;
 	}
 
 	public void setEncounters(Container encounters) {
@@ -103,7 +103,7 @@ public class TurnInfo {
 	}
 
 	public Container getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	public void setArmies(Container armies) {
@@ -111,7 +111,7 @@ public class TurnInfo {
 	}
 
 	public Container getPopCentres() {
-		return popCentres;
+		return this.popCentres;
 	}
 
 	public void setPopCentres(Container popCentres) {
@@ -119,7 +119,7 @@ public class TurnInfo {
 	}
 
 	public Container getHostages() {
-		return hostages;
+		return this.hostages;
 	}
 
 	public void setHostages(Container hostages) {
@@ -127,7 +127,7 @@ public class TurnInfo {
 	}
 
 	public Container getHiddenArtifacts() {
-		return hiddenArtifacts;
+		return this.hiddenArtifacts;
 	}
 
 	public void setHiddenArtifacts(Container hiddenArtifacts) {
@@ -135,7 +135,7 @@ public class TurnInfo {
 	}
 
 	public Container getNonHiddenArtifacts() {
-		return nonHiddenArtifacts;
+		return this.nonHiddenArtifacts;
 	}
 
 	public void setNonHiddenArtifacts(Container nonHhiddenArtifacts) {
@@ -143,7 +143,7 @@ public class TurnInfo {
 	}
 
 	public Container getHexes() {
-		return hexes;
+		return this.hexes;
 	}
 
 	public void setHexes(Container hexes) {
@@ -151,7 +151,7 @@ public class TurnInfo {
 	}
 
 	public String getDate() {
-		return date;
+		return this.date;
 	}
 
 	public void setDate(String date) {
@@ -159,7 +159,7 @@ public class TurnInfo {
 	}
 
 	public String getNationName() {
-		return nationName;
+		return this.nationName;
 	}
 
 	public void setNationName(String nationName) {
@@ -167,7 +167,7 @@ public class TurnInfo {
 	}
 
 	public int getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
 	public void setNationNo(int nationNo) {
@@ -175,7 +175,7 @@ public class TurnInfo {
 	}
 
 	public String getSeason() {
-		return season;
+		return this.season;
 	}
 
 	public void setSeason(String season) {
@@ -183,7 +183,7 @@ public class TurnInfo {
 	}
 
 	public boolean getSeasonChanging() {
-		return seasonChanging;
+		return this.seasonChanging;
 	}
 
 	public void setSeasonChanging(boolean seasonChanging) {
@@ -191,7 +191,7 @@ public class TurnInfo {
 	}
 
 	public int getTurnNo() {
-		return turnNo;
+		return this.turnNo;
 	}
 
 	public void setTurnNo(int turnNo) {
@@ -199,7 +199,7 @@ public class TurnInfo {
 	}
 
 	public Container getNationRelations() {
-		return nationRelations;
+		return this.nationRelations;
 	}
 
 	public void setNationRelations(Container nationRelations) {
@@ -207,7 +207,7 @@ public class TurnInfo {
 	}
 
 	public Container getCompanies() {
-		return companies;
+		return this.companies;
 	}
 
 	public void setCompanies(Container companies) {
@@ -215,7 +215,7 @@ public class TurnInfo {
 	}
 
 	public Container getSnas() {
-		return snas;
+		return this.snas;
 	}
 
 	public void setSnas(Container snas) {
@@ -223,7 +223,7 @@ public class TurnInfo {
 	}
 
 	public Container getOrdersGiven() {
-		return ordersGiven;
+		return this.ordersGiven;
 	}
 
 	public void setOrdersGiven(Container ordersGiven) {

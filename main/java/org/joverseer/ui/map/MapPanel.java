@@ -15,6 +15,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -103,7 +104,12 @@ import org.springframework.richclient.progress.BusyIndicator;
  * @author Marios Skounakis
  */
 public class MapPanel extends JPanel implements MouseInputListener, MouseWheelListener {
-	protected javax.swing.event.EventListenerList listenerList = new javax.swing.event.EventListenerList();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected javax.swing.event.EventListenerList listenerList1 = new javax.swing.event.EventListenerList();
 
 	private static Logger logger = Logger.getLogger(MapPanel.class);
 	private static MapPanel _instance = null;
@@ -149,20 +155,20 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	}
 
 	private void setHexLocation(int x, int y) {
-		location = getHexLocation(x, y);
+		this.location = getHexLocation(x, y);
 	}
 
 	protected MapMetadata getMetadata() {
-		if (metadata == null) {
-			metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		if (this.metadata == null) {
+			this.metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 		}
-		return metadata;
+		return this.metadata;
 	}
 
 	public Point getHexCenter(int hexNo) {
 		Point p = getHexLocation(hexNo);
-		MapMetadata metadata = getMetadata();
-		p.translate(metadata.getHexSize() * metadata.getGridCellWidth() / 2, metadata.getHexSize() * metadata.getGridCellHeight() / 2);
+		MapMetadata metadata1 = getMetadata();
+		p.translate(metadata1.getHexSize() * metadata1.getGridCellWidth() / 2, metadata1.getHexSize() * metadata1.getGridCellHeight() / 2);
 		return p;
 	}
 
@@ -171,39 +177,39 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	}
 
 	public Point getHexLocation(int x, int y) {
-		Point location = new Point();
-		MapMetadata metadata = getMetadata();
-		x = x - metadata.getMinMapColumn();
-		y = y - metadata.getMinMapRow();
-		if ((y + metadata.getMinMapRow() + 1) % 2 == 0) {
-			location.setLocation(metadata.getHexSize() * metadata.getGridCellWidth() * x, metadata.getHexSize() * 3 / 4 * y * metadata.getGridCellHeight());
+		Point location1 = new Point();
+		MapMetadata metadata1 = getMetadata();
+		x = x - metadata1.getMinMapColumn();
+		y = y - metadata1.getMinMapRow();
+		if ((y + metadata1.getMinMapRow() + 1) % 2 == 0) {
+			location1.setLocation(metadata1.getHexSize() * metadata1.getGridCellWidth() * x, metadata1.getHexSize() * 3 / 4 * y * metadata1.getGridCellHeight());
 		} else {
-			location.setLocation((x + .5) * metadata.getHexSize() * metadata.getGridCellWidth(), metadata.getHexSize() * 3 / 4 * y * metadata.getGridCellHeight());
+			location1.setLocation((x + .5) * metadata1.getHexSize() * metadata1.getGridCellWidth(), metadata1.getHexSize() * 3 / 4 * y * metadata1.getGridCellHeight());
 		}
-		return location;
+		return location1;
 	}
 
 	private void setPoints(int x, int y) {
-		MapMetadata metadata = getMetadata();
-		xPoints[0] = metadata.getHexSize() / 2;
-		xPoints[1] = metadata.getHexSize();
-		xPoints[2] = metadata.getHexSize();
-		xPoints[3] = metadata.getHexSize() / 2;
-		xPoints[4] = 0;
-		xPoints[5] = 0;
+		MapMetadata metadata1 = getMetadata();
+		this.xPoints[0] = metadata1.getHexSize() / 2;
+		this.xPoints[1] = metadata1.getHexSize();
+		this.xPoints[2] = metadata1.getHexSize();
+		this.xPoints[3] = metadata1.getHexSize() / 2;
+		this.xPoints[4] = 0;
+		this.xPoints[5] = 0;
 
-		yPoints[0] = 0;
-		yPoints[1] = metadata.getHexSize() / 4;
-		yPoints[2] = metadata.getHexSize() * 3 / 4;
-		yPoints[3] = metadata.getHexSize();
-		yPoints[4] = metadata.getHexSize() * 3 / 4;
-		yPoints[5] = metadata.getHexSize() / 4;
+		this.yPoints[0] = 0;
+		this.yPoints[1] = metadata1.getHexSize() / 4;
+		this.yPoints[2] = metadata1.getHexSize() * 3 / 4;
+		this.yPoints[3] = metadata1.getHexSize();
+		this.yPoints[4] = metadata1.getHexSize() * 3 / 4;
+		this.yPoints[5] = metadata1.getHexSize() / 4;
 
 		setHexLocation(x, y);
 
 		for (int i = 0; i < 6; i++) {
-			xPoints[i] = xPoints[i] * metadata.getGridCellWidth() + location.x;
-			yPoints[i] = yPoints[i] * metadata.getGridCellHeight() + location.y;
+			this.xPoints[i] = this.xPoints[i] * metadata1.getGridCellWidth() + this.location.x;
+			this.yPoints[i] = this.yPoints[i] * metadata1.getGridCellHeight() + this.location.y;
 		}
 
 	}
@@ -215,31 +221,31 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * 
 	 */
 	private void createMap() {
-		MapMetadata metadata;
+		MapMetadata metadata1;
 		try {
-			metadata = getMetadata();
+			metadata1 = getMetadata();
 		} catch (Exception exc) {
 			// application is not ready
 			return;
 		}
 
-		Game game = getGame();
-		if (!Game.isInitialized(game))
+		Game game1 = getGame();
+		if (!Game.isInitialized(game1))
 			return;
 
-		GameMetadata gm = game.getMetadata();
+		GameMetadata gm = game1.getMetadata();
 
-		if (mapBack == null) {
+		if (this.mapBack == null) {
 			Dimension d = getMapDimension();
-			mapBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			this.mapBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			this.setPreferredSize(d);
 			this.setSize(d);
 		}
-		map = mapBack;
+		this.map = this.mapBack;
 
-		Graphics2D g = map.createGraphics();
+		Graphics2D g = this.map.createGraphics();
 		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, map.getWidth(), map.getHeight());
+		g.fillRect(0, 0, this.map.getWidth(), this.map.getHeight());
 
 		// try {
 		// Resource r =
@@ -253,26 +259,26 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 		for (Hex h : gm.getHexes()) {
 			setHexLocation(h.getColumn(), h.getRow());
-			for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 				if (r.appliesTo(h)) {
-					r.render(h, g, location.x, location.y);
+					r.render(h, g, this.location.x, this.location.y);
 				}
 			}
 		}
-		Container<Hex> hexOverrides = gm.getHexOverrides(game.getCurrentTurn());
+		Container<Hex> hexOverrides = gm.getHexOverrides(game1.getCurrentTurn());
 		for (Hex h : hexOverrides) {
 			setHexLocation(h.getColumn(), h.getRow());
-			for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 				if (r.appliesTo(h)) {
-					r.render(h, g, location.x, location.y);
+					r.render(h, g, this.location.x, this.location.y);
 				}
 			}
 		}
 
-		if (saveMap) {
+		if (this.saveMap) {
 			File outputFile = new File("map.png");
 			try {
-				ImageIO.write(map, "PNG", outputFile);
+				ImageIO.write(this.map, "PNG", outputFile);
 			} catch (Exception exc) {
 			}
 			;
@@ -280,53 +286,53 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	}
 
 	public Dimension getMapDimension() {
-		int width = (int) ((metadata.getMaxMapColumn() + 2d - metadata.getMinMapColumn() - .5) * metadata.getHexSize() * metadata.getGridCellWidth());
-		int height = (int) ((metadata.getMaxMapRow() * .75d + .25) * metadata.getHexSize() * metadata.getGridCellHeight());
+		int width = (int) ((this.metadata.getMaxMapColumn() + 2d - this.metadata.getMinMapColumn() - .5) * this.metadata.getHexSize() * this.metadata.getGridCellWidth());
+		int height = (int) ((this.metadata.getMaxMapRow() * .75d + .25) * this.metadata.getHexSize() * this.metadata.getGridCellHeight());
 		return new Dimension(width, height);
 	}
 
 	private void createMapItems() {
-		MapMetadata metadata;
+		MapMetadata metadata1;
 		try {
-			metadata = getMetadata();
+			metadata1 = getMetadata();
 		} catch (Exception exc) {
 			// application is not ready
 			return;
 		}
-		Game game = getGame();
-		if (!Game.isInitialized(game))
+		Game game1 = getGame();
+		if (!Game.isInitialized(game1))
 			return;
 
 		Graphics2D g = null;
 		BusyIndicator.showAt(this);
 		try {
-			if (mapItemsBack == null) {
+			if (this.mapItemsBack == null) {
 				Dimension d = getMapDimension();
-				mapItemsBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				this.mapItemsBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			}
-			mapItems = mapItemsBack;
+			this.mapItems = this.mapItemsBack;
 
-			g = mapItems.createGraphics();
+			g = this.mapItems.createGraphics();
 
-			if (mapBaseItems == null) {
+			if (this.mapBaseItems == null) {
 				createMapBaseItems();
 			}
-			g.drawImage(mapBaseItems, 0, 0, this);
+			g.drawImage(this.mapBaseItems, 0, 0, this);
 		} catch (OutOfMemoryError e) {
-			if (!outOfMemoryErrorThrown) {
-				outOfMemoryErrorThrown = true;
+			if (!this.outOfMemoryErrorThrown) {
+				this.outOfMemoryErrorThrown = true;
 				throw e;
 			}
 		}
 
 		try {
-			for (Character c : getGame().getTurn().getCharacters()) {
-				for (Order o : c.getOrders()) {
-					for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+			for (Character c1 : getGame().getTurn().getCharacters()) {
+				for (Order o : c1.getOrders()) {
+					for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 						if (r.appliesTo(o)) {
-							setHexLocation(c.getX(), c.getY());
+							setHexLocation(c1.getX(), c1.getY());
 							try {
-								r.render(o, g, location.x, location.y);
+								r.render(o, g, this.location.x, this.location.y);
 							} catch (Exception exc) {
 								logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage());
 							}
@@ -338,8 +344,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			logger.error("Error rendering orders " + exc.getMessage());
 		}
 
-		for (AbstractMapItem mi : game.getTurn().getMapItems()) {
-			for (Renderer r : metadata.getRenderers()) {
+		for (AbstractMapItem mi : game1.getTurn().getMapItems()) {
+			for (Renderer r : metadata1.getRenderers()) {
 				if (r.appliesTo(mi)) {
 					r.render(mi, g, 0, 0);
 				}
@@ -348,11 +354,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 		try {
 			for (Note n : getGame().getTurn().getNotes()) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(n)) {
 						setHexLocation(n.getX(), n.getY());
 						try {
-							r.render(n, g, location.x, location.y);
+							r.render(n, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error rendering note " + n.getHexNo() + " " + n.getText() + " " + exc.getMessage());
 						}
@@ -370,40 +376,40 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * background (terrain) todo update with renderers
 	 */
 	private void createMapBaseItems() {
-		MapMetadata metadata;
+		MapMetadata metadata1;
 		try {
-			metadata = getMetadata();
+			metadata1 = getMetadata();
 		} catch (Exception exc) {
 			// application is not ready
 			return;
 		}
-		Game game = getGame();
-		if (!Game.isInitialized(game))
+		Game game1 = getGame();
+		if (!Game.isInitialized(game1))
 			return;
 
 		MapTooltipHolder.instance().reset();
 
 		BusyIndicator.showAt(this);
-		if (mapBaseItemsBack == null) {
+		if (this.mapBaseItemsBack == null) {
 			Dimension d = getMapDimension();
-			mapBaseItemsBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			this.mapBaseItemsBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
-		mapBaseItems = mapBaseItemsBack;
+		this.mapBaseItems = this.mapBaseItemsBack;
 
-		Graphics2D g = mapBaseItems.createGraphics();
+		Graphics2D g = this.mapBaseItems.createGraphics();
 
-		if (map == null) {
+		if (this.map == null) {
 			createMap();
 		}
-		g.drawImage(map, 0, 0, this);
+		g.drawImage(this.map, 0, 0, this);
 
 		try {
 			for (PopulationCenter pc : getGame().getTurn().getPopulationCenters()) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(pc)) {
 						setHexLocation(pc.getX(), pc.getY());
 						try {
-							r.render(pc, g, location.x, location.y);
+							r.render(pc, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error pc " + pc.getName() + " " + exc.getMessage());
 						}
@@ -416,14 +422,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 
 		try {
-			for (Character c : getGame().getTurn().getCharacters()) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
-					if (r.appliesTo(c)) {
-						setHexLocation(c.getX(), c.getY());
+			for (Character c1 : getGame().getTurn().getCharacters()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
+					if (r.appliesTo(c1)) {
+						setHexLocation(c1.getX(), c1.getY());
 						try {
-							r.render(c, g, location.x, location.y);
+							r.render(c1, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering character " + c.getName() + " " + exc.getMessage());
+							logger.error("Error rendering character " + c1.getName() + " " + exc.getMessage());
 						}
 					}
 				}
@@ -434,11 +440,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 		try {
 			for (Army army : getGame().getTurn().getArmies()) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(army)) {
 						setHexLocation(army.getX(), army.getY());
 						try {
-							r.render(army, g, location.x, location.y);
+							r.render(army, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error rendering army " + army.getCommanderName() + " " + exc.getMessage());
 						}
@@ -453,11 +459,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			for (NationMessage nm : getGame().getTurn().getNationMessages()) {
 				if (nm.getX() <= 0 || nm.getY() <= 0)
 					continue;
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(nm)) {
 						setHexLocation(nm.getX(), nm.getY());
 						try {
-							r.render(nm, g, location.x, location.y);
+							r.render(nm, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error rendering nation message " + nm.getMessage() + " " + exc.getMessage());
 						}
@@ -470,11 +476,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 		try {
 			for (Artifact a : getGame().getTurn().getArtifacts()) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(a)) {
 						setHexLocation(a.getX(), a.getY());
 						try {
-							r.render(a, g, location.x, location.y);
+							r.render(a, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error rendering artifact " + a.getNumber() + " " + a.getName() + " " + exc.getMessage());
 						}
@@ -487,11 +493,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 		try {
 			for (Combat a : getGame().getTurn().getCombats()) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(a)) {
 						setHexLocation(a.getX(), a.getY());
 						try {
-							r.render(a, g, location.x, location.y);
+							r.render(a, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error rendering combat " + a.getHexNo() + " " + exc.getMessage());
 						}
@@ -507,11 +513,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			encounters.addAll(getGame().getTurn().getEncounters().getItems());
 			encounters.addAll(getGame().getTurn().getChallenges().getItems());
 			for (Encounter a : encounters) {
-				for (org.joverseer.ui.map.renderers.Renderer r : metadata.getRenderers()) {
+				for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
 					if (r.appliesTo(a)) {
 						setHexLocation(a.getX(), a.getY());
 						try {
-							r.render(a, g, location.x, location.y);
+							r.render(a, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
 							logger.error("Error rendering encounter " + a.getHexNo() + " " + exc.getMessage());
 						}
@@ -530,25 +536,25 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	}
 
 	public void invalidateAndReset() {
-		metadata = null;
-		map = null;
-		mapBack = null;
-		mapItemsBack = null;
-		mapBaseItemsBack = null;
+		this.metadata = null;
+		this.map = null;
+		this.mapBack = null;
+		this.mapItemsBack = null;
+		this.mapBaseItemsBack = null;
 		invalidateAll();
 	}
 
 	public void invalidateAll() {
-		metadata = null;
-		map = null;
-		mapBaseItems = null;
-		mapItems = null;
+		this.metadata = null;
+		this.map = null;
+		this.mapBaseItems = null;
+		this.mapItems = null;
 		setGame(((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame());
 	}
 
 	public void invalidateMapItems() {
-		metadata = null;
-		mapItems = null;
+		this.metadata = null;
+		this.mapItems = null;
 	}
 
 	/**
@@ -564,10 +570,10 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}
 
-		if (mapItems == null) {
+		if (this.mapItems == null) {
 			createMapItems();
 		}
-		if (mapItems == null) {
+		if (this.mapItems == null) {
 			// application is not ready
 			return;
 		}
@@ -580,7 +586,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 
 		// g.drawImage(map, 0, 0, this);
-		g.drawImage(mapItems, 0, 0, this);
+		g.drawImage(this.mapItems, 0, 0, this);
 
 		if (getSelectedHex() != null) {
 			Stroke s = ((Graphics2D) g).getStroke();
@@ -588,14 +594,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			setPoints(getSelectedHex().x, getSelectedHex().y);
 			g.setColor(Color.YELLOW);
 			((Graphics2D) g).setStroke(r);
-			g.drawPolygon(xPoints, yPoints, 6);
+			g.drawPolygon(this.xPoints, this.yPoints, 6);
 			((Graphics2D) g).setStroke(s);
 		}
 
 	}
 
 	public Point getSelectedHex() {
-		return selectedHex;
+		return this.selectedHex;
 	}
 
 	public void setSelectedHex(Point selectedHex) {
@@ -610,14 +616,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	public Rectangle getSelectedHexRectangle() {
 		setHexLocation(getSelectedHex().x, getSelectedHex().y);
-		MapMetadata metadata;
+		MapMetadata metadata1;
 		try {
-			metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
-			return new Rectangle(location.x, location.y, metadata.getHexSize() * metadata.getGridCellWidth(), metadata.getHexSize() * metadata.getGridCellHeight());
+			metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+			return new Rectangle(this.location.x, this.location.y, metadata1.getHexSize() * metadata1.getGridCellWidth(), metadata1.getHexSize() * metadata1.getGridCellHeight());
 		} catch (Exception exc) {
 			// application is not ready
 		}
-		return new Rectangle(location.x, location.y, 1, 1);
+		return new Rectangle(this.location.x, this.location.y, 1, 1);
 	}
 
 	/**
@@ -625,31 +631,32 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * and returns it as a point (i.e. point.x = hex.column, point.y = hex.row)
 	 */
 	private Point getHexFromPoint(Point p) {
-		MapMetadata metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
-		int y = p.y / (metadata.getHexSize() * 3 / 4 * metadata.getGridCellHeight());
+		MapMetadata metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		int y = p.y / (metadata1.getHexSize() * 3 / 4 * metadata1.getGridCellHeight());
 		int x;
-		if ((y + metadata.getMinMapRow() + 1) % 2 == 0) {
-			x = p.x / (metadata.getHexSize() * metadata.getGridCellWidth());
+		if ((y + metadata1.getMinMapRow() + 1) % 2 == 0) {
+			x = p.x / (metadata1.getHexSize() * metadata1.getGridCellWidth());
 		} else {
-			x = (p.x - metadata.getHexSize() / 2 * metadata.getGridCellWidth()) / (metadata.getHexSize() * metadata.getGridCellWidth());
+			x = (p.x - metadata1.getHexSize() / 2 * metadata1.getGridCellWidth()) / (metadata1.getHexSize() * metadata1.getGridCellWidth());
 		}
-		x += metadata.getMinMapColumn();
-		y += metadata.getMinMapRow();
-		if (x > metadata.getMaxMapColumn())
-			x = metadata.getMaxMapColumn();
-		if (y > metadata.getMaxMapRow())
-			y = metadata.getMaxMapRow();
+		x += metadata1.getMinMapColumn();
+		y += metadata1.getMinMapRow();
+		if (x > metadata1.getMaxMapColumn())
+			x = metadata1.getMaxMapColumn();
+		if (y > metadata1.getMaxMapRow())
+			y = metadata1.getMaxMapRow();
 		return new Point(x, y);
 	}
 
 	/**
 	 * Handles the mouse pressed event to change the current selected hex
 	 */
+	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			xDiff = e.getX();
-			yDiff = e.getY();
-			if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+			this.xDiff = e.getX();
+			this.yDiff = e.getY();
+			if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
 				setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 
 			} else {
@@ -658,10 +665,10 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			Point h = getHexFromPoint(e.getPoint());
 			int hexNo = h.x * 100 + h.y;
 			Game g = GameHolder.instance().getGame();
-			Hex hex = g.getMetadata().getHex(hexNo);
+			Hex hex1 = g.getMetadata().getHex(hexNo);
 			ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(new ShowCharacterMovementRangeCommand(hexNo, 12), new ShowCharacterLongStrideRangeCommand(hexNo), new ShowCharacterFastStrideRangeCommand(hexNo), new ShowCharacterPathMasteryRangeCommand(hexNo)));
 
-			HexTerrainEnum terrain = hex.getTerrain();
+			HexTerrainEnum terrain = hex1.getTerrain();
 			if (terrain.isLand()) {
 				commands.add("separator");
 				commands.add(new ShowFedInfantryArmyRangeCommand(hexNo));
@@ -683,15 +690,17 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			Point p = e.getPoint();
-			Point hex = getHexFromPoint(p);
-			setSelectedHex(hex);
+			Point hex1 = getHexFromPoint(p);
+			setSelectedHex(hex1);
 			this.updateUI();
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
 			HashMap<MapEditorOptionsEnum, Object> mapEditorOptions = (HashMap<MapEditorOptionsEnum, Object>) Application.instance().getApplicationContext().getBean("mapEditorOptions");
@@ -703,8 +712,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				Point p = e.getPoint();
 				Point h = getHexFromPoint(p);
 				int hexNo = h.x * 100 + h.y;
-				Hex hex = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
-				hex.setTerrain((HexTerrainEnum) brush);
+				Hex hex1 = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
+				hex1.setTerrain((HexTerrainEnum) brush);
 				MapEditorView.instance.log("");
 				MapEditorView.instance.log(hexNo + " terrain " + brush.toString());
 				invalidateAll();
@@ -713,11 +722,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				Point p = e.getPoint();
 				Point h = getHexFromPoint(p);
 				int hexNo = h.x * 100 + h.y;
-				Hex hex = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
+				Hex hex1 = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
 
 				Point hp = getHexLocation(hexNo);
-				int hexHalfWidth = metadata.getGridCellWidth() * metadata.getHexSize() / 2;
-				int hexOneThirdHeight = metadata.getGridCellHeight() * metadata.getHexSize() / 3;
+				int hexHalfWidth = this.metadata.getGridCellWidth() * this.metadata.getHexSize() / 2;
+				int hexOneThirdHeight = this.metadata.getGridCellHeight() * this.metadata.getHexSize() / 3;
 
 				boolean leftSide = p.x < hp.x + hexHalfWidth;
 				int ySide = 0;
@@ -773,7 +782,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				ArrayList<HexSideElementEnum> toRemove = new ArrayList<HexSideElementEnum>();
 				ArrayList<HexSideElementEnum> toAdd = new ArrayList<HexSideElementEnum>();
 
-				if (hex.getHexSideElements(hexSide).contains(element)) {
+				if (hex1.getHexSideElements(hexSide).contains(element)) {
 					// remove element
 					// if element is a river, then remove the bridge as well
 					if (element.equals(HexSideElementEnum.MajorRiver)) {
@@ -813,7 +822,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 					// add appropriate elements
 					if (element.equals(HexSideElementEnum.Bridge)) {
 						// add a bridge only if river exists
-						if (hex.getHexSideElements(hexSide).contains(HexSideElementEnum.MinorRiver) || hex.getHexSideElements(hexSide).contains(HexSideElementEnum.MajorRiver)) {
+						if (hex1.getHexSideElements(hexSide).contains(HexSideElementEnum.MinorRiver) || hex1.getHexSideElements(hexSide).contains(HexSideElementEnum.MajorRiver)) {
 							toAdd.add(HexSideElementEnum.Bridge);
 						}
 					} else {
@@ -826,9 +835,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				}
 				// remove what you must
 				for (HexSideElementEnum el : toRemove) {
-					if (hex.getHexSideElements(hexSide).contains(el)) {
-						hex.getHexSideElements(hexSide).remove(el);
-						MapEditorView.instance.log(hex.getHexNo() + " " + hexSide.toString() + " remove " + el.toString());
+					if (hex1.getHexSideElements(hexSide).contains(el)) {
+						hex1.getHexSideElements(hexSide).remove(el);
+						MapEditorView.instance.log(hex1.getHexNo() + " " + hexSide.toString() + " remove " + el.toString());
 					}
 					if (otherHex != null) {
 						if (otherHex.getHexSideElements(otherHexSide).contains(el)) {
@@ -839,9 +848,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				}
 				// add what you must
 				for (HexSideElementEnum el : toAdd) {
-					if (!hex.getHexSideElements(hexSide).contains(el)) {
-						MapEditorView.instance.log(hex.getHexNo() + " " + hexSide.toString() + " add " + el.toString());
-						hex.getHexSideElements(hexSide).add(el);
+					if (!hex1.getHexSideElements(hexSide).contains(el)) {
+						MapEditorView.instance.log(hex1.getHexNo() + " " + hexSide.toString() + " add " + el.toString());
+						hex1.getHexSideElements(hexSide).add(el);
 					}
 					if (otherHex != null && !otherHex.getHexSideElements(otherHexSide).contains(el)) {
 						MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " add " + el.toString());
@@ -854,20 +863,23 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
-		if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
-			c = this.getParent();
-			if (c instanceof JViewport) {
-				JViewport jv = (JViewport) c;
+		if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+			this.c = this.getParent();
+			if (this.c instanceof JViewport) {
+				JViewport jv = (JViewport) this.c;
 				Point p = jv.getViewPosition();
-				int newX = p.x - (e.getX() - xDiff);
-				int newY = p.y - (e.getY() - yDiff);
+				int newX = p.x - (e.getX() - this.xDiff);
+				int newY = p.y - (e.getY() - this.yDiff);
 
 				int maxX = this.getWidth() - jv.getWidth();
 				int maxY = this.getHeight() - jv.getHeight();
@@ -885,8 +897,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		} else {
 			if (!GameHolder.hasInitializedGame())
 				return;
-			int dx = Math.abs(e.getX() - xDiff);
-			int dy = Math.abs(e.getY() - yDiff);
+			int dx = Math.abs(e.getX() - this.xDiff);
+			int dy = Math.abs(e.getY() - this.yDiff);
 			if (dx > 5 || dy > 5) {
 				TransferHandler handler = this.getTransferHandler();
 				handler.exportAsDrag(this, e, TransferHandler.COPY);
@@ -896,6 +908,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		MapTooltipHolder tooltipHolder = MapTooltipHolder.instance();
 		String pval = PreferenceRegistry.instance().getPreferenceValue("map.tooltips");
@@ -904,10 +917,10 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	}
 
 	public Game getGame() {
-		if (game == null) {
-			game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		if (this.game == null) {
+			this.game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 		}
-		return game;
+		return this.game;
 	}
 
 	public void setGame(Game game) {
@@ -915,11 +928,11 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	}
 
 	public BufferedImage getMapImage() {
-		return mapItems;
+		return this.mapItems;
 	}
 
 	public String getHex() {
-		Point p = getHexFromPoint(new Point(xDiff, yDiff));
+		Point p = getHexFromPoint(new Point(this.xDiff, this.yDiff));
 		String h = String.valueOf(p.x * 100 + p.y);
 		if (h.length() < 4) {
 			h = "0" + h;
@@ -931,11 +944,12 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	};
 
 	public BufferedImage getMap() {
-		return mapItems;
+		return this.mapItems;
 	}
 
 	class MapPanelDropTargetAdapter extends DropTargetAdapter {
 
+		@Override
 		public void drop(DropTargetDropEvent e) {
 			Transferable t = e.getTransferable();
 			Object obj = null;
@@ -978,8 +992,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	}
 
+	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if ((e.getModifiers() & MouseEvent.CTRL_MASK) == MouseEvent.CTRL_MASK) {
+		if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
 			if (e.getUnitsToScroll() < 0) {
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.ZoomIncreaseEvent.toString(), this, this));
 			} else if (e.getUnitsToScroll() > 0) {

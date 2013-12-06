@@ -20,7 +20,7 @@ public class NationMapRange implements Serializable {
     int brY;
 
     public int getBrX() {
-        return brX;
+        return this.brX;
     }
 
     public void setBrX(int brX) {
@@ -28,7 +28,7 @@ public class NationMapRange implements Serializable {
     }
 
     public int getBrY() {
-        return brY;
+        return this.brY;
     }
 
     public void setBrY(int brY) {
@@ -36,7 +36,7 @@ public class NationMapRange implements Serializable {
     }
 
     public int getTlX() {
-        return tlX;
+        return this.tlX;
     }
 
     public void setTlX(int tlX) {
@@ -44,7 +44,7 @@ public class NationMapRange implements Serializable {
     }
 
     public int getTlY() {
-        return tlY;
+        return this.tlY;
     }
 
     public void setTlY(int tlY) {
@@ -56,7 +56,7 @@ public class NationMapRange implements Serializable {
     }
 
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     public void setNationNo(int nationNo) {

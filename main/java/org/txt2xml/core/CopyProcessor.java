@@ -5,20 +5,23 @@ public class CopyProcessor extends Processor {
 	
 	@Override
 	protected boolean findMatch() {
-		i++;
-		return i == 1;
+		this.i++;
+		return this.i == 1;
 	}
 
+	@Override
 	protected CharSequence getMatchedText() {
-		return chars;
+		return this.chars;
 	}
 
+	@Override
 	protected CharSequence getRemainderText() {
-		return chars;
+		return this.chars;
 	}
 
+	@Override
 	protected void resetMatching() {
-		i = 0;
+		this.i = 0;
 	}
 	
 

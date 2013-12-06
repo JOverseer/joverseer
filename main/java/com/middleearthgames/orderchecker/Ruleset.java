@@ -18,8 +18,8 @@ public class Ruleset extends Vector
 
     public Ruleset()
     {
-        orderNumbers = new Vector();
-        orderNames = new Vector();
+        this.orderNumbers = new Vector();
+        this.orderNames = new Vector();
     }
 
     void printStateInformation()
@@ -96,12 +96,12 @@ public class Ruleset extends Vector
 
     public String findOrderName(int number)
     {
-        for(int i = 0; i < orderNumbers.size(); i++)
+        for(int i = 0; i < this.orderNumbers.size(); i++)
         {
-            Integer value = (Integer)orderNumbers.get(i);
+            Integer value = (Integer)this.orderNumbers.get(i);
             if(value.intValue() == number)
             {
-                return (String)orderNames.get(i);
+                return (String)this.orderNames.get(i);
             }
         }
 
@@ -143,8 +143,8 @@ public class Ruleset extends Vector
 
     public void addOrderName(Integer number, String name)
     {
-        orderNumbers.add(((Object) (number)));
-        orderNames.add(((Object) (name)));
+        this.orderNumbers.add(((Object) (number)));
+        this.orderNames.add(((Object) (name)));
     }
 
     public boolean isRuleSetComplete()

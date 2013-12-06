@@ -43,7 +43,7 @@ public class JidePageDescriptor extends AbstractPageDescriptor {
 	private final PerspectiveManager perspectiveManager = new PerspectiveManager();
 
 	public PerspectiveManager getPerspectiveManager() {
-		return perspectiveManager;
+		return this.perspectiveManager;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class JidePageDescriptor extends AbstractPageDescriptor {
 	@Override
 	public void setBeanName(String beanName) {
 		super.setBeanName(beanName);
-		perspectiveManager.setPageName(beanName);
+		this.perspectiveManager.setPageName(beanName);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class JidePageDescriptor extends AbstractPageDescriptor {
 	 * @param perspectives
 	 */
 	public void setPerspectives(List perspectives) {
-		perspectiveManager.setPerspectives(perspectives);
+		this.perspectiveManager.setPerspectives(perspectives);
 	}
 
 	/**
@@ -75,16 +75,17 @@ public class JidePageDescriptor extends AbstractPageDescriptor {
 	}
 
 	public Object getInitialEditorContents() {
-		return initialEditorContents;
+		return this.initialEditorContents;
 	}
 
 	/**
 	 * Builds the initial page layout by iterating the collection of view
 	 * descriptors.
 	 */
+	@Override
 	public void buildInitialLayout(PageLayoutBuilder pageLayout) {
 		log.debug("Building initial layout");
-		for (Iterator iter = _viewDescriptors.iterator(); iter.hasNext();) {
+		for (Iterator iter = this._viewDescriptors.iterator(); iter.hasNext();) {
 			String viewDescriptorId = (String) iter.next();
 			pageLayout.addView(viewDescriptorId);
 			if (log.isDebugEnabled()) {
@@ -94,10 +95,10 @@ public class JidePageDescriptor extends AbstractPageDescriptor {
 	}
 
 	public List getViewDescriptors() {
-		return _viewDescriptors;
+		return this._viewDescriptors;
 	}
 
 	public void setViewDescriptors(List viewDescriptors) {
-		_viewDescriptors = viewDescriptors;
+		this._viewDescriptors = viewDescriptors;
 	}
 }

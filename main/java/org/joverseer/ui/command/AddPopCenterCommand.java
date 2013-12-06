@@ -40,7 +40,7 @@ public class AddPopCenterCommand extends ActionCommand {
 		final PopulationCenter pc = new PopulationCenter();
 		InfoSource is = new UserInfoSource();
 		Game g = GameHolder.instance().getGame();
-		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo) != null) {
+		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo) != null) {
 			ErrorDialog md = new ErrorDialog("Cannot add new pop center - there is already a pop center in this hex.");
 			md.showDialog();
 			return;
@@ -48,7 +48,7 @@ public class AddPopCenterCommand extends ActionCommand {
 		is.setTurnNo(g.getCurrentTurn());
 		pc.setInfoSource(is);
 		pc.setInformationSource(InformationSourceEnum.exhaustive);
-		pc.setHexNo(hexNo);
+		pc.setHexNo(this.hexNo);
 		pc.setSize(PopulationCenterSizeEnum.ruins);
 		pc.setFortification(FortificationSizeEnum.none);
 		pc.setHarbor(HarborSizeEnum.none);

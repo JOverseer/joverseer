@@ -9,7 +9,6 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Artifact;
-import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.dataFlavors.ArtifactDataFlavor;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
@@ -24,24 +23,29 @@ public class ArtifactExportTransferHandler extends TransferHandler {
         this.artifact = artifact;
     }
 
-    public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
+    @Override
+	public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
         return false;
     }
 
-    public int getSourceActions(JComponent c) {
+    @Override
+	public int getSourceActions(JComponent c) {
         return COPY_OR_MOVE;
     }
 
-    protected void exportDone(JComponent c, Transferable data, int action) {
+    @Override
+	protected void exportDone(JComponent c, Transferable data, int action) {
     }
 
-    protected Transferable createTransferable(JComponent arg0) {
+    @Override
+	protected Transferable createTransferable(JComponent arg0) {
         Transferable t = new Transferable() {
 
-            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            @Override
+			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
                 try {
                     if (flavor.equals(new ArtifactDataFlavor())) {
-                        return artifact;
+                        return ArtifactExportTransferHandler.this.artifact;
                     }
                 }
                 catch (Exception exc) {
@@ -49,19 +53,20 @@ public class ArtifactExportTransferHandler extends TransferHandler {
                 };
                 try {
                     if (flavor.equals(new ArtifactInfoDataFlavor())) {
-                        return GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());
+                        return GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", ArtifactExportTransferHandler.this.artifact.getNumber());
                     }
                 }
                 catch (Exception exc) {
 
                 };
                 if (flavor.equals(DataFlavor.stringFlavor)) {
-                    return String.valueOf("#" + artifact.getNumber() + " " + artifact.getName());
+                    return String.valueOf("#" + ArtifactExportTransferHandler.this.artifact.getNumber() + " " + ArtifactExportTransferHandler.this.artifact.getName());
                 }
                 return null;
             }
 
-            public DataFlavor[] getTransferDataFlavors() {
+            @Override
+			public DataFlavor[] getTransferDataFlavors() {
                 try {
                     return new DataFlavor[]{new ArtifactDataFlavor(), new ArtifactInfoDataFlavor(), DataFlavor.stringFlavor};
                 }
@@ -70,7 +75,8 @@ public class ArtifactExportTransferHandler extends TransferHandler {
                 }
             }
 
-            public boolean isDataFlavorSupported(DataFlavor flavor) {
+            @Override
+			public boolean isDataFlavorSupported(DataFlavor flavor) {
                 for (DataFlavor f : getTransferDataFlavors()) {
                     if (flavor.equals(f)) return true;
                 }

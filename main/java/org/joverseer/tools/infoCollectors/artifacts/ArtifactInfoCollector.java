@@ -127,7 +127,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
 			return null;
 		}
 		getWrappersForTurn(turnNo);
-		Container<ArtifactWrapper> ret = turnInfo.get(turnNo);
+		Container<ArtifactWrapper> ret = this.turnInfo.get(turnNo);
 		return ret.findFirstByProperty("number", number);
 	}
 
@@ -136,7 +136,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
 			return new ArrayList<ArtifactWrapper>();
 		}
 		getWrappersForTurn(turnNo);
-		Container<ArtifactWrapper> ret = turnInfo.get(turnNo);
+		Container<ArtifactWrapper> ret = this.turnInfo.get(turnNo);
 		return ret.findAllByProperty("owner", owner);
 	}
 
@@ -152,17 +152,18 @@ public class ArtifactInfoCollector implements ApplicationListener {
 		Game game = GameHolder.instance().getGame();
 		if (turnNo == -1)
 			turnNo = game.getCurrentTurn();
-		if (!turnInfo.containsKey(turnNo)) {
-			turnInfo.put(turnNo, computeWrappersForTurn(turnNo));
+		if (!this.turnInfo.containsKey(turnNo)) {
+			this.turnInfo.put(turnNo, computeWrappersForTurn(turnNo));
 		}
-		return turnInfo.get(turnNo).getItems();
+		return this.turnInfo.get(turnNo).getItems();
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				turnInfo.clear();
+				this.turnInfo.clear();
 			}
 		}
 	}

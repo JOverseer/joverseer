@@ -19,6 +19,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * @author Marios Skounakis
  */
 public abstract class AbstractOrderSubeditor {
+	protected static final int PREFERRED_HEIGHT = 23; // was 18 but cuts off descenders
     Order order;
     OrderEditor editor;
 
@@ -27,11 +28,11 @@ public abstract class AbstractOrderSubeditor {
     }
 
     public AbstractOrderSubeditor(Order o) {
-    	order = o;
+    	this.order = o;
     }
 
     public OrderEditor getEditor() {
-        return editor;
+        return this.editor;
     }
 
     public void setEditor(OrderEditor editor) {
@@ -41,14 +42,18 @@ public abstract class AbstractOrderSubeditor {
     public void attachAutoUpdateDocumentListener(JTextComponent c) {
         // call updateEditor whenever the text component is changed
         c.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent arg0) {
+            @Override
+			public void changedUpdate(DocumentEvent arg0) {
+            	// Nothing to do but must override pure virtual
             }
     
-            public void insertUpdate(DocumentEvent arg0) {
+            @Override
+			public void insertUpdate(DocumentEvent arg0) {
                 updateEditor();
             }
     
-            public void removeUpdate(DocumentEvent arg0) {
+            @Override
+			public void removeUpdate(DocumentEvent arg0) {
                 updateEditor();
             }
         });
@@ -57,7 +62,7 @@ public abstract class AbstractOrderSubeditor {
     public abstract void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo);
 
 	public Order getOrder() {
-		return order;
+		return this.order;
 	}
 
 	public void setOrder(Order order) {
@@ -66,7 +71,7 @@ public abstract class AbstractOrderSubeditor {
 
 
    public void valueChanged() {
-       
+	   // empty hook by default
    }
         
 }

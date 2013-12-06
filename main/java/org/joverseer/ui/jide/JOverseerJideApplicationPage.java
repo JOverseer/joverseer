@@ -13,6 +13,7 @@ import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.PageDescriptor;
+import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.image.IconSource;
 
@@ -36,6 +37,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 		super(window, pageDescriptor);
 	}
 
+	@Override
 	protected DockableFrame createDockableFrame(final PageComponent pageComponent, 
     		JideViewDescriptor viewDescriptor) {
 
@@ -43,15 +45,15 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 			log.info("Creating dockable frame for page component "+ pageComponent.getId());
 		}
 		Icon icon = pageComponent.getIcon();
-                IconSource iconSource = (IconSource) ApplicationServicesLocator.services().getService(IconSource.class);
-                icon = iconSource.getIcon(viewDescriptor.getId() + ".icon");
-		DockableFrame dockableFrame;
+        IconSource iconSource = (IconSource) ApplicationServicesLocator.services().getService(IconSource.class);
+        DockableFrame dockableFrame;
+        if (viewDescriptor != null) {
+        	icon = iconSource.getIcon(viewDescriptor.getId() + ".icon");
+        }
 		if (icon == null) {
-                        icon = iconSource.getIcon("applicationInfo.image");
-			dockableFrame = new DockableFrame(pageComponent.getId(), icon);
-		} else {
-			dockableFrame = new DockableFrame(pageComponent.getId(), icon);
+            icon = iconSource.getIcon("applicationInfo.image");
 		}
+		dockableFrame = new DockableFrame(pageComponent.getId(), icon);
                 
 		dockableFrame.setTitle(pageComponent.getDisplayName());
 		dockableFrame.setTabTitle(pageComponent.getDisplayName());
@@ -73,6 +75,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 		}
 		dockableFrame.addDockableFrameListener(new DockableFrameAdapter() {
             
+			@Override
 			public void dockableFrameRemoved(DockableFrameEvent event) {
 				if(log.isDebugEnabled()){
 					log.debug("Frame removed event on "+pageComponent.getId());
@@ -80,6 +83,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 				fireClosed(pageComponent);
 			}
 
+			@Override
 			public void dockableFrameActivated(DockableFrameEvent e) {
 				if(log.isDebugEnabled()){
 					log.debug("Frame activated event on "+pageComponent.getId());
@@ -88,7 +92,8 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
                 fireFocusGained(pageComponent);
             }
             
-            public void dockableFrameDeactivated(DockableFrameEvent e){
+            @Override
+			public void dockableFrameDeactivated(DockableFrameEvent e){
 				if(log.isDebugEnabled()){
 					log.debug("Frame deactivated event on "+pageComponent.getId());
 				}
@@ -114,6 +119,7 @@ public class JOverseerJideApplicationPage extends JideApplicationPage {
 			final DockableFrame ff = dockableFrame;
             view.getDescriptor().addPropertyChangeListener("displayName", new PropertyChangeListener() {
 
+				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					ff.setTitle(evt.getNewValue().toString());
 				}

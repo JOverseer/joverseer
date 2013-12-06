@@ -15,7 +15,7 @@ public class CombatReport extends BaseReportObject {
 	}
 
 	public String getPopInfo() {
-		return popInfo;
+		return this.popInfo;
 	}
 
 	public void setPopInfo(String popInfo) {
@@ -23,7 +23,7 @@ public class CombatReport extends BaseReportObject {
 	}
 
 	public String getPopOutcome() {
-		return popOutcome;
+		return this.popOutcome;
 	}
 
 	public void setPopOutcome(String popOutcome) {
@@ -33,7 +33,7 @@ public class CombatReport extends BaseReportObject {
 	
 
 	public String getParticipants() {
-		return participants;
+		return this.participants;
 	}
 
 	public void setParticipants(String participants) {
@@ -41,7 +41,7 @@ public class CombatReport extends BaseReportObject {
 	}
 
 	public String getWinners() {
-		return winners;
+		return this.winners;
 	}
 
 	public void setWinners(String winners) {
@@ -66,8 +66,8 @@ public class CombatReport extends BaseReportObject {
 	@Override
 	public String getLinks() {
 		String str = super.getLinks();
-		if (c != null) 
-			str += " <a href='http://event?combat=" + c.getHexNo() +"'>Report</a>";
+		if (this.c != null) 
+			str += " <a href='http://event?combat=" + this.c.getHexNo() +"'>Report</a>";
 		return str;
 	}
 	

@@ -15,10 +15,10 @@ class PrefixFileFilter extends FileFilter
 
     PrefixFileFilter()
     {
-        filters = null;
-        description = null;
-        fullDescription = null;
-        filters = new Hashtable();
+        this.filters = null;
+        this.description = null;
+        this.fullDescription = null;
+        this.filters = new Hashtable();
     }
 
     PrefixFileFilter(String prefix)
@@ -50,7 +50,8 @@ class PrefixFileFilter extends FileFilter
             setDescription(description);
     }
 
-    public boolean accept(File f)
+    @Override
+	public boolean accept(File f)
     {
 label0:
         {
@@ -59,7 +60,7 @@ label0:
             if(f.isDirectory())
                 return true;
             String filename = f.getName();
-            Enumeration itr = filters.keys();
+            Enumeration itr = this.filters.keys();
             String prefix;
             do
             {
@@ -74,33 +75,34 @@ label0:
 
     void addPrefix(String prefix)
     {
-        if(filters == null)
-            filters = new Hashtable(5);
-        filters.put(prefix.toLowerCase(), this);
-        fullDescription = null;
+        if(this.filters == null)
+            this.filters = new Hashtable(5);
+        this.filters.put(prefix.toLowerCase(), this);
+        this.fullDescription = null;
     }
 
-    public String getDescription()
+    @Override
+	public String getDescription()
     {
-        if(fullDescription == null)
-            if(description == null)
+        if(this.fullDescription == null)
+            if(this.description == null)
             {
-                fullDescription = description != null ? description + " (" : "(";
-                Enumeration extensions = filters.keys();
+                this.fullDescription = this.description != null ? this.description + " (" : "(";
+                Enumeration extensions = this.filters.keys();
                 if(extensions != null)
-                    for(fullDescription += "." + (String)extensions.nextElement(); extensions.hasMoreElements(); fullDescription += ", ." + (String)extensions.nextElement());
-                fullDescription += ")";
+                    for(this.fullDescription += "." + (String)extensions.nextElement(); extensions.hasMoreElements(); this.fullDescription += ", ." + (String)extensions.nextElement());
+                this.fullDescription += ")";
             } else
             {
-                fullDescription = description;
+                this.fullDescription = this.description;
             }
-        return fullDescription;
+        return this.fullDescription;
     }
 
     void setDescription(String description)
     {
         this.description = description;
-        fullDescription = null;
+        this.fullDescription = null;
     }
 
     private Hashtable filters;

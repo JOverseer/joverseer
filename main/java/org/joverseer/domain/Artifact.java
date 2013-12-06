@@ -29,17 +29,17 @@ public class Artifact implements Serializable, IHasMapLocation {
     InfoSource infoSource;
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
         this.hexNo = hexNo;
-        x = hexNo / 100;
-        y = hexNo % 100;
+        this.x = hexNo / 100;
+        this.y = hexNo % 100;
     }
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(int number) {
@@ -47,7 +47,7 @@ public class Artifact implements Serializable, IHasMapLocation {
     }
     
     public String getOwner() {
-        return (owner == null ? "" : owner);
+        return (this.owner == null ? "" : this.owner);
     }
     
     public void setOwner(String owner) {
@@ -56,7 +56,7 @@ public class Artifact implements Serializable, IHasMapLocation {
 
     
     public InfoSource getInfoSource() {
-        return infoSource;
+        return this.infoSource;
     }
 
     
@@ -66,7 +66,7 @@ public class Artifact implements Serializable, IHasMapLocation {
 
     
     public String getName() {
-        return name;
+        return this.name;
     }
 
     
@@ -75,8 +75,9 @@ public class Artifact implements Serializable, IHasMapLocation {
     }
 
     
-    public int getX() {
-        return x;
+    @Override
+	public int getX() {
+        return this.x;
     }
 
     
@@ -85,8 +86,9 @@ public class Artifact implements Serializable, IHasMapLocation {
     }
 
     
-    public int getY() {
-        return y;
+    @Override
+	public int getY() {
+        return this.y;
     }
 
     
@@ -97,11 +99,11 @@ public class Artifact implements Serializable, IHasMapLocation {
     
 	public String getInfoSourceDescr() {
         String txt = "";
-        if (DerivedFromSpellInfoSource.class.isInstance(infoSource)) {
-            txt = ((DerivedFromSpellInfoSource)infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)infoSource).getCasterName();
-            for (InfoSource is : ((DerivedFromSpellInfoSource)infoSource).getOtherInfoSources()) {
+        if (DerivedFromSpellInfoSource.class.isInstance(this.infoSource)) {
+            txt = ((DerivedFromSpellInfoSource)this.infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getCasterName();
+            for (InfoSource is : ((DerivedFromSpellInfoSource)this.infoSource).getOtherInfoSources()) {
                 if (DerivedFromSpellInfoSource.class.isInstance(is)) {
-                    txt += ", " + ((DerivedFromSpellInfoSource)is).getSpell() + " - " + ((DerivedFromSpellInfoSource)infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)is).getCasterName();
+                    txt += ", " + ((DerivedFromSpellInfoSource)is).getSpell() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)is).getCasterName();
                 }
             }
         }

@@ -38,7 +38,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		EconomyCalculatorData ecd = getEconomyCalculatorData();
-		String productCode = columnHeaders[columnIndex];
+		String productCode = this.columnHeaders[columnIndex];
 		ProductEnum product = ProductEnum.getFromCode(productCode);
 		if (rowIndex == 5) {
 			ecd.setSellUnits(product, (Integer) aValue);
@@ -84,28 +84,30 @@ public class MarketTableModel extends BaseEconomyTableModel {
 
 	protected void select(int rowIndex, int columnIndex) {
 		try {
-			table.setColumnSelectionInterval(columnIndex, columnIndex);
-			table.setRowSelectionInterval(rowIndex, rowIndex);
+			this.table.setColumnSelectionInterval(columnIndex, columnIndex);
+			this.table.setRowSelectionInterval(rowIndex, rowIndex);
 		} catch (Exception exc) {
 			// do nothing
 		}
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 8;
 	}
 
+	@Override
 	public int getRowCount() {
 		return 13;
 	}
 
 	@Override
 	public String getColumnName(int column) {
-		return columnHeaders[column];
+		return this.columnHeaders[column];
 	}
 
 	public int getColumnWidth(int column) {
-		return columnWidths[column];
+		return this.columnWidths[column];
 	}
 
 	@Override
@@ -120,9 +122,10 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		return columnIndex > 0 && (rowIndex == 5 || rowIndex == 6 || rowIndex == 9 || rowIndex == 10 || rowIndex == 11);
 	}
 
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if (columnIndex == 0)
-			return rowHeaders[rowIndex];
+			return this.rowHeaders[rowIndex];
 		if (!Game.isInitialized(getGame()))
 			return "";
 		if (getGame().getTurn() == null)
@@ -135,7 +138,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			return "";
 		if (!ecd.isInitialized())
 			return "";
-		String productCode = columnHeaders[columnIndex];
+		String productCode = this.columnHeaders[columnIndex];
 		ProductEnum product = ProductEnum.getFromCode(productCode);
 		if (rowIndex == 0) {
 			return ecd.getStores(product);
@@ -183,7 +186,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	public String getPriceHistory(int columnIndex, int numberOfTurns) {
 		if (columnIndex == 0)
 			return "";
-		String productCode = columnHeaders[columnIndex];
+		String productCode = this.columnHeaders[columnIndex];
 		ProductEnum product = ProductEnum.getFromCode(productCode);
 		return getPriceHistory(product, numberOfTurns);
 	}
@@ -223,7 +226,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	}
 
 	public EconomyTotalsTableModel getTotalsModel() {
-		return ettm;
+		return this.ettm;
 	}
 
 	public void setTotalsModel(EconomyTotalsTableModel ettm) {

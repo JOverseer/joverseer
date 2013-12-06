@@ -2,8 +2,6 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
-import org.pdfbox.pdmodel.PDDocument;
-
 /**
  * Stores the text representation of the pdf turn result for a given nation
  * 
@@ -15,7 +13,7 @@ public class PdfTurnText implements Serializable {
     String text;
     
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
     
     public void setNationNo(int nationNo) {
@@ -23,7 +21,7 @@ public class PdfTurnText implements Serializable {
     }
     
     public String getText() {
-        return text;
+        return this.text;
     }
     
     public void setText(String text) {

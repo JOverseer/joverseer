@@ -44,6 +44,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setApplicationWindow(ApplicationWindow window) {
 		this.window = window;
 	}
@@ -107,7 +108,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 				Collections.sort(captions);
 				for (String caption : captions) {
 					ViewDescriptor vd = viewMap.get(caption);
-					AbstractCommand cmd = vd.createShowViewCommand(window);
+					AbstractCommand cmd = vd.createShowViewCommand(this.window);
 					cg.add(cmd);
 
 					Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
@@ -119,7 +120,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 
 			} else {
 				for (String caption : captions) {
-					AbstractCommand cmd = viewMap.get(caption).createShowViewCommand(window);
+					AbstractCommand cmd = viewMap.get(caption).createShowViewCommand(this.window);
 					addInternal(cmd);
 					Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
 					cmd.setIcon(ico);
@@ -144,7 +145,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 		for (String c : allCaptions) {
 			for (ViewDescriptor vd : views) {
 				if (vd.getCaption().replace("&", "").equals(c)) {
-					AbstractCommand cmd = vd.createShowViewCommand(window);
+					AbstractCommand cmd = vd.createShowViewCommand(this.window);
 					allViews.add(cmd);
 
 					Icon ico = new ImageIcon(imgSource.getImage(vd.getId() + ".icon"));

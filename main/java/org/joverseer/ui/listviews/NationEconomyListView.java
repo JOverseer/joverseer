@@ -13,7 +13,8 @@ public class NationEconomyListView extends ItemListView {
         super(TurnElementsEnum.NationEconomy, NationEconomyTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[]{60, 80,
         		80, 80, 80, 64, 64, 64, 64, 64};
     }

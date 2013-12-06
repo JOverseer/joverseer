@@ -23,27 +23,31 @@ public class CompanyWrapper implements IHasMapLocation, IBelongsToNation {
 		this.company = company;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		Character leader = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", company.getCommander());
+		Character leader = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", this.company.getCommander());
 		if (leader == null) return null;
 		return leader.getNationNo();
 	}
 
+	@Override
 	public void setNationNo(Integer no) {
 	}
 
+	@Override
 	public int getX() {
-		return company.getX();
+		return this.company.getX();
 	}
 
+	@Override
 	public int getY() {
-		return company.getY();	
+		return this.company.getY();	
 	}
 	
 	public String getMemberStr() {
 		String txt = "";
 		Game g = GameHolder.instance().getGame();
-		for (String ch : company.getMembers()) {
+		for (String ch : this.company.getMembers()) {
 			ch = ch.replace("\n", "");
 			String memberStr = ch;
 			Character member = (Character)g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ch);
@@ -64,11 +68,11 @@ public class CompanyWrapper implements IHasMapLocation, IBelongsToNation {
 	}
 	
 	public int getHexNo() {
-		return company.getHexNo();
+		return this.company.getHexNo();
 	}
 	
 	public String getCommander() {
-		return company.getCommander();
+		return this.company.getCommander();
 	}
 	
 

@@ -15,11 +15,11 @@ class ExampleFileFilter extends FileFilter
 
     ExampleFileFilter()
     {
-        filters = null;
-        description = null;
-        fullDescription = null;
-        useExtensionsInDescription = true;
-        filters = new Hashtable();
+        this.filters = null;
+        this.description = null;
+        this.fullDescription = null;
+        this.useExtensionsInDescription = true;
+        this.filters = new Hashtable();
     }
 
     ExampleFileFilter(String extension)
@@ -51,14 +51,15 @@ class ExampleFileFilter extends FileFilter
             setDescription(description);
     }
 
-    public boolean accept(File f)
+    @Override
+	public boolean accept(File f)
     {
         if(f != null)
         {
             if(f.isDirectory())
                 return true;
             String extension = getExtension(f);
-            if(extension != null && filters.get(getExtension(f)) != null)
+            if(extension != null && this.filters.get(getExtension(f)) != null)
                 return true;
         }
         return false;
@@ -78,44 +79,45 @@ class ExampleFileFilter extends FileFilter
 
     void addExtension(String extension)
     {
-        if(filters == null)
-            filters = new Hashtable(5);
-        filters.put(extension.toLowerCase(), this);
-        fullDescription = null;
+        if(this.filters == null)
+            this.filters = new Hashtable(5);
+        this.filters.put(extension.toLowerCase(), this);
+        this.fullDescription = null;
     }
 
-    public String getDescription()
+    @Override
+	public String getDescription()
     {
-        if(fullDescription == null)
-            if(description == null || isExtensionListInDescription())
+        if(this.fullDescription == null)
+            if(this.description == null || isExtensionListInDescription())
             {
-                fullDescription = description != null ? description + " (" : "(";
-                Enumeration extensions = filters.keys();
+                this.fullDescription = this.description != null ? this.description + " (" : "(";
+                Enumeration extensions = this.filters.keys();
                 if(extensions != null)
-                    for(fullDescription += "." + (String)extensions.nextElement(); extensions.hasMoreElements(); fullDescription += ", ." + (String)extensions.nextElement());
-                fullDescription += ")";
+                    for(this.fullDescription += "." + (String)extensions.nextElement(); extensions.hasMoreElements(); this.fullDescription += ", ." + (String)extensions.nextElement());
+                this.fullDescription += ")";
             } else
             {
-                fullDescription = description;
+                this.fullDescription = this.description;
             }
-        return fullDescription;
+        return this.fullDescription;
     }
 
     void setDescription(String description)
     {
         this.description = description;
-        fullDescription = null;
+        this.fullDescription = null;
     }
 
     void setExtensionListInDescription(boolean b)
     {
-        useExtensionsInDescription = b;
-        fullDescription = null;
+        this.useExtensionsInDescription = b;
+        this.fullDescription = null;
     }
 
     boolean isExtensionListInDescription()
     {
-        return useExtensionsInDescription;
+        return this.useExtensionsInDescription;
     }
 
     private static String TYPE_UNKNOWN = "Type Unknown";

@@ -17,7 +17,7 @@ public class ArmyWrapper {
 	ArrayList<ArmyRegimentWrapper> regiments = new ArrayList<ArmyRegimentWrapper>();
 
 	public String getClimate() {
-		return climate;
+		return this.climate;
 	}
 
 	public void setClimate(String climate) {
@@ -25,7 +25,7 @@ public class ArmyWrapper {
 	}
 
 	public String getCommander() {
-		return commander;
+		return this.commander;
 	}
 
 	public void setCommander(String commander) {
@@ -33,7 +33,7 @@ public class ArmyWrapper {
 	}
 
 	public int getFood() {
-		return food;
+		return this.food;
 	}
 
 	public void setFood(int food) {
@@ -41,7 +41,7 @@ public class ArmyWrapper {
 	}
 
 	public int getMorale() {
-		return morale;
+		return this.morale;
 	}
 
 	public void setMorale(int morale) {
@@ -49,7 +49,7 @@ public class ArmyWrapper {
 	}
 
 	public int getTransports() {
-		return transports;
+		return this.transports;
 	}
 
 	public void setTransports(int transports) {
@@ -57,7 +57,7 @@ public class ArmyWrapper {
 	}
 
 	public int getWarmachines() {
-		return warmachines;
+		return this.warmachines;
 	}
 
 	public void setWarmachines(int warmachines) {
@@ -65,7 +65,7 @@ public class ArmyWrapper {
 	}
 
 	public int getWarships() {
-		return warships;
+		return this.warships;
 	}
 
 	public void setWarships(int warships) {
@@ -73,7 +73,7 @@ public class ArmyWrapper {
 	}
 
 	public ArrayList<ArmyRegimentWrapper> getRegiments() {
-		return regiments;
+		return this.regiments;
 	}
 
 	public void setRegiments(ArrayList<ArmyRegimentWrapper> regiments) {
@@ -81,7 +81,7 @@ public class ArmyWrapper {
 	}
 
 	public void addRegiment(ArmyRegimentWrapper arw) {
-		regiments.add(arw);
+		this.regiments.add(arw);
 	}
 
 	public void updateArmy(Army army) {

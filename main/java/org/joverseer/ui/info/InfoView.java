@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.ui.support.UIUtils;
@@ -134,15 +135,15 @@ public class InfoView extends AbstractView {
 			JPanel pnl = new JPanel(new BorderLayout());
 
 			JTable table = TableUtils.createStandardSortableTable(model);
-			tables.add(table);
+			this.tables.add(table);
 			table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 				@Override
 				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
 					if (arg5 > 0) {
-						lbl.setHorizontalAlignment(JLabel.CENTER);
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
 					} else {
-						lbl.setHorizontalAlignment(JLabel.LEFT);
+						lbl.setHorizontalAlignment(SwingConstants.LEFT);
 					}
 					return lbl;
 				}
@@ -158,12 +159,16 @@ public class InfoView extends AbstractView {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 		}
-		;
+	
 		return null;
 	}
 
 	public class InfoTableModel extends BaseTableModel {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 139624667549196939L;
 		ArrayList<String> colNames = new ArrayList<String>();
 		ArrayList<String[]> values = new ArrayList<String[]>();
 
@@ -173,7 +178,7 @@ public class InfoView extends AbstractView {
 		}
 
 		public ArrayList<String> getColNames() {
-			return colNames;
+			return this.colNames;
 		}
 
 		public void setColNames(ArrayList<String> colNames) {
@@ -181,7 +186,7 @@ public class InfoView extends AbstractView {
 		}
 
 		public ArrayList<String[]> getValues() {
-			return values;
+			return this.values;
 		}
 
 		public void setValues(ArrayList<String[]> values) {
@@ -190,29 +195,29 @@ public class InfoView extends AbstractView {
 
 		@Override
 		public int getColumnCount() {
-			return colNames.size();
+			return this.colNames.size();
 		}
 
 		@Override
 		public int getRowCount() {
-			return values.size();
+			return this.values.size();
 		}
 
 		@Override
 		public Object getValueAt(int arg0, int arg1) {
-			return values.get(arg0)[arg1];
+			return this.values.get(arg0)[arg1];
 		}
 
 		@Override
 		protected Class<?>[] createColumnClasses() {
-			Class<?>[] classes = new Class<?>[colNames.size()];
+			Class<?>[] classes = new Class<?>[this.colNames.size()];
 			Arrays.fill(classes, String.class);
 			return classes;
 		}
 
 		@Override
 		protected String[] createColumnNames() {
-			return colNames.toArray(new String[] {});
+			return this.colNames.toArray(new String[] {});
 		}
 
 		@Override
@@ -222,7 +227,7 @@ public class InfoView extends AbstractView {
 
 		@Override
 		public String getColumnName(int arg0) {
-			return colNames.get(arg0);
+			return this.colNames.get(arg0);
 		}
 
 		@Override

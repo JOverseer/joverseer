@@ -6,7 +6,7 @@ public class StealGoldReport extends BaseReportObject {
 	int gainedByNation;
 	
 	public int getGold() {
-		return gold;
+		return this.gold;
 	}
 
 	public void setGold(int gold) {
@@ -14,7 +14,7 @@ public class StealGoldReport extends BaseReportObject {
 	}
 
 	public int getStolenFromNation() {
-		return stolenFromNation;
+		return this.stolenFromNation;
 	}
 
 	public void setStolenFromNation(int stolenFromNation) {
@@ -22,13 +22,14 @@ public class StealGoldReport extends BaseReportObject {
 	}
 
 	public int getGainedByNation() {
-		return gainedByNation;
+		return this.gainedByNation;
 	}
 
 	public void setGainedByNation(int gainedByNation) {
 		this.gainedByNation = gainedByNation;
 	}
 	
+	@Override
 	public String getHtmlString() {
 		return 	
 			//appendTd(getNationStr()) +

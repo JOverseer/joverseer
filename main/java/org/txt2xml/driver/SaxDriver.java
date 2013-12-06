@@ -52,7 +52,8 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class SaxDriver {
     
-    private static final Logger LOG = Logger.getLogger(SaxDriver.class.getName());
+    @SuppressWarnings("unused")
+	private static final Logger LOG = Logger.getLogger(SaxDriver.class.getName());
     
     protected static final String ROOT_ELEMENT = "txt2xml";
     protected static final Attributes NULL_ATTRIBUTES = new AttributesImpl();
@@ -71,12 +72,12 @@ public class SaxDriver {
      */
     public void generateXmlDocument(CharSequence text, ContentHandler handler)
     throws SAXException {
-        if (processor == null) {
+        if (this.processor == null) {
             throw new IllegalStateException("Driver has no Processor to apply to text.");
         }
         handler.startDocument();
         handler.startElement("", ROOT_ELEMENT, ROOT_ELEMENT, NULL_ATTRIBUTES);
-        processor.generateXmlFragment(text, handler);
+        this.processor.generateXmlFragment(text, handler);
         handler.endElement("", ROOT_ELEMENT, ROOT_ELEMENT);
         handler.endDocument();
     }

@@ -64,47 +64,52 @@ public final class SubCharSequence implements CharSequence {
     }
 
     public int getOffset() {
-        return offset;
+        return this.offset;
     }
 
     /**
      * @see CharSequence#length()
      */
-    public int length() {
-        return length;
+    @Override
+	public int length() {
+        return this.length;
     }
 
     /**
      * @see CharSequence#charAt(int)
      */
-    public char charAt(int index) {
-        if (index > length - 1) {
-            throw new IndexOutOfBoundsException("Can't get charAt for index=" + index + " when length=" + length);
+    @Override
+	public char charAt(int index) {
+        if (index > this.length - 1) {
+            throw new IndexOutOfBoundsException("Can't get charAt for index=" + index + " when length=" + this.length);
         }
-        return parent.charAt(offset + index);
+        return this.parent.charAt(this.offset + index);
     }
 
     /**
      * @see CharSequence#subSequence(int, int)
      */
-    public CharSequence subSequence(int start, int end) {
-        if (start < 0 || end < start || end > length) {
+    @Override
+	public CharSequence subSequence(int start, int end) {
+        if (start < 0 || end < start || end > this.length) {
             throw new IndexOutOfBoundsException("Can't make subSequence with start=" + start + ", end=" + end);
         }
-        return new SubCharSequence(parent, offset + start, end - start);
+        return new SubCharSequence(this.parent, this.offset + start, end - start);
     }
 
-    public String toString() {
-        return parent.toString().substring(offset, offset + length);
+    @Override
+	public String toString() {
+        return this.parent.toString().substring(this.offset, this.offset + this.length);
     }
 
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof SubCharSequence) {
             SubCharSequence seq = (SubCharSequence) obj;
-            int n = length;
+            int n = this.length;
             if (n == seq.length) {
                 int i = 0;
                 while (n-- != 0) {

@@ -22,7 +22,7 @@ public class PopCenterXmlInfoSource extends XmlTurnInfoSource implements Seriali
 
 
     public int getPreviousTurnNo() {
-        return previousTurnNo;
+        return this.previousTurnNo;
     }
 
     

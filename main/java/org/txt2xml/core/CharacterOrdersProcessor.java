@@ -28,39 +28,43 @@ public class CharacterOrdersProcessor extends Processor {
         return str.replaceAll(pattern, "");
     }
     
-    protected void resetMatching() {
-        Pattern p = Pattern.compile(namePattern);
-        String str = chars.toString();
+    @Override
+	protected void resetMatching() {
+        Pattern p = Pattern.compile(this.namePattern);
+        String str = this.chars.toString();
         String datePattern = "\\d{1,2}/\\d{1,2}/\\d{4}  Game \\d+  Player \\d+  Turn \\d+  Page \\d+";
         str = str.replaceAll(datePattern, "");
-        remainder = "";
-        Matcher m = p.matcher(str);
-        while (m.find()) {
-            matchIdxs.add(m.start());
+        this.remainder = "";
+        Matcher m1 = p.matcher(str);
+        while (m1.find()) {
+            this.matchIdxs.add(m1.start());
         }
-        for (int i=0; i<matchIdxs.size() - 1; i++) {
-            matches.add(stripTail(str.substring(matchIdxs.get(i), matchIdxs.get(i+1))));
+        for (int i=0; i<this.matchIdxs.size() - 1; i++) {
+            this.matches.add(stripTail(str.substring(this.matchIdxs.get(i), this.matchIdxs.get(i+1))));
         }
-        if (matchIdxs.size() > 0) {
-            matches.add(stripMapTail(str.substring(matchIdxs.get(matchIdxs.size()-1))));
+        if (this.matchIdxs.size() > 0) {
+            this.matches.add(stripMapTail(str.substring(this.matchIdxs.get(this.matchIdxs.size()-1))));
         }
     }
 
-    protected boolean findMatch() {
-        if (matchCount < matches.size()) {
-            match = matches.get(matchCount);
-            matchCount++;
+    @Override
+	protected boolean findMatch() {
+        if (this.matchCount < this.matches.size()) {
+            this.match = this.matches.get(this.matchCount);
+            this.matchCount++;
             return true;
         }
         return false;
     }
 
-    protected CharSequence getMatchedText() {
-        return match;
+    @Override
+	protected CharSequence getMatchedText() {
+        return this.match;
     }
 
-    protected CharSequence getRemainderText() {
-        return remainder;
+    @Override
+	protected CharSequence getRemainderText() {
+        return this.remainder;
     }
     
     public static void main(String[] args) throws IOException {

@@ -7,13 +7,14 @@ public class ArtifactReport extends BaseReportObject {
 	int artifactNo;
 
 	public int getArtifactNo() {
-		return artifactNo;
+		return this.artifactNo;
 	}
 
 	public void setArtifactNo(int artifactNo) {
 		this.artifactNo = artifactNo;
 	}
 	
+	@Override
 	public String getExtraInfo() {
 		ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", getArtifactNo());
 		String ret = "";

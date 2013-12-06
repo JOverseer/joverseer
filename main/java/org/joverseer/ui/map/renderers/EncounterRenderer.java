@@ -7,7 +7,6 @@ import java.awt.geom.RoundRectangle2D;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -21,21 +20,23 @@ import org.springframework.richclient.application.Application;
 public class EncounterRenderer implements Renderer {
     protected MapMetadata mapMetadata = null;
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Encounter.class.isInstance(obj) || Challenge.class.isInstance(obj);
     }
 
     protected void init() {
-        mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
     }
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
-        if (mapMetadata == null) init();
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
+        if (this.mapMetadata == null) init();
         Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
-        int w = mapMetadata.getGridCellWidth() / 3;
-        int h = mapMetadata.getGridCellHeight() / 3;
-        int dx = mapMetadata.getGridCellWidth() * mapMetadata.getHexSize() * 1/2 - w/2;
-        int dy = mapMetadata.getGridCellHeight() * mapMetadata.getHexSize() * 1 / 9;
+        int w = this.mapMetadata.getGridCellWidth() / 3;
+        int h = this.mapMetadata.getGridCellHeight() / 3;
+        int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1/2 - w/2;
+        int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 1 / 9;
 
         Color color1 = ColorPicker.getInstance().getColor("encounterFG");
         Color color2 = ColorPicker.getInstance().getColor("encounterBorder");

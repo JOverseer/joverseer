@@ -7,7 +7,7 @@ public class TurnReport {
     Container reportItems = new Container(new String[]{"nationNo"});
     
     public Container getReportItems() {
-        return reportItems;
+        return this.reportItems;
     }
     
     public void setReportItems(Container reportItems) {

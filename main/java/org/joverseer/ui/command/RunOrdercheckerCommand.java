@@ -82,19 +82,19 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
 				@Override
 				protected boolean onFinish() {
-					selectedNation = ((org.joverseer.metadata.domain.Nation) frm.getFormObject()).getNumber();
+					RunOrdercheckerCommand.this.selectedNation = ((org.joverseer.metadata.domain.Nation) frm.getFormObject()).getNumber();
 					return true;
 				}
 			};
 			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 			dlg.setTitle(ms.getMessage("selectOrdercheckerNation.title", new Object[] {}, Locale.getDefault()));
 			dlg.showDialog();
-			if (selectedNation == -1)
+			if (this.selectedNation == -1)
 				return;
 
 			// create new order checker proxy
-			proxy = new OrdercheckerProxy();
-			proxy.updateOrdercheckerGameData(selectedNation);
+			this.proxy = new OrdercheckerProxy();
+			this.proxy.updateOrdercheckerGameData(this.selectedNation);
 			final OrdercheckerForm form = new OrdercheckerForm(Main.main);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
@@ -103,7 +103,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 				protected void onAboutToShow() {
 					try {
 
-						proxy.runOrderchecker();
+						RunOrdercheckerCommand.this.proxy.runOrderchecker();
 
 						Game g = GameHolder.instance().getGame();
 
@@ -119,26 +119,26 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 							if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead)
 								continue;
 							com.middleearthgames.orderchecker.Character mc = Main.main.getNation().findCharacterById(c.getId() + "     ".substring(0, 5 - c.getId().length()));
-							for (com.middleearthgames.orderchecker.Order mo : proxy.getCharacterOrders(mc)) {
-								Order order = proxy.getOrderMap().get(mo);
+							for (com.middleearthgames.orderchecker.Order mo : RunOrdercheckerCommand.this.proxy.getCharacterOrders(mc)) {
+								Order order = RunOrdercheckerCommand.this.proxy.getOrderMap().get(mo);
 								boolean resultFound = false;
 								cont.removeResultsForOrder(order);
-								for (String msg : proxy.getOrderInfoResults(mo)) {
+								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderInfoResults(mo)) {
 									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Info);
 									resultList.add(or);
 									resultFound = true;
 								}
-								for (String msg : proxy.getOrderErrorResults(mo)) {
+								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderErrorResults(mo)) {
 									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Error);
 									resultList.add(or);
 									resultFound = true;
 								}
-								for (String msg : proxy.getOrderHelpResults(mo)) {
+								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderHelpResults(mo)) {
 									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Help);
 									resultList.add(or);
 									resultFound = true;
 								}
-								for (String msg : proxy.getOrderWarnResults(mo)) {
+								for (String msg : RunOrdercheckerCommand.this.proxy.getOrderWarnResults(mo)) {
 									OrderResult or = new OrderResult(order, msg, OrderResultTypeEnum.Warning);
 									resultList.add(or);
 									resultFound = true;

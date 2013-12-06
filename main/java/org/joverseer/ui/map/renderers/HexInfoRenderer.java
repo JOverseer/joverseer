@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.Transparency;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
@@ -45,49 +46,51 @@ public class HexInfoRenderer extends DefaultHexRenderer {
     int fontSize = 8;
     int fontStyle = Font.ITALIC;
     
-    protected void init() {
+    @Override
+	protected void init() {
         super.init();
-        img = null;
-        gh = GameHolder.instance();
-        mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        this.img = null;
+        this.gh = GameHolder.instance();
+        this.mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
     }
 
 
     public int getDensityFactor() {
-        return densityFactor;
+        return this.densityFactor;
     }
 
     public void setDensityFactor(int densityFactor) {
         this.densityFactor = densityFactor;
     }
 
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Hex.class.isInstance(obj);
     }
 
     private Image getImage() {
-        if (img == null) {
-            img = new BufferedImage(metadata.getGridCellWidth() * metadata.getHexSize(), metadata.getGridCellHeight() * metadata.getHexSize(), BufferedImage.TRANSLUCENT);
-            Polygon polygon = new Polygon(xPoints, yPoints, 6);
-            Graphics2D g = img.createGraphics();
+        if (this.img == null) {
+            this.img = new BufferedImage(this.metadata.getGridCellWidth() * this.metadata.getHexSize(), this.metadata.getGridCellHeight() * this.metadata.getHexSize(), Transparency.TRANSLUCENT);
+            Polygon polygon1 = new Polygon(this.xPoints, this.yPoints, 6);
+            Graphics2D g = this.img.createGraphics();
 
-            int w = metadata.getHexSize() * metadata.getGridCellWidth();
-            int h = metadata.getHexSize() * metadata.getGridCellHeight();
+            int w = this.metadata.getHexSize() * this.metadata.getGridCellWidth();
+            int h = this.metadata.getHexSize() * this.metadata.getGridCellHeight();
             int m = w / getDensityFactor();
 
             g.setClip(null);
-            g.clip(polygon);
+            g.clip(polygon1);
             g.setColor(Color.gray);
             for (int i=2; i<10; i++) {
                 Line2D.Float l = new Line2D.Float(- w + m * i, h, m * i, 0);
                 g.draw(l);
             }
             g.setColor(Color.black);
-            g.drawPolygon(polygon);
+            g.drawPolygon(polygon1);
             g.setClip(null);
 
         }
-        return img;
+        return this.img;
     }
 
     private boolean visibleToAllegiance(Hex hex, Game game, NationAllegianceEnum allegiance) {
@@ -105,27 +108,27 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         return false;
     }
 
-    public void render(Object obj, Graphics2D g, int x, int y) {
+    @Override
+	public void render(Object obj, Graphics2D g, int x, int y) {
         if (!appliesTo(obj)) {
             throw new IllegalArgumentException(obj.toString());
         }
         String pval = PreferenceRegistry.instance().getPreferenceValue("map.fogOfWarStyle");
         boolean simpleColors = pval.equals("xs");
 
-        if (metadata == null) {
+        if (this.metadata == null) {
             init();
         }
         Hex hex = (Hex)obj;
-        if (!withinMapRange(hex.getColumn(), hex.getRow(), metadata)) return;
-        Game game = gh.getGame();
+        if (!withinMapRange(hex.getColumn(), hex.getRow(), this.metadata)) return;
+        Game game = this.gh.getGame();
         
-        Object map = mapOptions.get(MapOptionsEnum.NationMap);
-        boolean showClimate = (mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : mapOptions.get(MapOptionsEnum.ShowClimate).equals(MapOptionValuesEnum.ShowClimateOn));
+        Object map = this.mapOptions.get(MapOptionsEnum.NationMap);
+        boolean showClimate = (this.mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : this.mapOptions.get(MapOptionsEnum.ShowClimate).equals(MapOptionValuesEnum.ShowClimateOn));
         boolean visible = false;
         if (map == null) {
             HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());
             visible = hexInfo.getVisible();
-            int a = 1;
         } else if (map == MapOptionValuesEnum.NationMapDarkServants) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.DarkServants);
         } else if (map == MapOptionValuesEnum.NationMapNotDarkServants) {
@@ -162,9 +165,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             if (hexInfo.getClimate() != null) {
                 Color climateColor = ColorPicker.getInstance().getColor("climate." + hexInfo.getClimate().toString());
                 Color transClimateColor = new Color(climateColor.getRed(), climateColor.getBlue(), climateColor.getGreen(), 100);
-                int radius = metadata.getGridCellWidth() * 2;
-                int cx = x + metadata.getGridCellWidth() * metadata.getHexSize() / 2;
-                int cy = y + metadata.getGridCellHeight() * metadata.getHexSize() / 2;
+                int radius = this.metadata.getGridCellWidth() * 2;
+                int cx = x + this.metadata.getGridCellWidth() * this.metadata.getHexSize() / 2;
+                int cy = y + this.metadata.getGridCellHeight() * this.metadata.getHexSize() / 2;
                 Ellipse2D.Float el = new Ellipse2D.Float(cx - radius / 2, cy - radius / 2, radius, radius);
                 g.setColor(transClimateColor);
                 g.fill(el);
@@ -173,10 +176,10 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         }
         if (!visible) {
         	if (simpleColors) {
-        		Font f = new Font(fontName, fontStyle, fontSize);
+        		Font f = new Font(this.fontName, this.fontStyle, this.fontSize);
         		int w = ((Number)f.getStringBounds("0000", g.getFontRenderContext()).getWidth()).intValue();
-        		x = metadata.getGridCellWidth() * metadata.getHexSize() + x - w / 2;
-                y = metadata.getGridCellHeight() * metadata.getHexSize() / 4 + y + 8;
+        		x = this.metadata.getGridCellWidth() * this.metadata.getHexSize() + x - w / 2;
+                y = this.metadata.getGridCellHeight() * this.metadata.getHexSize() / 4 + y + 8;
 
         		g.setFont(f);
         		if (hex.getTerrain() == HexTerrainEnum.mountains ||
@@ -191,8 +194,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         		}
                 g.drawString("x", x, y);
         	} else {
-        		Image img = getImage();
-            	g.drawImage(img, x, y, null);
+        		Image img1 = getImage();
+            	g.drawImage(img1, x, y, null);
             	repaintNumber = true;
         	}
         }
@@ -205,7 +208,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
     }
 
     public Renderer getHexNumberRenderer() {
-        return hexNumberRenderer;
+        return this.hexNumberRenderer;
     }
 
     public void setHexNumberRenderer(Renderer hexNumberRendererId) {

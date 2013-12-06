@@ -6,15 +6,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.springframework.context.ApplicationContext;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.DefaultApplicationDescriptor;
-
-import sun.misc.Regexp;
 
 public class VersionChecker {
 	public boolean newVersionExists() throws Exception {
@@ -35,7 +28,6 @@ public class VersionChecker {
         	Pattern regex = Pattern.compile("/joverseer-v(\\d\\.\\d+\\.\\d+).*\\.zip");
         	Matcher matcher = regex.matcher(response);
         	while (matcher.find()) {
-            	int a = 1;
         		//String match = response.substring(matcher.start(), matcher.end());
             	
         		String group = matcher.group(1);

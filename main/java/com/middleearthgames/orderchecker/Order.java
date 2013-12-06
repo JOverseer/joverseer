@@ -35,69 +35,69 @@ public class Order
 
     public Order(Character parent, int number)
     {
-        infoResults = new Vector();
-        warnResults = new Vector();
-        errorResults = new Vector();
-        helpResults = new Vector();
+        this.infoResults = new Vector();
+        this.warnResults = new Vector();
+        this.errorResults = new Vector();
+        this.helpResults = new Vector();
         this.parent = parent;
-        orderNumber = number;
+        this.orderNumber = number;
     }
 
     void printStateInformation()
     {
-        rules.printStateInformation();
+        this.rules.printStateInformation();
     }
 
     String implementPhase(int phase)
     {
-        if(orderNumber == 9999)
+        if(this.orderNumber == 9999)
         {
             if(phase == 1)
             {
-                errorResults.add("Missing order.");
+                this.errorResults.add("Missing order.");
             }
-            done = true;
+            this.done = true;
             return null;
         }
         if(phase == 1)
         {
-            rules = Main.main.getRuleSet().getRulesForOrder(orderNumber, false);
+            this.rules = Main.main.getRuleSet().getRulesForOrder(this.orderNumber, false);
         }
-        if(rules.size() == 0)
+        if(this.rules.size() == 0)
         {
             if(phase == 2)
             {
-                warnResults.add("No rules exist for this order.");
+                this.warnResults.add("No rules exist for this order.");
             }
-            done = true;
+            this.done = true;
             return null;
         }
         if(phase == 1)
         {
-            infoResults.clear();
-            warnResults.clear();
-            errorResults.clear();
-            helpResults.clear();
-            done = false;
+            this.infoResults.clear();
+            this.warnResults.clear();
+            this.errorResults.clear();
+            this.helpResults.clear();
+            this.done = false;
         }
-        String result = rules.processRules(this, phase);
-        if(result == null && rules.getDone())
+        String result = this.rules.processRules(this, phase);
+        if(result == null && this.rules.getDone())
         {
-            done = true;
+            this.done = true;
         }
         return result;
     }
 
     boolean getDone()
     {
-        return done;
+        return this.done;
     }
 
     boolean getStateDone(int state)
     {
-        if(rules != null)
+        if(this.rules != null)
         {
-            return rules.getStateDone(state);
+            return this.rules.getStateDone(state);
         } else
         {
             return true;
@@ -106,58 +106,58 @@ public class Order
 
     Ruleset getRules()
     {
-        return rules;
+        return this.rules;
     }
 
     void addWarning(String msg)
     {
-        warnResults.add(((Object) (msg)));
+        this.warnResults.add(((Object) (msg)));
     }
 
     void addError(String msg)
     {
-        errorResults.add(((Object) (msg)));
+        this.errorResults.add(((Object) (msg)));
     }
 
     void addInfo(String msg)
     {
-        infoResults.add(((Object) (msg)));
+        this.infoResults.add(((Object) (msg)));
     }
 
     void addHelp(String msg)
     {
-        helpResults.add(((Object) (msg)));
+        this.helpResults.add(((Object) (msg)));
     }
 
-    public void addTreeNodes(JTree tree, OCTreeNode parent)
+    public void addTreeNodes(JTree tree, OCTreeNode parent1)
     {
         OCTreeNode orderNode = new OCTreeNode(tree, ((Object) (this)), true);
-        parent.add(((javax.swing.tree.MutableTreeNode) (orderNode)));
-        int errors = errorResults.size();
+        parent1.add(((javax.swing.tree.MutableTreeNode) (orderNode)));
+        int errors = this.errorResults.size();
         for(int i = 0; i < errors; i++)
         {
-            String resultNode = "[R] " + (String)errorResults.get(i);
+            String resultNode = "[R] " + (String)this.errorResults.get(i);
             orderNode.add(((javax.swing.tree.MutableTreeNode) (new OCTreeNode(tree, ((Object) (resultNode)), false))));
         }
 
-        int warnings = warnResults.size();
+        int warnings = this.warnResults.size();
         for(int i = 0; i < warnings; i++)
         {
-            String resultNode = "[Y] " + (String)warnResults.get(i);
+            String resultNode = "[Y] " + (String)this.warnResults.get(i);
             orderNode.add(((javax.swing.tree.MutableTreeNode) (new OCTreeNode(tree, ((Object) (resultNode)), false))));
         }
 
-        int messages = infoResults.size();
+        int messages = this.infoResults.size();
         for(int i = 0; i < messages; i++)
         {
-            String resultNode = "[G] " + (String)infoResults.get(i);
+            String resultNode = "[G] " + (String)this.infoResults.get(i);
             orderNode.add(((javax.swing.tree.MutableTreeNode) (new OCTreeNode(tree, ((Object) (resultNode)), false))));
         }
 
-        int helpmsgs = helpResults.size();
+        int helpmsgs = this.helpResults.size();
         for(int i = 0; i < helpmsgs; i++)
         {
-            String resultNode = "[H] " + (String)helpResults.get(i);
+            String resultNode = "[H] " + (String)this.helpResults.get(i);
             orderNode.add(((javax.swing.tree.MutableTreeNode) (new OCTreeNode(tree, ((Object) (resultNode)), false))));
         }
 
@@ -171,10 +171,10 @@ public class Order
     public String getParameterList()
     {
         String paramList = "";
-        int size = parameters.size();
+        int size = this.parameters.size();
         for(int i = 0; i < size; i++)
         {
-            String param = (String)parameters.get(i);
+            String param = (String)this.parameters.get(i);
             paramList = paramList + param + " ";
         }
 
@@ -183,53 +183,55 @@ public class Order
 
     public void addParameter(String param)
     {
-        parameters.add(((Object) (param)));
+        this.parameters.add(((Object) (param)));
     }
 
     int getNumberOfParameters()
     {
-        return parameters.size();
+        return this.parameters.size();
     }
 
     public int getOrder()
     {
-        return orderNumber;
+        return this.orderNumber;
     }
 
     Character getParent()
     {
-        return parent;
+        return this.parent;
     }
 
     void getInfoRequests(Vector list)
     {
-        if(rules != null)
+        if(this.rules != null)
         {
-            rules.getInfoRequests(list);
+            this.rules.getInfoRequests(list);
         }
     }
 
-    public int compareTo(Object object)
+    @Override
+	public int compareTo(Object object)
     {
         Order order = (Order)object;
-        if(orderNumber < order.orderNumber)
+        if(this.orderNumber < order.orderNumber)
         {
             return -1;
         }
-        return orderNumber != order.orderNumber ? 1 : 0;
+        return this.orderNumber != order.orderNumber ? 1 : 0;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
-        return String.valueOf(orderNumber);
+        return String.valueOf(this.orderNumber);
     }
 
     String getParameterString(int paramNumber)
     {
         int index = paramNumber - 1;
-        if(index >= 0 && index < parameters.size())
+        if(index >= 0 && index < this.parameters.size())
         {
-            return (String)parameters.get(index);
+            return (String)this.parameters.get(index);
         } else
         {
             return null;
@@ -247,7 +249,7 @@ public class Order
             }
             return Integer.parseInt(strValue);
         }
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             return -1;
         }
     }
@@ -257,7 +259,7 @@ public class Order
         Character character = null;
         if(param == 0)
         {
-            character = parent;
+            character = this.parent;
         } else
         {
             String id = getParameterString(param);
@@ -273,10 +275,10 @@ public class Order
             {
                 if(id != null)
                 {
-                    warnResults.add(((Object) ("No information could be obtained for " + id + ".")));
+                    this.warnResults.add(((Object) ("No information could be obtained for " + id + ".")));
                 } else
                 {
-                    errorResults.add("No character was specified.");
+                    this.errorResults.add("No character was specified.");
                 }
             }
         }
@@ -285,7 +287,7 @@ public class Order
 
     int extractLocation(int param, boolean reportError)
     {
-        int location = parent.getLocation(orderNumber);
+        int location = this.parent.getLocation(this.orderNumber);
         if(param > 0)
         {
             location = getParameterNumber(param);
@@ -294,14 +296,14 @@ public class Order
         {
             if(reportError)
             {
-                errorResults.add("Could not determine the location.");
+                this.errorResults.add("Could not determine the location.");
             }
         } else
         if(location < 101 || location > 4439)
         {
             if(reportError)
             {
-                errorResults.add(((Object) ("Invalid location of " + location + ".")));
+                this.errorResults.add(((Object) ("Invalid location of " + location + ".")));
             }
             location = -1;
         }
@@ -328,22 +330,22 @@ public class Order
 
     
     public Vector getErrorResults() {
-        return errorResults;
+        return this.errorResults;
     }
 
     
     public Vector getHelpResults() {
-        return helpResults;
+        return this.helpResults;
     }
 
     
     public Vector getInfoResults() {
-        return infoResults;
+        return this.infoResults;
     }
 
     
     public Vector getWarnResults() {
-        return warnResults;
+        return this.warnResults;
     }
     
     

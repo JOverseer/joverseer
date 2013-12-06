@@ -24,16 +24,19 @@ public class EditPreferencesCommand  extends ActionCommand {
         super("editPreferencesCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         FormModel formModel = FormModelHelper.createFormModel(PreferenceRegistry.instance());
         final EditPreferencesForm form = new EditPreferencesForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() {
+            @Override
+			protected void onAboutToShow() {
             }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 form.commit();
                 return true;
             }

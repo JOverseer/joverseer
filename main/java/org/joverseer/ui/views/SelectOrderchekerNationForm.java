@@ -36,7 +36,7 @@ public class SelectOrderchekerNationForm extends AbstractForm {
 
     private void loadNationCombo() {
     	Nation selectedNation = null;
-        nationCombo.removeAllItems();
+        this.nationCombo.removeAllItems();
         Game g = GameHolder.instance().getGame();
         if (!Game.isInitialized(g))
             return;
@@ -46,34 +46,36 @@ public class SelectOrderchekerNationForm extends AbstractForm {
             if (n.getNumber() == 0) continue;
             PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n.getNumber());
             if (pi == null) continue;
-            nationCombo.addItem(n.getName());
+            this.nationCombo.addItem(n.getName());
             if (n.getNumber().equals(g.getMetadata().getNationNo())) {
             	selectedNation = n;
             }
         }
         
         if (selectedNation == null) {
-        	if (nationCombo.getItemCount() > 0) {
-	            nationCombo.setSelectedIndex(0);
+        	if (this.nationCombo.getItemCount() > 0) {
+	            this.nationCombo.setSelectedIndex(0);
 	        }
         } else {
-        	nationCombo.setSelectedItem(selectedNation.getName());
+        	this.nationCombo.setSelectedItem(selectedNation.getName());
         }
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         tlb.cell(new JLabel("Select the nation to check:"));
         tlb.relatedGapRow();
-        tlb.cell(nationCombo = new JComboBox(), "align=left");
-        nationCombo.setPreferredSize(new Dimension(200, 20));
-        nationCombo.addActionListener(new ActionListener() {
+        tlb.cell(this.nationCombo = new JComboBox(), "align=left");
+        this.nationCombo.setPreferredSize(new Dimension(200, 20));
+        this.nationCombo.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 Game g = GameHolder.instance().getGame();
-                if (nationCombo.getSelectedItem() == null)
+                if (SelectOrderchekerNationForm.this.nationCombo.getSelectedItem() == null)
                     return;
-                Nation n = g.getMetadata().getNationByName(nationCombo.getSelectedItem().toString());
+                Nation n = g.getMetadata().getNationByName(SelectOrderchekerNationForm.this.nationCombo.getSelectedItem().toString());
                 setFormObject(n);
             }
 
@@ -82,13 +84,15 @@ public class SelectOrderchekerNationForm extends AbstractForm {
         return tlb.getPanel();
     }
 
-    public Object getFormObject() {
-        return nation;
+    @Override
+	public Object getFormObject() {
+        return this.nation;
     }
 
-    public void setFormObject(Object arg0) {
+    @Override
+	public void setFormObject(Object arg0) {
         super.setFormObject(arg0);
-        nation = (Nation) arg0;
+        this.nation = (Nation) arg0;
     }
 
 

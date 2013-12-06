@@ -69,7 +69,7 @@ public class ImportRulesCsv extends ImportCsv
                 if(param.trim().equals("Spell"))
                     rule.setSpellType();
                 else
-                    ruleset.addOrderName(order, param);
+                    this.ruleset.addOrderName(order, param);
             param = getToken(line, false);
             if(param == null)
             {
@@ -83,7 +83,7 @@ public class ImportRulesCsv extends ImportCsv
             result = parseRuleParameters(rule, line);
             if(result != null)
                 return result;
-            ruleset.add(rule);
+            this.ruleset.add(rule);
             return null;
         }
         catch (Exception ex) {

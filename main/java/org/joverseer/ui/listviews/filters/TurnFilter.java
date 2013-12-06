@@ -23,18 +23,19 @@ public class TurnFilter extends AbstractListViewFilter {
         this.match = match;
     }
 
-    public boolean accept(Object obj) {
+    @Override
+	public boolean accept(Object obj) {
         if (!IHasTurnNumber.class.isInstance(obj))
             return false;
-        if (turnNo == -1)
+        if (this.turnNo == -1)
             return true;
         IHasTurnNumber t = (IHasTurnNumber) obj;
-        if (match == EXACT) {
-            return t.getTurnNo() == turnNo;
-        } else if (match == BEFORE) {
-            return t.getTurnNo() <= turnNo;
+        if (this.match == EXACT) {
+            return t.getTurnNo() == this.turnNo;
+        } else if (this.match == BEFORE) {
+            return t.getTurnNo() <= this.turnNo;
         } else {
-            return t.getTurnNo() >= turnNo;
+            return t.getTurnNo() >= this.turnNo;
         }
     }
 

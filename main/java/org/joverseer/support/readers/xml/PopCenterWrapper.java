@@ -26,7 +26,7 @@ public class PopCenterWrapper {
 	int hidden;
 
 	public int getCapital() {
-		return capital;
+		return this.capital;
 	}
 
 	public void setCapital(int capital) {
@@ -34,7 +34,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getDock() {
-		return dock;
+		return this.dock;
 	}
 
 	public void setDock(int dock) {
@@ -42,7 +42,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getFortificationLevel() {
-		return fortificationLevel;
+		return this.fortificationLevel;
 	}
 
 	public void setFortificationLevel(int fortificationLevel) {
@@ -50,7 +50,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getHidden() {
-		return hidden;
+		return this.hidden;
 	}
 
 	public void setHidden(int hidden) {
@@ -58,7 +58,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getInformationSource() {
-		return informationSource;
+		return this.informationSource;
 	}
 
 	public void setInformationSource(int informationSource) {
@@ -66,7 +66,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getLoyalty() {
-		return loyalty;
+		return this.loyalty;
 	}
 
 	public void setLoyalty(int loyalty) {
@@ -74,7 +74,7 @@ public class PopCenterWrapper {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -82,7 +82,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getNation() {
-		return nation;
+		return this.nation;
 	}
 
 	public void setNation(int nation) {
@@ -90,7 +90,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getNationAllegience() {
-		return nationAllegience;
+		return this.nationAllegience;
 	}
 
 	public void setNationAllegience(int nationAllegience) {
@@ -98,7 +98,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 
 	public void setSize(int size) {
@@ -106,7 +106,7 @@ public class PopCenterWrapper {
 	}
 
 	public int getHexID() {
-		return hexID;
+		return this.hexID;
 	}
 
 	public void setHexID(int hexID) {

@@ -14,7 +14,7 @@ public class ChallengeWrapper extends CombatWrapper {
     
     
     public String getCharacter() {
-        return character;
+        return this.character;
     }
 
     

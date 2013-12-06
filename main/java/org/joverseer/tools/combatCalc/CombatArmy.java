@@ -49,7 +49,7 @@ public class CombatArmy implements Serializable {
     int defensiveAddOns;
 
     public String getCommander() {
-        return commander;
+        return this.commander;
     }
 
     public void setCommander(String commander) {
@@ -57,7 +57,7 @@ public class CombatArmy implements Serializable {
     }
 
     public int getCommandRank() {
-        return commandRank;
+        return this.commandRank;
     }
 
     public void setCommandRank(int commandRank) {
@@ -65,7 +65,7 @@ public class CombatArmy implements Serializable {
     }
 
     public int getDefensiveAddOns() {
-        return defensiveAddOns;
+        return this.defensiveAddOns;
     }
 
     public void setDefensiveAddOns(int defensiveAddOns) {
@@ -73,7 +73,7 @@ public class CombatArmy implements Serializable {
     }
 
     public ArrayList<ArmyElement> getElements() {
-        return elements;
+        return this.elements;
     }
 
     public void setElements(ArrayList<ArmyElement> elements) {
@@ -81,11 +81,11 @@ public class CombatArmy implements Serializable {
     }
 
     public void addElement(ArmyElement armyElement) {
-    	elements.add(armyElement) ;
+    	this.elements.add(armyElement) ;
     }
     
     public int getMorale() {
-        return morale;
+        return this.morale;
     }
 
     public void setMorale(int morale) {
@@ -93,7 +93,7 @@ public class CombatArmy implements Serializable {
     }
 
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     public void setNationNo(int nationNo) {
@@ -101,7 +101,7 @@ public class CombatArmy implements Serializable {
     }
 
     public int getOffensiveAddOns() {
-        return offensiveAddOns;
+        return this.offensiveAddOns;
     }
 
     public void setOffensiveAddOns(int offensiveAddOns) {
@@ -109,7 +109,7 @@ public class CombatArmy implements Serializable {
     }
 
     public TacticEnum getTactic() {
-        return tactic;
+        return this.tactic;
     }
 
     public void setTactic(TacticEnum tactic) {
@@ -120,7 +120,7 @@ public class CombatArmy implements Serializable {
 
     
     public double getLosses() {
-        return losses;
+        return this.losses;
     }
 
     
@@ -181,7 +181,7 @@ public class CombatArmy implements Serializable {
             ArmyElement ae = new ArmyElement(aet, 0);
             getElements().add(ae);
         }
-        tactic = TacticEnum.Standard;
+        this.tactic = TacticEnum.Standard;
     }
     
     public CombatArmy(CombatArmy ca) {

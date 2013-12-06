@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.Note;
@@ -102,14 +103,14 @@ public class HexInfoViewer extends ObjectViewer {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
 		JLabel l;
 		lb.append(l = new JLabel("Hex No :"), 2, 1);
-		lb.append(hexNo = new JTextField(), 2, 1);
-		hexNo.setBorder(null);
-		lb.append(terrain = new JTextField(), 2, 1);
-		terrain.setPreferredSize(new Dimension(60, 12));
-		terrain.setBorder(null);
-		lb.append(climate = new JTextField(), 2, 1);
-		climate.setPreferredSize(new Dimension(50, 12));
-		climate.setBorder(null);
+		lb.append(this.hexNo = new JTextField(), 2, 1);
+		this.hexNo.setBorder(null);
+		lb.append(this.terrain = new JTextField(), 2, 1);
+		this.terrain.setPreferredSize(new Dimension(60, 12));
+		this.terrain.setBorder(null);
+		lb.append(this.climate = new JTextField(), 2, 1);
+		this.climate.setPreferredSize(new Dimension(50, 12));
+		this.climate.setBorder(null);
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 		JButton btnMenu = new JButton();
@@ -128,9 +129,9 @@ public class HexInfoViewer extends ObjectViewer {
 		lb.nextLine();
 
 		lb.append(l = new JLabel("Latest info :"), 2, 1);
-		lb.append(turnInfo = new JTextField(), 4, 1);
-		turnInfo.setPreferredSize(new Dimension(80, 12));
-		turnInfo.setBorder(null);
+		lb.append(this.turnInfo = new JTextField(), 4, 1);
+		this.turnInfo.setPreferredSize(new Dimension(80, 12));
+		this.turnInfo.setBorder(null);
 		lb.nextLine();
 
 		lb.append(new JSeparator(), 5, 1);
@@ -147,8 +148,8 @@ public class HexInfoViewer extends ObjectViewer {
 		for (MovementDirection md : MovementDirection.values()) {
 			lb.append(new JLabel(md.getDir().toUpperCase() + " :"));
 			JTextField tf = new JTextField();
-			tf.setHorizontalAlignment(JLabel.RIGHT);
-			infCosts.put(md, tf);
+			tf.setHorizontalAlignment(SwingConstants.RIGHT);
+			this.infCosts.put(md, tf);
 			tf.setBorder(null);
 			tf.setPreferredSize(new Dimension(20, 12));
 			lb.append(tf);
@@ -157,17 +158,17 @@ public class HexInfoViewer extends ObjectViewer {
 
 			lb.append(new JLabel(md.getDir().toUpperCase() + " :"));
 			tf = new JTextField();
-			tf.setHorizontalAlignment(JLabel.RIGHT);
-			cavCosts.put(md, tf);
+			tf.setHorizontalAlignment(SwingConstants.RIGHT);
+			this.cavCosts.put(md, tf);
 			tf.setBorder(null);
 			tf.setPreferredSize(new Dimension(20, 12));
 			lb.append(tf);
 			lb.nextLine();
 		}
 
-		notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
+		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(notesViewer.createFormControl(), "colspec=left:240px");
+		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:240px");
 		JPanel notesPanel = tlb.getPanel();
 		notesPanel.setBackground(Color.white);
 		lb.append(notesPanel, 8, 1);
@@ -191,44 +192,44 @@ public class HexInfoViewer extends ObjectViewer {
 				hexNoStr = hexNoStr + "0";
 			}
 			hexNoStr += String.valueOf(h.getRow());
-			hexNo.setText(hexNoStr);
+			this.hexNo.setText(hexNoStr);
 
 			Integer latestTurnInfo = HexInfoHistory.getLatestHexInfoTurnNoForHex(h.getHexNo());
 			if (latestTurnInfo == null || latestTurnInfo == -1) {
-				turnInfo.setText("never");
+				this.turnInfo.setText("never");
 			} else {
-				turnInfo.setText("turn " + latestTurnInfo);
+				this.turnInfo.setText("turn " + latestTurnInfo);
 			}
 
 			Game g = GameHolder.instance().getGame();
 			HexInfo hi = (HexInfo) g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
-			climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
-			terrain.setText(UIUtils.enumToString(h.getTerrain()));
-			terrain.setCaretPosition(0);
+			this.climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
+			this.terrain.setText(UIUtils.enumToString(h.getTerrain()));
+			this.terrain.setCaretPosition(0);
 			int startHexNo = h.getColumn() * 100 + h.getRow();
 			if (startHexNo > 0) {
 				for (MovementDirection md : MovementDirection.values()) {
 					int cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), false, true, true, null, startHexNo);
-					JTextField tf = infCosts.get(md);
+					JTextField tf = this.infCosts.get(md);
 					String costStr = (cost > 0 ? String.valueOf(cost) : "-");
 					tf.setText(String.valueOf(costStr));
 
 					cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), true, true, true, null, startHexNo);
-					tf = cavCosts.get(md);
+					tf = this.cavCosts.get(md);
 					costStr = (cost > 0 ? String.valueOf(cost) : "-");
 					tf.setText(String.valueOf(costStr));
 				}
 			} else {
-				for (JTextField tf : infCosts.values()) {
+				for (JTextField tf : this.infCosts.values()) {
 					tf.setText("");
 				}
-				for (JTextField tf : cavCosts.values()) {
+				for (JTextField tf : this.cavCosts.values()) {
 					tf.setText("");
 				}
 			}
 
 			ArrayList<Note> notes = g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", h.getHexNo());
-			notesViewer.setFormObject(notes);
+			this.notesViewer.setFormObject(notes);
 		}
 	}
 
@@ -239,9 +240,10 @@ public class HexInfoViewer extends ObjectViewer {
 		ActionCommand showCharacterPathMasteryRangeCommand = new ShowCharacterPathMasteryRangeCommand(hex.getHexNo());
 		ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(hex.getHexNo(), 12);
 
-		CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoBridgeGroup", new Object[] { addBridgeNE, addBridgeE, addBridgeSE, addBridgeSW, addBridgeW, addBridgeNW, "separator", removeBridgeNE, removeBridgeE, removeBridgeSE, removeBridgeSW, removeBridgeW, removeBridgeNW });
-		int hexNo = hex.getHexNo();
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoCommandGroup", new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", new ShowFedInfantryArmyRangeCommand(hexNo), new ShowUnfedInfantryArmyRangeCommand(hexNo), new ShowFedCavalryArmyRangeCommand(hexNo), new ShowUnfedCavalryArmyRangeCommand(hexNo), "separator", new ShowFedNavyCoastalRangeCommand(hexNo), new ShowUnfedNavyCoastalRangeCommand(hexNo), new ShowFedNavyOpenSeasRangeCommand(hexNo), new ShowUnfedNavyOpenSeasRangeCommand(hexNo), "separator", new AddPopCenterCommand(hexNo), new AddEditNoteCommand(hex.getHexNo()), "separator", new CreateCombatForHexCommand(hex.getHexNo()), "separator", bridges
+		CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoBridgeGroup", new Object[] { this.addBridgeNE, this.addBridgeE, this.addBridgeSE, this.addBridgeSW, this.addBridgeW, this.addBridgeNW, "separator", this.removeBridgeNE, this.removeBridgeE, this.removeBridgeSE, this.removeBridgeSW, this.removeBridgeW, this.removeBridgeNW });
+		int hexNo1 = hex.getHexNo();
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoCommandGroup", 
+				new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator", new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator", new AddPopCenterCommand(hexNo1), new AddEditNoteCommand(hexNo1), "separator", new CreateCombatForHexCommand(hexNo1), "separator", bridges
 
 		});
 		return group.createPopupMenu();
@@ -295,7 +297,7 @@ public class HexInfoViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			Hex hex = (Hex) getFormObject();
 			HexSideElementEnum hse = null;
-			for (HexSideElementEnum hsei : hex.getHexSideElements(side)) {
+			for (HexSideElementEnum hsei : hex.getHexSideElements(this.side)) {
 				if (hsei == HexSideElementEnum.Bridge) {
 					hse = hsei;
 				}
@@ -304,10 +306,10 @@ public class HexInfoViewer extends ObjectViewer {
 				Game g = GameHolder.instance().getGame();
 				GameMetadata gm = g.getMetadata();
 				Hex nh = hex.clone();
-				nh.getHexSideElements(side).remove(hse);
+				nh.getHexSideElements(this.side).remove(hse);
 				gm.addHexOverride(g.getCurrentTurn(), nh);
-				Hex neighbor = gm.getHex(side.getHexNoAtSide(hex.getHexNo())).clone();
-				neighbor.getHexSideElements(side.getOppositeSide()).remove(HexSideElementEnum.Bridge);
+				Hex neighbor = gm.getHex(this.side.getHexNoAtSide(hex.getHexNo())).clone();
+				neighbor.getHexSideElements(this.side.getOppositeSide()).remove(HexSideElementEnum.Bridge);
 				gm.addHexOverride(g.getCurrentTurn(), neighbor);
 
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
@@ -366,7 +368,7 @@ public class HexInfoViewer extends ObjectViewer {
 			boolean hasRoad = false;
 			boolean hasMinorRiver = false;
 			boolean hasMajorRiver = false;
-			for (HexSideElementEnum hsei : hex.getHexSideElements(side)) {
+			for (HexSideElementEnum hsei : hex.getHexSideElements(this.side)) {
 				if (hsei == HexSideElementEnum.Bridge) {
 					return;
 				}
@@ -383,12 +385,12 @@ public class HexInfoViewer extends ObjectViewer {
 			if (!hasMinorRiver && !(hasMajorRiver && hasRoad))
 				return;
 			Hex nh = hex.clone();
-			nh.addHexSideElement(side, HexSideElementEnum.Bridge);
+			nh.addHexSideElement(this.side, HexSideElementEnum.Bridge);
 			Game g = GameHolder.instance().getGame();
 			GameMetadata gm = g.getMetadata();
 			gm.addHexOverride(g.getCurrentTurn(), nh);
-			Hex neighbor = gm.getHex(side.getHexNoAtSide(nh.getHexNo())).clone();
-			neighbor.addHexSideElement(side.getOppositeSide(), HexSideElementEnum.Bridge);
+			Hex neighbor = gm.getHex(this.side.getHexNoAtSide(nh.getHexNo())).clone();
+			neighbor.addHexSideElement(this.side.getOppositeSide(), HexSideElementEnum.Bridge);
 			gm.addHexOverride(g.getCurrentTurn(), neighbor);
 
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));

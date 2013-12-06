@@ -28,8 +28,8 @@ public class InfoUtils {
 		if (info == null)
 			return null;
 		if (info.getRowIdx(charName.toUpperCase()) > -1)
-			return true;
-		return false;
+			return Boolean.TRUE;
+		return Boolean.FALSE;
 	}
 
 	public static ArrayList<String> getAllCharacterTitles() {
@@ -102,7 +102,7 @@ public class InfoUtils {
 				} else if (t.equals("6")) {
 					return ArmyElementType.MenAtArms;
 				}
-				;
+				
 				return null;
 			}
 		}

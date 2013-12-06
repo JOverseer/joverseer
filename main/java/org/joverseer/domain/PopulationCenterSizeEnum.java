@@ -24,8 +24,9 @@ public enum PopulationCenterSizeEnum implements Serializable {
 		// File Templates.
 	}
 
+	@SuppressWarnings("boxing")
 	public Integer getCode() {
-		return size;
+		return this.size;
 	}
 
 	public static PopulationCenterSizeEnum getFromCode(int code) {
@@ -45,7 +46,7 @@ public enum PopulationCenterSizeEnum implements Serializable {
 	}
 
 	public String getLabel() {
-		switch (size) {
+		switch (this.size) {
 		case 0:
 			return "Ruins";
 		case 1:

@@ -39,11 +39,13 @@ public class ShowViewMenu extends CommandGroup implements ApplicationWindowAware
         super(ID);
     }
 
-    public void setApplicationWindow(ApplicationWindow window) {
+    @Override
+	public void setApplicationWindow(ApplicationWindow window) {
         this.window = window;
     }
 
-    public void afterPropertiesSet() {
+    @Override
+	public void afterPropertiesSet() {
         super.afterPropertiesSet();
         populate();
     }
@@ -57,11 +59,11 @@ public class ShowViewMenu extends CommandGroup implements ApplicationWindowAware
             if(view instanceof JideViewDescriptor){
             	JideViewDescriptor dockingView = (JideViewDescriptor)view;
             	if(!dockingView.isWorkspace()){
-            		addInternal(view.createShowViewCommand(window));
+            		addInternal(view.createShowViewCommand(this.window));
             	}
             }
             else{
-            	addInternal(view.createShowViewCommand(window));
+            	addInternal(view.createShowViewCommand(this.window));
             }
         }
     }

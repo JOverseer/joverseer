@@ -21,14 +21,14 @@ public class DragAndDropMouseInputHandler extends MouseInputAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		pressedPoint = e.getPoint();
+		this.pressedPoint = e.getPoint();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		Point p = e.getPoint();
-		if (!recognized && ((Math.abs(pressedPoint.x - p.x) > 5) || (Math.abs(pressedPoint.y - p.y) > 5))) {
-			recognized = true;
+		if (!this.recognized && ((Math.abs(this.pressedPoint.x - p.x) > 5) || (Math.abs(this.pressedPoint.y - p.y) > 5))) {
+			this.recognized = true;
 			JComponent c = (JComponent) e.getSource();
 			TransferHandler th = getTransferHandler(e);
 			if (th != null) {
@@ -39,8 +39,8 @@ public class DragAndDropMouseInputHandler extends MouseInputAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		recognized = false;
-		pressedPoint = null;
+		this.recognized = false;
+		this.pressedPoint = null;
 	}
 
 	public TransferHandler getTransferHandler(MouseEvent e) {

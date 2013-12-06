@@ -66,7 +66,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	boolean inChallengeFight = false;
 
 	public int getAgent() {
-		return agent;
+		return this.agent;
 	}
 
 	public void setAgent(int agent) {
@@ -74,7 +74,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getAgentTotal() {
-		return agentTotal;
+		return this.agentTotal;
 	}
 
 	public void setAgentTotal(int agentTotal) {
@@ -82,7 +82,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public ArrayList<Integer> getArtifacts() {
-		return artifacts;
+		return this.artifacts;
 	}
 
 	public void setArtifacts(ArrayList<Integer> artifacts) {
@@ -90,7 +90,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getChallenge() {
-		return challenge;
+		return this.challenge;
 	}
 
 	public void setChallenge(int challenge) {
@@ -98,7 +98,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getCommand() {
-		return command;
+		return this.command;
 	}
 
 	public void setCommand(int command) {
@@ -106,7 +106,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getCommandTotal() {
-		return commandTotal;
+		return this.commandTotal;
 	}
 
 	public void setCommandTotal(int commandTotal) {
@@ -114,7 +114,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getEmmisary() {
-		return emmisary;
+		return this.emmisary;
 	}
 
 	public void setEmmisary(int emmisary) {
@@ -122,7 +122,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getEmmisaryTotal() {
-		return emmisaryTotal;
+		return this.emmisaryTotal;
 	}
 
 	public void setEmmisaryTotal(int emmisaryTotal) {
@@ -130,7 +130,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public Integer getHealth() {
-		return health;
+		return this.health;
 	}
 
 	public void setHealth(Integer health) {
@@ -138,7 +138,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public InfoSourceValue getHealthEstimate() {
-		return healthEstimate;
+		return this.healthEstimate;
 	}
 
 	public void setHealthEstimate(InfoSourceValue healthEstimate) {
@@ -146,7 +146,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -154,7 +154,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public InfoSource getInfoSource() {
-		return infoSource;
+		return this.infoSource;
 	}
 
 	public void setInfoSource(InfoSource infoSource) {
@@ -162,7 +162,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getMage() {
-		return mage;
+		return this.mage;
 	}
 
 	public void setMage(int mage) {
@@ -170,7 +170,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getMageTotal() {
-		return mageTotal;
+		return this.mageTotal;
 	}
 
 	public void setMageTotal(int mageTotal) {
@@ -178,7 +178,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -186,7 +186,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public ArrayList<SpellProficiency> getSpells() {
-		return spells;
+		return this.spells;
 	}
 
 	public void setSpells(ArrayList<SpellProficiency> spells) {
@@ -194,7 +194,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getStealth() {
-		return stealth;
+		return this.stealth;
 	}
 
 	public void setStealth(int stealth) {
@@ -202,7 +202,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getStealthTotal() {
-		return stealthTotal;
+		return this.stealthTotal;
 	}
 
 	public void setStealthTotal(int stealthTotal) {
@@ -210,23 +210,25 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	@Override
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 	public void setX(int x) {
 		this.x = x;
 	}
 
+	@Override
 	public int getY() {
-		return y;
+		return this.y;
 	}
 
 	public void setY(int y) {
@@ -234,17 +236,19 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public InformationSourceEnum getInformationSource() {
-		return informationSource;
+		return this.informationSource;
 	}
 
 	public void setInformationSource(InformationSourceEnum informationSource) {
 		this.informationSource = informationSource;
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
@@ -259,10 +263,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public Order[] getOrders() {
-		if (orders.length == 2) {
-			orders = new Order[] { orders[0], orders[1], new Order(this) };
+		if (this.orders.length == 2) {
+			this.orders = new Order[] { this.orders[0], this.orders[1], new Order(this) };
 		}
-		return orders;
+		return this.orders;
 	}
 
 	public void setOrders(Order[] orders) {
@@ -279,7 +283,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public String getEncounter() {
-		return encounter;
+		return this.encounter;
 	}
 
 	public void setEncounter(String encounter) {
@@ -291,7 +295,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public String getOrderResults() {
-		return orderResults;
+		return this.orderResults;
 	}
 
 	public String getCleanOrderResults() {
@@ -305,7 +309,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public CharacterDeathReasonEnum getDeathReason() {
-		return deathReason;
+		return this.deathReason;
 	}
 
 	public void setDeathReason(CharacterDeathReasonEnum deathReason) {
@@ -317,7 +321,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public Boolean getHostage() {
-		return isHostage;
+		return this.isHostage;
 	}
 
 	public void setHostage(Boolean isHostage) {
@@ -325,7 +329,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getArtifactInUse() {
-		return artifactInUse;
+		return this.artifactInUse;
 	}
 
 	public void setArtifactInUse(int artifactInUse) {
@@ -338,24 +342,24 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 
 	public void setNation(Nation nation) {
 		if (nation == null) {
-			setNationNo(0);
+			setNationNo(new Integer(0));
 		} else {
 			setNationNo(nation.getNumber());
 		}
 	}
 
 	public ArrayList<IStructuredOrderResult> getStructuredOrderResults() {
-		if (structuredOrderResults == null) {
-			structuredOrderResults = new ArrayList<IStructuredOrderResult>();
+		if (this.structuredOrderResults == null) {
+			this.structuredOrderResults = new ArrayList<IStructuredOrderResult>();
 		}
-		return structuredOrderResults;
+		return this.structuredOrderResults;
 	}
 
 	public ArrayList<String> getHostages() {
-		if (hostages == null) {
-			hostages = new ArrayList<String>();
+		if (this.hostages == null) {
+			this.hostages = new ArrayList<String>();
 		}
-		return hostages;
+		return this.hostages;
 	}
 
 	public void setHostages(ArrayList<String> hostages) {
@@ -363,9 +367,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public int getNumberOfOrders() {
-		if (numberOfOrders == 0)
-			numberOfOrders = 2;
-		return numberOfOrders;
+		if (this.numberOfOrders == 0)
+			this.numberOfOrders = 2;
+		return this.numberOfOrders;
 	}
 
 	public void setNumberOfOrders(int numberOfOrders) {
@@ -373,15 +377,16 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public boolean isStartInfoDummy() {
-		return startInfoDummy;
+		return this.startInfoDummy;
 	}
 
 	public void setStartInfoDummy(boolean startInfoDummy) {
 		this.startInfoDummy = startInfoDummy;
 	}
 
+	@Override
 	public Integer getMaintenance() {
-		return (getCommand() + getMage() + getAgent() + getEmmisary()) * 20;
+		return new Integer((getCommand() + getMage() + getAgent() + getEmmisary()) * 20);
 	}
 
 	@Override
@@ -417,12 +422,13 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		return c;
 	}
 
+	@Override
 	public void initialize() {
-		refusingChallenges = false;
+		this.refusingChallenges = false;
 	}
 
 	public boolean isRefusingChallenges() {
-		return refusingChallenges;
+		return this.refusingChallenges;
 	}
 
 	public void setRefusingChallenges(boolean refusingChallenges) {
@@ -430,7 +436,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 
 	public boolean isInChallengeFight() {
-		return inChallengeFight;
+		return this.inChallengeFight;
 	}
 
 	public void setInChallengeFight(boolean inChallengeFight) {
@@ -466,7 +472,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		return getDeathReason() != null && !getDeathReason().equals(CharacterDeathReasonEnum.NotDead);
 	}
 
-	public void addHostage(String name) {
+	public void addHostage(@SuppressWarnings("hiding") String name) {
 		if (!getHostages().contains(name))
 			getHostages().add(name);
 	}

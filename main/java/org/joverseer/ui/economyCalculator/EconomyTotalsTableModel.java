@@ -60,36 +60,41 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     	this.table = table;
     }
     
-    public int getColumnCount() {
+    @Override
+	public int getColumnCount() {
         return 6;
     }
 
-    public int getRowCount() {
+    @Override
+	public int getRowCount() {
         return 5;
     }
     
-    public String getColumnName(int column) {
-        return columnHeaders[column];
+    @Override
+	public String getColumnName(int column) {
+        return this.columnHeaders[column];
     }
 
     public int getColumnWidth(int column) {
-        return columnWidths[column];
+        return this.columnWidths[column];
     }
     
-    public Class<?> getColumnClass(int column) {
+    @Override
+	public Class<?> getColumnClass(int column) {
         if (column == 0 || column == 2 || column == 4) return String.class;
         return Integer.class;
     }
 
-    public Object getValueAt(int rowIndex, int columnIndex) {
+    @Override
+	public Object getValueAt(int rowIndex, int columnIndex) {
         if (columnIndex == 0) {
-            return rowHeaders1[rowIndex];
+            return this.rowHeaders1[rowIndex];
         }
         if (columnIndex == 2) {
-            return rowHeaders2[rowIndex];
+            return this.rowHeaders2[rowIndex];
         }
         if (columnIndex == 4) {
-            return rowHeaders3[rowIndex];
+            return this.rowHeaders3[rowIndex];
         }
         if (!Game.isInitialized(getGame())) return "";
         if (getGame().getTurn() == null) return "";
@@ -149,8 +154,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     protected void select(int rowIndex, int columnIndex) {
     	try {
-    		table.setColumnSelectionInterval(columnIndex, columnIndex);
-    		table.setRowSelectionInterval(rowIndex, rowIndex);
+    		this.table.setColumnSelectionInterval(columnIndex, columnIndex);
+    		this.table.setRowSelectionInterval(rowIndex, rowIndex);
     	}
     	catch (Exception exc) {
     		// do nothing
@@ -175,13 +180,15 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return ne.getTaxBase() * 2500 * getTaxRate() / 100;
     }
     
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
+    @Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
         return (columnIndex == 5 && rowIndex == 0) ||
                 (columnIndex == 3 && rowIndex == 2) ||
                 (columnIndex == 3 && rowIndex == 0);
     }
 
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    @Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex == 5 && rowIndex == 0) {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();

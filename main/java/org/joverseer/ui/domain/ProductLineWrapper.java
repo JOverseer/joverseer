@@ -36,7 +36,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getBronze() {
-        return bronze;
+        return this.bronze;
     }
     
     public void setBronze(Integer bronze) {
@@ -44,7 +44,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getFood() {
-        return food;
+        return this.food;
     }
     
     public void setFood(Integer food) {
@@ -52,7 +52,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getGold() {
-        return gold;
+        return this.gold;
     }
     
     public void setGold(Integer gold) {
@@ -60,7 +60,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getLeather() {
-        return leather;
+        return this.leather;
     }
     
     public void setLeather(Integer leather) {
@@ -68,7 +68,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getMithril() {
-        return mithril;
+        return this.mithril;
     }
     
     public void setMithril(Integer mithril) {
@@ -76,7 +76,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getMounts() {
-        return mounts;
+        return this.mounts;
     }
     
     public void setMounts(Integer mounts) {
@@ -84,7 +84,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getSteel() {
-        return steel;
+        return this.steel;
     }
     
     public void setSteel(Integer steel) {
@@ -92,7 +92,7 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
     
     public Integer getTimber() {
-        return timber;
+        return this.timber;
     }
     
     public void setTimber(Integer timber) {
@@ -101,7 +101,7 @@ public class ProductLineWrapper implements IBelongsToNation {
 
     
     public String getDescr() {
-        return descr;
+        return this.descr;
     }
 
     
@@ -110,18 +110,20 @@ public class ProductLineWrapper implements IBelongsToNation {
     }
 
     
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
 
     
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
     
     public int getIdx() {
-        return idx;
+        return this.idx;
     }
 
     

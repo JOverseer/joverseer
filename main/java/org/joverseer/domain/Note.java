@@ -31,8 +31,9 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
     String tags;
     long id;
     
-    public Integer getNationNo() {
-        if (nationNo == null) {
+    @Override
+	public Integer getNationNo() {
+        if (this.nationNo == null) {
             if (Integer.class.isInstance(getTarget())) {
                 return 0;
             } else if (IBelongsToNation.class.isInstance(getTarget())) {
@@ -40,15 +41,16 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
             }
             return 0;
         }
-        return nationNo;
+        return this.nationNo;
     }
 
-    public void setNationNo(Integer n) {
-        nationNo = n;
+    @Override
+	public void setNationNo(Integer n) {
+        this.nationNo = n;
     };
     
     public Object getTarget() {
-        return target;
+        return this.target;
     }
 
     
@@ -58,7 +60,7 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
 
     
     public String getText() {
-        return text;
+        return this.text;
     }
 
     
@@ -69,7 +71,7 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
 
     
     public boolean getPersistent() {
-        return persistent;
+        return this.persistent;
     }
 
 
@@ -97,11 +99,13 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
         return 0;
     }
     
-    public int getX() {
+    @Override
+	public int getX() {
         return getHexNo() / 100;
     }
     
-    public int getY() {
+    @Override
+	public int getY() {
         return getHexNo() % 100;
     }
     
@@ -121,7 +125,7 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
 
     
     public String getTags() {
-        return tags;
+        return this.tags;
     }
 
     
@@ -131,7 +135,7 @@ public class Note implements IBelongsToNation, IHasMapLocation, Serializable {
 
     
     public long getId() {
-        return id;
+        return this.id;
     }
 
     

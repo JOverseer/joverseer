@@ -11,17 +11,18 @@ public class RAResultWrapper implements OrderResult {
 	
 	
 	public String getArtiName() {
-		return artiName;
+		return this.artiName;
 	}
 	public void setArtiName(String artiName) {
 		this.artiName = artiName;
 	}
 	public String getArtiNo() {
-		return artiNo;
+		return this.artiNo;
 	}
 	public void setArtiNo(String artiNo) {
 		this.artiNo = artiNo;
 	}
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
 		ArtifactInfo ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("name", getArtiName());
 		if (ai != null && ai.getNo() == 0) {

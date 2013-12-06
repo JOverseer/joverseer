@@ -17,11 +17,11 @@ public enum MovementDirection {
     private String dir;
 
     private MovementDirection(String d) {
-        dir = d;
+        this.dir = d;
     }
 
     public String getDir() {
-        return dir;
+        return this.dir;
     }
 
     public static MovementDirection getDirectionFromString(String dir) {

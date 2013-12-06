@@ -25,12 +25,12 @@ public class ChangelogForm extends AbstractForm implements HyperlinkListener {
 	@Override
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-		editor = new JEditorPane();
-		editor.setEditable(false);
-		editor.setPreferredSize(new Dimension(800, 600));
+		this.editor = new JEditorPane();
+		this.editor.setEditable(false);
+		this.editor.setPreferredSize(new Dimension(800, 600));
 		try {
-			editor.setPage(((Resource) getFormObject()).getURL());
-			String text = editor.getText();
+			this.editor.setPage(((Resource) getFormObject()).getURL());
+			String text = this.editor.getText();
 			String[] lines = text.split("\n");
 			String result = "";
 			for (String l : lines) {
@@ -62,22 +62,23 @@ public class ChangelogForm extends AbstractForm implements HyperlinkListener {
 				result += "<tr>" + ll + "</tr>";
 			}
 			result = "<html><body><table style='font-family:Tahoma; font-size:11pt' border=0 cellspacing=0 cellpadding=0>" + result + "</table></font></body></html>";
-			editor.setContentType("text/html");
-			editor.setText(result);
-			editor.select(0, 1);
+			this.editor.setContentType("text/html");
+			this.editor.setText(result);
+			this.editor.select(0, 1);
 		} catch (Exception exc) {
 			System.out.println(exc.getMessage());
 		}
-		JScrollPane scp = new JScrollPane(editor);
+		JScrollPane scp = new JScrollPane(this.editor);
 		scp.setPreferredSize(new Dimension(750, 500));
 		glb.append(scp);
 		glb.nextLine();
 		return glb.getPanel();
 	}
 
+	@Override
 	public void hyperlinkUpdate(HyperlinkEvent arg0) {
 		try {
-			editor.setPage(arg0.getURL());
+			this.editor.setPage(arg0.getURL());
 		} catch (Exception exc) {
 			System.out.println(exc.getMessage());
 		}

@@ -10,7 +10,7 @@ public class CompanyWrapper {
 	ArrayList<String> members = new ArrayList<String>();
 
 	public String getCommander() {
-		return commander;
+		return this.commander;
 	}
 
 	public void setCommander(String commander) {
@@ -18,7 +18,7 @@ public class CompanyWrapper {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
@@ -26,7 +26,7 @@ public class CompanyWrapper {
 	}
 
 	public ArrayList<String> getMembers() {
-		return members;
+		return this.members;
 	}
 
 	public void setMembers(ArrayList<String> members) {
@@ -39,7 +39,7 @@ public class CompanyWrapper {
 
 	public Company getCompany() {
 		Company c = new Company();
-		c.setHexNo(hexNo);
+		c.setHexNo(this.hexNo);
 		c.setCommander(getCommander());
 		for (String m : getMembers()) {
 			c.addMember(m.trim());

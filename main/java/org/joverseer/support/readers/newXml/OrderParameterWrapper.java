@@ -7,11 +7,11 @@ public class OrderParameterWrapper {
 
 	public OrderParameterWrapper() {
 		super();
-		type = "Additional";
+		this.type = "Additional";
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
@@ -19,7 +19,7 @@ public class OrderParameterWrapper {
 	}
 
 	public int getSeqNo() {
-		return seqNo;
+		return this.seqNo;
 	}
 
 	public void setSeqNo(int seqNo) {
@@ -27,7 +27,7 @@ public class OrderParameterWrapper {
 	}
 
 	public String getParameter() {
-		return parameter;
+		return this.parameter;
 	}
 
 	public void setParameter(String parameter) {

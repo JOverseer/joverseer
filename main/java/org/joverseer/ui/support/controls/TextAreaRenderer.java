@@ -24,7 +24,8 @@ public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
         setLineWrap(true);
     }
 
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+    @Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
             int row, int column) {
         JTextArea ta = this;
         ta.setWrapStyleWord(true);

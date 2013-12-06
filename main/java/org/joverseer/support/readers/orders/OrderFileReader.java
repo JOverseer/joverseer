@@ -5,14 +5,13 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.joverseer.domain.Character;
+import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
-import org.joverseer.domain.*;
-import org.joverseer.domain.Character;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.dialog.MessageDialog;
 
 /**
  * Reads orders from an order file.
@@ -28,7 +27,7 @@ public class OrderFileReader {
     int ordersRead = 0;
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public void setGame(Game game) {
@@ -36,7 +35,7 @@ public class OrderFileReader {
     }
 
     public String getOrderFile() {
-        return orderFile;
+        return this.orderFile;
     }
 
     public void setOrderFile(String orderFile) {
@@ -57,7 +56,7 @@ public class OrderFileReader {
                 return false;
             // check game no
             String[] parts = line.split(",");
-            if (Integer.parseInt(parts[0]) == game.getMetadata().getGameNo()) {
+            if (Integer.parseInt(parts[0]) == this.game.getMetadata().getGameNo()) {
                 return true;
             }
             return false;
@@ -139,7 +138,7 @@ public class OrderFileReader {
                                 orders[orderI].setParameters(params);
                             }
                         }
-                        ordersRead++;
+                        this.ordersRead++;
                     }
                 }
                 i++;
@@ -156,7 +155,7 @@ public class OrderFileReader {
 
 
     public int getOrdersRead() {
-        return ordersRead;
+        return this.ordersRead;
     }
 
 

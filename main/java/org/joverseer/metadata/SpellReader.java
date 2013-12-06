@@ -18,16 +18,17 @@ public class SpellReader implements MetadataReader {
 	String spellFilename = "spells.csv";
 
 	public String getSpellFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + spellFilename;
+		return "file:///" + gm.getBasePath() + "/" + this.spellFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<SpellInfo> spells = new Container<SpellInfo>();
 
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getSpellFilename(gm));
-			Resource resource = gm.getResource(spellFilename);
+			Resource resource = gm.getResource(this.spellFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 			String ln;
@@ -36,8 +37,8 @@ public class SpellReader implements MetadataReader {
 				SpellInfo si = new SpellInfo();
 				si.setName(parts[0]);
 				si.setDifficulty(parts[1]);
-				si.setOrderNumber(Integer.parseInt(parts[2]));
-				si.setNumber(Integer.parseInt(parts[3]));
+				si.setOrderNumber(new Integer(Integer.parseInt(parts[2])));
+				si.setNumber(new Integer(Integer.parseInt(parts[3])));
 				si.setRequiredInfo(parts[4]);
 				si.setRequirements(parts[5]);
 				si.setDescription(parts[6]);

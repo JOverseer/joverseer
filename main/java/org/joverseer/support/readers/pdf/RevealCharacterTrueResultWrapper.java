@@ -16,7 +16,7 @@ public class RevealCharacterTrueResultWrapper implements OrderResult {
 	int hexNo;
 
 	public String getCharacterName() {
-		return characterName;
+		return this.characterName;
 	}
 
 	public void setCharacterName(String characterName) {
@@ -24,13 +24,14 @@ public class RevealCharacterTrueResultWrapper implements OrderResult {
 	}
 
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 
 	public void setHexNo(int hexNo) {
 		this.hexNo = hexNo;
 	}
 
+	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String casterName) {
 		Container<Character> chars = turn.getCharacters();
 		Character c = chars.findFirstByProperty("name", getCharacterName());
@@ -56,7 +57,7 @@ public class RevealCharacterTrueResultWrapper implements OrderResult {
 				// check if it is LA or RC
 				if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) || DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
 					// replace info source and hexNo
-					c.setHexNo(hexNo);
+					c.setHexNo(this.hexNo);
 					c.setInfoSource(is1);
 				} else {
 					// info source is LAT or RCT

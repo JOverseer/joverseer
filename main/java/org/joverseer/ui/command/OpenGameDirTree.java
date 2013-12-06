@@ -56,7 +56,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 	public OpenGameDirTree() {
 		super("openGameDirTreeCommand");
-		gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+		this.gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 		if (!ActiveGameChecker.checkActiveGameExists())
 			return;
 
-		turnFolders.clear();
+		this.turnFolders.clear();
 
 		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 		ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[] {}, Locale.getDefault())) {
@@ -105,26 +105,26 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 					String tfp = file.getAbsolutePath() + "/" + String.format(turnFolderPattern, i);
 					File tf = new File(tfp);
 					if (tf.exists()) {
-						turnFolders.add(tf);
-						files = tf.listFiles(new XmlAndPdfFileFilter());
+						this.turnFolders.add(tf);
+						this.files = tf.listFiles(new XmlAndPdfFileFilter());
 						try {
-							log.info("Adding turn folder " + tf.getCanonicalPath() + " with " + files.length + " files.");
+							log.info("Adding turn folder " + tf.getCanonicalPath() + " with " + this.files.length + " files.");
 						} catch (Exception exc) {
 
 						}
-						fileCount += files.length;
+						fileCount += this.files.length;
 						break;
 					}
 				}
 			}
 			final int fileCountFinal = fileCount;
 			FormModel formModel = FormModelHelper.createFormModel(this);
-			monitor = new JOverseerClientProgressMonitor(formModel);
-			FormBackedDialogPage page = new FormBackedDialogPage(monitor);
-			dialog = new TitledPageApplicationDialog(page) {
+			this.monitor = new JOverseerClientProgressMonitor(formModel);
+			FormBackedDialogPage page = new FormBackedDialogPage(this.monitor);
+			this.dialog = new TitledPageApplicationDialog(page) {
 				@Override
 				protected void onAboutToShow() {
-					monitor.taskStarted(String.format("Importing Game Tree '%s'.", new Object[] { file.getAbsolutePath() }), 100 * fileCountFinal);
+					OpenGameDirTree.this.monitor.taskStarted(String.format("Importing Game Tree '%s'.", new Object[] { file.getAbsolutePath() }), 100 * fileCountFinal);
 					Thread t = new Thread(thisObj);
 					t.start();
 				}
@@ -139,41 +139,42 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 					return null;
 				}
 			};
-			dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[] {}, Locale.getDefault()));
-			dialog.showDialog();
+			this.dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[] {}, Locale.getDefault()));
+			this.dialog.showDialog();
 		}
 	}
 
+	@Override
 	public void run() {
-		Game game = gh.getGame();
+		Game game = this.gh.getGame();
 		if (game == null) {
 			return;
 		}
 		boolean errorOccurred = false;
 		boolean warningOccurred = false;
-		for (File tf : turnFolders) {
-			files = getFilesRecursive(tf, new XmlAndPdfFileFilter());
-			for (File f : files) {
+		for (File tf : this.turnFolders) {
+			this.files = getFilesRecursive(tf, new XmlAndPdfFileFilter());
+			for (File f : this.files) {
 				if (f.getAbsolutePath().endsWith(".xml")) {
 					try {
-						monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+						this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
 
 						final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
-						r.setMonitor(monitor);
+						r.setMonitor(this.monitor);
 						r.run();
 						if (r.getErrorOccured()) {
 							errorOccurred = true;
 						}
 						if (game.getMetadata().getNewXmlFormat()) {
 							final TurnNewXmlReader xr = new TurnNewXmlReader(game, "file:///" + f.getCanonicalPath(), r.getTurnInfo().getNationNo());
-							xr.setMonitor(monitor);
+							xr.setMonitor(this.monitor);
 							xr.run();
 							if (xr.getErrorOccured()) {
 								errorOccurred = true;
 							}
 						}
 					} catch (Exception exc) {
-						monitor.subTaskStarted(exc.getMessage());
+						this.monitor.subTaskStarted(exc.getMessage());
 						// do nothing
 						// todo fix
 					}
@@ -181,19 +182,19 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 			}
 			if (!game.getMetadata().getNewXmlFormat()) {
-				for (File f : files) {
+				for (File f : this.files) {
 					if (f.getAbsolutePath().endsWith(".pdf")) {
 						try {
-							monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+							this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
 
 							final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-							r.setMonitor(monitor);
+							r.setMonitor(this.monitor);
 							r.run();
 							if (r.getErrorOccurred()) {
 								warningOccurred = true;
 							}
 						} catch (Exception exc) {
-							monitor.subTaskStarted(exc.getMessage());
+							this.monitor.subTaskStarted(exc.getMessage());
 							// do nothing
 							// todo fix
 						}
@@ -212,13 +213,14 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 		} else {
 			globalMsg = "Import was successful.";
 		}
-		monitor.setGlobalMessage(globalMsg);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
-		monitor.done();
-		dialog.setDescription("Processing finished.");
+		this.monitor.setGlobalMessage(globalMsg);
+		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this.gh.getGame(), this));
+		this.monitor.done();
+		this.dialog.setDescription("Processing finished.");
 	}
 
 	class XmlAndPdfFileFilter implements FileFilter {
+		@Override
 		public boolean accept(File file) {
 			return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
 		}
@@ -226,9 +228,10 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 	private File[] getFilesRecursive(File folder, FileFilter filter) {
 		ArrayList<File> ret = new ArrayList<File>();
-		File[] files = folder.listFiles(filter);
-		ret.addAll(Arrays.asList(files));
+		File[] files1 = folder.listFiles(filter);
+		ret.addAll(Arrays.asList(files1));
 		FileFilter folderFilter = new FileFilter() {
+			@Override
 			public boolean accept(File pathname) {
 				return pathname.isDirectory();
 			}
@@ -242,6 +245,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 	class FileComparator implements Comparator<File> {
 
+		@Override
 		public int compare(File arg0, File arg1) {
 			String fn1 = arg0.getName();
 			String fn2 = arg1.getName();

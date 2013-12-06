@@ -13,7 +13,7 @@ public class EncounterWrapper {
     String description;
     
     public String getCharacter() {
-        return character;
+        return this.character;
     }
     
     public void setCharacter(String character) {
@@ -21,7 +21,7 @@ public class EncounterWrapper {
     }
     
     public String getDescription() {
-        return description;
+        return this.description;
     }
     
     public void setDescription(String description) {
@@ -30,7 +30,7 @@ public class EncounterWrapper {
     }
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {

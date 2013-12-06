@@ -5,9 +5,7 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.springframework.binding.PropertyAccessStrategy;
-import org.springframework.core.closure.Constraint;
 import org.springframework.rules.Rules;
-import org.springframework.rules.constraint.CompoundConstraint;
 import org.springframework.rules.constraint.property.AbstractPropertyConstraint;
 import org.springframework.rules.support.DefaultRulesSource;
 

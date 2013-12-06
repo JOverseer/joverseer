@@ -15,11 +15,12 @@ public class OrFilter extends AbstractListViewFilter {
 	}
 	
 	public void addFilter(AbstractListViewFilter filter) {
-		filters.add(filter);
+		this.filters.add(filter);
 	}
 
+	@Override
 	public boolean accept(Object obj) {
-		for (AbstractListViewFilter filter : filters) {
+		for (AbstractListViewFilter filter : this.filters) {
 			if (filter == null) continue;
 			if (filter.accept(obj)) return true;
 		}

@@ -21,7 +21,7 @@ public class HexWrapper {
 	Integer ports;
 
 	public Integer getForts() {
-		return forts;
+		return this.forts;
 	}
 
 	public void setForts(Integer forts) {
@@ -29,7 +29,7 @@ public class HexWrapper {
 	}
 
 	public Integer getPorts() {
-		return ports;
+		return this.ports;
 	}
 
 	public void setPorts(Integer ports) {
@@ -37,7 +37,7 @@ public class HexWrapper {
 	}
 
 	public Integer getBridges() {
-		return bridges;
+		return this.bridges;
 	}
 
 	public void setBridges(Integer bridges) {
@@ -45,7 +45,7 @@ public class HexWrapper {
 	}
 
 	public Integer getFords() {
-		return fords;
+		return this.fords;
 	}
 
 	public void setFords(Integer fords) {
@@ -53,7 +53,7 @@ public class HexWrapper {
 	}
 
 	public int getHexID() {
-		return hexID;
+		return this.hexID;
 	}
 
 	public void setHexID(int hexID) {
@@ -61,7 +61,7 @@ public class HexWrapper {
 	}
 
 	public Integer getMajorRivers() {
-		return majorRivers;
+		return this.majorRivers;
 	}
 
 	public void setMajorRivers(Integer majorRivers) {
@@ -69,7 +69,7 @@ public class HexWrapper {
 	}
 
 	public Integer getMinorRivers() {
-		return minorRivers;
+		return this.minorRivers;
 	}
 
 	public void setMinorRivers(Integer minorRivers) {
@@ -77,7 +77,7 @@ public class HexWrapper {
 	}
 
 	public String getPopCenterName() {
-		return popCenterName;
+		return this.popCenterName;
 	}
 
 	public void setPopCenterName(String popCenterName) {
@@ -85,7 +85,7 @@ public class HexWrapper {
 	}
 
 	public Integer getPopCenterSize() {
-		return popCenterSize;
+		return this.popCenterSize;
 	}
 
 	public void setPopCenterSize(Integer popCenterSize) {
@@ -93,7 +93,7 @@ public class HexWrapper {
 	}
 
 	public Integer getRoads() {
-		return roads;
+		return this.roads;
 	}
 
 	public void setRoads(Integer roads) {
@@ -101,7 +101,7 @@ public class HexWrapper {
 	}
 
 	public int getTerrain() {
-		return terrain;
+		return this.terrain;
 	}
 
 	public void setTerrain(int terrain) {

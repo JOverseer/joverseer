@@ -30,7 +30,7 @@ public class Map
 
     public Map()
     {
-        hexes = new Vector();
+        this.hexes = new Vector();
     }
 
     int calcArmyMovement(int startLoc, int direction, boolean cavalryOnly)
@@ -47,10 +47,10 @@ public class Map
             return -1;
         }
         boolean road = startHex.hasFeature(5, direction);
-        int base = cavalryOnly ? cavMove[endHex.getTerrain()] : infMove[endHex.getTerrain()];
+        int base = cavalryOnly ? this.cavMove[endHex.getTerrain()] : this.infMove[endHex.getTerrain()];
         if(road)
         {
-            base = cavalryOnly ? cavRoad[endHex.getTerrain()] : infRoad[endHex.getTerrain()];
+            base = cavalryOnly ? this.cavRoad[endHex.getTerrain()] : this.infRoad[endHex.getTerrain()];
         }
         if(base == -1)
         {
@@ -104,10 +104,10 @@ public class Map
 
     public Hex findHex(int location)
     {
-        int size = hexes.size();
+        int size = this.hexes.size();
         for(int i = 0; i < size; i++)
         {
-            Hex hex = (Hex)hexes.get(i);
+            Hex hex = (Hex)this.hexes.get(i);
             if(hex.getLocation() == location)
             {
                 return hex;
@@ -150,15 +150,15 @@ public class Map
 
     public void addHex(Hex hex)
     {
-        hexes.add(((Object) (hex)));
+        this.hexes.add(((Object) (hex)));
     }
 
     public boolean isMapComplete()
     {
-        int size = hexes.size();
+        int size = this.hexes.size();
         for(int i = 0; i < size; i++)
         {
-            Hex hex = (Hex)hexes.get(i);
+            Hex hex = (Hex)this.hexes.get(i);
             if(!hex.isHexComplete())
             {
                 return false;

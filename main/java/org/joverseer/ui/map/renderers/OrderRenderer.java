@@ -45,15 +45,15 @@ public class OrderRenderer extends DefaultHexRenderer {
 	OrderVisualizationData orderVisualizationData = null;
 
 	private OrderVisualizationData getOrderVisualizationData() {
-		if (orderVisualizationData == null) {
-			orderVisualizationData = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+		if (this.orderVisualizationData == null) {
+			this.orderVisualizationData = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
 		}
-		return orderVisualizationData;
+		return this.orderVisualizationData;
 	}
 
 	private boolean drawOrders() {
-		HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-		Object obj = mapOptions.get(MapOptionsEnum.DrawOrders);
+		HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+		Object obj = mapOptions1.get(MapOptionsEnum.DrawOrders);
 		if (obj == null)
 			return false;
 		if (obj == MapOptionValuesEnum.DrawOrdersOn) {
@@ -77,7 +77,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	public boolean render(Object obj, Graphics2D g, int x, int y, boolean doRender) {
-		if (mapMetadata == null)
+		if (this.mapMetadata == null)
 			init();
 
 		// todo render order
@@ -592,8 +592,8 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private boolean drawCharNames() {
-		HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-		Object obj = mapOptions.get(MapOptionsEnum.DrawNamesOnOrders);
+		HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
+		Object obj = mapOptions1.get(MapOptionsEnum.DrawNamesOnOrders);
 		if (obj == null)
 			return false;
 		if (obj == MapOptionValuesEnum.DrawNamesOnOrdersOn) {

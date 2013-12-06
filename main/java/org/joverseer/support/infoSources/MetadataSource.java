@@ -8,15 +8,18 @@ package org.joverseer.support.infoSources;
 public class MetadataSource extends InfoSource {
     private static final long serialVersionUID = 9182797701178648131L;
 
+	@Override
 	public int getTurnNo() {
         return -1;
     }
 
-    public void setTurnNo(int turnNo) {
+    @Override
+	public void setTurnNo(int turnNo) {
         // do nothing
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
     	return "Starting info";
     }
 }

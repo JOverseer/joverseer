@@ -20,8 +20,9 @@ public class Company implements IHasMapLocation, Serializable {
     ArrayList<String>members = new ArrayList<String>();
     InfoSource infoSource;
     
-    public int getX() {
-        return x;
+    @Override
+	public int getX() {
+        return this.x;
     }
 
     
@@ -30,8 +31,9 @@ public class Company implements IHasMapLocation, Serializable {
     }
 
     
-    public int getY() {
-        return y;
+    @Override
+	public int getY() {
+        return this.y;
     }
 
     
@@ -40,22 +42,22 @@ public class Company implements IHasMapLocation, Serializable {
     }
     
     public int getHexNo() {
-        return x * 100 + y;
+        return this.x * 100 + this.y;
     }
     
     public void setHexNo(int hexNo) {
-        x = hexNo / 100;
-        y = hexNo % 100;
+        this.x = hexNo / 100;
+        this.y = hexNo % 100;
     }
     
     public void addMember(String member) {
-        members.add(member);
+        this.members.add(member);
     }
 
 
     
     public String getCommander() {
-        return commander;
+        return this.commander;
     }
 
 
@@ -67,13 +69,13 @@ public class Company implements IHasMapLocation, Serializable {
 
     
     public ArrayList<String> getMembers() {
-        return members;
+        return this.members;
     }
 
 
     
     public InfoSource getInfoSource() {
-        return infoSource;
+        return this.infoSource;
     }
 
 

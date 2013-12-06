@@ -38,23 +38,25 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	Integer goldProduction;
 
 	public int getBuyUnits(ProductEnum p) {
-		return buyUnits.getProduct(p) == null ? 0 : buyUnits.getProduct(p);
+		return this.buyUnits.getProduct(p) == null ? 0 : this.buyUnits.getProduct(p).intValue();
 	}
 
 	public void setBuyUnits(ProductEnum p, Integer amount) {
 		this.buyUnits.setProduct(p, amount);
 	}
 
+	@Override
 	public Integer getNationNo() {
-		return nationNo;
+		return this.nationNo;
 	}
 
+	@Override
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
 
 	public int getSellPct(ProductEnum p) {
-		return sellPct.getProduct(p) == null ? 0 : sellPct.getProduct(p);
+		return this.sellPct.getProduct(p) == null ? 0 : this.sellPct.getProduct(p).intValue();
 	}
 
 	public void setSellPct(ProductEnum p, Integer amount) {
@@ -62,7 +64,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getSellUnits(ProductEnum p) {
-		return sellUnits.getProduct(p) == null ? 0 : sellUnits.getProduct(p);
+		return this.sellUnits.getProduct(p) == null ? 0 : this.sellUnits.getProduct(p).intValue();
 	}
 
 	public void setSellUnits(ProductEnum p, Integer amount) {
@@ -70,35 +72,35 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getBidUnits(ProductEnum p) {
-		if (bidUnits == null) {
-			bidUnits = new ProductContainer();
+		if (this.bidUnits == null) {
+			this.bidUnits = new ProductContainer();
 		}
-		return bidUnits.getProduct(p) == null ? 0 : bidUnits.getProduct(p);
+		return this.bidUnits.getProduct(p) == null ? 0 : this.bidUnits.getProduct(p).intValue();
 	}
 
 	public void setBidUnits(ProductEnum p, Integer amount) {
-		if (bidUnits == null) {
-			bidUnits = new ProductContainer();
+		if (this.bidUnits == null) {
+			this.bidUnits = new ProductContainer();
 		}
 		this.bidUnits.setProduct(p, amount);
 	}
 
 	public int getBidPrice(ProductEnum p) {
-		if (bidPrices == null) {
-			bidPrices = new ProductContainer();
+		if (this.bidPrices == null) {
+			this.bidPrices = new ProductContainer();
 		}
-		return bidPrices.getProduct(p) == null ? 0 : bidPrices.getProduct(p);
+		return this.bidPrices.getProduct(p) == null ? 0 : this.bidPrices.getProduct(p).intValue();
 	}
 
 	public void setBidPrice(ProductEnum p, Integer amount) {
-		if (bidPrices == null) {
-			bidPrices = new ProductContainer();
+		if (this.bidPrices == null) {
+			this.bidPrices = new ProductContainer();
 		}
 		this.bidPrices.setProduct(p, amount);
 	}
 
 	public int getOrdersCost() {
-		return ordersCost;
+		return this.ordersCost;
 	}
 
 	public void setOrdersCost(int ordersCost) {
@@ -106,7 +108,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getProductionFactor() {
-		return productionFactor;
+		return this.productionFactor;
 	}
 
 	public void setProductionFactor(int productionFactor) {
@@ -130,10 +132,10 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		int sum = 0;
 		for (PopulationCenter pc : natpcs) {
 			if (pc.getProduction(p) != null) {
-				sum += pc.getProduction(p) * getProductionFactor() / 100;
+				sum += pc.getProduction(p).intValue() * getProductionFactor() / 100;
 			}
 		}
-		return getNationEconomy().getProduction(p) * getProductionFactor() / 100 - sum;
+		return getNationEconomy().getProduction(p).intValue() * getProductionFactor() / 100 - sum;
 	}
 
 	public int getStores(ProductEnum p) {
@@ -145,10 +147,10 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		int sum = 0;
 		for (PopulationCenter pc : natpcs) {
 			if (pc.getStores(p) != null) {
-				sum += pc.getStores(p);
+				sum += pc.getStores(p).intValue();
 			}
 		}
-		return getNationEconomy().getStores(p) - sum;
+		return getNationEconomy().getStores(p).intValue() - sum;
 	}
 
 	public int getTotal(ProductEnum p) {
@@ -200,7 +202,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
 			try {
 				marketLimit = Integer.parseInt(pval);
-			} catch (Exception exc) {
+			} catch (NumberFormatException exc) {
 			}
 
 			return marketLimit > profits ? profits : marketLimit;
@@ -224,7 +226,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public boolean getSellBonus() {
-		return sellBonus;
+		return this.sellBonus;
 	}
 
 	public void setSellBonus(boolean sellBonus) {
@@ -232,7 +234,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public Integer getGoldProduction() {
-		return goldProduction;
+		return this.goldProduction;
 	}
 
 	public void setGoldProduction(Integer goldProduction) {
@@ -240,7 +242,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public Integer getTaxRate() {
-		return taxRate;
+		return this.taxRate;
 	}
 
 	public void setTaxRate(Integer taxRate) {
@@ -255,7 +257,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			setBidUnits(p, 0);
 			setBidPrice(p, 0);
 		}
-		for (Character c : GameHolder.instance().getGame().getTurn().getCharacters().findAllByProperty("nationNo", nationNo)) {
+		for (Character c : GameHolder.instance().getGame().getTurn().getCharacters().findAllByProperty("nationNo", this.nationNo)) {
 			for (int i = 0; i < c.getNumberOfOrders(); i++) {
 				if (c.getOrders()[i].isBlank())
 					continue;
@@ -267,7 +269,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 				Integer p1 = null;
 				try {
 					p1 = Integer.parseInt(o.getP1());
-				} catch (Exception exc) {
+				} catch (NumberFormatException exc) {
 					// nothing
 				}
 				if (p == null || p1 == null)
@@ -277,7 +279,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 					try {
 						setBidPrice(p, Integer.parseInt(o.getP2()));
 						setBidUnits(p, p1);
-					} catch (Exception exc) {
+					} catch (NumberFormatException exc) {
 						// nothing
 					}
 				} else if (no == 315) {

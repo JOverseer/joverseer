@@ -15,7 +15,7 @@ public class TrackCharacterInfo implements IHasMapLocation {
     int hexNo;
     
     public String getInfo() {
-        return info;
+        return this.info;
     }
     
     public void setInfo(String info) {
@@ -23,7 +23,7 @@ public class TrackCharacterInfo implements IHasMapLocation {
     }
     
     public int getTurnNo() {
-        return turnNo;
+        return this.turnNo;
     }
     
     public void setTurnNo(int turnNo) {
@@ -32,7 +32,7 @@ public class TrackCharacterInfo implements IHasMapLocation {
 
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
 
     
@@ -40,11 +40,13 @@ public class TrackCharacterInfo implements IHasMapLocation {
         this.hexNo = hexNo;
     }
 
-    public int getX() {
+    @Override
+	public int getX() {
         return getHexNo() / 100;
     }
 
-    public int getY() {
+    @Override
+	public int getY() {
         return getHexNo() % 100;
     }
     

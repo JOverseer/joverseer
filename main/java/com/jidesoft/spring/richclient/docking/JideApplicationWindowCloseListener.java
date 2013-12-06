@@ -23,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.richclient.application.ApplicationWindow;
 
 import com.jidesoft.docking.DockingManager;
-import com.jidesoft.spring.richclient.perspective.Perspective;
 
 /**
  * A window closing listener that can (and does by default)
@@ -34,6 +33,7 @@ import com.jidesoft.spring.richclient.perspective.Perspective;
  */
 public class JideApplicationWindowCloseListener extends WindowAdapter{
 
+	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(JideApplicationWindowCloseListener.class);
 	private ApplicationWindow window;
 	private DockingManager manager;
@@ -49,11 +49,12 @@ public class JideApplicationWindowCloseListener extends WindowAdapter{
 		this.saveLayoutOnClose = saveLayoutOnClose;
 	}
 	
+	@Override
 	public void windowClosing(WindowEvent event) {
-		if(saveLayoutOnClose){
-			((JideApplicationWindow)window).saveLayoutData();
+		if(this.saveLayoutOnClose){
+			((JideApplicationWindow)this.window).saveLayoutData();
 		}
-		window.close();
+		this.window.close();
 	}
 	
 	

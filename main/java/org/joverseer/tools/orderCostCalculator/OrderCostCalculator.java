@@ -166,20 +166,20 @@ public class OrderCostCalculator {
 			String weapons = o.getParameter(1);
 			String armor = o.getParameter(2);
 			if (troopType.equals("hc") || troopType.equals("lc")) {
-				cont.setProduct(ProductEnum.Mounts, number);
-				cont.setProduct(ProductEnum.Leather, number * 2);
+				this.cont.setProduct(ProductEnum.Mounts, number);
+				this.cont.setProduct(ProductEnum.Leather, number * 2);
 			}
 			if (!weapons.equals("wo")) {
 				ProductEnum p = ProductEnum.getFromCode(weapons);
-				cont.setProduct(p, number);
+				this.cont.setProduct(p, number);
 			}
 			if (!armor.equals("no")) {
 				ProductEnum p = ProductEnum.getFromCode(weapons);
-				Integer v = cont.getProduct(p);
+				Integer v = this.cont.getProduct(p);
 				if (v == null)
 					v = 0;
 				v += number;
-				cont.setProduct(p, v);
+				this.cont.setProduct(p, v);
 			}
 		} catch (Exception exc) {
 		}
@@ -195,8 +195,8 @@ public class OrderCostCalculator {
 			int no = Integer.parseInt(o.getParameter(1));
 			int bid = Integer.parseInt(o.getParameter(2));
 			int cost = no * bid;
-			cont.setProduct(ProductEnum.Gold, cost);
-			cont.setProduct(pe, -no);
+			this.cont.setProduct(ProductEnum.Gold, cost);
+			this.cont.setProduct(pe, -no);
 			return cost;
 		} catch (Exception exc) {
 			return -1;
@@ -211,8 +211,8 @@ public class OrderCostCalculator {
 			int no = Integer.parseInt(o.getParameter(1));
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int cost = no * pp.getBuyPrice();
-			cont.setProduct(ProductEnum.Gold, cost);
-			cont.setProduct(pe, -no);
+			this.cont.setProduct(ProductEnum.Gold, cost);
+			this.cont.setProduct(pe, -no);
 			return cost;
 		} catch (Exception exc) {
 			return -1;
@@ -227,8 +227,8 @@ public class OrderCostCalculator {
 			int no = Integer.parseInt(o.getParameter(1));
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int gain = -no * pp.getSellPrice();
-			cont.setProduct(ProductEnum.Gold, gain);
-			cont.setProduct(pe, no);
+			this.cont.setProduct(ProductEnum.Gold, gain);
+			this.cont.setProduct(pe, no);
 			return gain;
 		} catch (Exception exc) {
 			return -1;
@@ -245,8 +245,8 @@ public class OrderCostCalculator {
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int amt = (ne.getStores().getProduct(pe) + ne.getProduction().getProduct(pe)) * pct / 100;
 			int gain = -amt * pp.getSellPrice();
-			cont.setProduct(ProductEnum.Gold, gain);
-			cont.setProduct(pe, amt);
+			this.cont.setProduct(ProductEnum.Gold, gain);
+			this.cont.setProduct(pe, amt);
 			return gain;
 		} catch (Exception exc) {
 			return -1;
@@ -254,22 +254,22 @@ public class OrderCostCalculator {
 	}
 
 	public int researchSpellCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 1000);
+		this.cont.setProduct(ProductEnum.Gold, 1000);
 		return 1000;
 	}
 
 	public int nameNewMageCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 5000);
+		this.cont.setProduct(ProductEnum.Gold, 5000);
 		return 5000;
 	}
 
 	public int nameNewEmissaryCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 5000);
+		this.cont.setProduct(ProductEnum.Gold, 5000);
 		return 5000;
 	}
 
 	public int createCampCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 2000);
+		this.cont.setProduct(ProductEnum.Gold, 2000);
 		return 2000;
 	}
 
@@ -289,26 +289,26 @@ public class OrderCostCalculator {
 		} else if (pc.getSize() == PopulationCenterSizeEnum.city) {
 			cost = -1;
 		}
-		cont.setProduct(ProductEnum.Gold, cost);
+		this.cont.setProduct(ProductEnum.Gold, cost);
 		return cost;
 	}
 
 	public int addHarborCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 2500);
-		cont.setProduct(ProductEnum.Timber, 5000);
+		this.cont.setProduct(ProductEnum.Gold, 2500);
+		this.cont.setProduct(ProductEnum.Timber, 5000);
 		return 2500;
 	}
 
 	public int improveHarborCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 4000);
-		cont.setProduct(ProductEnum.Timber, 7500);
+		this.cont.setProduct(ProductEnum.Gold, 4000);
+		this.cont.setProduct(ProductEnum.Timber, 7500);
 		return 4000;
 	}
 
 	public int bribeCost(Order o) {
 		try {
 			int no = Integer.parseInt(o.getParameter(1));
-			cont.setProduct(ProductEnum.Gold, no);
+			this.cont.setProduct(ProductEnum.Gold, no);
 			return no;
 		} catch (Exception exc) {
 			return -1;
@@ -318,7 +318,7 @@ public class OrderCostCalculator {
 	public int offerRansomCost(Order o) {
 		try {
 			int no = Integer.parseInt(o.getParameter(1));
-			cont.setProduct(ProductEnum.Gold, no);
+			this.cont.setProduct(ProductEnum.Gold, no);
 			return no;
 		} catch (Exception exc) {
 			return -1;
@@ -326,21 +326,21 @@ public class OrderCostCalculator {
 	}
 
 	public int nameNewAgentCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 5000);
+		this.cont.setProduct(ProductEnum.Gold, 5000);
 		return 5000;
 	}
 
 	public int makeTransportsCost(Order o) {
 		try {
 			int no = Integer.parseInt(o.getParameter(0));
-			cont.setProduct(ProductEnum.Gold, no * 1000);
+			this.cont.setProduct(ProductEnum.Gold, no * 1000);
 			int f = 1;
 			if (getMetadataNation(o).getSnas().contains(SNAEnum.ShipsWith500Timber)) {
 				f = 3;
 			} else if (getMetadataNation(o).getSnas().contains(SNAEnum.ShipsWith750Timber)) {
 				f = 2;
 			}
-			cont.setProduct(ProductEnum.Timber, no * 1500 / f);
+			this.cont.setProduct(ProductEnum.Timber, no * 1500 / f);
 			return no * 1000;
 		} catch (Exception exc) {
 			return -1;
@@ -350,14 +350,14 @@ public class OrderCostCalculator {
 	public int makeWarshipsCost(Order o) {
 		try {
 			int no = Integer.parseInt(o.getParameter(0));
-			cont.setProduct(ProductEnum.Gold, no * 1000);
+			this.cont.setProduct(ProductEnum.Gold, no * 1000);
 			int f = 1;
 			if (getMetadataNation(o).getSnas().contains(SNAEnum.ShipsWith500Timber)) {
 				f = 3;
 			} else if (getMetadataNation(o).getSnas().contains(SNAEnum.ShipsWith750Timber)) {
 				f = 2;
 			}
-			cont.setProduct(ProductEnum.Timber, no * 1500 / f);
+			this.cont.setProduct(ProductEnum.Timber, no * 1500 / f);
 			return no * 1000;
 		} catch (Exception exc) {
 			return -1;
@@ -367,7 +367,7 @@ public class OrderCostCalculator {
 	public int makeWarMachinesCost(Order o) {
 		try {
 			int no = Integer.parseInt(o.getParameter(0));
-			cont.setProduct(ProductEnum.Timber, no * 500);
+			this.cont.setProduct(ProductEnum.Timber, no * 500);
 			return 0;
 		} catch (Exception exc) {
 			return -1;
@@ -375,7 +375,7 @@ public class OrderCostCalculator {
 	}
 
 	public int relocateCapitalCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 30000);
+		this.cont.setProduct(ProductEnum.Gold, 30000);
 		return 30000;
 	}
 
@@ -385,7 +385,7 @@ public class OrderCostCalculator {
 		if (n != null && n.hasSna(SNAEnum.FreeHire)) {
 			cost = 0;
 		}
-		cont.setProduct(ProductEnum.Gold, cost);
+		this.cont.setProduct(ProductEnum.Gold, cost);
 
 		// get troop type
 		try {
@@ -394,43 +394,43 @@ public class OrderCostCalculator {
 			String weapons = o.getParameter(2);
 			String armor = o.getParameter(3);
 			Integer food = Integer.parseInt(o.getParameter(4));
-			cont.setProduct(ProductEnum.Food, food);
+			this.cont.setProduct(ProductEnum.Food, food);
 			if (troopType.equals("hc") || troopType.equals("lc")) {
-				cont.setProduct(ProductEnum.Mounts, number);
-				cont.setProduct(ProductEnum.Leather, number * 2);
+				this.cont.setProduct(ProductEnum.Mounts, number);
+				this.cont.setProduct(ProductEnum.Leather, number * 2);
 			}
 			if (!weapons.equals("wo")) {
 				ProductEnum p = ProductEnum.getFromCode(weapons);
-				cont.setProduct(p, number);
+				this.cont.setProduct(p, number);
 			}
 			if (!armor.equals("no")) {
 				ProductEnum p = ProductEnum.getFromCode(weapons);
-				Integer v = cont.getProduct(p);
+				Integer v = this.cont.getProduct(p);
 				if (v == null)
 					v = 0;
 				v += number;
-				cont.setProduct(p, v);
+				this.cont.setProduct(p, v);
 			}
 
 		} catch (Exception exc) {
 
 		}
 
-		return cont.getProduct(ProductEnum.Gold);
+		return this.cont.getProduct(ProductEnum.Gold);
 	}
 
 	public int nameNewCommanderCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 5000);
+		this.cont.setProduct(ProductEnum.Gold, 5000);
 		return 5000;
 	}
 
 	public int nameNewCharCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 10000);
+		this.cont.setProduct(ProductEnum.Gold, 10000);
 		return 10000;
 	}
 
 	public int postCampCost(Order o) {
-		cont.setProduct(ProductEnum.Gold, 4000);
+		this.cont.setProduct(ProductEnum.Gold, 4000);
 		return 4000;
 	}
 
@@ -439,30 +439,30 @@ public class OrderCostCalculator {
 		if (pc == null)
 			return -1;
 		if (pc.getFortification() == FortificationSizeEnum.none) {
-			cont.setProduct(ProductEnum.Gold, 1000);
-			cont.setProduct(ProductEnum.Timber, 1000);
+			this.cont.setProduct(ProductEnum.Gold, 1000);
+			this.cont.setProduct(ProductEnum.Timber, 1000);
 		} else if (pc.getFortification() == FortificationSizeEnum.tower) {
-			cont.setProduct(ProductEnum.Gold, 3000);
-			cont.setProduct(ProductEnum.Timber, 3000);
+			this.cont.setProduct(ProductEnum.Gold, 3000);
+			this.cont.setProduct(ProductEnum.Timber, 3000);
 		} else if (pc.getFortification() == FortificationSizeEnum.fort) {
-			cont.setProduct(ProductEnum.Gold, 5000);
-			cont.setProduct(ProductEnum.Timber, 5000);
+			this.cont.setProduct(ProductEnum.Gold, 5000);
+			this.cont.setProduct(ProductEnum.Timber, 5000);
 		} else if (pc.getFortification() == FortificationSizeEnum.castle) {
-			cont.setProduct(ProductEnum.Gold, 8000);
-			cont.setProduct(ProductEnum.Timber, 8000);
+			this.cont.setProduct(ProductEnum.Gold, 8000);
+			this.cont.setProduct(ProductEnum.Timber, 8000);
 		} else if (pc.getFortification() == FortificationSizeEnum.keep) {
-			cont.setProduct(ProductEnum.Gold, 12000);
-			cont.setProduct(ProductEnum.Timber, 12000);
+			this.cont.setProduct(ProductEnum.Gold, 12000);
+			this.cont.setProduct(ProductEnum.Timber, 12000);
 		} else if (pc.getFortification() == FortificationSizeEnum.citadel) {
 			return -1;
 		}
 
 		// check SNA
 		if (getMetadataNation(o).getSnas().contains(SNAEnum.FortificationsWithHalfTimber)) {
-			cont.setProduct(ProductEnum.Timber, cont.getProduct(ProductEnum.Timber) / 2);
+			this.cont.setProduct(ProductEnum.Timber, this.cont.getProduct(ProductEnum.Timber) / 2);
 		}
 
-		return cont.getProduct(ProductEnum.Gold);
+		return this.cont.getProduct(ProductEnum.Gold);
 	}
 
 	public int buildBridgeCost(Order o) {
@@ -489,13 +489,13 @@ public class OrderCostCalculator {
 		if (side == null)
 			return -1;
 		if (hex.getHexSideElements(side).contains(HexSideElementEnum.MajorRiver)) {
-			cont.setProduct(ProductEnum.Gold, 5000);
-			cont.setProduct(ProductEnum.Timber, 10000);
+			this.cont.setProduct(ProductEnum.Gold, 5000);
+			this.cont.setProduct(ProductEnum.Timber, 10000);
 			return 5000;
 		}
 		if (hex.getHexSideElements(side).contains(HexSideElementEnum.MinorRiver)) {
-			cont.setProduct(ProductEnum.Gold, 2500);
-			cont.setProduct(ProductEnum.Timber, 5000);
+			this.cont.setProduct(ProductEnum.Gold, 2500);
+			this.cont.setProduct(ProductEnum.Timber, 5000);
 			return 2500;
 		}
 		return 0;
@@ -528,7 +528,7 @@ public class OrderCostCalculator {
 	}
 
 	public ProductContainer getContainer() {
-		return cont;
+		return this.cont;
 	}
 
 }

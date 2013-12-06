@@ -35,9 +35,10 @@ public class SwitchPerspectiveCommand extends ApplicationWindowAwareCommand{
 		this.perspective = perspective;
 	}
 	
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	JideApplicationWindow window = 
     		(JideApplicationWindow)Application.instance().getActiveWindow();
-    	perspective.switchPerspective(window);
+    	this.perspective.switchPerspective(window);
     }
 }

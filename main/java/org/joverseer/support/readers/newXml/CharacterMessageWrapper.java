@@ -33,7 +33,7 @@ public class CharacterMessageWrapper {
 	ArrayList<String> lines = new ArrayList<String>();
 
 	public String getCharId() {
-		return charId;
+		return this.charId;
 	}
 
 	public void setCharId(String charId) {
@@ -41,7 +41,7 @@ public class CharacterMessageWrapper {
 	}
 
 	public ArrayList<String> getLines() {
-		return lines;
+		return this.lines;
 	}
 
 	public void setLines(ArrayList<String> lines) {
@@ -49,12 +49,12 @@ public class CharacterMessageWrapper {
 	}
 
 	public void addLine(String line) {
-		lines.add(line);
+		this.lines.add(line);
 	}
 
 	public String getOrdersAsString() {
 		String ret = "";
-		for (String line : lines) {
+		for (String line : this.lines) {
 			ret += (ret.equals("") ? "" : " ") + line;
 		}
 		return ret;
@@ -90,7 +90,7 @@ public class CharacterMessageWrapper {
 	protected Integer getLastSeenLocation() {
 		// 2010 02 09 - KS Specific, parse
 		// "{Dervorin} has gone missing. She was last seen in the Mixed Forest at 1908. No one seems to know what has happened to her."
-		for (String line : lines) {
+		for (String line : this.lines) {
 			if (line.indexOf("was last seen ") > -1 && line.indexOf("was located in an unknown location") == -1) {
 				String[] sentences = line.split("\\.");
 				if (sentences.length > 1 && sentences[1].indexOf("was last seen") > -1) {
@@ -108,7 +108,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected Integer getOriginalLocation() {
-		for (String line : lines) {
+		for (String line : this.lines) {
 			if (line.indexOf("was located") > -1 && line.indexOf("was located in an unknown location") == -1) {
 				String hexNo = line.substring(line.length() - 5, line.length() - 1);
 				try {
@@ -123,7 +123,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected boolean getAssassinated(Character c) {
-		for (String line : lines) {
+		for (String line : this.lines) {
 			if (line.indexOf(c.getName() + " was assassinated.") > -1)
 				return true;
 		}
@@ -131,7 +131,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected boolean getMissing(Character c) {
-		for (String line : lines) {
+		for (String line : this.lines) {
 			if (line.indexOf(c.getName() + " has gone missing.") > -1)
 				return true;
 		}
@@ -139,7 +139,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected boolean getCursed(Character c) {
-		for (String line : lines) {
+		for (String line : this.lines) {
 			if (line.indexOf("was killed due to a mysterious and deadly curse.") > -1)
 				return true;
 			if (line.indexOf("was killed due to a mysterious and severe sickness.") > -1)
@@ -151,7 +151,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected boolean getExecuted(Character c) {
-		for (String line : lines) {
+		for (String line : this.lines) {
 			if (line.indexOf(c.getName() + " was executed.") > -1)
 				return true;
 		}
@@ -160,7 +160,7 @@ public class CharacterMessageWrapper {
 
 	public ArrayList<OrderResult> getOrderResults(InfoSource infoSource) {
 		ArrayList<OrderResult> ret = new ArrayList<OrderResult>();
-		for (String line : lines) {
+		for (String line : this.lines) {
 			line = line.replace("\n", " ").replace("\n", " ");
 			OrderResult or = null;
 			or = getAssassinationOrderResult(line);
@@ -275,7 +275,7 @@ public class CharacterMessageWrapper {
 			if (line.contains("A scout of the hex was attempted.")) {
 				line = StringUtils.replaceNationNames(line);
 				ScoutHexResult result = new ScoutHexResult();
-				String climate = StringUtils.getUniquePart(line, "Climate is ", "Cool|Cold|Mild|Warm|Polar|Hot", false, true);
+				//String climate = StringUtils.getUniquePart(line, "Climate is ", "Cool|Cold|Mild|Warm|Polar|Hot", false, true);
 				String foreignArmies = StringUtils.getUniquePart(line, "Foreign armies present:", "\\.", false, false);
 				if (foreignArmies != null) {
 					String[] fas = foreignArmies.split("\\-");
@@ -398,28 +398,28 @@ public class CharacterMessageWrapper {
 			String[] chs = chars.split("\\.");
 			for (String ch : chs) {
 				ch = ch.trim();
-				String allegiance = null;
-				String gender = null;
+//				String allegiance = null;
+//				String gender = null;
 				boolean unknown = false;
 				if (ch.contains(" - Free People")) {
-					allegiance = "FP";
+//					allegiance = "FP";
 					ch = ch.replace(" - Free People", " #allegiance#");
 				} else if (ch.contains(" - Dark Servant")) {
-					allegiance = "DS";
+//					allegiance = "DS";
 					ch = ch.replace(" - Dark Servant", " #allegiance#");
 				}
 				if (ch.endsWith(" Male")) {
-					gender = "Male";
+//					gender = "Male";
 					ch = ch.replace(" Male", "");
 				} else if (ch.endsWith(" Female")) {
-					gender = "Female";
+//					gender = "Female";
 					ch = ch.replace(" Female", "");
 				}
 				if (ch.startsWith("An unknown")) {
 					if (ch.contains("Free People")) {
-						allegiance = "FP";
+//						allegiance = "FP";
 					} else if (ch.contains("Dark Servant")) {
-						allegiance = "DS";
+//						allegiance = "DS";
 					}
 					// TODO handle these cases
 					// Character newChar = new Character();

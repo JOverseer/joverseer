@@ -33,7 +33,7 @@ public class LostPopsTableModel extends BeanTableModel {
 	}
 
 	public int getSelectedNationNo() {
-		return selectedNationNo;
+		return this.selectedNationNo;
 	}
 
 	public void setSelectedNationNo(int selectedNationNo) {

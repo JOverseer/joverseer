@@ -20,7 +20,7 @@ public class ProductWrapper {
 	int nationProduction;
 
 	public int getBuyPrice() {
-		return buyPrice;
+		return this.buyPrice;
 	}
 
 	public void setBuyPrice(int buyPrice) {
@@ -28,7 +28,7 @@ public class ProductWrapper {
 	}
 
 	public int getMarketAvail() {
-		return marketAvail;
+		return this.marketAvail;
 	}
 
 	public void setMarketAvail(int marketAvail) {
@@ -36,7 +36,7 @@ public class ProductWrapper {
 	}
 
 	public int getNationProduction() {
-		return nationProduction;
+		return this.nationProduction;
 	}
 
 	public void setNationProduction(int nationProduction) {
@@ -44,7 +44,7 @@ public class ProductWrapper {
 	}
 
 	public int getNationStores() {
-		return nationStores;
+		return this.nationStores;
 	}
 
 	public void setNationStores(int nationStores) {
@@ -52,7 +52,7 @@ public class ProductWrapper {
 	}
 
 	public int getSellPrice() {
-		return sellPrice;
+		return this.sellPrice;
 	}
 
 	public void setSellPrice(int sellPrice) {
@@ -60,7 +60,7 @@ public class ProductWrapper {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {

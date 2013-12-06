@@ -10,7 +10,8 @@ public class PalantirStyleMapCommand extends ActionCommand {
         super("palantirStyleMapCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	Application.instance().getApplicationContext().publishEvent(
                 new JOverseerEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString(), this, this));
     }

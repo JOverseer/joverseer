@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.EconomyCalculatorData;
@@ -62,17 +63,17 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.row();
 		lb.relatedGapRow();
 
-		teamEconomyTableModel = new TeamEconomyTableModel();
-		teamEconomyTable = new JOverseerTable(new com.jidesoft.grid.SortableTableModel(teamEconomyTableModel));
-		teamEconomyTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
-		teamEconomyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		for (int i = 0; i < teamEconomyTableModel.getColumnCount(); i++) {
-			teamEconomyTable.getColumnModel().getColumn(i).setPreferredWidth(teamEconomyTableModel.getColumnWidth(i));
+		this.teamEconomyTableModel = new TeamEconomyTableModel();
+		this.teamEconomyTable = new JOverseerTable(new com.jidesoft.grid.SortableTableModel(this.teamEconomyTableModel));
+		this.teamEconomyTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
+		this.teamEconomyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		for (int i = 0; i < this.teamEconomyTableModel.getColumnCount(); i++) {
+			this.teamEconomyTable.getColumnModel().getColumn(i).setPreferredWidth(this.teamEconomyTableModel.getColumnWidth(i));
 		}
-		teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer());
-		teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer());
-		teamEconomyTable.setBackground(Color.white);
-		JScrollPane scp = new JScrollPane(teamEconomyTable);
+		this.teamEconomyTable.setDefaultRenderer(Integer.class, new IntegerTeamEconomyTableRenderer());
+		this.teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer());
+		this.teamEconomyTable.setBackground(Color.white);
+		JScrollPane scp = new JScrollPane(this.teamEconomyTable);
 		scp.setPreferredSize(new Dimension(600, 250));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
@@ -81,19 +82,20 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.row();
 		lb.relatedGapRow();
 
-		showProductAsCombo = new JComboBox(new String[] { TeamEconomyTableModel.PROD_TOTAL, TeamEconomyTableModel.PROD_GAIN, TeamEconomyTableModel.PROD_PRODUCTION, TeamEconomyTableModel.PROD_STORES });
-		showProductAsCombo.addActionListener(new ActionListener() {
+		this.showProductAsCombo = new JComboBox(new String[] { TeamEconomyTableModel.PROD_TOTAL, TeamEconomyTableModel.PROD_GAIN, TeamEconomyTableModel.PROD_PRODUCTION, TeamEconomyTableModel.PROD_STORES });
+		this.showProductAsCombo.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				teamEconomyTableModel.setShowProductsAs(showProductAsCombo.getSelectedItem().toString());
-				teamEconomyTableModel.fireTableDataChanged();
+				TeamEconomyView.this.teamEconomyTableModel.setShowProductsAs(TeamEconomyView.this.showProductAsCombo.getSelectedItem().toString());
+				TeamEconomyView.this.teamEconomyTableModel.fireTableDataChanged();
 			}
 		});
-		showProductAsCombo.setPreferredSize(new Dimension(230, 20));
+		this.showProductAsCombo.setPreferredSize(new Dimension(230, 20));
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel("products: "));
 		tlb.gapCol();
-		tlb.cell(showProductAsCombo, "colspec=left:230px");
+		tlb.cell(this.showProductAsCombo, "colspec=left:230px");
 		tlb.gapCol();
 
 		lb.cell(tlb.getPanel(), "align=left");
@@ -101,6 +103,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		JButton btn = new JButton("Update market and order cost");
 		btn.setToolTipText("Updates the market profit/cost and order cost for all nations");
 		btn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!GameHolder.hasInitializedGame())
 					return;
@@ -111,7 +114,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 					ecd.updateMarketFromOrders();
 				}
 
-				teamEconomyTableModel.fireTableDataChanged();
+				TeamEconomyView.this.teamEconomyTableModel.fireTableDataChanged();
 			}
 		});
 		lb.gapCol();
@@ -123,8 +126,8 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.separator("Team Products");
 		lb.relatedGapRow();
 
-		nationProductionListView = new NationProductionListView();
-		JPanel pnl = (JPanel) nationProductionListView.getControl();
+		this.nationProductionListView = new NationProductionListView();
+		JPanel pnl = (JPanel) this.nationProductionListView.getControl();
 		pnl.setPreferredSize(new Dimension(300, 300));
 		lb.cell(pnl);
 
@@ -133,8 +136,8 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.separator("Team Economy");
 		lb.relatedGapRow();
 
-		nationEconomyListView = new NationEconomyListView();
-		pnl = (JPanel) nationEconomyListView.getControl();
+		this.nationEconomyListView = new NationEconomyListView();
+		pnl = (JPanel) this.nationEconomyListView.getControl();
 		pnl.setPreferredSize(new Dimension(300, 270));
 		lb.cell(pnl);
 
@@ -143,8 +146,8 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.separator("Team Statistics");
 		lb.relatedGapRow();
 
-		nationStatisticsListView = new NationStatisticsListView();
-		pnl = (JPanel) nationStatisticsListView.getControl();
+		this.nationStatisticsListView = new NationStatisticsListView();
+		pnl = (JPanel) this.nationStatisticsListView.getControl();
 		pnl.setPreferredSize(new Dimension(300, 270));
 		lb.cell(pnl);
 
@@ -171,29 +174,30 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 			}
 		}
 		ecds.add(null);
-		teamEconomyTableModel.setRows(ecds);
+		this.teamEconomyTableModel.setRows(ecds);
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
-		nationProductionListView.onApplicationEvent(applicationEvent);
-		nationEconomyListView.onApplicationEvent(applicationEvent);
-		nationStatisticsListView.onApplicationEvent(applicationEvent);
+		this.nationProductionListView.onApplicationEvent(applicationEvent);
+		this.nationEconomyListView.onApplicationEvent(applicationEvent);
+		this.nationStatisticsListView.onApplicationEvent(applicationEvent);
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString())) {
-				teamEconomyTableModel.fireTableDataChanged();
+				this.teamEconomyTableModel.fireTableDataChanged();
 			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
 				try {
 					refreshTableItems();
-					teamEconomyTableModel.fireTableDataChanged();
+					this.teamEconomyTableModel.fireTableDataChanged();
 				} catch (Exception exc) {
 					exc.printStackTrace();
 				}
 			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
 				refreshTableItems();
-				teamEconomyTableModel.fireTableDataChanged();
+				this.teamEconomyTableModel.fireTableDataChanged();
 			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
-				teamEconomyTableModel.fireTableDataChanged();
+				this.teamEconomyTableModel.fireTableDataChanged();
 			}
 
 		}
@@ -216,7 +220,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 					lbl.setForeground(Color.red);
 				}
 			} else if (column == TeamEconomyTableModel.iMarket) {
-				if (row < teamEconomyTableModel.getRowCount() - 1) {
+				if (row < TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
 					Integer amt = (Integer) value;
 					if (amt > EconomyCalculator.getMarketLimitWarningThreshhold()) {
 						lbl.setForeground(Color.red);
@@ -248,12 +252,12 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 				}
 			}
 
-			if (teamEconomyTableModel.getColumnClass(column) == Integer.class) {
-				lbl.setHorizontalAlignment(JLabel.RIGHT);
+			if (TeamEconomyView.this.teamEconomyTableModel.getColumnClass(column) == Integer.class) {
+				lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 			}
 
 			if (!isSelected) {
-				if (row == teamEconomyTableModel.getRowCount() - 1) {
+				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
 					lbl.setBackground(Color.decode("#d7dfe7"));
 				} else {
 					lbl.setBackground(Color.white);
@@ -272,7 +276,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (!isSelected) {
-				if (row == teamEconomyTableModel.getRowCount() - 1) {
+				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
 					lbl.setBackground(Color.decode("#d7dfe7"));
 				} else {
 					lbl.setBackground(Color.white);

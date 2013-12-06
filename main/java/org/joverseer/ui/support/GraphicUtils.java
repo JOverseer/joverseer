@@ -11,8 +11,8 @@ import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JTable;
+import javax.swing.WindowConstants;
 import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.domain.Order;
@@ -114,15 +114,16 @@ public class GraphicUtils {
 		URL styleSheet = TipOfTheDayDialog.class.getResource("/tips.css");
 		TipOfTheDayDialog dialog = new TipOfTheDayDialog((Frame) null, tipOfTheDaySource, new AbstractAction("Show Tips on startup") {
 
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() instanceof JCheckBox) {
-					JCheckBox checkBox = (JCheckBox) e.getSource();
+			@Override
+			public void actionPerformed(ActionEvent e1) {
+				if (e1.getSource() instanceof JCheckBox) {
+					JCheckBox checkBox = (JCheckBox) e1.getSource();
 					PreferenceRegistry.instance().setPreferenceValue("general.tipOfTheDay", checkBox.isSelected() ? "yes" : "no");
 				}
 			}
 		}, styleSheet);
 		dialog.setShowTooltip(PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes"));
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.setResizable(false);
 		dialog.pack();
 		JideSwingUtilities.globalCenterWindow(dialog);
@@ -151,11 +152,13 @@ public class GraphicUtils {
 				return (arg0 == null ? 0 : arg0.equals("") ? 0 : Integer.parseInt(arg0.toString()));
 			}
 
+			@Override
 			@SuppressWarnings("unchecked")
 			public Class[] getSourceClasses() {
 				return new Class[] { String.class };
 			}
 
+			@Override
 			@SuppressWarnings("unchecked")
 			public Class[] getTargetClasses() {
 				return new Class[] { Integer.class, Object.class };
@@ -172,11 +175,13 @@ public class GraphicUtils {
 				return arg0.toString();
 			}
 
+			@Override
 			@SuppressWarnings("unchecked")
 			public Class[] getSourceClasses() {
 				return new Class[] { Integer.class, Object.class };
 			}
 
+			@Override
 			@SuppressWarnings("unchecked")
 			public Class[] getTargetClasses() {
 				return new Class[] { String.class };

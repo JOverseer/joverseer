@@ -15,15 +15,15 @@ public class OrderWrapper implements Serializable {
     public OrderWrapper() {};
     
     public OrderWrapper(Order o) {
-        orderNo = o.getOrderNo();
-        parameters = o.getParameters();
-        charId = o.getCharacter().getId();
-        hexNo = o.getCharacter().getHexNo();
-        orderIdx = o.getCharacter().getOrders()[0] == o ? 0 : 1;
+        this.orderNo = o.getOrderNo();
+        this.parameters = o.getParameters();
+        this.charId = o.getCharacter().getId();
+        this.hexNo = o.getCharacter().getHexNo();
+        this.orderIdx = o.getCharacter().getOrders()[0] == o ? 0 : 1;
     }
     
     public String getCharId() {
-        return charId;
+        return this.charId;
     }
     
     public void setCharId(String charId) {
@@ -31,7 +31,7 @@ public class OrderWrapper implements Serializable {
     }
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -39,7 +39,7 @@ public class OrderWrapper implements Serializable {
     }
     
     public int getOrderIdx() {
-        return orderIdx;
+        return this.orderIdx;
     }
     
     public void setOrderIdx(int orderIdx) {
@@ -47,7 +47,7 @@ public class OrderWrapper implements Serializable {
     }
     
     public int getOrderNo() {
-        return orderNo;
+        return this.orderNo;
     }
     
     public void setOrderNo(int orderNo) {
@@ -55,7 +55,7 @@ public class OrderWrapper implements Serializable {
     }
     
     public String getParameters() {
-        return parameters;
+        return this.parameters;
     }
     
     public void setParameters(String parameters) {

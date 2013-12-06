@@ -130,81 +130,92 @@ public class HighlightCharacters extends ActionCommand {
 		Integer withinRangeOfHex = null;
 
 		public NationAllegianceEnum getAllegiance() {
-			return allegiance;
+			return this.allegiance;
 		}
 
+		@SuppressWarnings("unused")
 		public void setAllegiance(NationAllegianceEnum allegiance) {
 			this.allegiance = allegiance;
 		}
 
 		public Integer getWithinRangeOfHex() {
-			return withinRangeOfHex;
+			return this.withinRangeOfHex;
 		}
 
+		@SuppressWarnings("unused")
 		public void setWithinRangeOfHex(Integer withinRangeOfHex) {
 			this.withinRangeOfHex = withinRangeOfHex;
 		}
 
 		public String getFreeText() {
-			return freeText;
+			return this.freeText;
 		}
 
+		@SuppressWarnings("unused")
 		public void setFreeText(String freeText) {
 			this.freeText = freeText;
 		}
 
 		public Integer getMinAgentRank() {
-			return minAgentRank;
+			return this.minAgentRank;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMinAgentRank(Integer minAgentRank) {
 			this.minAgentRank = minAgentRank;
 		}
 
+		@SuppressWarnings("unused")
 		public Integer getMinChallengeRank() {
-			return minChallengeRank;
+			return this.minChallengeRank;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMinChallengeRank(Integer minChallengeRank) {
 			this.minChallengeRank = minChallengeRank;
 		}
 
 		public Integer getMinCommandRank() {
-			return minCommandRank;
+			return this.minCommandRank;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMinCommandRank(Integer minCommandRank) {
 			this.minCommandRank = minCommandRank;
 		}
 
 		public Integer getMinEmmisaryRank() {
-			return minEmmisaryRank;
+			return this.minEmmisaryRank;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMinEmmisaryRank(Integer minEmmisaryRank) {
 			this.minEmmisaryRank = minEmmisaryRank;
 		}
 
 		public Integer getMinMageRank() {
-			return minMageRank;
+			return this.minMageRank;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMinMageRank(Integer minMageRank) {
 			this.minMageRank = minMageRank;
 		}
 
 		public Integer getMinStealthRank() {
-			return minStealthRank;
+			return this.minStealthRank;
 		}
 
+		@SuppressWarnings("unused")
 		public void setMinStealthRank(Integer minStealthRank) {
 			this.minStealthRank = minStealthRank;
 		}
 
 		public Integer getNationNo() {
-			return nationNo;
+			return this.nationNo;
 		}
 
+		@SuppressWarnings("unused")
 		public void setNationNo(Integer nationNo) {
 			this.nationNo = nationNo;
 		}
@@ -235,8 +246,8 @@ public class HighlightCharacters extends ActionCommand {
 			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c.getNationNo());
-			NationAllegianceEnum allegiance = (nr != null ? nr.getAllegiance() : null);
-			if (getAllegiance() != null && getAllegiance() != allegiance)
+			NationAllegianceEnum allegiance1 = (nr != null ? nr.getAllegiance() : null);
+			if (getAllegiance() != null && getAllegiance() != allegiance1)
 				return false;
 
 			String charData = c.getName();

@@ -14,17 +14,21 @@ import javax.swing.TransferHandler;
  */
 public abstract class GenericExportTransferHandler extends TransferHandler {
 
-    public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
+    @Override
+	public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
         return false;
     }
 
-    public int getSourceActions(JComponent c) {
+    @Override
+	public int getSourceActions(JComponent c) {
         return COPY_OR_MOVE;
     }
 
-    protected void exportDone(JComponent c, Transferable data, int action) {
+    @Override
+	protected void exportDone(JComponent c, Transferable data, int action) {
     }
 
-    protected abstract Transferable createTransferable(JComponent arg0);
+    @Override
+	protected abstract Transferable createTransferable(JComponent arg0);
 
 }

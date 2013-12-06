@@ -41,12 +41,14 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
         super("setOrderEditorAutoNationsCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
         final OrderEditorAutoNationsForm frm = new OrderEditorAutoNationsForm(FormModelHelper.createFormModel(new Army()));
         FormBackedDialogPage pg = new FormBackedDialogPage(frm);
         TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 frm.commit();
                 return true;
             }
@@ -64,14 +66,15 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             super(arg0, "orderEditorAutoNationsForm");
         }
 
-        protected JComponent createFormControl() {
+        @Override
+		protected JComponent createFormControl() {
             TableLayoutBuilder tlb = new TableLayoutBuilder();
             final Game g = GameHolder.instance().getGame();
             for (int i=1; i<=25; i++) {
                 Nation n = g.getMetadata().getNationByNum(i);
                 if (n != null) {
                     JCheckBox box = new JCheckBox();
-                    checkBoxes.put(i, box);
+                    this.checkBoxes.put(i, box);
                     box.setSelected(OrderEditorAutoNations.instance().containsNation(i));
                     tlb.cell(new JLabel(n.getName()));
                     tlb.gapCol();
@@ -82,8 +85,9 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             
             JButton btn = new JButton("Select All");
             btn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    for (JCheckBox box : checkBoxes.values()) {
+                @Override
+				public void actionPerformed(ActionEvent e) {
+                    for (JCheckBox box : OrderEditorAutoNationsForm.this.checkBoxes.values()) {
                         box.setSelected(true);
                     }
                 }
@@ -93,10 +97,11 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             
             btn = new JButton("Select Imported");
             btn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    for (Integer n : checkBoxes.keySet()) {
+                @Override
+				public void actionPerformed(ActionEvent e) {
+                    for (Integer n : OrderEditorAutoNationsForm.this.checkBoxes.keySet()) {
                         PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n);
-                        checkBoxes.get(n).setSelected(pi!=null);
+                        OrderEditorAutoNationsForm.this.checkBoxes.get(n).setSelected(pi!=null);
                     }
                 }
             });
@@ -105,8 +110,9 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             
             btn = new JButton("Deselect All");
             btn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    for (JCheckBox box : checkBoxes.values()) {
+                @Override
+				public void actionPerformed(ActionEvent e) {
+                    for (JCheckBox box : OrderEditorAutoNationsForm.this.checkBoxes.values()) {
                         box.setSelected(false);
                     }
                 }
@@ -117,10 +123,11 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             return tlb.getPanel();
         }
 
-        public void commit() {
+        @Override
+		public void commit() {
             super.commit();
-            for (Integer i : checkBoxes.keySet()) {
-                if (checkBoxes.get(i).isSelected()) {
+            for (Integer i : this.checkBoxes.keySet()) {
+                if (this.checkBoxes.get(i).isSelected()) {
                     OrderEditorAutoNations.instance().addNation(i);
                 } else {
                     OrderEditorAutoNations.instance().removeNation(i);

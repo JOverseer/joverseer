@@ -28,28 +28,28 @@ public class OrderResultsView extends BaseHtmlReportView {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel("Character"));
 		tlb.gapCol();
-		tlb.cell(charName = new JTextField(), "colspec=left:100");
-		charName.setPreferredSize(new Dimension(100, 20));
+		tlb.cell(this.charName = new JTextField(), "colspec=left:100");
+		this.charName.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel("Text"));
 		tlb.gapCol();
-		tlb.cell(text = new JTextField(), "colspec=left:100");
-		text.setPreferredSize(new Dimension(100, 20));
+		tlb.cell(this.text = new JTextField(), "colspec=left:100");
+		this.text.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel("From turn"));
 		tlb.gapCol();
-		tlb.cell(turnFrom = new JTextField(), "colspec=left:100");
-		turnFrom.setPreferredSize(new Dimension(100, 20));
+		tlb.cell(this.turnFrom = new JTextField(), "colspec=left:100");
+		this.turnFrom.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel("To turn"));
 		tlb.gapCol();
-		tlb.cell(turnTo = new JTextField(), "colspec=left:100");
-		turnTo.setPreferredSize(new Dimension(100, 20));
+		tlb.cell(this.turnTo = new JTextField(), "colspec=left:100");
+		this.turnTo.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel("Nation"));
 		tlb.gapCol();
-		tlb.cell(nationNo = new JTextField(), "colspec=left:100");
-		nationNo.setPreferredSize(new Dimension(100, 20));
+		tlb.cell(this.nationNo = new JTextField(), "colspec=left:100");
+		this.nationNo.setPreferredSize(new Dimension(100, 20));
 		tlb.relatedGapRow();
 		return tlb.getPanel();
 	}
@@ -81,11 +81,11 @@ public class OrderResultsView extends BaseHtmlReportView {
 			return "";
 		String ret = "<html><body><div style='font-family:Tahoma; font-size:11pt'><table><tr><td width=700>";
 
-		String charFilter = charName.getText();
-		String textFilter = text.getText();
-		String turnFromFilter = turnFrom.getText();
-		String turnToFilter = turnTo.getText();
-		String nationFilter = nationNo.getText();
+		String charFilter = this.charName.getText();
+		String textFilter = this.text.getText();
+		String turnFromFilter = this.turnFrom.getText();
+		String turnToFilter = this.turnTo.getText();
+		String nationFilter = this.nationNo.getText();
 
 		int turnFromValue = -1;
 		try {

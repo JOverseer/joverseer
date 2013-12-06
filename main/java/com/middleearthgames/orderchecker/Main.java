@@ -5,15 +5,23 @@
 
 package com.middleearthgames.orderchecker;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Vector;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+
 import com.middleearthgames.orderchecker.gui.ExtraInfoDlg;
 import com.middleearthgames.orderchecker.gui.OCDialog;
 import com.middleearthgames.orderchecker.io.Data;
-import java.awt.Container;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.*;
-import java.util.Vector;
-import javax.swing.*;
 
 // Referenced classes of package com.middleearthgames.orderchecker:
 //            SpellList, ArtifactList, Nation, PopCenter, 
@@ -46,7 +54,8 @@ public class Main
         main = new Main();
         mainFrame.addWindowListener(((java.awt.event.WindowListener) (new WindowAdapter() {
 
-            public void windowClosing(WindowEvent e)
+            @Override
+			public void windowClosing(WindowEvent e)
             {
                 Main.main.getData().setWindowSize(0, Main.mainFrame.getSize());
                 Main.main.getData().setWindowLocation(0, Main.mainFrame.getLocationOnScreen());
@@ -76,59 +85,59 @@ public class Main
 
     public Main()
     {
-        nation = null;
-        map = null;
-        ruleset = null;
-        spells = new SpellList();
-        artifacts = new ArtifactList();
+        this.nation = null;
+        this.map = null;
+        this.ruleset = null;
+        this.spells = new SpellList();
+        this.artifacts = new ArtifactList();
         readData();
-        window = new OCDialog(mainFrame, data);
+        this.window = new OCDialog(mainFrame, this.data);
     }
     
     //mscoon
     public Main(boolean useMscoonVersion, Data data) {
-        nation = null;
-        map = null;
-        ruleset = null;
-        spells = new SpellList();
-        artifacts = new ArtifactList();
+        this.nation = null;
+        this.map = null;
+        this.ruleset = null;
+        this.spells = new SpellList();
+        this.artifacts = new ArtifactList();
         this.data = data;
-        window = new OCDialog(new JPanel(), this.data);
+        this.window = new OCDialog(new JPanel(), this.data);
     }
 
     public OCDialog getWindow()
     {
-        return window;
+        return this.window;
     }
 
     public Nation getNation()
     {
-        return nation;
+        return this.nation;
     }
 
     public Map getMap()
     {
-        return map;
+        return this.map;
     }
 
     public Ruleset getRuleSet()
     {
-        return ruleset;
+        return this.ruleset;
     }
 
     public SpellList getSpellList()
     {
-        return spells;
+        return this.spells;
     }
 
     public ArtifactList getArtifactList()
     {
-        return artifacts;
+        return this.artifacts;
     }
 
     public Data getData()
     {
-        return data;
+        return this.data;
     }
 
     public void setNation(Nation nation)
@@ -150,15 +159,15 @@ public class Main
     {
         try
         {
-            FileOutputStream file = new FileOutputStream("orderchecker.dat");
+            FileOutputStream file = new FileOutputStream(dataFile);
             ObjectOutputStream objFile = new ObjectOutputStream(((java.io.OutputStream) (file)));
-            data.writeObject(objFile);
+            this.data.writeObject(objFile);
             objFile.close();
             file.close();
         }
         catch(Exception ex)
         {
-            displayErrorMessage("Could not save the data file! (orderchecker.dat)");
+            displayErrorMessage("Could not save the data file! (" + dataFile + ")");
         }
     }
 
@@ -166,16 +175,16 @@ public class Main
     {
         try
         {
-            FileInputStream file = new FileInputStream("orderchecker.dat");
+            FileInputStream file = new FileInputStream(dataFile);
             ObjectInputStream objFile = new ObjectInputStream(((java.io.InputStream) (file)));
-            data = new Data();
-            data.readObject(objFile);
+            this.data = new Data();
+            this.data.readObject(objFile);
             objFile.close();
             file.close();
         }
         catch(Exception ex)
         {
-            data = new Data();
+            this.data = new Data();
         }
     }
 
@@ -185,7 +194,7 @@ public class Main
         {
             return "Hostage";
         }
-        PopCenter pc = nation.findPopulationCenter(location);
+        PopCenter pc = this.nation.findPopulationCenter(location);
         if(pc != null)
         {
             return pc.toString();
@@ -204,12 +213,12 @@ public class Main
     {
         JOptionPane msg = new JOptionPane(((Object) (message)), 0, -1);
         JDialog msgDlg = msg.createDialog(((java.awt.Component) (mainFrame)), "Error!");
-        msgDlg.show();
+        msgDlg.setVisible(true);
     }
 
     public void processOrders()
     {
-        String error = nation.implementPhase(1, this);
+        String error = this.nation.implementPhase(1, this);
         if(error != null)
         {
             displayErrorMessage(error);
@@ -217,9 +226,9 @@ public class Main
         }
         boolean done;
         int safety;
-        Vector requests = nation.getArmyRequests();
-        new ExtraInfoDlg(mainFrame, nation, data, requests);
-        nation.processArmyRequests(requests);
+        Vector requests = this.nation.getArmyRequests();
+        new ExtraInfoDlg(mainFrame, this.nation, this.data, requests);
+        this.nation.processArmyRequests(requests);
         done = false;
         safety = 0;
         do {
@@ -228,25 +237,25 @@ public class Main
                 break;
             }
             safety++;
-            error = nation.implementPhase(2, this);
+            error = this.nation.implementPhase(2, this);
             if(error != null)
             {
                 displayErrorMessage(error);
                 return;
             }
-            requests = nation.getInfoRequests();
+            requests = this.nation.getInfoRequests();
             if(requests.size() > 0)
             {
-                new ExtraInfoDlg(mainFrame, nation, data, requests);
+                new ExtraInfoDlg(mainFrame, this.nation, this.data, requests);
             }
-            done = nation.isProcessingDone();
+            done = this.nation.isProcessingDone();
         } while (true);
         if(safety == 20)
         {
             throw new RuntimeException("Maximum state iterations reached.");
         }
         try {
-            window.createResultsTree();
+            this.window.createResultsTree();
         }
         catch (Exception ex) {
             StringBuffer desc = new StringBuffer();

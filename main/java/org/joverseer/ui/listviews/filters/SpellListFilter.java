@@ -22,9 +22,10 @@ public class SpellListFilter extends AbstractListViewFilter {
         this.spellList = spellList;
     }
 
-    public boolean accept(Object obj) {
+    @Override
+	public boolean accept(Object obj) {
         SpellInfo si = (SpellInfo)obj;
-        return (spellList == null || si.getList().equals(spellList));
+        return (this.spellList == null || si.getList().equals(this.spellList));
     }
  
     public static AbstractListViewFilter[] createNationFilters() {

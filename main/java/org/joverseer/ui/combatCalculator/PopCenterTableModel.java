@@ -36,7 +36,7 @@ public class PopCenterTableModel extends BeanTableModel {
 	}
 
 	protected Combat getCombat() {
-		return (Combat) parentForm.getFormObject();
+		return (Combat) this.parentForm.getFormObject();
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package org.joverseer.orders.me.orderProcessors.spells;
 
-import java.util.Arrays;
-
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.SpellProficiency;
@@ -46,7 +44,7 @@ public abstract class AbstractSpellOrderProcessor extends AbstractOrderProcessor
                 mageProficiency = sp.getProficiency();
             }
         }
-        int artifactBonus = 0;
+//        int artifactBonus = 0;
         // TODO continue here
         return true;
         

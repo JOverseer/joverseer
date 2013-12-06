@@ -19,9 +19,10 @@ public class CharacterReader implements MetadataReader {
 	String characterFilename = "chars.csv";
 
 	public String getCharacterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + characterFilename;
+		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.characterFilename;
 	}
 
+	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		gm.setCharacters(loadCharacters(gm));
 	}
@@ -34,7 +35,7 @@ public class CharacterReader implements MetadataReader {
 		try {
 			// Resource resource =
 			// Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + characterFilename);
+			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.characterFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
@@ -55,7 +56,7 @@ public class CharacterReader implements MetadataReader {
 					numberOfOrders = Integer.parseInt(parts[9]);
 				}
 				Character c = new Character();
-				c.setNationNo(nationNo);
+				c.setNationNo(new Integer(nationNo));
 				c.setName(charName);
 				c.setId(id);
 				c.setCommand(command);

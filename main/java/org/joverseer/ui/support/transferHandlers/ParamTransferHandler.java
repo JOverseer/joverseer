@@ -16,8 +16,9 @@ public class ParamTransferHandler extends StringTransferHandler {
         this.param = param;
     }
 
-    protected String exportString(JComponent c) {
-        return param.toString();
+    @Override
+	protected String exportString(JComponent c) {
+        return this.param.toString();
     }
     
     

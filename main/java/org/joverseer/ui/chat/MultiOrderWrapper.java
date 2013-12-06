@@ -10,7 +10,7 @@ public class MultiOrderWrapper implements Serializable {
     ArrayList<OrderWrapper> orderWrappers = new ArrayList<OrderWrapper>();
     
     public ArrayList<OrderWrapper> getOrderWrappers() {
-        return orderWrappers;
+        return this.orderWrappers;
     }
 
 }

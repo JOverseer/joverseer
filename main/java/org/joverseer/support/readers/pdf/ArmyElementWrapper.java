@@ -14,7 +14,7 @@ public class ArmyElementWrapper {
     String fluff;
     
     public int getArmor() {
-        return armor;
+        return this.armor;
     }
     
     public void setArmor(int armor) {
@@ -22,7 +22,7 @@ public class ArmyElementWrapper {
     }
     
     public String getFluff() {
-        return fluff;
+        return this.fluff;
     }
     
     public void setFluff(String fluff) {
@@ -30,7 +30,7 @@ public class ArmyElementWrapper {
     }
     
     public int getNumber() {
-        return number;
+        return this.number;
     }
     
     public void setNumber(int number) {
@@ -38,7 +38,7 @@ public class ArmyElementWrapper {
     }
     
     public int getTraining() {
-        return training;
+        return this.training;
     }
     
     public void setTraining(int training) {
@@ -46,7 +46,7 @@ public class ArmyElementWrapper {
     }
     
     public String getType() {
-        return type;
+        return this.type;
     }
     
     public void setType(String type) {
@@ -54,7 +54,7 @@ public class ArmyElementWrapper {
     }
     
     public int getWeapons() {
-        return weapons;
+        return this.weapons;
     }
     
     public void setWeapons(int weapons) {

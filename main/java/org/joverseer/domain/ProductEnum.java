@@ -17,7 +17,7 @@ public enum ProductEnum {
 	}
 
 	public String getCode() {
-		return code;
+		return this.code;
 	}
 
 	public static ProductEnum getFromCode(String code) {

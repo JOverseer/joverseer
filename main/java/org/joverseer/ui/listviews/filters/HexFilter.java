@@ -12,10 +12,11 @@ public class HexFilter extends AbstractListViewFilter {
         this.hex = hex;
     }
 
-    public boolean accept(Object obj) {
+    @Override
+	public boolean accept(Object obj) {
     	if (!IHasMapLocation.class.isInstance(obj)) return false;
     	IHasMapLocation o = (IHasMapLocation)obj;
     	int hexNo = o.getX() * 100 + o.getY();
-    	return hexNo == hex;
+    	return hexNo == this.hex;
     }
 }

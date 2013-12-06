@@ -35,8 +35,9 @@ public class AllegianceFilter extends AbstractListViewFilter {
         this.inverse = inverse;
     }
 
-    public boolean accept(Object obj) {
-    	if (allegiance == null) return true;
+    @Override
+	public boolean accept(Object obj) {
+    	if (this.allegiance == null) return true;
         IBelongsToNation o = (IBelongsToNation)obj;
         Game g = GameHolder.instance().getGame();
         NationRelations nr = (NationRelations)g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", o.getNationNo());
@@ -44,9 +45,9 @@ public class AllegianceFilter extends AbstractListViewFilter {
         if (nr == null) {
             ret = false;
         } else {
-            ret = nr.getAllegiance().equals(allegiance);;
+            ret = nr.getAllegiance().equals(this.allegiance);;
         }
-        if  (inverse) {
+        if  (this.inverse) {
             ret = !ret;
         }
         return ret;

@@ -32,7 +32,8 @@ public class JOverseerTable extends javax.swing.JTable {
         private void init() {
             setSurrendersFocusOnKeystroke(true);
             addKeyListener(new KeyAdapter() {
-                public void keyPressed(KeyEvent e)
+                @Override
+				public void keyPressed(KeyEvent e)
                 {
                     onKeyPressed(e);
                 } 
@@ -44,14 +45,16 @@ public class JOverseerTable extends javax.swing.JTable {
         {
         }
 
-        public boolean editCellAt(int row, int col, EventObject event)
+        @Override
+		public boolean editCellAt(int row, int col, EventObject event)
         {
             boolean editing = super.editCellAt(row, col, event);
             if (editing)
             {
                 SwingUtilities.invokeLater(new Runnable()
                 {
-                    public void run()
+                    @Override
+					public void run()
                     {
                         Component comp = getEditorComponent();
                         if (comp != null) comp.requestFocus();
@@ -61,6 +64,7 @@ public class JOverseerTable extends javax.swing.JTable {
             return editing;
         }
 
+	@Override
 	public Component prepareEditor(TableCellEditor editor, int row, int column) {
 		Component c = super.prepareEditor(editor, row, column);
 		if (getOverwriteOnCellEdit()) {
@@ -72,7 +76,7 @@ public class JOverseerTable extends javax.swing.JTable {
 	}
 
 	public boolean getOverwriteOnCellEdit() {
-		return overwriteOnCellEdit;
+		return this.overwriteOnCellEdit;
 	}
 
 	public void setOverwriteOnCellEdit(boolean overwriteOnCellEdit) {

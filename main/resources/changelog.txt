@@ -1,3 +1,21 @@
+VERSION 1.0.9
+-------------
+28/11/2013
+
+	* The first release by MEPBM. 
+
+	* Java JRE requirements are now 'Java 6' or better. Really you should be using 'Java version 7'. 
+	
+	* BOFA support
+		o The BOFA games now use nations 1-5 instead of 10-14. This breaks compatibility with older BOFA games.
+
+	* Visual tweaks
+		o The descenders of order parameter text are no longer cut-off
+		
+	* XML errors
+		o Error: null when reading some characters in new XML format
+		o More helpful error when you read old format XML when expecting new format
+
 VERSION 1.0.8
 -------------
 22/4/2011

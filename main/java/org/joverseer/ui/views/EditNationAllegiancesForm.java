@@ -8,6 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
@@ -69,20 +70,20 @@ public class EditNationAllegiancesForm extends AbstractForm {
 				int n = (i + 1) + (j * 10);
 				if (n <= 25) {
 					JComboBox combo = new JComboBox(NationAllegianceEnum.values());
-					allegiances.put(n, combo);
+					this.allegiances.put(n, combo);
 					combo.setPreferredSize(new Dimension(100, 20));
 					JLabel lbl = new JLabel();
 					lbl.setPreferredSize(new Dimension(100, 24));
 					lbl.setText(Application.instance().getApplicationContext().getMessage("editNationAllegiancesForm.NationLabel", new Object[] { n }, null));
-					lbl.setHorizontalAlignment(JLabel.RIGHT);
-					labels.put(n, lbl);
+					lbl.setHorizontalAlignment(SwingConstants.RIGHT);
+					this.labels.put(n, lbl);
 					tlb.cell(lbl);
 					tlb.gapCol();
 					tlb.cell(combo);
 					tlb.gapCol();
 					JCheckBox elim = new JCheckBox("");
 					tlb.cell(elim, "align=center");
-					eliminated.put(n, elim);
+					this.eliminated.put(n, elim);
 					tlb.gapCol();
 				} else {
 					tlb.cell();
@@ -100,7 +101,7 @@ public class EditNationAllegiancesForm extends AbstractForm {
 		tlb.relatedGapRow();
 		tlb.cell(new ResourceLabel("editNationAllegiancesForm.StopAskingForAllegianceChanges"), "colspan=3");
 		tlb.gapCol();
-		tlb.cell(stopAsking = new JCheckBox(), "align=left");
+		tlb.cell(this.stopAsking = new JCheckBox(), "align=left");
 		tlb.gapCol();
 		tlb.cell();
 		tlb.cell();
@@ -119,11 +120,11 @@ public class EditNationAllegiancesForm extends AbstractForm {
 		for (int i = 1; i < 26; i++) {
 			if (i < gm.getNations().size()) {
 				Nation n = gm.getNations().get(i);
-				n.setAllegiance((NationAllegianceEnum) allegiances.get(i).getSelectedItem());
-				n.setEliminated(eliminated.get(i).isSelected());
+				n.setAllegiance((NationAllegianceEnum) this.allegiances.get(i).getSelectedItem());
+				n.setEliminated(this.eliminated.get(i).isSelected());
 			}
 		}
-		g.setParameter("StopAskingForAllegianceChanges", stopAsking.isSelected() ? "1" : "0");
+		g.setParameter("StopAskingForAllegianceChanges", this.stopAsking.isSelected() ? "1" : "0");
 	}
 
 	@Override
@@ -134,24 +135,24 @@ public class EditNationAllegiancesForm extends AbstractForm {
 		for (int i = 1; i < 26; i++) {
 			if (i < gm.getNations().size()) {
 				Nation n = gm.getNations().get(i);
-				labels.get(i).setText(n.getName() + " :");
-				allegiances.get(i).setSelectedItem(n.getAllegiance());
-				eliminated.get(i).setSelected(n.getEliminated());
+				this.labels.get(i).setText(n.getName() + " :");
+				this.allegiances.get(i).setSelectedItem(n.getAllegiance());
+				this.eliminated.get(i).setSelected(n.getEliminated());
 				if (n.getRemoved()) {
-					labels.get(i).setEnabled(false);
-					allegiances.get(i).setEnabled(false);
-					eliminated.get(i).setEnabled(false);
+					this.labels.get(i).setEnabled(false);
+					this.allegiances.get(i).setEnabled(false);
+					this.eliminated.get(i).setEnabled(false);
 				}
 			} else {
-				labels.get(i).setEnabled(false);
-				allegiances.get(i).setEnabled(false);
-				eliminated.get(i).setEnabled(false);
+				this.labels.get(i).setEnabled(false);
+				this.allegiances.get(i).setEnabled(false);
+				this.eliminated.get(i).setEnabled(false);
 			}
 		}
 		boolean stopAskingV = false;
 		if (g.containsParameter("StopAskingForAllegianceChanges") && "1".equals(g.getParameter("StopAskingForAllegianceChanges"))) {
 			stopAskingV = true;
 		}
-		stopAsking.setSelected(stopAskingV);
+		this.stopAsking.setSelected(stopAskingV);
 	}
 }

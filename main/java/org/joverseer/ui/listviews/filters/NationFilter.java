@@ -33,23 +33,23 @@ public class NationFilter extends AbstractListViewFilter {
 	@Override
 	public boolean accept(Object obj) {
 		IBelongsToNation o = (IBelongsToNation) obj;
-		if (nationNo == ALL_NATIONS)
+		if (this.nationNo == ALL_NATIONS)
 			return true;
-		if (nationNo == ALL_IMPORTED) {
+		if (this.nationNo == ALL_IMPORTED) {
 			GameHolder.instance();
 			if (!GameHolder.hasInitializedGame())
 				return true;
 			return GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", o.getNationNo()) != null;
 		}
-		if (nationNo == ADDITIONAL_NATIONS) {
+		if (this.nationNo == ADDITIONAL_NATIONS) {
 			GameHolder.instance();
 			if (!GameHolder.hasInitializedGame())
 				return true;
 			Game g = GameHolder.instance().getGame();
 			if (o.getNationNo() == null)
 				return true;
-			int nationNo = g.getMetadata().getNationNo();
-			if (nationNo == o.getNationNo())
+			int nationNo1 = g.getMetadata().getNationNo();
+			if (nationNo1 == o.getNationNo())
 				return true;
 			String additionalNations = g.getMetadata().getAdditionalNations();
 			if (additionalNations != null) {
@@ -65,7 +65,7 @@ public class NationFilter extends AbstractListViewFilter {
 			}
 			return false;
 		}
-		return o.getNationNo() != null && o.getNationNo() == nationNo;
+		return o.getNationNo() != null && o.getNationNo() == this.nationNo;
 	}
 
 	public static AbstractListViewFilter[] createNationFilters() {

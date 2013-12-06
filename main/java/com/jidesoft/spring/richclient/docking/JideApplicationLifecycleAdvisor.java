@@ -114,6 +114,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 							JMenuItem mu = new JMenuItem();
 							mu.setText("Game " + String.valueOf(rgi.getNumber()));
 							mu.addActionListener(new ActionListener() {
+								@Override
 								public void actionPerformed(ActionEvent e) {
 									LoadGame loadGame = new LoadGame(frgi.getFile());
 									loadGame.execute();
@@ -132,6 +133,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 					if (f.exists()) {
 						JMenuItem mi = new JMenuItem("User's Guide");
 						mi.addActionListener(new ActionListener() {
+							@Override
 							public void actionPerformed(ActionEvent e) {
 								try {
 									Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + f.getAbsolutePath());
@@ -225,7 +227,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 					prefs.put("lastVersionCheckDate", str);
 				} catch (Exception exc) {
 					// do nothing
-					int a = 1;
 				}
 			}
 		}
@@ -236,29 +237,29 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	}
 
 	private void initializeRepaintManager() {
-		if (repaintManager != null) {
-			RepaintManager.setCurrentManager(repaintManager);
+		if (this.repaintManager != null) {
+			RepaintManager.setCurrentManager(this.repaintManager);
 		}
 	}
 
 	@Override
 	public boolean onPreWindowClose(ApplicationWindow arg0) {
-		canCloseWindow = true;
+		this.canCloseWindow = true;
 		if (GameHolder.hasInitializedGame()) {
-			canCloseWindow = false;
+			this.canCloseWindow = false;
 			// show warning
 			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 			ConfirmationDialog md = new ConfirmationDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
 
 				@Override
 				protected void onConfirm() {
-					canCloseWindow = true;
+					JideApplicationLifecycleAdvisor.this.canCloseWindow = true;
 				}
 			};
 			md.showDialog();
 		}
 
-		return canCloseWindow;
+		return this.canCloseWindow;
 	}
 
 	@Override

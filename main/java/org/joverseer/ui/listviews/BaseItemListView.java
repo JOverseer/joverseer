@@ -105,8 +105,8 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 	@Override
 	protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
-		pageComponentContext.register("selectHexCommand", selectHexCommandExecutor);
-		selectHexCommandExecutor.setEnabled(GameHolder.hasInitializedGame());
+		pageComponentContext.register("selectHexCommand", this.selectHexCommandExecutor);
+		this.selectHexCommandExecutor.setEnabled(GameHolder.hasInitializedGame());
 	}
 
 	/**
@@ -115,21 +115,21 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	 */
 	private class SelectHexCommandExecutor extends AbstractActionCommandExecutor {
 
-		// TODO move to a seperate class?
+		// TODO move to a separate class?
 		@Override
 		public void execute() {
-			int row = table.getSelectedRow();
+			int row = BaseItemListView.this.table.getSelectedRow();
 			if (row >= 0) {
 				int idx = 0;
-				if (SortableTableModel.class.isInstance(table.getModel())) {
-					idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-				} else if (com.jidesoft.grid.SortableTableModel.class.isInstance(table.getModel())) {
-					idx = ((com.jidesoft.grid.SortableTableModel) table.getModel()).getActualRowAt(row);
+				if (SortableTableModel.class.isInstance(BaseItemListView.this.table.getModel())) {
+					idx = ((SortableTableModel) BaseItemListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+				} else if (com.jidesoft.grid.SortableTableModel.class.isInstance(BaseItemListView.this.table.getModel())) {
+					idx = ((com.jidesoft.grid.SortableTableModel) BaseItemListView.this.table.getModel()).getActualRowAt(row);
 				}
-				if (idx >= tableModel.getRowCount())
+				if (idx >= BaseItemListView.this.tableModel.getRowCount())
 					return;
 				try {
-					Object obj = tableModel.getRow(idx);
+					Object obj = BaseItemListView.this.tableModel.getRow(idx);
 					if (!IHasMapLocation.class.isInstance(obj))
 						return;
 					IHasMapLocation selectedItem = (IHasMapLocation) obj;
@@ -149,7 +149,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 	/**
 	 * Return the desired filters Two dimensional array so you can return
-	 * multiple groups of filtes Each group of filters goes into a separate
+	 * multiple groups of filters Each group of filters goes into a separate
 	 * combo box
 	 */
 	protected AbstractListViewFilter[][] getFilters() {
@@ -161,19 +161,19 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	}
 
 	protected AbstractListViewFilter getActiveFilter() {
-		AbstractListViewFilter textFilter = getTextFilter(textFilterField == null ? null : textFilterField.getText());
-		if (filters == null)
+		AbstractListViewFilter textFilter = getTextFilter(this.textFilterField == null ? null : this.textFilterField.getText());
+		if (this.filters == null)
 			return textFilter;
 		AndFilter f = new AndFilter();
 		f.addFilter(textFilter);
-		for (JComboBox filter : filters) {
+		for (JComboBox filter : this.filters) {
 			f.addFilter((AbstractListViewFilter) filter.getSelectedItem());
 		}
 		return f;
 	}
 
 	protected JTable createTable() {
-		return TableUtils.createStandardSortableTable(tableModel);
+		return TableUtils.createStandardSortableTable(this.tableModel);
 	}
 
 	/**
@@ -190,11 +190,11 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+					((SortableTableModel) BaseItemListView.this.table.getModel()).sortByColumns(getDefaultSort());
 				}
 
 			});
-			((SortableTableModel) table.getModel()).sortByColumns(getDefaultSort());
+			((SortableTableModel) this.table.getModel()).sortByColumns(getDefaultSort());
 			restoreSorting.setToolTipText("Restore default sort order");
 			return new JComponent[] { restoreSorting };
 		}
@@ -211,11 +211,12 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 		if (filterLists != null) {
 			for (AbstractListViewFilter[] filterList : filterLists) {
 				JComboBox filter = new JComboBox(filterList);
-				filters.add(filter);
+				this.filters.add(filter);
 				filter.addActionListener(new ActionListener() {
 
+					@Override
 					public void actionPerformed(ActionEvent e) {
-						if (handleFilterEvents)
+						if (BaseItemListView.this.handleFilterEvents)
 							setItems();
 					}
 				});
@@ -228,15 +229,16 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 		}
 		if (hasTextFilter()) {
 			hasFilters = true;
-			textFilterField = new JTextField();
-			textFilterField.setPreferredSize(new Dimension(150, 20));
-			textFilterField.addActionListener(new ActionListener() {
+			this.textFilterField = new JTextField();
+			this.textFilterField.setPreferredSize(new Dimension(150, 20));
+			this.textFilterField.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (handleFilterEvents)
+					if (BaseItemListView.this.handleFilterEvents)
 						setItems();
 				}
 			});
-			lb.cell(textFilterField, "colspec=left:150px");
+			lb.cell(this.textFilterField, "colspec=left:150px");
 			lb.gapCol();
 		}
 
@@ -261,7 +263,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 		// create the table model
 		try {
-			tableModel = (BeanTableModel) tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
+			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
 		} catch (InstantiationException e) {
 			e.printStackTrace(); // To change body of catch statement use File |
 			// Settings | File Templates.
@@ -286,27 +288,27 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 		setItems();
 
 		// create the JTable instance
-		table = createTable();
-		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(table, columnWidths());
+		this.table = createTable();
+		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
 
 		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
 		if (pval.equals("yes")) {
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		}
 
-		table.getTableHeader().setBackground(Color.WHITE);
-		table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(tableModel));
-		table.setDefaultRenderer(InfoSource.class, new InfoSourceTableCellRenderer(tableModel));
-		table.setDefaultRenderer(CharacterDeathReasonEnum.class, new DeathReasonEnumRenderer(tableModel));
-		table.addMouseListener(this);
-		table.addMouseMotionListener(this);
+		this.table.getTableHeader().setBackground(Color.WHITE);
+		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(Boolean.class, new AllegianceColorCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(InfoSource.class, new InfoSourceTableCellRenderer(this.tableModel));
+		this.table.setDefaultRenderer(CharacterDeathReasonEnum.class, new DeathReasonEnumRenderer(this.tableModel));
+		this.table.addMouseListener(this);
+		this.table.addMouseMotionListener(this);
 		// table.setDragEnabled(true);
-		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		JScrollPane scrollPane = new JScrollPane(table);
+		this.table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		JScrollPane scrollPane = new JScrollPane(this.table);
 		scrollPane.getViewport().setOpaque(true);
-		scrollPane.getViewport().setBackground(table.getBackground());
+		scrollPane.getViewport().setBackground(this.table.getBackground());
 		scrollPane.setPreferredSize(new Dimension(1200, 1200));
 		scrollPane.addMouseListener(this);
 		tlb.cell(scrollPane);
@@ -326,27 +328,29 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	}
 
 	protected void refreshFilters() {
-		if (filters.size() > 0) {
+		if (this.filters.size() > 0) {
 			AbstractListViewFilter[][] filterLists = getFilters();
 			for (int i = 0; i < filterLists.length; i++) {
-				filters.get(i).removeAllItems();
+				this.filters.get(i).removeAllItems();
 				for (AbstractListViewFilter f : filterLists[i]) {
-					filters.get(i).addItem(f);
+					this.filters.get(i).addItem(f);
 				}
 				try {
-					filters.get(i).updateUI();
+					this.filters.get(i).updateUI();
 				} catch (Exception exc) {
-					logger.error(exc);
+					this.logger.error(exc);
 				}
 			}
 		}
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						cacheFilterOptions();
 						refreshFilters();
@@ -358,6 +362,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 				// setItems();
 			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						refreshFilters();
 						setItems();
@@ -365,18 +370,20 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 				});
 			} else if (e.getEventType().equals(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle.toString())) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
 						if (pval.equals("yes")) {
-							table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+							BaseItemListView.this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 						} else {
-							table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+							BaseItemListView.this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 						}
 					}
 				});
 
 			} else if (e.getEventType().equals(LifecycleEventsEnum.ListviewRefreshItems.toString())) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						setItems();
 					}
@@ -386,7 +393,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	}
 
 	public void showContextMenu(MouseEvent e) {
-		JPopupMenu pm = getPopupMenu(table.getSelectedRowCount() != 0);
+		JPopupMenu pm = getPopupMenu(this.table.getSelectedRowCount() != 0);
 		if (pm == null)
 			return;
 		pm.show(e.getComponent(), e.getX(), e.getY());
@@ -396,35 +403,41 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 		return null;
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && e.getButton() == 1) {
-			selectHexCommandExecutor.execute();
+			this.selectHexCommandExecutor.execute();
 		}
 		if (e.getClickCount() == 1 && e.getButton() == 3) {
 			showContextMenu(e);
 		}
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			xDiff = e.getX();
-			yDiff = e.getY();
+			this.xDiff = e.getX();
+			this.yDiff = e.getY();
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
-		int dx = Math.abs(e.getX() - xDiff);
-		int dy = Math.abs(e.getY() - yDiff);
+		int dx = Math.abs(e.getX() - this.xDiff);
+		int dy = Math.abs(e.getY() - this.yDiff);
 		if (dx > 5 || dy > 5) {
 			startDragAndDropAction(e);
 		}
@@ -437,57 +450,58 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 	}
 
 	protected void cacheFilterOptions() {
-		filterOptionsCache.clear();
+		this.filterOptionsCache.clear();
 		if (hasTextFilter()) {
-			filterOptionsCache.add(textFilterField.getText());
+			this.filterOptionsCache.add(this.textFilterField.getText());
 		}
-		if (filters == null)
+		if (this.filters == null)
 			return;
-		for (JComboBox filter : filters) {
-			filterOptionsCache.add(filter.getSelectedItem());
+		for (JComboBox filter : this.filters) {
+			this.filterOptionsCache.add(filter.getSelectedItem());
 		}
 	}
 
 	protected void tryRestoreFilterOptions() {
 		try {
 
-			if (filterOptionsCache == null)
+			if (this.filterOptionsCache == null)
 				return;
-			if (filterOptionsCache.size() == 0)
+			if (this.filterOptionsCache.size() == 0)
 				return;
-			handleFilterEvents = false;
-			if (hasTextFilter() && textFilterField != null && filterOptionsCache.get(0) != null) {
-				textFilterField.setText(filterOptionsCache.get(0).toString());
+			this.handleFilterEvents = false;
+			if (hasTextFilter() && this.textFilterField != null && this.filterOptionsCache.get(0) != null) {
+				this.textFilterField.setText(this.filterOptionsCache.get(0).toString());
 			}
-			if (filters != null) {
-				for (int i = 1; i < filterOptionsCache.size(); i++) {
-					JComboBox filter = filters.get(i - 1);
-					filter.setSelectedItem(filterOptionsCache.get(i));
+			if (this.filters != null) {
+				for (int i = 1; i < this.filterOptionsCache.size(); i++) {
+					JComboBox filter = this.filters.get(i - 1);
+					filter.setSelectedItem(this.filterOptionsCache.get(i));
 				}
-				handleFilterEvents = true;
+				this.handleFilterEvents = true;
 			}
 		} catch (Exception exc) {
 			// do nothing
 			throw new RuntimeException(exc);
 		} finally {
-			handleFilterEvents = true;
+			this.handleFilterEvents = true;
 		}
 	}
 
 	public Object getSelectedObject() {
-		int row = table.getSelectedRow();
-		if (row < 0 && table.getRowCount() == 1)
+		int row = this.table.getSelectedRow();
+		if (row < 0 && this.table.getRowCount() == 1)
 			row = 0;
 		if (row >= 0) {
-			int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-			if (idx >= tableModel.getRowCount())
+			int idx = ((SortableTableModel) this.table.getModel()).convertSortedIndexToDataIndex(row);
+			if (idx >= this.tableModel.getRowCount())
 				return null;
 			try {
-				Object obj = tableModel.getRow(idx);
+				Object obj = this.tableModel.getRow(idx);
 				return obj;
 			} catch (Exception e) {
 			}

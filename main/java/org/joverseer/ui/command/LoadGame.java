@@ -44,7 +44,8 @@ public class LoadGame extends ActionCommand {
         this.fname = fname;
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (GameHolder.hasInitializedGame()) {
             // show warning
             MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
@@ -52,7 +53,8 @@ public class LoadGame extends ActionCommand {
                     ms.getMessage("confirmLoadGameDialog.title", new String[]{}, Locale.getDefault()),
                     ms.getMessage("confirmLoadGameDialog.message", new String[]{}, Locale.getDefault()))
             {
-                protected void onConfirm() {
+                @Override
+				protected void onConfirm() {
                     loadGame();
                 }
             };
@@ -64,7 +66,7 @@ public class LoadGame extends ActionCommand {
     
     
     public void loadGame() {
-        if (fname == null) {
+        if (this.fname == null) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
             fileChooser.setApproveButtonText("Load");
@@ -75,19 +77,19 @@ public class LoadGame extends ActionCommand {
             }
             fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file"));
             if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
-                fname = fileChooser.getSelectedFile().getAbsolutePath(); 
+                this.fname = fileChooser.getSelectedFile().getAbsolutePath(); 
             }
         }
 
-        if (fname != null) {
+        if (this.fname != null) {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
-            File f = new File(fname);
+            File f = new File(this.fname);
             try {
                 GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
                 gh.setGame(g);
-                gh.setFile(fname);
+                gh.setFile(this.fname);
 
                 MapMetadataUtils mmu = new MapMetadataUtils();
                 MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
@@ -146,7 +148,7 @@ public class LoadGame extends ActionCommand {
             }
             finally {
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-                fname = null;
+                this.fname = null;
             }
         }
     }

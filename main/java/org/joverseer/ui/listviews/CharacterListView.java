@@ -29,18 +29,20 @@ public class CharacterListView extends ItemListView {
     int iHexNo = 0;
     int iOrderResults = 16;
     
-    protected AbstractListViewFilter[][] getFilters() {
-        ArrayList<AbstractListViewFilter> filters = new ArrayList<AbstractListViewFilter>();
-        filters.addAll(Arrays.asList(NationFilter.createNationFilters()));
-        filters.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
-        return new AbstractListViewFilter[][]{filters.toArray(new AbstractListViewFilter[]{})};
+    @Override
+	protected AbstractListViewFilter[][] getFilters() {
+        ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
+        filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
+        filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+        return new AbstractListViewFilter[][]{filters1.toArray(new AbstractListViewFilter[]{})};
     }
 
     public CharacterListView() {
         super(TurnElementsEnum.Character, CharacterTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[] {40, 120, 
                             32, 32, 32, 32, 
                             32, 32, 32, 32, 
@@ -49,26 +51,29 @@ public class CharacterListView extends ItemListView {
     }
 
 
-    protected ColumnToSort[] getDefaultSort() {
+    @Override
+	protected ColumnToSort[] getDefaultSort() {
         return new ColumnToSort[] {new ColumnToSort(0, 2), new ColumnToSort(1, 1)};
     }
 
-    protected JComponent createControlImpl() {
+    @Override
+	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
-        table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(tableModel) {
+        this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel) {
 
-            public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
+            @Override
+			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
                     int arg4, int arg5) {
-                Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
-                JLabel lbl = (JLabel) c;
+                Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+                JLabel lbl = (JLabel) c1;
                 Integer v = (Integer) arg1;
                 if (v == null || v.equals(0)) {
                     lbl.setText("");
                 }
-                if (arg5 == iHexNo) {
+                if (arg5 == CharacterListView.this.iHexNo) {
                     // render capital with bold
-                    int idx = ((SortableTableModel)table.getModel()).convertSortedIndexToDataIndex(arg4);
-                    Object obj = tableModel.getRow(idx);
+                    int idx = ((SortableTableModel)CharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
+                    Object obj = CharacterListView.this.tableModel.getRow(idx);
                     Character ch = (Character)obj;
                     PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ch.getNationNo(), Boolean.TRUE});
                     if (capital != null && ch.getHexNo() == capital.getHexNo()) {
@@ -77,25 +82,26 @@ public class CharacterListView extends ItemListView {
 
                 }
                 
-                return c;
+                return c1;
             }
 
         });
         
-        table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(tableModel) {
-            public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
+        this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel) {
+            @Override
+			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
                     int arg4, int arg5) {
-                Component c = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
-                JLabel lbl = (JLabel) c;
+                Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+                JLabel lbl = (JLabel) c1;
                 
-                if (arg5 == iOrderResults) {
+                if (arg5 == CharacterListView.this.iOrderResults) {
                     String results = (String)arg1;
                     if (results != null) {
                         results = "<html><body>" + results.replace("\n", "<br>") + "</body></html>";
                         lbl.setToolTipText(results);
                     }
                 }
-                return c;
+                return c1;
             } 
         });
         return c;

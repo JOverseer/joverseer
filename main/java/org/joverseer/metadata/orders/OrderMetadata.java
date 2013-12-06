@@ -32,7 +32,7 @@ public class OrderMetadata implements Serializable {
     String skillRequirement;
 
     public String getCode() {
-        return code;
+        return this.code;
     }
 
     public void setCode(String code) {
@@ -40,7 +40,7 @@ public class OrderMetadata implements Serializable {
     }
 
     public String getDifficulty() {
-        return difficulty;
+        return this.difficulty;
     }
 
     public void setDifficulty(String difficulty) {
@@ -48,7 +48,7 @@ public class OrderMetadata implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -56,7 +56,7 @@ public class OrderMetadata implements Serializable {
     }
 
     public int getNumber() {
-        return number;
+        return this.number;
     }
 
     public void setNumber(int number) {
@@ -64,7 +64,7 @@ public class OrderMetadata implements Serializable {
     }
 
     public String getParameters() {
-        return parameters;
+        return this.parameters;
     }
 
     public void setParameters(String parameters) {
@@ -72,7 +72,7 @@ public class OrderMetadata implements Serializable {
     }
 
     public String getRequirement() {
-        return requirement;
+        return this.requirement;
     }
 
     public void setRequirement(String requirement) {
@@ -81,7 +81,7 @@ public class OrderMetadata implements Serializable {
 
     
     public String getSkillRequirement() {
-        return skillRequirement;
+        return this.skillRequirement;
     }
 
     
@@ -117,7 +117,7 @@ public class OrderMetadata implements Serializable {
     }
     
     public boolean orderAllowedDueToScoutingSNA(Character c) {
-    	if (number == 925 || number == 905 || number == 910 || number == 915 || number == 920 || number == 930) {
+    	if (this.number == 925 || this.number == 905 || this.number == 910 || this.number == 915 || this.number == 920 || this.number == 930) {
     		Nation n = c.getNation();
     		if (n == null) return false;
     		if (n.hasSna(SNAEnum.ScoutReconAt50)) {
@@ -128,7 +128,7 @@ public class OrderMetadata implements Serializable {
     }
     
     public boolean orderAllowedForGameType() {
-    	if (number == 942 || number == 960 || number == 965) {
+    	if (this.number == 942 || this.number == 960 || this.number == 965) {
     		Game g = GameHolder.instance().getGame();
     		return g.getMetadata().getGameType().equals(GameTypeEnum.gameFA) ||
     			g.getMetadata().getGameType().equals(GameTypeEnum.gameKS);

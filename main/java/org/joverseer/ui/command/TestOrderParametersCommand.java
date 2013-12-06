@@ -18,7 +18,8 @@ public class TestOrderParametersCommand  extends ActionCommand {
         super("testOrderParametersCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
 
         TestOrderParameters test = new TestOrderParameters();

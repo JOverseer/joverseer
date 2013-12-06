@@ -5,16 +5,21 @@
 
 package com.middleearthgames.orderchecker.io;
 
-import com.middleearthgames.orderchecker.*;
-import com.middleearthgames.orderchecker.Character;
-
 import java.io.File;
-import java.io.PrintStream;
+
 import javax.swing.filechooser.FileSystemView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.Document;
-import org.xml.sax.*;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+import com.middleearthgames.orderchecker.Army;
+import com.middleearthgames.orderchecker.Character;
+import com.middleearthgames.orderchecker.Nation;
+import com.middleearthgames.orderchecker.PopCenter;
 
 // Referenced classes of package com.middleearthgames.orderchecker.io:
 //            AdapterNode
@@ -24,16 +29,16 @@ public class ImportTurnXml
 
     public ImportTurnXml(String sFileName)
     {
-        nation = null;
-        primaryParse = true;
-        secondaryNation = -1;
-        filename = sFileName;
+        this.nation = null;
+        this.primaryParse = true;
+        this.secondaryNation = -1;
+        this.filename = sFileName;
     }
 
     public boolean getTurnData()
     {
-        primaryParse = true;
-        return getTurnData(filename);
+        this.primaryParse = true;
+        return getTurnData(this.filename);
     }
 
     private boolean getTurnData(String filePath)
@@ -43,18 +48,21 @@ public class ImportTurnXml
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setErrorHandler(new ErrorHandler() {
     
-                public void fatalError(SAXParseException saxparseexception)
+                @Override
+				public void fatalError(SAXParseException saxparseexception)
                     throws SAXException
                 {
                 }
     
-                public void error(SAXParseException e)
+                @Override
+				public void error(SAXParseException e)
                     throws SAXParseException
                 {
                     throw e;
                 }
     
-                public void warning(SAXParseException err)
+                @Override
+				public void warning(SAXParseException err)
                     throws SAXParseException
                 {
                     System.out.println("** Warning, line " + err.getLineNumber() + ", uri " + err.getSystemId());
@@ -64,7 +72,7 @@ public class ImportTurnXml
             }
     );
             File inputFile = new File(filePath);
-            document = builder.parse(inputFile);
+            this.document = builder.parse(inputFile);
             return true;
         }
         catch (Exception ex) {
@@ -74,16 +82,16 @@ public class ImportTurnXml
 
     public Nation parseTurnData()
     {
-        if(primaryParse)
-            nation = new Nation();
+        if(this.primaryParse)
+            this.nation = new Nation();
         parseNationData();
         parseSecondaryFiles();
-        return nation;
+        return this.nation;
     }
 
     private boolean parseNationData()
     {
-        AdapterNode root = new AdapterNode(document);
+        AdapterNode root = new AdapterNode(this.document);
         AdapterNode node = root.child(0);
         if(!node.isNodeAnElement() || !node.getNodeName().equals("METurn"))
             return false;
@@ -94,7 +102,7 @@ public class ImportTurnXml
             String name = childNode.getNodeName();
             if(name.equals("TurnInfo"))
             {
-                if(primaryParse)
+                if(this.primaryParse)
                 {
                     parseNationData(childNode);
                     continue;
@@ -127,13 +135,13 @@ public class ImportTurnXml
 
     private void parseSecondaryFiles()
     {
-        if(nation == null || !nation.isNationComplete())
+        if(this.nation == null || !this.nation.isNationComplete())
             return;
-        File file = new File(filename);
+        File file = new File(this.filename);
         String directory = file.getParent();
         FileSystemView view = FileSystemView.getFileSystemView();
         File fileList[] = view.getFiles(new File(directory), false);
-        primaryParse = false;
+        this.primaryParse = false;
         for(int i = 0; i < fileList.length; i++)
         {
             boolean bXmlFile = false;
@@ -146,7 +154,7 @@ public class ImportTurnXml
                     bXmlFile = true;
             }
             if(bXmlFile && fileList[i].exists() && !fileList[i].isDirectory() && getTurnData(fileList[i].getPath()) && parseNationData())
-                nation.addNationParsed(secondaryNation);
+                this.nation.addNationParsed(this.secondaryNation);
         }
 
     }
@@ -160,41 +168,41 @@ public class ImportTurnXml
             String name = childNode.getNodeName();
             if(name.equals("NationNo"))
             {
-                nation.SetNation(childNode.extractNodeNumber());
+                this.nation.SetNation(childNode.extractNodeNumber());
                 continue;
             }
             if(name.equals("NationCapitalHex"))
             {
-                nation.setCapital(childNode.extractNodeNumber());
+                this.nation.setCapital(childNode.extractNodeNumber());
                 continue;
             }
             if(name.equals("GameNo"))
             {
-                nation.setGame(childNode.extractNodeNumber());
+                this.nation.setGame(childNode.extractNodeNumber());
                 continue;
             }
             if(name.equals("TurnNo"))
             {
-                nation.setTurn(childNode.extractNodeNumber());
+                this.nation.setTurn(childNode.extractNodeNumber());
                 continue;
             }
             if(name.equals("Secret"))
             {
-                nation.setSecret(childNode.extractNodeNumber());
+                this.nation.setSecret(childNode.extractNodeNumber());
                 continue;
             }
             if(name.equals("GameType"))
             {
-                nation.setGameType(childNode.extractNodeString());
+                this.nation.setGameType(childNode.extractNodeString());
                 continue;
             }
             if(name.equals("DueDate"))
             {
-                nation.setDueDate(childNode.extractNodeString());
+                this.nation.setDueDate(childNode.extractNodeString());
                 continue;
             }
             if(name.equals("Player"))
-                nation.setPlayer(childNode.extractNodeString());
+                this.nation.setPlayer(childNode.extractNodeString());
         }
 
     }
@@ -211,22 +219,22 @@ public class ImportTurnXml
             String name = childNode.getNodeName();
             if(name.equals("NationNo"))
             {
-                secondaryNation = childNode.extractNodeNumber();
-                if(secondaryNation != nation.getNation())
+                this.secondaryNation = childNode.extractNodeNumber();
+                if(this.secondaryNation != this.nation.getNation())
                     nationPassed = true;
                 continue;
             }
             if(name.equals("GameNo"))
             {
                 int gameNumber = childNode.extractNodeNumber();
-                if(gameNumber == nation.getGame())
+                if(gameNumber == this.nation.getGame())
                     gamePassed = true;
                 continue;
             }
             if(!name.equals("TurnNo"))
                 continue;
             int turnNumber = childNode.extractNodeNumber();
-            if(turnNumber == nation.getTurn())
+            if(turnNumber == this.nation.getTurn())
                 turnPassed = true;
         }
 
@@ -235,7 +243,7 @@ public class ImportTurnXml
 
     private void parseNationNames(AdapterNode node)
     {
-        if(!primaryParse)
+        if(!this.primaryParse)
             return;
         int children = node.childCount();
         for(int i = 0; i < children; i++)
@@ -243,7 +251,7 @@ public class ImportTurnXml
             AdapterNode childNode = node.child(i);
             String name = childNode.getNodeName();
             if(name.equals("Nation"))
-                nation.addNation(childNode.extractNodeString());
+                this.nation.addNation(childNode.extractNodeString());
         }
 
     }
@@ -258,17 +266,17 @@ public class ImportTurnXml
                 continue;
             Character character = new Character(childNode.extractAttributeString());
             parseCharacter(childNode, character);
-            if(primaryParse)
+            if(this.primaryParse)
             {
-                nation.addCharacter(character);
+                this.nation.addCharacter(character);
                 continue;
             }
-            Character existingChar = nation.findCharacterById(character.getId());
-            if(existingChar != null && character.getNation() != secondaryNation)
+            Character existingChar = this.nation.findCharacterById(character.getId());
+            if(existingChar != null && character.getNation() != this.secondaryNation)
                 continue;
             if(existingChar != null)
-                nation.removeCharacter(existingChar);
-            nation.addCharacter(character);
+                this.nation.removeCharacter(existingChar);
+            this.nation.addCharacter(character);
         }
 
     }
@@ -412,16 +420,16 @@ public class ImportTurnXml
             parsePopulationCenter(childNode, pc);
             if(pc.getName() == null)
                 continue;
-            if(primaryParse)
+            if(this.primaryParse)
             {
-                nation.addPopulationCenter(pc);
+                this.nation.addPopulationCenter(pc);
                 continue;
             }
-            PopCenter existingPc = nation.findPopulationCenter(pc.getLocation());
+            PopCenter existingPc = this.nation.findPopulationCenter(pc.getLocation());
             if(existingPc != null)
                 existingPc.mergePopulationCenter(pc);
             else
-                nation.addPopulationCenter(pc);
+                this.nation.addPopulationCenter(pc);
         }
 
     }
@@ -486,17 +494,17 @@ public class ImportTurnXml
             parseArmy(childNode, army);
             if(army.getNation() <= 0)
                 continue;
-            if(primaryParse)
+            if(this.primaryParse)
             {
-                nation.addArmy(army);
+                this.nation.addArmy(army);
                 continue;
             }
-            Army existingArmy = nation.findArmyByCommander(army.getCommander());
-            if(existingArmy != null && army.getNation() != secondaryNation)
+            Army existingArmy = this.nation.findArmyByCommander(army.getCommander());
+            if(existingArmy != null && army.getNation() != this.secondaryNation)
                 continue;
             if(existingArmy != null)
-                nation.removeArmy(existingArmy);
-            nation.addArmy(army);
+                this.nation.removeArmy(existingArmy);
+            this.nation.addArmy(army);
         }
 
     }

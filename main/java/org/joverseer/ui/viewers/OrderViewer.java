@@ -60,7 +60,8 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         super(formModel, FORM_PAGE);
     }
     
-    public boolean appliesTo(Object obj) {
+    @Override
+	public boolean appliesTo(Object obj) {
         return Order.class.isInstance(obj);
     }
     
@@ -130,7 +131,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         } else if (orderResultType == OrderResultTypeEnum.Okay) {
             ico = new ImageIcon(imgSource.getImage("orderresult.okay.icon"));
         } 
-        orderResultIcon.setIcon(ico);
+        this.orderResultIcon.setIcon(ico);
         if (ico != null) {
             String txt = "";
             for (OrderResult result : results) {
@@ -143,53 +144,57 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             } else {
                 txt = null;
             }
-            orderResultIcon.setToolTipText(txt);
+            this.orderResultIcon.setToolTipText(txt);
         } else {
-            orderResultIcon.setToolTipText(null);
+            this.orderResultIcon.setToolTipText(null);
         }
     }
 
-    public void setFormObject(Object object) {
+    @Override
+	public void setFormObject(Object object) {
         super.setFormObject(object);
         Order o = (Order)object;
         if (o.getOrderNo() <= 0) {
-            orderText.setText("N/A");
+            this.orderText.setText("N/A");
         } else {
-            orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
-            orderText.setCaretPosition(0);
+            this.orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
+            this.orderText.setCaretPosition(0);
         }
-        orderText.setTransferHandler(new OrderExportTransferHandler(o));
+        this.orderText.setTransferHandler(new OrderExportTransferHandler(o));
         
         setOrderValidationResults(o);
         
         OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
-        draw.setSelected(ovd.contains(o));
+        this.draw.setSelected(ovd.contains(o));
         if (GraphicUtils.canRenderOrder(o)) {
-        	draw.setEnabled(true);
+        	this.draw.setEnabled(true);
         } else {
-        	draw.setEnabled(false);
-        	draw.setSelected(false);
+        	this.draw.setEnabled(false);
+        	this.draw.setSelected(false);
         }
         
     }
 
-    protected JComponent createFormControl() {
+    @Override
+	protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(1, 1, 1, 3));
-        glb.append(orderText = new JTextField());
-        orderText.setBorder(null);
-        orderText.setPreferredSize(new Dimension(170, 16));
-        orderText.setText("N/A");
+        glb.append(this.orderText = new JTextField());
+        this.orderText.setBorder(null);
+        this.orderText.setPreferredSize(new Dimension(170, 16));
+        this.orderText.setText("N/A");
 
-        orderText.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                TransferHandler handler = orderText.getTransferHandler();
-                handler.exportAsDrag(orderText, e, TransferHandler.COPY);
+        this.orderText.addMouseListener(new MouseAdapter() {
+            @Override
+			public void mousePressed(MouseEvent e) {
+                TransferHandler handler = OrderViewer.this.orderText.getTransferHandler();
+                handler.exportAsDrag(OrderViewer.this.orderText, e, TransferHandler.COPY);
             }
         });
         
-        orderText.setDropTarget(new DropTarget(orderText, new DropTargetAdapter() {
-            public void drop(DropTargetDropEvent dtde) {
+        this.orderText.setDropTarget(new DropTarget(this.orderText, new DropTargetAdapter() {
+            @Override
+			public void drop(DropTargetDropEvent dtde) {
                 try {
                     Transferable t = dtde.getTransferable();
                     if (dtde.isDataFlavorSupported(new OrderDataFlavor())) {
@@ -227,16 +232,17 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         }));
 
-        orderResultIcon = new JLabel("");
-        orderResultIcon.setPreferredSize(new Dimension(16, 16));
-        glb.append(orderResultIcon);
+        this.orderResultIcon = new JLabel("");
+        this.orderResultIcon.setPreferredSize(new Dimension(16, 16));
+        glb.append(this.orderResultIcon);
         
         ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
         Icon ico = new ImageIcon(imgSource.getImage("edit.image"));
         final JButton btn = new JButton(ico);
         btn.setToolTipText("Edit order");
         btn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 Order order = (Order)getFormObject();
                 Application.instance().getApplicationContext().publishEvent(
                     new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
@@ -248,12 +254,13 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 
 //        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
-        draw = new JCheckBox();
-        draw.setToolTipText("Draw order");
-        draw.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        this.draw = new JCheckBox();
+        this.draw.setToolTipText("Draw order");
+        this.draw.addActionListener(new ActionListener() {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
-                if (draw.isSelected()) {
+                if (OrderViewer.this.draw.isSelected()) {
                     ovd.addOrder((Order)getFormObject());
                 } else {
                     ovd.removeOrder((Order)getFormObject());
@@ -262,12 +269,12 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                                     new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
             }
         });
-        draw.setPreferredSize(new Dimension(16, 16));
-        draw.setOpaque(true);
-        draw.setBackground(Color.white);
-        draw.setVisible(true);
-        draw.setEnabled(false);
-        glb.append(draw);
+        this.draw.setPreferredSize(new Dimension(16, 16));
+        this.draw.setOpaque(true);
+        this.draw.setBackground(Color.white);
+        this.draw.setVisible(true);
+        this.draw.setEnabled(false);
+        glb.append(this.draw);
 
         glb.nextLine();
         JPanel p = glb.getPanel();
@@ -277,42 +284,48 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         
         p.setFocusTraversalPolicyProvider(true);
         p.setFocusTraversalPolicy(new FocusTraversalPolicy() {
-            public Component getComponentAfter(Container aContainer, Component aComponent) {
+            @Override
+			public Component getComponentAfter(Container aContainer, Component aComponent) {
                 if (aComponent == btn) {
-                    return draw;
-                } else if (aComponent == draw) {
+                    return OrderViewer.this.draw;
+                } else if (aComponent == OrderViewer.this.draw) {
                     return btn;
                 }
                 return btn;
             }
 
-            public Component getComponentBefore(Container aContainer, Component aComponent) {
+            @Override
+			public Component getComponentBefore(Container aContainer, Component aComponent) {
                 if (aComponent == btn) {
-                    return draw;
-                } else if (aComponent == draw) {
+                    return OrderViewer.this.draw;
+                } else if (aComponent == OrderViewer.this.draw) {
                     return btn;
                 }
-                return draw;
+                return OrderViewer.this.draw;
             }
 
             
-            public Component getDefaultComponent(Container aContainer) {
+            @Override
+			public Component getDefaultComponent(Container aContainer) {
                 return btn;
             }
 
-            public Component getFirstComponent(Container aContainer) {
+            @Override
+			public Component getFirstComponent(Container aContainer) {
                 return btn;
             }
 
-            public Component getLastComponent(Container aContainer) {
-                return (draw.isEnabled() ? draw : btn);
+            @Override
+			public Component getLastComponent(Container aContainer) {
+                return (OrderViewer.this.draw.isEnabled() ? OrderViewer.this.draw : btn);
             }
             
         });
         return p;
     }
 
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
           Order order = (Order)getFormObject();
           Application.instance().getApplicationContext().publishEvent(
               new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));

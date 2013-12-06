@@ -29,8 +29,8 @@ public class CreateCombatForHexCommand extends ActionCommand {
 	}
 
 	protected int getHexNo() {
-		if (hexNo != null) {
-			return hexNo;
+		if (this.hexNo != null) {
+			return this.hexNo;
 		}
 		Point p = MapPanel.instance().getSelectedHex();
 		return (int) p.getX() * 100 + (int) p.getY();
@@ -44,7 +44,7 @@ public class CreateCombatForHexCommand extends ActionCommand {
 		Combat combat = new Combat();
 		combat.setMaxRounds(10);
 		String strHex = String.valueOf(hex);
-		ArrayList<Army> allarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo" }, new Object[] { strHex });
+		//ArrayList<Army> allarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo" }, new Object[] { strHex });
 		ArrayList<Army> fparmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.FreePeople });
 		ArrayList<Army> dsarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.DarkServants });
 		ArrayList<Army> ntarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.Neutral });

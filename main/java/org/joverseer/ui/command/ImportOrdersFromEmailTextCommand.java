@@ -47,13 +47,13 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 	protected void doExecuteCommand() {
 		if (!ActiveGameChecker.checkActiveGameExists())
 			return;
-		form = new ParseOrdersForm(FormModelHelper.createFormModel(new String()));
-		FormBackedDialogPage pg = new FormBackedDialogPage(form);
-		final ClipboardOwner clipboardOwner = form;
+		this.form = new ParseOrdersForm(FormModelHelper.createFormModel(new String()));
+		FormBackedDialogPage pg = new FormBackedDialogPage(this.form);
+		final ClipboardOwner clipboardOwner = this.form;
 		TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
 			@Override
 			protected boolean onFinish() {
-				loadOrders(form.getOrderText(), form.getOrderTextType());
+				loadOrders(ImportOrdersFromEmailTextCommand.this.form.getOrderText(), ImportOrdersFromEmailTextCommand.this.form.getOrderTextType());
 				return true;
 			}
 
@@ -65,7 +65,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 						Transferable s = clipboard.getContents(clipboardOwner);
 						try {
-							form.setOrderText(s.getTransferData(DataFlavor.stringFlavor).toString());
+							ImportOrdersFromEmailTextCommand.this.form.setOrderText(s.getTransferData(DataFlavor.stringFlavor).toString());
 						} catch (Exception e) {
 							// do nothing
 						}
@@ -73,7 +73,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 				}, new ActionCommand("parseOrdersCommand") {
 					@Override
 					protected void doExecuteCommand() {
-						form.setParseResults(parseOrders(form.getOrderText(), form.getOrderTextType()));
+						ImportOrdersFromEmailTextCommand.this.form.setParseResults(parseOrders(ImportOrdersFromEmailTextCommand.this.form.getOrderText(), ImportOrdersFromEmailTextCommand.this.form.getOrderTextType()));
 					}
 				}, getFinishCommand(), getCancelCommand() };
 			}
@@ -129,41 +129,43 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 			tlb.cell(new JLabel("Orders : "), "colspec=left:60px valign=top");
 			tlb.gapCol();
 
-			orderText = new JTextArea();
-			orderScp = new JScrollPane(orderText);
-			orderScp.setPreferredSize(new Dimension(300, 500));
-			orderScp.getViewport().addChangeListener(new ChangeListener() {
+			this.orderText = new JTextArea();
+			this.orderScp = new JScrollPane(this.orderText);
+			this.orderScp.setPreferredSize(new Dimension(300, 500));
+			this.orderScp.getViewport().addChangeListener(new ChangeListener() {
 
+				@Override
 				public void stateChanged(ChangeEvent e) {
-					if (!parseResults.getText().equals("")) {
-						parseScp.getViewport().setViewPosition(orderScp.getViewport().getViewPosition());
+					if (!ParseOrdersForm.this.parseResults.getText().equals("")) {
+						ParseOrdersForm.this.parseScp.getViewport().setViewPosition(ParseOrdersForm.this.orderScp.getViewport().getViewPosition());
 					}
 				}
 
 			});
-			tlb.cell(orderScp);
+			tlb.cell(this.orderScp);
 
 			tlb.gapCol();
-			parseResults = new JTextArea();
-			parseResults.setEditable(false);
-			parseScp = new JScrollPane(parseResults);
-			parseScp.setPreferredSize(new Dimension(300, 500));
-			parseScp.getViewport().addChangeListener(new ChangeListener() {
+			this.parseResults = new JTextArea();
+			this.parseResults.setEditable(false);
+			this.parseScp = new JScrollPane(this.parseResults);
+			this.parseScp.setPreferredSize(new Dimension(300, 500));
+			this.parseScp.getViewport().addChangeListener(new ChangeListener() {
+				@Override
 				public void stateChanged(ChangeEvent e) {
-					orderScp.getViewport().setViewPosition(parseScp.getViewport().getViewPosition());
+					ParseOrdersForm.this.orderScp.getViewport().setViewPosition(ParseOrdersForm.this.parseScp.getViewport().getViewPosition());
 				}
 			});
-			tlb.cell(parseScp);
+			tlb.cell(this.parseScp);
 			tlb.relatedGapRow();
 
-			orderTextTypeCmb = new JComboBox();
-			orderTextTypeCmb.setPreferredSize(new Dimension(200, 20));
-			orderTextTypeCmb.addItem("Standard");
-			orderTextTypeCmb.addItem("Order Checker");
+			this.orderTextTypeCmb = new JComboBox();
+			this.orderTextTypeCmb.setPreferredSize(new Dimension(200, 20));
+			this.orderTextTypeCmb.addItem("Standard");
+			this.orderTextTypeCmb.addItem("Order Checker");
 			tlb.cell(new JLabel("Type :"));
 			tlb.gapCol();
 			TableLayoutBuilder tlb2 = new TableLayoutBuilder();
-			tlb2.cell(orderTextTypeCmb, "colspan=1 colspec=left:100px");
+			tlb2.cell(this.orderTextTypeCmb, "colspan=1 colspec=left:100px");
 			tlb2.relatedGapRow();
 			tlb.cell(tlb2.getPanel(), "colspan=1");
 			tlb.row();
@@ -171,6 +173,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 			return tlb.getPanel();
 		}
 
+		@Override
 		public void lostOwnership(Clipboard clipboard, Transferable contents) {
 		}
 
@@ -179,21 +182,21 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 			for (String r : results) {
 				res += r + "\n";
 			}
-			parseResults.setText(res);
-			orderText.setCaretPosition(0);
-			parseResults.setCaretPosition(0);
+			this.parseResults.setText(res);
+			this.orderText.setCaretPosition(0);
+			this.parseResults.setCaretPosition(0);
 		}
 
 		public String getOrderText() {
-			return orderText.getText();
+			return this.orderText.getText();
 		}
 
 		public void setOrderText(String text) {
-			orderText.setText(text);
+			this.orderText.setText(text);
 		}
 
 		public String getOrderTextType() {
-			return orderTextTypeCmb.getSelectedItem().toString();
+			return this.orderTextTypeCmb.getSelectedItem().toString();
 		}
 	}
 

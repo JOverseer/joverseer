@@ -19,16 +19,16 @@ public class ProductContainer implements Serializable {
     
     public ProductContainer() {
         for (ProductEnum p : ProductEnum.values()) {
-            products.put(p, null);
+            this.products.put(p, null);
         }
     }
     
     public void setProduct(ProductEnum pe, Integer amount) {
-        products.put(pe, amount);
+        this.products.put(pe, amount);
     }
     
     public Integer getProduct(ProductEnum pe) {
-        Integer amount = products.get(pe);
+        Integer amount = this.products.get(pe);
         return amount;
     }
     

@@ -35,17 +35,19 @@ public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.paramName = paramName;
     }
     
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(paramName), "colspec=left:70px");
+    @Override
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         try {
             DecimalFormat f = new DecimalFormat();
             f.setDecimalSeparatorAlwaysShown(false);
             f.setGroupingUsed(false);
-            tlb.cell(parameter = new JFormattedTextField(f), "colspec=left:220px");
-            parameter.setText(o.getParameter(paramNo));
-            parameter.setPreferredSize(new Dimension(50, 18));
-            parameter.setDropTarget(new DropTarget(parameter, new DropTargetAdapter() {
-    			public void drop(DropTargetDropEvent dtde) {
+            tlb.cell(this.parameter = new JFormattedTextField(f), "colspec=left:220px");
+            this.parameter.setText(o.getParameter(paramNo));
+            this.parameter.setPreferredSize(new Dimension(50, 18));
+            this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
+    			@Override
+				public void drop(DropTargetDropEvent dtde) {
     	                try {
     	                	Transferable t = dtde.getTransferable();
     	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
@@ -58,16 +60,16 @@ public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     	                	} else {
     	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
     	                	}
-    	                	parameter.setText(txt);
-    	                    parameter.requestFocus();
+    	                	NumberParameterOrderSubeditor.this.parameter.setText(txt);
+    	                    NumberParameterOrderSubeditor.this.parameter.requestFocus();
     	                }
     	                catch (Exception exc) {
     	                    
     	                }
     			}
             }));
-            attachAutoUpdateDocumentListener(parameter);
-            components.add(parameter);
+            attachAutoUpdateDocumentListener(this.parameter);
+            components.add(this.parameter);
         }
         catch (Exception exc) {
             

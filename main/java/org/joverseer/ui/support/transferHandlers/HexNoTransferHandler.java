@@ -17,7 +17,8 @@ public class HexNoTransferHandler extends StringTransferHandler {
         super(arg0);
     }
 
-    protected String exportString(JComponent c) {
+    @Override
+	protected String exportString(JComponent c) {
     	String v = ((MapPanel)c).getHex();
         return v;
     }

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ListCellRenderer;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import org.springframework.binding.form.FormModel;
@@ -49,92 +49,101 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 	protected JComponent createFormControl() {
 		// todo fix layout
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(taskName = new JLabel());
-		taskName.setPreferredSize(new Dimension(350, 16));
+		tlb.cell(this.taskName = new JLabel());
+		this.taskName.setPreferredSize(new Dimension(350, 16));
 		tlb.row();
 		tlb.relatedGapRow();
-		tlb.cell(taskProgress = new JProgressBar());
-		taskProgress.setMaximum(progressMax);
+		tlb.cell(this.taskProgress = new JProgressBar());
+		this.taskProgress.setMaximum(this.progressMax);
 		tlb.row();
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel("Import steps"));
 		tlb.row();
-		taskSubtasks = new JList();
-		taskSubtasks.setModel(llm = new ListListModel());
-		taskSubtasks.setCellRenderer(new ProgressItemRenderer());
-		scp = new JScrollPane(taskSubtasks);
-		scp.setPreferredSize(new Dimension(350, 350));
-		scp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		tlb.cell(scp);
+		this.taskSubtasks = new JList();
+		this.taskSubtasks.setModel(this.llm = new ListListModel());
+		this.taskSubtasks.setCellRenderer(new ProgressItemRenderer());
+		this.scp = new JScrollPane(this.taskSubtasks);
+		this.scp.setPreferredSize(new Dimension(350, 350));
+		this.scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		tlb.cell(this.scp);
 		tlb.relatedGapRow();
 		tlb.row();
-		globalMessage = new JTextArea();
-		globalMessage.setWrapStyleWord(true);
-		globalMessage.setLineWrap(true);
-		JScrollPane scp = new JScrollPane(globalMessage);
+		this.globalMessage = new JTextArea();
+		this.globalMessage.setWrapStyleWord(true);
+		this.globalMessage.setLineWrap(true);
+		@SuppressWarnings("hiding")
+		JScrollPane scp = new JScrollPane(this.globalMessage);
 		tlb.cell(scp);
 		scp.setPreferredSize(new Dimension(350, 80));
 
-		panel = tlb.getPanel();
-		panel.setPreferredSize(new Dimension(390, 300));
-		return panel;
+		this.panel = tlb.getPanel();
+		this.panel.setPreferredSize(new Dimension(390, 300));
+		return this.panel;
 	}
 
 	private JButton getOkButton() {
 		return this.getDefaultButton();
 	}
 
+	@Override
 	public void done() {
 		try {
 			Runnable r = new Runnable() {
+				@Override
 				public void run() {
 					getOkButton().setEnabled(true);
 				}
 			};
 			SwingUtilities.invokeLater(r);
 		} catch (Exception exc) {
-			logger.error(exc);
+			this.logger.error(exc);
 		}
 	}
 
+	@Override
 	public boolean isCanceled() {
 		return false;
 	}
 
+	@Override
 	public void setCanceled(boolean b) {
 		// do nothing, not allowed
 	}
 
+	@Override
 	public void subTaskStarted(String string) {
 		final String str = string;
 		Runnable r = new Runnable() {
+			@Override
 			public void run() {
-				llm.add(str);
-				int selIndex = llm.size() - 1;
-				taskSubtasks.setSelectedIndex(selIndex);
-				taskSubtasks.ensureIndexIsVisible(selIndex);
-				taskSubtasks.updateUI();
-				panel.updateUI();
+				JOverseerClientProgressMonitor.this.llm.add(str);
+				int selIndex = JOverseerClientProgressMonitor.this.llm.size() - 1;
+				JOverseerClientProgressMonitor.this.taskSubtasks.setSelectedIndex(selIndex);
+				JOverseerClientProgressMonitor.this.taskSubtasks.ensureIndexIsVisible(selIndex);
+				JOverseerClientProgressMonitor.this.taskSubtasks.updateUI();
+				JOverseerClientProgressMonitor.this.panel.updateUI();
 			}
 		};
 		SwingUtilities.invokeLater(r);
 	}
 
+	@Override
 	public void taskStarted(String string, int i) {
 		try {
 			final String str = string;
 			final int ii = i;
 			Runnable r = new Runnable() {
+				@Override
 				public void run() {
 					getOkButton().setEnabled(false);
-					taskProgress.setMaximum(ii);
-					taskName.setText(str);
-					panel.updateUI();
+					JOverseerClientProgressMonitor.this.taskProgress.setMaximum(ii);
+					JOverseerClientProgressMonitor.this.taskName.setText(str);
+					JOverseerClientProgressMonitor.this.panel.updateUI();
 				}
 			};
 			SwingUtilities.invokeLater(r);
 		} catch (Exception exc) {
-			logger.error(exc);
+			this.logger.error(exc);
 		}
 	}
 
@@ -142,14 +151,15 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 		try {
 			final String str = msg;
 			Runnable r = new Runnable() {
+				@Override
 				public void run() {
-					globalMessage.setText(str);
-					panel.updateUI();
+					JOverseerClientProgressMonitor.this.globalMessage.setText(str);
+					JOverseerClientProgressMonitor.this.panel.updateUI();
 				}
 			};
 			SwingUtilities.invokeLater(r);
 		} catch (Exception exc) {
-			logger.error(exc);
+			this.logger.error(exc);
 		}
 	}
 
@@ -160,27 +170,29 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 	 * 100, ok - new process starts - worked = 50 --> make progress = 100 + 50
 	 * -> 150 - worked = 100 --> make progress = 150 + 100 - 50 -> 200
 	 */
+	@Override
 	public void worked(int ii) {
 		try {
 			final int i = ii;
 			Runnable r = new Runnable() {
+				@Override
 				public void run() {
-					if (lastWork > i) {
-						lastWork = 0;
+					if (JOverseerClientProgressMonitor.this.lastWork > i) {
+						JOverseerClientProgressMonitor.this.lastWork = 0;
 					}
-					if (workBuffer > i) {
-						workBuffer = workBuffer + i - lastWork;
-						lastWork = i;
+					if (JOverseerClientProgressMonitor.this.workBuffer > i) {
+						JOverseerClientProgressMonitor.this.workBuffer = JOverseerClientProgressMonitor.this.workBuffer + i - JOverseerClientProgressMonitor.this.lastWork;
+						JOverseerClientProgressMonitor.this.lastWork = i;
 					} else {
-						workBuffer = i;
+						JOverseerClientProgressMonitor.this.workBuffer = i;
 					}
-					taskProgress.setValue(workBuffer);
-					panel.updateUI();
+					JOverseerClientProgressMonitor.this.taskProgress.setValue(JOverseerClientProgressMonitor.this.workBuffer);
+					JOverseerClientProgressMonitor.this.panel.updateUI();
 				}
 			};
 			SwingUtilities.invokeLater(r);
 		} catch (Exception exc) {
-			logger.error(exc);
+			this.logger.error(exc);
 		}
 	}
 
@@ -190,7 +202,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 	 * 
 	 * @author Marios Skounakis
 	 */
-	public class ProgressItemRenderer extends DefaultListCellRenderer implements ListCellRenderer {
+	public class ProgressItemRenderer extends DefaultListCellRenderer {
 
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

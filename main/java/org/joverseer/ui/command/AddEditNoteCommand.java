@@ -29,37 +29,39 @@ public class AddEditNoteCommand extends ActionCommand {
     Note note;
     
     public AddEditNoteCommand(Object target) {
-        note = new Note();
-        note.setId(UniqueIdGenerator.get());
-        note.setTarget(target);
+        this.note = new Note();
+        this.note.setId(UniqueIdGenerator.get());
+        this.note.setTarget(target);
     }
     
     public AddEditNoteCommand(Note note) {
         this.note = note;
     }
     
-    protected void doExecuteCommand() {
-        FormModel formModel = FormModelHelper.createFormModel(note);
+    @Override
+	protected void doExecuteCommand() {
+        FormModel formModel = FormModelHelper.createFormModel(this.note);
         final EditNoteForm form = new EditNoteForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-            protected void onAboutToShow() { 
-            }
+//            protected void onAboutToShow() { 
+//            }
 
-            protected boolean onFinish() {
+            @Override
+			protected boolean onFinish() {
                 form.commit();
                 Game g = GameHolder.instance().getGame();
                 Turn t = g.getTurn();
-                if (!t.getContainer(TurnElementsEnum.Notes).contains(note)) {
-                    t.getContainer(TurnElementsEnum.Notes).addItem(note);
+                if (!t.getContainer(TurnElementsEnum.Notes).contains(AddEditNoteCommand.this.note)) {
+                    t.getContainer(TurnElementsEnum.Notes).addItem(AddEditNoteCommand.this.note);
                 }
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
                 Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), note, this));
+                        new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), AddEditNoteCommand.this.note, this));
                 Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), note, this));
+                        new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), AddEditNoteCommand.this.note, this));
 
                 return true;
             }

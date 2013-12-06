@@ -14,7 +14,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
-import org.springframework.util.StringUtils;
 
 /**
  * Reads orders from a text representation. The format supported is that used by
@@ -39,7 +38,7 @@ public class OrderTextReader {
 	int orders = 0;
 
 	public Game getGame() {
-		return game;
+		return this.game;
 	}
 
 	public void setGame(Game game) {
@@ -47,7 +46,7 @@ public class OrderTextReader {
 	}
 
 	public String getOrderText() {
-		return orderText;
+		return this.orderText;
 	}
 
 	public void setOrderText(String orderText) {
@@ -123,7 +122,7 @@ public class OrderTextReader {
 	public void readOrders(int pass) {
 		try {
 			if (pass == 0) {
-				lineResults.clear();
+				this.lineResults.clear();
 			}
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					new ByteArrayInputStream(getOrderText().getBytes())));
@@ -132,7 +131,7 @@ public class OrderTextReader {
 			String location = null;
 			int i = 0;
 			int charLine = 0;
-			String[] orderText = new String[] { null, null, null };
+			String[] orderText1 = new String[] { null, null, null };
 			int[] orderLines = new int[] { 0, 0, 0 };
 			String notes = "";
 
@@ -140,9 +139,9 @@ public class OrderTextReader {
 			while ((line = reader.readLine()) != null) {
 				if (isCharacterLine(line)) {
 					if (charId != null) {
-						addOrders(charId, location, charLine, orderText,
+						addOrders(charId, location, charLine, orderText1,
 								orderLines, notes, pass);
-						orderText = new String[] { null, null, null };
+						orderText1 = new String[] { null, null, null };
 						orderLines = new int[] { 0, 0, 0 };
 						notes = "";
 					}
@@ -152,32 +151,32 @@ public class OrderTextReader {
 						charLine = lineCounter;
 						i = 0;
 						notes = "";
-						lineResults.add("Character line (char id: " + charId
+						this.lineResults.add("Character line (char id: " + charId
 								+ ").");
 					} else {
-						lineResults
+						this.lineResults
 								.add("Line ignored. Looks like character line but parsing failed.");
 					}
 				} else if (isOrderLine(line)) {
 					if (charId != null) {
 						orderLines[i] = lineCounter;
-						orderText[i] = line;
-						lineResults.add("Order line.");
+						orderText1[i] = line;
+						this.lineResults.add("Order line.");
 						i++;
 					} else {
-						lineResults.add("Order line ignored.");
+						this.lineResults.add("Order line ignored.");
 					}
 				} else if (!line.trim().equals("") && !line.trim().equals("--")) {
 					// comments
 					notes += (line.equals("") ? "" : "\n") + line;
-					lineResults.add("Order notes.");
+					this.lineResults.add("Order notes.");
 				} else {
-					lineResults.add("Line ignored.");
+					this.lineResults.add("Line ignored.");
 				}
 				lineCounter++;
 			}
 			if (charId != null) {
-				addOrders(charId, location, charLine, orderText, orderLines,
+				addOrders(charId, location, charLine, orderText1, orderLines,
 						notes, pass);
 			}
 		} catch (Exception exc) {
@@ -186,7 +185,7 @@ public class OrderTextReader {
 	}
 
 	private void addOrders(String charId, String location, int charLine,
-			String[] orderText, int[] orderLines, String notes, int pass) {
+			String[] orderText1, int[] orderLines, String notes, int pass) {
 		Character c = (Character) getGame().getTurn().getContainer(
 				TurnElementsEnum.Character).findFirstByProperty("id", charId);
 		if (c == null) {
@@ -195,16 +194,16 @@ public class OrderTextReader {
 					charId.trim());
 		}
 		if (c == null) {
-			String lineRes = lineResults.get(charLine);
+			String lineRes = this.lineResults.get(charLine);
 			lineRes += " " + "Character was not found in game.";
-			lineResults.set(charLine, lineRes.trim());
+			this.lineResults.set(charLine, lineRes.trim());
 			return;
 		}
 		if (c.getHexNo() != Integer.parseInt(location)) {
-			String lineRes = lineResults.get(charLine);
+			String lineRes = this.lineResults.get(charLine);
 			lineRes += " "
 					+ "Character was found but at a different location - ignoring.";
-			lineResults.set(charLine, lineRes.trim());
+			this.lineResults.set(charLine, lineRes.trim());
 			return;
 		}
 
@@ -229,18 +228,18 @@ public class OrderTextReader {
 			
 		}
 
-		chars++;
-		Order[] orders = c.getOrders();
+		this.chars++;
+		Order[] orders1 = c.getOrders();
 		for (int i = 0; i < c.getNumberOfOrders(); i++) {
-			if (orderText[i] == null) {
-				orders[i].clear();
+			if (orderText1[i] == null) {
+				orders1[i].clear();
 			} else {
 				this.orders++;
 				String repString = "  ";
-				if (orderText[i].trim().indexOf(repString) == -1) {
+				if (orderText1[i].trim().indexOf(repString) == -1) {
 					repString = " ";
 				}
-				String[] parts = orderText[i].trim().replace(repString,
+				String[] parts = orderText1[i].trim().replace(repString,
 						Order.DELIM).split(Order.DELIM);
 				String parameters = "";
 				int orderNo = -1;
@@ -255,30 +254,30 @@ public class OrderTextReader {
 						}
 					}
 				}
-				String lineRes = lineResults.get(orderLines[i]);
+				String lineRes = this.lineResults.get(orderLines[i]);
 				lineRes += " Parsed order: " + orderNo
 						+ ". Order will be added to " + c.getName() + ".";
-				lineResults.set(orderLines[i], lineRes.trim());
+				this.lineResults.set(orderLines[i], lineRes.trim());
 				if (pass == 1) {
-					orders[i].setOrderNo(orderNo);
-					orders[i].setParameters(parameters);
+					orders1[i].setOrderNo(orderNo);
+					orders1[i].setParameters(parameters);
 					// check mov army orders and swap params if applicable
 					if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
 						// String paramTemp =
 						// orders[i].getParameter(orders[i].getLastParamIndex());
-						String paramZero = orders[i].getParameter(0);
+						String paramZero = orders1[i].getParameter(0);
 						if (paramZero.equals("no") || paramZero.equals("ev")) {
-							for (int ii = 0; ii < orders[i].getLastParamIndex(); ii++) {
-								orders[i].setParameter(ii, orders[i]
+							for (int ii = 0; ii < orders1[i].getLastParamIndex(); ii++) {
+								orders1[i].setParameter(ii, orders1[i]
 										.getParameter(ii + 1));
 							}
-							orders[i].setParameter(orders[i]
+							orders1[i].setParameter(orders1[i]
 									.getLastParamIndex(), paramZero);
 						}
 					}
 					OrderParameterValidator opv = new OrderParameterValidator();
 					int j = 0;
-					Order o = orders[i];
+					Order o = orders1[i];
 					while (j <= o.getLastParamIndex()) {
 						int length = o.getParameter(j).length(); 
 						// special handling for char id parameters that get messed up due to spaces (trailing or in the middle)
@@ -322,7 +321,7 @@ public class OrderTextReader {
 	}
 
 	public int getChars() {
-		return chars;
+		return this.chars;
 	}
 
 	public void setChars(int chars) {
@@ -330,11 +329,11 @@ public class OrderTextReader {
 	}
 
 	public ArrayList<String> getLineResults() {
-		return lineResults;
+		return this.lineResults;
 	}
 
 	public int getOrders() {
-		return orders;
+		return this.orders;
 	}
 
 	public void setOrders(int orders) {
@@ -342,7 +341,7 @@ public class OrderTextReader {
 	}
 
 	public int getTextType() {
-		return textType;
+		return this.textType;
 	}
 
 	public void setTextType(int textType) {

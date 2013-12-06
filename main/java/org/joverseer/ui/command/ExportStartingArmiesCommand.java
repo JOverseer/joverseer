@@ -25,7 +25,8 @@ public class ExportStartingArmiesCommand extends ActionCommand {
         super("exportStartingArmiesCommand");
     }
 
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	try {
 	    	String fname = "c:\\file.out";
 	    	FileWriter fw = new FileWriter(fname);

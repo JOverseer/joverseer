@@ -20,23 +20,26 @@ public class ArtifactInfoListView extends ItemListView {
         super("artifacts", ArtifactInfoTableModel.class);
     }
 
-    protected int[] columnWidths() {
+    @Override
+	protected int[] columnWidths() {
         return new int[] {32, 96, 96, 96, 96};
     }
 
-    protected JComponent createControlImpl() {
+    @Override
+	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
 
         //TODO does this drag and drop work? Needs refinement maybe?
-        table.addMouseListener(new MouseAdapter() {
+        this.table.addMouseListener(new MouseAdapter() {
 
-            public void mousePressed(MouseEvent arg0) {
-                ArtifactInfo a = (ArtifactInfo) tableModel.getRow(table.getSelectedRow());
+            @Override
+			public void mousePressed(MouseEvent arg0) {
+                ArtifactInfo a = (ArtifactInfo) ArtifactInfoListView.this.tableModel.getRow(ArtifactInfoListView.this.table.getSelectedRow());
                 if (a == null)
                     return;
                 TransferHandler handler = new ParamTransferHandler(a.getNo());
-                table.setTransferHandler(handler);
-                handler.exportAsDrag(table, arg0, TransferHandler.COPY);
+                ArtifactInfoListView.this.table.setTransferHandler(handler);
+                handler.exportAsDrag(ArtifactInfoListView.this.table, arg0, TransferHandler.COPY);
             }
         });
         return c;

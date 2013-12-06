@@ -24,7 +24,7 @@ public class NewGame implements PropertyConstraintProvider {
     
     
     public boolean getNewXmlFormat() {
-		return newXmlFormat;
+		return this.newXmlFormat;
 	}
 
 	public void setNewXmlFormat(boolean newXmlFormat) {
@@ -32,7 +32,7 @@ public class NewGame implements PropertyConstraintProvider {
 	}
 
 	public GameTypeEnum getGameType() {
-        return gameType;
+        return this.gameType;
     }
 
     public void setGameType(GameTypeEnum gameType) {
@@ -40,7 +40,7 @@ public class NewGame implements PropertyConstraintProvider {
     }
 
     public Integer getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
 
     public void setNationNo(Integer nationNo) {
@@ -48,7 +48,7 @@ public class NewGame implements PropertyConstraintProvider {
     }
 
     public Integer getNumber() {
-        return number;
+        return this.number;
     }
 
     public void setNumber(Integer number) {
@@ -58,19 +58,20 @@ public class NewGame implements PropertyConstraintProvider {
     
 
     public String getAdditionalNations() {
-		return additionalNations;
+		return this.additionalNations;
 	}
 
 	public void setAdditionalNations(String additionalNations) {
 		this.additionalNations = additionalNations;
 	}
 
+	@Override
 	public PropertyConstraint getPropertyConstraint(String string) {
-        if (rules == null) {
-            rules = new Rules();
-            rules.add("nationNo", Constraints.instance().and(Constraints.instance().gt(0), Constraints.instance().lt(26)));
-            rules.add("number", Constraints.instance().gt(0));
+        if (this.rules == null) {
+            this.rules = new Rules();
+            this.rules.add("nationNo", Constraints.instance().and(Constraints.instance().gt(0), Constraints.instance().lt(26)));
+            this.rules.add("number", Constraints.instance().gt(0));
         }
-        return rules.getPropertyConstraint(string);
+        return this.rules.getPropertyConstraint(string);
     }
 }

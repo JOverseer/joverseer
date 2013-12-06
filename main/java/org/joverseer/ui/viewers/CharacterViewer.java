@@ -26,6 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 
 import org.joverseer.domain.Army;
@@ -158,11 +160,11 @@ public class CharacterViewer extends ObjectViewer {
 	public void setFormObject(Object object) {
 		Character c = (Character) object;
 		if (object != getFormObject()) {
-			showArtifacts = false;
-			showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank() || !c.getOrders()[0].isBlank() || OrderEditorAutoNations.instance().containsNation(c.getNationNo());
+			this.showArtifacts = false;
+			this.showOrders = !c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank() || !c.getOrders()[0].isBlank() || OrderEditorAutoNations.instance().containsNation(c.getNationNo());
 			resetOrderPanel(c.getNumberOfOrders());
-			showSpells = false;
-			showHostages = false;
+			this.showSpells = false;
+			this.showHostages = false;
 		}
 		super.setFormObject(object);
 		if (object == null)
@@ -171,19 +173,19 @@ public class CharacterViewer extends ObjectViewer {
 	}
 
 	private void resetOrderPanel(int numberOfOrders) {
-		orderPanel.removeAll();
+		this.orderPanel.removeAll();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(order1comp, "rowspec=top:20px");
+		tlb.cell(this.order1comp, "rowspec=top:20px");
 		tlb.row();
-		tlb.cell(order2comp, "rowspec=top:20px");
+		tlb.cell(this.order2comp, "rowspec=top:20px");
 		tlb.row();
 		if (numberOfOrders == 3) {
-			tlb.cell(order3comp, "rowspec=top:20px");
+			tlb.cell(this.order3comp, "rowspec=top:20px");
 			tlb.row();
 		}
 		JPanel pnl = tlb.getPanel();
 		pnl.setBackground(Color.white);
-		orderPanel.add(pnl);
+		this.orderPanel.add(pnl);
 	}
 
 	public void reset(Character c) {
@@ -192,10 +194,10 @@ public class CharacterViewer extends ObjectViewer {
 		boolean showStartingInfo = false;
 		ArrayList<ArtifactInfo> artis = new ArrayList<ArtifactInfo>();
 		Character startingChar = null;
-		characterName.setText(GraphicUtils.parseName(c.getName()));
-		characterName.setTransferHandler(new CharacterExportTransferHandler(c));
-		if (statsTextBox != null) {
-			characterName.setCaretPosition(0);
+		this.characterName.setText(GraphicUtils.parseName(c.getName()));
+		this.characterName.setTransferHandler(new CharacterExportTransferHandler(c));
+		if (this.statsTextBox != null) {
+			this.characterName.setCaretPosition(0);
 			String txt = c.getStatString();
 
 			if (txt.equals("")) {
@@ -217,7 +219,7 @@ public class CharacterViewer extends ObjectViewer {
 						txt += ")";
 					}
 					// artifacts
-					if (showArtifacts) {
+					if (this.showArtifacts) {
 						for (ArtifactWrapper aw : acw.getArtifacts()) {
 							// find artifact in metadata
 							ArtifactInfo a = g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
@@ -248,31 +250,31 @@ public class CharacterViewer extends ObjectViewer {
 					}
 				}
 			}
-			statsTextBox.setText(txt);
-			statsTextBox.setCaretPosition(0);
+			this.statsTextBox.setText(txt);
+			this.statsTextBox.setCaretPosition(0);
 
 			// show info sources, if needed
 			InfoSource is = c.getInfoSource();
 			if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) || DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
 				DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource) is;
 				String infoSourcesStr = sis.getSpell() + " at " + sis.getHexNo();
-				infoSourcesTextBox.setVisible(true);
+				this.infoSourcesTextBox.setVisible(true);
 				for (InfoSource dsis : sis.getOtherInfoSources()) {
 					if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
 						infoSourcesStr += ", " + ((DerivedFromSpellInfoSource) dsis).getSpell() + " at " + ((DerivedFromSpellInfoSource) dsis).getHexNo();
 					}
 				}
-				infoSourcesTextBox.setText(infoSourcesStr);
+				this.infoSourcesTextBox.setText(infoSourcesStr);
 			} else if (DoubleAgentInfoSource.class.isInstance(is)) {
-				infoSourcesTextBox.setVisible(true);
+				this.infoSourcesTextBox.setVisible(true);
 				// TODO show nation name
-				infoSourcesTextBox.setText("Double agent for nation " + ((DoubleAgentInfoSource) is).getNationNo());
+				this.infoSourcesTextBox.setText("Double agent for nation " + ((DoubleAgentInfoSource) is).getNationNo());
 			} else {
-				infoSourcesTextBox.setVisible(false);
+				this.infoSourcesTextBox.setVisible(false);
 			}
 
-			Font f = GraphicUtils.getFont(statsTextBox.getFont().getName(), (showStartingInfo ? Font.ITALIC : Font.PLAIN), statsTextBox.getFont().getSize());
-			statsTextBox.setFont(f);
+			Font f = GraphicUtils.getFont(this.statsTextBox.getFont().getName(), (showStartingInfo ? Font.ITALIC : Font.PLAIN), this.statsTextBox.getFont().getSize());
+			this.statsTextBox.setFont(f);
 
 			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			if (game == null)
@@ -289,10 +291,10 @@ public class CharacterViewer extends ObjectViewer {
 					nationName = "This character is a dragon";
 				}
 			}
-			nationTextBox.setText(nationShortName);
-			nationTextBox.setCaretPosition(0);
-			nationTextBox.setToolTipText(nationName);
-			if (showArtifacts && !showStartingInfo) {
+			this.nationTextBox.setText(nationShortName);
+			this.nationTextBox.setCaretPosition(0);
+			this.nationTextBox.setToolTipText(nationName);
+			if (this.showArtifacts && !showStartingInfo) {
 				ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
 				if (artifacts != null) {
 					for (Integer no : artifacts) {
@@ -309,35 +311,35 @@ public class CharacterViewer extends ObjectViewer {
 				// do nothing, we have already populated the artis table
 			}
 
-			((BeanTableModel) artifactsTable.getModel()).setRows(artis);
-			artifactsTable.setPreferredSize(new Dimension(180, 16 * artis.size()));
-			TableUtils.setTableColumnWidths(artifactsTable, new int[] { 10, 120, 40 });
+			((BeanTableModel) this.artifactsTable.getModel()).setRows(artis);
+			this.artifactsTable.setPreferredSize(new Dimension(180, 16 * artis.size()));
+			TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 10, 120, 40 });
 
 			ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
-			if (showSpells) {
+			if (this.showSpells) {
 				spells.addAll(c.getSpells());
 			}
-			((BeanTableModel) spellsTable.getModel()).setRows(spells);
-			spellsTable.setPreferredSize(new Dimension(spellsTable.getWidth(), 16 * spells.size()));
-			TableUtils.setTableColumnWidths(spellsTable, new int[] { 10, 120, 40 });
+			((BeanTableModel) this.spellsTable.getModel()).setRows(spells);
+			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), 16 * spells.size()));
+			TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 10, 120, 40 });
 			Container<Company> companies = game.getTurn().getCompanies();
 			Company company = companies.findFirstByProperty("commander", c.getName());
 			if (company != null) {
 				String members = company.getMemberStr();
 
-				companyMembersTextBox.setText("Company: " + members);
-				companyMembersTextBox.setCaretPosition(0);
-				companyMembersTextBox.setVisible(true);
-				companyMembersTextBox.setFont(GraphicUtils.getFont(companyMembersTextBox.getFont().getName(), Font.ITALIC, companyMembersTextBox.getFont().getSize()));
+				this.companyMembersTextBox.setText("Company: " + members);
+				this.companyMembersTextBox.setCaretPosition(0);
+				this.companyMembersTextBox.setVisible(true);
+				this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 			} else {
 				// check if he is travelling with a company or an army...
 				boolean found = false;
 				for (Company comp : companies.getItems()) {
 					if (comp.getMembers().contains(c.getName())) {
-						companyMembersTextBox.setVisible(true);
-						companyMembersTextBox.setText("In " + comp.getCommander() + "'s company");
-						companyMembersTextBox.setCaretPosition(0);
-						companyMembersTextBox.setFont(GraphicUtils.getFont(companyMembersTextBox.getFont().getName(), Font.ITALIC, companyMembersTextBox.getFont().getSize()));
+						this.companyMembersTextBox.setVisible(true);
+						this.companyMembersTextBox.setText("In " + comp.getCommander() + "'s company");
+						this.companyMembersTextBox.setCaretPosition(0);
+						this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 						found = true;
 						break;
 					}
@@ -347,10 +349,10 @@ public class CharacterViewer extends ObjectViewer {
 						ArrayList<Army> armies = game.getTurn().getArmies().findAllByProperty("nationNo", c.getNationNo());
 						for (Army a : armies) {
 							if (a.getCharacters().contains(c.getName())) {
-								companyMembersTextBox.setVisible(true);
-								companyMembersTextBox.setText("In " + a.getCommanderName() + "'s army");
-								companyMembersTextBox.setCaretPosition(0);
-								companyMembersTextBox.setFont(GraphicUtils.getFont(companyMembersTextBox.getFont().getName(), Font.ITALIC, companyMembersTextBox.getFont().getSize()));
+								this.companyMembersTextBox.setVisible(true);
+								this.companyMembersTextBox.setText("In " + a.getCommanderName() + "'s army");
+								this.companyMembersTextBox.setCaretPosition(0);
+								this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 								found = true;
 								break;
 							}
@@ -358,7 +360,7 @@ public class CharacterViewer extends ObjectViewer {
 					}
 				}
 				if (!found) {
-					companyMembersTextBox.setVisible(false);
+					this.companyMembersTextBox.setVisible(false);
 				}
 
 			}
@@ -374,10 +376,10 @@ public class CharacterViewer extends ObjectViewer {
 				} else {
 					col = ColorPicker.getInstance().getColor(nr.getAllegiance().toString());
 				}
-				characterName.setForeground(col);
+				this.characterName.setForeground(col);
 			}
-			if (showHostages && c.getHostages().size() > 0) {
-				hostagesPane.setVisible(true);
+			if (this.showHostages && c.getHostages().size() > 0) {
+				this.hostagesPane.setVisible(true);
 				String htxt = "";
 				for (String h : c.getHostages()) {
 					htxt += (htxt.equals("") ? "" : ", ") + h;
@@ -388,33 +390,33 @@ public class CharacterViewer extends ObjectViewer {
 						htxt += "(" + hNationName + ")";
 					}
 				}
-				hostages.setText(("Hostages: " + htxt));
+				this.hostages.setText(("Hostages: " + htxt));
 			} else {
-				hostagesPane.setVisible(false);
+				this.hostagesPane.setVisible(false);
 			}
 
-			ArrayList<Note> notes = g.getTurn().getNotes().findAllByProperty("target", c);
-			notesViewer.setFormObject(notes);
-			characterName.setCaretPosition(0);
+			ArrayList<Note> notes1 = g.getTurn().getNotes().findAllByProperty("target", c);
+			this.notesViewer.setFormObject(notes1);
+			this.characterName.setCaretPosition(0);
 		}
 
 	}
 
 	public void refreshOrders(Character c) {
-		order1.setFormObject(c.getOrders()[0]);
-		order2.setFormObject(c.getOrders()[1]);
-		order3.setFormObject(c.getOrders()[2]);
-		if (showOrders) {
-			orderPanel.setVisible(true);
+		this.order1.setFormObject(c.getOrders()[0]);
+		this.order2.setFormObject(c.getOrders()[1]);
+		this.order3.setFormObject(c.getOrders()[2]);
+		if (this.showOrders) {
+			this.orderPanel.setVisible(true);
 			if (c.getNumberOfOrders() == 3) {
-				order3comp.setVisible(true);
+				this.order3comp.setVisible(true);
 			} else {
-				order3comp.setVisible(false);
+				this.order3comp.setVisible(false);
 			}
-			swapOrdersIconCmd.setVisible(true);
+			this.swapOrdersIconCmd.setVisible(true);
 		} else {
-			orderPanel.setVisible(false);
-			swapOrdersIconCmd.setVisible(false);
+			this.orderPanel.setVisible(false);
+			this.swapOrdersIconCmd.setVisible(false);
 		}
 
 	}
@@ -433,14 +435,14 @@ public class CharacterViewer extends ObjectViewer {
 		JComponent c;
 
 		glb.append(c = new JTextField());
-		characterName = (JTextField) c;
-		characterName.addMouseListener(new MouseAdapter() {
+		this.characterName = (JTextField) c;
+		this.characterName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// characterName.setTransferHandler(new
 				// CharIdTransferHandler("text"));
-				TransferHandler handler = characterName.getTransferHandler();
-				handler.exportAsDrag(characterName, e, TransferHandler.COPY);
+				TransferHandler handler = CharacterViewer.this.characterName.getTransferHandler();
+				handler.exportAsDrag(CharacterViewer.this.characterName, e, TransferHandler.COPY);
 			}
 		});
 		c.setBorder(null);
@@ -450,7 +452,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.append(c = new JTextField());
 		c.setBorder(null);
-		nationTextBox = (JTextField) c;
+		this.nationTextBox = (JTextField) c;
 		// bf.bindControl(c, "nationNo");
 		c.setPreferredSize(new Dimension(50, 12));
 
@@ -476,11 +478,12 @@ public class CharacterViewer extends ObjectViewer {
 		glb.append(btnCharDetails);
 		btnCharDetails.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				showArtifacts = !showOrders;
-				showSpells = !showOrders;
-				showHostages = !showOrders;
-				showOrders = !showOrders;
+				CharacterViewer.this.showArtifacts = !CharacterViewer.this.showOrders;
+				CharacterViewer.this.showSpells = !CharacterViewer.this.showOrders;
+				CharacterViewer.this.showHostages = !CharacterViewer.this.showOrders;
+				CharacterViewer.this.showOrders = !CharacterViewer.this.showOrders;
 				reset((Character) getFormObject());
 			}
 
@@ -488,25 +491,25 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.nextLine();
 
-		glb.append(statsTextBox = new JTextField(), 2, 1);
-		statsTextBox.setBorder(null);
-		statsTextBox.setPreferredSize(new Dimension(100, 12));
+		glb.append(this.statsTextBox = new JTextField(), 2, 1);
+		this.statsTextBox.setBorder(null);
+		this.statsTextBox.setPreferredSize(new Dimension(100, 12));
 		glb.nextLine();
 
-		glb.append(companyMembersTextBox = new JTextField(), 3, 1);
-		companyMembersTextBox.setBorder(null);
-		companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
-		Font f = GraphicUtils.getFont(companyMembersTextBox.getFont().getName(), Font.ITALIC, 11);
-		companyMembersTextBox.setFont(f);
+		glb.append(this.companyMembersTextBox = new JTextField(), 3, 1);
+		this.companyMembersTextBox.setBorder(null);
+		this.companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
+		Font f = GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, 11);
+		this.companyMembersTextBox.setFont(f);
 		glb.nextLine();
 
-		glb.append(infoSourcesTextBox = new JTextField(), 2, 1);
-		infoSourcesTextBox.setBorder(null);
-		infoSourcesTextBox.setPreferredSize(new Dimension(100, 12));
+		glb.append(this.infoSourcesTextBox = new JTextField(), 2, 1);
+		this.infoSourcesTextBox.setBorder(null);
+		this.infoSourcesTextBox.setPreferredSize(new Dimension(100, 12));
 		glb.nextLine();
 
-		glb.append(artifactsTable = new JTable(), 2, 1);
-		artifactsTable.setPreferredSize(new Dimension(150, 20));
+		glb.append(this.artifactsTable = new JTable(), 2, 1);
+		this.artifactsTable.setPreferredSize(new Dimension(150, 20));
 		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
 
 			@Override
@@ -521,22 +524,22 @@ public class CharacterViewer extends ObjectViewer {
 
 		};
 
-		artifactsTable.addMouseListener(new MouseAdapter() {
+		this.artifactsTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 1) {
-					if (artifactsTable.getSelectedRow() < 0)
+					if (CharacterViewer.this.artifactsTable.getSelectedRow() < 0)
 						return;
-					ArtifactInfo a = (ArtifactInfo) tableModel.getRow(artifactsTable.getSelectedRow());
+					ArtifactInfo a = (ArtifactInfo) tableModel.getRow(CharacterViewer.this.artifactsTable.getSelectedRow());
 					if (a == null)
 						return;
 					TransferHandler handler = new ArtifactInfoExportTransferHandler(a);
-					artifactsTable.setTransferHandler(handler);
-					handler.exportAsDrag(artifactsTable, e, TransferHandler.COPY);
+					CharacterViewer.this.artifactsTable.setTransferHandler(handler);
+					handler.exportAsDrag(CharacterViewer.this.artifactsTable, e, TransferHandler.COPY);
 				} else if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-					if (artifactsTable.getSelectedRow() < 0)
+					if (CharacterViewer.this.artifactsTable.getSelectedRow() < 0)
 						return;
-					ArtifactInfo a = (ArtifactInfo) tableModel.getRow(artifactsTable.getSelectedRow());
+					ArtifactInfo a = (ArtifactInfo) tableModel.getRow(CharacterViewer.this.artifactsTable.getSelectedRow());
 					if (a == null)
 						return;
 					final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" + a.getAlignment() + "\n" + a.getPower1() + ", " + a.getPower2();
@@ -548,9 +551,9 @@ public class CharacterViewer extends ObjectViewer {
 		});
 
 		tableModel.setRowNumbers(false);
-		artifactsTable.setModel(tableModel);
-		TableUtils.setTableColumnWidths(artifactsTable, new int[] { 16, 100, 100 });
-		artifactsTable.setBorder(null);
+		this.artifactsTable.setModel(tableModel);
+		TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 16, 100, 100 });
+		this.artifactsTable.setBorder(null);
 
 		glb.nextLine();
 		glb.append(new JLabel() {
@@ -561,8 +564,8 @@ public class CharacterViewer extends ObjectViewer {
 		});
 		glb.nextLine();
 
-		glb.append(spellsTable = new JTable(), 2, 1);
-		spellsTable.setPreferredSize(new Dimension(150, 12));
+		glb.append(this.spellsTable = new JTable(), 2, 1);
+		this.spellsTable.setPreferredSize(new Dimension(150, 12));
 		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
 
 			@Override
@@ -576,26 +579,26 @@ public class CharacterViewer extends ObjectViewer {
 			}
 		};
 		spellModel.setRowNumbers(false);
-		spellsTable.setModel(spellModel);
-		TableUtils.setTableColumnWidths(spellsTable, new int[] { 30, 90, 30 });
-		spellsTable.setBorder(null);
+		this.spellsTable.setModel(spellModel);
+		TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 30, 90, 30 });
+		this.spellsTable.setBorder(null);
 
-		spellsTable.addMouseListener(new MouseAdapter() {
+		this.spellsTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 1) {
-					if (spellsTable.getSelectedRow() < 0)
+					if (CharacterViewer.this.spellsTable.getSelectedRow() < 0)
 						return;
-					SpellProficiency sp = (SpellProficiency) spellModel.getRow(spellsTable.getSelectedRow());
+					SpellProficiency sp = (SpellProficiency) spellModel.getRow(CharacterViewer.this.spellsTable.getSelectedRow());
 					if (sp == null)
 						return;
 					TransferHandler handler = new ParamTransferHandler(sp.getSpellId());
-					spellsTable.setTransferHandler(handler);
-					handler.exportAsDrag(spellsTable, e, TransferHandler.COPY);
+					CharacterViewer.this.spellsTable.setTransferHandler(handler);
+					handler.exportAsDrag(CharacterViewer.this.spellsTable, e, TransferHandler.COPY);
 				} else if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-					if (spellsTable.getSelectedRow() < 0)
+					if (CharacterViewer.this.spellsTable.getSelectedRow() < 0)
 						return;
-					SpellProficiency sp = (SpellProficiency) spellModel.getRow(spellsTable.getSelectedRow());
+					SpellProficiency sp = (SpellProficiency) spellModel.getRow(CharacterViewer.this.spellsTable.getSelectedRow());
 					if (sp == null)
 						return;
 
@@ -613,47 +616,48 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.nextLine();
 
-		hostages = new JTextArea();
-		hostages.setWrapStyleWord(true);
-		hostages.setLineWrap(true);
-		hostagesPane = new JScrollPane(hostages);
-		hostagesPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		hostagesPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		hostagesPane.setBorder(BorderFactory.createEmptyBorder());
-		glb.append(hostagesPane, 6, 1);
+		this.hostages = new JTextArea();
+		this.hostages.setWrapStyleWord(true);
+		this.hostages.setLineWrap(true);
+		this.hostagesPane = new JScrollPane(this.hostages);
+		this.hostagesPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		this.hostagesPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		this.hostagesPane.setBorder(BorderFactory.createEmptyBorder());
+		glb.append(this.hostagesPane, 6, 1);
 		glb.nextLine();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-		tlb.cell(order1comp = order1.createFormControl(), "rowspec=top:20px");
+		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px");
 		tlb.row();
-		order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-		tlb.cell(order2comp = order2.createFormControl(), "rowspec=top:20px");
+		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px");
 		tlb.row();
-		order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-		tlb.cell(order3comp = order3.createFormControl(), "rowspec=top:20px");
+		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px");
 		tlb.row();
-		orderPanel = new JPanel();
-		orderPanel.add(tlb.getPanel());
-		orderPanel.setBackground(Color.white);
-		glb.append(orderPanel, 2, 1);
-		glb.append(swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
-		swapOrdersIconCmd.setVerticalAlignment(JButton.CENTER);
-		swapOrdersIconCmd.setToolTipText("Swap orders");
-		swapOrdersIconCmd.setPreferredSize(new Dimension(16, 16));
-		swapOrdersIconCmd.addActionListener(new ActionListener() {
+		this.orderPanel = new JPanel();
+		this.orderPanel.add(tlb.getPanel());
+		this.orderPanel.setBackground(Color.white);
+		glb.append(this.orderPanel, 2, 1);
+		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
+		this.swapOrdersIconCmd.setVerticalAlignment(SwingConstants.CENTER);
+		this.swapOrdersIconCmd.setToolTipText("Swap orders");
+		this.swapOrdersIconCmd.setPreferredSize(new Dimension(16, 16));
+		this.swapOrdersIconCmd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Character c = (Character) getFormObject();
-				c.setOrders(new Order[] { c.getOrders()[1], c.getOrders()[0] });
+				Character c1 = (Character) getFormObject();
+				c1.setOrders(new Order[] { c1.getOrders()[1], c1.getOrders()[0] });
 				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshHexItems.toString(), MapPanel.instance().getSelectedHex(), this));
 			}
 		});
 
 		glb.nextLine();
 
-		notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
+		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
 		tlb = new TableLayoutBuilder();
-		tlb.cell(notesViewer.createFormControl(), "colspec=left:285px");
+		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px");
 		JPanel notesPanel = tlb.getPanel();
 		notesPanel.setBackground(Color.white);
 		glb.append(notesPanel, 6, 1);
@@ -694,49 +698,49 @@ public class CharacterViewer extends ObjectViewer {
 		panel.setFocusTraversalPolicy(new FocusTraversalPolicy() {
 			@Override
 			public Component getComponentAfter(java.awt.Container aContainer, Component aComponent) {
-				if (aComponent == characterName) {
+				if (aComponent == CharacterViewer.this.characterName) {
 					return btnMainMenu;
 				} else if (aComponent == btnMainMenu) {
 					return btnCharDetails;
 				} else if (aComponent == btnCharDetails) {
-					return order1comp.getFocusTraversalPolicy().getFirstComponent(order1comp);
-				} else if (aComponent == order1comp.getFocusTraversalPolicy().getLastComponent(order1comp)) {
-					return order2comp.getFocusTraversalPolicy().getFirstComponent(order2comp);
-				} else if (aComponent == order2comp.getFocusTraversalPolicy().getLastComponent(order1comp)) {
-					return characterName;
+					return CharacterViewer.this.order1comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order1comp);
+				} else if (aComponent == CharacterViewer.this.order1comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order1comp)) {
+					return CharacterViewer.this.order2comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order2comp);
+				} else if (aComponent == CharacterViewer.this.order2comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order1comp)) {
+					return CharacterViewer.this.characterName;
 				}
-				return characterName;
+				return CharacterViewer.this.characterName;
 			}
 
 			@Override
 			public Component getComponentBefore(java.awt.Container aContainer, Component aComponent) {
-				if (aComponent == characterName) {
-					return order2comp.getFocusTraversalPolicy().getLastComponent(order2comp);
+				if (aComponent == CharacterViewer.this.characterName) {
+					return CharacterViewer.this.order2comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order2comp);
 				} else if (aComponent == btnMainMenu) {
-					return characterName;
+					return CharacterViewer.this.characterName;
 				} else if (aComponent == btnCharDetails) {
 					return btnMainMenu;
-				} else if (aComponent == order1comp.getFocusTraversalPolicy().getFirstComponent(order1comp)) {
+				} else if (aComponent == CharacterViewer.this.order1comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order1comp)) {
 					return btnCharDetails;
-				} else if (aComponent == order2comp.getFocusTraversalPolicy().getFirstComponent(order2comp)) {
-					return order1comp.getFocusTraversalPolicy().getLastComponent(order1comp);
+				} else if (aComponent == CharacterViewer.this.order2comp.getFocusTraversalPolicy().getFirstComponent(CharacterViewer.this.order2comp)) {
+					return CharacterViewer.this.order1comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order1comp);
 				}
-				return characterName;
+				return CharacterViewer.this.characterName;
 			}
 
 			@Override
 			public Component getDefaultComponent(java.awt.Container aContainer) {
-				return characterName;
+				return CharacterViewer.this.characterName;
 			}
 
 			@Override
 			public Component getFirstComponent(java.awt.Container aContainer) {
-				return characterName;
+				return CharacterViewer.this.characterName;
 			}
 
 			@Override
 			public Component getLastComponent(java.awt.Container aContainer) {
-				return order2comp.isVisible() ? order2comp.getFocusTraversalPolicy().getLastComponent(order2comp) : btnCharDetails;
+				return CharacterViewer.this.order2comp.isVisible() ? CharacterViewer.this.order2comp.getFocusTraversalPolicy().getLastComponent(CharacterViewer.this.order2comp) : btnCharDetails;
 			}
 
 		});
@@ -753,7 +757,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			showArtifacts = !showArtifacts;
+			CharacterViewer.this.showArtifacts = !CharacterViewer.this.showArtifacts;
 			refresh();
 		}
 	}
@@ -762,7 +766,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			showSpells = !showSpells;
+			CharacterViewer.this.showSpells = !CharacterViewer.this.showSpells;
 			refresh();
 		}
 	}
@@ -771,7 +775,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			showOrders = !showOrders;
+			CharacterViewer.this.showOrders = !CharacterViewer.this.showOrders;
 			refresh();
 		}
 	}
@@ -857,10 +861,10 @@ public class CharacterViewer extends ObjectViewer {
 			Character c = (Character) getFormObject();
 			for (int i = 0; i < c.getNumberOfOrders(); i++) {
 				if (c.getOrders()[i].isBlank()) {
-					c.getOrders()[i].setOrderNo(orderNo);
-					c.getOrders()[i].setParameters(params);
+					c.getOrders()[i].setOrderNo(this.orderNo);
+					c.getOrders()[i].setParameters(this.params);
 					setFormObject(getFormObject());
-					showOrders = true;
+					CharacterViewer.this.showOrders = true;
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), c.getOrders()[i], this));
 					return;
 				}
@@ -874,7 +878,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		@Override
 		protected void doExecuteCommand() {
-			cancel = true;
+			this.cancel = true;
 			Character c = (Character) getFormObject();
 			ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete character '" + c.getName() + "'?") {
 				@Override
@@ -884,12 +888,12 @@ public class CharacterViewer extends ObjectViewer {
 
 				@Override
 				protected void onConfirm() {
-					cancel = false;
+					DeleteCharacterCommand.this.cancel = false;
 				}
 
 			};
 			cdlg.showDialog();
-			if (cancel)
+			if (this.cancel)
 				return;
 			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 			Turn t = g.getTurn();
@@ -964,18 +968,18 @@ public class CharacterViewer extends ObjectViewer {
 		showCharacterLongStrideRangeCommand.setEnabled(hasLongStride);
 		showCharacterPathMasteryRangeCommand.setEnabled(hasPathMastery);
 
-		showArtifactsCommand.setEnabled(c != null);
-		showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
-		showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
+		this.showArtifactsCommand.setEnabled(c != null);
+		this.showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
+		this.showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
 
 		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() });
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { showArtifactsCommand, showSpellsCommand, showOrdersCommand, showResultsCommand, "separator", editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", sendOrdersByChatCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", this.editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", this.deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", this.sendOrdersByChatCommand });
 		return group.createPopupMenu();
 	}
 
 	public boolean getShowColor() {
-		return showColor;
+		return this.showColor;
 	}
 
 	public void setShowColor(boolean showColor) {
@@ -997,7 +1001,7 @@ public class CharacterViewer extends ObjectViewer {
 		Character c = (Character) getFormObject();
 		Note n = (Note) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c);
 		if (n != null) {
-			n.setText(notes.getText());
+			n.setText(this.notes.getText());
 		}
 	}
 

@@ -17,13 +17,14 @@ public class DerivedFromCombatNarrationInfoSource extends PdfTurnInfoSource {
 	}
 
 	public String getLossesDescription() {
-		return lossesDescription;
+		return this.lossesDescription;
 	}
 
 	public void setLossesDescription(String lossesDescription) {
 		this.lossesDescription = lossesDescription;
 	}
 	
+	@Override
 	public String toString() {
     	return "Combat narration";
     }

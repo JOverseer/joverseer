@@ -21,27 +21,27 @@ public class ContainerCache<X> implements Serializable {
 
 	public ContainerCache(String propertyName) {
 		this.propertyName = propertyName;
-		cache = new HashMap<Object, ArrayList<X>>();
-		reverseMap = new HashMap<Object, Object>();
+		this.cache = new HashMap<Object, ArrayList<X>>();
+		this.reverseMap = new HashMap<Object, Object>();
 	}
 
 	public void addItem(X obj) {
 		Object value = getPropertyValue(obj);
-		ArrayList<X> objects = cache.get(value);
+		ArrayList<X> objects = this.cache.get(value);
 		if (objects == null) {
 			objects = new ArrayList<X>();
-			cache.put(value, objects);
+			this.cache.put(value, objects);
 		}
 		getReverseMap().put(obj, value);
 		objects.add(obj);
 	}
 
 	public void clear() {
-		cache.clear();
+		this.cache.clear();
 	}
 
 	public String getPropertyName() {
-		return propertyName;
+		return this.propertyName;
 	}
 
 	private Object getPropertyValue(X obj) {
@@ -53,10 +53,10 @@ public class ContainerCache<X> implements Serializable {
 	}
 
 	private HashMap<Object, Object> getReverseMap() {
-		if (reverseMap == null) {
+		if (this.reverseMap == null) {
 			reconstructReverseMap();
 		}
-		return reverseMap;
+		return this.reverseMap;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,21 +66,21 @@ public class ContainerCache<X> implements Serializable {
 		Object o1 = in.readObject();
 		Object o2 = in.readObject();
 		if (HashMap.class.isInstance(o1)) {
-			cache = (HashMap<Object, ArrayList<X>>) o1;
-			propertyName = (String) o2;
+			this.cache = (HashMap<Object, ArrayList<X>>) o1;
+			this.propertyName = (String) o2;
 		} else {
-			propertyName = (String) o1;
-			cache = (HashMap<Object, ArrayList<X>>) o2;
+			this.propertyName = (String) o1;
+			this.cache = (HashMap<Object, ArrayList<X>>) o2;
 		}
 		reconstructReverseMap();
 	}
 
 	private void reconstructReverseMap() {
-		reverseMap = new HashMap<Object, Object>();
-		for (ArrayList<X> list : cache.values()) {
+		this.reverseMap = new HashMap<Object, Object>();
+		for (ArrayList<X> list : this.cache.values()) {
 			for (X obj : list) {
 				Object value = getPropertyValue(obj);
-				reverseMap.put(obj, value);
+				this.reverseMap.put(obj, value);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ public class ContainerCache<X> implements Serializable {
 			} catch (Exception exc) {
 			}
 		}
-		ArrayList<X> objects = cache.get(value);
+		ArrayList<X> objects = this.cache.get(value);
 		if (objects == null) {
 			return;
 		}
@@ -109,7 +109,7 @@ public class ContainerCache<X> implements Serializable {
 	}
 
 	public ArrayList<X> retrieveItems(Object value) {
-		ArrayList<X> objects = cache.get(value);
+		ArrayList<X> objects = this.cache.get(value);
 		return objects;
 	}
 

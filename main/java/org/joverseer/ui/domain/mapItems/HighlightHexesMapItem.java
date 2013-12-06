@@ -18,13 +18,14 @@ public class HighlightHexesMapItem extends AbstractMapItem {
         this.description = descr;
     }
     
-    public String getDescription() {
-        return description;
+    @Override
+	public String getDescription() {
+        return this.description;
     }
 
     
     public ArrayList<Integer> getHexesToHighlight() {
-        return hexesToHighlight;
+        return this.hexesToHighlight;
     }
 
     

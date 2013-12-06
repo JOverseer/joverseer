@@ -7,16 +7,18 @@ public class LocateArtifactWithOwnerResultProcessor extends Processor {
     
     
 
-    protected void resetMatching() {
-        matchedText = null;
-        String remainder = null;
+    @Override
+	protected void resetMatching() {
+        this.matchedText = null;
+        this.remainder = null;
         super.resetMatching();
     }
 
-    protected boolean findMatch() {
-        if (matchedText != null) return false;
-        String str = chars.toString();
-        remainder = str;
+    @Override
+	protected boolean findMatch() {
+        if (this.matchedText != null) return false;
+        String str = this.chars.toString();
+        this.remainder = str;
         str = str.replace("\r\n", " ").replace("\n", " ").replace("  ", " ");
         String prefix = "was ordered to cast a lore spell. Locate Artifact - ";
         int i1 = str.indexOf(prefix); 
@@ -26,17 +28,19 @@ public class LocateArtifactWithOwnerResultProcessor extends Processor {
         if (str.indexOf("is possessed by", i1 + prefix.length()) <0) {
             return false;
         }
-        matchedText = str.substring(i1 + prefix.length(), i2);
-        remainder = str.substring(i2 + 1);
+        this.matchedText = str.substring(i1 + prefix.length(), i2);
+        this.remainder = str.substring(i2 + 1);
         return true;
     }
 
-    protected CharSequence getMatchedText() {
-        return matchedText;
+    @Override
+	protected CharSequence getMatchedText() {
+        return this.matchedText;
     }
 
-    protected CharSequence getRemainderText() {
-        return remainder;
+    @Override
+	protected CharSequence getRemainderText() {
+        return this.remainder;
     }
 
 }

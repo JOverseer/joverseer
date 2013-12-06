@@ -68,7 +68,7 @@ public class ArmyListView extends ItemListView {
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(table), new ExportArmyDataAction() }) };
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table), new ExportArmyDataAction() }) };
 	}
 
 	/**
@@ -78,15 +78,15 @@ public class ArmyListView extends ItemListView {
 	 */
 	@Override
 	protected void startDragAndDropAction(MouseEvent e) {
-		final Army[] selectedArmies = new Army[table.getSelectedRowCount()];
+		final Army[] selectedArmies = new Army[this.table.getSelectedRowCount()];
 		String copyString = "";
-		for (int i = 0; i < table.getSelectedRowCount(); i++) {
-			int idx = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(table.getSelectedRows()[i]);
-			Army a = (Army) tableModel.getRow(idx);
+		for (int i = 0; i < this.table.getSelectedRowCount(); i++) {
+			int idx = ((SortableTableModel) this.table.getModel()).convertSortedIndexToDataIndex(this.table.getSelectedRows()[i]);
+			Army a = (Army) this.tableModel.getRow(idx);
 			selectedArmies[i] = a;
 			String ln = "";
-			for (int j = 0; j < table.getColumnCount(); j++) {
-				Object v = table.getValueAt(i, j);
+			for (int j = 0; j < this.table.getColumnCount(); j++) {
+				Object v = this.table.getValueAt(i, j);
 				if (v == null)
 					v = "";
 				ln += (ln.equals("") ? "" : "\t") + v;
@@ -96,6 +96,8 @@ public class ArmyListView extends ItemListView {
 		final String str = copyString;
 
 		TransferHandler handler = new GenericExportTransferHandler() {
+
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Transferable createTransferable(JComponent arg0) {
@@ -109,8 +111,8 @@ public class ArmyListView extends ItemListView {
 
 			}
 		};
-		table.setTransferHandler(handler);
-		handler.exportAsDrag(table, e, TransferHandler.COPY);
+		this.table.setTransferHandler(handler);
+		handler.exportAsDrag(this.table, e, TransferHandler.COPY);
 	}
 
 	public class ExportArmyDataAction extends ActionCommand implements ClipboardOwner {
@@ -125,9 +127,9 @@ public class ArmyListView extends ItemListView {
 		@Override
 		protected void doExecuteCommand() {
 			String str = "";
-			for (int j = 0; j < tableModel.getRowCount(); j++) {
-				Army a = (Army) tableModel.getRow(j);
-				str += a.getHexNo() + DELIM + a.getCommanderName() + DELIM + a.getNationAllegiance().getAllegiance() + DELIM + a.getNationNo() + DELIM + (a.isNavy() ? 1 : 0) + DELIM + a.getSize().getSize() + DELIM + a.getTroopCount() + DELIM + a.getMorale() + DELIM + getElementString(a, ArmyElementType.HeavyCavalry) + DELIM + getElementString(a, ArmyElementType.LightCavalry) + DELIM + getElementString(a, ArmyElementType.HeavyInfantry) + DELIM + getElementString(a, ArmyElementType.LightInfantry) + DELIM + getElementString(a, ArmyElementType.Archers) + DELIM + getElementString(a, ArmyElementType.MenAtArms) + DELIM + getElementString(a, ArmyElementType.WarMachimes) + DELIM + getElementString(a, ArmyElementType.Warships) + DELIM + getElementString(a, ArmyElementType.Transports) + DELIM + NL;
+			for (int j = 0; j < ArmyListView.this.tableModel.getRowCount(); j++) {
+				Army a = (Army) ArmyListView.this.tableModel.getRow(j);
+				str += a.getHexNo() + this.DELIM + a.getCommanderName() + this.DELIM + a.getNationAllegiance().getAllegiance() + this.DELIM + a.getNationNo() + this.DELIM + (a.isNavy() ? 1 : 0) + this.DELIM + a.getSize().getSize() + this.DELIM + a.getTroopCount() + this.DELIM + a.getMorale() + this.DELIM + getElementString(a, ArmyElementType.HeavyCavalry) + this.DELIM + getElementString(a, ArmyElementType.LightCavalry) + this.DELIM + getElementString(a, ArmyElementType.HeavyInfantry) + this.DELIM + getElementString(a, ArmyElementType.LightInfantry) + this.DELIM + getElementString(a, ArmyElementType.Archers) + this.DELIM + getElementString(a, ArmyElementType.MenAtArms) + this.DELIM + getElementString(a, ArmyElementType.WarMachimes) + this.DELIM + getElementString(a, ArmyElementType.Warships) + this.DELIM + getElementString(a, ArmyElementType.Transports) + this.DELIM + this.NL;
 			}
 			StringSelection stringSelection = new StringSelection(str);
 			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -138,13 +140,14 @@ public class ArmyListView extends ItemListView {
 			String str = "";
 			ArmyElement ae = a.getElement(aet);
 			if (ae == null) {
-				str = aet.getType() + DELIM + "" + DELIM + "" + DELIM + "" + DELIM + "";
+				str = aet.getType() + this.DELIM + "" + this.DELIM + "" + this.DELIM + "" + this.DELIM + "";
 			} else {
-				str = aet.getType() + DELIM + ae.getNumber() + DELIM + ae.getTraining() + DELIM + ae.getWeapons() + DELIM + ae.getArmor();
+				str = aet.getType() + this.DELIM + ae.getNumber() + this.DELIM + ae.getTraining() + this.DELIM + ae.getWeapons() + this.DELIM + ae.getArmor();
 			}
 			return str;
 		}
 
+		@Override
 		public void lostOwnership(Clipboard arg0, Transferable arg1) {
 			// TODO Auto-generated method stub
 

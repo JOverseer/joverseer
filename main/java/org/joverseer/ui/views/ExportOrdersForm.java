@@ -102,7 +102,7 @@ public class ExportOrdersForm extends AbstractForm {
 	}
 
 	private int getSelectedNationNo() {
-		String nationName = nation.getSelectedItem().toString();
+		String nationName = this.nation.getSelectedItem().toString();
 		Game g = GameHolder.instance().getGame();
 		return g.getMetadata().getNationByName(nationName).getNumber();
 	}
@@ -113,20 +113,21 @@ public class ExportOrdersForm extends AbstractForm {
 
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.append(new ResourceLabel("standardFields.Nation"));
-		glb.append(nation = new JComboBox(getNationItems().toArray()));
+		glb.append(this.nation = new JComboBox(getNationItems().toArray()));
 
-		nation.setPreferredSize(new Dimension(100, 24));
-		nation.addActionListener(new ActionListener() {
+		this.nation.setPreferredSize(new Dimension(100, 24));
+		this.nation.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				Game g = GameHolder.instance().getGame();
+				Game g1 = GameHolder.instance().getGame();
 				int nationNo = getSelectedNationNo();
-				PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
-				version.setSelectedItem(String.valueOf(pi.getTurnVersion()));
-				if (oldSelectedNation == null || oldSelectedNation != nationNo) {
-					orders.setText("");
-					ordersOk = false;
-					oldSelectedNation = nationNo;
+				PlayerInfo pi = (PlayerInfo) g1.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+				ExportOrdersForm.this.version.setSelectedItem(String.valueOf(pi.getTurnVersion()));
+				if (ExportOrdersForm.this.oldSelectedNation == null || ExportOrdersForm.this.oldSelectedNation != nationNo) {
+					ExportOrdersForm.this.orders.setText("");
+					ExportOrdersForm.this.ordersOk = false;
+					ExportOrdersForm.this.oldSelectedNation = nationNo;
 				}
 			}
 
@@ -135,14 +136,14 @@ public class ExportOrdersForm extends AbstractForm {
 		glb.nextLine();
 
 		glb.append(new ResourceLabel("ExportOrdersForm.Version"));
-		glb.append(version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
-		version.setPreferredSize(new Dimension(20, 24));
+		glb.append(this.version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+		this.version.setPreferredSize(new Dimension(20, 24));
 		glb.nextLine();
 
-		orders = new JTextArea();
-		orders.setWrapStyleWord(false);
-		orders.setLineWrap(false);
-		JScrollPane scp = new JScrollPane(orders);
+		this.orders = new JTextArea();
+		this.orders.setWrapStyleWord(false);
+		this.orders.setLineWrap(false);
+		JScrollPane scp = new JScrollPane(this.orders);
 		scp.setPreferredSize(new Dimension(500, 400));
 		glb.append(scp, 3, 1);
 
@@ -152,17 +153,18 @@ public class ExportOrdersForm extends AbstractForm {
 		glb.append(generate, 1, 1);
 		glb.nextLine();
 		generate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				OrderFileGenerator gen = new OrderFileGenerator();
-				Game g = GameHolder.instance().getGame();
+				Game g1 = GameHolder.instance().getGame();
 				try {
-					orders.setText(gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo()));
-					orders.setCaretPosition(0);
-					orderCheckResult = validateOrders();
-					ordersOk = true;
+					ExportOrdersForm.this.orders.setText(gen.generateOrderFile(g1, g1.getTurn(), getSelectedNationNo()));
+					ExportOrdersForm.this.orders.setCaretPosition(0);
+					ExportOrdersForm.this.orderCheckResult = validateOrders();
+					ExportOrdersForm.this.ordersOk = true;
 				} catch (Exception exc) {
-					orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
-					ordersOk = false;
+					ExportOrdersForm.this.orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
+					ExportOrdersForm.this.ordersOk = false;
 					logger.error(exc);
 				}
 			}
@@ -172,6 +174,7 @@ public class ExportOrdersForm extends AbstractForm {
 		glb.append(save, 1, 1);
 
 		save.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAndSendOrders(false);
 			}
@@ -185,32 +188,33 @@ public class ExportOrdersForm extends AbstractForm {
 		send.setVisible(true);
 
 		send.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAndSendOrders(true);
 			}
 		});
 
-		nation.setSelectedIndex(0);
-		nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+		this.nation.setSelectedIndex(0);
+		this.nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
 
 		return glb.getPanel();
 	}
 
 	private void increaseVersionNumber(PlayerInfo pi) {
 		pi.setTurnVersion(pi.getTurnVersion() + 1);
-		nation.setSelectedIndex(nation.getSelectedIndex());
+		this.nation.setSelectedIndex(this.nation.getSelectedIndex());
 	}
 
 	private void saveAndSendOrders(boolean send) {
-		if (!ordersOk)
+		if (!this.ordersOk)
 			return;
 		if (!checkOrderValidity())
 			return;
 		Game g = GameHolder.instance().getGame();
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
-		pi.setTurnVersion(Integer.parseInt(version.getSelectedItem().toString()));
-		String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), version.getSelectedItem(), g.getMetadata().getGameNo());
+		pi.setTurnVersion(Integer.parseInt(this.version.getSelectedItem().toString()));
+		String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), this.version.getSelectedItem(), g.getMetadata().getGameNo());
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(Application.instance().getApplicationContext().getMessage("standardActions.Save", null, null));
@@ -236,7 +240,7 @@ public class ExportOrdersForm extends AbstractForm {
 					GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
 				}
 				FileWriter f = new FileWriter(file);
-				String txt = orders.getText();
+				String txt = this.orders.getText();
 				txt = txt.replace("\n", System.getProperty("line.separator"));
 				f.write(txt);
 				f.close();
@@ -306,7 +310,7 @@ public class ExportOrdersForm extends AbstractForm {
 										((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
 										frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
 									} catch (Exception exc) {
-										logger.error(exc);
+										this.logger.error(exc);
 									}
 								}
 
@@ -363,75 +367,75 @@ public class ExportOrdersForm extends AbstractForm {
 		}
 		chars.removeAll(toRemove);
 
-		missingOrders = false;
-		ordersWithErrors = false;
-		uncheckedOrders = false;
-		duplicateSkillOrders = false;
-		ordersWithWarnings = false;
+		this.missingOrders = false;
+		this.ordersWithErrors = false;
+		this.uncheckedOrders = false;
+		this.duplicateSkillOrders = false;
+		this.ordersWithWarnings = false;
 
 		OrderResultContainer orc = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
 		OrderParameterValidator validator = new OrderParameterValidator();
 		for (Character ch : chars) {
 			for (int i = 0; i < ch.getNumberOfOrders(); i++) {
 				if (ch.getOrders()[i].isBlank()) {
-					missingOrders = true;
+					this.missingOrders = true;
 				} else {
 					if (orc.getResultsForOrder(ch.getOrders()[i]).size() == 0) {
 						if (!g.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
-							uncheckedOrders = true;
+							this.uncheckedOrders = true;
 						}
 					} else {
 						if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Error) {
-							ordersWithErrors = true;
+							this.ordersWithErrors = true;
 						} else if (orc.getResultTypeForOrder(ch.getOrders()[i]) == OrderResultTypeEnum.Warning) {
-							ordersWithWarnings = true;
+							this.ordersWithWarnings = true;
 						}
 					}
 					OrderValidationResult ovr = validator.checkForDuplicateSkillOrder(ch.getOrders()[i]);
 					if (ovr != null) {
-						duplicateSkillOrders = true;
+						this.duplicateSkillOrders = true;
 					}
 					ovr = validator.checkOrder(ch.getOrders()[i]);
 					if (ovr != null && ovr.getLevel() == OrderValidationResult.ERROR) {
-						ordersWithErrors = true;
+						this.ordersWithErrors = true;
 					}
 					for (int j = 0; j <= ch.getOrders()[i].getLastParamIndex(); j++) {
 						ovr = validator.checkParam(ch.getOrders()[i], j);
 						if (ovr != null && ovr.getLevel() == OrderValidationResult.ERROR) {
-							ordersWithErrors = true;
+							this.ordersWithErrors = true;
 						}
 					}
 				}
 			}
 		}
 
-		if (missingOrders || uncheckedOrders || ordersWithErrors || duplicateSkillOrders || ordersWithWarnings)
+		if (this.missingOrders || this.uncheckedOrders || this.ordersWithErrors || this.duplicateSkillOrders || this.ordersWithWarnings)
 			return ORDERS_NOT_OK;
 		return ORDERS_OK;
 	}
 
 	private boolean checkOrderValidity() {
-		cancelExport = false;
+		this.cancelExport = false;
 		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		if (orderCheckResult != ORDERS_OK) {
-			if (missingOrders) {
+		if (this.orderCheckResult != ORDERS_OK) {
+			if (this.missingOrders) {
 				MessageDialog dlg = new MessageDialog(ms.getMessage("standardMessages.Error", null, null), ms.getMessage("ExportOrdersForm.error.CharactersMissingOrders", null, null));
 				dlg.showDialog();
 				return false;
 			}
-			if (duplicateSkillOrders) {
+			if (this.duplicateSkillOrders) {
 				MessageDialog dlg = new MessageDialog(ms.getMessage("standardMessages.Error", null, null), ms.getMessage("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders", null, null));
 				dlg.showDialog();
 				return false;
 			}
-			if (ordersWithErrors) {
+			if (this.ordersWithErrors) {
 
-				cancelExport = false;
+				this.cancelExport = false;
 				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersWithErrors", null, null)) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
-						cancelExport = true;
+						ExportOrdersForm.this.cancelExport = true;
 					}
 
 					@Override
@@ -440,15 +444,15 @@ public class ExportOrdersForm extends AbstractForm {
 
 				};
 				dlg.showDialog();
-				if (cancelExport)
+				if (this.cancelExport)
 					return false;
-			} else if (ordersWithWarnings) {
-				cancelExport = false;
+			} else if (this.ordersWithWarnings) {
+				this.cancelExport = false;
 				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersWithWarnings", null, null)) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
-						cancelExport = true;
+						ExportOrdersForm.this.cancelExport = true;
 					}
 
 					@Override
@@ -457,16 +461,16 @@ public class ExportOrdersForm extends AbstractForm {
 
 				};
 				dlg.showDialog();
-				if (cancelExport)
+				if (this.cancelExport)
 					return false;
 
 			}
-			if (uncheckedOrders) {
+			if (this.uncheckedOrders) {
 				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC", null, null)) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
-						cancelExport = true;
+						ExportOrdersForm.this.cancelExport = true;
 					}
 
 					@Override
@@ -474,7 +478,7 @@ public class ExportOrdersForm extends AbstractForm {
 					}
 				};
 				dlg.showDialog();
-				if (cancelExport)
+				if (this.cancelExport)
 					return false;
 			}
 		}

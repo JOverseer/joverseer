@@ -13,11 +13,12 @@ public class DoubleAgentProcessor extends Processor {
 	@Override
 	
 	protected void resetMatching() {
-		remainder = chars.toString();
+		this.remainder = this.chars.toString();
 	}
 	
+	@Override
 	protected boolean findMatch() {
-		String str = remainder;
+		String str = this.remainder;
 		String namePattern="(\\p{L}+(?:[\\s\\-']\\p{L}+)*) of [the ]?\\p{L}+(?:[\\s\\-]\\p{L}+)* @ \\d{4}";
 		Pattern p = Pattern.compile(namePattern);
 		Matcher m = p.matcher(str);
@@ -30,23 +31,23 @@ public class DoubleAgentProcessor extends Processor {
         	j = m.start();
         }
         if (i > -1 && j > -1) {
-        	match = str.substring(i, j);
-        	remainder = str.substring(j);
+        	this.match = str.substring(i, j);
+        	this.remainder = str.substring(j);
         	return true;
         } else if (i > -1 && j == -1)  
         {
-        	match = str.substring(i);
-        	remainder = "";
+        	this.match = str.substring(i);
+        	this.remainder = "";
         	return true;
         } else {
-        	remainder = str;
+        	this.remainder = str;
         	return false;
         }
 	}
 
 	@Override
 	protected CharSequence getMatchedText() {
-		return match;
+		return this.match;
 	}
 
 	@Override

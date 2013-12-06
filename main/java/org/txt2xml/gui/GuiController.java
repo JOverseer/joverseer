@@ -50,7 +50,8 @@ import org.scopemvc.util.UIStrings;
  */
 public class GuiController extends BasicController {
     
-    private static final Logger LOG = Logger.getLogger(GuiController.class.getName());
+    @SuppressWarnings("unused")
+	private static final Logger LOG = Logger.getLogger(GuiController.class.getName());
     
     public static final String PROCESS = "Process";
     public static final String LOAD_SOURCE = "LoadSource";
@@ -73,7 +74,8 @@ public class GuiController extends BasicController {
         showView();
     }
     
-    protected void doHandleControl(Control inControl) throws ControlException {
+    @Override
+	protected void doHandleControl(Control inControl) throws ControlException {
         if (inControl.matchesID(PROCESS)) {
             doProcess();
         } else if (inControl.matchesID(LOAD_SOURCE)) {
@@ -93,21 +95,21 @@ public class GuiController extends BasicController {
     }
 
     private void doLoadSource() {
-        JFileChooser chooser = new JFileChooser(currentDirectory);
+        JFileChooser chooser = new JFileChooser(this.currentDirectory);
         chooser.setDialogTitle("Choose source text file");
         int returnValue = chooser.showOpenDialog((GuiView)getView());
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            currentDirectory = chooser.getCurrentDirectory();
+            this.currentDirectory = chooser.getCurrentDirectory();
             ((GuiModel)getModel()).loadSourceFromFile(chooser.getSelectedFile());
         }
     }
     
     private void doLoadConfig() {
-        JFileChooser chooser = new JFileChooser(currentDirectory);
+        JFileChooser chooser = new JFileChooser(this.currentDirectory);
         chooser.setDialogTitle("Choose txt2xml config file");
         int returnValue = chooser.showOpenDialog((GuiView)getView());
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            currentDirectory = chooser.getCurrentDirectory();
+            this.currentDirectory = chooser.getCurrentDirectory();
             ((GuiModel)getModel()).loadConfigFromFile(chooser.getSelectedFile());
         }
     }

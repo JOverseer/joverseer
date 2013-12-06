@@ -34,7 +34,8 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
         this.tableModel = tableModel;
     }
     
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+    @Override
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
             boolean hasFocus, int row, int column) {
 
         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -44,7 +45,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             return c;
         }
         int objRow = ((SortableTableModel) table.getModel()).convertSortedIndexToDataIndex(row);
-        Object obj = tableModel.getRow(objRow);
+        Object obj = this.tableModel.getRow(objRow);
         if (IBelongsToNation.class.isInstance(obj)) {
             IBelongsToNation natObj = (IBelongsToNation) obj;
             if (natObj == null || natObj.getNationNo() == null)
@@ -71,7 +72,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
 
     
     public BeanTableModel getTableModel() {
-        return tableModel;
+        return this.tableModel;
     }
 
     

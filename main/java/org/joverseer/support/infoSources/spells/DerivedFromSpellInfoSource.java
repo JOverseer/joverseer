@@ -25,7 +25,7 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     int hexNo;
     
     public String getCasterName() {
-        return casterName;
+        return this.casterName;
     }
     
     public void setCasterName(String casterName) {
@@ -33,7 +33,7 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     }
     
     public int getNationNo() {
-        return nationNo;
+        return this.nationNo;
     }
     
     public void setNationNo(int nationNo) {
@@ -42,7 +42,7 @@ public class DerivedFromSpellInfoSource extends InfoSource {
 
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
 
     
@@ -51,11 +51,11 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     }
     
     public void addInfoSource(InfoSource is) {
-        otherInfoSources.add(is);
+        this.otherInfoSources.add(is);
     }
     
     public ArrayList<InfoSource> getOtherInfoSources() {
-        return otherInfoSources;
+        return this.otherInfoSources;
     }
     
     public String getSpell() {
@@ -63,7 +63,8 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     }
     
     
-    public String getDescription() {
+    @Override
+	public String getDescription() {
     	String str = "";
     	str += getSpell() + " " + getCasterName();
     	for (InfoSource dis : getOtherInfoSources()) {
@@ -72,7 +73,8 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     	return str;
     }
     
-    public boolean equals(Object obj) {
+    @Override
+	public boolean equals(Object obj) {
         if (this.getClass().isInstance(obj)) {
             DerivedFromSpellInfoSource is = (DerivedFromSpellInfoSource)obj;
             return is.getNationNo() == getNationNo() && is.getCasterName().equals(getCasterName()) && is.getHexNo() == getHexNo();

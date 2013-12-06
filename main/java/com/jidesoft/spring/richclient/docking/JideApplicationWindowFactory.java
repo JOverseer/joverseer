@@ -66,6 +66,7 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	private boolean showToolBar = true;
 	private boolean showStatusBar = true;
 	
+	@Override
 	public ApplicationWindow createApplicationWindow() {
 		DefaultDockableHolder dockableHolder = new DefaultDockableHolder();
 
@@ -75,45 +76,46 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 		Lm.setParent(dockableHolder);
 		
 		JideApplicationWindow window = new JideApplicationWindow(dockableHolder){
-		    protected ApplicationWindowConfigurer initWindowConfigurer() {
+		    @Override
+			protected ApplicationWindowConfigurer initWindowConfigurer() {
 		    	DefaultApplicationWindowConfigurer configurer = new DefaultApplicationWindowConfigurer( this );
-		    	configurer.setShowMenuBar(showMenuBar);
-		    	configurer.setShowToolBar(showToolBar);
-		    	configurer.setShowStatusBar(showStatusBar);
+		    	configurer.setShowMenuBar(JideApplicationWindowFactory.this.showMenuBar);
+		    	configurer.setShowToolBar(JideApplicationWindowFactory.this.showToolBar);
+		    	configurer.setShowStatusBar(JideApplicationWindowFactory.this.showStatusBar);
 		    	return configurer;
 		    }
 
 		};
 		JideApplicationWindowCloseListener closeListener = new JideApplicationWindowCloseListener(window,
-				dockableHolder.getDockingManager(), saveLayoutOnClose);
+				dockableHolder.getDockingManager(), this.saveLayoutOnClose);
 		dockableHolder.addWindowListener(closeListener);
 		return window;
 	}
 
 
     private void configureDockingManager(DockingManager manager){
-    	if(layoutVersion != null){
-    		manager.setVersion(layoutVersion.shortValue());
+    	if(this.layoutVersion != null){
+    		manager.setVersion(this.layoutVersion.shortValue());
     	}
-    	manager.setProfileKey(profileKey);
-    	manager.setRearrangable(rearrangable);
-    	manager.setResizable(resizable);
-    	manager.setContinuousLayout(continuousLayout);
-    	manager.setSensitiveAreaSize(sensitiveAreaSize);
-    	manager.setOutlineMode(outlineMode);
-    	manager.setGroupAllowedOnSidePane(groupAllowedOnSidePane);
-    	manager.setEasyTabDock(easyTabDocking);
-    	manager.setShowGripper(showGripper);
-    	manager.setShowTitleBar(showTitleBar);
-    	manager.setDoubleClickAction(doubleClickAction);
-    	manager.setHeavyweightComponentEnabled(heavyweightComponentEnabled);
-    	manager.setShowWorkspace(showWorkspace);
-    	manager.setFloatable(floatable);
-    	manager.setTabbedPaneCustomizer(tabbedPaneCustomizer);
-    	if(popupMenuCustomizer != null){
-    		manager.setPopupMenuCustomizer(popupMenuCustomizer);
+    	manager.setProfileKey(this.profileKey);
+    	manager.setRearrangable(this.rearrangable);
+    	manager.setResizable(this.resizable);
+    	manager.setContinuousLayout(this.continuousLayout);
+    	manager.setSensitiveAreaSize(this.sensitiveAreaSize);
+    	manager.setOutlineMode(this.outlineMode);
+    	manager.setGroupAllowedOnSidePane(this.groupAllowedOnSidePane);
+    	manager.setEasyTabDock(this.easyTabDocking);
+    	manager.setShowGripper(this.showGripper);
+    	manager.setShowTitleBar(this.showTitleBar);
+    	manager.setDoubleClickAction(this.doubleClickAction);
+    	manager.setHeavyweightComponentEnabled(this.heavyweightComponentEnabled);
+    	manager.setShowWorkspace(this.showWorkspace);
+    	manager.setFloatable(this.floatable);
+    	manager.setTabbedPaneCustomizer(this.tabbedPaneCustomizer);
+    	if(this.popupMenuCustomizer != null){
+    		manager.setPopupMenuCustomizer(this.popupMenuCustomizer);
     	}
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(!heavyweightComponentEnabled);
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(!this.heavyweightComponentEnabled);
     }
 	
     public void setShowToolBar(boolean showToolBar){
@@ -216,6 +218,7 @@ public class JideApplicationWindowFactory implements ApplicationWindowFactory {
 	}
 
 	private static class DefaultCustomizer implements DockingManager.TabbedPaneCustomizer{
+		@Override
 		public void customize(JideTabbedPane tabbedPane) {
 			tabbedPane.setShowTabButtons(true);
 		}

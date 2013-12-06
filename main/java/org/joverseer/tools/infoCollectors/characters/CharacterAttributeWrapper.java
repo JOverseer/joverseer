@@ -46,7 +46,7 @@ public class CharacterAttributeWrapper implements Comparable<CharacterAttributeW
 	}
 
 	public InfoSource getInfoSource() {
-		return infoSource;
+		return this.infoSource;
 	}
 
 	public void setInfoSource(InfoSource infoSource) {
@@ -54,7 +54,7 @@ public class CharacterAttributeWrapper implements Comparable<CharacterAttributeW
 	}
 
 	public String getAttribute() {
-		return attribute;
+		return this.attribute;
 	}
 
 	public void setAttribute(String attribute) {
@@ -62,7 +62,7 @@ public class CharacterAttributeWrapper implements Comparable<CharacterAttributeW
 	}
 
 	public Object getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(Object value) {
@@ -70,7 +70,7 @@ public class CharacterAttributeWrapper implements Comparable<CharacterAttributeW
 	}
 
 	public int getTurnNo() {
-		return turnNo;
+		return this.turnNo;
 	}
 
 	public void setTurnNo(int turnNo) {
@@ -78,13 +78,14 @@ public class CharacterAttributeWrapper implements Comparable<CharacterAttributeW
 	}
 
 	public Object getTotalValue() {
-		return totalValue;
+		return this.totalValue;
 	}
 
 	public void setTotalValue(Object totalValue) {
 		this.totalValue = totalValue;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public int compareTo(CharacterAttributeWrapper caw) {
 		if (caw == null)

@@ -22,42 +22,43 @@ public class OCTreeNode extends DefaultMutableTreeNode
     public OCTreeNode(JTree tree, Object userObject, boolean allowsChildren)
     {
         super(userObject, allowsChildren);
-        normalFont = tree.getFont();
-        boldFont = new Font(normalFont.getName(), 1, normalFont.getSize());
+        this.normalFont = tree.getFont();
+        this.boldFont = new Font(this.normalFont.getName(), 1, this.normalFont.getSize());
         if(userObject instanceof Order)
-            nodeType = 0;
+            this.nodeType = ORDER_NODE;
         else
         if(userObject instanceof Character)
-            nodeType = 1;
+            this.nodeType = CHARACTER_NODE;
         else
-            nodeType = 2;
+            this.nodeType = RESULT_NODE;
     }
 
     public int getNodeType()
     {
-        return nodeType;
+        return this.nodeType;
     }
 
     public Font getActiveFont()
     {
-        if(nodeType == 1)
-            return boldFont;
+        if(this.nodeType == CHARACTER_NODE)
+            return this.boldFont;
         else
-            return normalFont;
+            return this.normalFont;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         String currentText = getUserObject().toString();
         try
         {
-            switch(nodeType)
+            switch(this.nodeType)
             {
-            case 2: // '\002'
+            case RESULT_NODE: // '\002'
             default:
                 break;
 
-            case 1: // '\001'
+            case CHARACTER_NODE: // '\001'
                 Character character = (Character)getUserObject();
                 currentText = currentText + " (" + character.getId();
                 currentText = currentText + ", " + character.getAttributes() + ") ";
@@ -70,7 +71,7 @@ public class OCTreeNode extends DefaultMutableTreeNode
                 }
                 break;
 
-            case 0: // '\0'
+            case ORDER_NODE: // '\0'
                 Order order = (Order)getUserObject();
                 if(order.getOrder() == 9999)
                     currentText = "";
@@ -90,19 +91,19 @@ public class OCTreeNode extends DefaultMutableTreeNode
 
     private int getResultType()
     {
-        int result = 0;
+        int result = NO_RESULT;
         String currentText = getUserObject().toString();
-        if(currentText.length() > 3 && nodeType == 2)
+        if(currentText.length() > 3 && this.nodeType == RESULT_NODE)
         {
             String typeTag = currentText.substring(0, 4);
             if(typeTag.equals("[R] "))
-                return 4;
+                return ERROR_RESULT;
             if(typeTag.equals("[Y] "))
-                return 3;
+                return WARNING_RESULT;
             if(typeTag.equals("[G] "))
-                return 1;
+                return INFO_RESULT;
             if(typeTag.equals("[H] "))
-                return 2;
+                return HELP_RESULT;
         }
         return result;
     }
@@ -116,36 +117,36 @@ public class OCTreeNode extends DefaultMutableTreeNode
             if(result.length() > 4)
                 return result;
         } else
-        if(type == 2)
+        if(type == HELP_RESULT)
             return result;
         return "";
     }
 
     public ImageIcon getIcon()
     {
-        switch(nodeType)
+        switch(this.nodeType)
         {
-        case 1: // '\001'
+        case CHARACTER_NODE: // '\001'
             return getCharIcon();
 
-        case 0: // '\0'
+        case ORDER_NODE: // '\0'
             return getOrderIcon();
 
-        case 2: // '\002'
+        case RESULT_NODE: // '\002'
             int type = getResultType();
             switch(type)
             {
-            case 4: // '\004'
+            case ERROR_RESULT: // '\004'
                 return getRedIcon();
 
-            case 3: // '\003'
+            case WARNING_RESULT: // '\003'
                 return getYellowIcon();
 
-            case 1: // '\001'
-            case 2: // '\002'
+            case INFO_RESULT: // '\001'
+            case HELP_RESULT: // '\002'
                 return getGreenIcon();
 
-            case 0: // '\0'
+            case NO_RESULT: // '\0'
             default:
                 return null;
             }
@@ -178,11 +179,16 @@ public class OCTreeNode extends DefaultMutableTreeNode
         return new ImageIcon(imgSource.getImage("orderchecker.character.image"));
     }
 
-    private static final ImageIcon redIcon = new ImageIcon("images/red.gif");
-    private static final ImageIcon yellowIcon = new ImageIcon("images/yellow.gif");
-    private static final ImageIcon greenIcon = new ImageIcon("images/green.gif");
-    private static final ImageIcon orderIcon = new ImageIcon("images/order.gif");
-    private static final ImageIcon charIcon = new ImageIcon("images/character.gif");
+    @SuppressWarnings("unused")
+	private static final ImageIcon redIcon = new ImageIcon("images/red.gif");
+    @SuppressWarnings("unused")
+	private static final ImageIcon yellowIcon = new ImageIcon("images/yellow.gif");
+    @SuppressWarnings("unused")
+	private static final ImageIcon greenIcon = new ImageIcon("images/green.gif");
+    @SuppressWarnings("unused")
+	private static final ImageIcon orderIcon = new ImageIcon("images/order.gif");
+    @SuppressWarnings("unused")
+	private static final ImageIcon charIcon = new ImageIcon("images/character.gif");
     private static final int NO_RESULT = 0;
     private static final int INFO_RESULT = 1;
     private static final int HELP_RESULT = 2;

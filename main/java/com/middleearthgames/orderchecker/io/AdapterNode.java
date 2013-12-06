@@ -12,27 +12,27 @@ class AdapterNode
 
     AdapterNode(Node node)
     {
-        domNode = node;
+        this.domNode = node;
     }
 
     boolean isNodeAnElement()
     {
-        return domNode.getNodeType() == 1;
+        return this.domNode.getNodeType() == AdapterNode.ELEMENT_TYPE;
     }
 
     boolean isNodeText()
     {
-        return domNode.getNodeType() == 3;
+        return this.domNode.getNodeType() == AdapterNode.TEXT_TYPE;
     }
 
     String getNodeName()
     {
-        return domNode.getNodeName();
+        return this.domNode.getNodeName();
     }
 
     String getNodeValue()
     {
-        return domNode.getNodeValue();
+        return this.domNode.getNodeValue();
     }
 
     int extractNodeNumber()
@@ -44,7 +44,7 @@ class AdapterNode
                 return -1;
             return Integer.parseInt(value);
         }
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             return -1;
         }
     }
@@ -64,12 +64,12 @@ class AdapterNode
 
     String extractAttributeString()
     {
-        if(!domNode.hasAttributes())
+        if(!this.domNode.hasAttributes())
         {
             return null;
         } else
         {
-            NamedNodeMap map = domNode.getAttributes();
+            NamedNodeMap map = this.domNode.getAttributes();
             Node mapNode = map.item(0);
             return mapNode.getNodeValue();
         }
@@ -84,7 +84,7 @@ class AdapterNode
                 return -1;
             return Integer.parseInt(value);
         }
-        catch (Exception ex) {
+        catch (NumberFormatException ex) {
             return -1;
         }
     }
@@ -104,9 +104,9 @@ class AdapterNode
 
     AdapterNode child(int searchIndex)
     {
-        if(domNode.hasChildNodes())
+        if(this.domNode.hasChildNodes())
         {
-            Node node = domNode.getChildNodes().item(searchIndex);
+            Node node = this.domNode.getChildNodes().item(searchIndex);
             return new AdapterNode(node);
         } else
         {
@@ -116,10 +116,10 @@ class AdapterNode
 
     int childCount()
     {
-        return domNode.getChildNodes().getLength();
+        return this.domNode.getChildNodes().getLength();
     }
 
-    private final int ELEMENT_TYPE = 1;
-    private final int TEXT_TYPE = 3;
+   static private final int ELEMENT_TYPE = 1;
+   static  private final int TEXT_TYPE = 3;
     private Node domNode;
 }

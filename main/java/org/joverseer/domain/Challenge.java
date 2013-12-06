@@ -20,7 +20,7 @@ public class Challenge extends Encounter {
 	String victorWounds;
 
 	protected void parse() {
-		parsed = true;
+		this.parsed = true;
 		String d = getCleanDescription();
 		int i = Math.max(d.lastIndexOf('.'), d.lastIndexOf('!'));
 		String[] sentences = d.substring(0, i).split("[\\.\\!]");
@@ -41,9 +41,9 @@ public class Challenge extends Encounter {
 			if (char1 != null && char2 != null) {
 				// last sentence lists the victor's wounds
 				String ls = sentences[sentences.length - 1].trim();
-				victorWounds = StringUtils.getUniquePart(ls, " was noted to have suffered ", " wounds ", false, false);
-				if (victorWounds == null) {
-					victorWounds = StringUtils.getUniquePart(ls, "but suffered ", "wounds", false, false);
+				this.victorWounds = StringUtils.getUniquePart(ls, " was noted to have suffered ", " wounds ", false, false);
+				if (this.victorWounds == null) {
+					this.victorWounds = StringUtils.getUniquePart(ls, "but suffered ", "wounds", false, false);
 				}
 				// start from the end and find a sentence that mentions both
 				// chars
@@ -54,11 +54,11 @@ public class Challenge extends Encounter {
 					// loser
 					if (ci1 > -1 && ci2 > -1) {
 						if (ci1 > ci2) {
-							victor = char2;
-							loser = char1;
+							this.victor = char2;
+							this.loser = char1;
 						} else {
-							victor = char1;
-							loser = char2;
+							this.victor = char1;
+							this.loser = char2;
 						}
 						return;
 					}
@@ -69,20 +69,20 @@ public class Challenge extends Encounter {
 	}
 
 	public String getVictor() {
-		parsed = false;
-		if (!parsed)
+		this.parsed = false;
+		if (!this.parsed)
 			parse();
-		return victor;
+		return this.victor;
 	}
 
 	public String getLoser() {
-		if (!parsed)
+		if (!this.parsed)
 			parse();
-		return loser;
+		return this.loser;
 	}
 
 	public String getVictorWounds() {
-		return victorWounds;
+		return this.victorWounds;
 	}
 
 }

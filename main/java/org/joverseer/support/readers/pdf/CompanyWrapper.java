@@ -13,7 +13,7 @@ public class CompanyWrapper {
     String members = new String();
     
     public String getCommanderName() {
-        return commanderName;
+        return this.commanderName;
     }
     
     public void setCommanderName(String commanderName) {
@@ -21,7 +21,7 @@ public class CompanyWrapper {
     }
     
     public int getHexNo() {
-        return hexNo;
+        return this.hexNo;
     }
     
     public void setHexNo(int hexNo) {
@@ -30,7 +30,7 @@ public class CompanyWrapper {
     
     
     public String getMembers() {
-        return members;
+        return this.members;
     }
 
     
@@ -42,10 +42,10 @@ public class CompanyWrapper {
     
     public Company getCompany() {
         Company c = new Company();
-        c.setHexNo(hexNo);
+        c.setHexNo(this.hexNo);
         c.setCommander(getCommanderName());
-        String[] members = getMembers().split("-");
-        for (String m : members) {
+        String[] members1 = getMembers().split("-");
+        for (String m : members1) {
             c.addMember(m.trim().replace("&#13;", ""));
         }
         return c;

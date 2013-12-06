@@ -10,15 +10,15 @@ public class CombatFormHolder {
     CombatForm form;
     
     public void setCombatForm(CombatForm f) {
-        form = f;
+        this.form = f;
     }
     
     public CombatForm getCombatForm() {
-        if (form == null) {
+        if (this.form == null) {
             FormModel formModel = FormModelHelper.createFormModel(new Combat());
-            form = new CombatForm(formModel);
+            this.form = new CombatForm(formModel);
         }
-        return form;
+        return this.form;
     }
     
     public static CombatFormHolder instance() {

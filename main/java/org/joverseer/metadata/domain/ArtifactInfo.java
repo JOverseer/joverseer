@@ -22,13 +22,13 @@ public class ArtifactInfo implements Serializable {
 	int currentlyHiddenPopCenter = -1;
 
 	public ArtifactInfo() {
-		powers = new ArrayList<String>(2);
-		powers.add(EMPTY_POWER);
-		powers.add(EMPTY_POWER);
+		this.powers = new ArrayList<String>(2);
+		this.powers.add(EMPTY_POWER);
+		this.powers.add(EMPTY_POWER);
 	}
 
 	public String getAlignment() {
-		return alignment;
+		return this.alignment;
 	}
 
 	public void setAlignment(String alignment) {
@@ -36,7 +36,7 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -44,7 +44,7 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public int getNo() {
-		return no;
+		return this.no;
 	}
 
 	public void setNo(int no) {
@@ -52,7 +52,7 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public String getOwner() {
-		return owner;
+		return this.owner;
 	}
 
 	public void setOwner(String owner) {
@@ -60,7 +60,7 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public ArrayList<String> getPowers() {
-		return powers;
+		return this.powers;
 	}
 
 	public void setPowers(ArrayList<String> powers) {
@@ -68,24 +68,24 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public String getPower1() {
-		if (powers.size() == 0) {
+		if (this.powers.size() == 0) {
 			return "";
 		}
-		return powers.get(0).toString();
+		return this.powers.get(0).toString();
 	}
 
 	public String getPower2() {
-		if (powers.size() < 2) {
+		if (this.powers.size() < 2) {
 			return "";
 		}
-		return powers.get(1).toString();
+		return this.powers.get(1).toString();
 	}
 
 	public void setPower(int index, String updatedPower) {
-		if (powers.size() <= index) {
-			powers.add(updatedPower);
+		if (this.powers.size() <= index) {
+			this.powers.add(updatedPower);
 		} else {
-			powers.set(index, updatedPower);
+			this.powers.set(index, updatedPower);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public int getCurrentlyHiddenPopCenter() {
-		return currentlyHiddenPopCenter;
+		return this.currentlyHiddenPopCenter;
 	}
 
 	public void setCurrentlyHiddenPopCenter(int currentlyHiddenPopCenter) {

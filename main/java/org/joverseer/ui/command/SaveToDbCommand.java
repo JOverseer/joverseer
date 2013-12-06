@@ -12,7 +12,8 @@ public class SaveToDbCommand extends ActionCommand {
     
     
     
-    protected void doExecuteCommand() {
+    @Override
+	protected void doExecuteCommand() {
     	JOverseerDAO dao = new JOverseerDAO();
     	dao.SerializeGame("c:\\jov.mdb", GameHolder.instance().getGame());
     }

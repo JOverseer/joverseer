@@ -9,7 +9,12 @@ package org.joverseer.metadata;
  */
 
 public class MetadataReaderException extends Exception {
-    public MetadataReaderException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public MetadataReaderException() {
         super();
     }
 

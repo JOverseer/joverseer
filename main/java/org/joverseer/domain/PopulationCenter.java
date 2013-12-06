@@ -1,12 +1,11 @@
 package org.joverseer.domain;
 
+import java.io.Serializable;
+
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.ProductContainer;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.metadata.domain.Nation;
-
-import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  * Stores information about a population center from the pdf turns
@@ -50,7 +49,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -58,23 +57,25 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public PopulationCenterSizeEnum getSize() {
-        return size;
+        return this.size;
     }
 
     public void setSize(PopulationCenterSizeEnum size) {
         this.size = size;
     }
 
-    public int getX() {
-        return x;
+    @Override
+	public int getX() {
+        return this.x;
     }
 
     public void setX(int x) {
         this.x = x;
     }
 
-    public int getY() {
-        return y;
+    @Override
+	public int getY() {
+        return this.y;
     }
 
     public void setY(int y) {
@@ -82,7 +83,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public FortificationSizeEnum getFortification() {
-        return fortification;
+        return this.fortification;
     }
 
     public void setFortification(FortificationSizeEnum fortification) {
@@ -97,16 +98,18 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
         setNationNo(nation.getNumber());
     }
 
-    public Integer getNationNo() {
-        return nationNo;
+    @Override
+	public Integer getNationNo() {
+        return this.nationNo;
     }
 
-    public void setNationNo(Integer nationNo) {
+    @Override
+	public void setNationNo(Integer nationNo) {
         this.nationNo = nationNo;
     }
 
     public HarborSizeEnum getHarbor() {
-        return harbor;
+        return this.harbor;
     }
 
     public void setHarbor(HarborSizeEnum harbor) {
@@ -114,7 +117,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public boolean getCapital() {
-        return capital;
+        return this.capital;
     }
 
     public void setCapital(boolean capital) {
@@ -122,7 +125,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public boolean getHidden() {
-        return hidden;
+        return this.hidden;
     }
 
     public void setHidden(boolean hidden) {
@@ -130,7 +133,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public int getLoyalty() {
-        return loyalty;
+        return this.loyalty;
     }
 
     public void setLoyalty(int loyalty) {
@@ -138,7 +141,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public InformationSourceEnum getInformationSource() {
-        return informationSource;
+        return this.informationSource;
     }
 
     public void setInformationSource(InformationSourceEnum informationSource) {
@@ -146,7 +149,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public InfoSource getInfoSource() {
-        return infoSource;
+        return this.infoSource;
     }
 
     public void setInfoSource(InfoSource infoSource) {
@@ -163,24 +166,24 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public Integer getProduction(ProductEnum p) {
-        return production.getProduct(p);
+        return this.production.getProduct(p);
     }
 
     public Integer getStores(ProductEnum p) {
-        return stores.getProduct(p);
+        return this.stores.getProduct(p);
     }
 
     public void setProduction(ProductEnum p, Integer amount) {
-        production.setProduct(p, amount);
+        this.production.setProduct(p, amount);
     }
 
     public void setStores(ProductEnum p, Integer amount) {
-        stores.setProduct(p, amount);
+        this.stores.setProduct(p, amount);
     }
 
 
     public boolean getLostThisTurn() {
-        return lostThisTurn;
+        return this.lostThisTurn;
     }
 
 
@@ -190,14 +193,15 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 
 
     public InfoSourceValue getLoyaltyEstimate() {
-        return loyaltyEstimate;
+        return this.loyaltyEstimate;
     }
 
     public void setLoyaltyEstimate(InfoSourceValue loyaltyEstimate) {
         this.loyaltyEstimate = loyaltyEstimate;
     }
 
-    public PopulationCenter clone() {
+    @Override
+	public PopulationCenter clone() {
         PopulationCenter newPc = new PopulationCenter();
         newPc.setName(getName());
         newPc.setCapital(getCapital());
@@ -222,6 +226,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
         return newPc;
     }
 
+	@Override
 	public Integer getMaintenance() {
 		if (getSize().equals(PopulationCenterSizeEnum.ruins)) return 0;
 		int cost = 0;
@@ -235,7 +240,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 	}
 
 	public int getRecruits() {
-		return recruits;
+		return this.recruits;
 	}
 
 	public void setRecruits(int recruits) {
@@ -243,7 +248,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 	}
 
 	public int getFoodCapacity() {
-		return foodCapacity;
+		return this.foodCapacity;
 	}
 
 	public void setFoodCapacity(int foodCapacity) {
@@ -251,7 +256,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 	}
 
 	public boolean isImprovedThisTurn() {
-		return improvedThisTurn;
+		return this.improvedThisTurn;
 	}
 
 	public void setImprovedThisTurn(boolean improvedThisTurn) {
@@ -262,29 +267,30 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 
 
 	public boolean isSieged() {
-		return sieged;
+		return this.sieged;
 	}
 
 	public void setSieged(boolean sieged) {
 		this.sieged = sieged;
 	}
 
+	@Override
 	public void initialize() {
-		int recruits = getSize().getCode() * 100;
-		setRecruits(recruits);
-		int foodCapacity = 0; 
+		int recruits1 = getSize().getCode() * 100;
+		setRecruits(recruits1);
+		int foodCapacity1 = 0; 
 		if (getSize().equals(PopulationCenterSizeEnum.camp)) {
-			foodCapacity = 100;
+			foodCapacity1 = 100;
 		} else if (getSize().equals(PopulationCenterSizeEnum.village)) {
-			foodCapacity = 200;
+			foodCapacity1 = 200;
 		} else if (getSize().equals(PopulationCenterSizeEnum.town)) {
-			foodCapacity = 1000;
+			foodCapacity1 = 1000;
 		} else if (getSize().equals(PopulationCenterSizeEnum.majorTown)) {
-			foodCapacity = 2500;
+			foodCapacity1 = 2500;
 		} else if (getSize().equals(PopulationCenterSizeEnum.city)) {
-			foodCapacity = 5000;
+			foodCapacity1 = 5000;
 		}  
-		setFoodCapacity(foodCapacity);
+		setFoodCapacity(foodCapacity1);
 		setImprovedThisTurn(false); // TODO move to dif method
 		setSieged(false);
 	}

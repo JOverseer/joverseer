@@ -1,11 +1,7 @@
 package org.joverseer.ui.listviews.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
@@ -24,7 +20,8 @@ public class PopupMenuCommand {
 	    final Object[] cmds = commands;
 	    popupMenu.addActionListener(new PopupMenuActionListener() {
 	
-	        public JPopupMenu getPopupMenu() {
+	        @Override
+			public JPopupMenu getPopupMenu() {
 	            CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
 	                    "listViewCommandGroup", cmds);
 	            return group.createPopupMenu();

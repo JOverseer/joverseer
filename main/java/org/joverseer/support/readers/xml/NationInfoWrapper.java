@@ -16,7 +16,7 @@ public class NationInfoWrapper {
 	ArrayList<String> rumors = new ArrayList<String>();
 
 	public ArrayList<String> getRumors() {
-		return rumors;
+		return this.rumors;
 	}
 
 	public void setRumors(ArrayList<String> rumors) {
@@ -24,7 +24,7 @@ public class NationInfoWrapper {
 	}
 
 	public String getEmptyPopHexes() {
-		return emptyPopHexes;
+		return this.emptyPopHexes;
 	}
 
 	public void setEmptyPopHexes(String emptyPopHexes) {
@@ -32,7 +32,7 @@ public class NationInfoWrapper {
 	}
 
 	public String getPopHexes() {
-		return popHexes;
+		return this.popHexes;
 	}
 
 	public void setPopHexes(String popHexes) {
@@ -42,7 +42,7 @@ public class NationInfoWrapper {
 	public ArrayList<HexInfo> getHexInfos(int nationNo) {
 		ArrayList<HexInfo> ret = new ArrayList<HexInfo>();
 		String[] emptyHexes = getEmptyPopHexes().split(",");
-		String[] popHexes = getPopHexes().split(",");
+		String[] popHexes1 = getPopHexes().split(",");
 
 		for (String eh : emptyHexes) {
 			int ehi = Integer.parseInt(eh);
@@ -54,7 +54,7 @@ public class NationInfoWrapper {
 			ret.add(hi);
 		}
 
-		for (String ph : popHexes) {
+		for (String ph : popHexes1) {
 			int phi = Integer.parseInt(ph);
 			HexInfo hi = new HexInfo();
 			hi.getNationSources().add(nationNo);

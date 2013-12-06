@@ -26,22 +26,22 @@ public class MapTooltipHolder {
 	}
 
 	public void addTooltipObject(Rectangle rectangle, Object obj) {
-		if (toolTipObjects == null) {
+		if (this.toolTipObjects == null) {
 			initToolTipObjects();
 		}
 		for (int i = rectangle.x; i <= rectangle.x + rectangle.width; i++) {
 			for (int j = rectangle.y; j <= rectangle.y + rectangle.height; j++) {
-				toolTipObjects[i][j] = obj;
+				this.toolTipObjects[i][j] = obj;
 			}
 		}
 	}
 
 	public void showTooltip(Point mapLocation, Point screenLocation) {
 		try {
-			if (toolTipObjects == null) {
+			if (this.toolTipObjects == null) {
 				initToolTipObjects();
 			}
-			Object obj = toolTipObjects[mapLocation.x][mapLocation.y];
+			Object obj = this.toolTipObjects[mapLocation.x][mapLocation.y];
 			String tooltipText = null;
 			if (obj == null) {
 				tooltipText = null;
@@ -55,8 +55,8 @@ public class MapTooltipHolder {
 				}
 
 			}
-			if ((tooltipText == null && currentToolTipText != null) || !tooltipText.equals(currentToolTipText)) {
-				currentToolTipText = tooltipText;
+			if ((tooltipText == null && this.currentToolTipText != null) || !tooltipText.equals(this.currentToolTipText)) {
+				this.currentToolTipText = tooltipText;
 				MapPanel.instance().setToolTipText(tooltipText);
 				Action toolTipAction = MapPanel.instance().getActionMap().get("postTip");
 				if (toolTipAction != null) {
@@ -71,11 +71,11 @@ public class MapTooltipHolder {
 
 	public void initToolTipObjects() {
 		Dimension d = MapPanel.instance().getMapDimension();
-		toolTipObjects = new Object[d.width][d.height];
+		this.toolTipObjects = new Object[d.width][d.height];
 	}
 
 	public void reset() {
-		toolTipObjects = null;
+		this.toolTipObjects = null;
 	}
 
 }

@@ -135,7 +135,7 @@ public class SpellcasterListView extends BaseItemListView {
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(table) }) };
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table) }) };
 	}
 
 	/**
@@ -143,22 +143,22 @@ public class SpellcasterListView extends BaseItemListView {
 	 */
 	protected void resetColumns() {
 		try {
-			SpellList sl = (SpellList) combo.getSelectedItem();
+			SpellList sl = (SpellList) this.combo.getSelectedItem();
 			if (sl == null)
 				return;
 			sl = getSpellsFromFilters();
 			for (int i = 5; i < sl.getSpells().size() + 5; i++) {
-				TableColumn col = table.getColumnModel().getColumn(i);
+				TableColumn col = this.table.getColumnModel().getColumn(i);
 				col.setMaxWidth(100);
 				col.setPreferredWidth(64);
 				col.setHeaderValue(sl.getSpellDescrs().get(i - 5));
 			}
 			for (int i = sl.getSpells().size() + 5; i < 105; i++) {
-				TableColumn col = table.getColumnModel().getColumn(i);
+				TableColumn col = this.table.getColumnModel().getColumn(i);
 				col.setMaxWidth(0);
 				col.setPreferredWidth(0);
 			}
-			table.updateUI();
+			this.table.updateUI();
 
 		} catch (Exception exc) {
 			exc.printStackTrace();
@@ -169,32 +169,34 @@ public class SpellcasterListView extends BaseItemListView {
 	protected JComponent createControlImpl() {
 		JComponent tableComp = super.createControlImpl();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(combo = new JComboBox(), "align=left");
-		combo.setPreferredSize(new Dimension(200, 24));
-		combo.setOpaque(true);
-		combo.addActionListener(new ActionListener() {
+		tlb.cell(this.combo = new JComboBox(), "align=left");
+		this.combo.setPreferredSize(new Dimension(200, 24));
+		this.combo.setOpaque(true);
+		this.combo.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// resetColumns();
 				setItems();
 			}
 		});
 
-		tlb.cell(textFilterField = new JTextField(), "align=left");
-		textFilterField.setPreferredSize(new Dimension(200, 24));
-		textFilterField.setOpaque(true);
-		textFilterField.addActionListener(new ActionListener() {
+		tlb.cell(this.textFilterField = new JTextField(), "align=left");
+		this.textFilterField.setPreferredSize(new Dimension(200, 24));
+		this.textFilterField.setOpaque(true);
+		this.textFilterField.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (combo.getItemCount() > 0) {
-					combo.setSelectedIndex(combo.getItemCount() - 1);
+				if (SpellcasterListView.this.combo.getItemCount() > 0) {
+					SpellcasterListView.this.combo.setSelectedIndex(SpellcasterListView.this.combo.getItemCount() - 1);
 				}
 				setItems();
 			}
 		});
-		textFilterField.setToolTipText("Enter comma separated list of spells");
+		this.textFilterField.setToolTipText("Enter comma separated list of spells");
 
-		JTableHeader header = table.getTableHeader();
+		JTableHeader header = this.table.getTableHeader();
 		header.addMouseMotionListener(new MouseMotionAdapter() {
 
 			TableColumn curCol;
@@ -202,9 +204,9 @@ public class SpellcasterListView extends BaseItemListView {
 			@Override
 			public void mouseMoved(MouseEvent evt) {
 				TableColumn col = null;
-				JTableHeader header = (JTableHeader) evt.getSource();
-				JTable table = header.getTable();
-				TableColumnModel colModel = table.getColumnModel();
+				JTableHeader header1 = (JTableHeader) evt.getSource();
+				JTable table1 = header1.getTable();
+				TableColumnModel colModel = table1.getColumnModel();
 				int vColIndex = colModel.getColumnIndexAtX(evt.getX());
 
 				// Return if not clicked on any column header
@@ -212,7 +214,7 @@ public class SpellcasterListView extends BaseItemListView {
 					col = colModel.getColumn(vColIndex);
 				}
 
-				if (col != curCol) {
+				if (col != this.curCol) {
 					// tool tip for the column header
 					// so we can display the details for this column
 					// these are:
@@ -241,8 +243,8 @@ public class SpellcasterListView extends BaseItemListView {
 							}
 						}
 					}
-					header.setToolTipText(toolTip);
-					curCol = col;
+					header1.setToolTipText(toolTip);
+					this.curCol = col;
 				}
 			}
 		});
@@ -253,14 +255,14 @@ public class SpellcasterListView extends BaseItemListView {
 	}
 
 	SpellList getSpellsFromFilters() {
-		SpellList sl = (SpellList) combo.getSelectedItem();
+		SpellList sl = (SpellList) this.combo.getSelectedItem();
 		if (sl == null)
 			return null;
 		ArrayList<Integer> spells = sl.getSpells();
 		ArrayList<String> spellDescrs = sl.getSpellDescrs();
 		ArrayList<Integer> retSpells = new ArrayList<Integer>();
 		ArrayList<String> retSpellDescrs = new ArrayList<String>();
-		String txt = textFilterField.getText().trim();
+		String txt = this.textFilterField.getText().trim();
 		if (txt.equals(""))
 			return sl;
 		String[] parts = txt.split(",");
@@ -283,11 +285,11 @@ public class SpellcasterListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		if (combo == null)
+		if (this.combo == null)
 			return;
-		if (tableModel == null)
+		if (this.tableModel == null)
 			return;
-		SpellList sl = (SpellList) combo.getSelectedItem();
+		SpellList sl = (SpellList) this.combo.getSelectedItem();
 		if (sl == null)
 			return;
 		sl = getSpellsFromFilters();
@@ -319,15 +321,15 @@ public class SpellcasterListView extends BaseItemListView {
 				items.add(sw);
 			}
 		}
-		((SpellcasterTableModel) tableModel).getSpells().clear();
-		((SpellcasterTableModel) tableModel).getSpellDescrs().clear();
+		((SpellcasterTableModel) this.tableModel).getSpells().clear();
+		((SpellcasterTableModel) this.tableModel).getSpellDescrs().clear();
 		for (int i = 0; i < spells.size(); i++) {
-			((SpellcasterTableModel) tableModel).getSpells().add(spells.get(i));
-			((SpellcasterTableModel) tableModel).getSpellDescrs().add(sl.getSpellDescrs().get(i));
+			((SpellcasterTableModel) this.tableModel).getSpells().add(spells.get(i));
+			((SpellcasterTableModel) this.tableModel).getSpellDescrs().add(sl.getSpellDescrs().get(i));
 		}
-		tableModel.setRows(items);
-		tableModel.fireTableStructureChanged();
-		tableModel.fireTableDataChanged();
+		this.tableModel.setRows(items);
+		this.tableModel.fireTableStructureChanged();
+		this.tableModel.fireTableDataChanged();
 		resetColumns();
 		// try {
 		// for (int i=1; i<11; i++) {
@@ -337,9 +339,9 @@ public class SpellcasterListView extends BaseItemListView {
 	}
 
 	protected void resetFilters() {
-		combo.removeAllItems();
+		this.combo.removeAllItems();
 		for (SpellList sl : createSpellLists()) {
-			combo.addItem(sl);
+			this.combo.addItem(sl);
 		}
 	}
 
@@ -352,6 +354,7 @@ public class SpellcasterListView extends BaseItemListView {
 				setItems();
 			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						resetFilters();
 					}
@@ -388,19 +391,20 @@ public class SpellcasterListView extends BaseItemListView {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
+		@SuppressWarnings("unused")
 		public void setName(String name) {
 			this.name = name;
 		}
 
 		public ArrayList<Integer> getSpells() {
-			return spells;
+			return this.spells;
 		}
 
 		public ArrayList<String> getSpellDescrs() {
-			return spellDescrs;
+			return this.spellDescrs;
 		}
 
 		@Override

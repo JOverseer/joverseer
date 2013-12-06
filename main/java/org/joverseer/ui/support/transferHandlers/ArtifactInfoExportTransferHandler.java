@@ -23,35 +23,41 @@ public class ArtifactInfoExportTransferHandler extends TransferHandler {
 		this.artifactInfo = artifactInfo;
 	}
 
+	@Override
 	public boolean canImport(JComponent arg0, DataFlavor[] arg1) {
 		return false;
 	}
 	
+	@Override
 	public int getSourceActions(JComponent c) {
         return COPY_OR_MOVE;
     }
 	
+	@Override
 	protected void exportDone(JComponent c, Transferable data, int action) {
     }
 
+	@Override
 	protected Transferable createTransferable(JComponent arg0) {
 		Transferable t = new Transferable() {
 
+			@Override
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 				try {
 					if (flavor.equals(new ArtifactInfoDataFlavor())) {
-						return artifactInfo;
+						return ArtifactInfoExportTransferHandler.this.artifactInfo;
 					}
 				}
 				catch (Exception exc) {
 					
 				};
 				if (flavor.equals(DataFlavor.stringFlavor)) {
-					return String.valueOf("#" + artifactInfo.getNo() + " " + artifactInfo.getName());
+					return String.valueOf("#" + ArtifactInfoExportTransferHandler.this.artifactInfo.getNo() + " " + ArtifactInfoExportTransferHandler.this.artifactInfo.getName());
 				}
 				return null;
 			}
 
+			@Override
 			public DataFlavor[] getTransferDataFlavors() {
 				try {
 					return new DataFlavor[]{new ArtifactInfoDataFlavor(), DataFlavor.stringFlavor};
@@ -61,6 +67,7 @@ public class ArtifactInfoExportTransferHandler extends TransferHandler {
 				}
 			}
 
+			@Override
 			public boolean isDataFlavorSupported(DataFlavor flavor) {
 				for (DataFlavor f : getTransferDataFlavors()) {
 					if (flavor.equals(f)) return true;

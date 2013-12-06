@@ -14,25 +14,25 @@ public class HostageWrapper {
 	String heldBy;
 	int hexNo;
 	public String getNameId() {
-		return nameId;
+		return this.nameId;
 	}
 	public void setNameId(String nameId) {
 		this.nameId = nameId;
 	}
 	public String getNation() {
-		return nation;
+		return this.nation;
 	}
 	public void setNation(String nation) {
 		this.nation = nation;
 	}
 	public String getHeldBy() {
-		return heldBy;
+		return this.heldBy;
 	}
 	public void setHeldBy(String heldBy) {
 		this.heldBy = heldBy;
 	}
 	public int getHexNo() {
-		return hexNo;
+		return this.hexNo;
 	}
 	
 	public void setHexNo(int hexNo) {

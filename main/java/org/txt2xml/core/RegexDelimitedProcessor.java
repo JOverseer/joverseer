@@ -55,50 +55,54 @@ public class RegexDelimitedProcessor extends AbstractRegexProcessor {
     protected int matchEnd;
     protected int nextMatchFrom;
 
-    protected boolean findMatch() {
-        assert (chars != null);// : "Null text but asked to findMatch!";
-        if (matcher == null) {
+    @Override
+	protected boolean findMatch() {
+        assert (this.chars != null);// : "Null text but asked to findMatch!";
+        if (this.matcher == null) {
             throw new IllegalStateException("No matcher for this Processor. Was a regex pattern specified?");
         }
         
         // Fallen off the end of the text? Then no match.
-        if (nextMatchFrom >= chars.length()) {
-            matchStart = chars.length();
-            matchEnd = chars.length();
+        if (this.nextMatchFrom >= this.chars.length()) {
+            this.matchStart = this.chars.length();
+            this.matchEnd = this.chars.length();
             return false;
         }
         
-        if (! matcher.find()) {
+        if (! this.matcher.find()) {
             // No more delimiters so match the end of the text
-            matchStart = nextMatchFrom;
-            matchEnd = chars.length();
-            nextMatchFrom = chars.length();
+            this.matchStart = this.nextMatchFrom;
+            this.matchEnd = this.chars.length();
+            this.nextMatchFrom = this.chars.length();
         } else {
             // match against the stuff before the delimiter we matched
-            matchStart = nextMatchFrom;
+            this.matchStart = this.nextMatchFrom;
             // match to the start of the delimiter we just matched
-            matchEnd = matcher.start();
+            this.matchEnd = this.matcher.start();
             // start next match from beyond the delimiter we matched
-            nextMatchFrom = matcher.end();
+            this.nextMatchFrom = this.matcher.end();
         }
         return true;
     }
     
-    protected CharSequence getMatchedText() {
-        assert (matchStart < chars.length());// : "Fallen off end of text but asked to getMatchedText!";
-        return new SubCharSequence(chars, matchStart, matchEnd - matchStart);
+    @Override
+	protected CharSequence getMatchedText() {
+        assert (this.matchStart < this.chars.length());// : "Fallen off end of text but asked to getMatchedText!";
+        return new SubCharSequence(this.chars, this.matchStart, this.matchEnd - this.matchStart);
     }
 
     /**
      * @return null because this repeating Processor 
      * completely consumes the text.
      */
-    protected CharSequence getRemainderText() {
+    @Override
+	protected CharSequence getRemainderText() {
         return null;
     }
     
-    protected void resetMatching() {
+    @Override
+	protected void resetMatching() {
         super.resetMatching();
-        nextMatchFrom = 0;
+        this.nextMatchFrom = 0;
     }
 }

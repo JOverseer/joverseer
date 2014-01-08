@@ -56,9 +56,12 @@ public class RelationsListView extends ItemListView {
 	protected void setItems() {
         super.setItems();
         try {
-            for (int i=1; i<26; i++) {
-                this.table.getColumnModel().getColumn(i+2).setHeaderValue(this.tableModel.getColumnName(i+2));
-            }
+        	//TODO: work out why this exception happens.
+        	if (this.table != null) { // stop a predictable silent exception
+        		for (int i=1; i<26; i++) {
+        			this.table.getColumnModel().getColumn(i+2).setHeaderValue(this.tableModel.getColumnName(i+2));
+        		}
+        	}
         } catch (Exception exc) {};
     }
     

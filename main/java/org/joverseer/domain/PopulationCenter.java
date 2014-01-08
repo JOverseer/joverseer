@@ -46,6 +46,7 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     boolean sieged = false; // used in Engine
     
     public PopulationCenter() {
+    	 this.harbor = HarborSizeEnum.none;
     }
 
     public String getName() {
@@ -109,11 +110,16 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public HarborSizeEnum getHarbor() {
-        return this.harbor;
+    	// this fixes a data corruption when destroying a PC.
+    	if (this.harbor == null)
+    		return HarborSizeEnum.none;
+    	else
+    		return this.harbor;
     }
 
     public void setHarbor(HarborSizeEnum harbor) {
-        this.harbor = harbor;
+    	// and hopefully this stops the bug above happening.
+        this.harbor = (harbor == null) ? HarborSizeEnum.none : harbor;
     }
 
     public boolean getCapital() {

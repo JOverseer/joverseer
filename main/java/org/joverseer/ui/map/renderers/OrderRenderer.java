@@ -246,7 +246,9 @@ public class OrderRenderer extends DefaultHexRenderer {
 				evasive = true;
 			}
 
-			for (int i = 0; i < order.getLastParamIndex(); i++) {
+			int lastUsefulParamIndex = order.getLastMovementIndex();
+			// TODO: check that the +1 is correct
+			for (int i = 0; i < lastUsefulParamIndex+1; i++) {
 				String dir = params[i];
 				MovementDirection md = MovementDirection.getDirectionFromString(dir);
 				int nextHexNo = MovementUtils.getHexNoAtDir(currentHexNo, md);
@@ -288,7 +290,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 				}
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
-				if (i == params.length - 2) {
+				if (i == lastUsefulParamIndex - 2) {
 					// last segment
 					double theta = Math.atan2((p2.y - p1.y), (p2.x - p1.x));
 					Shape a = Arrow.getArrowHead(p2.x, p2.y, 10, 15, theta);
@@ -306,7 +308,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 				}
 
 				if (drawCharNames()) {
-					if (i == (params.length - 1) / 2) {
+					if (i == (lastUsefulParamIndex - 1) / 2) {
 						// middle segment
 						drawString(g, order.getCharacter().getName(), p1, p2);
 					}

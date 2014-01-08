@@ -43,6 +43,8 @@ public class MapTooltipHolder {
 			}
 			Object obj = this.toolTipObjects[mapLocation.x][mapLocation.y];
 			String tooltipText = null;
+			boolean doUpdate = false;
+			
 			if (obj == null) {
 				tooltipText = null;
 			} else {
@@ -53,9 +55,13 @@ public class MapTooltipHolder {
 				} else if (PopulationCenter.class.isInstance(obj)) {
 					tooltipText = ((PopulationCenter) obj).getName();
 				}
-
 			}
-			if ((tooltipText == null && this.currentToolTipText != null) || !tooltipText.equals(this.currentToolTipText)) {
+			if (tooltipText == null) {
+				doUpdate = (this.currentToolTipText != null);
+			} else {
+				doUpdate = (!tooltipText.equals(this.currentToolTipText));
+			}
+			if (doUpdate) {
 				this.currentToolTipText = tooltipText;
 				MapPanel.instance().setToolTipText(tooltipText);
 				Action toolTipAction = MapPanel.instance().getActionMap().get("postTip");

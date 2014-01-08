@@ -216,6 +216,20 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		return p;
 	}
 
+	
+	//TODO: check for possible no/ev//at end.
+	public int getLastMovementIndex() {
+		int n = getLastParamIndex();
+		int i = 0;
+		for (int j = 0; j < n; j++) {
+			if (getParameter(j) != null) {
+				if (!getParameter(j).equals("-")) {
+					i = j;
+				}
+			}
+		}
+		return i;
+	}
 	public int getLastParamIndex() {
 		int i = 0;
 		for (int j = 0; j < 16; j++) {

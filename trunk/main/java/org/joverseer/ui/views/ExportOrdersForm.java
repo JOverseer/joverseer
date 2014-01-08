@@ -143,6 +143,7 @@ public class ExportOrdersForm extends AbstractForm {
 		this.orders = new JTextArea();
 		this.orders.setWrapStyleWord(false);
 		this.orders.setLineWrap(false);
+		this.orders.setEditable(false);
 		JScrollPane scp = new JScrollPane(this.orders);
 		scp.setPreferredSize(new Dimension(500, 400));
 		glb.append(scp, 3, 1);

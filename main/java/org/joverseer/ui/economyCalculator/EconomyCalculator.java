@@ -168,7 +168,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			this.taxIncrease.setVisible(false);
 		} else {
 			this.taxIncrease.setVisible(true);
-			this.taxIncrease.setText("Your taxes will go up by " + taxIncreaseAmt + "%!");
+			int finalTaxAmt = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getTaxRate() + taxIncreaseAmt; 
+			this.taxIncrease.setText("Your taxes will go up by " + taxIncreaseAmt + "% to " + finalTaxAmt + "!");
 		}
 	}
 

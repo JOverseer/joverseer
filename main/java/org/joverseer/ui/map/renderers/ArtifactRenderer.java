@@ -30,7 +30,7 @@ public class ArtifactRenderer implements Renderer {
 	public void render(Object obj, Graphics2D g, int x, int y) {
         if (this.mapMetadata == null) init();
 
-        Artifact a = (Artifact)obj;
+        //Artifact a = (Artifact)obj;
 
 
         int w = this.mapMetadata.getGridCellWidth() / 3;

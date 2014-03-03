@@ -46,6 +46,13 @@ public class NavyRangeMapItem extends AbstractRangeMapItem {
 		this.openSeas = openSeas;
 	}
 
+
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof NavyRangeMapItem)
+				&& (this.army == ((NavyRangeMapItem)mi).army); 
+	}
+
 	
     
 }

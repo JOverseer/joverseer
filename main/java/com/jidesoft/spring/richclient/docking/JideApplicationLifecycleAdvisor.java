@@ -38,12 +38,16 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.application.support.DefaultApplicationDescriptor;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.exceptionhandling.DefaultRegisterableExceptionHandler;
 import org.springframework.richclient.exceptionhandling.RegisterableExceptionHandler;
+
+import com.middleearthgames.updater.UpdateChecker;
+import com.middleearthgames.updater.ThreepartVersion;
 
 /**
  * Extends the default application lifecycle advisor to allow the injection of
@@ -214,14 +218,16 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			Date dateMinusOneWeek = c.getTime();
 			if (dt == null || dateMinusOneWeek.after(dt)) {
 
-				VersionChecker versionChecker = new VersionChecker();
-				try {
-					boolean newVersionExists = versionChecker.newVersionExists();
-					if (newVersionExists) {
-						MessageDialog md = new MessageDialog("A new version is available!", "A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://code.google.com/p/joverseer/downloads/list'>http://code.google.com/p/joverseer/downloads/list</a>") {
-
-						};
-						md.showDialog();
+				DefaultApplicationDescriptor descriptor = (DefaultApplicationDescriptor)Application.instance().getApplicationContext().getBean("applicationDescriptor");
+				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
+		        
+   		        try {
+		            if (UpdateChecker.getLatestVersion("http://www.middleearthgames.com/software/joverseer/feed.xml").isLaterThan(current)) { 
+//						MessageDialog md = new MessageDialog("A new version is available!", "A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://www.middleearthgames.com/software/joverseer/feed.xml'>http://code.google.com/p/joverseer/downloads/list</a>") {
+//
+//						};
+//						md.showDialog();
+		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew("http://www.middleearthgames.com/software/joverseer/feed.xml"));
 					}
 					String str = new SimpleDateFormat().format(new Date());
 					prefs.put("lastVersionCheckDate", str);

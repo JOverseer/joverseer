@@ -63,6 +63,14 @@ public class ArmyRangeMapItem extends AbstractRangeMapItem {
     public void setFed(boolean fed) {
         this.fed = fed;
     }
+
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof ArmyRangeMapItem)
+				&& (this.army == ((ArmyRangeMapItem)mi).army) 
+				&& (this.cav == ((ArmyRangeMapItem)mi).cav) 
+				&& (this.fed == ((ArmyRangeMapItem)mi).fed);
+	}
     
     
 }

@@ -38,4 +38,12 @@ public class TrackCharacterMapItem extends AbstractMapItem {
     	this.hexes.add(hex);
     	this.turns.add(turn);
     }
+
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof TrackCharacterMapItem)
+				&& (this.description == ((TrackCharacterMapItem)mi).description) 
+				&& (this.hexes == ((TrackCharacterMapItem)mi).hexes) 
+				&& (this.turns == ((TrackCharacterMapItem)mi).turns); 
+	}
 }

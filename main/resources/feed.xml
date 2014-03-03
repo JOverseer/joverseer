@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Overseer releases</title>
+    <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
+    <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
+    <language>en</language>
+    <item>
+      <title>1.0.11</title>
+      <pubDate>Mon, 3 Mar 2014</pubDate>
+      <description>
+VERSION 1.0.11
+--------------
+
+	* Updater
+		o The Updater now spots windows and tries to run with elevated privileges if needed.
+		o Added jOverseer.exe to launch jOverseer with the right java options and remove the dos window.
+		o Running jOverseerUpdater.exe will always download the latest version.
+		
+	* Econo Calc
+		o The economic calculator now correctly reports that "Your taxes will go up *by* n% to m%"
+		
+	* Current Hex View
+		o Show Army movement is now a toggle. Click it again to remove the displayed range.
+		o Show Character Movement Range is now a toggle.
+		o The icon/button to display orders no longer jumps left/right when used.
+
+	* Other
+		o The Blue Wizard now appears in the Kinstrife characters.
+		
+		</description>
+    </item>
+  </channel>
+</rss>

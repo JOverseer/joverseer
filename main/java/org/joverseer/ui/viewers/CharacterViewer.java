@@ -135,7 +135,7 @@ public class CharacterViewer extends ObjectViewer {
 
 	boolean showArtifacts = false;
 	boolean showSpells = false;
-	boolean showOrders = false;
+	boolean showOrders = true;
 	boolean showHostages = false;
 
 	ActionCommand showArtifactsCommand = new ShowArtifactsCommand();
@@ -454,7 +454,8 @@ public class CharacterViewer extends ObjectViewer {
 		c.setBorder(null);
 		this.nationTextBox = (JTextField) c;
 		// bf.bindControl(c, "nationNo");
-		c.setPreferredSize(new Dimension(50, 12));
+		// a bit of a hack...extend to stop the menu icon jumping about
+		c.setPreferredSize(new Dimension(100, 12));
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 

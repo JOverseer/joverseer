@@ -47,4 +47,12 @@ public class CharacterRangeMapItem extends AbstractMapItem {
 	public String getDescription() {
         return String.format("{0} hexes range from hex {1}.", new Object[] {this.range, this.hexNo});
     }
+
+
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof CharacterRangeMapItem)
+				&& (this.range == ((CharacterRangeMapItem)mi).range) 
+				&& (this.hexNo == ((CharacterRangeMapItem)mi).hexNo);
+	}
 }

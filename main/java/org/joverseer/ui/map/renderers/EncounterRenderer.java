@@ -32,7 +32,7 @@ public class EncounterRenderer implements Renderer {
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
         if (this.mapMetadata == null) init();
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        //Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         int w = this.mapMetadata.getGridCellWidth() / 3;
         int h = this.mapMetadata.getGridCellHeight() / 3;
         int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1/2 - w/2;

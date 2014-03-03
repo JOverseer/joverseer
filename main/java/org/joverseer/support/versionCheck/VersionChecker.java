@@ -1,3 +1,4 @@
+// this has been superceeded by com.middleearthgames.Updater etc
 package org.joverseer.support.versionCheck;
 
 import java.util.regex.Matcher;

@@ -36,4 +36,11 @@ public class HighlightHexesMapItem extends AbstractMapItem {
     public void addHex(int hexNo) {
         getHexesToHighlight().add(hexNo);
     }
+
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof HighlightHexesMapItem)
+				&& (this.description == ((HighlightHexesMapItem)mi).description) 
+				&& (this.hexesToHighlight == ((HighlightHexesMapItem)mi).hexesToHighlight); 
+	}
 }

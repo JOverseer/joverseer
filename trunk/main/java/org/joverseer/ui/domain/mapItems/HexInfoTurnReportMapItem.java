@@ -37,4 +37,10 @@ public class HexInfoTurnReportMapItem extends AbstractMapItem {
 		return String.format("Hex info turn report.", new Object[]{});
 	}
 
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof HexInfoTurnReportMapItem)
+				&& (this.hexes == ((HexInfoTurnReportMapItem)mi).hexes); 
+	}
+
 }

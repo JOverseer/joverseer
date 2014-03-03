@@ -43,4 +43,12 @@ public class HexArrowMapItem extends AbstractMapItem {
 		return null;
 	}
 
+	@Override
+	public boolean isEquivalent(AbstractMapItem mi) {
+		return (mi instanceof HexArrowMapItem)
+				&& (this.originHex == ((HexArrowMapItem)mi).originHex) 
+				&& (this.destinationHex == ((HexArrowMapItem)mi).destinationHex) 
+				&& (this.color == ((HexArrowMapItem)mi).color);
+	}
+
 }

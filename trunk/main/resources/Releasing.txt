@@ -1,0 +1,24 @@
+1. Bump the version in
+main/resources/ctx/jideApplicationContext.xml
+XPath:
+ //beans/bean[@id='applicationDescriptor']/property[@name='version']
+   @value='1.x.x'
+
+ //beans/bean[@id='applicationDescriptor']/property[@name='buildId']
+   @value='2014-x-x'
+
+2. update the version in the changelog.txt
+
+3.build
+
+3. run buildjars.bat
+
+4. ftp latestupdate.zip to megames
+
+5. edit and update feed.xml
+
+(delete the registry entry if testing)
+
+(make sure update/update.jar is present)
+
+start joverseer.

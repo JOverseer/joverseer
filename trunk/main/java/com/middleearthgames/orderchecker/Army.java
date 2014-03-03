@@ -374,7 +374,7 @@ public class Army
         this.foodRequired = amount;
     }
 
-    void setHasEnoughFood(boolean value)
+    public void setHasEnoughFood(boolean value)
     {
         this.hasEnoughFood = value;
     }
@@ -437,7 +437,7 @@ public class Army
         return commander1;
     }
 
-    int getFoodRequired()
+    public int getFoodRequired()
     {
         return this.foodRequired;
     }

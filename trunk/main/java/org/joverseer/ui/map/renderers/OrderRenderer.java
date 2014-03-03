@@ -459,7 +459,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 			ProductEnum product = ProductEnum.getFromCode(order.getParameter(1));
 			String pctStr = order.getParameter(2);
-			int pct = Integer.parseInt(pctStr);
+			//int pct = Integer.parseInt(pctStr);
 
 			// draw arrowhead
 			double theta = Math.atan2((p1.y - p2.y), (p1.x - p2.x));

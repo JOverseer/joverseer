@@ -26,7 +26,7 @@ public class ShowArmyRangeCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		ArmyRangeMapItem armi = new ArmyRangeMapItem(this.hexNo, this.cav, this.fed);
-		AbstractMapItem.add(armi);
+		AbstractMapItem.toggle(armi);
 
 		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
 	}

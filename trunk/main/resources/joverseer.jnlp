@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="" href="http://www.middleearth/joverseer.jnlp">
+    <information>
+        <title>jOverseer</title>
+        <vendor>Middle Earth Games</vendor>
+        <homepage href="http://www.middleearth/soov.html"/>
+        <icon href="joverseer.jpg"/>
+        <offline-allowed/>
+        <menu>JOverseer</menu>
+        <association extensions=".jov"/>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.6+" href=
+           "http://java.sun.com/products/autodl/j2se" max-heap-size="384M"/>
+        <jar href="joverseer.jar"
+            main="true" />
+
+    </resources>
+    <application-desc
+         name="jOverseer"
+         main-class="org.joverseer.ui.JOverseerJIDEClient"
+     </application-desc>
+     <update check="background"/>
+</jnlp>

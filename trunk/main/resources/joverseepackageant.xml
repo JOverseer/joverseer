@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_jnlp" name="Create Runnable Jar for Project JOverseerDevelopment with libraries">
+    <!--ANT 1.7 is required                                        -->
+    <property name="jOverseerWorkspace" location="I:/MiddleEarth/JOverseerWorkspace"/>
+    <property name="jOverseerClass.dir" location="I:/MiddleEarth/joverseer/classes"/>
+    <property name="launch4j.dir" location="C:/ProgramFiles/launch4j"/>
+    
+    <taskdef name="launch4j"
+        classname="net.sf.launch4j.ant.Launch4jTask"
+        classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar"/>
+    
+    <target name="create_joverseer_jar">
+        <jar destfile="${jOverseerWorkspace}/joverseer.jar"
+            basedir="${jOverseerClass.dir}"
+            excludes="**/JOverseerUserGuide.ppt,images/map/map.png,**/Thumbs.db">
+            <manifest>
+                <attribute name="Main-Class" value="org.joverseer.ui.JOverseerJIDEClient"/>
+                <attribute name="Class-Path" value=". spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="create_jnlp">
+        <jar destfile="${jOverseerWorkspace}/joverseer-jnlp.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.joverseer.ui.JOverseerJIDEClient"/>
+                <attribute name="Class-Path" value="joverseer.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar"/>
+            </manifest>
+            <fileset dir="RequiredLibs/" excludes="joverseer.jar"/>
+            <fileset file="joverseer.jar"/>
+        </jar>
+    </target>
+        <target name="create_updaterjar">
+        <jar destfile="${jOverseerWorkspace}/update.jar"
+            basedir="${jOverseerClass.dir}"
+            includes="**/Main_Gui*">
+            <manifest>
+                <attribute name="Main-Class" value="com.middleearthgames.updater.Main_Gui"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="create_joverseerupdate_exe" depends="create_updaterjar">
+    	<launch4j configFile="${jOverseerWorkspace}/jOverseerUpdaterLaunch4j.xml"/>    
+    </target>
+    <target name="create_joverseerlauncher_exe" depends="create_joverseer_jar">
+    	<launch4j configFile="${jOverseerWorkspace}/jOverseerLauncher.xml"/>    
+    </target>
+        <target name="create_updatezip" depends="create_joverseer_jar,create_updaterjar,create_joverseerupdate_exe,create_joverseerlauncher_exe">
+        <zip destfile="${jOverseerWorkspace}/latestupdate.zip">
+            <fileset file="joverseer.jar"/>
+            <fileset file="jOverseerUpdater.exe"/>
+            <fileset file="jOverseer.exe"/>
+            <fileset file="update.jar"/>	<!--  needed at top too -->
+            <zipfileset dir="." includes="update.jar" prefix="update"/>
+        </zip>
+    </target>
+    
+</project>

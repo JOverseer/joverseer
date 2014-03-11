@@ -106,7 +106,7 @@ public class Data
             this.showAllResults = in.readBoolean();
     }
 
-    private GameData findGame(Nation nation)
+    public GameData findGame(Nation nation)
     {
         for(int i = 0; i < this.gameData.size(); i++)
         {

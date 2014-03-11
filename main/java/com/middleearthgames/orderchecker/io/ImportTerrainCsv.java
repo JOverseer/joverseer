@@ -50,7 +50,8 @@ public class ImportTerrainCsv extends ImportCsv
         int location;
         try
         {
-            String locationString = param.substring(1, param.length() - 1);
+        	// asssumes the location is surrounded by double quotes
+            String locationString = param.substring(1, param.length()-1);
             location = Integer.parseInt(locationString);
         }
         catch(NumberFormatException ex)

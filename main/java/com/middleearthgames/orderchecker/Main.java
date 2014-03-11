@@ -8,7 +8,9 @@ package com.middleearthgames.orderchecker;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
@@ -85,13 +87,11 @@ public class Main
 
     public Main()
     {
-        this.nation = null;
-        this.map = null;
-        this.ruleset = null;
-        this.spells = new SpellList();
-        this.artifacts = new ArtifactList();
-        readData();
-        this.window = new OCDialog(mainFrame, this.data);
+        this(false,readData(dataFile));
+    }
+    public Main(InputStream is)
+    {
+    	this(false,readData(is));
     }
     
     //mscoon
@@ -171,21 +171,32 @@ public class Main
         }
     }
 
-    public void readData()
+    public static Data readData(String file)
     {
+    	Data data;
+    	try {
+    		return readData(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			data =new Data();
+		}
+    	return data;	
+    }
+    public static Data readData(InputStream file)
+    {
+    	Data data = new Data();
         try
         {
-            FileInputStream file = new FileInputStream(dataFile);
-            ObjectInputStream objFile = new ObjectInputStream(((java.io.InputStream) (file)));
-            this.data = new Data();
-            this.data.readObject(objFile);
+            ObjectInputStream objFile = new ObjectInputStream(file);
+            data.readObject(objFile);
             objFile.close();
             file.close();
         }
         catch(Exception ex)
         {
-            this.data = new Data();
+            data = new Data();
         }
+        return data;
     }
 
     public String locationStr(int location)

@@ -6,7 +6,19 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
-      <title>1.0.11</title>
+    <title>1.0.12</title>
+      <pubDate>Tue, 4 Mar 2014</pubDate>
+      <description>
+VERSION 1.0.12
+--------------
+	* Orderchecker
+		o Enabled for Kinstrife.
+		o Terrain maps and traffic maps corrected for Kinstrife.
+
+		</description>
+    </item>
+    <item>
+    <title>1.0.11</title>
       <pubDate>Mon, 3 Mar 2014</pubDate>
       <description>
 VERSION 1.0.11
@@ -30,5 +42,46 @@ VERSION 1.0.11
 		
 		</description>
     </item>
-  </channel>
+    <item>
+    <title>1.0.10</title>
+      <pubDate>8 Jan 2014</pubDate>
+      <description>
+VERSION 1.0.10
+--------------
+
+    * Bug Fixes
+    	o Symptom: no PC icon, Hex highlight unreliable, no order entry for hex.
+    		+ There was a bug causing data corruption of Pop Centre.
+    		+ Especially after a PC has been reduced to ruins.
+    		+ There may be more than one cause. 
+    		+ Please email a copy of the .jov file and a note of which hex shows the problem to middlearth.com.
+    	o The Export Order Form no longer lets you mess around with the preformatted order.
+    	o The movement calculator was getting confused when moving evasively.
+    	 
+		</description>
+    </item>
+        <item>
+    <title>1.0.9</title>
+      <pubDate>28 Nov 2014</pubDate>
+      <description>
+VERSION 1.0.9
+-------------
+
+	* The first release by MEPBM. 
+
+	* Java JRE requirements are now 'Java 6' or better. Really you should be using 'Java version 7'. 
+	
+	* BOFA support
+		o The BOFA games now use nations 1-5 instead of 10-14. This breaks compatibility with older BOFA games.
+
+	* Visual tweaks
+		o The descenders of order parameter text are no longer cut-off
+		
+	* XML errors
+		o Error: null when reading some characters in new XML format
+		o More helpful error when you read old format XML when expecting new format
+
+		</description>
+    </item>
+    </channel>
 </rss>

@@ -42,6 +42,7 @@ import com.middleearthgames.orderchecker.Order;
 import com.middleearthgames.orderchecker.PopCenter;
 import com.middleearthgames.orderchecker.Ruleset;
 import com.middleearthgames.orderchecker.gui.ExtraInfoDlg;
+import com.middleearthgames.orderchecker.gui.OCResultTreeRenderer;
 import com.middleearthgames.orderchecker.gui.OCTreeNode;
 import com.middleearthgames.orderchecker.io.Data;
 import com.middleearthgames.orderchecker.io.ImportRulesCsv;
@@ -161,6 +162,13 @@ public class OrdercheckerProxy {
 
 		final DefaultMutableTreeNode root = ((DefaultMutableTreeNode) ReflectionUtils.retrieveField(main.getWindow(), "root"));
 		JTree tree = (JTree) ReflectionUtils.retrieveField(main.getWindow(), "tree");
+		final OCResultTreeRenderer renderer = new OCResultTreeRenderer(null);
+		renderer.setRedIcon(new ImageIcon(imgSource.getImage("orderchecker.red.image")));
+		renderer.setYellowIcon(new ImageIcon(imgSource.getImage("orderchecker.yellow.image")));
+		renderer.setGreenIcon(new ImageIcon(imgSource.getImage("orderchecker.green.image")));
+		renderer.setOrderIcon(new ImageIcon(imgSource.getImage("orderchecker.order.image")));
+		renderer.setCharIcon(new ImageIcon(imgSource.getImage("orderchecker.character.image")));
+
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
 			@Override
 			public Component getTreeCellRendererComponent(JTree tree1, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus1) {
@@ -281,21 +289,8 @@ public class OrdercheckerProxy {
 		}
 	}
 
-	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
-		setNationNo(nationNo1);
-		Main.mainFrame = new JFrame();
-		final Main main = new Main();
-		Main.main = main;
-
-		Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
-		ObjectInputStream ois = new ObjectInputStream(res.getInputStream());
-		Data data = Main.main.getData();
-		data.readObject(ois);
-		ois.close();
-
-		Game g = GameHolder.instance().getGame();
-		Turn t = g.getTurn();
-
+	private static Nation updateNation(Game g,int nationNo1,Turn t) {
+		
 		PlayerInfo pi = (PlayerInfo) t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo1);
 
 		Nation nation = new Nation();
@@ -323,7 +318,11 @@ public class OrdercheckerProxy {
 		for (org.joverseer.metadata.domain.Nation n : g.getMetadata().getNations()) {
 			nation.addNation(n.getName());
 		}
+		return nation;
+	}
 
+	private static void updatePC(Turn t,Nation nation)
+	{
 		for (PopulationCenter popCenter : (ArrayList<PopulationCenter>) t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
 			if (popCenter.getSize() == PopulationCenterSizeEnum.ruins)
 				continue;
@@ -345,11 +344,13 @@ public class OrdercheckerProxy {
 			pc.setLoyalty(popCenter.getLoyalty());
 			nation.addPopulationCenter(pc);
 
-			if (popCenter.getCapital() && popCenter.getNationNo() == nationNo1) {
+			if (popCenter.getCapital() && popCenter.getNationNo() == nation.getNation()) {
 				nation.setCapital(popCenter.getHexNo());
 			}
 		}
-
+		
+	}
+	private void updateCharacters(Game g,Turn t, Nation nation) {
 		for (Character ch : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
 			if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead)
 				continue;
@@ -414,7 +415,8 @@ public class OrdercheckerProxy {
 				mc.addOrder(mo);
 			}
 		}
-
+	}
+	private static void updateArmies(Turn t,Nation nation) {
 		for (Army army : (ArrayList<Army>) t.getContainer(TurnElementsEnum.Army).getItems()) {
 			if (Army.isAnchoredShips(army))
 				continue;
@@ -435,9 +437,9 @@ public class OrdercheckerProxy {
 			a.setNavy(army.isNavy() ? 1 : 0);
 			nation.addArmy(a);
 		}
-
-		ReflectionUtils.invokeMethod(data, "findGame", new Object[] { nation });
-
+	}
+	
+	private static void updateNationRelations(Game g,Data data,Turn t,Nation nation) {
 		for (int i = 1; i <= 25; i++) {
 			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", i);
 			if (nr != null) {
@@ -462,6 +464,30 @@ public class OrdercheckerProxy {
 				}
 			}
 		}
+	}
+	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
+		setNationNo(nationNo1);
+		Main.mainFrame = new JFrame();
+		Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
+
+		final Main main = new Main(res.getInputStream());
+		Main.main = main;
+		
+		Data data = main.getData();
+
+		Game g = GameHolder.instance().getGame();
+		Turn t = g.getTurn();
+
+		Nation nation = updateNation(g, nationNo1, t);
+
+		updatePC(t, nation);
+		this.updateCharacters(g,t, nation);
+		updateArmies(t, nation);
+
+		//ReflectionUtils.invokeMethod(data, "findGame", new Object[] { nation });
+		data.findGame(nation);
+
+		updateNationRelations(g,data, t, nation);
 
 		Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
 		ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});

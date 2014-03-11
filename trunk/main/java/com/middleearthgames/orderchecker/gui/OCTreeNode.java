@@ -9,12 +9,8 @@ import com.middleearthgames.orderchecker.*;
 import com.middleearthgames.orderchecker.Character;
 
 import java.awt.Font;
-import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.image.ImageSource;
 
 public class OCTreeNode extends DefaultMutableTreeNode
 {
@@ -32,7 +28,18 @@ public class OCTreeNode extends DefaultMutableTreeNode
         else
             this.nodeType = RESULT_NODE;
     }
-
+    public String getMessagePrefix(int messageType)
+    {
+    	String prefix;
+    	switch (messageType){
+    	case ERROR_RESULT: prefix = "[R] "; break;
+    	case WARNING_RESULT: prefix = "[Y] "; break;
+    	case INFO_RESULT: prefix = "[G] "; break;
+    	case HELP_RESULT: prefix = "[H] "; break;
+    	default:	prefix = ""; break; 
+    	}
+    	return prefix;
+    }
     public int getNodeType()
     {
         return this.nodeType;
@@ -89,7 +96,7 @@ public class OCTreeNode extends DefaultMutableTreeNode
         return currentText;
     }
 
-    private int getResultType()
+    public int getResultType()
     {
         int result = NO_RESULT;
         String currentText = getUserObject().toString();
@@ -122,81 +129,15 @@ public class OCTreeNode extends DefaultMutableTreeNode
         return "";
     }
 
-    public ImageIcon getIcon()
-    {
-        switch(this.nodeType)
-        {
-        case CHARACTER_NODE: // '\001'
-            return getCharIcon();
-
-        case ORDER_NODE: // '\0'
-            return getOrderIcon();
-
-        case RESULT_NODE: // '\002'
-            int type = getResultType();
-            switch(type)
-            {
-            case ERROR_RESULT: // '\004'
-                return getRedIcon();
-
-            case WARNING_RESULT: // '\003'
-                return getYellowIcon();
-
-            case INFO_RESULT: // '\001'
-            case HELP_RESULT: // '\002'
-                return getGreenIcon();
-
-            case NO_RESULT: // '\0'
-            default:
-                return null;
-            }
-        }
-        return null;
-    }
     
-    public ImageIcon getRedIcon() {
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        return new ImageIcon(imgSource.getImage("orderchecker.red.image"));
-    }
-
-    public ImageIcon getYellowIcon() {
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        return new ImageIcon(imgSource.getImage("orderchecker.yellow.image"));
-    }
-
-    public ImageIcon getGreenIcon() {
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        return new ImageIcon(imgSource.getImage("orderchecker.green.image"));
-    }
-
-    public ImageIcon getOrderIcon() {
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        return new ImageIcon(imgSource.getImage("orderchecker.order.image"));
-    }
-
-    public ImageIcon getCharIcon() {
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        return new ImageIcon(imgSource.getImage("orderchecker.character.image"));
-    }
-
-    @SuppressWarnings("unused")
-	private static final ImageIcon redIcon = new ImageIcon("images/red.gif");
-    @SuppressWarnings("unused")
-	private static final ImageIcon yellowIcon = new ImageIcon("images/yellow.gif");
-    @SuppressWarnings("unused")
-	private static final ImageIcon greenIcon = new ImageIcon("images/green.gif");
-    @SuppressWarnings("unused")
-	private static final ImageIcon orderIcon = new ImageIcon("images/order.gif");
-    @SuppressWarnings("unused")
-	private static final ImageIcon charIcon = new ImageIcon("images/character.gif");
-    private static final int NO_RESULT = 0;
-    private static final int INFO_RESULT = 1;
-    private static final int HELP_RESULT = 2;
-    private static final int WARNING_RESULT = 3;
-    private static final int ERROR_RESULT = 4;
-    static final int ORDER_NODE = 0;
-    static final int CHARACTER_NODE = 1;
-    static final int RESULT_NODE = 2;
+    public static final int NO_RESULT = 0;
+    public static final int INFO_RESULT = 1;
+    public static final int HELP_RESULT = 2;
+    public static final int WARNING_RESULT = 3;
+    public static final int ERROR_RESULT = 4;
+    public static final int ORDER_NODE = 0;
+    public static final int CHARACTER_NODE = 1;
+    public static final int RESULT_NODE = 2;
     private final Font normalFont;
     private final Font boldFont;
     private final int nodeType;

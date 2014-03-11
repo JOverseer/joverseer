@@ -24,11 +24,10 @@ import javax.swing.tree.*;
 
 public class OCDialog extends JPanel
 {
-    
     public OCDialog(JPanel panel, Data data) {
         this.frame = null;
         this.splitPane = null;
-        this.tree = new JTree(new DefaultTreeModel(this.root));
+        this.tree = new JTree(new DefaultTreeModel(this.getRoot()));
         this.bottomPane = new JScrollPane(this.tree);
         this.panel = panel;
         this.data = data;
@@ -43,7 +42,7 @@ public class OCDialog extends JPanel
 
     public OCDialog(JFrame frame, Data data)
     {
-        this.tree = new JTree(new DefaultTreeModel(this.root));
+        this.tree = new JTree(new DefaultTreeModel(this.getRoot()));
         this.bottomPane = new JScrollPane(this.tree);
         this.frame = frame;
         this.data = data;
@@ -289,54 +288,17 @@ public class OCDialog extends JPanel
         this.tree.setEditable(false);
         this.tree.setExpandsSelectedPaths(true);
         this.tree.setRootVisible(false);
-        class _cls1ResultTreeRenderer extends DefaultTreeCellRenderer
-        {
 
-            @Override
-			public Component getTreeCellRendererComponent(JTree tree1, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus1)
-            {
-                try {
-                    super.getTreeCellRendererComponent(tree1, value, sel, expanded, leaf, row, hasFocus1);
-                    if(value != OCDialog.this.root)
-                    {
-                        OCTreeNode node = (OCTreeNode)value;
-                        setFont(node.getActiveFont());
-                        if(node.getNodeType() == 2)
-                        {
-                            String currentText = getText();
-                            if(currentText.length() > 3)
-                            {
-                                currentText = currentText.substring(4);
-                                setText(currentText);
-                            }
-                        }
-                        ImageIcon icon = node.getIcon();
-                        if(icon != null)
-                            setIcon(node.getIcon());
-                    }
-                    return this;
-                }
-                catch (Exception ex) {
-                    ex.printStackTrace();
-                    return this;
-                }
-            }
-
-            public _cls1ResultTreeRenderer()
-            {
-            }
-        }
-
-        this.tree.setCellRenderer(new _cls1ResultTreeRenderer());
+        this.tree.setCellRenderer(new OCResultTreeRenderer(this));
     }
 
     public void createResultsTree()
     {
-        this.root.removeAllChildren();
-        Main.main.getNation().addTreeNodes(this.tree, this.root);
-        ((DefaultTreeModel)this.tree.getModel()).nodeStructureChanged(this.root);
+        this.getRoot().removeAllChildren();
+        Main.main.getNation().addTreeNodes(this.tree, this.getRoot());
+        ((DefaultTreeModel)this.tree.getModel()).nodeStructureChanged(this.getRoot());
         javax.swing.tree.TreeNode path[];
-        for(Enumeration allNodes = this.root.depthFirstEnumeration(); allNodes.hasMoreElements(); this.tree.expandPath(new TreePath(path)))
+        for(Enumeration allNodes = this.getRoot().depthFirstEnumeration(); allNodes.hasMoreElements(); this.tree.expandPath(new TreePath(path)))
         {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)allNodes.nextElement();
             path = node.getPath();
@@ -456,6 +418,7 @@ public class OCDialog extends JPanel
         this.data.setOrdersPath(this.ordersPath.getText());
         this.data.setGameType((String)this.gameTypes.getSelectedItem());
         Main.main.setRuleSet(new Ruleset());
+        System.out.println(System.getProperty("user.dir"));
         ImportRulesCsv rules = new ImportRulesCsv(this.data.getRulesPath(), Main.main.getRuleSet());
         result = rules.getRules();
         if(!result)
@@ -513,7 +476,8 @@ public class OCDialog extends JPanel
         Main.displayErrorMessage(msg);
     }
     
-    
+
+
 
     private static final ImageIcon goIcon = new ImageIcon("images/button06_yes.gif");
     private static final ImageIcon stopIcon = new ImageIcon("images/button06_no.gif");
@@ -673,6 +637,11 @@ public class OCDialog extends JPanel
             return;
         }
     }
+
+	public DefaultMutableTreeNode getRoot() {
+		return root;
+	}
+
 
 
 

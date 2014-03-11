@@ -248,6 +248,7 @@ public class Army
     private int[] getTroopContent()
     {
         int amounts[] = new int[6];
+        if (this.extraInfo != null) {
         for(int type = 0; type < 6; type++)
         {
             try
@@ -262,7 +263,7 @@ public class Army
             }
             catch(NumberFormatException ex) { }
         }
-
+        }
         return amounts;
     }
 

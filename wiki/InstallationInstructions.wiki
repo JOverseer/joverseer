@@ -2,11 +2,18 @@
 #labels Featured
 =Installation Instructions=
 
-_These instructions apply to version 1.0.0 and later_
+_These instructions apply to version 1.0.12 and later_
 
-To install JOverseer:
-  # Download *the libraries package* (JOverseer libraries) from the Downloads page. Unzip to your preferred folder (i.e. desktop\JOverseer)
-  # Download the *JOverseer executable package* (e.g. JOverseer v1.0.x). Unzip to the folder you unzipped the libraries into (i.e. desktop\JOverseer)
+Java version 1.6 (aka 'Java 6') or later is required.
+You can download java for your computer [http://www.java.com here].
+
+To install JOverseer on Windows:
+  # Download and run the setup program [http://www.middleearthgames.com/software/joverseer/joverseer-1.0.12-setup.exe joverseer-1.0.12-setup.exe].
+
+
+To install jOverseer on linux/unix/Mac
+  # Download the zip package [http://www.middleearthgames.com/software/joverseer/joverseer-libraries-v1.0.12.zip joverseer-libraries-v1.0.12.zip]. Unzip to your preferred folder (i.e. desktop\JOverseer)
+
   # Download and read the User Guide!
 
-To run JOverseer, on Windows run *joverseer.bat*. On linux / unix / Mac OS, run *unix-launcher.sh*.
+To run JOverseer, on Windows run *jOverseer.exe*. On linux / unix / Mac OS, run *unix-launcher.sh*.

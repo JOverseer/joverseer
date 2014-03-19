@@ -27,9 +27,13 @@ import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.metadata.domain.HexSideElementEnum;
+import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
@@ -84,6 +88,26 @@ public class OrdercheckerProxy {
 		}
 	}
 	
+	static void copyCurrentMap(GameMetadata metadata,Map map)
+	{
+		com.middleearthgames.orderchecker.Hex ocHex;
+		HashMap<HexSideEnum,ArrayList<HexSideElementEnum>> elements;
+		
+		for(org.joverseer.metadata.domain.Hex meHex:metadata.getHexes()){
+			ocHex = new com.middleearthgames.orderchecker.Hex(meHex.getHexNo());
+			// TODO: check this the doc says it starts at 0
+			ocHex.setTerrain((int)(meHex.getTerrain().ordinal())); // terrain numbers are the same.
+			elements = meHex.getSideElements(); 
+			
+			for(java.util.Map.Entry<HexSideEnum,ArrayList<HexSideElementEnum>> entry:elements.entrySet()){
+				for(HexSideElementEnum feature:entry.getValue()) {
+					ocHex.addDirection(entry.getKey().ordinal());
+					ocHex.addFeature(feature.getElement());
+				}
+			}
+			map.addHex(ocHex);
+		}
+	}
 	
 	public void runOrderchecker() {
 		Data data = Main.main.getData();
@@ -128,6 +152,8 @@ public class OrdercheckerProxy {
 			Main.main.getData().setGameType("Kin Strife");
 			gt = "ks";
 		}
+		copyCurrentMap(g.getMetadata(),Main.main.getMap());
+/*		
 		ImportTerrainCsv terrain = new ImportTerrainCsv(OrdercheckerPaths.getInstance().terrainPath + gt + ".game", Main.main.getMap());
 		result = terrain.getMapInformation();
 		if (!result) {
@@ -142,6 +168,7 @@ public class OrdercheckerProxy {
 			Main.displayErrorMessage(error);
 			return;
 		}
+*/
 		if (!Main.main.getMap().isMapComplete()) {
 			Main.displayErrorMessage("The map file was processed but appears to be missing data!");
 			return;
@@ -354,6 +381,10 @@ public class OrdercheckerProxy {
 		for (Character ch : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
 			if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead)
 				continue;
+			if (ch.getId() == null) { 
+				System.out.println(ch.getName() + " has no Id");
+				continue;
+			}
 			com.middleearthgames.orderchecker.Character mc = new com.middleearthgames.orderchecker.Character(ch.getId() + "     ".substring(0, 5 - ch.getId().length()));
 			mc.setNation(ch.getNationNo());
 			mc.setName(ch.getName());
@@ -443,7 +474,7 @@ public class OrdercheckerProxy {
 		for (int i = 1; i <= 25; i++) {
 			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", i);
 			if (nr != null) {
-				data.setNationAlignment(nr.getNationNo(), -1, nation);
+				data.setNationAlignment(nr.getNationNo()-1, -1, nation);
 				if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {
 					data.setNationAlignment(nr.getNationNo() - 1, 1, nation);
 				} else if (nr.getAllegiance() == NationAllegianceEnum.DarkServants) {
@@ -468,12 +499,13 @@ public class OrdercheckerProxy {
 	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
 		setNationNo(nationNo1);
 		Main.mainFrame = new JFrame();
-		Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
+//		Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
 
-		final Main main = new Main(res.getInputStream());
+//		final Main main = new Main(res.getInputStream());
+		Data data = new Data();
+		final Main main = new Main(true,data);
 		Main.main = main;
 		
-		Data data = main.getData();
 
 		Game g = GameHolder.instance().getGame();
 		Turn t = g.getTurn();

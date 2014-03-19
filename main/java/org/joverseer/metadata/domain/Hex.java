@@ -95,6 +95,10 @@ public class Hex implements Serializable {
 		return ret;
 	}
 
+	// only used by orderchecker integration
+	public HashMap<HexSideEnum, ArrayList<HexSideElementEnum>> getSideElements() {
+		return this.hexSideElements;
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public Hex clone() {

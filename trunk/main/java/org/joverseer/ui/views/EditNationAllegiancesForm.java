@@ -10,7 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -117,11 +119,16 @@ public class EditNationAllegiancesForm extends AbstractForm {
 		super.commit();
 		Game g = (Game) getFormObject();
 		GameMetadata gm = g.getMetadata();
+		NationRelations nr;
 		for (int i = 1; i < 26; i++) {
 			if (i < gm.getNations().size()) {
 				Nation n = gm.getNations().get(i);
+				nr = g.getTurn().getNationRelations(i);
 				n.setAllegiance((NationAllegianceEnum) this.allegiances.get(i).getSelectedItem());
 				n.setEliminated(this.eliminated.get(i).isSelected());
+				if (nr.getAllegiance() != n.getAllegiance()) {
+					nr.setAllegiance(n.getAllegiance());
+				}
 			}
 		}
 		g.setParameter("StopAskingForAllegianceChanges", this.stopAsking.isSelected() ? "1" : "0");

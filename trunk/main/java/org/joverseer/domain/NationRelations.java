@@ -18,6 +18,7 @@ public class NationRelations implements IBelongsToNation, Serializable {
     private static final long serialVersionUID = -3415693212063202826L;
     Integer nationNo;
     NationRelationsEnum[] relations = new NationRelationsEnum[26];
+    // this shouldn't be used...it's the nation's one that is definitive.
     NationAllegianceEnum allegiance;
     boolean eliminated = false;
     boolean removed = false;

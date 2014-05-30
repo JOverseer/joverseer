@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Order;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
@@ -34,12 +35,12 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     @Override
 	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         
-        tlb.cell(new JLabel("Style : "), "colspec=left:70px");
-        tlb.cell(this.movementStyle = new JComboBox(), "colspec=left:130px");
+        tlb.cell(new JLabel(Messages.getString("MoveArmyOrderSubeditor.StyleColon")), "colspec=left:70px"); //$NON-NLS-1$ //$NON-NLS-2$
+        tlb.cell(this.movementStyle = new JComboBox(), "colspec=left:130px"); //$NON-NLS-1$
         this.movementStyle.setPreferredSize(new Dimension(60, 18));
-        this.movementStyle.addItem("");
-        this.movementStyle.addItem("no");
-        this.movementStyle.addItem("ev");
+        this.movementStyle.addItem(""); //$NON-NLS-1$
+        this.movementStyle.addItem(Messages.getString("MoveArmyOrderSubeditor.movement.normal")); //$NON-NLS-1$
+        this.movementStyle.addItem(Messages.getString("MoveArmyOrderSubeditor.movement.evasive")); //$NON-NLS-1$
         this.movementStyle.setSelectedItem(o.getParameter(o.getLastParamIndex()));
         this.movementStyle.addActionListener(new ActionListener() {
             @Override
@@ -51,33 +52,33 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         this.directionParams = new JTextField();
         this.directionParams.setVisible(false);
 
-        String txt = "";
+        String txt = ""; //$NON-NLS-1$
         for (int i=0; i<o.getLastParamIndex(); i++) {
             if (o.getParameter(i) == null) break;
             this.dirs.add(o.getParameter(i));
-            txt += (txt.equals("") ? "" : Order.DELIM) + o.getParameter(i);
+            txt += (txt.equals("") ? "" : Order.DELIM) + o.getParameter(i); //$NON-NLS-1$ //$NON-NLS-2$
         }
         this.directionParams.setText(txt);
         
         tlb.row();
         TableLayoutBuilder stlb = new TableLayoutBuilder();
         JButton btn;
-        stlb.cell(btn = new JButton("nw"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.nw"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("nw");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.nw")); //$NON-NLS-1$
                 updateEditor();
             }
         });
         
         stlb.cell(new JLabel());
         
-        stlb.cell(btn = new JButton("ne"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("ne");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.ne")); //$NON-NLS-1$
                 updateEditor();
             }
         });
@@ -85,47 +86,47 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         stlb.row();
 
         
-        stlb.cell(btn = new JButton("w"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.w"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("w");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.w")); //$NON-NLS-1$
                 updateEditor();
             }
         });
         
-        stlb.cell(btn = new JButton("h"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.home"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("h");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.home")); //$NON-NLS-1$
                 updateEditor();
             }
         });
         
-        stlb.cell(btn = new JButton("e"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.e"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("e");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.e")); //$NON-NLS-1$
                 updateEditor();
             }
         });
         
         stlb.row();
         
-        stlb.cell(btn = new JButton("sw"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("sw");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.sw")); //$NON-NLS-1$
                 updateEditor();
             }
         });
         
         //stlb.cell();
-        stlb.cell(btn = new JButton("<--"));
-        btn.setToolTipText("Back (delete last move)");
+        stlb.cell(btn = new JButton("<--")); //$NON-NLS-1$
+        btn.setToolTipText(Messages.getString("MoveArmyOrderSubeditor.back")); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -136,11 +137,11 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
         
-        stlb.cell(btn = new JButton("se"));
+        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.se"))); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add("se");
+                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.se")); //$NON-NLS-1$
                 updateEditor();
             }
         });
@@ -148,7 +149,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 //        stlb.row();
         
 
-        tlb.cell(new JLabel(" "));
+        tlb.cell(new JLabel(" ")); //$NON-NLS-1$
         JPanel pnl = stlb.getPanel();
         pnl.setBackground(Color.white);
         tlb.cell(pnl);
@@ -164,9 +165,9 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         while (this.dirs.size() > 14) {
             this.dirs.remove(this.dirs.size()-1);
         }
-        String text = "";
+        String text = ""; //$NON-NLS-1$
         for (String dir : this.dirs) {
-            text += (text.equals("") ? "" : Order.DELIM) + dir;
+            text += (text.equals("") ? "" : Order.DELIM) + dir; //$NON-NLS-1$ //$NON-NLS-2$
         }
         this.directionParams.setText(text);
         getEditor().updateParameters();

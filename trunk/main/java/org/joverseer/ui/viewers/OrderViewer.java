@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
+import javax.swing.border.Border;
 
 import org.joverseer.domain.Order;
 import org.joverseer.tools.OrderParameterValidator;
@@ -36,6 +37,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dataFlavors.OrderDataFlavor;
 import org.joverseer.ui.support.transferHandlers.OrderExportTransferHandler;
 import org.springframework.binding.form.FormModel;
@@ -50,7 +52,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  * @author Marios Skounakis
  */
 public class OrderViewer extends ObjectViewer implements ActionListener {
-    public static final String FORM_PAGE = "OrderViewer";
+    public static final String FORM_PAGE = "OrderViewer"; //$NON-NLS-1$
 
     JTextField orderText;
     JLabel orderResultIcon;
@@ -67,9 +69,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     
     protected OrderResultTypeEnum addValidationResult(Order o, OrderValidationResult res, Integer paramI, OrderResultTypeEnum orderResultType, ArrayList<OrderResult> results) {
     	if (res == null) return orderResultType;
-    	String e = "";
+    	String e = ""; //$NON-NLS-1$
     	if (paramI != null) {
-    		e = "Param " + paramI +": ";
+    		e = Messages.getString("OrderViewer.ParamNColon",new Object [] { paramI }); //$NON-NLS-1$
     	}
     	e += res.getMessage();
     	if (res.getLevel() == OrderValidationResult.ERROR) {
@@ -97,10 +99,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	Icon ico = null;
     	boolean joErrors = false;
     	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
     	if (!o.isBlank()) {
 	    	
-	        OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer");
+	        OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer"); //$NON-NLS-1$
 	        orderResultType = container.getResultTypeForOrder(o);
 	        if (orderResultType != null) {
 	        	results = container.getResultsForOrder(o);
@@ -121,26 +123,26 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	if (orderResultType == null) {
             ico = null;
         } else if (orderResultType == OrderResultTypeEnum.Info) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.info.icon"));
+            ico = new ImageIcon(imgSource.getImage("orderresult.info.icon")); //$NON-NLS-1$
         } else if (orderResultType == OrderResultTypeEnum.Help) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.help.icon"));
+            ico = new ImageIcon(imgSource.getImage("orderresult.help.icon")); //$NON-NLS-1$
         } else if (orderResultType == OrderResultTypeEnum.Warning) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.warn.icon"));
+            ico = new ImageIcon(imgSource.getImage("orderresult.warn.icon")); //$NON-NLS-1$
         } else if (orderResultType == OrderResultTypeEnum.Error) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.error.icon"));
+            ico = new ImageIcon(imgSource.getImage("orderresult.error.icon")); //$NON-NLS-1$
         } else if (orderResultType == OrderResultTypeEnum.Okay) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.okay.icon"));
+            ico = new ImageIcon(imgSource.getImage("orderresult.okay.icon")); //$NON-NLS-1$
         } 
         this.orderResultIcon.setIcon(ico);
         if (ico != null) {
-            String txt = "";
+            String txt = ""; //$NON-NLS-1$
             for (OrderResult result : results) {
                 String resText = null;
                 resText = result.getType().toString();
-                txt += (txt.equals("") ? "" : "") + "<li>" + resText + (joErrors ? " [JO]" : "") + ": " + result.getMessage() + "</li>";
+                txt += (txt.equals("") ? "" : "") + "<li>" + resText + (joErrors ? " [JO]" : "") + ": " + result.getMessage() + "</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
             }
-            if (!txt.equals("")) {
-                txt = "<html><body><lu>" + txt + "</lu></body></html>";
+            if (!txt.equals("")) { //$NON-NLS-1$
+                txt = "<html><body><lu>" + txt + "</lu></body></html>"; //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 txt = null;
             }
@@ -155,16 +157,16 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         super.setFormObject(object);
         Order o = (Order)object;
         if (o.getOrderNo() <= 0) {
-            this.orderText.setText("N/A");
+            this.orderText.setText(Messages.getString("OrderViewer.NA")); //$NON-NLS-1$
         } else {
-            this.orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters()));
+            this.orderText.setText(o.getNoAndCode() + " " + Order.getParametersAsString(o.getParameters())); //$NON-NLS-1$
             this.orderText.setCaretPosition(0);
         }
         this.orderText.setTransferHandler(new OrderExportTransferHandler(o));
         
         setOrderValidationResults(o);
         
-        OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+        OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
         this.draw.setSelected(ovd.contains(o));
         if (GraphicUtils.canRenderOrder(o)) {
         	this.draw.setEnabled(true);
@@ -180,9 +182,12 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(1, 1, 1, 3));
         glb.append(this.orderText = new JTextField());
-        this.orderText.setBorder(null);
+		// diagnostic border
+		Border  border = null;//BorderFactory.createLineBorder(Color.green);
+
+		this.orderText.setBorder(border);
         this.orderText.setPreferredSize(new Dimension(170, 16));
-        this.orderText.setText("N/A");
+        this.orderText.setText(Messages.getString("OrderViewer.NA")); //$NON-NLS-1$
 
         this.orderText.addMouseListener(new MouseAdapter() {
             @Override
@@ -232,14 +237,15 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         }));
 
-        this.orderResultIcon = new JLabel("");
+        this.orderResultIcon = new JLabel(""); //$NON-NLS-1$
         this.orderResultIcon.setPreferredSize(new Dimension(16, 16));
+        this.orderResultIcon.setBorder(border);
         glb.append(this.orderResultIcon);
         
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        Icon ico = new ImageIcon(imgSource.getImage("edit.image"));
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+        Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
         final JButton btn = new JButton(ico);
-        btn.setToolTipText("Edit order");
+        btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
         btn.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent e) {
@@ -250,16 +256,17 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         });
         
         btn.setPreferredSize(new Dimension(16, 16));
+        btn.setBorder(border);
         glb.append(btn);
 
 //        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
         this.draw = new JCheckBox();
-        this.draw.setToolTipText("Draw order");
+        this.draw.setToolTipText(Messages.getString("OrderViewer.DrawOrder")); //$NON-NLS-1$
         this.draw.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent e) {
-                OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+                OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
                 if (OrderViewer.this.draw.isSelected()) {
                     ovd.addOrder((Order)getFormObject());
                 } else {
@@ -270,6 +277,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         });
         this.draw.setPreferredSize(new Dimension(16, 16));
+        this.draw.setBorder(border);
         this.draw.setOpaque(true);
         this.draw.setBackground(Color.white);
         this.draw.setVisible(true);
@@ -280,7 +288,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         JPanel p = glb.getPanel();
         //p.setPreferredSize(new Dimension(166, 16));
         p.setBackground(Color.white);
-        p.setBorder(null);
+        p.setBorder(border);
         
         p.setFocusTraversalPolicyProvider(true);
         p.setFocusTraversalPolicy(new FocusTraversalPolicy() {

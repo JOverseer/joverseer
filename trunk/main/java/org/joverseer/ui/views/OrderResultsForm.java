@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Character;
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -20,7 +21,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class OrderResultsForm extends AbstractForm {
 
-	public static String FORM_PAGE = "orderResultsForm";
+	public static String FORM_PAGE = "orderResultsForm"; //$NON-NLS-1$
 
 	JTextField name;
 	JTextArea results;
@@ -33,7 +34,7 @@ public class OrderResultsForm extends AbstractForm {
 	protected JComponent createFormControl() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		JLabel lbl;
-		tlb.cell(lbl = new JLabel("Character :"));
+		tlb.cell(lbl = new JLabel(Messages.getString("OrderResultsForm.CharacterColon"))); //$NON-NLS-1$
 		lbl.setPreferredSize(new Dimension(70, 20));
 		this.name = new JTextField();
 		this.name.setEditable(false);
@@ -41,7 +42,7 @@ public class OrderResultsForm extends AbstractForm {
 		tlb.cell(this.name);
 		tlb.relatedGapRow();
 		tlb.row();
-		tlb.cell(lbl = new JLabel("Results :"), "valign=top");
+		tlb.cell(lbl = new JLabel(Messages.getString("OrderResultsForm.ResultsColon")), "valign=top"); //$NON-NLS-1$ //$NON-NLS-2$
 		lbl.setPreferredSize(new Dimension(70, 20));
 		tlb.gapCol();
 		this.results = new JTextArea();
@@ -57,17 +58,35 @@ public class OrderResultsForm extends AbstractForm {
 	@Override
 	public void setFormObject(Object arg0) {
 		super.setFormObject(arg0);
+		final String[] searchStrings = {
+				"OrderResultsForm.HeWasOrdered",
+				"OrderResultsForm.SheWasOrdered",
+				"OrderResultsForm.HeIsTravelling",
+				"OrderResultsForm.SheIsTravelling",
+				"OrderResultsForm.HeIsCurrently",
+				"OrderResultsForm.SheIsCurrently",
+				"OrderResultsForm.HeCommandsA",
+				"OrderResultsForm.SheCommandsA"
+		};
 		Character c = (Character) arg0;
 		this.name.setText(c.getName());
-		String result = c.getCleanOrderResults().replaceAll("\n", "");
-		result = result.replaceAll(" He was ordered", "\n\nHe was ordered");
-		result = result.replaceAll(" She was ordered", "\n\nShe was ordered");
-		result = result.replaceAll(" He is travelling", "\n\nHe is travelling");
-		result = result.replaceAll(" She is travelling", "\n\nShe is travelling");
-		result = result.replaceAll(" He is currently", "\n\nHe is currently");
-		result = result.replaceAll(" She is currently", "\n\nShe is currently");
-		result = result.replaceAll(" He commands a", "\n\nHe commands a");
-		result = result.replaceAll(" She commands a", "\n\nShe commands a");
+		String result = c.getCleanOrderResults().replaceAll("\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
+
+		// replace " {string}" with "\n\n{string}"
+		StringBuilder search = new StringBuilder();
+		StringBuilder replacement = new StringBuilder();
+		String match;
+		//TODO: test this.
+		for(String s: searchStrings){
+			search.setLength(0);
+			replacement.setLength(0);
+			search.append(" ");
+			replacement.append("\n\n");
+			match = Messages.getString(s);
+			search.append(match);
+			replacement.append(match);
+			result = result.replaceAll(search.toString(), replacement.toString());
+		}
 		this.results.setText(result);
 		this.results.setCaretPosition(0);
 	}

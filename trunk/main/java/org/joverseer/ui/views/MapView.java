@@ -15,6 +15,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -73,12 +74,12 @@ public class MapView extends AbstractView implements ApplicationListener {
 		this.mapPanel.setPreferredSize(new Dimension(3500, 2500));
 		this.mapPanel.setBackground(Color.white);
 		this.scp.setPreferredSize(new Dimension(800, 500));
-		MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 		this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(new JLabel("New game"));
+		tlb.cell(new JLabel(Messages.getString("MapView.NewGame"))); //$NON-NLS-1$
 		return this.scp;
 	}
 
@@ -120,7 +121,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 				this.mapPanel.invalidateMapItems();
 				this.mapPanel.updateUI();
 			} else if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
-				MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+				MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
 				this.mapPanel.setPreferredSize(new Dimension(mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
 				this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 				this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);

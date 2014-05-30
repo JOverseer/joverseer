@@ -19,6 +19,7 @@ import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.PopCenterInfoSourceTableCellRenderer;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.richclient.table.ColumnToSort;
@@ -101,9 +102,9 @@ public class PopulationCenterListView extends ItemListView {
 				Object v = this.table.getValueAt(i, j);
 				if (v == null)
 					v = "";
-				ln += (ln.equals("") ? "" : "\t") + v;
+				ln += UIUtils.OptTab(ln,v.toString());
 			}
-			copyString += (copyString.equals("") ? "" : "\n") + ln;
+			copyString += UIUtils.OptNewLine(copyString,ln);
 		}
 		final String str = copyString;
 

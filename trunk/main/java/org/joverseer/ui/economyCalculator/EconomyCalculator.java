@@ -34,6 +34,7 @@ import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
@@ -98,7 +99,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				loadNationCombo(true);
 			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
 				refreshAutocalcOrderCost();
-				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) {
+				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
 					((EconomyTotalsTableModel) this.totalsTable.getModel()).updateMarketFromOrders();
 					refreshMarketLimitWarning();
 					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
@@ -114,7 +115,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * If sell amount is above this amount give a "market limit warning"
 	 */
 	public static int getMarketLimitWarningThreshhold() {
-		String pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
+		String pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit"); //$NON-NLS-1$
 		try {
 			return Integer.parseInt(pval);
 		} catch (Exception exc) {
@@ -128,7 +129,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	private void refreshMarketLimitWarning() {
 		int marketProfits = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
 		if (marketProfits >= getMarketLimitWarningThreshhold()) {
-			this.marketLimitWarning.setText("Market limit warning!");
+			this.marketLimitWarning.setText(Messages.getString("EconomyCalculator.MarketLimitWarning")); //$NON-NLS-1$
 			this.marketLimitWarning.setVisible(true);
 		} else {
 			this.marketLimitWarning.setVisible(false);
@@ -146,13 +147,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				// find cost for TranCar orders
 				if (ordersCost < -finalGold) {
 					this.finalGoldWarning.setVisible(true);
-					this.finalGoldWarning.setText("Danger - negative final gold without including order cost!");
+					this.finalGoldWarning.setText(Messages.getString("EconomyCalculator.NegativeOrderCost")); //$NON-NLS-1$
 				} else if (this.tranCarOrderCost < -finalGold) {
 					this.finalGoldWarning.setVisible(true);
-					this.finalGoldWarning.setText("Negative final gold. Some of your orders may not be executed.");
+					this.finalGoldWarning.setText(Messages.getString("EconomyCalculator.NegativeFinalGold")); //$NON-NLS-1$
 				} else {
 					this.finalGoldWarning.setVisible(true);
-					this.finalGoldWarning.setText("Negative final gold. Some of your TranCar (948) orders may be adjusted.");
+					this.finalGoldWarning.setText(Messages.getString("EconomyCalculator.NegativeFinalGold948")); //$NON-NLS-1$
 				}
 			}
 		}
@@ -169,7 +170,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		} else {
 			this.taxIncrease.setVisible(true);
 			int finalTaxAmt = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getTaxRate() + taxIncreaseAmt; 
-			this.taxIncrease.setText("Your taxes will go up by " + taxIncreaseAmt + "% to " + finalTaxAmt + "!");
+			this.taxIncrease.setText(Messages.getString("EconomyCalculator.taxesUp", new Object[] { taxIncreaseAmt, finalTaxAmt})); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
@@ -183,7 +184,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		int selectedIndex = 0;
 		int i = 0;
 		for (Nation n : g.getMetadata().getNations()) {
-			NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", n.getNumber());
+			NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
 			// load only nations for which economy has been imported
 			if (ne == null)
 				continue;
@@ -224,11 +225,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 		lb.relatedGapRow();
 
-		lb.separator("Nation");
+		lb.separator(Messages.getString("EconomyCalculator.Nation")); //$NON-NLS-1$
 		lb.row();
 		lb.relatedGapRow();
 
-		lb.cell(this.nationCombo = new JComboBox(), "align=left");
+		lb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
 		this.nationCombo.setPreferredSize(new Dimension(200, 24));
 		this.nationCombo.addActionListener(new ActionListener() {
 			@Override
@@ -253,8 +254,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		});
 		lb.row();
 
-		lb.cell(this.sellBonus = new JCheckBox(), "align=left");
-		this.sellBonus.setText("sell bonus: ");
+		lb.cell(this.sellBonus = new JCheckBox(), "align=left"); //$NON-NLS-1$
+		this.sellBonus.setText(Messages.getString("EconomyCalculator.SellBonus")); //$NON-NLS-1$
 		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.sellBonus.setBackground(Color.white);
 		this.sellBonus.addActionListener(new ActionListener() {
@@ -282,7 +283,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 		lb.relatedGapRow();
 
-		lb.separator("Market");
+		lb.separator(Messages.getString("EconomyCalculator.Market")); //$NON-NLS-1$
 		lb.row();
 		lb.relatedGapRow();
 
@@ -305,7 +306,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.cell(scp);
 
 		JButton priceHistory = new JButton();
-		priceHistory.setText("price history");
+		priceHistory.setText(Messages.getString("EconomyCalculator.PriceHistory")); //$NON-NLS-1$
 		priceHistory.addActionListener(new ActionListener() {
 
 			@Override
@@ -313,7 +314,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				final JidePopup popup = new JidePopup();
 				popup.getContentPane().setLayout(new BorderLayout());
 				TableLayoutBuilder lb1 = new TableLayoutBuilder();
-				JButton closePopup = new JButton("Close");
+				JButton closePopup = new JButton(Messages.getString("EconomyCalculator.Close")); //$NON-NLS-1$
 				closePopup.setPreferredSize(new Dimension(70, 20));
 				closePopup.addActionListener(new ActionListener() {
 					@Override
@@ -328,22 +329,22 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				if (selCol > -1) {
 					priceHistory1 = ((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).getPriceHistory(selCol, 10);
 				}
-				if (priceHistory1 == null || priceHistory1.equals("")) {
+				if (priceHistory1 == null || priceHistory1.equals("")) { //$NON-NLS-1$
 					Game g = GameHolder.instance().getGame();
 					if (!Game.isInitialized(g))
 						return;
-					String error = "You must select a product (click anywhere on a product column in the table to the left.";
+					String error = Messages.getString("EconomyCalculator.SelectProduct"); //$NON-NLS-1$
 					if (g.getCurrentTurn() == 0) {
-						error = "Price history not available on Turn 0.";
+						error = Messages.getString("EconomyCalculator.NoHistoryForT0"); //$NON-NLS-1$
 					}
-					MessageDialog dlg = new MessageDialog("Price History", error);
+					MessageDialog dlg = new MessageDialog(Messages.getString("EconomyCalculator.PriceHistoryTitle"), error); //$NON-NLS-1$
 					dlg.showDialog();
 					return;
 				}
 				lbl.setText(priceHistory1);
 				lb1.cell(lbl);
 				lb1.relatedGapRow();
-				lb1.cell(closePopup, "align=center");
+				lb1.cell(closePopup, "align=center"); //$NON-NLS-1$
 				lb1.relatedGapRow();
 
 				JScrollPane scp1 = new JScrollPane(lb1.getPanel());
@@ -356,12 +357,12 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				popup.showPopup();
 			}
 		});
-		lb.cell(priceHistory, "valign=top");
+		lb.cell(priceHistory, "valign=top"); //$NON-NLS-1$
 
 		lb.row();
 		lb.relatedGapRow();
 
-		lb.separator("Totals");
+		lb.separator(Messages.getString("EconomyCalculator.Totals")); //$NON-NLS-1$
 		lb.row();
 		lb.relatedGapRow();
 
@@ -385,15 +386,15 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.cell(scp);
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(new JLabel("Autocalc order cost: "), "colspec=left:110px");
+		tlb.cell(new JLabel(Messages.getString("EconomyCalculator.Autocalc")), "colspec=left:110px"); //$NON-NLS-1$ //$NON-NLS-2$
 		tlb.gapCol();
-		this.autocalcOrderCost = new JLabel("0");
-		tlb.cell(this.autocalcOrderCost, "align=left");
+		this.autocalcOrderCost = new JLabel("0"); //$NON-NLS-1$
+		tlb.cell(this.autocalcOrderCost, "align=left"); //$NON-NLS-1$
 
 		tlb.row();
 		tlb.relatedGapRow();
 
-		JButton btn = new JButton("<- update cost");
+		JButton btn = new JButton(Messages.getString("EconomyCalculator.UpdateCost")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(130, 24));
 		btn.addActionListener(new ActionListener() {
 			@Override
@@ -409,7 +410,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		});
 		tlb.cell(btn);
 		tlb.relatedGapRow();
-		btn = new JButton("<- update market");
+		btn = new JButton(Messages.getString("EconomyCalculator.UpdateMarket")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(130, 24));
 
 		btn.addActionListener(new ActionListener() {
@@ -429,31 +430,31 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		JPanel pnl = tlb.getPanel();
 		pnl.setBackground(Color.white);
 		lb.gapCol();
-		lb.cell(pnl, "colspec=left:150px valign=top");
+		lb.cell(pnl, "colspec=left:150px valign=top"); //$NON-NLS-1$
 		lb.row();
 
-		this.marketLimitWarning = new JLabel("Market limit warning!");
+		this.marketLimitWarning = new JLabel("Market limit warning!"); //$NON-NLS-1$
 		this.marketLimitWarning.setFont(GraphicUtils.getFont(this.marketLimitWarning.getFont().getName(), Font.BOLD, this.marketLimitWarning.getFont().getSize()));
 		this.marketLimitWarning.setForeground(Color.red);
 		lb.cell(this.marketLimitWarning);
 		lb.row();
 		lb.relatedGapRow();
 
-		this.finalGoldWarning = new JLabel("Final gold warning!");
+		this.finalGoldWarning = new JLabel(Messages.getString("EconomyCalculator.FinalGoldWarning")); //$NON-NLS-1$
 		this.finalGoldWarning.setFont(GraphicUtils.getFont(this.finalGoldWarning.getFont().getName(), Font.BOLD, this.marketLimitWarning.getFont().getSize()));
 		this.finalGoldWarning.setForeground(Color.red);
 		lb.cell(this.finalGoldWarning);
 		lb.row();
 		lb.relatedGapRow();
 
-		this.taxIncrease = new JLabel("Your taxes will go up.");
+		this.taxIncrease = new JLabel(Messages.getString("EconomyCalculator.TaxesUp")); //$NON-NLS-1$
 		this.taxIncrease.setFont(GraphicUtils.getFont(this.taxIncrease.getFont().getName(), Font.BOLD, this.taxIncrease.getFont().getSize()));
 		this.taxIncrease.setForeground(Color.red);
 		lb.cell(this.taxIncrease);
 		lb.row();
 
 		lb.relatedGapRow();
-		lb.separator("Pop Centers expected to be lost this turn");
+		lb.separator(Messages.getString("EconomyCalculator.PClost")); //$NON-NLS-1$
 		lb.row();
 		lb.relatedGapRow();
 
@@ -465,7 +466,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.pcTable.setDefaultEditor(Boolean.class, this.totalsTable.getDefaultEditor(Boolean.class));
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, getLostPCColumWidths());
 		this.pcTable.setMaximumSize(new Dimension(600, 1000));
-		lb.cell(this.pcTable, "align=left");
+		lb.cell(this.pcTable, "align=left"); //$NON-NLS-1$
 
 		lb.row();
 
@@ -501,7 +502,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 */
 	public class MarketRenderer extends DefaultTableCellRenderer {
 		// TODO export colors to color.properties
-		Color[] rowColors = new Color[] { Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.decode("#FFCCAA"), Color.decode("#FFCCAA"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.white, Color.lightGray };
+		Color[] rowColors = new Color[] { Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.decode("#FFCCAA"), Color.decode("#FFCCAA"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.white, Color.lightGray }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -541,7 +542,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			} else {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.PLAIN, lbl.getFont().getSize()));
 			}
-			if (row == 3 && column == 3 && !value.toString().equals("")) {
+			if (row == 3 && column == 3 && !value.toString().equals("")) { //$NON-NLS-1$
 				int amount = Integer.parseInt(value.toString());
 				if (amount >= getMarketLimitWarningThreshhold()) {
 					if (!isSelected) {
@@ -556,7 +557,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 					// ,
 					// gold
 					// production
-					lbl.setBackground(Color.decode("#ADD3A6"));
+					lbl.setBackground(Color.decode("#ADD3A6")); //$NON-NLS-1$
 				} else {
 					lbl.setBackground(Color.white);
 				}

@@ -9,8 +9,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Locale;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -21,11 +19,10 @@ import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.ResourceButton;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -59,8 +56,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 			}
 		};
 
-		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		dlg.setTitle(ms.getMessage("exportOrderTextDialog.title", new Object[] {}, Locale.getDefault()));
+		dlg.setTitle(Messages.getString("exportOrderTextDialog.title"));
 		dlg.showDialog();
 
 	}

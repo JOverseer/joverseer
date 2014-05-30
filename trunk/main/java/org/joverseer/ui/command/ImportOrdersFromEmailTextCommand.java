@@ -21,6 +21,7 @@ import org.joverseer.support.readers.orders.OrderTextReader;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -40,7 +41,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 	ParseOrdersForm form;
 
 	public ImportOrdersFromEmailTextCommand() {
-		super("importOrdersFromEmailTextCommand");
+		super("importOrdersFromEmailTextCommand"); //$NON-NLS-1$
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 
 			@Override
 			protected Object[] getCommandGroupMembers() {
-				return new Object[] { new ActionCommand("copyFromClipboardCommand") {
+				return new Object[] { new ActionCommand("copyFromClipboardCommand") { //$NON-NLS-1$
 					@Override
 					protected void doExecuteCommand() {
 						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -70,7 +71,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 							// do nothing
 						}
 					}
-				}, new ActionCommand("parseOrdersCommand") {
+				}, new ActionCommand("parseOrdersCommand") { //$NON-NLS-1$
 					@Override
 					protected void doExecuteCommand() {
 						ImportOrdersFromEmailTextCommand.this.form.setParseResults(parseOrders(ImportOrdersFromEmailTextCommand.this.form.getOrderText(), ImportOrdersFromEmailTextCommand.this.form.getOrderTextType()));
@@ -79,15 +80,15 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 			}
 
 		};
-		dlg.setTitle("Import Orders from Text");
+		dlg.setTitle(Messages.getString("importOrdersFromEmailTextCommand.ImportOrdersFromText")); //$NON-NLS-1$
 		dlg.showDialog();
 	}
 
 	private ArrayList<String> parseOrders(String text, String textType) {
 		OrderTextReader orderTextReader = new OrderTextReader();
-		if (textType.equals("Standard")) {
+		if (textType.equals("Standard")) { //$NON-NLS-1$
 			orderTextReader.setTextType(OrderTextReader.STANDARD_ORDER_TEXT);
-		} else if (textType.equals("Order Checker")) {
+		} else if (textType.equals("Order Checker")) { //$NON-NLS-1$
 			orderTextReader.setTextType(OrderTextReader.ORDERCHECKER_ORDER_TEXT);
 		}
 		orderTextReader.setGame(GameHolder.instance().getGame());
@@ -98,15 +99,16 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 
 	private void loadOrders(String text, String textType) {
 		OrderTextReader orderTextReader = new OrderTextReader();
-		if (textType.equals("Standard")) {
+		if (textType.equals("Standard")) { //$NON-NLS-1$
 			orderTextReader.setTextType(OrderTextReader.STANDARD_ORDER_TEXT);
-		} else if (textType.equals("Order Checker")) {
+		} else if (textType.equals("Order Checker")) { //$NON-NLS-1$
 			orderTextReader.setTextType(OrderTextReader.ORDERCHECKER_ORDER_TEXT);
 		}
 		orderTextReader.setGame(GameHolder.instance().getGame());
 		orderTextReader.setOrderText(text);
 		orderTextReader.readOrders(1);
-		MessageDialog dialog = new MessageDialog("Import Orders", orderTextReader.getOrders() + " orders were imported.");
+		MessageDialog dialog = new MessageDialog(Messages.getString("importOrdersFromEmailTextCommand.ImportOrders"), 
+					Messages.getString("importOrdersFromEmailTextCommand.OrdersImported", new Object[] {orderTextReader.getOrders()})); //$NON-NLS-1$ //$NON-NLS-2$
 		dialog.showDialog();
 		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), GameHolder.instance().getGame(), this));
 
@@ -120,13 +122,13 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 		JComboBox orderTextTypeCmb;
 
 		private ParseOrdersForm(FormModel arg0) {
-			super(arg0, "parseOrdersForm");
+			super(arg0, "parseOrdersForm"); //$NON-NLS-1$
 		}
 
 		@Override
 		protected JComponent createFormControl() {
 			TableLayoutBuilder tlb = new TableLayoutBuilder();
-			tlb.cell(new JLabel("Orders : "), "colspec=left:60px valign=top");
+			tlb.cell(new JLabel(Messages.getString("importOrdersFromEmailTextCommand.OrdersColon")), "colspec=left:60px valign=top"); //$NON-NLS-1$ //$NON-NLS-2$
 			tlb.gapCol();
 
 			this.orderText = new JTextArea();
@@ -136,7 +138,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
-					if (!ParseOrdersForm.this.parseResults.getText().equals("")) {
+					if (!ParseOrdersForm.this.parseResults.getText().equals("")) { //$NON-NLS-1$
 						ParseOrdersForm.this.parseScp.getViewport().setViewPosition(ParseOrdersForm.this.orderScp.getViewport().getViewPosition());
 					}
 				}
@@ -160,14 +162,14 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 
 			this.orderTextTypeCmb = new JComboBox();
 			this.orderTextTypeCmb.setPreferredSize(new Dimension(200, 20));
-			this.orderTextTypeCmb.addItem("Standard");
-			this.orderTextTypeCmb.addItem("Order Checker");
-			tlb.cell(new JLabel("Type :"));
+			this.orderTextTypeCmb.addItem("Standard"); //$NON-NLS-1$
+			this.orderTextTypeCmb.addItem("Order Checker"); //$NON-NLS-1$
+			tlb.cell(new JLabel(Messages.getString("importOrdersFromEmailTextCommand.TypeColon"))); //$NON-NLS-1$
 			tlb.gapCol();
 			TableLayoutBuilder tlb2 = new TableLayoutBuilder();
-			tlb2.cell(this.orderTextTypeCmb, "colspan=1 colspec=left:100px");
+			tlb2.cell(this.orderTextTypeCmb, "colspan=1 colspec=left:100px"); //$NON-NLS-1$
 			tlb2.relatedGapRow();
-			tlb.cell(tlb2.getPanel(), "colspan=1");
+			tlb.cell(tlb2.getPanel(), "colspan=1"); //$NON-NLS-1$
 			tlb.row();
 
 			return tlb.getPanel();
@@ -178,9 +180,9 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 		}
 
 		public void setParseResults(ArrayList<String> results) {
-			String res = "";
+			String res = ""; //$NON-NLS-1$
 			for (String r : results) {
-				res += r + "\n";
+				res += r + "\n"; //$NON-NLS-1$
 			}
 			this.parseResults.setText(res);
 			this.orderText.setCaretPosition(0);

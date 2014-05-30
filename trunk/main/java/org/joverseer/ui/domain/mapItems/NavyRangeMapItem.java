@@ -2,6 +2,7 @@ package org.joverseer.ui.domain.mapItems;
 
 import org.joverseer.domain.Army;
 import org.joverseer.support.movement.MovementUtils;
+import org.joverseer.ui.support.Messages;
 
 public class NavyRangeMapItem extends AbstractRangeMapItem {
 	private static final long serialVersionUID = -802327536773943344L;
@@ -18,7 +19,7 @@ public class NavyRangeMapItem extends AbstractRangeMapItem {
 	
     @Override
 	public String getDescription() {
-        return String.format("Range for army {0} located at {1}.", new Object[]{getArmy().getCommanderName(), getArmy().getHexNo()});
+        return Messages.getString("NavyRangeMapItem.RangForArmyAt", new Object[]{getArmy().getCommanderName(), getArmy().getHexNo()}); //$NON-NLS-1$
     }
 
 	public Army getArmy() {

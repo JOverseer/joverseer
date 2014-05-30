@@ -19,6 +19,7 @@ import org.joverseer.support.infoSources.RumorInfoSource;
 import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**
@@ -33,8 +34,8 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
 
     private static String getNationStr(int nationNo) {
         String nationName = String.valueOf(nationNo);
-        String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
-        if (pval == null || pval.equals("name")) {
+        String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs"); //$NON-NLS-1$
+        if (pval == null || pval.equals("name")) { //$NON-NLS-1$
             Nation n = GameHolder.instance().getGame().getMetadata().getNationByNum(nationNo);
             if (n != null) {
                 nationName = n.getShortName();
@@ -44,41 +45,41 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
     }
     
     public static String getInfoSourceDescription(InfoSource value) {
-        String strValue = "";
+        String strValue = ""; //$NON-NLS-1$
         if (InfoSource.class.isInstance(value)) {
             if (DerivedFromSpellInfoSource.class.isInstance(value)) {
                 DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource)value;
-                strValue = sis.getSpell() + " - " + sis.getCasterName();
+                strValue = sis.getSpell() + " - " + sis.getCasterName(); //$NON-NLS-1$
                 for (InfoSource is : sis.getOtherInfoSources()) {
-                    strValue += ", " + getInfoSourceDescription(is);
+                    strValue += ", " + getInfoSourceDescription(is); //$NON-NLS-1$
                 }
             } else if (DerivedFromArmyInfoSource.class.isInstance(value)) {
-                strValue = "Army/Navy commander";
+                strValue = Messages.getString("InfoSourceTableCellRenderer.Commander"); //$NON-NLS-1$
             } else if (DoubleAgentInfoSource.class.isInstance(value)) {
                 DoubleAgentInfoSource dais = (DoubleAgentInfoSource)value;
-                strValue = "Double agent for " + getNationStr(dais.getNationNo()); 
+                strValue = Messages.getString("InfoSourceTableCellRenderer.DoubleAgent", new String[] {getNationStr(dais.getNationNo())});  //$NON-NLS-1$
             } else if (HostageInfoSource.class.isInstance(value)) {
                 HostageInfoSource dais = (HostageInfoSource)value;
-                strValue = "Hostage for " + getNationStr(dais.getNationNo()); 
+                strValue = Messages.getString("InfoSourceTableCellRenderer.Hostage", new String[] {getNationStr(dais.getNationNo())});  //$NON-NLS-1$
             } else if (MetadataSource.class.isInstance(value)) {
-                strValue = "Starting info";
+                strValue = Messages.getString("InfoSourceTableCellRenderer.StartingInfo"); //$NON-NLS-1$
             } else if (PdfTurnInfoSource.class.isInstance(value)) {
                 PdfTurnInfoSource pis = (PdfTurnInfoSource)value;
-                strValue = "Pdf (" + getNationStr(pis.getNationNo()) + ")";
+                strValue = Messages.getString("InfoSourceTableCellRenderer.PDF", new String[] {getNationStr(pis.getNationNo())});
             } else if (XmlTurnInfoSource.class.isInstance(value)) {
                 XmlTurnInfoSource xis = (XmlTurnInfoSource)value;
-                strValue = "Xml (" + getNationStr(xis.getNationNo()) + ")";
+                strValue = Messages.getString("InfoSourceTableCellRenderer.XML", new String[] {getNationStr(xis.getNationNo())});
             } else if (DerivedFromTitleInfoSource.class.isInstance(value)) {
             	DerivedFromTitleInfoSource dtis = (DerivedFromTitleInfoSource)value;
             	strValue = dtis.getTitle();
             } else if (RumorInfoSource.class.isInstance(value)) {
-            	strValue = "Rumor";
+            	strValue = Messages.getString("InfoSourceTableCellRenderer.Rumour"); //$NON-NLS-1$
             } else if (RumorActionInfoSource.class.isInstance(value)) {
             	RumorActionInfoSource aais = (RumorActionInfoSource)value;
             	strValue = aais.getReports();
             } else if (UserInfoSource.class.isInstance(value)) {
             	UserInfoSource uis = (UserInfoSource)value;
-            	strValue = "User T" + uis.getTurnNo();
+            	strValue = Messages.getString("InfoSourceTableCellRenderer.UserT", new Object[] { uis.getTurnNo()});; //$NON-NLS-1$
             }
         }
         return strValue;

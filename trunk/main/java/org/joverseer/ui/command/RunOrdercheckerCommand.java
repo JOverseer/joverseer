@@ -2,7 +2,6 @@ package org.joverseer.ui.command;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.swing.JComponent;
 
@@ -10,7 +9,6 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
-import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
@@ -18,13 +16,12 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
 import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
-import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -69,13 +66,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			// md.showDialog();
 			// return;
 			// }
-			/*if (GameHolder.instance().getGame().getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
-				MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-				MessageDialog md = new MessageDialog(ms.getMessage("errorDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("errorOrdercheckerDoesNotSupportKS", new String[] {}, Locale.getDefault()));
-				md.showDialog();
-				return;
-			}
-*/
+			
 			// show a form so that the user selects the desired nation
 			final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));
 			FormBackedDialogPage pg = new FormBackedDialogPage(frm);
@@ -86,8 +77,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 					return true;
 				}
 			};
-			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-			dlg.setTitle(ms.getMessage("selectOrdercheckerNation.title", new Object[] {}, Locale.getDefault()));
+			dlg.setTitle(Messages.getString("selectOrdercheckerNation.title"));
 			dlg.showDialog();
 			if (this.selectedNation == -1)
 				return;
@@ -166,8 +156,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 					return new AbstractCommand[] { getFinishCommand() };
 				}
 			};
-			ms = (MessageSource) Application.services().getService(MessageSource.class);
-			dialog.setTitle(ms.getMessage("checkOrdersDialog.title", new Object[] {}, Locale.getDefault()));
+			dialog.setTitle(Messages.getString("checkOrdersDialog.title"));
 			dialog.showDialog();
 		} catch (Exception exc) {
 			System.out.println(exc.getMessage());

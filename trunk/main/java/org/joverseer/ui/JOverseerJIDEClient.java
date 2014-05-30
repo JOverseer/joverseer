@@ -15,8 +15,11 @@
  */
 package org.joverseer.ui;
 
+import java.util.Locale;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.i18n.LocaleContext;
 import org.springframework.richclient.application.ApplicationLauncher;
 
 import com.jidesoft.plaf.LookAndFeelFactory;
@@ -52,7 +55,11 @@ public class JOverseerJIDEClient {
 		try {
 			cmdLineArgs = args;
 			_logger.info("JOverseer Client starting up");
-
+			if (args.length >0) {
+				if (args[0].equals("-L")) {
+					Locale.setDefault(new Locale(args[1]));
+				}
+			}
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
 			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");

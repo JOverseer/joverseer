@@ -16,6 +16,7 @@ import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -50,13 +51,13 @@ public class CreateCombatForHexCommand extends ActionCommand {
 		ArrayList<Army> ntarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.Neutral });
 
 		if (ntarmies.size() > 0) {
-			MessageDialog dlg = new MessageDialog("Error", Application.instance().getApplicationContext().getMessage("createCombatForHexCommand.error.NetrualArmiesFound", null, null));
+			MessageDialog dlg = new MessageDialog("Error", Messages.getString("createCombatForHexCommand.error.NetrualArmiesFound"));
 			dlg.showDialog();
 		}
 
 		PopulationCenter pc = (PopulationCenter) game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hex);
 		if (pc != null && (pc.getNationNo() == 0 || pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral))) {
-			MessageDialog dlg = new MessageDialog("Error", Application.instance().getApplicationContext().getMessage("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound", null, null));
+			MessageDialog dlg = new MessageDialog("Error", Messages.getString("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound"));
 			dlg.showDialog();
 		}
 
@@ -97,7 +98,7 @@ public class CreateCombatForHexCommand extends ActionCommand {
 			combat.setSide2Pc(cpc);
 		}
 		combat.setHexNo(hex);
-		String description = Application.instance().getApplicationContext().getMessage("createCombatForHexCommand.success.Title", new Object[] { hex }, null);
+		String description = Messages.getString("createCombatForHexCommand.success.Title", new Object[] { hex });
 		if (pc != null) {
 			description += " - " + pc.getName();
 		}

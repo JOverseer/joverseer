@@ -11,6 +11,9 @@ import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.UIUtils;
+import org.springframework.rules.reporting.SummingVisitor;
 
 /**
  * Table model for the Team Economy main table It basically shows a complete
@@ -19,12 +22,7 @@ import org.joverseer.support.GameHolder;
  * @author Marios Skounakis
  */
 public class TeamEconomyTableModel extends BaseEconomyTableModel {
-	// what to show for each product
-	public static String PROD_TOTAL = "total (stores + production)";
-	public static String PROD_PRODUCTION = "production";
-	public static String PROD_STORES = "stores";
-	public static String PROD_GAIN = "max gain (if 100% is sold to market)";
-
+	
 	public static int iFinalGold = 15;
 	public static int iMarket = 13;
 	public static int iProdStart = 1;
@@ -32,9 +30,11 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	public static int iSurplus = 8;
 	public static int iTaxRate = 11;
 
-	String showProductsAs = PROD_TOTAL;
+	SummaryTypeEnum showProductsAs = SummaryTypeEnum.Total;
 
-	String[] columnNames = new String[] { "nation", "le", "br", "st", "mi", "fo", "ti", "mo", "surplus", "reserves", "losses", "tax rate", "cptl chars", "market", "orders", "final gold" };
+	//note: change code in the constructor if you change this.
+	String[] columnHeaderTags = new String[] { "nation", "le", "br", "st", "mi", "fo", "ti", "mo", "surplus","reserves","losses","taxRate","cptChars","market","orders","finalGold"};
+	String[] columnNames;
 
 	int[] columnWidths = new int[] { 42, 42, 42, 42, 42, 42, 42, 42, 54, 54, 54, 42, 58, 42, 42, 64 };
 
@@ -42,6 +42,18 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 
 	ArrayList<EconomyCalculatorData> items = new ArrayList<EconomyCalculatorData>();
 
+	public TeamEconomyTableModel()
+	{
+		super();
+		this.columnNames = new String[this.columnHeaderTags.length];
+		this.columnNames[0]=Messages.getString("standardFields.Nation");
+		for (int i=1;i<8;i++) {
+			this.columnNames[i] = Messages.getString("ProductEnum."+this.columnHeaderTags[i]);
+		}
+		for (int i=8;i<this.columnHeaderTags.length;i++) {
+			this.columnNames[i] = Messages.getString("TeamEconomy."+this.columnHeaderTags[i]);
+		}
+	}
 	@Override
 	public int getColumnCount() {
 		return this.columnNames.length;
@@ -79,25 +91,27 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 		return (NationEconomy) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo1);
 	}
 
-	public String getShowProductsAs() {
+	public SummaryTypeEnum getShowProductsAs() {
 		return this.showProductsAs;
 	}
 
-	public void setShowProductsAs(String showProductsAs) {
+	public void setShowProductsAs(SummaryTypeEnum showProductsAs) {
 		this.showProductsAs = showProductsAs;
 	}
 
 	protected int getProduct(EconomyCalculatorData ecd, ProductEnum p) {
-		if (this.showProductsAs.equals(PROD_TOTAL)) {
-			return ecd.getTotal(p);
-		} else if (this.showProductsAs.equals(PROD_GAIN)) {
-			return ecd.getTotal(p) * ecd.getSellPrice(p);
-		} else if (this.showProductsAs.equals(PROD_STORES)) {
-			return ecd.getStores(p);
-		} else if (this.showProductsAs.equals(PROD_PRODUCTION)) {
-			return ecd.getProduction(p);
+		switch (this.showProductsAs) {
+			case Total:
+				return ecd.getTotal(p);
+			case Gain:
+				return ecd.getTotal(p) * ecd.getSellPrice(p);
+			case Stores: 
+				return ecd.getStores(p);
+			case Production: 
+				return ecd.getProduction(p);
+			default:
+				return ecd.getTotal(p);
 		}
-		return ecd.getTotal(p);
 	}
 
 	@Override
@@ -223,5 +237,17 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 			j++;
 		}
 		return sbi + 1;
+	}
+	// a list of options for a combo box etc.
+	static public String[] getSummaryOptions()
+	{
+		int count = SummaryTypeEnum.values().length;
+		String[] options = new String[count];
+		
+		count = 0;
+		for (SummaryTypeEnum option: SummaryTypeEnum.values()) {
+			options[count++] = option.getRenderString();
+		}
+		return options;
 	}
 }

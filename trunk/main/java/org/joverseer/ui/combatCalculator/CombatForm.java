@@ -42,6 +42,7 @@ import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.ValueModel;
 import org.springframework.binding.value.support.ListListModel;
@@ -64,7 +65,7 @@ import com.jidesoft.popup.JidePopup;
 
 public class CombatForm extends AbstractForm {
 
-	public static String FORM_ID = "combatForm";
+	public static String FORM_ID = "combatForm"; //$NON-NLS-1$
 	CombatArmyTableModel side1TableModel;
 	CombatArmyTableModel side2TableModel;
 	JTable side1Table;
@@ -81,22 +82,22 @@ public class CombatForm extends AbstractForm {
 		SwingBindingFactory sbf = (SwingBindingFactory) getBindingFactory();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
-		GraphicUtils.registerIntegerPropertyConverters(this, "hexNo");
+		GraphicUtils.registerIntegerPropertyConverters(this, "hexNo"); //$NON-NLS-1$
 		TableLayoutBuilder lb = new TableLayoutBuilder();
-		lb.cell(new JLabel("Description :"), "colspec=left:80px");
+		lb.cell(new JLabel(Messages.getString("CombatForm.Description")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		lb.cell(sbf.createBoundTextField("description").getControl(), "colspec=left:120px");
+		lb.cell(sbf.createBoundTextField("description").getControl(), "colspec=left:120px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
 		lb.gapCol();
 
 		lb.relatedGapRow();
 
-		lb.cell(new JLabel("Hex :"), "colspec=left:80px");
+		lb.cell(new JLabel(Messages.getString("CombatForm.Hex")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		lb.cell(sbf.createBoundTextField("hexNo").getControl(), "colspec=left:120px");
+		lb.cell(sbf.createBoundTextField("hexNo").getControl(), "colspec=left:120px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
 
-		JButton updateButton = new JButton("Refresh");
+		JButton updateButton = new JButton(Messages.getString("CombatForm.Refresh")); //$NON-NLS-1$
 		updateButton.setPreferredSize(new Dimension(70, 20));
 		updateButton.addActionListener(new ActionListener() {
 			@Override
@@ -106,13 +107,13 @@ public class CombatForm extends AbstractForm {
 					Combat c = (Combat) getFormObject();
 					int hexNo = c.getHexNo();
 					Hex h = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
-					HexInfo hi = (HexInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo);
+					HexInfo hi = (HexInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo); //$NON-NLS-1$
 					if (h != null && h.getTerrain() != null) {
-						ValueModel vm = getFormModel().getValueModel("terrain");
+						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
 						vm.setValue(h.getTerrain());
 					}
 					if (hi != null && hi.getClimate() != null) {
-						ValueModel vm = getFormModel().getValueModel("climate");
+						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
 						vm.setValue(hi.getClimate());
 					}
 				} catch (Exception exc) {
@@ -120,14 +121,14 @@ public class CombatForm extends AbstractForm {
 				}
 			}
 		});
-		lb.cell(updateButton, "colspec=left:80px");
+		lb.cell(updateButton, "colspec=left:80px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		lb.cell(new JLabel("Terrain :"), "colspec=left:80px");
+		lb.cell(new JLabel(Messages.getString("CombatForm.Terrain")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		JComboBox cb = (JComboBox) sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.landValues())), "renderString").getControl();
+		JComboBox cb = (JComboBox) sbf.createBoundComboBox("terrain", new ListListModel(Arrays.asList(HexTerrainEnum.landValues())), "renderString").getControl(); //$NON-NLS-1$ //$NON-NLS-2$
 		cb.setPreferredSize(new Dimension(100, 20));
-		lb.cell(cb, "colspec=left:120px");
+		lb.cell(cb, "colspec=left:120px"); //$NON-NLS-1$
 		cb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -139,11 +140,11 @@ public class CombatForm extends AbstractForm {
 		lb.gapCol();
 		lb.relatedGapRow();
 
-		lb.cell(new JLabel("Climate :"), "colspec=left:80px");
+		lb.cell(new JLabel(Messages.getString("CombatForm.Climate")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		cb = (JComboBox) sbf.createBoundComboBox("climate", new ListListModel(Arrays.asList(ClimateEnum.values()))).getControl();
+		cb = (JComboBox) sbf.createBoundComboBox("climate", new ListListModel(Arrays.asList(ClimateEnum.values()))).getControl(); //$NON-NLS-1$
 		cb.setPreferredSize(new Dimension(100, 20));
-		lb.cell(cb, "colspec=left:120px");
+		lb.cell(cb, "colspec=left:120px"); //$NON-NLS-1$
 		cb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -155,11 +156,11 @@ public class CombatForm extends AbstractForm {
 		lb.gapCol();
 		lb.relatedGapRow();
 
-		lb.cell(new JLabel("Attack PC :"), "colspec=left:80px");
+		lb.cell(new JLabel(Messages.getString("CombatForm.AttackPC")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		JCheckBox chkb = (JCheckBox) sbf.createBoundCheckBox("attackPopCenter").getControl();
+		JCheckBox chkb = (JCheckBox) sbf.createBoundCheckBox("attackPopCenter").getControl(); //$NON-NLS-1$
 		chkb.setPreferredSize(new Dimension(100, 20));
-		lb.cell(chkb, "colspec=left:120px");
+		lb.cell(chkb, "colspec=left:120px"); //$NON-NLS-1$
 		chkb.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -171,10 +172,10 @@ public class CombatForm extends AbstractForm {
 		lb.gapCol();
 		lb.relatedGapRow();
 
-		tlb.cell(lb.getPanel(), "colspan=2");
+		tlb.cell(lb.getPanel(), "colspan=2"); //$NON-NLS-1$
 		tlb.relatedGapRow();
 
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource"); //$NON-NLS-1$
 		this.side1TableModel = new CombatArmyTableModel(this, messageSource);
 		this.side1Table = TableUtils.createStandardSortableTable(this.side1TableModel);
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side1Table, this.side1TableModel.getColumnWidths());
@@ -204,13 +205,13 @@ public class CombatForm extends AbstractForm {
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
 		tlb.cell(scp);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		Icon ico;
 		JButton btn;
 		lb = new TableLayoutBuilder();
-		ico = new ImageIcon(imgSource.getImage("edit.image"));
+		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
 		btn = new JButton(ico);
-		btn.setToolTipText("Edit Army");
+		btn.setToolTipText(Messages.getString("CombatForm.EditArmyToolTip")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
 			@Override
@@ -218,12 +219,12 @@ public class CombatForm extends AbstractForm {
 				new EditSelectedArmyCommand(0).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
 
-		ico = new ImageIcon(imgSource.getImage("add.icon"));
+		ico = new ImageIcon(imgSource.getImage("add.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
-		btn.setToolTipText("Add New Army");
+		btn.setToolTipText(Messages.getString("CombatForm.AddNewArmyToolTip")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
 			@Override
@@ -231,12 +232,12 @@ public class CombatForm extends AbstractForm {
 				new AddArmyCommand(0).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		ico = new ImageIcon(imgSource.getImage("remove.icon"));
+		ico = new ImageIcon(imgSource.getImage("remove.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
-		btn.setToolTipText("Remove Army");
+		btn.setToolTipText(Messages.getString("CombatForm.RemoveArmyToolTip")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
 			@Override
@@ -244,12 +245,12 @@ public class CombatForm extends AbstractForm {
 				new RemoveSelectedArmyCommand(0).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
 
-		ico = new ImageIcon(imgSource.getImage("switch.icon"));
+		ico = new ImageIcon(imgSource.getImage("switch.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
-		btn.setToolTipText("Switch Sides (Sends Army to other side)");
+		btn.setToolTipText(Messages.getString("CombatForm.SwitchSidesToolTip")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
 			@Override
@@ -257,12 +258,12 @@ public class CombatForm extends AbstractForm {
 				new SwitchSideCommand(0).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		ico = new ImageIcon(imgSource.getImage("relations.icon"));
+		ico = new ImageIcon(imgSource.getImage("relations.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
-		btn.setToolTipText("Change Relations for Army");
+		btn.setToolTipText(Messages.getString("CombatForm.ChangeRelationsToolTip")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
 			@Override
@@ -270,17 +271,17 @@ public class CombatForm extends AbstractForm {
 				new EditSelectedArmyRelationsCommand(0).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
-		lb.cell(new JLabel(" "));
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		lb.cell(new JLabel(" "));
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
 		lb.relatedGapRow();
 		lb.row();
 
 		tlb.gapCol();
-		tlb.cell(lb.getPanel(), "colspec=left:60px");
+		tlb.cell(lb.getPanel(), "colspec=left:60px"); //$NON-NLS-1$
 
 		tlb.relatedGapRow();
 
@@ -314,7 +315,7 @@ public class CombatForm extends AbstractForm {
 		tlb.cell(scp);
 
 		lb = new TableLayoutBuilder();
-		ico = new ImageIcon(imgSource.getImage("edit.image"));
+		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setToolTipText("Edit Army");
 		btn.setPreferredSize(new Dimension(20, 20));
@@ -324,10 +325,10 @@ public class CombatForm extends AbstractForm {
 				new EditSelectedArmyCommand(1).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
 
-		ico = new ImageIcon(imgSource.getImage("add.icon"));
+		ico = new ImageIcon(imgSource.getImage("add.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setToolTipText("Add New Army");
 		btn.setPreferredSize(new Dimension(20, 20));
@@ -337,10 +338,10 @@ public class CombatForm extends AbstractForm {
 				new AddArmyCommand(1).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		ico = new ImageIcon(imgSource.getImage("remove.icon"));
+		ico = new ImageIcon(imgSource.getImage("remove.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
@@ -349,10 +350,10 @@ public class CombatForm extends AbstractForm {
 				new RemoveSelectedArmyCommand(1).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
 
-		ico = new ImageIcon(imgSource.getImage("switch.icon"));
+		ico = new ImageIcon(imgSource.getImage("switch.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setToolTipText("Switch Sides (Sends Army to other side)");
 		btn.setPreferredSize(new Dimension(20, 20));
@@ -362,10 +363,10 @@ public class CombatForm extends AbstractForm {
 				new SwitchSideCommand(1).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		ico = new ImageIcon(imgSource.getImage("relations.icon"));
+		ico = new ImageIcon(imgSource.getImage("relations.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setToolTipText("Change Relations for Army");
 		btn.setPreferredSize(new Dimension(20, 20));
@@ -375,12 +376,12 @@ public class CombatForm extends AbstractForm {
 				new EditSelectedArmyRelationsCommand(1).doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
-		lb.cell(new JLabel(" "));
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
 		lb.relatedGapRow();
 
-		lb.cell(new JLabel(" "));
+		lb.cell(new JLabel(" ")); //$NON-NLS-1$
 		lb.relatedGapRow();
 
 		lb.row();
@@ -413,7 +414,7 @@ public class CombatForm extends AbstractForm {
 		tlb.cell(scp);
 
 		lb = new TableLayoutBuilder();
-		ico = new ImageIcon(imgSource.getImage("edit.image"));
+		ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
@@ -422,10 +423,10 @@ public class CombatForm extends AbstractForm {
 				new EditPopCenterCommand().doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
 
-		ico = new ImageIcon(imgSource.getImage("remove.icon"));
+		ico = new ImageIcon(imgSource.getImage("remove.icon")); //$NON-NLS-1$
 		btn = new JButton(ico);
 		btn.setPreferredSize(new Dimension(20, 20));
 		btn.addActionListener(new ActionListener() {
@@ -434,7 +435,7 @@ public class CombatForm extends AbstractForm {
 				new RemovePopCenterCommand().doExecuteCommand();
 			}
 		});
-		lb.cell(btn, "colspec=left:30px");
+		lb.cell(btn, "colspec=left:30px"); //$NON-NLS-1$
 		lb.gapCol();
 		lb.relatedGapRow();
 
@@ -442,19 +443,19 @@ public class CombatForm extends AbstractForm {
 		tlb.relatedGapRow();
 
 		lb = new TableLayoutBuilder();
-		lb.cell(new JLabel("Rounds :"), "colspec=left:80px");
+		lb.cell(new JLabel(Messages.getString("CombatForm.Rounds")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		this.rounds = (JTextField) sbf.createBoundTextField("rounds").getControl();
+		this.rounds = (JTextField) sbf.createBoundTextField("rounds").getControl(); //$NON-NLS-1$
 
 		this.rounds.setEditable(false);
-		lb.cell(this.rounds, "colspec=left:60px");
+		lb.cell(this.rounds, "colspec=left:60px"); //$NON-NLS-1$
 		lb.gapCol();
 
 		tlb.cell(lb.getPanel());
 		tlb.gapCol();
 		tlb.relatedGapRow();
 
-		tlb.cell(new JLabel(" "));
+		tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.relatedGapRow();
 
@@ -634,7 +635,7 @@ public class CombatForm extends AbstractForm {
 				return;
 			if (this.side == 0) {
 				final int idx1 = idx;
-				ConfirmationDialog md = new ConfirmationDialog("Remove army?", "Remove selected army from side 1?") {
+				ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemoveArmy.title"), "") { //$NON-NLS-1$ 
 
 					@Override
 					protected void onConfirm() {
@@ -651,7 +652,7 @@ public class CombatForm extends AbstractForm {
 				md.showDialog();
 			} else {
 				final int idx1 = idx;
-				ConfirmationDialog md = new ConfirmationDialog("Remove army?", "Remove selected army from side 2?") {
+				ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemoveArmy.title"), Messages.getString("CombatForm.RemoveArmySide2")) { //$NON-NLS-2$
 
 					@Override
 					protected void onConfirm() {
@@ -710,9 +711,9 @@ public class CombatForm extends AbstractForm {
 				enemySide = c.getSide1();
 			}
 			for (int i = 0; i < enemySide.length; i++) {
-				String label = "Army " + (i + 1) + ": ";
+				String label = Messages.getString("CombatForm.ArmySpace") + (i + 1) + ": "; //$NON-NLS-1$ //$NON-NLS-2$
 				if (i == enemySide.length - 1)
-					label = "Pop Center: ";
+					label = Messages.getString("CombatForm.PC"); //$NON-NLS-1$
 				tlb.cell(new JLabel(label));
 				tlb.gapCol();
 				final JComboBox rel = new JComboBox(NationRelationsEnum.values());
@@ -721,7 +722,7 @@ public class CombatForm extends AbstractForm {
 				} else {
 					rel.setSelectedItem(c.getSide2Relations()[armyIdx][i]);
 				}
-				tlb.cell(new JLabel("relations : "));
+				tlb.cell(new JLabel(Messages.getString("CombatForm.relations"))); //$NON-NLS-1$
 				tlb.gapCol();
 				tlb.cell(rel);
 				tlb.relatedGapRow();
@@ -740,7 +741,7 @@ public class CombatForm extends AbstractForm {
 					}
 				});
 			}
-			JButton closePopup = new JButton("Close");
+			JButton closePopup = new JButton(Messages.getString("CombatForm.Close")); //$NON-NLS-1$
 			closePopup.setPreferredSize(new Dimension(70, 20));
 			closePopup.addActionListener(new ActionListener() {
 
@@ -750,7 +751,7 @@ public class CombatForm extends AbstractForm {
 					runCombat();
 				}
 			});
-			tlb.cell(closePopup, "align=left");
+			tlb.cell(closePopup, "align=left"); //$NON-NLS-1$
 			tlb.relatedGapRow();
 
 			JScrollPane scp = new JScrollPane(tlb.getPanel());
@@ -814,7 +815,7 @@ public class CombatForm extends AbstractForm {
 				}
 			};
 			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-			dialog.setTitle(ms.getMessage("editCombatArmy.title", new Object[] {}, Locale.getDefault()));
+			dialog.setTitle(ms.getMessage("editCombatArmy.title", new Object[] {}, Locale.getDefault())); //$NON-NLS-1$
 			dialog.showDialog();
 
 		}
@@ -822,7 +823,7 @@ public class CombatForm extends AbstractForm {
 	}
 
 	protected void showContextMenu(int side, MouseEvent e) {
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("contextMenu", new Object[] { new AddArmyCommand(side), new EditSelectedArmyCommand(side), new EditSelectedArmyRelationsCommand(side), new RemoveSelectedArmyCommand(side), new SwitchSideCommand(side) });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("contextMenu", new Object[] { new AddArmyCommand(side), new EditSelectedArmyCommand(side), new EditSelectedArmyRelationsCommand(side), new RemoveSelectedArmyCommand(side), new SwitchSideCommand(side) }); //$NON-NLS-1$
 		JPopupMenu pm = group.createPopupMenu();
 		pm.show((side == 0 ? this.side1Table : this.side2Table), e.getX(), e.getY());
 	}
@@ -863,10 +864,10 @@ public class CombatForm extends AbstractForm {
 		public void drop(DropTargetDropEvent e) {
 			Transferable t = e.getTransferable();
 			try {
-				DataFlavor armyArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + Army[].class.getName() + "\"");
-				DataFlavor armyFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName());
-				DataFlavor armyEstimateArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + ArmyEstimate[].class.getName() + "\"");
-				DataFlavor armyEstimateFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArmyEstimate.class.getName());
+				DataFlavor armyArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + Army[].class.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+				DataFlavor armyFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName()); //$NON-NLS-1$
+				DataFlavor armyEstimateArrayFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + ArmyEstimate[].class.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+				DataFlavor armyEstimateFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArmyEstimate.class.getName()); //$NON-NLS-1$
 
 				Combat c = (Combat) getFormObject();
 				if (t.isDataFlavorSupported(armyArrayFlavor)) {
@@ -928,7 +929,7 @@ public class CombatForm extends AbstractForm {
 		public void drop(DropTargetDropEvent e) {
 			Transferable t = e.getTransferable();
 			try {
-				DataFlavor popCenterFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + PopulationCenter.class.getName());
+				DataFlavor popCenterFlavor = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + PopulationCenter.class.getName()); //$NON-NLS-1$
 
 				if (t.isDataFlavorSupported(popCenterFlavor)) {
 					PopulationCenter pc = (PopulationCenter) t.getTransferData(popCenterFlavor);
@@ -955,7 +956,7 @@ public class CombatForm extends AbstractForm {
 		@Override
 		protected void doExecuteCommand() {
 			final Combat c = (Combat) getFormObject();
-			ConfirmationDialog md = new ConfirmationDialog("Remove pop center?", "Remove pop center?") {
+			ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemovePC"), Messages.getString("Remove pop center?")) { //$NON-NLS-1$
 				@Override
 				protected void onConfirm() {
 					c.setSide2Pc(null);
@@ -1008,7 +1009,7 @@ public class CombatForm extends AbstractForm {
 					return true;
 				}
 			};
-			dialog.setTitle("Edit population center");
+			dialog.setTitle(Messages.getString("CombatForm.EditPC.title")); //$NON-NLS-1$
 			dialog.showDialog();
 
 		}

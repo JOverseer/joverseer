@@ -12,6 +12,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 import org.joverseer.ui.domain.ProductLineWrapper;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
@@ -22,6 +23,27 @@ import org.springframework.richclient.table.ColumnToSort;
  */
 public class NationProductionListView extends BaseItemListView {
 
+	public enum ProductionTypesEnum {
+		Total(0),Production(1),Stores(2),SellPrice(3),BuyPrice(4),TotalProduction(5);
+		int identity;
+		private ProductionTypesEnum(int identity) {
+			this.identity = identity;
+		}
+	}
+	public class IdentifiedProductLineWrapper extends ProductLineWrapper
+	{
+		ProductionTypesEnum identity;
+		public IdentifiedProductLineWrapper(ProductionTypesEnum identity)
+		{
+			this.identity = identity;
+		}
+		public IdentifiedProductLineWrapper(ProductionTypesEnum identity,ProductContainer pc)
+		{
+			super(pc);
+			this.identity=identity;
+		}
+		public ProductionTypesEnum getIdentity() { return identity;}
+	}
 	public NationProductionListView() {
 		super(NationProductionTableModel.class);
 	}
@@ -33,22 +55,22 @@ public class NationProductionListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		ArrayList<ProductLineWrapper> items = new ArrayList<ProductLineWrapper>();
+		ArrayList<IdentifiedProductLineWrapper> items = new ArrayList<IdentifiedProductLineWrapper>();
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
 		if (!Game.isInitialized(g))
 			return;
 		ProductContainer totalProdContainer = new ProductContainer();
 		int counter = 1;
 		for (NationEconomy ne : g.getTurn().getNationEconomies()) {
-			ProductLineWrapper prod = new ProductLineWrapper(ne.getProduction());
+			IdentifiedProductLineWrapper prod = new IdentifiedProductLineWrapper(ProductionTypesEnum.Production,ne.getProduction());
 			prod.setNationNo(ne.getNationNo());
-			prod.setDescr("Production");
+			prod.setDescr(Messages.getString("NationProductionListView.Production"));
 			prod.setIdx(counter);
 			counter++;
 			items.add(prod);
-			ProductLineWrapper stores = new ProductLineWrapper(ne.getStores());
+			IdentifiedProductLineWrapper stores = new IdentifiedProductLineWrapper(ProductionTypesEnum.Stores,ne.getStores());
 			stores.setNationNo(ne.getNationNo());
-			stores.setDescr("Stores");
+			stores.setDescr(Messages.getString("NationProductionListView.Stores"));
 			stores.setIdx(counter);
 			counter++;
 			items.add(stores);
@@ -56,85 +78,49 @@ public class NationProductionListView extends BaseItemListView {
 			ProductContainer nationTotals = new ProductContainer();
 			nationTotals.add(ne.getProduction());
 			nationTotals.add(ne.getStores());
-			ProductLineWrapper total = new ProductLineWrapper(nationTotals);
+			IdentifiedProductLineWrapper total = new IdentifiedProductLineWrapper(ProductionTypesEnum.Total,nationTotals);
 			total.setNationNo(ne.getNationNo());
 			total.setIdx(counter);
 			counter++;
-			total.setDescr("Total");
+			total.setDescr(Messages.getString("NationProductionListView.Total"));
 			items.add(total);
 
 			totalProdContainer.add(ne.getProduction());
 		}
-		ProductLineWrapper totalProduction = new ProductLineWrapper(totalProdContainer);
-		totalProduction.setDescr("Total Production");
+		IdentifiedProductLineWrapper totalProduction = new IdentifiedProductLineWrapper(ProductionTypesEnum.TotalProduction,totalProdContainer);
+		totalProduction.setDescr(Messages.getString("NationProductionListView.TotalProduction"));
 		Container<ProductPrice> prices = g.getTurn().getProductPrices();
-		ProductLineWrapper sellPrices = new ProductLineWrapper();
-		ProductLineWrapper buyPrices = new ProductLineWrapper();
+		IdentifiedProductLineWrapper sellPrices = new IdentifiedProductLineWrapper(ProductionTypesEnum.SellPrice);
+		IdentifiedProductLineWrapper buyPrices = new IdentifiedProductLineWrapper(ProductionTypesEnum.BuyPrice);
 
-		sellPrices.setDescr("Sell Price");
+		sellPrices.setDescr(Messages.getString("NationProductionListView.SellPrice"));
 		sellPrices.setIdx(counter);
 		counter++;
 
-		buyPrices.setDescr("Buy Price");
+		buyPrices.setDescr(Messages.getString("NationProductionListView.BuyPrice"));
 		buyPrices.setIdx(counter);
 		counter++;
 
 		totalProduction.setIdx(counter);
 
-		ProductPrice pp = prices.findFirstByProperty("product", ProductEnum.Food);
-		if (pp != null) {
-			sellPrices.setFood(pp.getSellPrice());
-			buyPrices.setFood(pp.getBuyPrice());
-		}
+		ProductPrice pp;
+		for (ProductEnum product:ProductEnum.values())
+		{
+			if (product ==  ProductEnum.Gold) continue;
 
-		pp = prices.findFirstByProperty("product", ProductEnum.Food);
-		if (pp != null) {
-			sellPrices.setFood(pp.getSellPrice());
-			buyPrices.setFood(pp.getBuyPrice());
-		}
-
-		pp = prices.findFirstByProperty("product", ProductEnum.Leather);
-		if (pp != null) {
-			sellPrices.setLeather(pp.getSellPrice());
-			buyPrices.setLeather(pp.getBuyPrice());
-		}
-
-		pp = prices.findFirstByProperty("product", ProductEnum.Bronze);
-		if (pp != null) {
-			sellPrices.setBronze(pp.getSellPrice());
-			buyPrices.setBronze(pp.getBuyPrice());
-		}
-
-		pp = prices.findFirstByProperty("product", ProductEnum.Steel);
-		if (pp != null) {
-			sellPrices.setSteel(pp.getSellPrice());
-			buyPrices.setSteel(pp.getBuyPrice());
-		}
-
-		pp = prices.findFirstByProperty("product", ProductEnum.Mithril);
-		if (pp != null) {
-			sellPrices.setMithril(pp.getSellPrice());
-			buyPrices.setMithril(pp.getBuyPrice());
-		}
-
-		pp = prices.findFirstByProperty("product", ProductEnum.Mounts);
-		if (pp != null) {
-			sellPrices.setMounts(pp.getSellPrice());
-			buyPrices.setMounts(pp.getBuyPrice());
-		}
-
-		pp = prices.findFirstByProperty("product", ProductEnum.Timber);
-		if (pp != null) {
-			sellPrices.setTimber(pp.getSellPrice());
-			buyPrices.setTimber(pp.getBuyPrice());
+			pp = prices.findFirstByProperty("product", product);
+			if (pp != null) {
+				sellPrices.setProduct(product, pp.getSellPrice());
+				buyPrices.setProduct(product, pp.getBuyPrice());
+			}
 		}
 
 		items.add(sellPrices);
 		items.add(buyPrices);
 		items.add(totalProduction);
 
-		ArrayList<ProductLineWrapper> filteredItems = new ArrayList<ProductLineWrapper>();
-		for (ProductLineWrapper plw : items) {
+		ArrayList<IdentifiedProductLineWrapper> filteredItems = new ArrayList<IdentifiedProductLineWrapper>();
+		for (IdentifiedProductLineWrapper plw : items) {
 			if (getActiveFilter() == null || getActiveFilter().accept(plw)) {
 				filteredItems.add(plw);
 			}
@@ -157,21 +143,29 @@ public class NationProductionListView extends BaseItemListView {
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		return new AbstractListViewFilter[][] { new AbstractListViewFilter[] { new ProductionFilter("All", null), new ProductionFilter("Production", "Production"), new ProductionFilter("Stores", "Stores"), new ProductionFilter("Total", "Total"), } };
+		return new AbstractListViewFilter[][] {
+				new AbstractListViewFilter[] { new ProductionFilter(Messages.getString("NationProductionListView.All"), null), 
+				new ProductionFilter(Messages.getString("NationProductionListView.Production"), ProductionTypesEnum.Production), 
+				new ProductionFilter(Messages.getString("NationProductionListView.Stores"), ProductionTypesEnum.Stores),
+				new ProductionFilter(Messages.getString("NationProductionListView.Total"), ProductionTypesEnum.Total), } };
 	}
 
 	class ProductionFilter extends AbstractListViewFilter {
-		String type;
+		ProductionTypesEnum type;
 
-		public ProductionFilter(String description, String type) {
+		public ProductionFilter(String description, ProductionTypesEnum type) {
 			super(description);
 			this.type = type;
 		}
 
 		@Override
 		public boolean accept(Object obj) {
-			ProductLineWrapper plw = (ProductLineWrapper) obj;
-			return this.type == null || plw.getDescr().equals("Total Production") || plw.getDescr().equals("Sell Price") || plw.getDescr().equals("Buy Price") || plw.getDescr().equals(this.type);
+			IdentifiedProductLineWrapper plw = (IdentifiedProductLineWrapper) obj;
+			return this.type == null
+					|| plw.getIdentity() == ProductionTypesEnum.TotalProduction
+					|| plw.getIdentity() == ProductionTypesEnum.SellPrice
+					|| plw.getIdentity() == ProductionTypesEnum.BuyPrice
+					|| plw.getIdentity() == this.type;
 		}
 
 	}

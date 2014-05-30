@@ -11,10 +11,10 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -60,7 +60,7 @@ public class CreateArmyCommand extends ActionCommand {
 				Game g = GameHolder.instance().getGame();
 				Turn t = g.getTurn();
 				if (!army.getCommanderName().toLowerCase().startsWith("unknown") && t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", army.getCommanderName()) != null) {
-					ErrorDialog errDlg = new ErrorDialog(Application.instance().getApplicationContext().getMessage("addArmyDialog.error.DuplicateCommanderName", new Object[] { army.getCommanderName() }, Locale.getDefault()));
+					ErrorDialog errDlg = new ErrorDialog(Messages.getString("addArmyDialog.error.DuplicateCommanderName", new Object[] { army.getCommanderName() }));
 					errDlg.showDialog();
 					return false;
 				}
@@ -70,8 +70,7 @@ public class CreateArmyCommand extends ActionCommand {
 				return true;
 			}
 		};
-		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		dialog.setTitle(ms.getMessage("addArmyDialog.title", new Object[] { "" }, Locale.getDefault()));
+		dialog.setTitle(Messages.getString("addArmyDialog.title"));
 		dialog.setModal(true);
 		dialog.showDialog();
 	}

@@ -1,6 +1,7 @@
 package org.joverseer.ui.domain.mapItems;
 
 import org.joverseer.domain.Character;
+import org.joverseer.ui.support.Messages;
 
 /**
  * Handles the drawing of the character's movement range on the map It can also draw arbitrary ranges from a given hex
@@ -45,7 +46,7 @@ public class CharacterRangeMapItem extends AbstractMapItem {
 
     @Override
 	public String getDescription() {
-        return String.format("{0} hexes range from hex {1}.", new Object[] {this.range, this.hexNo});
+        return Messages.getString("CharacterRangeMapItem.HexesFromHex", new Object[] {this.range, this.hexNo}); //$NON-NLS-1$
     }
 
 

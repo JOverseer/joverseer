@@ -1,7 +1,5 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
@@ -12,10 +10,10 @@ import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.NewGameForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -39,11 +37,10 @@ public class CreateGame extends ActionCommand {
         final NewGameForm form = new NewGameForm(formModel);
         final FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        final MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
-                setDescription(ms.getMessage(form.getId() + ".description", null, Locale.getDefault()));
+                setDescription(Messages.getString(form.getId() + ".description"));
             }
 
             @Override
@@ -83,7 +80,7 @@ public class CreateGame extends ActionCommand {
                     game.addTurn(t0);
                 }
                 catch (Exception exc) {
-                    // do nothing, exception cannoit really occur
+                    // do nothing, exception cannot really occur
                 }
 
                 Application.instance().getApplicationContext().publishEvent(
@@ -92,7 +89,7 @@ public class CreateGame extends ActionCommand {
                 return true;
             }
         };
-        dialog.setTitle(ms.getMessage("newGameDialog.title", new Object[]{}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("newGameDialog.title"));
         dialog.showDialog();
 
     }

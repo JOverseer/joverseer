@@ -3,7 +3,6 @@ package org.joverseer.ui.command;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,9 +17,8 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -53,8 +51,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
                 return true;
             }
         };
-        MessageSource ms = (MessageSource)Application.instance().getApplicationContext().getBean("messageSource");
-        dlg.setTitle(ms.getMessage("orderEditorAutoNationsDialog.title", new Object[]{}, Locale.getDefault()));
+        dlg.setTitle(Messages.getString("orderEditorAutoNationsDialog.title"));
         dlg.showDialog();
     }
     

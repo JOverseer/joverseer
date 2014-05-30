@@ -5,6 +5,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -27,11 +28,12 @@ public class DeleteLastTurnCommand extends ActionCommand {
 			return;
 		final Game g = GameHolder.instance().getGame();
 		if (g.getMaxTurn() == 0) {
-			ErrorDialog edlg = new ErrorDialog(Application.instance().getApplicationContext().getMessage("standardErrors.NoTurnsInGame", null, null));
+			ErrorDialog edlg = new ErrorDialog(Messages.getString("standardErrors.NoTurnsInGame"));
 			edlg.showDialog();
 			return;
 		}
-		ConfirmationDialog dlg = new ConfirmationDialog(Application.instance().getApplicationContext().getMessage("deleteLastTurnCommand.ConfirmationTitle", null, null), Application.instance().getApplicationContext().getMessage("deleteLastTurnCommand.ConfirmationMessage", null, null)) {
+		ConfirmationDialog dlg = new ConfirmationDialog(Messages.getString("deleteLastTurnCommand.ConfirmationTitle"),
+				Messages.getString("deleteLastTurnCommand.ConfirmationMessage")) {
 			@Override
 			protected void onConfirm() {
 

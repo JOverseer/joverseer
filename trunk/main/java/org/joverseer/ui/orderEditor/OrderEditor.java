@@ -42,6 +42,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -68,7 +69,7 @@ import org.springframework.richclient.list.SortedListModel;
  */
 public class OrderEditor extends AbstractForm implements ApplicationListener {
 
-	public static final String FORM_PAGE = "orderEditorForm";
+	public static final String FORM_PAGE = "orderEditorForm"; //$NON-NLS-1$
 	static final int PREFERRED_TEXT_HEIGHT = 23; // was 18 but cuts off descenders
 	JComboBox orderCombo;
 	JCheckBox chkDraw;
@@ -80,9 +81,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	JPanel subeditorPanel;
 	JPanel myPanel;
 	int bkOrderNo = -1;
-	String bkParams = "";
+	String bkParams = ""; //$NON-NLS-1$
 
-	String currentOrderNoAndCode = "";
+	String currentOrderNoAndCode = ""; //$NON-NLS-1$
 
 	ArrayList<JComponent> subeditorComponents = new ArrayList<JComponent>();
 
@@ -100,17 +101,17 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	public Container<OrderEditorData> getOrderEditorData() {
 		if (this.orderEditorData == null) {
-			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
+			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" }); //$NON-NLS-1$
 			try {
-				GameMetadata gm1 = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
-				Resource resource = gm1.getResource("orderEditorData.csv");
+				GameMetadata gm1 = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata"); //$NON-NLS-1$
+				Resource resource = gm1.getResource("orderEditorData.csv"); //$NON-NLS-1$
 				BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 
 				String ln;
 				while ((ln = reader.readLine()) != null) {
 					try {
-						String[] partsL = ln.split(";");
-						String[] parts = new String[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+						String[] partsL = ln.split(";"); //$NON-NLS-1$
+						String[] parts = new String[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
 						for (int i = 0; i < partsL.length; i++) {
 							parts[i] = partsL[i];
 						}
@@ -131,10 +132,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 						this.orderEditorData.addItem(oed);
 						ln = reader.readLine();
 						if (ln == null) {
-							ln = "";
+							ln = ""; //$NON-NLS-1$
 						}
-						partsL = ln.split(";");
-						parts = new String[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+						partsL = ln.split(";"); //$NON-NLS-1$
+						parts = new String[] { "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
 						for (int i = 0; i < partsL.length; i++) {
 							parts[i] = partsL[i];
 						}
@@ -159,7 +160,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	private GameMetadata getGameMetadata() {
 		if (this.gm == null) {
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 			if (!Game.isInitialized(g))
 				return null;
 			this.gm = g.getMetadata();
@@ -179,7 +180,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		for (OrderMetadata om : orderMetadata.getItems()) {
 			if (o.getCharacter() != null && (om.charHasRequiredSkill(o.getCharacter()) || om.orderAllowedDueToScoutingSNA(o.getCharacter()))) {
 				if (om.orderAllowedForGameType()) {
-					orders.add(om.getNumber() + " " + om.getCode());
+					orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -191,7 +192,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 		glb.setDefaultInsets(new Insets(5, 5, 0, 0));
-		glb.append(new JLabel("Character :"));
+		glb.append(new JLabel(Messages.getString("OrderEditor.43"))); //$NON-NLS-1$
 
 		glb.append(this.character = new JTextField());
 		this.character.setEditable(false);
@@ -199,8 +200,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		JButton btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-		Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon"));
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
@@ -211,11 +212,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				saveOrder();
 			}
 		});
-		btn.setToolTipText("Save order");
+		btn.setToolTipText(Messages.getString("OrderEditor.46")); //$NON-NLS-1$
 
 		btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ico = new ImageIcon(imgSource.getImage("char.icon"));
+		ico = new ImageIcon(imgSource.getImage("char.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
@@ -226,11 +227,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 			}
 		});
-		btn.setToolTipText("Goto chars");
+		btn.setToolTipText(Messages.getString("OrderEditor.48")); //$NON-NLS-1$
 
 		btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ico = new ImageIcon(imgSource.getImage("clear.icon"));
+		ico = new ImageIcon(imgSource.getImage("clear.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
@@ -240,11 +241,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				clearOrder();
 			}
 		});
-		btn.setToolTipText("Delete order");
+		btn.setToolTipText(Messages.getString("OrderEditor.50")); //$NON-NLS-1$
 
 		btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ico = new ImageIcon(imgSource.getImage("revert.icon"));
+		ico = new ImageIcon(imgSource.getImage("revert.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
 		btn.addMouseListener(new MouseAdapter() {
@@ -254,11 +255,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				revertOrder();
 			}
 		});
-		btn.setToolTipText("Revert order");
+		btn.setToolTipText(Messages.getString("OrderEditor.52")); //$NON-NLS-1$
 
 		btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ico = new ImageIcon(imgSource.getImage("ShowHideOrderDescription.icon"));
+		ico = new ImageIcon(imgSource.getImage("ShowHideOrderDescription.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
@@ -269,11 +270,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				OrderEditor.this.description.setVisible(!OrderEditor.this.description.isVisible());
 			}
 		});
-		btn.setToolTipText("Show / hide description");
+		btn.setToolTipText(Messages.getString("OrderEditor.54")); //$NON-NLS-1$
 
 		glb.nextLine();
 
-		glb.append(new JLabel("Order :"));
+		glb.append(new JLabel(Messages.getString("OrderEditor.55"))); //$NON-NLS-1$
 
 		// orderCombo = new JComboBox();
 		// orderCombo.setEditable(true);
@@ -299,7 +300,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			}
 		});
 
-		this.chkDraw = new JCheckBox("Draw");
+		this.chkDraw = new JCheckBox(Messages.getString("OrderEditor.56")); //$NON-NLS-1$
 		this.chkDraw.setPreferredSize(new Dimension(60, 18));
 		this.chkDraw.setBackground(Color.white);
 		glb.append(this.chkDraw, 3, 1);
@@ -308,7 +309,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
-				OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+				OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
 				if (!ovd.contains(o)) {
 					ovd.addOrder((Order) getFormObject());
 				} else {
@@ -319,11 +320,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			}
 		});
 		this.chkDraw.setFocusable(false);
-		btn.setToolTipText("Draw");
+		btn.setToolTipText(Messages.getString("OrderEditor.58")); //$NON-NLS-1$
 
 		btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ico = new ImageIcon(imgSource.getImage("displace.icon"));
+		ico = new ImageIcon(imgSource.getImage("displace.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
 		btn.addActionListener(new ActionListener() {
@@ -332,11 +333,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
 				if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
-					OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+					OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
 					if (!ovd.contains(o) && ovd.getOrderEditorOrder() != o) {
 						ovd.addOrder((Order) getFormObject());
 					}
-					Object d = ovd.getAdditionalInfo(o, "displacement");
+					Object d = ovd.getAdditionalInfo(o, "displacement"); //$NON-NLS-1$
 					if (d == null) {
 						d = 1;
 					} else {
@@ -345,19 +346,19 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 							d = 0;
 					}
 					if (d.equals(0)) {
-						ovd.removeAdditionalInfo(o, "displacement");
+						ovd.removeAdditionalInfo(o, "displacement"); //$NON-NLS-1$
 					} else {
-						ovd.setAdditionalInfo(o, "displacement", d);
+						ovd.setAdditionalInfo(o, "displacement", d); //$NON-NLS-1$
 					}
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
 				}
 			}
 		});
-		btn.setToolTipText("Draw displaced");
+		btn.setToolTipText(Messages.getString("OrderEditor.64")); //$NON-NLS-1$
 
 		glb.nextLine();
 
-		glb.append(new JLabel("Parameters :"));
+		glb.append(new JLabel(Messages.getString("OrderEditor.65"))); //$NON-NLS-1$
 		glb.append(this.parameters = new JTextField());
 		this.parameters.setEditable(false);
 		this.parameters.setPreferredSize(new Dimension(70, PREFERRED_TEXT_HEIGHT));
@@ -367,7 +368,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		glb.append(this.parametersInternal);
 		glb.nextLine();
 
-		glb.append(this.descriptionLabel = new JLabel("Description :"));
+		glb.append(this.descriptionLabel = new JLabel(Messages.getString("OrderEditor.66"))); //$NON-NLS-1$
 		glb.append(this.description = new JTextArea());
 		this.descriptionLabel.setVerticalAlignment(SwingConstants.NORTH);
 		this.descriptionLabel.setVisible(true);
@@ -402,16 +403,16 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	 */
 	private boolean refreshOrder() {
 		Order o = (Order) getFormObject();
-		if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) {
-			int orderNo = getSelectedOrderNo().equals("") ? -1 : Integer.parseInt(getSelectedOrderNo());
+		if (getSelectedOrderNo().equals("") || o.getOrderNo() != Integer.parseInt(getSelectedOrderNo())) { //$NON-NLS-1$
+			int orderNo = getSelectedOrderNo().equals("") ? -1 : Integer.parseInt(getSelectedOrderNo()); //$NON-NLS-1$
 			// exclude changes between
 			// 830, 850, 860
 			// 810, 820 and 870
-			String[] equivalentOrders = new String[] { ",830,850,860,", ",810,820,870,", ",230,240,250,255," };
+			String[] equivalentOrders = new String[] { ",830,850,860,", ",810,820,870,", ",230,240,250,255," }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			boolean areEquivalent = false;
 			for (int i = 0; i < equivalentOrders.length; i++) {
-				int j = equivalentOrders[i].indexOf("," + String.valueOf(o.getOrderNo()) + ",");
-				int k = equivalentOrders[i].indexOf("," + String.valueOf(getSelectedOrderNo()) + ",");
+				int j = equivalentOrders[i].indexOf("," + String.valueOf(o.getOrderNo()) + ","); //$NON-NLS-1$ //$NON-NLS-2$
+				int k = equivalentOrders[i].indexOf("," + String.valueOf(getSelectedOrderNo()) + ","); //$NON-NLS-1$ //$NON-NLS-2$
 				if (j >= 0 && k >= 0) {
 					areEquivalent = true;
 				}
@@ -419,9 +420,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			if (areEquivalent)
 				return false;
 
-			o.setParameters("");
+			o.setParameters(""); //$NON-NLS-1$
 			if (Arrays.binarySearch(new int[] { 830, 850, 860 }, orderNo) > -1) {
-				o.setP0("no");
+				o.setP0("no"); //$NON-NLS-1$
 			}
 			this.parameters.setText(Order.getParametersAsString(o.getParameters()));
 			this.parametersInternal.setText(o.getParameters());
@@ -432,7 +433,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	public void refreshDrawCheck() {
 		Order o = (Order) getFormObject();
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
 		this.chkDraw.setSelected(ovd.contains(o));
 		Order no = new Order(o.getCharacter());
 		try {
@@ -445,11 +446,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	private String getSelectedOrderNo() {
 		String noAndCode = this.orderCombo.getSelectedItem().toString();
-		int i = noAndCode.indexOf(" ");
+		int i = noAndCode.indexOf(" "); //$NON-NLS-1$
 		if (i > 0) {
 			return noAndCode.substring(0, i);
 		} else {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -462,8 +463,8 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		this.subeditorComponents.clear();
 		Order o = (Order) getFormObject();
 		boolean paramsEditable = true;
-		if (!getSelectedOrderNo().equals("") && getOrderEditorData() != null) {
-			OrderEditorData oed = getOrderEditorData().findFirstByProperty("orderNo", Integer.parseInt(getSelectedOrderNo()));
+		if (!getSelectedOrderNo().equals("") && getOrderEditorData() != null) { //$NON-NLS-1$
+			OrderEditorData oed = getOrderEditorData().findFirstByProperty("orderNo", Integer.parseInt(getSelectedOrderNo())); //$NON-NLS-1$
 			if (oed != null) {
 				paramsEditable = false;
 				TableLayoutBuilder tlb = new TableLayoutBuilder(this.subeditorPanel);
@@ -481,64 +482,64 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 						String paramType = oed.getParamTypes().get(i);
 						String paramDescription = oed.getParamDescriptions().get(i);
 						AbstractOrderSubeditor sub = null;
-						if (paramType.equals("hex")) {
+						if (paramType.equals("hex")) { //$NON-NLS-1$
 							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("cid") || paramType.equals("xid")) {
+						} else if (paramType.equals("cid") || paramType.equals("xid")) { //$NON-NLS-1$ //$NON-NLS-2$
 							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("tac")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "ch", "fl", "st", "su", "hr", "am" }, new String[] { "Charge", "Flank", "Standard", "Surround", "Hit and Run", "Ambush" });
-						} else if (paramType.equals("prd")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "le", "br", "st", "mi", "fo", "ti", "mo" }, new String[] { "Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts" });
-						} else if (paramType.equals("pro")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "le", "br", "st", "mi", "fo", "ti", "mo", "go" }, new String[] { "Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold" });
-						} else if (paramType.equals("%")) {
+						} else if (paramType.equals("tac")) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.87"), Messages.getString("OrderEditor.88"), Messages.getString("OrderEditor.89"), Messages.getString("OrderEditor.90"), Messages.getString("OrderEditor.91"), Messages.getString("OrderEditor.92") }, new String[] { Messages.getString("OrderEditor.93"), Messages.getString("OrderEditor.94"), Messages.getString("OrderEditor.95"), Messages.getString("OrderEditor.96"), Messages.getString("OrderEditor.97"), Messages.getString("OrderEditor.98") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+						} else if (paramType.equals(Messages.getString("OrderEditor.99"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.100"), Messages.getString("OrderEditor.101"), Messages.getString("OrderEditor.102"), Messages.getString("OrderEditor.103"), Messages.getString("OrderEditor.104"), Messages.getString("OrderEditor.105"), Messages.getString("OrderEditor.106") }, new String[] { Messages.getString("OrderEditor.107"), Messages.getString("OrderEditor.108"), Messages.getString("OrderEditor.109"), Messages.getString("OrderEditor.110"), Messages.getString("OrderEditor.111"), Messages.getString("OrderEditor.112"), Messages.getString("OrderEditor.113") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$
+						} else if (paramType.equals(Messages.getString("OrderEditor.114"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.115"), Messages.getString("OrderEditor.116"), Messages.getString("OrderEditor.117"), Messages.getString("OrderEditor.118"), Messages.getString("OrderEditor.119"), Messages.getString("OrderEditor.120"), Messages.getString("OrderEditor.121"), Messages.getString("OrderEditor.122") }, new String[] { Messages.getString("OrderEditor.123"), Messages.getString("OrderEditor.124"), Messages.getString("OrderEditor.125"), Messages.getString("OrderEditor.126"), Messages.getString("OrderEditor.127"), Messages.getString("OrderEditor.128"), Messages.getString("OrderEditor.129"), Messages.getString("OrderEditor.130") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
+						} else if (paramType.equals(Messages.getString("OrderEditor.131"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("g")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.132"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("yn")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "y", "n" }, new String[] { "Yes", "No" });
-						} else if (paramType.equals("wep")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "wo", "br", "st", "mi" }, new String[] { "Wooden", "Bronze", "Steel", "Mithril" });
-						} else if (paramType.equals("arm")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "no", "le", "br", "st", "mi" }, new String[] { "None", "Leather", "Bronze", "Steel", "Mithril" });
-						} else if (paramType.equals("trp")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "hc", "lc", "hi", "li", "ar", "ma" }, new String[] { "HC", "LC", "HI", "LI", "AR", "MA" });
-						} else if (paramType.equals("gen")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "m", "f" }, new String[] { "Male", "Female" });
-						} else if (paramType.equals("alg")) {
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "g", "e", "n" }, new String[] { "Good", "Evil", "Neutral" });
-						} else if (paramType.equals("nam")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.133"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.134"), Messages.getString("OrderEditor.135") }, new String[] { Messages.getString("OrderEditor.136"), Messages.getString("OrderEditor.137") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						} else if (paramType.equals(Messages.getString("OrderEditor.138"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.139"), Messages.getString("OrderEditor.140"), Messages.getString("OrderEditor.141"), Messages.getString("OrderEditor.142") }, new String[] { Messages.getString("OrderEditor.143"), Messages.getString("OrderEditor.144"), Messages.getString("OrderEditor.145"), Messages.getString("OrderEditor.146") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+						} else if (paramType.equals(Messages.getString("OrderEditor.147"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.148"), Messages.getString("OrderEditor.149"), Messages.getString("OrderEditor.150"), Messages.getString("OrderEditor.151"), Messages.getString("OrderEditor.152") }, new String[] { Messages.getString("OrderEditor.153"), Messages.getString("OrderEditor.154"), Messages.getString("OrderEditor.155"), Messages.getString("OrderEditor.156"), Messages.getString("OrderEditor.157") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+						} else if (paramType.equals(Messages.getString("OrderEditor.158"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.159"), Messages.getString("OrderEditor.160"), Messages.getString("OrderEditor.161"), Messages.getString("OrderEditor.162"), Messages.getString("OrderEditor.163"), Messages.getString("OrderEditor.164") }, new String[] { Messages.getString("OrderEditor.165"), Messages.getString("OrderEditor.166"), Messages.getString("OrderEditor.167"), Messages.getString("OrderEditor.168"), Messages.getString("OrderEditor.169"), Messages.getString("OrderEditor.170") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+						} else if (paramType.equals(Messages.getString("OrderEditor.171"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.172"), Messages.getString("OrderEditor.173") }, new String[] { Messages.getString("OrderEditor.174"), Messages.getString("OrderEditor.175") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						} else if (paramType.equals(Messages.getString("OrderEditor.176"))) { //$NON-NLS-1$
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.177"), Messages.getString("OrderEditor.178"), Messages.getString("OrderEditor.179") }, new String[] { Messages.getString("OrderEditor.180"), Messages.getString("OrderEditor.181"), Messages.getString("OrderEditor.182") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+						} else if (paramType.equals(Messages.getString("OrderEditor.183"))) { //$NON-NLS-1$
 							sub = new SingleParameterOrderSubeditor(paramDescription, o, 160);
-						} else if (paramType.equals("rsp")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.184"))) { //$NON-NLS-1$
 							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("a")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.185"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("ae")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.186"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("b")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.187"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("e")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.188"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("d")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.189"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("de")) {
+						} else if (paramType.equals(Messages.getString("OrderEditor.190"))) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("dcid")) {
+						} else if (paramType.equals("dcid")) { //$NON-NLS-1$
 							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("i")) {
+						} else if (paramType.equals("i")) { //$NON-NLS-1$
 							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("dir") || paramType.equals("dirx")) {
+						} else if (paramType.equals("dir") || paramType.equals("dirx")) { //$NON-NLS-1$ //$NON-NLS-2$
 							// sub = new
 							// SingleParameterOrderSubeditor(paramDescription,
 							// o);
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { "ne", "e", "se", "sw", "w", "nw" }, new String[] { "ne", "e", "se", "sw", "w", "nw" });
-						} else if (paramType.equals("nat")) {
+							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.195"), Messages.getString("OrderEditor.196"), Messages.getString("OrderEditor.197"), Messages.getString("OrderEditor.198"), Messages.getString("OrderEditor.199"), Messages.getString("OrderEditor.200") }, new String[] { Messages.getString("OrderEditor.201"), Messages.getString("OrderEditor.202"), Messages.getString("OrderEditor.203"), Messages.getString("OrderEditor.204"), Messages.getString("OrderEditor.205"), Messages.getString("OrderEditor.206") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+						} else if (paramType.equals("nat")) { //$NON-NLS-1$
 							sub = new NationParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) {
+						} else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 							sub = new SpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
-						} else if (paramType.equals("spz")) {
+						} else if (paramType.equals("spz")) { //$NON-NLS-1$
 							sub = new ResearchSpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
-						} else if (paramType.equals("art")) {
+						} else if (paramType.equals("art")) { //$NON-NLS-1$
 							sub = new ArtifactNumberParameterOrderSubeditor(paramDescription, o);
 						}
 						if (sub != null) {
@@ -549,15 +550,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 					}
 				}
 				// hack in order to show all of the subeditor fields
-				tlb.cell(new JLabel(" "));
+				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
-				tlb.cell(new JLabel(" "));
+				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
-				tlb.cell(new JLabel(" "));
+				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
-				tlb.cell(new JLabel(" "));
+				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
-				tlb.cell(new JLabel(" "));
+				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
 				tlb.getPanel();
 				// subeditorPanel.invalidate();
@@ -570,15 +571,15 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	}
 
 	private void refreshDescription() {
-		String txt = "";
+		String txt = ""; //$NON-NLS-1$
 		try {
 			String selOrder = (String) this.orderCombo.getSelectedItem();
 			int i = selOrder.indexOf(' ');
 			int no = Integer.parseInt(selOrder.substring(0, i));
 			Container<OrderMetadata> orderMetadata = getGameMetadata().getOrders();
 
-			OrderMetadata om = orderMetadata.findFirstByProperty("number", no);
-			txt = om.getName() + ", " + om.getDifficulty() + ", " + om.getRequirement() + "\n" + om.getParameters();
+			OrderMetadata om = orderMetadata.findFirstByProperty("number", no); //$NON-NLS-1$
+			txt = om.getName() + ", " + om.getDifficulty() + ", " + om.getRequirement() + "\n" + om.getParameters(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} catch (Exception exc) {
 			// do nothing
 		}
@@ -604,14 +605,14 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	private void clearOrder() {
 		this.orderCombo.setSelectedItem(Order.NA);
-		this.parameters.setText("");
-		this.parametersInternal.setText("");
+		this.parameters.setText(""); //$NON-NLS-1$
+		this.parametersInternal.setText(""); //$NON-NLS-1$
 		refreshSubeditor();
 		refreshDescription();
 		Order o = (Order) getFormObject();
 		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
 		o.setParameters(this.parametersInternal.getText());
-		this.currentOrderNoAndCode = "";
+		this.currentOrderNoAndCode = ""; //$NON-NLS-1$
 		// throw an order changed event
 		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
 		// Point selectedHex = new Point(o.getCharacter().getX(),
@@ -652,13 +653,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		this.currentOrderNoAndCode = o.getNoAndCode();
 		Character c = o.getCharacter();
 		if (c == null) {
-			this.character.setText("");
+			this.character.setText(""); //$NON-NLS-1$
 		} else {
-			this.character.setText(c.getName() + " - " + c.getHexNo());
+			this.character.setText(c.getName() + " - " + c.getHexNo()); //$NON-NLS-1$
 		}
 		this.chkDraw.setEnabled(GraphicUtils.canRenderOrder(o));
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
-		if (PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoDraw").equals("yes") && PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave").equals("yes")) {
+		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+		if (PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoDraw").equals("yes") && PreferenceRegistry.instance().getPreferenceValue(Messages.getString("OrderEditor.233")).equals("yes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			ovd.setOrderEditorOrder(o);
 			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
 		} else {
@@ -686,25 +687,25 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	}
 
 	public void updateParameters() {
-		String v = "";
+		String v = ""; //$NON-NLS-1$
 		for (JComponent c : this.subeditorComponents) {
-			String val = "";
+			String val = ""; //$NON-NLS-1$
 			if (JTextField.class.isInstance(c)) {
 				val = ((JTextField) c).getText();
 			} else if (JComboBox.class.isInstance(c)) {
 				if (((JComboBox) c).getSelectedItem() == null) {
-					val = "";
+					val = ""; //$NON-NLS-1$
 				} else {
 					val = ((JComboBox) c).getSelectedItem().toString();
 				}
 			}
-			if (val.equals("")) {
-				val = "-";
+			if (val.equals("")) { //$NON-NLS-1$
+				val = "-"; //$NON-NLS-1$
 			}
-			v += (v.equals("") ? "" : Order.DELIM) + val;
+			v += (v.equals("") ? "" : Order.DELIM) + val; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		this.parametersInternal.setText(v);
-		this.parameters.setText(v.replace(Order.DELIM, " "));
+		this.parameters.setText(v.replace(Order.DELIM, " ")); //$NON-NLS-1$
 		if (getAutoSave()) {
 			saveOrder();
 		}
@@ -714,10 +715,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
 		if (res == null)
 			return;
-		OrderResultContainer cont = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
-		String e = "";
+		OrderResultContainer cont = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer"); //$NON-NLS-1$
+		String e = ""; //$NON-NLS-1$
 		if (paramI != null) {
-			e = "Param " + paramI + ": ";
+			e = Messages.getString("OrderEditor.245") + paramI + ": "; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		e += res.getMessage();
 		if (res.getLevel() == OrderValidationResult.ERROR) {
@@ -756,7 +757,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	}
 
 	public boolean getAutoSave() {
-		String pval = PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave");
-		return !pval.equals("no");
+		String pval = PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave"); //$NON-NLS-1$
+		return !pval.equals("no"); //$NON-NLS-1$
 	}
 }

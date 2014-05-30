@@ -3,8 +3,6 @@
  */
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
@@ -17,10 +15,10 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -40,8 +38,8 @@ public class AddPopCenterCommand extends ActionCommand {
 		final PopulationCenter pc = new PopulationCenter();
 		InfoSource is = new UserInfoSource();
 		Game g = GameHolder.instance().getGame();
-		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo) != null) {
-			ErrorDialog md = new ErrorDialog("Cannot add new pop center - there is already a pop center in this hex.");
+		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo) != null) { //$NON-NLS-1$
+			ErrorDialog md = new ErrorDialog(Messages.getString("AddPopCenterCommand.1")); //$NON-NLS-1$
 			md.showDialog();
 			return;
 		}
@@ -54,7 +52,7 @@ public class AddPopCenterCommand extends ActionCommand {
 		pc.setHarbor(HarborSizeEnum.none);
 		pc.setNationNo(0);
 		pc.setLoyalty(0);
-		pc.setName("-");
+		pc.setName("-"); //$NON-NLS-1$
 		FormModel formModel = FormModelHelper.createFormModel(pc);
 		final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
@@ -73,8 +71,7 @@ public class AddPopCenterCommand extends ActionCommand {
 				return true;
 			}
 		};
-		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		dialog.setTitle(ms.getMessage("editPopulationCenterDialog.title", new Object[] { String.valueOf(pc.getHexNo()) }, Locale.getDefault()));
+		dialog.setTitle(Messages.getString("editPopulationCenterDialog.title", new Object[] { String.valueOf(pc.getHexNo()) }));
 		dialog.showDialog();
 	}
 }

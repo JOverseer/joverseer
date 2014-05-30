@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.richclient.form.AbstractForm;
@@ -29,7 +30,7 @@ import org.springframework.richclient.progress.ProgressMonitor;
  * @author Marios Skounakis
  */
 public class JOverseerClientProgressMonitor extends AbstractForm implements ProgressMonitor {
-	public static final String FORM_PAGE = "jOverseerClientProgressMonitor";
+	public static final String FORM_PAGE = "jOverseerClientProgressMonitor"; //$NON-NLS-1$
 	JLabel taskName;
 	JProgressBar taskProgress;
 	JList taskSubtasks;
@@ -57,7 +58,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 		this.taskProgress.setMaximum(this.progressMax);
 		tlb.row();
 		tlb.relatedGapRow();
-		tlb.cell(new JLabel("Import steps"));
+		tlb.cell(new JLabel(Messages.getString("JOverseerClientProgressMonitor.ImportSteps"))); 
 		tlb.row();
 		this.taskSubtasks = new JList();
 		this.taskSubtasks.setModel(this.llm = new ListListModel());
@@ -207,7 +208,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			JLabel lbl = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, hasFocus());
-			if (value != null && value.toString().startsWith("Error")) {
+			if (value != null && value.toString().startsWith("Error")) { //$NON-NLS-1$
 				lbl.setForeground(Color.RED);
 			}
 			return lbl;

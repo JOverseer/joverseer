@@ -30,6 +30,7 @@ import org.joverseer.tools.CombatUtils;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
@@ -73,7 +74,7 @@ public class ArmyEstimatesListView extends ItemListView {
 	 */
 	@Override
 	protected JComponent createControlImpl() {
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource"); //$NON-NLS-1$
 
 		// create the table model
 		try {
@@ -96,7 +97,7 @@ public class ArmyEstimatesListView extends ItemListView {
 
 		JPanel fp = createFilterPanel();
 		if (fp != null) {
-			tlb.cell(fp, "align=left");
+			tlb.cell(fp, "align=left"); //$NON-NLS-1$
 			tlb.row();
 		}
 
@@ -138,8 +139,8 @@ public class ArmyEstimatesListView extends ItemListView {
 		((JideTable) this.table).setRowAutoResizes(true);
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
 
-		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
-		if (pval.equals("yes")) {
+		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols"); //$NON-NLS-1$
+		if (pval.equals("yes")) { //$NON-NLS-1$
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		} else {
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -157,8 +158,8 @@ public class ArmyEstimatesListView extends ItemListView {
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
+			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon")); //$NON-NLS-1$
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);
 			restoreSorting.setPreferredSize(new Dimension(16, 16));
@@ -173,19 +174,19 @@ public class ArmyEstimatesListView extends ItemListView {
 			});
 			// ((SortableTableModel)
 			// table.getModel()).sortByColumns(getDefaultSort());
-			restoreSorting.setToolTipText("Restore default sort order");
-			tlb.cell(restoreSorting, "colspec=left:30px valign=top");
+			restoreSorting.setToolTipText("Restore default sort order"); //$NON-NLS-1$
+			tlb.cell(restoreSorting, "colspec=left:30px valign=top"); //$NON-NLS-1$
 		}
 
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 		for (JComponent compo : getButtons()) {
-			lb.cell(compo, "colspec=left:30px valign=top");
+			lb.cell(compo, "colspec=left:30px valign=top"); //$NON-NLS-1$
 			lb.relatedGapRow();
 			lb.row();
 		}
 		JPanel pnl = lb.getPanel();
 		pnl.setBackground(Color.WHITE);
-		tlb.cell(pnl, "colspec=left:30px valign=top");
+		tlb.cell(pnl, "colspec=left:30px valign=top"); //$NON-NLS-1$
 
 		JPanel p = tlb.getPanel();
 		p.setBackground(Color.WHITE);
@@ -202,19 +203,19 @@ public class ArmyEstimatesListView extends ItemListView {
 	@Override
 	protected void startDragAndDropAction(MouseEvent e) {
 		final ArmyEstimate[] selectedArmies = new ArmyEstimate[this.table.getSelectedRowCount()];
-		String copyString = "";
+		String copyString = ""; //$NON-NLS-1$
 		for (int i = 0; i < this.table.getSelectedRowCount(); i++) {
 			int idx = ((com.jidesoft.grid.SortableTableModel) this.table.getModel()).getActualRowAt(this.table.getSelectedRows()[i]);
 			ArmyEstimate a = (ArmyEstimate) this.tableModel.getRow(idx);
 			selectedArmies[i] = a;
-			String ln = "";
+			String ln = ""; //$NON-NLS-1$
 			for (int j = 0; j < this.table.getColumnCount(); j++) {
 				Object v = this.table.getValueAt(i, j);
 				if (v == null)
-					v = "";
-				ln += (ln.equals("") ? "" : "\t") + v;
+					v = ""; //$NON-NLS-1$
+				ln += (ln.equals("") ? "" : "\t") + v; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
-			copyString += (copyString.equals("") ? "" : "\n") + ln;
+			copyString += (copyString.equals("") ? "" : "\n") + ln; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		final String str = copyString;
 
@@ -223,7 +224,7 @@ public class ArmyEstimatesListView extends ItemListView {
 			@Override
 			protected Transferable createTransferable(JComponent arg0) {
 				try {
-					Transferable t = new GenericTransferable(new DataFlavor[] { new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + ArmyEstimate[].class.getName() + "\""), new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArmyEstimate.class.getName()), DataFlavor.stringFlavor }, new Object[] { selectedArmies, selectedArmies[0], str });
+					Transferable t = new GenericTransferable(new DataFlavor[] { new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + ArmyEstimate[].class.getName() + "\""), new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + ArmyEstimate.class.getName()), DataFlavor.stringFlavor }, new Object[] { selectedArmies, selectedArmies[0], str }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					return t;
 				} catch (Exception exc) {
 					exc.printStackTrace();
@@ -241,8 +242,8 @@ public class ArmyEstimatesListView extends ItemListView {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
 		comps.addAll(Arrays.asList(super.getButtons()));
 		JLabelButton popupMenu = new JLabelButton();
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		popupMenu.setIcon(ico);
 		popupMenu.addActionListener(new PopupMenuActionListener() {
 
@@ -261,7 +262,7 @@ public class ArmyEstimatesListView extends ItemListView {
 						}
 					}
 				}
-				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyEstimatesListView", new Object[] { new ShowENHICommand(ae), });
+				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyEstimatesListView", new Object[] { new ShowENHICommand(ae), }); //$NON-NLS-1$
 				return group.createPopupMenu();
 			}
 		});
@@ -273,27 +274,27 @@ public class ArmyEstimatesListView extends ItemListView {
 		ArmyEstimate estimate;
 
 		public ShowENHICommand(ArmyEstimate estimate) {
-			super("ShowENHICommand");
+			super("ShowENHICommand"); //$NON-NLS-1$
 			this.estimate = estimate;
 		}
 
 		@Override
 		protected void doExecuteCommand() {
 			if (this.estimate != null) {
-				String str = "Estimates for " + this.estimate.getCommanderName() + "'s army:";
+				String str = Messages.getString("ArmyEstimatesListView.ForArmy", new String[] { this.estimate.getCommanderName() }); //$NON-NLS-1$
 				new CombatUtils();
 				int enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(this.estimate, 0);
-				str += "\nAvegare losses: " + enhi + " enHI for estimated losses of " + (100 - this.estimate.getEffectiveLosses(0)) + "%";
+				str += Messages.getString("ArmyEstimatesListView.AverageLosses", new Object[] { enhi , (100 - this.estimate.getEffectiveLosses(0))}); //$NON-NLS-1$ 
 				new CombatUtils();
 				enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(this.estimate, -1);
-				str += "\nLowest losses: " + enhi + " enHI for estimated losses of " + (100 - this.estimate.getEffectiveLosses(-1)) + "%";
+				str += Messages.getString("ArmyEstimatesListView.LowestLosses", new Object[] { enhi  , (100 - this.estimate.getEffectiveLosses(-1))}); //$NON-NLS-1$
 				new CombatUtils();
 				enhi = CombatUtils.getNakedHeavyInfantryEquivalent3(this.estimate, 1);
-				str += "\nHighest losses: " + enhi + " enHI for estimated losses of " + (100 - this.estimate.getEffectiveLosses(1)) + "%";
-				if (this.estimate.getMoraleRange().equals("?")) {
-					str += "\nJOverseer failed to parse the army's morale from the combat narration, and is assuming 30 morale.";
+				str += Messages.getString("ArmyEstimatesListView.HighestLosses", new Object[] { enhi , (100 - this.estimate.getEffectiveLosses(1))}); //$NON-NLS-1$
+				if (this.estimate.getMoraleRange().equals("?")) { //$NON-NLS-1$
+					str += Messages.getString("ArmyEstimatesListView.Failed"); //$NON-NLS-1$
 				}
-				MessageDialog dlg = new MessageDialog("Estimated enHI", str);
+				MessageDialog dlg = new MessageDialog(Messages.getString("ArmyEstimatesListView.dialog.title"), str); //$NON-NLS-1$
 				dlg.showDialog();
 			}
 		}

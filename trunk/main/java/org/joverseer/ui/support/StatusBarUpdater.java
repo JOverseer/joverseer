@@ -29,20 +29,20 @@ public class StatusBarUpdater implements ApplicationListener {
 
     private void refreshGameInfo() {
         String msg = null;
-        GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder"); 
+        GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");  //$NON-NLS-1$
         Game game = gh.getGame();
         if (game == null) {
-            msg = "No active game.";
+            msg = Messages.getString("StatusBarUpdater.NoActiveGame"); //$NON-NLS-1$
         } else {
             GameMetadata gm = game.getMetadata();
-            msg = "Game %s (%s), %s, Turn %s";
-            msg = String.format(msg, gm.getGameNo(), gm.getGameType().toString() + (gm.getNewXmlFormat() ? "n" : ""), gm.getNationByNum(gm.getNationNo()).getName(), game.getCurrentTurn());
+            msg = Messages.getString("StatusBarUpdater.GameAndTurn"); //$NON-NLS-1$
+            msg = String.format(msg, gm.getGameNo(), gm.getGameType().toString() + (gm.getNewXmlFormat() ? "n" : ""), gm.getNationByNum(gm.getNationNo()).getName(), game.getCurrentTurn()); //$NON-NLS-1$ //$NON-NLS-2$
             if (game.getTurn() != null && game.getTurn().getSeason() != null) {
-                msg = String.format("%1$s, %2$s, %3$td %3$tb %3$tY", msg, game.getTurn().getSeason(), game.getTurn().getTurnDate());
+                msg = String.format(Messages.getString("StatusBarUpdater.5"), msg, game.getTurn().getSeason(), game.getTurn().getTurnDate()); //$NON-NLS-1$
             }
-            if (gh.getFile() != null) msg += " - " + gh.getFile(); 
+            if (gh.getFile() != null) msg += " - " + gh.getFile();  //$NON-NLS-1$
         }
         //Application.instance().getActiveWindow().getStatusBar().setMessage(msg);
-        Application.instance().getActiveWindow().getControl().setTitle("JOverseer - " + msg);
+        Application.instance().getActiveWindow().getControl().setTitle("JOverseer - " + msg); //$NON-NLS-1$
     }
 }

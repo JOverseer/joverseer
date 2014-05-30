@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.ApplicationServicesLocator;
@@ -68,6 +69,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 
 		ViewDescriptor[] views = viewDescriptorRegistry.getViewDescriptors();
 		ArrayList<String> viewGroups = new ArrayList<String>();
+		String label;
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 		for (ViewDescriptor vd : views) {
@@ -114,7 +116,8 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 					Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
 					cmd.setIcon(ico);
 				}
-				cg.setLabel(viewGroup);
+				label = Messages.getString("ViewGroup." + viewGroup.replace(" ", ""));
+				cg.setLabel(label);
 
 				addInternal(cg);
 
@@ -132,7 +135,8 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 
 		// add a final menu that contains ALL VIEWS
 		CommandGroup allViews = new CommandGroup("All");
-		allViews.setLabel("All");
+		label = Messages.getString("ViewGroup.All");
+		allViews.setLabel(label);
 		ArrayList<String> allCaptions = new ArrayList<String>();
 		for (ViewDescriptor vd : views) {
 			if (JOverseerJideViewDescriptor.class.isInstance(vd)) {

@@ -1,9 +1,6 @@
 package org.joverseer.ui.listviews.commands;
 
-import java.util.Locale;
-
-import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.MessageDialog;
 
@@ -17,8 +14,8 @@ public class ListViewDescriptionPopupCommand extends ActionCommand {
 
 	@Override
 	protected void doExecuteCommand() {
-		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		MessageDialog dlg = new MessageDialog(ms.getMessage("listViewDescriptionDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage(this.listViewName + ".description", new Object[] {}, Locale.getDefault()));
+		MessageDialog dlg = new MessageDialog(Messages.getString("listViewDescriptionDialog.title"),
+				Messages.getString(this.listViewName + ".description"));
 		dlg.showDialog();
 	}
 }

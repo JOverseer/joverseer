@@ -13,6 +13,8 @@ import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.UIUtils;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -21,15 +23,35 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class MarketTableModel extends BaseEconomyTableModel {
+	String[] rowHeaderTags = new String[] {"stores","production","availableToSell","potentialProfit","sellPrice","sellCount","sellPercent","availableMarket","butPrice",
+			"buyCount","bidPrice","bidCount","costOrProfit"
+	};
 	// row 0 of the table
 	String[] columnHeaders = new String[] { "", "le", "br", "st", "mi", "fo", "ti", "mo" };
-	// column 0 of the table
-	String[] rowHeaders = new String[] { "stores", "production", "available to sell", "profit if all were sold", "sell price", "units you wish to sell", "percent you wish to sell", "available on market", "purchase price", "units you wish to buy", "bid price", "units your wish to bid for", "cost/profit" };
 
 	// column widths
 	int[] columnWidths = new int[] { 170, 64, 64, 64, 64, 64, 64, 64 };
 	JTable table;
 	EconomyTotalsTableModel ettm;
+
+	// column 0 of the table
+	String[] rowHeaders;
+	String[] columnNames;
+
+	public MarketTableModel() {
+		this.rowHeaders = new String[rowHeaderTags.length];
+		for (int i=0;i<rowHeaderTags.length;i++) {
+			rowHeaders[i] = Messages.getString("EconomyCalculator.Market." +rowHeaderTags[i]);
+		}
+		this.columnNames = new String[columnHeaders.length];
+		columnNames[0] = "";
+		ProductEnum product;
+		for (int i=1;i<columnHeaders.length;i++) {
+			this.columnNames[i] = (ProductEnum.getFromCode(this.columnHeaders[i])).getLocalized();
+		}
+
+	}
+
 
 	public void setTable(JTable table) {
 		this.table = table;
@@ -103,7 +125,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return this.columnHeaders[column];
+		return this.columnNames[column];
 	}
 
 	public int getColumnWidth(int column) {
@@ -197,7 +219,14 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		Game g = GameHolder.instance().getGame();
 		if (g.getCurrentTurn() == 0)
 			return null;
-		String ret = "<html><b>" + product + " price history" + "</b><br/><table><tr><th>Turn</th><th>Sell</th><th>Buy</th><th>Available</th></tr>";
+		String ret = "<html><b>" + Messages.getString("EconomyCalculator.PriceHistory.title", new String[] {UIUtils.enumToString(product)})
+				+ "</b><br/><table><tr><th>"
+				+ Messages.getString("EconomyCalculator.PriceHistory.turn")
+				+ "</th><th>"
+				+ Messages.getString("EconomyCalculator.PriceHistory.sell")
+				+ "</th><th>"
+				+ Messages.getString("EconomyCalculator.PriceHistory.available")
+				+ "</th></tr>";
 		int maxSellPrice = 0;
 		int minSellPrice = 1000;
 		int maxBuyPrice = 0;
@@ -211,7 +240,6 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			ProductPrice pp = t.getProductPrice(product);
 			if (turnCount < numberOfTurns) {
 				ret += "<tr><td align=center>" + i + "</td><td align=center>" + pp.getSellPrice() + "</td><td align=center>" + pp.getBuyPrice() + "</td><td align=center>" + df.format(pp.getMarketTotal()) + "</td></tr>";
-
 			}
 			turnCount++;
 			maxSellPrice = Math.max(maxSellPrice, pp.getSellPrice());
@@ -220,7 +248,11 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			minBuyPrice = Math.min(minBuyPrice, pp.getBuyPrice());
 		}
 		if (turnCount > 0) {
-			ret += "</tr></table>" + "Sell price range: " + minSellPrice + " - " + maxSellPrice + "<br/>" + "Buy price range: " + minBuyPrice + " - " + maxBuyPrice + "<br/>" + "</html>";
+			ret += "</tr></table>"
+					+ Messages.getString("EconomyCalculator.PriceHistory.sellPriceRange",new Object[] {minSellPrice,maxSellPrice})
+					+ "<br/>"
+					+ Messages.getString("EconomyCalculator.PriceHistory.sellPriceRange",new Object[] {minBuyPrice,maxBuyPrice})
+					+ "<br/></html>";
 		}
 		return ret;
 	}

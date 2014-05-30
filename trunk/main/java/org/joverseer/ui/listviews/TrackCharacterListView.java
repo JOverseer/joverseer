@@ -34,6 +34,7 @@ import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.TrackCharacterMapItem;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.richclient.application.Application;
@@ -76,9 +77,9 @@ public class TrackCharacterListView extends BaseItemListView {
 	protected JComponent createControlImpl() {
 		JComponent tableComp = super.createControlImpl();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(new JLabel("Character : "), "colspec=left:80px");
+		tlb.cell(new JLabel(Messages.getString("TrackCharacterListView.CharacterColon")), "colspec=left:80px"); //$NON-NLS-1$ //$NON-NLS-2$
 		tlb.gapCol();
-		tlb.cell(this.character = new JTextField(), "colspec=left:150px");
+		tlb.cell(this.character = new JTextField(), "colspec=left:150px"); //$NON-NLS-1$
 		this.character.setPreferredSize(new Dimension(200, 20));
 		this.character.setDragEnabled(true);
 		this.character.setOpaque(true);
@@ -89,7 +90,7 @@ public class TrackCharacterListView extends BaseItemListView {
 				try {
 					Transferable t = dtde.getTransferable();
 					CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
-					String txt = "";
+					String txt = ""; //$NON-NLS-1$
 					if (t.isDataFlavorSupported(characterDataFlavor)) {
 						txt = ((Character) t.getTransferData(characterDataFlavor)).getName();
 						// txt = Character.getSpacePaddedIdFromId(txt);
@@ -111,10 +112,10 @@ public class TrackCharacterListView extends BaseItemListView {
 		});
 
 		tlb.gapCol();
-		JButton btn = new JButton("Track");
+		JButton btn = new JButton(Messages.getString("TrackCharacterListView.Track")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(70, 20));
 		tlb.gapCol();
-		tlb.cell(btn, "colspec=left:70px");
+		tlb.cell(btn, "colspec=left:70px"); //$NON-NLS-1$
 		btn.addActionListener(new ActionListener() {
 
 			@Override
@@ -124,10 +125,10 @@ public class TrackCharacterListView extends BaseItemListView {
 		});
 
 		tlb.gapCol();
-		btn = new JButton("Draw");
+		btn = new JButton(Messages.getString("TrackCharacterListView.Draw")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(70, 20));
 		tlb.gapCol();
-		tlb.cell(btn, "align=left");
+		tlb.cell(btn, "align=left"); //$NON-NLS-1$
 		btn.addActionListener(new ActionListener() {
 
 			@Override
@@ -137,10 +138,10 @@ public class TrackCharacterListView extends BaseItemListView {
 
 				final JTextField st = new JTextField();
 				InputDialog id = new InputDialog();
-				id.setTitle("Track Character");
-				id.addComponent("Start turn: ", st);
-				id.init("Draw tracking info starting at turn...");
-				st.setText("0");
+				id.setTitle(Messages.getString("TrackCharacterListView.title")); //$NON-NLS-1$
+				id.addComponent(Messages.getString("TrackCharacterListView.startTurnTitle"), st); //$NON-NLS-1$
+				id.init(Messages.getString("TrackCharacterListView.trackingInit")); //$NON-NLS-1$
+				st.setText("0"); //$NON-NLS-1$
 				id.setPreferredSize(new Dimension(400, 100));
 				id.showDialog();
 
@@ -174,9 +175,9 @@ public class TrackCharacterListView extends BaseItemListView {
 	 * Find character with given name in the given turn
 	 */
 	private Character findChar(Turn t, String name) {
-		String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
-		if (pv == null || pv.equals("accented")) {
-			Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name);
+		String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames"); //$NON-NLS-1$
+		if (pv == null || pv.equals("accented")) { //$NON-NLS-1$
+			Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", name); //$NON-NLS-1$
 			return c;
 		} else {
 			for (Character c : t.getCharacters()) {
@@ -192,9 +193,9 @@ public class TrackCharacterListView extends BaseItemListView {
 	 * Find army with given commander name in given turn
 	 */
 	private Army findInArmies(Turn t, String name) {
-		String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
-		if (pv == null || pv.equals("accented")) {
-			return (Army) t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name);
+		String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames"); //$NON-NLS-1$
+		if (pv == null || pv.equals("accented")) { //$NON-NLS-1$
+			return (Army) t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", name); //$NON-NLS-1$
 		} else {
 			for (Army a : t.getArmies()) {
 				if (AsciiUtils.convertNonAscii(a.getCommanderName()).toLowerCase().equals(name.toLowerCase())) {
@@ -208,11 +209,11 @@ public class TrackCharacterListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<TrackCharacterInfo> items = new ArrayList<TrackCharacterInfo>();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		if (g == null || !Game.isInitialized(g))
 			return;
 		String charName = this.character.getText();
-		if (!charName.equals("")) {
+		if (!charName.equals("")) { //$NON-NLS-1$
 			for (Turn t : g.getTurns()) {
 				// find in characters
 				Character c = findChar(t, charName);
@@ -220,10 +221,10 @@ public class TrackCharacterListView extends BaseItemListView {
 					// TODO move TrackCharacterInfo outside this class
 					TrackCharacterInfo tci = new TrackCharacterInfo();
 					tci.setTurnNo(t.getTurnNo());
-					tci.setInfo(String.format("Character was located at %s.", c.getHexNo()));
+					tci.setInfo(Messages.getString("TrackCharacterListView.LocatedAt", new Object[] { c.getHexNo() } )); //$NON-NLS-1$
 					tci.setHexNo(c.getHexNo());
 					items.add(tci);
-					if (c.getOrderResults() != null && !c.getOrderResults().equals("")) {
+					if (c.getOrderResults() != null && !c.getOrderResults().equals("")) { //$NON-NLS-1$
 						tci = new TrackCharacterInfo();
 						tci.setTurnNo(t.getTurnNo());
 						tci.setInfo(c.getOrderResults());
@@ -233,7 +234,7 @@ public class TrackCharacterListView extends BaseItemListView {
 					if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
 						tci = new TrackCharacterInfo();
 						tci.setTurnNo(t.getTurnNo());
-						tci.setInfo("Character died (" + c.getDeathReason().toString() + ").");
+						tci.setInfo(Messages.getString("TrackCharacterListView.Died", new Object[] { c.getDeathReason().toString() })); //$NON-NLS-1$ //$NON-NLS-2$
 						tci.setHexNo(c.getHexNo());
 						items.add(tci);
 					}
@@ -243,15 +244,15 @@ public class TrackCharacterListView extends BaseItemListView {
 				if (a != null) {
 					TrackCharacterInfo tci = new TrackCharacterInfo();
 					tci.setTurnNo(t.getTurnNo());
-					tci.setInfo(String.format("Character was leading an army at %s.", a.getHexNo()));
+					tci.setInfo(Messages.getString("TrackCharacterListView.leading", new Object[] { a.getHexNo() })); //$NON-NLS-1$
 					tci.setHexNo(Integer.parseInt(a.getHexNo()));
 					items.add(tci);
 				}
 				// find in rumors
 				for (NationMessage nm : t.getNationMessages()) {
 					boolean found = false;
-					String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
-					if (pv == null || pv.equals("accented")) {
+					String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames"); //$NON-NLS-1$
+					if (pv == null || pv.equals("accented")) { //$NON-NLS-1$
 						found = nm.getMessage().indexOf(charName) >= 0;
 					} else {
 						found = AsciiUtils.convertNonAscii(nm.getMessage()).toLowerCase().indexOf(charName.toLowerCase()) >= 0;
@@ -271,8 +272,8 @@ public class TrackCharacterListView extends BaseItemListView {
 				// find in LA/LAT results
 				for (Artifact arti : t.getArtifacts()) {
 					boolean found = false;
-					String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames");
-					if (pv == null || pv.equals("accented")) {
+					String pv = PreferenceRegistry.instance().getPreferenceValue("listviews.trackCharacterNames"); //$NON-NLS-1$
+					if (pv == null || pv.equals("accented")) { //$NON-NLS-1$
 						found = arti.getOwner().indexOf(charName) >= 0;
 					} else {
 						found = AsciiUtils.convertNonAscii(arti.getOwner()).toLowerCase().indexOf(charName.toLowerCase()) >= 0;
@@ -280,7 +281,7 @@ public class TrackCharacterListView extends BaseItemListView {
 					if (found) {
 						TrackCharacterInfo tci = new TrackCharacterInfo();
 						tci.setTurnNo(t.getTurnNo());
-						tci.setInfo(arti.getOwner() + " possesses #" + arti.getNumber() + " " + arti.getName());
+						tci.setInfo(Messages.getString("TrackCharacterListView.Possesses", new Object[] { arti.getOwner(), arti.getNumber(), arti.getName()})); //$NON-NLS-1$ //$NON-NLS-2$
 						tci.setHexNo(arti.getHexNo());
 						items.add(tci);
 					}
@@ -323,7 +324,7 @@ public class TrackCharacterListView extends BaseItemListView {
 						Point selectedHex = new Point(tci.getX(), tci.getY());
 						Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
 					}
-					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 					g.setCurrentTurn(tci.getTurnNo());
 					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
 

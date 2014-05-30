@@ -1,6 +1,12 @@
 VERSION 1.0.13
 --------------
-
+	* Internationalization
+		o Widespread changes to improve support for different countries and languages (locales).
+		o The messages.properties file now should have all the translatable text.
+		o The only sample (incomplete) version available is messages_es.properties for spanish readers.
+		o Orderchecker is not included, and the orders themselves are still in english.
+		o For the curious and if you want to force the selection of a locale, there is a command line option. For example '-L es' will select spanish.
+		
 	* Orderchecker
 		o Fixed so that characters only seen on PDF reports don't stop orderchecker running.
 		o Fixed so that it uses the current turn terrain and traffic map and allegiances instead of it's predefined ones.

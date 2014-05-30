@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
+import javax.swing.border.Border;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
@@ -70,6 +71,7 @@ import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.JLabelButton;
@@ -103,7 +105,7 @@ import org.springframework.richclient.table.BeanTableModel;
  */
 public class CharacterViewer extends ObjectViewer {
 
-	public static final String FORM_PAGE = "CharacterViewer";
+	public static final String FORM_PAGE = "CharacterViewer"; //$NON-NLS-1$
 
 	boolean showColor = true;
 
@@ -143,7 +145,7 @@ public class CharacterViewer extends ObjectViewer {
 	ActionCommand showOrdersCommand = new ShowOrdersCommand();
 	ActionCommand showResultsCommand = new ShowResultsCommand();
 	ActionCommand deleteCharacterCommand = new DeleteCharacterCommand();
-	ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, "");
+	ActionCommand addRefuseChallengesCommand = new AddOrderCommand(215, ""); //$NON-NLS-1$
 	ActionCommand editCharacterCommand = new EditCharacterCommand();
 	ActionCommand sendOrdersByChatCommand = new SendOrdersByChatCommand();
 
@@ -175,12 +177,12 @@ public class CharacterViewer extends ObjectViewer {
 	private void resetOrderPanel(int numberOfOrders) {
 		this.orderPanel.removeAll();
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(this.order1comp, "rowspec=top:20px");
+		tlb.cell(this.order1comp, "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
-		tlb.cell(this.order2comp, "rowspec=top:20px");
+		tlb.cell(this.order2comp, "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
 		if (numberOfOrders == 3) {
-			tlb.cell(this.order3comp, "rowspec=top:20px");
+			tlb.cell(this.order3comp, "rowspec=top:20px"); //$NON-NLS-1$
 			tlb.row();
 		}
 		JPanel pnl = tlb.getPanel();
@@ -200,7 +202,7 @@ public class CharacterViewer extends ObjectViewer {
 			this.characterName.setCaretPosition(0);
 			String txt = c.getStatString();
 
-			if (txt.equals("")) {
+			if (txt.equals("")) { //$NON-NLS-1$
 				// character is enemy
 
 				// retrieve info from CharacterInfoCollector if possible
@@ -211,18 +213,18 @@ public class CharacterViewer extends ObjectViewer {
 					startingChar.setId(acw.getId());
 					startingChar.setNationNo(acw.getNationNo());
 					txt = getStatLineFromCharacterWrapper(acw);
-					if (!txt.equals("")) {
-						txt += "(collected info";
+					if (!txt.equals("")) { //$NON-NLS-1$
 						if (acw.getStartChar()) {
-							txt += " - start char";
+							txt += Messages.getString("CharacterViewer.startChar"); //$NON-NLS-1$
+						} else {
+							txt += Messages.getString("CharacterViewer.CollectedInfo"); //$NON-NLS-1$
 						}
-						txt += ")";
 					}
 					// artifacts
 					if (this.showArtifacts) {
 						for (ArtifactWrapper aw : acw.getArtifacts()) {
 							// find artifact in metadata
-							ArtifactInfo a = g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber());
+							ArtifactInfo a = g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber()); //$NON-NLS-1$
 							// copy into new object to change the name and add
 							// the turn - hack but for now it works
 							ArtifactInfo na = new ArtifactInfo();
@@ -230,7 +232,7 @@ public class CharacterViewer extends ObjectViewer {
 							na.setAlignment(a.getAlignment());
 							na.setOwner(acw.getName());
 							na.setPowers(a.getPowers());
-							na.setName(a.getName() + " (t" + aw.getTurnNo() + ")");
+							na.setName(Messages.getString("CharacterViewer.AbbTurnNo", new Object[] {a.getName(), aw.getTurnNo()})); //$NON-NLS-1$
 							artis.add(na);
 						}
 					}
@@ -238,14 +240,14 @@ public class CharacterViewer extends ObjectViewer {
 					showStartingInfo = true;
 				} else {
 					// retrieve starting info
-					Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+					Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 					GameMetadata gm = game.getMetadata();
 					Container<?> startChars = gm.getCharacters();
 					if (startChars != null) {
-						startingChar = (Character) startChars.findFirstByProperty("id", c.getId());
+						startingChar = (Character) startChars.findFirstByProperty("id", c.getId()); //$NON-NLS-1$
 						showStartingInfo = true;
 						if (startingChar != null) {
-							txt = startingChar.getStatString() + "(start info)";
+							txt = startingChar.getStatString() + Messages.getString("CharacterViewer.startInfo"); //$NON-NLS-1$
 						}
 					}
 				}
@@ -257,18 +259,18 @@ public class CharacterViewer extends ObjectViewer {
 			InfoSource is = c.getInfoSource();
 			if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) || DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
 				DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource) is;
-				String infoSourcesStr = sis.getSpell() + " at " + sis.getHexNo();
+				String infoSourcesStr = Messages.getString("CharacterViewer.spellAtHex",new Object[] {sis.getSpell() ,sis.getHexNo()}); //$NON-NLS-1$
 				this.infoSourcesTextBox.setVisible(true);
 				for (InfoSource dsis : sis.getOtherInfoSources()) {
 					if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
-						infoSourcesStr += ", " + ((DerivedFromSpellInfoSource) dsis).getSpell() + " at " + ((DerivedFromSpellInfoSource) dsis).getHexNo();
+						infoSourcesStr += ", " + Messages.getString("CharacterViewer.spellAtHex",new Object[] {((DerivedFromSpellInfoSource) dsis).getSpell(), ((DerivedFromSpellInfoSource) dsis).getHexNo()}); //$NON-NLS-1$
 					}
 				}
 				this.infoSourcesTextBox.setText(infoSourcesStr);
 			} else if (DoubleAgentInfoSource.class.isInstance(is)) {
 				this.infoSourcesTextBox.setVisible(true);
 				// TODO show nation name
-				this.infoSourcesTextBox.setText("Double agent for nation " + ((DoubleAgentInfoSource) is).getNationNo());
+				this.infoSourcesTextBox.setText(Messages.getString("CharacterViewer.DoubleAgentFor", new Object[] {((DoubleAgentInfoSource) is).getNationNo()})); //$NON-NLS-1$
 			} else {
 				this.infoSourcesTextBox.setVisible(false);
 			}
@@ -276,7 +278,7 @@ public class CharacterViewer extends ObjectViewer {
 			Font f = GraphicUtils.getFont(this.statsTextBox.getFont().getName(), (showStartingInfo ? Font.ITALIC : Font.PLAIN), this.statsTextBox.getFont().getSize());
 			this.statsTextBox.setFont(f);
 
-			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 			if (game == null)
 				return;
 			GameMetadata gm = game.getMetadata();
@@ -287,8 +289,8 @@ public class CharacterViewer extends ObjectViewer {
 			if (nationNo == 0) {
 				// check if it is a dragon
 				if (InfoUtils.isDragon(c.getName())) {
-					nationShortName = "Dragon";
-					nationName = "This character is a dragon";
+					nationShortName = "Dragon"; //$NON-NLS-1$
+					nationName = Messages.getString("CharacterViewer.IsDragon"); //$NON-NLS-1$
 				}
 			}
 			this.nationTextBox.setText(nationShortName);
@@ -298,11 +300,11 @@ public class CharacterViewer extends ObjectViewer {
 				ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
 				if (artifacts != null) {
 					for (Integer no : artifacts) {
-						ArtifactInfo arti = gm.getArtifacts().findFirstByProperty("no", no);
+						ArtifactInfo arti = gm.getArtifacts().findFirstByProperty("no", no); //$NON-NLS-1$
 						if (arti == null) {
 							arti = new ArtifactInfo();
 							arti.setNo(no);
-							arti.setName("---");
+							arti.setName("---"); //$NON-NLS-1$
 						}
 						artis.add(arti);
 					}
@@ -323,11 +325,11 @@ public class CharacterViewer extends ObjectViewer {
 			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), 16 * spells.size()));
 			TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 10, 120, 40 });
 			Container<Company> companies = game.getTurn().getCompanies();
-			Company company = companies.findFirstByProperty("commander", c.getName());
+			Company company = companies.findFirstByProperty("commander", c.getName()); //$NON-NLS-1$
 			if (company != null) {
 				String members = company.getMemberStr();
 
-				this.companyMembersTextBox.setText("Company: " + members);
+				this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.CompanyColon") + members); //$NON-NLS-1$
 				this.companyMembersTextBox.setCaretPosition(0);
 				this.companyMembersTextBox.setVisible(true);
 				this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
@@ -337,7 +339,7 @@ public class CharacterViewer extends ObjectViewer {
 				for (Company comp : companies.getItems()) {
 					if (comp.getMembers().contains(c.getName())) {
 						this.companyMembersTextBox.setVisible(true);
-						this.companyMembersTextBox.setText("In " + comp.getCommander() + "'s company");
+						this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InCompany", new Object[] {comp.getCommander()})); //$NON-NLS-1$ //$NON-NLS-2$
 						this.companyMembersTextBox.setCaretPosition(0);
 						this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 						found = true;
@@ -346,11 +348,11 @@ public class CharacterViewer extends ObjectViewer {
 				}
 				if (!found) {
 					if (c.getNationNo() != null && c.getNationNo() > 0) {
-						ArrayList<Army> armies = game.getTurn().getArmies().findAllByProperty("nationNo", c.getNationNo());
+						ArrayList<Army> armies = game.getTurn().getArmies().findAllByProperty("nationNo", c.getNationNo()); //$NON-NLS-1$
 						for (Army a : armies) {
 							if (a.getCharacters().contains(c.getName())) {
 								this.companyMembersTextBox.setVisible(true);
-								this.companyMembersTextBox.setText("In " + a.getCommanderName() + "'s army");
+								this.companyMembersTextBox.setText(Messages.getString("CharacterViewer.InArmy", new Object[] {a.getCommanderName()})); //$NON-NLS-1$ //$NON-NLS-2$
 								this.companyMembersTextBox.setCaretPosition(0);
 								this.companyMembersTextBox.setFont(GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, this.companyMembersTextBox.getFont().getSize()));
 								found = true;
@@ -369,7 +371,7 @@ public class CharacterViewer extends ObjectViewer {
 			if (getShowColor()) {
 				Turn t = g.getTurn();
 
-				NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+				NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo); //$NON-NLS-1$
 				Color col;
 				if (nr == null) {
 					col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
@@ -380,22 +382,22 @@ public class CharacterViewer extends ObjectViewer {
 			}
 			if (this.showHostages && c.getHostages().size() > 0) {
 				this.hostagesPane.setVisible(true);
-				String htxt = "";
+				String htxt = ""; //$NON-NLS-1$
 				for (String h : c.getHostages()) {
-					htxt += (htxt.equals("") ? "" : ", ") + h;
-					Character hostage = (Character) g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", h);
+					htxt += (htxt.equals("") ? "" : ", ") + h; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Character hostage = (Character) g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", h); //$NON-NLS-1$
 					if (hostage != null) {
 						Integer hNationNo = hostage.getNationNo();
 						String hNationName = gm.getNationByNum(hNationNo).getShortName();
-						htxt += "(" + hNationName + ")";
+						htxt += "(" + hNationName + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
-				this.hostages.setText(("Hostages: " + htxt));
+				this.hostages.setText((Messages.getString("CharacterViewer.HostagesColon") + htxt)); //$NON-NLS-1$
 			} else {
 				this.hostagesPane.setVisible(false);
 			}
 
-			ArrayList<Note> notes1 = g.getTurn().getNotes().findAllByProperty("target", c);
+			ArrayList<Note> notes1 = g.getTurn().getNotes().findAllByProperty("target", c); //$NON-NLS-1$
 			this.notesViewer.setFormObject(notes1);
 			this.characterName.setCaretPosition(0);
 		}
@@ -434,7 +436,10 @@ public class CharacterViewer extends ObjectViewer {
 
 		JComponent c;
 
-		glb.append(c = new JTextField());
+		// diagnostic border
+		Border  border = null;//BorderFactory.createLineBorder(Color.red);
+		
+		glb.append(c = new JTextField(),1,1,4,0);
 		this.characterName = (JTextField) c;
 		this.characterName.addMouseListener(new MouseAdapter() {
 			@Override
@@ -445,24 +450,25 @@ public class CharacterViewer extends ObjectViewer {
 				handler.exportAsDrag(CharacterViewer.this.characterName, e, TransferHandler.COPY);
 			}
 		});
-		c.setBorder(null);
+		c.setBorder(border);
 		c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
 
 		c.setPreferredSize(new Dimension(160, 12));
 
 		glb.append(c = new JTextField());
-		c.setBorder(null);
+		c.setBorder(border);
 		this.nationTextBox = (JTextField) c;
 		// bf.bindControl(c, "nationNo");
 		// a bit of a hack...extend to stop the menu icon jumping about
 		c.setPreferredSize(new Dimension(100, 12));
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 
 		final JButton btnMainMenu = new JButton();
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMainMenu.setIcon(ico);
 		btnMainMenu.setPreferredSize(new Dimension(16, 16));
+		btnMainMenu.setBorder(border);
 		glb.append(btnMainMenu);
 		btnMainMenu.addActionListener(new PopupMenuActionListener() {
 
@@ -473,9 +479,10 @@ public class CharacterViewer extends ObjectViewer {
 		});
 
 		final JButton btnCharDetails = new JButton();
-		ico = new ImageIcon(imgSource.getImage("showCharDetails.icon"));
+		ico = new ImageIcon(imgSource.getImage("showCharDetails.icon")); //$NON-NLS-1$
 		btnCharDetails.setIcon(ico);
 		btnCharDetails.setPreferredSize(new Dimension(16, 16));
+		btnCharDetails.setBorder(border);
 		glb.append(btnCharDetails);
 		btnCharDetails.addActionListener(new ActionListener() {
 
@@ -493,19 +500,19 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		glb.append(this.statsTextBox = new JTextField(), 2, 1);
-		this.statsTextBox.setBorder(null);
+		this.statsTextBox.setBorder(border);
 		this.statsTextBox.setPreferredSize(new Dimension(100, 12));
 		glb.nextLine();
 
 		glb.append(this.companyMembersTextBox = new JTextField(), 3, 1);
-		this.companyMembersTextBox.setBorder(null);
+		this.companyMembersTextBox.setBorder(border);
 		this.companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
 		Font f = GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, 11);
 		this.companyMembersTextBox.setFont(f);
 		glb.nextLine();
 
 		glb.append(this.infoSourcesTextBox = new JTextField(), 2, 1);
-		this.infoSourcesTextBox.setBorder(null);
+		this.infoSourcesTextBox.setBorder(border);
 		this.infoSourcesTextBox.setPreferredSize(new Dimension(100, 12));
 		glb.nextLine();
 
@@ -515,7 +522,7 @@ public class CharacterViewer extends ObjectViewer {
 
 			@Override
 			protected String[] createColumnPropertyNames() {
-				return new String[] { "no", "name", "stats" };
+				return new String[] { "no", "name", "stats" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 
 			@Override
@@ -543,8 +550,8 @@ public class CharacterViewer extends ObjectViewer {
 					ArtifactInfo a = (ArtifactInfo) tableModel.getRow(CharacterViewer.this.artifactsTable.getSelectedRow());
 					if (a == null)
 						return;
-					final String descr = "#" + a.getNo() + " - " + a.getName() + "\n" + a.getAlignment() + "\n" + a.getPower1() + ", " + a.getPower2();
-					MessageDialog dlg = new MessageDialog("Artifact Info", descr);
+					final String descr = Messages.getString("CharacterViewer.ArtifactInfoText", new Object[] {a.getNo(), a.getName(), a.getAlignment(), a.getPower1(), a.getPower2()}); //$NON-NLS-1$
+					MessageDialog dlg = new MessageDialog(Messages.getString("CharacterViewer.ArtifactInfo.title"), descr); //$NON-NLS-1$
 					dlg.showDialog();
 				}
 			}
@@ -554,7 +561,7 @@ public class CharacterViewer extends ObjectViewer {
 		tableModel.setRowNumbers(false);
 		this.artifactsTable.setModel(tableModel);
 		TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 16, 100, 100 });
-		this.artifactsTable.setBorder(null);
+		this.artifactsTable.setBorder(border);
 
 		glb.nextLine();
 		glb.append(new JLabel() {
@@ -571,7 +578,7 @@ public class CharacterViewer extends ObjectViewer {
 
 			@Override
 			protected String[] createColumnPropertyNames() {
-				return new String[] { "spellId", "name", "proficiency" };
+				return new String[] { "spellId", "name", "proficiency" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 
 			@Override
@@ -582,7 +589,7 @@ public class CharacterViewer extends ObjectViewer {
 		spellModel.setRowNumbers(false);
 		this.spellsTable.setModel(spellModel);
 		TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 30, 90, 30 });
-		this.spellsTable.setBorder(null);
+		this.spellsTable.setBorder(border);
 
 		this.spellsTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -604,11 +611,11 @@ public class CharacterViewer extends ObjectViewer {
 						return;
 
 					Game g = GameHolder.instance().getGame();
-					SpellInfo si = g.getMetadata().getSpells().findFirstByProperty("number", sp.getSpellId());
+					SpellInfo si = g.getMetadata().getSpells().findFirstByProperty("number", sp.getSpellId()); //$NON-NLS-1$
 
-					String descr = si.getNumber() + " - " + si.getName() + "\n" + "Description: " + si.getDescription() + "\n" + "Difficulty: " + si.getDifficulty() + "\n" + "Required Info: " + si.getRequiredInfo() + "\n" + "Requirements: " + si.getRequirements() + "\n" + "Order: " + si.getOrderNumber();
+					String descr = Messages.getString("CharacterViewer.SpellSummary",new Object[] {si.getNumber(), si.getName(), si.getDescription(), si.getDifficulty(), si.getRequiredInfo(), si.getRequirements(), si.getOrderNumber()}); //$NON-NLS-1$
 
-					MessageDialog dlg = new MessageDialog("Spell Info", descr);
+					MessageDialog dlg = new MessageDialog(Messages.getString("CharacterViewer.SpellInfo.text"), descr); //$NON-NLS-1$
 					dlg.showDialog();
 				}
 			}
@@ -629,22 +636,24 @@ public class CharacterViewer extends ObjectViewer {
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px");
+		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
 		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px");
+		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
 		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
-		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px");
+		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
 		this.orderPanel = new JPanel();
 		this.orderPanel.add(tlb.getPanel());
 		this.orderPanel.setBackground(Color.white);
+		this.orderPanel.setBorder(border);
 		glb.append(this.orderPanel, 2, 1);
-		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon"))));
+		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon")))); //$NON-NLS-1$
 		this.swapOrdersIconCmd.setVerticalAlignment(SwingConstants.CENTER);
-		this.swapOrdersIconCmd.setToolTipText("Swap orders");
+		this.swapOrdersIconCmd.setToolTipText(Messages.getString("CharacterViewer.SwapOrders.tooltip")); //$NON-NLS-1$
 		this.swapOrdersIconCmd.setPreferredSize(new Dimension(16, 16));
+		this.swapOrdersIconCmd.setBorder(border);
 		this.swapOrdersIconCmd.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -658,7 +667,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
 		tlb = new TableLayoutBuilder();
-		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px");
+		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
 		notesPanel.setBackground(Color.white);
 		glb.append(notesPanel, 6, 1);
@@ -807,43 +816,43 @@ public class CharacterViewer extends ObjectViewer {
 
 	private class AddRefuseChallengeCommand extends AddOrderCommand {
 		public AddRefuseChallengeCommand() {
-			super(215, "");
+			super(215, ""); //$NON-NLS-1$
 		}
 	}
 
 	private class AddCreateCampCommand extends AddOrderCommand {
 		public AddCreateCampCommand() {
-			super(555, "");
+			super(555, ""); //$NON-NLS-1$
 		}
 	}
 
 	private class AddInfYourCommand extends AddOrderCommand {
 		public AddInfYourCommand() {
-			super(520, "");
+			super(520, ""); //$NON-NLS-1$
 		}
 	}
 
 	private class AddInfOtherCommand extends AddOrderCommand {
 		public AddInfOtherCommand() {
-			super(525, "");
+			super(525, ""); //$NON-NLS-1$
 		}
 	}
 
 	private class AddPrenticeCommand extends AddOrderCommand {
 		public AddPrenticeCommand() {
-			super(710, "");
+			super(710, ""); //$NON-NLS-1$
 		}
 	}
 
 	private class AddReconCommand extends AddOrderCommand {
 		public AddReconCommand() {
-			super(925, "");
+			super(925, ""); //$NON-NLS-1$
 		}
 	}
 
 	private class AddImprovePopCommand extends AddOrderCommand {
 		public AddImprovePopCommand() {
-			super(550, "");
+			super(550, ""); //$NON-NLS-1$
 		}
 	}
 
@@ -881,7 +890,8 @@ public class CharacterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			this.cancel = true;
 			Character c = (Character) getFormObject();
-			ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete character '" + c.getName() + "'?") {
+			ConfirmationDialog cdlg = new ConfirmationDialog(Messages.getString("standardMessages.Warning"),
+					Messages.getString("CharacterViewer.AreYouSure", new Object[]{c.getName()})) { //$NON-NLS-1$ //$NON-NLS-2$
 				@Override
 				protected void onCancel() {
 					super.onCancel();
@@ -896,12 +906,12 @@ public class CharacterViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancel)
 				return;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
-			Army a = armies.findFirstByProperty("commanderName", c.getName());
+			Army a = armies.findFirstByProperty("commanderName", c.getName()); //$NON-NLS-1$
 			if (a != null) {
-				MessageDialog dlg = new MessageDialog("Error", "The character commands an army and cannot be deleted.\nDelete the army first if you want to delete the character.");
+				ErrorDialog dlg = new ErrorDialog(Messages.getString("CharacterViewer.CantDelete")); //$NON-NLS-1$ //$NON-NLS-2$
 				dlg.showDialog();
 				return;
 			}
@@ -927,8 +937,8 @@ public class CharacterViewer extends ObjectViewer {
 
 				@Override
 				protected boolean onFinish() {
-					if (!form.getFormModel().getValueModel("name").getValue().equals(charName)) {
-						ErrorDialog errDlg = new ErrorDialog("You cannot change the name of the character. Delete the character and create a new one if you want to change the name.");
+					if (!form.getFormModel().getValueModel("name").getValue().equals(charName)) { //$NON-NLS-1$
+						ErrorDialog errDlg = new ErrorDialog(Messages.getString("CharacterViewer.CantRename")); //$NON-NLS-1$
 						errDlg.showDialog();
 						return false;
 					}
@@ -939,8 +949,7 @@ public class CharacterViewer extends ObjectViewer {
 					return true;
 				}
 			};
-			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-			dialog.setTitle(ms.getMessage("editCharacter.title", new Object[] { String.valueOf(c.getName()) }, Locale.getDefault()));
+			dialog.setTitle(Messages.getString("editCharacter.title", new Object[] { String.valueOf(c.getName()) })); //$NON-NLS-1$
 			dialog.showDialog();
 		}
 	}
@@ -971,11 +980,11 @@ public class CharacterViewer extends ObjectViewer {
 
 		this.showArtifactsCommand.setEnabled(c != null);
 		this.showSpellsCommand.setEnabled(c != null && c.getSpells().size() > 0);
-		this.showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals(""));
+		this.showResultsCommand.setEnabled(c != null && c.getOrderResults() != null && !c.getOrderResults().equals("")); //$NON-NLS-1$
 
-		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() });
+		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", this.editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", this.deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", this.sendOrdersByChatCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", this.editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", this.deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", this.sendOrdersByChatCommand }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		return group.createPopupMenu();
 	}
 
@@ -1000,7 +1009,7 @@ public class CharacterViewer extends ObjectViewer {
 
 	public void updateNotes() {
 		Character c = (Character) getFormObject();
-		Note n = (Note) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c);
+		Note n = (Note) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c); //$NON-NLS-1$
 		if (n != null) {
 			n.setText(this.notes.getText());
 		}
@@ -1014,7 +1023,7 @@ public class CharacterViewer extends ObjectViewer {
 			Game g = GameHolder.instance().getGame();
 			int ct = g.getCurrentTurn();
 			ArrayList<String> ret = new ArrayList<String>();
-			ret.add("T" + ct + ": " + c.getStatString());
+			ret.add(Messages.getString("CharacterViewer.StatHistory",new Object[] {ct, c.getStatString()})); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int i = g.getCurrentTurn() - 1; i >= Math.max(0, g.getCurrentTurn() - 10); i--) {
 				Turn t = g.getTurn(i);
 				if (t == null)
@@ -1022,9 +1031,9 @@ public class CharacterViewer extends ObjectViewer {
 				Character pc = t.getCharById(c.getId());
 				if (pc == null)
 					continue;
-				ret.add("T" + i + ": " + pc.getStatString());
+				ret.add(Messages.getString("CharacterViewer.StatHistory", new Object[] {i, pc.getStatString()})); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			String title = "Skill history for " + c.getName();
+			String title = Messages.getString("CharacterViewer.SkillHistory", new Object[] {c.getName()}); //$NON-NLS-1$
 			JOptionPane.showMessageDialog(getActiveWindow().getPage().getControl(), ret.toArray(), title, JOptionPane.INFORMATION_MESSAGE);
 		}
 

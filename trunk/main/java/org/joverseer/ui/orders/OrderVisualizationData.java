@@ -10,6 +10,7 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.InputDialog;
 
 /**
@@ -32,22 +33,23 @@ public class OrderVisualizationData {
             final Order order = o;
             // movement order
             // check if character has army
-            Army a = (Army)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", o.getCharacter().getName());
+            Army a = (Army)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", o.getCharacter().getName()); //$NON-NLS-1$
             if (a == null) {
                 // get info
                 InputDialog dlg = new InputDialog();
                 JCheckBox fed;
                 JCheckBox cavalry;
-                dlg.setTitle("Order - Provide Additional Information");
-                dlg.addComponent("Fed :", fed = new JCheckBox());
-                dlg.addComponent("Cavalry :", cavalry = new JCheckBox());
-                String txt = o.getCharacter().getName() + "'s army (" + o.getCharacter().getHexNo() + "): Enter the required information for drawing the army move."; 
+                dlg.setTitle(Messages.getString("OrderVisualizationData.title")); //$NON-NLS-1$
+                dlg.addComponent(Messages.getString("OrderVisualizationData.fed"), fed = new JCheckBox()); //$NON-NLS-1$
+                dlg.addComponent(Messages.getString("OrderVisualizationData.cavalry"), cavalry = new JCheckBox()); //$NON-NLS-1$
+                String txt = Messages.getString("OrderVisualizationData.EnterInforForMove", 
+                		new Object[] {o.getCharacter().getName(), o.getCharacter().getHexNo()});  //$NON-NLS-1$ //$NON-NLS-2$
                 dlg.init(txt);
                 dlg.showDialog();
                 if (dlg.getResult()) {
                     this.orders.add(order);
-                    setAdditionalInfo(order, "cavalry", cavalry.isSelected());
-                    setAdditionalInfo(order, "fed", fed.isSelected());
+                    setAdditionalInfo(order, "cavalry", cavalry.isSelected()); //$NON-NLS-1$
+                    setAdditionalInfo(order, "fed", fed.isSelected()); //$NON-NLS-1$
                 }
             } else {
                 this.orders.add(o);
@@ -57,18 +59,18 @@ public class OrderVisualizationData {
         	JTextField hexNo = new JTextField();
         	Order oo = Order.getOtherOrder(o);
         	if (oo.getOrderNo() == 810 || oo.getOrderNo() == 820 || oo.getOrderNo() == 870) {
-        		if (oo.getParameter(0) != null && !oo.getParameter(0).equals("") && !oo.getParameter(0).equals("-")) {
+        		if (oo.getParameter(0) != null && !oo.getParameter(0).equals("") && !oo.getParameter(0).equals("-")) { //$NON-NLS-1$ //$NON-NLS-2$
         			hexNo.setText(oo.getParameter(0));
         		}
         	}
-        	dlg.setTitle("Order - Provide Additional Information");
-            dlg.addComponent("Location after movement phase :", hexNo);
-            String txt = o.getCharacter().getName() + "'s Recon/ScoArea: Enter the required information for drawing the character's Recon/ScoArea.";
+        	dlg.setTitle(Messages.getString("OrderVisualizationData.title")); //$NON-NLS-1$
+            dlg.addComponent(Messages.getString("OrderVisualizationData.LocationColon"), hexNo); //$NON-NLS-1$
+            String txt = Messages.getString("OrderVisualizationData.EnterInfoForRecon", new Object[] {o.getCharacter().getName()}); //$NON-NLS-1$
             dlg.init(txt);
             dlg.showDialog();
             if (dlg.getResult()) {
                 this.orders.add(o);
-                setAdditionalInfo(o, "hexNo", hexNo.getText());
+                setAdditionalInfo(o, "hexNo", hexNo.getText()); //$NON-NLS-1$
             }
         } else {
             this.orders.add(o);

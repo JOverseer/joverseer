@@ -48,6 +48,10 @@ public class ArmyElement implements Serializable {
         return String.valueOf(getNumber()) + getArmyElementType().getType();
     }
 
+    public String getLocalizedDescription() {
+        return String.valueOf(getNumber()) + getArmyElementType().getLocalizedUC();
+    }
+
     
     public int getArmor() {
         return this.armor;

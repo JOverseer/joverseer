@@ -349,8 +349,7 @@ public class ExportOrdersForm extends AbstractForm {
 				}
 			} catch (Exception exc) {
 				logger.error(exc);
-				MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-				MessageDialog md = new MessageDialog(ms.getMessage("errorDialog.title", new String[] {}, Locale.getDefault()), exc.getMessage());
+				ErrorDialog md = new ErrorDialog(exc.getMessage());
 				md.showDialog();
 			}
 		}

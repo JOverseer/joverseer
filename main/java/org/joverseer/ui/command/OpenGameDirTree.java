@@ -24,6 +24,7 @@ import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -66,8 +67,8 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 		this.turnFolders.clear();
 
-		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-		ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[] {}, Locale.getDefault())) {
+		ConfirmationDialog dlg = new ConfirmationDialog(Messages.getString("changeAllegiancesConfirmationDialog.title"),
+				Messages.getString("changeAllegiancesConfirmationDialog.message")) {
 			@Override
 			protected void onConfirm() {
 				ChangeNationAllegiances cmd = new ChangeNationAllegiances();
@@ -139,7 +140,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 					return null;
 				}
 			};
-			this.dialog.setTitle(ms.getMessage("importFilesDialog.title", new Object[] {}, Locale.getDefault()));
+			this.dialog.setTitle(Messages.getString("importFilesDialog.title"));
 			this.dialog.showDialog();
 		}
 	}

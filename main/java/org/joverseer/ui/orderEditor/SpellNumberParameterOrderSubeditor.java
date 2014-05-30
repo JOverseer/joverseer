@@ -22,6 +22,7 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -47,7 +48,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     protected void loadSpellCombo() {
     	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     	Character c = getOrder().getCharacter();
-        this.parameter.addItem("");
+        this.parameter.addItem(""); //$NON-NLS-1$
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
             if (si.getOrderNumber() == this.orderNo) {
 	        	 boolean found = false;
@@ -56,15 +57,15 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
 	                     found = true;
 	                 }
 	             }
-	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
+	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
     }
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
-        tlb.cell(this.parameter = new JComboBox(), "colspec=left:180px");
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px"); //$NON-NLS-1$
+        tlb.cell(this.parameter = new JComboBox(), "colspec=left:180px"); //$NON-NLS-1$
         this.parameter.setPreferredSize(new Dimension(180, 18));
         this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
 			@Override
@@ -73,7 +74,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
                 	Transferable t = dtde.getTransferable();
                 	CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
                 	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
-                	String txt = "";
+                	String txt = ""; //$NON-NLS-1$
                 	if (t.isDataFlavorSupported(characterDataFlavor)) {
                 		txt = ((Character)t.getTransferData(characterDataFlavor)).getId();
                 		txt = Character.getSpacePaddedIdFromId(txt);
@@ -84,7 +85,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
                 	}
                 	JComboBox cmb = (JComboBox)SpellNumberParameterOrderSubeditor.this.parameter;
                 	for (int i=0; i<cmb.getItemCount(); i++) {
-                		if (cmb.getItemAt(i).toString().startsWith(txt + " ")) {
+                		if (cmb.getItemAt(i).toString().startsWith(txt + " ")) { //$NON-NLS-1$
                 			cmb.setSelectedIndex(i);
                 		}
                 	};
@@ -106,7 +107,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
         if (o.getParameter(paramNo) != null) {
             String spellId = o.getParameter(paramNo);
             for (int i=0; i<this.parameter.getItemCount(); i++) {
-                if (this.parameter.getItemAt(i).toString().startsWith(spellId + " ")) {
+                if (this.parameter.getItemAt(i).toString().startsWith(spellId + " ")) { //$NON-NLS-1$
                     this.parameter.setSelectedIndex(i);
                     this.spellNo.setText(o.getParameter(paramNo));
                     valueChanged();
@@ -119,9 +120,9 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
 			public void actionPerformed(ActionEvent arg0) {
                 if (SpellNumberParameterOrderSubeditor.this.parameter.getSelectedItem() != null) {
                     String spId = SpellNumberParameterOrderSubeditor.this.parameter.getSelectedItem().toString();
-                    SpellNumberParameterOrderSubeditor.this.spellNo.setText(spId.substring(0, spId.indexOf(" ")));
+                    SpellNumberParameterOrderSubeditor.this.spellNo.setText(spId.substring(0, spId.indexOf(" "))); //$NON-NLS-1$
                 } else {
-                    SpellNumberParameterOrderSubeditor.this.spellNo.setText("");
+                    SpellNumberParameterOrderSubeditor.this.spellNo.setText(""); //$NON-NLS-1$
                 }
                 updateEditor();
             }

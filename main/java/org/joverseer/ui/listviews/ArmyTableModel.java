@@ -5,6 +5,7 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.UIUtils;
 import org.springframework.context.MessageSource;
 
 /**
@@ -51,7 +52,7 @@ public class ArmyTableModel extends ItemTableModel {
 			if (army.getElements().size() > 0) {
 				String txt = "";
 				for (ArmyElement element : army.getElements()) {
-					txt += (txt.equals("") ? "" : " ") + element.getDescription();
+					txt += UIUtils.OptSpace(txt,element.getLocalizedDescription());
 				}
 				return txt;
 			} else if (army.getTroopCount() > 0) {
@@ -78,7 +79,7 @@ public class ArmyTableModel extends ItemTableModel {
 		} else if (i == 8) {
 			String chars = "";
 			for (String ch : army.getCharacters()) {
-				chars += (chars.equals("") ? "" : ", ") + ch;
+				chars += UIUtils.OptCommaSpace(chars,ch);
 			}
 			return chars;
 		} else {

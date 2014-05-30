@@ -26,6 +26,7 @@ import org.joverseer.domain.Note;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.DeleteNoteCommand;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
@@ -43,7 +44,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class NotesViewer extends ObjectViewer implements ActionListener {
 
-    public static final String FORM_PAGE = "NotesViewer";
+    public static final String FORM_PAGE = "NotesViewer"; //$NON-NLS-1$
 
     ArrayList<JScrollPane> scps = new ArrayList<JScrollPane>();
     ArrayList<JTextArea> texts = new ArrayList<JTextArea>();
@@ -87,8 +88,8 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
     @Override
 	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-        Icon ico = new ImageIcon(imgSource.getImage("note.icon"));
+        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+        Icon ico = new ImageIcon(imgSource.getImage("note.icon")); //$NON-NLS-1$
 
         for (int i = 0; i < 20; i++) {
             final JLabelButton l = new JLabelButton(ico);
@@ -108,7 +109,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             });
             this.icons.add(l);
 
-            tlb.cell(this.icons.get(i), "valign=top colspec=left:12px");
+            tlb.cell(this.icons.get(i), "valign=top colspec=left:12px"); //$NON-NLS-1$
 
             final JTextArea ta = new JTextArea();
             ta.setWrapStyleWord(true);
@@ -158,7 +159,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             notesPane.getVerticalScrollBar().setPreferredSize(new Dimension(16, 10));
             notesPane.setBorder(null);
             this.scps.add(notesPane);
-            tlb.cell(notesPane, "colspec=left:280px");
+            tlb.cell(notesPane, "colspec=left:280px"); //$NON-NLS-1$
             tlb.row();
         }
         JPanel p = tlb.getPanel();
@@ -183,10 +184,10 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
     protected JPopupMenu createPopupContextMenu(int idx) {
         Note n = ((ArrayList<Note>) getFormObject()).get(idx);
         AddEditNoteCommand editNote = new AddEditNoteCommand(n);
-        editNote.setLabel("Edit Note");
+        editNote.setLabel(Messages.getString("NotesViewer.EditNote")); //$NON-NLS-1$
         DeleteNoteCommand deleteNote = new DeleteNoteCommand(n);
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
-                "noteCommandGroup",
+                "noteCommandGroup", //$NON-NLS-1$
                 new Object[] {
                             editNote, deleteNote
                             }

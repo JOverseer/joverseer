@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
@@ -25,6 +27,7 @@ import org.springframework.richclient.table.BaseTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.swing.JideTabbedPane;
+import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 
 /**
  * The InfoView
@@ -44,64 +47,65 @@ public class InfoView extends AbstractView {
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 
-		lb.separator("Population Centers");
+		//TODO: fix the files so that we can have language bundles.
+		lb.separator(Messages.getString("InfoView.PC"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/popCenters.csv", 700, 100), "align=left");
-		lb.relatedGapRow();
-
-		lb.separator("Fortifications");
-		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/fortifications.csv", 400, 100), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/popCenters", 700, 100), "align=left");
 		lb.relatedGapRow();
 
-		lb.separator("General Costs");
+		lb.separator(Messages.getString("InfoView.Fortifications"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/generalCosts.csv", 600, 240), "align=left");
-		lb.relatedGapRow();
-
-		lb.separator("Maintenance Costs");
-		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/maintenanceCosts.csv", 400, 200), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/fortifications", 400, 100), "align=left");
 		lb.relatedGapRow();
 
-		lb.separator("Character Titles");
+		lb.separator(Messages.getString("InfoView.GeneralCosts"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/characterTitles.csv", 400, 200), "align=left");
-		lb.relatedGapRow();
-
-		lb.separator("Movement");
-		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/movementCosts.csv", 600, 200), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/generalCosts", 600, 240), "align=left");
 		lb.relatedGapRow();
 
-		lb.separator("Tactic vs Tactic");
+		lb.separator(Messages.getString("InfoView.MaintenanceCosts"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/tacticVsTactic.csv", 400, 120), "align=left");
-		lb.relatedGapRow();
-
-		lb.separator("Troop Type - Tactics");
-		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/troopTactics.csv", 600, 120), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/maintenanceCosts", 400, 200), "align=left");
 		lb.relatedGapRow();
 
-		lb.separator("Troop Combat Strength");
+		lb.separator(Messages.getString("InfoView.CharacterTitles"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/armyCombatValues.csv", 300, 120), "align=left");
-		lb.relatedGapRow();
-
-		lb.separator("Troop Terrain Modifiers");
-		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/troopTerrainPerformance.csv", 600, 120), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/characterTitles", 400, 200), "align=left");
 		lb.relatedGapRow();
 
-		lb.separator("Climate Production Modifiers");
+		lb.separator(Messages.getString("InfoView.Movement"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/climateProduction.csv", 600, 140), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/movementCosts", 600, 200), "align=left");
 		lb.relatedGapRow();
 
-		lb.separator("Dragons (player collected information - i.e. not official)");
+		lb.separator(Messages.getString("InfoView.TacticvsTactic"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/dragons2.csv", 850, 1100), "align=left");
+		lb.cell(createTableFromResource("classpath:metadata/info/tacticVsTactic", 400, 120), "align=left");
+		lb.relatedGapRow();
+
+		lb.separator(Messages.getString("InfoView.TroopTypeTactics"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromResource("classpath:metadata/info/troopTactics", 600, 120), "align=left");
+		lb.relatedGapRow();
+
+		lb.separator(Messages.getString("InfoView.TroopCombatStrength"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromResource("classpath:metadata/info/armyCombatValues", 300, 120), "align=left");
+		lb.relatedGapRow();
+
+		lb.separator(Messages.getString("InfoView.TroopTerrainModifiers"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromResource("classpath:metadata/info/troopTerrainPerformance", 600, 120), "align=left");
+		lb.relatedGapRow();
+
+		lb.separator(Messages.getString("InfoView.ClimateProductionModifiers"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromResource("classpath:metadata/info/climateProduction", 600, 140), "align=left");
+		lb.relatedGapRow();
+
+		lb.separator(Messages.getString("InfoView.Dragons"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromResource("classpath:metadata/info/dragons2",850, 1100), "align=left");
 		lb.relatedGapRow();
 
 		JScrollPane scp = new JScrollPane(lb.getPanel());
@@ -115,7 +119,13 @@ public class InfoView extends AbstractView {
 	 * uri
 	 */
 	protected JComponent createTableFromResource(String uri, int w, int h) {
-		Resource res = Application.instance().getApplicationContext().getResource(uri);
+		Resource res;
+		Locale current =Locale.getDefault();
+		final String localizedUri = uri + "_" + current.getLanguage() + ".csv";
+		res = Application.instance().getApplicationContext().getResource(localizedUri);
+		if (!res.exists()) {
+			res = Application.instance().getApplicationContext().getResource(uri + ".csv");
+		}
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream()));
 
@@ -182,7 +192,7 @@ public class InfoView extends AbstractView {
 		}
 
 		public void setColNames(ArrayList<String> colNames) {
-			this.colNames = colNames;
+			this.colNames =colNames;
 		}
 
 		public ArrayList<String[]> getValues() {
@@ -217,7 +227,7 @@ public class InfoView extends AbstractView {
 
 		@Override
 		protected String[] createColumnNames() {
-			return this.colNames.toArray(new String[] {});
+			return getColumnNames();
 		}
 
 		@Override
@@ -234,6 +244,10 @@ public class InfoView extends AbstractView {
 		public Class<?> getColumnClass(int arg0) {
 			return String.class;
 		}
+
+	    protected String[] getColumnNames() {
+			return this.colNames.toArray(new String[this.colNames.size()]);
+	    }
 
 	}
 

@@ -1,7 +1,5 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
@@ -11,7 +9,7 @@ import org.joverseer.ui.combatCalculator.CombatForm;
 import org.joverseer.ui.combatCalculator.CombatFormHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.MessageSource;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
@@ -71,8 +69,7 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
                 };
             }
         };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("combatCalculator.title", new Object[]{}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("combatCalculator.title"));
         dialog.setModal(false);
         dialog.showDialog();
     }

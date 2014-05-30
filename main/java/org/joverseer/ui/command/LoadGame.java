@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Locale;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
@@ -19,7 +18,8 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.MessageSource;
+import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
@@ -36,11 +36,11 @@ public class LoadGame extends ActionCommand {
     String fname = null;
     
     public LoadGame() {
-        super("LoadGameCommand");
+        super("LoadGameCommand"); //$NON-NLS-1$
     }
     
     public LoadGame(String fname) {
-        super("LoadGameCommand");
+        super("LoadGameCommand"); //$NON-NLS-1$
         this.fname = fname;
     }
 
@@ -48,10 +48,9 @@ public class LoadGame extends ActionCommand {
 	protected void doExecuteCommand() {
         if (GameHolder.hasInitializedGame()) {
             // show warning
-            MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
             ConfirmationDialog md = new ConfirmationDialog(
-                    ms.getMessage("confirmLoadGameDialog.title", new String[]{}, Locale.getDefault()),
-                    ms.getMessage("confirmLoadGameDialog.message", new String[]{}, Locale.getDefault()))
+            		Messages.getString("confirmLoadGameDialog.title"), //$NON-NLS-1$
+            		Messages.getString("confirmLoadGameDialog.message")) //$NON-NLS-1$
             {
                 @Override
 				protected void onConfirm() {
@@ -69,13 +68,13 @@ public class LoadGame extends ActionCommand {
         if (this.fname == null) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-            fileChooser.setApproveButtonText("Load");
+            fileChooser.setApproveButtonText("Load"); //$NON-NLS-1$
             Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-            String saveDir = prefs.get("saveDir", null);
+            String saveDir = prefs.get("saveDir", null); //$NON-NLS-1$
             if (saveDir != null) {
                 fileChooser.setCurrentDirectory(new File(saveDir));
             }
-            fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file"));
+            fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file")); //$NON-NLS-1$ //$NON-NLS-2$
             if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
                 this.fname = fileChooser.getSelectedFile().getAbsolutePath(); 
             }
@@ -85,24 +84,24 @@ public class LoadGame extends ActionCommand {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
             File f = new File(this.fname);
             try {
-                GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+                GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"); //$NON-NLS-1$
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
                 gh.setGame(g);
                 gh.setFile(this.fname);
 
                 MapMetadataUtils mmu = new MapMetadataUtils();
-                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
                 mmu.setMapSize(mm, g.getMetadata().getGameType());
 
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, g));
-                if (g.getParameter("horizontalMapScroll") != null) {
+                if (g.getParameter("horizontalMapScroll") != null) { //$NON-NLS-1$
                     MapPanel mp = MapPanel.instance();
                     JScrollPane scp = (JScrollPane)mp.getParent().getParent();
                     try {
-                        int hv = Integer.parseInt(g.getParameter("horizontalMapScroll"));
-                        int vv = Integer.parseInt(g.getParameter("verticalMapScroll"));
+                        int hv = Integer.parseInt(g.getParameter("horizontalMapScroll")); //$NON-NLS-1$
+                        int vv = Integer.parseInt(g.getParameter("verticalMapScroll")); //$NON-NLS-1$
                         scp.getHorizontalScrollBar().setValue(hv);
                         scp.getVerticalScrollBar().setValue(vv);
                     }
@@ -110,10 +109,10 @@ public class LoadGame extends ActionCommand {
                         
                     }
                 }
-                if (g.getParameter("selHexX") != null) {
+                if (g.getParameter("selHexX") != null) { //$NON-NLS-1$
                     try {
-                        int hx = Integer.parseInt(g.getParameter("selHexX"));
-                        int hy = Integer.parseInt(g.getParameter("selHexY"));
+                        int hx = Integer.parseInt(g.getParameter("selHexX")); //$NON-NLS-1$
+                        int hy = Integer.parseInt(g.getParameter("selHexY")); //$NON-NLS-1$
                         Application.instance().getApplicationContext().publishEvent(
                                 new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), new Point(hx, hy), g));
                     }
@@ -126,22 +125,15 @@ public class LoadGame extends ActionCommand {
                 
             }
             catch (EOFException exc) {
-            	MessageDialog d = new MessageDialog("Error", "The game file is corrupt. This can be caused if you interrupt the program when saving the file, or if you didn't finish downloading the file from an online source.");
+            	ErrorDialog d = new ErrorDialog(Messages.getString("LoadGame.CorruptFile")); //$NON-NLS-1$ //$NON-NLS-2$
                 d.showDialog();
             }
             catch (FileNotFoundException exc) {
-            	MessageDialog d = new MessageDialog("Error", "JOverseer could not find the file '" + f.getAbsolutePath() + "'.");
+            	ErrorDialog d = new ErrorDialog(Messages.getString("LoadGame.CantFind", new String[] { f.getAbsolutePath() })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 d.showDialog();
             }
             catch (Exception exc) {
-            	String msg;
-            	exc.printStackTrace();
-            	if (exc.getMessage() == null) {
-            		msg = "Unexpected Error";
-            	} else {
-            		msg = exc.getMessage();
-            	}
-                MessageDialog d = new MessageDialog("Error", msg);
+                ErrorDialog d = new ErrorDialog(exc);
                 d.showDialog();
                 // do nothing
                 // todo fix

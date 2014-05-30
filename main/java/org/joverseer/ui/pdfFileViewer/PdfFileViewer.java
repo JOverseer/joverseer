@@ -24,6 +24,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -48,7 +49,7 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
         TableLayoutBuilder lb = new TableLayoutBuilder();
-        lb.cell(this.nationCombo = new JComboBox(), "align=left");
+        lb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
         this.nationCombo.setPreferredSize(new Dimension(200, 24));
         this.nationCombo.addActionListener(new ActionListener() {
 
@@ -59,9 +60,9 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
                     return;
                 Nation n = g.getMetadata().getNationByName(PdfFileViewer.this.nationCombo.getSelectedItem().toString());
                 PdfTurnText ptt = (PdfTurnText) g.getTurn().getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
-                        "nationNo", n.getNumber());
+                        "nationNo", n.getNumber()); //$NON-NLS-1$
                 if (ptt == null) {
-                    PdfFileViewer.this.text.setText("");
+                    PdfFileViewer.this.text.setText(""); //$NON-NLS-1$
                 } else {
                     PdfFileViewer.this.text.setText(ptt.getText());
                     PdfFileViewer.this.text.setCaretPosition(0);
@@ -73,14 +74,14 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
         });
 
         lb.gapCol();
-        JLabel lbl = new JLabel("Find :");
+        JLabel lbl = new JLabel(Messages.getString("PdfFileViewer.FindColon")); //$NON-NLS-1$
         lb.cell(lbl);
         lb.gapCol();
         this.search = new JTextField();
         this.search.setPreferredSize(new Dimension(100, 20));
         lb.cell(this.search);
         lb.gapCol();
-        JButton btnSearch = new JButton("Next");
+        JButton btnSearch = new JButton(Messages.getString("PdfFileViewer.Next")); //$NON-NLS-1$
         lb.cell(btnSearch);
         btnSearch.addActionListener(new ActionListener() {
 
@@ -91,13 +92,13 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
 
         });
 
-        tlb.cell(lb.getPanel(), "align=left");
+        tlb.cell(lb.getPanel(), "align=left"); //$NON-NLS-1$
         tlb.row();
 
         this.text = new JTextArea();
         // text.setLineWrap(true);
         // text.setWrapStyleWord(true);
-        this.text.setFont(GraphicUtils.getFont("Monaco ", Font.PLAIN, 11));
+        this.text.setFont(GraphicUtils.getFont("Monaco ", Font.PLAIN, 11)); //$NON-NLS-1$
         tlb.cell(new JScrollPane(this.text));
 
         this.panel = tlb.getPanel();
@@ -115,7 +116,7 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
             return;
         for (Nation n : (ArrayList<Nation>) g.getMetadata().getNations()) {
             NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy)
-                    .findFirstByProperty("nationNo", n.getNumber());
+                    .findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
             // load only nations for which economy has been imported
             if (ne == null)
                 continue;

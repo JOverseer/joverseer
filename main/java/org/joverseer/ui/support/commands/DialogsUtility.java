@@ -1,7 +1,5 @@
 package org.joverseer.ui.support.commands;
 
-import java.util.Locale;
-
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
@@ -9,10 +7,10 @@ import org.joverseer.domain.Encounter;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -44,8 +42,7 @@ public class DialogsUtility {
 	                }
 
     	};
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dlg.setTitle(ms.getMessage("orderResultsDialog.title", new Object[]{}, Locale.getDefault()));
+        dlg.setTitle(Messages.getString("orderResultsDialog.title"));
     	dlg.showDialog();
 	}
 	
@@ -82,15 +79,14 @@ public class DialogsUtility {
         Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
         Nation n = game.getMetadata().getNationByNum(nationNo);
         
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("combatNarrationDialog.title", new Object[]{String.valueOf(combat.getHexNo()), n.getName()}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("combatNarrationDialog.title", new Object[]{String.valueOf(combat.getHexNo()), n.getName()}));
         dialog.showDialog();
 	}
 	
 	public static void showEncounterDescription(Encounter encounter) {
 		String description = encounter.getDescription();
 		if (encounter.getCanInvestigate()) {
-			description += "\n\n(This is not an actual encounter but a report that the character can issue 290 \norders to investigate the encounter)";
+			description += Messages.getString("encounterDialog.canInvestigate");
 		}
 		final String descr = description;
         FormModel formModel = FormModelHelper.createFormModel(descr);
@@ -114,8 +110,7 @@ public class DialogsUtility {
                 };
             }
         };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("encounterDialog.title", new Object[]{encounter.getCharacter(), String.valueOf(encounter.getHexNo())}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("encounterDialog.title", new Object[]{encounter.getCharacter(), String.valueOf(encounter.getHexNo())}));
         dialog.showDialog();
 	}
 	

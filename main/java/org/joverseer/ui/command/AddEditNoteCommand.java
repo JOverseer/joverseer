@@ -1,7 +1,5 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.domain.Note;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -10,9 +8,9 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.UniqueIdGenerator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.EditNoteForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -66,8 +64,7 @@ public class AddEditNoteCommand extends ActionCommand {
                 return true;
             }
         };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("editNoteDialog.title", new Object[]{""}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("editNoteDialog.title"));
         dialog.setModal(false);
         dialog.showDialog();
     }

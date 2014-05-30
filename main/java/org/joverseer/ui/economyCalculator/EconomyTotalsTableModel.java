@@ -14,6 +14,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -26,36 +27,35 @@ import org.springframework.richclient.application.Application;
 public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     String[] columnHeaders = new String[] {"", "", "", "", "", ""};
     // "row headers", they go into column 0 of the table
-    String[] rowHeaders1 = new String[] {
-            "army maintenance",
-            "pc maintenance",
-            "char maintenance",
-            "total maintenance",
-            "pc losses"
-            };
-
+    String[] rowTags1 = new String[] {"army","pc","char","total","pclosses" };
+    String[] rowTags2 = new String[] {"taxRate","taxRevenue","gold","profits","surplus"};
+    String[] rowTags3 = new String[] {"ordersCost",null,"starting","final",null};
+    String[] rowHeaders1;
     // "row headers 2", they go into column 2 of the table
-    String[] rowHeaders2 = new String[] {
-            "tax rate",
-            "tax revenue",
-            "gold production",
-            "market profits",
-            "surplus"
-            };
+    String[] rowHeaders2;
 
     //  "row headers 3", they go into column 4 of the table
-    String[] rowHeaders3 = new String[] {
-            "orders cost",
-            "",
-            "starting gold",
-            "final gold",
-            ""
-            };
+    String[] rowHeaders3;
 
     int[] columnWidths = new int[] {170, 64, 128, 64, 128, 64};
 
     JTable table;
-    
+    public EconomyTotalsTableModel()
+    {
+    	super();
+		this.rowHeaders1 = new String[this.rowTags1.length];
+		this.rowHeaders2 = new String[this.rowTags2.length];
+		this.rowHeaders3 = new String[this.rowTags3.length];
+		for (int i=0;i<this.rowTags1.length;i++) {
+			this.rowHeaders1[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags1[i]);
+		}
+		for (int i=0;i<this.rowTags2.length;i++) {
+			this.rowHeaders2[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags2[i]);
+		}
+		for (int i=0;i<this.rowTags3.length;i++) {
+			this.rowHeaders3[i] = (this.rowTags3[i] == null) ? "" : Messages.getString("EconomyCalculator.Totals." +this.rowTags3[i]);
+		}
+    }
     public void setTable(JTable table) {
     	this.table = table;
     }

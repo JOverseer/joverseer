@@ -1,10 +1,8 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.CreditsForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
@@ -47,8 +45,7 @@ public class ShowCreditsCommand  extends ActionCommand {
                 };
             }
         };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("creditsDialog.title", new Object[]{}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("creditsDialog.title"));
         dialog.showDialog();
     }
 }

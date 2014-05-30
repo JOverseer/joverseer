@@ -14,6 +14,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -25,7 +26,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class SelectOrderchekerNationForm extends AbstractForm {
 
-    public static String FORM_PAGE = "selectOrderchekerNationForm";
+    public static String FORM_PAGE = "selectOrderchekerNationForm"; //$NON-NLS-1$
 
     JComboBox nationCombo;
     Nation nation;
@@ -44,7 +45,7 @@ public class SelectOrderchekerNationForm extends AbstractForm {
             return;
         for (Nation n : (ArrayList<Nation>) g.getMetadata().getNations()) {
             if (n.getNumber() == 0) continue;
-            PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n.getNumber());
+            PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
             if (pi == null) continue;
             this.nationCombo.addItem(n.getName());
             if (n.getNumber().equals(g.getMetadata().getNationNo())) {
@@ -64,9 +65,9 @@ public class SelectOrderchekerNationForm extends AbstractForm {
     @Override
 	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        tlb.cell(new JLabel("Select the nation to check:"));
+        tlb.cell(new JLabel(Messages.getString("SelectOrderchekerNationForm.2"))); //$NON-NLS-1$
         tlb.relatedGapRow();
-        tlb.cell(this.nationCombo = new JComboBox(), "align=left");
+        tlb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
         this.nationCombo.setPreferredSize(new Dimension(200, 20));
         this.nationCombo.addActionListener(new ActionListener() {
 

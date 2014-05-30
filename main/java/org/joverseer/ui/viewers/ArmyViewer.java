@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -22,7 +21,6 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmySizeEnum;
-import org.joverseer.domain.Character;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
@@ -43,13 +41,13 @@ import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditArmyForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -68,7 +66,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 public class ArmyViewer extends ObjectViewer {
 
-	public static final String FORM_PAGE = "ArmyViewer";
+	public static final String FORM_PAGE = "ArmyViewer"; //$NON-NLS-1$
 
 	boolean showColor = true;
 
@@ -109,9 +107,9 @@ public class ArmyViewer extends ObjectViewer {
 		this.nation.setPreferredSize(new Dimension(30, 12));
 
 		// button to show range of army on map
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(new Dimension(16, 16));
 		btnMenu.setIcon(ico);
 		glb.append(btnMenu);
@@ -160,14 +158,14 @@ public class ArmyViewer extends ObjectViewer {
 		super.setFormObject(object);
 
 		Army army = (Army) object;
-		this.commanderName.setText((army.getCommanderTitle() + " " + GraphicUtils.parseName(army.getCommanderName())).trim());
+		this.commanderName.setText((army.getCommanderTitle() + " " + GraphicUtils.parseName(army.getCommanderName())).trim()); //$NON-NLS-1$
 
 		if (getShowColor()) {
 			Color c = ColorPicker.getInstance().getColor(army.getNationAllegiance().toString());
 			this.commanderName.setForeground(c);
 		}
 
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		if (game == null)
 			return;
 		GameMetadata gm = game.getMetadata();
@@ -176,69 +174,69 @@ public class ArmyViewer extends ObjectViewer {
 		this.nation.setCaretPosition(0);
 		this.nation.setToolTipText(armyNation.getName());
 
-		this.armySize.setText("Size: " + army.getSize().toString());
+		this.armySize.setText(Messages.getString("ArmyViewer.SizeColon") + army.getSize().toString()); //$NON-NLS-1$
 		this.armySize.setCaretPosition(0);
-		this.armyType.setText(army.isNavy() ? "Navy" : "Army");
+		this.armyType.setText(army.isNavy() ? Messages.getString("ArmyViewer.Navy") : Messages.getString("ArmyViewer.Army")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (army.getElements().size() > 0) {
-			this.extraInfo.setText("");
+			this.extraInfo.setText(""); //$NON-NLS-1$
 			this.extraInfo.setVisible(true);
 			for (ArmyElement element : army.getElements()) {
-				this.extraInfo.setText(this.extraInfo.getText() + (this.extraInfo.getText().equals("") ? "" : " ") + element.getDescription());
+				this.extraInfo.setText(UIUtils.OptSpace(this.extraInfo.getText(), element.getLocalizedDescription()));
 			}
-			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents");
-			if (pval != null && pval.equals("yes")) {
-				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName());
+			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents"); //$NON-NLS-1$
+			if (pval != null && pval.equals("yes")) { //$NON-NLS-1$
+				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName()); //$NON-NLS-1$
 				int nhi = army.getENHI();
 				if (nhi > 0) {
-					this.extraInfo.setText(this.extraInfo.getText() + " (" + nhi + "enHI)");
+					this.extraInfo.setText(this.extraInfo.getText() + Messages.getString("ArmyViewer.enHI",new Object[] { nhi})); //$NON-NLS-1$
 				}
 			}
 		} else if (army.getTroopCount() > 0) {
 			this.extraInfo.setVisible(true);
-			this.extraInfo.setText("~ " + army.getTroopCount() + " men");
+			this.extraInfo.setText(Messages.getString("ArmyViewer.aboutNMen",new Object[] {army.getTroopCount()})); //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (army.getSize() != ArmySizeEnum.unknown && !army.isNavy()) {
 			ArmySizeEstimate ae = (new ArmySizeEstimator()).getSizeEstimateForArmySize(army.getSize(), ArmySizeEstimate.ARMY_TYPE);
 			if (ae == null || ae.getMin() == null) {
 				this.extraInfo.setVisible(false);
 			} else {
 				this.extraInfo.setVisible(true);
-				this.extraInfo.setText("est. " + ae.getMin() + "-" + ae.getMax() + " men");
+				this.extraInfo.setText(Messages.getString("ArmyViewer.estMinToMaxMen", new Object[] {ae.getMin(), ae.getMax()})); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		} else {
 			this.extraInfo.setVisible(false);
 		}
-		if (army.getElements().size() == 0 && "yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showArmyEstimate"))) {
-			ArmyEstimate estimate = (ArmyEstimate) game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", army.getCommanderName());
+		if (army.getElements().size() == 0 && "yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showArmyEstimate"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			ArmyEstimate estimate = (ArmyEstimate) game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", army.getCommanderName()); //$NON-NLS-1$
 			if (estimate != null) {
 				String troopInfo = estimate.getTroopInfo();
-				if (!troopInfo.equals("")) {
-					this.extraInfo.setText(this.extraInfo.getText() + " [~" + troopInfo + "]");
+				if (!troopInfo.equals("")) { //$NON-NLS-1$
+					this.extraInfo.setText(this.extraInfo.getText() + " [~" + troopInfo + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 					this.extraInfo.setVisible(true);
 				}
 			}
 		}
 		this.extraInfo.setCaretPosition(0);
-		String foodStr = "";
-		String foodTooltip = "";
+		String foodStr = ""; //$NON-NLS-1$
+		String foodTooltip = ""; //$NON-NLS-1$
 		if (army.getFood() != null) {
-			foodStr = army.getFood().toString() + " ";
+			foodStr = army.getFood().toString() + " "; //$NON-NLS-1$
 		}
 		Boolean fed = army.computeFed();
 
-		foodStr += (fed != null && fed == true ? "Fed" : "Unfed");
+		foodStr += (fed != null && fed == true ? Messages.getString("ArmyViewer.Fed") : Messages.getString("ArmyViewer.Unfed")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (fed != null && fed == true) {
-			foodTooltip = "Move orders treat this army as fed.";
+			foodTooltip = Messages.getString("ArmyViewer.TreatAsFed"); //$NON-NLS-1$
 		} else {
-			foodTooltip = "Move orders treat this army as unfed.";
+			foodTooltip = Messages.getString("ArmyViewer.TreatAsUnfed"); //$NON-NLS-1$
 		}
-		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNumberOfFedTurnsForArmies"))) {
+		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNumberOfFedTurnsForArmies"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			if (Boolean.TRUE.equals(fed)) {
 				Integer food1 = army.getFood();
 				Integer consumption = army.computeFoodConsumption();
 				if (food1 != null && consumption != null && consumption > 0) {
 					int turns = (food1 - 1) / consumption;
-					foodStr += " (" + turns + ")";
-					foodTooltip = "<html>Army has enough food for " + turns + " turns.<br/>" + foodTooltip + "</html>";
+					foodStr += " (" + turns + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+					foodTooltip = "<html>" + Messages.getString("ArmyViewer.ArmyFoodForNTurns", new Object[] {turns}) + foodTooltip + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
 			}
 		}
@@ -246,53 +244,53 @@ public class ArmyViewer extends ObjectViewer {
 		this.food.setToolTipText(foodTooltip);
 		// armyMorale.setText("M: 0");
 
-		String cavString = "";
-		String cavTooltip = "";
+		String cavString = ""; //$NON-NLS-1$
+		String cavTooltip = ""; //$NON-NLS-1$
 		Boolean isCav = army.computeCavalry();
 		if (isCav == null) {
-			cavString = "";
-			cavTooltip = "";
+			cavString = ""; //$NON-NLS-1$
+			cavTooltip = ""; //$NON-NLS-1$
 		} else if (isCav) {
-			cavString = "Cav";
-			cavTooltip = "Move orders treat this army as cavalry.";
+			cavString = Messages.getString("ArmyViewer.AbbCavalry"); //$NON-NLS-1$
+			cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
 		} else {
-			cavString = "Inf";
-			cavTooltip = "Move orders treat this army as infantry.";
+			cavString = Messages.getString("ArmyViewer.AbbInfantry"); //$NON-NLS-1$
+			cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
 		}
 		this.cav.setText(cavString);
 		this.cav.setToolTipText(cavTooltip);
 
 		if (army.getCharacters().size() > 0) {
 			this.travellingWith.setVisible(true);
-			String txt = "";
+			String txt = ""; //$NON-NLS-1$
 			for (String cn : army.getCharacters()) {
-				txt += (txt.equals("") ? "" : ",") + cn;
+				txt += (txt.equals("") ? "" : ",") + cn; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
-			this.travellingWith.setText("With army: " + txt);
+			this.travellingWith.setText(Messages.getString("ArmyViewer.WithArmyColon") + txt); //$NON-NLS-1$
 		} else {
 			this.travellingWith.setVisible(false);
 		}
 	}
 
 	private JPopupMenu createArmyPopupContextMenu() {
-		ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, this.deleteArmyCommand, "separator", this.showArmyMovementRangeAction, this.showArmyMovementIgnorePopsRangeAction, "separator", new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource())));
-		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("general.developerOptions"))) {
-			commands.add("separator");
+		ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, this.deleteArmyCommand, "separator", this.showArmyMovementRangeAction, this.showArmyMovementIgnorePopsRangeAction, "separator", new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource()))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("general.developerOptions"))) { //$NON-NLS-1$ //$NON-NLS-2$
+			commands.add("separator"); //$NON-NLS-1$
 			commands.add(this.exportCombatArmyCodeCommand);
 		}
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", commands.toArray());
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", commands.toArray()); //$NON-NLS-1$
 		return group.createPopupMenu();
 	}
 
 	private class ShowArmyMovementRangeAction extends ShowArmyMovementRangeGenericAction {
 		public ShowArmyMovementRangeAction() {
-			super("showArmyMovementRangeAction", false);
+			super("showArmyMovementRangeAction", false); //$NON-NLS-1$
 		}
 	}
 
 	private class ShowArmyMovementRangeIgnorePopsAction extends ShowArmyMovementRangeGenericAction {
 		public ShowArmyMovementRangeIgnorePopsAction() {
-			super("showArmyMovementRangeIgnorePopsAction", true);
+			super("showArmyMovementRangeIgnorePopsAction", true); //$NON-NLS-1$
 		}
 	}
 
@@ -317,7 +315,7 @@ public class ArmyViewer extends ObjectViewer {
 	private class ToggleFedAction extends ActionCommand {
 
 		public ToggleFedAction() {
-			super("toggleFedAction");
+			super("toggleFedAction"); //$NON-NLS-1$
 		}
 
 		@Override
@@ -333,31 +331,31 @@ public class ArmyViewer extends ObjectViewer {
 	private class ShowCanCaptureAction extends ActionCommand {
 
 		public ShowCanCaptureAction() {
-			super("showCanCaptureAction");
+			super("showCanCaptureAction"); //$NON-NLS-1$
 		}
 
 		@Override
 		protected void doExecuteCommand() {
 			Army a = (org.joverseer.domain.Army) getFormObject();
-			String str = "";
+			String str = ""; //$NON-NLS-1$
 			for (PopulationCenterSizeEnum pcSize : PopulationCenterSizeEnum.values()) {
 				for (int f = FortificationSizeEnum.values().length - 1; f >= 0; f--) {
 					FortificationSizeEnum fort = FortificationSizeEnum.values()[f];
 					int i = CombatUtils.canCapturePopCenter(a, pcSize, fort);
 					if (i > -1) {
 						String fortString = UIUtils.enumToString(fort);
-						if (fortString.equals("-"))
-							fortString = "None";
-						str = UIUtils.enumToString(pcSize) + "/" + fortString + " at loyalty " + i + "\n" + str;
+						if (fortString.equals("-")) //$NON-NLS-1$
+							fortString = Messages.getString("ArmyViewer.NoFort"); //$NON-NLS-1$
+						str = UIUtils.enumToString(pcSize) + "/" + fortString + Messages.getString("ArmyViewer.LoyaltyIs", new Object[] {i}) +"\n" + str; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					}
 					if (i == 100)
 						break;
 				}
 			}
-			if (!str.equals("")) {
-				str = "Army can capture (assume Hated relations and no defending army):\n" + str;
-				str += "Note: The numbers are rough estimates. To get accurate numbers it is advised to do the calculations by hand.";
-				MessageDialog dlg = new MessageDialog("Army vs Pop Center", str);
+			if (!str.equals("")) { //$NON-NLS-1$
+				str = Messages.getString("ArmyViewer.ArmyCanCapture") + str; //$NON-NLS-1$
+				str += Messages.getString("ArmyViewer.Caveat"); //$NON-NLS-1$
+				MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.ArmyVsPC.title"), str); //$NON-NLS-1$
 				dlg.showDialog();
 			}
 		}
@@ -366,7 +364,7 @@ public class ArmyViewer extends ObjectViewer {
 	private class ToggleCavAction extends ActionCommand {
 
 		public ToggleCavAction() {
-			super("toggleCavAction");
+			super("toggleCavAction"); //$NON-NLS-1$
 		}
 
 		@Override
@@ -386,7 +384,7 @@ public class ArmyViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			this.cancel = true;
 			Army a = (Army) getFormObject();
-			ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete army '" + a.getCommanderName() + "'?") {
+			ConfirmationDialog cdlg = new ConfirmationDialog(Messages.getString("standardMessages.Warning"), Messages.getString("ArmyViewer.Warning.text",new Object[] { a.getCommanderName()})) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				@Override
 				protected void onCancel() {
 					super.onCancel();
@@ -401,7 +399,7 @@ public class ArmyViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancel)
 				return;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
 			armies.removeItem(a);
@@ -411,24 +409,24 @@ public class ArmyViewer extends ObjectViewer {
 
 	private class ExportCombatArmyCodeCommand extends ActionCommand {
 		public ExportCombatArmyCodeCommand() {
-			super("exportCombatArmyCodeCommand");
+			super("exportCombatArmyCodeCommand"); //$NON-NLS-1$
 		}
 
 		@Override
 		protected void doExecuteCommand() {
 			Army a = (Army) getFormObject();
 			CombatArmy ca = new CombatArmy(a);
-			LogManager.getLogger(this.getClass()).info("Exporting code for Combat Army under " + ca.getCommander());
+			LogManager.getLogger(this.getClass()).info("Exporting code for Combat Army under " + ca.getCommander()); //$NON-NLS-1$
 			LogManager.getLogger(this.getClass()).info(ca.getCode());
-			LogManager.getLogger(this.getClass()).info("Done exporting code for Combat Army under " + ca.getCommander());
-			MessageDialog dlg = new MessageDialog("Army code", ca.getCode());
+			LogManager.getLogger(this.getClass()).info("Done exporting code for Combat Army under " + ca.getCommander()); //$NON-NLS-1$
+			MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.ArmyCode.title"), ca.getCode()); //$NON-NLS-1$
 			dlg.showDialog();
 		}
 	}
 
 	private class ShowRequiredTransportsCommand extends ActionCommand {
 		public ShowRequiredTransportsCommand() {
-			super("showRequiredTransportsCommand");
+			super("showRequiredTransportsCommand"); //$NON-NLS-1$
 		}
 
 		@Override
@@ -439,30 +437,30 @@ public class ArmyViewer extends ObjectViewer {
 				requiredTransportCapacity += ae.getRequiredTransportCapacity();
 			}
 			int requiredTransports = a.getNumberOfRequiredTransports();
-			String msg = "The army requires " + requiredTransports + " transports.";
+			String msg = Messages.getString("ArmyViewer.TransportRequired",new Object[] { requiredTransports }); //$NON-NLS-1$
 			if (a.isNavy()) {
 				int transports = a.getElement(ArmyElementType.Transports).getNumber();
 				int transportInfCapacity = transports * 250;
 				int transportCavCapacity = transports * 150;
-				msg += "\n" + "The army current has " + transports + " transports and can carry a total of " + transportInfCapacity + " infantry or " + transportCavCapacity + " cavalry.";
+				msg += Messages.getString("ArmyViewer.CurrentTransport", new Object[] { transports, transportInfCapacity, transportCavCapacity }); //$NON-NLS-1$
 				int freeInfCapacity = transportInfCapacity - requiredTransportCapacity;
 				int freeCavCapacity = freeInfCapacity * 150 / 250;
 				if (freeInfCapacity > 0) {
-					msg += "\n" + "There is room for extra " + freeInfCapacity + " infantry or " + freeCavCapacity + " cavalry in the army's transports.";
+					msg += Messages.getString("ArmyViewer.TransportSpare", new Object[] {freeInfCapacity,freeCavCapacity}); //$NON-NLS-1$
 				} else if (freeInfCapacity == 0) {
-					msg += "\n" + "There is no room for extra troops in the army's transports.";
+					msg += Messages.getString("ArmyViewer.TransportSpareNone"); //$NON-NLS-1$
 				} else if (freeInfCapacity < 0) {
-					msg += "\n" + "The army's troops are too many to be carried by the army's transports.";
+					msg += Messages.getString("ArmyViewer.InsufficientTransport"); //$NON-NLS-1$
 				}
 			}
-			MessageDialog dlg = new MessageDialog("Required Transports", msg);
+			MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.RequiredTransports.title"), msg); //$NON-NLS-1$
 			dlg.showDialog();
 		}
 	}
 
 	private class ShowRequiredFoodCommand extends ActionCommand {
 		public ShowRequiredFoodCommand() {
-			super("showRequiredFoodCommand");
+			super("showRequiredFoodCommand"); //$NON-NLS-1$
 		}
 
 		@Override
@@ -471,8 +469,8 @@ public class ArmyViewer extends ObjectViewer {
 			Integer food1 = a.computeFoodConsumption();
 			if (food1 == null)
 				return;
-			String msg = "The army requires " + food1 + " food per turn.";
-			MessageDialog dlg = new MessageDialog("Required Food", msg);
+			MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.RequiredFood.title"), 
+					Messages.getString("ArmyViewer.RequiredFood.text",new Object[] { food1 })); //$NON-NLS-1$
 			dlg.showDialog();
 		}
 	}
@@ -495,7 +493,7 @@ public class ArmyViewer extends ObjectViewer {
 				protected boolean onFinish() {
 					form.commit();
 					Army a1 = (Army) getFormObject();
-					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 					Turn t = g.getTurn();
 					Container<Army> armies = t.getArmies();
 					armies.removeItem(a1);
@@ -504,8 +502,7 @@ public class ArmyViewer extends ObjectViewer {
 					return true;
 				}
 			};
-			MessageSource ms = (MessageSource) Application.instance().getApplicationContext().getBean("messageSource");
-			dlg.setTitle(ms.getMessage("editArmyDialog.title", new Object[] {}, Locale.getDefault()));
+			dlg.setTitle(Messages.getString("editArmyDialog.title")); //$NON-NLS-1$
 			dlg.showDialog();
 		}
 	}

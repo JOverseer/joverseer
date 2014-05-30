@@ -131,5 +131,18 @@ public class ProductLineWrapper implements IBelongsToNation {
         this.idx = idx;
     }
     
-    
+    public void setProduct(ProductEnum product,Integer quantity) {
+    	switch (product)
+    	{
+    	case Food: setFood(quantity); break;
+    	case Leather: setLeather(quantity); break;
+    	case Mithril: setMithril(quantity); break;
+    	case Mounts: setMounts(quantity); break;
+    	case Bronze: setBronze(quantity); break;
+    	case Steel: setSteel(quantity); break;
+    	case Gold: setGold(quantity); break;
+    	case Timber: setTimber(quantity); break;
+    	default: break;
+    	}
+    }
 }

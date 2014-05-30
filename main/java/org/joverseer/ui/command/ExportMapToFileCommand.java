@@ -14,6 +14,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -28,7 +29,7 @@ import org.springframework.richclient.dialog.MessageDialog;
 public class ExportMapToFileCommand  extends ActionCommand {
     
     public ExportMapToFileCommand() {
-        super("exportMapToFileCommand");
+        super("exportMapToFileCommand"); //$NON-NLS-1$
     }
 
     @Override
@@ -38,23 +39,23 @@ public class ExportMapToFileCommand  extends ActionCommand {
     	if (map == null) return;
     	JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        fileChooser.setApproveButtonText("Save");
+        fileChooser.setApproveButtonText(Messages.getString("ExportMapToFileCommand.Save")); //$NON-NLS-1$
         Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
-        String saveDir = prefs.get("saveDir", null);
+        String saveDir = prefs.get("saveDir", null); //$NON-NLS-1$
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));
         }
         Game game = GameHolder.instance().getGame();
-        fileChooser.setSelectedFile(new File("game" + game.getMetadata().getGameNo() + "t" + game.getCurrentTurn() + ".jpeg"));
+        fileChooser.setSelectedFile(new File(Messages.getString("ExportMapToFileCommand.gamefileprefix") + game.getMetadata().getGameNo() + Messages.getString("ExportMapToFileCommand.TurnAbb") + game.getCurrentTurn() + ".jpeg")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         fileChooser.setFileFilter(new FileFilter() {
 			@Override
 			public boolean accept(File f) {
-				return f.isDirectory() || f.getAbsolutePath().endsWith(".jpeg");
+				return f.isDirectory() || f.getAbsolutePath().endsWith(".jpeg"); //$NON-NLS-1$
 			}
 
 			@Override
 			public String getDescription() {
-				return "jpeg files";
+				return Messages.getString("ExportMapToFileCommand.7"); //$NON-NLS-1$
 			}
         	
         });
@@ -64,8 +65,8 @@ public class ExportMapToFileCommand  extends ActionCommand {
         		Graphics2D g = img.createGraphics();
         		g.drawImage(map, 0, 0, null);
         		//new NeuQuantQuantizerOP().filter(img, img);
-        		ImageIO.write(img, "jpeg", fileChooser.getSelectedFile());
-        		MessageDialog dlg = new MessageDialog("Map Saved", "Map saved to file " + fileChooser.getSelectedFile().getCanonicalPath());
+        		ImageIO.write(img, "jpeg", fileChooser.getSelectedFile()); //$NON-NLS-1$
+        		MessageDialog dlg = new MessageDialog(Messages.getString("ExportMapToFileCommand.SavedConfirmation.title"), Messages.getString("ExportMapToFileCommand.MapSavedToFile", new Object[] { fileChooser.getSelectedFile().getCanonicalPath()})); //$NON-NLS-1$ //$NON-NLS-2$
         		dlg.showDialog();
         	}
         	catch (Exception exc) {

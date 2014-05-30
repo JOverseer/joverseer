@@ -1,5 +1,6 @@
 package org.joverseer.domain;
 
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 
 /**
@@ -30,6 +31,12 @@ public enum ProductEnum {
 
 	public String getRenderString() {
 		return UIUtils.enumToString(this);
+	}
+
+	//This is the code, rather than the full word
+	//Use UIUtils.EnumToString for the fullname.
+	public String getLocalized() {
+		return Messages.getString("ProductEnum."+code);
 	}
 
 	public static ProductEnum getFromText(String text) {

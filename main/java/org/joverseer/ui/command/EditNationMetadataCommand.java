@@ -1,13 +1,11 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.EditNationMetadataForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -44,8 +42,7 @@ public class EditNationMetadataCommand extends ActionCommand {
                 return true;
             }
         };
-        MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-        dialog.setTitle(ms.getMessage("editNationMetadataDialog.title", new Object[]{}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("editNationMetadataDialog.title"));
         dialog.showDialog();
     }
 

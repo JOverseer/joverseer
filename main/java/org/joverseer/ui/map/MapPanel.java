@@ -71,6 +71,7 @@ import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dataFlavors.ArtifactDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.transferHandlers.HexNoTransferHandler;
@@ -145,7 +146,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		addMouseListener(this);
 		addMouseWheelListener(this);
 		addMouseMotionListener(this);
-		this.setTransferHandler(new HexNoTransferHandler("hex"));
+		this.setTransferHandler(new HexNoTransferHandler("hex")); //$NON-NLS-1$
 		this.setDropTarget(new DropTarget(this, new MapPanelDropTargetAdapter()));
 		_instance = this;
 	}
@@ -160,7 +161,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	protected MapMetadata getMetadata() {
 		if (this.metadata == null) {
-			this.metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+			this.metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
 		}
 		return this.metadata;
 	}
@@ -276,9 +277,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 
 		if (this.saveMap) {
-			File outputFile = new File("map.png");
+			File outputFile = new File("map.png"); //$NON-NLS-1$
 			try {
-				ImageIO.write(this.map, "PNG", outputFile);
+				ImageIO.write(this.map, "PNG", outputFile); //$NON-NLS-1$
 			} catch (Exception exc) {
 			}
 			;
@@ -334,14 +335,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 							try {
 								r.render(o, g, this.location.x, this.location.y);
 							} catch (Exception exc) {
-								logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage());
+								logger.error("Error rendering order " + o.getCharacter().getName() + " " + o.getOrderNo() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							}
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering orders " + exc.getMessage());
+			logger.error("Error rendering orders " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		for (AbstractMapItem mi : game1.getTurn().getMapItems()) {
@@ -360,13 +361,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(n, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering note " + n.getHexNo() + " " + n.getText() + " " + exc.getMessage());
+							logger.error("Error rendering note " + n.getHexNo() + " " + n.getText() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering notes " + exc.getMessage());
+			logger.error("Error rendering notes " + exc.getMessage()); //$NON-NLS-1$
 		}
 		BusyIndicator.clearAt(this);
 	}
@@ -411,14 +412,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(pc, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error pc " + pc.getName() + " " + exc.getMessage());
+							logger.error("Error pc " + pc.getName() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering pop centers " + exc.getMessage());
+			logger.error("Error rendering pop centers " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -429,13 +430,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(c1, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering character " + c1.getName() + " " + exc.getMessage());
+							logger.error("Error rendering character " + c1.getName() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering pop centers " + exc.getMessage());
+			logger.error("Error rendering pop centers " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -446,13 +447,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(army, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering army " + army.getCommanderName() + " " + exc.getMessage());
+							logger.error("Error rendering army " + army.getCommanderName() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering pop centers " + exc.getMessage());
+			logger.error("Error rendering pop centers " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -465,13 +466,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(nm, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering nation message " + nm.getMessage() + " " + exc.getMessage());
+							logger.error("Error rendering nation message " + nm.getMessage() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering nation " + exc.getMessage());
+			logger.error("Error rendering nation " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -482,13 +483,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(a, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering artifact " + a.getNumber() + " " + a.getName() + " " + exc.getMessage());
+							logger.error("Error rendering artifact " + a.getNumber() + " " + a.getName() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering orders " + exc.getMessage());
+			logger.error("Error rendering orders " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -499,13 +500,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(a, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering combat " + a.getHexNo() + " " + exc.getMessage());
+							logger.error("Error rendering combat " + a.getHexNo() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering combats " + exc.getMessage());
+			logger.error("Error rendering combats " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		try {
@@ -519,13 +520,13 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 						try {
 							r.render(a, g, this.location.x, this.location.y);
 						} catch (Exception exc) {
-							logger.error("Error rendering encounter " + a.getHexNo() + " " + exc.getMessage());
+							logger.error("Error rendering encounter " + a.getHexNo() + " " + exc.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
 			}
 		} catch (Exception exc) {
-			logger.error("Error rendering encounters " + exc.getMessage());
+			logger.error("Error rendering encounters " + exc.getMessage()); //$NON-NLS-1$
 		}
 
 		BusyIndicator.clearAt(this);
@@ -549,7 +550,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		this.map = null;
 		this.mapBaseItems = null;
 		this.mapItems = null;
-		setGame(((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame());
+		setGame(((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame()); //$NON-NLS-1$
 	}
 
 	public void invalidateMapItems() {
@@ -579,7 +580,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 
 		try {
-			Application.instance().getApplicationContext().getBean("mapMetadata");
+			Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
 		} catch (Exception exc) {
 			// application is not ready
 			return;
@@ -618,7 +619,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		setHexLocation(getSelectedHex().x, getSelectedHex().y);
 		MapMetadata metadata1;
 		try {
-			metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+			metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
 			return new Rectangle(this.location.x, this.location.y, metadata1.getHexSize() * metadata1.getGridCellWidth(), metadata1.getHexSize() * metadata1.getGridCellHeight());
 		} catch (Exception exc) {
 			// application is not ready
@@ -631,7 +632,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * and returns it as a point (i.e. point.x = hex.column, point.y = hex.row)
 	 */
 	private Point getHexFromPoint(Point p) {
-		MapMetadata metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		MapMetadata metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
 		int y = p.y / (metadata1.getHexSize() * 3 / 4 * metadata1.getGridCellHeight());
 		int x;
 		if ((y + metadata1.getMinMapRow() + 1) % 2 == 0) {
@@ -670,21 +671,21 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 			HexTerrainEnum terrain = hex1.getTerrain();
 			if (terrain.isLand()) {
-				commands.add("separator");
+				commands.add("separator"); //$NON-NLS-1$
 				commands.add(new ShowFedInfantryArmyRangeCommand(hexNo));
 				commands.add(new ShowUnfedInfantryArmyRangeCommand(hexNo));
 				commands.add(new ShowFedCavalryArmyRangeCommand(hexNo));
 				commands.add(new ShowUnfedCavalryArmyRangeCommand(hexNo));
 			}
 			if (MovementUtils.calculateNavyRangeHexes(hexNo, false, true).size() > 0) {
-				commands.add("separator");
+				commands.add("separator"); //$NON-NLS-1$
 				commands.add(new ShowFedNavyCoastalRangeCommand(hexNo));
 				commands.add(new ShowUnfedNavyCoastalRangeCommand(hexNo));
 				commands.add(new ShowFedNavyOpenSeasRangeCommand(hexNo));
 				commands.add(new ShowUnfedNavyOpenSeasRangeCommand(hexNo));
 			}
 
-			CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("MapPanelContextMenu", commands.toArray());
+			CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("MapPanelContextMenu", commands.toArray()); //$NON-NLS-1$
 			JPopupMenu popup = group.createPopupMenu();
 			popup.show(this, e.getPoint().x, e.getPoint().y);
 		}
@@ -703,7 +704,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			setSelectedHex(hex1);
 			this.updateUI();
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
-			HashMap<MapEditorOptionsEnum, Object> mapEditorOptions = (HashMap<MapEditorOptionsEnum, Object>) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+			HashMap<MapEditorOptionsEnum, Object> mapEditorOptions = (HashMap<MapEditorOptionsEnum, Object>) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
 			Boolean active = (Boolean) mapEditorOptions.get(MapEditorOptionsEnum.active);
 			if (active == null || !active)
 				return;
@@ -714,7 +715,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				int hexNo = h.x * 100 + h.y;
 				Hex hex1 = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
 				hex1.setTerrain((HexTerrainEnum) brush);
-				MapEditorView.instance.log("");
+				MapEditorView.instance.log(""); //$NON-NLS-1$
 				MapEditorView.instance.log(hexNo + " terrain " + brush.toString());
 				invalidateAll();
 				this.updateUI();
@@ -831,29 +832,29 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 				}
 				if (toRemove.size() + toAdd.size() > 0) {
-					MapEditorView.instance.log("");
+					MapEditorView.instance.log(""); //$NON-NLS-1$
 				}
 				// remove what you must
 				for (HexSideElementEnum el : toRemove) {
 					if (hex1.getHexSideElements(hexSide).contains(el)) {
 						hex1.getHexSideElements(hexSide).remove(el);
-						MapEditorView.instance.log(hex1.getHexNo() + " " + hexSide.toString() + " remove " + el.toString());
+						MapEditorView.instance.log(hex1.getHexNo() + " " + hexSide.toString() + " remove " + el.toString()); //$NON-NLS-1$
 					}
 					if (otherHex != null) {
 						if (otherHex.getHexSideElements(otherHexSide).contains(el)) {
 							otherHex.getHexSideElements(otherHexSide).remove(el);
-							MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " remove " + el.toString());
+							MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " remove " + el.toString()); //$NON-NLS-1$
 						}
 					}
 				}
 				// add what you must
 				for (HexSideElementEnum el : toAdd) {
 					if (!hex1.getHexSideElements(hexSide).contains(el)) {
-						MapEditorView.instance.log(hex1.getHexNo() + " " + hexSide.toString() + " add " + el.toString());
+						MapEditorView.instance.log(hex1.getHexNo() + " " + hexSide.toString() + " add " + el.toString()); //$NON-NLS-1$
 						hex1.getHexSideElements(hexSide).add(el);
 					}
 					if (otherHex != null && !otherHex.getHexSideElements(otherHexSide).contains(el)) {
-						MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " add " + el.toString());
+						MapEditorView.instance.log(otherHex.getHexNo() + " " + otherHexSide.toString() + " add " + el.toString()); //$NON-NLS-1$
 						otherHex.getHexSideElements(otherHexSide).add(el);
 					}
 				}
@@ -911,14 +912,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		MapTooltipHolder tooltipHolder = MapTooltipHolder.instance();
-		String pval = PreferenceRegistry.instance().getPreferenceValue("map.tooltips");
-		if (pval != null && pval.equals("yes"))
+		String pval = PreferenceRegistry.instance().getPreferenceValue("map.tooltips"); //$NON-NLS-1$
+		if (pval != null && pval.equals("yes")) //$NON-NLS-1$
 			tooltipHolder.showTooltip(e.getPoint(), e.getPoint());
 	}
 
 	public Game getGame() {
 		if (this.game == null) {
-			this.game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			this.game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		}
 		return this.game;
 	}
@@ -935,7 +936,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		Point p = getHexFromPoint(new Point(this.xDiff, this.yDiff));
 		String h = String.valueOf(p.x * 100 + p.y);
 		if (h.length() < 4) {
-			h = "0" + h;
+			h = "0" + h; //$NON-NLS-1$
 		}
 		return h;
 	}
@@ -958,8 +959,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 					obj = t.getTransferData(new CharacterDataFlavor());
 				} else if (t.isDataFlavorSupported(new ArtifactDataFlavor())) {
 					obj = t.getTransferData(new ArtifactDataFlavor());
-				} else if (t.isDataFlavorSupported(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName()))) {
-					obj = t.getTransferData(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName()));
+				} else if (t.isDataFlavorSupported(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName()))) { //$NON-NLS-1$
+					obj = t.getTransferData(new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + Army.class.getName())); //$NON-NLS-1$
 				}
 				;
 				Point p = MapPanel.instance().getHexFromPoint(e.getLocation());
@@ -967,7 +968,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				if (obj != null) {
 					final Turn turn = GameHolder.instance().getGame().getTurn();
 					final Object target = obj;
-					ConfirmationDialog dlg = new ConfirmationDialog("Move item?", "Are you sure you want to move the selected item to hex " + hexNo + "?") {
+					ConfirmationDialog dlg = new ConfirmationDialog(Messages.getString("MapPanel.MoveConfirmation.title"),
+							Messages.getString("MapPanel.MoveConfirmation.text", new Object[] { hexNo })) {
 						@Override
 						protected void onConfirm() {
 							if (Character.class.isInstance(target)) {

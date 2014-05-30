@@ -46,6 +46,7 @@ import org.joverseer.ui.command.range.ShowUnfedInfantryArmyRangeCommand;
 import org.joverseer.ui.command.range.ShowUnfedNavyCoastalRangeCommand;
 import org.joverseer.ui.command.range.ShowUnfedNavyOpenSeasRangeCommand;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
@@ -64,7 +65,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class HexInfoViewer extends ObjectViewer {
 
-	public static final String FORM_PAGE = "HexInfoViewer";
+	public static final String FORM_PAGE = "HexInfoViewer"; //$NON-NLS-1$
 
 	HashMap<MovementDirection, JTextField> infCosts = new HashMap<MovementDirection, JTextField>();
 	HashMap<MovementDirection, JTextField> cavCosts = new HashMap<MovementDirection, JTextField>();
@@ -102,7 +103,8 @@ public class HexInfoViewer extends ObjectViewer {
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
 		JLabel l;
-		lb.append(l = new JLabel("Hex No :"), 2, 1);
+		String text;
+		lb.append(l = new JLabel(Messages.getString("HexInfoViewer.HexNumColon")), 2, 1); //$NON-NLS-1$
 		lb.append(this.hexNo = new JTextField(), 2, 1);
 		this.hexNo.setBorder(null);
 		lb.append(this.terrain = new JTextField(), 2, 1);
@@ -112,9 +114,9 @@ public class HexInfoViewer extends ObjectViewer {
 		this.climate.setPreferredSize(new Dimension(50, 12));
 		this.climate.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setIcon(ico);
 		btnMenu.setPreferredSize(new Dimension(16, 16));
 		lb.append(btnMenu);
@@ -128,7 +130,7 @@ public class HexInfoViewer extends ObjectViewer {
 
 		lb.nextLine();
 
-		lb.append(l = new JLabel("Latest info :"), 2, 1);
+		lb.append(l = new JLabel(Messages.getString("HexInfoViewer.LatestInfoColon")), 2, 1); //$NON-NLS-1$
 		lb.append(this.turnInfo = new JTextField(), 4, 1);
 		this.turnInfo.setPreferredSize(new Dimension(80, 12));
 		this.turnInfo.setBorder(null);
@@ -137,16 +139,17 @@ public class HexInfoViewer extends ObjectViewer {
 		lb.append(new JSeparator(), 5, 1);
 		lb.nextLine();
 
-		lb.append(l = new JLabel("Inf"), 2, 1);
+		lb.append(l = new JLabel(Messages.getString("HexInfoViewer.AbbInfantry")), 2, 1); //$NON-NLS-1$
 		Font f = new Font(l.getFont().getName(), Font.BOLD, l.getFont().getSize());
 		l.setFont(f);
-		lb.append(l = new JLabel(" "));
+		lb.append(l = new JLabel(" ")); //$NON-NLS-1$
 		l.setPreferredSize(new Dimension(20, 12));
-		lb.append(l = new JLabel("Cav"), 2, 1);
+		lb.append(l = new JLabel(Messages.getString("HexInfoViewer.AbbCavalry")), 2, 1); //$NON-NLS-1$
 		l.setFont(f);
 		lb.nextLine();
 		for (MovementDirection md : MovementDirection.values()) {
-			lb.append(new JLabel(md.getDir().toUpperCase() + " :"));
+			text = Messages.getString("movementCosts." + md.getDir());
+			lb.append(new JLabel(text + " :")); //$NON-NLS-1$
 			JTextField tf = new JTextField();
 			tf.setHorizontalAlignment(SwingConstants.RIGHT);
 			this.infCosts.put(md, tf);
@@ -154,9 +157,9 @@ public class HexInfoViewer extends ObjectViewer {
 			tf.setPreferredSize(new Dimension(20, 12));
 			lb.append(tf);
 
-			lb.append(l = new JLabel(" "));
+			lb.append(l = new JLabel(" ")); //$NON-NLS-1$
 
-			lb.append(new JLabel(md.getDir().toUpperCase() + " :"));
+			lb.append(new JLabel(text + " :")); //$NON-NLS-1$
 			tf = new JTextField();
 			tf.setHorizontalAlignment(SwingConstants.RIGHT);
 			this.cavCosts.put(md, tf);
@@ -168,7 +171,7 @@ public class HexInfoViewer extends ObjectViewer {
 
 		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:240px");
+		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:240px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
 		notesPanel.setBackground(Color.white);
 		lb.append(notesPanel, 8, 1);
@@ -186,24 +189,24 @@ public class HexInfoViewer extends ObjectViewer {
 			Hex h = (Hex) object;
 			String hexNoStr = String.valueOf(h.getColumn());
 			if (h.getColumn() < 10) {
-				hexNoStr = "0" + hexNoStr;
+				hexNoStr = "0" + hexNoStr; //$NON-NLS-1$
 			}
 			if (h.getRow() < 10) {
-				hexNoStr = hexNoStr + "0";
+				hexNoStr = hexNoStr + "0"; //$NON-NLS-1$
 			}
 			hexNoStr += String.valueOf(h.getRow());
 			this.hexNo.setText(hexNoStr);
 
 			Integer latestTurnInfo = HexInfoHistory.getLatestHexInfoTurnNoForHex(h.getHexNo());
 			if (latestTurnInfo == null || latestTurnInfo == -1) {
-				this.turnInfo.setText("never");
+				this.turnInfo.setText(Messages.getString("HexInfoViewer.Never")); //$NON-NLS-1$
 			} else {
-				this.turnInfo.setText("turn " + latestTurnInfo);
+				this.turnInfo.setText(Messages.getString("HexInfoViewer.Turn") + latestTurnInfo); //$NON-NLS-1$
 			}
 
 			Game g = GameHolder.instance().getGame();
-			HexInfo hi = (HexInfo) g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo());
-			this.climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : "");
+			HexInfo hi = (HexInfo) g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo()); //$NON-NLS-1$
+			this.climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : ""); //$NON-NLS-1$
 			this.terrain.setText(UIUtils.enumToString(h.getTerrain()));
 			this.terrain.setCaretPosition(0);
 			int startHexNo = h.getColumn() * 100 + h.getRow();
@@ -211,24 +214,24 @@ public class HexInfoViewer extends ObjectViewer {
 				for (MovementDirection md : MovementDirection.values()) {
 					int cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), false, true, true, null, startHexNo);
 					JTextField tf = this.infCosts.get(md);
-					String costStr = (cost > 0 ? String.valueOf(cost) : "-");
+					String costStr = (cost > 0 ? String.valueOf(cost) : "-"); //$NON-NLS-1$
 					tf.setText(String.valueOf(costStr));
 
 					cost = MovementUtils.calculateMovementCostForArmy(startHexNo, md.getDir(), true, true, true, null, startHexNo);
 					tf = this.cavCosts.get(md);
-					costStr = (cost > 0 ? String.valueOf(cost) : "-");
+					costStr = (cost > 0 ? String.valueOf(cost) : "-"); //$NON-NLS-1$
 					tf.setText(String.valueOf(costStr));
 				}
 			} else {
 				for (JTextField tf : this.infCosts.values()) {
-					tf.setText("");
+					tf.setText(""); //$NON-NLS-1$
 				}
 				for (JTextField tf : this.cavCosts.values()) {
-					tf.setText("");
+					tf.setText(""); //$NON-NLS-1$
 				}
 			}
 
-			ArrayList<Note> notes = g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", h.getHexNo());
+			ArrayList<Note> notes = g.getTurn().getContainer(TurnElementsEnum.Notes).findAllByProperty("target", h.getHexNo()); //$NON-NLS-1$
 			this.notesViewer.setFormObject(notes);
 		}
 	}
@@ -240,10 +243,10 @@ public class HexInfoViewer extends ObjectViewer {
 		ActionCommand showCharacterPathMasteryRangeCommand = new ShowCharacterPathMasteryRangeCommand(hex.getHexNo());
 		ActionCommand showCharacterRangeOnMapCommand = new ShowCharacterMovementRangeCommand(hex.getHexNo(), 12);
 
-		CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoBridgeGroup", new Object[] { this.addBridgeNE, this.addBridgeE, this.addBridgeSE, this.addBridgeSW, this.addBridgeW, this.addBridgeNW, "separator", this.removeBridgeNE, this.removeBridgeE, this.removeBridgeSE, this.removeBridgeSW, this.removeBridgeW, this.removeBridgeNW });
+		CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoBridgeGroup", new Object[] { this.addBridgeNE, this.addBridgeE, this.addBridgeSE, this.addBridgeSW, this.addBridgeW, this.addBridgeNW, "separator", this.removeBridgeNE, this.removeBridgeE, this.removeBridgeSE, this.removeBridgeSW, this.removeBridgeW, this.removeBridgeNW }); //$NON-NLS-1$ //$NON-NLS-2$
 		int hexNo1 = hex.getHexNo();
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoCommandGroup", 
-				new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator", new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator", new AddPopCenterCommand(hexNo1), new AddEditNoteCommand(hexNo1), "separator", new CreateCombatForHexCommand(hexNo1), "separator", bridges
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoCommandGroup",  //$NON-NLS-1$
+				new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator", new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator", new AddPopCenterCommand(hexNo1), new AddEditNoteCommand(hexNo1), "separator", new CreateCombatForHexCommand(hexNo1), "separator", bridges //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		});
 		return group.createPopupMenu();

@@ -30,6 +30,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
@@ -77,14 +78,14 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()));
 		this.popCenterPanel = new JPanel();
 		this.popCenterPanel.add(this.popCenterViewer.getControl());
-		tlb.separator(" Population Center ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.PopulationCenter")); //$NON-NLS-1$
 		tlb.row();
-		tlb.cell(this.popCenterPanel, "align=left");
+		tlb.cell(this.popCenterPanel, "align=left"); //$NON-NLS-1$
 		tlb.row();
 		this.popCenterPanel.setVisible(false);
 		this.popCenterPanel.setBackground(Color.white);
 
-		tlb.separator(" Armies ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.Armies")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 20; i++) {
 			ArmyViewer va = new ArmyViewer(FormModelHelper.createFormModel(new Army()));
@@ -93,12 +94,12 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.add(va.getControl());
 			cp.setBackground(Color.white);
 			this.armyPanels.add(cp);
-			tlb.cell(cp, "align=left");
+			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			cp.setVisible(false);
 		}
 
-		tlb.separator(" Characters ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.Characters")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 50; i++) {
 			CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()));
@@ -107,12 +108,12 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.add(vc.getControl());
 			cp.setBackground(Color.white);
 			this.characterPanels.add(cp);
-			tlb.cell(cp, "align=left");
+			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			cp.setVisible(false);
 		}
 
-		tlb.separator(" Artifacts ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.Artifacts")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 20; i++) {
 			ArtifactViewer av = new ArtifactViewer(FormModelHelper.createFormModel(new Artifact()));
@@ -121,12 +122,12 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.artifactPanels.add(ap);
 			ap.add(av.getControl());
 			ap.setBackground(Color.white);
-			tlb.cell(ap, "align=left");
+			tlb.cell(ap, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			ap.setVisible(false);
 		}
 
-		tlb.separator(" Nation Messages ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.NationMessages")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 20; i++) {
 			NationMessageViewer nmv = new NationMessageViewer(FormModelHelper.createFormModel(new NationMessage()));
@@ -135,12 +136,12 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.add(nmv.getControl());
 			cp.setBackground(Color.white);
 			this.nationMessagePanels.add(cp);
-			tlb.cell(cp, "align=left");
+			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			cp.setVisible(false);
 		}
 
-		tlb.separator(" Combats / Challenges / Encounters ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.CombatsChallengesEncounters")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 5; i++) {
 			CombatViewer cv = new CombatViewer(FormModelHelper.createFormModel(new Combat()));
@@ -149,7 +150,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.add(cv.getControl());
 			cp.setBackground(Color.white);
 			this.combatPanels.add(cp);
-			tlb.cell(cp, "align=left");
+			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			cp.setVisible(false);
 		}
@@ -160,7 +161,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.add(cv.getControl());
 			cp.setBackground(Color.white);
 			this.encounterPanels.add(cp);
-			tlb.cell(cp, "align=left");
+			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			cp.setVisible(false);
 		}
@@ -168,9 +169,9 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		this.hexInfoViewer = new HexInfoViewer(FormModelHelper.createFormModel(new Hex()));
 		this.hexInfoPanel = new JPanel();
 		this.hexInfoPanel.add(this.hexInfoViewer.getControl());
-		tlb.separator(" Hex Info ");
+		tlb.separator(Messages.getString("CurrentHexDataViewer.HexInfo")); //$NON-NLS-1$
 		tlb.row();
-		tlb.cell(this.hexInfoPanel, "align=left");
+		tlb.cell(this.hexInfoPanel, "align=left"); //$NON-NLS-1$
 		tlb.row();
 		this.hexInfoPanel.setVisible(false);
 		this.hexInfoPanel.setBackground(Color.white);
@@ -313,16 +314,16 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			hideAllNationMessageViewers();
 			return;
 		}
-		String hex = "";
+		String hex = ""; //$NON-NLS-1$
 		if ((p.x == 0 && p.y == 0) || p.x == -1) {
-			((DefaultViewDescriptor) getDescriptor()).setTitle("Current Hex View - " + hex);
+			((DefaultViewDescriptor) getDescriptor()).setTitle(Messages.getString("CurrentHexDataViewer.Title") + hex); //$NON-NLS-1$
 			return;
 		}
 		hex = String.valueOf(p.x * 100 + p.y);
 		if (p.x < 10)
-			hex = "0" + hex;
-		((DefaultViewDescriptor) getDescriptor()).setTitle("Current Hex View - " + hex);
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			hex = "0" + hex; //$NON-NLS-1$
+		((DefaultViewDescriptor) getDescriptor()).setTitle(Messages.getString("CurrentHexDataViewer.Title") + hex); //$NON-NLS-1$
+		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		if (g == null)
 			return;
 		GameMetadata gm = g.getMetadata();
@@ -336,7 +337,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			hideHexInfo();
 		}
 		Turn t = g.getTurn();
-		PopulationCenter pc = t.getPopulationCenters().findFirstByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y });
+		PopulationCenter pc = t.getPopulationCenters().findFirstByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
 		if (pc != null) {
 			showPopCenter(pc);
 		} else {
@@ -344,7 +345,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		}
 
 		hideAllCharacterViewers();
-		ArrayList<Character> chars = t.getCharacters().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y });
+		ArrayList<Character> chars = t.getCharacters().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
 		Collections.sort(chars, new CharacterDeathAllegianceNameComparator());
 
 		for (Character ch : chars) {
@@ -354,7 +355,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		}
 
 		hideAllArmyViewers();
-		ArrayList<Army> armies = t.getArmies().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y });
+		ArrayList<Army> armies = t.getArmies().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
 		Collections.sort(armies, new ArmyAllegianceNameComparator());
 
 		for (Army a : armies) {
@@ -362,27 +363,27 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		}
 
 		hideAllNationMessageViewers();
-		Collection<NationMessage> items = t.getNationMessages().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y });
+		Collection<NationMessage> items = t.getNationMessages().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
 		for (NationMessage obj : items) {
 			showNationMessage(obj);
 		}
 
 		hideAllArtifactViewers();
-		Collection<Artifact> artifacts = t.getArtifacts().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno });
+		Collection<Artifact> artifacts = t.getArtifacts().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno }); //$NON-NLS-1$
 		for (Artifact obj : artifacts) {
 			showArtifact(obj);
 		}
 
 		hideAllCombatViewers();
-		Collection<Combat> combats = t.getCombats().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno });
+		Collection<Combat> combats = t.getCombats().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno }); //$NON-NLS-1$
 		for (Combat obj : combats) {
 			showCombat(obj);
 		}
 
 		hideAllEncounterViewers();
 		Collection<Encounter> encounters = new ArrayList<Encounter>();
-		encounters.addAll(t.getEncounters().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno }));
-		encounters.addAll(t.getChallenges().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno }));
+		encounters.addAll(t.getEncounters().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno })); //$NON-NLS-1$
+		encounters.addAll(t.getChallenges().findAllByProperties(new String[] { "hexNo" }, new Object[] { hexno })); //$NON-NLS-1$
 		for (Encounter obj : encounters) {
 			showEncounter(obj);
 		}
@@ -440,7 +441,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			if (this.characterPanels.get(i).isVisible()) {
 				Character ch = (Character) this.characterViewers.get(i).getFormObject();
 				if (c == ch) {
-					GraphicUtils.showView("currentHexDataViewer");
+					GraphicUtils.showView("currentHexDataViewer"); //$NON-NLS-1$
 				}
 			}
 		}

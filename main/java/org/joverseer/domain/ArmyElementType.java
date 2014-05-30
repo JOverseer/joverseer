@@ -2,6 +2,8 @@ package org.joverseer.domain;
 
 import java.io.Serializable;
 
+import org.joverseer.ui.support.Messages;
+
 /**
  * Enumeration for army element types
  * 
@@ -67,5 +69,8 @@ public enum ArmyElementType implements Serializable {
     		i++;
     	}
     	return i;
+    }
+    public String getLocalizedUC() {
+    	return Messages.getString("ArmyElementType."+this.type);
     }
 }

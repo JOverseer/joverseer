@@ -31,6 +31,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -90,7 +91,6 @@ public class ChatView extends AbstractView implements ApplicationListener {
         
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         
-        //MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
 
 //        text = new JTextArea();
 //        text.setWrapStyleWord(true);
@@ -151,8 +151,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
                         return true;
                     }
                 };
-                MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
-                dialog.setTitle(ms.getMessage("editNoteDialog.title", new Object[]{""}, Locale.getDefault()));
+                dialog.setTitle(Messages.getString("editNoteDialog.title"));
                 dialog.setModal(false);
                 dialog.showDialog();
 //                try {

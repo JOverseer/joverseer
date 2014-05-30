@@ -1,7 +1,5 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
@@ -9,9 +7,9 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.NewGameForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -36,11 +34,10 @@ public class EditGameCommand extends ActionCommand {
         final NewGameForm form = new NewGameForm(formModel, true);
         final FormBackedDialogPage page = new FormBackedDialogPage(form);
 
-        final MessageSource ms = (MessageSource)Application.services().getService(MessageSource.class);
         final TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
             @Override
 			protected void onAboutToShow() {
-                setDescription(ms.getMessage(form.getId() + ".description", null, Locale.getDefault()));
+                setDescription(Messages.getString(form.getId() + ".description"));
             }
 
             @Override
@@ -63,7 +60,7 @@ public class EditGameCommand extends ActionCommand {
                 return true;
             }
         };
-        dialog.setTitle(ms.getMessage("editGameDialog.title", new Object[]{}, Locale.getDefault()));
+        dialog.setTitle(Messages.getString("editGameDialog.title"));
         dialog.showDialog();
 
     }

@@ -16,6 +16,7 @@ import javax.swing.event.HyperlinkEvent.EventType;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -42,19 +43,19 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 		tlb.relatedGapRow();
 		JPanel pnl = getCriteriaPanel();
 		if (pnl != null) {
-			tlb.cell(pnl, "align=left");
+			tlb.cell(pnl, "align=left"); //$NON-NLS-1$
 			tlb.relatedGapRow();
 		}
-		JButton btn = new JButton("Generate");
-		btn.setText("Generate");
+		JButton btn = new JButton(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
+		btn.setText(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
 		btn.setPreferredSize(new Dimension(100, 20));
-		tlb.cell(btn, "align=left");
+		tlb.cell(btn, "align=left"); //$NON-NLS-1$
 		btn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!GameHolder.hasInitializedGame()) {
-					BaseHtmlReportView.this.editor.setText("");
+					BaseHtmlReportView.this.editor.setText(""); //$NON-NLS-1$
 					return;
 				}
 				BaseHtmlReportView.this.editor.setText(getReportContents());
@@ -65,8 +66,8 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 
 		this.editor = new JEditorPane();
 		this.editor.setEditable(false);
-		this.editor.setContentType("text/html");
-		this.editor.setText("");
+		this.editor.setContentType("text/html"); //$NON-NLS-1$
+		this.editor.setText(""); //$NON-NLS-1$
 		this.editor.addHyperlinkListener(new HyperlinkListener() {
 
 			@Override
@@ -90,7 +91,7 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString()) || e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				this.editor.setText("");
+				this.editor.setText(""); //$NON-NLS-1$
 			}
 		}
 	}

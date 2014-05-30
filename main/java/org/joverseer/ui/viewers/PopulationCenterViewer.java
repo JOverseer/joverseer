@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -46,13 +45,13 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.drawing.ColorPicker;
 import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -72,7 +71,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class PopulationCenterViewer extends ObjectViewer {
 
-	public static final String FORM_PAGE = "PopulationCenterViewer";
+	public static final String FORM_PAGE = "PopulationCenterViewer"; //$NON-NLS-1$
 
 	boolean showColor = true;
 
@@ -105,7 +104,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		super.setFormObject(object);
 
 		PopulationCenter pc = (PopulationCenter) object;
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		if (game == null)
 			return;
 
@@ -122,7 +121,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		if (loyaltyNo == 0) {
 			InfoSourceValue isv = PopulationCenterLoyaltyEstimator.getLoyaltyEstimateForPopCenter(pc);
 			if (isv != null) {
-				String txt = isv.getValue() + " (t" + ((DerivedFromInfluenceOtherInfoSource) isv.getInfoSource()).getTurnNo() + ")";
+				String txt = Messages.getString("PopulationCenterViewer.FromTurn", new Object[] {isv.getValue(),((DerivedFromInfluenceOtherInfoSource) isv.getInfoSource()).getTurnNo()}); //$NON-NLS-1$
 				this.loyalty.setText(txt);
 			} else {
 				this.loyalty.setText(String.valueOf(loyaltyNo));
@@ -137,10 +136,10 @@ public class PopulationCenterViewer extends ObjectViewer {
 		this.nation.setToolTipText(pcNation.getName());
 		this.sizeFort.setText(UIUtils.enumToString(pc.getSize()));
 		if (!pc.getFortification().equals(FortificationSizeEnum.none)) {
-			this.sizeFort.setText(this.sizeFort.getText() + " - " + UIUtils.enumToString(pc.getFortification()));
+			this.sizeFort.setText(this.sizeFort.getText() + " - " + UIUtils.enumToString(pc.getFortification())); //$NON-NLS-1$
 		}
 		if (pc.getHarbor() != HarborSizeEnum.none) {
-			this.sizeFort.setText(this.sizeFort.getText() + " - " + UIUtils.enumToString(pc.getHarbor()));
+			this.sizeFort.setText(this.sizeFort.getText() + " - " + UIUtils.enumToString(pc.getHarbor())); //$NON-NLS-1$
 		}
 		this.sizeFort.setCaretPosition(0);
 
@@ -154,7 +153,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				productionTurn = game.getTurn(i);
 				if (productionTurn == null)
 					continue;
-				PopulationCenter pop = (PopulationCenter) productionTurn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
+				PopulationCenter pop = (PopulationCenter) productionTurn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
 				if (pop == null)
 					continue;
 				if (pop.getSize() != PopulationCenterSizeEnum.ruins) {
@@ -165,8 +164,9 @@ public class PopulationCenterViewer extends ObjectViewer {
 				}
 			}
 		}
-		if (pcForProduction != pc) {
-			this.productionDescription.setText(String.format("Production shown as of turn %s (%s):", productionTurn.getTurnNo(), pcForProduction.getSize()));
+		// one of the tests will be redundant, but it keeps the compiler quiet.
+		if ((pcForProduction != pc) && (productionTurn != null)) {
+			this.productionDescription.setText(Messages.getString("PopulationCenterViewer.ProductionAtTurn", new Object[] { productionTurn.getTurnNo(), pcForProduction.getSize()})); //$NON-NLS-1$
 			this.productionDescription.setVisible(true);
 			setStoresVisible(false);
 			setProductionLabelsVisible(true);
@@ -189,7 +189,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			Integer amt = pcForProduction.getProduction(p);
 			String amtStr;
 			if (amt == null || amt == 0) {
-				amtStr = "  -";
+				amtStr = "  -"; //$NON-NLS-1$
 			} else {
 				amtStr = String.valueOf(amt);
 			}
@@ -198,7 +198,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			tf = this.stores.get(p);
 			amt = pcForProduction.getStores(p);
 			if (amt == null || amt == 0) {
-				amtStr = "  -";
+				amtStr = "  -"; //$NON-NLS-1$
 			} else {
 				amtStr = String.valueOf(amt);
 			}
@@ -207,26 +207,26 @@ public class PopulationCenterViewer extends ObjectViewer {
 		}
 
 		if (pc.getLostThisTurn()) {
-			this.lostThisTurn.setText("Exp. to be lost this turn.");
+			this.lostThisTurn.setText(Messages.getString("PopulationCenterViewer.ExpectedToLose")); //$NON-NLS-1$
 			this.lostThisTurn.setVisible(true);
 		} else {
 			this.lostThisTurn.setVisible(false);
 		}
-		String turnInfoStr = "";
+		String turnInfoStr = ""; //$NON-NLS-1$
 		if (pc.getSize() != PopulationCenterSizeEnum.ruins) {
 			if (pc.getInfoSource().getTurnNo() < game.getCurrentTurn()) {
-				turnInfoStr = "Info from t" + Math.max(pc.getInfoSource().getTurnNo(), 0);
+				turnInfoStr = Messages.getString("PopulationCenterViewer.InfoFromT", new Object[] { Math.max(pc.getInfoSource().getTurnNo(), 0)}); //$NON-NLS-1$
 			}
 			;
 			if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource())) {
 				PopCenterXmlInfoSource is = (PopCenterXmlInfoSource) pc.getInfoSource();
 				if (is.getTurnNo() != is.getPreviousTurnNo()) {
-					turnInfoStr += (turnInfoStr.equals("") ? "" : " - ") + "Owner from t" + Math.max(is.getPreviousTurnNo(), 0);
+					turnInfoStr += (turnInfoStr.equals("") ? "" : " - ") + Messages.getString("PopulationCenterViewer.OwnerFromT", new Object[] { Math.max(is.getPreviousTurnNo(), 0)}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				}
 			}
 		}
 		this.turnInfo.setText(turnInfoStr);
-		this.turnInfo.setVisible(!turnInfoStr.equals(""));
+		this.turnInfo.setVisible(!turnInfoStr.equals("")); //$NON-NLS-1$
 		// else if (PopCenterXmlInfoSource.class.isInstance(pc.getInfoSource())
 		// &&
 		// ((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo() <
@@ -242,7 +242,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
+			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo); //$NON-NLS-1$
 			Color col;
 			if (nr == null) {
 				col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
@@ -305,10 +305,10 @@ public class PopulationCenterViewer extends ObjectViewer {
 		c.setPreferredSize(new Dimension(120, 12));
 		c.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 
 		JButton btnMenu = new JButton();
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setIcon(ico);
 		btnMenu.setPreferredSize(new Dimension(16, 16));
 		glb.append(btnMenu);
@@ -335,11 +335,11 @@ public class PopulationCenterViewer extends ObjectViewer {
 		Font f = GraphicUtils.getFont(this.productionDescription.getFont().getName(), Font.ITALIC, 11);
 		this.productionDescription.setFont(f);
 		glb.nextLine();
-		f = GraphicUtils.getFont("Arial", Font.PLAIN, 9);
+		f = GraphicUtils.getFont("Arial", Font.PLAIN, 9); //$NON-NLS-1$
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		for (ProductEnum p : ProductEnum.values()) {
-			JLabel label = new JLabel(" " + p.getCode());
+			JLabel label = new JLabel(" " + p.getLocalized()); //$NON-NLS-1$
 			this.productionLabels.add(label);
 			label.setPreferredSize(new Dimension(28, 12));
 			label.setFont(f);
@@ -386,7 +386,8 @@ public class PopulationCenterViewer extends ObjectViewer {
 	}
 
 	private JPopupMenu createPopulationCenterPopupContextMenu() {
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("populationCenterCommandGroup", new Object[] { this.toggleLostThisTurnCommand, "separator", this.editPopulationCenter, this.deletePopulationCenterCommand, "separator", new ShowCaptureInformationCommand(), "separator", new ShowInfoSourcePopupCommand(((PopulationCenter) getFormObject()).getInfoSource()) });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("populationCenterCommandGroup",
+				new Object[] { this.toggleLostThisTurnCommand, "separator", this.editPopulationCenter, this.deletePopulationCenterCommand, "separator", new ShowCaptureInformationCommand(), "separator", new ShowInfoSourcePopupCommand(((PopulationCenter) getFormObject()).getInfoSource()) }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		return group.createPopupMenu();
 	}
 
@@ -397,7 +398,8 @@ public class PopulationCenterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			this.cancelAction = true;
 			PopulationCenter pc = (PopulationCenter) getFormObject();
-			ConfirmationDialog cdlg = new ConfirmationDialog("Warning", "Are you sure you want to delete population center '" + pc.getName() + "'?") {
+			ConfirmationDialog cdlg = new ConfirmationDialog(Messages.getString("standardMessages.Warning"), 
+					Messages.getString("PopulationCenterViewer.AreYouSure", new Object[] { pc.getName() })) { //$NON-NLS-1$
 				@Override
 				protected void onCancel() {
 					super.onCancel();
@@ -412,7 +414,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancelAction)
 				return;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 			Turn t = g.getTurn();
 			Container<PopulationCenter> pcs = t.getPopulationCenters();
 			pcs.removeItem(pc);
@@ -453,7 +455,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 			Game game = GameHolder.instance().getGame();
 			Hex hex = game.getMetadata().getHex(pc.getHexNo());
-			HexInfo hi = (HexInfo) game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo());
+			HexInfo hi = (HexInfo) game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
 
 			boolean estimateClimate = false;
 			ClimateEnum climate = ClimateEnum.Mild;
@@ -468,20 +470,17 @@ public class PopulationCenterViewer extends ObjectViewer {
 			int captureEHI = ca.getHI().getNumber();
 			int lostEHI = (int) Math.round(captureEHI * (100d - ca.getLosses()) / 100);
 
-			String msg = "Population Center combat statistics estimates:";
-			msg += "\n" + pc.getName() + " has " + strength + " strength. If it is attacked by an enemy army:";
-			msg += "\n- " + captureEHI + " enHI are required to capture this pop center.";
-			msg += "\n- " + lostEHI + " enHI will be lost by the attacking army.";
+			String msg = Messages.getString("PopulationCenterViewer.CombatStats", new Object[] {
+					pc.getName(),strength,captureEHI,lostEHI}); //$NON-NLS-1$
 			if (estimateLoyalty) {
-				msg += "\n * Because the loyalty of this pop center is unknown, an estimate of " + loyalty1 + " was used.";
+				msg += Messages.getString("PopulationCenterViewer.Loyalty", new Object[] {loyalty1}); //$NON-NLS-1$
 			}
 			if (estimateClimate) {
-				msg += "\n * Because the climate is unknown, Mild climate was used.";
+				msg += Messages.getString("PopulationCenterViewer.UnknownClimate"); //$NON-NLS-1$
 			}
-			msg += "\n * Hated relations are assumed for both the attacker and the defender.";
-			msg += "\nNote: The numbers are rough estimates. To get accurate numbers it is advised to do the calculations by hand.";
+			msg += Messages.getString("PopulationCenterViewer.Estimates"); //$NON-NLS-1$
 
-			MessageDialog dlg = new MessageDialog("Population Center combat", msg);
+			MessageDialog dlg = new MessageDialog(Messages.getString("PopulationCenterViewer.CombatDialog.title"), msg); //$NON-NLS-1$
 			dlg.showDialog();
 		}
 	}
@@ -519,8 +518,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 					return true;
 				}
 			};
-			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-			dialog.setTitle(ms.getMessage("editPopulationCenterDialog.title", new Object[] { String.valueOf(pc.getHexNo()) }, Locale.getDefault()));
+			dialog.setTitle(Messages.getString("editPopulationCenterDialog.title", new Object[] { String.valueOf(pc.getHexNo()) })); //$NON-NLS-1$
 			dialog.showDialog();
 		}
 	}

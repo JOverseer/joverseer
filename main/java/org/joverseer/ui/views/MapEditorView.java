@@ -22,6 +22,7 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
@@ -45,43 +46,43 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		JLabel lbl;
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(new JLabel("Active :"), "colspec=left:70px");
+		tlb.cell(new JLabel(Messages.getString("MapEditorView.ActiveColon")), "colspec=left:70px"); //$NON-NLS-1$ //$NON-NLS-2$
 		final JCheckBox active = new JCheckBox();
 		active.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+				HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
 				mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
 			}
 		});
 		tlb.gapCol();
-		tlb.cell(active, "colspec=left:20px");
+		tlb.cell(active, "colspec=left:20px"); //$NON-NLS-1$
 
 		lb.cell(tlb.getPanel());
 		lb.gapCol();
-		lb.cell(new JLabel(" "), "colspec=left:100px");
+		lb.cell(new JLabel(" "), "colspec=left:100px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.gapCol();
-		lb.cell(new JLabel(" "), "colspec=left:100px");
+		lb.cell(new JLabel(" "), "colspec=left:100px"); //$NON-NLS-1$ //$NON-NLS-2$
 		lb.row();
-		lb.cell(new JSeparator(), "colspan=5");
+		lb.cell(new JSeparator(), "colspan=5"); //$NON-NLS-1$
 		lb.row();
 
 		ButtonGroup grp = new ButtonGroup();
 
 		tlb = new TableLayoutBuilder();
 		for (HexTerrainEnum t : HexTerrainEnum.values()) {
-			tlb.cell(new JLabel(t.toString()), "colspec=left:70px");
+			tlb.cell(new JLabel(t.toString()), "colspec=left:70px"); //$NON-NLS-1$
 			tlb.gapCol();
 			final JRadioButton rb = new JRadioButton();
 			final HexTerrainEnum te = t;
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
 				}
 			});
-			tlb.cell(rb, "colspec=left:20px");
+			tlb.cell(rb, "colspec=left:20px"); //$NON-NLS-1$
 			grp.add(rb);
 			tlb.row();
 		}
@@ -90,25 +91,25 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 
 		tlb = new TableLayoutBuilder();
 		for (HexSideElementEnum e : HexSideElementEnum.values()) {
-			tlb.cell(new JLabel(e.toString()), "colspec=left:70px");
+			tlb.cell(new JLabel(e.toString()), "colspec=left:70px"); //$NON-NLS-1$
 			tlb.gapCol();
 			final HexSideElementEnum se = e;
 			final JRadioButton rb = new JRadioButton();
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e1) {
-					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions");
+					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
 				}
 			});
-			tlb.cell(rb, "colspec=left:20px");
+			tlb.cell(rb, "colspec=left:20px"); //$NON-NLS-1$
 			grp.add(rb);
 			tlb.row();
 		}
-		lb.gapCol("20px");
+		lb.gapCol("20px"); //$NON-NLS-1$
 		lb.cell(tlb.getPanel());
 
-		lb.gapCol("20px");
+		lb.gapCol("20px"); //$NON-NLS-1$
 		this.log = new JTextArea();
 		JScrollPane scp;
 		lb.cell(scp = new JScrollPane(this.log));
@@ -135,7 +136,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 	}
 
 	public void log(String message) {
-		this.log.setText(message + "\n" + this.log.getText());
+		this.log.setText(message + "\n" + this.log.getText()); //$NON-NLS-1$
 		this.log.setCaretPosition(0);
 	}
 }

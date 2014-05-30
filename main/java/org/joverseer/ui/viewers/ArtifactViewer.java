@@ -18,6 +18,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.transferHandlers.ArtifactExportTransferHandler;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -30,7 +31,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 public class ArtifactViewer extends ObjectViewer {
 
-    public static final String FORM_PAGE = "ArtifactViewer";
+    public static final String FORM_PAGE = "ArtifactViewer"; //$NON-NLS-1$
 
     JTextField artifactName;
     JTextField owner;
@@ -51,18 +52,18 @@ public class ArtifactViewer extends ObjectViewer {
 
         Artifact a = (Artifact)obj;
         this.artifactName.setTransferHandler(new ArtifactExportTransferHandler(a));
-        this.artifactName.setText("#" + String.valueOf(a.getNumber()) + " " + a.getName());
+        this.artifactName.setText(Messages.getString("ArtifactViewer.NumberAndName", new Object[] { String.valueOf(a.getNumber()),a.getName()})); //$NON-NLS-1$
         this.artifactName.setCaretPosition(0);
-        this.owner.setText(a.getOwner() != null ? a.getOwner() : "unclaimed");
+        this.owner.setText(a.getOwner() != null ? a.getOwner() : Messages.getString("ArtifactViewer.OwnerUnclaimed")); //$NON-NLS-1$
         // show info sources, if needed
         InfoSource is = a.getInfoSource();
         if (DerivedFromSpellInfoSource.class.isInstance(is)) {
             DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource)is;
-            String infoSourcesStr = sis.getSpell() + " at " + sis.getHexNo();
+            String infoSourcesStr = Messages.getString("ArtifactViewer.SpellAtHex",new Object[] {sis.getSpell(),sis.getHexNo()}); //$NON-NLS-1$
             this.infoSource.setVisible(true);
             for (InfoSource dsis : sis.getOtherInfoSources()) {
                 if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
-                    infoSourcesStr += ", " + ((DerivedFromSpellInfoSource)dsis).getSpell() + " at " + ((DerivedFromSpellInfoSource)dsis).getHexNo();
+                    infoSourcesStr += ", " + Messages.getString("ArtifactViewer.SpellAtHex",new Object[] {((DerivedFromSpellInfoSource)dsis).getSpell(), ((DerivedFromSpellInfoSource)dsis).getHexNo()}); //$NON-NLS-1$
                 }
             }
             this.infoSource.setText(infoSourcesStr);
@@ -95,12 +96,11 @@ public class ArtifactViewer extends ObjectViewer {
 						arg0.getClickCount() == 2) {
 					Artifact a = (Artifact)getFormObject();
                     if (a == null) return;
-                    ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", a.getNumber());
+                    ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", a.getNumber()); //$NON-NLS-1$
                     if (ai == null) return;
-                    final String descr = "#" + ai.getNo() + " - " + ai.getName() + "\n" +
-                                    ai.getAlignment() + "\n" +
-                                    ai.getPower1() + ", " + ai.getPower2(); 
-                    MessageDialog dlg = new MessageDialog("Artifact Info", descr);
+                    final String descr = Messages.getString("ArtifactViewer.text",new Object[] {  //$NON-NLS-1$
+                    					ai.getNo(), ai.getName(), ai.getAlignment(), ai.getPower1(), ai.getPower2()});
+                    MessageDialog dlg = new MessageDialog(Messages.getString("ArtifactViewer.title"), descr); //$NON-NLS-1$
                     dlg.showDialog();
 				}
 			}

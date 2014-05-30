@@ -33,6 +33,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
@@ -68,7 +69,7 @@ public class EncounterListView extends BaseItemListView {
 	@Override
 	protected JComponent createControlImpl() {
 		// fetch the messageSource instance from the application context
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource"); //$NON-NLS-1$
 
 		// create the table model
 		try {
@@ -104,7 +105,7 @@ public class EncounterListView extends BaseItemListView {
 				});
 				filter.setPreferredSize(new Dimension(150, 20));
 				filter.setOpaque(true);
-				tlb.cell(filter, "align=left");
+				tlb.cell(filter, "align=left"); //$NON-NLS-1$
 				tlb.gapCol();
 			}
 			tlb.row();
@@ -146,8 +147,8 @@ public class EncounterListView extends BaseItemListView {
 		((JideTable) this.table).setRowAutoResizes(true);
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.table, columnWidths());
 
-		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
-		if (pval.equals("yes")) {
+		String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols"); //$NON-NLS-1$
+		if (pval.equals("yes")) { //$NON-NLS-1$
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		} else {
 			this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -164,8 +165,8 @@ public class EncounterListView extends BaseItemListView {
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
-			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
+			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon")); //$NON-NLS-1$
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);
 			restoreSorting.setPreferredSize(new Dimension(16, 16));
@@ -178,8 +179,8 @@ public class EncounterListView extends BaseItemListView {
 
 			});
 			((SortableTableModel) this.table.getModel()).sortByColumns(getDefaultSort());
-			restoreSorting.setToolTipText("Restore default sort order");
-			tlb.cell(restoreSorting, "colspec=left:30px valign=top");
+			restoreSorting.setToolTipText(Messages.getString("EncounterListView.RestoreDefaultSortOrder")); //$NON-NLS-1$
+			tlb.cell(restoreSorting, "colspec=left:30px valign=top"); //$NON-NLS-1$
 		}
 		JPanel p = tlb.getPanel();
 		p.setBackground(Color.WHITE);
@@ -215,7 +216,7 @@ public class EncounterListView extends BaseItemListView {
 					ew.setCharacter(e.getCharacter());
 					ew.setDescription(e.getDescription());
 					ew.setHexNo(e.getHexNo());
-					Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ew.getCharacter());
+					Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", ew.getCharacter()); //$NON-NLS-1$
 					ew.setNationNo(0);
 					if (c != null)
 						ew.setNationNo(c.getNationNo());

@@ -7,6 +7,7 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.HexInfoHistory;
+import org.joverseer.ui.support.Messages;
 
 /**
  * Holds information about the Hex Info Turn Report
@@ -34,7 +35,7 @@ public class HexInfoTurnReportMapItem extends AbstractMapItem {
 
 	@Override
 	public String getDescription() {
-		return String.format("Hex info turn report.", new Object[]{});
+		return Messages.getString("HexInfoTurnReportMapItem.HexInfoReport"); //$NON-NLS-1$
 	}
 
 	@Override

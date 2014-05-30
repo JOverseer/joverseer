@@ -17,6 +17,7 @@ import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
@@ -33,7 +34,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 public class CombatViewer extends ObjectViewer {
 
-	public static final String FORM_PAGE = "CombatViewer";
+	public static final String FORM_PAGE = "CombatViewer"; //$NON-NLS-1$
 
 	JTextField description;
 
@@ -57,9 +58,9 @@ public class CombatViewer extends ObjectViewer {
 		this.description.setPreferredSize(new Dimension(200, 12));
 		this.description.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(new Dimension(16, 16));
 		btnMenu.setIcon(ico);
 		glb.append(btnMenu);
@@ -85,7 +86,7 @@ public class CombatViewer extends ObjectViewer {
 		for (Integer nationNo : c.getNarrations().keySet()) {
 			narrationActions.add(new ShowDescriptionCommand(nationNo));
 		}
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("combatCommandGroup", narrationActions.toArray());
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("combatCommandGroup", narrationActions.toArray()); //$NON-NLS-1$
 		return group.createPopupMenu();
 	}
 
@@ -93,14 +94,14 @@ public class CombatViewer extends ObjectViewer {
 	public void setFormObject(Object obj) {
 		super.setFormObject(obj);
 		Combat c = (Combat) obj;
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 
-		String d = "";
+		String d = ""; //$NON-NLS-1$
 		for (Integer nationNo : c.getNarrations().keySet()) {
 			Nation n = game.getMetadata().getNationByNum(nationNo);
-			d += (!d.equals("") ? ", " : "") + n.getShortName();
+			d += (!d.equals("") ? ", " : "") + n.getShortName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
-		this.description.setText("Combat: " + d);
+		this.description.setText(Messages.getString("CombatViewer.CombatColon") + d); //$NON-NLS-1$
 		this.description.setCaretPosition(0);
 	}
 
@@ -108,11 +109,11 @@ public class CombatViewer extends ObjectViewer {
 		int nationNo;
 
 		public ShowDescriptionCommand(int nationNo) {
-			super("showDescriptionCommand" + nationNo);
+			super("showDescriptionCommand" + nationNo); //$NON-NLS-1$
 			this.nationNo = nationNo;
-			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 			Nation n = game.getMetadata().getNationByNum(nationNo);
-			setLabel(n.getName() + " Narration");
+			setLabel(Messages.getString("CombatViewer.Narration", new Object[] {n.getName()})); //$NON-NLS-1$
 		}
 
 		@Override

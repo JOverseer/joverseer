@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.springframework.binding.form.FormModel;
@@ -30,7 +31,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 public class EncounterViewer extends ObjectViewer {
 
-	public static final String FORM_PAGE = "encounterViewer";
+	public static final String FORM_PAGE = "encounterViewer"; //$NON-NLS-1$
 
 	JTextField description;
 
@@ -54,9 +55,9 @@ public class EncounterViewer extends ObjectViewer {
 		this.description.setPreferredSize(new Dimension(200, 12));
 		this.description.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
-		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
+		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(new Dimension(16, 16));
 		btnMenu.setIcon(ico);
 		glb.append(btnMenu);
@@ -76,7 +77,7 @@ public class EncounterViewer extends ObjectViewer {
 	}
 
 	private JPopupMenu createEncounterPopupContextMenu() {
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("encounterCommandGroup", new Object[] { this.showDescriptionCommand });
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("encounterCommandGroup", new Object[] { this.showDescriptionCommand }); //$NON-NLS-1$
 		return group.createPopupMenu();
 	}
 
@@ -84,12 +85,8 @@ public class EncounterViewer extends ObjectViewer {
 	public void setFormObject(Object obj) {
 		super.setFormObject(obj);
 		Encounter e = (Encounter) obj;
-		String type = "Encounter: ";
-		if (Challenge.class.isInstance(obj)) {
-			type = "Challenge: ";
-		}
-		String d = type + e.getCharacter();
-		this.description.setText(d);
+		this.description.setText(Messages.getString(Challenge.class.isInstance(obj) ? "EncounterViewer.ChallengeColon" :"EncounterViewer.EncounterColon",
+				new Object [] {e.getCharacter()}));
 		this.description.setCaretPosition(0);
 	}
 

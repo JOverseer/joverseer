@@ -2,6 +2,7 @@ package org.joverseer.ui.domain.mapItems;
 
 import org.joverseer.domain.Army;
 import org.joverseer.support.movement.MovementUtils;
+import org.joverseer.ui.support.Messages;
 
 /**
  * Class that handles the drawing of army ranges on the map.
@@ -40,7 +41,7 @@ public class ArmyRangeMapItem extends AbstractRangeMapItem {
 
     @Override
 	public String getDescription() {
-        return String.format("Range for army {0} located at {1}.", new Object[]{getArmy().getCommanderName(), getArmy().getHexNo()});
+        return Messages.getString("ArmyRangeMapItem.RangeForArmy", new Object[]{getArmy().getCommanderName(), getArmy().getHexNo()}); //$NON-NLS-1$
     }
 
     

@@ -29,6 +29,7 @@ import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
@@ -59,7 +60,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 
 		lb.relatedGapRow();
 
-		lb.separator("Team Economy");
+		lb.separator(Messages.getString("TeamEconomyView.label")); //$NON-NLS-1$
 		lb.row();
 		lb.relatedGapRow();
 
@@ -82,26 +83,26 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.row();
 		lb.relatedGapRow();
 
-		this.showProductAsCombo = new JComboBox(new String[] { TeamEconomyTableModel.PROD_TOTAL, TeamEconomyTableModel.PROD_GAIN, TeamEconomyTableModel.PROD_PRODUCTION, TeamEconomyTableModel.PROD_STORES });
+		this.showProductAsCombo = new JComboBox(TeamEconomyTableModel.getSummaryOptions());
 		this.showProductAsCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TeamEconomyView.this.teamEconomyTableModel.setShowProductsAs(TeamEconomyView.this.showProductAsCombo.getSelectedItem().toString());
+				TeamEconomyView.this.teamEconomyTableModel.setShowProductsAs(SummaryTypeEnum.values()[TeamEconomyView.this.showProductAsCombo.getSelectedIndex()]);
 				TeamEconomyView.this.teamEconomyTableModel.fireTableDataChanged();
 			}
 		});
 		this.showProductAsCombo.setPreferredSize(new Dimension(230, 20));
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		tlb.cell(new JLabel("products: "));
+		tlb.cell(new JLabel(Messages.getString("TeamEconomyView.ProductsColon"))); //$NON-NLS-1$
 		tlb.gapCol();
-		tlb.cell(this.showProductAsCombo, "colspec=left:230px");
+		tlb.cell(this.showProductAsCombo, "colspec=left:230px"); //$NON-NLS-1$
 		tlb.gapCol();
 
-		lb.cell(tlb.getPanel(), "align=left");
+		lb.cell(tlb.getPanel(), "align=left"); //$NON-NLS-1$
 
-		JButton btn = new JButton("Update market and order cost");
-		btn.setToolTipText("Updates the market profit/cost and order cost for all nations");
+		JButton btn = new JButton(Messages.getString("TeamEconomyView.UpdateMarket")); //$NON-NLS-1$
+		btn.setToolTipText(Messages.getString("TeamEconomyView.UpdateAll")); //$NON-NLS-1$
 		btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -119,11 +120,11 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		});
 		lb.gapCol();
 		btn.setPreferredSize(new Dimension(200, 20));
-		lb.cell(btn, "colspec=right:200px valign=top");
+		lb.cell(btn, "colspec=right:200px valign=top"); //$NON-NLS-1$
 
 		lb.relatedGapRow();
 
-		lb.separator("Team Products");
+		lb.separator(Messages.getString("TeamEconomyView.ProductsLabel")); //$NON-NLS-1$
 		lb.relatedGapRow();
 
 		this.nationProductionListView = new NationProductionListView();
@@ -133,7 +134,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 
 		lb.relatedGapRow();
 
-		lb.separator("Team Economy");
+		lb.separator(Messages.getString("TeamEconomyView.TE")); //$NON-NLS-1$
 		lb.relatedGapRow();
 
 		this.nationEconomyListView = new NationEconomyListView();
@@ -143,7 +144,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 
 		lb.relatedGapRow();
 
-		lb.separator("Team Statistics");
+		lb.separator(Messages.getString("TeamEconomyView.Tstats")); //$NON-NLS-1$
 		lb.relatedGapRow();
 
 		this.nationStatisticsListView = new NationStatisticsListView();
@@ -163,7 +164,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		GameHolder.instance();
 		if (GameHolder.hasInitializedGame()) {
 			for (NationEconomy ne : GameHolder.instance().getGame().getTurn().getNationEconomies().getItems()) {
-				EconomyCalculatorData ecd = (EconomyCalculatorData) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", ne.getNationNo());
+				EconomyCalculatorData ecd = (EconomyCalculatorData) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", ne.getNationNo()); //$NON-NLS-1$
 				if (ecd == null) {
 					ecd = new EconomyCalculatorData();
 					ecd.setNationNo(ne.getNationNo());
@@ -240,7 +241,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 			} else if (column == TeamEconomyTableModel.iTaxRate) {
 				Integer amt = (Integer) value;
 				if (amt < 60) {
-					lbl.setForeground(Color.decode("#009900"));
+					lbl.setForeground(Color.decode("#009900")); //$NON-NLS-1$
 				} else if (amt > 60) {
 					lbl.setForeground(Color.red);
 				}
@@ -258,7 +259,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 
 			if (!isSelected) {
 				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
-					lbl.setBackground(Color.decode("#d7dfe7"));
+					lbl.setBackground(Color.decode("#d7dfe7")); //$NON-NLS-1$
 				} else {
 					lbl.setBackground(Color.white);
 				}
@@ -277,7 +278,7 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (!isSelected) {
 				if (row == TeamEconomyView.this.teamEconomyTableModel.getRowCount() - 1) {
-					lbl.setBackground(Color.decode("#d7dfe7"));
+					lbl.setBackground(Color.decode("#d7dfe7")); //$NON-NLS-1$
 				} else {
 					lbl.setBackground(Color.white);
 				}

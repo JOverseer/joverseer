@@ -641,7 +641,9 @@ public class OCDialog extends JPanel
 	public DefaultMutableTreeNode getRoot() {
 		return root;
 	}
-
+	public JTree getTree() {
+		return tree;
+	}
 
 
 

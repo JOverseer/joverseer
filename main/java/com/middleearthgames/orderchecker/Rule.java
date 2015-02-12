@@ -190,7 +190,7 @@ public class Rule
         if(this.spellRules != null && !this.spellRules.getDone())
         {
             result = this.spellRules.processRules(this.parentOrder, phase1);
-            if(result != null && !result.equals("state"))
+            if(result != null && !result.equals(STATE_REQ))
             {
                 return result;
             }
@@ -489,20 +489,20 @@ public class Rule
         boolean forced = convertParameter(0) == 1;
         if(this.phase == 1)
         {
-            clearProcessState(2);
-            clearProcessState(4);
+            clearProcessState(STATE_ARMY_LOCATION);
+            clearProcessState(STATE_CHARACTER_LOCATION);
         } else
         if(this.phase == 2)
         {
-            if(waitForProcessState(0))
+            if(waitForProcessState(STATE_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
             if(army == null)
             {
-                setProcessState(2);
-                setProcessState(4);
+                setProcessState(STATE_ARMY_LOCATION);
+                setProcessState(STATE_CHARACTER_LOCATION);
                 return null;
             }
             if(army.getFoodRequirement() == 0)
@@ -511,18 +511,18 @@ public class Rule
                 {
                     String msg = "FOOD:Will " + this.parentChar + "'s army have 1 food?";
                     addAdditionalInfo(msg, false);
-                    return "state";
+                    return STATE_REQ;
                 }
                 army.setFoodRequired(1);
                 army.setHasEnoughFood(getAdditionalInfo());
             }
             boolean food = army.getHasEnoughFood();
-            if(waitForPartialState(2) || waitForPartialState(4))
+            if(waitForPartialState(STATE_ARMY_LOCATION) || waitForPartialState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(2);
-            setProcessState(4);
+            setProcessState(STATE_ARMY_LOCATION);
+            setProcessState(STATE_CHARACTER_LOCATION);
             String evasiveString = this.parentOrder.getParameterString(1);
             boolean evasive = !evasiveString.equalsIgnoreCase("no");
             boolean cavalry = army.isAllCavalry(this.parentOrder.getOrder());
@@ -623,9 +623,9 @@ public class Rule
         int type = convertParameter(0);
         if(this.phase == 2)
         {
-            if(waitForProcessState(3))
+            if(waitForProcessState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             boolean armyCheck = false;
@@ -673,9 +673,9 @@ public class Rule
             {
                 return null;
             }
-            if(waitForProcessState(3) || waitForProcessState(4))
+            if(waitForProcessState(STATE_CHARACTER_ARMY) || waitForProcessState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(!character.isArmyCO(this.parentOrder.getOrder()))
             {
@@ -705,9 +705,9 @@ public class Rule
         }
         if(this.phase == 2)
         {
-            if(wait && waitForProcessState(5))
+            if(wait && waitForProcessState(STATE_ARTIFACT))
             {
-                return "state";
+                return STATE_REQ;
             }
             int artifactNum = this.parentOrder.getParameterNumber(artifactParam);
             if(artifactNum == -1)
@@ -743,15 +743,15 @@ public class Rule
         }
         if(this.phase == 1)
         {
-            clearProcessState(5);
+            clearProcessState(STATE_ARTIFACT);
         } else
         if(this.phase == 2)
         {
-            if(waitForPartialState(5))
+            if(waitForPartialState(STATE_ARTIFACT))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(5);
+            setProcessState(STATE_ARTIFACT);
             if(this.parentChar.getTotalMageRank() == 0)
             {
                 this.parentOrder.addWarning(this.parentChar + " doesn't have Mage rank.");
@@ -782,15 +782,15 @@ public class Rule
         int artifactParam = convertParameter(1);
         if(this.phase == 1)
         {
-            clearProcessState(5);
+            clearProcessState(STATE_ARTIFACT);
         } else
         if(this.phase == 2)
         {
-            if(waitForPartialState(5))
+            if(waitForPartialState(STATE_ARTIFACT))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(5);
+            setProcessState(STATE_ARTIFACT);
             int numArtifacts = this.parentOrder.getNumberOfParameters() + 1;
             int total = numArtifacts - artifactParam;
             if(total < 1)
@@ -902,9 +902,9 @@ public class Rule
             {
                 return null;
             }
-            if(waitForProcessState(4))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(character.getLocation(this.parentOrder.getOrder()) != location && state != 4)
             {
@@ -990,28 +990,28 @@ public class Rule
             }
             if(type != 1)
             {
-                clearProcessState(4);
-                clearProcessState(3);
+                clearProcessState(STATE_CHARACTER_LOCATION);
+                clearProcessState(STATE_CHARACTER_ARMY);
             }
         } else
         if(this.phase == 2)
         {
             if(type != 1)
             {
-                if(type == 2 && waitForProcessState(2))
+                if(type == 2 && waitForProcessState(STATE_ARMY_LOCATION))
                 {
-                    return "state";
+                    return STATE_REQ;
                 }
-                if(waitForPartialState(4) || waitForPartialState(3))
+                if(waitForPartialState(STATE_CHARACTER_LOCATION) || waitForPartialState(STATE_CHARACTER_ARMY))
                 {
-                    return "state";
+                    return STATE_REQ;
                 }
-                setProcessState(4);
-                setProcessState(3);
+                setProcessState(STATE_CHARACTER_LOCATION);
+                setProcessState(STATE_CHARACTER_ARMY);
             } else
-            if(waitForProcessState(4))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(type != 1)
             {
@@ -1100,9 +1100,9 @@ public class Rule
             {
                 return null;
             }
-            if(waitForProcessState(4) || waitForProcessState(3))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION) || waitForProcessState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(character.getTotalCommandRank() > 0 && (CO == 4 || CO == 5))
             {
@@ -1110,7 +1110,7 @@ public class Rule
                 {
                     String msg = "COMPANYCO:Is " + character + " a company commander?";
                     addAdditionalInfo(msg, false);
-                    return "state";
+                    return STATE_REQ;
                 }
                 character.setCompanyCO(getAdditionalInfo(), 0);
             }
@@ -1233,9 +1233,9 @@ public class Rule
             {
                 return null;
             }
-            if(waitForProcessState(4) || waitForProcessState(3))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION) || waitForProcessState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(character.getTotalCommandRank() > 0 && (CO == 4 || CO == 5))
             {
@@ -1243,7 +1243,7 @@ public class Rule
                 {
                     String msg = "COMPANYCO:Is " + character + " a company commander?";
                     addAdditionalInfo(msg, false);
-                    return "state";
+                    return STATE_REQ;
                 }
                 character.setCompanyCO(getAdditionalInfo(), 0);
             }
@@ -1329,9 +1329,9 @@ public class Rule
         }
         if(this.phase == 1)
         {
-            clearProcessState(0);
-            clearProcessState(6);
-            clearProcessState(3);
+            clearProcessState(STATE_ARMY);
+            clearProcessState(STATE_COMPANY);
+            clearProcessState(STATE_CHARACTER_ARMY);
         } else
         if(this.phase == 2)
         {
@@ -1341,18 +1341,18 @@ public class Rule
                 {
                     String msg = "COMPANYCO:Is " + this.parentChar + " a company commander?";
                     addAdditionalInfo(msg, false);
-                    return "state";
+                    return STATE_REQ;
                 }
                 this.parentChar.setCompanyCO(getAdditionalInfo(), 0);
             }
             boolean companyCO = this.parentChar.isCompanyCO(this.parentOrder.getOrder());
-            if(waitForPartialState(0) || waitForPartialState(6) || waitForPartialState(3))
+            if(waitForPartialState(STATE_ARMY) || waitForPartialState(STATE_COMPANY) || waitForPartialState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(0);
-            setProcessState(6);
-            setProcessState(3);
+            setProcessState(STATE_ARMY);
+            setProcessState(STATE_COMPANY);
+            setProcessState(STATE_CHARACTER_ARMY);
             if(companyCO)
             {
                 this.parentChar.setCompanyCO(false, this.parentOrder.getOrder());
@@ -1421,9 +1421,9 @@ public class Rule
         int type = convertParameter(0);
         if(this.phase == 2)
         {
-            if(waitForProcessState(4))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             PopCenter pc = Main.main.getNation().findPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             String location = Main.main.locationStr(this.parentChar.getLocation(this.parentOrder.getOrder()));
@@ -1684,7 +1684,7 @@ public class Rule
                 {
                     String msg = "HOSTAGE:Is \"" + charName + "\" a hostage?";
                     addAdditionalInfo(msg, false);
-                    return "state";
+                    return STATE_REQ;
                 }
                 hostage = getAdditionalInfo();
             } else
@@ -1748,9 +1748,9 @@ public class Rule
         int locParam = convertParameter(0);
         if(this.phase == 2)
         {
-            if(locParam == 0 && waitForProcessState(4))
+            if(locParam == 0 && waitForProcessState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
@@ -1779,18 +1779,18 @@ public class Rule
         {
             if(type == 2)
             {
-                clearProcessState(0);
+                clearProcessState(STATE_ARMY);
             }
         } else
         if(this.phase == 2)
         {
             if(type == 2)
             {
-                if(waitForPartialState(0))
+                if(waitForPartialState(STATE_ARMY))
                 {
-                    return "state";
+                    return STATE_REQ;
                 }
-                setProcessState(0);
+                setProcessState(STATE_ARMY);
             }
             int quantity = this.parentOrder.getParameterNumber(amtParam);
             if(quantity == -1)
@@ -1912,20 +1912,20 @@ public class Rule
     {
         if(this.phase == 1)
         {
-            clearProcessState(2);
-            clearProcessState(4);
+            clearProcessState(STATE_ARMY_LOCATION);
+            clearProcessState(STATE_CHARACTER_LOCATION);
         } else
         if(this.phase == 2)
         {
-            if(waitForProcessState(0))
+            if(waitForProcessState(STATE_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
             if(army == null)
             {
-                setProcessState(2);
-                setProcessState(4);
+                setProcessState(STATE_ARMY_LOCATION);
+                setProcessState(STATE_CHARACTER_LOCATION);
                 return null;
             }
             boolean requiredTransports = false;
@@ -1952,7 +1952,7 @@ public class Rule
                     msg = "FOOD:Will " + this.parentChar + "'s navy have 1 food?";
                     addAdditionalInfo(msg, false);
                 }
-                return "state";
+                return STATE_REQ;
             }
             requiredTransports = getAdditionalInfo();
             if(army.getFoodRequired() == 0)
@@ -1961,12 +1961,12 @@ public class Rule
                 army.setHasEnoughFood(getAdditionalInfo());
             }
             boolean food = army.getHasEnoughFood();
-            if(waitForPartialState(2) || waitForPartialState(4))
+            if(waitForPartialState(STATE_ARMY_LOCATION) || waitForPartialState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(2);
-            setProcessState(4);
+            setProcessState(STATE_ARMY_LOCATION);
+            setProcessState(STATE_CHARACTER_LOCATION);
             if(!requiredTransports)
             {
                 this.parentOrder.addError("The navy does not have enough transports to move.");
@@ -2144,9 +2144,9 @@ public class Rule
     {
         if(this.phase == 2)
         {
-            if(waitForProcessState(4) || waitForProcessState(5))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION) || waitForProcessState(STATE_ARTIFACT))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(this.parentChar.getLocation(this.parentOrder.getOrder()) != 3423)
             {
@@ -2190,13 +2190,13 @@ public class Rule
         int state = convertParameter(1);
         if(this.phase != 1 && this.phase == 2)
         {
-            if(waitForProcessState(1))
+            if(waitForProcessState(STATE_PC))
             {
-                return "state";
+                return STATE_REQ;
             }
-            if(locParam == 0 && waitForProcessState(4))
+            if(locParam == 0 && waitForProcessState(STATE_CHARACTER_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
@@ -2468,15 +2468,15 @@ public class Rule
         int state = convertParameter(1);
         if(this.phase == 1)
         {
-            clearProcessState(1);
+            clearProcessState(STATE_PC);
         } else
         if(this.phase == 2)
         {
-            if(waitForPartialState(1))
+            if(waitForPartialState(STATE_PC))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(1);
+            setProcessState(STATE_PC);
             int location = this.parentOrder.extractLocation(locParam, true);
             if(location == -1)
             {
@@ -2708,17 +2708,17 @@ public class Rule
             {
                 return "Invalid logic (" + logic + ") for SETCOMMAND!";
             }
-            clearProcessState(0);
-            clearProcessState(6);
+            clearProcessState(STATE_ARMY);
+            clearProcessState(STATE_COMPANY);
         } else
         if(this.phase == 2)
         {
-            if(waitForPartialState(0) || waitForPartialState(6))
+            if(waitForPartialState(STATE_ARMY) || waitForPartialState(STATE_COMPANY))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(0);
-            setProcessState(6);
+            setProcessState(STATE_ARMY);
+            setProcessState(STATE_COMPANY);
             Character character = this.parentOrder.extractCharacter(charParam, false);
             if(character == null)
             {
@@ -2798,7 +2798,7 @@ public class Rule
                 }
                 msg = msg + warships + " warships and " + transports + " transports?";
                 addAdditionalInfo(msg, false);
-                return "state";
+                return STATE_REQ;
             }
             if(!getAdditionalInfo())
             {
@@ -2990,9 +2990,9 @@ public class Rule
             {
                 return null;
             }
-            if(waitForProcessState(3))
+            if(waitForProcessState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             if(character.isArmyCO(this.parentOrder.getOrder()) && (this.parentChar.army == null))
             {
@@ -3007,9 +3007,9 @@ public class Rule
         boolean bDisabled = true;
         if(this.phase == 2 && !bDisabled)
         {
-            if(waitForProcessState(4) || waitForProcessState(0) || waitForProcessState(2))
+            if(waitForProcessState(STATE_CHARACTER_LOCATION) || waitForProcessState(STATE_ARMY) || waitForProcessState(STATE_ARMY_LOCATION))
             {
-                return "state";
+                return STATE_REQ;
             }
             int location = this.parentChar.getLocation(this.parentOrder.getOrder());
             int troops = Main.main.getNation().totalTroopsAtLocation(location, this.parentOrder.getOrder());
@@ -3068,22 +3068,22 @@ public class Rule
         {
             if(retire == 1)
             {
-                clearProcessState(0);
+                clearProcessState(STATE_ARMY);
             }
         } else
         if(this.phase == 2)
         {
             if(retire == 1)
             {
-                if(waitForPartialState(0))
+                if(waitForPartialState(STATE_ARMY))
                 {
-                    return "state";
+                    return STATE_REQ;
                 }
-                setProcessState(0);
+                setProcessState(STATE_ARMY);
             } else
-            if(waitForProcessState(0))
+            if(waitForProcessState(STATE_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             Army army = null;
             if(type == 0)
@@ -3178,8 +3178,8 @@ public class Rule
         }
         if(this.phase == 1)
         {
-            clearProcessState(0);
-            clearProcessState(3);
+            clearProcessState(STATE_ARMY);
+            clearProcessState(STATE_CHARACTER_ARMY);
         } else
         if(this.phase == 2)
         {
@@ -3195,8 +3195,8 @@ public class Rule
             PopCenter pc = Main.main.getNation().findOwnedPopulationCenter(this.parentChar.getLocation(this.parentOrder.getOrder()));
             if(amount == -1 || type < 0 || type > 5 || pc == null)
             {
-                setProcessState(0);
-                setProcessState(3);
+                setProcessState(STATE_ARMY);
+                setProcessState(STATE_CHARACTER_ARMY);
                 return null;
             }
             if(type == 0 || type == 1)
@@ -3205,19 +3205,19 @@ public class Rule
                 {
                     String msg = "TROOP:Does " + pc + " have " + amount + " mounts and " + amount * 2 + " leather?";
                     addAdditionalInfo(msg, false);
-                    return "state";
+                    return STATE_REQ;
                 }
                 if(!getAdditionalInfo())
                 {
                     this.parentOrder.addError(pc + " doesn't have enough mounts " + "and/or leather for cavalry.");
                 }
             }
-            if(waitForPartialState(0) || waitForPartialState(3))
+            if(waitForPartialState(STATE_ARMY) || waitForPartialState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(0);
-            setProcessState(3);
+            setProcessState(STATE_ARMY);
+            setProcessState(STATE_CHARACTER_ARMY);
             int amounts[] = new int[6];
             amounts[type] = amount;
             Army army = null;
@@ -3264,9 +3264,9 @@ public class Rule
         int typeParam = convertParameter(1);
         if(this.phase == 2)
         {
-            if(waitForProcessState(3) || waitForProcessState(0))
+            if(waitForProcessState(STATE_CHARACTER_ARMY) || waitForProcessState(STATE_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
             Character character = this.parentOrder.extractCharacter(charParam, true);
             if(character == null)
@@ -3320,17 +3320,17 @@ public class Rule
 
         if(this.phase == 1)
         {
-            clearProcessState(0);
-            clearProcessState(3);
+            clearProcessState(STATE_ARMY);
+            clearProcessState(STATE_CHARACTER_ARMY);
         } else
         if(this.phase == 2)
         {
             processTroopAmount(type, 1, amountParam);
-            if(waitForPartialState(3))
+            if(waitForPartialState(STATE_CHARACTER_ARMY))
             {
-                return "state";
+                return STATE_REQ;
             }
-            setProcessState(3);
+            setProcessState(STATE_CHARACTER_ARMY);
             Army srcArmy = null;
             if(type == 0)
             {

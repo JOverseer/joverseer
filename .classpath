@@ -6,7 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JOverseerGameLibrary"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spring"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jide"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PDFBox"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache HTTP Client"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JGoodies Looks"/>
@@ -22,5 +21,12 @@
 	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/skinlf-1.2.11.jar"/>
 	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/swingx-0.8.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-action.jar"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-beaninfo.jar"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-common-patched-swing-utils.jar"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-components.jar"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-dialogs.jar"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-dock.jar"/>
+	<classpathentry kind="lib" path="I:/MiddleEarth/JOverseerWorkspace/RequiredLibs/jide-grids.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

@@ -92,7 +92,7 @@ public class Nation
         }
     }
 
-    String implementPhase(int phase, Main main)
+    public String implementPhase(int phase, Main main)
     {
         if(phase == 1)
         {
@@ -147,7 +147,7 @@ public class Nation
         return null;
     }
 
-    boolean isProcessingDone()
+    public boolean isProcessingDone()
     {
         for(int i = 0; i < this.orderList.size(); i++)
         {
@@ -217,7 +217,7 @@ public class Nation
 
     }
 
-    Vector getArmyRequests()
+    public Vector getArmyRequests()
     {
         this.requestList.removeAllElements();
         for(int i = 0; i < this.armies.size(); i++)
@@ -245,7 +245,7 @@ public class Nation
         return this.requestList;
     }
 
-    void processArmyRequests(Vector list)
+   public void processArmyRequests(Vector list)
     {
         for(int i = 0; i < this.armies.size(); i++)
         {

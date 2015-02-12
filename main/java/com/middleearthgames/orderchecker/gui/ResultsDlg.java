@@ -39,8 +39,8 @@ import javax.swing.event.MenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.middleearthgames.orderchecker.Character;
-import com.middleearthgames.orderchecker.Main;
 import com.middleearthgames.orderchecker.Nation;
+import com.middleearthgames.orderchecker.Main;
 import com.middleearthgames.orderchecker.io.Data;
 
 // Referenced classes of package com.middleearthgames.orderchecker.gui:

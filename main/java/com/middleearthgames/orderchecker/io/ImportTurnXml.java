@@ -19,6 +19,7 @@ import org.xml.sax.SAXParseException;
 import com.middleearthgames.orderchecker.Army;
 import com.middleearthgames.orderchecker.Character;
 import com.middleearthgames.orderchecker.Nation;
+import com.middleearthgames.orderchecker.Nation;
 import com.middleearthgames.orderchecker.PopCenter;
 
 // Referenced classes of package com.middleearthgames.orderchecker.io:

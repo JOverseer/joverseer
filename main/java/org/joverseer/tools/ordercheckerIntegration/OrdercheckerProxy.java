@@ -1,7 +1,5 @@
 package org.joverseer.tools.ordercheckerIntegration;
 
-import java.awt.Component;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -11,7 +9,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -33,9 +30,7 @@ import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.joverseer.metadata.domain.Hex;
 import org.joverseer.support.GameHolder;
-import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
 
@@ -47,10 +42,8 @@ import com.middleearthgames.orderchecker.PopCenter;
 import com.middleearthgames.orderchecker.Ruleset;
 import com.middleearthgames.orderchecker.gui.ExtraInfoDlg;
 import com.middleearthgames.orderchecker.gui.OCResultTreeRenderer;
-import com.middleearthgames.orderchecker.gui.OCTreeNode;
 import com.middleearthgames.orderchecker.io.Data;
 import com.middleearthgames.orderchecker.io.ImportRulesCsv;
-import com.middleearthgames.orderchecker.io.ImportTerrainCsv;
 
 /**
  * Class the acts as a proxy between JOverseer and Bernie Geiger's Order Checker
@@ -69,7 +62,7 @@ public class OrdercheckerProxy {
 	HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> reverseOrderMap = new HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order>();
 	int nationNo;
 
-	static class OrdercheckerPaths {
+	private static class OrdercheckerPaths {
 		public String rulesetPath;
 		public String terrainPath;
 		private static final OrdercheckerPaths instance = new OrdercheckerPaths();
@@ -88,7 +81,7 @@ public class OrdercheckerProxy {
 		}
 	}
 	
-	static void copyCurrentMap(GameMetadata metadata,Map map)
+	private static void copyCurrentMap(GameMetadata metadata,Map map)
 	{
 		com.middleearthgames.orderchecker.Hex ocHex;
 		HashMap<HexSideEnum,ArrayList<HexSideElementEnum>> elements;
@@ -187,77 +180,28 @@ public class OrdercheckerProxy {
 	protected void processOrders(Main main) throws Exception {
 		final ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 
-		final DefaultMutableTreeNode root = ((DefaultMutableTreeNode) ReflectionUtils.retrieveField(main.getWindow(), "root"));
-		JTree tree = (JTree) ReflectionUtils.retrieveField(main.getWindow(), "tree");
-		final OCResultTreeRenderer renderer = new OCResultTreeRenderer(null);
-		renderer.setRedIcon(new ImageIcon(imgSource.getImage("orderchecker.red.image")));
-		renderer.setYellowIcon(new ImageIcon(imgSource.getImage("orderchecker.yellow.image")));
-		renderer.setGreenIcon(new ImageIcon(imgSource.getImage("orderchecker.green.image")));
-		renderer.setOrderIcon(new ImageIcon(imgSource.getImage("orderchecker.order.image")));
-		renderer.setCharIcon(new ImageIcon(imgSource.getImage("orderchecker.character.image")));
+		final DefaultMutableTreeNode root = main.getWindow().getRoot();
+		JTree tree = main.getWindow().getTree();
+		if (tree.getCellRenderer() instanceof OCResultTreeRenderer) {
+			final OCResultTreeRenderer renderer = (OCResultTreeRenderer)tree.getCellRenderer();
+			renderer.setRedIcon(new ImageIcon(imgSource.getImage("orderchecker.red.image")));
+			renderer.setYellowIcon(new ImageIcon(imgSource.getImage("orderchecker.yellow.image")));
+			renderer.setGreenIcon(new ImageIcon(imgSource.getImage("orderchecker.green.image")));
+			renderer.setOrderIcon(new ImageIcon(imgSource.getImage("orderchecker.order.image")));
+			renderer.setCharIcon(new ImageIcon(imgSource.getImage("orderchecker.character.image")));
+		}
 
-		tree.setCellRenderer(new DefaultTreeCellRenderer() {
-			@Override
-			public Component getTreeCellRendererComponent(JTree tree1, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus1) {
-				try {
-					super.getTreeCellRendererComponent(tree1, value, sel, expanded, leaf, row, hasFocus1);
-					if (value != root) {
-						OCTreeNode node = (OCTreeNode) value;
-						setFont(node.getActiveFont());
-						if (node.getNodeType() == 2) {
-							String currentText = getText();
-							if (currentText.length() > 3) {
-								currentText = currentText.substring(4);
-								setText(currentText);
-							}
-						}
-						ImageIcon icon = null;
-						switch ((Integer) ReflectionUtils.retrieveField(value, "nodeType")) {
-						case 1: // '\001'
-							icon = new ImageIcon(imgSource.getImage("orderchecker.character.image"));
-							break;
-						case 0: // '\0'
-							icon = new ImageIcon(imgSource.getImage("orderchecker.order.image"));
-							break;
-						case 2: // '\002'
-							int type = (Integer) ReflectionUtils.invokeMethod(value, "getResultType", new Object[] {});
-							switch (type) {
-							case 4: // '\004'
-								icon = new ImageIcon(imgSource.getImage("orderchecker.red.image"));
-								break;
-							case 3: // '\003'
-								icon = new ImageIcon(imgSource.getImage("orderchecker.yellow.image"));
-								break;
-							case 1: // '\001'
-							case 2: // '\002'
-								icon = new ImageIcon(imgSource.getImage("orderchecker.green.image"));
-								break;
-							case 0: // '\0'
-							default:
-								return null;
-							}
-						}
-						if (icon != null)
-							setIcon(icon);
-					}
-					return this;
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					return this;
-				}
-			}
-		});
-		String error = (String) ReflectionUtils.invokeMethod(main.getNation(), "implementPhase", new Object[] { 1, main });
+		String error = main.getNation().implementPhase(1, main);
 		if (error != null) {
 			Main.displayErrorMessage(error);
 			return;
 		}
 		boolean done;
 		int safety;
-		Vector requests = (Vector) ReflectionUtils.invokeMethod(main.getNation(), "getArmyRequests", new Object[] {});
+		Vector requests = main.getNation().getArmyRequests();
 		parseInfoRequests(requests);
 		new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
-		ReflectionUtils.invokeMethod(main.getNation(), "processArmyRequests", new Object[] { requests });
+		main.getNation().processArmyRequests( requests );
 		done = false;
 		safety = 0;
 		do {
@@ -265,17 +209,17 @@ public class OrdercheckerProxy {
 				break;
 			}
 			safety++;
-			error = (String) ReflectionUtils.invokeMethod(main.getNation(), "implementPhase", new Object[] { 2, main });
+			error = main.getNation().implementPhase( 2, main );
 			if (error != null) {
 				Main.displayErrorMessage(error);
 				return;
 			}
-			requests = (Vector) ReflectionUtils.invokeMethod(main.getNation(), "getInfoRequests", new Object[] {});
+			requests = main.getNation().getInfoRequests();
 			parseInfoRequests(requests);
 			if (requests.size() > 0) {
 				new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
 			}
-			done = (Boolean) ReflectionUtils.invokeMethod(main.getNation(), "isProcessingDone", new Object[] {});
+			done = main.getNation().isProcessingDone();
 		} while (true);
 		if (safety == 20) {
 			throw new RuntimeException("Maximum state iterations reached.");

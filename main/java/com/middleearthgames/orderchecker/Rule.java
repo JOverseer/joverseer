@@ -2994,7 +2994,7 @@ public class Rule
             {
                 return "state";
             }
-            if(character.isArmyCO(this.parentOrder.getOrder()) && !this.parentChar.isCommanderInArmy(this.parentOrder.getOrder()))
+            if(character.isArmyCO(this.parentOrder.getOrder()) && (this.parentChar.army == null))
             {
                 this.parentOrder.addError(this.parentChar + " needs to be in an army " + "since " + character + " is an army/navy commander.");
             }

@@ -53,6 +53,7 @@ public class JOverseerJIDEClient {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		try {
+			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // until sorting bug fixed.
 			cmdLineArgs = args;
 			_logger.info("JOverseer Client starting up");
 			if (args.length >0) {
@@ -62,6 +63,8 @@ public class JOverseerJIDEClient {
 			}
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
 			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+			
+			
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 
 			// LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);

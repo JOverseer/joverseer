@@ -89,7 +89,7 @@ public class OrdercheckerProxy {
 		for(org.joverseer.metadata.domain.Hex meHex:metadata.getHexes()){
 			ocHex = new com.middleearthgames.orderchecker.Hex(meHex.getHexNo());
 			// TODO: check this the doc says it starts at 0
-			ocHex.setTerrain((int)(meHex.getTerrain().ordinal())); // terrain numbers are the same.
+			ocHex.setTerrain((int)(meHex.getTerrain().getTerrain())); // terrain numbers are the same.
 			elements = meHex.getSideElements(); 
 			
 			for(java.util.Map.Entry<HexSideEnum,ArrayList<HexSideElementEnum>> entry:elements.entrySet()){

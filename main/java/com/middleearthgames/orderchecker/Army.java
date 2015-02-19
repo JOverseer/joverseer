@@ -36,6 +36,7 @@ public class Army
     private StateList armyCommander;
     private int foodRequired;
     private boolean hasEnoughFood;
+    private int foodGainedBeforeMove;
 
     public Army(int location)
     {
@@ -51,6 +52,7 @@ public class Army
         this.foodRequired = 0;
         this.hasEnoughFood = false;
         this.location = location;
+        this.foodGainedBeforeMove =0;
     }
 
     static String getTroopName(int type)
@@ -442,7 +444,15 @@ public class Army
     {
         return this.foodRequired;
     }
-
+    public int getFoodGainedBeforeMove()
+    {
+    	return this.foodGainedBeforeMove;
+    }
+    public void setFoodGainedBeforeMove(int value)
+    {
+    	this.foodGainedBeforeMove = value;
+    }
+    
     boolean getHasEnoughFood()
     {
         return this.hasEnoughFood;

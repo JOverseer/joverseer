@@ -515,6 +515,10 @@ public class Rule
                 }
                 army.setFoodRequired(1);
                 army.setHasEnoughFood(getAdditionalInfo());
+            } else {
+            	if (army.getFoodGainedBeforeMove() > 0) {
+            		army.setHasEnoughFood(true);
+            	}
             }
             boolean food = army.getHasEnoughFood();
             if(waitForPartialState(STATE_ARMY_LOCATION) || waitForPartialState(STATE_CHARACTER_LOCATION))
@@ -2596,6 +2600,13 @@ public class Rule
             if(destination > 0)
             {
                 msg = msg + " to " + Main.main.locationStr(destination);
+            }
+            //is this food coming into an army?
+            if ((type == 2) && (product.equals("Food"))) {
+                Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
+                if (army != null) {
+                	army.setFoodGainedBeforeMove(quantity);
+                }
             }
             msg = msg + ".";
             this.parentOrder.addHelp(msg);

@@ -45,6 +45,7 @@ import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.SaveGame;
 import org.joverseer.ui.support.controls.ResourceButton;
@@ -69,7 +70,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  * @author Marios Skounakis
  */
 // TODO document better
-public class ExportOrdersForm extends AbstractForm {
+public class ExportOrdersForm extends ScalableAbstractForm {
 	static Logger logger = Logger.getLogger(ExportOrdersForm.class);
 	public static int ORDERS_OK = 0;
 	public static int ORDERS_NOT_OK = 1;
@@ -115,7 +116,7 @@ public class ExportOrdersForm extends AbstractForm {
 		glb.append(new ResourceLabel("standardFields.Nation"));
 		glb.append(this.nation = new JComboBox(getNationItems().toArray()));
 
-		this.nation.setPreferredSize(new Dimension(100, 24));
+		this.nation.setPreferredSize(this.uiSizes.newDimension(100/24, this.uiSizes.getHeight6()));
 		this.nation.addActionListener(new ActionListener() {
 
 			@Override
@@ -137,7 +138,7 @@ public class ExportOrdersForm extends AbstractForm {
 
 		glb.append(new ResourceLabel("ExportOrdersForm.Version"));
 		glb.append(this.version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
-		this.version.setPreferredSize(new Dimension(20, 24));
+		this.version.setPreferredSize(this.uiSizes.newDimension(20/24, this.uiSizes.getHeight6()));
 		glb.nextLine();
 
 		this.orders = new JTextArea();
@@ -150,7 +151,7 @@ public class ExportOrdersForm extends AbstractForm {
 
 		glb.nextLine();
 		JButton generate = new ResourceButton("ExportOrdersForm.BtnGenerate");
-		generate.setPreferredSize(new Dimension(100, 20));
+		generate.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
 		glb.append(generate, 1, 1);
 		glb.nextLine();
 		generate.addActionListener(new ActionListener() {
@@ -171,7 +172,7 @@ public class ExportOrdersForm extends AbstractForm {
 			}
 		});
 		JButton save = new ResourceButton("standardActions.Save");
-		save.setPreferredSize(new Dimension(100, 20));
+		save.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
 		glb.append(save, 1, 1);
 
 		save.addActionListener(new ActionListener() {
@@ -182,7 +183,7 @@ public class ExportOrdersForm extends AbstractForm {
 		});
 
 		JButton send = new ResourceButton("ExportOrdersForm.BtnSend");
-		send.setPreferredSize(new Dimension(100, 20));
+		send.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
 		glb.append(send, 1, 1);
 		glb.append(new JLabel(), 1, 1);
 

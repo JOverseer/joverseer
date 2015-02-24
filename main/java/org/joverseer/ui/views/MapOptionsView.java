@@ -20,6 +20,7 @@ import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
@@ -37,7 +38,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class MapOptionsView extends AbstractView implements ApplicationListener {
+public class MapOptionsView extends ScalableAbstractView implements ApplicationListener {
 	JComboBox cmbTurns;
 	JComboBox cmbMaps;
 	JComboBox zoom;
@@ -56,7 +57,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 		JLabel label;
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.TurnColon")), "colspec=left:130px"); //$NON-NLS-1$ //$NON-NLS-2$
-		label.setPreferredSize(new Dimension(100, 16));
+		label.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
 		lb.cell(this.cmbTurns = new JComboBox(), "colspec=left:100px"); //$NON-NLS-1$
 		lb.relatedGapRow();
 
@@ -81,14 +82,14 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 				}
 			}
 		});
-		this.cmbTurns.setPreferredSize(new Dimension(100, 16));
+		this.cmbTurns.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
 		lb.row();
 
 		// lb.append(new JLabel("  "));
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.MapColon"))); //$NON-NLS-1$
 		lb.cell(this.cmbMaps = new JComboBox(), "align=left"); //$NON-NLS-1$
 		lb.relatedGapRow();
-		this.cmbMaps.setPreferredSize(new Dimension(100, 16));
+		this.cmbMaps.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
 		this.cmbMaps.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -246,7 +247,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		ZoomOption[] zoomOptions = new ZoomOption[] { new ZoomOption("s1", 6, 6), new ZoomOption("s2", 7, 7), new ZoomOption("s3", 9, 9), new ZoomOption("s4", 11, 11), new ZoomOption("1", 13, 13), new ZoomOption("2", 15, 15), new ZoomOption("3", 17, 17), new ZoomOption("4", 19, 19), }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		lb.cell(this.zoom = new JComboBox(zoomOptions), "align=left"); //$NON-NLS-1$
 		lb.relatedGapRow();
-		this.zoom.setPreferredSize(new Dimension(100, 16));
+		this.zoom.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
 		this.zoom.addActionListener(new ActionListener() {
 
 			@Override
@@ -270,7 +271,7 @@ public class MapOptionsView extends AbstractView implements ApplicationListener 
 		lb.cell(this.nationColors = new JComboBox(new String[] { Messages.getString("MapOptionsView.ColourForNation"), Messages.getString("MapOptionsView.ColourForAllegiance") }), "align=left"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		this.nationColors.setSelectedIndex(0);
 		lb.relatedGapRow();
-		this.nationColors.setPreferredSize(new Dimension(100, 16));
+		this.nationColors.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
 		this.nationColors.addActionListener(new ActionListener() {
 
 			@Override

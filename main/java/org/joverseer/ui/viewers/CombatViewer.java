@@ -55,13 +55,13 @@ public class CombatViewer extends ObjectViewer {
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
 		glb.append(this.description = new JTextField());
-		this.description.setPreferredSize(new Dimension(200, 12));
+		this.description.setPreferredSize(this.uiSizes.newDimension(200/12, this.uiSizes.getHeight3()));
 		this.description.setBorder(null);
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
-		btnMenu.setPreferredSize(new Dimension(16, 16));
+		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		btnMenu.setIcon(ico);
 		glb.append(btnMenu);
 		btnMenu.addActionListener(new PopupMenuActionListener() {

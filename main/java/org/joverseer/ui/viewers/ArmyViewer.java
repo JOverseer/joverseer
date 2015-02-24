@@ -102,15 +102,15 @@ public class ArmyViewer extends ObjectViewer {
 		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
 		glb.append(this.commanderName = new JTextField());
-		this.commanderName.setPreferredSize(new Dimension(160, 12));
+		this.commanderName.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
 		glb.append(this.nation = new JTextField());
-		this.nation.setPreferredSize(new Dimension(30, 12));
+		this.nation.setPreferredSize(this.uiSizes.newDimension(30/12, this.uiSizes.getHeight3()));
 
 		// button to show range of army on map
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
-		btnMenu.setPreferredSize(new Dimension(16, 16));
+		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		btnMenu.setIcon(ico);
 		glb.append(btnMenu);
 		btnMenu.addActionListener(new PopupMenuActionListener() {
@@ -123,20 +123,20 @@ public class ArmyViewer extends ObjectViewer {
 
 		glb.nextLine();
 		glb.append(this.armySize = new JTextField(), 1, 1);
-		this.armySize.setPreferredSize(new Dimension(100, 12));
+		this.armySize.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		glb.append(this.armyType = new JTextField());
-		this.armyType.setPreferredSize(new Dimension(50, 12));
+		this.armyType.setPreferredSize(this.uiSizes.newDimension(50/12, this.uiSizes.getHeight3()));
 		glb.nextLine();
 		glb.append(this.extraInfo = new JTextField(), 2, 1);
-		this.extraInfo.setPreferredSize(new Dimension(150, 12));
+		this.extraInfo.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
 		glb.nextLine();
 		glb.append(this.food = new JTextField());
-		this.food.setPreferredSize(new Dimension(100, 12));
+		this.food.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		glb.append(this.cav = new JTextField());
-		this.cav.setPreferredSize(new Dimension(40, 12));
+		this.cav.setPreferredSize(this.uiSizes.newDimension(40/12, this.uiSizes.getHeight3()));
 		glb.nextLine();
 		glb.append(this.travellingWith = new JTextField(), 2, 1);
-		this.travellingWith.setPreferredSize(new Dimension(150, 12));
+		this.travellingWith.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
 
 		this.commanderName.setBorder(null);
 		this.commanderName.setFont(new Font(this.commanderName.getFont().getName(), Font.BOLD, this.commanderName.getFont().getSize()));

@@ -1,10 +1,6 @@
 package org.joverseer.ui.support;
 
-import java.util.Collection;
-
 import javax.swing.JScrollPane;
-
-import org.springframework.richclient.application.Application;
 
 public class UIUtils {
 	public static String enumToString(Object enumValue) {

@@ -16,6 +16,7 @@ import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
@@ -31,7 +32,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class EditNationAllegiancesForm extends AbstractForm {
+public class EditNationAllegiancesForm extends ScalableAbstractForm {
 	public static final String FORM_PAGE = "editNationAllegiancesForm";
 
 	Hashtable<Integer, JComboBox> allegiances = new Hashtable<Integer, JComboBox>();
@@ -73,9 +74,9 @@ public class EditNationAllegiancesForm extends AbstractForm {
 				if (n <= 25) {
 					JComboBox combo = new JComboBox(NationAllegianceEnum.values());
 					this.allegiances.put(n, combo);
-					combo.setPreferredSize(new Dimension(100, 20));
+					combo.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
 					JLabel lbl = new JLabel();
-					lbl.setPreferredSize(new Dimension(100, 24));
+					lbl.setPreferredSize(this.uiSizes.newDimension(100/24, this.uiSizes.getHeight6()));
 					lbl.setText(Application.instance().getApplicationContext().getMessage("editNationAllegiancesForm.NationLabel", new Object[] { n }, null));
 					lbl.setHorizontalAlignment(SwingConstants.RIGHT);
 					this.labels.put(n, lbl);

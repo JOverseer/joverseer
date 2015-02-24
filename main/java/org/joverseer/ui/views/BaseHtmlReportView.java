@@ -15,6 +15,7 @@ import javax.swing.event.HyperlinkEvent.EventType;
 
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
@@ -22,7 +23,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
-public class BaseHtmlReportView extends AbstractView implements ApplicationListener {
+public class BaseHtmlReportView extends ScalableAbstractView implements ApplicationListener {
 	JEditorPane editor;
 
 	protected String getReportContents() {
@@ -48,7 +49,7 @@ public class BaseHtmlReportView extends AbstractView implements ApplicationListe
 		}
 		JButton btn = new JButton(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
 		btn.setText(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
-		btn.setPreferredSize(new Dimension(100, 20));
+		btn.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
 		tlb.cell(btn, "align=left"); //$NON-NLS-1$
 		btn.addActionListener(new ActionListener() {
 

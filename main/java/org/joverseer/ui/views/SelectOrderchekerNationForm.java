@@ -14,6 +14,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
@@ -24,7 +25,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class SelectOrderchekerNationForm extends AbstractForm {
+public class SelectOrderchekerNationForm extends ScalableAbstractForm {
 
     public static String FORM_PAGE = "selectOrderchekerNationForm"; //$NON-NLS-1$
 
@@ -68,7 +69,7 @@ public class SelectOrderchekerNationForm extends AbstractForm {
         tlb.cell(new JLabel(Messages.getString("SelectOrderchekerNationForm.2"))); //$NON-NLS-1$
         tlb.relatedGapRow();
         tlb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
-        this.nationCombo.setPreferredSize(new Dimension(200, 20));
+        this.nationCombo.setPreferredSize(this.uiSizes.newDimension(160/16, this.uiSizes.getHeight4()));
         this.nationCombo.addActionListener(new ActionListener() {
 
             @Override

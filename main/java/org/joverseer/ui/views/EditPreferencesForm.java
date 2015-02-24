@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -27,7 +28,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class EditPreferencesForm extends AbstractForm {
+public class EditPreferencesForm extends ScalableAbstractForm {
 	public static String FORM_ID = "editPreferencesForm";
 	JPanel panel;
 	HashMap<String, JComponent> components = new HashMap<String, JComponent>();
@@ -67,7 +68,7 @@ public class EditPreferencesForm extends AbstractForm {
 			// show control for editing pref, based on pref type
 			if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
 				JComboBox combo = new JComboBox();
-				combo.setPreferredSize(new Dimension(190, 20));
+				combo.setPreferredSize(this.uiSizes.newDimension(190/20, this.uiSizes.getHeight5()));
 				for (PreferenceValue pv : p.getDomain()) {
 					combo.addItem(pv.getDescription());
 					// find the appriate combo box item from the key
@@ -79,7 +80,7 @@ public class EditPreferencesForm extends AbstractForm {
 				tlb.cell(combo, "colspec=left:200px");
 			} else {
 				JTextField tf = new JTextField();
-				tf.setPreferredSize(new Dimension(190, 20));
+				tf.setPreferredSize(this.uiSizes.newDimension(190/20, this.uiSizes.getHeight5()));
 				tf.setText(reg.getPreferenceValue(p.getKey()));
 				this.components.put(p.getKey(), tf);
 				tlb.cell(tf, "colspec=left:200px");

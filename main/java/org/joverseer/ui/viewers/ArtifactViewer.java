@@ -78,7 +78,7 @@ public class ArtifactViewer extends ObjectViewer {
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
         
         glb.append(this.artifactName = new JTextField());
-        this.artifactName.setPreferredSize(new Dimension(150, 16));
+        this.artifactName.setPreferredSize(this.uiSizes.newDimension(150/16, this.uiSizes.getHeight4()));
         this.artifactName.setFont(GraphicUtils.getFont(this.artifactName.getFont().getName(), Font.BOLD, this.artifactName.getFont().getSize()));
         this.artifactName.setBorder(null);
         this.artifactName.addMouseListener(new MouseAdapter() {
@@ -109,13 +109,13 @@ public class ArtifactViewer extends ObjectViewer {
         });
         
         glb.append(this.owner = new JTextField());
-        this.owner.setPreferredSize(new Dimension(70, 12));
+        this.owner.setPreferredSize(this.uiSizes.newDimension(70/12, this.uiSizes.getHeight3()));
         this.owner.setBorder(null);
         
         glb.nextLine();
         
         glb.append(this.infoSource = new JTextField(), 2, 1);
-        this.infoSource.setPreferredSize(new Dimension(100, 12));
+        this.infoSource.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
         this.infoSource.setBorder(null);
         
         JPanel panel = glb.getPanel();

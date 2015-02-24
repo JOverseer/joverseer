@@ -108,17 +108,17 @@ public class HexInfoViewer extends ObjectViewer {
 		lb.append(this.hexNo = new JTextField(), 2, 1);
 		this.hexNo.setBorder(null);
 		lb.append(this.terrain = new JTextField(), 2, 1);
-		this.terrain.setPreferredSize(new Dimension(60, 12));
+		this.terrain.setPreferredSize(this.uiSizes.newDimension(60/12, this.uiSizes.getHeight3()));
 		this.terrain.setBorder(null);
 		lb.append(this.climate = new JTextField(), 2, 1);
-		this.climate.setPreferredSize(new Dimension(50, 12));
+		this.climate.setPreferredSize(this.uiSizes.newDimension(50/12, this.uiSizes.getHeight3()));
 		this.climate.setBorder(null);
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setIcon(ico);
-		btnMenu.setPreferredSize(new Dimension(16, 16));
+		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		lb.append(btnMenu);
 		btnMenu.addActionListener(new PopupMenuActionListener() {
 
@@ -132,7 +132,7 @@ public class HexInfoViewer extends ObjectViewer {
 
 		lb.append(l = new JLabel(Messages.getString("HexInfoViewer.LatestInfoColon")), 2, 1); //$NON-NLS-1$
 		lb.append(this.turnInfo = new JTextField(), 4, 1);
-		this.turnInfo.setPreferredSize(new Dimension(80, 12));
+		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(80/12, this.uiSizes.getHeight3()));
 		this.turnInfo.setBorder(null);
 		lb.nextLine();
 
@@ -143,7 +143,7 @@ public class HexInfoViewer extends ObjectViewer {
 		Font f = new Font(l.getFont().getName(), Font.BOLD, l.getFont().getSize());
 		l.setFont(f);
 		lb.append(l = new JLabel(" ")); //$NON-NLS-1$
-		l.setPreferredSize(new Dimension(20, 12));
+		l.setPreferredSize(this.uiSizes.newDimension(20/12, this.uiSizes.getHeight3()));
 		lb.append(l = new JLabel(Messages.getString("HexInfoViewer.AbbCavalry")), 2, 1); //$NON-NLS-1$
 		l.setFont(f);
 		lb.nextLine();
@@ -154,7 +154,7 @@ public class HexInfoViewer extends ObjectViewer {
 			tf.setHorizontalAlignment(SwingConstants.RIGHT);
 			this.infCosts.put(md, tf);
 			tf.setBorder(null);
-			tf.setPreferredSize(new Dimension(20, 12));
+			tf.setPreferredSize(this.uiSizes.newDimension(20/12, this.uiSizes.getHeight3()));
 			lb.append(tf);
 
 			lb.append(l = new JLabel(" ")); //$NON-NLS-1$
@@ -164,7 +164,7 @@ public class HexInfoViewer extends ObjectViewer {
 			tf.setHorizontalAlignment(SwingConstants.RIGHT);
 			this.cavCosts.put(md, tf);
 			tf.setBorder(null);
-			tf.setPreferredSize(new Dimension(20, 12));
+			tf.setPreferredSize(this.uiSizes.newDimension(20/12, this.uiSizes.getHeight3()));
 			lb.append(tf);
 			lb.nextLine();
 		}

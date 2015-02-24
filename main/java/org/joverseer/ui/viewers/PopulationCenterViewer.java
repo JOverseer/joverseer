@@ -296,13 +296,13 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 		glb.append(this.name = new JTextField());
 		c = this.name;
-		c.setPreferredSize(new Dimension(100, 12));
+		c.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
 		c.setBorder(null);
 
 		glb.append(this.sizeFort = new JTextField());
 		c = this.sizeFort;
-		c.setPreferredSize(new Dimension(120, 12));
+		c.setPreferredSize(this.uiSizes.newDimension(120/12, this.uiSizes.getHeight3()));
 		c.setBorder(null);
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
@@ -310,7 +310,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setIcon(ico);
-		btnMenu.setPreferredSize(new Dimension(16, 16));
+		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		glb.append(btnMenu);
 		btnMenu.addActionListener(new PopupMenuActionListener() {
 
@@ -341,7 +341,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JLabel label = new JLabel(" " + p.getLocalized()); //$NON-NLS-1$
 			this.productionLabels.add(label);
-			label.setPreferredSize(new Dimension(28, 12));
+			label.setPreferredSize(this.uiSizes.newDimension(28/12, this.uiSizes.getHeight3()));
 			label.setFont(f);
 			tlb.cell(label);
 		}
@@ -349,7 +349,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JTextField tf = new JTextField();
 			tf.setBorder(null);
-			tf.setPreferredSize(new Dimension(28, 16));
+			tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
 			tf.setFont(f);
 			tlb.cell(tf);
 			this.production.put(p, tf);
@@ -358,7 +358,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		for (ProductEnum p : ProductEnum.values()) {
 			JTextField tf = new JTextField();
 			tf.setBorder(null);
-			tf.setPreferredSize(new Dimension(28, 16));
+			tf.setPreferredSize(this.uiSizes.newDimension(28/16, this.uiSizes.getHeight4()));
 			tf.setFont(f);
 			tlb.cell(tf);
 			this.stores.put(p, tf);
@@ -368,13 +368,13 @@ public class PopulationCenterViewer extends ObjectViewer {
 		tlb.cell(this.lostThisTurn = new JTextField());
 		this.lostThisTurn.setBorder(null);
 		this.lostThisTurn.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
-		this.lostThisTurn.setPreferredSize(new Dimension(100, 12));
+		this.lostThisTurn.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 
 		tlb.row();
 		tlb.cell(this.turnInfo = new JTextField());
 		this.turnInfo.setBorder(null);
 		this.turnInfo.setFont(GraphicUtils.getFont(this.lostThisTurn.getFont().getName(), Font.ITALIC, this.lostThisTurn.getFont().getSize()));
-		this.turnInfo.setPreferredSize(new Dimension(100, 12));
+		this.turnInfo.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 
 		JPanel pnl = tlb.getPanel();
 		pnl.setBackground(Color.white);

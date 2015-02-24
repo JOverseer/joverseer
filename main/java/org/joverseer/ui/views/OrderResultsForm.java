@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Character;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.form.AbstractForm;
@@ -19,7 +20,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class OrderResultsForm extends AbstractForm {
+public class OrderResultsForm extends ScalableAbstractForm {
 
 	public static String FORM_PAGE = "orderResultsForm"; //$NON-NLS-1$
 
@@ -35,7 +36,7 @@ public class OrderResultsForm extends AbstractForm {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		JLabel lbl;
 		tlb.cell(lbl = new JLabel(Messages.getString("OrderResultsForm.CharacterColon"))); //$NON-NLS-1$
-		lbl.setPreferredSize(new Dimension(70, 20));
+		lbl.setPreferredSize(this.uiSizes.newDimension(70/20, this.uiSizes.getHeight5()));
 		this.name = new JTextField();
 		this.name.setEditable(false);
 		tlb.gapCol();
@@ -43,7 +44,7 @@ public class OrderResultsForm extends AbstractForm {
 		tlb.relatedGapRow();
 		tlb.row();
 		tlb.cell(lbl = new JLabel(Messages.getString("OrderResultsForm.ResultsColon")), "valign=top"); //$NON-NLS-1$ //$NON-NLS-2$
-		lbl.setPreferredSize(new Dimension(70, 20));
+		lbl.setPreferredSize(this.uiSizes.newDimension(70/20, this.uiSizes.getHeight5()));
 		tlb.gapCol();
 		this.results = new JTextArea();
 		this.results.setWrapStyleWord(true);

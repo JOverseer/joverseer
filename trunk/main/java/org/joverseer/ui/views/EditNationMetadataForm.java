@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.controls.ResourceButton;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
@@ -34,7 +35,7 @@ import com.jidesoft.popup.JidePopup;
  * 
  * @author Marios Skounakis
  */
-public class EditNationMetadataForm extends AbstractForm {
+public class EditNationMetadataForm extends ScalableAbstractForm {
 	public static String FORM_ID = "editNationMetadataForm";
 
 	ArrayList<JTextField> nationNames = new ArrayList<JTextField>();
@@ -96,16 +97,16 @@ public class EditNationMetadataForm extends AbstractForm {
 		for (int i = 0; i < 25; i++) {
 			JTextField nationName = new JTextField();
 			this.nationNames.add(nationName);
-			nationName.setPreferredSize(new Dimension(170, 20));
+			nationName.setPreferredSize(this.uiSizes.newDimension(170/20, this.uiSizes.getHeight5()));
 			JLabel lbl = new JLabel();
-			lbl.setPreferredSize(new Dimension(60, 24));
+			lbl.setPreferredSize(this.uiSizes.newDimension(60/24, this.uiSizes.getHeight6()));
 			lbl.setText(Application.instance().getApplicationContext().getMessage("editNationMetadataForm.NationLabel", new Object[] { (i + 1) }, null));
 			this.labels.add(lbl);
 			tlb.cell(lbl);
 			tlb.cell(nationName);
 			JTextField nationShortName = new JTextField();
 			this.nationShortNames.add(nationShortName);
-			nationShortName.setPreferredSize(new Dimension(80, 20));
+			nationShortName.setPreferredSize(this.uiSizes.newDimension(80/20, this.uiSizes.getHeight5()));
 			tlb.gapCol();
 			tlb.cell(nationShortName);
 
@@ -118,13 +119,13 @@ public class EditNationMetadataForm extends AbstractForm {
 			JTextField nationSNAList = new JTextField();
 			nationSNAList.setEditable(false);
 			this.nationSNAs.add(nationSNAList);
-			nationSNAList.setPreferredSize(new Dimension(250, 20));
+			nationSNAList.setPreferredSize(this.uiSizes.newDimension(250/20, this.uiSizes.getHeight5()));
 			tlb.gapCol();
 			tlb.cell(nationSNAList);
 
 			JButton editNationSNAs = new ResourceButton("standardActions.Edit");
 			this.editSNAButtons.add(editNationSNAs);
-			editNationSNAs.setPreferredSize(new Dimension(50, 16));
+			editNationSNAs.setPreferredSize(this.uiSizes.newDimension(50/16, this.uiSizes.getHeight4()));
 			tlb.gapCol();
 			tlb.cell(editNationSNAs);
 			final JidePopup popup = new JidePopup();
@@ -149,7 +150,7 @@ public class EditNationMetadataForm extends AbstractForm {
 			}
 			// create button to close the popup
 			JButton closePopup = new JButton("Close");
-			closePopup.setPreferredSize(new Dimension(70, 20));
+			closePopup.setPreferredSize(this.uiSizes.newDimension(70/20, this.uiSizes.getHeight5()));
 			closePopup.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

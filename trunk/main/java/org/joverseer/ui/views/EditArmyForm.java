@@ -23,6 +23,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -40,7 +41,7 @@ import org.springframework.richclient.table.TableUtils;
  */
 
 // TODO needs validation
-public class EditArmyForm extends AbstractForm {
+public class EditArmyForm extends ScalableAbstractForm {
 	@SuppressWarnings("unchecked")
 	class ArmyElementTableModel extends BeanTableModel {
 
@@ -122,37 +123,37 @@ public class EditArmyForm extends AbstractForm {
 
 		lb.append(new ResourceLabel("editArmyForm.Commander"));
 		lb.append(this.commander = new JTextField());
-		this.commander.setPreferredSize(new Dimension(120, 20));
+		this.commander.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("standardFields.Nation"));
 		lb.append(this.nation = new JComboBox(getNationNames().toArray()));
-		this.nation.setPreferredSize(new Dimension(120, 20));
+		this.nation.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("standardFields.HexNo"));
 		lb.append(this.hexNo = new JTextField());
-		this.nation.setPreferredSize(new Dimension(120, 20));
+		this.nation.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("editArmyForm.CommandRank"));
 		lb.append(this.commandRank = new JTextField());
-		this.commandRank.setPreferredSize(new Dimension(60, 20));
+		this.commandRank.setPreferredSize(this.uiSizes.newDimension(60/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("editArmyForm.Morale"));
 		lb.append(this.morale = new JTextField());
-		this.morale.setPreferredSize(new Dimension(60, 20));
+		this.morale.setPreferredSize(this.uiSizes.newDimension(60/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
 		lb.append(new ResourceLabel("editArmyForm.Food"));
 		lb.append(this.food = new JTextField());
-		this.food.setPreferredSize(new Dimension(60, 20));
+		this.food.setPreferredSize(this.uiSizes.newDimension(60/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 

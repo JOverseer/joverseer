@@ -93,7 +93,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
 
         for (int i = 0; i < 20; i++) {
             final JLabelButton l = new JLabelButton(ico);
-            l.setPreferredSize(new Dimension(12, 12));
+            l.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight3()));
             l.setVerticalAlignment(SwingConstants.TOP);
             l.addActionListener(new PopupMenuActionListener() {
 

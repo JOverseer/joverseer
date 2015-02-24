@@ -186,7 +186,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 		Border  border = null;//BorderFactory.createLineBorder(Color.green);
 
 		this.orderText.setBorder(border);
-        this.orderText.setPreferredSize(new Dimension(170, 16));
+        this.orderText.setPreferredSize(this.uiSizes.newDimension(170/16, this.uiSizes.getHeight4()));
         this.orderText.setText(Messages.getString("OrderViewer.NA")); //$NON-NLS-1$
 
         this.orderText.addMouseListener(new MouseAdapter() {
@@ -238,7 +238,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         }));
 
         this.orderResultIcon = new JLabel(""); //$NON-NLS-1$
-        this.orderResultIcon.setPreferredSize(new Dimension(16, 16));
+        this.orderResultIcon.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
         this.orderResultIcon.setBorder(border);
         glb.append(this.orderResultIcon);
         
@@ -255,7 +255,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             }
         });
         
-        btn.setPreferredSize(new Dimension(16, 16));
+        btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
         btn.setBorder(border);
         glb.append(btn);
 
@@ -276,7 +276,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                                     new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
             }
         });
-        this.draw.setPreferredSize(new Dimension(16, 16));
+        this.draw.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
         this.draw.setBorder(border);
         this.draw.setOpaque(true);
         this.draw.setBackground(Color.white);

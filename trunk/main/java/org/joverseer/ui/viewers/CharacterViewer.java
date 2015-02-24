@@ -314,7 +314,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 
 			((BeanTableModel) this.artifactsTable.getModel()).setRows(artis);
-			this.artifactsTable.setPreferredSize(new Dimension(180, 16 * artis.size()));
+			this.artifactsTable.setPreferredSize(new Dimension((180/16)*this.uiSizes.getHeight4(), this.uiSizes.getHeight4() * artis.size()));
 			TableUtils.setTableColumnWidths(this.artifactsTable, new int[] { 10, 120, 40 });
 
 			ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
@@ -322,7 +322,7 @@ public class CharacterViewer extends ObjectViewer {
 				spells.addAll(c.getSpells());
 			}
 			((BeanTableModel) this.spellsTable.getModel()).setRows(spells);
-			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), 16 * spells.size()));
+			this.spellsTable.setPreferredSize(new Dimension(this.spellsTable.getWidth(), this.uiSizes.getHeight4() * spells.size()));
 			TableUtils.setTableColumnWidths(this.spellsTable, new int[] { 10, 120, 40 });
 			Container<Company> companies = game.getTurn().getCompanies();
 			Company company = companies.findFirstByProperty("commander", c.getName()); //$NON-NLS-1$
@@ -453,21 +453,21 @@ public class CharacterViewer extends ObjectViewer {
 		c.setBorder(border);
 		c.setFont(new Font(c.getFont().getName(), Font.BOLD, c.getFont().getSize()));
 
-		c.setPreferredSize(new Dimension(160, 12));
+		c.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
 
 		glb.append(c = new JTextField());
 		c.setBorder(border);
 		this.nationTextBox = (JTextField) c;
 		// bf.bindControl(c, "nationNo");
 		// a bit of a hack...extend to stop the menu icon jumping about
-		c.setPreferredSize(new Dimension(100, 12));
+		c.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
 
 		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
 
 		final JButton btnMainMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMainMenu.setIcon(ico);
-		btnMainMenu.setPreferredSize(new Dimension(16, 16));
+		btnMainMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		btnMainMenu.setBorder(border);
 		glb.append(btnMainMenu);
 		btnMainMenu.addActionListener(new PopupMenuActionListener() {
@@ -481,7 +481,7 @@ public class CharacterViewer extends ObjectViewer {
 		final JButton btnCharDetails = new JButton();
 		ico = new ImageIcon(imgSource.getImage("showCharDetails.icon")); //$NON-NLS-1$
 		btnCharDetails.setIcon(ico);
-		btnCharDetails.setPreferredSize(new Dimension(16, 16));
+		btnCharDetails.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		btnCharDetails.setBorder(border);
 		glb.append(btnCharDetails);
 		btnCharDetails.addActionListener(new ActionListener() {
@@ -501,23 +501,23 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.append(this.statsTextBox = new JTextField(), 2, 1);
 		this.statsTextBox.setBorder(border);
-		this.statsTextBox.setPreferredSize(new Dimension(100, 12));
+		this.statsTextBox.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		glb.nextLine();
 
 		glb.append(this.companyMembersTextBox = new JTextField(), 3, 1);
 		this.companyMembersTextBox.setBorder(border);
-		this.companyMembersTextBox.setPreferredSize(new Dimension(150, 12));
+		this.companyMembersTextBox.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		Font f = GraphicUtils.getFont(this.companyMembersTextBox.getFont().getName(), Font.ITALIC, 11);
 		this.companyMembersTextBox.setFont(f);
 		glb.nextLine();
 
 		glb.append(this.infoSourcesTextBox = new JTextField(), 2, 1);
 		this.infoSourcesTextBox.setBorder(border);
-		this.infoSourcesTextBox.setPreferredSize(new Dimension(100, 12));
+		this.infoSourcesTextBox.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		glb.nextLine();
 
 		glb.append(this.artifactsTable = new JTable(), 2, 1);
-		this.artifactsTable.setPreferredSize(new Dimension(150, 20));
+		this.artifactsTable.setPreferredSize(this.uiSizes.newDimension(150/20, this.uiSizes.getHeight5()));
 		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
 
 			@Override
@@ -573,7 +573,7 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		glb.append(this.spellsTable = new JTable(), 2, 1);
-		this.spellsTable.setPreferredSize(new Dimension(150, 12));
+		this.spellsTable.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
 		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
 
 			@Override
@@ -652,7 +652,7 @@ public class CharacterViewer extends ObjectViewer {
 		glb.append(this.swapOrdersIconCmd = new JLabelButton(new ImageIcon(imgSource.getImage("swapOrders.icon")))); //$NON-NLS-1$
 		this.swapOrdersIconCmd.setVerticalAlignment(SwingConstants.CENTER);
 		this.swapOrdersIconCmd.setToolTipText(Messages.getString("CharacterViewer.SwapOrders.tooltip")); //$NON-NLS-1$
-		this.swapOrdersIconCmd.setPreferredSize(new Dimension(16, 16));
+		this.swapOrdersIconCmd.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		this.swapOrdersIconCmd.setBorder(border);
 		this.swapOrdersIconCmd.addActionListener(new ActionListener() {
 			@Override

@@ -2,7 +2,7 @@
 
 JOverseer is a desktop application which aims to assist players of the Middle Earth PBM game (http://www.middleearthgames.com).
 
-![http://joverseer.googlecode.com/svn/wiki/images/jov.joverseer.jpg](http://joverseer.googlecode.com/svn/wiki/images/jov.joverseer.jpg)
+![joverseer screenshot](../../wiki/images/jov.joverseer.jpg)
 
 **Downloading**
 

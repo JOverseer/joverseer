@@ -32,12 +32,12 @@ To ask questions, offer suggestions, or report bugs please use the [JOverseer Ya
 
 **Read the Documentation - Wiki Pages**
 
-  * [Installation instructions](wiki/InstallationInstructions)
-  * [Introduction](wiki.Introduction)
-  * [Help for the Map display](wiki/MapInfo)
-  * [Entering Orders](wiki/OrderEntry)
-  * [Importing Orders](wiki/ImportingOrders)
-  * [Checking Orders](wiki/RunningOrderchecker)
+  * [Installation instructions](../../wiki/InstallationInstructions)
+  * [Introduction](../../wiki/Introduction)
+  * [Help for the Map display](../../wiki/MapInfo)
+  * [Entering Orders](../../wiki/OrderEntry)
+  * [Importing Orders](../../wiki/ImportingOrders)
+  * [Checking Orders](../../wiki/RunningOrderchecker)
 
 **Powered by:**
 

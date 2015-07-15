@@ -11,7 +11,7 @@
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>I:\MiddleEarth\joverseer\main\resources\images\joverseer.ico</icon>
+  <icon>images/joverseer.ico</icon>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>
@@ -25,8 +25,8 @@
     <txtFileVersion>1.0.0.0</txtFileVersion>
     <fileDescription>jOverseer launcher</fileDescription>
     <copyright>Middle-Earth Games Ltd</copyright>
-    <productVersion>1.0.12.0</productVersion>
-    <txtProductVersion>1.0.12</txtProductVersion>
+    <productVersion>1.13.6.0</productVersion>
+    <txtProductVersion>1.13.6.0</txtProductVersion>
     <productName>jOverseer</productName>
     <companyName>Middle Earth Games</companyName>
     <internalName>jOverseer</internalName>

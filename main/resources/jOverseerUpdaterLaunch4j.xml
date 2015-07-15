@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>I:\MiddleEarth\JOverseerWorkspace\update.jar</jar>
-  <outfile>jOverseerUpdater.exe</outfile>
+  <jar>out/update.jar</jar>
+  <outfile>out/jOverseerUpdater.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -10,7 +10,7 @@
   <downloadUrl>https://www.java.com/en/download/</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
-  <manifest>I:\MiddleEarth\JOverseerWorkspace\updatewithUAC.manifest</manifest>
+  <manifest>../joverseer/main/resources/updatewithUAC.manifest</manifest>
   <icon></icon>
   <jre>
     <path></path>

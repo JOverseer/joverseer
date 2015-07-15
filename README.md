@@ -6,8 +6,8 @@ JOverseer is a desktop application which aims to assist players of the Middle Ea
 
 **Downloading**
 
-Due to abuse, Google Code no longer permits new downloads.
-The source code is still hosted here, but from now on downloads will be found at http://www.middleearthgames.com/soov.html.
+As GoogleCode has shut down, the source code is now hosted here at http://www.github.com.
+At the moment downloads for the runnable program will be found at http://www.middleearthgames.com/soov.html.
 
 **The latest version is 1.0.12, released on March 4, 2014.**
 
@@ -67,4 +67,4 @@ To ask questions, offer suggestions, or report bugs please use the [JOverseer Ya
 
 
 
-_Last update: 11 March 2014, Dave Spring_
+_Last update: 15 July 2015, Dave Spring_

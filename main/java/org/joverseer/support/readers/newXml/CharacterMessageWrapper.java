@@ -278,7 +278,7 @@ public class CharacterMessageWrapper {
 				//String climate = StringUtils.getUniquePart(line, "Climate is ", "Cool|Cold|Mild|Warm|Polar|Hot", false, true);
 				String foreignArmies = StringUtils.getUniquePart(line, "Foreign armies present:", "\\.", false, false);
 				if (foreignArmies != null) {
-					String[] fas = foreignArmies.split("\\-");
+					String[] fas = foreignArmies.split("\\- ");
 					for (String fa : fas) {
 						if (fa.length() < 5)
 							continue;

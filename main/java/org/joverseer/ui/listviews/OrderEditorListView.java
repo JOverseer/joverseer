@@ -262,6 +262,18 @@ public class OrderEditorListView extends ItemListView {
 		};
 		filterList.add(f);
 
+
+                 OrderFilter f = new OrderFilter("All characters without orders") {
+
+			@Override
+			public boolean acceptCharacter(Character c) {
+				return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (c.getOrders()[0].isBlank() || c.getOrders()[1].isBlank());
+			}
+		};
+		filterList.add(f);
+
+
+
 		f = new OrderFilter("All Imported") {
 
 			@Override

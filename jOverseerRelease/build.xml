@@ -6,6 +6,7 @@
     <property name="bin">bin</property>
     <property name="src">src</property>
     <property name="dist">dist</property>
+	<property name="shared.lib">../lib</property>
 	<property name="lib">../joverseerjar/lib</property> <!-- note difference -->
     <property name="joverseer.jar">../joverseerjar/dist/lib/joverseer.jar</property>
 	<property name="updater.jar">../joverseerupdaterjar/dist/lib/updater.jar</property>
@@ -62,7 +63,7 @@
 	<property name="commons_beanutils.path">${lib}/commons-beanutils-1.7.0.jar</property>
     <property name="commons_digester.path">${lib}/commons-digester-1.7.jar</property>
 	<property name="swing.path">${lib}/swingx-0.8.0.jar</property>
-	<property name="commons_collections.path">${lib}/commons-collections-3.1.jar</property>
+	<property name="commons_collections.path">${shared.lib}/commons-collections-3.1.jar</property>
 	<property name="junit.path">${lib}/junit-3.8.1.jar</property>
 	<path id="pdfbox.path">
 	    <fileset dir="${lib}">
@@ -85,6 +86,14 @@
 	        <include name="forms-1.0.7.jar"/>
 	        <include name="looks-2.0.4.jar"/>
 	    </fileset>
+	</path>
+	<!-- run time libraries mentioned in jar file -->
+	<path id="runtime.jars.path">
+		<fileset dir="${lib}">
+			<include name="commons-codec-1.3.jar"/>
+			<include name="jide-action.jar"/>
+			<include name="skinlf-1.2.11.jar"/>
+		</fileset>
 	</path>
 		
     
@@ -217,6 +226,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
    				<pathelement location="${commons_collections.path}"/>
    				<pathelement location="${junit.path}"/>
    			</path>
+			<path refid="runtime.jars.path"/>
 		</copy>
 		<copy todir="${dist}" file="${src}/joverseer.bat">
 		</copy>

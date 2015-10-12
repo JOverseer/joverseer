@@ -1,7 +1,0 @@
--;Charge;Flank;Standard;Surround;HitAndRun;Ambush
-Charge;100;100;110;100;115;90
-Flank;100;100;95;90;110;115
-Standard;90;115;100;100;100;100
-Surround;100;115;100;100;90;100
-HitAndRun;95;90;100;115;100;100
-Ambush;115;90;100;100;100;100

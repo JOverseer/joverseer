@@ -22,11 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
 
-import org.springframework.binding.form.FormModel;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
-
 /**
  *
  * @author Thomas Otero H3R3T1C productised for jOverseer and UAC stuff by Dave Spring.

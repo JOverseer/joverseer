@@ -263,7 +263,7 @@ public class OrderEditorListView extends ItemListView {
 		filterList.add(f);
 
 
-                 OrderFilter f = new OrderFilter("All characters without orders") {
+        f = new OrderFilter("All characters without orders") {
 
 			@Override
 			public boolean acceptCharacter(Character c) {

@@ -9,6 +9,7 @@
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
 	<property name="lib">lib</property>
+	<property name="shared.lib">../lib</property>
     <property name="jardir">${dist}/lib</property>
     <property name="jarfile">${jardir}/joverseer.jar</property>
     
@@ -38,7 +39,7 @@
 	<property name="commons_beanutils.path">${lib}/commons-beanutils-1.7.0.jar</property>
     <property name="commons_digester.path">${lib}/commons-digester-1.7.jar</property>
 	<property name="swing.path">${lib}/swingx-0.8.0.jar</property>
-	<property name="commons_collections.path">${lib}/commons-collections-3.1.jar</property>
+	<property name="commons_collections.path">${shared.lib}/commons-collections-3.1.jar</property>
 	<property name="junit.path">${lib}/junit-3.8.1.jar</property>
 	<path id="pdfbox.path">
 	    <fileset dir="${lib}">

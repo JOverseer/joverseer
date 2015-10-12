@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="yesPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>yes</value>
+		</property>
+		<property name="description">
+			<value>Yes</value>
+		</property>
+	</bean>
+	<bean id="noPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>no</value>
+		</property>
+		<property name="description">
+			<value>No</value>
+		</property>
+	</bean>
+		<bean id="onPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>on</value>
+		</property>
+		<property name="description">
+			<value>On</value>
+		</property>
+	</bean>
+	<bean id="offPrefValue" class="org.joverseer.preferences.PreferenceValue">
+		<property name="key">
+			<value>off</value>
+		</property>
+		<property name="description">
+			<value>Off</value>
+		</property>
+	</bean>
+	
+							
+	<bean id="preferenceRegistry" class="org.joverseer.preferences.PreferenceRegistry">
+		<property name="prefix">
+			<value>display</value>
+		</property>
+		<property name="allPreferences">
+			<list>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.bgColor</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewRefreshItems</value>
+					</property>
+					<property name="description">
+						<value>Item Background Color</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>allegiance</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>none</value>
+								</property>
+								<property name="description">
+									<value>None</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegiance</value>
+								</property>
+								<property name="description">
+									<value>Allegiance</value>
+								</property>
+							</bean>															
+						</list>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.autoresizeCols</value>
+					</property>
+					<property name="description">
+						<value>Auto Resize Columns</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewTableAutoresizeModeToggle</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.showNationAs</value>
+					</property>
+					<property name="description">
+						<value>Show Nation As</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewRefreshItems</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>name</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>name</value>
+								</property>
+								<property name="description">
+									<value>Name</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>number</value>
+								</property>
+								<property name="description">
+									<value>Number</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.trackCharacterNames</value>
+					</property>
+					<property name="description">
+						<value>Track Character Names</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>ListviewRefreshItems</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>ascii</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>accented</value>
+								</property>
+								<property name="description">
+									<value>Accented</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>ascii</value>
+								</property>
+								<property name="description">
+									<value>ascii</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>listviews.nationFilterOrder</value>
+					</property>
+					<property name="description">
+						<value>Nation Filter Order</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>GameChangedEvent</value>
+					</property>
+					<property name="group">
+						<value>Display.Information Tabs</value>
+					</property>
+					<property name="defaultValue">
+						<value>nationNumber</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>nationNumber</value>
+								</property>
+								<property name="description">
+									<value>By Nation Number</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>myAllegianceNationNumber</value>
+								</property>
+								<property name="description">
+									<value>My Allegiance, Nation Number</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.showNHIEquivalents</value>
+					</property>
+					<property name="description">
+						<value>Show naked HI equivalents (enHI)</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.showArmyEstimate</value>
+					</property>
+					<property name="description">
+						<value>Show estimate from last combat</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.showNumberOfFedTurnsForArmies</value>
+					</property>
+					<property name="description">
+						<value>Show number of fed turns for armies</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.autoUpdateEconCalcMarketFromOrders</value>
+					</property>
+					<property name="description">
+						<value>Buy/Sell Orders auto update Econ Calc</value>
+					</property>
+					<property name="group">
+						<value>Economy Calculator</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>currentHexView.sortCharacters</value>
+					</property>
+					<property name="description">
+						<value>Sort Characters By</value>
+					</property>
+					<property name="group">
+						<value>Display.Current Hex View</value>
+					</property>
+					<property name="defaultValue">
+						<value>allegianceName</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegianceName</value>
+								</property>
+								<property name="description">
+									<value>Allegiance, Name</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegianceNationName</value>
+								</property>
+								<property name="description">
+									<value>Allegiance, Nation, Name</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.hiddenPops</value>
+					</property>
+					<property name="description">
+						<value>Hidden Pops</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>alwaysShow</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>alwaysShow</value>
+								</property>
+								<property name="description">
+									<value>Show always</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>normalShow</value>
+								</property>
+								<property name="description">
+									<value>Show only when applicable</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.hiddenPopsDrawStyle</value>
+					</property>
+					<property name="description">
+						<value>Hidden Pops Draw Style</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>standard</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>standard</value>
+								</property>
+								<property name="description">
+									<value>Standard</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>h</value>
+								</property>
+								<property name="description">
+									<value>H marker</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.terrainGraphics</value>
+					</property>
+					<property name="description">
+						<value>Terrain Graphics</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>texture</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>texture</value>
+								</property>
+								<property name="description">
+									<value>Texture</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>simple</value>
+								</property>
+								<property name="description">
+									<value>Simple</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.fogOfWarStyle</value>
+					</property>
+					<property name="description">
+						<value>Fog of War Style</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>lines</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>lines</value>
+								</property>
+								<property name="description">
+									<value>Lines</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>xs</value>
+								</property>
+								<property name="description">
+									<value>X's (palantir)</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.charsAndArmies</value>
+					</property>
+					<property name="description">
+						<value>Chars/Armies</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>extended</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>simplified</value>
+								</property>
+								<property name="description">
+									<value>Simplified (Palantir)</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>extended</value>
+								</property>
+								<property name="description">
+									<value>Extended</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.deadCharacters</value>
+					</property>
+					<property name="description">
+						<value>Show Dead Characters</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.tooltips</value>
+					</property>
+					<property name="description">
+						<value>Show Tool Tips</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.showArmyType</value>
+					</property>
+					<property name="description">
+						<value>Show Army Type</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="lifecycleEvent">	
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.anchoredShips</value>
+					</property>
+					<property name="description">
+						<value>Show Anchored Ships</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>													
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.tipOfTheDay</value>
+					</property>
+					<property name="description">
+						<value>Show Tip of the Day</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.marketSellLimit</value>
+					</property>
+					<property name="description">
+						<value>Market Sell Limit</value>
+					</property>
+					<property name="group">
+						<value>Economy Calculator</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>20000</value>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.strictMarketLimit</value>
+					</property>
+					<property name="description">
+						<value>Market Sell Limit is Strict</value>
+					</property>
+					<property name="group">
+						<value>Economy Calculator</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.informationAfterSaveGame</value>
+					</property>
+					<property name="description">
+						<value>Inform after Save Game</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.developerOptions</value>
+					</property>
+					<property name="description">
+						<value>Developer Options</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>orderEditor.autoSave</value>
+					</property>
+					<property name="description">
+						<value>Auto Save</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>orderEditor.autoDraw</value>
+					</property>
+					<property name="description">
+						<value>Auto Draw When Editing</value>
+					</property>
+					<property name="group">
+						<value>Order Editor</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+				
+				
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.method</value>
+					</property>
+					<property name="description">
+						<value>Autosubmit Method</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
+					</property>
+					<property name="defaultValue">
+						<value>meturn</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>meturn</value>
+								</property>
+								<property name="description">
+									<value>meturn.com</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>email</value>
+								</property>
+								<property name="description">
+									<value>e-mail</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.defaultFolder</value>
+					</property>
+					<property name="description">
+						<value>Order File Directory</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
+					</property>
+					<property name="defaultValue">
+						<value>importDir</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>importDir</value>
+								</property>
+								<property name="description">
+									<value>Turn Directory</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>orderDir</value>
+								</property>
+								<property name="description">
+									<value>Global Order Directory</value>
+								</property>
+							</bean>							
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.recipientEmail</value>
+					</property>
+					<property name="description">
+						<value>Autosubmit  Recipient Address</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>me@middleearthgames.com</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.url</value>
+					</property>
+					<property name="description">
+						<value>Autosubmit  URL</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>http://www.meturn.com</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>submitOrders.autoSave</value>
+					</property>
+					<property name="description">
+						<value>Autosave Game After Version Change</value>
+					</property>
+					<property name="group">
+						<value>Submit Orders</value>
+					</property>
+					<property name="defaultValue">
+						<value>yes</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>	
+						</list>
+					</property>
+				</bean>
+				
+			
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.autoCheckForNewVersion</value>
+					</property>
+					<property name="description">
+						<value>Check for new version at startup</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="defaultValue">
+						<value></value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value></value>
+								</property>
+								<property name="description">
+									<value>-</value>
+								</property>
+							</bean>								
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

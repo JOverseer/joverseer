@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="joverseerjar" default="BuildAll" basedir=".">
+<project name="joverseerRelease" default="BuildAll" basedir=".">
     <description>
         Build file for the release parts of joverseer.
     </description>
@@ -9,7 +9,7 @@
 	<property name="shared.lib">../lib</property>
 	<property name="lib">../joverseerjar/lib</property> <!-- note difference -->
     <property name="joverseer.jar">../joverseerjar/dist/lib/joverseer.jar</property>
-	<property name="updater.jar">../joverseerupdaterjar/dist/lib/updater.jar</property>
+	<property name="updater.jar">../joverseerupdaterjar/dist/lib/update.jar</property>
 	<property name="res.dir">../joverseerjar/resources</property>
     
     <property name="launch4j.dir" location="../launch4j"/>
@@ -108,6 +108,8 @@
        depends="-Init"
        description="use output from jOverseerJar">
    		<copy file="${joverseer.jar}" todir="${dist}"/>
+   		<copy file="${res.dir}/layout/default.layout" todir="${dist}"/>
+   		<copy file="${res.dir}/log4j.properties" todir="${dist}"/>
    </target>
 	
 	<target name="UpdateJar"
@@ -150,8 +152,10 @@
 	    <echo>${joverseer.version}</echo>
 	    <touch file="${joverseer.version}.ver"/>
     </target>
-	
-	<target name="WindowsUpdaterLauncher" depends="UpdateJar">
+	<target name="WindowsIcon">
+		<copy file="${res.dir}/images/joverseer.ico" todir="${dist}"/>
+	</target>
+	<target name="WindowsUpdaterLauncher" depends="UpdateJar,WindowsIcon">
     	<assertLaunch4jAvailable dir="${launch4j.dir}"/>
 	    <launch4j>
 	  		<config headerType="gui" jar="${updater.jar}" outfile="${dist}/jOverseerUpdater.exe" stayAlive="false" manifest="${src}/updatewithUAC.manifest">
@@ -161,7 +165,7 @@
 		</launch4j>
     </target>
     
-    <target name="WindowsJoverseerLauncher" depends="versionLabel,JoverseerJar">
+    <target name="WindowsJoverseerLauncher" depends="versionLabel,JoverseerJar,WindowsIcon">
       <!-- doesn't work - dontwrapjar isnt recognised
 	   <launch4j dontWrapJar="true" headerType="gui" jar="${out.dir}/joverseer.jar" outfile="${out.dir}/jOverseer.exe" stayAlive="false" icon="${jOverseerRes}/images/joverseer.ico">
 	<jre minVersion="1.6.0" maxHeapSize="512"/>
@@ -184,6 +188,15 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
         </zip>
 	</target>
 	
+	<target name="windowsInstaller" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+		<property name="iss.dir">C:\Program Files (x86)\Inno Setup 5</property>
+		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
+		<filter token="version" value="${joverseer.version}"/>
+		<copy tofile="${dist}\joverseer.iss.out" file="src/joverseer.iss" filtering="true" overwrite="true"/>
+		<exec executable="${iss.dir}/iscc">
+			<arg value="${dist}\joverseer.iss.out"/>
+		</exec>
+	</target>
 	<target name="create_betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${jOverseerWorkspace}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>

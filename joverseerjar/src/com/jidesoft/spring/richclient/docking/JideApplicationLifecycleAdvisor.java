@@ -107,6 +107,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 		for (int i = 0; i < menuBar.getMenuCount(); i++) {
 			// recent games
+			//TODO: I18N
 			if (menuBar.getMenu(i).getText().equals("Game")) {
 				for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
 					if (menuBar.getMenu(i).getItem(j) != null && menuBar.getMenu(i).getItem(j).getText() != null && menuBar.getMenu(i).getItem(j).getText().equals("Recent Games")) {
@@ -179,6 +180,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		if (pval == null || pval.equals("")) {
 			// if preference is null, ask user if they want to activate version
 			// checking
+			//TODO:I18N
 			final MessageDialog dlg = new MessageDialog("Automatic version check", "As of version 1.0.4 JOverseer comes with a mechanism to automatically check for new versions on the web site.\r\n Note that if you choose yes, JOverseer will try to connect to the internet every time upon start-up to check for a new version.\n Do you wish to activate this check?") {
 				@Override
 				protected Object[] getCommandGroupMembers() {

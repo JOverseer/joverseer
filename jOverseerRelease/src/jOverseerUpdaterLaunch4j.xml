@@ -10,7 +10,7 @@
   <downloadUrl>https://www.java.com/en/download/</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
-  <manifest>../joverseer/main/resources/updatewithUAC.manifest</manifest>
+  <manifest>updatewithUAC.manifest</manifest>
   <icon></icon>
   <jre>
     <path></path>

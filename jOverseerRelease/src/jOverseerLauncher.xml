@@ -11,7 +11,7 @@
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
-  <icon>../../joverseerjar/resources/images/joverseer.ico</icon>
+  <icon>..\dist\joverseer.ico</icon>
   <jre>
     <path></path>
     <bundledJre64Bit>false</bundledJre64Bit>

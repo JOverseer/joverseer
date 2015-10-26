@@ -15,10 +15,22 @@
  */
 package org.joverseer.ui;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryIteratorException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Appender;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.richclient.application.ApplicationLauncher;
 
@@ -53,6 +65,26 @@ public class JOverseerJIDEClient {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		try {
+			
+			SimpleDateFormat format = new SimpleDateFormat("M-d_HHmmss");
+			FileAppender fileAppender = new FileAppender(new SimpleLayout(), getLogFilename());
+			fileAppender.setName("joverseerfileappender");
+			fileAppender.activateOptions();
+			
+			Logger rootLogger = Logger.getRootLogger();
+
+			rootLogger.setLevel(Level.WARN);
+			rootLogger.addAppender(fileAppender);
+			
+//			for (Enumeration loggers=LogManager.getCurrentLoggers(); loggers.hasMoreElements(); )  {
+//			    Logger logger2 = (Logger) loggers.nextElement();
+//			    _logger.warn("logger:" + logger2.getName());
+//		    for (Enumeration appenders=logger2.getAllAppenders(); appenders.hasMoreElements(); )  {
+//			        Appender appender = (Appender) appenders.nextElement();
+//				    _logger.warn("appender-"+appender.getName());
+//		    }}
+//		    
+			
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // until sorting bug fixed.
 			cmdLineArgs = args;
 			_logger.info("JOverseer Client starting up");
@@ -98,7 +130,22 @@ public class JOverseerJIDEClient {
 			// System.exit(1);
 		}
 	}
-
+	// put the log somewhere writable
+	public static String getLogFilename() {
+		File log;
+		String name;
+		SimpleDateFormat format = new SimpleDateFormat("M-d_HHmmss");
+		name = "joverseer_"+format.format(Calendar.getInstance().getTime());
+		try {
+			log = File.createTempFile(name, ".log");
+			// this next line will get skipped on an exception
+			name = log.getAbsolutePath();
+		} catch (IOException e) {
+			// fallback to somewhere that should be writable, but a bit messy for the user.
+			name = System.getProperty("user.home") + File.separator + name + ".log"; 
+		}
+		return name;
+	}
 	public static void launchTestFramework() {
 		if (!testApplicationIsLaunched) {
 			try {

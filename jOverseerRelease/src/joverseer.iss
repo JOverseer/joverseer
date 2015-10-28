@@ -7,6 +7,8 @@ DefaultGroupName=JOverseer
 OutputBaseFilename=joverseer-setup-@version@
 #define InputResourceDirName "..\src"
 #define InputBuild "..\dist"
+; TODO: fix this so it doesn't need to know structure of joverseerjar
+#define OrdercheckerMetadata "..\..\joverseerjar\resources\metadata\orderchecker"
 
 DiskSpanning=false
 DiskSliceSize=8000000
@@ -16,7 +18,6 @@ Name: "{group}\jOverseer"; Filename: "{app}\jOverseer.exe"; WorkingDir: "{app}"
 Name: "{group}\Uninstall jOverseer"; Filename: "{uninstallexe}"
 
 [Files]
-;Source: {#InputBuild}\*; DestDir: {app}\bin\metadata\orderchecker
 Source: {#InputBuild}\..\MailSender\MailSender.exe; DestDir: {app}\bin\mailSender
 Source: {#InputBuild}\default.layout; DestDir: {app}\layout
 Source: {#InputBuild}\commons*.jar; DestDir: {app}
@@ -37,11 +38,19 @@ Source: {#InputBuild}\jOverseer.exe; DestDir: {app}
 Source: {#InputBuild}\jOverseerUpdater.exe; DestDir: {app}
 Source: {#InputResourceDirName}\joverseer.bat; DestDir: {app}
 Source: {#InputBuild}\log4j.properties; DestDir: {app}
+;check that these are actually needed here...they used to be copied in 1.0.12
+Source: {#OrdercheckerMetadata}\*; DestDir: {app}\bin\metadata\orderchecker
+;Source: {#InputBuild}\scope*.jar; DestDir: {app}
+;Source: {#InputBuild}\jdom*.jar; DestDir: {app}
+
 [Dirs]
 Name: {app}\bin
 Name: {app}\bin\mailSender
 Name: {app}\bin\metadata
 Name: {app}\bin\metadata\orderchecker
 Name: {app}\layout
+;check that these are actually needed here...they used to be copied in 1.0.12
+Name: {app}\update
+Name: {app}\meow
 
 

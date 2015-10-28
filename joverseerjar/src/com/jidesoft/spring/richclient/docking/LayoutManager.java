@@ -15,6 +15,7 @@
  */
 package com.jidesoft.spring.richclient.docking;
 
+import java.io.File;
 import java.text.MessageFormat;
 
 import org.apache.commons.logging.Log;
@@ -58,26 +59,28 @@ public class LayoutManager {
 		manager.beginLoadLayoutData();
 		try{
 			//if(isValidLayout(manager, pageId, perspective)){
-                   try {
+            try {
 				String pageLayout = MessageFormat.format(PAGE_LAYOUT, new Object[]{pageId, perspective.getId()});
-				//manager.setLayoutDirectory(".");
+				String path =getSaveLayoutDirectory();
 				manager.setUsePref(false);
-				manager.loadLayoutDataFromFile(pageLayout);
-				logger.info("Used existing layout");
-				return true;
-                   }
-                   catch (Exception exc)
-			//}
-//                        else{
-                   {
-				logger.info("Using default layout");
-                Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
-                manager.loadLayoutFrom(r.getInputStream());
-				return false;
-			}
+				manager.setLayoutDirectory(path); // must be after setting false
+				if (manager.isLayoutAvailable(pageLayout)) {
+					manager.loadLayoutDataFromFile(pageLayout);
+					logger.info("Used existing layout " + path);
+// expected normal exit.
+					return true;
+				}
+            }
+            catch (Exception exc) { }
+                
+			logger.info("Using default layout 1");
+            Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
+            manager.loadLayoutFrom(r.getInputStream());
+			return false;
+			
 		}
 		catch(Exception e){
-			logger.info("Using default layout");
+			logger.info("Using default layout 2");
 			manager.setUsePref(true);
 			manager.loadLayoutData();
 			return false;
@@ -92,9 +95,32 @@ public class LayoutManager {
 	 */
 	public static void savePageLayoutData(DockingManager manager, String pageId, String perspectiveId){
 		logger.info("Saving layout for page "+pageId);
-		//manager.setLayoutDirectory(".");
 		manager.setUsePref(false);
+		manager.setLayoutDirectory(getSaveLayoutDirectory()); // must be after setting false
 		manager.saveLayoutDataToFile(MessageFormat.format(PAGE_LAYOUT, 
 				new Object[]{pageId, perspectiveId}));
+	}
+	public static String getSaveLayoutDirectory()
+	{
+		String path = "";
+		path = System.getenv("APPDATA");
+		if ((path == null) || path.isEmpty()) {
+			// assume unix/mac
+			path = System.getProperty("user.home");
+			if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+				path = path +"/Library/Application Support/jOverseer";
+			} else {
+				path = path +"/.jOverseer";
+			}
+		} else {
+			// assume windows
+			path = path + "\\jOverseer";
+		}
+		File dir = new File(path);
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+	
+		return path;
 	}
 }

@@ -37,13 +37,22 @@ import com.jidesoft.spring.richclient.perspective.Perspective;
 public class LayoutManager {
 	private static final Log logger = LogFactory.getLog(LayoutManager.class);
 
-	private static final String PAGE_LAYOUT = "page_{0}_layout_{1}.layout";
+	private static final String PAGE_LAYOUT = "page_{0}_layout_{1}";
 	
+	private static boolean isValidLayout(DockingManager manager, String pageLayout){
+		return manager.isLayoutAvailable(pageLayout) && 
+				manager.isLayoutDataVersionValid(pageLayout);
+		
+	}
+	private static String getPageLayoutId(String pageId, String perspectiveId) {
+		return MessageFormat.format(PAGE_LAYOUT, new Object[]{pageId, perspectiveId});
+	}
+	private static String getPageLayoutId(String pageId, Perspective perspective) {
+		return getPageLayoutId(pageId, perspective.getId());
+	}
 	public static boolean isValidLayout(DockingManager manager, String pageId, Perspective perspective){
 
-		String pageLayout = MessageFormat.format(PAGE_LAYOUT, new Object[]{pageId, perspective.getId()});
-		return manager.isLayoutAvailable(pageLayout) && 
-			manager.isLayoutDataVersionValid(pageLayout);
+		return isValidLayout(manager,getPageLayoutId(pageId, perspective)); 
 	}
 	
 	/**
@@ -58,14 +67,13 @@ public class LayoutManager {
 	public static boolean loadPageLayoutData(DockingManager manager, String pageId, Perspective perspective){
 		manager.beginLoadLayoutData();
 		try{
-			//if(isValidLayout(manager, pageId, perspective)){
             try {
-				String pageLayout = MessageFormat.format(PAGE_LAYOUT, new Object[]{pageId, perspective.getId()});
+				String pageLayout = getPageLayoutId(pageId, perspective);
 				String path =getSaveLayoutDirectory();
 				manager.setUsePref(false);
 				manager.setLayoutDirectory(path); // must be after setting false
-				if (manager.isLayoutAvailable(pageLayout)) {
-					manager.loadLayoutDataFromFile(pageLayout);
+				if(isValidLayout(manager, pageLayout)){
+					manager.loadLayoutDataFrom(pageLayout);
 					logger.info("Used existing layout " + path);
 // expected normal exit.
 					return true;
@@ -97,10 +105,10 @@ public class LayoutManager {
 		logger.info("Saving layout for page "+pageId);
 		manager.setUsePref(false);
 		manager.setLayoutDirectory(getSaveLayoutDirectory()); // must be after setting false
-		manager.saveLayoutDataToFile(MessageFormat.format(PAGE_LAYOUT, 
-				new Object[]{pageId, perspectiveId}));
+		manager.saveLayoutDataAs(getPageLayoutId(pageId, perspectiveId));
+		
 	}
-	public static String getSaveLayoutDirectory()
+	private static String getSaveLayoutDirectory()
 	{
 		String path = "";
 		path = System.getenv("APPDATA");

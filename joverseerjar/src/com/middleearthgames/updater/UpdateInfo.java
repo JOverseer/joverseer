@@ -22,6 +22,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkListener;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.springframework.binding.form.FormModel;
+import org.springframework.core.io.Resource;
+import org.springframework.richclient.form.AbstractForm;
+import org.springframework.richclient.layout.GridBagLayoutBuilder;
+
 /**
  *
  * @author Thomas Otero H3R3T1C productised for jOverseer and UAC stuff by Dave Spring.
@@ -133,9 +139,10 @@ public class UpdateInfo extends JFrame{
     // clear?
     private void update()
     {
+    	final String downloadLocation = PreferenceRegistry.instance().getPreferenceValue("updates.DownloadPointer");
     	String[] run;
-    	String[] runJava = {"java","-jar","update/update.jar"};
-        String[] runWindows = {"cscript.exe",System.getProperty("java.io.tmpdir")+"\\runJoverseerUpdater.vbs"};
+    	String[] runJava = {"java","-jar","update/update.jar",downloadLocation};
+        String[] runWindows = {"cscript.exe",System.getProperty("java.io.tmpdir")+"\\runJoverseerUpdater.vbs",downloadLocation};
         
         run = runJava;
     	if (System.getProperty("os.name").startsWith("Windows")) {
@@ -162,7 +169,7 @@ public class UpdateInfo extends JFrame{
 					fw.write("Set objShell = CreateObject(\"Shell.Application\")");
 					fw.write("\r\n");
 					// ShellExecute (file,args,directory,operation,show)
-					fw.write("objShell.ShellExecute \""+ location + "\\jOverseerUpdater.exe\" , \"\",\""+location+"\",\"runas\"");
+					fw.write("objShell.ShellExecute \""+ location + "\\jOverseerUpdater.exe\" , \""+ downloadLocation + "\",\""+location+"\",\"runas\"");
 	    			fw.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

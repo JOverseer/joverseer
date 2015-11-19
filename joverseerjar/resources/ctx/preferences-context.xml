@@ -884,13 +884,13 @@
 				
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
-						<value>general.autoCheckForNewVersion</value>
+						<value>updates.autoCheckForNewVersion</value>
 					</property>
 					<property name="description">
 						<value>Check for new version at startup</value>
 					</property>
 					<property name="group">
-						<value>General</value>
+						<value>Updates</value>
 					</property>
 					<property name="defaultValue">
 						<value></value>
@@ -910,7 +910,110 @@
 						</list>
 					</property>
 				</bean>
-			</list>
+				<bean class="org.joverseer.preferences.Preference">
+				    <property name="key">
+				        <value>updates.RSSFeed</value>
+				    </property>
+				    <property name="description">
+				        <value>Location of the RSS feed for updates</value>
+				    </property>
+				    <property name="group">
+				        <value>Updates</value>
+				    </property>
+					<property name="type">
+						<value>text</value>
+					</property>
+				    <property name="defaultValue">
+				        <value>http://www.middleearthgames.com/software/joverseer/feed.xml</value>
+				    </property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+				    <property name="key">
+				        <value>updates.DownloadPointer</value>
+				    </property>
+				    <property name="description">
+				        <value>Download pointer for updates</value>
+				    </property>
+				    <property name="group">
+				        <value>Updates</value>
+				    </property>
+					<property name="type">
+						<value>text</value>
+					</property>
+				    <property name="defaultValue">
+				        <value>http://www.middleearthgames.com/software/joverseer/url.html</value>
+				    </property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+				    <property name="key">
+				        <value>UIscaling.smalltext</value>
+				    </property>
+				    <property name="description">
+				        <value>size for smallest text</value>
+				    </property>
+				    <property name="group">
+				        <value>Window Display</value>
+				    </property>
+					<property name="type">
+						<value>text</value>
+					</property>
+				    <property name="defaultValue">
+				        <value>12</value>
+				    </property>
+				</bean>
+								<bean class="org.joverseer.preferences.Preference">
+				    <property name="key">
+				        <value>UIscaling.normaltext</value>
+				    </property>
+				    <property name="description">
+				        <value>size for normal text</value>
+				    </property>
+				    <property name="group">
+				        <value>Window Display</value>
+				    </property>
+					<property name="type">
+						<value>text</value>
+					</property>
+				    <property name="defaultValue">
+				        <value>16</value>
+				    </property>
+				</bean>
+								<bean class="org.joverseer.preferences.Preference">
+				    <property name="key">
+				        <value>UIscaling.largertext</value>
+				    </property>
+				    <property name="description">
+				        <value>size for larger text</value>
+				    </property>
+				    <property name="group">
+				        <value>Window Display</value>
+				    </property>
+					<property name="type">
+						<value>text</value>
+					</property>
+				    <property name="defaultValue">
+				        <value>20</value>
+				    </property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+				    <property name="key">
+				        <value>UIscaling.largesttext</value>
+				    </property>
+				    <property name="description">
+				        <value>size for largest text</value>
+				    </property>
+				    <property name="group">
+				        <value>Window Display</value>
+				    </property>
+					<property name="type">
+						<value>text</value>
+					</property>
+				    <property name="defaultValue">
+				        <value>24</value>
+				    </property>
+				</bean>
+												</list>
 		</property>
 	</bean>
 </beans>

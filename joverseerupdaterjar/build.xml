@@ -50,7 +50,11 @@
 		depends="-Init,Compile">
 		<jar destfile="${jarfile}"
 			basedir="${bin}"
-			includes="**/*.class"/>
+			includes="**/*.class">
+            <manifest>
+                <attribute name="Main-Class" value="com.middleearthgames.updater.Main_Gui"/>
+            </manifest>
+		</jar>
 	</target>
    <!-- Internal targets -->
    <target name="-Init">

@@ -138,7 +138,7 @@
 		    	includes="metadata/**"
 		    	excludes="**/*.bak"/>
 	    	<fileset dir="${res.dir}"
-		    	includes="ui/**, tips.properties,log4j.properties"/>
+		    	includes="ui/**, tips.properties,log4j.properties,changelog.txt"/>
 			
 		</jar>
 	</target>

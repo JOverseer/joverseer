@@ -198,13 +198,21 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		</exec>
 	</target>
 	<target name="create_betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
-        <zip destfile="${jOverseerWorkspace}/latestbetaupdate.zip">
+        <zip destfile="${dist}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
             <fileset file="${dist}/jOverseerUpdater.exe"/>
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
-            <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/>
+        </zip>
+	</target>
+	<target name="create_updatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
+        <zip destfile="${dist}/latestupdate.zip">
+            <fileset file="${dist}/joverseer.jar"/>
+            <fileset file="${dist}/jOverseerUpdater.exe"/>
+            <fileset file="${dist}/jOverseer.exe"/>
+            <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
+            <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>
 	</target>
 	
@@ -217,6 +225,18 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	       >
 	    <fileset dir="dist" include="latestbetaupdate.zip"/>
 	    <fileset dir="${jOverseerBuildRes.dir}" include="betafeed.xml"/>
+	  </ftp>
+	</target>
+	
+	<target name="Release" depends="create_updatezip">
+	  <ftp server="ftp.middleearthgames.com"
+	       remotedir="/htdocs/software/joverseer"
+	       binary="yes"
+	       useid="${ftp.userid}"
+	       password="${ftp.password}"
+	       >
+	    <fileset dir="dist" include="latestpdate.zip"/>
+	    <fileset dir="${jOverseerBuildRes.dir}" include="feed.xml"/>
 	  </ftp>
 	</target>
 	

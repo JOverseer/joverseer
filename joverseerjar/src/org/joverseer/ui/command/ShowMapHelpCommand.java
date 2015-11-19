@@ -13,7 +13,7 @@ public class ShowMapHelpCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		try {
-			Desktop.getDesktop().browse(new URI("http://code.google.com/p/joverseer/wiki/MapInfo"));
+			Desktop.getDesktop().browse(new URI("https://github.com/JOverseer/joverseer/wiki/MapInfo"));
 		} catch (Exception e) {
 		}
 		;

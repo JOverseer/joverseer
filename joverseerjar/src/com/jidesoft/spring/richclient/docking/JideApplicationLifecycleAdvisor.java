@@ -30,7 +30,6 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
-import org.joverseer.support.versionCheck.VersionChecker;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
@@ -52,7 +51,7 @@ import com.middleearthgames.updater.ThreepartVersion;
 /**
  * Extends the default application lifecycle advisor to allow the injection of
  * any status bar command group implementation. It also changes the repaint
- * manager to use the technique of Scott Deplap to detetect illegal UI updates
+ * manager to use the technique of Scott Deplap to detect illegal UI updates
  * outside of the EDT
  * 
  * @author Jonny Wray
@@ -77,6 +76,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			public void uncaughtException(Thread arg0, Throwable arg1) {
 				if (OutOfMemoryError.class.isInstance(arg1)) {
 					JFrame parentFrame = (getApplication().getActiveWindow() == null) ? null : getApplication().getActiveWindow().getControl();
+					//TODO:I18N
 					JOptionPane.showMessageDialog(parentFrame, "Not enough memory. This is often caused by running joverseer.jar directly. You should always run joverseer.bat and not joverseer.jar.", "Error", JOptionPane.ERROR_MESSAGE);
 					// clear game so that the program does not ask you if you
 					// want to close the program
@@ -99,6 +99,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		if (devOption == false) {
 			JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 			for (int i = 0; i < menuBar.getMenuCount(); i++) {
+				//TODO:I18N
 				if (menuBar.getMenu(i).getText().equals("Admin")) {
 					menuBar.getMenu(i).setVisible(false);
 				}
@@ -132,10 +133,12 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			}
 
 			// user guide
+			//TODO:I18N
 			if (menuBar.getMenu(i).getText().equals("Help")) {
 				try {
 					final File f = new File("JOverseerUserGuide.pdf");
 					if (f.exists()) {
+						//TODO:I18N
 						JMenuItem mi = new JMenuItem("User's Guide");
 						mi.addActionListener(new ActionListener() {
 							@Override
@@ -176,7 +179,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 
 		// automatic version checking
 		// get preference
-		String pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
+		String pval = PreferenceRegistry.instance().getPreferenceValue("updates.autoCheckForNewVersion");
 		if (pval == null || pval.equals("")) {
 			// if preference is null, ask user if they want to activate version
 			// checking
@@ -187,13 +190,13 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 					return new Object[] { new ActionCommand("actionYes") {
 						@Override
 						protected void doExecuteCommand() {
-							PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "yes");
+							PreferenceRegistry.instance().setPreferenceValue("updates.autoCheckForNewVersion", "yes");
 							getDialog().dispose();
 						}
 					}, new ActionCommand("actionNo") {
 						@Override
 						protected void doExecuteCommand() {
-							PreferenceRegistry.instance().setPreferenceValue("general.autoCheckForNewVersion", "no");
+							PreferenceRegistry.instance().setPreferenceValue("updates.autoCheckForNewVersion", "no");
 							getDialog().dispose();
 						}
 					} };
@@ -202,7 +205,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			dlg.showDialog();
 		}
 		// get preference value and do version checking if needed
-		pval = PreferenceRegistry.instance().getPreferenceValue("general.autoCheckForNewVersion");
+		pval = PreferenceRegistry.instance().getPreferenceValue("updates.autoCheckForNewVersion");
 		if (pval.equals("yes")) {
 			// check once every week
 			Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
@@ -224,12 +227,8 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
 		        
    		        try {
-		            if (UpdateChecker.getLatestVersion("http://www.middleearthgames.com/software/joverseer/feed.xml").isLaterThan(current)) { 
-//						MessageDialog md = new MessageDialog("A new version is available!", "A new version of JOverseer is available.\n If you wish to download it, visit the downloads page.\n<a href='http://www.middleearthgames.com/software/joverseer/feed.xml'>http://code.google.com/p/joverseer/downloads/list</a>") {
-//
-//						};
-//						md.showDialog();
-		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew("http://www.middleearthgames.com/software/joverseer/feed.xml"));
+		            if (UpdateChecker.getLatestVersion(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")).isLaterThan(current)) { 
+		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")));
 					}
 					String str = new SimpleDateFormat().format(new Date());
 					prefs.put("lastVersionCheckDate", str);

@@ -17,7 +17,6 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -50,7 +49,7 @@ public class Main_Gui extends JFrame{
 
 //	private String latestUpdateZip = "latestupdate.zip";
 	private String targetjar = "joverseer.jar";
-	private String downloadPath = "http://www.middleearthgames.com/software/joverseer/url.html";
+	private String downloadPath;
 	
     private Thread worker;
     private final String root = "update/";
@@ -62,9 +61,10 @@ public class Main_Gui extends JFrame{
     private JPanel pan1;
     private JPanel pan2;
 
-     public Main_Gui() {
+     public Main_Gui(String downloadPath) {
         initComponents();
         outText.setText("3 Contacting Download Server...");
+        this.downloadPath = downloadPath;
         download();
     }
     private void initComponents() {
@@ -264,6 +264,7 @@ public class Main_Gui extends JFrame{
         URL url = new URL(this.downloadPath);
 
         InputStream html = null;
+        String tag = "url";
 
       	html = url.openStream();
 
@@ -275,7 +276,7 @@ public class Main_Gui extends JFrame{
         buffer.append((char)c);
 
         }
-        return buffer.substring(buffer.indexOf("<url>")+5,buffer.indexOf("</url>"));
+        return buffer.substring(buffer.indexOf("<"+tag+">")+5,buffer.indexOf("</"+tag+">"));
     }
     private void logInfo(String message)
     {
@@ -286,12 +287,26 @@ public class Main_Gui extends JFrame{
         this.outText.setText(this.outText.getText()+message);
     }
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
+    	String downloadPath = "http://www.middleearthgames.com/software/joverseer/url.html";
+    	
+    	class UpdateRunnable implements Runnable {
+    		private final String downloadPath;
+    		public UpdateRunnable(final String downloadPath) {
+    			super();
+    			this.downloadPath = downloadPath;
+    		}
             @Override
 			public void run() {
-                new Main_Gui().setVisible(true);
+                new Main_Gui(this.downloadPath).setVisible(true);
             }
-        });
+    		
+    	}
+    	UpdateRunnable runner;
+    	if (args.length >0) {
+    		downloadPath = args[0];
+            }
+    	runner = new UpdateRunnable(downloadPath);
+        java.awt.EventQueue.invokeLater(runner);
     }
 
 }

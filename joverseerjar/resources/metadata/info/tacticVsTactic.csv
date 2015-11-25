@@ -1,0 +1,7 @@
+Tactic;Best vs.;Worst vs.
+Charge;Hit & Run;Ambush
+Flank;Ambush;Surround
+Standard;Flank;Charge
+Surround;Flank;Hit & Run
+Hit & Run;Surround;Flank
+Ambush;Charge;Flank

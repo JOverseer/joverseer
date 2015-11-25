@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!--
+		JIDE specific page descriptor. Give a unique page id and a list of views
+		for the page. This page contains one workspace and one other view.
+	-->
+	<bean name="mainPage" class="com.jidesoft.spring.richclient.docking.JidePageDescriptor">
+		<property name="viewDescriptors">
+			<list>
+				<value>artifactInfoListView</value>
+				<value>companyListView</value>
+				<value>encounterListView</value>
+				<value>enemyCharacterRumorListView</value>
+				<value>locateArtifactResultListView</value>
+				<value>nationMessageListView</value>
+				<value>orderListView</value>
+				<value>nationProductionListView</value>
+				<value>relationsListView</value>
+				<value>spellcasterListView</value>
+				<value>ownedArtifactsListView</value>
+				<value>trackCharacterListView</value>
+				<value>spellInfoListView</value>
+				<value>mapOptionsView</value>
+				<value>economyCalculatorView</value>
+				<value>currentHexDataViewer</value>
+				<value>mapView</value>
+				<value>orderEditorView</value>
+				<value>characterListView</value>
+				<value>armyListView</value>				
+				<value>populationCenterListView</value>
+				<value>nationEconomyListView</value>
+				<value>armySizeEstimatesListView</value>
+				<value>nationEconomyPotentialsListView</value>
+				<value>pdfFileView</value>
+				<value>startingCharacterListView</value>
+				<value>infoView</value>
+				<value>orderInfoView</value>	
+				<value>advancedArtifactListView</value>			
+				<value>armyEstimatesListView</value>							
+				<value>advancedCharacterListView</value>
+				<value>nationStatisticsListView</value>
+				<value>teamEconomyView</value>
+				<value>notesListView</value>
+				<value>turnReportView</value>
+				<value>gameEncountersReportView</value>
+				<value>orderResultsView</value>
+				<!--
+				<value>pcChangesListView</value>
+				<value>chatWindowView</value>
+				-->				
+				<value>playerInfoListView</value>
+				<value>combatCalcView</value>
+				<value>mapEditorView</value>
+				<!--
+				<value>hexProductionListView</value>
+				-->
+			</list>
+		</property>
+		<property name="perspectives">
+			<list>
+				<ref bean="fullPerspective" />
+			</list>
+		</property>	
+	</bean>
+	
+	<bean id="mapView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.views.MapView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+		
+	</bean>
+	
+	<bean id="economyCalculatorView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.economyCalculator.EconomyCalculator</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+		
+	</bean>
+	
+	
+	
+	<bean id="teamEconomyView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.economyCalculator.TeamEconomyView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+		
+	</bean>
+
+	<bean id="infoView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.info.InfoView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Game Info</value>
+		</property>
+	</bean>
+	
+	<bean id="orderInfoView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.info.OrderInfoView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Game Info</value>
+		</property>
+	</bean>
+
+	<bean id="pdfFileView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.pdfFileViewer.PdfFileViewer</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>600</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+	
+	<bean id="turnReportView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.TurnReportView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	<bean id="gameEncountersReportView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.GameEncounterReportView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Admin</value>
+		</property>
+	</bean>
+	
+	<bean id="orderResultsView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_HIDDEN"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
+		</property>
+		<property name="initIndex">
+			<value>1</value>
+		</property>
+		<property name="viewClass">
+			<value> org.joverseer.ui.views.OrderResultsView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Admin</value>
+		</property>
+	</bean>
+	
+	<bean id="currentHexDataViewer" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_EAST"/>
+		</property>
+		<property name="initIndex">
+			<value>2</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.viewers.CurrentHexDataViewer</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+	
+	
+	<bean id="characterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.CharacterListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+
+	<bean id="hexProductionListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.HexProductionListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+
+<!--
+	<bean id="chatWindowView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.chat.ChatView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Collaboration</value>
+		</property>
+	</bean>
+	-->
+
+	<bean id="combatCalcView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.CombatCalcCombatListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+
+	<bean id="playerInfoListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.PlayerInfoListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="armyEstimatesListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.ArmyEstimatesListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="nationStatisticsListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NationStatisticsListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+
+	
+	<bean id="startingCharacterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.StartingCharacterListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Starting Info</value>
+		</property>
+	</bean>
+
+	<bean id="advancedArtifactListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.AdvancedArtifactListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
+	
+	
+	<bean id="advancedCharacterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.advancedCharacterListView.AdvancedCharacterListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>500</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="armyListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.ArmyListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="nationEconomyPotentialsListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NationEconomyPotentialListView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>650</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="populationCenterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.PopulationCenterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="ownedArtifactsListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.OwnedArtifactsListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="armySizeEstimatesListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.ArmySizeEstimatesListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="nationEconomyListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NationEconomyListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="artifactInfoListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.ArtifactInfoListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Starting Info</value>
+		</property>
+	</bean>
+	
+	<bean id="notesListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NotesListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="companyListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.CompanyListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="encounterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.EncounterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="enemyCharacterRumorListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.EnemyCharacterRumorListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="locateArtifactResultListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.LocateArtifactResultListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+		
+	<bean id="nationMessageListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NationMessageListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Basic Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="nationProductionListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.NationProductionListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="orderListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.OrderEditorListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Orders</value>
+		</property>
+	</bean>
+	
+	<bean id="relationsListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.RelationsListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="spellcasterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.SpellcasterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Team</value>
+		</property>
+	</bean>
+	
+	<bean id="spellInfoListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.SpellInfoListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Game Info</value>
+		</property>
+	</bean>
+	
+	<bean id="trackCharacterListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.TrackCharacterListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Advanced Intel</value>
+		</property>
+	</bean>
+	
+	<bean id="mapOptionsView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.views.MapOptionsView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+	
+	<bean id="mapEditorView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.views.MapEditorView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+	
+	
+	<bean id="orderEditorView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>4</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.orderEditor.OrderEditorView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+	
+	<bean id="fullPerspective" class="org.joverseer.ui.jide.FullPerspective">
+		<constructor-arg index="0" value="full"/>
+	</bean>
+	
+	
+	<bean id="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.STATE_AUTOHIDE"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.STATE_HIDDEN"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.STATE_FLOATING"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+				 
+
+	<bean id="com.jidesoft.docking.DockContext.DOCK_SIDE_ALL"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.DOCK_SIDE_CENTER"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.DOCK_SIDE_NORTH"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.DOCK_SIDE_EAST"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+	<bean id="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"
+		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+		
+</beans>

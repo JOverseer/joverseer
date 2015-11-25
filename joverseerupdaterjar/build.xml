@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project name="joverseerupdaterjar" default="BuildAll" basedir=".">
+    <description>
+        Build file for the updater.jar part of joverseer.
+    </description>
+    <property name="bin">bin</property>
+    <property name="src">src</property>
+    <property name="dist">dist</property>
+	<property name="doc">${dist}/doc</property>
+	<property name="lib">lib</property>
+    <property name="jardir">${dist}/lib</property>
+    <property name="jarfile">${jardir}/update.jar</property>
+
+    
+   <!-- Main targets -->
+   <target name="BuildAll"
+       depends="-Init, -Prep, Compile, Javadoc, Jar"
+       description="Complete rebuild">
+       <echo message="Build finished."/>
+   </target>
+   <target name="Compile"
+       depends="-Init"
+       description="Compile all java classes">
+       <javac srcdir="${src}" destdir="${bin}">
+       		<classpath>
+       			<pathelement path="${java.class.path}"/>
+       		</classpath>
+       </javac>
+       
+   </target>
+   <target name="Test"
+       depends="-Init,Compile"
+       description="Run JUnit Tests">
+       <java fork="yes" classname="junit.textui.TestRunner"
+           taskname="junit" failonerror="true">
+           
+       </java>
+       <echo message="Tested"/>
+   </target>
+	<target name="Javadoc"
+		depends="-Init"
+		description="Create Javadoc">
+		<javadoc destdir="${doc}" author="true" version="true" use="true" package="true">
+		<fileset dir="${src}">
+			<include name="**/*.java"/>
+		</fileset>
+		</javadoc>
+	</target>
+	<target name="Jar"
+		depends="-Init,Compile">
+		<jar destfile="${jarfile}"
+			basedir="${bin}"
+			includes="**/*.class">
+            <manifest>
+                <attribute name="Main-Class" value="com.middleearthgames.updater.Main_Gui"/>
+            </manifest>
+		</jar>
+	</target>
+   <!-- Internal targets -->
+   <target name="-Init">
+       <tstamp/>
+       <echo message="Build time: ${TODAY} ${TSTAMP}"/>
+   </target>
+   <target name="-Prep">
+       <delete dir="${bin}"/>
+       <delete dir="${dist}"/>
+       <delete dir="${jardir}"/>
+       <mkdir dir="${bin}"/>
+       <mkdir dir="${dist}"/>
+       <mkdir dir="${jardir}"/>
+   </target>
+       
+</project>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>jOverseerRelease</name>
+	<comment></comment>
+	<projects>
+		<project>joverseerjar</project>
+		<project>joverseerupdaterjar</project>
+		<project>orderchecker</project>
+		<project>txt2xmljar</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>

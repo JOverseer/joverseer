@@ -1,0 +1,87 @@
+1. Bump the version in
+main/resources/ctx/jideApplicationContext.xml
+XPath:
+ //beans/bean[@id='applicationDescriptor']/property[@name='version']
+   @value='1.x.x'
+
+ //beans/bean[@id='applicationDescriptor']/property[@name='buildId']
+   @value='2014-x-x'
+
+2. update the version in the changelog.txt
+
+3.build
+
+3. run buildjars.bat
+
+4. ftp latestupdate.zip to megames
+
+5. edit and update feed.xml
+
+(delete the registry entry if testing)
+
+(make sure update/update.jar is present)
+
+start joverseer.
+
+Autoupdate notes
+================
+
+version 1.0.12 has new updater technology.
+
+
+spotting new versions
+---------------------
+The joverseer application checks the RSS feed for notification of a new release.
+"http://www.middleearthgames.com/software/joverseer/feed.xml"
+version 1.0.12 has this hard-wired.
+Later versions use the preference
+ updates.RSSFeed
+ in 
+ main/resources/ctx/preferences-context.xml
+
+The official beta RSS Feed is
+"http://www.middleearthgames.com/software/joverseer/betafeed.xml"
+
+Version numbers are compared numerically.
+The middle 0 was dropped after 1.0.12, the next version being 1.13.0.
+At the same time, it was decided to use odd number versions as beta versions.
+That way, the timing of beta and stable releases can be decoupled, and still be consistent numerically.
+
+The checking done in the code:
+com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor class, method onWindowOpened().
+
+
+update.jar
+----------
+The key thing about auto updating in general is that at some point you have to spawn and switch to a separate process, so you can change the original files.
+
+The updater is packaged as a separate jar file: update.jar.
+It takes one optional argument, the url of the zipfile to download.
+Normally it is the contents of the first url found in the RSS feed.
+It defaults to ???
+
+
+The source files
+
+com.middleearthgames.updater.UpdateChecker  - checks the rss feed and compares the version
+com.middleearthgames.updater.IThreepartVersion - interface for comparing 2 versions.
+com.middleearthgames.updater.Main_Gui - The crude UI for the standalone updater part.
+com.middleearthgames.updater.UpdateInfo - lists the changelog contents, and a lot of the complications needed to get updates to work under windows.
+
+so UpdateInfo.update()
+spawns java -jar update/update.jar 'download url'
+if on linux/unix/mac
+and for windows runs
+jOverseerUpdate.exe
+
+
+jOverseerUpdater.exe is a packaged version of java -jar update ....
+for windows and tagged to request admin privileges.
+
+update.Main_Gui.java is a simple java AWT application.
+moves it to the appropriate place
+deletes the initial version of the unpacked files.
+and executes any updateapp.jar to execute any version-specific updates beyond just files updates.
+NB. the cancel button just exits...it doesn't stop the download or undo the overwrite of files.
+
+

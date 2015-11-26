@@ -257,17 +257,20 @@ public class OrderEditorListView extends ItemListView {
 
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank());
+				return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank()|| !c.getOrders()[2].isBlank());
 			}
 		};
 		filterList.add(f);
 
 
-        f = new OrderFilter("All characters without orders") {
+        f = new OrderFilter("Characters without all orders") {
 
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (c.getOrders()[0].isBlank() || c.getOrders()[1].isBlank());
+				if (!GameHolder.hasInitializedGame())
+					return false;
+				PlayerInfo pi = (PlayerInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", c.getNationNo());
+				return pi != null && c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (c.getOrders()[0].isBlank() || c.getOrders()[1].isBlank()|| !c.getOrders()[2].isBlank());
 			}
 		};
 		filterList.add(f);

@@ -37,6 +37,7 @@ Source: {#InputBuild}\joverseer.ico; DestDir: {app}
 Source: {#InputBuild}\jOverseer.exe; DestDir: {app}
 Source: {#InputBuild}\jOverseerUpdater.exe; DestDir: {app}
 Source: {#InputResourceDirName}\joverseer.bat; DestDir: {app}
+Source: {#InputResourceDirName}\jOverseer.lnk; DestDir: {userdesktop}
 Source: {#InputBuild}\log4j.properties; DestDir: {app}
 ;check that these are actually needed here...they used to be copied in 1.0.12
 Source: {#OrdercheckerMetadata}\*; DestDir: {app}\bin\metadata\orderchecker

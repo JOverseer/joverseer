@@ -178,13 +178,15 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
     </target>
     
     <target name="updatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
-        <zip destfile="${jOverseerWorkspace}/latestupdate.zip">
+        <zip destfile="${dist}/latestupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
             <fileset file="${dist}/jOverseerUpdater.exe"/>
             <fileset file="${dist}/jOverseer.exe"/>
+            <fileset file="${dist}/orderchecker.jar"/>
+            <fileset file="${dist}/txt2xml.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
-            <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/>
+<!--              <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/> -->
         </zip>
 	</target>
 	
@@ -197,26 +199,19 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 			<arg value="${dist}\joverseer.iss.out"/>
 		</exec>
 	</target>
-	<target name="create_betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
+	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
             <fileset file="${dist}/jOverseerUpdater.exe"/>
             <fileset file="${dist}/jOverseer.exe"/>
-            <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
-            <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
-        </zip>
-	</target>
-	<target name="create_updatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
-        <zip destfile="${dist}/latestupdate.zip">
-            <fileset file="${dist}/joverseer.jar"/>
-            <fileset file="${dist}/jOverseerUpdater.exe"/>
-            <fileset file="${dist}/jOverseer.exe"/>
+            <fileset file="${dist}/orderchecker.jar"/>
+            <fileset file="${dist}/txt2xml.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>
 	</target>
 	
-	<target name="ReleaseBeta" depends="create_betaupdatezip">
+	<target name="ReleaseBeta" depends="betaupdatezip">
 	  <ftp server="ftp.middleearthgames.com"
 	       remotedir="/htdocs/software/joverseer"
 	       binary="yes"
@@ -228,7 +223,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	  </ftp>
 	</target>
 	
-	<target name="Release" depends="create_updatezip">
+	<target name="Release" depends="updatezip">
 	  <ftp server="ftp.middleearthgames.com"
 	       remotedir="/htdocs/software/joverseer"
 	       binary="yes"

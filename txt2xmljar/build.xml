@@ -57,7 +57,12 @@
 		depends="-Init,Compile">
 		<jar destfile="${jarfile}"
 			basedir="${bin}"
-			includes="**/*.class"/>
+			includes="**/*.class">
+            <manifest>
+                <attribute name="Main-Class" value="org.txt2xml.gui.GuiController"/>
+                <attribute name="Class-Path" value=". jdom.jar scope-bin.jar commons-collections-3.1.jar"/>
+            </manifest>
+		</jar>			
 	</target>
    <!-- Internal targets -->
    <target name="-Init">

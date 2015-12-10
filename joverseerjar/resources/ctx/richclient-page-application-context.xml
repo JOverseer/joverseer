@@ -25,6 +25,7 @@
 				<value>mapOptionsView</value>
 				<value>economyCalculatorView</value>
 				<value>currentHexDataViewer</value>
+				<value>currentHexData2Viewer</value>
 				<value>mapView</value>
 				<value>orderEditorView</value>
 				<value>characterListView</value>
@@ -317,6 +318,29 @@
 		</property>
 		<property name="viewClass">
 			<value>org.joverseer.ui.viewers.CurrentHexDataViewer</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+
+	<bean id="currentHexData2Viewer" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_EAST"/>
+		</property>
+		<property name="initIndex">
+			<value>2</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.viewers.CurrentHexData2Viewer</value>
 		</property>
 		<property name="preferredWidth">
 			<value>350</value>

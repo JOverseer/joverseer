@@ -30,6 +30,7 @@ import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
  */
 public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWindowAware {
 
+	
 	/** The identifier of this command. */
 	public static final String ID = "showViewMenu";
 
@@ -63,6 +64,16 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 		// TODO should this be confirming that 'this.window' is not null?
 		populate();
 	}
+	// safe version that won't kill the app if a configuration error.
+	private static String getAcceleratorFreeCaption(ViewDescriptor vd)
+	{
+		if (vd.getCaption() == null) { 
+			return "Missing caption";
+		} else {
+			return vd.getCaption().replace("&", "");
+		}
+	}
+
 
 	private void populate() {
 		ViewDescriptorRegistry viewDescriptorRegistry = (ViewDescriptorRegistry) ApplicationServicesLocator.services().getService(ViewDescriptorRegistry.class);
@@ -71,7 +82,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 		ArrayList<String> viewGroups = new ArrayList<String>();
 		String label;
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		// find all the viewgroups actually used in the configuration of the views.
 		for (ViewDescriptor vd : views) {
 			String group = "";
 			if (JOverseerJideViewDescriptor.class.isInstance(vd)) {
@@ -85,6 +96,8 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 			}
 		}
 		Collections.sort(viewGroups);
+		
+		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
 
 		for (String viewGroup : viewGroups) {
 			HashMap<String, ViewDescriptor> viewMap = new HashMap<String, ViewDescriptor>();
@@ -97,7 +110,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 					}
 				}
 				if (viewGroup.equals(cViewGroup)) {
-					viewMap.put(vd.getCaption().replace("&", ""), vd);
+					viewMap.put(getAcceleratorFreeCaption(vd), vd);
 				}
 			}
 			ArrayList<String> captions = new ArrayList<String>();
@@ -112,9 +125,11 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 					ViewDescriptor vd = viewMap.get(caption);
 					AbstractCommand cmd = vd.createShowViewCommand(this.window);
 					cg.add(cmd);
-
-					Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
-					cmd.setIcon(ico);
+					
+					if (viewMap.get(caption) != null) {
+						Icon ico = new ImageIcon(imgSource.getImage(viewMap.get(caption).getId() + ".icon"));
+						cmd.setIcon(ico);
+					}
 				}
 				label = Messages.getString("ViewGroup." + viewGroup.replace(" ", ""));
 				cg.setLabel(label);
@@ -143,12 +158,12 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 				if ("Admin".equals(((JOverseerJideViewDescriptor) vd).getViewGroup()))
 					continue;
 			}
-			allCaptions.add(vd.getCaption().replace("&", ""));
+			allCaptions.add(getAcceleratorFreeCaption(vd));
 		}
 		Collections.sort(allCaptions);
 		for (String c : allCaptions) {
 			for (ViewDescriptor vd : views) {
-				if (vd.getCaption().replace("&", "").equals(c)) {
+				if (getAcceleratorFreeCaption(vd).equals(c)) {
 					AbstractCommand cmd = vd.createShowViewCommand(this.window);
 					allViews.add(cmd);
 

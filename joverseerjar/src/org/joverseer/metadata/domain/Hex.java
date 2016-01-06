@@ -111,4 +111,17 @@ public class Hex implements Serializable {
 		return h;
 
 	}
+	// special formatting for the hexnumber
+	public String getHexNoStr()
+	{
+		String hexNoStr = String.valueOf(getColumn());
+		if (getColumn() < 10) {
+			hexNoStr = "0" + hexNoStr; //$NON-NLS-1$
+		}
+		if (getRow() < 10) {
+			hexNoStr = hexNoStr + "0"; //$NON-NLS-1$
+		}
+		hexNoStr += String.valueOf(getRow());
+		return hexNoStr;
+	}
 }

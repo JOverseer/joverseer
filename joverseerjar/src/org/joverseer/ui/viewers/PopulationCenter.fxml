@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.joverseer.ui.viewers.PopulationCenterController">
+   <children>
+      <HBox>
+         <children>
+            <HBox>
+               <children>
+                  <Label fx:id="pcName" text="Osgiliath" />
+                  <Label fx:id="pcSize" text="MT" />
+                  <Label fx:id="fortification" text="fort" />
+                  <Label fx:id="seaShelter" text="Harbour" />
+                  <HBox />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <Label fx:id="owner" text="owner" />
+            <Label fx:id="loyalty" text="75" />
+         </children></HBox>
+      <Separator prefWidth="200.0" />
+      <TableView fx:id="iProduction">
+        <columns>
+            <TableColumn prefWidth="75.0" text="%ProductEnum.le" />
+          <TableColumn editable="false" prefWidth="75.0" sortable="false" text="%ProductEnum.br" />
+          <TableColumn editable="false" prefWidth="75.0" sortable="false" text="%ProductEnum.st" />
+            <TableColumn prefWidth="75.0" text="%ProductEnum.mi" />
+            <TableColumn prefWidth="75.0" text="%ProductEnum.fo" />
+            <TableColumn prefWidth="75.0" text="%ProductEnum.mo" />
+            <TableColumn prefWidth="75.0" text="%ProductEnum.ti" />
+            <TableColumn prefWidth="75.0" text="%ProductEnum.go" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>

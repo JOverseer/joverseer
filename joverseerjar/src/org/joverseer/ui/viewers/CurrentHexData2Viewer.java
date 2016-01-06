@@ -3,6 +3,7 @@ package org.joverseer.ui.viewers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,6 +28,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ArmyAllegianceNameComparator;
 import org.joverseer.tools.CharacterDeathAllegianceNameComparator;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.controllers.CurrentHexDataController;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -38,6 +40,19 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.support.DefaultViewDescriptor;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Callback;
 
 /**
  * Shows information for the current hex, using the various viewers in this
@@ -52,7 +67,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * @author Marios Skounakis
  */
 public class CurrentHexData2Viewer extends AbstractView implements ApplicationListener {
-	JPanel panel;
+/*	JPanel panel;
 	JPanel mainPanel;
 	JPanel popCenterPanel;
 	PopulationCenterViewer popCenterViewer;
@@ -70,11 +85,15 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 	ArrayList<JPanel> combatPanels = new ArrayList<JPanel>();
 	ArrayList<EncounterViewer> encounterViewers = new ArrayList<EncounterViewer>();
 	ArrayList<JPanel> encounterPanels = new ArrayList<JPanel>();
+*/
 	JScrollPane scp;
-
+	CurrentHexDataController controller;
+	FXMLLoader armyloader;
+	// this is only used to pass the last point to the refresh thread
+	Point pointTriggeringRefresh;
 	@Override
 	protected JComponent createControl() {
-		TableLayoutBuilder tlb = new TableLayoutBuilder();
+/*		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()));
 		this.popCenterPanel = new JPanel();
 		this.popCenterPanel.add(this.popCenterViewer.getControl());
@@ -179,31 +198,38 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 		this.panel = tlb.getPanel();
 		this.panel.setBackground(Color.white);
 		this.panel.setPreferredSize(new Dimension(240, 3000));
-		this.scp = new JScrollPane(this.panel);
+*/
+		final JFXPanel canvas = new JFXPanel();
+		this.scp = new JScrollPane(canvas);
 		this.scp.setPreferredSize(new Dimension(240, 1500));
 		this.scp.getVerticalScrollBar().setUnitIncrement(32);
+		Platform.runLater(new Runnable(){
+			@Override
+			public void run() {
+				initFX(canvas);
+			}
+		});
 		return this.scp;
+		}
+	// run on FX thread.
+	private void initFX(JFXPanel jfxPanel) {
+		try {
+//			final Parent root = FXMLLoader.load(getApplicationContext().getResource("classpath:ui/views/CurrentHexDataView.fxml").getURL(),Messages.getResourceBundle());
+			FXMLLoader fxmlLoader = new FXMLLoader(getApplicationContext().getResource("org/joverseer/ui/viewers/CurrentHexDataView.fxml").getURL(),Messages.getResourceBundle());
+			armyloader = new FXMLLoader(getApplicationContext().getResource("org/joverseer/ui/viewers/Army.fxml").getURL(),Messages.getResourceBundle());
+
+			final Parent root = fxmlLoader.load();
+			this.controller = fxmlLoader.getController();
+			final Scene scene = new Scene(root);
+			//scene.getStylesheets().add("classpath:application.css");
+			//set the translatable text
+			jfxPanel.setScene(scene);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
-	private void showPopCenter(PopulationCenter pc) {
-		this.popCenterViewer.setFormObject(pc);
-		this.popCenterPanel.setVisible(true);
-	}
-
-	private void hidePopCenter() {
-		this.popCenterPanel.setVisible(false);
-	}
-
-	private void showHexInfo(Hex h) {
-		this.hexInfoViewer.setFormObject(h);
-		this.hexInfoPanel.setVisible(true);
-
-	}
-
-	private void hideHexInfo() {
-		this.hexInfoPanel.setVisible(false);
-	}
-
+/*
 	private void showCharacter(Character c) {
 		for (int i = 0; i < this.characterViewers.size(); i++) {
 			if (!this.characterPanels.get(i).isVisible()) {
@@ -302,17 +328,30 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 		}
 
 	}
+*/
+	private void refreshFX()
+	{
+		Platform.runLater(new Runnable(){
+			@Override
+			public void run() {
+				refresh();
+			}
+		});
 
-	private void refresh(Point p) {
+	}
+	private void refresh() {
+		
+		// point is set on another thread, so don't pass in.
+		Point p = pointTriggeringRefresh;
 		if (p == null) {
-			hideHexInfo();
-			hidePopCenter();
-			hideAllArmyViewers();
+			this.controller.hexInfoController.hideAll();
+			this.controller.populationCenterController.hideAll();
+/*			hideAllArmyViewers();
 			hideAllArtifactViewers();
 			hideAllCharacterViewers();
 			hideAllCombatViewers();
 			hideAllNationMessageViewers();
-			return;
+*/			return;
 		}
 		String hex = ""; //$NON-NLS-1$
 		if ((p.x == 0 && p.y == 0) || p.x == -1) {
@@ -323,6 +362,7 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 		if (p.x < 10)
 			hex = "0" + hex; //$NON-NLS-1$
 		((DefaultViewDescriptor) getDescriptor()).setTitle(Messages.getString("CurrentHexDataViewer.Title") + hex); //$NON-NLS-1$
+
 		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		if (g == null)
 			return;
@@ -331,19 +371,38 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 		int hexno = p.x * 100 + p.y; 
 		Hex h = gm.getHex(hexno);
 		if (h != null) {
-			showHexInfo(h);
+			this.controller.hexInfoController.populate(h);
+			this.controller.hexInfoController.showAll();
 			hexno = h.getHexNo();
 		} else {
-			hideHexInfo();
+			this.controller.hexInfoController.hideAll();
 		}
 		Turn t = g.getTurn();
 		PopulationCenter pc = t.getPopulationCenters().findFirstByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
 		if (pc != null) {
-			showPopCenter(pc);
+			this.controller.populationCenterController.populate(pc);
+			this.controller.populationCenterController.showAll();
 		} else {
-			hidePopCenter();
+			this.controller.populationCenterController.hideAll();
 		}
+		this.controller.hideAllArmies();
+		ArrayList<Army> armies = t.getArmies().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
+		Collections.sort(armies, new ArmyAllegianceNameComparator());
 
+		ObservableList<Army> armyData = FXCollections.observableArrayList();
+		for (Army a : armies) {
+			armyData.add(a);
+		}
+		this.controller.lstArmies.setItems(armyData);
+		this.controller.lstArmies.setCellFactory(new Callback<ListView<Army>,ListCell<Army>>() {
+			@Override
+			public ListCell<Army> call(ListView<Army> list) {
+				return new ArmyCell();
+			}
+		});
+		this.controller.showAllArmies();
+
+		/*
 		hideAllCharacterViewers();
 		ArrayList<Character> chars = t.getCharacters().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
 		Collections.sort(chars, new CharacterDeathAllegianceNameComparator());
@@ -352,14 +411,6 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 			if (ch.getHostage() != null && ch.getHostage().booleanValue())
 				continue;
 			showCharacter(ch);
-		}
-
-		hideAllArmyViewers();
-		ArrayList<Army> armies = t.getArmies().findAllByProperties(new String[] { "x", "y" }, new Object[] { p.x, p.y }); //$NON-NLS-1$ //$NON-NLS-2$
-		Collections.sort(armies, new ArmyAllegianceNameComparator());
-
-		for (Army a : armies) {
-			showArmy(a);
 		}
 
 		hideAllNationMessageViewers();
@@ -389,31 +440,60 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 		}
 
 		this.scp.getVerticalScrollBar().setValue(0);
+		*/
 	}
-
+	class ArmyCell extends ListCell<Army> {
+/*		ArmyController ac;
+		public ArmyCell() {
+			super();
+			Parent root=null;
+			try {
+				root = armyloader.load();
+				ac = armyloader.getController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			setGraphic(root);
+		}
+*/
+		@Override
+		public void updateItem(Army item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty || item == null) {
+				setText(null);
+				setGraphic(null);
+			} else {
+				//ac.populate(item);
+				setText(item.getCommanderTitle() + " " + item.getCommanderName());
+			}
+		}
+		
+	}
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
-				Point p = (Point) e.getObject();
-				refresh(p);
+				pointTriggeringRefresh = (Point) e.getObject();
+				refreshFX();
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
-				Point p = MapPanel.instance().getSelectedHex();
-				if (p != null)
-					refresh(p);
+				pointTriggeringRefresh = MapPanel.instance().getSelectedHex();
+				if (pointTriggeringRefresh != null)
+					refreshFX();
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.RefreshHexItems.toString())) {
-				Point p = (Point) e.getObject();
-				refresh(p);
+				pointTriggeringRefresh = (Point) e.getObject();
+				refreshFX();
 			}
 
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
-				Point p = MapPanel.instance().getSelectedHex();
-				refresh(p);
+				pointTriggeringRefresh = MapPanel.instance().getSelectedHex();
+				refreshFX();
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+				/*
 				Order o = (Order) e.getData();
 				for (int i = 0; i < this.characterPanels.size(); i++) {
 					if (!this.characterPanels.get(i).isVisible())
@@ -424,18 +504,20 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 						break;
 					}
 				}
+				*/
 			}
 			if (e.getEventType().equals(LifecycleEventsEnum.SelectCharEvent.toString())) {
+/*
 				Character c = (Character) e.getData();
 				selectCharacter(c);
-			}
+*/			}
 			if (e.getEventType().equals(LifecycleEventsEnum.NoteUpdated.toString())) {
-				Point p = MapPanel.instance().getSelectedHex();
-				refresh(p);
+				pointTriggeringRefresh = MapPanel.instance().getSelectedHex();
+				refreshFX();
 			}
 		}
 	}
-
+/*
 	protected void selectCharacter(Character c) {
 		for (int i = 0; i < this.characterViewers.size(); i++) {
 			if (this.characterPanels.get(i).isVisible()) {
@@ -446,5 +528,5 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 			}
 		}
 	}
-
+*/
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox prefHeight="108.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="org.joverseer.ui.viewers.ArmyController">
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="leader" text="Label" />
+            <Label fx:id="nation" text="Label" />
+            <Button mnemonicParsing="false" text="Button" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label text="Label" />
+            <Label fx:id="armySize" text="Label" />
+            <Label fx:id="armyOrNavy" text="Label" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="composition" text="Label" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="fedOrNot" text="Label" />
+            <Label fx:id="infOrCav" text="Label" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

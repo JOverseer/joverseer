@@ -78,7 +78,7 @@
 		class="org.springframework.richclient.application.config.DefaultApplicationObjectConfigurer" />
 		
 	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
+		class="org.joverseer.ui.support.ResourceBundleMessageSourceForFX">
 		<property name="basenames">
 			<list>
 				<value>ui.messages</value>

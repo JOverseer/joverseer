@@ -24,6 +24,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.ScalableAbstractForm;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
@@ -167,7 +168,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 		tlb.cell(pnl, "align=left");
 		tlb.relatedGapRow();
 
-		this.elements = new JTable(this.elementTableModel = new ArmyElementTableModel((MessageSource) Application.instance().getApplicationContext().getBean("messageSource")) {
+		this.elements = new JTable(this.elementTableModel = new ArmyElementTableModel(Messages.getMessageSource()) {
 			@Override
 			public boolean isCellEditable(int arg0, int arg1) {
 				if (arg1 == 0)

@@ -25,7 +25,7 @@
       <HBox>
          <children>
             <Label text="%HexInfoViewer.LatestInfoColon" />
-            <Label id="valLatestInfo" text="Label" />
+            <Label fx:id="valTurnInfo"/>
          </children></HBox>
       <Separator prefWidth="200.0" />
       <TableView fx:id="iMovementCost">

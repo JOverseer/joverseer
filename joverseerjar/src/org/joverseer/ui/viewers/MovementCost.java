@@ -34,5 +34,9 @@ public class MovementCost {
 	{
 		return this.cavalryCost.get();
 	}
+	public void setCavalryCost(Integer v)
+	{
+		this.cavalryCost.set(v);
+	}
 	
 }

@@ -221,7 +221,7 @@ public class CurrentHexData2Viewer extends AbstractView implements ApplicationLi
 			final Parent root = fxmlLoader.load();
 			this.controller = fxmlLoader.getController();
 			final Scene scene = new Scene(root);
-			//scene.getStylesheets().add("classpath:application.css");
+			scene.getStylesheets().add(getApplicationContext().getResource("org/joverseer/ui/viewers/CurrentHexDataViewer.css").getURL().toString());
 			//set the translatable text
 			jfxPanel.setScene(scene);
 		} catch (IOException e) {

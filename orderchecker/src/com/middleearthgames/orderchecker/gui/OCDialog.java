@@ -158,7 +158,7 @@ public class OCDialog extends JPanel
     private void configureTopPane()
     {
         this.turnLabel.setText("Turn Result");
-        this.ordersLabel.setText("MEOW/Automagic Orders");
+        this.ordersLabel.setText("Order Files");
         this.gameTypeLabel.setText("Game Type");
         this.turnPath.setText(this.data.getTurnResultsPath());
         this.ordersPath.setText(this.data.getOrdersPath());

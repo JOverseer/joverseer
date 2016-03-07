@@ -1,13 +1,13 @@
 1;Ring of Wind;None;Agent;+40;;
 2;Ring of Stargazing;None;Mage;+25;;Dog Lord
 3;Ring of Iron Magic;Evil;Mage;+30;;Dark Lts.
-4;Ring of Impersonati;None;Agent;+25;;
+4;Ring of Impersonation;None;Agent;+25;;
 5;Ring of Barahir;Good;Command;+35;;Rangers
 6;Ring of Axardil;None;Command;+10;;
 7;Nazguaga;Evil;Mage;+35;;B.Sorcerer
-8;Lorglin;None;Mage;+10;;Noldo
+8;Lorglîn;None;Mage;+10;;Noldo
 9;Elenya;None;Stealth;+15;;
-10;Wolor Priest Ring;None;Mage;+25;;Dog Lord
+10;Wôlor Priest Ring;None;Mage;+25;;Dog Lord
 11;Vilya;None;Mage;+50;;Noldo
 12;Nenya;None;Mage;+50;;Sinda
 13;Narya;None;Mage;+50;;
@@ -15,59 +15,60 @@
 15;Tinculin;None;Mage;+40;;
 16;Mothras;None;Combat;+500;;
 17;Ring of Angrenost;None;Combat;+500;;White Wizard 
-18;Tablets of Dark;Evil;Mage;+15;;
+18;Tablets of Dark Knowledge;Evil;Mage;+15;;
 19;Staff of Storms;None;Open Seas;-;;
-20;Staff of the Serpen;None;Mage;+10;;Ice King
-21;Staff of Earthmast;None;Mage;+20;;
+20;Staff of the Serpent;None;Mage;+10;;Ice King
+21;Staff of Earthmastery;None;Mage;+20;;
 22;Rauzgnagli;Evil;Combat;+1750;;B.Sorcerer
-23;Nedelhach;None;Combat;+750;;
+23;Neldelhach;None;Combat;+750;;
 24;Ghostbane;None;Combat;+750;;Dunlendings
 25;Staff of Bronze;None;Mage;+25;;Ice King
 26;Mallorn Staff;None;Mage;+30;;Noldo
-27;Palantir of Osgilia;None;Scry Area;-;;
-28;Palantir of Minas I;None;Scry Area;-;;Witch-King
-29;Palantir of Minas A;None;Scry Area;-;;N.Gondor
-30;Palantir of Orthanc;None;Scry Area;-;;White Wizard 
-31;Palantir of Annumin;None;Scry Area;-;;
-32;Palantir of Elostir;None;Scry Area;-;;Noldo
-33;Palantir of Amon Su;None;Scry Area;-;;
-34;Orb of Dark Se;Evil;Mage;+20;;
+27;Palantír of Osgiliath;None;Scry Area;-;;
+28;Palantír of Minas Ithil;None;Scry Area;-;;Witch-King
+29;Palantír of Minas Anor;None;Scry Area;-;;N.Gondor
+30;Palantír of Orthanc;None;Scry Area;-;;White Wizard 
+31;Palantír of Annúminas;None;Scry Area;-;;
+32;Palantír of Elostirion;None;Scry Area;-;;Noldo
+33;Palantír of Amon Sûl;None;Scry Area;-;;
+34;Orb of Dark Seeing;Evil;Mage;+20;;
 35;Orb of Seeing;None;Mage;+30;;Silvan
 36;Bone Ring;None;Mage;+10;;Rangers
 37;Voice of the Dark Tower;Evil;Emissary;+20;;Dark Lts.
-38;Silver Rod of Andun;Good;Command;+25;;Rangers
+38;Silver Rod of Andúni;Good;Command;+25;;Rangers
 39;Miramarth;Evil;Agent;+20;;
 40;Gaergil;None;Open Seas;-;;Noldo
 41;Mantle of Doriath;Good;Hide Pop Center;-;;Noldo
 42;Collar of Might;None;Mage;+30;;
-43;Cloak of the Heaven;None;Agent;+20;;Dog Lord
+43;Cloak of the Heavens;None;Agent;+20;;Dog Lord
 44;Collohwesta;None;Stealth;+25;;
 45;Cloak of the Abyss;None;Stealth;+40;;Dark Lts.
-46;Robe of the Orc Priest;Evil;Command;+15;;Dark Lts.
+46;Robe of the Orc Priests;Evil;Command;+15;;Dark Lts.
 47;Belt of Durin;None;Command;+20;;
-48;Thologaer Ciry;None;Mage;+30;;Witch-King
+48;Thôlogaer Ciryatano;None;Mage;+30;;Witch-King
+49;Shield of Anárion;None;Command;+20;;
 50;Ovir Crown;None;Mage;+20;;Ice King
 51;Ossanna;None;Mage;+15;;Noldo
 52;Morgul Plate;Evil;Command;+15;;Witch-King
 53;Listening Helm;None;Agent;+10;;Long Rider
-54;Helm of Sen Jay;None;Command;+15;;Fire King
+54;Helm of Sen Jey;None;Command;+15;;Fire King
 55;Helm of Shadow;None;Stealth;+10;;Silvan
-56;Helm of the Mumak King;None;Command;+25;;Cloud Lord
+56;Helm of the Mûmak-king;None;Command;+25;;Cloud Lord
 57;Helm of Isildur;None;Command;+20;;
 58;Helm of the Dark;Evil;Command;+15;;Dark Lts.
 59;Gaerennon;None;Command;+15;;Noldo
 60;Durin's Armor/Shield;None;Command;+15;;
-61;Dragon Helm of Dor-Lomin;None;Command;+15;;
-62;Dragon Helm and Armor;Evil;Mage;+30;;Dragon Lord
+61;Dragon Helm of Dor-Lómin;None;Command;+15;;
+62;Dragon Helm/Armor;Evil;Mage;+30;;Dragon Lord
 63;Deepwood Bracelet;None;Mage;+15;;N.Gondor
-64;Bracers of the Mist;None;Stealth;+30;;Silvan
+64;Bracers of the Mists;None;Stealth;+30;;Silvan
 65;Angbor;None;Command;+10;;Witch-King
 66;Bracers of Chennacatt;None;Command;+10;;B.Sorcerer
-67;Ulukai;Evil;Command;+35;;Witch-King
+67;Ulûkai;Evil;Command;+35;;Witch-King
 68;Thrakurghash;Evil;Combat;+500;;Witch-King
 69;Corantir;None;Mage;+10;;
 70;Ring of Binding;Evil;Agent;+30;;Long Rider
-71;Talisman of Absorpt;Evil;Mage;+20;;Long Rider
+71;Talisman of Absorption;Evil;Mage;+20;;Long Rider
 72;Cloak of Duvorn;None;Agent;+20;;Long Rider
 73;Yellow Hammer;None;Combat;+500;;B.Sorcerer
 74;War-dancer;None;Combat;+750;;Dog Lord
@@ -78,26 +79,26 @@
 79;Stormless Bow;None;Combat;+500;;Long Rider
 80;Snow Hammer;None;Combat;+500;;Ice King
 81;Sil-Maegil;Good;Combat;+750;;
-82;Romoquenaro;None;Combat;+750;;Witch-King
+82;Romoquenáro;None;Combat;+750;;Witch-King
 83;Orcrist;None;Combat;+750;;Dwarves
 84;Ongrum;None;Combat;+500;;Fire King
 85;Navorn;None;Combat;+500;;S.Gondor
 86;Nallagurth;Evil;Combat;+750;;Witch-King
 87;Morlhach;Evil;Combat;+500;;
-88;Macirille;None;Combat;+750;;
-89;Macrilomen;None;Combat;+1000;;Noldo
+88;Macirillë;None;Combat;+750;;
+89;Macrilómen;None;Combat;+1000;;Noldo
 90;Helkaluin;None;Combat;+1250;;Noldo
 91;Gordur;Good;Combat;+500;;Rangers
-92;Horsetamer;None;Combat;+500;;Long Rider
+92;Horse-tamer;None;Combat;+500;;Long Rider
 93;Gurthdur;Good;Combat;+500;;Rangers
 94;Glamdring;Good;Combat;+750;;
 95;Gildagor;None;Combat;+500;;
-96;Fohnrad;None;Combat;+500;;
+96;Fonhrad;None;Combat;+500;;
 97;Fire's Edge;Evil;Combat;+750;;Quiet Avenger
 98;Elhach;None;Combat;+1000;;
 99;Elfhewer;Evil;Combat;+500;;Dragon Lord
 100;Elfbane;Evil;Combat;+500;;
-101;E Voronwe;Good;Combat;+500;;
+101;E Voronwë;Good;Combat;+500;;
 102;Durin's Axe;None;Combat;+750;;
 103;Durcrist;Good;Combat;+500;;
 104;Dawnsword;Evil;Combat;+750;;Cloud Lord
@@ -106,16 +107,16 @@
 107;Curaran;None;Combat;+500;;Rangers
 108;Craig-olf-Ti;None;Combat;+500;;
 109;Cloud Bow;None;Combat;+750;;Cloud Lord
-110;Craig-olf-ti;None;Combat;+500;;
+110;Círmegil;None;Combat;+500;;
 111;Believer's Bane;Evil;Combat;+500;;Fire King
 112;Burning Bane;None;Combat;+500;;Fire King
-113;Ar-Sil;Good;Combat;+750;;
+113;Ar-sil;Good;Combat;+750;;
 114;Angian;Good;Combat;+500;;
 115;Fire Mace;None;Combat;+750;;
 116;Blood Spike;None;Combat;+750;;  
 117;Hatred Curse;None;Combat;+750;;Dark Lts.
 118;Skull Flail;None;Combat;+1000;;Dark Lts.
-119;Moon-Axe;None;Combat;+750;;Dark Lts.
+119;Moon-axe;None;Combat;+750;;Dark Lts.
 120;Amulet of Sea Mastery;None;Open Seas;-;;
 121;Troll Slayer;Good;Combat;+750;;Silvan
 122;Orc Slayer;Good;Combat;+750;;Silvan
@@ -123,15 +124,15 @@
 124;Robes of Aman;Good;Stealth;+25;;Gandalf
 125;Aeglin;Good;Combat;+750;;
 126;Anarmacil;Good;Combat;+750;;Sinda
-127;Aranruth;Good;Combat;+1750;;
+127;Aranrûth;Good;Combat;+1750;;
 128;Aratocam;None;Combat;+1000;;
 129;Bow of Thunder and Bone;None;Combat;+500;;
-130;Brodic Spear;None;Combat;+500;;
+130;Brôdic Spear;None;Combat;+500;;
 131;Caranlhach;None;Combat;+1750;;  
 132;Daeron's Rapier;None;Combat;+1000;;
-133;Dagger of Green;None;Combat;+500;;
+133;Dagger of Green Wisdom;None;Combat;+500;;
 134;Dagnirdraug;Good;Combat;+750;;
-135;Elenruth;None;Combat;+750;;Sinda
+135;Elenrûth;None;Combat;+750;;Sinda
 136;Foamcleaver;None;Combat;+1500;;
 137;Bloodrunner;None;Combat;+750;;Dunlendings
 138;Air Cleaver;None;Combat;+750;;Dog Lord
@@ -139,15 +140,15 @@
 140;Red Robes;None;Command;+20;;B.Sorcerer
 141;Hue Changer;None;Combat;+500;;Ice King
 142;Kirrauko;Good;Combat;+1250;;
-143;Night Piercer;None;Combat;+500;;Quiet Avenger
+143;Night-piercer;None;Combat;+500;;Quiet Avenger
 144;Orcring;Good;Combat;+2250;;
 145;Orcruin;Good;Combat;+2250;;
 146;Horse-slayer;None;Combat;+500;;Khand
 147;Ringil;Good;Combat;+2000;;
-148;Sickle of the Heave;None;Combat;+1000;;Dog Lord
+148;Sickle of the Heavens;None;Combat;+1000;;Dog Lord
 149;Sting;Good;Combat;+500;;
 150;Stinging Tongue;Evil;Combat;+500;;DrLd
-151;Troll-Cleaver;Good;Combat;+2000;;
+151;Troll-cleaver;Good;Combat;+2000;;
 152;Turantir;Good;Combat;+500;;
 153;Water-skimmer;None;Combat;+750;;DrLd
 154;Ring of Bleeding;Evil;Mage;+30;;Dragon Lord
@@ -160,7 +161,7 @@
 161;Erivagil;None;Combat;+1500;;
 162;Glosvagil;None;Combat;+1500;;White Wizard 
 163;Mirror of Galadriel;Good;Mage;+40;;Sinda
-164;Tintelpe;Good;Combat;+1750;;Sinda
+164;Tintelpë;Good;Combat;+1750;;Sinda
 165;Cuiviegurth;Evil;Combat;+750;;
 166;Calris;Evil;Combat;+750;;
 167;Aedring;Good;Combat;+1000;;
@@ -172,39 +173,39 @@
 173;Daecollo;None;Stealth;+20;;Daeron
 174;Belthronding;Good;Combat;+2250;;
 175;Ring of Curufin;None;Agent;+25;;
-176;Spear of Blador;None;Combat;+1250;;
-177;Calninque;Good;Combat;+1500;;
+176;Spear of Bladorthin;None;Combat;+1250;;
+177;Calninquë;Good;Combat;+1500;;
 178;Cubeleg;None;Combat;+750;;
 179;Durcarak;Evil;Combat;+1250;;
 180;Fuinrako;Evil;Combat;+2000;;
 181;Herugrim;Good;Combat;+1000;;Rohan
 182;Morgurth;None;Combat;+1000;;
 183;Silmaruth;None;Combat;+2000;;
-184;Stone Mace;Good;Combat;+500;;
-185;Headband of Sla;None;Mage;+10;;
+184;Stone Mace of Setmaenen;Good;Combat;+500;;
+185;Headband of Slaeg;None;Mage;+10;;
 186;Sceptre of Hent;Good;Combat;+750;;
 187;The Black Book;None;Mage;+10;;
 188;E Mere Vardo;Good;Mage;+10;;
-189;The Blue Ring;Evil;Mage;+10;;
-190;Staff of the Wander;None;Mage;+15;;
+189;Blue Ring;Evil;Mage;+10;;
+190;Staff of the Wanderer;None;Mage;+15;;
 191;Aercrist;None;Combat;+750;;S.Gondor
 192;Maikarama;Good;Combat;+750;;
 193;Raukambar;Good;Combat;+750;;
 194;Darlachiel;Good;Combat;+750;;
 195;Shards of Narsil;Good;Combat;+750;;Rangers
 196;Mighty Blade;None;Combat;+750;;N.Gondor
-197;Forest Blade;Good;Combat;+750;;N.Gondor
-198;Flail of Horseslayi;Evil;Combat;+500;;Long Rider
-199;Guthwine;Good;Combat;+750;;Rohan
-200;Mace of the Huntsma;None;Combat;+500;;RhEas
-201;Runya;Good;Combat;+500;;Noldo
+197;Forest-blade;Good;Combat;+750;;N.Gondor
+198;Flail of Horseslaying;Evil;Combat;+500;;Long Rider
+199;Gúthwinë;Good;Combat;+750;;Rohan
+200;Mace of the Huntsman;None;Combat;+500;;RhEas
+201;Rúnya;Good;Combat;+500;;Noldo
 202;Sword of Cleaving;None;Combat;+750;;Corsairs
 203;Spear of Following;None;Combat;+500;;Long Rider
 204;Steward's Blade;None;Combat;+750;;N.Gondor
 205;Sulhelka;None;Combat;+1000;;
-206;Foam-Light Armor;None;Command;+15;;S.Gondor
-207;Gulthalion;None;Command;+30;;
-208;Horse-Lord's Shield;None;Command;+15;;Rohan
+206;Foam-light;None;Command;+15;;S.Gondor
+207;Gûlthalion;None;Command;+30;;
+208;Horse-lord's Shield;None;Command;+15;;Rohan
 209;Rat Gauntlets;None;Agent;+10;;Corsairs
 210;Boots of Iron;None;Command;+10;;Dwarves
 211;Cloak of Protection;None;Agent;+10;;Dwarves

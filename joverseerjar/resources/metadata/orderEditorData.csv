@@ -1,4 +1,4 @@
-120;CstHlSp;MagH;Spell ID # + Target Character ID (5 lowercase letters/spaces) ;sph;xid;;;;;;M;M
+﻿120;CstHlSp;MagH;Spell ID # + Target Character ID (5 lowercase letters/spaces) ;sph;xid;;;;;;M;M
 ;;;;Spell;Char;;;;;;;
 175;ChAlleg;Comm;New allegiance (g,e);alg;;;;;;;C;C
 ;;;;Allegiance;;;;;;;;
@@ -280,3 +280,5 @@
 ;;;;Rate;;;;;;;;
 965;DecrCar;Comm-Emis;Rate (1-50%);%;;;;;;;CE;CE
 ;;;;Rate;;;;;;;;
+990;OneRing;Misc;;;;;;;;;;
+

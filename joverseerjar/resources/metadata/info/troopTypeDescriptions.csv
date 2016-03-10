@@ -1,98 +1,4 @@
 Scenario;Nation;Troop Type;Description
-WTR;10;3;Wood Elf footsoldiers w/broadswords
-WTR;10;4;Wood Elf footsoldiers w/shortswords
-WTR;10;5;Wood Elf archers w/long bows
-WTR;10;6;Wood Elf mercenaries w/hand axes
-WTR;11;1;Mixed Northman horsemen w/lances
-WTR;11;2;Mixed Northman horsemen w/maces
-WTR;11;3;Troll footsoldiers w/flails
-WTR;11;4;Orc footsoldiers w/scimitars
-WTR;11;5;Goblin archers w/short bows
-WTR;11;6;Mannish slaves w/maces
-WTR;12;1;Orc wolfriders w/maces
-WTR;12;2;Goblin wolfriders w/scimitars
-WTR;12;3;Troll footsoldiers w/battle axes
-WTR;12;4;Orc footsoldiers w/scimitars
-WTR;12;5;Goblin archers w/short bows
-WTR;12;6;Mannish slaves w/maces
-WTR;13;1;Orc warhoundriders w/scimitars
-WTR;13;2;Orc wolfriders w/scimitars
-WTR;13;3;Troll footsoldiers w/war mattocks
-WTR;13;4;Orc footsoldiers w/scimitars
-WTR;13;5;Goblin archers w/short bows
-WTR;13;6;Mannish slaves w/maces
-WTR;14;1;Southron horsemen w/scimitars
-WTR;14;2;Southron camelriders w/spears
-WTR;14;3;Southron footsoldiers w/maces
-WTR;14;4;Southron footsoldiers w/spears
-WTR;14;5;Southron archers w/short bows
-WTR;14;6;Mannish slaves w/spears
-WTR;15;1;Southron horsemen w/scimitars
-WTR;15;2;Mixed Easterling camelriders w/spears
-WTR;15;3;Southron footmen w/two-handed swords
-WTR;15;4;Mixed Easterling footmen w/scimitars
-WTR;15;5;Southron archers w/short bows
-WTR;15;6;Mannish slaves w/sabres
-WTR;16;1;Orc wolfriders w/maces
-WTR;16;2;Goblin wolfriders w/scimitars
-WTR;16;3;Troll footsoldiers w/battle axes
-WTR;16;4;Orc footsoldiers w/scimitars
-WTR;16;5;Goblin archers w/short bows
-WTR;16;6;Mannish slaves w/maces
-WTR;17;1;Southron mumakriders w/falchions
-WTR;17;2;Southron horsemen w/scimitars
-WTR;17;3;Troll footsoldiers w/maces
-WTR;17;4;Southron footsoldiers w/spears
-WTR;17;5;Southron archers w/short bows
-WTR;17;6;Mannish slaves w/spears
-WTR;18;1;Orc wolfriders w/maces
-WTR;18;2;Goblin wolfriders w/scimitars
-WTR;18;3;Troll footsoldiers w/battle axes
-WTR;18;4;Orc footsoldiers w/scimitars
-WTR;18;5;Goblin archers w/short bows
-WTR;18;6;Mannish slaves w/maces
-WTR;19;1;Mixed Easterling chariotmen w/swords
-WTR;19;2;Mixed Easterling camelriders w/spears
-WTR;19;3;Mixed Easterling footmen w/swords
-WTR;19;4;Mixed Easterling footmen w/scimitars
-WTR;19;5;Mixed Easterling archers w/short bows
-WTR;19;6;Mannish slaves w/sabres
-WTR;20;1;Orc wolfriders w/maces
-WTR;20;2;Goblin wolfriders w/scimitars
-WTR;20;3;Troll footsoldiers w/battle axes
-WTR;20;4;Orc footsoldiers w/scimitars
-WTR;20;5;Goblin archers w/short bows
-WTR;20;6;Mannish slaves w/maces
-WTR;21;1;Mixed Dunadan horsemen w/broadswords
-WTR;21;2;Haradan horsemen w/shortswords
-WTR;21;3;Mixed Dunadan footmen w/broadswords
-WTR;21;4;Haradan footmen w/shortswords
-WTR;21;5;Haradan archers w/short bows
-WTR;21;6;Mixed Mannish mercenaries w/shortswords
-WTR;22;1;Haradan mumakriders w/falchions
-WTR;22;2;Haradan horsemen w/scimitars
-WTR;22;3;Haradan footmen w/broadswords
-WTR;22;4;Haradan footmen w/spears
-WTR;22;5;Haradan archers w/short bows
-WTR;22;6;Southron mercenaries w/scimitars
-WTR;23;1;Dunlending chariotmen w/spears
-WTR;23;2;Dunlending horsemen w/javelins
-WTR;23;3;Dunlending footmen w/battle axes
-WTR;23;4;Dunlending footmen w/spears
-WTR;23;5;Dunlending archers w/short bows
-WTR;23;6;Eriadoran mercenaries w/hand axes
-WTR;24;1;Lesser Dunadan horsemen w/shortswords
-WTR;24;2;Hillmen horsemen w/spears
-WTR;24;3;Hillmen footmen w/spears
-WTR;24;4;Hillmen footmen w/shortswords
-WTR;24;5;Hillmen archers w/short bows
-WTR;24;6;Lesser Dunadan mercenaries w/shortswords
-WTR;25;1;Mixed Easterling chariotmen w/spears
-WTR;25;2;Mixed Easterling horsemen w/javelins
-WTR;25;3;Mixed Easterling footmen w/spears
-WTR;25;4;Mixed Easterling footmen w/scimitars
-WTR;25;5;Mixed Easterling archers w/short bows
-WTR;25;6;Mixed Easterling mercenaries w/slings
 PBM;1;1;Woodman horsemen w/maces
 PBM;1;2;Woodman horsemen w/hand axes
 PBM;1;3;Beorning footmen w/battle axes
@@ -345,24 +251,24 @@ WTR;2;3;Northman footmen w/broadswords
 WTR;2;4;Northman footmen w/spears
 WTR;2;5;Northman archers w/short bows
 WTR;2;6;Mixed Northman mercenaries w/maces
-WTR;3;1;Eothraim horsemen w/lances
-WTR;3;2;Plainsman horsemen w/broadswords
-WTR;3;3;Plainsman footmen w/broadswords
-WTR;3;4;Plainsman footmen w/spears
-WTR;3;5;Plainsman archers w/crossbows
-WTR;3;6;Mixed Northman mercenaries w/maces
+WTR;3;1;Rohan horsemen w/lances
+WTR;3;2;Rohan horsemen w/broadswords
+WTR;3;3;Rohan footmen w/broadswords
+WTR;3;4;Rohan footmen w/spears
+WTR;3;5;Rohan archers w/crossbows
+WTR;3;6;Mixed Mannish mercenaries w/maces
 WTR;4;1;Dunadan knights w/lances
-WTR;4;2;Lesser Dunadan knights w/shortswords
-WTR;4;3;Dunadan footmen w/broadswords
-WTR;4;4;Lesser Dunadan footmen w/shortswords
-WTR;4;5;Dunadan archers w/crossbows
+WTR;4;2;Eriadoran knights w/shortswords
+WTR;4;3;Lesser Dunadan footmen w/broadswords
+WTR;4;4;Eriadoran footmen w/shortswords
+WTR;4;5;Eriadoran archers w/crossbows
 WTR;4;6;Eriadoran mercenaries w/shortswords
-WTR;5;1;Lesser Dunadan horsemen w/broadswords
-WTR;5;2;Eriadoran horsemen w/spears
-WTR;5;3;Mixed Mannish footmen w/spears
-WTR;5;4;Mixed Mannish footmen w/spears
-WTR;5;5;Mixed Mannish archers w/short bows
-WTR;5;6;Lesser Dunadan mercenaries w/broadswords
+WTR;5;1;Mixed Elven horseriders w/broadswords
+WTR;5;2;Mixed Elven horseriders w/shortswords
+WTR;5;3;Wood Elf footsoldiers w/broadswords
+WTR;5;4;Wood Elf footsoldiers w/shortswords
+WTR;5;5;Wood Elf archers w/long bows
+WTR;5;6;Wood Elf mercenaries w/hand axes
 WTR;6;1;Dunadan knights w/lances
 WTR;6;2;Dunadan knights w/shortswords
 WTR;6;3;Dunadan footmen w/broadswords
@@ -389,6 +295,100 @@ WTR;9;5;Wood Elf archers w/long bows
 WTR;9;6;Wood Elf mercenaries w/hand axes
 WTR;10;1;Mixed Elven horseriders w/broadswords
 WTR;10;2;Mixed Elven horseriders w/shortswords
+WTR;10;3;Wood Elf footsoldiers w/broadswords
+WTR;10;4;Wood Elf footsoldiers w/shortswords
+WTR;10;5;Wood Elf archers w/long bows
+WTR;10;6;Wood Elf mercenaries w/hand axes
+WTR;11;1;Mixed Northman horsemen w/lances
+WTR;11;2;Mixed Northman horsemen w/maces
+WTR;11;3;Troll footsoldiers w/flails
+WTR;11;4;Orc footsoldiers w/scimitars
+WTR;11;5;Goblin archers w/short bows
+WTR;11;6;Mannish slaves w/maces
+WTR;12;1;Orc wolfriders w/maces
+WTR;12;2;Goblin wolfriders w/scimitars
+WTR;12;3;Troll footsoldiers w/battle axes
+WTR;12;4;Orc footsoldiers w/scimitars
+WTR;12;5;Goblin archers w/short bows
+WTR;12;6;Mannish slaves w/maces
+WTR;13;1;Orc warhoundriders w/scimitars
+WTR;13;2;Orc wolfriders w/scimitars
+WTR;13;3;Troll footsoldiers w/war mattocks
+WTR;13;4;Orc footsoldiers w/scimitars
+WTR;13;5;Goblin archers w/short bows
+WTR;13;6;Mannish slaves w/maces
+WTR;14;1;Southron horsemen w/scimitars
+WTR;14;2;Southron camelriders w/spears
+WTR;14;3;Southron footsoldiers w/maces
+WTR;14;4;Southron footsoldiers w/spears
+WTR;14;5;Southron archers w/short bows
+WTR;14;6;Mannish slaves w/spears
+WTR;15;1;Southron horsemen w/scimitars
+WTR;15;2;Mixed Easterling camelriders w/spears
+WTR;15;3;Southron footmen w/two-handed swords
+WTR;15;4;Mixed Easterling footmen w/scimitars
+WTR;15;5;Southron archers w/short bows
+WTR;15;6;Mannish slaves w/sabres
+WTR;16;1;Orc wolfriders w/maces
+WTR;16;2;Goblin wolfriders w/scimitars
+WTR;16;3;Troll footsoldiers w/battle axes
+WTR;16;4;Orc footsoldiers w/scimitars
+WTR;16;5;Goblin archers w/short bows
+WTR;16;6;Mannish slaves w/maces
+WTR;17;1;Southron mumakriders w/falchions
+WTR;17;2;Southron horsemen w/scimitars
+WTR;17;3;Troll footsoldiers w/maces
+WTR;17;4;Southron footsoldiers w/spears
+WTR;17;5;Southron archers w/short bows
+WTR;17;6;Mannish slaves w/spears
+WTR;18;1;Orc wolfriders w/maces
+WTR;18;2;Goblin wolfriders w/scimitars
+WTR;18;3;Troll footsoldiers w/battle axes
+WTR;18;4;Orc footsoldiers w/scimitars
+WTR;18;5;Goblin archers w/short bows
+WTR;18;6;Mannish slaves w/maces
+WTR;19;1;Mixed Easterling chariotmen w/swords
+WTR;19;2;Mixed Easterling camelriders w/spears
+WTR;19;3;Mixed Easterling footmen w/swords
+WTR;19;4;Mixed Easterling footmen w/scimitars
+WTR;19;5;Mixed Easterling archers w/short bows
+WTR;19;6;Mannish slaves w/sabres
+WTR;20;1;Orc wolfriders w/maces
+WTR;20;2;Goblin wolfriders w/scimitars
+WTR;20;3;Troll footsoldiers w/battle axes
+WTR;20;4;Orc footsoldiers w/scimitars
+WTR;20;5;Goblin archers w/short bows
+WTR;20;6;Mannish slaves w/maces
+WTR;21;1;Mixed Dunadan horsemen w/broadswords
+WTR;21;2;Haradan horsemen w/shortswords
+WTR;21;3;Mixed Dunadan footmen w/broadswords
+WTR;21;4;Haradan footmen w/shortswords
+WTR;21;5;Haradan archers w/short bows
+WTR;21;6;Mixed Mannish mercenaries w/shortswords
+WTR;22;1;Mixed Easterling chariotmen w/spears
+WTR;22;2;Mixed Easterling horsemen w/javelins
+WTR;22;3;Mixed Easterling footmen w/spears
+WTR;22;4;Mixed Easterling footmen w/scimitars
+WTR;22;5;Mixed Easterling archers w/short bows
+WTR;25;6;Mixed Easterling mercenaries w/slings
+WTR;23;1;Dunlending chariotmen w/spears
+WTR;23;2;Dunlending horsemen w/javelins
+WTR;23;3;Dunlending footmen w/battle axes
+WTR;23;4;Dunlending footmen w/spears
+WTR;23;5;Dunlending archers w/short bows
+WTR;23;6;Eriadoran mercenaries w/hand axes
+WTR;24;1;Mixed Mannish wolfriders w/shortswords
+WTR;24;2;Lesser Mannish wolfriders w/scimitars
+WTR;24;3;Mixed Mannish footmen w/battle axes
+WTR;24;4;Lesser Mannish footmen w/spears
+WTR;24;5;Eriadoran archers w/short bows
+WTR;24;6;Mannish slaves w/slings
+WTR;25;1;Mixed Easterling chariotmen w/spears
+WTR;25;2;Mixed Easterling horsemen w/javelins
+WTR;25;3;Mixed Easterling footmen w/spears
+WTR;25;4;Mixed Easterling footmen w/scimitars
+WTR;25;5;Mixed Easterling archers w/short bows
+WTR;25;6;Mixed Easterling mercenaries w/slings
 KS;1;1;Loyalist Mounted Knights
 KS;1;2;Loyalist Mounted Skirmishers
 KS;1;3;Loyalist Knights

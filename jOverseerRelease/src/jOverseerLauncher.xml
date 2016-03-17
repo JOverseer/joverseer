@@ -19,6 +19,7 @@
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <maxHeapSize>512</maxHeapSize>
+    <opt>-Djava.net.preferIPv4Stack=true</opt>
   </jre>
   <versionInfo>
     <fileVersion>1.0.0.0</fileVersion>

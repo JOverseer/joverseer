@@ -145,21 +145,59 @@ public class OrderEditorListView extends ItemListView {
 		};
 		filterList.add(f);
 
-		f = new OrderFilter("Emissaries (E>=30)") {
+		f = new OrderFilter("Commanders (C>0)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getEmmisary() >= 30;
+				return c.getCommander() > 0;
 			}
 		};
 		filterList.add(f);
 
-		f = new OrderFilter("Agent (A>=30)") {
+		f = new OrderFilter("Agent (A>0)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getAgent() >= 30;
+				return c.getAgent() > 0;
 			}
 		};
 		filterList.add(f);
+
+		f = new OrderFilter("Emissaries (E>0)") {
+			@Override
+			public boolean acceptCharacter(Character c) {
+				return c.getEmmisary() > 0;
+			}
+		};
+		filterList.add(f);
+
+		f = new OrderFilter("Mages (M>0)") {
+			@Override
+			public boolean acceptCharacter(Character c) {
+				return c.getMage() > 0;
+			}
+		};
+		filterList.add(f);
+
+
+		if (GameHolder.hasInitializedGame()) {
+			Game g = GameHolder.instance().getGame();
+			GameMetadata gm = g.getMetadata();
+			for (int i = 1; i < 26; i++) {
+				PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", i);
+				if (pi == null)
+					continue;
+				f = new OrderFilter(gm.getNationByNum(i).getName()) {
+
+					@Override
+					public boolean acceptCharacter(Character c) {
+						Game g1 = GameHolder.instance().getGame();
+						GameMetadata gm1 = g1.getMetadata();
+						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm1.getNationByNum(c.getNationNo()).getName().equals(getDescription());
+					}
+				};
+				filterList.add(f);
+			}
+		}
+
 
 		f = new OrderFilter("Army/Navy Movement") {
 			@Override

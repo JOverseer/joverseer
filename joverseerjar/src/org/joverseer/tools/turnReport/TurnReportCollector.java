@@ -51,6 +51,7 @@ import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 
 public class TurnReportCollector {
 
+	final String UNICODE_RIGHTWARDS_ARROW = "\u2192";
 	public ArrayList<BaseReportObject> CollectNatSells(Turn t) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		ArrayList<Integer> friendlyNations = new ArrayList<Integer>();
@@ -293,7 +294,7 @@ public class TurnReportCollector {
 						cr.setNotes("Sab Fort at " + popPlusNation(pop, t));
 						PopulationCenter pp = p.getPopCenter(pop);
 						PopulationCenter cp = t.getPopCenter(pop);
-						cr.appendNote(pp.getFortification().getRenderString() + "→" + cp.getFortification().getRenderString());
+						cr.appendNote(pp.getFortification().getRenderString() + UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
 						cr.setNotes("Failed sab fort");
@@ -313,7 +314,7 @@ public class TurnReportCollector {
 						PopulationCenter pp = p.getPopCenter(pop);
 						PopulationCenter cp = t.getPopCenter(pop);
 						if (pp != null && cp != null && pp.getHarbor() != null && cp.getHarbor() != null) {
-							cr.appendNote(pp.getHarbor().getRenderString() + "→" + cp.getHarbor().getRenderString());
+							cr.appendNote(pp.getHarbor().getRenderString() + UNICODE_RIGHTWARDS_ARROW + cp.getHarbor().getRenderString());
 						}
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
@@ -656,7 +657,7 @@ public class TurnReportCollector {
 					}
 				}
 
-				pr.appendNote(ppc.getNation().getShortName() + "→" + pc.getNation().getShortName());
+				pr.appendNote(ppc.getNation().getShortName() + UNICODE_RIGHTWARDS_ARROW + pc.getNation().getShortName());
 				pr.addNation(ppc.getNationNo());
 				if (sizeChanged) {
 					String pcDescr = shortenPopSize(pc.getSize().getRenderString());
@@ -669,7 +670,7 @@ public class TurnReportCollector {
 						ppcDescr += "/" + shortenPopFort(ppc.getFortification().getRenderString());
 					if (ppc.getHarbor() != null && !ppc.getHarbor().equals(HarborSizeEnum.none))
 						ppcDescr += "/" + shortenPopDocks(ppc.getHarbor().getRenderString());
-					pr.appendNote(ppcDescr + "→" + pcDescr);
+					pr.appendNote(ppcDescr + UNICODE_RIGHTWARDS_ARROW + pcDescr);
 				}
 			}
 			if (hiddenChanged)
@@ -688,7 +689,7 @@ public class TurnReportCollector {
 						}
 					}
 				}
-				pr.appendNote(shortenPopSize(ppc.getSize().getRenderString()) + "→" + shortenPopSize(pc.getSize().getRenderString()));
+				pr.appendNote(shortenPopSize(ppc.getSize().getRenderString()) + UNICODE_RIGHTWARDS_ARROW + shortenPopSize(pc.getSize().getRenderString()));
 			}
 			if (fortChanged) {
 				if (!captured) {
@@ -716,11 +717,11 @@ public class TurnReportCollector {
 							}
 						}
 					}
-					pr.appendNote(shortenPopFort(ppc.getFortification().getRenderString()) + "→" + shortenPopFort(pc.getFortification().getRenderString()));
+					pr.appendNote(shortenPopFort(ppc.getFortification().getRenderString()) + UNICODE_RIGHTWARDS_ARROW + shortenPopFort(pc.getFortification().getRenderString()));
 				}
 			}
 			if (portChanged && !captured)
-				pr.appendNote(shortenPopDocks(ppc.getHarbor().getRenderString()) + "→" + shortenPopDocks(pc.getHarbor().getRenderString()));
+				pr.appendNote(shortenPopDocks(ppc.getHarbor().getRenderString()) + UNICODE_RIGHTWARDS_ARROW + shortenPopDocks(pc.getHarbor().getRenderString()));
 			return pr;
 		}
 		if (pc.getLoyalty() < ppc.getLoyalty()) {
@@ -728,7 +729,7 @@ public class TurnReportCollector {
 				if (nm.isInfOtherRumor() && nm.getInfoOtherPop().equals(pc.getName())) {
 					PopCenterReport pr = new PopCenterReport(pc);
 					pr.setModification(ObjectModificationType.Modified);
-					pr.setNotes("InfOthered, Loyalty: " + ppc.getLoyalty() + "→" + pc.getLoyalty());
+					pr.setNotes("InfOthered, Loyalty: " + ppc.getLoyalty() + UNICODE_RIGHTWARDS_ARROW + pc.getLoyalty());
 					return pr;
 				}
 			}
@@ -736,7 +737,7 @@ public class TurnReportCollector {
 		if (pc.getLoyalty() < 16) {
 			PopCenterReport pr = new PopCenterReport(pc);
 			pr.setModification(ObjectModificationType.Modified);
-			pr.setNotes("Loyalty: " + ppc.getLoyalty() + "→" + pc.getLoyalty() + " (at risk)");
+			pr.setNotes("Loyalty: " + ppc.getLoyalty() + UNICODE_RIGHTWARDS_ARROW + pc.getLoyalty() + " (at risk)");
 			return pr;
 		}
 		return null;
@@ -909,7 +910,7 @@ public class TurnReportCollector {
 					ar.setNationNo(aw.getNationNo());
 					ar.setHexNo(aw.getHexNo());
 					ar.setModification(ObjectModificationType.Modified);
-					ar.setNotes(charPlusNation(paw.getOwner(), t) + " → " + charPlusNation(aw.getOwner(), t));
+					ar.setNotes(charPlusNation(paw.getOwner(), t) + " "+ UNICODE_RIGHTWARDS_ARROW +" " + charPlusNation(aw.getOwner(), t));
 					ret.add(ar);
 				}
 			}
@@ -1053,7 +1054,8 @@ public class TurnReportCollector {
 			if (e.getTaxRate() != pe.getTaxRate()) {
 				NationReport er = new NationReport();
 				er.setNationNo(e.getNationNo());
-				er.setNotes("Tax rate: " + pe.getTaxRate() + "→" + e.getTaxRate());
+				//TODO I18N
+				er.setNotes("Tax rate: " + pe.getTaxRate() + UNICODE_RIGHTWARDS_ARROW + e.getTaxRate());
 				er.setModification(ObjectModificationType.Modified);
 				ret.add(er);
 			}

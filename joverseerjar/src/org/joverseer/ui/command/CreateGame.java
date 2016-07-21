@@ -48,6 +48,7 @@ public class CreateGame extends ActionCommand {
                 form.commit();
                 Game game = new Game();
                 GameMetadata gm = (GameMetadata)Application.instance().getApplicationContext().getBean("gameMetadata");
+                gm.getHexes().clear(); // without this the number of hexes keeps accumulating!
                 gm.setGame(game);
                 gm.setGameNo(ng.getNumber());
                 gm.setNationNo(ng.getNationNo());

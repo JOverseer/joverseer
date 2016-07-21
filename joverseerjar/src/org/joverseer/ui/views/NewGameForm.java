@@ -44,8 +44,8 @@ public class NewGameForm extends AbstractForm {
         tlb.row();
         JCheckBox chk;
         //tlb.add("additionalNations");
-        tlb.add("newXmlFormat", chk = new JCheckBox());
-        chk.setEnabled(!this.edit);
+//        tlb.add("newXmlFormat", chk = new JCheckBox());
+//        chk.setEnabled(!this.edit);
         return tlb.getForm();
     }
     

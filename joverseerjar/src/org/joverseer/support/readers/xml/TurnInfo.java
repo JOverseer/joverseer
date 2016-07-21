@@ -26,6 +26,16 @@ public class TurnInfo {
 	String dueDate;
 	int nationCapitalHex;
 
+	String xxmlversion;
+
+	public String getXxmlversion() {
+		return this.xxmlversion;
+	}
+
+	public void setXxmlversion(String xxmlversion) {
+		this.xxmlversion = xxmlversion;
+	}
+
 	public Container<CharacterWrapper> getCharacters() {
 		return this.characters;
 	}

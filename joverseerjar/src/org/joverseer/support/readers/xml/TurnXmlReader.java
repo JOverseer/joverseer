@@ -107,6 +107,8 @@ public class TurnXmlReader implements Runnable {
 			this.digester.setRules(new RegexRules(new SimpleRegexMatcher()));
 			// parse turn info
 			this.digester.addObjectCreate("METurn", TurnInfo.class);
+			//More><TurnInfo><XXMLVersion>
+			this.digester.addCallMethod("METurn/More/TurnInfo/XXMLVersion","setXxmlversion",0);
 			// parse turn info attributes
 			SetNestedPropertiesRule snpr = new SetNestedPropertiesRule();
 			snpr = new SetNestedPropertiesRule(new String[] { "GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account", "NationCapitalHex" }, new String[] { "gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo", "nationCapitalHex" });
@@ -250,11 +252,18 @@ public class TurnXmlReader implements Runnable {
 			this.errorOccured = true;
 		}
 	}
-
+	// warning: updates newXMLFormat to true if a version is set.
 	public void updateGame(Game game1) throws Exception {
 		if (this.turnInfo.getTurnNo() < game1.getMaxTurn()) {
 			// todo fix
 			throw new Exception("Cannot import past turns.");
+		}
+		if (this.turnInfo.getXxmlversion() != null) {
+			game.getMetadata().setNewXmlFormat(true);
+			if (getMonitor() != null) {
+				getMonitor().worked(10);
+				getMonitor().subTaskStarted("New version of XML found...");
+			}
 		}
 		try {
 			this.turn = null;
@@ -286,7 +295,7 @@ public class TurnXmlReader implements Runnable {
 
 			this.infoSource = new XmlTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
 			if (getMonitor() != null) {
-				getMonitor().worked(10);
+				getMonitor().worked(20);
 				getMonitor().subTaskStarted("Updating Nations...");
 			}
 			updateNations(game1);

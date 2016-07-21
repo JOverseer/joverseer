@@ -162,6 +162,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 						final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
 						r.setMonitor(this.monitor);
+						//note that this may change game.NewXmlFormat!
 						r.run();
 						if (r.getErrorOccured()) {
 							errorOccurred = true;

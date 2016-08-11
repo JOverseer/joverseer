@@ -37,7 +37,7 @@ public class CharacterMessageWrapper {
 	}
 
 	public void setCharId(String charId) {
-		this.charId = charId;
+		this.charId =  charId.trim(); //for those pesk ids less than 5 characters
 	}
 
 	public ArrayList<String> getLines() {

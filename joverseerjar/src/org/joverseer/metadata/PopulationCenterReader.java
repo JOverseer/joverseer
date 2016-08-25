@@ -35,10 +35,14 @@ public class PopulationCenterReader implements MetadataReader {
 			// Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
 			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.populationCenterFilename);
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream(),"UTF-8"));
 
 			String ln;
-			while ((ln = reader.readLine()) != null) {
+			ln = reader.readLine();
+			if (ln.codePointAt(0) == 0xFEFF) { // skip any BOM left.
+				ln = ln.substring(1);
+			}
+			while (ln != null) {
 				String[] parts = ln.split(",");
 				parts[0] = parts[0].replaceAll("\"", "");
 				int no = Integer.parseInt(parts[0]);
@@ -110,6 +114,7 @@ public class PopulationCenterReader implements MetadataReader {
 				pc.setInfoSource(new MetadataSource());
 
 				populationCenters.addItem(pc);
+				ln = reader.readLine();
 			}
 			gm.setPopulationCenters(populationCenters);
 		} catch (IOException exc) {

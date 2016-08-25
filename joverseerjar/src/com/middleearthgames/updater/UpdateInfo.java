@@ -15,18 +15,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkListener;
-
 import org.joverseer.preferences.PreferenceRegistry;
-import org.springframework.binding.form.FormModel;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  *

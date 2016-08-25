@@ -17,21 +17,16 @@ package org.joverseer.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryIteratorException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Appender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
-import org.springframework.context.i18n.LocaleContext;
 import org.springframework.richclient.application.ApplicationLauncher;
 
 import com.jidesoft.plaf.LookAndFeelFactory;

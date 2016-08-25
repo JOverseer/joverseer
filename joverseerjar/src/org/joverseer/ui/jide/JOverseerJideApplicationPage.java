@@ -13,7 +13,6 @@ import org.springframework.richclient.application.ApplicationServicesLocator;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.PageComponent;
 import org.springframework.richclient.application.PageDescriptor;
-import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.image.IconSource;
 

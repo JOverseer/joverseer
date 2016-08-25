@@ -28,7 +28,6 @@ import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;

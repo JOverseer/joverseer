@@ -1,0 +1,358 @@
+8                                                           7/17/2013  Game 228  Player 8  Turn 0  Page 1
+MEPBM GAMES
+presents
+Middle-earth Play-By-Mail“
+Third Age, circa 2950
+GAME # 228
+Dwarves
+Victory points      : 0
+Victory Conditions  : 
+           To hold in stores at game end the greatest amount of Mithril.
+           To see to the termination of Hesnef by any means whatsoever.
+           To see to the termination of Adûnaphel by any means whatsoever.
+           To terminate 10 characters by personal challenge or by assassination.
+           To see to the termination of Maben by any means whatsoever.
+Game #          :    228
+Player #        :      8
+Turn #          :      0
+           Internet G228N08 Account         : $ 0.00
+                       AARON HILL 110930 Free Turns      :      0
+                       NONE Security Code   :   6486
+                       NONE Special Service :    YES
+                       NONE
+7/17/2013  Game 228  Player 8  Turn 0  Page 2
+Dwarves
+(A Free People)
+Season : Summer
+RELATIONS WITH OTHER NATIONS
+Woodmen  : Tolerated Northmen  : Tolerated Riders of Rohan  : Tolerated
+Dúnadan Rangers  : Tolerated Silvan Elves  : Tolerated Northern Gondor  : Tolerated
+Southern Gondor  : Tolerated Sinda Elves  : Tolerated Noldo Elves  : Tolerated
+Witch-king  : Disliked Dragon Lord  : Disliked Dog Lord  : Disliked
+Cloud Lord  : Disliked Blind Sorcerer  : Disliked Ice King  : Disliked
+Quiet Avenger  : Disliked Fire King  : Disliked Long Rider  : Disliked
+Dark Lieutenants  : Disliked Corsairs  : Neutral Rhûn Easterlings  : Neutral
+Dunlendings  : Neutral White Wizard  : Neutral Khand Easterlings : Neutral
+POPULATION CENTERS
+Azanulinbar-dûm  (Capital)    Location : @ 3707 in Hills & Rough   Climate is Cool
+Size : Major Town Fortifications : Fort Loyalty : 75 Docks : None Hidden ? : No Sieged ? : No
+Surplus Product         Leather     Bronze      Steel    Mithril       Food     Timber     Mounts       Gold
+Expected production         110          0          0          0        604          0          0       2700
+Current stores              110          0          0          0        604          0          0          -
+An army bearing the banner of the Dwarves under Captain Thralin III is here.
+Barak-shathûr     Location : @ 3607 in Hills & Rough   Climate is Cool
+Size : Village Fortifications : Tower Loyalty : 40 Docks : None Hidden ? : No Sieged ? : No
+Surplus Product         Leather     Bronze      Steel    Mithril       Food     Timber     Mounts       Gold
+Expected production           0          0          0          0          0        358         32       1500
+Current stores                0          0          0          0       1000        358         32          -
+Belegost     Location : @ 0812 in Mountains   Climate is Mild
+Size : Village Fortifications : Fort Loyalty : 40 Docks : None Hidden ? : No Sieged ? : No
+Surplus Product         Leather     Bronze      Steel    Mithril       Food     Timber     Mounts       Gold
+Expected production           0        288          0         40          0          0          0       2200
+Current stores                0        288          0         40       1000          0          0          -
+An army bearing the banner of the Dwarves under Warlord Balin is here.
+Kheled-nâla     Location : @ 3916 in Hills & Rough   Climate is Warm
+Size : Village Fortifications : Tower Loyalty : 40 Docks : None Hidden ? : No Sieged ? : No
+Surplus Product         Leather     Bronze      Steel    Mithril       Food     Timber     Mounts       Gold
+Expected production         408          0          0          0          0          0         16       1800
+Current stores              408          0          0          0       1000          0         16          -
+An army bearing the banner of the Dwarves under Captain Dáin II is here.
+Noegrod     Location : @ 0606 in Mountains   Climate is Cool
+Size : Village Fortifications : Tower Loyalty : 40 Docks : None Hidden ? : No Sieged ? : No
+Surplus Product         Leather     Bronze      Steel    Mithril       Food     Timber     Mounts       Gold
+Expected production           0        208          0         16          0          0          0       2200
+Current stores                0        208          0         16       1000          0          0          -
+Zarak-dûm     Location : @ 2004 in Mountains   Climate is Polar
+Size : Camp Fortifications : Tower Loyalty : 30 Docks : None Hidden ? : No Sieged ? : No
+Surplus Product         Leather     Bronze      Steel    Mithril       Food     Timber     Mounts       Gold
+Expected production           0         90          0          9          0          0          0        660
+Current stores                0         90          0          9        500          0          0          -
+7/17/2013  Game 228  Player 8  Turn 0  Page 3
+ARMIES AND NAVIES
+Army Commander : Warlord Balin    Location : @ 0812 in Mountains   Climate is Mild
+Army morale :   70  Warships :    0  Transports  :    0  (2)    Travel mode  : Normal
+Troops Training  Weapon  Armor  # Troops    Troop Type
+  Dwarven footsoldiers w/war hammers  40  40  40    300 Heavy Infantry
+Baggage Train Leather Bronze Steel Mithril
+Weapons       -      0      0      0
+Armor       0      0      0      0
+Food     660  
+War machines       0  
+The Village/Fort of Belegost flying the flag of the Dwarves is here.
+Army Commander : Captain Dáin II    Location : @ 3916 in Hills & Rough   Climate is Warm
+Army morale :   40  Warships :    0  Transports  :    0  (2)    Travel mode  : Normal
+Troops Training  Weapon  Armor  # Troops    Troop Type
+  Dwarven footsoldiers w/battle axes  40  40  40    300 Light Infantry
+Baggage Train Leather Bronze Steel Mithril
+Weapons       -      0      0      0
+Armor       0      0      0      0
+Food     660  
+War machines       0  
+The Village/Tower of Kheled-nâla flying the flag of the Dwarves is here.
+Army Commander : Captain Thralin III    Location : @ 3707 in Hills & Rough   Climate is Cool
+Army morale :   40  Warships :    0  Transports  :    0  (2)    Travel mode  : Normal
+Troops Training  Weapon  Armor  # Troops    Troop Type
+  Dwarven footsoldiers w/war hammers  40  40  40    200 Heavy Infantry
+  Dwarven footsoldiers w/battle axes  40  40  40    200 Light Infantry
+Baggage Train Leather Bronze Steel Mithril
+Weapons       -      0      0      0
+Armor       0      0      0      0
+Food     880  
+War machines       0  
+The Major Town/Fort of Azanulinbar-dûm flying the flag of the Dwarves is here.
+COMPANY COMMANDERS : 
+None
+MARKET PRICES
+Product Leather Bronze Steel Mithril Food Timber Mounts
+Market units available     6000     4000     3000      500    25000     5000     2000
+Purchase at market price/unit        6       11       11       90        3       10       20
+Sell to market price/unit        4        8        8       63        2        7       14
+MISCELLANEOUS
+Maintenance Costs expected next turn are: Totals for Nation: Stores Production
+Armies/Navies :     3000 Leather      518      518
+Pop Centers   :     4000 Bronze      586      586
+Characters    :     8000 Steel        0        0
+Mithril       65       65
+Total         :    15000 Food     5104      604
+Timber      358      358
+Current Tax rate           :        40% Mounts       48       48
+Revenue expected next turn :    18060 (+3060)
+Current Gold reserve       :       28060
+Ritual character terminations:   0
+7/17/2013  Game 228  Player 8  Turn 0  Page 4
+Ships have been left anchored at the following locations:
+None
+You have the following double agents:
+None
+You have the following hostages:
+None
+You possess the following artifacts:
+Name of artifact Item # Latent Alignment Known Powers
+Orcrist      Sword  83  No None COMBAT - Increases damage by 750 points.
+Boots of Iron      Boots 210 Yes None Increases Command Rank by 15.
+Cloak of Protection      Cloak 211 Yes None Increases Agent Rank by 10.
+Cloak of Hiding      Cloak 212 Yes None Increases Stealth Rank by 10.
+You have hidden the following additional artifacts:
+None
+NATION MESSAGES
+Reports suggest the presence of holdings/forces of the Rhûn Easterlings at 3605. 
+Reports suggest the presence of holdings/forces of the Northmen at 3109. 
+Reports suggest the presence of holdings/forces of the Rhûn Easterlings at 3713. 
+ENCOUNTER MESSAGES
+None
+COMBAT MESSAGES
+None
+SPECIAL MESSAGES
+FREE TURNS! Do you have any friends that would enjoy playing ME-PBM? MEPBM will credit you with a free turn 
+for each NEW player that signs up and mentions your name (New players can only mention one name). If you 
+would like to start a game with several friends, just let us know! Please try to collect all names & 
+required funds, and mail together, when joining with friends. Current player set-ups are: £5.00, new player 
+registrations are: £10.00 
+ 
+Front Sheet
+The FrontSheet is now in the main body of the email of each turn you get. This also includes nations 
+available, new games starting up, generic message from us about other aspects of the game as well as game 
+reports.  It also has your balance and the conta
+ME-PBM Forum and ME-PBM Mailing List
+This is to let you know that we have started an ME-PBM forum on our web site. The address for the web site 
+is www.MiddleEarthGames.com. From there, you can go to links that allow you to log into the message board 
+and to subscribe to the mailing list.
+7/17/2013  Game 228  Player 8  Turn 0  Page 5
+ORDERS GIVEN
+None
+7/17/2013  Game 228  Player 8  Turn 0  Page 6B
+alin Ranks       : Command 70    Agent 0    Emissary 0    Mage 0
+              Health 100    Stealth 0    Challenge 70
+Artifacts   : None 
+Spells (+0) : None
+He commands an army in the Mountains at 0812. The Village/Fort of Belegost flying the 
+flag of the Dwarves is here.
+Din II Ranks       : Command 40 (55)    Agent 10 (20)    Emissary 20    Mage 0
+              Health 100    Stealth 0    Challenge 61
+Artifacts   :  #210 Boots of Iron  #211 Cloak of Protection 
+Spells (+0) : None
+He commands an army in the Hills & Rough at 3916. The Village/Tower of Kheled-nâla 
+flying the flag of the Dwarves is here.
+Ds  Ranks       : Command 20    Agent 0    Emissary 0    Mage 10
+              Health 100    Stealth 0    Challenge 22
+Artifacts   : None 
+Spells (+0) : #2 Minor Heal(88)
+She is currently in the Mountains at 0606. The Village/Tower of Noegrod flying the flag 
+of the Dwarves is here.
+7/17/2013  Game 228  Player 8  Turn 0  Page 7G
+imli Ranks       : Command 20    Agent 10    Emissary 0    Mage 0
+              Health 100    Stealth 0 (10)    Challenge 21
+Artifacts   :  #212 Cloak of Hiding 
+Spells (+0) : None
+He is currently in the Mountains at 0606. The Village/Tower of Noegrod flying the flag 
+of the Dwarves is here.
+Glin Ranks       : Command 40    Agent 0    Emissary 0    Mage 0
+              Health 100    Stealth 0    Challenge 40
+Artifacts   : None 
+Spells (+0) : None
+He is currently in the Mountains at 2004. The Camp/Tower of Zarak-dûm flying the flag 
+of the Dwarves is here.
+Grin Ranks       : Command 30    Agent 0    Emissary 0    Mage 0
+              Health 100    Stealth 0    Challenge 30
+Artifacts   : None 
+Spells (+0) : None
+He is currently in the Hills & Rough at 3607. The Village/Tower of Barak-shathûr flying 
+the flag of the Dwarves is here.
+7/17/2013  Game 228  Player 8  Turn 0  Page 8T
+horin II Ranks       : Command 60    Agent 10    Emissary 10    Mage 0
+              Health 100    Stealth 0    Challenge 78
+Artifacts   :  #83 Orcrist? 
+Spells (+0) : None
+He is currently in the Hills & Rough at 3707. The Major Town/Fort of Azanulinbar-dûm 
+flying the flag of the Dwarves is here.
+Thralin III Ranks       : Command 40    Agent 0    Emissary 0    Mage 10
+              Health 100    Stealth 0    Challenge 42
+Artifacts   : None 
+Spells (+0) : #412 Research Artifact(54)
+  Thralin III has a special ability. He has a bonus to his Mage rank. 
+He commands an army in the Hills & Rough at 3707. The Major Town/Fort of 
+Azanulinbar-dûm flying the flag of the Dwarves is here.
+7/17/2013  Game 228  Player 8  Turn 0  Page 9
+3105 3205 3305 3405 3505 3605 3705 3805 3905
+3106 3206 3306 3406 3506 3606 3706 3806
+3107 3207 3307 3407 3507 3607 3707 3807 3907
+3108 3208 3308 3408 3508 3608 3708 3808
+3109 3209 3309 3409 3509 3609 3709 3809 3909
+3110 3210 3310 3410 3510 3610 3710 3810
+3111 3211 3311 3411 3511 3611 3711 3811 3911
+3112 3212 3312 3412 3512 3612 3712 3812
+3113 3213 3313 3413 3513 3613 3713 3813 3913
+3114 3214 3314 3414 3514 3614 3714 3814
+3115 3215 3315 3415 3515 3615 3715 3815 3915
+3116 3216 3316 3416 3516 3616 3716 3816
+3117 3217 3317 3417 3517 3617 3717 3817 3917
+7/17/2013  Game 228  Player 8  Turn 0  Page 1
+MEPBM GAMESMiddle-earth Play-By-Mail“
+Third Age, circa 2950
+Dwarves
+TURNSHEET
+Game # 228
+AARON HILL 110930
+NONE
+NONE
+NONE
+Game #     :  228
+Player #   :    8
+Turn #     :    1
+Security # : 6486
+Return this turnsheet before JULY 30 2013
+To MEPBM, 340 North Rd, Cardiff, Wales CF14 3BP  Voice: +44 (0) 29 20913359
+Tel: +44 (0) 29 20913359  Fax: +44 (0) 29 20625532
+                                     
+Daytime Phone #:_____________________
+Balin (ID: balin) @ 0812  Command
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+Dáin II (ID: dain ) @ 3916  Command Agent Emissary
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+Dís  (ID: dis  ) @ 0606  Command Mage
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+7/17/2013  Game 228  Player 8  Turn 0  Page 2
+Gimli (ID: gimli) @ 0606  Command Agent
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+Glóin (ID: gloin) @ 2004  Command
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+Gróin (ID: groin) @ 3607  Command
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+Thorin II (ID: thori) @ 3707  Command Agent Emissary
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+Thralin III (ID: thral) @ 3707  Command Mage
+  Order    ->  # _____ Code _________ Type _____   Order    ->  # _____ Code _________ Type _____
+                              
+               _______________________                _______________________
+Required       Required       
+               _______________________                _______________________
+Information    Information    
+               _______________________                _______________________
+                              
+               _______________________                _______________________
+7/17/2013  Game 228  Player 8  Turn 0  Page 3
+How did you hear? .....
+How did you hear about your game? 
+(skip this if you are currently in a ME-PBM game) 
+Magazine ad __________________ 
+If yes, then which magazine? __________________ 
+A friend __________________ 
+If yes, then who? __________________ 
+Other (specify) __________________ 
+Special Service
+If you wish special service, please circle  YES. 
+For details, see  House Rules and Procedures. 
+Verification of this service will appear on your resultsheet.
+        YES          NO   
+Standby Players
+If you are an experienced ME-PBM player - would 
+you like to have your name placed on our "STANDBY" 
+player list. Contact MEPBM if you have any questions. 
+        YES          NO   If "YES", can you provide MEPBM with a contact phone number 
+[Include Area code]   Days:                Evenings:      
+Emergency Contact Number
+From time to time, MEPBM has need to contact players regarding 
+game actions, turnsheet reception problems, etc... 
+For MEPBM to be able to reach players in such instances, day or evening, 
+we need an emergency contact phone number, e-mail address, 
+fax number, etc... We will not call unless necessary, but having 
+such information could help us all avoid missed turns or orders. 
+[Include Area code]   Days:                 Evenings:      
+[Include Area code]   Fax:                  E-mail:        
+Thanks for your help and good luck in the game!!

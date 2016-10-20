@@ -1,13 +1,13 @@
 <txt2xml>
     <processor type="StringEnclosedMatch">
         <element>Turn</element>
-        <startString>MEPBM GAMES|MEPBM Games|ME Games Ltd</startString>
-        <endString>TURNSHEET</endString>
+        <startString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd</startString>
+        <endString>TURNSHEET|$</endString>
         
         <processor type="StringEnclosedMatch">
         	<element>General</element>
-        	<startString>MEPBM GAMES|MEPBM Games|ME Games Ltd</startString>
-        	<endString>CENTERS</endString>
+        	<startString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd</startString>
+        	<endString>CENTERS|Centers</endString>
 
 			<processor type="RegexMatch">
 				<element>NationName</element>
@@ -30,11 +30,11 @@
 			</processor>
 	        <processor type="RegexMatch">
 	        	<element>Nation</element>
-	        	<regex>Player #\s+:\s+(\d+)</regex>
+	        	<regex>Player(?: #\s++)?:\s+(\d+)</regex>
 	       	</processor>
 	        <processor type="RegexMatch">
 	        	<element>TurnNumber</element>
-	        	<regex>Turn #\s+:\s+(\d+)</regex>
+	        	<regex>Turn(?: #\s+)?:\s+(\d+)</regex>
 	       	</processor>
 	       	<processor type="RegexMatch">
         		<element>Date</element>
@@ -47,13 +47,13 @@
 
 			<processor type="RegexMatch">
         		<element>Season</element>
-        		<regex>Season\s+:\s+(Spring|Summer|Fall|Winter)</regex>
+        		<regex>Season\s?:\s+(Spring|Summer|Fall|Winter)</regex>
         	</processor>
         	 <processor type="StringEnclosedMatch">
 	        	<element>NationRelations</element>
-	        	<startString>RELATIONS WITH OTHER NATIONS</startString>
+	        	<startString>RELATIONS WITH OTHER NATIONS|Relations with other Nations</startString>
 	        	<includeStart>0</includeStart>
-    	    	<endString>POPULAT</endString>
+    	    	<endString>POPULAT|Populat</endString>
 		        	<processor type="RepeatRegexMatch">
 		        		<element>NationRelation</element>
 		        		<regex>((?:#\s?\d{1,2}\s+)?[\p{L}']+(?:[\s\-]['\p{L}]+)*\s+:\s+\w+)</regex>
@@ -76,8 +76,8 @@
         <processor type="StringEnclosedMatch">
         	<!--  Get the region for the population centers -->
         	<element>PopulationCentres</element>
-        	<startString>CENTERS</startString>
-        	<endString>ARMIES AND NAVIES</endString>
+        	<startString>CENTERS|Centres</startString>
+        	<endString>ARMIES AND NAVIES|Armies and Navies</endString>
 
         	<processor type="RepeatRegexMatch">
         		<element>PopCentre</element>

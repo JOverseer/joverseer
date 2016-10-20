@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -97,12 +98,12 @@ public class ArmyViewer extends ObjectViewer {
 
 	@Override
 	protected JComponent createFormControl() {
-		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
+		Box box = Box.createHorizontalBox();
 
-		glb.append(this.commanderName = new JTextField());
+		box.add(this.commanderName = new JTextField());
 		this.commanderName.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
-		glb.append(this.nation = new JTextField());
+		box.add(Box.createHorizontalStrut(5));
+		box.add(this.nation = new JTextField());
 		this.nation.setPreferredSize(this.uiSizes.newDimension(30/12, this.uiSizes.getHeight3()));
 
 		// button to show range of army on map
@@ -111,7 +112,8 @@ public class ArmyViewer extends ObjectViewer {
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		btnMenu.setIcon(ico);
-		glb.append(btnMenu);
+		box.add(Box.createHorizontalGlue());
+		box.add(btnMenu);
 		btnMenu.addActionListener(new PopupMenuActionListener() {
 
 			@Override
@@ -119,8 +121,10 @@ public class ArmyViewer extends ObjectViewer {
 				return createArmyPopupContextMenu();
 			}
 		});
+		box.add(Box.createHorizontalStrut(5));
 
-		glb.nextLine();
+		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
+		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 		glb.append(this.armySize = new JTextField(), 1, 1);
 		this.armySize.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
 		glb.append(this.armyType = new JTextField());
@@ -149,7 +153,10 @@ public class ArmyViewer extends ObjectViewer {
 
 		JPanel panel = glb.getPanel();
 		panel.setBackground(Color.white);
-		return panel;
+		Box vBox = Box.createVerticalBox();
+		vBox.add(box);
+		vBox.add(panel);
+		return vBox;
 	}
 
 	@Override

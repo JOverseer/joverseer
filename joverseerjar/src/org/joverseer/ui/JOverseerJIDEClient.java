@@ -17,7 +17,6 @@ package org.joverseer.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.DirectoryIteratorException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Enumeration;

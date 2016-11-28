@@ -225,6 +225,8 @@ public class MarketTableModel extends BaseEconomyTableModel {
 				+ "</th><th>"
 				+ Messages.getString("EconomyCalculator.PriceHistory.sell")
 				+ "</th><th>"
+				+ Messages.getString("EconomyCalculator.PriceHistory.buy")
+				+ "</th><th>"
 				+ Messages.getString("EconomyCalculator.PriceHistory.available")
 				+ "</th></tr>";
 		int maxSellPrice = 0;
@@ -251,7 +253,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			ret += "</tr></table>"
 					+ Messages.getString("EconomyCalculator.PriceHistory.sellPriceRange",new Object[] {minSellPrice,maxSellPrice})
 					+ "<br/>"
-					+ Messages.getString("EconomyCalculator.PriceHistory.sellPriceRange",new Object[] {minBuyPrice,maxBuyPrice})
+					+ Messages.getString("EconomyCalculator.PriceHistory.buyPriceRange",new Object[] {minBuyPrice,maxBuyPrice})
 					+ "<br/></html>";
 		}
 		return ret;

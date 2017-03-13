@@ -185,6 +185,8 @@ public class CharacterMessageWrapper {
 			if (or == null)
 				or = getScryResult(line, infoSource);
 			if (or == null)
+				or = getPalantirResult(line, infoSource);
+			if (or == null)
 				or = getRAResult(line, infoSource);
 			if (or == null)
 				or = getScoutHexResult(line, infoSource);
@@ -485,6 +487,10 @@ public class CharacterMessageWrapper {
 		}
 	}
 
+	protected OrderResult getPalantirResult(String line, InfoSource infoSource) {
+		return getReconResult(line, infoSource, "He was ordered to use a scrying artifact.", "None", " See report below");
+	}
+	
 	protected OrderResult getScryResult(String line, InfoSource infoSource) {
 		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below");
 	}

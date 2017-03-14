@@ -196,6 +196,8 @@ public class CharacterMessageWrapper {
 				or = getScoutPopCenterResult(line, infoSource);
 			if (or == null)
 				or = getScoArmyResult(line, infoSource);
+			if (or == null)
+				or = getScoutAreaResult(line, infoSource);
 			if (or != null)
 				ret.add(or);
 		}
@@ -272,6 +274,12 @@ public class CharacterMessageWrapper {
 		}
 	}
 
+	/*He was ordered to scout the area.  Jilad of the Dúnadan Rangers with about 1400 troops at 1409
+	. See Map below.  
+	*/
+	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource) {
+		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below");
+	}
 	protected OrderResult getScoutHexResult(String line, InfoSource infoSource) {
 		try {
 			if (line.contains("A scout of the hex was attempted.")) {

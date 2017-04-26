@@ -10,18 +10,41 @@ XPath:
 2. update the version in the changelog.txt
 
 3.build
+  from eclipse by clicking on each component's build.xml in dependency order
+4. run buildjars.bat
 
-3. run buildjars.bat
+5. ftp latestupdate.zip to megames
 
-4. ftp latestupdate.zip to megames
-
-5. edit and update feed.xml
+6. edit and update feed.xml
 
 (delete the registry entry if testing)
 
 (make sure update/update.jar is present)
 
 start joverseer.
+
+Beta
+----
+The betachannel is similar, but uses betafeed.xml and latestbetaupdate.zip
+
+MacOS packaging notes
+=====================
+At the moment a Mac is required to create the pkg.
+Install 'Packages' from http://s.sudre.free.fr/Software/Packages/about.html
+We also use 
+https://github.com/tofi86/universalJavaApplicationStub
+to launch a java program on MacOS without worrying about which JVM is used.
+The Java VM options are set in Info.plist (an xml file)
+The jOverseer.icns file is one I created from public domain clipart from openclipart.org, and  I place it in the public domain too.
+The installer installs using admin permissions in /Applications
+The updater probably doesn't work yet due to those permissions.
+The logfiles appear as $TMPDIR/joverseer* so check there for problems.
+run 'Packages' on jOverseer.pkgproj to work out how to lay out the files as input.
+build the package from within 'Packages' and upload the 17MB installer file.
+When the subsequent installer pkg is run, macos may complain about it being from the internet.
+Either control-left click the pkg file and say I trust it, or remove the extended attributes from the file....lookup the xattr command (xattr -l and -d)
+The installer gives you the option to install somewhere else...I have not tried it.
+
 
 Autoupdate notes
 ================
@@ -83,5 +106,4 @@ moves it to the appropriate place
 deletes the initial version of the unpacked files.
 and executes any updateapp.jar to execute any version-specific updates beyond just files updates.
 NB. the cancel button just exits...it doesn't stop the download or undo the overwrite of files.
-
 

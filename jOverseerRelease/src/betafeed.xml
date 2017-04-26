@@ -6,10 +6,13 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
-    <title>1.15.3</title>
-      <pubDate>Thu, 23 Nov 2016</pubDate>
+    <title>1.15.4</title>
+      <pubDate>Wed, 19 Apr 2017</pubDate>
       <description>
-     
+VERSION 1.15.4
+--------------
+	* Fix: 935 recon result is now recognised.
+	* Fix: 910 scouting result is now recognised.     
 VERSION 1.15.3
 --------------
     * Fix for macs.

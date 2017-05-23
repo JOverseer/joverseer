@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
+encoding//resources/ui/messages_it.properties=UTF-8
 encoding//src/org/joverseer/support/AsciiUtils.java=UTF-8
+encoding//src/org/joverseer/support/readers/newXml/CharacterMessageWrapper.java=UTF-8

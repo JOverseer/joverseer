@@ -40,7 +40,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 	public static int iDraw = 20;
 	public static int iResults = 21;
 	public static int iCost = 22;
-	public static int iProfit = 23;
+//	public static int iProfit = 23;
 	public static int iNation = 0;
 	public static int iHexNo = 2;
 
@@ -50,7 +50,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 
 	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[] { "character.nationNo", "character.name", "character.hexNo", "characterStats", "noAndCode", "p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "draw", "results", "cost", "profit" };
+		return new String[] { "character.nationNo", "character.name", "character.hexNo", "characterStats", "noAndCode", "p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "draw", "results", "cost" /*, "profit" */};
 	}
 
 	@SuppressWarnings("unchecked")
@@ -121,7 +121,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 			} else {
 				return "";
 			}
-		} else if (i == iProfit) {
+			// Profit disabled as it's confusing and raises inconsistencies with the economies page, that can't easily be resolved.
+/*		} else if (i == iProfit) {
 			Order order = (Order) object;
 			OrderCostCalculator calc = new OrderCostCalculator();
 			int cost = calc.getOrderCost(order, game.getTurn());
@@ -132,7 +133,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			} else {
 				return "";
 			}
-		} else if (i >= iParamStart && i <= iParamEnd) {
+*/		} else if (i >= iParamStart && i <= iParamEnd) {
 			Order order = (Order) object;
 			String v = order.getParameter(i - iParamStart);
 			if (v == null || v.equals("--") || v.equals("-")) {

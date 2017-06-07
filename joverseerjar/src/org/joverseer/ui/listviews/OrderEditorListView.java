@@ -148,7 +148,7 @@ public class OrderEditorListView extends ItemListView {
 		f = new OrderFilter("Commanders (C>0)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getCommander() > 0;
+				return c.getCommand() > 0;
 			}
 		};
 		filterList.add(f);

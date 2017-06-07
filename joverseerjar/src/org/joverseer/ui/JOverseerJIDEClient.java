@@ -68,6 +68,7 @@ public class JOverseerJIDEClient {
 			
 			Logger rootLogger = Logger.getRootLogger();
 
+//			rootLogger.setLevel(Level.DEBUG);
 			rootLogger.setLevel(Level.WARN);
 			rootLogger.addAppender(fileAppender);
 			
@@ -86,6 +87,9 @@ public class JOverseerJIDEClient {
 			if (args.length >0) {
 				if (args[0].equals("-L")) {
 					Locale.setDefault(new Locale(args[1]));
+				}
+				if (args[0].equals("-U")) {
+					System.clearProperty("org.joverseer.ui.lastVersionCheckDate");
 				}
 			}
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");

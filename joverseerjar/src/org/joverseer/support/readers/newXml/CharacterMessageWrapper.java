@@ -274,7 +274,7 @@ public class CharacterMessageWrapper {
 		}
 	}
 
-	/*He was ordered to scout the area.  Jilad of the Dúnadan Rangers with about 1400 troops at 1409
+	/*He was ordered to scout the area.  Jilad of the Dunadan Rangers with about 1400 troops at 1409
 	. See Map below.  
 	*/
 	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource) {

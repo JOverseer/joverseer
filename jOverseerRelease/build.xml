@@ -200,6 +200,19 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 			<arg value="${dist}\joverseer.iss.out"/>
 		</exec>
 	</target>
+	<!-- needs to run on a Mac -->
+	<target name="MacOSIntaller" depends="GatherDependents">
+	<!-- universalJavaApplicationStub
+		jOverseer.icns
+		default.layout
+		PkgInfo
+		Info.pList
+		and the dependents to dist
+	-->
+		<copy fromdir="MacOS" todir="${dist}" flatten="true">
+		</copy>
+		<exec executable="/usr/local/bin/packagesbuild -v ${dist}/jOverseer.pkgproj"/>
+	</target>
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>

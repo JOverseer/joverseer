@@ -1,3 +1,6 @@
+VERSION 1.15.5
+--------------
+	* Fix for automatic updating on macs
 VERSION 1.15.4
 --------------
 	* Fix: 935 recon result is now recognised.

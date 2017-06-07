@@ -9,11 +9,19 @@ XPath:
 
 2. update the version in the changelog.txt
 
-3.build
-  from eclipse by clicking on each component's build.xml in dependency order
-4. run buildjars.bat
+3. compile
+  from eclipse by clicking on each component's build.xml in dependency order;
+  txt2xmljar
+  orderchecker
+  joverseerupdaterjar
+  joverseerjar
+  
+  and pick the appropriate target in
+  joverseerRelease (build.xml)
+  
+4. or run buildjars.bat
 
-5. ftp latestupdate.zip to megames
+5. ftp latestupdate.zip to middleearthgames.com
 
 6. edit and update feed.xml
 
@@ -37,7 +45,6 @@ to launch a java program on MacOS without worrying about which JVM is used.
 The Java VM options are set in Info.plist (an xml file)
 The jOverseer.icns file is one I created from public domain clipart from openclipart.org, and  I place it in the public domain too.
 The installer installs using admin permissions in /Applications
-The updater probably doesn't work yet due to those permissions.
 The logfiles appear as $TMPDIR/joverseer* so check there for problems.
 run 'Packages' on jOverseer.pkgproj to work out how to lay out the files as input.
 build the package from within 'Packages' and upload the 17MB installer file.
@@ -60,7 +67,7 @@ version 1.0.12 has this hard-wired.
 Later versions use the preference
  updates.RSSFeed
  in 
- main/resources/ctx/preferences-context.xml
+ resources/ctx/preferences-context.xml
 
 The official beta RSS Feed is
 "http://www.middleearthgames.com/software/joverseer/betafeed.xml"
@@ -81,7 +88,6 @@ The key thing about auto updating in general is that at some point you have to s
 The updater is packaged as a separate jar file: update.jar.
 It takes one optional argument, the url of the zipfile to download.
 Normally it is the contents of the first url found in the RSS feed.
-It defaults to ???
 
 
 The source files
@@ -107,3 +113,11 @@ deletes the initial version of the unpacked files.
 and executes any updateapp.jar to execute any version-specific updates beyond just files updates.
 NB. the cancel button just exits...it doesn't stop the download or undo the overwrite of files.
 
+
+How to test updating
+====================
+To avoid spamming incomplete releases on the beta or live channel use:
+http://www.middleearthgames.com/software/joverseer/testfeed.xml
+http://www.middleearthgames.com/software/joverseer/testupdate.zip
+remember to remove the 'lastupdated' preference in joverseer to persuade jOverseer to actually check for updates.
+MacOS: use 'Pref Setter'. Windows: use regedit.

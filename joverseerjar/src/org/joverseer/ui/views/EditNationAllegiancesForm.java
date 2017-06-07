@@ -1,6 +1,5 @@
 package org.joverseer.ui.views;
 
-import java.awt.Dimension;
 import java.util.Hashtable;
 
 import javax.swing.JCheckBox;
@@ -12,7 +11,6 @@ import javax.swing.SwingConstants;
 
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
-import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -20,7 +18,6 @@ import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**

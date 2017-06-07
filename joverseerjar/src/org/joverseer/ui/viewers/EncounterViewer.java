@@ -1,7 +1,6 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Insets;
 
 import javax.swing.Icon;

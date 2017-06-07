@@ -98,9 +98,10 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		}
 
 		boolean warningOccurred = false;
-		if (!game.getMetadata().getNewXmlFormat()) {
-			for (File f : this.files) {
-				if (f.getAbsolutePath().endsWith(".pdf")) {
+		for (File f : this.files) {
+			if (f.getAbsolutePath().endsWith(".pdf")) {
+				//we still grab pdf info even if new format, so that we can summarise for the pdfviewer.
+				//if (!game.getMetadata().getNewXmlFormat()) {
 					try {
 						this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
 						pdfCount++;
@@ -116,7 +117,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 						// do nothing
 						// todo fix
 					}
-				}
+				//}
 			}
 		}
 		this.monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");

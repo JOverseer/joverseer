@@ -184,6 +184,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>
             <fileset file="${dist}/txt2xml.jar"/>
+        	<fileset file="${dist}/jide-common.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
 <!--              <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/> -->
@@ -199,6 +200,19 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 			<arg value="${dist}\joverseer.iss.out"/>
 		</exec>
 	</target>
+	<!-- needs to run on a Mac -->
+	<target name="MacOSIntaller" depends="GatherDependents">
+	<!-- universalJavaApplicationStub
+		jOverseer.icns
+		default.layout
+		PkgInfo
+		Info.pList
+		and the dependents to dist
+	-->
+		<copy fromdir="MacOS" todir="${dist}" flatten="true">
+		</copy>
+		<exec executable="/usr/local/bin/packagesbuild -v ${dist}/jOverseer.pkgproj"/>
+	</target>
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
@@ -206,6 +220,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>
             <fileset file="${dist}/txt2xml.jar"/>
+        	<fileset file="${dist}/jide-common.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>

@@ -12,7 +12,6 @@ import org.joverseer.domain.Character;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**

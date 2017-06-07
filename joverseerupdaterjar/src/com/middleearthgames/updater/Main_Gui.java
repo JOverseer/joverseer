@@ -81,7 +81,12 @@ public class Main_Gui extends JFrame{
         sp = new JScrollPane();
         sp.setViewportView(outText);
         
-        launch = new JButton("Launch App");
+        if (System.getProperty("os.name").startsWith("Mac OS X")) {
+        	launch = new JButton("Close and Launch App");
+        } else { 
+        	launch = new JButton("Launch App");
+        }
+        
         launch.setEnabled(false);
         launch.addActionListener(new ActionListener(){
 
@@ -91,7 +96,7 @@ public class Main_Gui extends JFrame{
         });
         pan2.add(launch);
 
-        cancel = new JButton("Cancel Update");
+        cancel = new JButton("Close");
         cancel.addActionListener(new ActionListener(){
 
             public void actionPerformed(ActionEvent e) {
@@ -131,12 +136,15 @@ public class Main_Gui extends JFrame{
     }
     private void launch()
     {
-        String[] run = {"java","-Xmx512M","-jar",targetjar};
-        try {
-            Runtime.getRuntime().exec(run);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+		// if Mac then don't launch from inside update.jar, as we running as root and the preferences are different.
+    	if (!(System.getProperty("os.name").startsWith("Mac OS X"))) {
+			String[] run = { "java", "-Xmx512M", "-jar", targetjar };
+			try {
+				Runtime.getRuntime().exec(run);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+    	}
         System.exit(0);
     }
     private void cleanup(File file)

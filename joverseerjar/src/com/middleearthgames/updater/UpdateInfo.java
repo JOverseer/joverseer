@@ -11,22 +11,24 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.springframework.binding.form.FormModel;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.form.AbstractForm;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
+
+import com.jidesoft.spring.richclient.docking.JideApplicationPage;
 
 /**
  *
@@ -34,6 +36,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 @SuppressWarnings("serial")
 public class UpdateInfo extends JFrame{
+	private static final Log log = LogFactory.getLog(UpdateInfo.class);
     private JEditorPane infoPane;
     private JScrollPane scp;
     private JButton ok;
@@ -142,7 +145,11 @@ public class UpdateInfo extends JFrame{
     	final String downloadLocation = PreferenceRegistry.instance().getPreferenceValue("updates.DownloadPointer");
     	String[] run;
     	String[] runJava = {"java","-jar","update/update.jar",downloadLocation};
-        String[] runWindows = {"cscript.exe",System.getProperty("java.io.tmpdir")+"\\runJoverseerUpdater.vbs",downloadLocation};
+    	String windowsScript = System.getProperty("java.io.tmpdir")+"\\runJoverseerUpdater.vbs";
+        String[] runWindows = {"cscript.exe",windowsScript,downloadLocation};
+        String macScript = System.getProperty("java.io.tmpdir")+"joverseerUpdater.sh";
+        String macElevatorScript = System.getProperty("java.io.tmpdir")+"joverseerElevator.sh";
+		String[] runMacOSX = {macElevatorScript,macScript,downloadLocation};
         
         run = runJava;
     	if (System.getProperty("os.name").startsWith("Windows")) {
@@ -154,14 +161,14 @@ public class UpdateInfo extends JFrame{
     			writesok = true;
     		} catch (IOException e) {}
     		file.delete();
-	        System.out.println("windows");
+    		log.debug("windows detected");
     		if (!writesok) {
-    	        System.out.println("needs elevation");
+    			log.debug("needs elevation");
     			// use the version with elevated privileges
     			run = runWindows;
-    			File bat = new File(System.getProperty("java.io.tmpdir")+"\\runJoverseerUpdater.vbs");
+    			File bat = new File(runWindows[1]);
     			bat.delete();
-    	        System.out.println(bat);
+    	        log.debug(bat);
     			try {
     				FileWriter fw = new FileWriter(bat);
     				String location = System.getProperty("user.dir");
@@ -172,23 +179,62 @@ public class UpdateInfo extends JFrame{
 					fw.write("objShell.ShellExecute \""+ location + "\\jOverseerUpdater.exe\" , \""+ downloadLocation + "\",\""+location+"\",\"runas\"");
 	    			fw.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					log.error("Failed to execute privilege escalation");
 					e.printStackTrace();
 				}
     			
     		}
+    	} else if (System.getProperty("os.name").startsWith("Mac OS X")) {
+    	    //https://stackoverflow.com/questions/27736300/elevate-your-java-app-as-admin-privilege-on-mac-osx-by-osascript
+    		log.debug("Mac OS X detected");
+			run = runMacOSX;
+			File executor = new File(macScript);
+    	    PrintWriter writer;
+			try {
+				writer = new PrintWriter(executor, "UTF-8");
+				log.debug("create ok");
+				writer.println("#!/bin/bash");
+				writer.println();
+				writer.println("java -jar /Applications/jOverseer.app/Contents/Java/update/update.jar '" + downloadLocation +"' > "
+						+ System.getProperty("java.io.tmpdir") +"joupdateout.txt 2>&1 &");
+				writer.close();
+				log.debug("close ok");
+				executor.setExecutable(true);				
+				log.debug("chmod ok");
+				// use another script for osascript as exec isn't good enough..needs a shell.
+				File elevator = new File(macElevatorScript);
+				writer = new PrintWriter(elevator, "UTF-8");
+				writer.println("#!/bin/bash");
+				writer.println();
+				writer.println("osascript -e 'do shell script \"" + macScript + "\" with administrator privileges'");
+				// don't launch from inside update.jar, as we running as root and the preferences are different.
+				writer.println("open -a jOverseer");
+				writer.close();
+				elevator.setExecutable(true);
+				log.debug("elevator ok");
+			} catch (Exception e) {
+				log.error("cant create script to elevate privileges");
+				log.error(e.getMessage());
+				e.printStackTrace();
+			}
+
     	}
         ProcessBuilder pb = new ProcessBuilder(run);
-        System.out.println(run[0]);
-        System.out.println(run[1]);
-        System.out.println(System.getProperty("user.dir"));
-        System.out.println(pb.directory());
+        log.debug(run[0]);
+        log.debug(run[1]);
+        log.debug(run[2]);
+        log.debug(System.getProperty("user.dir"));
+        log.debug(pb.directory());
         try {
         	pb.start();
         	//Runtime.getRuntime().exec(run);
+        	Thread.yield();
+        	Thread.sleep(2000);
         } catch (Exception ex) {
+        	log.error("Failed to run updater.");
             ex.printStackTrace();
         }
+        log.info("closing down");
         System.exit(0);
     }
 }

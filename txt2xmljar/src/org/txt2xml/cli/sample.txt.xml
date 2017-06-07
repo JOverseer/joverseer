@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><txt2xml>
+<line>
+<field>1</field>
+<field>2</field>
+<field>3</field>
+<field>4&#13;</field>
+</line>
+<line>
+<field>a</field>
+<field>b</field>
+<field>c&#13;</field>
+</line>
+<line>
+<field>x</field>
+<field>y</field>
+<field>z</field>
+</line>
+</txt2xml>

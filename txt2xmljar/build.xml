@@ -4,7 +4,9 @@
         Build file for the txt2xml.jar part of joverseer.
     </description>
     <property name="bin">bin</property>
+    <property name="bintest">bin-test</property>
     <property name="src">src</property>
+    <property name="srctest">test</property>
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
 	<property name="lib">lib</property>
@@ -14,8 +16,17 @@
 	<property name="commons_collection_path">${shared.lib}/commons-collections-3.1.jar</property>
 	<property name="jdom_path">${lib}/jdom.jar</property>
 	<property name="scope_path">${lib}/scope-bin.jar</property>
+	<property name="junit_path"> C:\Users\Dave\eclipse\mars\plugins\org.junit_4.12.0.v201504281640/junit.jar</property>
+	<property name="junit_deps_path">C:\Users\Dave\eclipse\mars\plugins/org.hamcrest.core_1.3.0.v201303031735.jar</property>
+	<property name="report.dir">${dist}/junitreport</property>
 
-    
+    <path id="common.classpath">
+    	<fileset dir="${shared.lib}" includes="**/*.jar"/>
+    	<fileset dir="${lib}" includes="**/*.jar"/>
+    </path>
+	<path id="compiletime.classpath">
+	</path>
+	
    <!-- Main targets -->
    <target name="BuildAll"
        depends="-Init, -Prep, Compile, Javadoc, Jar"
@@ -25,29 +36,63 @@
    <target name="Compile"
        depends="-Init"
        description="Compile all java classes">
-       <javac srcdir="${src}" destdir="${bin}">
-       		<classpath>
-       			<pathelement path="${java.class.path}"/>
-       			<pathelement location="${commons_collection_path}"/>
-       			<pathelement location="${jdom_path}"/>
-       			<pathelement location="${scope_path}"/>
-       		</classpath>
+       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" target="1.6" source="1.6">
+    		<classpath>
+    			<path refid="common.classpath"/>
+	   			<pathelement path="${java.class.path}"/>
+	   		</classpath>
        </javac>
-       
    </target>
+
+	<target name="BuildTests"
+	       depends="Jar"
+	       description="Compile all test java classes">
+	       <javac srcdir="${srctest}" destdir="${bintest}" includeantruntime="false" target="1.6" source="1.6">
+	   		<classpath>
+	   			<path refid="common.classpath"/>
+	   			<pathelement path="${java.class.path}"/>
+   				<pathelement path="${junit_path}"/>
+   				<pathelement location="${jarfile}"/>
+	   		</classpath>
+	       </javac>
+			<!-- copy sample files for testing -->
+		  <copy todir="${bintest}">
+		  	<fileset dir="${src}" excludes="**/*.java"/>
+		  </copy>
+	   </target>
    <target name="Test"
-       depends="-Init,Compile"
+       depends="BuildTests"
        description="Run JUnit Tests">
-       <java fork="yes" classname="junit.textui.TestRunner"
-           taskname="junit" failonerror="true">
-           
-       </java>
-       <echo message="Tested"/>
+   		<mkdir dir="${report.dir}"/>
+   		<junit printsummary="yes">
+   			<classpath>
+   	   			<pathelement path="${java.class.path}"/>
+   				<pathelement path="${bintest}"/>
+   				<pathelement path="${junit_path}"/>
+   				<pathelement path="${junit_deps_path}"/>
+   	   			<path refid="common.classpath"/>
+   				<pathelement location="${jarfile}"/>
+   			</classpath>
+   			<formatter type="xml"/>
+   			<batchtest fork="yes" todir="${report.dir}">
+   				<fileset dir="test" includes="**/*Test.java"/>
+   			</batchtest>
+   		</junit>
    </target>
+	<target name="junitreport">
+		<junitreport todir="${report.dir}">
+			<fileset dir="${report.dir}"  includes="TEST-*.xml"/>
+			<report todir="${report.dir}"/>
+		</junitreport>
+	</target>
 	<target name="Javadoc"
 		depends="-Init"
 		description="Create Javadoc">
 		<javadoc destdir="${doc}" author="true" version="true" use="true" package="true">
+	   		<classpath>
+	   			<pathelement path="${java.class.path}"/>
+   	   			<path refid="common.classpath"/>
+	   		</classpath>
 		<fileset dir="${src}">
 			<include name="**/*.java"/>
 		</fileset>
@@ -70,10 +115,12 @@
        <echo message="Build time: ${TODAY} ${TSTAMP}"/>
    </target>
    <target name="-Prep">
-       <delete dir="${bin}"/>
+	   <delete dir="${bin}"/>
+       <delete dir="${bintest}"/>
        <delete dir="${dist}"/>
        <delete dir="${jardir}"/>
        <mkdir dir="${bin}"/>
+   	   <mkdir dir="${bintest}"/>
        <mkdir dir="${dist}"/>
        <mkdir dir="${jardir}"/>
    </target>

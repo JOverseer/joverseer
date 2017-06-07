@@ -12,8 +12,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
-import org.joverseer.ui.support.UIUtils;
-import org.springframework.rules.reporting.SummingVisitor;
 
 /**
  * Table model for the Team Economy main table It basically shows a complete

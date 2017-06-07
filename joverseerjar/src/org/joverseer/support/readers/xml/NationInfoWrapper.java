@@ -44,6 +44,10 @@ public class NationInfoWrapper {
 		String[] emptyHexes = getEmptyPopHexes().split(",");
 		String[] popHexes1 = getPopHexes().split(",");
 
+		// check for degenerate case
+		if ((emptyHexes.length == 1) && (emptyHexes[0].length()==0)) {
+			return ret;
+		}
 		for (String eh : emptyHexes) {
 			int ehi = Integer.parseInt(eh);
 			HexInfo hi = new HexInfo();

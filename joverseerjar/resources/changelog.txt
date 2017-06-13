@@ -1,18 +1,14 @@
-VERSION 1.15.5
+VERSION 1.16.0
 --------------
+    * Higher resolution joverseer icon.
+	* Clarified some the column names in the Economy Team View.
+    * New filters in Order List View.
+	* The same as the 1.15.5 beta version.
 	* Fix for automatic updating on macs
-VERSION 1.15.4
---------------
 	* Fix: 935 recon result is now recognised.
 	* Fix: 910 scouting result is now recognised.
-VERSION 1.15.3
---------------
     * Fix for macs.
-VERSION 1.15.2
---------------
     * Fixed crash in 2950 new game.
-VERSION 1.15.1
---------------
 	* starting information for 2950 games has been significantly corrected.
 	* 990 order (one ring) shouldn't be flagged yellow in orderchecker
 	* Fixed: java8 selects IPv6 for networking which breaks email sending.

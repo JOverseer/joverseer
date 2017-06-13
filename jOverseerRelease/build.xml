@@ -190,9 +190,30 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 <!--              <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/> -->
         </zip>
 	</target>
-	
-	<target name="windowsInstaller" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+	<target name="windowsCompleteZip" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+		<copy tofile="${dist}\jide-common.jar" file="${dist}\jide-common-windows.jar" overwrite="true"/>
+		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
+		<zip destfile="${dist}/joverseer-${joverseer.version}.zip">
+            <fileset file="${dist}/joverseer.jar"/>
+            <fileset file="${dist}/jOverseerUpdater.exe"/>
+            <fileset file="${dist}/jOverseer.exe"/>
+            <fileset file="${dist}/orderchecker.jar"/>
+            <fileset file="${dist}/txt2xml.jar"/>
+        	<fileset file="${dist}/jide-common.jar"/>
+            <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
+            <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
+			<fileset file="${src}/joverseer.bat"/>
+			<fileset file="${dist}/log4j.properties"/>
+			<fileset dir="${dist}" includes="swing*.jar,spring*.jar,skin*.jar,PDF*.jar,lo*.jar,junit*.jar,fo*.jar,commons*.jar"/>
+			<fileset dir="${dist}" includes="jide-action.jar, jide-beaninfo.jar,jide-components,jide-dialogs.jar,jide-dock.jar,jide-grids.jar"/>
+            <fileset file="${dist}/joverseer.ico"/>
+			<zipfileset dir="${dist}/../MailSender" includes="MailSender.exe" prefix="bin"/>
+			<zipfileset dir="${dist}" includes="default.layout" prefix="layout"/>
+		</zip>
+	</target>
+	<target name="windowsInstaller" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
 		<property name="iss.dir">C:\Program Files (x86)\Inno Setup 5</property>
+		<copy tofile="${dist}\jide-common.jar" file="${dist}\jide-common-windows.jar" overwrite="true"/>
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
 		<filter token="version" value="${joverseer.version}"/>
 		<copy tofile="${dist}\joverseer.iss.out" file="src/joverseer.iss" filtering="true" overwrite="true"/>
@@ -201,7 +222,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		</exec>
 	</target>
 	<!-- needs to run on a Mac -->
-	<target name="MacOSIntaller" depends="GatherDependents">
+	<target name="MacOSInstaller" >
 	<!-- universalJavaApplicationStub
 		jOverseer.icns
 		default.layout
@@ -209,7 +230,49 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		Info.pList
 		and the dependents to dist
 	-->
-		<copy fromdir="MacOS" todir="${dist}" flatten="true">
+		<copy todir="${dist}" flatten="true">
+		  <fileset dir="${src}/MacOS"/>
+		</copy>
+		<copy tofile="${dist}/jide-common.jar" file="${dist}/jide-common-MacOS.jar" overwrite="true"/>
+		<mkdir dir="${dist}/Java"/>
+		<copy todir="${dist}/Java" flatten="true">
+		  <fileset file="${dist}/joverseer.jar"/>
+		  <fileset file="${dist}/orderchecker.jar"/>
+		  <fileset file="${dist}/txt2xml.jar"/>
+        	  <fileset file="${dist}/jide-common.jar"/>
+        	  <fileset file="${dist}/commons-beanutils-1.7.0.jar"/>
+        	  <fileset file="${dist}/commons-codec-1.3.jar"/>
+        	  <fileset file="${dist}/commons-collections-3.1.jar"/>
+        	  <fileset file="${dist}/commons-digester-1.7.jar"/>
+        	  <fileset file="${dist}/commons-httpclient-3.0.1.jar"/>
+        	  <fileset file="${dist}/commons-logging-1.1.jar"/>
+        	  <fileset file="${dist}/FontBox-0.1.0-dev.jar"/>
+        	  <fileset file="${dist}/forms-1.0.7.jar"/>
+        	  <fileset file="${dist}/jide-action.jar"/>
+        	  <fileset file="${dist}/jide-beaninfo.jar"/>
+        	  <fileset file="${dist}/jide-common.jar"/>
+        	  <fileset file="${dist}/jide-components.jar"/>
+        	  <fileset file="${dist}/jide-dialogs.jar"/>
+        	  <fileset file="${dist}/jide-dock.jar"/>
+        	  <fileset file="${dist}/jide-grids.jar"/>
+        	  <fileset file="${dist}/junit-3.8.1.jar"/>
+        	  <fileset file="${dist}/log4j-1.2.12.jar"/>
+        	  <fileset file="${dist}/log4j.properties"/>
+        	  <fileset file="${dist}/looks-2.0.4.jar"/>
+        	  <fileset file="${dist}/PDFBox-0.7.3.jar"/>
+        	  <fileset file="${dist}/skinlf-1.2.11.jar"/>
+        	  <fileset file="${dist}/spring-beans.jar"/>
+        	  <fileset file="${dist}/spring-binding-1.0.5.jar"/>
+        	  <fileset file="${dist}/spring-context-support.jar"/>
+        	  <fileset file="${dist}/spring-context.jar"/>
+        	  <fileset file="${dist}/spring-core.jar"/>
+        	  <fileset file="${dist}/spring-richclient-full-1.0.0.jar"/>
+        	  <fileset file="${dist}/swingx-0.8.0.jar"/>
+        	  <fileset file="${dist}/update.jar"/>
+		</copy>
+		<mkdir dir="${dist}/update/update"/>
+		<copy todir="${dist}/update/update">
+		  <fileset file="${dist}/update.jar"/>
 		</copy>
 		<exec executable="/usr/local/bin/packagesbuild -v ${dist}/jOverseer.pkgproj"/>
 	</target>

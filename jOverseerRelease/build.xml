@@ -176,7 +176,8 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
       <assertLaunch4jAvailable dir="${launch4j.dir}"/>
       <launch4j configFile="${src}/jOverseerLauncher.xml" outfile="${dist}/jOverseer.exe"/>
     </target>
-    
+
+	<!-- don't include jide-common.jar in update, since we now have platform specific versions -->
     <target name="updatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
@@ -184,7 +185,6 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>
             <fileset file="${dist}/txt2xml.jar"/>
-        	<fileset file="${dist}/jide-common.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
 <!--              <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/> -->

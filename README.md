@@ -8,22 +8,29 @@ JOverseer is a desktop application which aims to assist players of the Middle Ea
 
 As GoogleCode has shut down, the source code is now hosted here at http://www.github.com.
 At the moment downloads for the runnable program will be found at http://www.middleearthgames.com/soov.html.
+For user convenience, there are installers for MacOS and Windows although they are not certified or available on the relevant 'Store'.
 
-**The latest version is 1.0.12, released on March 4, 2014.**
+**The latest version is 1.16.0, released on June 7, 2017.**
 
 **Updating**
-Version 1.0.12 now includes some better updating technology.
+Version 1.0.12 and later includes some better updating technology.
 To spot new versions, the updater will visit the RSS feed http://www.middleearthgames.com/software/joverseer/feed.xml once a week.
 If it finds a new version, then it will notify you, show you what's changed and ask if you want to update. If you do, then it will download and install it.
 Updates are currently about 2MB instead of the 15MB for the full install.
 
-JOverseer now **requires at least** java version 1.6 (confusingly also known as java 6). java 1.7 (java 7) is preferred.
+JOverseer now **requires at least** java version 1.6 (confusingly also known as java 6). java 1.8 (java 8) is preferred.
 
 
 **Running**
 
 Windows users can now run **jOverseer.exe** which replaces the old batch file and automatically configures the java environment for joverseer.jar.
 
+The MacOS installer will now add jOverseer to Launchpad.
+
+Since jOverseer is a java program, you can also run it from the unzipped download with the command:
+ java -jar joverseer.jar
+ 
+See joverseer.bat for the current recommended java settings.
 
 **Mailing Lists - Getting Involved**
 
@@ -67,4 +74,4 @@ To ask questions, offer suggestions, or report bugs please use the [JOverseer Ya
 
 
 
-_Last update: 15 July 2015, Dave Spring_
+_Last update: 14 June 2017, Dave Spring_

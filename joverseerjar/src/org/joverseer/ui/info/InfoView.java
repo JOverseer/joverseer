@@ -27,7 +27,6 @@ import org.springframework.richclient.table.BaseTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.swing.JideTabbedPane;
-import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 
 /**
  * The InfoView

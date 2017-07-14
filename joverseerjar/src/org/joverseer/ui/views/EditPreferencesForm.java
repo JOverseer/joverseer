@@ -18,7 +18,6 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**

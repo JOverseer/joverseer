@@ -185,6 +185,8 @@ public class CharacterMessageWrapper {
 			if (or == null)
 				or = getScryResult(line, infoSource);
 			if (or == null)
+				or = getPalantirResult(line, infoSource);
+			if (or == null)
 				or = getRAResult(line, infoSource);
 			if (or == null)
 				or = getScoutHexResult(line, infoSource);
@@ -194,6 +196,8 @@ public class CharacterMessageWrapper {
 				or = getScoutPopCenterResult(line, infoSource);
 			if (or == null)
 				or = getScoArmyResult(line, infoSource);
+			if (or == null)
+				or = getScoutAreaResult(line, infoSource);
 			if (or != null)
 				ret.add(or);
 		}
@@ -270,6 +274,12 @@ public class CharacterMessageWrapper {
 		}
 	}
 
+	/*He was ordered to scout the area.  Jilad of the Dunadan Rangers with about 1400 troops at 1409
+	. See Map below.  
+	*/
+	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource) {
+		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below");
+	}
 	protected OrderResult getScoutHexResult(String line, InfoSource infoSource) {
 		try {
 			if (line.contains("A scout of the hex was attempted.")) {
@@ -485,6 +495,10 @@ public class CharacterMessageWrapper {
 		}
 	}
 
+	protected OrderResult getPalantirResult(String line, InfoSource infoSource) {
+		return getReconResult(line, infoSource, "He was ordered to use a scrying artifact.", "None", " See report below");
+	}
+	
 	protected OrderResult getScryResult(String line, InfoSource infoSource) {
 		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below");
 	}

@@ -1,7 +1,5 @@
 package org.joverseer.ui.command;
 
-import java.util.Locale;
-
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.game.Game;

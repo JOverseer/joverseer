@@ -1,3 +1,23 @@
+VERSION 1.16.0
+--------------
+    * Higher resolution joverseer icon.
+	* Clarified some the column names in the Economy Team View.
+    * New filters in Order List View.
+	* The same as the 1.15.5 beta version.
+	* Fix for automatic updating on macs
+	* Fix: 935 recon result is now recognised.
+	* Fix: 910 scouting result is now recognised.
+    * Fix for macs.
+    * Fixed crash in 2950 new game.
+	* starting information for 2950 games has been significantly corrected.
+	* 990 order (one ring) shouldn't be flagged yellow in orderchecker
+	* Fixed: java8 selects IPv6 for networking which breaks email sending.
+	* automatic recognition of new XML format so no need for user to pick.
+	* right arrow symbol now correctly displayed.
+	* Fix 622: Kinstrife roads selected at game setup no longer vanish.
+	* Fix 632: Player characters with less than 5 characters in their name, had odd things happening, eg no past orders etc. Rebuilding the .jov file is needed to actually see a difference.
+	* Artifact effect descriptions are now consistent for saner sorting.
+	
 VERSION 1.14.1
 --------------
 	Update package fixed.

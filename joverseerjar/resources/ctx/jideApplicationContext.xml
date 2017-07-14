@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
 	"http://www.springframework.org/dtd/spring-beans.dtd">
@@ -13,8 +14,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.14.1"/>
-		<property name="buildId" value="2015-11-30"/>
+		<property name="version" value="1.16.0"/>
+		<property name="buildId" value="2017-6-7"/>
 	</bean>
 	
 	<!--
@@ -229,7 +230,7 @@
             <value>target/classes/metadata/</value>
              -->
             <!-- -->
-            <value>bin/metadata</value>
+            <value>metadata\</value>
             <!-- -->
         </property>
         <property name="readers">
@@ -430,3 +431,4 @@
    		</property>
    	</bean>
 </beans>
+

@@ -1,6 +1,5 @@
 package org.joverseer.ui.views;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**

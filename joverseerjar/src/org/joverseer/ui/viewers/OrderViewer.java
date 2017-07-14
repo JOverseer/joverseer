@@ -3,7 +3,6 @@ package org.joverseer.ui.viewers;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Insets;
 import java.awt.datatransfer.Transferable;

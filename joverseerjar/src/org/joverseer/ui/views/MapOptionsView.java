@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import org.joverseer.game.Game;
-import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -30,7 +29,6 @@ import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**

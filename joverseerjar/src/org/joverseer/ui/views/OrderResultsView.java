@@ -1,6 +1,5 @@
 package org.joverseer.ui.views;
 
-import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.JLabel;

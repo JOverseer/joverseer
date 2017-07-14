@@ -10,6 +10,7 @@ public class StringEnclosedMatchProcessor extends Processor {
     boolean includeEnd = true;
     boolean removeNewLines = false;
     String currentEndString = null;
+    String currentStartString = null;
 
     public String getEndString() {
         return this.endString;
@@ -58,6 +59,7 @@ public class StringEnclosedMatchProcessor extends Processor {
         	}
             if (this.matchStart > -1 && (this.matchStart <= idx || idx == -1)) {
                 idx = this.matchStart;
+                this.currentStartString = startString1;
                 foundStartString = startString1;
             }
         }
@@ -92,7 +94,7 @@ public class StringEnclosedMatchProcessor extends Processor {
         int matchStart1 = this.matchStart;
         int matchEnd1 = this.matchEnd;
         if (!this.includeStart) {
-            matchStart1 = matchStart1 + this.startString.length();
+            matchStart1 = matchStart1 + this.currentStartString.length();
         }
         if (this.includeEnd) {
             if (!this.currentEndString.equals("$")) {

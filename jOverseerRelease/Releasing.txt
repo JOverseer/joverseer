@@ -9,19 +9,86 @@ XPath:
 
 2. update the version in the changelog.txt
 
-3.build
+3. compile
+  from eclipse by clicking on each component's build.xml in dependency order;
+  txt2xmljar
+  orderchecker
+  joverseerupdaterjar
+  joverseerjar
+  
+  and pick the appropriate target in
+  joverseerRelease (build.xml)
+  
+4. or run buildjars.bat
 
-3. run buildjars.bat
+5. ftp latestupdate.zip to middleearthgames.com
 
-4. ftp latestupdate.zip to megames
-
-5. edit and update feed.xml
+6. edit and update feed.xml
 
 (delete the registry entry if testing)
 
 (make sure update/update.jar is present)
 
 start joverseer.
+
+build the windows installer
+ from jOverseerRelease\build.xml
+using the target windowsInstaller
+upload joverseer-setupxxxxx.exe to website
+
+build the macOS installer
+ from jOverseerRelease\build.xml
+using the target MacOSInstaller
+(requires a MacOS computer)
+upload the *.pkg file to website
+
+upload zip file for linux users?
+
+update the website and wiki pages.
+
+Remember that the updaters will not trigger until the feed.xml has a higher version number, so do that last.
+
+Checklist of types of users
+---------------------------
+1. new Windows users
+	a) using .exe installer
+	b) using .zip 
+2. new MacOS users
+	a) using .pkg installer
+	b) using .zip
+3. new Linux users
+	using .zip
+4. updating windows users
+5. updating MacOS users
+6. updating Linux users
+7. Beta channel users
+
+Beta
+----
+The betachannel is similar, but uses betafeed.xml and latestbetaupdate.zip
+
+MacOS packaging notes
+=====================
+At the moment a Mac is required to create the pkg.
+Install 'Packages' from http://s.sudre.free.fr/Software/Packages/about.html
+We also use 
+https://github.com/tofi86/universalJavaApplicationStub
+to launch a java program on MacOS without worrying about which JVM is used.
+The Java VM options are set in Info.plist (an xml file)
+The jOverseer.icns file is one I created from public domain clipart from openclipart.org, and  I place it in the public domain too.
+The installer installs using admin permissions in /Applications
+The logfiles appear as $TMPDIR/joverseer* so check there for problems.
+run 'Packages' on jOverseer.pkgproj to work out how to lay out the files as input.
+build the package from within 'Packages' and upload the 17MB installer file.
+When the subsequent installer pkg is run, macos may complain about it being from the internet.
+Either control-left click the pkg file and say I trust it, or remove the extended attributes from the file....lookup the xattr command (xattr -l and -d)
+The installer gives you the option to install somewhere else...I have not tried it.
+
+do windows builds, then copy jOverseerRelease and launch4j(to be removed from the process later) to a mac.
+run ant MacOSInstaller
+ftp joverseer
+
+Note: make sure line endings on the mac files are unix style. Problems can stop the launcher to run with a 'no such file or directory' in the console log.
 
 Autoupdate notes
 ================
@@ -37,7 +104,7 @@ version 1.0.12 has this hard-wired.
 Later versions use the preference
  updates.RSSFeed
  in 
- main/resources/ctx/preferences-context.xml
+ resources/ctx/preferences-context.xml
 
 The official beta RSS Feed is
 "http://www.middleearthgames.com/software/joverseer/betafeed.xml"
@@ -58,7 +125,6 @@ The key thing about auto updating in general is that at some point you have to s
 The updater is packaged as a separate jar file: update.jar.
 It takes one optional argument, the url of the zipfile to download.
 Normally it is the contents of the first url found in the RSS feed.
-It defaults to ???
 
 
 The source files
@@ -85,3 +151,10 @@ and executes any updateapp.jar to execute any version-specific updates beyond ju
 NB. the cancel button just exits...it doesn't stop the download or undo the overwrite of files.
 
 
+How to test updating
+====================
+To avoid spamming incomplete releases on the beta or live channel use:
+http://www.middleearthgames.com/software/joverseer/testfeed.xml
+http://www.middleearthgames.com/software/joverseer/testupdate.zip
+remember to remove the 'lastupdated' preference in joverseer to persuade jOverseer to actually check for updates.
+MacOS: use 'Pref Setter'. Windows: use regedit.

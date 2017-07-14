@@ -17,10 +17,6 @@ import org.springframework.core.io.Resource;
 public class ArtifactReader implements MetadataReader {
 	String artifactFilename = "arties.csv";
 
-	public String getArtifactFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.artifactFilename;
-	}
-
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		gm.setArtifacts(loadArtifacts(gm));
@@ -30,9 +26,7 @@ public class ArtifactReader implements MetadataReader {
 		Container<ArtifactInfo> artifacts = new Container<ArtifactInfo>();
 
 		try {
-			// Resource resource =
-			// Application.instance().getApplicationContext().getResource(getArtifactFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.artifactFilename);
+			Resource resource = gm.getResourceByGame(this.artifactFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
 

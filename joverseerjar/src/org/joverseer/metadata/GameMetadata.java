@@ -1,5 +1,6 @@
 package org.joverseer.metadata;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -264,7 +265,6 @@ public class GameMetadata implements Serializable {
 	public void setBasePath(String basePath) {
 		this.basePath = basePath;
 	}
-
 	public Container<Character> getCharacters() {
 		return this.characters;
 	}
@@ -338,7 +338,14 @@ public class GameMetadata implements Serializable {
 			hc.removeItem(h);
 		hc.addItem(hex);
 	}
-
+	
+	// search order is:
+	// files first.
+	// then check classpath 
+	// note that getBasePath is not just a getter.
+	public Resource getResourceByGame(String filename) {
+		return getResource(getGameType().toString() + "." + filename);
+	}
 	public Resource getResource(String resourceName) {
 		try {
 			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);

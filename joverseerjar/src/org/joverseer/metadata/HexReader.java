@@ -21,14 +21,6 @@ public class HexReader implements MetadataReader {
     String terrainFilename = "terrain";
     String trafficFilename = "traffic";
 
-    public String getTerrainFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.terrainFilename;
-    }
-
-    public String getTrafficFilename(GameMetadata gm) {
-        return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.trafficFilename;
-    }
-
     @Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = loadHexes(gm);
@@ -39,8 +31,7 @@ public class HexReader implements MetadataReader {
     private HashMap loadHexes(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = new HashMap();
         try {
-            //Resource resource = Application.instance().getApplicationContext().getResource(getTerrainFilename(gm));
-            Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.terrainFilename);
+            Resource resource = gm.getResourceByGame(this.terrainFilename);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
@@ -69,8 +60,7 @@ public class HexReader implements MetadataReader {
 
     private void loadTraffic(HashMap hexes, GameMetadata gm) throws IOException, MetadataReaderException {
         try {
-            //Resource resource = Application.instance().getApplicationContext().getResource(getTrafficFilename(gm));
-            Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.trafficFilename);
+            Resource resource = gm.getResourceByGame(this.trafficFilename);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;

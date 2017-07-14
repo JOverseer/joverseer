@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.16.0"/>
-		<property name="buildId" value="2017-6-7"/>
+		<property name="version" value="1.16.1"/>
+		<property name="buildId" value="2017-6-21"/>
 	</bean>
 	
 	<!--
@@ -225,12 +225,7 @@
 
     <bean id="gameMetadata" class="org.joverseer.metadata.GameMetadata">
         <property name="basePath">
-            <!-- 
-            <value>target/classes/metadata/</value>
-             -->
-            <!-- -->
-            <value>metadata\</value>
-            <!-- -->
+            <value>metadata</value>
         </property>
         <property name="readers">
             <list>

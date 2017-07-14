@@ -17,17 +17,11 @@ import org.springframework.core.io.Resource;
 public class SpellReader implements MetadataReader {
 	String spellFilename = "spells.csv";
 
-	public String getSpellFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + this.spellFilename;
-	}
-
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<SpellInfo> spells = new Container<SpellInfo>();
 
 		try {
-			// Resource resource =
-			// Application.instance().getApplicationContext().getResource(getSpellFilename(gm));
 			Resource resource = gm.getResource(this.spellFilename);
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));

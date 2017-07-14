@@ -334,7 +334,7 @@ public class Data
     public static final int FILE_EXPORT_WINDOW = 1;
     public static final int HELP_INFO_WINDOW = 2;
     public static final int CHAR_NOTES_WINDOW = 3;
-    private static String dataDirectory = "data/";
+    private static String dataDirectory = "bin/metadata/orderchecker/";
     private static String rulesFile = "ruleset.csv";
     private static String terrainFiles[] = {
         "1650.game", "2950.game", "fa.game", "bofa.game", "uw.game", "ks.game"

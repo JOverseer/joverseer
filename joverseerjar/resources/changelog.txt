@@ -1,3 +1,7 @@
+VERSION 1.16.1
+--------------
+	* Fix: you can now create new 1000 games.
+	
 VERSION 1.16.0
 --------------
     * Higher resolution joverseer icon.

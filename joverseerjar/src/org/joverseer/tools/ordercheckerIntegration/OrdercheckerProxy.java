@@ -62,25 +62,6 @@ public class OrdercheckerProxy {
 	HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> reverseOrderMap = new HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order>();
 	int nationNo;
 
-	private static class OrdercheckerPaths {
-		public String rulesetPath;
-		public String terrainPath;
-		private static final OrdercheckerPaths instance = new OrdercheckerPaths();
-		private OrdercheckerPaths() {
-			if (System.getProperty("Debugging") != null) {
-				this.rulesetPath = "classes/metadata/orderchecker/ruleset.csv";
-				this.terrainPath = "classes/metadata/orderchecker/";
-			} else { 
-				this.rulesetPath="bin/metadata/orderchecker/ruleset.csv";
-				this.terrainPath = "bin/metadata/orderchecker/";
-			}
-		}
-		public static OrdercheckerPaths getInstance()
-		{
-			return instance;
-		}
-	}
-	
 	private static void copyCurrentMap(GameMetadata metadata,Map map)
 	{
 		com.middleearthgames.orderchecker.Hex ocHex;
@@ -105,7 +86,7 @@ public class OrdercheckerProxy {
 	public void runOrderchecker() {
 		Data data = Main.main.getData();
 		Main.main.setRuleSet(new Ruleset());
-		ImportRulesCsv rules = new ImportRulesCsv(OrdercheckerPaths.getInstance().rulesetPath, Main.main.getRuleSet());
+		ImportRulesCsv rules = new ImportRulesCsv(data.getRulesPath(), Main.main.getRuleSet());
 		boolean result = rules.getRules();
 		if (!result) {
 			rules.closeFile();
@@ -147,7 +128,7 @@ public class OrdercheckerProxy {
 		}
 		copyCurrentMap(g.getMetadata(),Main.main.getMap());
 /*		
-		ImportTerrainCsv terrain = new ImportTerrainCsv(OrdercheckerPaths.getInstance().terrainPath + gt + ".game", Main.main.getMap());
+		ImportTerrainCsv terrain = new ImportTerrainCsv(data.getTerrainPath() + gt + ".game", Main.main.getMap());
 		result = terrain.getMapInformation();
 		if (!result) {
 			terrain.closeFile();

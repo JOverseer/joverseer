@@ -2,34 +2,27 @@ Licensing
 =========
 
 jOverseer is comprised of various third-party software, in source and linkable form.
-The Hobbit and the names of all other characters events items and places therein are trademarks of The Saul Zaentz Company d/b/a Tolkien
-Enterprises.
+The Hobbit, Lord of the Rings and the names of all other characters events items and places therein are trademarks of The Saul Zaentz Company d/b/a Tolkien Enterprises.
 
+The code written originally written by Marios Skounakis is under BSD Open Source License.
+The ongoing development of jOverseer is placed under the 3-clause BSD licence.
+As is:
 
-The code written originally written by Marios Skounakis is under 
-
-    the Spring RCP
-    ---
-    JIDE (http://www.jidesoft.com)
-    ----
-    JIDE Spring Rich Client Integration
-    ----
-    PDFBox (http://pdfbox.apache.org)
-    ------
-    Apache License 2.0
-    
     txt2xml (http://txt2xml.sourceforge.net)
-    -------
     The source for txt2xml is released under the BSD Open Source License, which allows commercial development projects built with txt2xml to be distributed under non-Open Source licenses.
      uses scope: BSD licence
      uses jdom.org :
      JDOM is available under an Apache-style open source license, with the acknowledgement clause removed. This license is among the least restrictive license available, enabling developers to use JDOM in creating new products without requiring them to release their own products as open source. 
-     
-     the Eclipse icon set (http://www.eclipse.org)
-     ---------------
-       EPL
-       
+
+Apache License 2.0 is used for:
+    Spring RCP (https://sourceforge.net/projects/spring-rich-c/)
+    PDFBox (http://pdfbox.apache.org)
     Apache Digester
-    ---------------
-    Apache License 2.0
+	 
+The Eclipse icon set (http://www.eclipse.org) uses it's own licence: EPL
+
+JIDE (http://www.jidesoft.com) and
+JIDE Spring Rich Client Integration
+    Are commercial products using a specific license granted to Marios as an Open Source project for what is now a very old version of JIDE, before parts of JIDE were made open source.
+
 

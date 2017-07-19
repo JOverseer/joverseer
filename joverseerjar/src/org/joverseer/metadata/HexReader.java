@@ -31,9 +31,7 @@ public class HexReader implements MetadataReader {
     private HashMap loadHexes(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = new HashMap();
         try {
-            Resource resource = gm.getResourceByGame(this.terrainFilename);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+            BufferedReader reader = gm.getUTF8ResourceByGame(this.terrainFilename);
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(",");

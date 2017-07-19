@@ -30,9 +30,7 @@ public class DetailArmyReader implements MetadataReader {
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<Army> armies = new Container<Army>();
 		try {
-			Resource resource = gm.getResourceByGame(this.armyFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

@@ -1,3 +1,5 @@
+	* Fix: 120 Order wasn't being helpful in order editor.
+	* Fix/Enhancement: UTF-8 encoding handled in metadata files.
 VERSION 1.16.1
 --------------
 	* Fix: you can now create new 1000 games.

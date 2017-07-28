@@ -22,9 +22,7 @@ public class NationMapRangeReader implements MetadataReader {
 		Container<NationMapRange> mapRanges = new Container<NationMapRange>();
 
 		try {
-			Resource resource = gm.getResourceByGame(this.nationMapFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.nationMapFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

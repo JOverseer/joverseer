@@ -23,9 +23,7 @@ public class StartingCharacterReader implements MetadataReader {
 		MetadataSource ms = new MetadataSource();
 
 		try {
-			Resource resource = gm.getResourceByGame(this.characterFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

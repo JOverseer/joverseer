@@ -26,9 +26,7 @@ public class ArtifactReader implements MetadataReader {
 		Container<ArtifactInfo> artifacts = new Container<ArtifactInfo>();
 
 		try {
-			Resource resource = gm.getResourceByGame(this.artifactFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.artifactFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

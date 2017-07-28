@@ -22,9 +22,7 @@ public class OrderReader implements MetadataReader {
 		Container<OrderMetadata> orders = new Container<OrderMetadata>();
 
 		try {
-			Resource resource = gm.getResource(this.orderFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8Resource(this.orderFilename);
 			String ln;
 			int i = 0;
 			while ((ln = reader.readLine()) != null) {

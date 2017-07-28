@@ -23,7 +23,6 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.StringUtils;
 import org.joverseer.ui.orderEditor.OrderEditorData;
-import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -46,8 +45,7 @@ public class OrderParameterValidator {
 			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
 			try {
 				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
-				Resource resource = gm.getResource("orderEditorData.csv");
-				BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+				BufferedReader reader = gm.getUTF8Resource("orderEditorData.csv");
 
 				String ln;
 				while ((ln = reader.readLine()) != null) {

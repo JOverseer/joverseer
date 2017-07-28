@@ -104,8 +104,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" }); //$NON-NLS-1$
 			try {
 				GameMetadata gm1 = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata"); //$NON-NLS-1$
-				Resource resource = gm1.getResource("orderEditorData.csv"); //$NON-NLS-1$
-				BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+				BufferedReader reader = gm1.getUTF8Resource("orderEditorData.csv"); 
 
 				String ln;
 				while ((ln = reader.readLine()) != null) {

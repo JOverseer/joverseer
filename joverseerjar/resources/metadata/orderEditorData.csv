@@ -263,7 +263,7 @@
 935;UsScArt;Misc;Artifact ID # + Chosen 4-Digit Hex;art;hex;;;;;;;
 ;;;;Artifact id;Hex;;;;;;;
 940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;dcid;;;;;;M;M
-;;;;Spell;Target;;;;;;;
+;;;;Spell;Target;Target;Target;Target;Target;Target;;
 945;UsHiArt;Misc;Artifact ID #;art;;;;;;;;
 ;;;;Artifact id;;;;;;;;
 947;NatTran;Misc;4-Digit Destination Hex + Product (mi,st,br,le,ti,mo,fo) + % transferred (1-100);hex;prd;%;;;;;;

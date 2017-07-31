@@ -31,6 +31,8 @@ import org.joverseer.tools.HexInfoHistory;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.AddPopCenterCommand;
+import org.joverseer.ui.command.CreateArmyCommand;
+import org.joverseer.ui.command.CreateCharacterCommand;
 import org.joverseer.ui.command.CreateCombatForHexCommand;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
 import org.joverseer.ui.command.ShowCharacterLongStrideRangeCommand;
@@ -245,8 +247,12 @@ public class HexInfoViewer extends ObjectViewer {
 		CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoBridgeGroup", new Object[] { this.addBridgeNE, this.addBridgeE, this.addBridgeSE, this.addBridgeSW, this.addBridgeW, this.addBridgeNW, "separator", this.removeBridgeNE, this.removeBridgeE, this.removeBridgeSE, this.removeBridgeSW, this.removeBridgeW, this.removeBridgeNW }); //$NON-NLS-1$ //$NON-NLS-2$
 		int hexNo1 = hex.getHexNo();
 		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoCommandGroup",  //$NON-NLS-1$
-				new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator", new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator", new AddPopCenterCommand(hexNo1), new CreateArmyCommand(hexNo1), new CreateCharacterCommand(hexNo1), new AddEditNoteCommand(hexNo1), "separator", new CreateCombatForHexCommand(hexNo1), "separator", bridges //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-
+			new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator",//$NON-NLS-1$ 
+			new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator",//$NON-NLS-1$  
+			new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator",//$NON-NLS-1$ 
+			new AddPopCenterCommand(hexNo1), new CreateArmyCommand(), new CreateCharacterCommand(), new AddEditNoteCommand(hexNo1), "separator",  //$NON-NLS-1$ 
+			new CreateCombatForHexCommand(hexNo1), "separator", //$NON-NLS-1$ 
+			bridges 
 		});
 		return group.createPopupMenu();
 	}

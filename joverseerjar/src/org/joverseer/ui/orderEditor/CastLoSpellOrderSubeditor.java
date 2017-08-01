@@ -128,8 +128,10 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 paramType = "nat";
             } else if (",402,410,".indexOf("," + spellId + ",") > -1) {
                 paramType = "alg";
-            } else if (",412,418,428,".indexOf("," + spellId + ",") > -1) {
+            } else if (",412,".indexOf("," + spellId + ",") > -1) {
                 multiple = true;
+                paramType = "art";
+            } else if (",418,428,".indexOf("," + spellId + ",") > -1) {
                 paramType = "art";
             } else if (",413,414,415,434,".indexOf("," + spellId + ",") > -1) {
                 paramType = "hex";

@@ -6,6 +6,22 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
+    	<title>1.16.2</title>
+      	<pubDate>Tue, 1 Aug 2017</pubDate>
+      	<description>
+VERSION 1.16.2
+--------------
+	* Enh: Cast Lore Spell 412 now supports up to 6 parameters.
+	* Fix: 120 Order wasn't being helpful in order editor.
+	* Fix/Enhancement: UTF-8 encoding handled in metadata files. If an external editor put a Byte Order Mark in a metadata file, then JO could miss-read the first line. e.g. the 120 bug.
+	* Enh: Create Army and Character now added to current hex view popup menu.
+	* Fix: KS army missing from 3222. 
+	* Fix: FA roads and rivers updated.
+	* Fix: Merged fix to metadata paths from alexey-mr and extended. It should help non-Windows users.
+	* Fix: Open Software licence is now explicitly BSD.
+      	</description>
+    </item>
+    <item>
     	<title>1.16.1</title>
       	<pubDate>Wed, 7 Jun 2017</pubDate>
       	<description>

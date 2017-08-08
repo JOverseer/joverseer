@@ -177,7 +177,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		ListListModel orders = new ListListModel();
 		orders.add(Order.NA);
 		for (OrderMetadata om : orderMetadata.getItems()) {
-			if (o.getCharacter() != null && (om.charHasRequiredSkill(o.getCharacter()) || om.orderAllowedDueToScoutingSNA(o.getCharacter()))) {
+			if (o.getCharacter() != null && (om.charHasRequiredSkill(o.getCharacter()) ||
+					om.orderAllowedDueToUncoverSecretsSNA(o.getCharacter())
+					|| om.orderAllowedDueToScoutingSNA(o.getCharacter()))) {
 				if (om.orderAllowedForGameType()) {
 					orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
 				}

@@ -27,7 +27,7 @@
 1113,0,0,1,0,0,0,Minas Girithlin,0,False,True,1,False
 1210,0,1,0,12,0,0,Kul-vrestik,30,False,True,1,True
 1211,0,3,1,5,0,1,Athrad Sarn,55,False,True,1,False
-1219,0,0,1,0,0,0,Sud?ri,0,False,True,1,False
+1219,0,0,1,0,0,0,Sudûri,0,False,True,1,False
 1227,0,4,2,13,0,2,Lond Galen,75,False,True,1,False
 1309,0,2,0,5,0,0,Malonn,40,False,True,1,False
 1312,0,1,0,5,0,0,Eridea,30,False,True,1,False
@@ -44,14 +44,14 @@
 1513,0,0,3,0,0,0,Metriath,0,False,True,1,False
 1514,0,0,1,0,0,0,Argond,0,False,True,1,False
 1602,0,1,0,16,0,0,Eregiath,30,False,True,1,False
-1609,0,2,3,5,0,0,Amon S?l,40,False,True,1,False
+1609,0,2,3,5,0,0,Amon Sûl,40,False,True,1,False
 1614,0,5,2,5,0,2,Tharbad,100,False,True,1,False
 1715,0,3,2,5,0,0,Narram,55,False,True,1,False
 1720,0,3,1,13,0,0,Lond Angren,55,False,True,1,False
 1721,0,1,0,6,0,0,Sarn Celebdor,30,False,True,1,False
 1726,0,2,2,14,0,0,Tomozulis,40,False,True,1,False
 1803,0,1,1,16,0,0,Tilram,30,False,True,1,False
-1804,0,4,3,16,0,0,Carn D?m,75,False,True,1,False
+1804,0,4,3,16,0,0,Carn Dûm,75,False,True,1,False
 1904,0,1,0,16,0,0,Fuindor,30,False,True,1,False
 1908,0,1,0,16,0,0,Dinwall,30,False,True,1,False
 1910,0,3,0,16,0,0,Fennas Druinin,55,False,True,1,False
@@ -60,7 +60,7 @@
 1918,0,1,0,5,0,0,Brolorne,30,False,True,1,False
 1922,0,1,0,5,0,0,Belegos,30,False,True,1,False
 1923,0,3,2,21,0,0,Kul Bandah,55,False,True,1,False
-2004,0,1,0,16,0,0,Zarak D?m,30,False,True,1,False
+2004,0,1,0,16,0,0,Zarak Dûm,30,False,True,1,False
 2006,0,4,1,16,0,0,Mount Gram,75,False,True,1,False
 2007,0,0,1,0,0,0,Amon Garoth,0,False,True,1,False
 2008,0,4,2,16,0,0,Cameth Brin,75,False,True,1,False
@@ -247,7 +247,7 @@
 4408,0,4,2,15,0,0,Lag Norvor,75,False,True,1,False
 4410,0,2,0,15,0,0,Ardor Bal,40,False,True,1,False
 4411,0,3,2,15,0,0,Ondicor,55,False,True,1,False
-4413,0,3,0,6,0,0,Rh?bar,55,False,True,1,True
+4413,0,3,0,6,0,0,Rhûbar,55,False,True,1,True
 4420,0,4,2,15,0,0,Lag Midor,75,False,True,1,False
 4425,0,4,0,15,0,0,Zar-velesh,75,False,True,1,True
 4426,0,1,0,15,0,0,Zalag-varr,30,False,True,1,False

@@ -125,8 +125,8 @@ Join Company;755;JnCmpy;Company Commander ID;Automatic ;;M
 Leave Company;760;LvCmpy;None;Automatic ;;M
 Join Army*;785;JnArmy;Army Commander Character ID  to be joined;Automatic ;;M
 Leave Army;790;LvArmy;None;Automatic ;;M
-Drop Artifact;792;DropArt;1-6 Artifact ID #�s to be dropped (1 per line);Automatic ;;M
-Pickup Artifact;796;PickArt;1-6 Artifact ID #�s to be picked up (1 per line);Easy ;;M
+Drop Artifact;792;DropArt;1-6 Artifact ID #s to be dropped (1 per line);Automatic ;;M
+Pickup Artifact;796;PickArt;1-6 Artifact ID #s to be picked up (1 per line);Easy ;;M
 Use Movement Artifact;805;UsMvArt;Artifact ID #;Automatic ;;M
 Find Artifact;900;FindArt;Artifact ID #;Hard ;;M
 Use Scrying Artifact*;935;UsScArt;Artifact ID # / Chosen Hex;Automatic ;;M

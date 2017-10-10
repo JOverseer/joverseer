@@ -822,6 +822,7 @@ public class TurnPdfReader implements Runnable {
     private void updateTurnData() throws Exception {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
+            if (this.turnInfo.getDate() == null) return; 
             this.turn.setTurnDate(sdf.parse(this.turnInfo.getDate()));
             if (this.turnInfo.getSeason().equals("Spring")) {
                 this.turn.setSeason(SeasonEnum.Spring);
@@ -937,6 +938,7 @@ public class TurnPdfReader implements Runnable {
         }
         Container nrs = this.turn.getContainer(TurnElementsEnum.NationRelation);
         NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+        if (this.turnInfo.getAllegiance()==null) return;
         if (this.turnInfo.getAllegiance().equals("Free People")) {
             nation.setAllegiance(NationAllegianceEnum.FreePeople);
         } else if (this.turnInfo.getAllegiance().equals("Dark Servant")) {
@@ -980,6 +982,7 @@ public class TurnPdfReader implements Runnable {
     public void updatePcs(Game game1) throws Exception {
         Container pcws = this.turnInfo.getPopulationCenters();
         Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
+        if (pcws == null) return;
         String pcsNotFound = "";
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
             //PopulationCenter pc = (PopulationCenter)pcs.findFirstByProperty("name", pcw.getName());
@@ -1009,6 +1012,7 @@ public class TurnPdfReader implements Runnable {
     
     public void updateClimates(Game game1) throws Exception {
         Container pcws = this.turnInfo.getPopulationCenters();
+        if (pcws ==null) return;
         Container his = this.turn.getContainer(TurnElementsEnum.HexInfo);
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
             HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", pcw.getHexNo());
@@ -1030,6 +1034,7 @@ public class TurnPdfReader implements Runnable {
     
     public void updateArtifacts(Game game1) throws Exception {
         Container aws = this.turnInfo.getArtifacts();
+        if (aws == null) return;
         for (ArtifactWrapper aw : (ArrayList<ArtifactWrapper>)aws.getItems()) {
             // for FA game, update artifact numbers
             if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA) {
@@ -1107,6 +1112,7 @@ public class TurnPdfReader implements Runnable {
     
     public void updateCharacters(Game game1) throws Exception {
         Container cws = this.turnInfo.getCharacters();
+        if (cws == null) return;
         Container cs = this.turn.getContainer(TurnElementsEnum.Character);
         for (CharacterWrapper cw : (ArrayList<CharacterWrapper>)cws.getItems()) {
         	try {

@@ -48,4 +48,8 @@ public class UISizes {
 	public void setHeight6(int height6) {
 		this.height6 = height6;
 	}
+	public int getComboxBoxHeight()
+	{
+		return this.height5;
+	}
 }

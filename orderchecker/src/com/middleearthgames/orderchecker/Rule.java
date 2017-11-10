@@ -73,6 +73,21 @@ public class Rule
         this.phase = -1;
         this.order = order;
     }
+    private void resetState()
+    {
+        if (this.stateProcessed == null) {
+        	this.stateProcessed = new boolean[7];
+        }
+        for(int i = 0; i < STATE_NUM; i++)
+        {
+            this.stateProcessed[i] = true;
+        }
+        if (this.additionalInfo == null) {
+        	this.additionalInfo = new Vector();
+        }
+        this.additionalInfo.clear();
+    	
+    }
 
     @Override
 	protected Object clone()
@@ -178,13 +193,7 @@ public class Rule
         this.phase = phase1;
         if(phase1 == 1)
         {
-            this.additionalInfo = new Vector();
-            this.stateProcessed = new boolean[7];
-            for(int i = 0; i < STATE_NUM; i++)
-            {
-                this.stateProcessed[i] = true;
-            }
-
+            resetState();
         }
         String result;
         if(this.spellRules != null && !this.spellRules.getDone())
@@ -3212,6 +3221,8 @@ public class Rule
             }
             if(type == 0 || type == 1)
             {
+//            	Hex hex = Main.main.getMap().findHex(pc.getLocation());
+            	
                 if(this.additionalInfo.size() == 0)
                 {
                     String msg = "TROOP:Does " + pc + " have " + amount + " mounts and " + amount * 2 + " leather?";

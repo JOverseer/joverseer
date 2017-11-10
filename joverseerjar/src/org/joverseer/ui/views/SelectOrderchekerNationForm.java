@@ -1,5 +1,6 @@
 package org.joverseer.ui.views;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class SelectOrderchekerNationForm extends ScalableAbstractForm {
         tlb.cell(new JLabel(Messages.getString("SelectOrderchekerNationForm.2"))); //$NON-NLS-1$
         tlb.relatedGapRow();
         tlb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
-        this.nationCombo.setPreferredSize(this.uiSizes.newDimension(160/16, this.uiSizes.getHeight4()));
+        this.nationCombo.setPreferredSize(this.uiSizes.newDimension(160/16, this.uiSizes.getComboxBoxHeight()));
         this.nationCombo.addActionListener(new ActionListener() {
 
             @Override

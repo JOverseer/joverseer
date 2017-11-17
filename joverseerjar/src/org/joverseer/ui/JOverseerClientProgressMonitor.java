@@ -58,7 +58,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 		this.taskProgress.setMaximum(this.progressMax);
 		tlb.row();
 		tlb.relatedGapRow();
-		tlb.cell(new JLabel(Messages.getString("JOverseerClientProgressMonitor.ImportSteps"))); 
+		tlb.cell(new JLabel(Messages.getString("jOverseerClientProgressMonitor.ImportSteps")));  //$NON-NLS-1$
 		tlb.row();
 		this.taskSubtasks = new JList();
 		this.taskSubtasks.setModel(this.llm = new ListListModel());

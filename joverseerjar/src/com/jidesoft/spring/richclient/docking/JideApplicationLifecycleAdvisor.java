@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 
@@ -24,22 +25,31 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JToolBar;
 import javax.swing.RepaintManager;
+import javax.tools.Tool;
 
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.commands.ToolbarCommandGroup;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.application.support.DefaultApplicationDescriptor;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.command.GroupMemberList;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.exceptionhandling.DefaultRegisterableExceptionHandler;
@@ -93,11 +103,37 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		return handler;
 	}
 
+	
+	@Override
+	public void onApplicationEvent(ApplicationEvent event) {
+		if (event instanceof JOverseerEvent) {
+			
+			JOverseerEvent e = (JOverseerEvent) event;
+			if (e.getEventType().equals(LifecycleEventsEnum.GameLoadedEvent.toString())) {
+				JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+				for (int i = 0; i < menuBar.getMenuCount(); i++) {
+						if (!menuBar.getMenu(i).isEnabled()) {
+						menuBar.getMenu(i).setEnabled(true);
+					}
+						for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
+						JMenuItem menu = menuBar.getMenu(i).getItem(j);
+						if (menu != null) {
+							if (!menu.isEnabled()) {
+								menu.setEnabled(true);
+							}
+						}
+					}
+				}
+			}
+		}
+		super.onApplicationEvent(event);
+	}
+
 	@Override
 	public void onPostStartup() {
 		initializeRepaintManager();
+		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 		if (devOption == false) {
-			JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 			for (int i = 0; i < menuBar.getMenuCount(); i++) {
 				//TODO:I18N
 				if (menuBar.getMenu(i).getText().equals("Admin")) {
@@ -105,7 +141,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				}
 			}
 		}
-		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 		for (int i = 0; i < menuBar.getMenuCount(); i++) {
 			// recent games
 			//TODO: I18N
@@ -168,6 +203,8 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				lg.loadGame();
 			}
 		}
+		
+		// some commands are disabled until game loaded...
 	}
 
 	@Override

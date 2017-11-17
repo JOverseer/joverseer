@@ -95,6 +95,8 @@ public class LoadGame extends ActionCommand {
 
                 Application.instance().getApplicationContext().publishEvent(
                         new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, g));
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.GameLoadedEvent.toString(), g, g));
                 if (g.getParameter("horizontalMapScroll") != null) { //$NON-NLS-1$
                     MapPanel mp = MapPanel.instance();
                     JScrollPane scp = (JScrollPane)mp.getParent().getParent();

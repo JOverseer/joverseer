@@ -85,7 +85,9 @@ public class CreateGame extends ActionCommand {
                 }
 
                 Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), game, this));
+                        new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), game, this));
+                Application.instance().getApplicationContext().publishEvent(
+                        new JOverseerEvent(LifecycleEventsEnum.GameLoadedEvent.toString(), game, this));
 
                 return true;
             }

@@ -3,12 +3,21 @@
     <!-- Processor splits text into lines -->
     <processor type="RegexDelimited">
         <element>line</element>
-        <regex>\n</regex>
+        <regex>\n|\r\n</regex>
         
         <!-- Sub-processor to process each line -->
+      	<processor type="RegexMatch">
+      		<element>number</element>
+	        <regex>(\d+)\s(\d+)\s(\d)</regex>
+	        <processor type="Copy">
+	        <element>type</element>
+	        </processor>
+       </processor>
         <processor type="RegexDelimited">
             <element>field</element>
             <regex>,\s*</regex>
+
+            
         </processor>
         
     </processor>

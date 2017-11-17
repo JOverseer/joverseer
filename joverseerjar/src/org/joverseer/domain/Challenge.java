@@ -52,6 +52,8 @@ public class Challenge extends Encounter {
 					int ci2 = sentences[j].indexOf(char2);
 					// the one mentioned first is the victor, the other the
 					// loser
+					//
+					// wrong in this case:  Finally, Amroth fell to a savage barrage of spells by The Blue Wizard
 					if (ci1 > -1 && ci2 > -1) {
 						if (ci1 > ci2) {
 							this.victor = char2;

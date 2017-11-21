@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.springframework.core.io.Resource;
@@ -126,7 +127,7 @@ public class InfoView extends AbstractView {
 			res = Application.instance().getApplicationContext().getResource(uri + ".csv");
 		}
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream()));
+			BufferedReader reader = GameMetadata.getUTF8Resource(res);
 
 			InfoTableModel model = new InfoTableModel();
 			ArrayList<String> colNames = null;

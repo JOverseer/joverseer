@@ -5,6 +5,55 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item>
+    	<title>1.16.2</title>
+      	<pubDate>Tue, 1 Aug 2017</pubDate>
+      	<description>
+VERSION 1.16.2
+--------------
+	* Enh: Cast Lore Spell 412 now supports up to 6 parameters.
+	* Fix: 120 Order wasn't being helpful in order editor.
+	* Fix/Enhancement: UTF-8 encoding handled in metadata files. If an external editor put a Byte Order Mark in a metadata file, then JO could miss-read the first line. e.g. the 120 bug.
+	* Enh: Create Army and Character now added to current hex view popup menu.
+	* Fix: KS army missing from 3222. 
+	* Fix: FA roads and rivers updated.
+	* Fix: Merged fix to metadata paths from alexey-mr and extended. It should help non-Windows users.
+	* Fix: Open Software licence is now explicitly BSD.
+      	</description>
+    </item>
+    <item>
+    	<title>1.16.1</title>
+      	<pubDate>Wed, 7 Jun 2017</pubDate>
+      	<description>
+VERSION 1.16.1
+--------------
+	* Fix: you can now create new 1000 games.
+	</description>
+    </item>
+    <item>
+		<title>1.16.0</title>
+      	<pubDate>Wed, 7 Jun 2017</pubDate>
+      	<description>
+VERSION 1.16.0
+--------------
+	* Clarified some the column names in the Economy Team View.
+    * New filters in Order List View.
+	* The same as the 1.15.5 beta version.
+	* Fix for automatic updating on macs
+	* Fix: 935 recon result is now recognised.
+	* Fix: 910 scouting result is now recognised.
+    * Fix for macs.
+    * Fixed crash in 2950 new game.
+	* starting information for 2950 games has been significantly corrected.
+	* 990 order (one ring) shouldn't be flagged yellow in orderchecker
+	* Fixed: java8 selects IPv6 for networking which breaks email sending.
+	* automatic recognition of new XML format so no need for user to pick.
+	* right arrow symbol now correctly displayed.
+	* Fix 622: Kinstrife roads selected at game setup no longer vanish.
+	* Fix 632: Player characters with less than 5 characters in their name, had odd things happening, eg no past orders etc. Rebuilding the .jov file is needed to actually see a difference.
+	* Artifact effect descriptions are now consistent for saner sorting.
+      	</description>
+    </item>
 	<item>
 		<title>1.14.1</title>
       	<pubDate>Mon, 30 Nov 2015</pubDate>

@@ -472,6 +472,24 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		return getDeathReason() != null && !getDeathReason().equals(CharacterDeathReasonEnum.NotDead);
 	}
 
+	public boolean hasAllOrders() {
+		for(int i=0;i<this.numberOfOrders;i++) {
+			if (this.orders[i].isBlank()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean hasAnOrder() {
+		for(int i=0;i<this.numberOfOrders;i++) {
+			if (!this.orders[i].isBlank()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void addHostage(@SuppressWarnings("hiding") String name) {
 		if (!getHostages().contains(name))
 			getHostages().add(name);

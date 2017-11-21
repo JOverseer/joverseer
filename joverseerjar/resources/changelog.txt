@@ -1,18 +1,29 @@
-VERSION 1.15.5
+VERSION 1.16.2
 --------------
+	* Enh: Cast Lore Spell 412 now supports up to 6 parameters.
+	* Fix: 120 Order wasn't being helpful in order editor.
+	* Fix/Enhancement: UTF-8 encoding handled in metadata files. If an external editor put a Byte Order Mark in a metadata file, then JO could miss-read the first line. e.g. the 120 bug.
+	* Enh: Create Army and Character now added to current hex view popup menu.
+	* Fix: KS army missing from 3222. 
+	* Fix: FA roads and rivers updated.
+	* Fix: Merged fix to metadata paths from alexey-mr and extended. It should help non-Windows users.
+	* Fix: Open Software licence is now explicitly BSD.
+
+VERSION 1.16.1
+--------------
+	* Fix: you can now create new 1000 games.
+	
+VERSION 1.16.0
+--------------
+    * Higher resolution joverseer icon.
+	* Clarified some the column names in the Economy Team View.
+    * New filters in Order List View.
+	* The same as the 1.15.5 beta version.
 	* Fix for automatic updating on macs
-VERSION 1.15.4
---------------
 	* Fix: 935 recon result is now recognised.
 	* Fix: 910 scouting result is now recognised.
-VERSION 1.15.3
---------------
     * Fix for macs.
-VERSION 1.15.2
---------------
     * Fixed crash in 2950 new game.
-VERSION 1.15.1
---------------
 	* starting information for 2950 games has been significantly corrected.
 	* 990 order (one ring) shouldn't be flagged yellow in orderchecker
 	* Fixed: java8 selects IPv6 for networking which breaks email sending.
@@ -1068,17 +1079,10 @@ VERSION 0.9.1
 25/3/2007
 
 	* Fixed a problem with nation names that contained accents ( e.g. Eothraim, Dunadain Rangers, etc) which was causing problems in parsing pdf data. Saved games are unfortunately not fixed, this change has an effect only on new games.
-	
 	* Fixed another minor bug with New Game and Nation names.
-	
 	* Added a new map option to control the way hexes are rendered (in response to remarks about colors seeming "subdued") 
 	  Now you can choose textured (the current graphics) or simple, which uses a single color to draw the hexes.
-	
 	* Ability to scroll the map using the keyboard (in response to Mark's request). You have to click on the map first so that it gets focus. Will see if I can add mouse dragging as well soon.
-	
 	* Improved the form that shows the progress when importing turns. When the process is finished, a message is shown explaining the kinds of errors that occurred (if any).
-
 	* Fixed a problem with the map size for the larger zoom levels (you were not able to see the whole map) as reported by Mark.
-	
-	
     

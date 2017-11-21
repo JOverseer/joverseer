@@ -18,10 +18,6 @@ import org.springframework.core.io.Resource;
 public class CharacterReader implements MetadataReader {
 	String characterFilename = "chars.csv";
 
-	public String getCharacterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.characterFilename;
-	}
-
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		gm.setCharacters(loadCharacters(gm));
@@ -33,11 +29,7 @@ public class CharacterReader implements MetadataReader {
 		MetadataSource ms = new MetadataSource();
 
 		try {
-			// Resource resource =
-			// Application.instance().getApplicationContext().getResource(getCharacterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.characterFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

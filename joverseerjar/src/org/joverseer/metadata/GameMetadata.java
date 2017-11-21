@@ -1,9 +1,11 @@
 package org.joverseer.metadata;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -264,7 +266,6 @@ public class GameMetadata implements Serializable {
 	public void setBasePath(String basePath) {
 		this.basePath = basePath;
 	}
-
 	public Container<Character> getCharacters() {
 		return this.characters;
 	}
@@ -338,7 +339,36 @@ public class GameMetadata implements Serializable {
 			hc.removeItem(h);
 		hc.addItem(hex);
 	}
+	
+	
+	//from https://stackoverflow.com/questions/1835430/byte-order-mark-screws-up-file-reading-in-java
+	public BufferedReader getUTF8Resource(String filename) throws IOException
+	{
+		return getUTF8Resource(getResource(filename));
+	}
+	public static BufferedReader getUTF8Resource(Resource res) throws IOException
+	{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8"));
+	    reader.mark(1);
+        char[] possibleBOM = new char[1];
+        reader.read(possibleBOM);
 
+        if (possibleBOM[0] != '\ufeff')
+        {
+            reader.reset();
+        }
+        return reader;
+	}
+	// search order is:
+	// files first.
+	// then check classpath 
+	// note that getBasePath is not just a getter.
+	public Resource getResourceByGame(String filename) {
+		return getResource(getGameType().toString() + "." + filename);
+	}
+	public BufferedReader getUTF8ResourceByGame(String filename) throws IOException {
+		return getUTF8Resource(getGameType().toString() + "." + filename);
+	}
 	public Resource getResource(String resourceName) {
 		try {
 			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
@@ -347,7 +377,7 @@ public class GameMetadata implements Serializable {
 		} catch (Exception exc) {
 			try {
 				//System.out.println(exc.getMessage());
-				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + resourceName);
+				Resource r = Application.instance().getApplicationContext().getResource("classpath:" + this.basePath + "/" + resourceName);
 				new InputStreamReader(r.getInputStream());
 				return r;
 			} catch (Exception ex) {

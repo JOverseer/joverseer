@@ -23,19 +23,12 @@ import org.springframework.core.io.Resource;
 public class ArmyReader implements MetadataReader {
 	String armyFilename = "armies";
 
-	public String getPopulationCenterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.armyFilename;
-	}
-
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<Army> armies = new Container<Army>();
 		try {
-			// Resource resource =
-			// Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.armyFilename);
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

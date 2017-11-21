@@ -291,16 +291,18 @@ public class OrderEditorListView extends ItemListView {
 
 	private ArrayList<OrderFilter> createOrderNationFilterList() {
 		ArrayList<OrderFilter> filterList = new ArrayList<OrderFilter>();
+		//TODO: I18N
 		OrderFilter f = new OrderFilter("All characters with orders") {
 
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (!c.getOrders()[0].isBlank() || !c.getOrders()[1].isBlank()|| !c.getOrders()[2].isBlank());
+				return (!c.isDead()) && (c.getX() > 0) && (c.hasAnOrder());
 			}
 		};
 		filterList.add(f);
 
 
+		//TODO: I18N
         f = new OrderFilter("Characters without all orders") {
 
 			@Override
@@ -308,13 +310,13 @@ public class OrderEditorListView extends ItemListView {
 				if (!GameHolder.hasInitializedGame())
 					return false;
 				PlayerInfo pi = (PlayerInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", c.getNationNo());
-				return pi != null && c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && (c.getOrders()[0].isBlank() || c.getOrders()[1].isBlank()|| !c.getOrders()[2].isBlank());
+				return (pi != null) && (!c.isDead()) && (c.getX() > 0) && (!c.hasAllOrders());
 			}
 		};
 		filterList.add(f);
 
 
-
+		//TODO: I18N
 		f = new OrderFilter("All Imported") {
 
 			@Override

@@ -17,20 +17,12 @@ import org.springframework.core.io.Resource;
 public class OrderReader implements MetadataReader {
 	String orderFilename = "orders.csv";
 
-	public String getOrderFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + this.orderFilename;
-	}
-
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<OrderMetadata> orders = new Container<OrderMetadata>();
 
 		try {
-			// Resource resource =
-			// Application.instance().getApplicationContext().getResource(getOrderFilename(gm));
-			Resource resource = gm.getResource(this.orderFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+			BufferedReader reader = gm.getUTF8Resource(this.orderFilename);
 			String ln;
 			int i = 0;
 			while ((ln = reader.readLine()) != null) {

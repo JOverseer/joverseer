@@ -23,24 +23,18 @@ import org.springframework.core.io.Resource;
 public class PopulationCenterReader implements MetadataReader {
 	String populationCenterFilename = "pcs";
 
-	public String getPopulationCenterFilename(GameMetadata gm) {
-		return "file:///" + gm.getBasePath() + "/" + gm.getGameType().toString() + "." + this.populationCenterFilename;
-	}
-
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<PopulationCenter> populationCenters = new Container<PopulationCenter>();
 		try {
-			// Resource resource =
-			// Application.instance().getApplicationContext().getResource(getPopulationCenterFilename(gm));
-			Resource resource = gm.getResource(gm.getGameType().toString() + "." + this.populationCenterFilename);
-
-			BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream(),"UTF-8"));
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.populationCenterFilename);
 
 			String ln;
 			ln = reader.readLine();
-			if (ln.codePointAt(0) == 0xFEFF) { // skip any BOM left.
-				ln = ln.substring(1);
+			if (ln !=null) {
+				if (ln.codePointAt(0) == 0xFEFF) { // skip any BOM left.
+					ln = ln.substring(1);
+				}
 			}
 			while (ln != null) {
 				String[] parts = ln.split(",");

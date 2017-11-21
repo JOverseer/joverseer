@@ -22,7 +22,13 @@ Source: {#InputBuild}\..\MailSender\MailSender.exe; DestDir: {app}\bin\mailSende
 Source: {#InputBuild}\default.layout; DestDir: {app}\layout
 Source: {#InputBuild}\commons*.jar; DestDir: {app}
 Source: {#InputBuild}\fo*.jar; DestDir: {app}
-Source: {#InputBuild}\jide*.jar; DestDir: {app}
+Source: {#InputBuild}\jide-action.jar; DestDir: {app}
+Source: {#InputBuild}\jide-beaninfo.jar; DestDir: {app}
+Source: {#InputBuild}\jide-common.jar; DestDir: {app}
+Source: {#InputBuild}\jide-components.jar; DestDir: {app}
+Source: {#InputBuild}\jide-dialogs.jar; DestDir: {app}
+Source: {#InputBuild}\jide-dock.jar; DestDir: {app}
+Source: {#InputBuild}\jide-grids.jar; DestDir: {app}
 Source: {#InputBuild}\junit*.jar; DestDir: {app}
 Source: {#InputBuild}\lo*.jar; DestDir: {app}
 Source: {#InputBuild}\PDF*.jar; DestDir: {app}
@@ -52,6 +58,5 @@ Name: {app}\bin\metadata\orderchecker
 Name: {app}\layout
 ;check that these are actually needed here...they used to be copied in 1.0.12
 Name: {app}\update
-Name: {app}\meow
 
 

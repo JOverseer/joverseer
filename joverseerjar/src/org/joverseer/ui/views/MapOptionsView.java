@@ -278,7 +278,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
 				if (opt == null)
 					return;
-				if (opt.equals(Messages.getString("MapOptionsView.ColorForNation"))) { //$NON-NLS-1$
+				if (opt.equals(Messages.getString("MapOptionsView.ColourForNation"))) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsNation);
 				} else if (opt.equals(Messages.getString("MapOptionsView.ColourForAllegiance"))) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);

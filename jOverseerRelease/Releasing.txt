@@ -31,6 +31,38 @@ XPath:
 
 start joverseer.
 
+build the windows installer
+ from jOverseerRelease\build.xml
+using the target windowsInstaller
+upload joverseer-setupxxxxx.exe to website
+
+build the macOS installer
+ from jOverseerRelease\build.xml
+using the target MacOSInstaller
+(requires a MacOS computer)
+upload the *.pkg file to website
+
+upload zip file for linux users?
+
+update the website and wiki pages.
+
+Remember that the updaters will not trigger until the feed.xml has a higher version number, so do that last.
+
+Checklist of types of users
+---------------------------
+1. new Windows users
+	a) using .exe installer
+	b) using .zip 
+2. new MacOS users
+	a) using .pkg installer
+	b) using .zip
+3. new Linux users
+	using .zip
+4. updating windows users
+5. updating MacOS users
+6. updating Linux users
+7. Beta channel users
+
 Beta
 ----
 The betachannel is similar, but uses betafeed.xml and latestbetaupdate.zip
@@ -52,6 +84,11 @@ When the subsequent installer pkg is run, macos may complain about it being from
 Either control-left click the pkg file and say I trust it, or remove the extended attributes from the file....lookup the xattr command (xattr -l and -d)
 The installer gives you the option to install somewhere else...I have not tried it.
 
+do windows builds, then copy jOverseerRelease and launch4j(to be removed from the process later) to a mac.
+run ant MacOSInstaller
+ftp joverseer
+
+Note: make sure line endings on the mac files are unix style. Problems can stop the launcher to run with a 'no such file or directory' in the console log.
 
 Autoupdate notes
 ================

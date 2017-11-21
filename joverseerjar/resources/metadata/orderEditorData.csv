@@ -66,7 +66,7 @@
 ;;;;Commander;Warships;Transports;;;;;;
 360;TrArt;Misc;Other Character ID (5 lowercase letters/spaces) + 1-6 Artifact ID #'s (1 per cell);cid;art;art;art;art;art;art;;
 ;;;;Character;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;
-363;TrHost;Misc;Other Character ID (5 lowercase letters/spaces) + 1-3 Hostage Character ID�s (1 per cell);cid;cid;xid;xid;;;;;
+363;TrHost;Misc;Other Character ID (5 lowercase letters/spaces) + 1-3 Hostage Character IDs (1 per cell);cid;cid;xid;xid;;;;;
 ;;;;Character;Hostage;Hostage;Hostage;;;;;
 370;UpWpns;Misc;New Weapon type (mi,st,br) + # of each Troop type upgraded, each in a different cell.;wep;d;d;d;d;d;d;;C
 ;;;;New weapon type;HC;LC;HI;LI;AR;MA;;
@@ -182,7 +182,7 @@
 ;;;;Artifact id;;;;;;;;
 690;StlGold;Agen;;;;;;;;;A;A
 
-700;ForgtSp;Misc;1-6 Spell ID #�s to be forgotten (1 per cell);b;e;e;e;e;e;;;M
+700;ForgtSp;Misc;1-6 Spell ID #s to be forgotten (1 per cell);b;e;e;e;e;e;;;M
 ;;;;Spell;Spell;Spell;Spell;Spell;Spell;;;
 705;RsrchSp;Misc;Spell ID #;spz;;;;;;;;M
 ;;;;Spell;;;;;;;;
@@ -220,11 +220,11 @@
 ;;;;Commander;;;;;;;;
 790;LvArmy;Misc;;;;;;;;;;
 
-792;DropArt;Misc;1-6 Artifact ID #�s to be dropped (1 per cell);art;art;art;art;art;art;;;
+792;DropArt;Misc;1-6 Artifact ID #s to be dropped (1 per cell);art;art;art;art;art;art;;;
 ;;;;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;;
 794;AnchShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
 ;;;;Warships;Transports;;;;;;;
-796;PickArt;Misc;1-6 Artifact ID #�s to be picked up (1 per cell);art;art;art;art;art;art;;;
+796;PickArt;Misc;1-6 Artifact ID #s to be picked up (1 per cell);art;art;art;art;art;art;;;
 ;;;;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;Artifact id;;;
 798;PickShp;Misc;# of Warships + # of Transports;g;g;;;;;;;C
 ;;;;Warships;Transports;;;;;;;
@@ -263,7 +263,7 @@
 935;UsScArt;Misc;Artifact ID # + Chosen 4-Digit Hex;art;hex;;;;;;;
 ;;;;Artifact id;Hex;;;;;;;
 940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;dcid;;;;;;M;M
-;;;;Spell;Target;;;;;;;
+;;;;Spell;Target;Target;Target;Target;Target;Target;;
 945;UsHiArt;Misc;Artifact ID #;art;;;;;;;;
 ;;;;Artifact id;;;;;;;;
 947;NatTran;Misc;4-Digit Destination Hex + Product (mi,st,br,le,ti,mo,fo) + % transferred (1-100);hex;prd;%;;;;;;

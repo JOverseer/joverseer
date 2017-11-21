@@ -127,6 +127,16 @@ public class OrderMetadata implements Serializable {
     	return false;
     }
     
+    public boolean orderAllowedDueToUncoverSecretsSNA(Character c) {
+    	if (this.number == 585) {
+    		Nation n = c.getNation();
+    		if (n == null) return false;
+    		if (n.hasSna(SNAEnum.UncoverSecretsAt40)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     public boolean orderAllowedForGameType() {
     	if (this.number == 942 || this.number == 960 || this.number == 965) {
     		Game g = GameHolder.instance().getGame();

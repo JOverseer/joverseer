@@ -117,6 +117,8 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     private void refreshSecondParameter() {
         try {
             int spellId = Integer.parseInt(this.spellNo.getText());
+        	int counter =1;
+        	boolean multiple=false;
             String paramType = "";
             if (",406,408,417,420,422,424,426,430,436,".indexOf("," + spellId + ",") > -1) {
                 paramType = "cid";
@@ -126,7 +128,10 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 paramType = "nat";
             } else if (",402,410,".indexOf("," + spellId + ",") > -1) {
                 paramType = "alg";
-            } else if (",412,418,428,".indexOf("," + spellId + ",") > -1) {
+            } else if (",412,".indexOf("," + spellId + ",") > -1) {
+                multiple = true;
+                paramType = "art";
+            } else if (",418,428,".indexOf("," + spellId + ",") > -1) {
                 paramType = "art";
             } else if (",413,414,415,434,".indexOf("," + spellId + ",") > -1) {
                 paramType = "hex";
@@ -158,13 +163,21 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 sub = new DropDownParameterOrderSubeditor("Alleg", getOrder(), new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"});
             }else if (paramType.equals("art")) {
                 sub = new ArtifactNumberParameterOrderSubeditor("Arti", getOrder());
+            } else {
+            	throw new Exception("Config error");
             }
             TableLayoutBuilder tlb1 = new TableLayoutBuilder();
-            sub.addComponents(tlb1, this.components, getOrder(), 1);
-            tlb1.row();
-            tlb1.cell(new JLabel(" "));
-            tlb1.row();
-            sub.setEditor(getEditor());
+            do {
+                sub.addComponents(tlb1, this.components, getOrder(), counter);
+                tlb1.row();
+//                tlb1.cell(new JLabel(" ")); //DAS- I don't understand what this is doing unless to force a thick row?
+//            	tlb1.row();
+                sub.setEditor(getEditor());
+                if (!multiple) break; // normal loop exit if one parameter
+                counter++;
+              	sub = new ArtifactNumberParameterOrderSubeditor("Arti", getOrder());
+            } while (counter < 7);
+            
             this.currentComp = this.components.get(1);
             this.currentCompPanel = tlb1.getPanel();
             this.currentCompPanel.setBackground(Color.white);

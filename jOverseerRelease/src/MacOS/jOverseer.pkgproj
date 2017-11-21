@@ -206,70 +206,6 @@
 														<key>GID</key>
 														<integer>0</integer>
 														<key>PATH</key>
-														<string>Java/jide-common-orig.jar</string>
-														<key>PATH_TYPE</key>
-														<integer>1</integer>
-														<key>PERMISSIONS</key>
-														<integer>420</integer>
-														<key>TYPE</key>
-														<integer>3</integer>
-														<key>UID</key>
-														<integer>0</integer>
-													</dict>
-													<dict>
-														<key>CHILDREN</key>
-														<array/>
-														<key>GID</key>
-														<integer>0</integer>
-														<key>PATH</key>
-														<string>Java/jide-common-patched.jar</string>
-														<key>PATH_TYPE</key>
-														<integer>1</integer>
-														<key>PERMISSIONS</key>
-														<integer>420</integer>
-														<key>TYPE</key>
-														<integer>3</integer>
-														<key>UID</key>
-														<integer>0</integer>
-													</dict>
-													<dict>
-														<key>CHILDREN</key>
-														<array/>
-														<key>GID</key>
-														<integer>0</integer>
-														<key>PATH</key>
-														<string>Java/jide-common-skipped-clinit.jar</string>
-														<key>PATH_TYPE</key>
-														<integer>1</integer>
-														<key>PERMISSIONS</key>
-														<integer>420</integer>
-														<key>TYPE</key>
-														<integer>3</integer>
-														<key>UID</key>
-														<integer>0</integer>
-													</dict>
-													<dict>
-														<key>CHILDREN</key>
-														<array/>
-														<key>GID</key>
-														<integer>0</integer>
-														<key>PATH</key>
-														<string>Java/jide-common-with-hacked-class.jar</string>
-														<key>PATH_TYPE</key>
-														<integer>1</integer>
-														<key>PERMISSIONS</key>
-														<integer>420</integer>
-														<key>TYPE</key>
-														<integer>3</integer>
-														<key>UID</key>
-														<integer>0</integer>
-													</dict>
-													<dict>
-														<key>CHILDREN</key>
-														<array/>
-														<key>GID</key>
-														<integer>0</integer>
-														<key>PATH</key>
 														<string>Java/jide-common.jar</string>
 														<key>PATH_TYPE</key>
 														<integer>1</integer>
@@ -335,22 +271,6 @@
 														<integer>0</integer>
 														<key>PATH</key>
 														<string>Java/jide-grids.jar</string>
-														<key>PATH_TYPE</key>
-														<integer>1</integer>
-														<key>PERMISSIONS</key>
-														<integer>420</integer>
-														<key>TYPE</key>
-														<integer>3</integer>
-														<key>UID</key>
-														<integer>0</integer>
-													</dict>
-													<dict>
-														<key>CHILDREN</key>
-														<array/>
-														<key>GID</key>
-														<integer>0</integer>
-														<key>PATH</key>
-														<string>Java/jide-oss-3.4.5.jar</string>
 														<key>PATH_TYPE</key>
 														<integer>1</integer>
 														<key>PERMISSIONS</key>

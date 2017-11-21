@@ -104,8 +104,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" }); //$NON-NLS-1$
 			try {
 				GameMetadata gm1 = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata"); //$NON-NLS-1$
-				Resource resource = gm1.getResource("orderEditorData.csv"); //$NON-NLS-1$
-				BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+				BufferedReader reader = gm1.getUTF8Resource("orderEditorData.csv"); 
 
 				String ln;
 				while ((ln = reader.readLine()) != null) {
@@ -178,7 +177,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		ListListModel orders = new ListListModel();
 		orders.add(Order.NA);
 		for (OrderMetadata om : orderMetadata.getItems()) {
-			if (o.getCharacter() != null && (om.charHasRequiredSkill(o.getCharacter()) || om.orderAllowedDueToScoutingSNA(o.getCharacter()))) {
+			if (o.getCharacter() != null && (om.charHasRequiredSkill(o.getCharacter()) ||
+					om.orderAllowedDueToUncoverSecretsSNA(o.getCharacter())
+					|| om.orderAllowedDueToScoutingSNA(o.getCharacter()))) {
 				if (om.orderAllowedForGameType()) {
 					orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
 				}

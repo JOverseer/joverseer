@@ -137,7 +137,6 @@
 		<property name="members">
 			<list>
                 <bean class="org.joverseer.ui.command.JOverseerShowViewMenu" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default" />
-                <bean class="org.joverseer.ui.command.RestoreAutomagicLayoutCommand"/>
                 <bean class="org.joverseer.ui.command.RestoreDefaultLayoutCommand"/>
 			</list>
 		</property>
@@ -175,6 +174,10 @@
 				<bean class="org.joverseer.ui.command.ShowMapHelpCommand"/>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand"/>
+				<value>separator</value>
+<!-- 				<bean class="org.joverseer.ui.command.GatherSupportDataCommand"/>
+				<value>separator</value>
+ -->				<bean class="org.joverseer.ui.command.CheckForUpdatesCommand"/>
 				<value>separator</value>
 				<ref bean="aboutCommand"/>
 			</list>

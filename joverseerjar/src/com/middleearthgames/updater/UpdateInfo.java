@@ -45,7 +45,11 @@ public class UpdateInfo extends JFrame{
     private JPanel pan2;
 
     public UpdateInfo(String info) {
-        initComponents();
+    	this(info,"New Update Found");
+    }
+    public UpdateInfo(String info,String title) {
+    	
+        initComponents(title);
 		this.infoPane.setPreferredSize(new Dimension(800, 600));
 		try {
 			String text = info;
@@ -88,10 +92,10 @@ public class UpdateInfo extends JFrame{
 		}
     }
 
-    private void initComponents() {
+    private void initComponents(String title) {
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        this.setTitle("New Update Found");
+        this.setTitle(title);
         this.pan1 = new JPanel();
         this.pan1.setLayout(new BorderLayout());
 

@@ -24,4 +24,8 @@ public class JOverseerEvent extends LifecycleApplicationEvent {
         return super.getObject();
     }
 
+    public boolean isLifecycleEvent(LifecycleEventsEnum type)
+    {
+    	return getEventType().equals(type.toString()); 
+    }
 }

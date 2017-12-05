@@ -589,12 +589,12 @@ public class OrderEditorListView extends ItemListView {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				refreshFilters();
 				setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
 				setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				// setFilters();
 				refreshFilters();
 				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
@@ -643,11 +643,11 @@ public class OrderEditorListView extends ItemListView {
 				});
 
 				setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				// setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
 				setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.RefreshOrders.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshOrders)) {
 				setItems();
 			}
 		}

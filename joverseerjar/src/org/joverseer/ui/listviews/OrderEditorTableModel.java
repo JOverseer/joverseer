@@ -149,20 +149,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			Order order = (Order) object;
 			Character c = order.getCharacter();
 
-			String txt = "";
-			if (c.getCommandTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getCommandTotal()) + "C";
-			}
-			if (c.getAgentTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getAgentTotal()) + "A";
-			}
-			if (c.getEmmisaryTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getEmmisaryTotal()) + "E";
-			}
-			if (c.getMageTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getMageTotal()) + "M";
-			}
-			return txt;
+			return c.getBasicStatString();
 		}
 		return super.getValueAtInternal(object, i);
 	}

@@ -461,6 +461,25 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 
 		return txt;
 	}
+	// prefix non-zero stat with code.
+	private static void appendStat(StringBuilder sb,int stat,String code)
+	{
+		if (stat > 0 ) {
+			if (sb.length() >0) {
+				sb.append(", ");
+			}
+			sb.append(code);
+			sb.append(stat);
+		}
+	}
+	public String getBasicStatString() {
+		StringBuilder sb = new StringBuilder();
+		appendStat(sb,this.getCommandTotal(),"C");
+		appendStat(sb,this.getAgentTotal(),"A");
+		appendStat(sb,this.getEmmisaryTotal(),"E");
+		appendStat(sb,this.getMageTotal(),"M");
+		return sb.toString();
+	}
 
 	private String getStatText(String prefix, int skill, int skillTotal) {
 		if (skillTotal == 0 && skill == 0)

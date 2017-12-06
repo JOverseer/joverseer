@@ -18,7 +18,6 @@ import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.support.ValueHolder;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.binding.Binding;
 import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
@@ -52,7 +51,7 @@ public class EditNoteForm extends AbstractForm {
 		formBuilder.row();
 
 		ArrayList<Nation> nations = new ArrayList<Nation>();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (Game.isInitialized(g)) {
 			GameMetadata gm = g.getMetadata();
 			nations.addAll(gm.getNations());

@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.DeleteNoteCommand;
@@ -88,7 +89,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
     @Override
 	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+        ImageSource imgSource = joApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("note.icon")); //$NON-NLS-1$
 
         for (int i = 0; i < 20; i++) {

@@ -43,14 +43,14 @@ public class OrderEditorView extends AbstractView implements ApplicationListener
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.EditOrderEvent)) {
                 GraphicUtils.showView("orderEditorView");
                 ((OrderEditor)this.f).giveFocus();
             }
-            if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
                 ((OrderEditor)this.f).setFormObject(new Order(null));
             }
-            else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems.toString())) {
+            else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
             	if (e.getSender() != this.f) {
             		((OrderEditor)this.f).refreshDrawCheck();
             	}

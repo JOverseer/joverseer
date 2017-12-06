@@ -5,7 +5,6 @@ import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for NationRelation objects
@@ -13,6 +12,11 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class RelationsTableModel extends ItemTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1590235238130836506L;
+
 	public RelationsTableModel(MessageSource messageSource) {
 		super(NationRelations.class, messageSource);
 	}
@@ -42,7 +46,7 @@ public class RelationsTableModel extends ItemTableModel {
 
 	@Override
 	public String getColumnName(int arg0) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g) || arg0 < 3)
 			return super.getColumnName(arg0);
 		return g.getMetadata().getNationByNum(arg0 - 2).getShortName();

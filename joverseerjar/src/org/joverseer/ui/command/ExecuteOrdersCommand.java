@@ -4,9 +4,8 @@ package org.joverseer.ui.command;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 public class ExecuteOrdersCommand extends ActionCommand {
@@ -17,7 +16,7 @@ public class ExecuteOrdersCommand extends ActionCommand {
 
 	@Override
 	protected void doExecuteCommand() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = joApplication.getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		try {

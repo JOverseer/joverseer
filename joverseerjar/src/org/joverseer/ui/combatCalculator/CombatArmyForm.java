@@ -6,17 +6,16 @@ import java.util.Arrays;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.TacticEnum;
 import org.joverseer.ui.support.Messages;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.binding.form.FormModel;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.binding.value.support.ValueHolder;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.binding.swing.ComboBoxBinding;
 import org.springframework.richclient.form.binding.swing.SwingBindingFactory;
@@ -45,7 +44,7 @@ public class CombatArmyForm extends AbstractForm {
 		tlb.relatedGapRow();
 
 		ArrayList<Nation> nations = new ArrayList<Nation>();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game g = joApplication.getGame();
 		if (Game.isInitialized(g)) {
 			GameMetadata gm = g.getMetadata();
 			nations.addAll(gm.getNations());

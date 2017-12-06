@@ -9,7 +9,6 @@ import org.joverseer.domain.Note;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 public class NotesRenderer implements Renderer {
 	MapMetadata mapMetadata = null;
@@ -22,7 +21,7 @@ public class NotesRenderer implements Renderer {
 	}
 
 	private void init() {
-		this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		this.mapMetadata = MapMetadata.instance();
 	}
 
 	@Override

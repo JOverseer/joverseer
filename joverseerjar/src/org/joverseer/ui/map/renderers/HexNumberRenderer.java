@@ -2,8 +2,6 @@ package org.joverseer.ui.map.renderers;
 
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.ui.map.MapMetadata;
-import org.springframework.richclient.application.Application;
-
 import java.awt.*;
 
 /**
@@ -21,7 +19,7 @@ public class HexNumberRenderer implements Renderer{
     }
 
     private void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
     @Override

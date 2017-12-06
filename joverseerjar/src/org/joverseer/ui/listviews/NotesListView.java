@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -23,6 +24,7 @@ import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -52,7 +54,7 @@ public class NotesListView extends ItemListView {
     //TODO issues with the cell renderers - need multiline or not?
     @Override
 	protected JComponent createControlImpl() {
-        MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+        MessageSource messageSource = Messages.getMessageSource();
 
         // create the table model
         try {
@@ -177,8 +179,7 @@ public class NotesListView extends ItemListView {
                     Object obj = NotesListView.this.tableModel.getRow(idx);
                     Note note = (Note) obj;
                     GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
-                    Application.instance().getApplicationContext().publishEvent(
-                            new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
+                    joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
 
                 } catch (Exception exc) {
 

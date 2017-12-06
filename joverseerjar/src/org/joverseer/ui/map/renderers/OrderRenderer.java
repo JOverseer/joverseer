@@ -46,7 +46,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 	private OrderVisualizationData getOrderVisualizationData() {
 		if (this.orderVisualizationData == null) {
-			this.orderVisualizationData = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+			this.orderVisualizationData = OrderVisualizationData.instance();
 		}
 		return this.orderVisualizationData;
 	}
@@ -189,7 +189,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 			return;
 		}
 
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		Object d = ovd.getAdditionalInfo(order, "displacement");
 		if (d == null)
 			d = 0;
@@ -220,7 +220,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 			Point p2 = null;
 			int cost = 0;
 
-			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game game = GameHolder.instance().getGame();
 
 			Army army = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", order.getCharacter().getName());
 			Boolean cav = null;
@@ -556,7 +556,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private void renderReconOrder(Order o, Graphics2D g) {
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		try {
 			int hexNo = Integer.parseInt((String) (ovd.getAdditionalInfo(o, "hexNo")));
 			renderReconTypeOrder(hexNo, o.getCharacter().getName() + "'s recon", g);
@@ -566,7 +566,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private void renderScoAreaOrder(Order o, Graphics2D g) {
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		try {
 			int hexNo = Integer.parseInt((String) (ovd.getAdditionalInfo(o, "hexNo")));
 			renderReconTypeOrder(hexNo, o.getCharacter().getName() + "'s ScoArea", g);

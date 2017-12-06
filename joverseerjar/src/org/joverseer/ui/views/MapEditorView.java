@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.joverseer.joApplication;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -49,7 +50,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		active.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
+				HashMap mapEditorOptions = joApplication.getMapEditorOptions();
 				mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
 			}
 		});
@@ -76,7 +77,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
+					HashMap mapEditorOptions = joApplication.getMapEditorOptions();
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
 				}
 			});
@@ -96,7 +97,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e1) {
-					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
+					HashMap mapEditorOptions = joApplication.getMapEditorOptions();
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
 				}
 			});
@@ -127,7 +128,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 
 			}
 		}

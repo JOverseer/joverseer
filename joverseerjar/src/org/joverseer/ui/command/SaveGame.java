@@ -49,7 +49,7 @@ public class SaveGame extends ActionCommand {
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));
         }
-        GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"); //$NON-NLS-1$
+        GameHolder gh = GameHolder.instance();
         String fname = String.format("game%s.jov", gh.getGame().getMetadata().getGameNo()); //$NON-NLS-1$
         fileChooser.setSelectedFile(new File(fname));
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {

@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ClimateEnum;
@@ -175,7 +176,7 @@ public class CombatForm extends AbstractForm {
 		tlb.cell(lb.getPanel(), "colspan=2"); //$NON-NLS-1$
 		tlb.relatedGapRow();
 
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource"); //$NON-NLS-1$
+		MessageSource messageSource = Messages.getMessageSource();
 		this.side1TableModel = new CombatArmyTableModel(this, messageSource);
 		this.side1Table = TableUtils.createStandardSortableTable(this.side1TableModel);
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.side1Table, this.side1TableModel.getColumnWidths());
@@ -205,7 +206,7 @@ public class CombatForm extends AbstractForm {
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
 		tlb.cell(scp);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 		Icon ico;
 		JButton btn;
 		lb = new TableLayoutBuilder();

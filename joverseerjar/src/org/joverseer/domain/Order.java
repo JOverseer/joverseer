@@ -6,7 +6,6 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 
 /**
  * Stores an order for a character
@@ -116,7 +115,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	 * looking it up in the game metadata
 	 */
 	public OrderMetadata getMetadata() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null)
 			return null;
 		GameMetadata gm = g.getMetadata();

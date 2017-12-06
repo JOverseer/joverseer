@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
@@ -34,13 +35,10 @@ import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.TrackCharacterMapItem;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
-import org.joverseer.ui.map.renderers.HexNumberRenderer;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.dialogs.InputDialog;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.ColumnToSort;
@@ -163,7 +161,7 @@ public class TrackCharacterListView extends BaseItemListView {
 					}
 				}
 				AbstractMapItem.add(tcmi);
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), tcmi, this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, tcmi, this);
 			}
 		});
 
@@ -213,7 +211,7 @@ public class TrackCharacterListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<TrackCharacterInfo> items = new ArrayList<TrackCharacterInfo>();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		String charName = this.character.getText();
@@ -326,11 +324,11 @@ public class TrackCharacterListView extends BaseItemListView {
 					TrackCharacterInfo tci = (TrackCharacterInfo) obj;
 					if (tci.getHexNo() > 0) {
 						Point selectedHex = new Point(tci.getX(), tci.getY());
-						Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+						joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 					}
-					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+					Game g = GameHolder.instance().getGame();
 					g.setCurrentTurn(tci.getTurnNo());
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 
 				} catch (Exception exc) {
 					// do nothing

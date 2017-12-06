@@ -3,6 +3,7 @@ package org.joverseer.support;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.HexInfo;
@@ -16,7 +17,6 @@ import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.springframework.richclient.application.Application;
 
 /**
  * Utility class that initializes a new turn. Based on the existence of not of a previous turn
@@ -34,7 +34,7 @@ public class TurnInitializer {
         Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
 
         Container newPlayerInfo = newTurn.getContainer(TurnElementsEnum.PlayerInfo);
-        GameMetadata gm = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+        GameMetadata gm = joApplication.getMetadata();
         
         Container newNotes = newTurn.getContainer(TurnElementsEnum.Notes);
         Container newChars = new Container(new String[]{"id", "name", "hexNo", "nationNo"});

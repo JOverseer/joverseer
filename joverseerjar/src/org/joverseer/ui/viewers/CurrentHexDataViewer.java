@@ -33,7 +33,6 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.application.support.DefaultViewDescriptor;
 import org.springframework.richclient.form.FormModelHelper;
@@ -323,7 +322,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		if (p.x < 10)
 			hex = "0" + hex; //$NON-NLS-1$
 		((DefaultViewDescriptor) getDescriptor()).setTitle(Messages.getString("CurrentHexDataViewer.Title") + hex); //$NON-NLS-1$
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
 		if (g == null)
 			return;
 		GameMetadata gm = g.getMetadata();
@@ -395,25 +394,25 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
 				Point p = (Point) e.getObject();
 				refresh(p);
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				Point p = MapPanel.instance().getSelectedHex();
 				if (p != null)
 					refresh(p);
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.RefreshHexItems.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshHexItems)) {
 				Point p = (Point) e.getObject();
 				refresh(p);
 			}
 
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				Point p = MapPanel.instance().getSelectedHex();
 				refresh(p);
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				Order o = (Order) e.getData();
 				for (int i = 0; i < this.characterPanels.size(); i++) {
 					if (!this.characterPanels.get(i).isVisible())
@@ -425,11 +424,11 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 					}
 				}
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectCharEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectCharEvent)) {
 				Character c = (Character) e.getData();
 				selectCharacter(c);
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.NoteUpdated.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.NoteUpdated)) {
 				Point p = MapPanel.instance().getSelectedHex();
 				refresh(p);
 			}

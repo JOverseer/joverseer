@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.PopulationCenter;
@@ -15,9 +16,7 @@ import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.MessageDialog;
 
@@ -106,7 +105,7 @@ public class CreateCombatForHexCommand extends ActionCommand {
 		combat.loadTerrainAndClimateFromHex();
 		combat.autoSetRelationsToHated();
 		game.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(combat);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+		joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 		ShowCombatCalculatorCommand cmd = new ShowCombatCalculatorCommand(combat);
 		cmd.execute();
 	}

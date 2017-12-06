@@ -1,12 +1,11 @@
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.EditNationMetadataForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -25,7 +24,7 @@ public class EditNationMetadataCommand extends ActionCommand {
     @Override
 	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
-        final Game g = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        final Game g = joApplication.getGame();
         FormModel formModel = FormModelHelper.createFormModel(g.getMetadata());
         final EditNationMetadataForm form = new EditNationMetadataForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);

@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.JTableHeader;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Encounter;
 import org.joverseer.game.Game;
@@ -35,7 +36,6 @@ import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
@@ -69,7 +69,7 @@ public class EncounterListView extends BaseItemListView {
 	@Override
 	protected JComponent createControlImpl() {
 		// fetch the messageSource instance from the application context
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource"); //$NON-NLS-1$
+		MessageSource messageSource = Messages.getMessageSource();
 
 		// create the table model
 		try {
@@ -116,6 +116,11 @@ public class EncounterListView extends BaseItemListView {
 		// create the JTable instance
 		this.table = TableUtils.createStandardSortableTable(this.tableModel);
 		this.table = new SortableTable(this.table.getModel()) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3061414315302366669L;
+
 			@Override
 			protected void initTable() {
 				super.initTable();
@@ -165,7 +170,7 @@ public class EncounterListView extends BaseItemListView {
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+			ImageSource imgSource =joApplication.getImageSource();
 			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon")); //$NON-NLS-1$
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);

@@ -19,7 +19,6 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -74,7 +73,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 		this.mapPanel.setPreferredSize(new Dimension(3500, 2500));
 		this.mapPanel.setBackground(Color.white);
 		this.scp.setPreferredSize(new Dimension(800, 500));
-		MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+		MapMetadata mm = MapMetadata.instance();
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 		this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
 
@@ -91,10 +90,10 @@ public class MapView extends AbstractView implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				this.mapPanel.invalidateAll();
 				this.mapPanel.updateUI();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
 				if (e.getSender() != this.mapPanel) {
 					Point p = (Point) e.getObject();
 					this.mapPanel.setSelectedHex(p);
@@ -107,21 +106,21 @@ public class MapView extends AbstractView implements ApplicationListener {
 					vr.y = shr.y - (vr.height - shr.height) / 2;
 					this.mapPanel.scrollRectToVisible(vr);
 				}
-			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				this.mapPanel.invalidateAll();
 				this.mapPanel.updateUI();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.RefreshTurnMapItems.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshTurnMapItems)) {
 				this.mapPanel.invalidateAll();
 				this.mapPanel.updateUI();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
 				// refreshAutoArmyRangeMapItems(null);
 				this.mapPanel.invalidateMapItems();
 				this.mapPanel.updateUI();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				this.mapPanel.invalidateMapItems();
 				this.mapPanel.updateUI();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
-				MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.MapMetadataChangedEvent)) {
+				MapMetadata mm = MapMetadata.instance();
 				this.mapPanel.setPreferredSize(new Dimension(mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
 				this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 				this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);

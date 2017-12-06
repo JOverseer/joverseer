@@ -1,10 +1,9 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for Note objects
@@ -39,7 +38,7 @@ public class NotesTableModel extends ItemTableModel {
 	@Override
 	protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
 		super.setValueAtInternal(arg0, arg1, arg2);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.NoteUpdated.toString(), this, this));
+		joApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, this, this);
 
 	}
 

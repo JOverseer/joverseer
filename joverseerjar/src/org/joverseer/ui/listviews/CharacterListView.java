@@ -8,8 +8,6 @@ import java.util.Arrays;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.TurnElementsEnum;
@@ -18,7 +16,6 @@ import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
-import org.joverseer.ui.listviews.renderers.NonZeroNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.table.ColumnToSort;
@@ -83,7 +80,12 @@ public class CharacterListView extends ItemListView {
 
         });
         this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel) {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -2541679036922383283L;
+
+			@Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
                     int arg4, int arg5) {
                 Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);

@@ -1,7 +1,7 @@
 package org.joverseer.support;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
-import org.springframework.richclient.application.Application;
 
 /**
  * Simple wrapper for the Game object.
@@ -31,11 +31,11 @@ public class GameHolder {
 	}
 
 	public static boolean hasInitializedGame() {
-        GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+        GameHolder gh = instance();
         return Game.isInitialized(gh.getGame());
     }
     
     public static GameHolder instance() {
-        return (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+        return (GameHolder) joApplication.getApplicationContext().getBean("gameHolder");
     }
 }

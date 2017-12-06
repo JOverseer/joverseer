@@ -25,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
@@ -91,7 +92,7 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 		ArrayList<Order> orders = new ArrayList<Order>();
@@ -383,6 +384,10 @@ public class OrderEditorListView extends ItemListView {
 		JTable table1 = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.tableModel);
 		JTable newTable = new JOverseerTable(table1.getModel()) {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1691495526936183832L;
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
 
@@ -446,6 +451,10 @@ public class OrderEditorListView extends ItemListView {
 
 		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 310794852715412640L;
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
 
@@ -481,6 +490,11 @@ public class OrderEditorListView extends ItemListView {
 		// virtual field
 		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6783374680361562177L;
+
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				try {
@@ -488,7 +502,7 @@ public class OrderEditorListView extends ItemListView {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, "", isSelected, hasFocus, row, column);
 					lbl.setIcon(ico);
 					if (ico != null) {
-						OrderResultContainer container = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
+						OrderResultContainer container = OrderResultContainer.instance();
 						int idx = ((SortableTableModel) table1.getModel()).convertSortedIndexToDataIndex(row);
 						Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 						Order o = (Order) obj;
@@ -512,6 +526,11 @@ public class OrderEditorListView extends ItemListView {
 
 		// renderer for hex - boldify capital hex
 		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6644638520816762371L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -537,6 +556,11 @@ public class OrderEditorListView extends ItemListView {
 		});
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -4536220456339002594L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -574,7 +598,7 @@ public class OrderEditorListView extends ItemListView {
 				// setFilters();
 				refreshFilters();
 				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+				Game g = GameHolder.instance().getGame();
 				ListListModel orders = new ListListModel();
 				orders.add(Order.NA);
 				if (Game.isInitialized(g)) {
@@ -658,7 +682,7 @@ public class OrderEditorListView extends ItemListView {
 				try {
 					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 					Order order = (Order) obj;
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
+					joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
 				} catch (Exception exc) {
 
 				}
@@ -685,7 +709,7 @@ public class OrderEditorListView extends ItemListView {
 					Order order = (Order) obj;
 					order.clear();
 					((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
+					joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
 				} catch (Exception exc) {
 					System.out.println(exc);
 				}
@@ -703,14 +727,14 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+			OrderVisualizationData ovd = OrderVisualizationData.instance();
 			for (Object o : OrderEditorListView.this.tableModel.getRows()) {
 				Order order = (Order) o;
 				if (GraphicUtils.canRenderOrder(order)) {
 					ovd.addOrder(order);
 				}
 			}
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 		}
 	}
 
@@ -723,9 +747,9 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+			OrderVisualizationData ovd = OrderVisualizationData.instance();
 			ovd.clear();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 		}
 	}
 
@@ -817,6 +841,10 @@ public class OrderEditorListView extends ItemListView {
 	 */
 	class OrderParameterCellRenderer extends DefaultTableCellRenderer {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8431276961016537008L;
 		int paramNo;
 		Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 		Color normalBackground = (Color) UIManager.get("Table.background");
@@ -869,6 +897,10 @@ public class OrderEditorListView extends ItemListView {
 	 */
 	class OrderNumberCellRenderer extends DefaultTableCellRenderer {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 506383000581556844L;
 		Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 		Color normalBackground = (Color) UIManager.get("Table.background");
 

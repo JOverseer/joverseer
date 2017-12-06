@@ -13,7 +13,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 import org.joverseer.ui.domain.ProductLineWrapper;
 import org.joverseer.ui.support.Messages;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
 /**
@@ -56,7 +55,7 @@ public class NationProductionListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<IdentifiedProductLineWrapper> items = new ArrayList<IdentifiedProductLineWrapper>();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 		ProductContainer totalProdContainer = new ProductContainer();

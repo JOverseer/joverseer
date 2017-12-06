@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.NationRelations;
@@ -19,7 +20,6 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
-import org.springframework.richclient.application.Application;
 
 /**
  * Various movement utilities. This class contains only static methods.
@@ -68,7 +68,7 @@ public class MovementUtils {
 	 * a major river (for navies)
 	 */
 	public static boolean movementAlongMajorRiver(Hex startHex, MovementDirection md) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = joApplication.getGame();
 		GameMetadata gm = g.getMetadata();
 		Hex dest = gm.getHex(getHexNoAtDir(startHex.getHexNo(), md));
 
@@ -120,7 +120,7 @@ public class MovementUtils {
 	 * @return
 	 */
 	public static int calculateMovementCostForNavy(int startHexNo, String direction, boolean isFed, int initialHex) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = joApplication.getGame();
 		GameMetadata gm = g.getMetadata();
 		Hex start = gm.getHex(startHexNo);
 		MovementDirection md = MovementDirection.getDirectionFromString(direction);
@@ -133,7 +133,7 @@ public class MovementUtils {
 			return -1;
 		} else {
 			// out of map
-			MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+			MapMetadata mm = joApplication.getMapMetadata();
 			if (dest.getColumn() < mm.getMinMapColumn())
 				return -1;
 			if (dest.getColumn() > mm.getMaxMapColumn())
@@ -212,7 +212,7 @@ public class MovementUtils {
 	 * @return
 	 */
 	public static int calculateMovementCostForArmy(int startHexNo, String direction, boolean isCavalry, boolean isFed, boolean ignoreEnemyPops, NationAllegianceEnum allegiance, int initialHex) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = joApplication.getGame();
 		GameMetadata gm = g.getMetadata();
 		Hex start = gm.getHex(startHexNo);
 
@@ -256,7 +256,7 @@ public class MovementUtils {
 			return -1;
 		} else {
 			// out of map
-			MapMetadata mm = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+			MapMetadata mm = joApplication.getMapMetadata();
 			if (dest.getColumn() < mm.getMinMapColumn())
 				return -1;
 			if (dest.getColumn() > mm.getMaxMapColumn())

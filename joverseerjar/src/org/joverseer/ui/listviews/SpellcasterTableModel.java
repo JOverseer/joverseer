@@ -8,7 +8,6 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.SpellcasterWrapper;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for SpellcasterWrapper objects
@@ -16,7 +15,7 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class SpellcasterTableModel extends ItemTableModel {
-	
+
 	ArrayList<Integer> spells = new ArrayList<Integer>();
 	ArrayList<String> spellDescrs = new ArrayList<String>();
 
@@ -65,7 +64,7 @@ public class SpellcasterTableModel extends ItemTableModel {
 
 	@Override
 	public String getColumnName(int arg0) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g) || arg0 < getSpellStartI()) {
 			return super.getColumnName(arg0);
 		}

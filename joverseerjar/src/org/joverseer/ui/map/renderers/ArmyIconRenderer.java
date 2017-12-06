@@ -10,7 +10,6 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renderer for armies Renders one icon for all armies of the same allegiance in
@@ -33,7 +32,7 @@ public class ArmyIconRenderer extends ImageRenderer {
 	}
 
 	private void init() {
-		this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		this.mapMetadata = MapMetadata.instance();
 	}
 
 	@Override

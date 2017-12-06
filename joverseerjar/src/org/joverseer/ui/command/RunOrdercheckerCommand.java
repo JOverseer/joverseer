@@ -18,7 +18,6 @@ import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -101,7 +100,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 						// results
 						// the order results are retrieved from the order
 						// checker proxy
-						OrderResultContainer cont = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
+						OrderResultContainer cont = OrderResultContainer.instance();
 
 						ArrayList<OrderResult> resultList = new ArrayList<OrderResult>();
 						ArrayList<Character> chars = g.getTurn().getCharacters().findAllByProperty("nationNo", Main.main.getNation().getNation());

@@ -9,6 +9,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
@@ -17,7 +18,6 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
 import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.application.Application;
@@ -83,20 +83,18 @@ public class LoadGame extends ActionCommand {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
             File f = new File(this.fname);
             try {
-                GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"); //$NON-NLS-1$
+                GameHolder gh = GameHolder.instance();
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
                 gh.setGame(g);
                 gh.setFile(this.fname);
 
                 MapMetadataUtils mmu = new MapMetadataUtils();
-                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+                MapMetadata mm = MapMetadata.instance();
                 mmu.setMapSize(mm, g.getMetadata().getGameType());
 
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, g));
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.GameLoadedEvent.toString(), g, g));
+                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
+                joApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, g, g);
                 if (g.getParameter("horizontalMapScroll") != null) { //$NON-NLS-1$
                     MapPanel mp = MapPanel.instance();
                     JScrollPane scp = (JScrollPane)mp.getParent().getParent();
@@ -114,8 +112,7 @@ public class LoadGame extends ActionCommand {
                     try {
                         int hx = Integer.parseInt(g.getParameter("selHexX")); //$NON-NLS-1$
                         int hy = Integer.parseInt(g.getParameter("selHexY")); //$NON-NLS-1$
-                        Application.instance().getApplicationContext().publishEvent(
-                                new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), new Point(hx, hy), g));
+                        joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(hx, hy), g);
                     }
                     catch (Exception exc) {
                         

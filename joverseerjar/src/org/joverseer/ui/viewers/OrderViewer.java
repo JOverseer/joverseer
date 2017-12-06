@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Order;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
@@ -35,12 +36,10 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dataFlavors.OrderDataFlavor;
 import org.joverseer.ui.support.transferHandlers.OrderExportTransferHandler;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
@@ -98,10 +97,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	Icon ico = null;
     	boolean joErrors = false;
     	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+        ImageSource imgSource = joApplication.getImageSource();
     	if (!o.isBlank()) {
 	    	
-	        OrderResultContainer container = (OrderResultContainer)Application.instance().getApplicationContext().getBean("orderResultContainer"); //$NON-NLS-1$
+	        OrderResultContainer container = OrderResultContainer.instance();
 	        orderResultType = container.getResultTypeForOrder(o);
 	        if (orderResultType != null) {
 	        	results = container.getResultsForOrder(o);
@@ -165,7 +164,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         
         setOrderValidationResults(o);
         
-        OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+        OrderVisualizationData ovd = OrderVisualizationData.instance();
         this.draw.setSelected(ovd.contains(o));
         if (GraphicUtils.canRenderOrder(o)) {
         	this.draw.setEnabled(true);
@@ -224,11 +223,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                         	}
                         }
                         
-                        Application.instance().getApplicationContext().publishEvent(
-                                new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+                        joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 
-                        Application.instance().getApplicationContext().publishEvent(
-                                new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), no, this));
+                        joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, no, this);
                     }
                 }
                 catch (Exception exc) {
@@ -241,7 +238,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         this.orderResultIcon.setBorder(border);
         glb.append(this.orderResultIcon);
         
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+        ImageSource imgSource = joApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
         final JButton btn = new JButton(ico);
         btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
@@ -249,8 +246,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             @Override
 			public void actionPerformed(ActionEvent e) {
                 Order order = (Order)getFormObject();
-                Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
+                joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
             }
         });
         
@@ -258,21 +254,20 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         btn.setBorder(border);
         glb.append(btn);
 
-//        imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+//        imgSource = joApplication.getImageSource();
 //        ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
         this.draw = new JCheckBox();
         this.draw.setToolTipText(Messages.getString("OrderViewer.DrawOrder")); //$NON-NLS-1$
         this.draw.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent e) {
-                OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+                OrderVisualizationData ovd = OrderVisualizationData.instance();
                 if (OrderViewer.this.draw.isSelected()) {
                     ovd.addOrder((Order)getFormObject());
                 } else {
                     ovd.removeOrder((Order)getFormObject());
                 }
-                Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+                joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
             }
         });
         this.draw.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
@@ -334,8 +329,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     @Override
 	public void actionPerformed(ActionEvent e) {
           Order order = (Order)getFormObject();
-          Application.instance().getApplicationContext().publishEvent(
-              new JOverseerEvent(LifecycleEventsEnum.EditOrderEvent.toString(), order, this));
+          joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
         //final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
 //        final OrderEditor form = new OrderEditor();
 //        FormBackedDialogPage page = new FormBackedDialogPage(form);
@@ -351,12 +345,10 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 //                // first we need to find the current hex
 //                Order order = (Order)getFormObject();
 //                Point selHex = new Point(order.getX(), order.getY());
-//                Application.instance().getApplicationContext().publishEvent(
-//                                    new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selHex, this));
+//                joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selHex, this);
 //
 //                // throw an order changed event
-//                Application.instance().getApplicationContext().publishEvent(
-//                                    new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), order, this));
+//                joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
 //
 //                return true;
 //            }

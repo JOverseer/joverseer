@@ -3,6 +3,7 @@ package org.joverseer.tools.turnReport;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
@@ -14,9 +15,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.commands.DialogsUtility;
-import org.springframework.richclient.application.Application;
 
 public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	String name;
@@ -201,7 +200,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 				int hexNo = Integer.parseInt(ps[1]);
 				if (hexNo != 0) {
 					Point p = new Point(hexNo / 100, hexNo % 100);
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), p, null));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, p);
 				}
 			} else if (ps[0].equals("report")) {
 				String charId = ps[1].replace("_", " ");

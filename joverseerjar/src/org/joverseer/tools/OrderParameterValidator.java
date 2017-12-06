@@ -1,7 +1,6 @@
 package org.joverseer.tools;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -23,7 +22,6 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.StringUtils;
 import org.joverseer.ui.orderEditor.OrderEditorData;
-import org.springframework.richclient.application.Application;
 
 /**
  * Utility class that validates order parameters based on the resource file
@@ -44,7 +42,7 @@ public class OrderParameterValidator {
 		if (this.orderEditorData == null) {
 			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
 			try {
-				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+				GameMetadata gm = GameMetadata.instance();
 				BufferedReader reader = gm.getUTF8Resource("orderEditorData.csv");
 
 				String ln;

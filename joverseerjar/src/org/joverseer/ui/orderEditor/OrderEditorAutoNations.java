@@ -49,7 +49,7 @@ public class OrderEditorAutoNations implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
                 this.nations.clear();
             }
         }

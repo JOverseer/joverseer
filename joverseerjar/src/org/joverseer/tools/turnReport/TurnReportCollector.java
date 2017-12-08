@@ -650,9 +650,11 @@ public class TurnReportCollector {
 				if (combat != null) {
 					CombatWrapper cw = new CombatWrapper();
 					cw.parseAll(combat.getFirstNarration());
-					if (cw.getPopName().equals(ppc.getName())) {
-						if ("captured".equals(cw.getPopCenterOutcome())) {
-							pr.appendNote(" Captured");
+					if (cw.getPopName() != null) {
+						if (cw.getPopName().equals(ppc.getName())) {
+							if ("captured".equals(cw.getPopCenterOutcome())) {
+								pr.appendNote(" Captured");
+							}
 						}
 					}
 				}

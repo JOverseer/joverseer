@@ -66,7 +66,7 @@ public class TrackCharacterListView extends BaseItemListView {
 
 	@Override
 	protected ColumnToSort[] getDefaultSort() {
-		return new ColumnToSort[] { new ColumnToSort(0, 0), new ColumnToSort(0, 1) };
+		return new ColumnToSort[] { new ColumnToSort(0, 0), new ColumnToSort(1, 1) };
 	}
 
 	/**

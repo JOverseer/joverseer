@@ -1,21 +1,20 @@
 package org.joverseer.ui.listviews.renderers;
 
 import java.awt.Component;
-import java.text.NumberFormat;
-
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import org.springframework.richclient.table.BeanTableModel;
 
-public class HexNumberCellRenderer extends DefaultTableCellRenderer {
+public class HexNumberCellRenderer extends AllegianceColorCellRenderer {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public HexNumberCellRenderer() {
-            setHorizontalAlignment(SwingConstants.CENTER);
+	public HexNumberCellRenderer(BeanTableModel tableModel) {
+		super(tableModel);
+        setHorizontalAlignment(SwingConstants.CENTER);
     }
 
         @Override

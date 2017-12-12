@@ -25,25 +25,25 @@ public class UISizes {
 		this.height6 = 24;
 	}
 	public int getHeight3() {
-		return height3;
+		return this.height3;
 	}
 	public void setHeight3(int height3) {
 		this.height3 = height3;
 	}
 	public int getHeight4() {
-		return height4;
+		return this.height4;
 	}
 	public void setHeight4(int height4) {
 		this.height4 = height4;
 	}
 	public int getHeight5() {
-		return height5;
+		return this.height5;
 	}
 	public void setHeight5(int height5) {
 		this.height5 = height5;
 	}
 	public int getHeight6() {
-		return height6;
+		return this.height6;
 	}
 	public void setHeight6(int height6) {
 		this.height6 = height6;

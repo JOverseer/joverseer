@@ -245,7 +245,8 @@ public class InfoView extends AbstractView {
 			return String.class;
 		}
 
-	    protected String[] getColumnNames() {
+	    @Override
+		protected String[] getColumnNames() {
 			return this.colNames.toArray(new String[this.colNames.size()]);
 	    }
 

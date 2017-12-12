@@ -27,7 +27,6 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;

@@ -42,14 +42,13 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	String[] columnNames;
 
 	public MarketTableModel() {
-		this.rowHeaders = new String[rowHeaderTags.length];
-		for (int i=0;i<rowHeaderTags.length;i++) {
-			rowHeaders[i] = Messages.getString("EconomyCalculator.Market." +rowHeaderTags[i]);
+		this.rowHeaders = new String[this.rowHeaderTags.length];
+		for (int i=0;i<this.rowHeaderTags.length;i++) {
+			this.rowHeaders[i] = Messages.getString("EconomyCalculator.Market." +this.rowHeaderTags[i]);
 		}
-		this.columnNames = new String[columnHeaders.length];
-		columnNames[0] = "";
-		ProductEnum product;
-		for (int i=1;i<columnHeaders.length;i++) {
+		this.columnNames = new String[this.columnHeaders.length];
+		this.columnNames[0] = "";
+		for (int i=1;i<this.columnHeaders.length;i++) {
 			this.columnNames[i] = (ProductEnum.getFromCode(this.columnHeaders[i])).getLocalized();
 		}
 

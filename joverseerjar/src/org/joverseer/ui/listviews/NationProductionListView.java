@@ -41,7 +41,7 @@ public class NationProductionListView extends BaseItemListView {
 			super(pc);
 			this.identity=identity;
 		}
-		public ProductionTypesEnum getIdentity() { return identity;}
+		public ProductionTypesEnum getIdentity() { return this.identity;}
 	}
 	public NationProductionListView() {
 		super(NationProductionTableModel.class);

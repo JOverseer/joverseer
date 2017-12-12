@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
@@ -15,7 +16,6 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
 
@@ -59,8 +59,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             if (nr != null && nationNo > 0) {
             	allegiance = nr.getAllegiance();
             }
-            MessageSource colorSource = (MessageSource) Application.instance().getApplicationContext().getBean(
-                    "colorSource");
+            MessageSource colorSource = joApplication.getColorSource();
             String colorKey = allegiance != null ? "Listview." + allegiance.toString() + ".color" : "ListView.unknownAllegiance.color";
             Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[] {}, Locale.getDefault()));
             c.setBackground(bg);

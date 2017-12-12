@@ -33,10 +33,10 @@ public class TurnInitializer {
         newTurn.getContainers().put(TurnElementsEnum.NationRelation, new Container(new String[]{"nationNo"}));
         Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
 
-        Container newPlayerInfo = newTurn.getContainer(TurnElementsEnum.PlayerInfo);
+        newTurn.getContainer(TurnElementsEnum.PlayerInfo);
         GameMetadata gm = joApplication.getMetadata();
         
-        Container newNotes = newTurn.getContainer(TurnElementsEnum.Notes);
+        newTurn.getContainer(TurnElementsEnum.Notes);
         Container newChars = new Container(new String[]{"id", "name", "hexNo", "nationNo"});
         if (previousTurn != null) {
             // copy pcs

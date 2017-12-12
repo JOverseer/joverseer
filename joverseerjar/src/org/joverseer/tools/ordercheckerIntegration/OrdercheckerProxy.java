@@ -8,8 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -105,8 +103,8 @@ public class OrdercheckerProxy {
 			return;
 		}
 		Main.main.setMap(new Map());
-		String gt = "1650";
 		Game g = GameHolder.instance().getGame();
+/*		String gt;
 		if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
 			Main.main.getData().setGameType("1650");
 			gt = "1650";
@@ -126,6 +124,7 @@ public class OrdercheckerProxy {
 			Main.main.getData().setGameType("Kin Strife");
 			gt = "ks";
 		}
+*/
 		copyCurrentMap(g.getMetadata(),Main.main.getMap());
 /*		
 		ImportTerrainCsv terrain = new ImportTerrainCsv(data.getTerrainPath() + gt + ".game", Main.main.getMap());
@@ -161,7 +160,7 @@ public class OrdercheckerProxy {
 	protected void processOrders(Main main) throws Exception {
 		final ImageSource imgSource = joApplication.getImageSource();
 
-		final DefaultMutableTreeNode root = main.getWindow().getRoot();
+		main.getWindow().getRoot();
 		JTree tree = main.getWindow().getTree();
 		if (tree.getCellRenderer() instanceof OCResultTreeRenderer) {
 			final OCResultTreeRenderer renderer = (OCResultTreeRenderer)tree.getCellRenderer();

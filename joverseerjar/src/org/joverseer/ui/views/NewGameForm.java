@@ -41,7 +41,7 @@ public class NewGameForm extends AbstractForm {
         tlb.add("number", txt = new JTextField());
         txt.setEnabled(!this.edit);
         tlb.row();
-//        JCheckBox chk;
+        //JCheckBox chk;
         //tlb.add("additionalNations");
 //        tlb.add("newXmlFormat", chk = new JCheckBox());
 //        chk.setEnabled(!this.edit);

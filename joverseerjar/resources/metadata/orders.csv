@@ -78,7 +78,7 @@ Scout Army;905;ScoArmy;Army Commander Character ID / Follow army? (y/n);Average 
 Scout Area;910;ScoArea;None;Easy ;;Agent Skill
 Scout for Characters;930;ScoChar;None;Average ;;Agent Skill
 Release Hostage;625;Release;Hostage Character ID ;Automatic ;;Agent Misc
-Take Custody of Hostage;640;Custody;Hostage Character ID ;Automatic ;;AM
+Take Custody of Hostage;640;Custody;Hostage Character ID ;Automatic ;;Agent Misc
 Imprison Hostage;645;Imprsn;Hostage Character ID ;Automatic ;;Agent Misc
 Execute Hostage;650;Execute;Hostage Character ID ;Automatic ;;Agent Misc
 Demand Ransom for Hostage;655;RansDmd;Hostage Character ID / Amount of GOLD desired for ransom;Automatic ;;Agent Misc

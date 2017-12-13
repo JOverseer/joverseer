@@ -16,6 +16,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
@@ -59,7 +60,7 @@ public class CharacterListView extends ItemListView {
     @Override
 	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
-        this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel) {
+        this.table.setDefaultRenderer(Integer.class, new HexNumberCellRenderer(this.tableModel) {
 
             @Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,

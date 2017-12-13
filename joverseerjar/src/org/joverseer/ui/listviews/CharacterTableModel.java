@@ -10,7 +10,7 @@ import org.springframework.context.MessageSource;
  */
 public class CharacterTableModel extends ItemTableModel {
 	private static final long serialVersionUID = 1L;
-
+	final static int iHex = 0;
 	public CharacterTableModel(MessageSource messageSource) {
 		super(Character.class, messageSource);
 	}

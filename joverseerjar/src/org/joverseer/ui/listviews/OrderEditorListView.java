@@ -511,7 +511,7 @@ public class OrderEditorListView extends ItemListView {
 		});
 
 		// renderer for hex - boldify capital hex
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new HexNumberCellRenderer() {
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel) {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

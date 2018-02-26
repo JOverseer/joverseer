@@ -20,6 +20,7 @@ import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
@@ -388,6 +389,17 @@ public class GameMetadata implements Serializable {
 	static public GameMetadata instance()
 	{
 		return (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+	}
+
+	// note only returns non-null if a game has been initialized.
+	static public GameMetadata lazyLoadGameMetadata(GameMetadata gm) {
+		if (gm == null) {
+			Game g = GameHolder.instance().getGame();
+			if (!Game.isInitialized(g))
+				return null;
+			gm = g.getMetadata();
+		}
+		return gm;
 	}
 
 }

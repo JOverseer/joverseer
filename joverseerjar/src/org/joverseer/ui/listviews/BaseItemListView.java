@@ -494,19 +494,33 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	}
 
 	public Object getSelectedObject() {
-		int row = this.table.getSelectedRow();
-		if (row < 0 && this.table.getRowCount() == 1)
-			row = 0;
-		if (row >= 0) {
-			int idx = ((SortableTableModel) this.table.getModel()).convertSortedIndexToDataIndex(row);
-			if (idx >= this.tableModel.getRowCount())
-				return null;
-			try {
-				Object obj = this.tableModel.getRow(idx);
-				return obj;
-			} catch (Exception e) {
-			}
+		int idx = this.getSelectedSortedRow();
+		if (idx < 0) {
+			return null;
+		}
+		try {
+			Object obj = this.tableModel.getRow(idx);
+			return obj;
+		} catch (Exception e) {
 		}
 		return null;
+	}
+	/**
+	 * 
+	 * @return -1 if not selected
+	 */
+	public int getSelectedSortedRow() {
+		int row = this.table.getSelectedRow();
+		if (row < 0 && this.table.getRowCount() == 1) {
+			row = 0;
+		}
+		if (row < 0) {
+			return row;
+		}
+		int idx = ((SortableTableModel) this.table.getModel()).convertSortedIndexToDataIndex(row);
+		if (idx >= this.tableModel.getRowCount()) {
+			return -1;
+		}
+		return idx;
 	}
 }

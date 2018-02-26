@@ -49,6 +49,17 @@ public class CombatCalcCombatListView extends ItemListView {
 	        return cg.createPopupMenu();
     	}
     }
+    
+    private Combat getSelectedCombat()
+    {
+    	Combat c=null;
+        try {
+        	c = (Combat) this.getSelectedObject();
+        } catch (Exception exc) {
+        	// do nothing;
+        }
+        return c;
+    }
 
     class AddCombatCommand extends ActionCommand {
         @Override
@@ -65,42 +76,22 @@ public class CombatCalcCombatListView extends ItemListView {
     class EditSelectedCombatCommand extends ActionCommand {
         @Override
 		protected void doExecuteCommand() {
-            int row = CombatCalcCombatListView.this.table.getSelectedRow();
-            if (row >= 0) {
-                int idx = ((SortableTableModel) CombatCalcCombatListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
-                if (idx >= CombatCalcCombatListView.this.tableModel.getRowCount())
-                    return;
-                try {
-                    Object obj = CombatCalcCombatListView.this.tableModel.getRow(idx);
-                    Combat c = (Combat) obj;
-                    new ShowCombatCalculatorCommand(c).execute();
-                } catch (Exception exc) {
-
-                }
+            Combat c = CombatCalcCombatListView.this.getSelectedCombat(); 
+            if (c != null) {
+            	new ShowCombatCalculatorCommand(c).execute();
             }
         }
-        
-    }
-    
+    }    
+
     class DeleteSelectedCombatCommand extends ActionCommand {
         @Override
 		protected void doExecuteCommand() {
-            int row = CombatCalcCombatListView.this.table.getSelectedRow();
-            if (row >= 0) {
-                int idx = ((SortableTableModel) CombatCalcCombatListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
-                if (idx >= CombatCalcCombatListView.this.tableModel.getRowCount())
-                    return;
-                try {
-                    Object obj = CombatCalcCombatListView.this.tableModel.getRow(idx);
-                    Combat c = (Combat) obj;
-                    GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).removeItem(c);
-                    setItems();
-                } catch (Exception exc) {
-
-                }
+            Combat c = CombatCalcCombatListView.this.getSelectedCombat(); 
+            if (c != null) {
+            	GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).removeItem(c);
+                setItems();
             }
         }
-        
     }
 
 }

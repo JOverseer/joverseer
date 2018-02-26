@@ -10,12 +10,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
@@ -34,7 +36,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
@@ -43,19 +44,18 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.orderEditor.OrderEditor;
+import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.TableUtils;
-import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.list.ComboBoxListModelAdapter;
-import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.ShuttleSortableTableModel;
@@ -74,12 +74,13 @@ public class OrderEditorListView extends ItemListView {
 
 	ActionCommand deleteOrderAction = new DeleteOrderAction();
 	ActionCommand editOrderAction = new EditOrderAction();
-	JComboBox combo;
+	ActionCommand nextOrderAction = new NextOrderAction();
 	OrderParameterValidator validator = new OrderParameterValidator();
 	Color paramErrorColor = Color.decode("#ffff99");
 	Color paramWarningColor = Color.decode("#99ffff");
 	Color paramInfoColor = Color.decode("#99FF99");
 	HashMap<Character, Integer> characterIndices = new HashMap<Character, Integer>();
+	Container<OrderEditorData> completeOrderData;
 
 	public OrderEditorListView() {
 		super(TurnElementsEnum.Character, OrderEditorTableModel.class);
@@ -92,6 +93,7 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected void setItems() {
+		this.logger.debug("setitems()");
 		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
@@ -384,10 +386,7 @@ public class OrderEditorListView extends ItemListView {
 		JTable table1 = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.tableModel);
 		JTable newTable = new JOverseerTable(table1.getModel()) {
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -1691495526936183832L;
+			private static final long serialVersionUID = 1L;
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
 
@@ -451,9 +450,6 @@ public class OrderEditorListView extends ItemListView {
 
 		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
 
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 310794852715412640L;
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
@@ -490,10 +486,7 @@ public class OrderEditorListView extends ItemListView {
 		// virtual field
 		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -6783374680361562177L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -527,10 +520,7 @@ public class OrderEditorListView extends ItemListView {
 		// renderer for hex - boldify capital hex
 		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel) {
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -6644638520816762371L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -557,10 +547,7 @@ public class OrderEditorListView extends ItemListView {
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -4536220456339002594L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -582,6 +569,8 @@ public class OrderEditorListView extends ItemListView {
 		// tlb.cell(tableComp);
 		// tlb.row();
 		// return tlb.getPanel();
+		InputMap input = tableComp.getInputMap(JComponent.WHEN_FOCUSED);
+		input.put(KeyStroke.getKeyStroke("~"),new NextOrderAction() );
 		return tableComp;
 	}
 
@@ -598,20 +587,12 @@ public class OrderEditorListView extends ItemListView {
 				// setFilters();
 				refreshFilters();
 				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
-				Game g = GameHolder.instance().getGame();
-				ListListModel orders = new ListListModel();
-				orders.add(Order.NA);
-				if (Game.isInitialized(g)) {
-					GameMetadata gm = g.getMetadata();
-					Container<OrderMetadata> orderMetadata = gm.getOrders();
-					for (OrderMetadata om : orderMetadata) {
-						orders.add(om.getNumber() + " " + om.getCode());
-					}
-				}
-				SortedListModel slm = new SortedListModel(orders);
+				GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
 
+				Order order = getSelectedOrder();
+				if (order==null) return; // nothing selected.
 				// ComboBox Editor for the order number
-				final JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
+				final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(order, gm));
 				comboBox.setEditable(true);
 				comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
 				final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
@@ -644,7 +625,7 @@ public class OrderEditorListView extends ItemListView {
 
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-				setItems();
+			    setItems(); //this seems to cause an event storm.
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshOrders)) {
@@ -664,7 +645,17 @@ public class OrderEditorListView extends ItemListView {
 				});
 		return group.createPopupMenu();
 	}
+	
 
+	private Order getSelectedOrder() {
+		Order order;
+		try {
+			order = (Order)getSelectedObject();
+		} catch (Exception exc) {
+			order = null;
+		}
+		return order;
+	}
 	/**
 	 * Edit the selected order
 	 * 
@@ -674,18 +665,10 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			int row = OrderEditorListView.this.table.getSelectedRow();
-			if (row >= 0) {
-				int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
-				if (idx >= OrderEditorListView.this.tableModel.getRowCount())
-					return;
-				try {
-					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
-					Order order = (Order) obj;
-					joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
-				} catch (Exception exc) {
-
-				}
+			Order order = getSelectedOrder();
+			if (order != null) {
+				joApplication.publishEvent(LifecycleEventsEnum.EditOrderStartEvent, order, this);
+				joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
 			}
 		}
 	}
@@ -699,23 +682,53 @@ public class OrderEditorListView extends ItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			int row = OrderEditorListView.this.table.getSelectedRow();
-			if (row >= 0) {
-				int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
-				if (idx >= OrderEditorListView.this.tableModel.getRowCount())
-					return;
-				try {
-					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
-					Order order = (Order) obj;
-					order.clear();
-					((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
-					joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
-				} catch (Exception exc) {
-					System.out.println(exc);
-				}
+			Order order = getSelectedOrder();
+			if (order != null) {
+				order.clear();
+				((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
+				joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
 			}
 		}
 
+	}
+	
+	/**
+	 * Move the selected (order/parameter) cell to the next order below
+	 * 
+	 * @author Dave
+	 *
+	 */
+	private class NextOrderAction extends ActionCommand {
+
+		@Override
+		protected void doExecuteCommand() {
+			int row = OrderEditorListView.this.getSelectedSortedRow();
+			if (row >= 0) {
+				if (row+1 < OrderEditorListView.this.table.getRowCount()) {
+					OrderEditorListView.this.table.changeSelection(row+1, OrderEditorTableModel.iNoAndCode, false, false);
+				}
+			}
+		}
+	}
+	/**
+	 * Move the selected (order/parameter) cell to the next parameter
+	 * @author Dave
+	 *
+	 */
+	private class NextOrderParameterAction extends ActionCommand {
+		@Override
+		protected void doExecuteCommand() {
+			int row = OrderEditorListView.this.getSelectedSortedRow();
+			int col;
+			if (row >= 0) {
+				col = OrderEditorListView.this.table.getSelectedColumn();
+				if (col+1 >= OrderEditorListView.this.table.getColumnCount()) {
+					new NextOrderAction().doExecuteCommand();
+				} else {
+					OrderEditorListView.this.table.changeSelection(row, col+1, false, false);
+				}
+			}
+		}
 	}
 
 	/**

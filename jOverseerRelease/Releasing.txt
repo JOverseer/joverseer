@@ -157,4 +157,5 @@ To avoid spamming incomplete releases on the beta or live channel use:
 http://www.middleearthgames.com/software/joverseer/testfeed.xml
 http://www.middleearthgames.com/software/joverseer/testupdate.zip
 remember to remove the 'lastupdated' preference in joverseer to persuade jOverseer to actually check for updates.
+HKEY_CURRRENT_USER\Software\JavaSoft\Prefs\org\joverseer\ui /last/Version/Check/Date
 MacOS: use 'Pref Setter'. Windows: use regedit.

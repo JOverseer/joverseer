@@ -211,6 +211,10 @@
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand"/>
 				<value>separator</value>
+<!-- 				<bean class="org.joverseer.ui.command.GatherSupportDataCommand"/>
+				<value>separator</value>
+ -->				<bean class="org.joverseer.ui.command.CheckForUpdatesCommand"/>
+				<value>separator</value>
 				<ref bean="aboutCommand"/>
 			</list>
 		</property>

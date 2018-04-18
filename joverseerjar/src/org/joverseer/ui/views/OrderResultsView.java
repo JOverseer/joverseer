@@ -29,27 +29,27 @@ public class OrderResultsView extends BaseHtmlReportView {
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.Character"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.charName = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.charName.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.charName.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.Text"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.text = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.text.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.text.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.FromTurn"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.turnFrom = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.turnFrom.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.turnFrom.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.ToTurn"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.turnTo = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.turnTo.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.turnTo.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.Nation"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.nationNo = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.nationNo.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.nationNo.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		return tlb.getPanel();
 	}

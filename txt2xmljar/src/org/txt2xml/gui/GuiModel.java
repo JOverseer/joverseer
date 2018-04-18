@@ -87,6 +87,7 @@ public class GuiModel extends BasicModel {
     
     /**
      * Set a new source text and then {@link #process()}.
+     * @param sourceText the text 
      */
     public void setSourceText(String sourceText) {
         this.sourceText = sourceText;
@@ -100,6 +101,7 @@ public class GuiModel extends BasicModel {
     
     /**
      * Set a new config text and then {@link #process()}.
+     * @param configText the text 
      */
     public void setConfigText(String configText) {
         this.configText = configText;

@@ -88,6 +88,11 @@ public class StreamDriver extends SaxDriver {
      * Dump XML to an OutputStream using a null
      * XSL Transformer as a serializer, and closing the
      * OutputStream after use.
+     * @param text the text.
+     * @param stream the stream
+     * @throws SAXException if any exception encountered.
+     * @throws TransformerConfigurationException if any exception encountered.
+     * @throws IOException if any IOexception encountered.
      */
     public void generateXmlDocument(CharSequence text, OutputStream stream)
     throws SAXException, TransformerConfigurationException, IOException {
@@ -123,7 +128,7 @@ public class StreamDriver extends SaxDriver {
      *
      * @see #useDebugOutputProperties()
      * @see javax.xml.transform.OutputKeys
-	 * @param Properties current output properties used for the 
+	 * @param outputProperties current output properties used for the 
      * Transformer that serializes XML to an OutputStream
 	 */
 	public void setOutputProperties(Properties outputProperties) {

@@ -174,7 +174,7 @@ public class ArmyViewer extends ObjectViewer {
 		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
 		if (game == null)
 			return;
-		GameMetadata gm = game.getMetadata();
+		game.getMetadata();
 		Nation armyNation = army.getNation();
 		this.nation.setText(armyNation.getShortName());
 		this.nation.setCaretPosition(0);

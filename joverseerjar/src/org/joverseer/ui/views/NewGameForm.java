@@ -1,6 +1,5 @@
 package org.joverseer.ui.views;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -42,7 +41,7 @@ public class NewGameForm extends AbstractForm {
         tlb.add("number", txt = new JTextField());
         txt.setEnabled(!this.edit);
         tlb.row();
-        JCheckBox chk;
+//        JCheckBox chk;
         //tlb.add("additionalNations");
 //        tlb.add("newXmlFormat", chk = new JCheckBox());
 //        chk.setEnabled(!this.edit);

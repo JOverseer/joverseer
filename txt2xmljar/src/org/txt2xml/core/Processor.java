@@ -111,8 +111,9 @@ public abstract class Processor {
      * pass the remainder of the original CharSequence to the next Processor
      * if there is one.
      * 
-     * @param CharSequence text to match against.
-     * @param ContentHandler the SAX handler to send XML to.
+     * @param text to match against.
+     * @param contentHandler the SAX handler to send XML to.
+     * @throws SAXException if any exception encountered.
      */
     public void generateXmlFragment(CharSequence text, ContentHandler contentHandler)
     throws SAXException {
@@ -166,6 +167,7 @@ public abstract class Processor {
      * Write this Processor's start element as a simple
      * element with no attributes. Override if a Processor
      * needs to create a more complex element start.
+     * @throws SAXException if any exception encountered.
      */
     protected void generateStartXmlElement() 
     throws SAXException {
@@ -175,6 +177,7 @@ public abstract class Processor {
 
     /**
      * Write the end element for this Processor.
+     * @throws SAXException if any exception encountered.
      */    
     protected void generateEndXmlElement() 
     throws SAXException {
@@ -187,6 +190,7 @@ public abstract class Processor {
      * Processors (ie no sub-Processor). This default implementation
      * writes the matched text as XML characters. Override for
      * other behaviour.
+     * @throws SAXException if any exception encountered.
      */
     protected void generateXmlElementCharacters()
     throws SAXException {

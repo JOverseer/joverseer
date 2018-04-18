@@ -57,6 +57,7 @@ import org.scopemvc.view.swing.STextArea;
 /**
  * @author <A HREF="mailto:smeyfroi@users.sourceforge.net">Steve Meyfroidt</A>
  */
+@SuppressWarnings("serial")
 public class GuiView extends SPanel {
     
     public GuiView() {

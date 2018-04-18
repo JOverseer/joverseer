@@ -9,7 +9,12 @@ import java.util.Vector;
 
 class StateList extends Vector
 {
-    private class StateInfo
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private class StateInfo
     {
 
         private int orderNumber;

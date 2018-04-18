@@ -57,13 +57,13 @@ import org.txt2xml.core.Processor;
 /**
  * Create a Processor from a configuration file.
  * <p>
- * Config file of the form:
+ * Config file of the form:</p>
  * <pre>
- *     &lt;txt2xml>
+ *     &lt;txt2xml&gt;
  * *****
- *     &lt;/txt2xml>
+ *     &lt;/txt2xml&gt;
  * </pre>
- * </p>
+ * 
  * 
  * @author <A HREF="mailto:smeyfroi@users.sourceforge.net">Steve Meyfroidt</A>
  */
@@ -124,6 +124,7 @@ public class ProcessorFactory {
      * @param configReader Reader for a config definition.
      * @return Processor the Processor defined by the
      * config file at the passed URL.
+     * @throws ConfigException if any exception encountered.
      */
     public Processor createProcessor(Reader configReader) throws ConfigException {
         try {
@@ -148,6 +149,7 @@ public class ProcessorFactory {
      * @param configUrl URL of a config file.
      * @return Processor the Processor defined by the
      * config file at the passed URL.
+     * @throws ConfigException if any exception encountered.
      */
     public Processor createProcessor(URL configUrl) throws ConfigException {
         Reader reader = null;
@@ -180,6 +182,7 @@ public class ProcessorFactory {
      * @param parentElement the Element containing a Processor
      * definition. Only child "Processor" elements are handled.
      * @return Processor the Processor defined within the parent Eement.
+     * @throws ConfigException if any exception encountered.
      */
     protected Processor readProcessorSequenceFrom(Element parentElement) throws ConfigException {
         Processor resultProcessor = null;
@@ -207,17 +210,18 @@ public class ProcessorFactory {
      * <p>
      * The type of a Processor is read from the processor_types.properties
      * configuration. The following types are pre-defined but can be overriden
-     * in a "processor_types.properties" file:
+     * in a "processor_types.properties" file:</p>
      * <ul>
-     * <li>RegexDelimited -> org.txt2xml.core.RegexDelimitedProcessor</li>
+     * <li>RegexDelimited -&gt; org.txt2xml.core.RegexDelimitedProcessor</li>
      * </ul>
-     * Processors are created using java.beans.Beans.instantiate() so
+     * <p>Processors are created using java.beans.Beans.instantiate() so
      * serialised Processors can be loaded with the appropriate
      * config. See JDK javadoc.
      * </p>
      * 
      * @param processorElement the top-level Processor Element.
      * @return Processor matching the config.
+     * @throws ConfigException if any exception encountered.
      */
     protected Processor readProcessor(Element processorElement) throws ConfigException {
 

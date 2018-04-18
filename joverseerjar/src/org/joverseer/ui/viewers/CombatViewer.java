@@ -81,7 +81,6 @@ public class CombatViewer extends ObjectViewer {
 	private JPopupMenu createCombatPopupContextMenu() {
 		Combat c = (Combat) getFormObject();
 		ArrayList<Object> narrationActions = new ArrayList<Object>();
-		int i = 0;
 		for (Integer nationNo : c.getNarrations().keySet()) {
 			narrationActions.add(new ShowDescriptionCommand(nationNo));
 		}

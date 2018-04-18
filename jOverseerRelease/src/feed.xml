@@ -6,6 +6,25 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
+    	<title>1.16.3</title>
+      	<pubDate>Wed, 18 Apr 2018</pubDate>
+      	<description>
+VERSION 1.16.3
+--------------
+	* Enh: Menu Help now has item Check For Update which forces the check to happen on request, rather than once every two weeks.
+	* Enh: additional command to restore layout to a simpler, automagic style layout.
+	* Fix: issue #627 now checks for SNA 22 when building the list of possible orders in the order editor
+	* Fix: Popcentres should have their accents back.
+	* Fix: Some odd accents in artifacts and spells.
+	* Fix: pdf imports no longer report benign null errors.
+	* Fix: issue #653 order view filter - characters with/without orders - now understands characters with more than 3 orders
+	* Fix: In the Map Option View, If you changed to allegiance colours, then you couldn't get back to nation colours
+	* Fix: default nation names for FA
+	* Fix: orderchecker and 940 412 order  
+	</description>
+    </item>
+
+    <item>
     	<title>1.16.2</title>
       	<pubDate>Tue, 1 Aug 2017</pubDate>
       	<description>

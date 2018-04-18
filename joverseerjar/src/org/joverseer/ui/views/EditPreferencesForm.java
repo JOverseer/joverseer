@@ -60,38 +60,42 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 				tlb.relatedGapRow();
 				group = p.getGroup();
 			}
-			// show pref label
-			tlb.gapCol();
-			tlb.cell(new JLabel(p.getDescription()), "colspec=left:220px");
-			tlb.gapCol();
-			// show control for editing pref, based on pref type
-			if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
-				JComboBox combo = new JComboBox();
-				combo.setPreferredSize(this.uiSizes.newDimension(190/20, this.uiSizes.getHeight5()));
-				for (PreferenceValue pv : p.getDomain()) {
-					combo.addItem(pv.getDescription());
-					// find the appriate combo box item from the key
-					if (reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) {
-						combo.setSelectedItem(pv.getDescription());
+			if (tlb != null) {
+				// show pref label
+				tlb.gapCol();
+				tlb.cell(new JLabel(p.getDescription()), "colspec=left:220px");
+				tlb.gapCol();
+				// show control for editing pref, based on pref type
+				if (p.getType().equals(Preference.TYPE_DROPDOWN)) {
+					JComboBox combo = new JComboBox();
+					combo.setPreferredSize(this.uiSizes.newDimension(190 / 20, this.uiSizes.getHeight5()));
+					for (PreferenceValue pv : p.getDomain()) {
+						combo.addItem(pv.getDescription());
+						// find the appriate combo box item from the key
+						if (reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) {
+							combo.setSelectedItem(pv.getDescription());
+						}
 					}
+					this.components.put(p.getKey(), combo);
+					tlb.cell(combo, "colspec=left:200px");
+				} else {
+					JTextField tf = new JTextField();
+					tf.setPreferredSize(this.uiSizes.newDimension(190 / 20, this.uiSizes.getHeight5()));
+					tf.setText(reg.getPreferenceValue(p.getKey()));
+					this.components.put(p.getKey(), tf);
+					tlb.cell(tf, "colspec=left:200px");
 				}
-				this.components.put(p.getKey(), combo);
-				tlb.cell(combo, "colspec=left:200px");
-			} else {
-				JTextField tf = new JTextField();
-				tf.setPreferredSize(this.uiSizes.newDimension(190/20, this.uiSizes.getHeight5()));
-				tf.setText(reg.getPreferenceValue(p.getKey()));
-				this.components.put(p.getKey(), tf);
-				tlb.cell(tf, "colspec=left:200px");
-			}
 
-			tlb.gapCol();
-			tlb.relatedGapRow();
+				tlb.gapCol();
+				tlb.relatedGapRow();
+			}
 		}
 
-		// add last group
-		String tabName = group.replace(".", " - ");
-		tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
+		if (tlb != null) {
+			// add last group
+			String tabName = group.replace(".", " - ");
+			tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
+		}
 
 		// panel = tlb.getPanel();
 		// panel = tabPane;

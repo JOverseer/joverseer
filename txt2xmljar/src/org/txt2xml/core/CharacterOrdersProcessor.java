@@ -71,7 +71,7 @@ public class CharacterOrdersProcessor extends Processor {
         CharacterOrdersProcessor p = new CharacterOrdersProcessor();
         InputStreamReader is = new InputStreamReader(new FileInputStream("c:\\tst.txt"), "UTF-8");
         char[] b = new char[50000];
-        int l = is.read(b);
+        is.read(b);
         String str = new String(b);
         //str = str.substring(20000);
         String datePattern = "\\d{1,2}/\\d{1,2}/\\d{4}  Game \\d+  Player \\d+  Turn \\d+  Page \\d+";
@@ -83,6 +83,7 @@ public class CharacterOrdersProcessor extends Processor {
             System.out.println("*************************");
             System.out.println(p.getMatchedText());
         }
+        is.close();
     }
     
 

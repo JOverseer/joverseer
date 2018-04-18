@@ -43,8 +43,6 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 
-		JLabel lbl;
-
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel(Messages.getString("MapEditorView.ActiveColon")), "colspec=left:70px"); //$NON-NLS-1$ //$NON-NLS-2$
 		final JCheckBox active = new JCheckBox();

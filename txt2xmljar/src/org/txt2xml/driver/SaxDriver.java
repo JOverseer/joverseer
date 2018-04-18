@@ -69,6 +69,9 @@ public class SaxDriver {
 
     /**
      * Dump XML to a SAX ContentHandler.
+     * @param text the text.
+     * @param handler the handler
+     * @throws SAXException if any exception encountered.
      */
     public void generateXmlDocument(CharSequence text, ContentHandler handler)
     throws SAXException {

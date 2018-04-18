@@ -37,8 +37,6 @@
  
 package org.txt2xml.core;
 
-import java.util.logging.Logger;
-
 /**
  * Repeatedly matches sections of text delimited 
  * by a regex pattern. For example, when
@@ -49,8 +47,6 @@ import java.util.logging.Logger;
  */
 public class RegexDelimitedProcessor extends AbstractRegexProcessor {
 	
-	private static final Logger LOG = Logger.getLogger(RegexDelimitedProcessor.class.getName());
-    
     protected int matchStart;
     protected int matchEnd;
     protected int nextMatchFrom;

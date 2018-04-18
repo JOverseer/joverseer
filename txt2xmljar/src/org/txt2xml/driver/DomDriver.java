@@ -71,6 +71,10 @@ public class DomDriver extends SaxDriver {
     
     /**
      * Dump XML into a returned DOM Document.
+     * @param text the text.
+     * @return Node the fragment
+     * @throws SAXException if any exception encountered.
+     * @throws TransformerConfigurationException if any exception encountered.
      */
     public Node generateXmlDocument(CharSequence text)
     throws SAXException, TransformerConfigurationException {

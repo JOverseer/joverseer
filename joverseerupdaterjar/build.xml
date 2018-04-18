@@ -21,7 +21,7 @@
    <target name="Compile"
        depends="-Init"
        description="Compile all java classes">
-       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" target="1.6" source="1.6">
+       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" target="1.7" source="1.7">
        		<classpath>
        			<pathelement path="${java.class.path}"/>
        		</classpath>

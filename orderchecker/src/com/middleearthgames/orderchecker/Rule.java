@@ -22,7 +22,8 @@ public class Rule
     public static final int STATE_ARTIFACT = 5;
     public static final int STATE_COMPANY = 6;
     public static final String STATE_REQ = "state";
-    private static String stateDesc[] = {
+    @SuppressWarnings("unused")
+	private static String stateDesc[] = {
         "Army", "PC", "Army Loc", "Char Army", "Char Loc", "Artifact", "Company"
     };
     private static final String productMapping[][] = {

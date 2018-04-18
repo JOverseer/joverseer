@@ -116,6 +116,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();

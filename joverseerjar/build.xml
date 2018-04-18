@@ -78,7 +78,7 @@
        <!-- encoding needed for
        org.joverseer.support.AsciiUtils  -->
        <javac srcdir="${src}" destdir="${bin}" 
-           encoding="utf-8" includeantruntime="false" target="1.6" source="1.6">
+           encoding="utf-8" includeantruntime="false" target="1.7" source="1.7">
        		<classpath>
        			<pathelement path="${java.class.path}"/>
        			<path refid="updater.path"/>

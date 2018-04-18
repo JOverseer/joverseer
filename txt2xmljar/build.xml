@@ -36,7 +36,7 @@
    <target name="Compile"
        depends="-Init"
        description="Compile all java classes">
-       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" target="1.6" source="1.6">
+       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false">
     		<classpath>
     			<path refid="common.classpath"/>
 	   			<pathelement path="${java.class.path}"/>
@@ -47,7 +47,7 @@
 	<target name="BuildTests"
 	       depends="Jar"
 	       description="Compile all test java classes">
-	       <javac srcdir="${srctest}" destdir="${bintest}" includeantruntime="false" target="1.6" source="1.6">
+	       <javac srcdir="${srctest}" destdir="${bintest}" includeantruntime="false">
 	   		<classpath>
 	   			<path refid="common.classpath"/>
 	   			<pathelement path="${java.class.path}"/>

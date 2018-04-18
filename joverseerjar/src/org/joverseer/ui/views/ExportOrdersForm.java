@@ -70,6 +70,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 // TODO document better
 public class ExportOrdersForm extends ScalableAbstractForm {
+	@SuppressWarnings("hiding")
 	static Logger logger = Logger.getLogger(ExportOrdersForm.class);
 	public static int ORDERS_OK = 0;
 	public static int ORDERS_NOT_OK = 1;

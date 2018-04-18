@@ -8,7 +8,7 @@ import java.net.URL;
  * 
  * This checks a RSS URL for the latest version.
  * For simplicity it doesn't really parse the XML,
- * it just looks for the first <item> and assumes the title is the version number.
+ * it just looks for the first &lt;item&gt; and assumes the title is the version number.
  */
 public class UpdateChecker {
 //    private final static String RSSfeed = "http://www.middleearthgames.com/software/joverseer/feed.xml";

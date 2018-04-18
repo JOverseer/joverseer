@@ -256,9 +256,9 @@ public class Main_Gui extends JFrame{
         BufferedOutputStream fOut = new BufferedOutputStream(new FileOutputStream(file));
         byte[] buffer = new byte[32 * 1024];
         int bytesRead = 0;
-        int in = 0;
+//        int in = 0;
         while ((bytesRead = is.read(buffer)) != -1) {
-            in += bytesRead;
+//            in += bytesRead;
             fOut.write(buffer, 0, bytesRead);
         }
         fOut.flush();

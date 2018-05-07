@@ -23,13 +23,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.command.ActionCommandInterceptor;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 
 import com.jidesoft.docking.DockingManager;
-import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
 
 /**

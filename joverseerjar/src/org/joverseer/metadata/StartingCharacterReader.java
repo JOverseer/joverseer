@@ -2,12 +2,9 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.joverseer.domain.Character;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.springframework.core.io.Resource;
 
 public class StartingCharacterReader implements MetadataReader {
 	String characterFilename = "startchars";

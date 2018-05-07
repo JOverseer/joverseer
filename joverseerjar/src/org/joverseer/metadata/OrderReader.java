@@ -2,11 +2,8 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
-import org.springframework.core.io.Resource;
 
 /**
  * Order metadata reader. Reads order metadata from data files.

@@ -114,6 +114,7 @@ public class GraphicUtils {
 		URL styleSheet = TipOfTheDayDialog.class.getResource("/tips.css");
 		TipOfTheDayDialog dialog = new TipOfTheDayDialog((Frame) null, tipOfTheDaySource, new AbstractAction("Show Tips on startup") {
 
+
 			@Override
 			public void actionPerformed(ActionEvent e1) {
 				if (e1.getSource() instanceof JCheckBox) {

@@ -2,8 +2,6 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -12,7 +10,6 @@ import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.springframework.core.io.Resource;
 
 /**
  * Reads starting army information.

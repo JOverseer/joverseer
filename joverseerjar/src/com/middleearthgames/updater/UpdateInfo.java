@@ -11,13 +11,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -27,8 +23,6 @@ import javax.swing.JScrollPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joverseer.preferences.PreferenceRegistry;
-
-import com.jidesoft.spring.richclient.docking.JideApplicationPage;
 
 /**
  *

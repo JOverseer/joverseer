@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,7 +46,6 @@ import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;

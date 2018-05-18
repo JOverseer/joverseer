@@ -41,6 +41,7 @@ import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -460,8 +461,8 @@ public class OrderEditorListView extends ItemListView {
 						JCheckBox b = new JCheckBox();
 						b.setSelected((Boolean) value);
 						b.setHorizontalAlignment(SwingConstants.CENTER);
-						System.out.println("row == table.getSelectedRow() = " + String.valueOf(row == table1.getSelectedRow()));
-						System.out.println("isSelected = " + String.valueOf(isSelected));
+//						System.out.println("row == table.getSelectedRow() = " + String.valueOf(row == table1.getSelectedRow()));
+//						System.out.println("isSelected = " + String.valueOf(isSelected));
 						b.setBackground(row == table1.getSelectedRow() && isSelected ? this.selectionBackground : this.normalBackground);
 						return b;
 					} else {
@@ -510,7 +511,7 @@ public class OrderEditorListView extends ItemListView {
 		});
 
 		// renderer for hex - boldify capital hex
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
+		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new HexNumberCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

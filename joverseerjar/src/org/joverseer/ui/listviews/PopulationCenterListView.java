@@ -23,6 +23,7 @@ import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.PopCenterInfoSourceTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.UIUtils;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.richclient.table.ColumnToSort;
@@ -50,9 +51,9 @@ public class PopulationCenterListView extends ItemListView {
 		JComponent c = super.createControlImpl();
 		this.table.setDefaultRenderer(InfoSource.class, new PopCenterInfoSourceTableCellRenderer(this.tableModel));
 		EnumTableCellRenderer e =new EnumTableCellRenderer(this.tableModel); 
-		GraphicUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iSize,e);
-		GraphicUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iFort,e);
-		GraphicUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iHex, new HexNumberCellRenderer(this.tableModel));
+		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iSize,e);
+		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iFort,e);
+		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iHex, new HexNumberCellRenderer(this.tableModel));
 		return c;
 	}
 

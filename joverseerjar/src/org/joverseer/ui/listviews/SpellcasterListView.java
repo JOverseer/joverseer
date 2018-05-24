@@ -26,7 +26,9 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.SpellcasterWrapper;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.ColumnToSort;
@@ -251,6 +253,7 @@ public class SpellcasterListView extends BaseItemListView {
 		tlb.row();
 		tlb.cell(tableComp);
 		tlb.row();
+		TableUtils.setTableColumnRenderer(this.table, SpellcasterTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
 		return tlb.getPanel();
 	}
 

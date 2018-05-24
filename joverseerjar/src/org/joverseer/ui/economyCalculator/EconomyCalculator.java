@@ -32,18 +32,19 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.popup.JidePopup;
 
@@ -460,10 +461,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 		this.lostPopsTableModel = new LostPopsTableModel();
 		// pcTable = new JTable(lostPopsTableModel);
-		this.pcTable = TableUtils.createStandardSortableTable(this.lostPopsTableModel);
+		this.pcTable = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.lostPopsTableModel);
 		this.pcTable.setBackground(Color.white);
 		this.pcTable.setDefaultRenderer(Boolean.class, this.totalsTable.getDefaultRenderer(Boolean.class));
 		this.pcTable.setDefaultEditor(Boolean.class, this.totalsTable.getDefaultEditor(Boolean.class));
+		TableUtils.setTableColumnRenderer(this.pcTable, LostPopsTableModel.iHex, new HexNumberCellRenderer(this.lostPopsTableModel) );
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, getLostPCColumWidths());
 		this.pcTable.setMaximumSize(new Dimension(600, 1000));
 		lb.cell(this.pcTable, "align=left"); //$NON-NLS-1$

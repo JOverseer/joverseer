@@ -14,7 +14,13 @@ import org.springframework.richclient.table.BeanTableModel;
  * @author Marios Skounakis
  */
 public class LostPopsTableModel extends BeanTableModel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int selectedNationNo = -1;
+	final static int iHex=1;
 
 	public LostPopsTableModel() {
 		super(PopulationCenter.class, (MessageSource) Application.instance().getApplicationContext().getBean("messageSource"));

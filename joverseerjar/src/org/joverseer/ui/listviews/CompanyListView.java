@@ -1,12 +1,18 @@
 package org.joverseer.ui.listviews;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
+
+import javax.swing.JComponent;
 
 import org.joverseer.domain.Company;
 import org.joverseer.game.Game;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.CompanyWrapper;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.application.Application;
 
 /**
@@ -39,6 +45,13 @@ public class CompanyListView extends BaseItemListView {
 		}
 		;
 		this.tableModel.setRows(filteredItems);
+	}
+
+	@Override
+	protected JComponent createControlImpl() {
+		JComponent c = super.createControlImpl();
+		TableUtils.setTableColumnRenderer(this.table, CompanyTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
+		return c;
 	}
 
 }

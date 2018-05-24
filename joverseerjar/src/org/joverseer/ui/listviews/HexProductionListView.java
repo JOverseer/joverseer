@@ -2,11 +2,16 @@ package org.joverseer.ui.listviews;
 
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
+
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.controls.TableUtils;
 
 public class HexProductionListView extends ItemListView {
 	ArrayList<HexProductionWrapper> averages = new ArrayList<HexProductionWrapper>();
@@ -110,5 +115,12 @@ public class HexProductionListView extends ItemListView {
 			av.add(pw);
 			this.averages.add(av);
 		}
+	}
+
+	@Override
+	protected JComponent createControlImpl() {
+		JComponent c = super.createControlImpl();
+		TableUtils.setTableColumnRenderer(this.table, HexProductionTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
+		return c;
 	}
 }

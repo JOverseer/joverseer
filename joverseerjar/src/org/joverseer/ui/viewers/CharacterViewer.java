@@ -256,11 +256,11 @@ public class CharacterViewer extends ObjectViewer {
 			InfoSource is = c.getInfoSource();
 			if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) || DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
 				DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource) is;
-				String infoSourcesStr = Messages.getString("CharacterViewer.spellAtHex",new Object[] {sis.getSpell() ,sis.getHexNo()}); //$NON-NLS-1$
+				String infoSourcesStr = Messages.getString("CharacterViewer.spellAtHex",new Object[] {sis.getSpell() ,sis.getHexNoAsString()}); //$NON-NLS-1$
 				this.infoSourcesTextBox.setVisible(true);
 				for (InfoSource dsis : sis.getOtherInfoSources()) {
 					if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
-						infoSourcesStr += ", " + Messages.getString("CharacterViewer.spellAtHex",new Object[] {((DerivedFromSpellInfoSource) dsis).getSpell(), ((DerivedFromSpellInfoSource) dsis).getHexNo()}); //$NON-NLS-1$
+						infoSourcesStr += ", " + Messages.getString("CharacterViewer.spellAtHex",new Object[] {((DerivedFromSpellInfoSource) dsis).getSpell(), ((DerivedFromSpellInfoSource) dsis).getHexNoAsString()}); //$NON-NLS-1$
 					}
 				}
 				this.infoSourcesTextBox.setText(infoSourcesStr);

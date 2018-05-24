@@ -208,7 +208,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public String getHexNo() {
-		return String.valueOf(getX() * 100 + getY());
+		return String.format("%04d",getX() * 100 + getY());
 	}
 
 	public int getInformationAmount(int turnNo) {

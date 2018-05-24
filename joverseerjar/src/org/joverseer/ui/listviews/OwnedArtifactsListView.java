@@ -2,6 +2,8 @@ package org.joverseer.ui.listviews;
 
 import java.util.ArrayList;
 
+import javax.swing.JComponent;
+
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
@@ -11,6 +13,8 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.OwnedArtifact;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
@@ -79,6 +83,13 @@ public class OwnedArtifactsListView extends ItemListView {
 			}
 		}
 		this.tableModel.setRows(artis);
+	}
+
+	@Override
+	protected JComponent createControlImpl() {
+		JComponent c=super.createControlImpl();
+		TableUtils.setTableColumnRenderer(this.table, OwnedArtifactsTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
+		return c;
 	}
 
 }

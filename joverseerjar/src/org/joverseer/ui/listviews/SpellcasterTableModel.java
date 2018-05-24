@@ -16,10 +16,11 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class SpellcasterTableModel extends ItemTableModel {
-
+	
 	ArrayList<Integer> spells = new ArrayList<Integer>();
 	ArrayList<String> spellDescrs = new ArrayList<String>();
 
+	public static final int iHexNo=1;
 	public SpellcasterTableModel(MessageSource messageSource) {
 		super(SpellcasterWrapper.class, messageSource);
 	}
@@ -38,7 +39,7 @@ public class SpellcasterTableModel extends ItemTableModel {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		Class[] cols = new Class[] { String.class, String.class, String.class, Integer.class, Integer.class };
+		Class[] cols = new Class[] { String.class, Integer.class, String.class, Integer.class, Integer.class };
 		List<Class> colList = new ArrayList<Class>();
 		colList.addAll(Arrays.asList(cols));
 		for (int i = 0; i < 100; i++) {

@@ -21,6 +21,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -137,6 +138,8 @@ public class NotesListView extends ItemListView {
         scrollPane.getViewport().setBackground(this.table.getBackground());
         tlb.cell(scrollPane);
 
+        org.joverseer.ui.support.controls.TableUtils.setTableColumnRenderer(this.table, NotesTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
+        
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
 

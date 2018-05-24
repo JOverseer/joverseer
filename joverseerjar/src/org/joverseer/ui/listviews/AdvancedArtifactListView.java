@@ -28,9 +28,12 @@ import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
+import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -234,5 +237,12 @@ public class AdvancedArtifactListView extends BaseItemListView {
 			}
 		}
 		this.tableModel.setRows(filteredItems);
+	}
+
+	@Override
+	protected JComponent createControlImpl() {
+		JComponent c = super.createControlImpl();
+		TableUtils.setTableColumnRenderer(this.table, AdvancedArtifactTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
+		return c;
 	}
 }

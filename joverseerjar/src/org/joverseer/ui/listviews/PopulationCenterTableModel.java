@@ -1,12 +1,13 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.PopulationCenterLoyaltyEstimator;
-import org.joverseer.ui.support.UIUtils;
 import org.springframework.context.MessageSource;
 
 /**
@@ -20,6 +21,7 @@ public class PopulationCenterTableModel extends ItemTableModel {
 	static int iLoyalty = 5;
 	static int iSize = 3;
 	static int iFort = 4;
+	static int iHex = 0;
 
 	public PopulationCenterTableModel(MessageSource messageSource) {
 		super(PopulationCenter.class, messageSource);
@@ -33,7 +35,7 @@ public class PopulationCenterTableModel extends ItemTableModel {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[] { Integer.class, String.class, String.class, String.class, String.class, String.class, InfoSource.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
+		return new Class[] { Integer.class, String.class, String.class, PopulationCenterSizeEnum.class, FortificationSizeEnum.class, String.class, InfoSource.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 	}
 
 	@Override
@@ -45,13 +47,14 @@ public class PopulationCenterTableModel extends ItemTableModel {
 			int p = pc.getProduction(pe) == null ? 0 : pc.getProduction(pe);
 			return s + p == 0 ? null : s + p;
 		}
-		if (i == iSize) {
+/*		if (i == iSize) {
 			PopulationCenter pc = (PopulationCenter) object;
 			return UIUtils.enumToString(pc.getSize());
 		} else if (i == iFort) {
 			PopulationCenter pc = (PopulationCenter) object;
 			return UIUtils.enumToString(pc.getFortification());
-		} else if (i == iLostThisTurn) {
+		} else
+		*/ if (i == iLostThisTurn) {
 			PopulationCenter pc = (PopulationCenter) object;
 			return pc.getLostThisTurn() ? "yes" : "";
 		} else if (i == iLoyalty) {

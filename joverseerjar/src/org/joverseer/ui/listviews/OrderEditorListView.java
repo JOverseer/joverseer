@@ -41,11 +41,13 @@ import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JOverseerTable;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
@@ -58,7 +60,6 @@ import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.ShuttleSortableTableModel;
 import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
-import org.springframework.richclient.table.TableUtils;
 import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
 
 /**
@@ -379,7 +380,7 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected JTable createTable() {
-		JTable table1 = TableUtils.createStandardSortableTable(this.tableModel);
+		JTable table1 = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.tableModel);
 		JTable newTable = new JOverseerTable(table1.getModel()) {
 
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
@@ -443,7 +444,7 @@ public class OrderEditorListView extends ItemListView {
 		// }
 		// });
 
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
+		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iDraw, new BooleanTableCellRenderer() {
 
 			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
@@ -460,8 +461,8 @@ public class OrderEditorListView extends ItemListView {
 						JCheckBox b = new JCheckBox();
 						b.setSelected((Boolean) value);
 						b.setHorizontalAlignment(SwingConstants.CENTER);
-						System.out.println("row == table.getSelectedRow() = " + String.valueOf(row == table1.getSelectedRow()));
-						System.out.println("isSelected = " + String.valueOf(isSelected));
+//						System.out.println("row == table.getSelectedRow() = " + String.valueOf(row == table1.getSelectedRow()));
+//						System.out.println("isSelected = " + String.valueOf(isSelected));
 						b.setBackground(row == table1.getSelectedRow() && isSelected ? this.selectionBackground : this.normalBackground);
 						return b;
 					} else {
@@ -478,7 +479,7 @@ public class OrderEditorListView extends ItemListView {
 
 		// specialized renderer for the icon returned by the orderResultType
 		// virtual field
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
+		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iResults, new DefaultTableCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -510,7 +511,7 @@ public class OrderEditorListView extends ItemListView {
 		});
 
 		// renderer for hex - boldify capital hex
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new DefaultTableCellRenderer() {
+		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel) {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -546,12 +547,12 @@ public class OrderEditorListView extends ItemListView {
 		};
 
 		// render stats - center alignment
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iStats, centerRenderer);
+		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iStats, centerRenderer);
 
 		for (int i = OrderEditorTableModel.iParamStart; i <= OrderEditorTableModel.iParamEnd; i++) {
-			GraphicUtils.setTableColumnRenderer(this.table, i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
+			TableUtils.setTableColumnRenderer(this.table, i, new OrderParameterCellRenderer(i - OrderEditorTableModel.iParamStart));
 		}
-		GraphicUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
+		TableUtils.setTableColumnRenderer(this.table, OrderEditorTableModel.iNoAndCode, new OrderNumberCellRenderer());
 
 		// tlb.row();
 		// tlb.cell(tableComp);

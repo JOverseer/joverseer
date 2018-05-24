@@ -33,8 +33,11 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.TrackCharacterMapItem;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.map.renderers.HexNumberRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.richclient.application.Application;
@@ -66,7 +69,7 @@ public class TrackCharacterListView extends BaseItemListView {
 
 	@Override
 	protected ColumnToSort[] getDefaultSort() {
-		return new ColumnToSort[] { new ColumnToSort(0, 0), new ColumnToSort(0, 1) };
+		return new ColumnToSort[] { new ColumnToSort(0, 0), new ColumnToSort(1, 1) };
 	}
 
 	/**
@@ -168,6 +171,7 @@ public class TrackCharacterListView extends BaseItemListView {
 		tlb.relatedGapRow();
 		tlb.cell(tableComp);
 		tlb.row();
+		TableUtils.setTableColumnRenderer(this.table, TrackCharacterTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
 		return tlb.getPanel();
 	}
 

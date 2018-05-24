@@ -95,6 +95,19 @@ public class Hex implements Serializable {
 		return ret;
 	}
 
+	public String getHexNoStr()
+	{
+		String hexNoStr = String.valueOf(this.getColumn());
+		if (this.getColumn() < 10) {
+			hexNoStr = "0" + hexNoStr; //$NON-NLS-1$
+		}
+		if (this.getRow() < 10) {
+			hexNoStr = hexNoStr + "0"; //$NON-NLS-1$
+		}
+		hexNoStr += String.valueOf(this.getRow());
+		return hexNoStr;
+	}
+	
 	// only used by orderchecker integration
 	public HashMap<HexSideEnum, ArrayList<HexSideElementEnum>> getSideElements() {
 		return this.hexSideElements;
@@ -111,4 +124,5 @@ public class Hex implements Serializable {
 		return h;
 
 	}
+
 }

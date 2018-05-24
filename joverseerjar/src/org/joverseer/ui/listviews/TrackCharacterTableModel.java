@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
  */
 public class TrackCharacterTableModel extends ItemTableModel {
 
+	public static final int iHexNo=1;
 	public TrackCharacterTableModel(MessageSource messageSource) {
 		super(TrackCharacterInfo.class, messageSource);
 	}

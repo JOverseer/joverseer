@@ -188,15 +188,7 @@ public class HexInfoViewer extends ObjectViewer {
 		super.setFormObject(object);
 		if (object != null) {
 			Hex h = (Hex) object;
-			String hexNoStr = String.valueOf(h.getColumn());
-			if (h.getColumn() < 10) {
-				hexNoStr = "0" + hexNoStr; //$NON-NLS-1$
-			}
-			if (h.getRow() < 10) {
-				hexNoStr = hexNoStr + "0"; //$NON-NLS-1$
-			}
-			hexNoStr += String.valueOf(h.getRow());
-			this.hexNo.setText(hexNoStr);
+			this.hexNo.setText(h.getHexNoStr());
 
 			Integer latestTurnInfo = HexInfoHistory.getLatestHexInfoTurnNoForHex(h.getHexNo());
 			if (latestTurnInfo == null || latestTurnInfo == -1) {

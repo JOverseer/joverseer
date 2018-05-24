@@ -12,9 +12,10 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class NotesTableModel extends ItemTableModel {
-	public static int iTarget = 1;
-	public static int iText = 4;
-	public static int iTags = 3;
+	public static final int iHexNo =0;
+	public static final int iTarget = 1;
+	public static final int iText = 4;
+	public static final int iTags = 3;
 
 	public NotesTableModel(MessageSource messageSource) {
 		super(Note.class, messageSource);
@@ -28,7 +29,7 @@ public class NotesTableModel extends ItemTableModel {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, String.class, String.class, Boolean.class };
+		return new Class[] { Integer.class, String.class, String.class, String.class, String.class, Boolean.class };
 	}
 
 	// protected boolean isCellEditableInternal(Object object, int i) {

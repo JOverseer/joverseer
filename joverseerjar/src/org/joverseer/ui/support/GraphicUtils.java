@@ -133,14 +133,7 @@ public class GraphicUtils {
 	}
 
 	/**
-	 * Set a cell render for a given table column indexed by column index
-	 */
-	public static void setTableColumnRenderer(JTable table, int iColumn, TableCellRenderer renderer) {
-		table.getColumnModel().getColumn(iColumn).setCellRenderer(renderer);
-	}
-
-	/**
-	 * Spring has the annoying habbit to use property converters for integer
+	 * Spring has the annoying habit to use property converters for integer
 	 * fields in forms that use a dot to represent thousands. This method
 	 * registers new converters that don't use dots
 	 */

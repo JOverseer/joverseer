@@ -8,6 +8,7 @@ import java.util.Arrays;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
@@ -16,7 +17,10 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.listviews.renderers.NonZeroNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.SortableTableModel;
 
@@ -59,34 +63,25 @@ public class CharacterListView extends ItemListView {
     @Override
 	protected JComponent createControlImpl() {
         JComponent c = super.createControlImpl();
-        this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel) {
-
-            @Override
-			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,
-                    int arg4, int arg5) {
-                Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+//        this.table.setDefaultRenderer(Integer.class, new NonZeroNumberCellRenderer(this.tableModel));
+        TableUtils.setTableColumnRenderer(this.table, this.iHexNo, new HexNumberCellRenderer(this.tableModel)
+        {
+			@Override
+			public Component getTableCellRendererComponent(JTable arg0, Object value, boolean arg2, boolean arg3,int row, int column) {
+                Component c1 = super.getTableCellRendererComponent(arg0, value, arg2, arg3, row, column);
                 JLabel lbl = (JLabel) c1;
-                Integer v = (Integer) arg1;
-                if (v == null || v.equals(0)) {
-                    lbl.setText("");
+                // render capital with bold
+                int idx = ((SortableTableModel)CharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+                Object obj = CharacterListView.this.tableModel.getRow(idx);
+                Character ch = (Character)obj;
+                PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ch.getNationNo(), Boolean.TRUE});
+                if (capital != null && ch.getHexNo() == capital.getHexNo()) {
+                    lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
                 }
-                if (arg5 == CharacterListView.this.iHexNo) {
-                    // render capital with bold
-                    int idx = ((SortableTableModel)CharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
-                    Object obj = CharacterListView.this.tableModel.getRow(idx);
-                    Character ch = (Character)obj;
-                    PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ch.getNationNo(), Boolean.TRUE});
-                    if (capital != null && ch.getHexNo() == capital.getHexNo()) {
-                        lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
-                    }
-
-                }
-                
                 return c1;
             }
 
         });
-        
         this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel) {
             @Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,

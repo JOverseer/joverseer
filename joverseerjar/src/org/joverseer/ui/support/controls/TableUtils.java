@@ -1,6 +1,7 @@
 package org.joverseer.ui.support.controls;
 
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * Variou static table utilities
@@ -14,5 +15,11 @@ public class TableUtils {
 				return;
 			table.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
 		}
+	}
+	/**
+	 * Set a cell render for a given table column indexed by column index
+	 */
+	public static void setTableColumnRenderer(JTable table, int iColumn, TableCellRenderer renderer) {
+		table.getColumnModel().getColumn(iColumn).setCellRenderer(renderer);
 	}
 }

@@ -12,6 +12,7 @@ import javax.swing.JFileChooser;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
@@ -22,7 +23,6 @@ import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
@@ -55,7 +55,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 
 	public OpenGameDirTree() {
 		super("openGameDirTreeCommand");
-		this.gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+		this.gh = GameHolder.instance();
 	}
 
 	@Override
@@ -214,7 +214,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 			globalMsg = "Import was successful.";
 		}
 		this.monitor.setGlobalMessage(globalMsg);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this.gh.getGame(), this));
+		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gh.getGame(), this);
 		this.monitor.done();
 		this.dialog.setDescription("Processing finished.");
 	}

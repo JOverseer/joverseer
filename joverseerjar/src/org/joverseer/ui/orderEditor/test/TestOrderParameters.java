@@ -10,7 +10,6 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.orderEditor.OrderEditorData;
-import org.springframework.richclient.application.Application;
 
 /**
  * Tests whether the OrderEditor can support all parameter types specified
@@ -20,7 +19,7 @@ import org.springframework.richclient.application.Application;
  */
 public class TestOrderParameters extends TestCase {
     public void testOrderParametersForOrderEditor() {
-        OrderEditor oe = (OrderEditor)Application.instance().getApplicationContext().getBean("orderEditor");
+        OrderEditor oe = OrderEditor.instance();
         Character c = new Character();
         c.setCommand(50);
         c.setCommandTotal(50);

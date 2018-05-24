@@ -11,7 +11,6 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -76,7 +75,7 @@ public class DialogsUtility {
             }
 
         };
-        Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        Game game = GameHolder.instance().getGame();
         Nation n = game.getMetadata().getNationByNum(nationNo);
         
         dialog.setTitle(Messages.getString("combatNarrationDialog.title", new Object[]{String.valueOf(combat.getHexNo()), n.getName()}));

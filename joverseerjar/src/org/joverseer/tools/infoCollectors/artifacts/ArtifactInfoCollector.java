@@ -46,7 +46,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
 	HashMap<Integer, Container<ArtifactWrapper>> turnInfo = new HashMap<Integer, Container<ArtifactWrapper>>();
 
 	public Container<ArtifactWrapper> computeWrappersForTurn(int turnNo) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 
 		MetadataSource ms = new MetadataSource();
 		Container<ArtifactWrapper> aws = new Container<ArtifactWrapper>(new String[] { "number" });
@@ -162,7 +162,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				this.turnInfo.clear();
 			}
 		}

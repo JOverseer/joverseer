@@ -8,7 +8,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 
 /**
  * Base class for Item List Views.
@@ -37,7 +36,7 @@ public abstract class ItemListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		if (this.turnElementType != null) {
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = GameHolder.instance().getGame();
 			if (!Game.isInitialized(g))
 				return;
 			Container<?> items = g.getTurn().getContainer(this.turnElementType);
@@ -50,7 +49,7 @@ public abstract class ItemListView extends BaseItemListView {
 			;
 			this.tableModel.setRows(filteredItems);
 		} else {
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = GameHolder.instance().getGame();
 			if (!Game.isInitialized(g))
 				return;
 			GameMetadata gm = g.getMetadata();

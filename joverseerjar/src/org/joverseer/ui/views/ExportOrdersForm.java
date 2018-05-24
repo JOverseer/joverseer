@@ -374,7 +374,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 		this.duplicateSkillOrders = false;
 		this.ordersWithWarnings = false;
 
-		OrderResultContainer orc = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
+		OrderResultContainer orc = OrderResultContainer.instance();
 		OrderParameterValidator validator = new OrderParameterValidator();
 		for (Character ch : chars) {
 			for (int i = 0; i < ch.getNumberOfOrders(); i++) {

@@ -6,7 +6,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 
 /**
  * Abstract class that forms the base for all volatile (i.e. drawable, non
@@ -23,7 +22,7 @@ public abstract class AbstractMapItem implements Serializable {
 	public abstract boolean isEquivalent(AbstractMapItem mi);
 
 	public static void add(AbstractMapItem mapItem) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		Turn t = g.getTurn();
@@ -34,7 +33,7 @@ public abstract class AbstractMapItem implements Serializable {
 	}
 
 	public static void remove(AbstractMapItem mapItem) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		Turn t = g.getTurn();
@@ -44,7 +43,7 @@ public abstract class AbstractMapItem implements Serializable {
 		mapItems.removeItem(mapItem);
 	}
 	public static void toggle(AbstractMapItem mapItem) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		Turn t = g.getTurn();

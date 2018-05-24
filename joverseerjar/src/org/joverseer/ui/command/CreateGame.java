@@ -1,5 +1,6 @@
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.GameMetadata;
@@ -9,12 +10,10 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapMetadataUtils;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.NewGameForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -47,7 +46,7 @@ public class CreateGame extends ActionCommand {
 			protected boolean onFinish() {
                 form.commit();
                 Game game = new Game();
-                GameMetadata gm = (GameMetadata)Application.instance().getApplicationContext().getBean("gameMetadata");
+                GameMetadata gm = GameMetadata.instance();
                 gm.getHexes().clear(); // without this the number of hexes keeps accumulating!
                 gm.setGame(game);
                 gm.setGameNo(ng.getNumber());
@@ -64,12 +63,12 @@ public class CreateGame extends ActionCommand {
                 } 
 
                 MapMetadataUtils mmu = new MapMetadataUtils();
-                MapMetadata mm = (MapMetadata)Application.instance().getApplicationContext().getBean("mapMetadata");
+                MapMetadata mm = MapMetadata.instance();
                 mmu.setMapSize(mm, gm.getGameType());
                 
                 game.setMetadata(gm);
                 game.setMaxTurn(0);
-                GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
+                GameHolder gh = GameHolder.instance();
                 gh.setGame(game);
                 gh.setFile(null);
 
@@ -84,10 +83,8 @@ public class CreateGame extends ActionCommand {
                     // do nothing, exception cannot really occur
                 }
 
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), game, this));
-                Application.instance().getApplicationContext().publishEvent(
-                        new JOverseerEvent(LifecycleEventsEnum.GameLoadedEvent.toString(), game, this));
+                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, game, this);
+                joApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, game, this);
 
                 return true;
             }

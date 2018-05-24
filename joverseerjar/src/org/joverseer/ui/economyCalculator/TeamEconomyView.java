@@ -185,19 +185,19 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		this.nationStatisticsListView.onApplicationEvent(applicationEvent);
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.EconomyCalculatorUpdate)) {
 				this.teamEconomyTableModel.fireTableDataChanged();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				try {
 					refreshTableItems();
 					this.teamEconomyTableModel.fireTableDataChanged();
 				} catch (Exception exc) {
 					exc.printStackTrace();
 				}
-			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				refreshTableItems();
 				this.teamEconomyTableModel.fireTableDataChanged();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				this.teamEconomyTableModel.fireTableDataChanged();
 			}
 
@@ -210,6 +210,11 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 	 * @author Marios Skounakis
 	 */
 	class IntegerTeamEconomyTableRenderer extends DefaultTableCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1808381074745472954L;
+
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -273,6 +278,11 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 	}
 
 	class StringTeamEconomyTableRenderer extends DefaultTableCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -2226537511337457982L;
+
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

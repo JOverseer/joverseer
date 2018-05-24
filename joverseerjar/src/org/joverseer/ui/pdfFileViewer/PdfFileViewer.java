@@ -131,10 +131,10 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
                 loadNationCombo();
                 initSearch();
-            } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+            } else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
                 loadNationCombo();
                 initSearch();
             }

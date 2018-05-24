@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.joverseer.joApplication;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -11,8 +12,6 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 /**
@@ -61,7 +60,7 @@ public class GotoNextHighlightedHexCommand extends ActionCommand {
 			}
 		}
 		Point selectedHex = new Point(hexToHighlight / 100, hexToHighlight / 100);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+		joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 
 	}
 

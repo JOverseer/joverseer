@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
@@ -43,7 +44,6 @@ import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
@@ -103,7 +103,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		super.setFormObject(object);
 
 		PopulationCenter pc = (PopulationCenter) object;
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game game = GameHolder.instance().getGame();
 		if (game == null)
 			return;
 
@@ -304,7 +304,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		c.setPreferredSize(this.uiSizes.newDimension(120/12, this.uiSizes.getHeight3()));
 		c.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
@@ -413,11 +413,11 @@ public class PopulationCenterViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancelAction)
 				return;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 			Container<PopulationCenter> pcs = t.getPopulationCenters();
 			pcs.removeItem(pc);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -490,7 +490,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			PopulationCenter pc = (PopulationCenter) getFormObject();
 			pc.setLostThisTurn(!pc.getLostThisTurn());
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -513,7 +513,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				protected boolean onFinish() {
 					form.commit();
 					GameHolder.instance().getGame().getTurn().getPopulationCenters().refreshItem(pc);
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 					return true;
 				}
 			};

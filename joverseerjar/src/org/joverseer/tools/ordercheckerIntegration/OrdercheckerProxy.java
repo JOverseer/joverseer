@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.Character;
@@ -31,7 +32,6 @@ import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
 
 import com.middleearthgames.orderchecker.Main;
@@ -159,7 +159,7 @@ public class OrdercheckerProxy {
 	}
 
 	protected void processOrders(Main main) throws Exception {
-		final ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		final ImageSource imgSource = joApplication.getImageSource();
 
 		final DefaultMutableTreeNode root = main.getWindow().getRoot();
 		JTree tree = main.getWindow().getTree();

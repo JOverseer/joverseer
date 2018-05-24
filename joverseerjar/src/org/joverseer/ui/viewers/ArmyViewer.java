@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 import org.apache.log4j.LogManager;
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -40,7 +41,6 @@ import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
@@ -107,7 +107,7 @@ public class ArmyViewer extends ObjectViewer {
 		this.nation.setPreferredSize(this.uiSizes.newDimension(30/12, this.uiSizes.getHeight3()));
 
 		// button to show range of army on map
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
@@ -171,7 +171,7 @@ public class ArmyViewer extends ObjectViewer {
 			this.commanderName.setForeground(c);
 		}
 
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game game = GameHolder.instance().getGame();
 		if (game == null)
 			return;
 		game.getMetadata();
@@ -314,7 +314,7 @@ public class ArmyViewer extends ObjectViewer {
 			ArmyRangeMapItem armi = new ArmyRangeMapItem(army, this.ignoreEnemyPops);
 			AbstractMapItem.add(armi);
 
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -329,8 +329,8 @@ public class ArmyViewer extends ObjectViewer {
 			Army a = (org.joverseer.domain.Army) getFormObject();
 			Boolean fed = a.computeFed();
 			a.setFed(fed == null || fed != true ? true : false);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -378,8 +378,8 @@ public class ArmyViewer extends ObjectViewer {
 			Army a = (org.joverseer.domain.Army) getFormObject();
 			Boolean cav1 = a.computeCavalry();
 			a.setCavalry(cav1 == null || cav1 != true ? true : false);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -405,11 +405,11 @@ public class ArmyViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancel)
 				return;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
 			armies.removeItem(a);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -499,12 +499,12 @@ public class ArmyViewer extends ObjectViewer {
 				protected boolean onFinish() {
 					form.commit();
 					Army a1 = (Army) getFormObject();
-					Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+					Game g = GameHolder.instance().getGame();
 					Turn t = g.getTurn();
 					Container<Army> armies = t.getArmies();
 					armies.removeItem(a1);
 					armies.addItem(a1);
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 					return true;
 				}
 			};

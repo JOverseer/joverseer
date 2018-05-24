@@ -1,6 +1,5 @@
 package org.joverseer.ui.listviews;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -11,9 +10,7 @@ import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.CompanyWrapper;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
-import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.controls.TableUtils;
-import org.springframework.richclient.application.Application;
 
 /**
  * List view for companies
@@ -32,7 +29,7 @@ public class CompanyListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 		Container<Company> items = g.getTurn().getCompanies();

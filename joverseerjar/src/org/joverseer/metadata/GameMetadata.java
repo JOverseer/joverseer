@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -232,7 +231,7 @@ public class GameMetadata implements Serializable {
 		if (this.orders != null) {
 			OrderMetadata om = this.orders.findFirstByProperty("number", new Integer(225));
 			if (om.getSkillRequirement().equals("MS")) {
-				GameMetadata gm = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+				GameMetadata gm = GameMetadata.instance();
 				gm.setGameType(getGameType());
 
 				try {
@@ -386,4 +385,9 @@ public class GameMetadata implements Serializable {
 			}
 		}
 	}
+	static public GameMetadata instance()
+	{
+		return (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+	}
+
 }

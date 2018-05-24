@@ -3,6 +3,7 @@ package org.joverseer.ui.command;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.SpellProficiency;
@@ -19,10 +20,8 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HighlightHexesMapItem;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -70,7 +69,7 @@ public class HighlightCharacters extends ActionCommand {
 				}
 				AbstractMapItem.add(hhmi);
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 				return true;
 			}
 		};

@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -36,10 +37,10 @@ import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.PageComponentContext;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
@@ -134,7 +135,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 						return;
 					IHasMapLocation selectedItem = (IHasMapLocation) obj;
 					Point selectedHex = new Point(selectedItem.getX(), selectedItem.getY());
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 				} catch (Exception exc) {
 					// do nothing
 				}
@@ -181,7 +182,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	 */
 	protected JComponent[] getButtons() {
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+			ImageSource imgSource = joApplication.getImageSource();
 			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);
@@ -259,7 +260,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	protected JComponent createControlImpl() {
 
 		// fetch the messageSource instance from the application context
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource");
+		MessageSource messageSource = Messages.getMessageSource();
 
 		// create the table model
 		try {
@@ -348,7 +349,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -358,9 +359,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 						setItems();
 					}
 				});
-			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedHexChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
 				// setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -368,7 +369,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 						setItems();
 					}
 				});
-			} else if (e.getEventType().equals(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle)) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -381,7 +382,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 					}
 				});
 
-			} else if (e.getEventType().equals(LifecycleEventsEnum.ListviewRefreshItems.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ListviewRefreshItems)) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {

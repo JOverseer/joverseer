@@ -23,6 +23,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
@@ -33,7 +34,6 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -215,7 +215,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
         final JButton button = new JButton();
         final Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
         if (c == null) return null;
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        ImageSource imgSource = joApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("acceptOrder.icon"));
         button.setIcon(ico);
         button.setPreferredSize(new Dimension(16, 10));
@@ -228,8 +228,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
                 Order o = c.getOrders()[ow.getOrderIdx()];
                 o.setOrderNo(ow.getOrderNo());
                 o.setParameters(ow.getParameters());
-                Application.instance().getApplicationContext().publishEvent(
-                      new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+                joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
             }
         });
         
@@ -241,7 +240,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
         final JButton button = new JButton();
         final Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
         if (c == null) return null;
-        ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+        ImageSource imgSource = joApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
         button.setIcon(ico);
         button.setPreferredSize(new Dimension(16, 16));
@@ -251,8 +250,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
         button.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent e) {
-                Application.instance().getApplicationContext().publishEvent(
-                      new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), new Point(c.getX(), c.getY()), this));
+                joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(c.getX(), c.getY()), this);
             }
         });
         
@@ -403,7 +401,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.SendOrdersByChat.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.SendOrdersByChat)) {
                 if (Order.class.isInstance(e.getObject())) {
                     sendOrder((Order)e.getObject());
                 } else if (ArrayList.class.isInstance(e.getObject())) {

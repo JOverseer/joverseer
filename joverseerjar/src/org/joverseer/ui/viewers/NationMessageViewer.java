@@ -16,7 +16,6 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
@@ -68,7 +67,7 @@ public class NationMessageViewer extends ObjectViewer {
     @Override
 	public void setFormObject(Object obj) {
         NationMessage nm = (NationMessage)obj;
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        Game game = GameHolder.instance().getGame();
         if (game == null) return;
         GameMetadata gm = game.getMetadata();
         String nationName = gm.getNationByNum(nm.getNationNo()).getShortName();

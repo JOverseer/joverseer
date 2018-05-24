@@ -8,7 +8,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 
 /**
  * Wraps data for the nation statistics list view
@@ -55,7 +54,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	public int getArmyEHI() {
 		if (this.armyEHI == null) {
 			this.armyEHI = 0;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game g = GameHolder.instance().getGame();
 			if (!Game.isInitialized(g))
 				return 0;
 			Turn t = g.getTurn();

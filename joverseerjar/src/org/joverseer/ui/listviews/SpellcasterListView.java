@@ -353,9 +353,9 @@ public class SpellcasterListView extends BaseItemListView {
 		super.onApplicationEvent(applicationEvent);
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				setItems();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {

@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.prefs.Preferences;
 
+import org.joverseer.joApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.JOverseerJIDEClient;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.support.DefaultApplicationDescriptor;
+import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.command.ActionCommand;
 
 import com.middleearthgames.updater.ThreepartVersion;
@@ -20,7 +20,7 @@ public class CheckForUpdatesCommand extends ActionCommand{
 
 	@Override
 	protected void doExecuteCommand() {
-		DefaultApplicationDescriptor descriptor = (DefaultApplicationDescriptor)Application.instance().getApplicationContext().getBean("applicationDescriptor");
+		ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
 		ThreepartVersion latest,current = new ThreepartVersion(descriptor.getVersion());
 		String title;
         

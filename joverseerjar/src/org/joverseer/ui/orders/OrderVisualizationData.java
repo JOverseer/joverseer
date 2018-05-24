@@ -12,6 +12,7 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.InputDialog;
+import org.springframework.richclient.application.Application;
 
 /**
  * Holds info for visualizing orders on the map (used by the Order renderers)
@@ -113,5 +114,9 @@ public class OrderVisualizationData {
     
     public void setOrderEditorOrder(Order order) {
     	this.orderEditorOrder = order;
+    }
+    public static OrderVisualizationData instance()
+    {
+		return (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
     }
 }

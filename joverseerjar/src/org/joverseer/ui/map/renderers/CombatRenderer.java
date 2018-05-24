@@ -8,7 +8,6 @@ import org.joverseer.domain.Combat;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renders combats as a small dot on the top of the hex
@@ -24,13 +23,13 @@ public class CombatRenderer implements Renderer {
     }
 
     protected void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
         if (this.mapMetadata == null) init();
-        ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        GameHolder.instance().getGame();
         int w = this.mapMetadata.getGridCellWidth() / 3;
         int h = this.mapMetadata.getGridCellHeight() / 3;
         int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 1/2 - w/2;

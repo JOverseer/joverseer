@@ -9,7 +9,6 @@ import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 public class ExportMapMetadataInfoCommand extends ActionCommand {
@@ -25,7 +24,7 @@ public class ExportMapMetadataInfoCommand extends ActionCommand {
 		try {
 			FileWriter f = new FileWriter("c:\\map.terrain");
 			Game game = GameHolder.instance().getGame();
-			MapMetadata metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+			MapMetadata metadata = MapMetadata.instance();
 			for (int i = metadata.getMinMapColumn(); i <= metadata.getMaxMapColumn(); i++) {
 				for (int j = metadata.getMinMapRow(); j <= metadata.getMaxMapRow(); j++) {
 					Hex hex = game.getMetadata().getHex(i * 100 + j);

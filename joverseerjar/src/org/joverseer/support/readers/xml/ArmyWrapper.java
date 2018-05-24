@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.xml;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -8,8 +9,6 @@ import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 
 /**
  * Holds information about armies (from xml turns)
@@ -197,7 +196,7 @@ public class ArmyWrapper {
 			throw new RuntimeException("Uknown information source " + getInformationSource());
 		}
 
-		GameMetadata gm = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame().getMetadata();
+		GameMetadata gm = joApplication.getMetadata();
 
 		switch (getNationAllegience()) {
 		case 0:

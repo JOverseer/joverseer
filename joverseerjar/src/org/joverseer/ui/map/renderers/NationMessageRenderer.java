@@ -6,7 +6,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renders nation messages as a small dot on the bottom of the hex
@@ -22,7 +21,7 @@ public class NationMessageRenderer implements Renderer {
     }
 
     private void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
     @Override

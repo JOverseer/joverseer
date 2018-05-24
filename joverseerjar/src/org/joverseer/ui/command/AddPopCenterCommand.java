@@ -3,6 +3,7 @@
  */
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
@@ -14,12 +15,10 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.EditPopulationCenterForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -67,7 +66,7 @@ public class AddPopCenterCommand extends ActionCommand {
 			protected boolean onFinish() {
 				form.commit();
 				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 				return true;
 			}
 		};

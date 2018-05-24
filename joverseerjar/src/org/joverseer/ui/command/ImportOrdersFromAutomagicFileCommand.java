@@ -5,11 +5,11 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 
+import org.joverseer.joApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderFileReader;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -48,7 +48,7 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
             
             prefs.put("importOrdersDir", f.getParentFile().getAbsolutePath()); //$NON-NLS-1$
             
-            GameHolder gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder"); //$NON-NLS-1$
+            GameHolder gh = GameHolder.instance();
             try {
                 OrderFileReader orderFileReader = new OrderFileReader();
                 orderFileReader.setGame(gh.getGame());
@@ -70,8 +70,7 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
                 MessageDialog dlg = new MessageDialog(Messages.getString("importOrdersFromAutomagicFileCommand.importOrders"),
                 		Messages.getString("importOrdersFromAutomagicFileCommand.OrdersImported", new Object[] {orderFileReader.getOrdersRead() }));
                 dlg.showDialog();
-                Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), gh.getGame(), this));
+                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, gh.getGame(), this);
 
             }
             catch (Exception exc) {

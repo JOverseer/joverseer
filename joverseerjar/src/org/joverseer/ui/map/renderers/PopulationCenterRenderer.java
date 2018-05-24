@@ -45,7 +45,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
     }
 
     private void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
 

@@ -2,6 +2,7 @@ package org.joverseer.support;
 
 import java.util.ArrayList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
@@ -13,8 +14,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.richclient.application.Application;
 
 /**
  * Class the post-processes a newly imported turn, i.e. it is called after new
@@ -70,7 +69,7 @@ public class TurnPostProcessor {
 		turn.getNotes().removeAll(toRemove);
 
 		// copy persistent notes from previous turn
-		final Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		final Game g = joApplication.getGame();
 		Turn previousTurn = null;
 		for (int i = g.getCurrentTurn() - 1; i >= 0; i--) {
 			if (g.getTurn(i) != null) {
@@ -151,6 +150,6 @@ public class TurnPostProcessor {
 			}
 		}
 
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.ListviewRefreshItems.toString(), this, this));
+		joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
 	}
 }

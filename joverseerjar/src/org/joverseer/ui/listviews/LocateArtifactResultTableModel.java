@@ -10,7 +10,6 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for LA/LAT results
@@ -18,6 +17,11 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class LocateArtifactResultTableModel extends ItemTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3536612294036865492L;
+
 	public LocateArtifactResultTableModel(MessageSource messageSource) {
 		super(LocateArtifactResult.class, messageSource);
 	}
@@ -53,7 +57,7 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
 		lar.setOwner(artifact.getOwner());
 		lar.setSpellName(dfsis.getSpell() + " - " + dfsis.getCasterName());
 
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());
 		if (ai != null) {
 			lar.setArtifactPowers(ai.getPower1() != null ? ai.getPower1() : "");

@@ -8,7 +8,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.joverseer.ui.listviews.filters.TurnFilter;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
 /**
@@ -35,7 +34,7 @@ public class LocateArtifactResultListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<LocateArtifactResult> results = new ArrayList<LocateArtifactResult>();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 

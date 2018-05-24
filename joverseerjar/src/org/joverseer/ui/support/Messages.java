@@ -13,8 +13,7 @@ public class Messages {
 	}
 
 	public static String getString(String key, Object[] args,String defaultMessage) {
-		MessageSource ms = (MessageSource) Application.instance().getApplicationContext().getBean(MESSAGEBEAN);
-		return ms.getMessage(key, args, defaultMessage,Locale.getDefault());
+		return getMessageSource().getMessage(key, args, defaultMessage,Locale.getDefault());
 	}
 	public static String getString(String key) {
 		return getString(key, new Object[] {});
@@ -22,11 +21,14 @@ public class Messages {
 
 	public static String getString(String key, Object[] args) {
 		try {
-			MessageSource ms = (MessageSource) Application.instance().getApplicationContext().getBean(MESSAGEBEAN);
-			return ms.getMessage(key, args, Locale.getDefault());
+			return getMessageSource().getMessage(key, args, Locale.getDefault());
 		} catch (NoSuchMessageException e) {
 			return "!"+key+"!";
 		}
 		
+	}
+	public static MessageSource getMessageSource()
+	{
+		return (MessageSource) Application.instance().getApplicationContext().getBean(MESSAGEBEAN);
 	}
 }

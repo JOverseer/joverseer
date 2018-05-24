@@ -12,27 +12,12 @@ import org.joverseer.game.TurnElementsEnum;
 
 public class OrderTextGenerator extends OrderFileGenerator {
 
-    private String getStatsLine(Character c) {
-        String ret = "";
-        ret = appendStat(ret, "C", c.getCommandTotal());
-        ret = appendStat(ret, "A", c.getAgentTotal());
-        ret = appendStat(ret, "E", c.getEmmisaryTotal());
-        ret = appendStat(ret, "M", c.getMageTotal());
-        return ret;
-    }
-    
-    private String appendStat(String stats, String statLetter, int rank) {
-        if (rank != 0) {
-            return stats + (stats.equals("") ? "" : ", ") + statLetter + rank;
-        }
-        return stats;
-    }
     
     @Override
 	protected String exportOrder(Character c, Order o) {
         String ret = "";
         if (o == c.getOrders()[0]) {
-            ret += String.format("%s (%s) @ %04d (%s)\n", c.getName(), (c.getId() + "    ").substring(0, 5), c.getHexNo(), getStatsLine(c));
+            ret += String.format("%s (%s) @ %04d (%s)\n", c.getName(), (c.getId() + "    ").substring(0, 5), c.getHexNo(), c.getBasicStatString());
         }
 
         if (o.isBlank()) {

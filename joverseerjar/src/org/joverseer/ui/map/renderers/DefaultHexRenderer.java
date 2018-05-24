@@ -53,7 +53,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 
 	@SuppressWarnings("unchecked")
 	protected void init() {
-		this.metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+		this.metadata = MapMetadata.instance();
 		this.xPoints[0] = this.metadata.getHexSize() / 2 * this.metadata.getGridCellWidth();
 		this.xPoints[1] = this.metadata.getHexSize() * this.metadata.getGridCellWidth();
 		this.xPoints[2] = this.metadata.getHexSize() * this.metadata.getGridCellWidth();
@@ -352,7 +352,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.MapMetadataChangedEvent)) {
 				init();
 			}
 		}

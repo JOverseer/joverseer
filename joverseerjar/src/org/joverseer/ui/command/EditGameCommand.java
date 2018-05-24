@@ -1,16 +1,15 @@
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.NewGame;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.NewGameForm;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -51,11 +50,10 @@ public class EditGameCommand extends ActionCommand {
                 gm.setAdditionalNations(ng.getAdditionalNations());
                 gm.setNewXmlFormat(ng.getNewXmlFormat());
                 
-                GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");
+                GameHolder gh = GameHolder.instance();
                 gh.setGame(g);
                 
-                Application.instance().getApplicationContext().publishEvent(
-                                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, this));
+                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
 
                 return true;
             }

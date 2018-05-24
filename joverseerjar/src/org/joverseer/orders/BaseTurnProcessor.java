@@ -7,12 +7,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.richclient.application.Application;
 
 
 public class BaseTurnProcessor {
@@ -25,8 +24,7 @@ public class BaseTurnProcessor {
         processTurn(newTurn);
         try {
             g.addTurn(newTurn);
-            Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, this));
+            joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
 
         }
         catch (Exception exc) {}

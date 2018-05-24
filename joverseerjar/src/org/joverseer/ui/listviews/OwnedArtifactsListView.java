@@ -15,7 +15,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.OwnedArtifact;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.controls.TableUtils;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.ColumnToSort;
 
 /**
@@ -40,7 +39,7 @@ public class OwnedArtifactsListView extends ItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 		Container<Character> items = g.getTurn().getCharacters();

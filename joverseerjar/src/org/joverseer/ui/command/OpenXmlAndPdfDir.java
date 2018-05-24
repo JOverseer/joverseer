@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -22,7 +23,6 @@ import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.joverseer.ui.JOverseerClientProgressMonitor;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -50,7 +50,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
 	public OpenXmlAndPdfDir() {
 		super("openXmlAndPdfDirCommand");
-		this.gh = (GameHolder) Application.instance().getApplicationContext().getBean("gameHolder");
+		this.gh = GameHolder.instance();
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			globalMsg = "Import was successful.";
 		}
 		this.monitor.setGlobalMessage(globalMsg);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this.gh.getGame(), this));
+		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gh.getGame(), this);
 
 		this.monitor.done();
 		this.dialog.setDescription("Processing finished.");

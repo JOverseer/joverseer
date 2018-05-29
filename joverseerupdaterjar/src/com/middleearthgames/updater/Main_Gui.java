@@ -63,7 +63,7 @@ public class Main_Gui extends JFrame{
 
      public Main_Gui(String downloadPath) {
         initComponents();
-        outText.setText("3 Contacting Download Server...");
+        outText.setText("Contacting Download Server...");
         this.downloadPath = downloadPath;
         download();
     }
@@ -80,6 +80,7 @@ public class Main_Gui extends JFrame{
         outText = new JTextArea();
         sp = new JScrollPane();
         sp.setViewportView(outText);
+        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         if (System.getProperty("os.name").startsWith("Mac OS X")) {
         	launch = new JButton("Close and Launch App");
@@ -124,6 +125,7 @@ public class Main_Gui extends JFrame{
                     copyFiles(new File(root),new File("").getAbsolutePath());
                     cleanup(file);
                     launch.setEnabled(true);
+                    afterDownload();
                     logInfo("\nUpdate Finished!");
                 } catch (Exception ex) {
                 	logInfo("\n"+ex.getMessage());
@@ -294,6 +296,17 @@ public class Main_Gui extends JFrame{
     {
         this.outText.setText(this.outText.getText()+message);
     }
+    private void afterDownload()
+    {
+    	// do nothing for now but ideally load and run a routine from the downloaded version of update.jar.
+    	checkRequiredJavaVersion();
+    }
+    private void checkRequiredJavaVersion()
+    {
+    	if (getVersion() < 1.8 ) {
+    		JOptionPane.showMessageDialog(null, "Please update your version of java to at least version 1.8. See http://www.java.com");
+    	}
+    }
     public static void main(String args[]) {
     	String downloadPath = "http://www.middleearthgames.com/software/joverseer/url.html";
     	
@@ -316,5 +329,12 @@ public class Main_Gui extends JFrame{
     	runner = new UpdateRunnable(downloadPath);
         java.awt.EventQueue.invokeLater(runner);
     }
+    public static double JAVA_VERSION = getVersion ();
 
+    static double getVersion () {
+        String version = System.getProperty("java.version");
+        int pos = version.indexOf('.');
+        pos = version.indexOf('.', pos+1);
+        return Double.parseDouble (version.substring (0, pos));
+    }
 }

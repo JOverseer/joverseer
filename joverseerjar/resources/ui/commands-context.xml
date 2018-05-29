@@ -281,7 +281,7 @@
             	</bean>
                 <value>separator</value>
                 <bean class="org.joverseer.ui.command.EditPreferencesCommand">
-            		<property name="enabled"><value>false</value></property>
+            		<property name="enabled"><value>true</value></property>
             	</bean>
                 <bean class="org.joverseer.ui.command.PalantirStyleMapCommand">
             		<property name="enabled"><value>false</value></property>

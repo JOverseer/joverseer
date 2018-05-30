@@ -454,7 +454,6 @@ public class Nation
             Army army = (Army)this.armies.get(i);
             if(army.getLocation() == location && (army.getNation() == this.nation || isFriend(this.nation, army.getNation())))
             {
-                int troops[] = army.getTroopContent(0);
                 totalFood -= army.getFoodRequirement();
             }
         }

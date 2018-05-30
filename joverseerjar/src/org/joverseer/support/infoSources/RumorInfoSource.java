@@ -6,6 +6,7 @@ package org.joverseer.support.infoSources;
  * @author Marios Skounakis
  *
  */
+@SuppressWarnings("serial")
 public class RumorInfoSource extends TurnInfoSource {
 	@Override
 	public String toString() {

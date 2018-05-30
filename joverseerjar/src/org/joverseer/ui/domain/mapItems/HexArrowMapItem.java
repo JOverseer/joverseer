@@ -2,6 +2,7 @@ package org.joverseer.ui.domain.mapItems;
 
 import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class HexArrowMapItem extends AbstractMapItem {
 	int originHex;
 	int destinationHex;

@@ -54,7 +54,6 @@ import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.support.ApplicationServicesAccessor;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;

@@ -46,6 +46,7 @@ import com.middleearthgames.orderchecker.io.Data;
 // Referenced classes of package com.middleearthgames.orderchecker.gui:
 //            OCTreeNode
 
+@SuppressWarnings("serial")
 class ResultsDlg extends JDialog
 {
 

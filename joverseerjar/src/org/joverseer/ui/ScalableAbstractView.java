@@ -6,14 +6,14 @@ public abstract class ScalableAbstractView extends AbstractView {
 	public UISizes uiSizes;
 
 	public UISizes getUiSizes() {
-		return uiSizes;
+		return this.uiSizes;
 	}
 
 	public void setUiSizes(UISizes uiSizes) {
 		this.uiSizes = uiSizes;
 	}
 	public ScalableAbstractView() {
-		uiSizes = new UISizes();
+		this.uiSizes = new UISizes();
 	}
 
 }

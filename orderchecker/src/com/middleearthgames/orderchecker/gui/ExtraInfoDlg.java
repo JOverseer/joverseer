@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.util.Vector;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class ExtraInfoDlg extends JDialog
 {
 

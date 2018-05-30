@@ -10,7 +10,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
-import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.controls.TableUtils;
 
 public class HexProductionListView extends ItemListView {

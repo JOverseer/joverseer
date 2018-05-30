@@ -16,6 +16,7 @@ import javax.swing.table.TableColumnModel;
  * @author Marios Skounakis
  */
 //TODO Fix or delete
+@SuppressWarnings("serial")
 public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
 
     public TextAreaRenderer() {
@@ -49,7 +50,7 @@ public class TextAreaRenderer extends JTextArea implements TableCellRenderer {
 //        scp.setBorder(BorderFactory.createEmptyBorder());
         TableColumnModel columnModel = table.getColumnModel();
         setSize(columnModel.getColumn(column).getWidth(), 100000);
-        int rowHeight = table.getRowHeight(row);
+        //int rowHeight = table.getRowHeight(row);
         int thisHeight = this.getPreferredSize().height;
         //if (thisHeight>rowHeight) 
             table.setRowHeight(row, thisHeight);

@@ -12,6 +12,7 @@ import javax.swing.TransferHandler;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public abstract class GenericExportTransferHandler extends TransferHandler {
 
     @Override

@@ -4,6 +4,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.springframework.richclient.application.event.LifecycleApplicationEvent;
 
 
+@SuppressWarnings("serial")
 public class JOverseerEvent extends LifecycleApplicationEvent {
 	Object sender;
 

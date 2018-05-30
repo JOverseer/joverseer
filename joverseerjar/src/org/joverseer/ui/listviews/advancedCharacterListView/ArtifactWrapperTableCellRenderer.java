@@ -20,6 +20,7 @@ import org.springframework.richclient.table.BeanTableModel;
  * Basically adds a tooltip for the artifacts so that their name, powers and info source can be shown
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class ArtifactWrapperTableCellRenderer extends AllegianceColorCellRenderer {
         
 

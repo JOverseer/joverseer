@@ -14,6 +14,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class SpellcasterTableModel extends ItemTableModel {
 
 	ArrayList<Integer> spells = new ArrayList<Integer>();

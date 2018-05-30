@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -291,6 +292,8 @@ public class Main_Gui extends JFrame{
     private void logInfo(String message)
     {
         this.outText.setText(this.outText.getText()+message);
+    	JScrollBar vertical = this.sp.getVerticalScrollBar();
+    	vertical.setValue(vertical.getMaximum());
     }
     private void logDebug(String message)
     {

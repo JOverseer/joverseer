@@ -52,6 +52,13 @@ public abstract class AbstractListViewFilter {
 		}
 		return super.equals(obj);
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		return super.hashCode() + getDescription().hashCode();
+	}
     
     
 }

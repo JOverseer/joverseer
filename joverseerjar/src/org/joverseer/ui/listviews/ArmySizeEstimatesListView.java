@@ -31,6 +31,8 @@ public class ArmySizeEstimatesListView extends BaseItemListView {
 	protected JComponent createControlImpl() {
 		JComponent comp = super.createControlImpl();
 		this.table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				JLabel lbl = (JLabel) super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);

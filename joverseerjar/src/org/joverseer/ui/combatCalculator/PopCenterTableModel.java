@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.richclient.form.Form;
 import org.springframework.richclient.table.BeanTableModel;
 
+@SuppressWarnings("serial")
 public class PopCenterTableModel extends BeanTableModel {
 	public static int iDefense = 6;
 	public static int iAttackerStr = 5;

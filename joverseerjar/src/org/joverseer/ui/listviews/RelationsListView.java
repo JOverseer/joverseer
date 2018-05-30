@@ -18,7 +18,6 @@ import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**

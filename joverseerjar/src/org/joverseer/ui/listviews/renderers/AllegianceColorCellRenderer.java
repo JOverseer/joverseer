@@ -27,6 +27,7 @@ import org.springframework.richclient.table.SortableTableModel;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
     BeanTableModel tableModel;
     

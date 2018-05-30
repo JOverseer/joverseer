@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class NotesTableModel extends ItemTableModel {
 	public static final int iHexNo =0;
 	public static final int iTarget = 1;

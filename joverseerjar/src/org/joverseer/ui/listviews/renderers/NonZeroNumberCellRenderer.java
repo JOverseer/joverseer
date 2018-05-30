@@ -7,6 +7,7 @@ import javax.swing.JTable;
 
 import org.springframework.richclient.table.BeanTableModel;
 
+@SuppressWarnings("serial")
 public class NonZeroNumberCellRenderer extends AllegianceColorCellRenderer {
 
 	public NonZeroNumberCellRenderer(BeanTableModel tableModel) {

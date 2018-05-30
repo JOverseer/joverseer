@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class PlayerInfoTableModel extends ItemTableModel {
 
 	public PlayerInfoTableModel(MessageSource messageSource) {

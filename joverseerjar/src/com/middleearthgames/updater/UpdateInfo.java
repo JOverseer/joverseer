@@ -80,7 +80,7 @@ public class UpdateInfo extends JFrame{
 			result = "<html><body><table style='font-family:Tahoma; font-size:11pt' border=0 cellspacing=0 cellpadding=0>" + result + "</table></font></body></html>";
 			this.infoPane.setText(result);
 			this.infoPane.select(0, 1);
-			scp.setPreferredSize(new Dimension(750, 500));
+			this.scp.setPreferredSize(new Dimension(750, 500));
 		} catch (Exception exc) {
 			System.out.println(exc.getMessage());
 		}

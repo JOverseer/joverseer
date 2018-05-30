@@ -10,7 +10,7 @@ public abstract class ScalableAbstractForm extends AbstractForm {
 
 	public ScalableAbstractForm(FormModel arg0, String fORM_PAGE) {
 		super(arg0,fORM_PAGE);
-		uiSizes = new UISizes();
+		this.uiSizes = new UISizes();
 	}
 
 	public UISizes getUiSizes() {

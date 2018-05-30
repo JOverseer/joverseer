@@ -203,6 +203,7 @@ public class JOverseerClientProgressMonitor extends AbstractForm implements Prog
 	 * 
 	 * @author Marios Skounakis
 	 */
+	@SuppressWarnings("serial")
 	public class ProgressItemRenderer extends DefaultListCellRenderer {
 
 		@Override

@@ -135,7 +135,7 @@ public class JideApplicationPage extends DefaultApplicationPage {
         if (log.isDebugEnabled()) {
             log.debug("Adding view for " + viewDescriptor.getId());
         }
-        JideViewDescriptor jvd = (JideViewDescriptor)viewDescriptor;
+//        JideViewDescriptor jvd = (JideViewDescriptor)viewDescriptor;
         super.showView(viewDescriptor);
         registerPageComponent(viewDescriptor.getId());
     }
@@ -372,7 +372,7 @@ public class JideApplicationPage extends DefaultApplicationPage {
 		public void propertyChange(PropertyChangeEvent evt) {
             DefaultKeyboardFocusManager manager = (DefaultKeyboardFocusManager) evt.getSource();
             Component focusOwner = manager.getFocusOwner();
-            Workspace workspace = (Workspace) getDockableWorkspace(focusOwner);
+            getDockableWorkspace(focusOwner);
             // if( workspace != null){
             // if(logger.isDebugEnabled()){
             // logger.debug("About to fire focus gained on the active workspace component");

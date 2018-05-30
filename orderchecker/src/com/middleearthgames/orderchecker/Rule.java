@@ -1265,16 +1265,11 @@ public class Rule
             processCharacter(charParam, charLoc, status);
             boolean armyCO = character.isArmyCO(this.parentOrder.getOrder());
             boolean navyCO = false;
-            boolean withArmy = false;
             Army army = character.getArmy(this.parentOrder.getOrder());
             if(army != null && armyCO && army.isNavy())
             {
                 armyCO = false;
                 navyCO = true;
-            }
-            if(!armyCO && !navyCO)
-            {
-                withArmy = character.isCommanderInArmy(this.parentOrder.getOrder());
             }
             switch(CO)
             {
@@ -2383,7 +2378,7 @@ public class Rule
                 break;
 
             case 10: // '\n'
-                String sourceNation = Main.main.getNation().getNationName(Main.main.getNation().getNation());
+//                String sourceNation = Main.main.getNation().getNationName(Main.main.getNation().getNation());
                 String targetNation = Main.main.getNation().getNationName(pc.getNation());
                 if(owned)
                 {
@@ -2612,11 +2607,13 @@ public class Rule
                 msg = msg + " to " + Main.main.locationStr(destination);
             }
             //is this food coming into an army?
-            if ((type == 2) && (product.equals("Food"))) {
-                Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
-                if (army != null) {
-                	army.setFoodGainedBeforeMove(quantity);
-                }
+            if (product != null) {
+            	if ((type == 2) && (product.equals("Food"))) {
+            		Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
+                	if (army != null) {
+                		army.setFoodGainedBeforeMove(quantity);
+                	}
+            	}
             }
             msg = msg + ".";
             this.parentOrder.addHelp(msg);
@@ -2745,7 +2742,6 @@ public class Rule
             {
                 return null;
             }
-            int warn21;
             switch(type)
             {
             case 0: // '\0'
@@ -2766,7 +2762,6 @@ public class Rule
                     character.setCompanyCO(!character.isCompanyCO(this.parentOrder.getOrder()), this.parentOrder.getOrder());
                 } else
                 {
-                    warn21 = 1;
                 }
                 break;
 

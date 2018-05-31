@@ -5,6 +5,9 @@
 
 package com.middleearthgames.orderchecker.io;
 
+import java.io.File;
+import java.net.URL;
+
 import com.middleearthgames.orderchecker.*;
 
 // Referenced classes of package com.middleearthgames.orderchecker.io:
@@ -21,7 +24,7 @@ public class ImportRulesCsv extends ImportCsv
 
     public boolean getRules()
     {
-        return openFile();
+    	return super.openFileOrStream();
     }
 
     public String parseRules()

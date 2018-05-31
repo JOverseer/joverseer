@@ -121,9 +121,9 @@ class GameDeleteDlg extends JDialog
 
     private void okActionPerformed()
     {
-        for(Object obj: this.gameList.getSelectedValuesList())
-            this.data.getGames().remove(obj);
-
+//        for (Object obj: this.gameList.getSelectedValuesList()) {
+//            this.data.getGames().remove(obj);
+//        }
         dispose();
     }
 

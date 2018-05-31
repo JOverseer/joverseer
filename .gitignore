@@ -2,3 +2,6 @@ RemoteSystemsTempFiles
 .metadata
 /.recommenders
 .DS_Store
+joverseerupdaterjar/update/update/update.jar
+joverseerupdaterjar/update.jar
+joverseerupdaterjar/txt2xml.jar

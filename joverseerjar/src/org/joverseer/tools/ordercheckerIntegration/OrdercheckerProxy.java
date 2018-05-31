@@ -84,12 +84,17 @@ public class OrdercheckerProxy {
 	public void runOrderchecker() {
 		Data data = Main.main.getData();
 		Main.main.setRuleSet(new Ruleset());
-		ImportRulesCsv rules = new ImportRulesCsv(data.getRulesPath(), Main.main.getRuleSet());
+		ImportRulesCsv rules = new ImportRulesCsv("ruleset.csv", Main.main.getRuleSet());
 		boolean result = rules.getRules();
 		if (!result) {
+			// maybe we're running under eclipse.
 			rules.closeFile();
-			Main.displayErrorMessage("The rules file (" + data.getRulesPath() + ") could not be opened!");
-			return;
+			rules = new ImportRulesCsv("bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
+			result = rules.getRules();
+			if (!result) {
+				Main.displayErrorMessage("The rules file (" + data.getRulesPath() + ") could not be opened!");
+				return;
+			}
 		}
 		String error = rules.parseRules();
 		rules.closeFile();

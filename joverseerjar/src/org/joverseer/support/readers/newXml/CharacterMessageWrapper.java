@@ -410,7 +410,6 @@ public class CharacterMessageWrapper {
 				ch = ch.trim();
 //				String allegiance = null;
 //				String gender = null;
-				boolean unknown = false;
 				if (ch.contains(" - Free People")) {
 //					allegiance = "FP";
 					ch = ch.replace(" - Free People", " #allegiance#");

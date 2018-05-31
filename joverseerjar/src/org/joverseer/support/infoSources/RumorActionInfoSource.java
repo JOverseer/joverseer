@@ -8,6 +8,7 @@ package org.joverseer.support.infoSources;
  * @author Marios Skounakis
  *
  */
+@SuppressWarnings("serial")
 public class RumorActionInfoSource extends InfoSource {
 	String reports;
 	

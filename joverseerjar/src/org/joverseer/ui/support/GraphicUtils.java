@@ -115,6 +115,11 @@ public class GraphicUtils {
 		TipOfTheDayDialog dialog = new TipOfTheDayDialog((Frame) null, tipOfTheDaySource, new AbstractAction("Show Tips on startup") {
 
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5690955309434823082L;
+
 			@Override
 			public void actionPerformed(ActionEvent e1) {
 				if (e1.getSource() instanceof JCheckBox) {
@@ -130,6 +135,14 @@ public class GraphicUtils {
 		JideSwingUtilities.globalCenterWindow(dialog);
 		dialog.setModal(true);
 		dialog.setVisible(true);
+	}
+
+	/**
+	 * Spring has the annoying habit to use property converters for integer
+	 * Set a cell render for a given table column indexed by column index
+	 */
+	public static void setTableColumnRenderer(JTable table, int iColumn, TableCellRenderer renderer) {
+		table.getColumnModel().getColumn(iColumn).setCellRenderer(renderer);
 	}
 
 	/**

@@ -15,6 +15,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class PopulationCenterTableModel extends ItemTableModel {
 	static int iProductStart = 8;
 	static int iLostThisTurn = 7;

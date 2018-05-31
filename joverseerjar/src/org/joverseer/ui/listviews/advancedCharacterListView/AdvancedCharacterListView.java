@@ -45,7 +45,6 @@ import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
-import org.joverseer.ui.listviews.renderers.NonZeroNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.JLabelButton;

@@ -14,6 +14,7 @@ import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
  * TransferHandler for Character objects
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class CharacterExportTransferHandler extends TransferHandler {
 	org.joverseer.domain.Character character;
 	

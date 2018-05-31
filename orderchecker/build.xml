@@ -5,6 +5,7 @@
     </description>
     <property name="bin">bin</property>
     <property name="src">src</property>
+    <property name="res.dir">resources</property>
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
 	<property name="lib">lib</property>
@@ -52,7 +53,23 @@
 		depends="-Init,Compile">
 		<jar destfile="${jarfile}"
 			basedir="${bin}"
-			includes="**/*.class"/>
+			includes="**/*.class">
+            <manifest>
+                <attribute name="Main-Class" value="com.middleearthgames.orderchecker.Main"/>
+            	<section name="orderchecker">
+            	    <attribute name="Specification-Title" value="orderchecker"/>
+            	    <attribute name="Specification-Version" value="2.4a"/>
+            	    <attribute name="Specification-Vendor" value="Middle-Earth Games"/>
+            	    <attribute name="Implementation-Title" value="orderchecker"/>
+            	    <attribute name="Implementation-Version" value="2.4a ${TODAY}"/>
+            	    <attribute name="Implementation-Vendor" value="Middle-Earth Games"/>
+            	</section>
+            </manifest>
+
+	    	<fileset dir="${res.dir}"
+		    	includes="metadata/**"
+		    	excludes="**/*.bak,**/orderchecker.dat"/>
+			</jar>
 	</target>
    <!-- Internal targets -->
    <target name="-Init">

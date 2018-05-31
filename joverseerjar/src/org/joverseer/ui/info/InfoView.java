@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -147,6 +146,8 @@ public class InfoView extends AbstractView {
 			JTable table = TableUtils.createStandardSortableTable(model);
 			this.tables.add(table);
 			table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
@@ -245,7 +246,8 @@ public class InfoView extends AbstractView {
 			return String.class;
 		}
 
-	    protected String[] getColumnNames() {
+	    @Override
+		protected String[] getColumnNames() {
 			return this.colNames.toArray(new String[this.colNames.size()]);
 	    }
 

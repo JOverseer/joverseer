@@ -2,12 +2,7 @@ package org.joverseer.orders.me.orderProcessors.spells;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
-import org.joverseer.domain.SpellProficiency;
-import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.domain.SpellDifficultyEnum;
-import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.orders.AbstractOrderProcessor;
-import org.joverseer.orders.OrderUtils;
 
 
 public abstract class AbstractSpellOrderProcessor extends AbstractOrderProcessor {
@@ -26,6 +21,7 @@ public abstract class AbstractSpellOrderProcessor extends AbstractOrderProcessor
     }
     
     public boolean spellCastOutcome(Character c, int spellNo) {
+    	/*
         GameMetadata gm = OrderUtils.getGame().getMetadata();
         SpellInfo si = (SpellInfo)gm.getSpells().findFirstByProperty("number", spellNo);
         int difficultyFactor = 0;
@@ -44,7 +40,8 @@ public abstract class AbstractSpellOrderProcessor extends AbstractOrderProcessor
                 mageProficiency = sp.getProficiency();
             }
         }
-//        int artifactBonus = 0;
+*/
+        //        int artifactBonus = 0;
         // TODO continue here
         return true;
         

@@ -21,7 +21,6 @@ import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.EnumTableCellRenderer;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.PopCenterInfoSourceTableCellRenderer;
-import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
@@ -118,6 +117,7 @@ public class PopulationCenterListView extends ItemListView {
 		final String str = copyString;
 
 		TransferHandler handler = new GenericExportTransferHandler() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Transferable createTransferable(JComponent arg0) {

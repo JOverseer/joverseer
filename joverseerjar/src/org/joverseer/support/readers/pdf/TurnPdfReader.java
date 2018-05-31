@@ -114,9 +114,7 @@ public class TurnPdfReader implements Runnable {
             this.document = PDDocument.load(this.filename);
 
 
-            if (encoding != null) {
-                output = new OutputStreamWriter(outs = new ByteArrayOutputStream(), encoding);
-            }
+            output = new OutputStreamWriter(outs = new ByteArrayOutputStream(), encoding);
 
             PDFTextStripper stripper = null;
             stripper = new PDFTextStripper();

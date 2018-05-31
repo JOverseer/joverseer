@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import com.middleearthgames.orderchecker.io.Data;
 
+@SuppressWarnings("serial")
 class GameDeleteDlg extends JDialog
 {
 
@@ -120,10 +121,9 @@ class GameDeleteDlg extends JDialog
 
     private void okActionPerformed()
     {
-        Object selected[] = this.gameList.getSelectedValues();
-        for(int i = 0; i < selected.length; i++)
-            this.data.getGames().remove(selected[i]);
-
+//        for (Object obj: this.gameList.getSelectedValuesList()) {
+//            this.data.getGames().remove(obj);
+//        }
         dispose();
     }
 
@@ -136,8 +136,5 @@ class GameDeleteDlg extends JDialog
     private final JButton okButton = new JButton();
     private final JButton cancelButton = new JButton();
     private final Data data;
-
-
-
 
 }

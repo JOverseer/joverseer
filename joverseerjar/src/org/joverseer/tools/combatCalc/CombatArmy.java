@@ -185,7 +185,7 @@ public class CombatArmy implements Serializable {
     }
     
     public CombatArmy(CombatArmy ca) {
-    	Game g = GameHolder.instance().getGame();
+    	GameHolder.instance().getGame();
         for (ArmyElementType aet : ArmyElementType.values()) {
             ArmyElement ae = ca.getArmyElement(aet);
             if (ae == null) {

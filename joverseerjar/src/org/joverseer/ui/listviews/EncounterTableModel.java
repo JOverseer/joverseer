@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class EncounterTableModel extends ItemTableModel {
 	public EncounterTableModel(MessageSource messageSource) {
 		super(EncounterWrapper.class, messageSource);

@@ -22,6 +22,7 @@ import javax.swing.tree.*;
 //            ExampleFileFilter, PrefixFileFilter, CharInfoDlg, ResultsDlg, 
 //            GameDeleteDlg, HelpDlg, AboutDlg, OCTreeNode
 
+@SuppressWarnings("serial")
 public class OCDialog extends JPanel
 {
     public OCDialog(JPanel panel, Data data) {
@@ -639,10 +640,10 @@ public class OCDialog extends JPanel
     }
 
 	public DefaultMutableTreeNode getRoot() {
-		return root;
+		return this.root;
 	}
 	public JTree getTree() {
-		return tree;
+		return this.tree;
 	}
 
 

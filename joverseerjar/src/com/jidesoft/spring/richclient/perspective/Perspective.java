@@ -47,6 +47,7 @@ public abstract class Perspective implements BeanNameAware{
 		this.id = id;
 	}
 	
+	@Override
 	public void setBeanName(String beanName) {
 		this.id = beanName;
 	}

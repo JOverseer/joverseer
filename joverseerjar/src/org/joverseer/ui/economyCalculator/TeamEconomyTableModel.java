@@ -19,6 +19,7 @@ import org.joverseer.ui.support.Messages;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	
 	public static int iFinalGold = 15;

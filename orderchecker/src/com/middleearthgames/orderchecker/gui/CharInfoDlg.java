@@ -37,6 +37,7 @@ import com.middleearthgames.orderchecker.io.Data;
 // Referenced classes of package com.middleearthgames.orderchecker.gui:
 //            OCTreeNode
 
+@SuppressWarnings("serial")
 class CharInfoDlg extends JDialog
 {
 
@@ -237,7 +238,8 @@ class CharInfoDlg extends JDialog
         dispose();
     }
 
-    private static final int DEFAULT_ROWS = 4;
+    @SuppressWarnings("unused")
+	private static final int DEFAULT_ROWS = 4;
     private JPanel pane;
     private JButton okButton;
     private JButton cancelButton;

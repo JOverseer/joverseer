@@ -2,6 +2,7 @@ package org.joverseer.ui.domain;
 
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 
 public class ChangedPCInfo implements IHasMapLocation, IBelongsToNation {
@@ -60,6 +61,16 @@ public class ChangedPCInfo implements IHasMapLocation, IBelongsToNation {
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	/*
+	 * Note doesn't copy Name!
+	 */
+	public ChangedPCInfo copyFrom(PopulationCenter newPc,String newReason) {
+		this.setHexNo(newPc.getHexNo());
+		this.setSize(newPc.getSize());
+		this.setNationNo(newPc.getNationNo());
+		this.setReason(newReason);
+		return this;
 	}
 	
 		

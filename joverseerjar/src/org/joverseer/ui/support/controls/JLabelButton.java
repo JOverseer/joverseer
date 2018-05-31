@@ -17,6 +17,7 @@ import javax.swing.JLabel;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class JLabelButton extends JLabel {
     ArrayList<ActionListener> actionListeners = new ArrayList<ActionListener>();
     

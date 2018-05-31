@@ -78,7 +78,6 @@ public class OrderFileReader {
             String line;
             String charName = null;
             int orderI = 0;
-            int i = 0;
             Pattern turnFileInfo = Pattern.compile("(\\d+),(\\d+),(\\d+),(\\d+),([\\w ]+),.*");
 
             while ((line = reader.readLine()) != null) {
@@ -141,7 +140,6 @@ public class OrderFileReader {
                         this.ordersRead++;
                     }
                 }
-                i++;
             }
         } catch (Exception exc) {
             throw exc;

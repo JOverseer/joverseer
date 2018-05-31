@@ -23,7 +23,6 @@ import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;

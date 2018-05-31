@@ -36,6 +36,7 @@ public class JideApplicationWindowCloseListener extends WindowAdapter{
 	@SuppressWarnings("unused")
 	private static final Log log = LogFactory.getLog(JideApplicationWindowCloseListener.class);
 	private ApplicationWindow window;
+	@SuppressWarnings("unused")
 	private DockingManager manager;
 	private boolean saveLayoutOnClose = true;
 

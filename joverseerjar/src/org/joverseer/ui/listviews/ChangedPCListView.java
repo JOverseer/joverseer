@@ -25,46 +25,31 @@ public class ChangedPCListView extends BaseItemListView {
 		return g.getTurn(turnNo).getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo) != null;
 	}
 
+	@SuppressWarnings("null")
 	protected ChangedPCInfo comparePCs(PopulationCenter oldPc, PopulationCenter newPc) {
 		if ((oldPc == null) && (newPc==null)) return null;
 		
 		ChangedPCInfo cpi = new ChangedPCInfo();
 		if (oldPc != null && newPc == null) {
-			cpi.setHexNo(oldPc.getHexNo());
-			cpi.setSize(oldPc.getSize());
-			cpi.setNationNo(oldPc.getNationNo());
-			cpi.setReason("Disappeared");
-			return cpi;
+			return cpi.copyFrom(oldPc,"Disappeared");
 		}  
 		if (oldPc == null && newPc != null) {
-			cpi.setHexNo(newPc.getHexNo());
-			cpi.setSize(newPc.getSize());
-			cpi.setNationNo(newPc.getNationNo());
-			cpi.setReason("Created");
-			return cpi;
+			return cpi.copyFrom(newPc,"Created");
 		}
 		if (oldPc.getNationNo().equals(newPc.getNationNo())) {
 			if (oldPc.getSize().equals(newPc.getSize()))
 				return null;
-			cpi.setHexNo(oldPc.getHexNo());
-			cpi.setSize(newPc.getSize());
-			cpi.setNationNo(oldPc.getNationNo());
 			if (newPc.getSize().getCode() > oldPc.getSize().getCode()) {
-				cpi.setReason("Improved");
+				return cpi.copyFrom(newPc,"Improved");
 			} else {
-				cpi.setReason("Degrade");
+				return cpi.copyFrom(newPc,"Degrade");
 			}
-			return cpi;
 		} else if (!oldPc.getNationNo().equals(newPc.getNationNo())) {
-			cpi.setHexNo(oldPc.getHexNo());
-			cpi.setSize(newPc.getSize());
-			cpi.setNationNo(oldPc.getNationNo());
 			if (newPc.getSize().getCode() < oldPc.getSize().getCode()) {
-				cpi.setReason("Degrade & Lost");
+				return cpi.copyFrom(newPc,"Degrade & Lost");
 			} else {
-				cpi.setReason("Ownership change");
+				return cpi.copyFrom(newPc,"Ownership change");
 			}
-			return cpi;
 		}
 		return null;
 	}

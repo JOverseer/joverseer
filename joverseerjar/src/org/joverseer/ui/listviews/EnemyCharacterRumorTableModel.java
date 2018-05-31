@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class EnemyCharacterRumorTableModel extends ItemTableModel {
 	public EnemyCharacterRumorTableModel(MessageSource messageSource) {
 		super(EnemyCharacterRumorWrapper.class, messageSource);

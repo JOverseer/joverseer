@@ -8,8 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -86,12 +84,17 @@ public class OrdercheckerProxy {
 	public void runOrderchecker() {
 		Data data = Main.main.getData();
 		Main.main.setRuleSet(new Ruleset());
-		ImportRulesCsv rules = new ImportRulesCsv(data.getRulesPath(), Main.main.getRuleSet());
+		ImportRulesCsv rules = new ImportRulesCsv("ruleset.csv", Main.main.getRuleSet());
 		boolean result = rules.getRules();
 		if (!result) {
+			// maybe we're running under eclipse.
 			rules.closeFile();
-			Main.displayErrorMessage("The rules file (" + data.getRulesPath() + ") could not be opened!");
-			return;
+			rules = new ImportRulesCsv("bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
+			result = rules.getRules();
+			if (!result) {
+				Main.displayErrorMessage("The rules file (" + data.getRulesPath() + ") could not be opened!");
+				return;
+			}
 		}
 		String error = rules.parseRules();
 		rules.closeFile();
@@ -105,8 +108,8 @@ public class OrdercheckerProxy {
 			return;
 		}
 		Main.main.setMap(new Map());
-		String gt = "1650";
 		Game g = GameHolder.instance().getGame();
+/*		String gt;
 		if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
 			Main.main.getData().setGameType("1650");
 			gt = "1650";
@@ -126,6 +129,7 @@ public class OrdercheckerProxy {
 			Main.main.getData().setGameType("Kin Strife");
 			gt = "ks";
 		}
+*/
 		copyCurrentMap(g.getMetadata(),Main.main.getMap());
 /*		
 		ImportTerrainCsv terrain = new ImportTerrainCsv(data.getTerrainPath() + gt + ".game", Main.main.getMap());
@@ -161,7 +165,7 @@ public class OrdercheckerProxy {
 	protected void processOrders(Main main) throws Exception {
 		final ImageSource imgSource = joApplication.getImageSource();
 
-		final DefaultMutableTreeNode root = main.getWindow().getRoot();
+		main.getWindow().getRoot();
 		JTree tree = main.getWindow().getTree();
 		if (tree.getCellRenderer() instanceof OCResultTreeRenderer) {
 			final OCResultTreeRenderer renderer = (OCResultTreeRenderer)tree.getCellRenderer();

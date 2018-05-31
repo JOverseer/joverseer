@@ -22,7 +22,7 @@ public class ImportTerrainCsv extends ImportCsv
 
     public boolean getMapInformation()
     {
-        return openFile();
+        return openFileOrStream();
     }
 
     public String parseTerrain()

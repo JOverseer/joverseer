@@ -63,6 +63,8 @@ public class CharacterListView extends ItemListView {
 //        this.table.setDefaultRenderer(Integer.class, new NonZeroNumberCellRenderer(this.tableModel));
         TableUtils.setTableColumnRenderer(this.table, this.iHexNo, new HexNumberCellRenderer(this.tableModel)
         {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Component getTableCellRendererComponent(JTable arg0, Object value, boolean arg2, boolean arg3,int row, int column) {
                 Component c1 = super.getTableCellRendererComponent(arg0, value, arg2, arg3, row, column);
@@ -80,10 +82,7 @@ public class CharacterListView extends ItemListView {
 
         });
         this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel) {
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = -2541679036922383283L;
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3,

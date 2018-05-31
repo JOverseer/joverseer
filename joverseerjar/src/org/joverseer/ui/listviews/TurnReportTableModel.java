@@ -3,6 +3,7 @@ package org.joverseer.ui.listviews;
 import org.joverseer.ui.domain.TurnReportItem;
 import org.springframework.context.MessageSource;
 
+@SuppressWarnings("serial")
 public class TurnReportTableModel extends ItemTableModel {
 
 	public TurnReportTableModel(MessageSource messageSource) {

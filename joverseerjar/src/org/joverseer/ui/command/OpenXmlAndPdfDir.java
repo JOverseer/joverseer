@@ -88,7 +88,6 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 						}
 					}
 				} catch (Exception exc) {
-					int a = 1;
 					this.monitor.subTaskStarted(exc.getMessage());
 					// do nothing
 					// todo fix
@@ -112,7 +111,6 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 							warningOccurred = true;
 						}
 					} catch (Exception exc) {
-						int a = 1;
 						this.monitor.subTaskStarted(exc.getMessage());
 						// do nothing
 						// todo fix

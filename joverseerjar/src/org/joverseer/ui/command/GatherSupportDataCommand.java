@@ -23,8 +23,8 @@ public class GatherSupportDataCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
-		ThreepartVersion latest = new ThreepartVersion(descriptor.getVersion());
-		String report = "Version:" +descriptor.getVersion() + EOL
+//		ThreepartVersion latest = new ThreepartVersion(descriptor.getVersion());
+		String report = "Version:" +descriptor.getVersion() + this.EOL
 				+ SystemProperties();
 
         FormModel formModel = FormModelHelper.createFormModel(report);
@@ -57,12 +57,12 @@ public class GatherSupportDataCommand extends ActionCommand {
 		sb.append(prop);
 		sb.append(":");
 		sb.append(System.getProperty(prop));
-		sb.append(EOL);
+		sb.append(this.EOL);
 	}
 	public String SystemProperties()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("system properties"+EOL);
+		sb.append("system properties"+this.EOL);
 		reportProperty(sb,"java.home");
 		reportProperty(sb,"java.vendor");
 		reportProperty(sb,"java.vendor.url");

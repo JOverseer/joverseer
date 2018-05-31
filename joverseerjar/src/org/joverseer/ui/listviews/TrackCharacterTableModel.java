@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class TrackCharacterTableModel extends ItemTableModel {
 
 	public static final int iHexNo=1;

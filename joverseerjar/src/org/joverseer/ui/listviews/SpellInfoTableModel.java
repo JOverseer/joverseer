@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class SpellInfoTableModel extends ItemTableModel {
 	public SpellInfoTableModel(MessageSource messageSource) {
 		super(SpellInfo.class, messageSource);

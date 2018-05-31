@@ -8,8 +8,10 @@ import javax.swing.JComponent;
  * @author Marios Skounakis
  */
 //TODO It's obsolete - the GenericExportTransferHandler should be used instead
+@SuppressWarnings("serial")
 public class ParamTransferHandler extends StringTransferHandler {
-    Object param;
+
+	Object param;
     
     public ParamTransferHandler(Object param) {
         super("");

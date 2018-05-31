@@ -14,6 +14,7 @@ import org.springframework.richclient.table.BeanTableModel;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class PopCenterInfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
 
     public PopCenterInfoSourceTableCellRenderer(BeanTableModel tableModel) {

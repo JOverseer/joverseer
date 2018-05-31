@@ -92,4 +92,9 @@ public class DerivedFromSpellInfoSource extends InfoSource {
         }
         return false;
     }
+
+	@Override
+	public int hashCode() {
+        return super.hashCode() + getNationNo() + getCasterName().hashCode() + getHexNo();
+	}
 }

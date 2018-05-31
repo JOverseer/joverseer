@@ -88,8 +88,8 @@ import org.springframework.richclient.progress.BusyIndicator;
  * Painting is done in a layered way in order to avoid having to always redraw
  * everything, which is slow The three layers are: 1. the map, which shows the
  * terrain and other static stuff for the game type 2. the map base items, which
- * shows fairly non-volative objects for the current turn such as pop centers,
- * chars, armies, etc 3. the map items, which shows volative objects such as
+ * shows fairly non-volatile objects for the current turn such as pop centers,
+ * chars, armies, etc 3. the map items, which shows volatile objects such as
  * army ranges and orders Each layer is stored in a buffered image so that if
  * one of the higher layers is changed, the buffered image is used to redraw the
  * lower layer.
@@ -98,7 +98,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  * 
  * The control also implements mouse listener and mouse motion listener
  * interfaces to provide: - hex selection upon mouse click - scrolling upon
- * ctrl+mouse drag - drag & drop capability for draggin hex number from the map
+ * ctrl+mouse drag - drag & drop capability for dragging hex number from the map
  * to other controls
  * 
  * 

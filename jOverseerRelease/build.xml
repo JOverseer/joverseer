@@ -196,7 +196,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		</exec>
 	</target>
 	<!-- needs to run on a Mac -->
-	<target name="MacOSInstaller" >
+	<target name="MacOSInstaller" depends="GatherDependents,JoverseerJar">
 	<!-- universalJavaApplicationStub
 		jOverseer.icns
 		default.layout
@@ -248,7 +248,11 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		<copy todir="${dist}/update/update">
 		  <fileset file="${dist}/update.jar"/>
 		</copy>
-		<exec executable="/usr/local/bin/packagesbuild -v ${dist}/jOverseer.pkgproj"/>
+		<exec executable="/usr/local/bin/packagesbuild">
+			<arg value="-v"/>
+			<arg value="${dist}/jOverseer.pkgproj"/>
+		</exec>
+		<copy tofile="${dist}/build/joverseer-${joverseer.version}.pkg" file="${dist}/build/joverseer.pkg" overwrite="true"/>
 	</target>
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">

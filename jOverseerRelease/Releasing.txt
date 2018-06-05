@@ -47,6 +47,7 @@ upload zip file for linux users?
 update the website and wiki pages.
 
 Remember that the updaters will not trigger until the feed.xml has a higher version number, so do that last.
+No longer true as of 1.16.3 you can manually force a check for update and force the update to happen.
 
 Checklist of types of users
 ---------------------------
@@ -67,10 +68,43 @@ Beta
 ----
 The betachannel is similar, but uses betafeed.xml and latestbetaupdate.zip
 
-MacOS packaging notes
+MacOS
+=====
+Building with eclipse works.
+Install your desired version of eclipse (I'm currently running Oxygen).
+Install Homebrew (http://brew.sh) if you haven't already.
+Run 'brew install git'
+
+you will need to fix the user library locations for your specific install and version of java.
+(ctl-click on the top level of the package explorer and select Build Path... from the popup menu ...)
+
+you should be able to run and debug.
+If you get exceptions about bad cast for Renderer then copy jide-common-MacOS.jar over jide-common.jar .
+Problems with jGoodies/looks/FontPolicy mean you're missing looks.jar from the User Library JGoodies.
+
+Run 'brew install ant' if you are going to work outside eclipse.
+
+In eclipse, open an Ant window and add each build.xml
+Then from the Ant window you can invoke each build.xml in order by selecting the name then the green play icon.
+The order to default build is
+txt2xmljar
+orderchecker
+joverseerupdaterjar
+joverseerjar
+
+JoverseerRelease has multiple targets, pick the one you need.
+Note that the outputs of the build.xml are distinct from the classes used to debug/run joverseer in eclipse, so they may not always be in sync.
+
+Packaging for releases on windows and mac, and building update bundles can all be built from targets
+in the jOverseerRelease/build.xml either inside or outside eclipse.
+
+ packaging notes
 =====================
+Run 'brew install launch4j'
+Run 'brew cask install packages'
+
 At the moment a Mac is required to create the pkg.
-Install 'Packages' from http://s.sudre.free.fr/Software/Packages/about.html
+Install 'Packages' from http://s.sudre.free.fr/Software/Packages/about.html (or use brew as above)
 We also use 
 https://github.com/tofi86/universalJavaApplicationStub
 to launch a java program on MacOS without worrying about which JVM is used.

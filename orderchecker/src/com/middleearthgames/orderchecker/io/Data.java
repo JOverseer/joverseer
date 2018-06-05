@@ -113,7 +113,7 @@ public class Data
             GameData data = (GameData)this.gameData.get(i);
             if(data.getGame() == nation.getGame())
             {
-                if(data.getGameType().length() == 0)
+                if((data.getGameType() == null) || (data.getGameType().length() == 0))
                     data.setGameType(nation.getGameType());
                 return data;
             }
@@ -321,8 +321,9 @@ public class Data
     public static final int GAME_BOFA = 3;
     public static final int GAME_UW = 4;
     public static final int GAME_KS = 5;
+    public static final int GAME_CME= 6;
     private static String gameDesc[] = {
-        "1650", "2950", "Fourth Age", "BOFA", "Untold War", "Kin Strife"
+        "1650", "2950", "Fourth Age", "BOFA", "Untold War", "Kin Strife","Champions of Middle-Earth"
     };
     public static final int NORMAL_FORMAT = 0;
     public static final int HTML_FORMAT = 1;
@@ -337,7 +338,7 @@ public class Data
     private static String dataDirectory = "bin/metadata/orderchecker/";
     private static String rulesFile = "ruleset.csv";
     private static String terrainFiles[] = {
-        "1650.game", "2950.game", "fa.game", "bofa.game", "uw.game", "ks.game"
+        "1650.game", "2950.game", "fa.game", "bofa.game", "uw.game", "ks.game","cme.game"
     };
     private String turnPath;
     private String ordersPath;

@@ -1,3 +1,13 @@
+VERSION 1.16.4
+--------------
+	* Enh: Support for the new Champions of Middle Earth module, although order checking is currently missing.
+	* Enh: If you are using an obsolete version of java, you will get a warning at update time.
+	* Fix: Orderchecker is working again for those who found it broken in 1.16.3.
+	* Fix: Orderchecker data files now live in the orderchecker.jar file by default. Bare files in the filesystem will override them.
+	* Fix: Those running older versions of java which broke on joverseer 1.16.3. 
+	* Fix: The characterset used for the data files is treated as UTF-8 and several names now have the correct accents.
+	* FIx: lots of uses of Hex locations omitted the leading 0.
+	* Fix: Sorting by Popcentre level and fortifications.
 VERSION 1.16.3
 --------------
 	* Enh: Menu Help now has item Check For Update which forces the check to happen on request, rather than once every two weeks.

@@ -2,6 +2,7 @@ package org.joverseer.ui.command;
 
 import java.util.ArrayList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -12,8 +13,6 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 public class ToggleDrawAllOrdersCommand extends ActionCommand {
@@ -30,7 +29,7 @@ public class ToggleDrawAllOrdersCommand extends ActionCommand {
     	Game g = GameHolder.instance().getGame();
     	Turn t = g.getTurn();
     	ArrayList<Character> chars = (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems();
-		OrderVisualizationData ovd = (OrderVisualizationData)Application.instance().getApplicationContext().getBean("orderVisualizationData");
+		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		if (this.value) {
 			ovd.clear();
 			this.value = false;
@@ -44,7 +43,6 @@ public class ToggleDrawAllOrdersCommand extends ActionCommand {
 	    	}
 	    	this.value = true;
 		}
-		Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
     }
 }

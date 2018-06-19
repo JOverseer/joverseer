@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.40" fx:controller="application.SampleController">
+   <center>
+      <Accordion BorderPane.alignment="CENTER">
+        <panes>
+          <TitledPane animated="false" prefHeight="0.0" prefWidth="202.0" text="Population Center">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Armies">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="Characters">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView layoutX="19.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="60.0" text="Artifacts">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="266.0" text="Nation Messages">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="291.0" text="Combats / Challenges / Encounters">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="10.0" layoutY="316.0" prefHeight="500.0" prefWidth="229.0" text="Hex Info">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="227.0">
+                     <children>
+                        <Label layoutX="22.0" layoutY="14.0" text="Hex no:" />
+                        <Label layoutX="72.0" layoutY="14.0" text="3316" />
+                        <Label layoutX="114.0" layoutY="14.0" text="planes" />
+                        <Label layoutX="22.0" layoutY="42.0" text="Latest info:" />
+                        <Label layoutX="114.0" layoutY="42.0" text="turn 5" />
+                        <TableView layoutX="14.0" layoutY="74.0" prefHeight="385.0" prefWidth="206.0">
+                          <columns>
+                            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Infantry" />
+                            <TableColumn prefWidth="75.0" text="Cavalry" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+        </panes>
+      </Accordion>
+   </center>
+</BorderPane>

@@ -1,15 +1,18 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="orderchecker" default="BuildAll" basedir=".">
     <description>
         Build file for the orderchecker.jar part of joverseer.
     </description>
     <property name="bin">bin</property>
     <property name="src">src</property>
+    <property name="res.dir">resources</property>
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
 	<property name="lib">lib</property>
+	<property name="shared.lib">../lib</property>
     <property name="jardir">${dist}/lib</property>
     <property name="jarfile">${jardir}/orderchecker.jar</property>
+	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
 
     
    <!-- Main targets -->
@@ -21,7 +24,7 @@
    <target name="Compile"
        depends="-Init"
        description="Compile all java classes">
-       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" target="1.6" source="1.6">
+       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" source="1.6" target="1.6" bootclasspath="${compat.rt.jar}">
        		<classpath>
        			<pathelement path="${java.class.path}"/>
        		</classpath>
@@ -50,7 +53,23 @@
 		depends="-Init,Compile">
 		<jar destfile="${jarfile}"
 			basedir="${bin}"
-			includes="**/*.class"/>
+			includes="**/*.class">
+            <manifest>
+                <attribute name="Main-Class" value="com.middleearthgames.orderchecker.Main"/>
+            	<section name="orderchecker">
+            	    <attribute name="Specification-Title" value="orderchecker"/>
+            	    <attribute name="Specification-Version" value="2.4a"/>
+            	    <attribute name="Specification-Vendor" value="Middle-Earth Games"/>
+            	    <attribute name="Implementation-Title" value="orderchecker"/>
+            	    <attribute name="Implementation-Version" value="2.4a ${TODAY}"/>
+            	    <attribute name="Implementation-Vendor" value="Middle-Earth Games"/>
+            	</section>
+            </manifest>
+
+	    	<fileset dir="${res.dir}"
+		    	includes="metadata/**"
+		    	excludes="**/*.bak,**/orderchecker.dat"/>
+			</jar>
 	</target>
    <!-- Internal targets -->
    <target name="-Init">

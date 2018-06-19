@@ -14,7 +14,7 @@ public abstract class ObjectViewer extends AbstractForm {
     
     public ObjectViewer(FormModel arg0, String arg1) {
         super(arg0, arg1);
-        uiSizes = new UISizes();
+        this.uiSizes = new UISizes();
     }
 
     public abstract boolean appliesTo(Object obj);
@@ -22,7 +22,7 @@ public abstract class ObjectViewer extends AbstractForm {
     public UISizes uiSizes;
 
 	public UISizes getUiSizes() {
-		return uiSizes;
+		return this.uiSizes;
 	}
 
 	public void setUiSizes(UISizes uiSizes) {

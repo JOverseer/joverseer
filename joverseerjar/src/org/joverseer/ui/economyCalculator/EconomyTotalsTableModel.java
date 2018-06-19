@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
@@ -13,9 +14,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for the Economy Totals table for the Economy Calculator
@@ -25,7 +24,11 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class EconomyTotalsTableModel extends BaseEconomyTableModel {
-    String[] columnHeaders = new String[] {"", "", "", "", "", ""};
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7961559423992117184L;
+	String[] columnHeaders = new String[] {"", "", "", "", "", ""};
     // "row headers", they go into column 0 of the table
     String[] rowTags1 = new String[] {"army","pc","char","total","pclosses" };
     String[] rowTags2 = new String[] {"taxRate","taxRevenue","gold","profits","surplus"};
@@ -192,22 +195,19 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (columnIndex == 5 && rowIndex == 0) {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();
-            Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
         if (columnIndex == 3 && rowIndex == 2) {
             setGoldProduction((Integer)aValue);
             fireTableDataChanged();
-            Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
         if (columnIndex == 3 && rowIndex == 0) {
             setTaxRate((Integer)aValue);
             fireTableDataChanged();
-            Application.instance().getApplicationContext().publishEvent(
-                    new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+            joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
     }

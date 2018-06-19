@@ -57,7 +57,7 @@ import org.txt2xml.driver.StreamDriver;
  * 
  * Usage:
  * <pre>
- * java org.txt2xml.cli.Batch <config_xml> <source_file>*
+ * java org.txt2xml.cli.Batch &lt;config_xml&gt; &lt;source_file&gt;*
  * </pre>
  * Applies txt2xml to all source files as configured by the config_xml,
  * saving result xml by appending .xml to the source filename.

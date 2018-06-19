@@ -2,12 +2,11 @@ package org.joverseer.tools.armySizeEstimator;
 
 import java.util.ArrayList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.support.GameHolder;
-import org.springframework.richclient.application.Application;
 
 /**
  * Class the estimates the number of men (and ships) per army (and navy) size It
@@ -29,7 +28,7 @@ public class ArmySizeEstimator {
 				ret.add(new ArmySizeEstimate(ArmySizeEstimate.NAVY_TYPE, size));
 			}
 		}
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = joApplication.getGame();
 		if (g == null || !Game.isInitialized(g))
 			return ret;
 		Turn t = g.getTurn();

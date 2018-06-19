@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -47,7 +47,6 @@ import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
@@ -103,7 +102,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		if (this.orderEditorData == null) {
 			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" }); //$NON-NLS-1$
 			try {
-				GameMetadata gm1 = (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata"); //$NON-NLS-1$
+				GameMetadata gm1 = GameMetadata.instance();
 				BufferedReader reader = gm1.getUTF8Resource("orderEditorData.csv"); 
 
 				String ln;
@@ -159,7 +158,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	private GameMetadata getGameMetadata() {
 		if (this.gm == null) {
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			Game g = GameHolder.instance().getGame();
 			if (!Game.isInitialized(g))
 				return null;
 			this.gm = g.getMetadata();
@@ -201,7 +200,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		JButton btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
@@ -224,7 +223,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectCharEvent.toString(), ((Order) getFormObject()).getCharacter(), this));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectCharEvent, ((Order) getFormObject()).getCharacter(), this);
 
 			}
 		});
@@ -310,13 +309,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
-				OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+				OrderVisualizationData ovd = OrderVisualizationData.instance();
 				if (!ovd.contains(o)) {
 					ovd.addOrder((Order) getFormObject());
 				} else {
 					ovd.removeOrder((Order) getFormObject());
 				}
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
 
 			}
 		});
@@ -334,7 +333,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
 				if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
-					OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+					OrderVisualizationData ovd = OrderVisualizationData.instance();
 					if (!ovd.contains(o) && ovd.getOrderEditorOrder() != o) {
 						ovd.addOrder((Order) getFormObject());
 					}
@@ -351,7 +350,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 					} else {
 						ovd.setAdditionalInfo(o, "displacement", d); //$NON-NLS-1$
 					}
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+					joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
 				}
 			}
 		});
@@ -434,7 +433,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	public void refreshDrawCheck() {
 		Order o = (Order) getFormObject();
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		this.chkDraw.setSelected(ovd.contains(o));
 		Order no = new Order(o.getCharacter());
 		try {
@@ -595,13 +594,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		o.setParameters(this.parametersInternal.getText());
 		// validateOrder();
 		// throw an order changed event
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+		joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
-		// Application.instance().getApplicationContext().publishEvent(
-		// new
-		// JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(),
-		// selectedHex, this));
+		// joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent,selectedHex, this);
 	}
 
 	private void clearOrder() {
@@ -615,13 +611,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		o.setParameters(this.parametersInternal.getText());
 		this.currentOrderNoAndCode = ""; //$NON-NLS-1$
 		// throw an order changed event
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, this));
+		joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
-		// Application.instance().getApplicationContext().publishEvent(
-		// new
-		// JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(),
-		// selectedHex, this));
+		// joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent,selectedHex, this);
 	}
 
 	private void revertOrder() {
@@ -659,10 +652,10 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			this.character.setText(c.getName() + " - " + c.getHexNo()); //$NON-NLS-1$
 		}
 		this.chkDraw.setEnabled(GraphicUtils.canRenderOrder(o));
-		OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData"); //$NON-NLS-1$
+		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		if (PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoDraw").equals("yes") && PreferenceRegistry.instance().getPreferenceValue(Messages.getString("OrderEditor.233")).equals("yes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			ovd.setOrderEditorOrder(o);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), getFormObject(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
 		} else {
 			ovd.setOrderEditorOrder(null);
 		}
@@ -672,16 +665,16 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				refreshOrderCombo();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.EditOrderEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.EditOrderEvent)) {
 				setFormObject(e.getObject());
 				refreshDrawCheck();
 				// OrderEditorView oev =
 				// (OrderEditorView)Application.instance().getApplicationContext().getBean("orderEditorView");
 				// mscoon
 				// DockingManager.display(DockingManager.getDockable("orderEditorView"));
-			} else if (e.getEventType().equals(LifecycleEventsEnum.RefreshMapItems)) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
 				refreshDrawCheck();
 			}
 		}
@@ -716,7 +709,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	protected void addValidationResult(Order o, OrderValidationResult res, Integer paramI) {
 		if (res == null)
 			return;
-		OrderResultContainer cont = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer"); //$NON-NLS-1$
+		OrderResultContainer cont = OrderResultContainer.instance();
 		String e = ""; //$NON-NLS-1$
 		if (paramI != null) {
 			e = Messages.getString("OrderEditor.245") + paramI + ": "; //$NON-NLS-1$ //$NON-NLS-2$
@@ -760,5 +753,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	public boolean getAutoSave() {
 		String pval = PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave"); //$NON-NLS-1$
 		return !pval.equals("no"); //$NON-NLS-1$
+	}
+	public static OrderEditor instance()
+	{
+         return (OrderEditor)Application.instance().getApplicationContext().getBean("orderEditor");
 	}
 }

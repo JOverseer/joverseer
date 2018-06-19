@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 class HelpDlg extends JDialog
 {
 

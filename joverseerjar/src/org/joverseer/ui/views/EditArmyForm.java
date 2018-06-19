@@ -24,10 +24,10 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.ScalableAbstractForm;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
@@ -166,7 +166,12 @@ public class EditArmyForm extends ScalableAbstractForm {
 		tlb.cell(pnl, "align=left");
 		tlb.relatedGapRow();
 
-		this.elements = new JTable(this.elementTableModel = new ArmyElementTableModel((MessageSource) Application.instance().getApplicationContext().getBean("messageSource")) {
+		this.elements = new JTable(this.elementTableModel = new ArmyElementTableModel(Messages.getMessageSource()) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748366891274748131L;
+
 			@Override
 			public boolean isCellEditable(int arg0, int arg1) {
 				if (arg1 == 0)
@@ -185,6 +190,11 @@ public class EditArmyForm extends ScalableAbstractForm {
 			}
 		});
 		this.elements.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 5593420847626205199L;
+
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				if ((Integer) value == 0) {

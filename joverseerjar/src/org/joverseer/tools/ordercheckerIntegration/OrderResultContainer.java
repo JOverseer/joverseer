@@ -9,6 +9,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.application.Application;
 
 /**
  * Container wrapper for the Order Results.
@@ -49,13 +50,19 @@ public class OrderResultContainer implements ApplicationListener {
 		}
 	}
 
+	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				Order o = (Order) e.getData();
 				removeResultsForOrder(o);
 			}
 		}
 	}
+	public static OrderResultContainer instance()
+	{
+		return (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
+	}
+
 }

@@ -1,13 +1,12 @@
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 
@@ -48,7 +47,7 @@ public class DeleteLastTurnCommand extends ActionCommand {
 					g.setCurrentTurn(newMaxTurn);
 				}
 				g.setMaxTurn(newMaxTurn);
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), g, this));
+				joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
 			}
 		};
 		dlg.showDialog();

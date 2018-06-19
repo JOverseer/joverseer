@@ -1,8 +1,8 @@
 package org.joverseer.ui.map.renderers;
 
 import org.springframework.richclient.image.ImageSource;
-import org.springframework.richclient.application.Application;
 import org.apache.log4j.Logger;
+import org.joverseer.joApplication;
 
 import java.util.HashMap;
 import java.awt.image.*;
@@ -37,7 +37,7 @@ public abstract class ImageRenderer implements Renderer {
     protected BufferedImage getImage(String imgName) {
         if (!this.images.containsKey(imgName)) {
             try {
-                ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+                ImageSource imgSource = joApplication.getImageSource();
                 Image img = imgSource.getImage(imgName);
                 BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
                 Graphics g = bimg.getGraphics();
@@ -61,7 +61,7 @@ public abstract class ImageRenderer implements Renderer {
     protected BufferedImage getImage(String imgName, int desiredWidth, int desiredHeight) {
         if (!this.images.containsKey(imgName)) {
             try {
-                ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+                ImageSource imgSource = joApplication.getImageSource();
                 Image img = imgSource.getImage(imgName);
                 
                

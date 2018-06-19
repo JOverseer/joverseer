@@ -60,7 +60,7 @@ public class DoubleAgentProcessor extends Processor {
         DoubleAgentProcessor p = new DoubleAgentProcessor();
         InputStreamReader is = new InputStreamReader(new FileInputStream("c:\\users\\mscoon\\desktop\\tst.txt"), "UTF-8");
         char[] b = new char[50000];
-        int l = is.read(b);
+        is.read(b);
         String str = new String(b);
         //str = str.substring(20000);
         String datePattern = "\\d{1,2}/\\d{1,2}/\\d{4}  Game \\d+  Player \\d+  Turn \\d+  Page \\d+";
@@ -72,5 +72,6 @@ public class DoubleAgentProcessor extends Processor {
             System.out.println("*************************");
             System.out.println(p.getMatchedText());
         }
+        is.close();
     }
 }

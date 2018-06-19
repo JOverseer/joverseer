@@ -1,11 +1,10 @@
 package org.joverseer.ui.economyCalculator;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
-import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**
@@ -14,10 +13,13 @@ import org.springframework.richclient.table.BeanTableModel;
  * @author Marios Skounakis
  */
 public class LostPopsTableModel extends BeanTableModel {
+
+	private static final long serialVersionUID = 1L;
 	int selectedNationNo = -1;
+	final static int iHex=1;
 
 	public LostPopsTableModel() {
-		super(PopulationCenter.class, (MessageSource) Application.instance().getApplicationContext().getBean("messageSource"));
+		super(PopulationCenter.class, Messages.getMessageSource());
 		setRowNumbers(false);
 	}
 
@@ -48,7 +50,7 @@ public class LostPopsTableModel extends BeanTableModel {
 	@Override
 	protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
 		super.setValueAtInternal(arg0, arg1, arg2);
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+		joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 
 	}
 

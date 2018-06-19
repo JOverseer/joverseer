@@ -7,6 +7,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class StartingCharacterTableModel extends ItemTableModel {
 
 	public StartingCharacterTableModel(MessageSource messageSource) {

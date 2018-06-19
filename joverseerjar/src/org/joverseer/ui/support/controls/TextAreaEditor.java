@@ -18,6 +18,7 @@ import javax.swing.table.TableCellEditor;
  * @author Marios Skounakis
  */
 //TODO Fix or delete
+@SuppressWarnings("serial")
 public class TextAreaEditor extends AbstractCellEditor implements TableCellEditor
 {
         protected JTextArea myEditor;

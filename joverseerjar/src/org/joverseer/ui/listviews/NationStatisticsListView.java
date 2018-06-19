@@ -21,7 +21,6 @@ import org.joverseer.support.NationMap;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
-import org.springframework.richclient.application.Application;
 
 /**
  * List view for nation statistics
@@ -49,7 +48,7 @@ public class NationStatisticsListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 		ArrayList<NationStatisticsWrapper> items = new ArrayList<NationStatisticsWrapper>();

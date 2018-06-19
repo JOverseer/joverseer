@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
@@ -47,7 +48,7 @@ public class ColorPicker implements ApplicationListener {
     public Color getColor1(int nationNo) {
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+	    	HashMap mapOptions = joApplication.getMapOptions();                
 	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
 	        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
 	        	key = nr.getAllegiance().toString();
@@ -75,7 +76,7 @@ public class ColorPicker implements ApplicationListener {
     public Color getColor2(int nationNo) {
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");                
+	    	HashMap mapOptions = joApplication.getMapOptions();                
 	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
 	        	NationRelations nr = (NationRelations)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo);
 	        	key = nr.getAllegiance().toString();
@@ -112,7 +113,7 @@ public class ColorPicker implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.MapMetadataChangedEvent.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.MapMetadataChangedEvent)) {
                 initHashTables();
             }
         }
@@ -120,7 +121,7 @@ public class ColorPicker implements ApplicationListener {
 
     MessageSource getColorSource() {
         if (this.colorSource == null) {
-            this.colorSource = (MessageSource) Application.instance().getApplicationContext().getBean("colorSource");
+            this.colorSource = joApplication.getColorSource();
         }
         return this.colorSource;
     }

@@ -1,143 +1,143 @@
 Name;Number;Code;Parameters;Difficulty;Requirements;Skill
-Change Allegiance;175;ChAlleg;New allegiance (g,e);Average;At Capital;CS
-Upgrade Relations;180;UpStNat;Target Nation # (1-25);Easy;At Capital;CS
-Downgrade Relations;185;DnStNat;Target Nation # (1-25);Easy;At Capital;CS
-Attack Enemy*;230;AttEnmy;Combat Tactic (ch,fl,st,su,hr,am);Automatic ;Army Commander;CS
-Attack Nation;235;AttNat;Target Nation # (1-25) / Combat Tactic (ch,fl,st,su,hr,am);Automatic ;Army Commander;CS
-Defend;240;Defend;Combat Tactic (ch,fl,st,su,hr,am);Automatic ;Army Commander;CS
-Destroy Population Center*;250;DstPop;Combat Tactic (ch,fl,st,su,hr,am);Varies;Army Commander;CS
-Capture Population Center*;255;CptrPop;Combat Tactic (ch,fl,st,su,hr,am);Varies;Army Commander;CS
-Siege Population Center;260;SiegPop;None;Varies ;Army Commander;CS
-Change Tax Rate;300;ChTaxRt;New tax rate % (1-100);Easy ;At Capital;CS
-Recruit Heavy Cavalry*;400;HvCvlry;# Recruited / Weapon type / Armor type;Automatic ;With Army;CS
-Recruit Light Cavalry;404;LtCvlry;# Recruited / Weapon type / Armor type;Automatic ;With Army;CS
-Recruit Heavy Infantry*;408;HvInfan;# Recruited / Weapon type / Armor type;Automatic ;With Army;CS
-Recruit Light Infantry;412;LtInfan;# Recruited / Weapon type / Armor type;Automatic ;With Army;CS
-Recruit Archers;416;Archers;# Recruited;Automatic ;With Army;CS
-Recruit Men-at-Arms;420;MenAtAr;# Recruited;Automatic ;With Army;CS
-Put TROOPS on Maneuvers;430;TrpsMan;Troop type (hc,lc,hi,li,ar,ma);Automatic ;With Army;CS
-Put ARMY on Maneuvers*;435;ArmyMan;None;Automatic ;Army Commander;CS
-Remove Harbor;460;RmvHar;None;Easy ;;CS
-Remove Port;465;RmvPort;None;Easy ;;CS
-Destroy Pop Center Stores;470;DstStor;None;Average ;;CS
-Destroy Bridge;475;DstBrdg;Direction hexside of Bridge. (ne,nw,w,se,sw,e);Average ;;CS
-Remove Fortifications;480;RmvFort;None;Hard ;;CS
-Build Bridge;490;BldBrdg;Direction hexside of Bridge. (ne,nw,w,se,sw,e);Average ;;CS
-Fortify Population Center*;494;FortPop;None;Average ;;CS
-Build Road (4th Age ONLY);496;BldRoad;Initial Hexside of road / Final Hexside of road (ne,nw,w,se,sw,e);Hard ;Army Comm + Emis;CS
-Threaten Population Center*;498;Threat;None;Hard ;Army Commander;CS
-Post Camp;552;PosCmp;Name of Camp (5-20 letters);Average ;Army Commander;CS
-Name New Character;725;NamChar;Name (5-17 letters) / Gender / Comm / Agent / Emiss / Mage skill points.;Automatic ;At Capital;CS
-Name New Commander*;728;NamComm;Name (5-17 letters) / Gender;Automatic ;At Capital;CS
-Create Company;745;CreCmpy;None;Automatic ;;CS
-Disband Company;750;DsbCmpy;None;Automatic ;Company Commndr;CS
-Hire Army*;770;HrArmy;# of Troops / Troop Type / Weapons / Armor / Food;Automatic ;;CS
-Transfer Command of Army*;780;TrComm;New Commander Character ID / Join Army (y/n);Automatic ;Army Commander;CS
-Relocate Capital;950;ReloCap;New Capital Hex Location;Easy ;At Capital;CS
-Increase Caravan Prices (4th Age);960;IncrCar;Rate of Increase (1-50%);Hard ;At Capital + Emis skill;CS
-Reduce Caravan Prices (4th Age);965;ReduCar;Rate of Reduction (1-50%);Hard ;At Capital + Emis skill;CS
-Destroy Ships;270;DstShp;None;Varies ;Army Commander;CM
-Scuttle Ships;275;ScttShp;# of Warships / # of Transports;Automatic ;Army Commander;CM
-Abandon Ships;280;AbanShp;Hex Location / # of Warships / # of Transports;Automatic ;At Capital;CM
-Transfer Food: PC to Army*;340;TrPo2Ar;# of Food units transferred;Automatic ;With Army;CM
-Transfer Food: Army to PC;345;TrAr2Po;# of Food units transferred;Automatic ;With Army;CM
-Transfer Food: Army to Army;347;TrFood;Other Commander Char ID /  # of Food units transferred;Automatic ;With Army;CM
-Xfer War Mchns: Army to Army;349;TrWarMa;Other Commander Char ID / # of War Machines transferred;Automatic ;With Army;CM
-Xfer Weapons: Army to Army;351;TrWpns;Other Commander Char ID / # of each weapon type, each on a diff. line.;Automatic ;With Army;CM
-Xfer Armor: Army to Army;353;TrArmr;Other Commander Char ID / # of each armor type, each on a different line.;Automatic ;With Army;CM
-Xfer Troops: Army to Army;355;TrTrps;Other Commander Char ID / # of each troop type, each on a different line.;Automatic ;With Army;CM
-Xfer Ships: Navy to Navy;357;TrShp;Other Commander Char ID / # of Warships / # of Transports transferred.;Automatic ;With Army;CM
-Upgrade Troop Weapons;370;UpWpns;New Weapon type / # of each Troop type upgraded, each on a different line.;Automatic ;With Army;CM
-Upgrade Troop Armor;375;UpArmr;New Armor type / # of each Troop type upgraded, each on a different line.;Automatic ;With Army;CM
-Retire Troops;425;RtrTrps;# of each Troop type retired, each on a different line.;Automatic ;With Army;CM
-Make War Machines*;440;MakWrMa;# of War Machines built;Automatic ;With Army;CM
-Make Armor;444;MakArmr;# of Armor made / Armor type;Automatic ;With Army;CM
-Make Weapons;448;MakWpns;# of Weapons made / Weapon type;Automatic ;With Army;CM
-Make Warships;452;MakWShp;# of Warships made;Automatic ;With Army;CM
-Make Transports;456;MakTShp;# of Transports made;Automatic ;With Army;CM
-Split Army;765;SplArmy;New Commander ID / # of each Troop Type, each on a different line.;Automatic ;Army Commander;CM
-Disband Army*;775;DsbArmy;None;Automatic ;With Army;CM
-Anchor Ships;794;AnchShp;# of Warships / # of Transports;Automatic ;Army Commander;CM
-Pickup Ships;798;PickShp;# of Warships / # of Transports;Automatic ;Army Commander;CM
-Recon Area*;925;Recon;None;Easy ;On Land;CM
-Counter Espionage;600;CntrEsp;None;Average ;;AS
-Guard Location*;605;GrdLoc;None;Automatic ;;AS
-Guard Character*;610;GrdChar;Guarded Character ID;Automatic ;;AS
-Assassinate Character*;615;Assass;Target Character ID;Hard ;;AS
-Kidnap Character;620;Kidnap;Target Character ID ;Hard ;;AS
-Rescue Hostage;630;Rescue;Hostage Character ID / Release? (y/n);Hard ;;AS
-Interrogate Hostage;635;Interr;Hostage Character ID ;Average ;;AS
-Sabotage Bridge;665;SabBrdg;Direction Hexside of Bridge (ne,nw,w,se,sw,e);Hard ;;AS
-Sabotage Fortifications*;670;SabFort;None;Hard ;;AS
-Sabotage Harbor or Port;675;SabPort;None;Hard ;;AS
-Sabotage Production Stores*;680;SabStor;Stores Type (mi,st,br,le,ti,mo,fo);Hard ;;AS
-Steal Artifact*;685;StlArt;Artifact ID #;Hard ;;AS
-Steal Gold*;690;StlGold;None;Hard ;;AS
-Name New Agent*;731;NamAgen;Name (5-17 letters) / Gender;Automatic ;At Capital;AS
-Scout Army;905;ScoArmy;Army Commander Character ID / Follow army? (y/n);Average ;;AS
-Scout Area;910;ScoArea;None;Easy ;;AS
-Scout for Characters*;930;ScoChar;None;Average ;;AS
-Release Hostage;625;Release;Hostage Character ID ;Automatic ;;AM
-Take Custody of Hostage;640;Custody;Hostage Character ID ;Automatic ;;AM
-Imprison Hostage;645;Imprsn;Hostage Character ID ;Automatic ;;AM
-Execute Hostage;650;Execute;Hostage Character ID ;Automatic ;;AM
-Demand Ransom for Hostage;655;RansDmd;Hostage Character ID / Amount of GOLD desired for ransom;Automatic ;;AM
-Offer Ransom for Hostage;660;RansOff;Hostage Character ID / Amount of GOLD offered / Release? (y/n);Automatic ;;AM
-Scout Hex;915;ScoHex;None;Easy ;;AM
-Scout Population Center*;920;ScoPop;None;Easy ;;AM
-Recruit Double Agent;500;Double;Target Character ID ;Average ;;ES
-Bribe/Recruit Character;505;Bribe;Target Character ID / Amount of GOLD for bribe (>=500);Average ;;ES
-Influence Own PC Loyalty;520;InfYour;None;Automatic ;;ES
-Influence Other PC Loyalty;525;InfOthr;None;Average ;;ES
-Improve Harbor to Port;530;Har2Por;None;Easy ;;ES
-Add Harbor to Pop Center;535;AddHar;None;Easy ;;ES
-Improve Pop Center Size;550;ImprPop;None;Average ;;ES
-Create Camp;555;CreCmp;Name of camp (5-20 letters);Easy ;;ES
-Abandon Camp;560;AbanCmp;None;Easy ;;ES
-Reduce Pop Center Size;565;ReduPop;None;Easy ;;ES
-Name New Emissary;734;NamEmis;Name (5-17 letters) / Gender;Automatic ;At Capital;ES
-Move Turn Map (4th Age ONLY);942;MvTnMap;Direction of movement (ne,nw,w,se,sw,e);Average ;At Capital + Comm skill;ES
-Transfer Ownership of PC;949;TrOwner;Other Character ID;Easy ;;ES
-Spread Rumors;580;SprdRum;None;Automatic ;;EM
-Uncover Secrets;585;Uncover;None;Average ;;EM
-s;120;CstHlSp;Spell ID # / Target Character ID ;Varies ;Improves Cast Rank;MM
-Cast Combat Spell*;225;CstCbSp;Spell ID #;Varies ;Improves Cast Rank;MM
-Cast Conjuring Spell*;330;CstCjSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank;MM
-Prentice Magery;710;PrenMgy;None;Automatic ;Own Pop Center;MS
-Name New Mage;737;NamMage;Name (5-17 letters) / Gender;Automatic ;At Capital;MS
-Cast Movement Spell;825;CstMvSp;Spell ID # / Destination Hex # (See spell for ranges);Varies ;Improves Cast Rank;MM
-Cast Lore Spell*;940;CstLoSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank;MM
-Forget Spell(s);700;ForgtSp;1-6 Spell IDs to be forgotten (1 per line);Automatic ;;MM
-Research Spell;705;RsrchSp;Spell ID #;Varies;Own Pop Center;MM
-Use Combat Artifact;205;UsCbArt;Artifact ID #;Automatic ;;M
-Issue Personal Challenge*;210;IssPers;Target Character ID ;Varies;MAY raise skill;M
-Refuse all Personal Challenges*;215;RfsPers;None;Automatic ;;M
-Reaction to Encounter;285;ReacEnc;Response (<20 letters);Varies ;MAY raise skill;M
-Investigate Encounter;290;InvEnc;None;Automatic ;;M
-Bid from Caravans;310;BidCar;Product / # of units to purchase / Amount bid (price per unit, not total);Automatic ;;M
-Purchase from Caravans*;315;PrchCar;Product / # of units to purchase;Automatic ;;M
-Sell to Caravans*;320;SellCar;Product / # of units to sell;Automatic ;At PC where stuff is;M
-Nation Sell to Caravans*;325;NatSell;Product / % of product to be sold (1-100);Automatic ;At Capital;M
-Transfer: Artifacts to Character*;360;TrArt;Other Character ID / 1-6 Artifact IDs (1 per line);Automatic ;;M
-Transfer: Hostages to Character;363;TrHost;Other Character ID / 1-3 Hostage Character IDs (1 per line);Automatic ;;M
-Retire Character;740;RtrChar;None;Automatic ;;M
-Join Company;755;JnCmpy;Company Commander ID;Automatic ;;M
-Leave Company;760;LvCmpy;None;Automatic ;;M
-Join Army*;785;JnArmy;Army Commander Character ID  to be joined;Automatic ;;M
-Leave Army;790;LvArmy;None;Automatic ;;M
-Drop Artifact;792;DropArt;1-6 Artifact ID #s to be dropped (1 per line);Automatic ;;M
-Pickup Artifact;796;PickArt;1-6 Artifact ID #s to be picked up (1 per line);Easy ;;M
-Use Movement Artifact;805;UsMvArt;Artifact ID #;Automatic ;;M
-Find Artifact;900;FindArt;Artifact ID #;Hard ;;M
-Use Scrying Artifact*;935;UsScArt;Artifact ID # / Chosen Hex;Automatic ;;M
-Use Hiding Artifact;945;UsHiArt;Artifact ID #;Automatic ;;M
-Nation Transport*;947;NatTran;Destination Hex / Product / % transferred (1-100);Automatic ;At Capital;M
-Transport by Caravan;948;TranCar;Origin Hex / Destination Hex / Product / # of units transported;Automatic ;At Capital or origin hex;M
-One Ring (1650/2950 ONLY);990;OneRing;None;Automatic ;;M
-Move Character*;810;MovChar;Destination Hex (within 12 hexes);Automatic ;Not to water;Move
+Change Allegiance;175;ChAlleg;New allegiance (g,e);Average;At Capital;Command Skill
+Upgrade Relations;180;UpStNat;Target Nation # (1-25);Easy;At Capital;Command Skill
+Downgrade Relations;185;DnStNat;Target Nation # (1-25);Easy;At Capital;Command Skill
+Attack Enemy;230;AttEnmy;Combat Tactic (ch,fl,st,su,hr,am);Automatic ;Army Commander;Command Skill
+Attack Nation;235;AttNat;Target Nation # (1-25) / Combat Tactic (ch,fl,st,su,hr,am);Automatic ;Army Commander;Command Skill
+Defend;240;Defend;Combat Tactic (ch,fl,st,su,hr,am);Automatic ;Army Commander;Command Skill
+Destroy Population Center;250;DstPop;Combat Tactic (ch,fl,st,su,hr,am);Varies;Army Commander;Command Skill
+Capture Population Center;255;CptrPop;Combat Tactic (ch,fl,st,su,hr,am);Varies;Army Commander;Command Skill
+Siege Population Center;260;SiegPop;None;Varies ;Army Commander;Command Skill
+Change Tax Rate;300;ChTaxRt;New tax rate % (1-100);Easy ;At Capital;Command Skill
+Recruit Heavy Cavalry;400;HvCvlry;# Recruited / Weapon type / Armor type;Automatic ;With Army;Command Skill
+Recruit Light Cavalry;404;LtCvlry;# Recruited / Weapon type / Armor type;Automatic ;With Army;Command Skill
+Recruit Heavy Infantry;408;HvInfan;# Recruited / Weapon type / Armor type;Automatic ;With Army;Command Skill
+Recruit Light Infantry;412;LtInfan;# Recruited / Weapon type / Armor type;Automatic ;With Army;Command Skill
+Recruit Archers;416;Archers;# Recruited;Automatic ;With Army;Command Skill
+Recruit Men-at-Arms;420;MenAtAr;# Recruited;Automatic ;With Army;Command Skill
+Put TROOPS on Maneuvers;430;TrpsMan;Troop type (hc,lc,hi,li,ar,ma);Automatic ;With Army;Command Skill
+Put ARMY on Maneuvers;435;ArmyMan;None;Automatic ;Army Commander;Command Skill
+Remove Harbor;460;RmvHar;None;Easy ;;Command Skill
+Remove Port;465;RmvPort;None;Easy ;;Command Skill
+Destroy Pop Center Stores;470;DstStor;None;Average ;;Command Skill
+Destroy Bridge;475;DstBrdg;Direction hexside of Bridge. (ne,nw,w,se,sw,e);Average ;;Command Skill
+Remove Fortifications;480;RmvFort;None;Hard ;;Command Skill
+Build Bridge;490;BldBrdg;Direction hexside of Bridge. (ne,nw,w,se,sw,e);Average ;;Command Skill
+Fortify Population Center;494;FortPop;None;Average ;;Command Skill
+Build Road (FA and KIN);496;BldRoad;Initial Hexside of road / Final Hexside of road (ne,nw,w,se,sw,e);Hard ;Army Comm + Emis;Command Skill
+Threaten Population Center;498;Threat;None;Hard ;Army Commander;Command Skill
+Post Camp;552;PosCmp;Name of Camp (5-20 letters);Average ;Army Commander;Command Skill
+Name New Character;725;NamChar;Name (5-17 letters) / Gender / Comm / Agent / Emiss / Mage skill points.;Automatic ;At Capital;Command Skill
+Name New Commander;728;NamComm;Name (5-17 letters) / Gender;Automatic ;At Capital;Command Skill
+Create Company;745;CreCmpy;None;Automatic ;;Command Skill
+Disband Company;750;DsbCmpy;None;Automatic ;Company Commndr;Command Skill
+Hire Army;770;HrArmy;# of Troops / Troop Type / Weapons / Armor / Food;Automatic ;;Command Skill
+Transfer Command of Army;780;TrComm;New Commander Character ID / Join Army (y/n);Automatic ;Army Commander;Command Skill
+Relocate Capital;950;ReloCap;New Capital Hex Location;Easy ;At Capital;Command Skill
+Increase Caravan Prices (FA and KIN);960;IncrCar;Rate of Increase (1-50%);Hard ;At Capital + Emis skill;Command Skill
+Reduce Caravan Prices (FA and KIN);965;ReduCar;Rate of Reduction (1-50%);Hard ;At Capital + Emis skill;Command Skill
+Destroy Ships;270;DstShp;None;Varies ;Army Commander;Command Misc
+Scuttle Ships;275;ScttShp;# of Warships / # of Transports;Automatic ;Army Commander;Command Misc
+Abandon Ships;280;AbanShp;Hex Location / # of Warships / # of Transports;Automatic ;At Capital;Command Misc
+Transfer Food: PC to Army;340;TrPo2Ar;# of Food units transferred;Automatic ;With Army;Command Misc
+Transfer Food: Army to PC;345;TrAr2Po;# of Food units transferred;Automatic ;With Army;Command Misc
+Transfer Food: Army to Army;347;TrFood;Other Commander Char ID /  # of Food units transferred;Automatic ;With Army;Command Misc
+Xfer War Mchns: Army to Army;349;TrWarMa;Other Commander Char ID / # of War Machines transferred;Automatic ;With Army;Command Misc
+Xfer Weapons: Army to Army;351;TrWpns;Other Commander Char ID / # of each weapon type, each on a diff. line.;Automatic ;With Army;Command Misc
+Xfer Armor: Army to Army;353;TrArmr;Other Commander Char ID / # of each armor type, each on a different line.;Automatic ;With Army;Command Misc
+Xfer Troops: Army to Army;355;TrTrps;Other Commander Char ID / # of each troop type, each on a different line.;Automatic ;With Army;Command Misc
+Xfer Ships: Navy to Navy;357;TrShp;Other Commander Char ID / # of Warships / # of Transports transferred.;Automatic ;With Army;Command Misc
+Upgrade Troop Weapons;370;UpWpns;New Weapon type / # of each Troop type upgraded, each on a different line.;Automatic ;With Army;Command Misc
+Upgrade Troop Armor;375;UpArmr;New Armor type / # of each Troop type upgraded, each on a different line.;Automatic ;With Army;Command Misc
+Retire Troops;425;RtrTrps;# of each Troop type retired, each on a different line.;Automatic ;With Army;Command Misc
+Make War Machines;440;MakWrMa;# of War Machines built;Automatic ;With Army;Command Misc
+Make Armor;444;MakArmr;# of Armor made / Armor type;Automatic ;With Army;Command Misc
+Make Weapons;448;MakWpns;# of Weapons made / Weapon type;Automatic ;With Army;Command Misc
+Make Warships;452;MakWShp;# of Warships made;Automatic ;With Army;Command Misc
+Make Transports;456;MakTShp;# of Transports made;Automatic ;With Army;Command Misc
+Split Army;765;SplArmy;New Commander ID / # of each Troop Type, each on a different line.;Automatic ;Army Commander;Command Misc
+Disband Army;775;DsbArmy;None;Automatic ;With Army;Command Misc
+Anchor Ships;794;AnchShp;# of Warships / # of Transports;Automatic ;Army Commander;Command Misc
+Pickup Ships;798;PickShp;# of Warships / # of Transports;Automatic ;Army Commander;Command Misc
+Recon Area;925;Recon;None;Easy ;On Land;Command Misc
+Counter Espionage;600;CntrEsp;None;Average ;;Agent Skill
+Guard Location;605;GrdLoc;None;Automatic ;;Agent Skill
+Guard Character;610;GrdChar;Guarded Character ID;Automatic ;;Agent Skill
+Assassinate Character;615;Assass;Target Character ID;Hard ;;Agent Skill
+Kidnap Character;620;Kidnap;Target Character ID ;Hard ;;Agent Skill
+Rescue Hostage;630;Rescue;Hostage Character ID / Release? (y/n);Hard ;;Agent Skill
+Interrogate Hostage;635;Interr;Hostage Character ID ;Average ;;Agent Skill
+Sabotage Bridge;665;SabBrdg;Direction Hexside of Bridge (ne,nw,w,se,sw,e);Hard ;;Agent Skill
+Sabotage Fortifications;670;SabFort;None;Hard ;;Agent Skill
+Sabotage Harbor or Port;675;SabPort;None;Hard ;;Agent Skill
+Sabotage Production Stores;680;SabStor;Stores Type (mi,st,br,le,ti,mo,fo);Hard ;;Agent Skill
+Steal Artifact;685;StlArt;Artifact ID #;Hard ;;Agent Skill
+Steal Gold;690;StlGold;None;Hard ;;Agent Skill
+Name New Agent;731;NamAgen;Name (5-17 letters) / Gender;Automatic ;At Capital;Agent Skill
+Scout Army;905;ScoArmy;Army Commander Character ID / Follow army? (y/n);Average ;;Agent Skill
+Scout Area;910;ScoArea;None;Easy ;;Agent Skill
+Scout for Characters;930;ScoChar;None;Average ;;Agent Skill
+Release Hostage;625;Release;Hostage Character ID ;Automatic ;;Agent Misc
+Take Custody of Hostage;640;Custody;Hostage Character ID ;Automatic ;;Agent Misc
+Imprison Hostage;645;Imprsn;Hostage Character ID ;Automatic ;;Agent Misc
+Execute Hostage;650;Execute;Hostage Character ID ;Automatic ;;Agent Misc
+Demand Ransom for Hostage;655;RansDmd;Hostage Character ID / Amount of GOLD desired for ransom;Automatic ;;Agent Misc
+Offer Ransom for Hostage;660;RansOff;Hostage Character ID / Amount of GOLD offered / Release? (y/n);Automatic ;;Agent Misc
+Scout Hex;915;ScoHex;None;Easy ;;Agent Misc
+Scout Population Center;920;ScoPop;None;Easy ;;Agent Misc
+Recruit Double Agent;500;Double;Target Character ID ;Average ;;Emissary Skill
+Bribe/Recruit Character;505;Bribe;Target Character ID / Amount of GOLD for bribe (>=500);Average ;;Emissary Skill
+Influence Own PC Loyalty;520;InfYour;None;Automatic ;;Emissary Skill
+Influence Other PC Loyalty;525;InfOthr;None;Average ;;Emissary Skill
+Improve Harbor to Port;530;Har2Por;None;Easy ;;Emissary Skill
+Add Harbor to Pop Center;535;AddHar;None;Easy ;;Emissary Skill
+Improve Pop Center Size;550;ImprPop;None;Average ;;Emissary Skill
+Create Camp;555;CreCmp;Name of camp (5-20 letters);Easy ;;Emissary Skill
+Abandon Camp;560;AbanCmp;None;Easy ;;Emissary Skill
+Reduce Pop Center Size;565;ReduPop;None;Easy ;;Emissary Skill
+Name New Emissary;734;NamEmis;Name (5-17 letters) / Gender;Automatic ;At Capital;Emissary Skill
+Move Turn Map (FA and KIN);942;MvTnMap;Direction of movement (ne,nw,w,se,sw,e);Average ;At Capital + Comm skill;Emissary Skill
+Transfer Ownership of PC;949;TrOwner;Other Character ID;Easy ;;Emissary Skill
+Spread Rumors;580;SprdRum;None;Automatic ;;Emissary Misc
+Uncover Secrets;585;Uncover;None;Average ;;Emissary Misc
+Cast Healing Spell;120;CstHlSp;Spell ID # / Target Character ID ;Varies ;Improves Cast Rank;Mage Misc
+Cast Combat Spell;225;CstCbSp;Spell ID #;Varies ;Improves Cast Rank;Mage Misc
+Cast Conjuring Spell;330;CstCjSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank;Mage Misc
+Prentice Magery;710;PrenMgy;None;Automatic ;Own Pop Center;Mage Skill
+Name New Mage;737;NamMage;Name (5-17 letters) / Gender;Automatic ;At Capital;Mage Skill
+Cast Movement Spell;825;CstMvSp;Spell ID # / Destination Hex # (See spell for ranges);Varies ;Improves Cast Rank;Mage Misc
+Cast Lore Spell;940;CstLoSp;Spell ID # / [See spell for requirements];Varies ;Improves Cast Rank;Mage Misc
+Forget Spell(s);700;ForgtSp;1-6 Spell IDs to be forgotten (1 per line);Automatic ;;Mage Misc
+Research Spell;705;RsrchSp;Spell ID #;Varies;Own Pop Center;Mage Misc
+Use Combat Artifact;205;UsCbArt;Artifact ID #;Automatic ;;Misc
+Issue Personal Challenge;210;IssPers;Target Character ID ;Varies;MAY raise skill;Misc
+Refuse all Personal Challenges;215;RfsPers;None;Automatic ;;Misc
+Reaction to Encounter;285;ReacEnc;Response (<20 letters);Varies ;MAY raise skill;Misc
+Investigate Encounter;290;InvEnc;None;Automatic ;;Misc
+Bid from Caravans;310;BidCar;Product / # of units to purchase / Amount bid (price per unit, not total);Automatic ;;Misc
+Purchase from Caravans;315;PrchCar;Product / # of units to purchase;Automatic ;;Misc
+Sell to Caravans;320;SellCar;Product / # of units to sell;Automatic ;At PC where stuff is;Misc
+Nation Sell to Caravans;325;NatSell;Product / % of product to be sold (1-100);Automatic ;At Capital;Misc
+Transfer: Artifacts to Character;360;TrArt;Other Character ID / 1-6 Artifact IDs (1 per line);Automatic ;;Misc
+Transfer: Hostages to Character;363;TrHost;Other Character ID / 1-3 Hostage Character IDs (1 per line);Automatic ;;Misc
+Retire Character;740;RtrChar;None;Automatic ;;Misc
+Join Company;755;JnCmpy;Company Commander ID;Automatic ;;Misc
+Leave Company;760;LvCmpy;None;Automatic ;;Misc
+Join Army;785;JnArmy;Army Commander Character ID  to be joined;Automatic ;;Misc
+Leave Army;790;LvArmy;None;Automatic ;;Misc
+Drop Artifact;792;DropArt;1-6 Artifact IDs to be dropped ;Automatic ;;Misc
+Pickup Artifact;796;PickArt;1-6 Artifact IDs to be picked up ;Easy ;;Misc
+Use Movement Artifact;805;UsMvArt;Artifact ID #;Automatic ;;Misc
+Find Artifact;900;FindArt;Artifact ID #;Hard ;;Misc
+Use Scrying Artifact;935;UsScArt;Artifact ID # / Chosen Hex;Automatic ;;Misc
+Use Hiding Artifact;945;UsHiArt;Artifact ID #;Automatic ;;Misc
+Nation Transport;947;NatTran;Destination Hex / Product / % transferred (1-100);Automatic ;At Capital;Misc
+Transport by Caravan;948;TranCar;Origin Hex / Destination Hex / Product / # of units transported;Automatic ;At Capital or origin hex;Misc
+One Ring (1650/2950 ONLY);990;OneRing;None;Automatic ;;Misc
+Move Character;810;MovChar;Destination Hex (within 12 hexes);Automatic ;Not to water;Move
 Move Company;820;MovCmpy;Destination Hex (within 12 hexes);Automatic ;Company Commndr;Move
 Move Navy;830;MovNavy;Directions for each hex sailed (1 per cell) / Travel mode (no,ev);Automatic ;Navy Commander;Move
-Stand and Defend*;840;Stand;Direction hexside;Automatic ;Army Commander;Move
+Stand and Defend;840;Stand;Direction hexside;Automatic ;Army Commander;Move
 Move Army;850;MovArmy;Directions for each hex moved (1 per cell) / Travel mode (no,ev);Automatic ;Army Commander;Move
-Force March Army*;860;ForcMar;Directions for each hex moved (1 per cell) / Travel mode (no,ev);Automatic ;Army Commander;Move
-Move Character & Join Army*;870;MovJoin;Destination Hex (within 12 hexes) / Army Commander Character ID ;Automatic ;;Move
+Force March Army;860;ForcMar;Directions for each hex moved (1 per cell) / Travel mode (no,ev);Automatic ;Army Commander;Move
+Move Character & Join Army;870;MovJoin;Destination Hex (within 12 hexes) / Army Commander Character ID ;Automatic ;;Move

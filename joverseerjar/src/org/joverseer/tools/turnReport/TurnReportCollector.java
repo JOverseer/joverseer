@@ -294,7 +294,7 @@ public class TurnReportCollector {
 						cr.setNotes("Sab Fort at " + popPlusNation(pop, t));
 						PopulationCenter pp = p.getPopCenter(pop);
 						PopulationCenter cp = t.getPopCenter(pop);
-						cr.appendNote(pp.getFortification().getRenderString() + UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
+						cr.appendNote(pp.getFortification().getRenderString() + this.UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
 						cr.setNotes("Failed sab fort");
@@ -314,7 +314,7 @@ public class TurnReportCollector {
 						PopulationCenter pp = p.getPopCenter(pop);
 						PopulationCenter cp = t.getPopCenter(pop);
 						if (pp != null && cp != null && pp.getHarbor() != null && cp.getHarbor() != null) {
-							cr.appendNote(pp.getHarbor().getRenderString() + UNICODE_RIGHTWARDS_ARROW + cp.getHarbor().getRenderString());
+							cr.appendNote(pp.getHarbor().getRenderString() + this.UNICODE_RIGHTWARDS_ARROW + cp.getHarbor().getRenderString());
 						}
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
@@ -650,14 +650,16 @@ public class TurnReportCollector {
 				if (combat != null) {
 					CombatWrapper cw = new CombatWrapper();
 					cw.parseAll(combat.getFirstNarration());
-					if (cw.getPopName().equals(ppc.getName())) {
-						if ("captured".equals(cw.getPopCenterOutcome())) {
-							pr.appendNote(" Captured");
+					if (cw.getPopName() != null) {
+						if (cw.getPopName().equals(ppc.getName())) {
+							if ("captured".equals(cw.getPopCenterOutcome())) {
+								pr.appendNote(" Captured");
+							}
 						}
 					}
 				}
 
-				pr.appendNote(ppc.getNation().getShortName() + UNICODE_RIGHTWARDS_ARROW + pc.getNation().getShortName());
+				pr.appendNote(ppc.getNation().getShortName() + this.UNICODE_RIGHTWARDS_ARROW + pc.getNation().getShortName());
 				pr.addNation(ppc.getNationNo());
 				if (sizeChanged) {
 					String pcDescr = shortenPopSize(pc.getSize().getRenderString());
@@ -670,7 +672,7 @@ public class TurnReportCollector {
 						ppcDescr += "/" + shortenPopFort(ppc.getFortification().getRenderString());
 					if (ppc.getHarbor() != null && !ppc.getHarbor().equals(HarborSizeEnum.none))
 						ppcDescr += "/" + shortenPopDocks(ppc.getHarbor().getRenderString());
-					pr.appendNote(ppcDescr + UNICODE_RIGHTWARDS_ARROW + pcDescr);
+					pr.appendNote(ppcDescr + this.UNICODE_RIGHTWARDS_ARROW + pcDescr);
 				}
 			}
 			if (hiddenChanged)
@@ -689,7 +691,7 @@ public class TurnReportCollector {
 						}
 					}
 				}
-				pr.appendNote(shortenPopSize(ppc.getSize().getRenderString()) + UNICODE_RIGHTWARDS_ARROW + shortenPopSize(pc.getSize().getRenderString()));
+				pr.appendNote(shortenPopSize(ppc.getSize().getRenderString()) + this.UNICODE_RIGHTWARDS_ARROW + shortenPopSize(pc.getSize().getRenderString()));
 			}
 			if (fortChanged) {
 				if (!captured) {
@@ -717,11 +719,11 @@ public class TurnReportCollector {
 							}
 						}
 					}
-					pr.appendNote(shortenPopFort(ppc.getFortification().getRenderString()) + UNICODE_RIGHTWARDS_ARROW + shortenPopFort(pc.getFortification().getRenderString()));
+					pr.appendNote(shortenPopFort(ppc.getFortification().getRenderString()) + this.UNICODE_RIGHTWARDS_ARROW + shortenPopFort(pc.getFortification().getRenderString()));
 				}
 			}
 			if (portChanged && !captured)
-				pr.appendNote(shortenPopDocks(ppc.getHarbor().getRenderString()) + UNICODE_RIGHTWARDS_ARROW + shortenPopDocks(pc.getHarbor().getRenderString()));
+				pr.appendNote(shortenPopDocks(ppc.getHarbor().getRenderString()) + this.UNICODE_RIGHTWARDS_ARROW + shortenPopDocks(pc.getHarbor().getRenderString()));
 			return pr;
 		}
 		if (pc.getLoyalty() < ppc.getLoyalty()) {
@@ -729,7 +731,7 @@ public class TurnReportCollector {
 				if (nm.isInfOtherRumor() && nm.getInfoOtherPop().equals(pc.getName())) {
 					PopCenterReport pr = new PopCenterReport(pc);
 					pr.setModification(ObjectModificationType.Modified);
-					pr.setNotes("InfOthered, Loyalty: " + ppc.getLoyalty() + UNICODE_RIGHTWARDS_ARROW + pc.getLoyalty());
+					pr.setNotes("InfOthered, Loyalty: " + ppc.getLoyalty() + this.UNICODE_RIGHTWARDS_ARROW + pc.getLoyalty());
 					return pr;
 				}
 			}
@@ -737,7 +739,7 @@ public class TurnReportCollector {
 		if (pc.getLoyalty() < 16) {
 			PopCenterReport pr = new PopCenterReport(pc);
 			pr.setModification(ObjectModificationType.Modified);
-			pr.setNotes("Loyalty: " + ppc.getLoyalty() + UNICODE_RIGHTWARDS_ARROW + pc.getLoyalty() + " (at risk)");
+			pr.setNotes("Loyalty: " + ppc.getLoyalty() + this.UNICODE_RIGHTWARDS_ARROW + pc.getLoyalty() + " (at risk)");
 			return pr;
 		}
 		return null;
@@ -910,7 +912,7 @@ public class TurnReportCollector {
 					ar.setNationNo(aw.getNationNo());
 					ar.setHexNo(aw.getHexNo());
 					ar.setModification(ObjectModificationType.Modified);
-					ar.setNotes(charPlusNation(paw.getOwner(), t) + " "+ UNICODE_RIGHTWARDS_ARROW +" " + charPlusNation(aw.getOwner(), t));
+					ar.setNotes(charPlusNation(paw.getOwner(), t) + " "+ this.UNICODE_RIGHTWARDS_ARROW +" " + charPlusNation(aw.getOwner(), t));
 					ret.add(ar);
 				}
 			}
@@ -1055,7 +1057,7 @@ public class TurnReportCollector {
 				NationReport er = new NationReport();
 				er.setNationNo(e.getNationNo());
 				//TODO I18N
-				er.setNotes("Tax rate: " + pe.getTaxRate() + UNICODE_RIGHTWARDS_ARROW + e.getTaxRate());
+				er.setNotes("Tax rate: " + pe.getTaxRate() + this.UNICODE_RIGHTWARDS_ARROW + e.getTaxRate());
 				er.setModification(ObjectModificationType.Modified);
 				ret.add(er);
 			}

@@ -20,6 +20,7 @@ import com.jidesoft.swing.AutoCompletionComboBox;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class AutocompletionComboBox extends AutoCompletionComboBox {
 
     public static final int ACTION_PERFORMED_ONLY_ON_ENTER = 1;

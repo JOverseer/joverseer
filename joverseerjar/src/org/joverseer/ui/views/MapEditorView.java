@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.joverseer.joApplication;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -25,7 +26,6 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -43,15 +43,13 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 
-		JLabel lbl;
-
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel(Messages.getString("MapEditorView.ActiveColon")), "colspec=left:70px"); //$NON-NLS-1$ //$NON-NLS-2$
 		final JCheckBox active = new JCheckBox();
 		active.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
+				HashMap mapEditorOptions = joApplication.getMapEditorOptions();
 				mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
 			}
 		});
@@ -78,7 +76,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
+					HashMap mapEditorOptions = joApplication.getMapEditorOptions();
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
 				}
 			});
@@ -98,7 +96,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e1) {
-					HashMap mapEditorOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
+					HashMap mapEditorOptions = joApplication.getMapEditorOptions();
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
 				}
 			});
@@ -129,7 +127,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 
 			}
 		}

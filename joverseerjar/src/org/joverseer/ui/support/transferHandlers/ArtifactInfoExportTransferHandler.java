@@ -15,6 +15,7 @@ import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
  * TransferHandler for ArtifactInfo objects
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class ArtifactInfoExportTransferHandler extends TransferHandler {
 	ArtifactInfo artifactInfo;
 	

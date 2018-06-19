@@ -16,6 +16,7 @@ import javax.swing.table.TableModel;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class JOverseerTable extends javax.swing.JTable {
 	boolean overwriteOnCellEdit = true;
 	

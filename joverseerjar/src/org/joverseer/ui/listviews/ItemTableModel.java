@@ -6,7 +6,6 @@ import org.joverseer.metadata.GameMetadata;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**
@@ -33,7 +32,7 @@ public abstract class ItemTableModel extends BeanTableModel {
 			String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
 			if (pval.equals("number"))
 				return super.getValueAtInternal(object, i);
-			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+			Game game = GameHolder.instance().getGame();
 			if (game == null)
 				return "";
 			if (IBelongsToNation.class.isInstance(object) && getColumnPropertyNames()[i].equals("nationNo")) {

@@ -13,7 +13,8 @@ public enum GameTypeEnum {
     gameBOFA("BOFA"),
     gameFA("1000"),
     gameUW("UW"),
-    gameKS("KS");
+    gameKS("KS"),
+	gameCME("CME");
 
     private final String myName;
 

@@ -8,7 +8,9 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class OwnedArtifactsTableModel extends ItemTableModel {
+	public static final int iHexNo=4;
 	public OwnedArtifactsTableModel(MessageSource messageSource) {
 		super(OwnedArtifact.class, messageSource);
 	}
@@ -21,7 +23,7 @@ public class OwnedArtifactsTableModel extends ItemTableModel {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class };
+		return new Class[] { String.class, String.class, String.class, String.class, Integer.class, String.class, String.class };
 	}
 
 }

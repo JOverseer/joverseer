@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
  */
 public class CompanyTableModel extends ItemTableModel {
 	private static final long serialVersionUID = 1L;
+	public static final int iHexNo=0;
 
 	public CompanyTableModel(MessageSource messageSource) {
 		super(CompanyWrapper.class, messageSource);
@@ -23,7 +24,7 @@ public class CompanyTableModel extends ItemTableModel {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, String.class };
+		return new Class[] { Integer.class, String.class, String.class, String.class };
 	}
 
 }

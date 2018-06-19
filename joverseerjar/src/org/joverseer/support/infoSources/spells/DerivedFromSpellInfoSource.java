@@ -44,6 +44,9 @@ public class DerivedFromSpellInfoSource extends InfoSource {
     public int getHexNo() {
         return this.hexNo;
     }
+    public String getHexNoAsString() {
+    	return String.format("%04d",this.hexNo);
+    }
 
     
     public void setHexNo(int hexNo) {
@@ -89,4 +92,9 @@ public class DerivedFromSpellInfoSource extends InfoSource {
         }
         return false;
     }
+
+	@Override
+	public int hashCode() {
+        return super.hashCode() + getNationNo() + getCasterName().hashCode() + getHexNo();
+	}
 }

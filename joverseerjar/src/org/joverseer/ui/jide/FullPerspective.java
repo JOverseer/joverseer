@@ -18,6 +18,7 @@ public class FullPerspective extends Perspective {
 		super(id);
 	}
 
+	@Override
 	public void display(DockingManager manager) {
 		manager.showFrame("mapView");
 		manager.showFrame("mapOptionsView");

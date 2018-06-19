@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -42,11 +43,13 @@ import org.joverseer.ui.listviews.filters.OrFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -308,32 +311,26 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		JComponent c = super.createControlImpl();
 		this.table.setDefaultRenderer(CharacterAttributeWrapper.class, new CharacterAttributeWrapperTableCellRenderer(this.tableModel));
 		this.table.setDefaultRenderer(ArtifactWrapper.class, new ArtifactWrapperTableCellRenderer(this.tableModel));
-		this.table.setDefaultRenderer(Integer.class, new AllegianceColorCellRenderer(this.tableModel) {
+//		this.table.setDefaultRenderer(Integer.class, new NonZeroNumberCellRenderer(this.tableModel));
+		TableUtils.setTableColumnRenderer(this.table, 1, new HexNumberCellRenderer(this.tableModel) {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
 				Component c1 = super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
 				JLabel lbl = (JLabel) c1;
-				Integer v = (Integer) arg1;
-				if (v == null || v.equals(0)) {
-					lbl.setText("");
+				// render capital with bold
+				int idx = ((SortableTableModel) AdvancedCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
+				Object obj = AdvancedCharacterListView.this.tableModel.getRow(idx);
+				AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper) obj;
+				PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ch.getNationNo(), Boolean.TRUE });
+				if (capital != null && ch.getHexNo() == capital.getHexNo()) {
+					lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 				}
-				if (arg5 == 1) {
-					// render capital with bold
-					int idx = ((SortableTableModel) AdvancedCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
-					Object obj = AdvancedCharacterListView.this.tableModel.getRow(idx);
-					AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper) obj;
-					PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ch.getNationNo(), Boolean.TRUE });
-					if (capital != null && ch.getHexNo() == capital.getHexNo()) {
-						lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
-					}
-
-				}
-
 				return c1;
 			}
 
 		});
+			
 
 		this.table.setDefaultRenderer(String.class, new AllegianceColorCellRenderer(this.tableModel) {
 			@Override
@@ -369,7 +366,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
 		comps.addAll(Arrays.asList(super.getButtons()));
 		JLabelButton popupMenu = new JLabelButton();
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = joApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
 		popupMenu.setIcon(ico);
 		popupMenu.addActionListener(new PopupMenuActionListener() {

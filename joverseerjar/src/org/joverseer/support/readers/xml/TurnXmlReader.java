@@ -259,7 +259,7 @@ public class TurnXmlReader implements Runnable {
 			throw new Exception("Cannot import past turns.");
 		}
 		if (this.turnInfo.getXxmlversion() != null) {
-			game.getMetadata().setNewXmlFormat(true);
+			this.game.getMetadata().setNewXmlFormat(true);
 			if (getMonitor() != null) {
 				getMonitor().worked(10);
 				getMonitor().subTaskStarted("New version of XML found...");

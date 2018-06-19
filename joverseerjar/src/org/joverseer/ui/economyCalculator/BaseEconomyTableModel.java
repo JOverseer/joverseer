@@ -15,6 +15,7 @@ import org.joverseer.support.GameHolder;
  * @author Marios Skounakis
  */
 public abstract class BaseEconomyTableModel extends AbstractTableModel {
+	private static final long serialVersionUID = 1L;
 	Game game = null;
 	int nationNo = 7;
 

@@ -5,6 +5,41 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+	    <item>
+    	<title>1.16.4</title>
+      	<pubDate>Tue, 5 Jun 2018</pubDate>
+      	<description>
+VERSION 1.16.4
+--------------
+	* Enh: Support for the new Champions of Middle Earth module, although order checking is currently missing.
+	* Enh: If you are using an obsolete version of java, you will get a warning at update time.
+	* Fix: Orderchecker is working again for those who found it broken in 1.16.3.
+	* Fix: Orderchecker data files now live in the orderchecker.jar file by default. Bare files in the filesystem will override them.
+	* Fix: Those running older versions of java which broke on joverseer 1.16.3. 
+	* Fix: The characterset used for the data files is treated as UTF-8 and several names now have the correct accents.
+	* FIx: lots of uses of Hex locations omitted the leading 0.
+	* Fix: Sorting by Popcentre level and fortifications.
+</description>
+</item>
+	    <item>
+    	<title>1.16.3</title>
+      	<pubDate>Wed, 18 Apr 2018</pubDate>
+      	<description>
+VERSION 1.16.3
+--------------
+	* Enh: Menu Help now has item Check For Update which forces the check to happen on request, rather than once every two weeks.
+	* Enh: additional command to restore layout to a simpler, automagic style layout.
+	* Fix: issue #627 now checks for SNA 22 when building the list of possible orders in the order editor
+	* Fix: Popcentres should have their accents back.
+	* Fix: Some odd accents in artifacts and spells.
+	* Fix: pdf imports no longer report benign null errors.
+	* Fix: issue #653 order view filter - characters with/without orders - now understands characters with more than 3 orders
+	* Fix: In the Map Option View, If you changed to allegiance colours, then you couldn't get back to nation colours
+	* Fix: default nation names for FA
+	* Fix: orderchecker and 940 412 order  
+	</description>
+    </item>
+
     <item>
     	<title>1.16.2</title>
       	<pubDate>Tue, 1 Aug 2017</pubDate>
@@ -53,138 +88,6 @@ VERSION 1.16.0
 	* Fix 632: Player characters with less than 5 characters in their name, had odd things happening, eg no past orders etc. Rebuilding the .jov file is needed to actually see a difference.
 	* Artifact effect descriptions are now consistent for saner sorting.
       	</description>
-    </item>
-	<item>
-		<title>1.14.1</title>
-      	<pubDate>Mon, 30 Nov 2015</pubDate>
-      	<description>
-VERSION 1.14.1
---------------
-	Bugfix update for the missing jars from the latestupdate.zip.
-		</description>
-	</item>
-    <item>
-        <title>1.14.0</title>
-      	<pubDate>Thu, 26 Nov 2015</pubDate>
-      	<description>
-VERSION 1.14.0
---------------
-	* Platform support
-		o Recent versions of java (version 7 update 9 and later) have changed some of the look and feel support, which broke jOverseer. This most obviously affected Macs, but also others.
-		o The error log file is now written to a temporary directory.
-		  + typically on Windows: /users/xxx/AppData/Local/Temp/joverseer_xxxxxxxx.log instead of the program files directory 
-		o The window layout is now stored in a file in the user directory.
-		  + under windows: /users/xxx/AppData/Roaming/jOverseer/page_mainPage_layout_nullPerspective.layout  instead of the program files directory.
-		  + On the mac: ~/Library/Application Support/jOverseer/...
-		  + linux: ~/.jOverseer/...
-		o The format of the layout file hasn't changed, so you can reuse an old one if you seem to lose your layout after the update. Note that on windows, AppData is a hidden directory.
-		o A new installer for Windows, and the two fixes above, means that write access to the install directory is not needed when *running* jOverseer. Hence the install to Program Files directory should now work OK.
-		 
-	* Current Hex View
-		o Bug Fix: An empty list of characters being shown using the new default mergesort in java 7+. 
-
-	* Order List View
-		o 'Characters without all orders' filter to show missing orders.
-				
-	* Internationalization
-		o Widespread changes to improve support for different countries and languages (locales).
-		o The messages.properties file now should have all the translatable text.
-		o The only versions available are messages_es.properties for Spanish readers and messages_it.properties for Italian readers.
-		o Orderchecker is not included, and the orders themselves are still in English.
-		o For the curious and if you want to force the selection of a locale, there is a command line option. For example '-L es' will select spanish.
-		o Preliminary italian support added.
-		o Better spanish coverage.
-		
-	* Orderchecker
-		o Fixed so that characters only seen on PDF reports don't stop orderchecker running.
-		o Fixed so that it uses the current turn terrain, traffic map and allegiances instead of it's predefined ones.
-		o Fixed so that you can issue a challenge when travelling with an army.
-		o Fixed so that it spots a buy food order before a move, so army is 'fed'
-		o OrderChecker is now packaged as a single java .jar file. If you tweaked the data files that it used then you will need to update the orderchecker.jar file.
-
-	* Edit Nation Allegiance
-		o Fixed a bug which resulted in a change in allegiance being partially propagated to future turns. This caused Orderchecker to get confused about changed allegiances especially for Tirkhor and Khazad in Kinstrife games.
-
-      	    	    
-      	</description>
-       </item>
-    <item>
-    <title>1.0.12</title>
-      <pubDate>Tue, 4 Mar 2014</pubDate>
-    <description>
-VERSION 1.0.12
---------------
-        * Orderchecker
-		o Enabled for Kinstrife.
-		o Terrain maps and traffic maps corrected for Kinstrife.
-
-		</description>
-    </item>
-    <item>
-    <title>1.0.11</title>
-      <pubDate>Mon, 3 Mar 2014</pubDate>
-      <description>
-VERSION 1.0.11
---------------
-
-	* Updater
-		o The Updater now spots windows and tries to run with elevated privileges if needed.
-		o Added jOverseer.exe to launch jOverseer with the right java options and remove the dos window.
-		o Running jOverseerUpdater.exe will always download the latest version.
-		
-	* Econo Calc
-		o The economic calculator now correctly reports that "Your taxes will go up *by* n% to m%"
-		
-	* Current Hex View
-		o Show Army movement is now a toggle. Click it again to remove the displayed range.
-		o Show Character Movement Range is now a toggle.
-		o The icon/button to display orders no longer jumps left/right when used.
-
-	* Other
-		o The Blue Wizard now appears in the Kinstrife characters.
-		
-		</description>
-    </item>
-    <item>
-    <title>1.0.10</title>
-      <pubDate>8 Jan 2014</pubDate>
-      <description>
-VERSION 1.0.10
---------------
-
-    * Bug Fixes
-    	o Symptom: no PC icon, Hex highlight unreliable, no order entry for hex.
-    		+ There was a bug causing data corruption of Pop Centre.
-    		+ Especially after a PC has been reduced to ruins.
-    		+ There may be more than one cause. 
-    		+ Please email a copy of the .jov file and a note of which hex shows the problem to middlearth.com.
-    	o The Export Order Form no longer lets you mess around with the preformatted order.
-    	o The movement calculator was getting confused when moving evasively.
-    	 
-		</description>
-    </item>
-        <item>
-    <title>1.0.9</title>
-      <pubDate>28 Nov 2014</pubDate>
-      <description>
-VERSION 1.0.9
--------------
-
-	* The first release by MEPBM. 
-
-	* Java JRE requirements are now 'Java 6' or better. Really you should be using 'Java version 7'. 
-	
-	* BOFA support
-		o The BOFA games now use nations 1-5 instead of 10-14. This breaks compatibility with older BOFA games.
-
-	* Visual tweaks
-		o The descenders of order parameter text are no longer cut-off
-		
-	* XML errors
-		o Error: null when reading some characters in new XML format
-		o More helpful error when you read old format XML when expecting new format
-
-		</description>
     </item>
     </channel>
 </rss>

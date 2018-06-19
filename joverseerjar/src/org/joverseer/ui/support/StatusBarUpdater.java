@@ -19,9 +19,9 @@ public class StatusBarUpdater implements ApplicationListener {
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+            if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
                 refreshGameInfo();
-            } else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+            } else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
                 refreshGameInfo();
             }
         }
@@ -29,7 +29,7 @@ public class StatusBarUpdater implements ApplicationListener {
 
     private void refreshGameInfo() {
         String msg = null;
-        GameHolder gh = (GameHolder)Application.instance().getApplicationContext().getBean("gameHolder");  //$NON-NLS-1$
+        GameHolder gh = GameHolder.instance();
         Game game = gh.getGame();
         if (game == null) {
             msg = Messages.getString("StatusBarUpdater.NoActiveGame"); //$NON-NLS-1$

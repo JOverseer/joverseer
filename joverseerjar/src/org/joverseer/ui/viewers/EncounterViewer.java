@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
 import org.joverseer.ui.support.Messages;
@@ -54,7 +55,7 @@ public class EncounterViewer extends ObjectViewer {
 		this.description.setPreferredSize(this.uiSizes.newDimension(200/12, this.uiSizes.getHeight3()));
 		this.description.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));

@@ -14,8 +14,9 @@ import org.joverseer.domain.ProductEnum;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class ProductContainer implements Serializable {
-    HashMap<ProductEnum, Integer> products = new HashMap<ProductEnum, Integer>();
+	HashMap<ProductEnum, Integer> products = new HashMap<ProductEnum, Integer>();
     
     public ProductContainer() {
         for (ProductEnum p : ProductEnum.values()) {

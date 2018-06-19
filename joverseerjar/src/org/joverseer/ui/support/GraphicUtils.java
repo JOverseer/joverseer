@@ -114,6 +114,12 @@ public class GraphicUtils {
 		URL styleSheet = TipOfTheDayDialog.class.getResource("/tips.css");
 		TipOfTheDayDialog dialog = new TipOfTheDayDialog((Frame) null, tipOfTheDaySource, new AbstractAction("Show Tips on startup") {
 
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5690955309434823082L;
+
 			@Override
 			public void actionPerformed(ActionEvent e1) {
 				if (e1.getSource() instanceof JCheckBox) {
@@ -132,6 +138,7 @@ public class GraphicUtils {
 	}
 
 	/**
+	 * Spring has the annoying habit to use property converters for integer
 	 * Set a cell render for a given table column indexed by column index
 	 */
 	public static void setTableColumnRenderer(JTable table, int iColumn, TableCellRenderer renderer) {
@@ -139,7 +146,7 @@ public class GraphicUtils {
 	}
 
 	/**
-	 * Spring has the annoying habbit to use property converters for integer
+	 * Spring has the annoying habit to use property converters for integer
 	 * fields in forms that use a dot to represent thousands. This method
 	 * registers new converters that don't use dots
 	 */

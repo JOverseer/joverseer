@@ -15,6 +15,7 @@ import javax.swing.TransferHandler;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class StringTransferHandler extends TransferHandler {
 	String property;
 

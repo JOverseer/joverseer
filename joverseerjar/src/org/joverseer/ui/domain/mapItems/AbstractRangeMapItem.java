@@ -2,6 +2,7 @@ package org.joverseer.ui.domain.mapItems;
 
 import java.util.HashMap;
 
+@SuppressWarnings("serial")
 public abstract class AbstractRangeMapItem extends AbstractMapItem {
 	protected HashMap rangeHexes;
     

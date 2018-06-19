@@ -12,12 +12,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.table.BeanTableModel;
 
 /**
@@ -78,7 +78,12 @@ public class RelationsListView extends ItemListView {
 
     public class RelationsTableCellRenderer extends AllegianceColorCellRenderer {
 
-        public RelationsTableCellRenderer(BeanTableModel tableModel) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 7723284888715216718L;
+
+		public RelationsTableCellRenderer(BeanTableModel tableModel) {
 			super(tableModel);
 		}
 
@@ -86,7 +91,7 @@ public class RelationsListView extends ItemListView {
 		public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             if (column < 3) return c;
-            MessageSource colorSource = (MessageSource)Application.instance().getApplicationContext().getBean("colorSource");
+            MessageSource colorSource = joApplication.getColorSource();
             String relation = value.toString();
             Color bgColor = Color.WHITE;
             if (relation.equals("F")) {

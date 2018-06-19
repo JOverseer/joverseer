@@ -1,8 +1,7 @@
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 public class PalantirStyleMapCommand extends ActionCommand {
@@ -12,7 +11,6 @@ public class PalantirStyleMapCommand extends ActionCommand {
 
     @Override
 	protected void doExecuteCommand() {
-    	Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString(), this, this));
+    	joApplication.publishEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent, this, this);
     }
 }

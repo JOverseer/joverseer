@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.JTable;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
@@ -12,10 +13,8 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for the market actions of a nation for the Economy Calculator
@@ -23,6 +22,10 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class MarketTableModel extends BaseEconomyTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -95042201849817111L;
 	String[] rowHeaderTags = new String[] {"stores","production","availableToSell","potentialProfit","sellPrice","sellCount","sellPercent","availableMarket","butPrice",
 			"buyCount","bidPrice","bidCount","costOrProfit"
 	};
@@ -39,14 +42,13 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	String[] columnNames;
 
 	public MarketTableModel() {
-		this.rowHeaders = new String[rowHeaderTags.length];
-		for (int i=0;i<rowHeaderTags.length;i++) {
-			rowHeaders[i] = Messages.getString("EconomyCalculator.Market." +rowHeaderTags[i]);
+		this.rowHeaders = new String[this.rowHeaderTags.length];
+		for (int i=0;i<this.rowHeaderTags.length;i++) {
+			this.rowHeaders[i] = Messages.getString("EconomyCalculator.Market." +this.rowHeaderTags[i]);
 		}
-		this.columnNames = new String[columnHeaders.length];
-		columnNames[0] = "";
-		ProductEnum product;
-		for (int i=1;i<columnHeaders.length;i++) {
+		this.columnNames = new String[this.columnHeaders.length];
+		this.columnNames[0] = "";
+		for (int i=1;i<this.columnHeaders.length;i++) {
 			this.columnNames[i] = (ProductEnum.getFromCode(this.columnHeaders[i])).getLocalized();
 		}
 
@@ -65,25 +67,25 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		if (rowIndex == 5) {
 			ecd.setSellUnits(product, (Integer) aValue);
 			fireTableDataChanged();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == 6) {
 			ecd.setSellPct(product, (Integer) aValue);
 			fireTableDataChanged();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == 9) {
 			ecd.setBuyUnits(product, (Integer) aValue);
 			fireTableDataChanged();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == 10) {
 			ecd.setBidPrice(product, (Integer) aValue);
 			fireTableDataChanged();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == 11) {
@@ -99,7 +101,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			}
 			ecd.setBidUnits(product, (Integer) aValue);
 			fireTableDataChanged();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.EconomyCalculatorUpdate.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 	}

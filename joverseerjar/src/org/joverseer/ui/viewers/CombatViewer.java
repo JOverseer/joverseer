@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
@@ -57,7 +58,7 @@ public class CombatViewer extends ObjectViewer {
 		this.description.setPreferredSize(this.uiSizes.newDimension(200/12, this.uiSizes.getHeight3()));
 		this.description.setBorder(null);
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
@@ -81,7 +82,6 @@ public class CombatViewer extends ObjectViewer {
 	private JPopupMenu createCombatPopupContextMenu() {
 		Combat c = (Combat) getFormObject();
 		ArrayList<Object> narrationActions = new ArrayList<Object>();
-		int i = 0;
 		for (Integer nationNo : c.getNarrations().keySet()) {
 			narrationActions.add(new ShowDescriptionCommand(nationNo));
 		}
@@ -93,7 +93,7 @@ public class CombatViewer extends ObjectViewer {
 	public void setFormObject(Object obj) {
 		super.setFormObject(obj);
 		Combat c = (Combat) obj;
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game game = GameHolder.instance().getGame();
 
 		String d = ""; //$NON-NLS-1$
 		for (Integer nationNo : c.getNarrations().keySet()) {
@@ -110,7 +110,7 @@ public class CombatViewer extends ObjectViewer {
 		public ShowDescriptionCommand(int nationNo) {
 			super("showDescriptionCommand" + nationNo); //$NON-NLS-1$
 			this.nationNo = nationNo;
-			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			Game game = GameHolder.instance().getGame();
 			Nation n = game.getMetadata().getNationByNum(nationNo);
 			setLabel(Messages.getString("CombatViewer.Narration", new Object[] {n.getName()})); //$NON-NLS-1$
 		}

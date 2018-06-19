@@ -839,7 +839,6 @@ public class TurnNewXmlReader implements Runnable {
 			throw new Exception("Error: no PCs found... should you have set old XML format?");
 		}
 		Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
-		String pcsNotFound = "";
 		for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>) pcws.getItems()) {
 			PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", pcw.getHexNo());
 			pcw.updatePopCenter(pc);

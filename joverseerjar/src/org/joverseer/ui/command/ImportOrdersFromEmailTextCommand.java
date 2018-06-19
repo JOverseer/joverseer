@@ -16,14 +16,13 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.joverseer.joApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderTextReader;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -110,7 +109,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 		MessageDialog dialog = new MessageDialog(Messages.getString("importOrdersFromEmailTextCommand.ImportOrders"), 
 					Messages.getString("importOrdersFromEmailTextCommand.OrdersImported", new Object[] {orderTextReader.getOrders()})); //$NON-NLS-1$ //$NON-NLS-2$
 		dialog.showDialog();
-		Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), GameHolder.instance().getGame(), this));
+		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, GameHolder.instance().getGame(), this);
 
 	}
 

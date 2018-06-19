@@ -72,6 +72,14 @@ public class ArmyListView extends ItemListView {
 		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table), new ExportArmyDataAction() }) };
 	}
 
+	@Override
+	protected JComponent createControlImpl() {
+		JComponent c = super.createControlImpl();
+		// add this when we convert army to integer?
+//		GraphicUtils.setTableColumnRenderer(this.table, ArmyTableModel.iHex, new HexNumberCellRenderer(this.tableModel));
+		return c;
+	}
+
 	/**
 	 * Drag and drop generates a transferable with the following three flavors:
 	 * - Army[] (all the selected armies) - Army (the first selected army) -

@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.table.JTableHeader;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -74,7 +75,7 @@ public class ArmyEstimatesListView extends ItemListView {
 	 */
 	@Override
 	protected JComponent createControlImpl() {
-		MessageSource messageSource = (MessageSource) getApplicationContext().getBean("messageSource"); //$NON-NLS-1$
+		MessageSource messageSource = Messages.getMessageSource();
 
 		// create the table model
 		try {
@@ -106,6 +107,11 @@ public class ArmyEstimatesListView extends ItemListView {
 		// create the JTable instance
 		this.table = TableUtils.createStandardSortableTable(this.tableModel);
 		this.table = new SortableTable(this.table.getModel()) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7989424858163400299L;
 
 			@Override
 			protected void initTable() {
@@ -158,7 +164,7 @@ public class ArmyEstimatesListView extends ItemListView {
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+			ImageSource imgSource = joApplication.getImageSource();
 			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon")); //$NON-NLS-1$
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);
@@ -221,6 +227,11 @@ public class ArmyEstimatesListView extends ItemListView {
 
 		TransferHandler handler = new GenericExportTransferHandler() {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5117995273740870509L;
+
 			@Override
 			protected Transferable createTransferable(JComponent arg0) {
 				try {
@@ -242,7 +253,7 @@ public class ArmyEstimatesListView extends ItemListView {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
 		comps.addAll(Arrays.asList(super.getButtons()));
 		JLabelButton popupMenu = new JLabelButton();
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		popupMenu.setIcon(ico);
 		popupMenu.addActionListener(new PopupMenuActionListener() {

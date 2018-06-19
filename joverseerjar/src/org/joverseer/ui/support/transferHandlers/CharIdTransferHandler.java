@@ -12,6 +12,7 @@ import org.joverseer.domain.Character;
  * @author Marios Skounakis
  */
 
+@SuppressWarnings("serial")
 public class CharIdTransferHandler extends StringTransferHandler {
 
     public CharIdTransferHandler(String arg0) {

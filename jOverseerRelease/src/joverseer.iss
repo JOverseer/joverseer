@@ -2,6 +2,9 @@
 AppCopyright=Marios Skounakis
 AppName=JOverseer
 AppVerName=JOverseer
+AppVersion=@version@
+AppPublisher=Middle-Earth Games
+AppPublisherURL=http://www.middleearthgames.com
 DefaultDirName={pf}\JOverseer\
 DefaultGroupName=JOverseer
 OutputBaseFilename=joverseer-setup-@version@
@@ -46,7 +49,7 @@ Source: {#InputResourceDirName}\joverseer.bat; DestDir: {app}
 Source: {#InputResourceDirName}\jOverseer.lnk; DestDir: {userdesktop}
 Source: {#InputBuild}\log4j.properties; DestDir: {app}
 ;check that these are actually needed here...they used to be copied in 1.0.12
-Source: {#OrdercheckerMetadata}\*; DestDir: {app}\bin\metadata\orderchecker
+;Source: {#OrdercheckerMetadata}\*; DestDir: {app}\bin\metadata\orderchecker
 ;Source: {#InputBuild}\scope*.jar; DestDir: {app}
 ;Source: {#InputBuild}\jdom*.jar; DestDir: {app}
 
@@ -59,4 +62,10 @@ Name: {app}\layout
 ;check that these are actually needed here...they used to be copied in 1.0.12
 Name: {app}\update
 
+[UninstallDelete]
+Type: files; Name: "{app}\update\update\update.jar"
+Type: files; Name: "{app}\update\update.jar"
+Type: dirifempty; Name: "{app}\update\update"
+Type: dirifempty; Name: "{app}\update"
+Type: dirifempty; Name: "{app}"
 

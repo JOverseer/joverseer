@@ -40,6 +40,7 @@ package org.txt2xml.config;
 /**
  * @author <A HREF="mailto:smeyfroi@users.sourceforge.net">Steve Meyfroidt</A>
  */
+@SuppressWarnings("serial")
 public class ConfigException extends Exception {
 
     public ConfigException() {

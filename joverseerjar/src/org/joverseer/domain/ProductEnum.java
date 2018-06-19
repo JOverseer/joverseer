@@ -36,7 +36,7 @@ public enum ProductEnum {
 	//This is the code, rather than the full word
 	//Use UIUtils.EnumToString for the fullname.
 	public String getLocalized() {
-		return Messages.getString("ProductEnum."+code);
+		return Messages.getString("ProductEnum."+this.code);
 	}
 
 	public static ProductEnum getFromText(String text) {

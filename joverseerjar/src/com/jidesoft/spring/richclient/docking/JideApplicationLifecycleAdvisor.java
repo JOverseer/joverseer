@@ -26,18 +26,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.RepaintManager;
 
+import org.joverseer.joApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
+import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
+import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
-import org.springframework.richclient.application.support.DefaultApplicationDescriptor;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.ConfirmationDialog;
@@ -93,11 +97,38 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		return handler;
 	}
 
+	
+	
+	@Override
+	public void onApplicationEvent(ApplicationEvent event) {
+		if (event instanceof JOverseerEvent) {
+			
+			JOverseerEvent e = (JOverseerEvent) event;
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
+				JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+				for (int i = 0; i < menuBar.getMenuCount(); i++) {
+						if (!menuBar.getMenu(i).isEnabled()) {
+						menuBar.getMenu(i).setEnabled(true);
+					}
+						for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
+						JMenuItem menu = menuBar.getMenu(i).getItem(j);
+						if (menu != null) {
+							if (!menu.isEnabled()) {
+								menu.setEnabled(true);
+							}
+						}
+					}
+				}
+			}
+		}
+		super.onApplicationEvent(event);
+	}
+
 	@Override
 	public void onPostStartup() {
 		initializeRepaintManager();
+		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 		if (devOption == false) {
-			JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 			for (int i = 0; i < menuBar.getMenuCount(); i++) {
 				//TODO:I18N
 				if (menuBar.getMenu(i).getText().equals("Admin")) {
@@ -105,7 +136,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				}
 			}
 		}
-		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 		for (int i = 0; i < menuBar.getMenuCount(); i++) {
 			// recent games
 			//TODO: I18N
@@ -168,6 +198,8 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				lg.loadGame();
 			}
 		}
+		
+		// some commands are disabled until game loaded...
 	}
 
 	@Override
@@ -223,7 +255,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			Date dateMinusOneWeek = c.getTime();
 			if (dt == null || dateMinusOneWeek.after(dt)) {
 
-				DefaultApplicationDescriptor descriptor = (DefaultApplicationDescriptor)Application.instance().getApplicationContext().getBean("applicationDescriptor");
+				ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
 				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
 		        
    		        try {

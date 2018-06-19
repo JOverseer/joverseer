@@ -2,8 +2,6 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
@@ -11,7 +9,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.springframework.core.io.Resource;
 
 /**
  * Population metadata reader. Reads population center starting info from data
@@ -31,11 +28,6 @@ public class PopulationCenterReader implements MetadataReader {
 
 			String ln;
 			ln = reader.readLine();
-			if (ln !=null) {
-				if (ln.codePointAt(0) == 0xFEFF) { // skip any BOM left.
-					ln = ln.substring(1);
-				}
-			}
 			while (ln != null) {
 				String[] parts = ln.split(",");
 				parts[0] = parts[0].replaceAll("\"", "");

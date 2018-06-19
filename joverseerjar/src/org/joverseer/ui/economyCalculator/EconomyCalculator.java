@@ -32,18 +32,19 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
-import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.popup.JidePopup;
 
@@ -74,14 +75,14 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.EconomyCalculatorUpdate.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.EconomyCalculatorUpdate)) {
 				((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
 				((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
 				refreshMarketLimitWarning();
 				refreshTaxIncrease();
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
-			} else if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				loadNationCombo(false);
 				try {
 					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
@@ -93,11 +94,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				} catch (Exception exc) {
 					exc.printStackTrace();
 				}
-			} else if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				((MarketTableModel) this.marketTable.getModel()).setGame(null);
 				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
 				loadNationCombo(true);
-			} else if (e.getEventType().equals(LifecycleEventsEnum.OrderChangedEvent.toString())) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				refreshAutocalcOrderCost();
 				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
 					((EconomyTotalsTableModel) this.totalsTable.getModel()).updateMarketFromOrders();
@@ -460,10 +461,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 		this.lostPopsTableModel = new LostPopsTableModel();
 		// pcTable = new JTable(lostPopsTableModel);
-		this.pcTable = TableUtils.createStandardSortableTable(this.lostPopsTableModel);
+		this.pcTable = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.lostPopsTableModel);
 		this.pcTable.setBackground(Color.white);
 		this.pcTable.setDefaultRenderer(Boolean.class, this.totalsTable.getDefaultRenderer(Boolean.class));
 		this.pcTable.setDefaultEditor(Boolean.class, this.totalsTable.getDefaultEditor(Boolean.class));
+		TableUtils.setTableColumnRenderer(this.pcTable, LostPopsTableModel.iHex, new HexNumberCellRenderer(this.lostPopsTableModel) );
 		org.joverseer.ui.support.controls.TableUtils.setTableColumnWidths(this.pcTable, getLostPCColumWidths());
 		this.pcTable.setMaximumSize(new Dimension(600, 1000));
 		lb.cell(this.pcTable, "align=left"); //$NON-NLS-1$
@@ -501,6 +503,10 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * @author Marios Skounakis
 	 */
 	public class MarketRenderer extends DefaultTableCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 9079326762672678398L;
 		// TODO export colors to color.properties
 		Color[] rowColors = new Color[] { Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.decode("#FFCCAA"), Color.decode("#FFCCAA"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.decode("#ADD3A6"), Color.decode("#ADD3A6"), Color.white, Color.white, Color.white, Color.lightGray }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
@@ -526,6 +532,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * @author Marios Skounakis
 	 */
 	public class TotalsRenderer extends DefaultTableCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4072426945699643672L;
+
 		// TODO export colors to resources
 		// TODO remove hard-coded column and row numbers
 		@Override

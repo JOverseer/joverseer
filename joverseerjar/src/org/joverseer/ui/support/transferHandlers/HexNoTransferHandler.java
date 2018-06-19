@@ -12,6 +12,7 @@ import org.joverseer.ui.map.MapPanel;
  */
 
 //TODO embed in MapPanel as it is MapPanel specific
+@SuppressWarnings("serial")
 public class HexNoTransferHandler extends StringTransferHandler {
     public HexNoTransferHandler(String arg0) {
         super(arg0);

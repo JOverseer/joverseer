@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.joverseer.ui.map.renderers.Renderer;
+import org.springframework.richclient.application.Application;
 
 /**
  * Metadata for the map (dimensions, grid sizes, etc)
@@ -83,6 +84,10 @@ public class MapMetadata {
 
 	public Collection<Renderer> getRenderers() {
 		return this.renderers;
+	}
+	public static MapMetadata instance()
+	{
+		return (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 	}
 
 }

@@ -22,7 +22,8 @@ public class Rule
     public static final int STATE_ARTIFACT = 5;
     public static final int STATE_COMPANY = 6;
     public static final String STATE_REQ = "state";
-    private static String stateDesc[] = {
+    @SuppressWarnings("unused")
+	private static String stateDesc[] = {
         "Army", "PC", "Army Loc", "Char Army", "Char Loc", "Artifact", "Company"
     };
     private static final String productMapping[][] = {
@@ -72,6 +73,21 @@ public class Rule
         this.parentChar = null;
         this.phase = -1;
         this.order = order;
+    }
+    private void resetState()
+    {
+        if (this.stateProcessed == null) {
+        	this.stateProcessed = new boolean[7];
+        }
+        for(int i = 0; i < STATE_NUM; i++)
+        {
+            this.stateProcessed[i] = true;
+        }
+        if (this.additionalInfo == null) {
+        	this.additionalInfo = new Vector();
+        }
+        this.additionalInfo.clear();
+    	
     }
 
     @Override
@@ -178,13 +194,7 @@ public class Rule
         this.phase = phase1;
         if(phase1 == 1)
         {
-            this.additionalInfo = new Vector();
-            this.stateProcessed = new boolean[7];
-            for(int i = 0; i < STATE_NUM; i++)
-            {
-                this.stateProcessed[i] = true;
-            }
-
+            resetState();
         }
         String result;
         if(this.spellRules != null && !this.spellRules.getDone())
@@ -1255,16 +1265,11 @@ public class Rule
             processCharacter(charParam, charLoc, status);
             boolean armyCO = character.isArmyCO(this.parentOrder.getOrder());
             boolean navyCO = false;
-            boolean withArmy = false;
             Army army = character.getArmy(this.parentOrder.getOrder());
             if(army != null && armyCO && army.isNavy())
             {
                 armyCO = false;
                 navyCO = true;
-            }
-            if(!armyCO && !navyCO)
-            {
-                withArmy = character.isCommanderInArmy(this.parentOrder.getOrder());
             }
             switch(CO)
             {
@@ -2373,7 +2378,7 @@ public class Rule
                 break;
 
             case 10: // '\n'
-                String sourceNation = Main.main.getNation().getNationName(Main.main.getNation().getNation());
+//                String sourceNation = Main.main.getNation().getNationName(Main.main.getNation().getNation());
                 String targetNation = Main.main.getNation().getNationName(pc.getNation());
                 if(owned)
                 {
@@ -2602,11 +2607,13 @@ public class Rule
                 msg = msg + " to " + Main.main.locationStr(destination);
             }
             //is this food coming into an army?
-            if ((type == 2) && (product.equals("Food"))) {
-                Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
-                if (army != null) {
-                	army.setFoodGainedBeforeMove(quantity);
-                }
+            if (product != null) {
+            	if ((type == 2) && (product.equals("Food"))) {
+            		Army army = this.parentChar.getArmy(this.parentOrder.getOrder());
+                	if (army != null) {
+                		army.setFoodGainedBeforeMove(quantity);
+                	}
+            	}
             }
             msg = msg + ".";
             this.parentOrder.addHelp(msg);
@@ -2735,7 +2742,6 @@ public class Rule
             {
                 return null;
             }
-            int warn21;
             switch(type)
             {
             case 0: // '\0'
@@ -2756,7 +2762,6 @@ public class Rule
                     character.setCompanyCO(!character.isCompanyCO(this.parentOrder.getOrder()), this.parentOrder.getOrder());
                 } else
                 {
-                    warn21 = 1;
                 }
                 break;
 
@@ -3212,6 +3217,8 @@ public class Rule
             }
             if(type == 0 || type == 1)
             {
+//            	Hex hex = Main.main.getMap().findHex(pc.getLocation());
+            	
                 if(this.additionalInfo.size() == 0)
                 {
                     String msg = "TROOP:Does " + pc + " have " + amount + " mounts and " + amount * 2 + " leather?";

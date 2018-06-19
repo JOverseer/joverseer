@@ -14,6 +14,7 @@ import org.joverseer.ui.support.dataFlavors.ArtifactDataFlavor;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 
 
+@SuppressWarnings("serial")
 public class ArtifactExportTransferHandler extends TransferHandler {
 
     Artifact artifact;

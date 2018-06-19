@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class NationEconomyTableModel extends ItemTableModel {
 	public NationEconomyTableModel(MessageSource messageSource) {
 		super(NationEconomy.class, messageSource);

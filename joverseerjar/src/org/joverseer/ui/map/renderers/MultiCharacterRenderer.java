@@ -18,7 +18,6 @@ import org.joverseer.support.info.InfoUtils;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renders all characters in the hex as seperate dots
@@ -34,13 +33,13 @@ public class MultiCharacterRenderer implements Renderer {
     }
 
     protected void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
         if (this.mapMetadata == null) init();
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        Game game = GameHolder.instance().getGame();
         Turn turn = game.getTurn();
 
         org.joverseer.domain.Character c = (Character)obj;

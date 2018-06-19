@@ -6,35 +6,36 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+@SuppressWarnings("serial")
 public class OCResultTreeRenderer extends DefaultTreeCellRenderer {
     @SuppressWarnings("unused")
 	private ImageIcon redIcon = new ImageIcon("images/red.gif");
     public ImageIcon getRedIcon() {
-		return redIcon;
+		return this.redIcon;
 	}
 	public void setRedIcon(ImageIcon redIcon) {
 		this.redIcon = redIcon;
 	}
 	public ImageIcon getYellowIcon() {
-		return yellowIcon;
+		return this.yellowIcon;
 	}
 	public void setYellowIcon(ImageIcon yellowIcon) {
 		this.yellowIcon = yellowIcon;
 	}
 	public ImageIcon getGreenIcon() {
-		return greenIcon;
+		return this.greenIcon;
 	}
 	public void setGreenIcon(ImageIcon greenIcon) {
 		this.greenIcon = greenIcon;
 	}
 	public ImageIcon getOrderIcon() {
-		return orderIcon;
+		return this.orderIcon;
 	}
 	public void setOrderIcon(ImageIcon orderIcon) {
 		this.orderIcon = orderIcon;
 	}
 	public ImageIcon getCharIcon() {
-		return charIcon;
+		return this.charIcon;
 	}
 	public void setCharIcon(ImageIcon charIcon) {
 		this.charIcon = charIcon;
@@ -86,7 +87,7 @@ public class OCResultTreeRenderer extends DefaultTreeCellRenderer {
         {
             try {
                 super.getTreeCellRendererComponent(tree1, value, sel, expanded, leaf, row, hasFocus1);
-                if(value != (Object)(parent.getRoot()))
+                if(value != (Object)(this.parent.getRoot()))
                 {
                 	OCTreeNode node = (OCTreeNode)value;
                     setFont(node.getActiveFont());

@@ -26,6 +26,7 @@ import org.springframework.richclient.table.BeanTableModel;
  * Cell renderer for the InfoSource class
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
 
     public InfoSourceTableCellRenderer(BeanTableModel tableModel) {

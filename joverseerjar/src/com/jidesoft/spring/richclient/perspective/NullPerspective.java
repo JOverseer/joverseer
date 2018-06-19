@@ -33,6 +33,7 @@ public class NullPerspective extends Perspective {
 		super(ID);
 	}
 	
+	@Override
 	public void display(DockingManager manager) {
 		// null, so do nothing
 	}

@@ -29,6 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Company;
@@ -68,7 +69,6 @@ import org.joverseer.ui.listviews.ItemTableModel;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
 import org.joverseer.ui.support.GraphicUtils;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.commands.ShowInfoSourcePopupCommand;
@@ -237,7 +237,7 @@ public class CharacterViewer extends ObjectViewer {
 					showStartingInfo = true;
 				} else {
 					// retrieve starting info
-					Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+					Game game = GameHolder.instance().getGame();
 					GameMetadata gm = game.getMetadata();
 					Container<?> startChars = gm.getCharacters();
 					if (startChars != null) {
@@ -256,11 +256,11 @@ public class CharacterViewer extends ObjectViewer {
 			InfoSource is = c.getInfoSource();
 			if (DerivedFromLocateArtifactInfoSource.class.isInstance(is) || DerivedFromRevealCharacterInfoSource.class.isInstance(is)) {
 				DerivedFromSpellInfoSource sis = (DerivedFromSpellInfoSource) is;
-				String infoSourcesStr = Messages.getString("CharacterViewer.spellAtHex",new Object[] {sis.getSpell() ,sis.getHexNo()}); //$NON-NLS-1$
+				String infoSourcesStr = Messages.getString("CharacterViewer.spellAtHex",new Object[] {sis.getSpell() ,sis.getHexNoAsString()}); //$NON-NLS-1$
 				this.infoSourcesTextBox.setVisible(true);
 				for (InfoSource dsis : sis.getOtherInfoSources()) {
 					if (DerivedFromSpellInfoSource.class.isInstance(dsis)) {
-						infoSourcesStr += ", " + Messages.getString("CharacterViewer.spellAtHex",new Object[] {((DerivedFromSpellInfoSource) dsis).getSpell(), ((DerivedFromSpellInfoSource) dsis).getHexNo()}); //$NON-NLS-1$
+						infoSourcesStr += ", " + Messages.getString("CharacterViewer.spellAtHex",new Object[] {((DerivedFromSpellInfoSource) dsis).getSpell(), ((DerivedFromSpellInfoSource) dsis).getHexNoAsString()}); //$NON-NLS-1$
 					}
 				}
 				this.infoSourcesTextBox.setText(infoSourcesStr);
@@ -275,7 +275,7 @@ public class CharacterViewer extends ObjectViewer {
 			Font f = GraphicUtils.getFont(this.statsTextBox.getFont().getName(), (showStartingInfo ? Font.ITALIC : Font.PLAIN), this.statsTextBox.getFont().getSize());
 			this.statsTextBox.setFont(f);
 
-			Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			Game game = GameHolder.instance().getGame();
 			if (game == null)
 				return;
 			GameMetadata gm = game.getMetadata();
@@ -459,7 +459,7 @@ public class CharacterViewer extends ObjectViewer {
 		// a bit of a hack...extend to stop the menu icon jumping about
 		c.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
 
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource"); //$NON-NLS-1$
+		ImageSource imgSource = joApplication.getImageSource();
 
 		final JButton btnMainMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
@@ -517,6 +517,11 @@ public class CharacterViewer extends ObjectViewer {
 		this.artifactsTable.setPreferredSize(this.uiSizes.newDimension(150/20, this.uiSizes.getHeight5()));
 		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 849682786089362695L;
+
 			@Override
 			protected String[] createColumnPropertyNames() {
 				return new String[] { "no", "name", "stats" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -562,6 +567,11 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.nextLine();
 		glb.append(new JLabel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1186841898044385427L;
+
 			@Override
 			public Dimension getPreferredSize() {
 				return new Dimension(20, 4);
@@ -572,6 +582,11 @@ public class CharacterViewer extends ObjectViewer {
 		glb.append(this.spellsTable = new JTable(), 2, 1);
 		this.spellsTable.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
 		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8451414798515425664L;
 
 			@Override
 			protected String[] createColumnPropertyNames() {
@@ -656,7 +671,7 @@ public class CharacterViewer extends ObjectViewer {
 			public void actionPerformed(ActionEvent e) {
 				Character c1 = (Character) getFormObject();
 				c1.setOrders(new Order[] { c1.getOrders()[1], c1.getOrders()[0] });
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshHexItems.toString(), MapPanel.instance().getSelectedHex(), this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, MapPanel.instance().getSelectedHex(), this);
 			}
 		});
 
@@ -801,12 +816,12 @@ public class CharacterViewer extends ObjectViewer {
 			if (pc != null) {
 				hami = new HexArrowMapItem(pc.getHexNo(), c.getHexNo(), Color.black);
 				AbstractMapItem.add(hami);
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 			}
 			DialogsUtility.showCharacterOrderResults(c);
 			if (hami != null) {
 				AbstractMapItem.remove(hami);
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), MapPanel.instance().getSelectedHex(), this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 			}
 		}
 	}
@@ -872,7 +887,7 @@ public class CharacterViewer extends ObjectViewer {
 					c.getOrders()[i].setParameters(this.params);
 					setFormObject(getFormObject());
 					CharacterViewer.this.showOrders = true;
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), c.getOrders()[i], this));
+					joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, c.getOrders()[i], this);
 					return;
 				}
 			}
@@ -903,7 +918,7 @@ public class CharacterViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancel)
 				return;
-			Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
 			Army a = armies.findFirstByProperty("commanderName", c.getName()); //$NON-NLS-1$
@@ -914,7 +929,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 			Container<Character> characters = t.getCharacters();
 			characters.removeItem(c);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -942,7 +957,7 @@ public class CharacterViewer extends ObjectViewer {
 					form.commit();
 					c.setId(Character.getIdFromName(c.getName()));
 					GameHolder.instance().getGame().getTurn().getCharacters().refreshItem(c);
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.GameChangedEvent.toString(), this, this));
+					joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this, this);
 					return true;
 				}
 			};
@@ -998,8 +1013,8 @@ public class CharacterViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Character c = (Character) getFormObject();
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), c.getOrders()[0], this));
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SendOrdersByChat.toString(), c.getOrders()[1], this));
+			joApplication.publishEvent(LifecycleEventsEnum.SendOrdersByChat, c.getOrders()[0], this);
+			joApplication.publishEvent(LifecycleEventsEnum.SendOrdersByChat, c.getOrders()[1], this);
 		}
 
 	}

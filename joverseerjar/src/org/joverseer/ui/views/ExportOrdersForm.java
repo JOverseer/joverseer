@@ -30,7 +30,6 @@ import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.log4j.Logger;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -70,7 +69,6 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  */
 // TODO document better
 public class ExportOrdersForm extends ScalableAbstractForm {
-	static Logger logger = Logger.getLogger(ExportOrdersForm.class);
 	public static int ORDERS_OK = 0;
 	public static int ORDERS_NOT_OK = 1;
 
@@ -166,7 +164,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 				} catch (Exception exc) {
 					ExportOrdersForm.this.orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
 					ExportOrdersForm.this.ordersOk = false;
-					logger.error(exc);
+//					ExportOrdersForm.logger.error(exc);
 				}
 			}
 		});
@@ -255,7 +253,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 						// send by email
 						String recipientEmail = PreferenceRegistry.instance().getPreferenceValue("submitOrders.recipientEmail");
 						String cmd = "bin\\mailSender\\MailSender.exe " + recipientEmail + " " + fname + " " + file.getCanonicalPath();
-						logger.debug("Starting mail client with command " + cmd);
+						this.logger.debug("Starting mail client with command " + cmd);
 						Runtime.getRuntime().exec(cmd);
 						increaseVersionNumber(pi);
 
@@ -348,7 +346,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 					autoSaveGameAccordingToPref();
 				}
 			} catch (Exception exc) {
-				logger.error(exc);
+				this.logger.error(exc);
 				ErrorDialog md = new ErrorDialog(exc.getMessage());
 				md.showDialog();
 			}
@@ -373,7 +371,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 		this.duplicateSkillOrders = false;
 		this.ordersWithWarnings = false;
 
-		OrderResultContainer orc = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
+		OrderResultContainer orc = OrderResultContainer.instance();
 		OrderParameterValidator validator = new OrderParameterValidator();
 		for (Character ch : chars) {
 			for (int i = 0; i < ch.getNumberOfOrders(); i++) {

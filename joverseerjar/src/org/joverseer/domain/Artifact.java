@@ -5,11 +5,11 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
 /**
- * Srores information about an artifact. It only stores current reported information such
+ * Stores information about an artifact. It only stores current reported information such
  * as the owner, the hex, and the number. The powers are stored in the ArtifactInfo class.
  * 
  * Note that currently only artifacts NOT owned by friendly chars are stored 
- * using this class. This includes aretifacts that:
+ * using this class. This includes artifacts that:
  * - have been located with LA/LAT spells
  * - have been hidden by a friendly nation
  * 
@@ -100,10 +100,10 @@ public class Artifact implements Serializable, IHasMapLocation {
 	public String getInfoSourceDescr() {
         String txt = "";
         if (DerivedFromSpellInfoSource.class.isInstance(this.infoSource)) {
-            txt = ((DerivedFromSpellInfoSource)this.infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getCasterName();
+            txt = ((DerivedFromSpellInfoSource)this.infoSource).getSpell() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getHexNoAsString() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getCasterName();
             for (InfoSource is : ((DerivedFromSpellInfoSource)this.infoSource).getOtherInfoSources()) {
                 if (DerivedFromSpellInfoSource.class.isInstance(is)) {
-                    txt += ", " + ((DerivedFromSpellInfoSource)is).getSpell() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getHexNo() + " - " + ((DerivedFromSpellInfoSource)is).getCasterName();
+                    txt += ", " + ((DerivedFromSpellInfoSource)is).getSpell() + " - " + ((DerivedFromSpellInfoSource)this.infoSource).getHexNoAsString() + " - " + ((DerivedFromSpellInfoSource)is).getCasterName();
                 }
             }
         }

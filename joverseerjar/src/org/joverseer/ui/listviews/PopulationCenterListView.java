@@ -18,11 +18,15 @@ import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
+import org.joverseer.ui.listviews.renderers.EnumTableCellRenderer;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.PopCenterInfoSourceTableCellRenderer;
 import org.joverseer.ui.support.UIUtils;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
 import org.springframework.richclient.table.ColumnToSort;
+import org.springframework.richclient.table.SortOrder;
 import org.springframework.richclient.table.SortableTableModel;
 
 /**
@@ -45,6 +49,10 @@ public class PopulationCenterListView extends ItemListView {
 	protected JComponent createControlImpl() {
 		JComponent c = super.createControlImpl();
 		this.table.setDefaultRenderer(InfoSource.class, new PopCenterInfoSourceTableCellRenderer(this.tableModel));
+		EnumTableCellRenderer e =new EnumTableCellRenderer(this.tableModel); 
+		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iSize,e);
+		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iFort,e);
+		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iHex, new HexNumberCellRenderer(this.tableModel));
 		return c;
 	}
 
@@ -58,7 +66,7 @@ public class PopulationCenterListView extends ItemListView {
 
 	@Override
 	protected ColumnToSort[] getDefaultSort() {
-		return new ColumnToSort[] { new ColumnToSort(0, 2), new ColumnToSort(0, 1) };
+		return new ColumnToSort[] { new ColumnToSort(0, 4, SortOrder.DESCENDING), new ColumnToSort(1, 5, SortOrder.DESCENDING) };
 	}
 
 	@Override
@@ -109,6 +117,7 @@ public class PopulationCenterListView extends ItemListView {
 		final String str = copyString;
 
 		TransferHandler handler = new GenericExportTransferHandler() {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Transferable createTransferable(JComponent arg0) {

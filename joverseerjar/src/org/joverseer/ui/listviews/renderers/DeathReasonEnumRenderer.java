@@ -13,8 +13,9 @@ import org.springframework.richclient.table.BeanTableModel;
  * @author Marios Skounakis
  */
 public class DeathReasonEnumRenderer extends AllegianceColorCellRenderer {
+	private static final long serialVersionUID = 1L;
 
-    public DeathReasonEnumRenderer(BeanTableModel tableModel) {
+	public DeathReasonEnumRenderer(BeanTableModel tableModel) {
         super(tableModel);
     }
 

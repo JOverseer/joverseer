@@ -90,7 +90,7 @@ public class BaseHtmlReportView extends ScalableAbstractView implements Applicat
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString()) || e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent) || e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				this.editor.setText(""); //$NON-NLS-1$
 			}
 		}

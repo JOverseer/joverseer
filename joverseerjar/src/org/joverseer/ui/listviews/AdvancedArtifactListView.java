@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
@@ -28,9 +29,11 @@ import org.joverseer.ui.listviews.filters.HexFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
+import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
+import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
@@ -175,7 +178,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
 		comps.addAll(Arrays.asList(super.getButtons()));
 		JLabelButton popupMenu = new JLabelButton();
-		ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+		ImageSource imgSource = joApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
 		popupMenu.setIcon(ico);
 		popupMenu.addActionListener(new PopupMenuActionListener() {
@@ -222,7 +225,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (!Game.isInitialized(g))
 			return;
 		ArrayList<ArtifactWrapper> aws = ArtifactInfoCollector.instance().getWrappersForTurn(g.getCurrentTurn());
@@ -234,5 +237,12 @@ public class AdvancedArtifactListView extends BaseItemListView {
 			}
 		}
 		this.tableModel.setRows(filteredItems);
+	}
+
+	@Override
+	protected JComponent createControlImpl() {
+		JComponent c = super.createControlImpl();
+		TableUtils.setTableColumnRenderer(this.table, AdvancedArtifactTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
+		return c;
 	}
 }

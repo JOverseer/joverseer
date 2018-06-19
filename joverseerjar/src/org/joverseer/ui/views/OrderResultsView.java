@@ -6,14 +6,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class OrderResultsView extends BaseHtmlReportView {
@@ -29,27 +28,27 @@ public class OrderResultsView extends BaseHtmlReportView {
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.Character"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.charName = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.charName.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.charName.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.Text"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.text = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.text.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.text.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.FromTurn"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.turnFrom = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.turnFrom.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.turnFrom.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.ToTurn"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.turnTo = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.turnTo.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.turnTo.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		tlb.cell(new JLabel(Messages.getString("OrderResultsView.Nation"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.nationNo = new JTextField(), "colspec=left:100"); //$NON-NLS-1$
-		this.nationNo.setPreferredSize(uiSizes.newTextPreferredDimension());
+		this.nationNo.setPreferredSize(this.uiSizes.newTextPreferredDimension());
 		tlb.relatedGapRow();
 		return tlb.getPanel();
 	}
@@ -65,12 +64,12 @@ public class OrderResultsView extends BaseHtmlReportView {
 				int hexNo = Integer.parseInt(ps[1]);
 				if (hexNo != 0) {
 					Point p = new Point(hexNo / 100, hexNo % 100);
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), p, null));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, p);
 				}
 			} else if (ps[0].equals("turn")) { //$NON-NLS-1$
 				int turnNo = Integer.parseInt(ps[1]);
 				GameHolder.instance().getGame().setCurrentTurn(turnNo);
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, null));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo);
 			}
 		}
 	}

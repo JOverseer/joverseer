@@ -29,7 +29,7 @@ public class AsciiUtils {
     +"\u00C7\u00E7"                                                             
      ;
 
-        // private constructor, can't be instanciated!
+        // private constructor, can't be instantiated!
         private AsciiUtils() { }
 
         // remove accentued from a string and replace with ascii equivalent

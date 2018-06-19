@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.joverseer.joApplication;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -25,7 +26,6 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renders PopulationCenter objects
@@ -45,7 +45,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
     }
 
     private void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
 
@@ -128,7 +128,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
         }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
 
-        HashMap mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
+        HashMap mapOptions = joApplication.getMapOptions();
         Object map = mapOptions.get(MapOptionsEnum.PopCenterNames);
         if (map!= null && map.equals(MapOptionValuesEnum.PopCenterNamesOn)) {
 	        String pcName = popCenter.getName();

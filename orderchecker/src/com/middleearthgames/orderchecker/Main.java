@@ -7,14 +7,18 @@ package com.middleearthgames.orderchecker;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.Vector;
 
+import javax.naming.directory.DirContext;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -42,8 +46,7 @@ public class Main
     private SpellList spells;
     private ArtifactList artifacts;
     private Data data;
-    private final OCDialog window;
-
+    private OCDialog window;
     public static void main(String argv[])
     {
         try
@@ -87,24 +90,30 @@ public class Main
 
     public Main()
     {
-        this(false,readData(dataFile));
+   		init(false,readData(dataFile));
     }
     public Main(InputStream is)
     {
-    	this(false,readData(is));
+    	init(false,readData(is));
     }
     
     //mscoon
     public Main(boolean useMscoonVersion, Data data) {
+    	init(useMscoonVersion,data);
+    }
+    protected void init(boolean useMscoonVersion, Data data) {
         this.nation = null;
         this.map = null;
         this.ruleset = null;
         this.spells = new SpellList();
         this.artifacts = new ArtifactList();
         this.data = data;
-        this.window = new OCDialog(new JPanel(), this.data);
+        if (useMscoonVersion) {
+        	this.window = new OCDialog(new JPanel(), data);
+        } else {
+        	this.window = new OCDialog(mainFrame, data);
+        }
     }
-
     public OCDialog getWindow()
     {
         return this.window;

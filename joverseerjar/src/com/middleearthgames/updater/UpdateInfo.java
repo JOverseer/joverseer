@@ -11,13 +11,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -27,8 +23,6 @@ import javax.swing.JScrollPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joverseer.preferences.PreferenceRegistry;
-
-import com.jidesoft.spring.richclient.docking.JideApplicationPage;
 
 /**
  *
@@ -45,7 +39,11 @@ public class UpdateInfo extends JFrame{
     private JPanel pan2;
 
     public UpdateInfo(String info) {
-        initComponents();
+    	this(info,"New Update Found");
+    }
+    public UpdateInfo(String info,String title) {
+    	
+        initComponents(title);
 		this.infoPane.setPreferredSize(new Dimension(800, 600));
 		try {
 			String text = info;
@@ -82,16 +80,16 @@ public class UpdateInfo extends JFrame{
 			result = "<html><body><table style='font-family:Tahoma; font-size:11pt' border=0 cellspacing=0 cellpadding=0>" + result + "</table></font></body></html>";
 			this.infoPane.setText(result);
 			this.infoPane.select(0, 1);
-			scp.setPreferredSize(new Dimension(750, 500));
+			this.scp.setPreferredSize(new Dimension(750, 500));
 		} catch (Exception exc) {
 			System.out.println(exc.getMessage());
 		}
     }
 
-    private void initComponents() {
+    private void initComponents(String title) {
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        this.setTitle("New Update Found");
+        this.setTitle(title);
         this.pan1 = new JPanel();
         this.pan1.setLayout(new BorderLayout());
 

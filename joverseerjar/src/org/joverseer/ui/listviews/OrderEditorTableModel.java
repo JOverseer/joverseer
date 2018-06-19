@@ -5,6 +5,7 @@ import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.Order;
@@ -18,9 +19,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.image.ImageSource;
 
 /**
@@ -33,6 +32,10 @@ import org.springframework.richclient.image.ImageSource;
  */
 public class OrderEditorTableModel extends ItemTableModel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7218689165930472924L;
 	public static int iStats = 3;
 	public static int iNoAndCode = 4;
 	public static int iParamStart = 5;
@@ -70,7 +73,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 
 	@Override
 	protected Object getValueAtInternal(Object object, int i) {
-		Game game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game game = GameHolder.instance().getGame();
 		if (i == iNation) {
 			Order order = (Order) object;
 			if (game == null)
@@ -87,14 +90,14 @@ public class OrderEditorTableModel extends ItemTableModel {
 			}
 			return super.getValueAtInternal(object, i);
 		} else if (i == iDraw) {
-			OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+			OrderVisualizationData ovd = OrderVisualizationData.instance();
 			return ovd.contains((Order) object);
 		} else if (i == iResults) {
-			OrderResultContainer container = (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");
+			OrderResultContainer container = OrderResultContainer.instance();
 			OrderResultTypeEnum orderResultType = container.getResultTypeForOrder((Order) object);
 			Icon ico = null;
 			if (orderResultType != null) {
-				ImageSource imgSource = (ImageSource) Application.instance().getApplicationContext().getBean("imageSource");
+				ImageSource imgSource = joApplication.getImageSource();
 				if (imgSource == null) {
 					ico = null;
 				} else if (orderResultType == OrderResultTypeEnum.Info) {
@@ -145,20 +148,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			Order order = (Order) object;
 			Character c = order.getCharacter();
 
-			String txt = "";
-			if (c.getCommandTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getCommandTotal()) + "C";
-			}
-			if (c.getAgentTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getAgentTotal()) + "A";
-			}
-			if (c.getEmmisaryTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getEmmisaryTotal()) + "E";
-			}
-			if (c.getMageTotal() > 0) {
-				txt += (txt.equals("") ? "" : ", ") + String.valueOf(c.getMageTotal()) + "M";
-			}
-			return txt;
+			return c.getBasicStatString();
 		}
 		return super.getValueAtInternal(object, i);
 	}
@@ -166,13 +156,13 @@ public class OrderEditorTableModel extends ItemTableModel {
 	@Override
 	protected void setValueAtInternal(Object v, Object obj, int col) {
 		if (col == iDraw) {
-			OrderVisualizationData ovd = (OrderVisualizationData) Application.instance().getApplicationContext().getBean("orderVisualizationData");
+			OrderVisualizationData ovd = OrderVisualizationData.instance();
 			if (ovd.contains((Order) obj)) {
 				ovd.removeOrder((Order) obj);
 			} else {
 				ovd.addOrder((Order) obj);
 			}
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 
 			return;
 		} else if (col == iNoAndCode) {
@@ -187,8 +177,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 					o.setParameters("");
 				}
 			}
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, o));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		} else if (col >= iParamStart && col <= iParamEnd) {
 			Order o = (Order) obj;
@@ -211,8 +201,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 				}
 			}
 			o.setParameters(paramTxt2);
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), this, this));
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.OrderChangedEvent.toString(), o, o));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		}
 		super.setValueAtInternal(v, obj, col);
@@ -223,7 +213,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 		// super.fireTableCellUpdated(row, column);
 		Point selectedHex = MapPanel.instance().getSelectedHex();
 		if (selectedHex != null) {
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshHexItems.toString(), selectedHex, this));
+			joApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, selectedHex, this);
 		}
 	}
 }

@@ -1,5 +1,7 @@
 package org.joverseer.ui.command;
 
+import java.util.Locale;
+
 /*
  * Copyright 2005 the original author or authors.
  * 
@@ -18,9 +20,11 @@ package org.joverseer.ui.command;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
+import org.springframework.richclient.dialog.ConfirmationDialog;
 
 import com.jidesoft.docking.DockingManager;
 import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
@@ -43,12 +47,21 @@ public class RestoreDefaultLayoutCommand extends ApplicationWindowAwareCommand {
 	@Override
 	protected void doExecuteCommand() {
 		log.debug("Execute command");
-		DockingManager manager = ((JideApplicationWindow) getApplicationWindow()).getDockingManager();
-		Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
-		try {
-			manager.loadLayoutFrom(r.getInputStream());
-		} catch (Exception exc) {
-			log.error("Failed to load original layout from layout file " + exc.getMessage());
-		}
+		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
+		ConfirmationDialog md = new ConfirmationDialog(ms.getMessage("confirmRestoreLayoutDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmRestoreLayoutDialog.message", new String[] {}, Locale.getDefault())) {
+
+			@Override
+			protected void onConfirm() {
+				DockingManager manager = ((JideApplicationWindow) getApplicationWindow()).getDockingManager();
+				Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/default.layout");
+				try {
+					manager.loadLayoutFrom(r.getInputStream());
+				} catch (Exception exc) {
+					log.error("Failed to load original layout from layout file " + exc.getMessage());
+				}
+			}
+		};
+		md.showDialog();
+
 	}
 }

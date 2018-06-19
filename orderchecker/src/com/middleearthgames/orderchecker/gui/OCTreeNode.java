@@ -12,6 +12,7 @@ import java.awt.Font;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+@SuppressWarnings("serial")
 public class OCTreeNode extends DefaultMutableTreeNode
 {
 

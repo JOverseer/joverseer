@@ -1,11 +1,10 @@
 package org.joverseer.ui.command;
 
+import org.joverseer.joApplication;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HexInfoTurnReportMapItem;
 import org.joverseer.ui.support.ActiveGameChecker;
-import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 
 /**
@@ -24,7 +23,6 @@ public class ShowHexInfoTurnReportCommand extends ActionCommand {
 
         HexInfoTurnReportMapItem hitrmi = new HexInfoTurnReportMapItem();
         AbstractMapItem.add(hitrmi);
-        Application.instance().getApplicationContext().publishEvent(
-                new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), hitrmi, this));
+        joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hitrmi, this);
     }
 }

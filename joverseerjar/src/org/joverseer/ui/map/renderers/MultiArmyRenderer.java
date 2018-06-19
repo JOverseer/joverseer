@@ -16,7 +16,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renders multiple armies as seperate icons within the hex.
@@ -37,7 +36,7 @@ public class MultiArmyRenderer extends ImageRenderer {
     }
 
     private void init() {
-        this.mapMetadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
+        this.mapMetadata = MapMetadata.instance();
     }
 
     private boolean isArmyFp(Army army) {
@@ -56,7 +55,7 @@ public class MultiArmyRenderer extends ImageRenderer {
             PreferenceRegistry.instance().getPreferenceValue("map.anchoredShips").equals("yes");
         if (!showAnchoredShips && Army.isAnchoredShips(army)) return;
         
-        Game game = ((GameHolder)Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+        Game game = GameHolder.instance().getGame();
         Turn turn = game.getTurn();
 
         ArrayList<Army> armiesInHex = turn.getContainer(TurnElementsEnum.Army).findAllByProperty("hexNo", army.getHexNo());

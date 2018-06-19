@@ -8,18 +8,19 @@ import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.SpellcasterWrapper;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.application.Application;
 
 /**
  * Table model for SpellcasterWrapper objects
  * 
  * @author Marios Skounakis
  */
+@SuppressWarnings("serial")
 public class SpellcasterTableModel extends ItemTableModel {
 
 	ArrayList<Integer> spells = new ArrayList<Integer>();
 	ArrayList<String> spellDescrs = new ArrayList<String>();
 
+	public static final int iHexNo=1;
 	public SpellcasterTableModel(MessageSource messageSource) {
 		super(SpellcasterWrapper.class, messageSource);
 	}
@@ -38,7 +39,7 @@ public class SpellcasterTableModel extends ItemTableModel {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		Class[] cols = new Class[] { String.class, String.class, String.class, Integer.class, Integer.class };
+		Class[] cols = new Class[] { String.class, Integer.class, String.class, Integer.class, Integer.class };
 		List<Class> colList = new ArrayList<Class>();
 		colList.addAll(Arrays.asList(cols));
 		for (int i = 0; i < 100; i++) {
@@ -64,7 +65,7 @@ public class SpellcasterTableModel extends ItemTableModel {
 
 	@Override
 	public String getColumnName(int arg0) {
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame();
+		Game g = GameHolder.instance().getGame();
 		if (g == null || !Game.isInitialized(g) || arg0 < getSpellStartI()) {
 			return super.getColumnName(arg0);
 		}

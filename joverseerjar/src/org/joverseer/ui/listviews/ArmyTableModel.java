@@ -13,10 +13,16 @@ import org.springframework.context.MessageSource;
  * 
  * @author Marios Skounakis
  */
-// TODO remove hard-coded references to column numbers
 public class ArmyTableModel extends ItemTableModel {
 
 	private static final long serialVersionUID = 1L;
+	final static int iHex = 0;
+	final static int iCommanderName = 2;
+	final static int iSize = 3;
+	final static int iInfo = 4;
+	final static int iTotalTroops = 5;
+	final static int iEnHi = 6;
+	final static int iCharacters = 8;
 
 	public ArmyTableModel(MessageSource messageSource) {
 		super(Army.class, messageSource);
@@ -36,19 +42,19 @@ public class ArmyTableModel extends ItemTableModel {
 	@Override
 	protected Object getValueAtInternal(Object object, int i) {
 		Army army = (Army) object;
-		if (i == 2) {
+		if (i == iCommanderName) {
 			String commander = army.getCommanderName();
 			commander = GraphicUtils.parseName(commander);
 			if (commander.equals("Unknown")) {
 				commander = "-";
 			}
 			return commander;
-		} else if (i == 3) {
+		} else if (i == iSize) {
 			if (army.getSize() == null || army.getSize().equals(ArmySizeEnum.unknown)) {
 				return "";
 			}
 			return army.getSize().toString();
-		} else if (i == 4) {
+		} else if (i == iInfo) {
 			if (army.getElements().size() > 0) {
 				String txt = "";
 				for (ArmyElement element : army.getElements()) {
@@ -60,7 +66,7 @@ public class ArmyTableModel extends ItemTableModel {
 			} else {
 				return "-";
 			}
-		} else if (i == 5) {
+		} else if (i == iTotalTroops) {
 			if (army.getElements().size() > 0) {
 				int count = 0;
 				for (ArmyElement el : army.getElements()) {
@@ -74,9 +80,9 @@ public class ArmyTableModel extends ItemTableModel {
 			} else {
 				return null;
 			}
-		} else if (i == 6) {
+		} else if (i == iEnHi) {
 			return army.getENHI();
-		} else if (i == 8) {
+		} else if (i == iCharacters) {
 			String chars = "";
 			for (String ch : army.getCharacters()) {
 				chars += UIUtils.OptCommaSpace(chars,ch);

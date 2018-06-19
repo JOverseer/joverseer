@@ -5,13 +5,13 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import org.apache.commons.beanutils.BeanComparator;
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
 
 
@@ -79,7 +79,7 @@ public class OrderFileGenerator {
     }
     
     protected String getFileFooter() {
-    	ApplicationDescriptor appDesc = (ApplicationDescriptor)Application.instance().getApplicationContext().getBean("applicationDescriptor");
+    	ApplicationDescriptor appDesc = joApplication.getApplicationDescriptor();
         return "\n" +
                 "ENDMEAUTOINPUT" + "\n" +
                 "JO" + appDesc.getVersion();

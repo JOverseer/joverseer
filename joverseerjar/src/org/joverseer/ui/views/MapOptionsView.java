@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
@@ -28,7 +29,6 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
@@ -50,7 +50,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 	@Override
 	protected JComponent createControl() {
-		HashMap mapOptions = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
+		HashMap mapOptions = joApplication.getMapOptions();
 		mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 		JLabel label;
@@ -67,16 +67,16 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 					return;
 				int turnNo = (Integer) obj;
 
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				Game g = GameHolder.instance().getGame();
 				if (g.getCurrentTurn() == turnNo)
 					return;
 				g.setCurrentTurn(turnNo);
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 				if (MapPanel.instance().getSelectedHex() != null) {
-					Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), MapPanel.instance().getSelectedHex(), this));
+					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
 				}
 			}
 		});
@@ -94,8 +94,8 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				Object obj = MapOptionsView.this.cmbMaps.getSelectedItem();
 				if (obj == null)
 					return;
-				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				HashMap mapOptions1 = joApplication.getMapOptions();
+				Game g = GameHolder.instance().getGame();
 				String str = obj.toString();
 				if (str.equals("Current")) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationMap, null);
@@ -121,7 +121,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 			}
 
 		});
@@ -138,19 +138,19 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
+				HashMap mapOptions1 = joApplication.getMapOptions();
 				if (MapOptionsView.this.drawOrders.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
 				} else {
 					mapOptions1.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOff);
 				}
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				Game g = GameHolder.instance().getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
 				if (!MapOptionsView.this.fireEvents)
 					return;
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
 
 			}
 
@@ -165,20 +165,20 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
+				HashMap mapOptions1 = joApplication.getMapOptions();
 				if (MapOptionsView.this.drawNamesOnOrders.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOn);
 				} else {
 					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOff);
 				}
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				Game g = GameHolder.instance().getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.RefreshMapItems.toString(), turnNo, this));
+				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
 
 			}
 
@@ -193,20 +193,20 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
+				HashMap mapOptions1 = joApplication.getMapOptions();
 				if (MapOptionsView.this.popCenterNames.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
 				} else {
 					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOff);
 				}
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				Game g = GameHolder.instance().getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 
 			}
 
@@ -222,20 +222,20 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
+				HashMap mapOptions1 = joApplication.getMapOptions();
 				if (MapOptionsView.this.showClimate.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
 				} else {
 					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOff);
 				}
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				Game g = GameHolder.instance().getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), turnNo, this));
+				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 
 			}
 
@@ -254,13 +254,13 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 				if (opt == null)
 					return;
-				MapMetadata metadata = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+				MapMetadata metadata = MapMetadata.instance();
 				metadata.setGridCellHeight(opt.getHeight());
 				metadata.setGridCellWidth(opt.getWidth());
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 			}
 		});
 		this.zoom.setSelectedIndex(4);
@@ -275,10 +275,10 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String opt = (String) MapOptionsView.this.nationColors.getSelectedItem();
-				HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions"); //$NON-NLS-1$
+				HashMap mapOptions1 = joApplication.getMapOptions();
 				if (opt == null)
 					return;
-				if (opt.equals(Messages.getString("MapOptionsView.ColorForNation"))) { //$NON-NLS-1$
+				if (opt.equals(Messages.getString("MapOptionsView.ColourForNation"))) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsNation);
 				} else if (opt.equals(Messages.getString("MapOptionsView.ColourForAllegiance"))) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);
@@ -287,7 +287,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 			}
 		});
 
@@ -303,7 +303,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 		this.fireEvents = false;
 		this.cmbTurns.removeAllItems();
 		this.cmbMaps.removeAllItems();
-		Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+		Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
 		if (g != null) {
 			ActionListener[] als = this.cmbTurns.getActionListeners();
 			for (ActionListener al : als) {
@@ -338,14 +338,14 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.getEventType().equals(LifecycleEventsEnum.GameChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				this.fireEvents = false;
 				resetGame();
 				this.fireEvents = true;
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.SelectedTurnChangedEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				this.fireEvents = false;
-				Game g = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+				Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
 				if (Game.isInitialized(g)) {
 					if (!this.cmbTurns.getSelectedItem().equals(g.getCurrentTurn())) {
 						this.cmbTurns.setSelectedItem(g.getCurrentTurn());
@@ -353,7 +353,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				}
 				this.fireEvents = true;
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.SetPalantirMapStyleEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent)) {
 				this.fireEvents = false;
 
 				this.zoom.setSelectedIndex(2);
@@ -366,15 +366,15 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				PreferenceRegistry.instance().setPreferenceValue("map.showArmyType", "no"); //$NON-NLS-1$ //$NON-NLS-2$
 
 				this.fireEvents = true;
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.MapMetadataChangedEvent.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.ZoomIncreaseEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomIncreaseEvent)) {
 				if (this.zoom.getSelectedIndex() < this.zoom.getItemCount() - 1) {
 					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() + 1);
 				}
 			}
-			if (e.getEventType().equals(LifecycleEventsEnum.ZoomDecreaseEvent.toString())) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomDecreaseEvent)) {
 				if (this.zoom.getSelectedIndex() > 0) {
 					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() - 1);
 				}

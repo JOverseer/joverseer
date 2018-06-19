@@ -11,6 +11,7 @@ import org.joverseer.support.infoSources.InfoSource;
  * @author Marios Skounakis
  *
  */
+@SuppressWarnings("serial")
 public class ComputedInfoSource extends InfoSource {
 
 }

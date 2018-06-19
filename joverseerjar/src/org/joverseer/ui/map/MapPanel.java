@@ -33,6 +33,7 @@ import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputListener;
 
 import org.apache.log4j.Logger;
+import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
@@ -70,7 +71,6 @@ import org.joverseer.ui.command.range.ShowUnfedNavyOpenSeasRangeCommand;
 import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
-import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dataFlavors.ArtifactDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
@@ -88,8 +88,8 @@ import org.springframework.richclient.progress.BusyIndicator;
  * Painting is done in a layered way in order to avoid having to always redraw
  * everything, which is slow The three layers are: 1. the map, which shows the
  * terrain and other static stuff for the game type 2. the map base items, which
- * shows fairly non-volative objects for the current turn such as pop centers,
- * chars, armies, etc 3. the map items, which shows volative objects such as
+ * shows fairly non-volatile objects for the current turn such as pop centers,
+ * chars, armies, etc 3. the map items, which shows volatile objects such as
  * army ranges and orders Each layer is stored in a buffered image so that if
  * one of the higher layers is changed, the buffered image is used to redraw the
  * lower layer.
@@ -98,7 +98,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  * 
  * The control also implements mouse listener and mouse motion listener
  * interfaces to provide: - hex selection upon mouse click - scrolling upon
- * ctrl+mouse drag - drag & drop capability for draggin hex number from the map
+ * ctrl+mouse drag - drag & drop capability for dragging hex number from the map
  * to other controls
  * 
  * 
@@ -550,7 +550,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		this.map = null;
 		this.mapBaseItems = null;
 		this.mapItems = null;
-		setGame(((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame()); //$NON-NLS-1$
+		setGame(GameHolder.instance().getGame());
 	}
 
 	public void invalidateMapItems() {
@@ -580,7 +580,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		}
 
 		try {
-			Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+			MapMetadata.instance();
 		} catch (Exception exc) {
 			// application is not ready
 			return;
@@ -611,7 +611,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		if (this.selectedHex == null || selectedHex.x != this.selectedHex.x || selectedHex.y != this.selectedHex.y) {
 			this.selectedHex = selectedHex;
 			// fireMyEvent(new SelectedHexChangedEvent(this));
-			Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedHexChangedEvent.toString(), selectedHex, this));
+			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 		}
 	}
 
@@ -619,7 +619,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		setHexLocation(getSelectedHex().x, getSelectedHex().y);
 		MapMetadata metadata1;
 		try {
-			metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+			metadata1 = MapMetadata.instance();
 			return new Rectangle(this.location.x, this.location.y, metadata1.getHexSize() * metadata1.getGridCellWidth(), metadata1.getHexSize() * metadata1.getGridCellHeight());
 		} catch (Exception exc) {
 			// application is not ready
@@ -632,7 +632,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * and returns it as a point (i.e. point.x = hex.column, point.y = hex.row)
 	 */
 	private Point getHexFromPoint(Point p) {
-		MapMetadata metadata1 = (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata"); //$NON-NLS-1$
+		MapMetadata metadata1 = MapMetadata.instance();
 		int y = p.y / (metadata1.getHexSize() * 3 / 4 * metadata1.getGridCellHeight());
 		int x;
 		if ((y + metadata1.getMinMapRow() + 1) % 2 == 0) {
@@ -919,7 +919,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	public Game getGame() {
 		if (this.game == null) {
-			this.game = ((GameHolder) Application.instance().getApplicationContext().getBean("gameHolder")).getGame(); //$NON-NLS-1$
+			this.game = GameHolder.instance().getGame();
 		}
 		return this.game;
 	}
@@ -982,7 +982,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 								((Artifact) target).setHexNo(hexNo);
 								turn.getArtifacts().refreshItem((Artifact) target);
 							}
-							Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.SelectedTurnChangedEvent.toString(), this, this));
+							joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 						}
 					};
 					dlg.showDialog();
@@ -998,9 +998,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
 			if (e.getUnitsToScroll() < 0) {
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.ZoomIncreaseEvent.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.ZoomIncreaseEvent, this, this);
 			} else if (e.getUnitsToScroll() > 0) {
-				Application.instance().getApplicationContext().publishEvent(new JOverseerEvent(LifecycleEventsEnum.ZoomDecreaseEvent.toString(), this, this));
+				joApplication.publishEvent(LifecycleEventsEnum.ZoomDecreaseEvent, this, this);
 			}
 		} else {
 			// get the JScrollPane for this container

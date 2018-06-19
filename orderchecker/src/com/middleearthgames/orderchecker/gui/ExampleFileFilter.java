@@ -120,8 +120,10 @@ class ExampleFileFilter extends FileFilter
         return this.useExtensionsInDescription;
     }
 
-    private static String TYPE_UNKNOWN = "Type Unknown";
-    private static String HIDDEN_FILE = "Hidden File";
+    @SuppressWarnings("unused")
+	private static String TYPE_UNKNOWN = "Type Unknown";
+    @SuppressWarnings("unused")
+	private static String HIDDEN_FILE = "Hidden File";
     private Hashtable filters;
     private String description;
     private String fullDescription;

@@ -1,3 +1,8 @@
+VERSION 1.16.5
+--------------
+	* Fix: The order editor was ignoring *all* character skills in the order dropdown in new games.
+	* Fix: Fourth Age game terrain was wrong for hex 0302.
+	
 VERSION 1.16.4
 --------------
 	* Enh: Support for the new Champions of Middle Earth module, although order checking is currently missing.

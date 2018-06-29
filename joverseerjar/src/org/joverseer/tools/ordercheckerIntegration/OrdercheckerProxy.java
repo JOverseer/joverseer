@@ -70,10 +70,14 @@ public class OrdercheckerProxy {
 			// TODO: check this the doc says it starts at 0
 			ocHex.setTerrain((int)(meHex.getTerrain().getTerrain())); // terrain numbers are the same.
 			elements = meHex.getSideElements(); 
-			
+			int direction;
 			for(java.util.Map.Entry<HexSideEnum,ArrayList<HexSideElementEnum>> entry:elements.entrySet()){
 				for(HexSideElementEnum feature:entry.getValue()) {
-					ocHex.addDirection(entry.getKey().ordinal());
+					direction = entry.getKey().ordinal();
+					if (direction == 0) { // fixup NW
+						direction = 6;
+					}
+					ocHex.addDirection(direction);
 					ocHex.addFeature(feature.getElement());
 				}
 			}

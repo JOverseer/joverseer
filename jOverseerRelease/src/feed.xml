@@ -6,6 +6,16 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
 	    <item>
+    	<title>1.16.5</title>
+      	<pubDate>Fri, 29 Jun 2018</pubDate>
+      	<description>
+VERSION 1.16.5
+--------------
+	* Fix: The order editor was ignoring *all* character skills in the order dropdown in new games.
+	* Fix: Fourth Age game terrain was wrong for hex 0302.
+		</description>
+		</item>
+	    <item>
     	<title>1.16.4</title>
       	<pubDate>Tue, 5 Jun 2018</pubDate>
       	<description>

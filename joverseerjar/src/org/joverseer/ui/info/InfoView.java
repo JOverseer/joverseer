@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Locale;
 
 import javax.swing.JComponent;
@@ -16,7 +18,10 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.joverseer.joApplication;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.support.info.Info;
+import org.joverseer.support.info.InfoRegistry;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.springframework.core.io.Resource;
@@ -25,6 +30,7 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BaseTableModel;
 import org.springframework.richclient.table.TableUtils;
+import org.springframework.util.CollectionUtils;
 
 import com.jidesoft.swing.JideTabbedPane;
 
@@ -35,6 +41,7 @@ import com.jidesoft.swing.JideTabbedPane;
  * strengths, maintenance costs etc) The info is retrieve from the info data
  * files
  * 
+ * TODO: review against use of InfoRegistry class. which is way forward?
  * @author Marios Skounakis
  */
 public class InfoView extends AbstractView {
@@ -69,7 +76,7 @@ public class InfoView extends AbstractView {
 
 		lb.separator(Messages.getString("InfoView.CharacterTitles"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/characterTitles", 400, 200), "align=left");
+		lb.cell(createTableFromInfo("characterTitles", 400, 200), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Movement"));
@@ -94,23 +101,24 @@ public class InfoView extends AbstractView {
 
 		lb.separator(Messages.getString("InfoView.TroopTerrainModifiers"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/troopTerrainPerformance", 600, 120), "align=left");
+		lb.cell(createTableFromInfo("combat.troopTerrainModifiers", 600, 120), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.ClimateProductionModifiers"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/climateProduction", 600, 140), "align=left");
+		lb.cell(createTableFromInfo("climateProduction", 600, 140), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Dragons"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/dragons2",850, 1100), "align=left");
+		lb.cell(createTableFromInfo("dragons",850, 1100), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.CharactersAllowed"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromResource("classpath:metadata/info/charactersAllowed",500, 480), "align=left");
+		lb.cell(createTableFromInfo("charactersAllowed",500, 480), "align=left");
 		lb.relatedGapRow();
+
 
 		JScrollPane scp = new JScrollPane(lb.getPanel());
 		UIUtils.fixScrollPaneMouseScroll(scp);
@@ -171,6 +179,50 @@ public class InfoView extends AbstractView {
 			table.setPreferredSize(new Dimension(w, h));
 			TableUtils.sizeColumnsToFitRowData(table);
 			reader.close();
+			return pnl;
+		} catch (Exception exc) {
+			exc.printStackTrace();
+		}
+	
+		return null;
+	}
+	// creates a table from an Info table, already loaded from the InfoRegistry.
+	// otherwise the same as createTableFromResource.
+	protected JComponent createTableFromInfo(String key, int w, int h) {
+		Info info = InfoRegistry.instance().getInfo(key);
+		try {
+
+			InfoTableModel model = new InfoTableModel();
+			ArrayList<String> colNames = info.getColumnHeaders();
+			model.setColNames(colNames);
+			Iterator<ArrayList<String>> iter = info.getRowValuesIterator(); 
+			while (iter.hasNext()) {
+				model.getValues().add(iter.next().toArray(new String[0]));
+			}
+			JPanel pnl = new JPanel(new BorderLayout());
+
+			JTable table = TableUtils.createStandardSortableTable(model);
+			this.tables.add(table);
+			table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Component getTableCellRendererComponent(JTable arg0, Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
+					JLabel lbl = (JLabel) super.getTableCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5);
+					if (arg5 > 0) {
+						lbl.setHorizontalAlignment(SwingConstants.CENTER);
+					} else {
+						lbl.setHorizontalAlignment(SwingConstants.LEFT);
+					}
+					return lbl;
+				}
+
+			});
+			pnl.add(table.getTableHeader(), BorderLayout.PAGE_START);
+			pnl.add(table, BorderLayout.CENTER);
+
+			table.setPreferredSize(new Dimension(w, h));
+			TableUtils.sizeColumnsToFitRowData(table);
 			return pnl;
 		} catch (Exception exc) {
 			exc.printStackTrace();

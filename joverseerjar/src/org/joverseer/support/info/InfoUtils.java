@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.ProductEnum;
+import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.tools.combatCalc.TacticEnum;
@@ -207,6 +208,7 @@ public class InfoUtils {
 		return Integer.parseInt(obj.toString());
 	}
 
+	// not used?
 	public static String getCharacterTitle(String type, int rank) {
 		if (rank == 0)
 			return null;
@@ -234,5 +236,36 @@ public class InfoUtils {
 		if (ri == -1 || ci == -1)
 			return 100;
 		return Integer.parseInt(info.getValue(ri, ci));
+	}
+
+	public static int getCharactersAllowed(GameTypeEnum gt,int turn) {
+		Info info = InfoRegistry.instance().getInfo("charactersAllowed");
+		if (info == null)
+			return Integer.MAX_VALUE;
+		String range;
+		int upper,lower,separator;
+		for (int j = 1; j < info.getRowCount(); j++) {
+			if (info.getValue(j, 0).equalsIgnoreCase(gt.toMEString())) {
+				range = info.getValue(j, 1);
+				if (range.contains("+")) {
+					return Integer.MAX_VALUE;
+				}
+				separator = range.indexOf("-");
+				if (separator==0) {
+					upper = Integer.valueOf(range.substring(separator+1));
+					lower = 0;
+				} else if (separator >0) {
+					lower = Integer.valueOf(range.substring(0, separator));
+					upper = Integer.valueOf(range.substring(separator+1));
+				} else {
+					lower = Integer.valueOf(range); 
+					upper = lower;
+				}
+				if ((turn >= lower) && (turn <=upper)) {
+					return Integer.valueOf(info.getValue(j, 2));
+				}
+			}
+		}
+		return Integer.MAX_VALUE;
 	}
 }

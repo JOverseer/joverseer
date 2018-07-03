@@ -18,6 +18,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	NationAllegianceEnum allegiance;
 	Integer nationNo;
 	int characters;
+	int charactersLimit;
 	int charactersInCapital;
 	int hostages;
 	int commanders;
@@ -83,6 +84,12 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.characters = characters;
 	}
 
+	public int getCharactersLimit() {
+		return this.charactersLimit;
+	}
+	public void setCharactersLimit(int limit) {
+		this.charactersLimit = limit;
+	}
 	public int getHostages() {
 		return this.hostages;
 	}
@@ -214,6 +221,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.camps += nsw.getCamps();
 		this.taxBase += nsw.getTaxBase();
 		this.characters += nsw.getCharacters();
+		this.charactersLimit += nsw.getCharactersLimit();
 		this.hostages += nsw.getHostages();
 		this.navies += nsw.getNavies();
 		this.transports += nsw.getTransports();

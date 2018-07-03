@@ -421,6 +421,14 @@
    						<value>classpath:metadata/info/combatCalc/troopTerrainModifiers.csv</value>
    					</property>
    				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>charactersAllowed</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/charactersAllowed.csv</value>
+   					</property>
+   				</bean>
    			</list>
    		</property>
    	</bean>

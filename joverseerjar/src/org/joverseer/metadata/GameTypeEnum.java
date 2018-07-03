@@ -26,5 +26,11 @@ public enum GameTypeEnum {
 	public String toString() {
         return this.myName;
     }
+    public String toMEString() {
+    	if (this.myName == gameKS.myName) {
+    		return "KIN";
+    	}
+    	return this.myName;
+    }
 
 }

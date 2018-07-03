@@ -1,8 +1,13 @@
 Game Format;Turn number;Characters allowed;NPCs available to Recruit
-KIN;1–5;15;1
-KIN;6–10;18;2
-KIN;11–15;20;3
-KIN;16–20;22;4
+CME;1-5;10;5
+CME;6-10;15;7
+CME;11-15;20;8
+CME;16-20;25;9
+CME;21+;30;10
+KIN;1-5;15;1
+KIN;6-10;18;2
+KIN;11-15;20;3
+KIN;16-20;22;4
 KIN;21+;24;5
 FAS;1-5;12;0
 FAS;6-10;15;0

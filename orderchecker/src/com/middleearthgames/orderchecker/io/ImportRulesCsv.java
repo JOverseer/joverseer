@@ -5,9 +5,6 @@
 
 package com.middleearthgames.orderchecker.io;
 
-import java.io.File;
-import java.net.URL;
-
 import com.middleearthgames.orderchecker.*;
 
 // Referenced classes of package com.middleearthgames.orderchecker.io:

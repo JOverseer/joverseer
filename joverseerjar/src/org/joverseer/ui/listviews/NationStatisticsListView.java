@@ -8,6 +8,7 @@ import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
@@ -18,6 +19,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
+import org.joverseer.support.info.InfoUtils;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
@@ -35,7 +37,7 @@ public class NationStatisticsListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 32, 48, 52, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52 };
+		return new int[] { 32, 48, 52, 72, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52 };
 	}
 
 	@Override
@@ -62,6 +64,7 @@ public class NationStatisticsListView extends BaseItemListView {
 		ns.setAllegiance(NationAllegianceEnum.Neutral);
 
 		Turn t = g.getTurn();
+		int limit = InfoUtils.getCharactersAllowed(g.getMetadata().getGameType(), g.getCurrentTurn());
 		for (int i = 0; i < 26; i++) {
 			NationRelations nr = t.getNationRelations(i);
 			if (nr != null && nr.getEliminated())
@@ -77,6 +80,7 @@ public class NationStatisticsListView extends BaseItemListView {
 			NationStatisticsWrapper nsw = new NationStatisticsWrapper();
 			nsw.setNationNo(i);
 			nsw.setCharacters(0);
+			nsw.setCharactersLimit(limit);
 			nsw.setCharactersInCapital(0);
 			nsw.setCommanders(0);
 			for (Character c : t.getCharacters().findAllByProperty("nationNo", nsw.getNationNo())) {

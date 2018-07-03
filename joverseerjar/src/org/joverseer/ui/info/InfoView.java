@@ -107,6 +107,11 @@ public class InfoView extends AbstractView {
 		lb.cell(createTableFromResource("classpath:metadata/info/dragons2",850, 1100), "align=left");
 		lb.relatedGapRow();
 
+		lb.separator(Messages.getString("InfoView.CharactersAllowed"));
+		lb.relatedGapRow();
+		lb.cell(createTableFromResource("classpath:metadata/info/charactersAllowed",500, 480), "align=left");
+		lb.relatedGapRow();
+
 		JScrollPane scp = new JScrollPane(lb.getPanel());
 		UIUtils.fixScrollPaneMouseScroll(scp);
 

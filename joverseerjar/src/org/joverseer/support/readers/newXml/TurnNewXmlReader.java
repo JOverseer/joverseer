@@ -687,7 +687,13 @@ public class TurnNewXmlReader implements Runnable {
 		Container nrws = this.turnInfo.getCharMessages();
 		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
 		for (CharacterMessageWrapper cmw : (ArrayList<CharacterMessageWrapper>) nrws.getItems()) {
-			Character c = (Character) cs.findFirstByProperty("id", cmw.getCharId());
+			// TODO: sort this bit of a hack...without this 'dwar' doesn't get any order results.
+			// judging by the hack in CharacterMessageWrapper.SetCharId  there's probably something else that got fixed by that.
+			String id = cmw.getCharId();
+			while (id.length() < 5) {
+				id = id + ' ';
+			}
+			Character c = (Character) cs.findFirstByProperty("id", id);
 			if (c != null) {
 				InfoSource ifs = new DerivedFromOrderResultsInfoSource(this.turn.getTurnNo(), this.turnInfo.nationNo, c.getName());
 				cmw.updateCharacter(c, game1);

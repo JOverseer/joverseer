@@ -18,6 +18,7 @@ public class joApplication {
 
 	// this is a class to make it clear that all the Application.instance().getApplicationContext(). are one and the same
 	// and reduce the amount of casting going on.
+	// also
 	public joApplication() {
 		// TODO Auto-generated constructor stub
 

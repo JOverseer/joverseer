@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.joApplication;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.Info;
 import org.joverseer.support.info.InfoRegistry;
 import org.joverseer.ui.support.Messages;
@@ -76,7 +77,7 @@ public class InfoView extends AbstractView {
 
 		lb.separator(Messages.getString("InfoView.CharacterTitles"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("characterTitles", 400, 200), "align=left");
+		lb.cell(createTableFromInfo("characterTitles", 400, 200,null), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Movement"));
@@ -101,22 +102,29 @@ public class InfoView extends AbstractView {
 
 		lb.separator(Messages.getString("InfoView.TroopTerrainModifiers"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("combat.troopTerrainModifiers", 600, 120), "align=left");
+		lb.cell(createTableFromInfo("combat.troopTerrainModifiers", 600, 120,null), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.ClimateProductionModifiers"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("climateProduction", 600, 140), "align=left");
+		lb.cell(createTableFromInfo("climateProduction", 600, 140,null), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Dragons"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("dragons",850, 1100), "align=left");
+		lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.CharactersAllowed"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("charactersAllowed",500, 480), "align=left");
+		String selected  = null;
+		
+		//TODO: filtering by game type doesn't work as the view is cached by jide/spring
+		if (GameHolder.hasInitializedGame()) {
+			GameMetadata gm = joApplication.getMetadata();
+			selected = gm.getGameType().toMEString();
+		}
+		lb.cell(createTableFromInfo("charactersAllowed",500, 480,selected), "align=left");
 		lb.relatedGapRow();
 
 
@@ -188,16 +196,31 @@ public class InfoView extends AbstractView {
 	}
 	// creates a table from an Info table, already loaded from the InfoRegistry.
 	// otherwise the same as createTableFromResource.
-	protected JComponent createTableFromInfo(String key, int w, int h) {
+	// if only is not "" then only include those elements of column 0 
+	protected JComponent createTableFromInfo(String key, int w, int h,String only) {
 		Info info = InfoRegistry.instance().getInfo(key);
 		try {
 
 			InfoTableModel model = new InfoTableModel();
 			ArrayList<String> colNames = info.getColumnHeaders();
+			if (only != null) {
+				if (only.length() > 0) {
+					colNames.remove(0);
+				}
+			}
 			model.setColNames(colNames);
-			Iterator<ArrayList<String>> iter = info.getRowValuesIterator(); 
+				
+			Iterator<ArrayList<String>> iter = info.getRowValuesIterator();
+			ArrayList<String> row;
 			while (iter.hasNext()) {
-				model.getValues().add(iter.next().toArray(new String[0]));
+				row = iter.next();
+				if (only == null) {
+					model.getValues().add(row.toArray(new String[0]));
+				} else {
+					if (row.get(0).compareToIgnoreCase(only) == 0) {
+						row.subList(1, row.size()-1).toArray(new String[0]);
+					}
+				}
 			}
 			JPanel pnl = new JPanel(new BorderLayout());
 

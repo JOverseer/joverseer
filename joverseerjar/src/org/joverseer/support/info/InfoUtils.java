@@ -245,7 +245,7 @@ public class InfoUtils {
 		String range;
 		int upper,lower,separator;
 		for (int j = 1; j < info.getRowCount(); j++) {
-			if (info.getValue(j, 0).equalsIgnoreCase(gt.toMEString())) {
+			if (info.getValue(j, 0).equalsIgnoreCase(gt.toString())) {
 				range = info.getValue(j, 1);
 				if (range.contains("+")) {
 					return Integer.MAX_VALUE;

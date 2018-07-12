@@ -130,6 +130,9 @@ public class PopulationCenterViewer extends ObjectViewer {
 		}
 
 		Nation pcNation = gm.getNationByNum(nationNo);
+		if (pcNation == null) {
+			pcNation = gm.getNationByNum(0);
+		}
 		this.nation.setText(pcNation.getShortName());
 		this.nation.setCaretPosition(0);
 		this.nation.setToolTipText(pcNation.getName());

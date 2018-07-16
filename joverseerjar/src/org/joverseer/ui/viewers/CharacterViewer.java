@@ -368,7 +368,7 @@ public class CharacterViewer extends ObjectViewer {
 			if (getShowColor()) {
 				Turn t = g.getTurn();
 
-				NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo); //$NON-NLS-1$
+				NationRelations nr = t.getNationRelations(nationNo);
 				Color col;
 				if (nr == null) {
 					col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
@@ -1021,7 +1021,7 @@ public class CharacterViewer extends ObjectViewer {
 
 	public void updateNotes() {
 		Character c = (Character) getFormObject();
-		Note n = (Note) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).findFirstByProperty("target", c); //$NON-NLS-1$
+		Note n = GameHolder.instance().getGame().getTurn().getNotes().findFirstByProperty("target", c); //$NON-NLS-1$
 		if (n != null) {
 			n.setText(this.notes.getText());
 		}

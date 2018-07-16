@@ -155,6 +155,9 @@ public class Turn implements Serializable {
 	public Container<HexInfo> getHexInfos() {
 		return getContainerGeneric(TurnElementsEnum.HexInfo);
 	}
+    public HexInfo getHexInfo(int hexNo) {
+    	return getHexInfos().findFirstByProperty("hexNo", hexNo); //$NON-NLS-1$
+    }
 
 	public Container<ProductPrice> getProductPrices() {
 		return getContainerGeneric(TurnElementsEnum.ProductPrice);
@@ -162,6 +165,10 @@ public class Turn implements Serializable {
 
 	public Container<PlayerInfo> getPlayerInfo() {
 		return getContainerGeneric(TurnElementsEnum.PlayerInfo);
+	}
+
+	public PlayerInfo getPlayerInfo(int nationNo) {
+	    return getPlayerInfo().findFirstByProperty("nationNo", nationNo); //$NON-NLS-1$
 	}
 
 	public ArrayList<Character> getAllCharacters() {

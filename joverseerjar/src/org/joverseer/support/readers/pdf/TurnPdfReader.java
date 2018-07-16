@@ -571,7 +571,7 @@ public class TurnPdfReader implements Runnable {
         try {
             this.turn = game1.getTurn(game1.getMaxTurn());
             // check to see if corresponding XML has been imported
-            PlayerInfo pi = (PlayerInfo)this.turn.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+            PlayerInfo pi = this.turn.getPlayerInfo(this.turnInfo.getNationNo());
             if (pi == null) {
             	if (getMonitor() != null) {
                     getMonitor().worked(100);
@@ -879,7 +879,7 @@ public class TurnPdfReader implements Runnable {
                 a.setHexNo(hexNo);
                 a.setNationNo(this.turnInfo.getNationNo());
                 NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
-                NationRelations nr = (NationRelations)game1.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+                NationRelations nr = game1.getTurn().getNationRelations(this.turnInfo.getNationNo());
                 if (nr != null) {
                     allegiance = nr.getAllegiance();
                 }
@@ -934,8 +934,7 @@ public class TurnPdfReader implements Runnable {
         if (nation == null) {
         	throw new Exception("Failed to find nation with number " + this.turnInfo.getNationNo());
         }
-        Container nrs = this.turn.getContainer(TurnElementsEnum.NationRelation);
-        NationRelations nr = (NationRelations)nrs.findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+        NationRelations nr = this.turn.getNationRelations(this.turnInfo.getNationNo());
         if (this.turnInfo.getAllegiance()==null) return;
         if (this.turnInfo.getAllegiance().equals("Free People")) {
             nation.setAllegiance(NationAllegianceEnum.FreePeople);
@@ -1011,9 +1010,9 @@ public class TurnPdfReader implements Runnable {
     public void updateClimates(Game game1) throws Exception {
         Container pcws = this.turnInfo.getPopulationCenters();
         if (pcws ==null) return;
-        Container his = this.turn.getContainer(TurnElementsEnum.HexInfo);
+        Container<HexInfo> his = this.turn.getHexInfos();
         for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
-            HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", pcw.getHexNo());
+            HexInfo hi = his.findFirstByProperty("hexNo", pcw.getHexNo());
             ClimateEnum climate = translateClimate(pcw.getClimate());
             if (climate != null) {
                 hi.setClimate(climate);
@@ -1022,7 +1021,7 @@ public class TurnPdfReader implements Runnable {
         
         Container aws = this.turnInfo.getArmies();
         for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
-            HexInfo hi = (HexInfo)his.findFirstByProperty("hexNo", aw.getHexNo());
+            HexInfo hi = his.findFirstByProperty("hexNo", aw.getHexNo());
             ClimateEnum climate = translateClimate(aw.getClimate());
             if (climate != null) {
                 hi.setClimate(climate);

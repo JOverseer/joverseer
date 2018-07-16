@@ -120,7 +120,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 			public void actionPerformed(ActionEvent e) {
 				Game g1 = GameHolder.instance().getGame();
 				int nationNo = getSelectedNationNo();
-				PlayerInfo pi = (PlayerInfo) g1.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+				PlayerInfo pi = g1.getTurn().getPlayerInfo(nationNo);
 				ExportOrdersForm.this.version.setSelectedItem(String.valueOf(pi.getTurnVersion()));
 				if (ExportOrdersForm.this.oldSelectedNation == null || ExportOrdersForm.this.oldSelectedNation != nationNo) {
 					ExportOrdersForm.this.orders.setText("");
@@ -211,7 +211,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 			return;
 		Game g = GameHolder.instance().getGame();
 		int nationNo = getSelectedNationNo();
-		PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
 		pi.setTurnVersion(Integer.parseInt(this.version.getSelectedItem().toString()));
 		String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), this.version.getSelectedItem(), g.getMetadata().getGameNo());
 		JFileChooser fileChooser = new JFileChooser();

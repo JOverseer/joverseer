@@ -70,9 +70,9 @@ public class CharacterDeathAllegianceNameComparator implements Comparator<Charac
 		Turn t = g.getTurn();
 		if (t == null)
 			return 0;
-		NationRelations nr1 = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c1.getNationNo());
-		NationRelations nr2 = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c2.getNationNo());
-		NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", g.getMetadata().getNationNo());
+		NationRelations nr1 = t.getNationRelations(c1.getNationNo());
+		NationRelations nr2 = t.getNationRelations(c2.getNationNo());
+		NationRelations nr = t.getNationRelations(g.getMetadata().getNationNo());
 		if (nr1 == null)
 			return 1;
 		if (nr2 == null)

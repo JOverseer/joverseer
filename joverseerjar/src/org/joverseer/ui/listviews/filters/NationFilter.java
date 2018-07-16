@@ -39,7 +39,7 @@ public class NationFilter extends AbstractListViewFilter {
 			GameHolder.instance();
 			if (!GameHolder.hasInitializedGame())
 				return true;
-			return GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", o.getNationNo()) != null;
+			return GameHolder.instance().getGame().getTurn().getPlayerInfo(o.getNationNo()) != null;
 		}
 		if (this.nationNo == ADDITIONAL_NATIONS) {
 			GameHolder.instance();

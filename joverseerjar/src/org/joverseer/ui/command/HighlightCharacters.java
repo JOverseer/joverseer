@@ -241,7 +241,7 @@ public class HighlightCharacters extends ActionCommand {
 
 			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c.getNationNo());
+			NationRelations nr = t.getNationRelations(c.getNationNo());
 			NationAllegianceEnum allegiance1 = (nr != null ? nr.getAllegiance() : null);
 			if (getAllegiance() != null && getAllegiance() != allegiance1)
 				return false;

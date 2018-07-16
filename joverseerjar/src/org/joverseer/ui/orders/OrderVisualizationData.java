@@ -34,7 +34,7 @@ public class OrderVisualizationData {
             final Order order = o;
             // movement order
             // check if character has army
-            Army a = (Army)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", o.getCharacter().getName()); //$NON-NLS-1$
+            Army a = GameHolder.instance().getGame().getTurn().getArmy(o.getCharacter().getName());
             if (a == null) {
                 // get info
                 InputDialog dlg = new InputDialog();

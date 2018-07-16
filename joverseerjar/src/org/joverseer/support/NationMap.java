@@ -7,7 +7,7 @@ import org.joverseer.metadata.domain.Nation;
 
 
 /**
- * Utility class that maps nation numbers to metadata natios
+ * Utility class that maps nation numbers to metadata nations
  * 
  * TODO probably it should be removed or moved elsewhere
  * 

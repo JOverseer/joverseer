@@ -161,7 +161,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 				if (t == null)
 					continue;
 
-				NationRelations gameNr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", g.getMetadata().getNationNo());
+				NationRelations gameNr = t.getNationRelations(g.getMetadata().getNationNo());
 
 				for (NationMessage nm : t.getNationMessages().getItems()) {
 					String charName = null;
@@ -197,7 +197,7 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 						int nationNo = 0;
 						if (c != null) {
 							if (c.getNationNo() > 0) {
-								NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c.getNationNo());
+								NationRelations nr = t.getNationRelations(c.getNationNo());
 								if (nr.getAllegiance() == gameNr.getAllegiance()) {
 									// if you can deduce that the char is of
 									// friendly allegiance,

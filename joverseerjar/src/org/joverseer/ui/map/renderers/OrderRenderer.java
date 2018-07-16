@@ -222,7 +222,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 			Game game = GameHolder.instance().getGame();
 
-			Army army = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", order.getCharacter().getName());
+			Army army = game.getTurn().getArmy(order.getCharacter().getName());
 			Boolean cav = null;
 			Boolean fed = null;
 			if (army != null) {
@@ -363,7 +363,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 			int distance = MovementUtils.distance(order.getCharacter().getHexNo(), hexNo);
 			boolean distanceOk = false;
-			PopulationCenter popCenter = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo);
+			PopulationCenter popCenter = GameHolder.instance().getGame().getTurn().getPopCenter(hexNo);
 			if (spellNo == 302) {
 				distanceOk = distance <= 14;
 			} else if (spellNo == 304) {

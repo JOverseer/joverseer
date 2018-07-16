@@ -44,7 +44,7 @@ public class SelectOrderchekerNationForm extends ScalableAbstractForm {
             return;
         for (Nation n : (ArrayList<Nation>) g.getMetadata().getNations()) {
             if (n.getNumber() == 0) continue;
-            PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
+            PlayerInfo pi = g.getTurn().getPlayerInfo(n.getNumber());
             if (pi == null) continue;
             this.nationCombo.addItem(n.getName());
             if (n.getNumber().equals(g.getMetadata().getNationNo())) {

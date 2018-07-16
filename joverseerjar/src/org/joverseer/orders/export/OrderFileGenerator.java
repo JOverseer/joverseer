@@ -60,7 +60,7 @@ public class OrderFileGenerator {
         }
         
         String ret = "BEGINMEAUTOINPUT\n";
-        PlayerInfo pi = (PlayerInfo)t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo);
+        PlayerInfo pi = t.getPlayerInfo(nationNo);
         if (pi == null) {
             throw new Exception("Player Info not found.");
         }

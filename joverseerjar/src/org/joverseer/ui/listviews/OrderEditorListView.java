@@ -184,7 +184,7 @@ public class OrderEditorListView extends ItemListView {
 			Game g = GameHolder.instance().getGame();
 			GameMetadata gm = g.getMetadata();
 			for (int i = 1; i < 26; i++) {
-				PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", i);
+				PlayerInfo pi = g.getTurn().getPlayerInfo(i);
 				if (pi == null)
 					continue;
 				f = new OrderFilter(gm.getNationByNum(i).getName()) {
@@ -311,7 +311,7 @@ public class OrderEditorListView extends ItemListView {
 			public boolean acceptCharacter(Character c) {
 				if (!GameHolder.hasInitializedGame())
 					return false;
-				PlayerInfo pi = (PlayerInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", c.getNationNo());
+				PlayerInfo pi = GameHolder.instance().getGame().getTurn().getPlayerInfo(c.getNationNo());
 				return (pi != null) && (!c.isDead()) && (c.getX() > 0) && (!c.hasAllOrders());
 			}
 		};
@@ -325,7 +325,7 @@ public class OrderEditorListView extends ItemListView {
 			public boolean acceptCharacter(Character c) {
 				if (!GameHolder.hasInitializedGame())
 					return false;
-				PlayerInfo pi = (PlayerInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", c.getNationNo());
+				PlayerInfo pi = GameHolder.instance().getGame().getTurn().getPlayerInfo(c.getNationNo());
 				return pi != null && c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0;
 			}
 		};

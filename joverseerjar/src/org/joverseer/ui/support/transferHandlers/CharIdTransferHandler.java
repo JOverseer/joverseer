@@ -23,7 +23,7 @@ public class CharIdTransferHandler extends StringTransferHandler {
 	protected String exportString(JComponent c) {
         String v = super.exportString(c);
         Game g = GameHolder.instance().getGame();
-        Character ch = (Character)g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", v);
+        Character ch = g.getTurn().getCharByName(v);
         return ch.getId() + "     ".substring(0, 5 - ch.getId().length());
     }
 }

@@ -97,7 +97,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
                 @Override
 				public void actionPerformed(ActionEvent e) {
                     for (Integer n : OrderEditorAutoNationsForm.this.checkBoxes.keySet()) {
-                        PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n);
+                        PlayerInfo pi = g.getTurn().getPlayerInfo(n);
                         OrderEditorAutoNationsForm.this.checkBoxes.get(n).setSelected(pi!=null);
                     }
                 }

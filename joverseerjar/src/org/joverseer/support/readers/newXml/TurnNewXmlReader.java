@@ -723,7 +723,7 @@ public class TurnNewXmlReader implements Runnable {
 				a.setHexNo(hexNo);
 				a.setNationNo(this.turnInfo.getNationNo());
 				NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
-				NationRelations nr = (NationRelations) game1.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+				NationRelations nr = game1.getTurn().getNationRelations(this.turnInfo.getNationNo());
 				if (nr != null) {
 					allegiance = nr.getAllegiance();
 				}

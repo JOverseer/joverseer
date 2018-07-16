@@ -222,7 +222,7 @@ public class MovementUtils {
 				if (pc.getNationNo() == 0) {
 					return -1;
 				}
-				NationRelations nr = (NationRelations) g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pc.getNationNo());
+				NationRelations nr = g.getTurn().getNationRelations(pc.getNationNo());
 				if (nr.getAllegiance() != allegiance)
 					return -1;
 			}

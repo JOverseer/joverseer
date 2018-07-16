@@ -190,7 +190,7 @@ public class ArmyViewer extends ObjectViewer {
 			}
 			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents"); //$NON-NLS-1$
 			if (pval != null && pval.equals("yes")) { //$NON-NLS-1$
-				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName()); //$NON-NLS-1$
+//				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName()); //$NON-NLS-1$
 				int nhi = army.getENHI();
 				if (nhi > 0) {
 					this.extraInfo.setText(this.extraInfo.getText() + Messages.getString("ArmyViewer.enHI",new Object[] { nhi})); //$NON-NLS-1$

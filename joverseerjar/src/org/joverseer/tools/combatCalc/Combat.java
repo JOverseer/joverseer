@@ -526,7 +526,7 @@ public class Combat implements Serializable, IHasMapLocation {
         for (CombatArmy ca : cas) {
             if (ca == null) continue;
             if (ca.getNationNo() > 0) {
-                NationRelations nr = (NationRelations)g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", ca.getNationNo());
+                NationRelations nr = g.getTurn().getNationRelations(ca.getNationNo());
                 if (nr != null) {
                     if (ret == null) {
                         ret = nr.getAllegiance();
@@ -614,7 +614,7 @@ public class Combat implements Serializable, IHasMapLocation {
     }
 
     public void loadTerrainAndClimateFromHex() {
-    	HexInfo hi = (HexInfo)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", getHexNo());
+    	HexInfo hi = GameHolder.instance().getGame().getTurn().getHexInfo(getHexNo());
     	if (hi != null) {
     		setClimate(hi.getClimate());
     	}

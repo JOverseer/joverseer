@@ -127,7 +127,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         boolean showClimate = (this.mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : this.mapOptions.get(MapOptionsEnum.ShowClimate).equals(MapOptionValuesEnum.ShowClimateOn));
         boolean visible = false;
         if (map == null) {
-            HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());
+            HexInfo hexInfo = game.getTurn().getHexInfo(hex.getHexNo());
             visible = hexInfo.getVisible();
         } else if (map == MapOptionValuesEnum.NationMapDarkServants) {
             visible = visibleToAllegiance(hex, game, NationAllegianceEnum.DarkServants);

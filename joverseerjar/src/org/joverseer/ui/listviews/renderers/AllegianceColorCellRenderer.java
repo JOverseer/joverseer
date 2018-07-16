@@ -54,8 +54,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             int nationNo = natObj.getNationNo();
 
             Game g = GameHolder.instance().getGame();
-            NationRelations nr = (NationRelations) g.getTurn().getContainer(TurnElementsEnum.NationRelation)
-                    .findFirstByProperty("nationNo", nationNo);
+            NationRelations nr = g.getTurn().getNationRelations(nationNo);
             NationAllegianceEnum allegiance = null;
             if (nr != null && nationNo > 0) {
             	allegiance = nr.getAllegiance();

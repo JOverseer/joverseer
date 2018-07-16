@@ -37,7 +37,7 @@ public class ArmyAllegianceNameComparator implements Comparator<Army> {
 			return 0;
 		NationAllegianceEnum nr1 = c1.getNationAllegiance();
 		NationAllegianceEnum nr2 = c2.getNationAllegiance();
-		NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", g.getMetadata().getNationNo());
+		NationRelations nr = t.getNationRelations(g.getMetadata().getNationNo());
 		if (nr1 == null)
 			return 1;
 		if (nr2 == null)

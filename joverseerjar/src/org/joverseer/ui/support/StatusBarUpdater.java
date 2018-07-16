@@ -36,7 +36,7 @@ public class StatusBarUpdater implements ApplicationListener {
         } else {
             GameMetadata gm = game.getMetadata();
             msg = Messages.getString("StatusBarUpdater.GameAndTurn"); //$NON-NLS-1$
-            msg = String.format(msg, gm.getGameNo(), gm.getGameType().toString() + (gm.getNewXmlFormat() ? "n" : ""), gm.getNationByNum(gm.getNationNo()).getName(), game.getCurrentTurn()); //$NON-NLS-1$ //$NON-NLS-2$
+            msg = String.format(msg, gm.getGameNo(), gm.getGameType().toString(), gm.getNationByNum(gm.getNationNo()).getName(), game.getCurrentTurn()); //$NON-NLS-1$ //$NON-NLS-2$
             if (game.getTurn() != null && game.getTurn().getSeason() != null) {
                 msg = String.format(Messages.getString("StatusBarUpdater.5"), msg, game.getTurn().getSeason(), game.getTurn().getTurnDate()); //$NON-NLS-1$
             }

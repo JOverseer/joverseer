@@ -165,7 +165,7 @@ public class HexProductionWrapper {
 		setHexNo(pc.getHexNo());
 		Hex h = (Hex)game.getMetadata().getHex(pc.getHexNo());
 		if (h != null) setTerrain(h.getTerrain());
-		HexInfo hi = (HexInfo)turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo());
+		HexInfo hi = turn.getHexInfo(pc.getHexNo());
 		if (hi != null) setClimate(hi.getClimate());
 		
 		int factor = 100;

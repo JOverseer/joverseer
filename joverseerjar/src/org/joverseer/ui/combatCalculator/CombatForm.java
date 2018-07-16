@@ -108,7 +108,7 @@ public class CombatForm extends AbstractForm {
 					Combat c = (Combat) getFormObject();
 					int hexNo = c.getHexNo();
 					Hex h = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
-					HexInfo hi = (HexInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo); //$NON-NLS-1$
+					HexInfo hi = GameHolder.instance().getGame().getTurn().getHexInfo(hexNo);
 					if (h != null && h.getTerrain() != null) {
 						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
 						vm.setValue(h.getTerrain());

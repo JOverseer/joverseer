@@ -24,7 +24,7 @@ public class HexInfoHistory {
 			Turn t = game.getTurn(i);
 			if (t == null)
 				continue;
-			HexInfo hi = (HexInfo) t.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo);
+			HexInfo hi = t.getHexInfo(hexNo);
 			if (hi.getVisible())
 				return i;
 			// check friendly char present

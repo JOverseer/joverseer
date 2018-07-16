@@ -280,7 +280,7 @@ public class TurnXmlReader implements Runnable {
 			this.currentNationPops = new ArrayList<PopulationCenter>();
 
 			// update player info
-			PlayerInfo pi = this.turn.getPlayerInfo().findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+			PlayerInfo pi = this.turn.getPlayerInfo(this.turnInfo.getNationNo());
 			if (pi != null) {
 				this.turn.getPlayerInfo().removeItem(pi);
 			} else {

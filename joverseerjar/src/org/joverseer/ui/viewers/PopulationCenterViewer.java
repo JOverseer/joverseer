@@ -155,7 +155,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				productionTurn = game.getTurn(i);
 				if (productionTurn == null)
 					continue;
-				PopulationCenter pop = (PopulationCenter) productionTurn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
+				PopulationCenter pop = productionTurn.getPopCenter(pc.getHexNo()); //$NON-NLS-1$
 				if (pop == null)
 					continue;
 				if (pop.getSize() != PopulationCenterSizeEnum.ruins) {
@@ -244,7 +244,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo); //$NON-NLS-1$
+			NationRelations nr = t.getNationRelations(nationNo);
 			Color col;
 			if (nr == null) {
 				col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
@@ -457,7 +457,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 			Game game = GameHolder.instance().getGame();
 			Hex hex = game.getMetadata().getHex(pc.getHexNo());
-			HexInfo hi = (HexInfo) game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
+			HexInfo hi = game.getTurn().getHexInfo(pc.getHexNo());
 
 			boolean estimateClimate = false;
 			ClimateEnum climate = ClimateEnum.Mild;

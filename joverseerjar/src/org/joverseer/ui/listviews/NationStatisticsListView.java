@@ -65,11 +65,13 @@ public class NationStatisticsListView extends BaseItemListView {
 
 		Turn t = g.getTurn();
 		int limit = InfoUtils.getCharactersAllowed(g.getMetadata().getGameType(), g.getCurrentTurn());
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < 28; i++) {
 			NationRelations nr = t.getNationRelations(i);
 			if (nr != null && nr.getEliminated())
 				continue;
 			Nation n = NationMap.getNationFromNo(i);
+			if (n == null) // NPC nations that aren't present.
+				continue;
 			if (n.getRemoved())
 				continue;
 			Integer capitalHex = null;

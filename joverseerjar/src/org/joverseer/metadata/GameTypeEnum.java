@@ -32,5 +32,28 @@ public enum GameTypeEnum {
     	}
     	return this.myName;
     }
-
+    public String toOrderCheckerName() {
+		if (this.equals(GameTypeEnum.game1650)) {
+			return "1650";
+		}
+		if (this.equals(GameTypeEnum.game2950)) {
+			return "2950";
+		}
+		if (this.equals(GameTypeEnum.gameBOFA)) {
+			return "BOFA";
+		}
+		if (this.equals(GameTypeEnum.gameFA)) {
+			return "Fourth Age";
+		}
+		if (this.equals(GameTypeEnum.gameUW)) {
+			return "Untold War";
+		}
+		if (this.equals(GameTypeEnum.gameKS)) {
+			return "Kin Strife";
+		} 
+		if (this.equals(GameTypeEnum.gameCME)) {
+			return "CME";
+		}
+		return "unknown";
+    }
 }

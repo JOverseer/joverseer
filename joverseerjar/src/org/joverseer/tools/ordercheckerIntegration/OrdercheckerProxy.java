@@ -251,26 +251,13 @@ public class OrdercheckerProxy {
 
 	private static Nation updateNation(Game g,int nationNo1,Turn t) {
 		
-		PlayerInfo pi = (PlayerInfo) t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo1);
+		PlayerInfo pi = t.getPlayerInfo(nationNo1);
 
 		Nation nation = new Nation();
 		nation.SetNation(nationNo1);
 		nation.setGame(g.getMetadata().getGameNo());
 		nation.setTurn(t.getTurnNo());
-		// TODO complete
-		if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
-			nation.setGameType("1650");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
-			nation.setGameType("2950");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
-			nation.setGameType("BOFA");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
-			nation.setGameType("Fourth Age");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
-			nation.setGameType("Untold War");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameKS) {
-			nation.setGameType("Kin Strife");
-		}
+		nation.setGameType(g.getMetadata().getGameType().toOrderCheckerName());
 
 		nation.setSecret(Integer.parseInt(pi.getSecret()));
 		nation.setPlayer(pi.getPlayerName());
@@ -405,7 +392,7 @@ public class OrdercheckerProxy {
 	
 	private static void updateNationRelations(Game g,Data data,Turn t,Nation nation) {
 		for (int i = 1; i <= 25; i++) {
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", i);
+			NationRelations nr = t.getNationRelations(i);
 			if (nr != null) {
 				data.setNationAlignment(nr.getNationNo()-1, -1, nation);
 				if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {

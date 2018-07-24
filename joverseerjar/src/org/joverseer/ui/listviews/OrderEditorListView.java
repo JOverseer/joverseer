@@ -644,7 +644,7 @@ public class OrderEditorListView extends ItemListView {
 
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-				// setItems();
+				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshOrders)) {

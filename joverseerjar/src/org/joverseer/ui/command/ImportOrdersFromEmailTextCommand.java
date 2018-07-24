@@ -6,6 +6,9 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -17,8 +20,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.joverseer.joApplication;
+import org.joverseer.metadata.OrderReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderTextReader;
+import org.joverseer.support.readers.orders.OrderTextReaderInterface;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
@@ -84,30 +89,30 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 	}
 
 	private ArrayList<String> parseOrders(String text, String textType) {
-		OrderTextReader orderTextReader = new OrderTextReader();
-		if (textType.equals("Standard")) { //$NON-NLS-1$
-			orderTextReader.setTextType(OrderTextReader.STANDARD_ORDER_TEXT);
-		} else if (textType.equals("Order Checker")) { //$NON-NLS-1$
-			orderTextReader.setTextType(OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+		OrderTextReader orderTextReader = OrderTextReader.Factory(textType, GameHolder.instance().getGame());
+		try {
+			orderTextReader.parseOrders(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(text.getBytes()))));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		orderTextReader.setGame(GameHolder.instance().getGame());
-		orderTextReader.setOrderText(text);
-		orderTextReader.readOrders(0);
+		if (orderTextReader.getTextType() == OrderTextReader.AUTOMAGIC_ORDER_TEXT) {
+			this.form.orderTextTypeCmb.setSelectedIndex(2);
+		}
 		return orderTextReader.getLineResults();
 	}
 
 	private void loadOrders(String text, String textType) {
-		OrderTextReader orderTextReader = new OrderTextReader();
-		if (textType.equals("Standard")) { //$NON-NLS-1$
-			orderTextReader.setTextType(OrderTextReader.STANDARD_ORDER_TEXT);
-		} else if (textType.equals("Order Checker")) { //$NON-NLS-1$
-			orderTextReader.setTextType(OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+		// use interface incase we swtched to automagic file reader.
+		OrderTextReaderInterface orderReader = OrderTextReader.Factory2(textType, GameHolder.instance().getGame());
+		try {
+			orderReader.readOrders(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(text.getBytes()))));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		orderTextReader.setGame(GameHolder.instance().getGame());
-		orderTextReader.setOrderText(text);
-		orderTextReader.readOrders(1);
 		MessageDialog dialog = new MessageDialog(Messages.getString("importOrdersFromEmailTextCommand.ImportOrders"), 
-					Messages.getString("importOrdersFromEmailTextCommand.OrdersImported", new Object[] {orderTextReader.getOrders()})); //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("importOrdersFromEmailTextCommand.OrdersImported", new Object[] {orderReader.getOrdersRead()})); //$NON-NLS-1$ //$NON-NLS-2$
 		dialog.showDialog();
 		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, GameHolder.instance().getGame(), this);
 
@@ -163,6 +168,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 			this.orderTextTypeCmb.setPreferredSize(new Dimension(200, 20));
 			this.orderTextTypeCmb.addItem("Standard"); //$NON-NLS-1$
 			this.orderTextTypeCmb.addItem("Order Checker"); //$NON-NLS-1$
+			this.orderTextTypeCmb.addItem("Automagic/jOverseer"); //$NON-NLS-1$
 			tlb.cell(new JLabel(Messages.getString("importOrdersFromEmailTextCommand.TypeColon"))); //$NON-NLS-1$
 			tlb.gapCol();
 			TableLayoutBuilder tlb2 = new TableLayoutBuilder();

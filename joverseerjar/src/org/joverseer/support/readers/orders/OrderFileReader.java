@@ -1,7 +1,6 @@
 package org.joverseer.support.readers.orders;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,43 +9,24 @@ import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
-import org.springframework.core.io.Resource;
-import org.springframework.richclient.application.Application;
+import org.joverseer.support.StringUtils;
 
 /**
  * Reads orders from an order file.
  * 
  * @author Marios Skounakis
  */
-public class OrderFileReader {
+public class OrderFileReader implements OrderTextReaderInterface {
 
-    String orderFile;
-
-    Game game;
+    final Game game;
 
     int ordersRead = 0;
 
-    public Game getGame() {
-        return this.game;
+    public OrderFileReader(Game game) {
+    	this.game = game;
     }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public String getOrderFile() {
-        return this.orderFile;
-    }
-
-    public void setOrderFile(String orderFile) {
-        this.orderFile = orderFile;
-    }
-
-    public boolean checkGame() throws Exception {
-        BufferedReader reader = null;
+    public boolean checkGame(BufferedReader reader) throws Exception {
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getOrderFile());
-            reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String line;
             line = reader.readLine();
             if (line == null)
@@ -70,11 +50,9 @@ public class OrderFileReader {
 
     }
 
-    public void readOrders() throws Exception {
-        BufferedReader reader = null;
+    @Override
+	public void readOrders(BufferedReader reader) throws Exception {
         try {
-            Resource resource = Application.instance().getApplicationContext().getResource(getOrderFile());
-            reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String line;
             String charName = null;
             int orderI = 0;
@@ -97,15 +75,12 @@ public class OrderFileReader {
                 }
                 if (!line.equals("")) {
                     String[] parts = line.split(",");
-                    if (!parts[0].equals(charName)) {
+                    if (!parts[0].trim().equals(charName)) {
                         orderI = 0;
                     } else {
                         orderI++;
                     }
                     charName = parts[0].trim();
-                    while (charName.length() < 5) {
-                    	charName = charName + " ";
-                    }
                     String parameters = "";
                     int orderNo = -1;
                     if (!parts[1].equals("")) {
@@ -113,16 +88,22 @@ public class OrderFileReader {
 
                         for (int j = 2; j < parts.length; j++) {
                             String part = parts[j];
-                            part = part.trim();
+                            StringUtils.trimLeading(part);  // don't trim trailing wsp...the char may be <5 chars.
                             if (!part.replace(" ", "").equals("--")) {
                                 parameters = parameters + (parameters.equals("") ? "" : Order.DELIM) + part;
                             }
                         }
                     }
-                    Character c = (Character) getGame().getTurn().getContainer(TurnElementsEnum.Character)
+                    Character c = (Character) this.game.getTurn().getContainer(TurnElementsEnum.Character)
                             .findFirstByProperty("id", charName);
+                    if ((c == null) && (charName.length() < 5)) {
+                    	while (charName.length() < 5) {
+                    		charName = charName + " ";
+                    	}
+                    	c = (Character) this.game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charName);
+                    }
                     if (c == null && charName.endsWith(" ")) {
-                    	c = (Character) getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charName.substring(0, 3));
+                    	c = (Character) this.game.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", charName.substring(0, 3));
                     }
                     if (c != null) {
                         Order[] orders = c.getOrders();
@@ -130,7 +111,7 @@ public class OrderFileReader {
                         orders[orderI].setParameters(parameters);
                         if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
                             //String paramTemp = orders[i].getParameter(orders[i].getLastParamIndex());
-                            String paramZero = new String(orders[orderI].getParameter(0));
+                            String paramZero = new String(orders[orderI].getParameter(0)).trim();
                             if (paramZero.equals("no") || paramZero.equals("ev")) {
                             	String params = orders[orderI].getParameters();
                             	params = params.substring(3) + "#" + paramZero;
@@ -152,7 +133,8 @@ public class OrderFileReader {
     }
 
 
-    public int getOrdersRead() {
+    @Override
+	public int getOrdersRead() {
         return this.ordersRead;
     }
 

@@ -1,6 +1,8 @@
 package org.joverseer.ui.command;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
@@ -11,6 +13,7 @@ import org.joverseer.support.readers.orders.OrderFileReader;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
@@ -50,11 +53,13 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
             
             GameHolder gh = GameHolder.instance();
             try {
-                OrderFileReader orderFileReader = new OrderFileReader();
-                orderFileReader.setGame(gh.getGame());
-                orderFileReader.setOrderFile("file:///" + f.getAbsolutePath()); //$NON-NLS-1$
+                String orderFile = "file:///" + f.getAbsolutePath();
+
+                OrderFileReader orderFileReader = new OrderFileReader(gh.getGame());
                 // check game ok
-                if (!orderFileReader.checkGame()) {
+                Resource resource = Application.instance().getApplicationContext().getResource(orderFile);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+                if (!orderFileReader.checkGame(reader)) {
                     ConfirmationDialog dlg = new ConfirmationDialog() {
                         @Override
 						protected void onConfirm() {
@@ -66,7 +71,8 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
                     dlg.showDialog();
                     if (!this.confirmed) return;
                 }
-                orderFileReader.readOrders();
+                reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
+                orderFileReader.readOrders(reader);
                 MessageDialog dlg = new MessageDialog(Messages.getString("importOrdersFromAutomagicFileCommand.importOrders"),
                 		Messages.getString("importOrdersFromAutomagicFileCommand.OrdersImported", new Object[] {orderFileReader.getOrdersRead() }));
                 dlg.showDialog();

@@ -147,34 +147,34 @@ public class OrderEditorListView extends ItemListView {
 		};
 		filterList.add(f);
 
-		f = new OrderFilter("Commanders (C>0)") {
+		f = new OrderFilter("Commanders (30+)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getCommand() > 0;
+				return c.getCommand() >=30;
 			}
 		};
 		filterList.add(f);
 
-		f = new OrderFilter("Agent (A>0)") {
+		f = new OrderFilter("Agent (30+)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getAgent() > 0;
+				return c.getAgent() >=30;
 			}
 		};
 		filterList.add(f);
 
-		f = new OrderFilter("Emissaries (E>0)") {
+		f = new OrderFilter("Emissaries (30+)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getEmmisary() > 0;
+				return c.getEmmisary() >=30;
 			}
 		};
 		filterList.add(f);
 
-		f = new OrderFilter("Mages (M>0)") {
+		f = new OrderFilter("Mages (30+)") {
 			@Override
 			public boolean acceptCharacter(Character c) {
-				return c.getMage() > 0;
+				return c.getMage() >=30;
 			}
 		};
 		filterList.add(f);

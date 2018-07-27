@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
+
+import org.apache.commons.logging.Log;
 import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -324,9 +326,9 @@ public class OrdercheckerProxy {
 			// TODO double check
 			for (Integer artiNo : ch.getArtifacts()) {
 				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
-				if (ai == null)
-					return;
-				mc.addArtifact(ai.getNo(), ai.getName());
+				if (ai == null) {
+					mc.addArtifact(ai.getNo(), ai.getName());
+				}
 			}
 
 			// TODO double check
@@ -432,6 +434,11 @@ public class OrdercheckerProxy {
 
 		Nation nation = updateNation(g, nationNo1, t);
 
+		// update the artifacts before the characters that may have them.
+		Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
+		ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});
+
+
 		updatePC(t, nation);
 		this.updateCharacters(g,t, nation);
 		updateArmies(t, nation);
@@ -440,9 +447,6 @@ public class OrdercheckerProxy {
 		data.findGame(nation);
 
 		updateNationRelations(g,data, t, nation);
-
-		Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
-		ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});
 
 		Main.main.setNation(nation);
 	}

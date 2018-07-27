@@ -1,4 +1,4 @@
-1;The One Ring;None;Stealth;20;;Frodo
+ï»¿1;The One Ring;None;Stealth;20;;Frodo
 2;Narya;None;Mage;50;;Gandalf
 3;Ring of Barahir;Good;Command;35;;Aragorn
 4;Elessar;Good;Mage;30;;Aragorn
@@ -9,21 +9,21 @@
 9;Elenethbiel;None;Mage;15;;Celeborn
 10;Orc-hewer;Good;Combat;1500;;Dain
 11;Red Arrow;Good;Emissary;15;;Denethor
-12;Palantír of Minas Tirith;None;Scry;;;Denethor
+12;PalantÃ­r of Minas Tirith;None;Scry;;;Denethor
 13;Vilya;None;Mage;50;;Elrond
 14;Mantle of Doriath;Good;;;Hide Pop Centre;Elrond
-15;Gúthwinë;Good;Combat;750;;Eomer
+15;GÃºthwinÃ«;Good;Combat;750;;Eomer
 16;Shield of Rohan;Good;Command;15;;Eowyn
 17;Wood-shadow;None;Stealth;15;;Faramir
 18;Deepwood Bracelet;None;Mage;15;;Faramir
 19;Nenya;None;Mage;50;;Galadriel
-20;Light of Eärendil;Good;Mage;20;;Galadriel
-21;Staff of the Drúedain;Good;Combat;2250;;Ghan-buri-Ghan
-22;Drums of the Drúedain;None;Command;20;;Ghan-buri-Ghan
+20;Light ofÂ EÃ¤rendil;Good;Mage;20;;Galadriel
+21;Staff of the DrÃºedain;Good;Combat;2250;;Ghan-buri-Ghan
+22;Drums of the DrÃºedain;None;Command;20;;Ghan-buri-Ghan
 23;Hair of Galadriel;Good;Emissary;10;;Gimli
 24;Boots of Iron;None;Command;10;;Gimli
 25;Axe of Orc-huing;None;Combat;2000;;Gimli
-26;Lorglîn;None;Combat;2000;;Glorfindel
+26;LorglÃ®n;None;Combat;2000;;Glorfindel
 27;Night's Passing;Good;Stealth;10;;King of the Dead
 28;Bow of the Woodland Realm;Good;Combat;1000;;Legolas
 29;Boots of Tracelessness;None;Stealth;10;;Legolas
@@ -36,20 +36,20 @@
 36;Entdraught;Good;Emissary;10;;Treebeard
 37;Black Scale;Evil;Command;30;;Sauron
 38;Narsil's Bane;Evil;Command;20;;Sauron
-39;Palantír of Minas Morgul;None;Scry Area;;;Sauron
+39;PalantÃ­r of Minas Morgul;None;Scry Area;;;Sauron
 40;Memory's Strings;Evil;Emissary;10;;Adunaphel
 41;Duv Ad'el (Morgul Knife);Evil;Emissary;10;;Adunaphel
 42;Eyes of the Well;Evil;Scry Area;;;Akhorahil
 43;Duv Ak'il (Morgul Knife);Evil;Mage;25;;Akhorahil
 44;Blood Spike;None;Combat;1000;;Bert Huggins
-45;Wôlor Priest Ring;None;Mage;25;;Dendra Dwar
+45;WÃ´lor Priest Ring;None;Mage;25;;Dendra Dwar
 46;Duv Dw'ar (Morgul Knife);Evil;Agent;10;;Dendra Dwar
 47;Flaming Whip;Evil;Combat;1500;;Durin's Bane
 48;Skull Flail;None;Combat;1000;;Gothmog
 49;Blackroot Club;None;Mage;20;;Hoarmurath
 50;Ovir Crown;None;Agent;10;;Hoarmurath
 51;Duv Ho'ath (Morgul Knife);Evil;Command;25;;Ji Indur
-52;Helm of the Mûmak-king;None;Agent;10;;Ji Indur
+52;Helm of the MÃ»mak-king;None;Agent;10;;Ji Indur
 53;Duv Ji'ur (Morgul Knife);Evil;Command;15;;Khamul
 54;Duv Kh'aul (Morgul Knife);Evil;Mage;30;;Khamul
 55;Dragon Helm;Evil;Stealth;10;;Lhachglin
@@ -63,7 +63,7 @@
 63;Bracers of Sen Jey;None;Command;10;;Ren the Unclean
 64;Duv Re'an (Morgul Knife);Evil;Combat;1500;;Ren the Unclean
 65;Burning Blade;Evil;Scry;;;Saruman
-66;Palantír of Orthanc;None;Emissary;20;;Saruman 
+66;PalantÃ­r of Orthanc;None;Emissary;20;;Saruman 
 67;Many-colored Robes of Aman;Evil;Combat;1250;;Shagrat
 68;Nightstealer;Evil;Combat;2000;;The Great Goblin
 69;Alunthiensal;Evil;Mage;20;;Throkmaw
@@ -72,7 +72,7 @@
 72;Listening Helm;None;Agent;10;;Uvatha
 73;Duv Uv'ha (Morgul Knife);Evil;Agent;10;;Uvatha
 74;Stone Club;None;Combat;2000;;William Huggins
-0;Aranrûth;None;Combat;500;;
+0;AranrÃ»th;None;Combat;500;;
 0;Flute of Daeron;None;Combat;500;;
 0;Orcring;None;Combat;500;;
 0;Ringil;None;Combat;500;;
@@ -80,7 +80,7 @@
 0;Rauzgnagli;None;Combat;500;;
 0;Ring of Binding;None;Combat;750;;
 0;Talisman of Absorption;None;Combat;750;;
-0;Ulûkai;None;Combat;750;;
+0;UlÃ»kai;None;Combat;750;;
 0;Glosvagil;None;Combat;750;;
 0;Angbor;None;Combat;750;;
 0;Belt of Durin;None;Combat;750;;
@@ -98,14 +98,14 @@
 0;Corantir;None;Combat;1750;;
 0;Crown of Celethsa;None;Combat;1750;;
 0;Daecollo;None;Combat;2000;;
-0;Dragon Helm of Dor-Lómin;None;Combat;2000;;
+0;Dragon Helm of Dor-LÃ³min;None;Combat;2000;;
 0;Durin's Armor;None;Combat;2000;;
 0;Earring of Souls;None;Combat;2000;;
 0;Elenya;None;Combat;2000;;
 0;Erivagil;None;Combat;2250;;
 0;Foamcleaver;None;Agent;5;;
 0;Gift of Aronwe;None;Agent;5;;
-0;Gûlthalion;None;Agent;5;;
+0;GÃ»lthalion;None;Agent;5;;
 0;Helm of Isildur;None;Agent;10;;
 0;Lance of Reaching;None;Agent;10;;
 0;Mallorn Staff;None;Agent;10;;
@@ -114,7 +114,7 @@
 0;Mithril Helm;None;Agent;20;;
 0;Orcrist;None;Agent;20;;
 0;Ossanna;None;Comand;10;;
-0;Palantír of Elostirion;None;Comand;10;;
+0;PalantÃ­r of Elostirion;None;Comand;10;;
 0;Pectoral;None;Comand;15;;
 0;Spider Gloves;None;Comand;15;;
 0;Ring of Curufin;None;Comand;20;;
@@ -132,8 +132,8 @@
 0;Shadow Mace;None;Stealth;10;;
 0;Rod of the Steward;None;Stealth;10;;
 0;Helkaluine;None;Stealth;10;;
-0;Tintelpë;None;Stealth;15;;
-0;Macrilómen;None;Stealth;15;;
+0;TintelpÃ«;None;Stealth;15;;
+0;MacrilÃ³men;None;Stealth;15;;
 0;Nightfang;None;Mage;10;;
 0;Melody's Memory;None;Mage;10;;
 0;Herugrim;None;Mage;10;;
@@ -144,7 +144,7 @@
 0;Hue Changer;None;Mage;15;;
 0;Cloud Bow;None;Mage;15;;
 0;Stinging Tongue;None;Mage;20;;
-0;Thôlogaer Ciryatano;None;Mage;20;;
+0;ThÃ´logaer Ciryatano;None;Mage;20;;
 0;Ring of Angrenost;None;Mage;25;;
 0;Mithril Ring;None;Mage;30;;
 0;Andorithel;None;Mage;30;;

@@ -1,5 +1,7 @@
 eclipse.preferences.version=1
+encoding//resources/metadata/CME.arties.csv=UTF-8
 encoding//resources/metadata/CME.pcs=UTF-8
+encoding//resources/metadata/KS.arties.csv=UTF-8
 encoding//resources/ui/messages_it.properties=UTF-8
 encoding//src/org/joverseer/support/AsciiUtils.java=UTF-8
 encoding//src/org/joverseer/support/readers/newXml/CharacterMessageWrapper.java=UTF-8

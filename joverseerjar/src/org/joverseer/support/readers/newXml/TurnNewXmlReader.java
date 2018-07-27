@@ -904,7 +904,10 @@ public class TurnNewXmlReader implements Runnable {
 		for (ArtifactWrapper aw : aws) {
 			// for FA game, update artifact numbers
 			try {
-				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA || game1.getMetadata().getGameType() == GameTypeEnum.gameKS) {
+				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA 
+						|| game1.getMetadata().getGameType() == GameTypeEnum.gameKS
+						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCME
+						) {
 					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
 					boolean found = false;
 					for (ArtifactInfo ai : game1.getMetadata().getArtifacts().getItems()) {

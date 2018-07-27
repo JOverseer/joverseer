@@ -116,6 +116,20 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 					}
 				}
 			}
+			if (fileCount == 0) {
+				String tfp = file.getAbsolutePath() + "/";
+				File tf = new File(tfp);
+				if (tf.exists()) {
+					this.turnFolders.add(tf);
+					this.files = tf.listFiles(new XmlAndPdfFileFilter());
+					try {
+						log.info("Adding turn folder " + tf.getCanonicalPath() + " with " + this.files.length + " files.");
+					} catch (Exception exc) {
+
+					}
+					fileCount += this.files.length;
+				}
+			}
 			final int fileCountFinal = fileCount;
 			FormModel formModel = FormModelHelper.createFormModel(this);
 			this.monitor = new JOverseerClientProgressMonitor(formModel);

@@ -11,7 +11,6 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;

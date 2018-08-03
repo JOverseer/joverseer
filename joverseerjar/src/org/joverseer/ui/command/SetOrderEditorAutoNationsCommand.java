@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;

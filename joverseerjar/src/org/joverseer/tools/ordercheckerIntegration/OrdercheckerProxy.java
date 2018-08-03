@@ -9,7 +9,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
 
-import org.apache.commons.logging.Log;
 import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -26,7 +25,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
@@ -326,7 +324,7 @@ public class OrdercheckerProxy {
 			// TODO double check
 			for (Integer artiNo : ch.getArtifacts()) {
 				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
-				if (ai == null) {
+				if (ai != null) {
 					mc.addArtifact(ai.getNo(), ai.getName());
 				}
 			}

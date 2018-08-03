@@ -7,7 +7,6 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;

@@ -10,7 +10,6 @@ import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;

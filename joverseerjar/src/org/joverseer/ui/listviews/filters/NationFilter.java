@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;

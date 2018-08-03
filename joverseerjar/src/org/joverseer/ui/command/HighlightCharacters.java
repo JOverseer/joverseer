@@ -9,7 +9,6 @@ import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;

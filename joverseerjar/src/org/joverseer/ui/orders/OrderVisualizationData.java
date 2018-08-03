@@ -8,7 +8,6 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.InputDialog;

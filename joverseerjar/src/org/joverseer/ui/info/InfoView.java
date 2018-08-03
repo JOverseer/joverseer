@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -31,8 +30,6 @@ import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BaseTableModel;
 import org.springframework.richclient.table.TableUtils;
-import org.springframework.util.CollectionUtils;
-
 import com.jidesoft.swing.JideTabbedPane;
 
 /**

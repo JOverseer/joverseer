@@ -20,7 +20,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;

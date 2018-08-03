@@ -34,7 +34,6 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;

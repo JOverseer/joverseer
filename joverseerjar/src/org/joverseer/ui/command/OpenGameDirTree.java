@@ -293,13 +293,15 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 				int grp2 = matcher2.groupCount();
 				String g1 = matcher1.group(1);
 				String g2 = matcher2.group(1);
-				result =  matcher1.group(1).compareTo(matcher2.group(1)); // compare game
+				result =  g1.compareTo(g2); // compare game
 				if (result == 0) {
-					String t1 = matcher1.group(3);
-					String t2 = matcher2.group(3);
-					result =  matcher1.group(3).compareTo(matcher2.group(3)); // compare turn
-					if (result == 0) {
-						result =  matcher1.group(2).compareTo(matcher2.group(2)); // compare nation
+					if ((grp1 == grp2) &&  (grp1 >2)) {
+						String t1 = matcher1.group(3);
+						String t2 = matcher2.group(3);
+						result =  t1.compareTo(t2); // compare turn
+						if (result == 0) {
+							result =  matcher1.group(2).compareTo(matcher2.group(2)); // compare nation
+						}
 					}
 				}
 			}

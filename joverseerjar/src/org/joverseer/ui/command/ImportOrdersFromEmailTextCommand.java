@@ -20,7 +20,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.joverseer.joApplication;
-import org.joverseer.metadata.OrderReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderTextReader;
 import org.joverseer.support.readers.orders.OrderTextReaderInterface;

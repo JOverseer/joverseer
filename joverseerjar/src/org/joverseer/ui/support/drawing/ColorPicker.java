@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import org.joverseer.joApplication;
 import org.joverseer.domain.NationRelations;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;

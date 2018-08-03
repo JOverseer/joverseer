@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AbstractListViewFilter;

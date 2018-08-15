@@ -1,8 +1,8 @@
 package org.joverseer.metadata;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.domain.Character;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 
@@ -20,12 +20,10 @@ public class StartingCharacterReader implements MetadataReader {
 		MetadataSource ms = new MetadataSource();
 
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename);
+			CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				if (ln.startsWith("#"))
-					continue;
 				String[] parts = ln.split(";");
 				if (parts.length < 4)
 					continue;

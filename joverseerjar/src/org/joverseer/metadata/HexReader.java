@@ -9,6 +9,7 @@ import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.support.CommentedBufferedReader;
 import org.springframework.core.io.Resource;
 
 /**
@@ -31,7 +32,7 @@ public class HexReader implements MetadataReader {
     private HashMap loadHexes(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = new HashMap();
         try {
-            BufferedReader reader = gm.getUTF8ResourceByGame(this.terrainFilename);
+        	CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.terrainFilename);
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(",");

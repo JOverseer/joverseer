@@ -1,6 +1,5 @@
 package org.joverseer.metadata;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,6 +18,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.core.io.Resource;
@@ -342,13 +342,13 @@ public class GameMetadata implements Serializable {
 	
 	
 	//from https://stackoverflow.com/questions/1835430/byte-order-mark-screws-up-file-reading-in-java
-	public BufferedReader getUTF8Resource(String filename) throws IOException
+	public CommentedBufferedReader getUTF8Resource(String filename) throws IOException
 	{
 		return getUTF8Resource(getResource(filename));
 	}
-	public static BufferedReader getUTF8Resource(Resource res) throws IOException
+	public static CommentedBufferedReader getUTF8Resource(Resource res) throws IOException
 	{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8"));
+		CommentedBufferedReader reader = new CommentedBufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8"));
 	    reader.mark(1);
         char[] possibleBOM = new char[1];
         reader.read(possibleBOM);
@@ -366,7 +366,7 @@ public class GameMetadata implements Serializable {
 	public Resource getResourceByGame(String filename) {
 		return getResource(getGameType().toString() + "." + filename);
 	}
-	public BufferedReader getUTF8ResourceByGame(String filename) throws IOException {
+	public CommentedBufferedReader getUTF8ResourceByGame(String filename) throws IOException {
 		return getUTF8Resource(getGameType().toString() + "." + filename);
 	}
 	public Resource getResource(String resourceName) {

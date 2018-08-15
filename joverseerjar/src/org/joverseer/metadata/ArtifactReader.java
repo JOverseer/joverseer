@@ -1,8 +1,8 @@
 package org.joverseer.metadata;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 
 /**
@@ -23,7 +23,7 @@ public class ArtifactReader implements MetadataReader {
 		Container<ArtifactInfo> artifacts = new Container<ArtifactInfo>();
 
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.artifactFilename);
+			CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.artifactFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

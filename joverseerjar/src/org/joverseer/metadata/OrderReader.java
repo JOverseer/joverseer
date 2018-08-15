@@ -1,8 +1,8 @@
 package org.joverseer.metadata;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 
 /**
@@ -19,13 +19,9 @@ public class OrderReader implements MetadataReader {
 		Container<OrderMetadata> orders = new Container<OrderMetadata>();
 
 		try {
-			BufferedReader reader = gm.getUTF8Resource(this.orderFilename);
+			CommentedBufferedReader reader = gm.getUTF8Resource(this.orderFilename);
 			String ln;
-			int i = 0;
 			while ((ln = reader.readLine()) != null) {
-				i++;
-				if (i == 1)
-					continue;
 				String[] parts = ln.split(";");
 				OrderMetadata om = new OrderMetadata();
 				om.setName(parts[0]);

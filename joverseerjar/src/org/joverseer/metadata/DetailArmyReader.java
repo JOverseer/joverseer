@@ -1,6 +1,5 @@
 package org.joverseer.metadata;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -8,6 +7,7 @@ import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 
@@ -27,12 +27,10 @@ public class DetailArmyReader implements MetadataReader {
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<Army> armies = new Container<Army>();
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename);
+			CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				if (ln.startsWith(("#")) || ln.equals(""))
-					continue;
 				try {
 					String parts[] = ln.split(";");
 					String hexNo = parts[0];

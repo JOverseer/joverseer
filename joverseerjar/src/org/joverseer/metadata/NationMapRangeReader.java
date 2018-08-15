@@ -1,8 +1,8 @@
 package org.joverseer.metadata;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.metadata.domain.NationMapRange;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 
 /**
@@ -19,7 +19,7 @@ public class NationMapRangeReader implements MetadataReader {
 		Container<NationMapRange> mapRanges = new Container<NationMapRange>();
 
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.nationMapFilename);
+			CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.nationMapFilename);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

@@ -1,4 +1,4 @@
-Name;Number;Code;Parameters;Difficulty;Requirements;Skill
+#Name;Number;Code;Parameters;Difficulty;Requirements;Skill
 Change Allegiance;175;ChAlleg;New allegiance (g,e);Average;At Capital;CS
 Upgrade Relations;180;UpStNat;Target Nation # (1-25);Easy;At Capital;CS
 Downgrade Relations;185;DnStNat;Target Nation # (1-25);Easy;At Capital;CS

@@ -101,5 +101,9 @@ public class Nation implements Serializable {
         this.eliminated = eliminated;
     }
     
-    
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+
 }

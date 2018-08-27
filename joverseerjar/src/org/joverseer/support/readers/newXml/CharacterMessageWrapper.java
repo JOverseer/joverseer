@@ -322,12 +322,19 @@ public class CharacterMessageWrapper {
 	}
 
 	protected OrderResult getRAResult(String line, InfoSource infoSource) {
-		if (line.contains(" was ordered to cast a lore spell. Research Artifact -")) {
-			String artiName = StringUtils.getUniquePart(line, "Research Artifact - ", "#\\d{1,3}", false, false);
-			String artiNo = StringUtils.getUniquePart(line, artiName + " #", " is a ", false, false);
+		if (line.contains(" was ordered to cast a lore spell.")) {
 			RAResultWrapper rrw = new RAResultWrapper();
-			rrw.setArtiName(artiName);
-			rrw.setArtiNo(artiNo);
+			final String start= "Research Artifact - ";
+			String text = line;
+			ArrayList<String> parts = StringUtils.getParts(text, start, "#\\d{1,3}", false, false);
+			for(String part:parts) {
+				String artiNo = StringUtils.getUniquePart(text, part + "\\s+#", " is a", false, false);
+				try {
+					rrw.Add(part, Integer.parseInt(artiNo));
+				} catch (NumberFormatException e) {
+					// don't add if not recognised.
+				}
+			}
 			return rrw;
 		}
 		return null;

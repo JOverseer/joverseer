@@ -247,7 +247,13 @@ public class NationReader implements MetadataReader {
 				String name = (String) this.nations_CME[i][0];
 				Nation n = new Nation(i, name, shortName);
 				number = n.getNumber().intValue();
-				n.setAllegiance(NationAllegianceEnum.Neutral);
+				if (i==1) {
+				  n.setAllegiance(NationAllegianceEnum.FreePeople);
+				} else if (i==2) {
+				  n.setAllegiance(NationAllegianceEnum.DarkServants);
+				} else {
+				  n.setAllegiance(NationAllegianceEnum.Neutral);
+				}
 				addSNAs(n, (Object[]) this.nations_CME[i][2]);
 				nations.add(n);
 				boolean removed = false;

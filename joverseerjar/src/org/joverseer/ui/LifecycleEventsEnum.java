@@ -25,5 +25,6 @@ public enum LifecycleEventsEnum {
     SetPalantirMapStyleEvent,
     ZoomIncreaseEvent,
     ZoomDecreaseEvent,
-    GameLoadedEvent
+    GameLoadedEvent,
+    EditOrderStartEvent
 }

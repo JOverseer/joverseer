@@ -3,7 +3,6 @@ package org.joverseer.ui.info;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -19,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.joApplication;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.Info;
 import org.joverseer.support.info.InfoRegistry;
@@ -144,7 +144,7 @@ public class InfoView extends AbstractView {
 			res = Application.instance().getApplicationContext().getResource(uri + ".csv");
 		}
 		try {
-			BufferedReader reader = GameMetadata.getUTF8Resource(res);
+			CommentedBufferedReader reader = GameMetadata.getUTF8Resource(res);
 
 			InfoTableModel model = new InfoTableModel();
 			ArrayList<String> colNames = null;

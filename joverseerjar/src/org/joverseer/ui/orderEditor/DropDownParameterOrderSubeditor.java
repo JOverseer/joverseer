@@ -26,12 +26,18 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     String paramName;
     String[] values;
     String[] descriptions;
+    int start;
     
+    public DropDownParameterOrderSubeditor(String paramName, Order o, String[] values, String descriptions[],int startAt) {
+    	this(paramName,o,values,descriptions);
+    	this.start = startAt;
+    }
     public DropDownParameterOrderSubeditor(String paramName, Order o, String[] values, String descriptions[]) {
         super(o);
         this.paramName = paramName;
         this.values = values;
         this.descriptions = descriptions;
+        this.start = -1;
     }
     
     @Override
@@ -48,6 +54,9 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(this.parameter = new JTextField());
         this.parameter.setVisible(false);
         String val = o.getParameter(paramNo);
+        if ((this.start != -1) && (val == null)) {
+        	val = this.values[this.start];
+        }
         this.parameter.setText(val);
         for (int i=0; i<this.descriptions.length; i++) {
             if (this.values[i].equals(val)) {

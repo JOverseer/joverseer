@@ -272,7 +272,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			}
 		}
 		// if not no, so that default for systems without the setting, is for it to appear
-		if (!PreferenceRegistry.instance().getPreferenceValue("general.showWelcome").equals("no")) {
+		if (PreferenceRegistry.instance().getPreferenceValue("general.showWelcome").equals("yes")) {
 			WelcomeDialog landing = new WelcomeDialog();
 			landing.setTitle(Messages.getString("Welcome.Title"));
 			landing.setDescription(Messages.getString("Welcome.Description"));

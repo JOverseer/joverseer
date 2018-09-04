@@ -10,7 +10,7 @@ import org.springframework.richclient.application.Application;
 public class LaunchTest {
 	@Test
 	public void simpleTest() {
-		//JOverseerJIDEClient.launchTestFramework();
+		JOverseerJIDEClient.launchTestFramework();
 		Application app = Application.instance();
 		assertNotNull(app);
 	}

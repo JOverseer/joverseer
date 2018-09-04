@@ -30,8 +30,9 @@
 	
 	
    <!-- Main targets -->
+	   <!-- skip Javadoc for now -->
    <target name="BuildAll"
-       depends="-Init, -Prep, Compile, Javadoc, Jar"
+       depends="-Init, -Prep, Compile, Jar"
        description="Complete rebuild">
        <echo message="Build finished."/>
    </target>

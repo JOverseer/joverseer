@@ -6,7 +6,7 @@
     <property name="bin">bin</property>
     <property name="src">src</property>
 	<property name="test.dir">test</property>
-	<property name="testbin.dir">test-bin</property>
+	<property name="bintest.dir">bin-test</property>
     <property name="res.dir">resources</property>
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
@@ -123,7 +123,7 @@
 	   	 	depends="Jar"
 	       description="Compile all test java classes">
 	       <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
-	       <javac srcdir="${test.dir}" destdir="${testbin.dir}" 
+	       <javac srcdir="${test.dir}" destdir="${bintest.dir}" 
 	           encoding="utf-8" includeantruntime="false" source="1.6" target="1.6" bootclasspath="${compat.rt.jar}">
 	       		<classpath>
 	       			<pathelement path="${java.class.path}"/>
@@ -154,7 +154,7 @@
    			<classpath> 
    				<pathelement location="${junit.path}"/>
        			<pathelement location="${hamcrest.path}"/>
-   				<pathelement location="${testbin.dir}"/>
+   				<pathelement location="${bintest.dir}"/>
        			<pathelement location="${jarfile}"/>
        			<pathelement location="${log4j.path}"/>
        			<pathelement location="${commons_logging.path}"/>
@@ -222,8 +222,10 @@
    <target name="-Prep">
        <delete dir="${jardir}" quiet="true"/>
        <delete dir="${bin}" quiet="true"/>
+       <delete dir="${bintest.dir}" quiet="true"/>
        <delete dir="${dist}"  quiet="true"/>
        <mkdir dir="${bin}"/>
+       <mkdir dir="${bintest.dir}"/>
        <mkdir dir="${dist}"/>
        <mkdir dir="${jardir}"/>
    </target>

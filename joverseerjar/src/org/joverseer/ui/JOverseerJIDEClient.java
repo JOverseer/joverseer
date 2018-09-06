@@ -93,7 +93,7 @@ public class JOverseerJIDEClient {
 				}
 			}
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
-			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+			//LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
 			
 			
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");

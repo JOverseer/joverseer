@@ -7,7 +7,7 @@
     <language>en</language>
     <item>
     <title>1.16.6</title>
-      <pubDate>Fri, 27 Jul 2018</pubDate>
+      <pubDate>Fri, 7 Sep 2018</pubDate>
       <description>
 VERSION 1.16.6
 --------------
@@ -17,6 +17,8 @@ VERSION 1.16.6
     * Enh: Add colours for the NPC nations 26 and 27.
     * Enh: Show population centres owned by NPC nations (CME).
 	* Enh: The maximum number of characters allowed per nation is added to the Nation Stats View, and the Info View.
+	* Fix: CME artifact numbers removed as they are randomised at game start.
+	* Fix: Spot lore spell Locate Artifact results again.
 	* Fix: Restore the filter order list view by meaningful stats (>29) rather than just >0.
 	* Fix: The starting artifact names should display accents again.
 	* Fix: If a character in JO had an artifact that wasn't recognised (separate bug), only the characters before that one were order checked.

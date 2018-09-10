@@ -198,11 +198,13 @@ public class EnemyCharacterRumorWrapper implements IHasMapLocation, IBelongsToNa
 						if (c != null) {
 							if (c.getNationNo() > 0) {
 								NationRelations nr = t.getNationRelations(c.getNationNo());
-								if (nr.getAllegiance() == gameNr.getAllegiance()) {
-									// if you can deduce that the char is of
-									// friendly allegiance,
-									// do not show him
-									continue;
+								if (nr != null) {
+									if (nr.getAllegiance() == gameNr.getAllegiance()) {
+										// if you can deduce that the char is of
+										// friendly allegiance,
+										// do not show him
+										continue;
+									}
 								}
 								nationNo = c.getNationNo();
 							}

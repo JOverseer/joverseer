@@ -1,5 +1,6 @@
 package org.joverseer.metadata;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -342,13 +343,24 @@ public class GameMetadata implements Serializable {
 	
 	
 	//from https://stackoverflow.com/questions/1835430/byte-order-mark-screws-up-file-reading-in-java
-	public CommentedBufferedReader getUTF8Resource(String filename) throws IOException
+	public BufferedReader getUTF8Resource(String filename,boolean ignoreComments) throws IOException
 	{
-		return getUTF8Resource(getResource(filename));
+		return getUTF8Resource(getResource(filename),ignoreComments);
 	}
-	public static CommentedBufferedReader getUTF8Resource(Resource res) throws IOException
+	public static BufferedReader getUTF8Resource(Resource res,boolean ignoreComments) throws IOException
 	{
-		CommentedBufferedReader reader = new CommentedBufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8"));
+		if (ignoreComments) {
+			return getUTF8Resource(res,new CommentedBufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8")));
+		} else {
+			return getUTF8Resource(res,new BufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8")));
+		}
+	}
+/*	public static BufferedReader getUTF8Resource(Resource res) throws IOException
+	{
+		return getUTF8Resource(res,true);
+	}
+*/	public static BufferedReader getUTF8Resource(Resource res,BufferedReader reader) throws IOException
+	{
 	    reader.mark(1);
         char[] possibleBOM = new char[1];
         reader.read(possibleBOM);
@@ -363,11 +375,8 @@ public class GameMetadata implements Serializable {
 	// files first.
 	// then check classpath 
 	// note that getBasePath is not just a getter.
-	public Resource getResourceByGame(String filename) {
-		return getResource(getGameType().toString() + "." + filename);
-	}
-	public CommentedBufferedReader getUTF8ResourceByGame(String filename) throws IOException {
-		return getUTF8Resource(getGameType().toString() + "." + filename);
+	public BufferedReader getUTF8ResourceByGame(String filename, boolean ignoreComments) throws IOException {
+		return getUTF8Resource(getGameType().toString() + "." + filename, ignoreComments);
 	}
 	public Resource getResource(String resourceName) {
 		try {

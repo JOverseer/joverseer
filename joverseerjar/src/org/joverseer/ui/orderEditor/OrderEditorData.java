@@ -89,7 +89,7 @@ public class OrderEditorData {
 		Container<OrderEditorData> container = new Container<OrderEditorData>(new String[] { "orderNo" }); //$NON-NLS-1$
 		try {
 			GameMetadata gm1 = GameMetadata.instance();
-			BufferedReader reader = gm1.getUTF8Resource(fileName); 
+			BufferedReader reader = gm1.getUTF8Resource(fileName,false); 
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

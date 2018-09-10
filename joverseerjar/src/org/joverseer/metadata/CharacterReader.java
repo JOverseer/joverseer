@@ -1,8 +1,8 @@
 package org.joverseer.metadata;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.domain.Character;
-import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 
@@ -26,7 +26,7 @@ public class CharacterReader implements MetadataReader {
 		MetadataSource ms = new MetadataSource();
 
 		try {
-			CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename);
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename,true);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

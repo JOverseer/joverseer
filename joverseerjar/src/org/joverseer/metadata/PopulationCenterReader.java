@@ -1,5 +1,6 @@
 package org.joverseer.metadata;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
@@ -24,7 +25,7 @@ public class PopulationCenterReader implements MetadataReader {
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<PopulationCenter> populationCenters = new Container<PopulationCenter>();
 		try {
-			CommentedBufferedReader reader = gm.getUTF8ResourceByGame(this.populationCenterFilename);
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.populationCenterFilename,true);
 
 			String ln;
 			ln = reader.readLine();

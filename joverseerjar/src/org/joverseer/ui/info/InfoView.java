@@ -3,6 +3,7 @@ package org.joverseer.ui.info;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -18,10 +19,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.joApplication;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.Info;
-import org.joverseer.support.info.InfoRegistry;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.springframework.core.io.Resource;
@@ -144,7 +143,7 @@ public class InfoView extends AbstractView {
 			res = Application.instance().getApplicationContext().getResource(uri + ".csv");
 		}
 		try {
-			CommentedBufferedReader reader = GameMetadata.getUTF8Resource(res);
+			BufferedReader reader = GameMetadata.getUTF8Resource(res,true);
 
 			InfoTableModel model = new InfoTableModel();
 			ArrayList<String> colNames = null;
@@ -195,7 +194,7 @@ public class InfoView extends AbstractView {
 	// otherwise the same as createTableFromResource.
 	// if only is not "" then only include those elements of column 0 
 	protected JComponent createTableFromInfo(String key, int w, int h,String only) {
-		Info info = InfoRegistry.instance().getInfo(key);
+		Info info = joApplication.getInfoRegistry().getInfo(key);
 		try {
 
 			InfoTableModel model = new InfoTableModel();

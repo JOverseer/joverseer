@@ -2,6 +2,7 @@ package org.joverseer.support.info;
 
 import java.util.ArrayList;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.ProductEnum;
@@ -25,7 +26,7 @@ import org.joverseer.tools.combatCalc.TacticEnum;
 public class InfoUtils {
 
 	public static Boolean isDragon(String charName) {
-		Info info = InfoRegistry.instance().getInfo("dragons");
+		Info info = joApplication.getInfoRegistry().getInfo("dragons");
 		if (info == null)
 			return null;
 		if (info.getRowIdx(charName.toUpperCase()) > -1)
@@ -35,7 +36,7 @@ public class InfoUtils {
 
 	public static ArrayList<String> getAllCharacterTitles() {
 		ArrayList<String> ret = new ArrayList<String>();
-		Info info = InfoRegistry.instance().getInfo("characterTitles");
+		Info info = joApplication.getInfoRegistry().getInfo("characterTitles");
 		if (info == null)
 			return null;
 		for (int i = 1; i < info.getColumnHeaders().size(); i++) {
@@ -47,7 +48,7 @@ public class InfoUtils {
 	}
 
 	public static String getCharacterStatsFromTitle(String title) {
-		Info info = InfoRegistry.instance().getInfo("characterTitles");
+		Info info = joApplication.getInfoRegistry().getInfo("characterTitles");
 		if (info == null)
 			return null;
 		for (int i = 1; i < info.getColumnHeaders().size(); i++) {
@@ -61,7 +62,7 @@ public class InfoUtils {
 	}
 
 	public static String getCharacterStatsTypeFromTitle(String title) {
-		Info info = InfoRegistry.instance().getInfo("characterTitles");
+		Info info = joApplication.getInfoRegistry().getInfo("characterTitles");
 		if (info == null)
 			return null;
 		for (int i = 1; i < info.getColumnHeaders().size(); i++) {
@@ -75,7 +76,7 @@ public class InfoUtils {
 	}
 
 	public static String getHealthRangeFromWounds(String woundsDescription) {
-		Info info = InfoRegistry.instance().getInfo("characterWounds");
+		Info info = joApplication.getInfoRegistry().getInfo("characterWounds");
 		if (info == null)
 			return null;
 		int i = info.getRowIdx(woundsDescription);
@@ -83,7 +84,7 @@ public class InfoUtils {
 	}
 
 	public static ArmyElementType getElementTypeFromDescription(String description) {
-		Info info = InfoRegistry.instance().getInfo("troopTypeDescriptions");
+		Info info = joApplication.getInfoRegistry().getInfo("troopTypeDescriptions");
 		if (info == null)
 			return null;
 		description = AsciiUtils.convertNonAscii(description);
@@ -111,7 +112,7 @@ public class InfoUtils {
 	}
 
 	public static String getArmyWareTypeRange(String description) {
-		Info info = InfoRegistry.instance().getInfo("armyWareTypes");
+		Info info = joApplication.getInfoRegistry().getInfo("armyWareTypes");
 		if (info == null)
 			return null;
 		for (int j = 1; j < info.getRowHeaders().size(); j++) {
@@ -124,7 +125,7 @@ public class InfoUtils {
 	}
 
 	public static String getArmyTrainingRange(String description) {
-		Info info = InfoRegistry.instance().getInfo("armyTrainingDescriptions");
+		Info info = joApplication.getInfoRegistry().getInfo("armyTrainingDescriptions");
 		if (info == null)
 			return null;
 		for (int j = 1; j < info.getRowHeaders().size(); j++) {
@@ -137,7 +138,7 @@ public class InfoUtils {
 	}
 
 	public static String getArmyLossesRange(String description) {
-		Info info = InfoRegistry.instance().getInfo("armyLossesDescriptions");
+		Info info = joApplication.getInfoRegistry().getInfo("armyLossesDescriptions");
 		if (info == null)
 			return null;
 		for (int j = 1; j < info.getRowHeaders().size(); j++) {
@@ -152,7 +153,7 @@ public class InfoUtils {
 	public static String getArmyMoraleRange(String description) {
 		if (description == null)
 			return null;
-		Info info = InfoRegistry.instance().getInfo("armyMoraleDescriptions");
+		Info info = joApplication.getInfoRegistry().getInfo("armyMoraleDescriptions");
 		if (info == null)
 			return null;
 		for (int j = 1; j < info.getRowHeaders().size(); j++) {
@@ -165,7 +166,7 @@ public class InfoUtils {
 	}
 
 	public static String getValueFromGrid(String columnHeader, String rowHeader, String key) {
-		Info info = InfoRegistry.instance().getInfo(key);
+		Info info = joApplication.getInfoRegistry().getInfo(key);
 		if (info == null)
 			return null;
 		for (int j = 0; j < info.getRowHeaders().size(); j++) {
@@ -214,7 +215,7 @@ public class InfoUtils {
 			return null;
 		if (rank < 10)
 			return "Unranked";
-		Info info = InfoRegistry.instance().getInfo("characterTitles");
+		Info info = joApplication.getInfoRegistry().getInfo("characterTitles");
 		if (info == null)
 			return null;
 		int ci = info.getColumnIdx(type);
@@ -230,7 +231,7 @@ public class InfoUtils {
 	}
 
 	public static int getClimateModifier(ProductEnum pr, ClimateEnum cl) {
-		Info info = InfoRegistry.instance().getInfo("climateProduction");
+		Info info = joApplication.getInfoRegistry().getInfo("climateProduction");
 		int ri = info.getRowIdx(String.valueOf(cl));
 		int ci = info.getColumnIdx(String.valueOf(pr));
 		if (ri == -1 || ci == -1)
@@ -239,7 +240,7 @@ public class InfoUtils {
 	}
 
 	public static int getCharactersAllowed(GameTypeEnum gt,int turn) {
-		Info info = InfoRegistry.instance().getInfo("charactersAllowed");
+		Info info = joApplication.getInfoRegistry().getInfo("charactersAllowed");
 		if (info == null)
 			return Integer.MAX_VALUE;
 		String range;

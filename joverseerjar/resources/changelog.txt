@@ -1,3 +1,8 @@
+VERSION 1.16.7
+--------------
+	* Fix: 1.16.6 broke order validation causing problems entering some orders.
+	* Fix: CME rumors of NPC thieving caused a silent crash and data corruption on importing turn.
+	
 VERSION 1.16.6
 --------------
     * Enh: Import Game Dir Tree, now imports in turn order instead of nation order (based on the filename).

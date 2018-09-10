@@ -6,6 +6,16 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
+    <title>1.16.7</title>
+      <pubDate>Mon, 10 Sep 2018</pubDate>
+      <description>
+VERSION 1.16.7
+--------------
+	* Fix: 1.16.6 broke order validation causing problems entering some orders.
+	* Fix: CME rumors of NPC thieving caused a silent crash and data corruption on importing turn.
+	</description>
+	</item>
+    <item>
     <title>1.16.6</title>
       <pubDate>Fri, 7 Sep 2018</pubDate>
       <description>

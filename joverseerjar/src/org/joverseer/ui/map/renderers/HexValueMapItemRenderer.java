@@ -133,9 +133,6 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 		CharacterRangeMapItem crmi = (CharacterRangeMapItem) obj;
 		int hexNo = crmi.getHexNo();
 		int range = crmi.getRange();
-		if (this.metadata == null) {
-			init();
-		}
 		Color color = Color.decode(getHighlightColor());
 
 		Stroke currentStroke = g.getStroke();

@@ -33,8 +33,6 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  * @author Marios Skounakis
  */	
 public class PopulationCenterRenderer extends ImageRenderer {
-    MapMetadata mapMetadata = null;
-
     
     @SuppressWarnings("hiding")
 	static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
@@ -44,15 +42,8 @@ public class PopulationCenterRenderer extends ImageRenderer {
         return PopulationCenter.class.isInstance(obj);
     }
 
-    private void init() {
-        this.mapMetadata = MapMetadata.instance();
-    }
-
-
-
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-        if (this.mapMetadata == null) init();
 
         PopulationCenter popCenter = (PopulationCenter)obj;
 
@@ -166,6 +157,4 @@ public class PopulationCenterRenderer extends ImageRenderer {
         g.drawString(str, xt + 1, yt + 1);
         
     }
-
-
 }

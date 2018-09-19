@@ -18,7 +18,6 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -39,7 +38,6 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	Point hexCenter;
 
 	protected Polygon polygon;
-	protected MapMetadata metadata = null;
 
 	Color majorRiverColor;
 	Color minorRiverColor;
@@ -48,27 +46,28 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	Color fordColor;
 	HashMap<MapOptionsEnum, Object> mapOptions;
 
+	private boolean useTexture;
+	
 	public DefaultHexRenderer() {
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void init() {
-		this.metadata = MapMetadata.instance();
-		this.xPoints[0] = this.metadata.getHexSize() / 2 * this.metadata.getGridCellWidth();
-		this.xPoints[1] = this.metadata.getHexSize() * this.metadata.getGridCellWidth();
-		this.xPoints[2] = this.metadata.getHexSize() * this.metadata.getGridCellWidth();
-		this.xPoints[3] = this.metadata.getHexSize() / 2 * this.metadata.getGridCellWidth();
+	@Override
+	public void refreshConfig() {
+		this.xPoints[0] = this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellWidth();
+		this.xPoints[1] = this.mapMetadata.getHexSize() * this.mapMetadata.getGridCellWidth();
+		this.xPoints[2] = this.mapMetadata.getHexSize() * this.mapMetadata.getGridCellWidth();
+		this.xPoints[3] = this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellWidth();
 		this.xPoints[4] = 0;
 		this.xPoints[5] = 0;
 
 		this.yPoints[0] = 0;
-		this.yPoints[1] = this.metadata.getHexSize() / 4 * this.metadata.getGridCellHeight();
-		this.yPoints[2] = this.metadata.getHexSize() * 3 / 4 * this.metadata.getGridCellHeight();
-		this.yPoints[3] = this.metadata.getHexSize() * this.metadata.getGridCellHeight();
-		this.yPoints[4] = this.metadata.getHexSize() * 3 / 4 * this.metadata.getGridCellHeight();
-		this.yPoints[5] = this.metadata.getHexSize() / 4 * this.metadata.getGridCellHeight();
+		this.yPoints[1] = this.mapMetadata.getHexSize() / 4 * this.mapMetadata.getGridCellHeight();
+		this.yPoints[2] = this.mapMetadata.getHexSize() * 3 / 4 * this.mapMetadata.getGridCellHeight();
+		this.yPoints[3] = this.mapMetadata.getHexSize() * this.mapMetadata.getGridCellHeight();
+		this.yPoints[4] = this.mapMetadata.getHexSize() * 3 / 4 * this.mapMetadata.getGridCellHeight();
+		this.yPoints[5] = this.mapMetadata.getHexSize() / 4 * this.mapMetadata.getGridCellHeight();
 
-		this.hexCenter = new Point(this.metadata.getHexSize() / 2 * this.metadata.getGridCellWidth(), this.metadata.getHexSize() / 2 * this.metadata.getGridCellHeight());
+		this.hexCenter = new Point(this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellWidth(), this.mapMetadata.getHexSize() / 2 * this.mapMetadata.getGridCellHeight());
 
 		MessageSource colorSource = (MessageSource) Application.instance().getApplicationContext().getBean("colorSource");
 
@@ -92,6 +91,9 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 		this.images.clear();
 
 		this.mapOptions = (HashMap<MapOptionsEnum, Object>) Application.instance().getApplicationContext().getBean("mapOptions");
+
+		String pval = PreferenceRegistry.instance().getPreferenceValue("map.terrainGraphics");
+		this.useTexture = pval.equals("texture");
 	}
 
 	protected Polygon getSidePolygon(HexSideEnum side) {
@@ -223,17 +225,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 		g.setStroke(s);
 	}
 
-	protected boolean withinMapRange(int x, int y, MapMetadata metadata1) {
-		if (x < metadata1.getMinMapColumn())
-			return false;
-		if (x > metadata1.getMaxMapColumn())
-			return false;
-		if (y < metadata1.getMinMapRow())
-			return false;
-		if (y > metadata1.getMaxMapRow())
-			return false;
-		return true;
-	}
+
 
 	@Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
@@ -241,19 +233,14 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 			throw new IllegalArgumentException(obj.toString());
 		}
 
-		if (this.metadata == null) {
-			init();
-		}
-
 		Hex hex = (Hex) obj;
-		if (!withinMapRange(hex.getColumn(), hex.getRow(), this.metadata))
+		if (!this.mapMetadata.withinMapRange(hex.getColumn(), hex.getRow()))
 			return;
 
 		boolean imageDrawn = false;
 
-		String pval = PreferenceRegistry.instance().getPreferenceValue("map.terrainGraphics");
-		if (pval.equals("texture")) {
-			BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", this.metadata.getGridCellWidth() * this.metadata.getHexSize(), this.metadata.getGridCellHeight() * this.metadata.getHexSize());
+		if (this.useTexture) {
+			BufferedImage img = getImage(hex.getTerrain().toString() + ".terrain", this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize(), this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize());
 			if (img != null) {
 				g.drawImage(img, x, y, null);
 				Polygon polygon1 = new Polygon(this.xPoints, this.yPoints, 6);
@@ -353,9 +340,8 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.MapMetadataChangedEvent)) {
-				init();
+				refreshConfig();
 			}
 		}
 	}
-
 }

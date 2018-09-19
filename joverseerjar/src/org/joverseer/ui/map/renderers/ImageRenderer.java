@@ -14,12 +14,23 @@ import java.awt.*;
  * 
  * @author Marios Skounakis
  */
-public abstract class ImageRenderer implements Renderer {
+public abstract class ImageRenderer extends AbstractBaseRenderer {
     protected HashMap images = new HashMap();
 
-    static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
+    static Logger logger = Logger.getLogger(ImageRenderer.class);
 
-    public BufferedImage copyImage(BufferedImage image) {
+    // injected dependencies
+    ImageSource imgSource;
+
+	public ImageSource getImgSource() {
+		return this.imgSource;
+	}
+
+	public void setImgSource(ImageSource imgSource) {
+		this.imgSource = imgSource;
+	}
+
+	public BufferedImage copyImage(BufferedImage image) {
         BufferedImage newImage = new BufferedImage(image.getWidth(),
                 image.getHeight(),
                 image.getType());
@@ -37,8 +48,8 @@ public abstract class ImageRenderer implements Renderer {
     protected BufferedImage getImage(String imgName) {
         if (!this.images.containsKey(imgName)) {
             try {
-                ImageSource imgSource = joApplication.getImageSource();
-                Image img = imgSource.getImage(imgName);
+//                ImageSource imgSource = joApplication.getImageSource();
+                Image img = this.imgSource.getImage(imgName);
                 BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
                 Graphics g = bimg.getGraphics();
                 g.drawImage(img, 0, 0, null);
@@ -61,8 +72,8 @@ public abstract class ImageRenderer implements Renderer {
     protected BufferedImage getImage(String imgName, int desiredWidth, int desiredHeight) {
         if (!this.images.containsKey(imgName)) {
             try {
-                ImageSource imgSource = joApplication.getImageSource();
-                Image img = imgSource.getImage(imgName);
+//                ImageSource imgSource = joApplication.getImageSource();
+                Image img = this.imgSource.getImage(imgName);
                 
                
                 BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -164,4 +175,9 @@ public abstract class ImageRenderer implements Renderer {
         }
     }
 
+	@Override
+	public void refreshConfig() {
+		// TODO Auto-generated method stub
+		
+	}
 }

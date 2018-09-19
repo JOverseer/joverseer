@@ -24,21 +24,15 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  * 
  * @author Marios Skounakis
  */
-public class MultiCharacterRenderer implements Renderer {
-    protected MapMetadata mapMetadata = null;
+public class MultiCharacterRenderer extends AbstractBaseRenderer {
 
     @Override
 	public boolean appliesTo(Object obj) {
         return Character.class.isInstance(obj);
     }
 
-    protected void init() {
-        this.mapMetadata = MapMetadata.instance();
-    }
-
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-        if (this.mapMetadata == null) init();
         Game game = GameHolder.instance().getGame();
         Turn turn = game.getTurn();
 
@@ -128,4 +122,9 @@ public class MultiCharacterRenderer implements Renderer {
         }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(cx, cy, w, h), c);
     }
+
+	@Override
+	public void refreshConfig() {
+		//nothing to do.
+	}
 }

@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**
@@ -18,40 +17,24 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  * @author Marios Skounakis
  */
 public class ArmyIconRenderer extends ImageRenderer {
-	MapMetadata mapMetadata = null;
+	private boolean simplified=true;
 
 	@SuppressWarnings("hiding")
-	static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
+	static Logger logger = Logger.getLogger(ArmyIconRenderer.class);
 
 	@Override
 	public boolean appliesTo(Object obj) {
-		String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
-		if (!pval.equals("simplified"))
+		if (!this.simplified)
 			return false;
 		return Army.class.isInstance(obj);
 	}
 
-	private void init() {
-		this.mapMetadata = MapMetadata.instance();
-	}
-
 	@Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-		if (this.mapMetadata == null)
-			init();
-
 		Army army = (Army) obj;
 
 		BufferedImage armyImage = null;
-		// todo calculate from army allegiance
-		NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
-		if (allegiance == NationAllegianceEnum.Neutral) {
-			if (army.getNationNo() > 10) {
-				allegiance = NationAllegianceEnum.DarkServants;
-			} else {
-				allegiance = NationAllegianceEnum.FreePeople;
-			}
-		}
+		NationAllegianceEnum allegiance = army.getNationAllegiance();
 		armyImage = getImage("army." + allegiance.toString() + ".image");
 
 		BufferedImage img = copyImage(armyImage);
@@ -68,14 +51,28 @@ public class ArmyIconRenderer extends ImageRenderer {
 		int dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() * 5 / 20;
 		int dy = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() * 13 / 20;
 		int w = armyImage.getWidth();
-		// todo make decision based on allegiance, not nation no
-		if (army.getNationNo() > 10) {
-			dx = dx + this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - w;
-		} else {
+		switch (allegiance) {
+		case FreePeople:
 			dx = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - dx;
+			break;
+		case DarkServants:
+			dx = dx + this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2 - w;
+			break;
+		case Neutral:
+			// fall thru
+		default:
+			dx = dx + this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2;
+			break;
+		
 		}
 
 		g.drawImage(img, x + dx, y + dy, null);
 
+	}
+
+	@Override
+	public void refreshConfig() {
+		String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
+		this.simplified = pval.equals("simplified");
 	}
 }

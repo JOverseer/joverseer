@@ -76,8 +76,6 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	public boolean render(Object obj, Graphics2D g, int x, int y, boolean doRender) {
-		if (this.mapMetadata == null)
-			init();
 
 		// todo render order
 		Order order = (Order) obj;

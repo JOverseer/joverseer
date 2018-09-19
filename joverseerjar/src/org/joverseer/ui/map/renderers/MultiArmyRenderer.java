@@ -13,7 +13,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
@@ -26,17 +25,12 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  * @author Marios Skounakis
  */
 public class MultiArmyRenderer extends ImageRenderer {
-    MapMetadata mapMetadata = null;
+	private boolean simplified=false;
     
     @Override
 	public boolean appliesTo(Object obj) {
-        String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
-        if (pval.equals("simplified")) return false;
+        if (this.simplified) return false;
         return Army.class.isInstance(obj);
-    }
-
-    private void init() {
-        this.mapMetadata = MapMetadata.instance();
     }
 
     private boolean isArmyFp(Army army) {
@@ -47,8 +41,6 @@ public class MultiArmyRenderer extends ImageRenderer {
 
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-        if (this.mapMetadata == null) init();
-
         Army army = (Army)obj;
         
         boolean showAnchoredShips =
@@ -138,4 +130,10 @@ public class MultiArmyRenderer extends ImageRenderer {
         g.drawImage(img, x + dx, y + dy, null);
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(x + dx, y+dy, img.getWidth(), img.getHeight()), army);
     }
+
+	@Override
+	public void refreshConfig() {
+		String pval = PreferenceRegistry.instance().getPreferenceValue("map.charsAndArmies");
+		this.simplified = pval.equals("simplified");
+	}
 }

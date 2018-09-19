@@ -89,5 +89,12 @@ public class MapMetadata {
 	{
 		return (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 	}
+	public boolean withinMapRange(int x, int y) {
+		if (x < getMinMapColumn()) return false;
+		if (x > getMaxMapColumn()) return false;
+		if (y < getMinMapRow()) return false;
+		if (y > getMaxMapRow()) return false;
+		return true;
+	}
 
 }

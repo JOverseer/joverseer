@@ -47,15 +47,14 @@ public class HexInfoRenderer extends DefaultHexRenderer {
     int fontStyle = Font.ITALIC;
     
     @Override
-	protected void init() {
-        super.init();
+	public void refreshConfig() {
+        super.refreshConfig();
         this.img = null;
         this.gh = GameHolder.instance();
         this.mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
     }
 
-
-    public int getDensityFactor() {
+	public int getDensityFactor() {
         return this.densityFactor;
     }
 
@@ -70,12 +69,12 @@ public class HexInfoRenderer extends DefaultHexRenderer {
 
     private Image getImage() {
         if (this.img == null) {
-            this.img = new BufferedImage(this.metadata.getGridCellWidth() * this.metadata.getHexSize(), this.metadata.getGridCellHeight() * this.metadata.getHexSize(), Transparency.TRANSLUCENT);
+            this.img = new BufferedImage(this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize(), this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize(), Transparency.TRANSLUCENT);
             Polygon polygon1 = new Polygon(this.xPoints, this.yPoints, 6);
             Graphics2D g = this.img.createGraphics();
 
-            int w = this.metadata.getHexSize() * this.metadata.getGridCellWidth();
-            int h = this.metadata.getHexSize() * this.metadata.getGridCellHeight();
+            int w = this.mapMetadata.getHexSize() * this.mapMetadata.getGridCellWidth();
+            int h = this.mapMetadata.getHexSize() * this.mapMetadata.getGridCellHeight();
             int m = w / getDensityFactor();
 
             g.setClip(null);
@@ -116,11 +115,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         String pval = PreferenceRegistry.instance().getPreferenceValue("map.fogOfWarStyle");
         boolean simpleColors = pval.equals("xs");
 
-        if (this.metadata == null) {
-            init();
-        }
         Hex hex = (Hex)obj;
-        if (!withinMapRange(hex.getColumn(), hex.getRow(), this.metadata)) return;
+        if (!this.mapMetadata.withinMapRange(hex.getColumn(), hex.getRow())) return;
         Game game = this.gh.getGame();
         
         Object map = this.mapOptions.get(MapOptionsEnum.NationMap);
@@ -165,9 +161,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             if (hexInfo.getClimate() != null) {
                 Color climateColor = ColorPicker.getInstance().getColor("climate." + hexInfo.getClimate().toString());
                 Color transClimateColor = new Color(climateColor.getRed(), climateColor.getBlue(), climateColor.getGreen(), 100);
-                int radius = this.metadata.getGridCellWidth() * 2;
-                int cx = x + this.metadata.getGridCellWidth() * this.metadata.getHexSize() / 2;
-                int cy = y + this.metadata.getGridCellHeight() * this.metadata.getHexSize() / 2;
+                int radius = this.mapMetadata.getGridCellWidth() * 2;
+                int cx = x + this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() / 2;
+                int cy = y + this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() / 2;
                 Ellipse2D.Float el = new Ellipse2D.Float(cx - radius / 2, cy - radius / 2, radius, radius);
                 g.setColor(transClimateColor);
                 g.fill(el);
@@ -178,8 +174,8 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         	if (simpleColors) {
         		Font f = new Font(this.fontName, this.fontStyle, this.fontSize);
         		int w = ((Number)f.getStringBounds("0000", g.getFontRenderContext()).getWidth()).intValue();
-        		x = this.metadata.getGridCellWidth() * this.metadata.getHexSize() + x - w / 2;
-                y = this.metadata.getGridCellHeight() * this.metadata.getHexSize() / 4 + y + 8;
+        		x = this.mapMetadata.getGridCellWidth() * this.mapMetadata.getHexSize() + x - w / 2;
+                y = this.mapMetadata.getGridCellHeight() * this.mapMetadata.getHexSize() / 4 + y + 8;
 
         		g.setFont(f);
         		if (hex.getTerrain() == HexTerrainEnum.mountains ||

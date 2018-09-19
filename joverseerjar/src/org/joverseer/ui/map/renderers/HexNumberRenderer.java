@@ -9,17 +9,12 @@ import java.awt.*;
  *  
  * @author Marios Skounakis
  */
-public class HexNumberRenderer implements Renderer{
+public class HexNumberRenderer extends AbstractBaseRenderer {
     String fontName = "Microsoft Sans Serif";
     int fontSize = 8;
     int fontStyle = Font.PLAIN;
-    MapMetadata mapMetadata;
 
     public HexNumberRenderer() {
-    }
-
-    private void init() {
-        this.mapMetadata = MapMetadata.instance();
     }
 
     @Override
@@ -27,25 +22,14 @@ public class HexNumberRenderer implements Renderer{
         return Hex.class.isInstance(obj);
     }
     
-    protected boolean withinMapRange(int x, int y, MapMetadata metadata) {
-        if (x < metadata.getMinMapColumn()) return false;
-        if (x > metadata.getMaxMapColumn()) return false;
-        if (y < metadata.getMinMapRow()) return false;
-        if (y > metadata.getMaxMapRow()) return false;
-        return true;
-    }
-
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
         if (!appliesTo(obj)) {
             throw new IllegalArgumentException(obj.toString());
         }
-        if (this.mapMetadata == null) {
-            init();
-        }
 
         Hex hex = (Hex)obj;
-        if (!withinMapRange(hex.getColumn(), hex.getRow(), this.mapMetadata)) return;
+        if (!this.mapMetadata.withinMapRange(hex.getColumn(), hex.getRow())) return;
 
         Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
         String hexNo = String.valueOf(hex.getColumn());
@@ -91,4 +75,10 @@ public class HexNumberRenderer implements Renderer{
     public void setFontStyle(int fontStyle) {
         this.fontStyle = fontStyle;
     }
+
+	@Override
+	public void refreshConfig() {
+		//nothing to do.
+		
+	}
 }

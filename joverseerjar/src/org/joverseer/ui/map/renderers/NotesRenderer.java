@@ -10,24 +10,17 @@ import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
-public class NotesRenderer implements Renderer {
-	MapMetadata mapMetadata = null;
+public class NotesRenderer extends AbstractBaseRenderer {
 
-	static Logger logger = Logger.getLogger(PopulationCenterRenderer.class);
+	static Logger logger = Logger.getLogger(NotesRenderer.class);
 
 	@Override
 	public boolean appliesTo(Object obj) {
 		return Note.class.isInstance(obj);
 	}
 
-	private void init() {
-		this.mapMetadata = MapMetadata.instance();
-	}
-
 	@Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-		if (this.mapMetadata == null)
-			init();
 
 		// Note note = (Note)obj;
 
@@ -47,6 +40,11 @@ public class NotesRenderer implements Renderer {
 		g.setColor(color2);
 
 		g.draw(e);
+	}
+
+	@Override
+	public void refreshConfig() {
+		
 	}
 
 }

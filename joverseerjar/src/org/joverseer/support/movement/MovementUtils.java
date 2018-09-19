@@ -134,13 +134,7 @@ public class MovementUtils {
 		} else {
 			// out of map
 			MapMetadata mm = joApplication.getMapMetadata();
-			if (dest.getColumn() < mm.getMinMapColumn())
-				return -1;
-			if (dest.getColumn() > mm.getMaxMapColumn())
-				return -1;
-			if (dest.getRow() < mm.getMinMapRow())
-				return -1;
-			if (dest.getRow() > mm.getMaxMapRow())
+			if (!mm.withinMapRange(dest.getColumn(),dest.getRow()))
 				return -1;
 		}
 
@@ -257,13 +251,7 @@ public class MovementUtils {
 		} else {
 			// out of map
 			MapMetadata mm = joApplication.getMapMetadata();
-			if (dest.getColumn() < mm.getMinMapColumn())
-				return -1;
-			if (dest.getColumn() > mm.getMaxMapColumn())
-				return -1;
-			if (dest.getRow() < mm.getMinMapRow())
-				return -1;
-			if (dest.getRow() > mm.getMaxMapRow())
+			if (!mm.withinMapRange(dest.getColumn(),dest.getRow()))
 				return -1;
 		}
 

@@ -120,19 +120,28 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	 * character's skill types
 	 */
 	private void refreshOrderCombo() {
-		this.orderCombo.setModel(createOrderCombo((Order) getFormObject(),getGameMetadata())); 
+		Order order = (Order) getFormObject();
+		Character c = null;
+		if (order != null) {
+			c = order.getCharacter();
+		}
+		this.orderCombo.setModel(createOrderCombo(c,getGameMetadata())); 
 	}
 	// useful utility function
-	public static ComboBoxListModelAdapter createOrderCombo(Order o,GameMetadata gm) {
+	public static ComboBoxListModelAdapter createOrderCombo(Character c,GameMetadata gm) {
 		Container<OrderMetadata> orderMetadata = gm.getOrders();
-		Character c = o.getCharacter();
+		
 		ListListModel orders = new ListListModel();
 		orders.add(Order.NA);
 		for (OrderMetadata om : orderMetadata.getItems()) {
-			if (c != null && (om.charHasRequiredSkill(c) ||
-					om.orderAllowedDueToUncoverSecretsSNA(c)
-					|| om.orderAllowedDueToScoutingSNA(c))) {
-				if (om.orderAllowedForGameType()) {
+			if (om.orderAllowedForGameType()) {
+				if (c != null) {
+					if (om.charHasRequiredSkill(c)
+						|| om.orderAllowedDueToUncoverSecretsSNA(c)
+						|| om.orderAllowedDueToScoutingSNA(c)) {
+						orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
+					}
+				} else {
 					orders.add(om.getNumber() + " " + om.getCode()); //$NON-NLS-1$
 				}
 			}

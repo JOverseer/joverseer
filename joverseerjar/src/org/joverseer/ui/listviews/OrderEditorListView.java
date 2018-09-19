@@ -36,6 +36,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.orders.OrderMetadata;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
@@ -52,10 +53,13 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.TableUtils;
+import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.list.ComboBoxListModelAdapter;
+import org.springframework.richclient.list.SortedListModel;
 import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ColumnToSort;
 import org.springframework.richclient.table.ShuttleSortableTableModel;
@@ -115,6 +119,9 @@ public class OrderEditorListView extends ItemListView {
 			}
 		}
 
+		if(this.table == null)
+			return;
+		
 		int row = this.table.getSelectedRow();
 		Object o = null;
 		try {
@@ -587,12 +594,44 @@ public class OrderEditorListView extends ItemListView {
 				// setFilters();
 				refreshFilters();
 				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
+				// ComboBox Editor for the order number
+/*
+ * 				Game g = GameHolder.instance().getGame();
+ 				ListListModel orders = new ListListModel();
+				orders.add(Order.NA);
+				if (Game.isInitialized(g)) {
+					GameMetadata gm = g.getMetadata();
+					Container<OrderMetadata> orderMetadata = gm.getOrders();
+					for (OrderMetadata om : orderMetadata) {
+						orders.add(om.getNumber() + " " + om.getCode());
+					}
+				}
+				SortedListModel slm = new SortedListModel(orders);
+
+*/
 				GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
 
-				Order order = getSelectedOrder();
-				if (order==null) return; // nothing selected.
-				// ComboBox Editor for the order number
-				final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(order, gm));
+				Order order=null;
+				Character c = null;
+				int row = OrderEditorListView.this.table.getSelectedRow();
+				if (row >= 0) {
+					int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+					if (idx < OrderEditorListView.this.tableModel.getRowCount()) {
+						try {
+							Object obj = OrderEditorListView.this.tableModel.getRow(idx);
+							order = (Order) obj;
+							if (order != null) {
+								c = order.getCharacter();
+							}
+						} catch (Exception exc) {
+						
+						}
+					}
+				}
+//				Order order = getSelectedOrder();
+				final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(c, gm));
+//				final JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
+//				final JComboBox comboBox = new JComboBox();
 				comboBox.setEditable(true);
 				comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
 				final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);

@@ -259,12 +259,9 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	 */
 	protected JComponent createControlImpl() {
 
-		// fetch the messageSource instance from the application context
-		MessageSource messageSource = Messages.getMessageSource();
-
 		// create the table model
 		try {
-			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
+			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { this.getMessageSource() });
 		} catch (InstantiationException e) {
 			e.printStackTrace(); // To change body of catch statement use File |
 			// Settings | File Templates.

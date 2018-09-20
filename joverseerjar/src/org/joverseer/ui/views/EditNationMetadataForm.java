@@ -15,14 +15,16 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
+import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.controls.ResourceButton;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.jidesoft.popup.JidePopup;
@@ -232,6 +234,8 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				}
 			}
 		}
+		Game g = joApplication.getGame();
+        joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
@@ -197,6 +198,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		}
 		if (this.nationCombo.getItemCount() > 0) {
 			this.nationCombo.setSelectedIndex(selectedIndex);
+			Nation n = g.getMetadata().getNationByName(this.nationCombo.getSelectedItem().toString());
+			setSellBonusFromSNA(n);
 		}
 
 	}
@@ -220,6 +223,10 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		return n.getNumber();
 	}
 
+	private void setSellBonusFromSNA(Nation n) {
+		this.sellBonus.setSelected(n.getSnas().contains(SNAEnum.BuySellBonus));
+		((EconomyTotalsTableModel) this.totalsTable.getModel()).getEconomyCalculatorData().setSellBonus(this.sellBonus.isSelected());
+	}
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -250,16 +257,23 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
-				EconomyCalculator.this.sellBonus.setSelected(((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
-			}
+//				EconomyCalculator.this.sellBonus.setSelected(((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
+				setSellBonusFromSNA(n);
+				}
 		});
-		lb.row();
 
 		lb.cell(this.sellBonus = new JCheckBox(), "align=left"); //$NON-NLS-1$
 		this.sellBonus.setText(Messages.getString("EconomyCalculator.SellBonus")); //$NON-NLS-1$
 		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.sellBonus.setBackground(Color.white);
-		this.sellBonus.addActionListener(new ActionListener() {
+		this.sellBonus.setEnabled(false);
+		Game g = GameHolder.instance().getGame();
+		if (EconomyCalculator.this.nationCombo.getSelectedItem() != null) {
+			Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
+			setSellBonusFromSNA(n);
+		}
+
+/*		this.sellBonus.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// when sell bonus changed
@@ -280,6 +294,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshTaxIncrease();
 			}
 		});
+*/
 		lb.row();
 
 		lb.relatedGapRow();

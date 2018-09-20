@@ -78,7 +78,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 	protected JComponent createFormControl() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
-		tlb.cell(new JLabel(" "));
+		tlb.cell(new ResourceLabel("standardFields.Nation"));
 		tlb.gapCol();
 		tlb.cell(new ResourceLabel("standardFields.Name"));
 		tlb.gapCol();
@@ -99,7 +99,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			nationName.setPreferredSize(this.uiSizes.newDimension(170/20, this.uiSizes.getHeight5()));
 			JLabel lbl = new JLabel();
 			lbl.setPreferredSize(this.uiSizes.newDimension(60/24, this.uiSizes.getHeight6()));
-			lbl.setText(Application.instance().getApplicationContext().getMessage("editNationMetadataForm.NationLabel", new Object[] { (i + 1) }, null));
+			lbl.setText(String.valueOf(i + 1));
 			this.labels.add(lbl);
 			tlb.cell(lbl);
 			tlb.cell(nationName);

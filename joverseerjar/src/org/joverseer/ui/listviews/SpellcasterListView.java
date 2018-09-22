@@ -52,14 +52,14 @@ public class SpellcasterListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		int[] widths = new int[105];
+		int[] widths = new int[SpellcasterTableModel.SPELL_COUNT+SpellcasterTableModel.FIRST_SPELL_COLUMN];
 		widths[0] = 96;
 		widths[1] = 32;
 		widths[2] = 42;
 		widths[3] = 64;
 		widths[4] = 42;
-		for (int i = 0; i < 100; i++) {
-			widths[i + 5] = 64;
+		for (int i = 0; i < SpellcasterTableModel.SPELL_COUNT; i++) {
+			widths[i + SpellcasterTableModel.FIRST_SPELL_COLUMN] = 64;
 		}
 		return widths;
 	}
@@ -149,14 +149,15 @@ public class SpellcasterListView extends BaseItemListView {
 			if (sl == null)
 				return;
 			sl = getSpellsFromFilters();
-			for (int i = 5; i < sl.getSpells().size() + 5; i++) {
+			for (int i = SpellcasterTableModel.FIRST_SPELL_COLUMN; i < sl.getSpells().size() + SpellcasterTableModel.FIRST_SPELL_COLUMN; i++) {
 				TableColumn col = this.table.getColumnModel().getColumn(i);
 				col.setMaxWidth(100);
 				col.setPreferredWidth(64);
-				col.setHeaderValue(sl.getSpellDescrs().get(i - 5));
+				col.setHeaderValue(sl.getSpellDescrs().get(i - SpellcasterTableModel.FIRST_SPELL_COLUMN));
 			}
-			for (int i = sl.getSpells().size() + 5; i < 105; i++) {
+			for (int i = sl.getSpells().size() + SpellcasterTableModel.FIRST_SPELL_COLUMN; i < SpellcasterTableModel.SPELL_COUNT+SpellcasterTableModel.FIRST_SPELL_COLUMN; i++) {
 				TableColumn col = this.table.getColumnModel().getColumn(i);
+				col.setMinWidth(0);
 				col.setMaxWidth(0);
 				col.setPreferredWidth(0);
 			}

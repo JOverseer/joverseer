@@ -89,7 +89,9 @@ public class NationFilter extends AbstractListViewFilter {
 		String pref = PreferenceRegistry.instance().getPreferenceValue("listviews.nationFilterOrder");
 		if (pref == null || pref.equals("nationNumber")) {
 			for (Nation n : g.getMetadata().getNations()) {
-				ret.add(new NationFilter(n.getName(), n.getNumber()));
+				if (!n.getRemoved() ) {
+					ret.add(new NationFilter(n.getName(), n.getNumber()));
+				}
 			}
 		} else {
 			// find the allegiance of the game's nation
@@ -98,17 +100,23 @@ public class NationFilter extends AbstractListViewFilter {
 			if (mn.getAllegiance() == NationAllegianceEnum.DarkServants) {
 				for (Nation n : g.getMetadata().getNations()) {
 					if (n.getAllegiance() == mn.getAllegiance()) {
-						ret.add(new NationFilter(n.getName(), n.getNumber()));
+						if (!n.getRemoved() ) {
+							ret.add(new NationFilter(n.getName(), n.getNumber()));
+						}
 					}
 				}
 				for (Nation n : g.getMetadata().getNations()) {
 					if (n.getAllegiance() != mn.getAllegiance()) {
-						ret.add(new NationFilter(n.getName(), n.getNumber()));
+						if (!n.getRemoved() ) {
+							ret.add(new NationFilter(n.getName(), n.getNumber()));
+						}
 					}
 				}
 			} else {
 				for (Nation n : g.getMetadata().getNations()) {
-					ret.add(new NationFilter(n.getName(), n.getNumber()));
+					if (!n.getRemoved() ) {
+						ret.add(new NationFilter(n.getName(), n.getNumber()));
+					}
 				}
 			}
 		}

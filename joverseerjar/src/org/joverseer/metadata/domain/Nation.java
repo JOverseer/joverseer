@@ -106,4 +106,7 @@ public class Nation implements Serializable {
 		return this.getName();
 	}
 
+	public boolean isActivePlayer() {
+		return (!this.eliminated) && (!this.removed) && (this.number >0) && (this.number < 26);
+	}
 }

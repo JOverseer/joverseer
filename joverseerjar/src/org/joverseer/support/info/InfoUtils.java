@@ -262,6 +262,9 @@ public class InfoUtils {
 					lower = Integer.valueOf(range); 
 					upper = lower;
 				}
+				if (lower == 1) {
+					lower =0;
+				}
 				if ((turn >= lower) && (turn <=upper)) {
 					return Integer.valueOf(info.getValue(j, 2));
 				}

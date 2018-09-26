@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -71,14 +72,20 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					combo.setPreferredSize(this.uiSizes.newDimension(190 / 20, this.uiSizes.getHeight5()));
 					for (PreferenceValue pv : p.getDomain()) {
 						combo.addItem(pv.getDescription());
-						// find the appriate combo box item from the key
+						// find the appropriate combo box item from the key
 						if (reg.getPreferenceValue(p.getKey()).equals(pv.getKey())) {
 							combo.setSelectedItem(pv.getDescription());
 						}
 					}
 					this.components.put(p.getKey(), combo);
 					tlb.cell(combo, "colspec=left:200px");
-				} else {
+				} else if (p.getType().equals(Preference.TYPE_CHECKBOX)) {
+					JCheckBox check = new JCheckBox();
+					check.setSelected(reg.getPreferenceValue(p.getKey()).equals("yes"));
+					this.components.put(p.getKey(), check);
+					tlb.cell(check);
+				}
+				else {
 					JTextField tf = new JTextField();
 					tf.setPreferredSize(this.uiSizes.newDimension(190 / 20, this.uiSizes.getHeight5()));
 					tf.setText(reg.getPreferenceValue(p.getKey()));
@@ -122,6 +129,13 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 							reg.setPreferenceValue(p.getKey(), pv.getKey());
 						}
 					}
+				}
+			} else if (p.getType().equals(Preference.TYPE_CHECKBOX)) {
+				JCheckBox check = (JCheckBox) c;
+				if (check.isSelected()) {
+					reg.setPreferenceValue(p.getKey(), "yes");
+				} else {
+					reg.setPreferenceValue(p.getKey(), "no");
 				}
 			} else {
 				JTextField tf = (JTextField) c;

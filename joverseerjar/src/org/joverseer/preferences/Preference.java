@@ -26,6 +26,7 @@ import org.springframework.richclient.application.Application;
 public class Preference {
 	public static String TYPE_DROPDOWN = "dropDown";
 	public static String TYPE_TEXT = "text";
+	public static String TYPE_CHECKBOX = "check";
 
     String key;
     String type = TYPE_DROPDOWN;
@@ -126,6 +127,19 @@ public class Preference {
 		this.type = type;
 	}
     
-    
+	/**
+	 * A utility function the find the description matching the specified key from the domain PreferenceValues.
+	 * @param code the key value in the domain.
+	 * @return the domain Description or empty string if not found.
+	 */
+	public String findDomainDescription(String code) {
+		for (PreferenceValue pv : this.domain) {
+			if (pv.getKey().equals(code)) {
+				return pv.getDescription();
+			}
+		}
+		return "";
+	}
+
     
 }

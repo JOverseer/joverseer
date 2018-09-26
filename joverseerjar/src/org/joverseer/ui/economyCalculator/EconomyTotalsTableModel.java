@@ -27,12 +27,25 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     /**
 	 * 
 	 */
+	private static final int iLeftHeaderCol =0;
+	private static final int iLeftValueCol=1;
+	private static final int iMiddleHeaderCol=2;
+	private static final int iMiddleValueCol=3;
+	private static final int iRightHeaderCol=4;
+	private static final int iRightValueCol=5;
+	
+	private static final int iTaxRateRow = 0;
+	private static final int iGoldRow = 2;
+	private static final int iMarketSalesRow =3;
+	private static final int iMarketSpendRow =4;
+	
+	private static final int iOrdersCostRow = 3;
 	private static final long serialVersionUID = -7961559423992117184L;
 	String[] columnHeaders = new String[] {"", "", "", "", "", ""};
     // "row headers", they go into column 0 of the table
     String[] rowTags1 = new String[] {"army","pc","char","total","pclosses" };
-    String[] rowTags2 = new String[] {"taxRate","taxRevenue","gold","profits","surplus"};
-    String[] rowTags3 = new String[] {"ordersCost",null,"starting","final",null};
+    String[] rowTags2 = new String[] {"taxRate","taxRevenue","gold","marketSales","marketSpend"};
+    String[] rowTags3 = new String[] {"starting","surplus","profits","ordersCost","final"};
     String[] rowHeaders1;
     // "row headers 2", they go into column 2 of the table
     String[] rowHeaders2;
@@ -84,19 +97,19 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     @Override
 	public Class<?> getColumnClass(int column) {
-        if (column == 0 || column == 2 || column == 4) return String.class;
+        if (column == iLeftHeaderCol || column == iMiddleHeaderCol || column == iRightHeaderCol) return String.class;
         return Integer.class;
     }
 
     @Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
+        if (columnIndex == iLeftHeaderCol) {
             return this.rowHeaders1[rowIndex];
         }
-        if (columnIndex == 2) {
+        if (columnIndex == iMiddleHeaderCol) {
             return this.rowHeaders2[rowIndex];
         }
-        if (columnIndex == 4) {
+        if (columnIndex == iRightHeaderCol) {
             return this.rowHeaders3[rowIndex];
         }
         if (!Game.isInitialized(getGame())) return "";
@@ -107,7 +120,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (ecd == null) return "";
         if (!ecd.isInitialized()) return "";
 
-        if (columnIndex == 1) {
+        if (columnIndex == iLeftValueCol) {
             switch (rowIndex) {
                 case 0:
                     return ne.getArmyMaintenance();
@@ -123,30 +136,32 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             }
             return "";
         }
-        if (columnIndex == 3) {
+        if (columnIndex == iMiddleValueCol) {
             switch (rowIndex) {
-                case 0:
+                case iTaxRateRow:
                     return getTaxRate();
                 case 1:
                     return getTaxRevenue();
-                case 2:
+                case iGoldRow:
                     return getGoldProduction();
-                case 3:
-                    // Market profits
-                    return getMarketProfits();
-                case 4:
-                    // Surplus
-                    return getSurplus();
+                case iMarketSalesRow:
+                    return getMarketSales();
+                case iMarketSpendRow:
+                    return getMarketSpend();
             }
             return "";
         }
-        if (columnIndex == 5) {
+        if (columnIndex == iRightValueCol) {
             switch (rowIndex) {
-                case 0:
+            	case 0:
+            		return ne.getReserve();
+            	case 1:
+                    return getSurplus();
+            	case 2:
+                    return getMarketProfits();
+                case iOrdersCostRow:
                     return ecd.getOrdersCost();
-                case 2:
-                    return ne.getReserve();
-                case 3:
+                case 4:
                     // final gold
                     return getFinalGold();
             }
@@ -185,26 +200,26 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     @Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return (columnIndex == 5 && rowIndex == 0) ||
-                (columnIndex == 3 && rowIndex == 2) ||
-                (columnIndex == 3 && rowIndex == 0);
+        return (columnIndex == 5 && rowIndex == iOrdersCostRow) ||
+                (columnIndex == 3 && rowIndex == iGoldRow) ||
+                (columnIndex == 3 && rowIndex == iTaxRateRow);
     }
 
     @Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 5 && rowIndex == 0) {
+        if (columnIndex == 5 && rowIndex == iOrdersCostRow) {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();
             joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
-        if (columnIndex == 3 && rowIndex == 2) {
+        if (columnIndex == 3 && rowIndex == iGoldRow) {
             setGoldProduction((Integer)aValue);
             fireTableDataChanged();
             joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
-        if (columnIndex == 3 && rowIndex == 0) {
+        if (columnIndex == 3 && rowIndex == iTaxRateRow) {
             setTaxRate((Integer)aValue);
             fireTableDataChanged();
             joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
@@ -221,6 +236,16 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     }
 
     
+    public Integer getMarketSales() {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return null;
+        return ecd.getMarketSales();
+    }
+    public Integer getMarketSpend() {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return null;
+        return ecd.getMarketSpend();
+    }
     public Integer getMarketProfits() {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return null;
@@ -228,7 +253,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     }
     
     /**
-     * Computes the gold production for the nation, unless it has been specicically set
+     * Computes the gold production for the nation, unless it has been specifically set
      * by the user
      * @return
      */

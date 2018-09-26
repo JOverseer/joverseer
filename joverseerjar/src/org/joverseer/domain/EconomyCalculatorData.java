@@ -184,6 +184,32 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		return pp.getMarketTotal();
 	}
 
+	public int getMarketSales() {
+		long sales=0;
+		Turn t = GameHolder.instance().getGame().getTurn();
+		if (t == null)
+			return 0;
+		for (ProductEnum p : ProductEnum.values()) {
+			if (p == ProductEnum.Gold)
+				continue;
+			long productSale = ( get100xProductSales(p) + ((getTotal(p) - getSellUnits(p)) * get100xProductSaleCommission(p)) )/100;
+			sales += productSale;
+		}
+		return (int)sales;
+	}
+	public int getMarketSpend() {
+		long spend=0;
+		Turn t = GameHolder.instance().getGame().getTurn();
+		if (t == null)
+			return 0;
+		for (ProductEnum p : ProductEnum.values()) {
+			if (p == ProductEnum.Gold)
+				continue;
+			long productSpend = ( get100xProductPurchases(p) + get100xProductBidPurchase(p) )/100;
+			spend += productSpend;
+		}
+		return (int)-spend;
+	}
 	public int getMarketProfits() {
 		int profits = 0;
 		Turn t = GameHolder.instance().getGame().getTurn();
@@ -210,6 +236,23 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		return profits;
 	}
 
+	// note 100x to avoid early rounding.
+	protected long get100xProductSales(ProductEnum p)
+	{
+		return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor();
+	}
+	protected long get100xProductPurchases(ProductEnum p)
+	{
+		return getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor();
+	}
+	protected long get100xProductBidPurchase(ProductEnum p)
+	{
+		return getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor();
+	}
+	protected long get100xProductSaleCommission(ProductEnum p)
+	{
+		return  getSellPrice(p) * getSellBonusFactor() * getSellPct(p)/ 100;
+	}
 	private int getSellBonusFactor() {
 		return getSellBonus() ? 120 : 100;
 	}

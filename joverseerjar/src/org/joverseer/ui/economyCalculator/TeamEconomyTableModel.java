@@ -11,6 +11,8 @@ import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.domain.NationStatisticsWrapper;
+import org.joverseer.ui.listviews.NationStatisticsTableModel;
 import org.joverseer.ui.support.Messages;
 
 /**
@@ -22,22 +24,32 @@ import org.joverseer.ui.support.Messages;
 @SuppressWarnings("serial")
 public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	
-	public static int iFinalGold = 15;
-	public static int iMarket = 13;
-	public static int iProdStart = 1;
-	public static int iProdEnd = 7;
-	public static int iSurplus = 8;
-	public static int iTaxRate = 11;
+	public static final int iProdStart = 1;
+	public static final int iProdEnd = 7;
+	public static final int iCaptialChars = 8;
+	public static final int iReserves = 9;
+	public static final int iSurplus = 10;
+	public static final int iMarketSpending = 11;
+	public static final int iMarketSales = 12;
+	public static final int iLosses = 13;
+	public static final int iOrders = 14;
+	public static final int iFinalGold = 15;
+	public static final int iHikedTaxRate = 16;
+	public static final int iTaxRate = 17;
+	public static final int iTaxBase = 18;
 
+	// used to grab the tax base. needs to injected.
+	NationStatisticsTableModel nswm = null;
+	
 	SummaryTypeEnum showProductsAs = SummaryTypeEnum.Total;
 
 	//note: change code in the constructor if you change this.
-	String[] columnHeaderTags = new String[] { "nation", "le", "br", "st", "mi", "fo", "ti", "mo", "surplus","reserves","losses","taxRate","cptChars","market","orders","finalGold"};
+	String[] columnHeaderTags = new String[] { "nation", "le", "br", "st", "mi", "fo", "ti", "mo", "cptChars", "reserves", "surplus","marketSpending","marketSales","losses","orders","finalGold","hikedTaxRate", "taxRate", "taxBase"};
 	String[] columnNames;
 
-	int[] columnWidths = new int[] { 42, 42, 42, 42, 42, 42, 42, 42, 54, 54, 54, 42, 58, 42, 42, 64 };
+	int[] columnWidths = new int[] { 42, 42, 42, 42, 42, 42, 42, 42, 58, 54, 54, 74, 74, 54, 42, 64, 60, 42, 48  };
 
-	Class<?>[] classes = new Class[] { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
+	Class<?>[] classes = new Class[] { String.class, Integer.class, Integer.class, Integer.class,  Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 
 	ArrayList<EconomyCalculatorData> items = new ArrayList<EconomyCalculatorData>();
 
@@ -46,10 +58,10 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 		super();
 		this.columnNames = new String[this.columnHeaderTags.length];
 		this.columnNames[0]=Messages.getString("standardFields.Nation");
-		for (int i=1;i<8;i++) {
+		for (int i=iProdStart;i<=iProdEnd;i++) {
 			this.columnNames[i] = Messages.getString("ProductEnum."+this.columnHeaderTags[i]);
 		}
-		for (int i=8;i<this.columnHeaderTags.length;i++) {
+		for (int i=iProdEnd+1;i<this.columnHeaderTags.length;i++) {
 			this.columnNames[i] = Messages.getString("TeamEconomy."+this.columnHeaderTags[i]);
 		}
 	}
@@ -146,7 +158,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 			if (n == null)
 				return ecd.getNationNo();
 			return n.getShortName();
-		case 1:
+		case iProdStart:
 			// leather
 			return getProduct(ecd, ProductEnum.Leather);
 		case 2:
@@ -164,35 +176,44 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 		case 6:
 			// timber
 			return getProduct(ecd, ProductEnum.Timber);
-		case 7:
+		case iProdEnd:
 			// mounts
 			return getProduct(ecd, ProductEnum.Mounts);
-		case 8:
-			// surplus
-			return ettm.getSurplus();
-		case 9:
-			// reserves
-			return ne.getReserve();
-		case 10:
-			return -EconomyTotalsTableModel.computeLostGoldRevenue(ne.getNationNo()) - EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
-		case 11:
-			// tax rate
-			return ettm.getTaxRate();
-		case 12:
-			// chars in capital
+		case iCaptialChars:
 			PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ecd.getNationNo(), true });
 			if (capital == null)
 				return null;
 			return GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperties(new String[] { "hexNo", "deathReason", "nationNo" }, new Object[] { capital.getHexNo(), CharacterDeathReasonEnum.NotDead, ecd.getNationNo() }).size();
-		case 13:
-			// market
-			return ecd.getMarketProfits();
-		case 14:
+		case iSurplus:
+			// surplus
+			return ettm.getSurplus();
+		case iReserves:
+			// reserves
+			return ne.getReserve();
+		case iLosses:
+			return -EconomyTotalsTableModel.computeLostGoldRevenue(ne.getNationNo()) - EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
+		case iMarketSales:
+			return ecd.getMarketSales();
+		case iMarketSpending:
+			return ecd.getMarketSpend();
+		case iOrders:
 			// orders
 			return ecd.getOrdersCost();
-		case 15:
+		case iFinalGold:
 			// available gold
 			return ettm.getFinalGold();
+		case iHikedTaxRate:
+			return ettm.getTaxIncrease() + ettm.getTaxRate();
+		case iTaxRate:
+			return ettm.getTaxRate();
+		case iTaxBase:
+			if (this.nswm == null) return 0;
+			for (NationStatisticsWrapper nsw:(ArrayList<NationStatisticsWrapper>)this.nswm.getRows()) {
+				if (nsw.getNationNo().intValue() == ecd.getNationNo().intValue()) {
+					return nsw.getTaxBase();
+				}
+			}
+			return 0;
 		}
 		;
 		return null;

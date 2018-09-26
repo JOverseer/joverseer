@@ -45,7 +45,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
         tlb.row();
         
         for (Nation n : (ArrayList<Nation>)gm.getNations()) {
-            if (n.getNumber() > 0) {
+            if (n.isActivePlayer()) {
                 this.parameter.addItem(n.getName());
             }
         }

@@ -2,8 +2,6 @@ package org.joverseer.ui.map.renderers;
 
 import org.springframework.richclient.image.ImageSource;
 import org.apache.log4j.Logger;
-import org.joverseer.joApplication;
-
 import java.util.HashMap;
 import java.awt.image.*;
 import java.awt.*;

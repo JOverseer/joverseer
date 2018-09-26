@@ -2,15 +2,12 @@
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.joverseer.support.CommentedBufferedReader;
-import org.springframework.core.io.Resource;
 
 /**
  *

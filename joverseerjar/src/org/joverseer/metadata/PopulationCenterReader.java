@@ -7,7 +7,6 @@ import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
-import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 

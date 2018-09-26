@@ -22,7 +22,6 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapTooltipHolder;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;

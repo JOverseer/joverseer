@@ -3,7 +3,6 @@ package org.joverseer.metadata;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.metadata.orders.OrderMetadata;
-import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
 
 /**

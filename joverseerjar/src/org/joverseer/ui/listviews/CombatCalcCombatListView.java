@@ -9,7 +9,6 @@ import org.joverseer.ui.command.ShowCombatCalculatorCommand;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.table.SortableTableModel;
 
 /**
  * List view for Combats for the Combat Calc

@@ -6,7 +6,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Note;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.ColorPicker;
 

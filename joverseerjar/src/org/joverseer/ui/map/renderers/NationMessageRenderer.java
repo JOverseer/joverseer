@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**

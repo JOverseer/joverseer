@@ -1,7 +1,6 @@
 package org.joverseer.ui.map.renderers;
 
 import org.joverseer.metadata.domain.Hex;
-import org.joverseer.ui.map.MapMetadata;
 import java.awt.*;
 
 /**

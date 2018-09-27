@@ -25,6 +25,20 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	/**
 	 * 
 	 */
+	public static final int iStoresRow=0;
+	public static final int iProductionRow=1;
+	public static final int iAvailableToSell=2;
+	public static final int iPotentialProfit=3;
+	public static final int iSellPrice=4;
+	public static final int iSellCount=5;
+	public static final int iSellPercent=6;
+	public static final int iAvailableMarket=7;
+	public static final int iBuyPrice=8;
+	public static final int iBuyCount=9;
+	public static final int iBidPrice=10;
+	public static final int iBidCount=11;
+	public static final int iCostOrProfit=12;
+	public static final int iRowCount=13;
 	private static final long serialVersionUID = -95042201849817111L;
 	String[] rowHeaderTags = new String[] {"stores","production","availableToSell","potentialProfit","sellPrice","sellCount","sellPercent","availableMarket","butPrice",
 			"buyCount","bidPrice","bidCount","costOrProfit"
@@ -64,31 +78,31 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		EconomyCalculatorData ecd = getEconomyCalculatorData();
 		String productCode = this.columnHeaders[columnIndex];
 		ProductEnum product = ProductEnum.getFromCode(productCode);
-		if (rowIndex == 5) {
+		if (rowIndex == iSellCount) {
 			ecd.setSellUnits(product, (Integer) aValue);
 			fireTableDataChanged();
 			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
-		if (rowIndex == 6) {
+		if (rowIndex == iSellPercent) {
 			ecd.setSellPct(product, (Integer) aValue);
 			fireTableDataChanged();
 			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
-		if (rowIndex == 9) {
+		if (rowIndex == iBuyCount) {
 			ecd.setBuyUnits(product, (Integer) aValue);
 			fireTableDataChanged();
 			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
-		if (rowIndex == 10) {
+		if (rowIndex == iBidPrice) {
 			ecd.setBidPrice(product, (Integer) aValue);
 			fireTableDataChanged();
 			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
-		if (rowIndex == 11) {
+		if (rowIndex == iBidCount) {
 			if (aValue != null && aValue.toString().startsWith("-")) {
 				String tr = aValue.toString().substring(1);
 				Integer newTr = Integer.parseInt(tr);
@@ -122,7 +136,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 
 	@Override
 	public int getRowCount() {
-		return 13;
+		return iRowCount;
 	}
 
 	@Override
@@ -164,44 +178,44 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			return "";
 		String productCode = this.columnHeaders[columnIndex];
 		ProductEnum product = ProductEnum.getFromCode(productCode);
-		if (rowIndex == 0) {
+		if (rowIndex == iStoresRow) {
 			return ecd.getStores(product);
 		}
-		if (rowIndex == 1) {
+		if (rowIndex == iProductionRow) {
 			return ecd.getProduction(product);
 		}
-		if (rowIndex == 2) {
+		if (rowIndex == iAvailableToSell) {
 			return ecd.getTotal(product);
 		}
-		if (rowIndex == 3) {
+		if (rowIndex == iPotentialProfit) {
 			// TODO include sell bonus
 			return ecd.getTotal(product) * ecd.getSellPrice(product);
 		}
-		if (rowIndex == 4) {
+		if (rowIndex == iSellPrice) {
 			return ecd.getSellPrice(product);
 		}
-		if (rowIndex == 5) {
+		if (rowIndex == iSellCount) {
 			return ecd.getSellUnits(product);
 		}
-		if (rowIndex == 6) {
+		if (rowIndex == iSellPercent) {
 			return ecd.getSellPct(product);
 		}
-		if (rowIndex == 7) {
+		if (rowIndex == iAvailableMarket) {
 			return ecd.getMarketTotal(product);
 		}
-		if (rowIndex == 8) {
+		if (rowIndex == iBuyPrice) {
 			return ecd.getBuyPrice(product);
 		}
-		if (rowIndex == 9) {
+		if (rowIndex == iBuyCount) {
 			return ecd.getBuyUnits(product);
 		}
-		if (rowIndex == 10) {
+		if (rowIndex == iBidPrice) {
 			return ecd.getBidPrice(product);
 		}
-		if (rowIndex == 11) {
+		if (rowIndex == iBidCount) {
 			return ecd.getBidUnits(product);
 		}
-		if (rowIndex == 12) {
+		if (rowIndex == iCostOrProfit) {
 			return ecd.getMarketProfits(product);
 		}
 		return "";

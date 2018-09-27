@@ -1,3 +1,4 @@
+    * Fix: Economy Calculator now works for multiple orders of the same product in a nation.
     * Enh: Merge Export Order Text and Export Order commands.
       The two separate export orders were confusing.
       The command automatically generates a 'nice' text representation of the order.

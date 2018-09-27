@@ -292,6 +292,28 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		this.taxRate = taxRate;
 	}
 
+	private void recordBidPrice(ProductEnum p, Integer amount) {
+		if (amount > this.getBidPrice(p)) {
+			this.setBidPrice(p, amount);
+		}
+	}
+	private void recordBidUnits(ProductEnum p, Integer amount) {
+		this.setBidUnits(p, getBidUnits(p) + amount);
+	}
+	private void recordBuyUnits(ProductEnum p, Integer amount) {
+		this.setBuyUnits(p, getBuyUnits(p) + amount);
+	}
+	private void recordSellUnits(ProductEnum p, Integer amount) {
+		this.setSellUnits(p, getSellUnits(p) + amount);
+	}
+	private void recordSellPct(ProductEnum p, Integer amount) {
+		int residual = 100 - this.getSellPct(p);
+		if (residual < 0) {
+			setSellPct(p,100);
+		} else {
+			setSellPct(p,this.getSellPct(p) + (residual * amount /100));
+		}
+	}
 	public void updateMarketFromOrders() {
 		for (ProductEnum p : ProductEnum.values()) {
 			setSellPct(p, 0);
@@ -320,17 +342,17 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
 				if (no == 310) {
 					try {
-						setBidPrice(p, Integer.parseInt(o.getP2()));
-						setBidUnits(p, p1);
+						recordBidPrice(p, Integer.parseInt(o.getP2()));
+						recordBidUnits(p, p1);
 					} catch (NumberFormatException exc) {
 						// nothing
 					}
 				} else if (no == 315) {
-					setBuyUnits(p, p1);
+					recordBuyUnits(p, p1);
 				} else if (no == 320) {
-					setSellUnits(p, p1);
+					recordSellUnits(p, p1);
 				} else if (no == 325) {
-					setSellPct(p, p1);
+					recordSellPct(p, p1);
 				}
 			}
 

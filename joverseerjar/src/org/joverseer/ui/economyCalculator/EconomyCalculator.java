@@ -227,6 +227,9 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.sellBonus.setSelected(n.getSnas().contains(SNAEnum.BuySellBonus));
 		((EconomyTotalsTableModel) this.totalsTable.getModel()).getEconomyCalculatorData().setSellBonus(this.sellBonus.isSelected());
 	}
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();

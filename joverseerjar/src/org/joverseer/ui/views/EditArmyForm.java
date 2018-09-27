@@ -120,43 +120,43 @@ public class EditArmyForm extends ScalableAbstractForm {
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
 
-		lb.append(new ResourceLabel("editArmyForm.Commander"));
+		lb.append(new JLabel(Messages.getString("editArmyForm.Commander")));
 		lb.append(this.commander = new JTextField());
 		this.commander.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
-		lb.append(new ResourceLabel("standardFields.Nation"));
+		lb.append(new JLabel(Messages.getString("standardFields.Nation")));
 		lb.append(this.nation = new JComboBox(getNationNames().toArray()));
 		this.nation.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
-		lb.append(new ResourceLabel("standardFields.HexNo"));
+		lb.append(new JLabel(Messages.getString("standardFields.HexNo")));
 		lb.append(this.hexNo = new JTextField());
 		this.nation.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
-		lb.append(new ResourceLabel("editArmyForm.CommandRank"));
+		lb.append(new JLabel(Messages.getString("editArmyForm.CommandRank")));
 		lb.append(this.commandRank = new JTextField());
 		this.commandRank.setPreferredSize(this.uiSizes.newDimension(60/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
-		lb.append(new ResourceLabel("editArmyForm.Morale"));
+		lb.append(new JLabel(Messages.getString("editArmyForm.Morale")));
 		lb.append(this.morale = new JTextField());
 		this.morale.setPreferredSize(this.uiSizes.newDimension(60/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
-		lb.append(new ResourceLabel("editArmyForm.Food"));
+		lb.append(new JLabel(Messages.getString("editArmyForm.Food")));
 		lb.append(this.food = new JTextField());
 		this.food.setPreferredSize(this.uiSizes.newDimension(60/20, this.uiSizes.getHeight5()));
 
 		lb.nextLine();
 
-		lb.append(new ResourceLabel("editArmyForm.Elements"));
+		lb.append(new JLabel(Messages.getString("editArmyForm.Elements")));
 		lb.nextLine();
 		JComponent panel = lb.getPanel();
 

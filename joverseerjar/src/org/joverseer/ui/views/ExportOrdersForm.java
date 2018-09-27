@@ -1,6 +1,13 @@
 package org.joverseer.ui.views;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,14 +20,17 @@ import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.text.html.HTMLDocument;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -35,6 +45,7 @@ import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.orders.export.OrderFileGenerator;
+import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
@@ -46,8 +57,6 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.SaveGame;
-import org.joverseer.ui.support.controls.ResourceButton;
-import org.joverseer.ui.support.controls.ResourceLabel;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -59,7 +68,6 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
-import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Export/Submit orders form
@@ -67,13 +75,14 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
  * @author Marios Skounakis
  */
 // TODO document better
-public class ExportOrdersForm extends ScalableAbstractForm {
+public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardOwner {
 	public static int ORDERS_OK = 0;
 	public static int ORDERS_NOT_OK = 1;
 
 	JComboBox nation;
 	JComboBox version;
 	JTextArea orders;
+	OrderFileGenerator visibleOrdersGenerator;
 	boolean ordersOk = false;
 	boolean cancelExport = false;
 	Integer oldSelectedNation = null;
@@ -87,6 +96,7 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 
 	public ExportOrdersForm(FormModel model) {
 		super(model, "ExportOrdersForm");
+		this.visibleOrdersGenerator = new OrderTextGenerator();
 	}
 
 	private ArrayList<String> getNationItems() {
@@ -104,14 +114,38 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 		return g.getMetadata().getNationByName(nationName).getNumber();
 	}
 
+	/**
+	 * The comment below allows Eclipse Window Builder Pro to parse the GUI for us!
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	protected JComponent createFormControl() {
 		Game g = GameHolder.instance().getGame();
 
-		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-		glb.append(new ResourceLabel("standardFields.Nation"));
-		glb.append(this.nation = new JComboBox(getNationItems().toArray()));
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		this.orders = new JTextArea();
+		this.orders.setWrapStyleWord(false);
+		this.orders.setLineWrap(false);
+		this.orders.setEditable(false);
+		JScrollPane scp = new JScrollPane(this.orders);
+		scp.setPreferredSize(new Dimension(500, 400));
+		panel.add(scp, BorderLayout.CENTER);
 
+		JPanel topPanel = new JPanel();
+		JPanel buttonPanel = new JPanel();
+		
+		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // so combos are above each other
+		JPanel nationPanel = new JPanel();
+		nationPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel nationLabel = new JLabel(Messages.getString("standardFields.Nation"));
+		nationLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		nationPanel.add(nationLabel);
+		this.nation = new JComboBox(getNationItems().toArray());
+		nationLabel.setLabelFor(this.nation);
+
+		panel.add(topPanel, BorderLayout.NORTH);
 		this.nation.setPreferredSize(this.uiSizes.newDimension(100/24, this.uiSizes.getHeight6()));
 		this.nation.addActionListener(new ActionListener() {
 
@@ -126,78 +160,81 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 					ExportOrdersForm.this.ordersOk = false;
 					ExportOrdersForm.this.oldSelectedNation = nationNo;
 				}
+				ExportOrdersForm.this.generateOrders(ExportOrdersForm.this.visibleOrdersGenerator);
 			}
 
 		});
+		nationPanel.add(this.nation);
+		topPanel.add(nationPanel);
 
-		glb.nextLine();
-
-		glb.append(new ResourceLabel("ExportOrdersForm.Version"));
-		glb.append(this.version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+		JPanel versionPanel = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) versionPanel.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.LEFT);
+		JLabel versionLabel =  new JLabel(Messages.getString("ExportOrdersForm.Version"));
+		versionLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		versionPanel.add(versionLabel);
+		this.version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" });
 		this.version.setPreferredSize(this.uiSizes.newDimension(20/24, this.uiSizes.getHeight6()));
-		glb.nextLine();
+		versionPanel.add(this.version);
+		versionLabel.setLabelFor(this.version);
+		topPanel.add(versionPanel);
+		
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 
-		this.orders = new JTextArea();
-		this.orders.setWrapStyleWord(false);
-		this.orders.setLineWrap(false);
-		this.orders.setEditable(false);
-		JScrollPane scp = new JScrollPane(this.orders);
-		scp.setPreferredSize(new Dimension(500, 400));
-		glb.append(scp, 3, 1);
-
-		glb.nextLine();
-		JButton generate = new ResourceButton("ExportOrdersForm.BtnGenerate");
-		generate.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
-		glb.append(generate, 1, 1);
-		glb.nextLine();
-		generate.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				OrderFileGenerator gen = new OrderFileGenerator();
-				Game g1 = GameHolder.instance().getGame();
-				try {
-					ExportOrdersForm.this.orders.setText(gen.generateOrderFile(g1, g1.getTurn(), getSelectedNationNo()));
-					ExportOrdersForm.this.orders.setCaretPosition(0);
-					ExportOrdersForm.this.orderCheckResult = validateOrders();
-					ExportOrdersForm.this.ordersOk = true;
-				} catch (Exception exc) {
-					ExportOrdersForm.this.orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
-					ExportOrdersForm.this.ordersOk = false;
-//					ExportOrdersForm.logger.error(exc);
-				}
-			}
-		});
-		JButton save = new ResourceButton("standardActions.Save");
-		save.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
-		glb.append(save, 1, 1);
-
+		JButton save = new JButton(Messages.getString("standardActions.Save"));
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAndSendOrders(false);
 			}
 		});
+		save.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
+		buttonPanel.add(save);
 
-		JButton send = new ResourceButton("ExportOrdersForm.BtnSend");
+		JButton send = new JButton(Messages.getString("ExportOrdersForm.BtnSend"));
 		send.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
-		glb.append(send, 1, 1);
-		glb.append(new JLabel(), 1, 1);
-
-		send.setVisible(true);
-
 		send.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAndSendOrders(true);
 			}
 		});
+		buttonPanel.add(send);
+
+		JButton ctc = new JButton(Messages.getString("standardActions.CopyToClipboard"));
+		final ClipboardOwner clipboardOwner = this;
+		ctc.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StringSelection stringSelection = new StringSelection(ExportOrdersForm.this.orders.getText());
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(stringSelection, clipboardOwner);
+			}
+		});
+
+		buttonPanel.add(ctc);
 
 		this.nation.setSelectedIndex(0);
 		this.nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
 
-		return glb.getPanel();
+		return panel;
 	}
 
+	private void generateOrders(OrderFileGenerator gen) {
+		Game g1 = GameHolder.instance().getGame();
+		try {
+			this.orders.setText(gen.generateOrderFile(g1, g1.getTurn(), getSelectedNationNo()));
+			this.orders.setCaretPosition(0);
+			this.orderCheckResult = validateOrders();
+			this.ordersOk = true;
+		} catch (Exception exc) {
+			this.orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
+			this.ordersOk = false;
+//			logger.error(exc);
+		}
+
+	}
 	private void increaseVersionNumber(PlayerInfo pi) {
 		pi.setTurnVersion(pi.getTurnVersion() + 1);
 		this.nation.setSelectedIndex(this.nation.getSelectedIndex());
@@ -238,7 +275,8 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 					GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
 				}
 				FileWriter f = new FileWriter(file);
-				String txt = this.orders.getText();
+				OrderFileGenerator gen = new OrderFileGenerator();
+				String txt = gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo());
 				txt = txt.replace("\n", System.getProperty("line.separator"));
 				f.write(txt);
 				f.close();
@@ -488,6 +526,10 @@ public class ExportOrdersForm extends ScalableAbstractForm {
 		if (pval.equals("yes")) {
 			new SaveGame().execute();
 		}
+	}
+
+	@Override
+	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
 
 }

@@ -1,3 +1,9 @@
+    * Enh: Merge Export Order Text and Export Order commands.
+      The two separate export orders were confusing.
+      The command automatically generates a 'nice' text representation of the order.
+      It may be copied to the clipboard.
+      The Save and Send buttons will use a different format of the orders that Middle-Earth Games and JOverseer understand.
+   
 VERSION 1.16.8
 --------------
 	* Fix: People really wanted the order drop-down list back on the OrderEditorListView (despite it having problems not showing the character-restricted set of orders).

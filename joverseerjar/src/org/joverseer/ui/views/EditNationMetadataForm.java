@@ -80,15 +80,15 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 	protected JComponent createFormControl() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
-		tlb.cell(new ResourceLabel("standardFields.Nation"));
+		tlb.cell(new JLabel(Messages.getString("standardFields.Nation")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("standardFields.Name"));
+		tlb.cell(new JLabel(Messages.getString("standardFields.Name")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationMetadataForm.ShortName"));
+		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.ShortName")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationMetadataForm.Removed"));
+		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.Removed")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationMetadataForm.SNAs"));
+		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.SNAs")));
 		tlb.gapCol();
 		tlb.cell();
 		// tlb.gapCol();
@@ -124,7 +124,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			tlb.gapCol();
 			tlb.cell(nationSNAList);
 
-			JButton editNationSNAs = new ResourceButton("standardActions.Edit");
+			JButton editNationSNAs = new JButton(Messages.getString("standardActions.Edit"));
 			this.editSNAButtons.add(editNationSNAs);
 			editNationSNAs.setPreferredSize(this.uiSizes.newDimension(50/16, this.uiSizes.getHeight4()));
 			tlb.gapCol();

@@ -47,21 +47,21 @@ public class EditNationAllegiancesForm extends ScalableAbstractForm {
 
 		tlb.cell(new JLabel(" "));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("standardFields.Allegiance"));
+		tlb.cell(new JLabel(Messages.getString("standardFields.Allegiance")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationAllegiancesForm.Eliminated"));
-		tlb.gapCol();
-		tlb.cell(new JLabel(" "));
-		tlb.gapCol();
-		tlb.cell(new ResourceLabel("standardFields.Allegiance"));
-		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationAllegiancesForm.Eliminated"));
+		tlb.cell(new JLabel(Messages.getString("editNationAllegiancesForm.Eliminated")));
 		tlb.gapCol();
 		tlb.cell(new JLabel(" "));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("standardFields.Allegiance"));
+		tlb.cell(new JLabel(Messages.getString("standardFields.Allegiance")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationAllegiancesForm.Eliminated"));
+		tlb.cell(new JLabel(Messages.getString("editNationAllegiancesForm.Eliminated")));
+		tlb.gapCol();
+		tlb.cell(new JLabel(" "));
+		tlb.gapCol();
+		tlb.cell(new JLabel(Messages.getString("standardFields.Allegiance")));
+		tlb.gapCol();
+		tlb.cell(new JLabel(Messages.getString("editNationAllegiancesForm.Eliminated")));
 		tlb.gapCol();
 		tlb.relatedGapRow();
 
@@ -99,7 +99,7 @@ public class EditNationAllegiancesForm extends ScalableAbstractForm {
 		tlb.relatedGapRow();
 		tlb.separator("");
 		tlb.relatedGapRow();
-		tlb.cell(new ResourceLabel("editNationAllegiancesForm.StopAskingForAllegianceChanges"), "colspan=3");
+		tlb.cell(new JLabel(Messages.getString("editNationAllegiancesForm.StopAskingForAllegianceChanges")), "colspan=3");
 		tlb.gapCol();
 		tlb.cell(this.stopAsking = new JCheckBox(), "align=left");
 		tlb.gapCol();

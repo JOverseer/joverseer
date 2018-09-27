@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -89,7 +90,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 			Game g = GameHolder.instance().getGame();
 
 			GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-			glb.append(new ResourceLabel("standardFields.Nation"));
+			glb.append(new JLabel(Messages.getString("standardFields.Nation")));
 			glb.append(this.nation = new JComboBox(getNationItems().toArray()));
 
 			this.nation.setSelectedIndex(0);
@@ -106,7 +107,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 			glb.append(scp, 2, 1);
 
 			glb.nextLine();
-			JButton generate = new ResourceButton("exportOrderTextForm.BtnGenerate");
+			JButton generate = new JButton(Messages.getString("exportOrderTextForm.BtnGenerate"));
 			glb.append(generate, 1, 1);
 			glb.nextLine();
 			generate.addActionListener(new ActionListener() {
@@ -123,7 +124,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 				}
 			});
 
-			JButton ctc = new ResourceButton("standardActions.CopyToClipboard");
+			JButton ctc = new JButton(Messages.getString("standardActions.CopyToClipboard"));
 			glb.append(ctc, 1, 1);
 			glb.nextLine();
 			final ClipboardOwner clipboardOwner = this;

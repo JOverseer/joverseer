@@ -232,7 +232,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      */
     public int getSurplus() {
         NationEconomy ne = getNationEconomy();
-        return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance() + getMarketProfits();
+        return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance();
     }
 
     

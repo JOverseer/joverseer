@@ -51,7 +51,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class TeamEconomyView extends AbstractView implements ApplicationListener {
 	JTable teamEconomyTable;
 	TeamEconomyTableModel teamEconomyTableModel;
-	JComboBox showProductAsCombo;
+//	JComboBox showProductAsCombo;
 	NationProductionListView nationProductionListView;
 	NationStatisticsListView nationStatisticsListView;
 	NationEconomyListView nationEconomyListView;
@@ -87,7 +87,8 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.row();
 		lb.relatedGapRow();
 
-		this.showProductAsCombo = new JComboBox(TeamEconomyTableModel.getSummaryOptions());
+		this.teamEconomyTableModel.setShowProductsAs(SummaryTypeEnum.Total);
+/*		this.showProductAsCombo = new JComboBox(TeamEconomyTableModel.getSummaryOptions());
 		this.showProductAsCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -96,14 +97,17 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 			}
 		});
 		this.showProductAsCombo.setPreferredSize(new Dimension(230, 20));
-
+		
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
+		
 		tlb.cell(new JLabel(Messages.getString("TeamEconomyView.ProductsColon"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.showProductAsCombo, "colspec=left:230px"); //$NON-NLS-1$
 		tlb.gapCol();
 
 		lb.cell(tlb.getPanel(), "align=left"); //$NON-NLS-1$
+		lb.gapCol();
+*/
 
 		JButton btn = new JButton(Messages.getString("TeamEconomyView.UpdateMarket")); //$NON-NLS-1$
 		btn.setToolTipText(Messages.getString("TeamEconomyView.UpdateAll")); //$NON-NLS-1$
@@ -113,9 +117,9 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 				updateMarketAndOrderCosts();
 			}
 		});
-		lb.gapCol();
 		btn.setPreferredSize(new Dimension(200, 20));
-		lb.cell(btn, "colspec=right:200px valign=top"); //$NON-NLS-1$
+//		lb.cell(btn, "colspec=right:200px valign=top"); //$NON-NLS-1$
+		//tlb.cell(this.showProductAsCombo, "colspec=left:230px"); //$NON-NLS-1$
 
 		lb.relatedGapRow();
 

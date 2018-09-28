@@ -129,8 +129,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * Refreshes the market limit warning message
 	 */
 	private void refreshMarketLimitWarning() {
-		int marketProfits = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
-		if (marketProfits >= getMarketLimitWarningThreshhold()) {
+		int marketSales = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getMarketSales();
+		if (marketSales >= getMarketLimitWarningThreshhold()) {
 			this.marketLimitWarning.setText(Messages.getString("EconomyCalculator.MarketLimitWarning")); //$NON-NLS-1$
 			this.marketLimitWarning.setVisible(true);
 		} else {

@@ -195,6 +195,17 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			long productSale = ( get100xProductSales(p) + ((getTotal(p) - getSellUnits(p)) * get100xProductSaleCommission(p)) )/100;
 			sales += productSale;
 		}
+		String pval = PreferenceRegistry.instance().getPreferenceValue("general.strictMarketLimit");
+		if (pval.equals("yes")) {
+			int marketLimit = 20000;
+			pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
+			try {
+				marketLimit = Integer.parseInt(pval);
+			} catch (NumberFormatException exc) {
+			}
+
+			return (int) (marketLimit > sales ? sales : marketLimit);
+		}
 		return (int)sales;
 	}
 	public int getMarketSpend() {
@@ -211,29 +222,10 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		return (int)-spend;
 	}
 	public int getMarketProfits() {
-		int profits = 0;
 		Turn t = GameHolder.instance().getGame().getTurn();
 		if (t == null)
 			return 0;
-		for (ProductEnum p : ProductEnum.values()) {
-			if (p == ProductEnum.Gold)
-				continue;
-			int productProfit = getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + (getTotal(p) - getSellUnits(p)) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
-			profits += productProfit;
-		}
-
-		String pval = PreferenceRegistry.instance().getPreferenceValue("general.strictMarketLimit");
-		if (pval.equals("yes")) {
-			int marketLimit = 20000;
-			pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
-			try {
-				marketLimit = Integer.parseInt(pval);
-			} catch (NumberFormatException exc) {
-			}
-
-			return marketLimit > profits ? profits : marketLimit;
-		}
-		return profits;
+		return getMarketSales() + getMarketSpend();
 	}
 
 	// note 100x to avoid early rounding.

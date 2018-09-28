@@ -80,7 +80,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	public static int ORDERS_NOT_OK = 1;
 
 	JComboBox nation;
-	JComboBox version;
 	JTextArea orders;
 	OrderFileGenerator visibleOrdersGenerator;
 	boolean ordersOk = false;
@@ -154,7 +153,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				Game g1 = GameHolder.instance().getGame();
 				int nationNo = getSelectedNationNo();
 				PlayerInfo pi = g1.getTurn().getPlayerInfo(nationNo);
-				ExportOrdersForm.this.version.setSelectedItem(String.valueOf(pi.getTurnVersion()));
 				if (ExportOrdersForm.this.oldSelectedNation == null || ExportOrdersForm.this.oldSelectedNation != nationNo) {
 					ExportOrdersForm.this.orders.setText("");
 					ExportOrdersForm.this.ordersOk = false;
@@ -166,23 +164,12 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		});
 		nationPanel.add(this.nation);
 		topPanel.add(nationPanel);
-
-		JPanel versionPanel = new JPanel();
-		FlowLayout flowLayout_2 = (FlowLayout) versionPanel.getLayout();
-		flowLayout_2.setAlignment(FlowLayout.LEFT);
-		JLabel versionLabel =  new JLabel(Messages.getString("ExportOrdersForm.Version"));
-		versionLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		versionPanel.add(versionLabel);
-		this.version = new JComboBox(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" });
-		this.version.setPreferredSize(this.uiSizes.newDimension(20/24, this.uiSizes.getHeight6()));
-		versionPanel.add(this.version);
-		versionLabel.setLabelFor(this.version);
-		topPanel.add(versionPanel);
 		
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 
-		JButton save = new JButton(Messages.getString("standardActions.Save"));
+		// use SaveAs to show user that the name can be changed and that it's not a final click...there's a popup.
+		JButton save = new JButton(Messages.getString("standardActions.SaveAs"));
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -248,8 +235,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		Game g = GameHolder.instance().getGame();
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
-		pi.setTurnVersion(Integer.parseInt(this.version.getSelectedItem().toString()));
-		String fname = String.format("me%02dv%s.%03d", getSelectedNationNo(), this.version.getSelectedItem(), g.getMetadata().getGameNo());
+		String fname = String.format("me%02dv%d.%03d", getSelectedNationNo(), pi.getTurnVersion(), g.getMetadata().getGameNo());
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(Application.instance().getApplicationContext().getMessage("standardActions.Save", null, null));

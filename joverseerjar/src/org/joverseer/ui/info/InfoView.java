@@ -296,6 +296,12 @@ public class InfoView extends AbstractView {
 		}
 
 		@Override
+		public void setValueAt(Object value, int rowIndex, int columnIndex) {
+			String[] row = this.values.get(rowIndex);
+			row[columnIndex] = (String) value;
+	    }
+
+		@Override
 		protected Class<?>[] createColumnClasses() {
 			Class<?>[] classes = new Class<?>[this.colNames.size()];
 			Arrays.fill(classes, String.class);
@@ -326,7 +332,6 @@ public class InfoView extends AbstractView {
 		protected String[] getColumnNames() {
 			return this.colNames.toArray(new String[this.colNames.size()]);
 	    }
-
 	}
 
 }

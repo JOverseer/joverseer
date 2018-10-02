@@ -62,7 +62,31 @@ public enum PopulationCenterSizeEnum implements Serializable {
 		}
 		return "";
 	}
-
+	/**
+	 * convert the population centre size to the matching number from an array.
+	 * @param lookup the 6 element array, index 0 matches ruin
+	 * @return
+	 */
+    public static int lookupSize(PopulationCenterSizeEnum size, int[] lookup) {
+    	
+    	switch (size) {
+    	case ruins:
+    		return lookup[0];
+    	case camp:
+    		return lookup[1];
+    	case village:
+    		return lookup[2];
+    	case town:
+    		return lookup[3];
+    	case majorTown:
+    		return lookup[4];
+    	case city:
+    		return lookup[5];
+    	default:
+    		assert false;    		
+    		return lookup[0];
+    	}
+    }
 	public String getRenderString() {
 		return UIUtils.enumToString(this);
 	}

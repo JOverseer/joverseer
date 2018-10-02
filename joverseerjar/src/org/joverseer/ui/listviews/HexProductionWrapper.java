@@ -167,16 +167,7 @@ public class HexProductionWrapper {
 		HexInfo hi = turn.getHexInfo(pc.getHexNo());
 		if (hi != null) setClimate(hi.getClimate());
 		
-		int factor = 100;
-		if (pc.getSize() == PopulationCenterSizeEnum.village) {
-			factor = 80;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.town) {
-			factor = 60;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
-			factor = 40;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.city) {
-			factor = 29;
-		} 
+		int factor =  pc.lookupSize(new int[] {100,100,80,60,40,29});
 		
 		setLeather(pc.getProduction(ProductEnum.Leather) * 100 / factor);
 		setBronze(pc.getProduction(ProductEnum.Bronze) * 100 / factor);

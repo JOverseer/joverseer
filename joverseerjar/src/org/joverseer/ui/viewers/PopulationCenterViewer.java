@@ -434,17 +434,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			boolean estimateLoyalty = false;
 			if (loyalty1 == 0) {
 				estimateLoyalty = true;
-				if (pc.getSize().equals(PopulationCenterSizeEnum.camp)) {
-					loyalty1 = 20;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.village)) {
-					loyalty1 = 35;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.town)) {
-					loyalty1 = 50;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.majorTown)) {
-					loyalty1 = 70;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.city)) {
-					loyalty1 = 90;
-				}
+				loyalty1 = pc.lookupSize(new int[]{0,20,35,50,70,90});
 			}
 
 			CombatPopCenter combatPc = new CombatPopCenter(pc);

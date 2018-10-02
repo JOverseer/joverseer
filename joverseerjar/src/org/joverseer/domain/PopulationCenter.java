@@ -284,21 +284,17 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 	public void initialize() {
 		int recruits1 = getSize().getCode() * 100;
 		setRecruits(recruits1);
-		int foodCapacity1 = 0; 
-		if (getSize().equals(PopulationCenterSizeEnum.camp)) {
-			foodCapacity1 = 100;
-		} else if (getSize().equals(PopulationCenterSizeEnum.village)) {
-			foodCapacity1 = 200;
-		} else if (getSize().equals(PopulationCenterSizeEnum.town)) {
-			foodCapacity1 = 1000;
-		} else if (getSize().equals(PopulationCenterSizeEnum.majorTown)) {
-			foodCapacity1 = 2500;
-		} else if (getSize().equals(PopulationCenterSizeEnum.city)) {
-			foodCapacity1 = 5000;
-		}  
+		int foodCapacity1 = this.lookupSize(new int[]{0, 100, 200, 1000, 2500, 5000}); 
 		setFoodCapacity(foodCapacity1);
 		setImprovedThisTurn(false); // TODO move to dif method
 		setSieged(false);
 	}
-    
+	/**
+	 * convert the population centre size to the matching number from an array.
+	 * @param lookup the 6 element array, index 0 matches camp
+	 * @return
+	 */
+    public int lookupSize(int[] lookup) {
+    	return PopulationCenterSizeEnum.lookupSize(this.size, lookup);
+    }
 }

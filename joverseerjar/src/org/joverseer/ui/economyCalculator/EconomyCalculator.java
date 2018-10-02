@@ -67,6 +67,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	JTable totalsTable;
 	JTable pcTable;
 	JCheckBox sellBonus;
+	JCheckBox cheaperShips;
+	JCheckBox cheapestShips;
+	JCheckBox cheapFortifications;
+	JCheckBox freeArmyHire;
+	JCheckBox marketInfluence;
 	JComboBox nationCombo;
 	JLabel marketLimitWarning;
 	JLabel taxIncrease;
@@ -199,7 +204,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		if (this.nationCombo.getItemCount() > 0) {
 			this.nationCombo.setSelectedIndex(selectedIndex);
 			Nation n = g.getMetadata().getNationByName(this.nationCombo.getSelectedItem().toString());
-			setSellBonusFromSNA(n);
+			refreshSNA(n);;
 		}
 
 	}
@@ -226,6 +231,29 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	private void setSellBonusFromSNA(Nation n) {
 		this.sellBonus.setSelected(n.getSnas().contains(SNAEnum.BuySellBonus));
 		((EconomyTotalsTableModel) this.totalsTable.getModel()).getEconomyCalculatorData().setSellBonus(this.sellBonus.isSelected());
+	}
+	private void setCheaperShipsFromSNA(Nation n) {
+		this.cheaperShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith750Timber));
+	}		
+	private void setCheapestShipsFromSNA(Nation n) {
+		this.cheapestShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith500Timber));
+	}		
+	private void setCheapFortificationsFromSNA(Nation n) {
+		this.cheapFortifications.setSelected(n.getSnas().contains(SNAEnum.FortificationsWithHalfTimber));
+	}		
+	private void setFreeArmyHireFromSNA(Nation n) {
+		this.freeArmyHire.setSelected(n.getSnas().contains(SNAEnum.FreeHire));
+	}		
+	private void setMarketInfluenceFromSNA(Nation n) {
+		this.marketInfluence.setSelected(n.getSnas().contains(SNAEnum.Influence));
+	}
+	private void refreshSNA(Nation n) {
+		setSellBonusFromSNA(n);
+		setCheaperShipsFromSNA(n);
+		setCheapestShipsFromSNA(n);
+		setCheapFortificationsFromSNA(n);
+		setFreeArmyHireFromSNA(n);
+		setMarketInfluenceFromSNA(n);
 	}
 	/**
 	 * @wbp.parser.entryPoint
@@ -261,11 +289,20 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
 //				EconomyCalculator.this.sellBonus.setSelected(((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
-				setSellBonusFromSNA(n);
+				refreshSNA(n);
 				}
 		});
 
-		lb.cell(this.sellBonus = new JCheckBox(), "align=left"); //$NON-NLS-1$
+		lb.relatedGapRow();
+		this.sellBonus = new JCheckBox();
+		this.cheaperShips = new JCheckBox();
+		this.cheapestShips = new JCheckBox();
+		this.cheapFortifications = new JCheckBox();
+		this.freeArmyHire = new JCheckBox();
+		this.marketInfluence = new JCheckBox();
+		JPanel snaPanel = new JPanel();
+		snaPanel.setBackground(Color.white);
+		snaPanel.add(this.sellBonus, "align=left"); //$NON-NLS-1$
 		this.sellBonus.setText(Messages.getString("EconomyCalculator.SellBonus")); //$NON-NLS-1$
 		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.sellBonus.setBackground(Color.white);
@@ -273,8 +310,34 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		Game g = GameHolder.instance().getGame();
 		if (EconomyCalculator.this.nationCombo.getSelectedItem() != null) {
 			Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
-			setSellBonusFromSNA(n);
+			refreshSNA(n);
 		}
+		snaPanel.add(this.cheaperShips, "align=left"); //$NON-NLS-1$
+		this.cheaperShips.setText(Messages.getString("EconomyCalculator.cheaperShips")); //$NON-NLS-1$
+		this.cheaperShips.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.cheaperShips.setBackground(Color.white);
+		this.cheaperShips.setEnabled(false);
+		snaPanel.add(this.cheapestShips, "align=left"); //$NON-NLS-1$
+		this.cheapestShips.setText(Messages.getString("EconomyCalculator.cheapestShips")); //$NON-NLS-1$
+		this.cheapestShips.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.cheapestShips.setBackground(Color.white);
+		this.cheapestShips.setEnabled(false);
+		snaPanel.add(this.cheapFortifications, "align=left"); //$NON-NLS-1$
+		this.cheapFortifications.setText(Messages.getString("EconomyCalculator.cheapFortifications")); //$NON-NLS-1$
+		this.cheapFortifications.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.cheapFortifications.setBackground(Color.white);
+		this.cheapFortifications.setEnabled(false);
+		snaPanel.add(this.freeArmyHire, "align=left"); //$NON-NLS-1$
+		this.freeArmyHire.setText(Messages.getString("EconomyCalculator.freeArmyHire")); //$NON-NLS-1$
+		this.freeArmyHire.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.freeArmyHire.setBackground(Color.white);
+		this.freeArmyHire.setEnabled(false);
+		snaPanel.add(this.marketInfluence, "align=left"); //$NON-NLS-1$
+		this.marketInfluence.setText(Messages.getString("EconomyCalculator.marketInfluence")); //$NON-NLS-1$
+		this.marketInfluence.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.marketInfluence.setBackground(Color.white);
+		this.marketInfluence.setEnabled(false);
+		lb.cell(snaPanel);
 
 /*		this.sellBonus.addActionListener(new ActionListener() {
 			@Override
@@ -399,7 +462,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
 		this.totalsTable.setBackground(Color.white);
 		scp = new JScrollPane(this.totalsTable);
-		scp.setPreferredSize(new Dimension(600, 90));
+		scp.setPreferredSize(new Dimension(610, 120));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
@@ -562,11 +625,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel lbl = ((JLabel) c);
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-			if (row == 3 && column == 5 || row == 0 && column == 5) { // final
-				// gold
-				// or
-				// orders
-				// cost
+			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol2 
+					|| row == EconomyTotalsTableModel.iFinalGoldRow && column == EconomyTotalsTableModel.iValueCol3) {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 			} else {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.PLAIN, lbl.getFont().getSize()));

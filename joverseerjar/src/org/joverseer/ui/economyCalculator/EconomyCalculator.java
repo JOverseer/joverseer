@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,8 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.AbstractBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
@@ -258,6 +262,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	/**
 	 * @wbp.parser.entryPoint
 	 */
+	@SuppressWarnings("serial")
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -451,7 +456,29 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
 
 		mtm.setTotalsModel(ettm);
-		this.totalsTable = new JOverseerTable(ettm);
+		this.totalsTable = new JOverseerTable(ettm) {
+
+			public boolean doHighlight(int row,int column) {
+				if ((row == EconomyTotalsTableModel.iTotalRevenueRow) && ((column ==EconomyTotalsTableModel.iValueCol0)||(column==EconomyTotalsTableModel.iValueCol1)||(column==EconomyTotalsTableModel.iValueCol2))
+						|| ((row ==EconomyTotalsTableModel.iFinalGoldRow) && (column==EconomyTotalsTableModel.iValueCol3) )
+						|| ((row ==EconomyTotalsTableModel.iStartingGoldRow) && (column==EconomyTotalsTableModel.iValueCol0) )
+						) {
+					return true;
+				}
+				return false;
+			}
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (this.doHighlight(row, column)) {
+					if (c instanceof JComponent) {
+						((JComponent) c).setBorder(new TopBottomBorder(Color.black, 1));
+	                }
+				}
+				return c;
+			}
+			
+		};
 		ettm.setTable(this.totalsTable);
 		this.totalsTable.getTableHeader().setVisible(false);
 		for (int i = 0; i < ettm.getColumnCount(); i++) {
@@ -462,7 +489,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
 		this.totalsTable.setBackground(Color.white);
 		scp = new JScrollPane(this.totalsTable);
-		scp.setPreferredSize(new Dimension(610, 120));
+		scp.setPreferredSize(new Dimension(590, 120));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
@@ -625,13 +652,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel lbl = ((JLabel) c);
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol2 
+			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol3 
 					|| row == EconomyTotalsTableModel.iFinalGoldRow && column == EconomyTotalsTableModel.iValueCol3) {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 			} else {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.PLAIN, lbl.getFont().getSize()));
 			}
-			if (row == 3 && column == 3 && !value.toString().equals("")) { //$NON-NLS-1$
+			if (row == EconomyTotalsTableModel.iMarketSalesRow && column == EconomyTotalsTableModel.iValueCol2 && !value.toString().equals("")) { //$NON-NLS-1$
 				int amount = Integer.parseInt(value.toString());
 				if (amount >= getMarketLimitWarningThreshhold()) {
 					if (!isSelected) {
@@ -662,4 +689,82 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		return new int[] { 140, 64, 64, 64, 65, 96 };
 	}
 
+	public class TopBottomBorder extends AbstractBorder
+	{
+	    protected int thickness;
+	    protected Color lineColor;
+	    protected int gap;
+
+	    public TopBottomBorder(Color color) {
+	        this(color, 1, 1);
+	    }
+
+	    public TopBottomBorder(Color color, int thickness)  {
+	        this(color, thickness, thickness);
+	    }
+
+	    public TopBottomBorder(Color color, int thickness, int gap)  {
+	        this.lineColor = color;
+	        this.thickness = thickness;
+	        this.gap = gap;
+	    }
+
+	    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        Color oldColor = g.getColor();
+	        int i;
+
+	        g.setColor(this.lineColor);
+	        for(i = 0; i < this.thickness; i++)  {
+		          g.drawLine(x, y-i, x+width, y-i);
+		          g.drawLine(x, y-i+height-1, x+width, y-i+height-1);
+	        }
+	        g.setColor(oldColor);
+	    }
+
+	    /**
+	     * Returns the insets of the border.
+	     * @param c the component for which this border insets value applies
+	     */
+	    @Override
+		public Insets getBorderInsets(Component c)       {
+	        return new Insets(0, 0, 0,this.gap);
+	    }
+
+	    @Override
+		public Insets getBorderInsets(Component c, Insets insets) {
+	        insets.left = 0;
+	        insets.top = 0;
+	        insets.right = this.gap;
+	        insets.bottom = 0;
+	        return insets;
+	    }
+
+	    /**
+	     * Returns the color of the border.
+	     */
+	    public Color getLineColor()     {
+	        return this.lineColor;
+	    }
+
+	    /**
+	     * Returns the thickness of the border.
+	     */
+	    public int getThickness()       {
+	        return this.thickness;
+	    }
+
+	    /**
+	     * Returns whether or not the border is opaque.
+	     */
+	    @Override
+		public boolean isBorderOpaque() { 
+	        return false; 
+	    }
+
+	  public int getGap() {
+	    return this.gap;
+	  }
+
+	}
 }

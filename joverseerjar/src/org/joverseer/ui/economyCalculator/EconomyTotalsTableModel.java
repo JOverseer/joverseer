@@ -29,26 +29,26 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	private static final int iHeaderCol0 =0;
 	public static final int iValueCol0=1;
 	private static final int iHeaderCol1=2;
-	private static final int iValueCol1=3;
+	public static final int iValueCol1=3;
 	private static final int iHeaderCol2=4;
 	public static final int iValueCol2=5;
 	private static final int iHeaderCol3=6;
 	public static final int iValueCol3=7;
 	
-	private static final int iStartingGoldRow = 0;
+	public static final int iStartingGoldRow = 0;
 	private static final int iTaxRevenueRow = 1;
 	private static final int iCharMaintRow = 1;
-	public static final int iOrdersCostRow = 1;
 	private static final int iTaxRateRow = 1;
 	private static final int iGoldProductionRow = 2;
 	private static final int iPCMaintRow = 2;
-	private static final int iPCLossesRow =2;
-	private static final int iMarketProfitRow =2;
-	private static final int iMarketSalesRow =3;
+	public static final int iMarketSalesRow =2;
+	public static final int iOrdersCostRow = 2;
+	private static final int iPCLossesRow =3;
 	private static final int iArmyMaintRow =3;
 	private static final int iMarketSpendRow =3;
 	private static final int iSurplusRow =3;
-	private static final int iTotalRevenueRow =4;
+	private static final int iMarketProfitRow =4;
+	public static final int iTotalRevenueRow =4;
 	private static final int iTotalMaintRow =4;
 	private static final int iTotalLossesRow =4;
 	public static final int iFinalGoldRow = 5;
@@ -56,19 +56,16 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	private static final long serialVersionUID = -7961559423992117184L;
 	String[] columnHeaders = new String[] {"", "", "", "", "", "","",""};
     // "row headers", they go into column 0 of the table
-//    String[] rowTags1 = new String[] {"army","pc","char","total","pclosses" };
-//  String[] rowTags2 = new String[] {"taxRate","taxRevenue","gold","marketSales","marketSpend"};
-//  String[] rowTags3 = new String[] {"starting","surplus","profits","ordersCost","final"};
-    String[] rowTags0 = new String[] {"starting","taxRevenue","gold","marketSales","totalRevenue","" };
+    String[] rowTags0 = new String[] {"starting","taxRevenue","gold","pclosses","totalRevenue","" };
     String[] rowTags1 = new String[] {"","char","pc","army","total",""};
-    String[] rowTags2 = new String[] {"","ordersCost","pclosses","marketSpend","losses",""};
-    String[] rowTags3 = new String[] {"","taxRate","profits","surplus","","final"};
+    String[] rowTags2 = new String[] {"","","marketSales","marketSpend","profits",""};
+    String[] rowTags3 = new String[] {"","taxRate","ordersCost","","","final"};
     String[] rowHeaders0;
     String[] rowHeaders1;
     String[] rowHeaders2;
     String[] rowHeaders3;
 
-    int[] columnWidths = new int[] {100, 60, 95, 60, 105, 60,100,60};
+    int[] columnWidths = new int[] {100, 60, 95, 60, 85, 60,95,60};
 
     JTable table;
     public EconomyTotalsTableModel()
@@ -165,8 +162,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                     return getTaxRevenue();
             	case iGoldProductionRow:
             		return getGoldProduction();
-            	case iMarketSalesRow:
-            		return getMarketSales();
+                case iPCLossesRow:
+                    return -(computeLostGoldRevenue() + computeLostTaxRevenue());
             	case iTotalRevenueRow:
             		return getTotalRevenue();
             }
@@ -187,27 +184,26 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
         if (columnIndex == iValueCol2) {
             switch (rowIndex) {
-            case iOrdersCostRow:
-                return -ecd.getOrdersCost();
-            case iPCLossesRow:
-                return -(computeLostGoldRevenue() + computeLostTaxRevenue());
+               	case iMarketSalesRow:
+            		return getMarketSales();
                 case iMarketSpendRow:
-                    return -getMarketSpend();
-            	case iTotalLossesRow:
-            		return getTotalLosses();
+                    return getMarketSpend();
+            	case iMarketProfitRow:
+            		return getMarketProfits();
+//            	case iTotalLossesRow:
+//            		return getTotalLosses();
             }
             return "";
         }
         if (columnIndex == iValueCol3) {
             switch (rowIndex) {
-            case iTaxRateRow:
-                return getTaxRate();
-            case iMarketProfitRow:
-                return getMarketProfits();
-            case iSurplusRow:
-            	return getSurplus();
+            	case iTaxRateRow:
+            		return getTaxRate();
+            	case iOrdersCostRow:
+                	return -ecd.getOrdersCost();
+//              case iSurplusRow:
+//            	return getSurplus();
                 case iFinalGoldRow:
-                    // final gold
                     return getFinalGold();
             }
             return "";
@@ -226,7 +222,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     }
     
     public int getTotalRevenue() {
-        return getTaxRevenue() + getGoldProduction() + getMarketSales();
+        return getTaxRevenue() + getGoldProduction()  - computeLostGoldRevenue() - computeLostTaxRevenue();
     }
     public int getTotalLosses() {
         NationEconomy ne = getNationEconomy();

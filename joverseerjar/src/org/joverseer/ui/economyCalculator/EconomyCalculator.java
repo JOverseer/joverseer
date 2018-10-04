@@ -234,9 +234,10 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 		lb.separator(Messages.getString("EconomyCalculator.Nation")); //$NON-NLS-1$
 		lb.row();
-		lb.relatedGapRow();
+//		lb.relatedGapRow();
 
-		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
+		JPanel nationPanel = new JPanel();
+		nationPanel.add(this.nationCombo = new NationComboBox(GameHolder.instance()));
 		this.nationCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -304,7 +305,12 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.marketInfluence.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.marketInfluence.setBackground(Color.white);
 		this.marketInfluence.setEnabled(false);
-		lb.cell(snaPanel);
+		
+		nationPanel.add(snaPanel);
+		nationPanel.getInsets().set(0, 0, 0, 0);
+		nationPanel.setBackground(Color.white);
+		lb.cell(nationPanel,"align=left");
+//		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
 
 /*		this.sellBonus.addActionListener(new ActionListener() {
 			@Override

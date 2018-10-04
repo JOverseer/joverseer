@@ -23,10 +23,32 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class BaseHtmlReportView extends ScalableAbstractView implements ApplicationListener {
-	JEditorPane editor;
+	public BaseHtmlReportView() {
+		this.hideButton = false;
+	}
+	public BaseHtmlReportView(boolean hideButton) {
+		super();
+		this.hideButton = hideButton;
+	}
 
+	JEditorPane editor;
+	private boolean hideButton;
+	private boolean isHideButton() {
+		return this.hideButton;
+	}
+
+	boolean isReportGenerated = false;
 	protected String getReportContents() {
+		this.isReportGenerated = true;
 		return null;
+	}
+
+	@Override
+	public void componentFocusGained() {
+		super.componentFocusGained();
+		if (!this.isReportGenerated) {
+			this.editor.setText(this.getReportContents());
+		}
 	}
 
 	protected void handleHyperlinkEvent(String url) {
@@ -46,24 +68,27 @@ public class BaseHtmlReportView extends ScalableAbstractView implements Applicat
 			tlb.cell(pnl, "align=left"); //$NON-NLS-1$
 			tlb.relatedGapRow();
 		}
-		JButton btn = new JButton(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
-		btn.setText(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
-		btn.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
-		tlb.cell(btn, "align=left"); //$NON-NLS-1$
-		btn.addActionListener(new ActionListener() {
+		if (!this.isHideButton()) {
+			JButton btn = new JButton(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
+			btn.setText(Messages.getString("BaseHtmlReportView.Generate")); //$NON-NLS-1$
+			btn.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
+			tlb.cell(btn, "align=left"); //$NON-NLS-1$
+			btn.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (!GameHolder.hasInitializedGame()) {
-					BaseHtmlReportView.this.editor.setText(""); //$NON-NLS-1$
-					return;
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if (!GameHolder.hasInitializedGame()) {
+						BaseHtmlReportView.this.editor.setText(""); //$NON-NLS-1$
+						BaseHtmlReportView.this.isReportGenerated = false;
+						return;
+					}
+					BaseHtmlReportView.this.editor.setText(getReportContents());
 				}
-				BaseHtmlReportView.this.editor.setText(getReportContents());
-			}
 
-		});
-		tlb.relatedGapRow();
+			});
+			tlb.relatedGapRow();
 
+		}
 		this.editor = new JEditorPane();
 		this.editor.setEditable(false);
 		this.editor.setContentType("text/html"); //$NON-NLS-1$
@@ -91,7 +116,8 @@ public class BaseHtmlReportView extends ScalableAbstractView implements Applicat
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent) || e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				this.editor.setText(""); //$NON-NLS-1$
+				this.isReportGenerated = false; // report gets generated on focus change.
+				this.editor.setText(this.getReportContents());
 			}
 		}
 	}

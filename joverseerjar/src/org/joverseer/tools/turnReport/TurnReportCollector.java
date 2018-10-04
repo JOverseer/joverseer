@@ -297,10 +297,12 @@ public class TurnReportCollector {
 						String pf="";
 						if (p != null) {
 							PopulationCenter pp = p.getPopCenter(pop);
-							pf = pp.getFortification().getRenderString();
+							if (pp != null)
+								pf = pp.getFortification().getRenderString();
 						}
 						PopulationCenter cp = t.getPopCenter(pop);
-						cr.appendNote(pf + this.UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
+						if (cp != null)
+							cr.appendNote(pf + this.UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
 						cr.setNotes("Failed sab fort");
@@ -1623,6 +1625,8 @@ public class TurnReportCollector {
 		try {
 			String ret = "";
 			Game g = GameHolder.instance().getGame();
+			if (!GameHolder.hasInitializedGame())
+				return ret;
 			Turn t = g.getTurn();
 			Turn p = g.getTurn(t.getTurnNo() - 1);
 			if (p == null) {

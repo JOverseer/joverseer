@@ -21,6 +21,8 @@ public class OrderReader implements MetadataReader {
 		try {
 			BufferedReader reader = gm.getUTF8Resource(this.orderFilename,true);
 			String ln;
+			//TODO: OrderInfoView also reads orders.csv.....refactor one of them!
+			ln = reader.readLine(); // ignore the first line.
 			while ((ln = reader.readLine()) != null) {
 				String[] parts = ln.split(";");
 				OrderMetadata om = new OrderMetadata();

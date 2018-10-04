@@ -4,10 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,7 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PdfTurnText;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -25,6 +21,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.controls.NationComboBox;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
@@ -40,7 +37,7 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
     String searchString = null;
     int lastSearchIdx = 0;
     JTextArea text;
-    JComboBox nationCombo;
+    NationComboBox nationCombo;
     JPanel panel;
     JTextField search;
 
@@ -49,20 +46,20 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
         TableLayoutBuilder lb = new TableLayoutBuilder();
-        lb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
-        this.nationCombo.setPreferredSize(new Dimension(200, 24));
+        lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
         this.nationCombo.addActionListener(new ActionListener() {
 
             @Override
 			public void actionPerformed(ActionEvent e) {
-                Game g = GameHolder.instance().getGame();
-                if (PdfFileViewer.this.nationCombo.getSelectedItem() == null)
-                    return;
-                Nation n = g.getMetadata().getNationByName(PdfFileViewer.this.nationCombo.getSelectedItem().toString());
-                PdfTurnText ptt = (PdfTurnText) g.getTurn().getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
+                Nation n = PdfFileViewer.this.nationCombo.getSelectedNation();
+                PdfTurnText ptt = null; 
+                if (n != null) {
+                	Game g = GameHolder.instance().getGame();
+                	ptt = (PdfTurnText) g.getTurn().getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
                         "nationNo", n.getNumber()); //$NON-NLS-1$
+                }
                 if (ptt == null) {
-                    PdfFileViewer.this.text.setText(""); //$NON-NLS-1$
+                    PdfFileViewer.this.text.setText("No PDF text for nation found."); //$NON-NLS-1$
                 } else {
                     PdfFileViewer.this.text.setText(ptt.getText());
                     PdfFileViewer.this.text.setCaretPosition(0);
@@ -107,35 +104,15 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
 
     }
 
-    private void loadNationCombo() {
-        this.nationCombo.removeAllItems();
-        Game g = GameHolder.instance().getGame();
-        if (!Game.isInitialized(g))
-            return;
-        if (g.getTurn() == null)
-            return;
-        for (Nation n : (ArrayList<Nation>) g.getMetadata().getNations()) {
-            NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy)
-                    .findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
-            // load only nations for which economy has been imported
-            if (ne == null)
-                continue;
-            this.nationCombo.addItem(n.getName());
-        }
-        if (this.nationCombo.getItemCount() > 0) {
-            this.nationCombo.setSelectedIndex(0);
-        }
-    }
-
     @Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-                loadNationCombo();
+                this.nationCombo.load(true, true);
                 initSearch();
             } else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-                loadNationCombo();
+                this.nationCombo.load(true, true);
                 initSearch();
             }
         }

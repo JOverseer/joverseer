@@ -41,11 +41,11 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	private static final int iTaxRateRow = 1;
 	private static final int iGoldProductionRow = 2;
 	private static final int iPCMaintRow = 2;
-	public static final int iMarketSalesRow =2;
-	public static final int iOrdersCostRow = 2;
+	public static final int iOrdersCostRow = 3;
 	private static final int iPCLossesRow =3;
 	private static final int iArmyMaintRow =3;
-	private static final int iMarketSpendRow =3;
+	public static final int iMarketSalesRow =3;
+	private static final int iMarketSpendRow =2;
 	private static final int iSurplusRow =3;
 	private static final int iMarketProfitRow =4;
 	public static final int iTotalRevenueRow =4;
@@ -58,8 +58,8 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     // "row headers", they go into column 0 of the table
     String[] rowTags0 = new String[] {"starting","taxRevenue","gold","pclosses","totalRevenue","" };
     String[] rowTags1 = new String[] {"","char","pc","army","total",""};
-    String[] rowTags2 = new String[] {"","","marketSales","marketSpend","profits",""};
-    String[] rowTags3 = new String[] {"","taxRate","ordersCost","","","final"};
+    String[] rowTags2 = new String[] {"","","marketSpend","marketSales","profits",""};
+    String[] rowTags3 = new String[] {"","taxRate","","ordersCost","","final"};
     String[] rowHeaders0;
     String[] rowHeaders1;
     String[] rowHeaders2;

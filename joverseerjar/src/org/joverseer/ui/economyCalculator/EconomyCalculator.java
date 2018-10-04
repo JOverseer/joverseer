@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,11 +25,9 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -43,6 +40,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
+import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -76,7 +74,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	JCheckBox cheapFortifications;
 	JCheckBox freeArmyHire;
 	JCheckBox marketInfluence;
-	JComboBox nationCombo;
+	NationComboBox nationCombo;
 	JLabel marketLimitWarning;
 	JLabel taxIncrease;
 	BeanTableModel lostPopsTableModel;
@@ -93,7 +91,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				loadNationCombo(false);
+				this.nationCombo.load(false,true);
 				try {
 					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
 					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
@@ -107,7 +105,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				((MarketTableModel) this.marketTable.getModel()).setGame(null);
 				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
-				loadNationCombo(true);
+				refreshSNA(this.nationCombo.load(true, true));
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				refreshAutocalcOrderCost();
 				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -185,52 +183,17 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		}
 	}
 
-	private void loadNationCombo(boolean autoFocusOnGameNation) {
-		this.nationCombo.removeAllItems();
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
-			return;
-		if (g.getTurn() == null)
-			return;
-		int selectedIndex = 0;
-		int i = 0;
-		for (Nation n : g.getMetadata().getNations()) {
-			NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
-			// load only nations for which economy has been imported
-			if (ne == null)
-				continue;
-			this.nationCombo.addItem(n.getName());
-			if (autoFocusOnGameNation && n.getNumber() == g.getMetadata().getNationNo()) {
-				selectedIndex = i;
-			}
-			i++;
-		}
-		if (this.nationCombo.getItemCount() > 0) {
-			this.nationCombo.setSelectedIndex(selectedIndex);
-			Nation n = g.getMetadata().getNationByName(this.nationCombo.getSelectedItem().toString());
-			refreshSNA(n);;
-		}
-
-	}
-
 	/**
 	 * Refreshes the autocalc order cost field
 	 */
 	private void refreshAutocalcOrderCost() {
 		OrderCostCalculator calc = new OrderCostCalculator();
-		int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
-		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
+		int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), this.nationCombo.getSelectedNationNo());
+		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), this.nationCombo.getSelectedNationNo());
 
 		this.autocalcOrderCost.setText(String.valueOf(totalCost));
 	}
 
-	private int getSelectedNationNo() {
-		Game g = GameHolder.instance().getGame();
-		if (this.nationCombo.getSelectedItem() == null)
-			return -1;
-		Nation n = g.getMetadata().getNationByName(this.nationCombo.getSelectedItem().toString());
-		return n.getNumber();
-	}
 
 	private void setSellBonusFromSNA(Nation n) {
 		this.sellBonus.setSelected(n.getSnas().contains(SNAEnum.BuySellBonus));
@@ -273,8 +236,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.row();
 		lb.relatedGapRow();
 
-		lb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
-		this.nationCombo.setPreferredSize(new Dimension(200, 24));
+		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
 		this.nationCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -298,7 +260,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				}
 		});
 
-		lb.relatedGapRow();
+//		lb.relatedGapRow();
 		this.sellBonus = new JCheckBox();
 		this.cheaperShips = new JCheckBox();
 		this.cheapestShips = new JCheckBox();

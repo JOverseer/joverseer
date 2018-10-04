@@ -20,6 +20,10 @@ public class PopCenterReport extends BaseReportObject implements IBelongsToNatio
 		setHexNo(pc.getHexNo());
 		setPc(pc);
 	}
+	public PopCenterReport(PopulationCenter pc,ObjectModificationType modification) {
+		this(pc);
+		this.setModification(modification);
+	}
 	
 	
 	

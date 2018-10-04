@@ -5,6 +5,10 @@ public class StealGoldReport extends BaseReportObject {
 	int stolenFromNation;
 	int gainedByNation;
 	
+	public StealGoldReport(ObjectModificationType modification) {
+		super();
+		this.setModification(modification);
+	}
 	public int getGold() {
 		return this.gold;
 	}

@@ -262,7 +262,7 @@
 
 935;UsScArt;Misc;Artifact ID # + Chosen 4-Digit Hex;art;hex;;;;;;;
 ;;;;Artifact id;Hex;;;;;;;
-940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;dcid;;;;;;M;M
+940;CstLoSp;MagL;Spell ID # + [See spell for requirements];spl;dcid;e;e;e;e;e;M;M
 ;;;;Spell;Target;Target;Target;Target;Target;Target;;
 945;UsHiArt;Misc;Artifact ID #;art;;;;;;;;
 ;;;;Artifact id;;;;;;;;

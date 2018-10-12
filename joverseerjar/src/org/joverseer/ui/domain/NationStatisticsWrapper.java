@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.IBelongsToNation;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -18,6 +19,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	NationAllegianceEnum allegiance;
 	Integer nationNo;
 	int characters;
+	int charactersLimit;
 	int charactersInCapital;
 	int hostages;
 	int commanders;
@@ -83,6 +85,12 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.characters = characters;
 	}
 
+	public int getCharactersLimit() {
+		return this.charactersLimit;
+	}
+	public void setCharactersLimit(int limit) {
+		this.charactersLimit = limit;
+	}
 	public int getHostages() {
 		return this.hostages;
 	}
@@ -214,6 +222,7 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.camps += nsw.getCamps();
 		this.taxBase += nsw.getTaxBase();
 		this.characters += nsw.getCharacters();
+		this.charactersLimit += nsw.getCharactersLimit();
 		this.hostages += nsw.getHostages();
 		this.navies += nsw.getNavies();
 		this.transports += nsw.getTransports();
@@ -221,5 +230,43 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.troopCount += nsw.getTroopCount();
 		this.popCenters += nsw.getPopCenters();
 
+	}
+	public void incCamps() {
+		this.camps++;
+		this.taxBase += 0;
+		this.popCenters++;
+	}
+	public void incVillages() {
+		this.villages++;
+		this.taxBase += 1;
+		this.popCenters++;
+	}
+	public void incTowns() {
+		this.towns++;
+		this.taxBase += 2;
+		this.popCenters++;
+	}
+	public void incMajorTowns() {
+		this.majorTowns++;
+		this.taxBase += 3;
+		this.popCenters++;
+	}
+	public void incCities() {
+		this.cities++;
+		this.taxBase += 4;
+		this.popCenters++;
+	}
+	public void incPopCentre(PopulationCenterSizeEnum size ) {
+		if (size == PopulationCenterSizeEnum.city) {
+			incCities();
+		} else if (size == PopulationCenterSizeEnum.majorTown) {
+			incMajorTowns();
+		} else if (size == PopulationCenterSizeEnum.town) {
+			incTowns();
+		} else if (size == PopulationCenterSizeEnum.village) {
+			incVillages();
+		} else if (size == PopulationCenterSizeEnum.camp) {
+			incCamps();
+		}
 	}
 }

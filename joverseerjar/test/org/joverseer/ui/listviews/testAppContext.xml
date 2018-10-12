@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>ui.messages</value>
+				<value>org.springframework.richclient.application.messages</value>
+			</list>
+		</property>
+	</bean>
+  <bean id="gameHolder"	class="org.joverseer.support.GameHolder">
+  </bean>
+  <bean id="preferenceRegistry" class="org.joverseer.preferences.PreferenceRegistry">
+  </bean>
+	<bean id="imageResourcesFactory"
+		class="org.springframework.context.support.ResourceMapFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:org/springframework/richclient/image/images.properties</value>
+				<value>classpath:ui/images.properties</value>
+			</list>
+		</property>
+	</bean>
+  <bean id="imageSource"
+		class="org.springframework.richclient.image.DefaultImageSource">
+        <constructor-arg index="0" ref="imageResourcesFactory"/>
+        <property name="brokenImageIndicator" value="/org/springframework/richclient/images/alert/error_obj.gif"/>
+  </bean>
+<!-- 
+	<bean id="orderListView" 
+		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.listviews.OrderEditorListView</value>
+		</property>
+		<property name="viewGroup">
+			<value>Orders</value>
+		</property>
+	</bean>
+   -->
+</beans>

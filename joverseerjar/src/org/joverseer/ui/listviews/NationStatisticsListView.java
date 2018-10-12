@@ -10,7 +10,6 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -18,6 +17,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
+import org.joverseer.support.info.InfoUtils;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
@@ -35,7 +35,7 @@ public class NationStatisticsListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 32, 48, 52, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52 };
+		return new int[] { 32, 48, 52, 72, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52 };
 	}
 
 	@Override
@@ -62,11 +62,14 @@ public class NationStatisticsListView extends BaseItemListView {
 		ns.setAllegiance(NationAllegianceEnum.Neutral);
 
 		Turn t = g.getTurn();
-		for (int i = 0; i < 26; i++) {
+		int limit = InfoUtils.getCharactersAllowed(g.getMetadata().getGameType(), g.getCurrentTurn());
+		for (int i = 0; i < 28; i++) {
 			NationRelations nr = t.getNationRelations(i);
 			if (nr != null && nr.getEliminated())
 				continue;
 			Nation n = NationMap.getNationFromNo(i);
+			if (n == null) // NPC nations that aren't present.
+				continue;
 			if (n.getRemoved())
 				continue;
 			Integer capitalHex = null;
@@ -77,6 +80,7 @@ public class NationStatisticsListView extends BaseItemListView {
 			NationStatisticsWrapper nsw = new NationStatisticsWrapper();
 			nsw.setNationNo(i);
 			nsw.setCharacters(0);
+			nsw.setCharactersLimit(limit);
 			nsw.setCharactersInCapital(0);
 			nsw.setCommanders(0);
 			for (Character c : t.getCharacters().findAllByProperty("nationNo", nsw.getNationNo())) {
@@ -105,26 +109,7 @@ public class NationStatisticsListView extends BaseItemListView {
 			for (PopulationCenter pc : t.getPopulationCenters().findAllByProperty("nationNo", nsw.getNationNo())) {
 				if (!pc.getNationNo().equals(nsw.getNationNo()))
 					continue;
-				if (pc.getSize() == PopulationCenterSizeEnum.city) {
-					nsw.setCities(nsw.getCities() + 1);
-					nsw.setTaxBase(nsw.getTaxBase() + 4);
-					nsw.setPopCenters(nsw.getPopCenters() + 1);
-				} else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
-					nsw.setMajorTowns(nsw.getMajorTowns() + 1);
-					nsw.setTaxBase(nsw.getTaxBase() + 3);
-					nsw.setPopCenters(nsw.getPopCenters() + 1);
-				} else if (pc.getSize() == PopulationCenterSizeEnum.town) {
-					nsw.setTowns(nsw.getTowns() + 1);
-					nsw.setTaxBase(nsw.getTaxBase() + 2);
-					nsw.setPopCenters(nsw.getPopCenters() + 1);
-				} else if (pc.getSize() == PopulationCenterSizeEnum.village) {
-					nsw.setVillages(nsw.getVillages() + 1);
-					nsw.setTaxBase(nsw.getTaxBase() + 1);
-					nsw.setPopCenters(nsw.getPopCenters() + 1);
-				} else if (pc.getSize() == PopulationCenterSizeEnum.camp) {
-					nsw.setCamps(nsw.getCamps() + 1);
-					nsw.setPopCenters(nsw.getPopCenters() + 1);
-				}
+				nsw.incPopCentre(pc.getSize());
 			}
 
 			nsw.setArmies(0);
@@ -185,6 +170,14 @@ public class NationStatisticsListView extends BaseItemListView {
 			filteredItems.add(ns);
 
 		this.tableModel.setRows(filteredItems);
+	}
+	/**
+	 * Get a handle to the underlying model, so that another view can hook in.
+	 * @return
+	 */
+	public NationStatisticsTableModel getTableModel() {
+		if (this.table == null) return null;
+		return (NationStatisticsTableModel)(this.tableModel);
 	}
 
 }

@@ -204,4 +204,13 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	public static Nation getFromNationCode(String nation) {
 		return NationMap.getNationFromNo(new Integer(parseNationCode(nation)));
 	}
+	public static String trimLeading(String s) {
+		int i;
+		for (i=0;i<s.length();i++) {
+			if ( !Character.isWhitespace(s.charAt(i))) {
+				return s.substring(i);
+			}
+		}
+		return "";
+	}
 }

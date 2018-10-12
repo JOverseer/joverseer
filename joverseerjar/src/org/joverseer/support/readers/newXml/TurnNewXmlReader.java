@@ -687,7 +687,13 @@ public class TurnNewXmlReader implements Runnable {
 		Container nrws = this.turnInfo.getCharMessages();
 		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
 		for (CharacterMessageWrapper cmw : (ArrayList<CharacterMessageWrapper>) nrws.getItems()) {
-			Character c = (Character) cs.findFirstByProperty("id", cmw.getCharId());
+			// TODO: sort this bit of a hack...without this 'dwar' doesn't get any order results.
+			// judging by the hack in CharacterMessageWrapper.SetCharId  there's probably something else that got fixed by that.
+			String id = cmw.getCharId();
+			while (id.length() < 5) {
+				id = id + ' ';
+			}
+			Character c = (Character) cs.findFirstByProperty("id", id);
 			if (c != null) {
 				InfoSource ifs = new DerivedFromOrderResultsInfoSource(this.turn.getTurnNo(), this.turnInfo.nationNo, c.getName());
 				cmw.updateCharacter(c, game1);
@@ -717,7 +723,7 @@ public class TurnNewXmlReader implements Runnable {
 				a.setHexNo(hexNo);
 				a.setNationNo(this.turnInfo.getNationNo());
 				NationAllegianceEnum allegiance = NationAllegianceEnum.Neutral;
-				NationRelations nr = (NationRelations) game1.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+				NationRelations nr = game1.getTurn().getNationRelations(this.turnInfo.getNationNo());
 				if (nr != null) {
 					allegiance = nr.getAllegiance();
 				}
@@ -898,7 +904,10 @@ public class TurnNewXmlReader implements Runnable {
 		for (ArtifactWrapper aw : aws) {
 			// for FA game, update artifact numbers
 			try {
-				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA || game1.getMetadata().getGameType() == GameTypeEnum.gameKS) {
+				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA 
+						|| game1.getMetadata().getGameType() == GameTypeEnum.gameKS
+						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCME
+						) {
 					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
 					boolean found = false;
 					for (ArtifactInfo ai : game1.getMetadata().getArtifacts().getItems()) {

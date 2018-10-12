@@ -5,7 +5,6 @@ import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 
 /**
@@ -24,7 +23,7 @@ public class HexInfoHistory {
 			Turn t = game.getTurn(i);
 			if (t == null)
 				continue;
-			HexInfo hi = (HexInfo) t.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo);
+			HexInfo hi = t.getHexInfo(hexNo);
 			if (hi.getVisible())
 				return i;
 			// check friendly char present

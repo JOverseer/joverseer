@@ -1,95 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
   <channel>
-    <title>Overseer Beta (development) releases</title>
-    <link>http://www.middleearthgames.com/software/joverseer/betafeed.xml</link>
+    <title>Overseer Test (development) releases</title>
+    <link>http://www.middleearthgames.com/software/joverseer/testfeed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
-    <title>1.16.4</title>
-      <pubDate>Fri, 25 May 2018</pubDate>
+    <title>1.16.6</title>
+      <pubDate>Fri, 27 August 2018</pubDate>
       <description>
-VERSION 1.15.5
+VERSION 1.16.6
 --------------
-	test version for mac update testing.
-VERSION 1.15.4
---------------
-	* Fix: 935 recon result is now recognised.
-	* Fix: 910 scouting result is now recognised.     
-VERSION 1.15.3
---------------
-    * Fix for macs.
-VERSION 1.15.2
---------------
-    * Fixed crash in 2950 new game.
-VERSION 1.15.1
---------------
-	* starting information for 2950 games has been significantly corrected.
-	* 990 order (one ring) shouldn't be flagged yellow in orderchecker
-	* Fixed: java8 selects IPv6 for networking which breaks email sending.
-	* automatic recognition of new XML format so no need for user to pick.
-	* right arrow symbol now correctly displayed.
-	* Fix 622: Kinstrife roads selected at game setup no longer vanish.
-	* Fix 632: Player characters with less than 5 characters in their name, had odd things happening, eg no past orders etc. Rebuilding the .jov file is needed to actually see a difference.
-	* Artifact effect descriptions are now consistent for saner sorting.
-	
-VERSION 1.13.9-11
---------------
-    * version bump to test distribution.
-VERSION 1.13.8
---------------
-	* layout files moved to user directory. JOverseer directory can now live as readonly in Program Files in windows.          
-VERSION 1.13.7
---------------
-  	* Ant based and Eclipse compatible build and release system rewritten.
-	* Windows installer updated for new installs.
-	* log files now written to temp directory instead of console.
-	
-VERSION 1.13.6
---------------
-    * Validation of switching from version control hosting from subversion on googlecode to git on GitHub.
-	
-VERSION 1.13.5
---------------
-	* Internationalization
-		o preliminary italian support added.
-		o better spanish coverage.
-		
-VERSION 1.13.4
---------------
-	* Version numbering change.
-		o This version is 1.13.0 rather than 1.0.13.
-		o This is a developer or 'beta' version, as will be all versions where the middle part is an odd number.
-		o The next stable release will be based on this one (probably) but called 1.14.0.
-		o All future stable releases will have even middle parts to the version number.
-		o The final version part number will increase with minor versions.
-		o Once you have a stable version of jOverseer installed, the auto-update mechanism will not switch you from a stable to beta version.
-		 
-	* Platform support
-		o Recent versions of java (version 7 update 9 and later) have changed some of the look and feel support, which broke jOverseer.
-		o This most obviously affected Macs, but also others.
-		o This is fixed for some users, further solutions are being considered.
-		
-	* Current Hex View
-		o Bug Fix: An empty list of characters being shown using the new default mergesort in java 7+. 
-		
-	* Internationalization
-		o Widespread changes to improve support for different countries and languages (locales).
-		o The messages.properties file now should have all the translatable text.
-		o The only sample (incomplete) version available is messages_es.properties for Spanish readers.
-		o Orderchecker is not included, and the orders themselves are still in English.
-		o For the curious and if you want to force the selection of a locale, there is a command line option. For example '-L es' will select spanish.
-		
-	* Orderchecker
-		o Fixed so that characters only seen on PDF reports don't stop orderchecker running.
-		o Fixed so that it uses the current turn terrain and traffic map and allegiances instead of it's predefined ones.
-		o Fixed so that you can issue a challenge when travelling with an army.
-		o Fixed so that it spots a buy food order before a move, so army is 'fed'
-
-	* Edit Nation Allegiance
-		o Fixed a bug which resulted in a change in allegiance being partially propagated to future turns. This caused Orderchecker to get confused about changed allegiances especially for Tirkhor and Khazad in Kinstrife games.
-
-		</description>
+    * Enh: Import Game Dir Tree, now imports in turn order instead of nation order (based on the filename).
+    * Enh: Import Game Dir Tree, now defaults to the selected directory if it doesn't find any files in turn sub directories.
+	* Enh: Import Text File now recognises that you've pasted the contents of an email file and selects the Automagic parser.
+    * Enh: Add colours for the NPC nations 26 and 27.
+    * Enh: Show population centres owned by NPC nations (CME).
+	* Enh: The maximum number of characters allowed per nation is added to the Nation Stats View, and the Info View.
+	* Fix: CME artifact numbers removed as they are randomised at game start.
+	* Fix: Spot lore spell Locate Artifact results again.
+	* Fix: Restore the filter order list view by meaningful stats (>29) rather than just >0.
+	* Fix: The starting artifact names should display accents again.
+	* Fix: If a character in JO had an artifact that wasn't recognised (separate bug), only the characters before that one were order checked.
+	* Fix: The Order List View now again spots when the Order Editor changes an order.
+    * Fix: Character ids with trailing spaces don't get mangled by the import process.
+    * Fix: CME start data updated (again).
+    * Fix: Add the abbreviations for CME nations.
+    * Fix: Enable orderchecker for CME.
+    * Fix: When the owner of a population centre wasn't recognised, it wasn't shown on the map.
+    * Fix: Unable to show order results report when the character id was less than five characters long.
+	* Fix: Orderchecker had the wrong data for NW hex features, which caused lots of confusion over movement costs.
+	</description>
     </item>
     </channel>
 </rss>

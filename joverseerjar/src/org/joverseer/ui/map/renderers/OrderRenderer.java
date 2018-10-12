@@ -20,7 +20,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
@@ -77,8 +76,6 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	public boolean render(Object obj, Graphics2D g, int x, int y, boolean doRender) {
-		if (this.mapMetadata == null)
-			init();
 
 		// todo render order
 		Order order = (Order) obj;
@@ -222,7 +219,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 			Game game = GameHolder.instance().getGame();
 
-			Army army = (Army) game.getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", order.getCharacter().getName());
+			Army army = game.getTurn().getArmy(order.getCharacter().getName());
 			Boolean cav = null;
 			Boolean fed = null;
 			if (army != null) {
@@ -363,7 +360,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 
 			int distance = MovementUtils.distance(order.getCharacter().getHexNo(), hexNo);
 			boolean distanceOk = false;
-			PopulationCenter popCenter = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hexNo);
+			PopulationCenter popCenter = GameHolder.instance().getGame().getTurn().getPopCenter(hexNo);
 			if (spellNo == 302) {
 				distanceOk = distance <= 14;
 			} else if (spellNo == 304) {

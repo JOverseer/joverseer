@@ -38,6 +38,7 @@
 				<ref bean="gameMenu"/>
 				<ref bean="utilMenu"/>
 				<ref bean="windowMenu"/>
+				<ref bean="advancedMenu"/>
                 <ref bean="helpMenu"/>
                 <ref bean="adminMenu"/>
 			</list>
@@ -67,7 +68,7 @@
                 <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
                 <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
                 <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
-                <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
+<!--                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>  -->
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
                 <value>separator</value>
@@ -93,60 +94,26 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
-                            <bean class="org.joverseer.ui.command.CreateGame"/>
-							<bean class="org.joverseer.ui.command.EditGameCommand">
-                            	<property name="enabled"><value>false</value></property>
-							</bean>
-                            <bean class="org.joverseer.ui.command.ChangeNationAllegiances">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-							<bean class="org.joverseer.ui.command.EditNationMetadataCommand">
-                            	<property name="enabled"><value>false</value></property>
-							</bean>
-			                <value>separator</value>
-                            <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>                                                        
-                            <bean class="org.joverseer.ui.command.OpenGameDirTree">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-                            <bean class="org.joverseer.ui.command.DeleteLastTurnCommand">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-			                <value>separator</value>                            
-                            <bean class="org.joverseer.ui.command.LoadGame"/>
-                            <bean class="org.joverseer.ui.command.SaveGame">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-			                <value>separator</value>
-                            <bean class="org.joverseer.ui.command.SetOrderEditorAutoNationsCommand">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>			                
-                            <bean class="org.joverseer.ui.command.ImportOrdersFromAutomagicFileCommand">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-                            <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-                            <bean class="org.joverseer.ui.command.ExportOrdersCommand">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-                            <bean class="org.joverseer.ui.command.RunOrdercheckerCommand">
-                            	<property name="enabled"><value>false</value></property>
-                            </bean>
-							<bean class="org.joverseer.ui.command.ExportOrderTextCommand">
-                            	<property name="enabled"><value>false</value></property>
-							</bean>
-                            <!-- 
-                            <bean class="org.joverseer.ui.command.RunOrders"/>
-                            -->
-                            <value>separator</value>
-                            <ref bean="recentGamesMenu"/>
-                            <value>separator</value>
-                            <!-- 
-                            <bean class="org.springframework.richclient.command.support.ExitCommand"/>
-                             -->
-                             <bean class="com.jidesoft.spring.richclient.ExitCommand"/>
+            	<bean class="org.joverseer.ui.command.CreateGame"/>
+			    <value>separator</value>
+                <bean class="org.joverseer.ui.command.LoadGame"/>
+                <ref bean="recentGamesMenu"/>
+                <bean class="org.joverseer.ui.command.SaveGame">
+					<property name="enabled"><value>false</value></property>
+                </bean>
+			    <value>separator</value>                            
+                <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir">
+                	<property name="enabled"><value>false</value></property>
+                </bean>                                                        
+			    <value>separator</value>
+                <bean class="org.joverseer.ui.command.RunOrdercheckerCommand">
+                	<property name="enabled"><value>false</value></property>
+                </bean>
+                <bean class="org.joverseer.ui.command.ExportOrdersCommand">
+                	<property name="enabled"><value>false</value></property>
+                </bean>
+ 				<value>separator</value>
+                <bean class="com.jidesoft.spring.richclient.ExitCommand"/>
 			</list>
 		</property>
 	</bean>
@@ -195,6 +162,40 @@
                <bean class="org.joverseer.ui.command.GetCreateCampSuccessRateCommand"/>
             </list>
 	    </property>
+    </bean>
+    <bean id="advancedMenu"
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+                <bean class="org.joverseer.ui.command.OpenGameDirTree">
+                    <property name="enabled"><value>false</value></property>
+                </bean>
+                <value>separator</value>
+				<bean class="org.joverseer.ui.command.EditGameCommand">
+                	<property name="enabled"><value>false</value></property>
+				</bean>
+                <bean class="org.joverseer.ui.command.ChangeNationAllegiances">
+                    <property name="enabled"><value>false</value></property>
+                </bean>
+				<bean class="org.joverseer.ui.command.EditNationMetadataCommand">
+                	<property name="enabled"><value>false</value></property>
+				</bean>
+                <bean class="org.joverseer.ui.command.SetOrderEditorAutoNationsCommand">
+                   	<property name="enabled"><value>false</value></property>
+                </bean>			                
+                <value>separator</value>
+                <bean class="org.joverseer.ui.command.ImportOrdersFromAutomagicFileCommand">
+                   	<property name="enabled"><value>false</value></property>
+                </bean>
+                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand">
+                   	<property name="enabled"><value>false</value></property>
+                </bean>
+                <value>separator</value>
+                <bean class="org.joverseer.ui.command.DeleteLastTurnCommand">
+                    <property name="enabled"><value>false</value></property>
+                </bean>
+			</list>
+		</property>            
     </bean>
     <!-- 
         Bean: helpMenu

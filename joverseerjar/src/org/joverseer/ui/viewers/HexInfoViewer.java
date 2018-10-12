@@ -198,7 +198,7 @@ public class HexInfoViewer extends ObjectViewer {
 			}
 
 			Game g = GameHolder.instance().getGame();
-			HexInfo hi = (HexInfo) g.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", h.getHexNo()); //$NON-NLS-1$
+			HexInfo hi = g.getTurn().getHexInfo(h.getHexNo());
 			this.climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : ""); //$NON-NLS-1$
 			this.terrain.setText(UIUtils.enumToString(h.getTerrain()));
 			this.terrain.setCaretPosition(0);

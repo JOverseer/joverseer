@@ -20,12 +20,10 @@ public class StartingCharacterReader implements MetadataReader {
 		MetadataSource ms = new MetadataSource();
 
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename);
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename,true);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				if (ln.startsWith("#"))
-					continue;
 				String[] parts = ln.split(";");
 				if (parts.length < 4)
 					continue;

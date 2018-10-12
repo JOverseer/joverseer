@@ -43,7 +43,7 @@ public class OrderParameterValidator {
 			this.orderEditorData = new Container<OrderEditorData>(new String[] { "orderNo" });
 			try {
 				GameMetadata gm = GameMetadata.instance();
-				BufferedReader reader = gm.getUTF8Resource("orderEditorData.csv");
+				BufferedReader reader = gm.getUTF8Resource("orderEditorData.csv",false);
 
 				String ln;
 				while ((ln = reader.readLine()) != null) {

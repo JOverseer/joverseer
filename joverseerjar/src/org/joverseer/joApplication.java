@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.info.InfoRegistry;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -18,9 +19,10 @@ public class joApplication {
 
 	// this is a class to make it clear that all the Application.instance().getApplicationContext(). are one and the same
 	// and reduce the amount of casting going on.
-	public joApplication() {
-		// TODO Auto-generated constructor stub
-
+	// also limits the impact of the decision to create singletons, to this class, instead of getInstance() functions on
+	// all other classes, and removes the knowledge of a singleton class from classes that don't really need to know.
+	public joApplication()
+	{
 	}
 	static public ApplicationContext getApplicationContext()
 	{
@@ -65,7 +67,11 @@ public class joApplication {
 		return (HashMap) getApplicationContext().getBean("mapEditorOptions"); //$NON-NLS-1$
 
 	}
-	
+    public static InfoRegistry getInfoRegistry()
+    {
+        return (InfoRegistry) getApplicationContext().getBean("infoRegistry"); //$NON-NLS-1$
+    }	
+    
     static public void publishEvent(LifecycleEventsEnum type,Object object,Object sender)
 	{
 		getApplicationContext().publishEvent(new JOverseerEvent(type, object,sender));

@@ -248,6 +248,16 @@ public class ArmyEstimatesListView extends ItemListView {
 		handler.exportAsDrag(this.table, e, TransferHandler.COPY);
 	}
 
+	private ArmyEstimate getSelectedArmyEstimate()
+	{
+		ArmyEstimate ae = null;
+		try {
+			ae = (ArmyEstimate)this.getSelectedObject();
+		} catch (Exception exc) {
+			// do nothing.
+		}
+		return ae;
+	}
 	@Override
 	protected JComponent[] getButtons() {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
@@ -260,19 +270,7 @@ public class ArmyEstimatesListView extends ItemListView {
 
 			@Override
 			public JPopupMenu getPopupMenu() {
-				ArmyEstimate ae = null;
-				int row = ArmyEstimatesListView.this.table.getSelectedRow();
-				if (row >= 0) {
-					int idx = ((SortableTableModel) ArmyEstimatesListView.this.table.getModel()).getActualRowAt(row);
-					if (idx < ArmyEstimatesListView.this.tableModel.getRowCount()) {
-						try {
-							Object obj = ArmyEstimatesListView.this.tableModel.getRow(idx);
-							ae = (ArmyEstimate) obj;
-						} catch (Exception exc) {
-
-						}
-					}
-				}
+				ArmyEstimate ae = ArmyEstimatesListView.this.getSelectedArmyEstimate(); 
 				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyEstimatesListView", new Object[] { new ShowENHICommand(ae), }); //$NON-NLS-1$
 				return group.createPopupMenu();
 			}

@@ -25,12 +25,10 @@ public class ArmyReader implements MetadataReader {
 		Container<Army> armies = new Container<Army>();
 		try {
 
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename);
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename,true);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				if (ln.equals(""))
-					continue;
 				ln = ln.replace("\"", "");
 				String parts[] = ln.split(",");
 

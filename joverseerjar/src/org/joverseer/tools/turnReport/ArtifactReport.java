@@ -2,10 +2,21 @@ package org.joverseer.tools.turnReport;
 
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.GameHolder;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 
 public class ArtifactReport extends BaseReportObject {
 	int artifactNo;
 
+	public ArtifactReport(ObjectModificationType modification,ArtifactWrapper aw) {
+		super();
+		this.setModification(modification);
+		this.setArtifactNo(aw.getNumber());
+		this.setName(aw.getName() + " (" + aw.getNumber() + ")");
+		this.setHexNo(aw.getHexNo());
+
+//		this.setNationNo(aw.getNationNo()); // can't as may be spell source and so null.
+
+	}
 	public int getArtifactNo() {
 		return this.artifactNo;
 	}

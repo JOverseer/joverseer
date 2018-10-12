@@ -6,7 +6,6 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 
@@ -37,7 +36,7 @@ public class ArmyAllegianceNameComparator implements Comparator<Army> {
 			return 0;
 		NationAllegianceEnum nr1 = c1.getNationAllegiance();
 		NationAllegianceEnum nr2 = c2.getNationAllegiance();
-		NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", g.getMetadata().getNationNo());
+		NationRelations nr = t.getNationRelations(g.getMetadata().getNationNo());
 		if (nr1 == null)
 			return 1;
 		if (nr2 == null)

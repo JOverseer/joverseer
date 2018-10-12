@@ -7,7 +7,6 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
@@ -70,9 +69,9 @@ public class CharacterDeathAllegianceNameComparator implements Comparator<Charac
 		Turn t = g.getTurn();
 		if (t == null)
 			return 0;
-		NationRelations nr1 = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c1.getNationNo());
-		NationRelations nr2 = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c2.getNationNo());
-		NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", g.getMetadata().getNationNo());
+		NationRelations nr1 = t.getNationRelations(c1.getNationNo());
+		NationRelations nr2 = t.getNationRelations(c2.getNationNo());
+		NationRelations nr = t.getNationRelations(g.getMetadata().getNationNo());
 		if (nr1 == null)
 			return 1;
 		if (nr2 == null)

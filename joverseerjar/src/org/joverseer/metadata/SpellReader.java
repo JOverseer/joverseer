@@ -19,7 +19,7 @@ public class SpellReader implements MetadataReader {
 		Container<SpellInfo> spells = new Container<SpellInfo>();
 
 		try {
-			BufferedReader reader = gm.getUTF8Resource(this.spellFilename);
+			BufferedReader reader = gm.getUTF8Resource(this.spellFilename,true);
 			String ln;
 			while ((ln = reader.readLine()) != null) {
 				String[] parts = ln.split(";");

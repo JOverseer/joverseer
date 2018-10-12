@@ -24,12 +24,7 @@ public class ProductionFactor {
     };
     
     public int getFactor(PopulationCenterSizeEnum size) {
-        if (size == PopulationCenterSizeEnum.camp) return 100;
-        if (size == PopulationCenterSizeEnum.village) return 80;
-        if (size == PopulationCenterSizeEnum.town) return 60;
-        if (size == PopulationCenterSizeEnum.majorTown) return 40;
-        if (size == PopulationCenterSizeEnum.city) return 20;
-        return 0;
+    	return PopulationCenterSizeEnum.lookupSize(size, new int[]{0,100,80,60,40,20});
     }
     
     public int getFactor(ClimateEnum climate, ProductEnum pe) {

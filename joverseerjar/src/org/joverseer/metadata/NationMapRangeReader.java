@@ -19,7 +19,7 @@ public class NationMapRangeReader implements MetadataReader {
 		Container<NationMapRange> mapRanges = new Container<NationMapRange>();
 
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.nationMapFilename);
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.nationMapFilename,true);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {

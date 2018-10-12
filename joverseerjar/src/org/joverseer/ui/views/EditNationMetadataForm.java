@@ -15,14 +15,16 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.joverseer.joApplication;
+import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.controls.ResourceButton;
 import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.jidesoft.popup.JidePopup;
@@ -78,15 +80,15 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 	protected JComponent createFormControl() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
-		tlb.cell(new JLabel(" "));
+		tlb.cell(new JLabel(Messages.getString("standardFields.Nation")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("standardFields.Name"));
+		tlb.cell(new JLabel(Messages.getString("standardFields.Name")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationMetadataForm.ShortName"));
+		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.ShortName")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationMetadataForm.Removed"));
+		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.Removed")));
 		tlb.gapCol();
-		tlb.cell(new ResourceLabel("editNationMetadataForm.SNAs"));
+		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.SNAs")));
 		tlb.gapCol();
 		tlb.cell();
 		// tlb.gapCol();
@@ -99,7 +101,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			nationName.setPreferredSize(this.uiSizes.newDimension(170/20, this.uiSizes.getHeight5()));
 			JLabel lbl = new JLabel();
 			lbl.setPreferredSize(this.uiSizes.newDimension(60/24, this.uiSizes.getHeight6()));
-			lbl.setText(Application.instance().getApplicationContext().getMessage("editNationMetadataForm.NationLabel", new Object[] { (i + 1) }, null));
+			lbl.setText(String.valueOf(i + 1));
 			this.labels.add(lbl);
 			tlb.cell(lbl);
 			tlb.cell(nationName);
@@ -122,7 +124,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			tlb.gapCol();
 			tlb.cell(nationSNAList);
 
-			JButton editNationSNAs = new ResourceButton("standardActions.Edit");
+			JButton editNationSNAs = new JButton(Messages.getString("standardActions.Edit"));
 			this.editSNAButtons.add(editNationSNAs);
 			editNationSNAs.setPreferredSize(this.uiSizes.newDimension(50/16, this.uiSizes.getHeight4()));
 			tlb.gapCol();
@@ -232,6 +234,8 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				}
 			}
 		}
+		Game g = joApplication.getGame();
+        joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
 	}
 
 	@Override

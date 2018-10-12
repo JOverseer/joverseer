@@ -7,7 +7,6 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 
@@ -165,19 +164,10 @@ public class HexProductionWrapper {
 		setHexNo(pc.getHexNo());
 		Hex h = (Hex)game.getMetadata().getHex(pc.getHexNo());
 		if (h != null) setTerrain(h.getTerrain());
-		HexInfo hi = (HexInfo)turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo());
+		HexInfo hi = turn.getHexInfo(pc.getHexNo());
 		if (hi != null) setClimate(hi.getClimate());
 		
-		int factor = 100;
-		if (pc.getSize() == PopulationCenterSizeEnum.village) {
-			factor = 80;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.town) {
-			factor = 60;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
-			factor = 40;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.city) {
-			factor = 29;
-		} 
+		int factor =  pc.lookupSize(new int[] {100,100,80,60,40,29});
 		
 		setLeather(pc.getProduction(ProductEnum.Leather) * 100 / factor);
 		setBronze(pc.getProduction(ProductEnum.Bronze) * 100 / factor);

@@ -5,6 +5,63 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item>
+    <title>1.16.8</title>
+    <pubDate>Wed, 19 Sep 2018</pubDate>
+    <description>
+VERSION 1.16.8
+--------------
+	* Fix: People really wanted the order drop-down list back on the OrderEditorListView (despite it having problems not showing the character-restricted set of orders).
+	* Fix: Some oddities with neutral armies not being show properly.
+</description>
+    </item>
+    <item>
+    <title>1.16.7</title>
+      <pubDate>Mon, 10 Sep 2018</pubDate>
+      <description>
+VERSION 1.16.7
+--------------
+	* Fix: 1.16.6 broke order validation causing problems entering some orders.
+	* Fix: CME rumors of NPC thieving caused a silent crash and data corruption on importing turn.
+	</description>
+	</item>
+    <item>
+    <title>1.16.6</title>
+      <pubDate>Fri, 7 Sep 2018</pubDate>
+      <description>
+VERSION 1.16.6
+--------------
+    * Enh: Import Game Dir Tree, now imports in turn order instead of nation order (based on the filename).
+    * Enh: Import Game Dir Tree, now defaults to the selected directory if it doesn't find any files in turn sub directories.
+	* Enh: Import Text File now recognises that you've pasted the contents of an email file and selects the Automagic parser.
+    * Enh: Add colours for the NPC nations 26 and 27.
+    * Enh: Show population centres owned by NPC nations (CME).
+	* Enh: The maximum number of characters allowed per nation is added to the Nation Stats View, and the Info View.
+	* Fix: CME artifact numbers removed as they are randomised at game start.
+	* Fix: Spot lore spell Locate Artifact results again.
+	* Fix: Restore the filter order list view by meaningful stats (>29) rather than just >0.
+	* Fix: The starting artifact names should display accents again.
+	* Fix: If a character in JO had an artifact that wasn't recognised (separate bug), only the characters before that one were order checked.
+	* Fix: The Order List View now again spots when the Order Editor changes an order.
+    * Fix: Character ids with trailing spaces don't get mangled by the import process.
+    * Fix: CME start data updated.
+    * Fix: Add the abbreviations for CME nations.
+    * Fix: Enable orderchecker for CME.
+    * Fix: When the owner of a population centre wasn't recognised, it wasn't shown on the map.
+    * Fix: Unable to show order results report when the character id was less than five characters long.
+	* Fix: Orderchecker had the wrong data for NW hex features, which caused lots of confusion over movement costs.
+	</description>
+    </item>
+	    <item>
+    	<title>1.16.5</title>
+      	<pubDate>Fri, 29 Jun 2018</pubDate>
+      	<description>
+VERSION 1.16.5
+--------------
+	* Fix: The order editor was ignoring *all* character skills in the order dropdown in new games.
+	* Fix: Fourth Age game terrain was wrong for hex 0302.
+		</description>
+		</item>
 	    <item>
     	<title>1.16.4</title>
       	<pubDate>Tue, 5 Jun 2018</pubDate>

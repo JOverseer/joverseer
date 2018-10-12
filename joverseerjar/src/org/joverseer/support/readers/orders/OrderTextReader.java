@@ -1,8 +1,6 @@
 package org.joverseer.support.readers.orders;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,38 +19,49 @@ import org.joverseer.tools.OrderValidationResult;
  * 
  * @author Marios Skounakis
  */
-public class OrderTextReader {
+public class OrderTextReader implements OrderTextReaderInterface {
 	public static int STANDARD_ORDER_TEXT = 1;
 	public static int ORDERCHECKER_ORDER_TEXT = 2;
+	public static int AUTOMAGIC_ORDER_TEXT = 3;
 	
-	public int textType = 2;
-	String orderText;
+	public int textType = 2; // note not final
 
-	Game game;
+	final Game game;
 	
-	
-
 	ArrayList<String> lineResults = new ArrayList<String>();
 
 	int chars = 0;
 	int orders = 0;
 
+	public OrderTextReader(Game game) {
+		this(game,STANDARD_ORDER_TEXT); 
+	}
+	public OrderTextReader(Game game,int type) {
+		this.game= game;
+		this.textType = type;
+	}
 	public Game getGame() {
 		return this.game;
 	}
-
-	public void setGame(Game game) {
-		this.game = game;
+	public static OrderTextReader Factory(String text,Game game) {
+		if (text.equals("Standard")) { //$NON-NLS-1$
+			return new OrderTextReader(game,OrderTextReader.STANDARD_ORDER_TEXT);
+		} else if (text.equals("Order Checker")) { //$NON-NLS-1$
+			return new OrderTextReader(game,OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+		} else {
+			return new OrderTextReader(game,OrderTextReader.AUTOMAGIC_ORDER_TEXT);
+		}
 	}
-
-	public String getOrderText() {
-		return this.orderText;
+	public static OrderTextReaderInterface Factory2(String text,Game game) {
+		if (text.equals("Standard")) { //$NON-NLS-1$
+			return new OrderTextReader(game,OrderTextReader.STANDARD_ORDER_TEXT);
+		} else if (text.equals("Order Checker")) { //$NON-NLS-1$
+			return new OrderTextReader(game,OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+		} else {
+			return new OrderFileReader(game);
+		}
 	}
-
-	public void setOrderText(String orderText) {
-		this.orderText = orderText;
-	}
-
+		
 	protected boolean isCharacterLine(String line) {
 		if (getTextType() == STANDARD_ORDER_TEXT) {
 			String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s' ]{3,5}\\) @ \\d{4}.*";
@@ -119,13 +128,18 @@ public class OrderTextReader {
 		return null;
 	}
 
-	public void readOrders(int pass) {
+	public void parseOrders(BufferedReader reader) throws Exception {
+		internalReadOrders(reader, 0);
+	}
+	@Override
+	public void readOrders(BufferedReader reader) throws Exception {
+		internalReadOrders(reader, 1);
+	}
+	public void internalReadOrders(BufferedReader reader,int pass) throws Exception {
 		try {
 			if (pass == 0) {
 				this.lineResults.clear();
 			}
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					new ByteArrayInputStream(getOrderText().getBytes())));
 			String line;
 			String charId = null;
 			String location = null;
@@ -137,6 +151,13 @@ public class OrderTextReader {
 
 			int lineCounter = 0;
 			while ((line = reader.readLine()) != null) {
+                if (line.startsWith("BEGINMEAUTOINPUT") && (pass == 0)) {
+                	// its a JO or automagic format!
+                	this.lineResults.add("Joverseer or Automagic orders found.");
+                	this.setTextType(AUTOMAGIC_ORDER_TEXT);
+                	return;
+                }
+
 				if (isCharacterLine(line)) {
 					if (charId != null) {
 						addOrders(charId, location, charLine, orderText1,
@@ -179,9 +200,14 @@ public class OrderTextReader {
 				addOrders(charId, location, charLine, orderText1, orderLines,
 						notes, pass);
 			}
-		} catch (Exception exc) {
-			exc.printStackTrace();
-		}
+        } catch (Exception exc) {
+            throw exc;
+        }
+        finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
 	}
 
 	private void addOrders(String charId, String location, int charLine,
@@ -332,12 +358,9 @@ public class OrderTextReader {
 		return this.lineResults;
 	}
 
-	public int getOrders() {
+	@Override
+	public int getOrdersRead() {
 		return this.orders;
-	}
-
-	public void setOrders(int orders) {
-		this.orders = orders;
 	}
 
 	public int getTextType() {

@@ -27,7 +27,6 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
@@ -130,6 +129,9 @@ public class PopulationCenterViewer extends ObjectViewer {
 		}
 
 		Nation pcNation = gm.getNationByNum(nationNo);
+		if (pcNation == null) {
+			pcNation = gm.getNationByNum(0);
+		}
 		this.nation.setText(pcNation.getShortName());
 		this.nation.setCaretPosition(0);
 		this.nation.setToolTipText(pcNation.getName());
@@ -152,7 +154,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				productionTurn = game.getTurn(i);
 				if (productionTurn == null)
 					continue;
-				PopulationCenter pop = (PopulationCenter) productionTurn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
+				PopulationCenter pop = productionTurn.getPopCenter(pc.getHexNo()); //$NON-NLS-1$
 				if (pop == null)
 					continue;
 				if (pop.getSize() != PopulationCenterSizeEnum.ruins) {
@@ -241,7 +243,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			Game g = GameHolder.instance().getGame();
 			Turn t = g.getTurn();
 
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", nationNo); //$NON-NLS-1$
+			NationRelations nr = t.getNationRelations(nationNo);
 			Color col;
 			if (nr == null) {
 				col = ColorPicker.getInstance().getColor(NationAllegianceEnum.Neutral.toString());
@@ -432,17 +434,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			boolean estimateLoyalty = false;
 			if (loyalty1 == 0) {
 				estimateLoyalty = true;
-				if (pc.getSize().equals(PopulationCenterSizeEnum.camp)) {
-					loyalty1 = 20;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.village)) {
-					loyalty1 = 35;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.town)) {
-					loyalty1 = 50;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.majorTown)) {
-					loyalty1 = 70;
-				} else if (pc.getSize().equals(PopulationCenterSizeEnum.city)) {
-					loyalty1 = 90;
-				}
+				loyalty1 = pc.lookupSize(new int[]{0,20,35,50,70,90});
 			}
 
 			CombatPopCenter combatPc = new CombatPopCenter(pc);
@@ -454,7 +446,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 
 			Game game = GameHolder.instance().getGame();
 			Hex hex = game.getMetadata().getHex(pc.getHexNo());
-			HexInfo hi = (HexInfo) game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
+			HexInfo hi = game.getTurn().getHexInfo(pc.getHexNo());
 
 			boolean estimateClimate = false;
 			ClimateEnum climate = ClimateEnum.Mild;

@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.orderEditor.OrderEditorAutoNations;
@@ -97,7 +96,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
                 @Override
 				public void actionPerformed(ActionEvent e) {
                     for (Integer n : OrderEditorAutoNationsForm.this.checkBoxes.keySet()) {
-                        PlayerInfo pi = (PlayerInfo)g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", n);
+                        PlayerInfo pi = g.getTurn().getPlayerInfo(n);
                         OrderEditorAutoNationsForm.this.checkBoxes.get(n).setSelected(pi!=null);
                     }
                 }

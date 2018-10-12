@@ -11,7 +11,6 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
@@ -54,8 +53,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             int nationNo = natObj.getNationNo();
 
             Game g = GameHolder.instance().getGame();
-            NationRelations nr = (NationRelations) g.getTurn().getContainer(TurnElementsEnum.NationRelation)
-                    .findFirstByProperty("nationNo", nationNo);
+            NationRelations nr = g.getTurn().getNationRelations(nationNo);
             NationAllegianceEnum allegiance = null;
             if (nr != null && nationNo > 0) {
             	allegiance = nr.getAllegiance();

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**
@@ -12,24 +11,17 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  * 
  * @author Marios Skounakis
  */
-public class ArtifactRenderer implements Renderer {
-    MapMetadata mapMetadata = null;
+public class ArtifactRenderer extends AbstractBaseRenderer {
 
     @Override
 	public boolean appliesTo(Object obj) {
         return org.joverseer.domain.Artifact.class.isInstance(obj);
     }
 
-    private void init() {
-        this.mapMetadata = MapMetadata.instance();
-    }
-
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-        if (this.mapMetadata == null) init();
 
         //Artifact a = (Artifact)obj;
-
 
         int w = this.mapMetadata.getGridCellWidth() / 3;
         int h = this.mapMetadata.getGridCellHeight() / 3;
@@ -48,4 +40,9 @@ public class ArtifactRenderer implements Renderer {
         g.draw(e);
         //g.drawRect(x + dx, y + dy, w, h);
     }
+
+	@Override
+	public void refreshConfig() {
+		// nothing to do.
+	}
 }

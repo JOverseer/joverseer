@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.16.4"/>
-		<property name="buildId" value="2018-6-5"/>
+		<property name="version" value="1.16.8"/>
+		<property name="buildId" value="2018-9-19"/>
 	</bean>
 	
 	<!--
@@ -164,22 +164,32 @@
         <property name="fontName"><value>MS Sans Serif</value></property>
         <property name="fontSize"><value>9</value></property>
         <property name="fontStyle"><value>1</value></property>
+		<property name="mapMetadata" ref="mapMetadata"/>
     </bean>
     
-	<bean id="defaultHexRenderer" class="org.joverseer.ui.map.renderers.DefaultHexRenderer"/>
+	<bean id="defaultHexRenderer" class="org.joverseer.ui.map.renderers.DefaultHexRenderer">
+ 		<property name="imgSource" ref="imageSource"></property>
+		<property name="mapMetadata" ref="mapMetadata"/>
+	</bean>
 	<bean id="hexInfoRenderer" class="org.joverseer.ui.map.renderers.HexInfoRenderer">
 		<property name="densityFactor"><value>4</value></property>
 	    <property name="hexNumberRenderer" ref="hexNumberRenderer"/>
+		<property name="mapMetadata" ref="mapMetadata"/>
     </bean>
     
     <bean id="highlightedHexRenderer" class="org.joverseer.ui.map.renderers.HighlightedHexRenderer">                
     	<property name="width"><value>2</value></property>
     	<property name="highlightColor"><value>#ff3300</value></property>
+		<property name="mapMetadata" ref="mapMetadata"/>
    	</bean>
     
 	
-    <bean id="orderRenderer" class="org.joverseer.ui.map.renderers.OrderRenderer"/>
-	<bean id="hexValueMapItemRenderer" class="org.joverseer.ui.map.renderers.HexValueMapItemRenderer"/>
+    <bean id="orderRenderer" class="org.joverseer.ui.map.renderers.OrderRenderer">
+		<property name="mapMetadata" ref="mapMetadata"/>
+	</bean>    	
+	<bean id="hexValueMapItemRenderer" class="org.joverseer.ui.map.renderers.HexValueMapItemRenderer">
+		<property name="mapMetadata" ref="mapMetadata"/>
+	</bean>
                 
 	<bean id="mapMetadata" class="org.joverseer.ui.map.MapMetadata">
         <property name="maxMapColumn">
@@ -204,18 +214,39 @@
             <list>
                 <ref bean="defaultHexRenderer"/>
                 <ref bean="hexNumberRenderer"></ref>
-                <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer"/>                
-                <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.ArmyIconRenderer"/>                
-                <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer"/>
+                <bean class="org.joverseer.ui.map.renderers.PopulationCenterRenderer">
+                	<property name="imgSource" ref="imageSource"></property>
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
+                <bean class="org.joverseer.ui.map.renderers.MultiCharacterRenderer">
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
+                <bean class="org.joverseer.ui.map.renderers.MultiArmyRenderer">
+                	<property name="imgSource" ref="imageSource"></property>
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
+                <bean class="org.joverseer.ui.map.renderers.ArmyIconRenderer">                
+                	<property name="imgSource" ref="imageSource"></property>
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
+                <bean class="org.joverseer.ui.map.renderers.NationMessageRenderer">
+                	<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
                 <ref bean="hexInfoRenderer"/>
 				<ref bean="orderRenderer"/>
 				<ref bean="hexValueMapItemRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer"/>
-                <bean class="org.joverseer.ui.map.renderers.CombatRenderer"/>                
-                <bean class="org.joverseer.ui.map.renderers.EncounterRenderer"/>                                
-				<bean class="org.joverseer.ui.map.renderers.NotesRenderer"/>            
+                <bean class="org.joverseer.ui.map.renderers.ArtifactRenderer">
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
+                <bean class="org.joverseer.ui.map.renderers.CombatRenderer">
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>
+                <bean class="org.joverseer.ui.map.renderers.EncounterRenderer">
+					<property name="mapMetadata" ref="mapMetadata"/>
+                </bean>                                
+				<bean class="org.joverseer.ui.map.renderers.NotesRenderer">
+					<property name="mapMetadata" ref="mapMetadata"/>
+				</bean>           
                 <ref bean="highlightedHexRenderer"/>				
             </list>
         </property>
@@ -419,6 +450,14 @@
    					</property>
    					<property name="resourcePath">
    						<value>classpath:metadata/info/combatCalc/troopTerrainModifiers.csv</value>
+   					</property>
+   				</bean>
+   				<bean class="org.joverseer.support.info.Info">
+   					<property name="key">
+   						<value>charactersAllowed</value>
+   					</property>
+   					<property name="resourcePath">
+   						<value>classpath:metadata/info/charactersAllowed.csv</value>
    					</property>
    				</bean>
    			</list>

@@ -23,6 +23,15 @@ public class CharacterReport extends BaseReportObject implements IBelongsToNatio
 		setHexNo(c.getHexNo());
 		setCharacter(c);
 	}
+	public CharacterReport(Character c,ObjectModificationType modification) {
+		this(c);
+		this.setModification(modification);
+	}
+	public CharacterReport(Character c,ObjectModificationType modification,String notes) {
+		this(c);
+		this.setModification(modification);
+		this.setNotes(notes);
+	}
 
 	public CharacterReport(AdvancedCharacterWrapper c) {
 		super();

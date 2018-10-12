@@ -277,18 +277,7 @@ public class OrderCostCalculator {
 		PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", o.getCharacter().getHexNo());
 		if (pc == null)
 			return -1;
-		int cost = 0;
-		if (pc.getSize() == PopulationCenterSizeEnum.camp) {
-			cost = 4000;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.village) {
-			cost = 6000;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.town) {
-			cost = 8000;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
-			cost = 10000;
-		} else if (pc.getSize() == PopulationCenterSizeEnum.city) {
-			cost = -1;
-		}
+		int cost = pc.lookupSize(new int[] {0,4000,6000,8000,10000,-1});
 		this.cont.setProduct(ProductEnum.Gold, cost);
 		return cost;
 	}

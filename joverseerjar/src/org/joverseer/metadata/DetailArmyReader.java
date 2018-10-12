@@ -27,12 +27,10 @@ public class DetailArmyReader implements MetadataReader {
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		Container<Army> armies = new Container<Army>();
 		try {
-			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename);
+			BufferedReader reader = gm.getUTF8ResourceByGame(this.armyFilename,true);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {
-				if (ln.startsWith(("#")) || ln.equals(""))
-					continue;
 				try {
 					String parts[] = ln.split(";");
 					String hexNo = parts[0];

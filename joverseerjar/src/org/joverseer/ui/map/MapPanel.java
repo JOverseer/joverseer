@@ -258,6 +258,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		// exc.printStackTrace();
 		// }
 
+		refreshRendersConfig();
+		
 		for (Hex h : gm.getHexes()) {
 			setHexLocation(h.getColumn(), h.getRow());
 			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
@@ -307,6 +309,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		Graphics2D g = null;
 		BusyIndicator.showAt(this);
 		try {
+			refreshRendersConfig();
 			if (this.mapItemsBack == null) {
 				Dimension d = getMapDimension();
 				this.mapItemsBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -391,6 +394,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		MapTooltipHolder.instance().reset();
 
 		BusyIndicator.showAt(this);
+		refreshRendersConfig();
 		if (this.mapBaseItemsBack == null) {
 			Dimension d = getMapDimension();
 			this.mapBaseItemsBack = new BufferedImage((int) d.getWidth(), (int) d.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -556,6 +560,17 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	public void invalidateMapItems() {
 		this.metadata = null;
 		this.mapItems = null;
+	}
+	
+	public void refreshRendersConfig() {
+		MapMetadata metadata1;
+		metadata1 = getMetadata();
+		if (metadata1 != null ) {
+			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
+				r.refreshConfig();
+			}
+		}
+		
 	}
 
 	/**

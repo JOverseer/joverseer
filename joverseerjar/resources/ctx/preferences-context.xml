@@ -92,6 +92,7 @@
 					<property name="group">
 						<value>Display.Information Tabs</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -227,6 +228,7 @@
 					<property name="group">
 						<value>Display.Current Hex View</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -248,6 +250,7 @@
 					<property name="group">
 						<value>Display.Current Hex View</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -269,6 +272,7 @@
 					<property name="group">
 						<value>Display.Current Hex View</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -290,6 +294,7 @@
 					<property name="group">
 						<value>Economy Calculator</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -522,6 +527,7 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="lifecycleEvent">	
 						<value>RefreshTurnMapItems</value>
 					</property>
@@ -546,6 +552,7 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
@@ -567,6 +574,7 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="lifecycleEvent">	
 						<value>RefreshTurnMapItems</value>
 					</property>
@@ -591,6 +599,7 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
@@ -612,8 +621,32 @@
 					<property name="group">
 						<value>General</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
+					</property>
+					
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue"/>
+							<ref bean="noPrefValue"/>							
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>general.showWelcome</value>
+					</property>
+					<property name="description">
+						<value>Show Welcome</value>
+					</property>
+					<property name="group">
+						<value>General</value>
+					</property>
+					<property name="type"><value>check</value></property>
+					<property name="defaultValue">
+						<value>yes</value>
 					</property>
 					
 					<property name="domain">
@@ -652,6 +685,7 @@
 					<property name="group">
 						<value>Economy Calculator</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -674,6 +708,7 @@
 					<property name="group">
 						<value>General</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -696,6 +731,7 @@
 					<property name="group">
 						<value>General</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -718,6 +754,7 @@
 					<property name="group">
 						<value>Order Editor</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -740,6 +777,7 @@
 					<property name="group">
 						<value>Order Editor</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
@@ -868,6 +906,7 @@
 					<property name="group">
 						<value>Submit Orders</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
@@ -892,6 +931,7 @@
 					<property name="group">
 						<value>Updates</value>
 					</property>
+					<property name="type"><value>check</value></property>
 					<property name="defaultValue">
 						<value></value>
 					</property>

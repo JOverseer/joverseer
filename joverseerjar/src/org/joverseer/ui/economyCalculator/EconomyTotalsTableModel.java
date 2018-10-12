@@ -8,7 +8,6 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -27,36 +26,74 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     /**
 	 * 
 	 */
+	private static final int iHeaderCol0 =0;
+	public static final int iValueCol0=1;
+	private static final int iHeaderCol1=2;
+	public static final int iValueCol1=3;
+	private static final int iHeaderCol2=4;
+	public static final int iValueCol2=5;
+	private static final int iHeaderCol3=6;
+	public static final int iValueCol3=7;
+	
+	public static final int iStartingGoldRow = 0;
+	private static final int iTaxRevenueRow = 1;
+	private static final int iCharMaintRow = 1;
+	private static final int iTaxRateRow = 1;
+	private static final int iGoldProductionRow = 2;
+	private static final int iPCMaintRow = 2;
+	public static final int iOrdersCostRow = 3;
+	private static final int iPCLossesRow =3;
+	private static final int iArmyMaintRow =3;
+	public static final int iMarketSalesRow =3;
+	private static final int iMarketSpendRow =2;
+	private static final int iSurplusRow =3;
+	private static final int iMarketProfitRow =4;
+	public static final int iTotalRevenueRow =4;
+	private static final int iTotalMaintRow =4;
+	private static final int iTotalLossesRow =4;
+	public static final int iFinalGoldRow = 5;
+	
 	private static final long serialVersionUID = -7961559423992117184L;
-	String[] columnHeaders = new String[] {"", "", "", "", "", ""};
+	String[] columnHeaders = new String[] {"", "", "", "", "", "","",""};
     // "row headers", they go into column 0 of the table
-    String[] rowTags1 = new String[] {"army","pc","char","total","pclosses" };
-    String[] rowTags2 = new String[] {"taxRate","taxRevenue","gold","profits","surplus"};
-    String[] rowTags3 = new String[] {"ordersCost",null,"starting","final",null};
+    String[] rowTags0 = new String[] {"starting","taxRevenue","gold","pclosses","totalRevenue","" };
+    String[] rowTags1 = new String[] {"","char","pc","army","total",""};
+    String[] rowTags2 = new String[] {"","","marketSpend","marketSales","profits",""};
+    String[] rowTags3 = new String[] {"","taxRate","","ordersCost","","final"};
+    String[] rowHeaders0;
     String[] rowHeaders1;
-    // "row headers 2", they go into column 2 of the table
     String[] rowHeaders2;
-
-    //  "row headers 3", they go into column 4 of the table
     String[] rowHeaders3;
 
-    int[] columnWidths = new int[] {170, 64, 128, 64, 128, 64};
+    int[] columnWidths = new int[] {100, 60, 95, 60, 85, 60,95,60};
 
     JTable table;
     public EconomyTotalsTableModel()
     {
     	super();
+		this.rowHeaders0 = new String[this.rowTags0.length];
 		this.rowHeaders1 = new String[this.rowTags1.length];
 		this.rowHeaders2 = new String[this.rowTags2.length];
 		this.rowHeaders3 = new String[this.rowTags3.length];
+		for (int i=0;i<this.rowTags0.length;i++) {
+			if (!this.rowTags0[i].isEmpty()) { 
+				this.rowHeaders0[i] = (this.rowTags0[i] == null) ? "" : Messages.getString("EconomyCalculator.Totals." +this.rowTags0[i]);
+			}
+		}
 		for (int i=0;i<this.rowTags1.length;i++) {
-			this.rowHeaders1[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags1[i]);
+			if (!this.rowTags1[i].isEmpty()) { 
+				this.rowHeaders1[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags1[i]);
+			}
 		}
 		for (int i=0;i<this.rowTags2.length;i++) {
-			this.rowHeaders2[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags2[i]);
+			if (!this.rowTags2[i].isEmpty()) { 
+				this.rowHeaders2[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags2[i]);
+			}
 		}
 		for (int i=0;i<this.rowTags3.length;i++) {
-			this.rowHeaders3[i] = (this.rowTags3[i] == null) ? "" : Messages.getString("EconomyCalculator.Totals." +this.rowTags3[i]);
+			if (!this.rowTags3[i].isEmpty()) { 
+				this.rowHeaders3[i] = (this.rowTags3[i] == null) ? "" : Messages.getString("EconomyCalculator.Totals." +this.rowTags3[i]);
+			}
 		}
     }
     public void setTable(JTable table) {
@@ -65,12 +102,12 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     @Override
 	public int getColumnCount() {
-        return 6;
+        return iValueCol3+1;
     }
 
     @Override
 	public int getRowCount() {
-        return 5;
+        return 6;
     }
     
     @Override
@@ -84,19 +121,29 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     @Override
 	public Class<?> getColumnClass(int column) {
-        if (column == 0 || column == 2 || column == 4) return String.class;
-        return Integer.class;
+    	switch (column) {
+    	case iHeaderCol0:
+    	case iHeaderCol1:
+    	case iHeaderCol2:
+    	case iHeaderCol3:
+    		return String.class;
+    	default:
+            return Integer.class;
+    	}
     }
 
     @Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-        if (columnIndex == 0) {
+        if (columnIndex == iHeaderCol0) {
+            return this.rowHeaders0[rowIndex];
+        }
+        if (columnIndex == iHeaderCol1) {
             return this.rowHeaders1[rowIndex];
         }
-        if (columnIndex == 2) {
+        if (columnIndex == iHeaderCol2) {
             return this.rowHeaders2[rowIndex];
         }
-        if (columnIndex == 4) {
+        if (columnIndex == iHeaderCol3) {
             return this.rowHeaders3[rowIndex];
         }
         if (!Game.isInitialized(getGame())) return "";
@@ -107,47 +154,56 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (ecd == null) return "";
         if (!ecd.isInitialized()) return "";
 
-        if (columnIndex == 1) {
+        if (columnIndex == iValueCol0) {
             switch (rowIndex) {
-                case 0:
-                    return ne.getArmyMaintenance();
-                case 1:
-                    return ne.getPopMaintenance();
-                case 2:
-                    return ne.getCharMaintenance();
-                case 3:
-                    return ne.getTotalMaintenance();
-                case 4:
-                    //PC Losses
-                    return computeLostGoldRevenue() + computeLostTaxRevenue();
-            }
-            return "";
-        }
-        if (columnIndex == 3) {
-            switch (rowIndex) {
-                case 0:
-                    return getTaxRate();
-                case 1:
+                case iStartingGoldRow:
+            		return ne.getReserve();
+                case iTaxRevenueRow:
                     return getTaxRevenue();
-                case 2:
-                    return getGoldProduction();
-                case 3:
-                    // Market profits
-                    return getMarketProfits();
-                case 4:
-                    // Surplus
-                    return getSurplus();
+            	case iGoldProductionRow:
+            		return getGoldProduction();
+                case iPCLossesRow:
+                    return -(computeLostGoldRevenue() + computeLostTaxRevenue());
+            	case iTotalRevenueRow:
+            		return getTotalRevenue();
             }
             return "";
         }
-        if (columnIndex == 5) {
+        if (columnIndex == iValueCol1) {
             switch (rowIndex) {
-                case 0:
-                    return ecd.getOrdersCost();
-                case 2:
-                    return ne.getReserve();
-                case 3:
-                    // final gold
+            	case iCharMaintRow:
+            		return -ne.getCharMaintenance();
+                case iPCMaintRow:
+                    return -ne.getPopMaintenance();
+            	case iArmyMaintRow:
+                    return -ne.getArmyMaintenance();
+            	case iTotalMaintRow:
+                    return -ne.getTotalMaintenance();
+            }
+            return "";
+        }
+        if (columnIndex == iValueCol2) {
+            switch (rowIndex) {
+               	case iMarketSalesRow:
+            		return getMarketSales();
+                case iMarketSpendRow:
+                    return getMarketSpend();
+            	case iMarketProfitRow:
+            		return getMarketProfits();
+//            	case iTotalLossesRow:
+//            		return getTotalLosses();
+            }
+            return "";
+        }
+        if (columnIndex == iValueCol3) {
+            switch (rowIndex) {
+            	case iTaxRateRow:
+            		return getTaxRate();
+            	case iOrdersCostRow:
+                	return -ecd.getOrdersCost();
+//              case iSurplusRow:
+//            	return getSurplus();
+                case iFinalGoldRow:
                     return getFinalGold();
             }
             return "";
@@ -165,6 +221,13 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     	}
     }
     
+    public int getTotalRevenue() {
+        return getTaxRevenue() + getGoldProduction()  - computeLostGoldRevenue() - computeLostTaxRevenue();
+    }
+    public int getTotalLosses() {
+        NationEconomy ne = getNationEconomy();
+        return -ne.getTotalMaintenance() - getOrdersCost() - computeLostGoldRevenue() - computeLostTaxRevenue() -getMarketSpend();
+    }
     /**
      * Computes the final gold for the nation
      * @return
@@ -185,26 +248,26 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     
     @Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return (columnIndex == 5 && rowIndex == 0) ||
-                (columnIndex == 3 && rowIndex == 2) ||
-                (columnIndex == 3 && rowIndex == 0);
+        return (columnIndex == iValueCol2 && rowIndex == iOrdersCostRow) ||
+                (columnIndex == iValueCol0 && rowIndex == iGoldProductionRow) ||
+                (columnIndex == iValueCol3 && rowIndex == iTaxRateRow);
     }
 
     @Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        if (columnIndex == 5 && rowIndex == 0) {
+        if (columnIndex == iValueCol2 && rowIndex == iOrdersCostRow) {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();
             joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
-        if (columnIndex == 3 && rowIndex == 2) {
+        if (columnIndex == iValueCol0 && rowIndex == iGoldProductionRow) {
             setGoldProduction((Integer)aValue);
             fireTableDataChanged();
             joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
-        if (columnIndex == 3 && rowIndex == 0) {
+        if (columnIndex == iValueCol3 && rowIndex == iTaxRateRow) {
             setTaxRate((Integer)aValue);
             fireTableDataChanged();
             joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
@@ -217,10 +280,20 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      */
     public int getSurplus() {
         NationEconomy ne = getNationEconomy();
-        return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance() + getMarketProfits();
+        return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance();
     }
 
     
+    public Integer getMarketSales() {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return null;
+        return ecd.getMarketSales();
+    }
+    public Integer getMarketSpend() {
+        EconomyCalculatorData ecd = getEconomyCalculatorData();
+        if (ecd == null) return null;
+        return ecd.getMarketSpend();
+    }
     public Integer getMarketProfits() {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return null;
@@ -228,7 +301,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     }
     
     /**
-     * Computes the gold production for the nation, unless it has been specicically set
+     * Computes the gold production for the nation, unless it has been specifically set
      * by the user
      * @return
      */
@@ -303,16 +376,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
             if (pc.getNationNo().equals(nationNo) && pc.getLostThisTurn()) {
-                int sz = 0;
-                if (pc.getSize() == PopulationCenterSizeEnum.village) {
-                    sz = 1;
-                } else if (pc.getSize() == PopulationCenterSizeEnum.town) {
-                    sz = 2;
-                } else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
-                    sz = 3;
-                } else if (pc.getSize() == PopulationCenterSizeEnum.city) {
-                    sz = 4;
-                }
+                int sz = pc.lookupSize(new int[] {0,0,1,2,3,4});
                 NationEconomy ne = (NationEconomy)g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo);
                 EconomyCalculatorData ecd = (EconomyCalculatorData)g.getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", nationNo);
                 if (ecd == null || ecd.getTaxRate() == null) {
@@ -343,16 +407,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
             if (pc.getNationNo().equals(nationNo) && !pc.getLostThisTurn()) {
-                int sz = 0;
-                if (pc.getSize() == PopulationCenterSizeEnum.village) {
-                    sz = 1;
-                } else if (pc.getSize() == PopulationCenterSizeEnum.town) {
-                    sz = 2;
-                } else if (pc.getSize() == PopulationCenterSizeEnum.majorTown) {
-                    sz = 3;
-                } else if (pc.getSize() == PopulationCenterSizeEnum.city) {
-                    sz = 4;
-                }
+                int sz = pc.lookupSize(new int[] {0,0,1,2,3,4});
                 newTaxBase += sz;
             }
             

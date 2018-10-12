@@ -208,27 +208,26 @@ public class TurnReportCollector {
 
 	public ArrayList<BaseReportObject> CollectSpells(Turn t, Turn p) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
-		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
-			int nationNo = pi.getNationNo();
-			for (Character c : t.getCharacters().getItems()) {
-				if (!c.getNationNo().equals(nationNo))
-					continue;
-				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
-				if (pc == null)
-					continue;
-				for (SpellProficiency sp : c.getSpells()) {
-					boolean found = false;
-					for (SpellProficiency sp1 : pc.getSpells()) {
-						if (sp.getSpellId() == sp1.getSpellId()) {
-							found = true;
-							break;
+		if (p != null ) {
+			for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
+				int nationNo = pi.getNationNo();
+				for (Character c : t.getCharacters().getItems()) {
+					if (!c.getNationNo().equals(nationNo))
+						continue;
+					Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
+					if (pc == null)
+						continue;
+					for (SpellProficiency sp : c.getSpells()) {
+						boolean found = false;
+						for (SpellProficiency sp1 : pc.getSpells()) {
+							if (sp.getSpellId() == sp1.getSpellId()) {
+								found = true;
+								break;
+							}
 						}
-					}
-					if (!found) {
-						CharacterReport cr = new CharacterReport(c);
-						cr.setModification(ObjectModificationType.Gained);
-						cr.setNotes("Learnt " + sp.getName() + " at " + sp.getProficiency());
-						ret.add(cr);
+						if (!found) {
+							ret.add(new CharacterReport(c,ObjectModificationType.Gained,"Learnt " + sp.getName() + " at " + sp.getProficiency()));						
+						}
 					}
 				}
 			}
@@ -245,11 +244,14 @@ public class TurnReportCollector {
 					continue;
 				if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead))
 					continue;
-				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				String orderResults = c.getCleanOrderResults();
 				String prefix = StringUtils.getFirstWord(orderResults);
 				String lprefix = prefix.toLowerCase();
 				String lprefixGen = lprefix.equals("she") ? "her" : "his";
+				Character pc = null;
+				if (p != null) {
+					pc = p.getCharacters().findFirstByProperty("name", c.getName());
+				}
 				if (orderResults.contains("was ordered to assassinate a character.")) {
 					boolean failure = orderResults.contains("was not able to assassinate the character") || orderResults.contains("was not able to complete " + lprefixGen + " mission because the character was too well guarded");
 					CharacterReport cr = new CharacterReport(c);
@@ -292,9 +294,15 @@ public class TurnReportCollector {
 					if (!failure) {
 						String pop = StringUtils.getUniquePart(orderResults, "The fortifications were sabotaged at", "\\.", false, false);
 						cr.setNotes("Sab Fort at " + popPlusNation(pop, t));
-						PopulationCenter pp = p.getPopCenter(pop);
+						String pf="";
+						if (p != null) {
+							PopulationCenter pp = p.getPopCenter(pop);
+							if (pp != null)
+								pf = pp.getFortification().getRenderString();
+						}
 						PopulationCenter cp = t.getPopCenter(pop);
-						cr.appendNote(pp.getFortification().getRenderString() + this.UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
+						if (cp != null)
+							cr.appendNote(pf + this.UNICODE_RIGHTWARDS_ARROW + cp.getFortification().getRenderString());
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
 						cr.setNotes("Failed sab fort");
@@ -311,10 +319,15 @@ public class TurnReportCollector {
 					if (!failure) {
 						String pop = StringUtils.getUniquePart(orderResults, "was sabotaged at ", "\\.", false, false);
 						cr.setNotes("Sab Docks at " + popPlusNation(pop, t));
-						PopulationCenter pp = p.getPopCenter(pop);
+						String ph ="";
+						PopulationCenter pp = null;
+						if (p != null) {
+							pp = p.getPopCenter(pop);
+							ph = pp.getHarbor().getRenderString();
+						}
 						PopulationCenter cp = t.getPopCenter(pop);
 						if (pp != null && cp != null && pp.getHarbor() != null && cp.getHarbor() != null) {
-							cr.appendNote(pp.getHarbor().getRenderString() + this.UNICODE_RIGHTWARDS_ARROW + cp.getHarbor().getRenderString());
+							cr.appendNote(ph + this.UNICODE_RIGHTWARDS_ARROW + cp.getHarbor().getRenderString());
 						}
 						cr.setModification(ObjectModificationType.Gained);
 					} else {
@@ -363,7 +376,7 @@ public class TurnReportCollector {
 		return ret;
 	}
 
-	public ArrayList<BaseReportObject> collectChallenges(Turn t, Turn p) {
+	public ArrayList<BaseReportObject> collectChallenges(Turn t) {
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
@@ -405,12 +418,14 @@ public class TurnReportCollector {
 		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
 			int nationNo = pi.getNationNo();
 			for (Character c : t.getCharacters().getItems()) {
-				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				if (!c.getNationNo().equals(nationNo))
 					continue;
+				Character pc = null;
+				if (p != null) {
+					pc = p.getCharacters().findFirstByProperty("name", c.getName());
+				}
 				if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
-					// lost
-					CharacterReport cr = new CharacterReport(c);
+					CharacterReport cr = new CharacterReport(c,ObjectModificationType.Lost);
 					if (c.getDeathReason().equals(CharacterDeathReasonEnum.Dead)) {
 						if (c.getCleanOrderResults().contains("was killed during combat")) {
 							cr.setNotes("Killed in combat");
@@ -444,7 +459,6 @@ public class TurnReportCollector {
 					}
 					if (pc != null)
 						cr.setCharacter(pc);
-					cr.setModification(ObjectModificationType.Lost);
 					ret.add(cr);
 					if (c.getCleanOrderResults().contains("The army commanded by " + c.getName() + " has been disbanded because no suitable commander was present.")) {
 						cr.appendNote("Army disbanded");
@@ -452,8 +466,7 @@ public class TurnReportCollector {
 				} else {
 					if (pc == null) {
 						// new
-						CharacterReport cr = new CharacterReport(c);
-						cr.setModification(ObjectModificationType.Gained);
+						CharacterReport cr = new CharacterReport(c,ObjectModificationType.Gained);
 						ret.add(cr);
 					} else {
 						// check for hostage
@@ -461,10 +474,8 @@ public class TurnReportCollector {
 						if (c.getHexNo() == 0 && pc.getHexNo() != 0) {
 							// hostage or missing
 							if (cleanOrderResults.contains("could not escape from being held hostage")) {
-								CharacterReport cr = new CharacterReport(c);
+								CharacterReport cr = new CharacterReport(c,ObjectModificationType.Lost,"Hostage");
 								cr.setHexNo(pc.getHexNo());
-								cr.setModification(ObjectModificationType.Lost);
-								cr.setNotes("Hostage");
 								if (cleanOrderResults.contains(c.getName() + " was captured during combat by")) {
 									cr.appendNote("Captured in combat");
 								} else if (cleanOrderResults.contains(c.getName() + " was kidnaped.")) {
@@ -481,14 +492,10 @@ public class TurnReportCollector {
 								ret.add(cr);
 							}
 						} else if (c.getHexNo() != 0 && pc.getHexNo() == 0) {
-							CharacterReport cr = new CharacterReport(c);
-							cr.setModification(ObjectModificationType.Gained);
-							cr.setNotes("Escaped from hostage");
+							CharacterReport cr = new CharacterReport(c,ObjectModificationType.Gained,"Escaped from hostage");
 							ret.add(cr);
 						} else if (c.getHealth() != null && c.getHealth() < 100 && c.getHealth() > 0 && pc.getHealth() > c.getHealth()) {
-							CharacterReport cr = new CharacterReport(c);
-							cr.setModification(ObjectModificationType.Modified);
-							cr.setNotes("Injured (" + c.getHealth() + ")");
+							CharacterReport cr = new CharacterReport(c,ObjectModificationType.Modified,"Injured (" + c.getHealth() + ")");
 							if (cleanOrderResults.contains("suffered a loss of health due to a mysterious")) {
 								cr.appendNote(" Cursed");
 							}
@@ -524,15 +531,17 @@ public class TurnReportCollector {
 			for (PopulationCenter pc : t.getPopulationCenters().findAllByProperty("nationNo", nationNo)) {
 				if (pc.getNationNo() != nationNo)
 					continue;
-				PopulationCenter ppc = p.getPopulationCenters().findFirstByProperty("hexNo", pc.getHexNo()); // if
+				PopulationCenter ppc = null;
+				if (p != null) {
+					ppc = p.getPopulationCenters().findFirstByProperty("hexNo", pc.getHexNo());
+				}
 				// previous pop was ruins, simulate that it did not exist
 				if (pc.getSize().equals(PopulationCenterSizeEnum.ruins))
 					continue;
 				if (ppc != null && ppc.getSize().equals(PopulationCenterSizeEnum.ruins))
 					ppc = null;
 				if (ppc == null) {
-					PopCenterReport pr = new PopCenterReport(pc);
-					pr.setModification(ObjectModificationType.Gained);
+					PopCenterReport pr = new PopCenterReport(pc,ObjectModificationType.Gained);
 					pr.setCreated(true);
 					if (pc.getLoyalty() < 16 && pc.getFortification().equals(FortificationSizeEnum.none)) {
 						pr.appendNote("Loyalty: " + pc.getLoyalty());
@@ -544,45 +553,46 @@ public class TurnReportCollector {
 						ret.add(pr);
 				}
 			}
-			for (PopulationCenter ppc : p.getPopulationCenters().findAllByProperty("nationNo", nationNo)) {
-				if (ppc.getNationNo() != nationNo)
-					continue;
-				PopulationCenter pc = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", ppc.getHexNo()); // if
-				// previous pop was ruins, simulate that it did not exist
-				if (pc == null || pc.getSize().equals(PopulationCenterSizeEnum.ruins)) {
-					PopCenterReport pr = new PopCenterReport(ppc);
-					pr.setPc(pc);
-					pr.setPrevPc(ppc);
-					pr.setModification(ObjectModificationType.Lost);
-					if (ppc.getCapital())
-						pr.appendNote("Capital");
-					String destroyed = "Lost";
-					Combat combat = (Combat) t.getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", ppc.getHexNo());
-					if (combat != null) {
-						CombatWrapper cw = new CombatWrapper();
-						cw.parseAll(combat.getFirstNarration());
-						if (ppc.getName().equals(cw.getPopName())) {
-							if ("destroyed".equals(cw.getPopCenterOutcome())) {
-								if (ppc.getNation() != null) {
-									destroyed = "Destroyed by ";
-									String destrNations = "";
-									for (Nation n : cw.getNations(ppc.getNation().getAllegiance())) {
-										destrNations += (destrNations.equals("") ? "" : ",") + n.getShortName();
+			if (p != null) {
+				for (PopulationCenter ppc : p.getPopulationCenters().findAllByProperty("nationNo", nationNo)) {
+					if (ppc.getNationNo() != nationNo)
+						continue;
+					PopulationCenter pc = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", ppc.getHexNo()); // if
+					// previous pop was ruins, simulate that it did not exist
+					if (pc == null || pc.getSize().equals(PopulationCenterSizeEnum.ruins)) {
+						PopCenterReport pr = new PopCenterReport(ppc,ObjectModificationType.Lost);
+						pr.setPc(pc);
+						pr.setPrevPc(ppc);
+						if (ppc.getCapital())
+							pr.appendNote("Capital");
+						String destroyed = "Lost";
+						Combat combat = (Combat) t.getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", ppc.getHexNo());
+						if (combat != null) {
+							CombatWrapper cw = new CombatWrapper();
+							cw.parseAll(combat.getFirstNarration());
+							if (ppc.getName().equals(cw.getPopName())) {
+								if ("destroyed".equals(cw.getPopCenterOutcome())) {
+									if (ppc.getNation() != null) {
+										destroyed = "Destroyed by ";
+										String destrNations = "";
+										for (Nation n : cw.getNations(ppc.getNation().getAllegiance())) {
+											destrNations += (destrNations.equals("") ? "" : ",") + n.getShortName();
+										}
+										destroyed += destrNations;
+									} else {
+										destroyed = "Destroyed";
 									}
-									destroyed += destrNations;
-								} else {
-									destroyed = "Destroyed";
 								}
 							}
 						}
-					}
-					pr.appendNote(destroyed);
-					ret.add(pr);
-				} else {
-					if (pc.getNationNo() != nationNo) {
-						PopCenterReport pr = GetPopCenterReport(pc, ppc, t, p, nationNo);
-						if (pr != null)
-							ret.add(pr);
+						pr.appendNote(destroyed);
+						ret.add(pr);
+					} else {
+						if (pc.getNationNo() != nationNo) {
+							PopCenterReport pr = GetPopCenterReport(pc, ppc, t, p, nationNo);
+							if (pr != null)
+								ret.add(pr);
+						}
 					}
 				}
 			}
@@ -590,6 +600,16 @@ public class TurnReportCollector {
 		return ret;
 	}
 
+	/**
+	 * 
+	 * prereq: ppc != null
+	 * @param pc
+	 * @param ppc
+	 * @param turn
+	 * @param previous
+	 * @param nationNo
+	 * @return
+	 */
 	protected PopCenterReport GetPopCenterReport(PopulationCenter pc, PopulationCenter ppc, Turn turn, Turn previous, int nationNo) {
 		// check for modifications
 		boolean sizeChanged = !pc.getSize().equals(ppc.getSize());
@@ -799,38 +819,32 @@ public class TurnReportCollector {
 	public ArrayList<BaseReportObject> CollectCompanies(Turn t, Turn p) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		for (Company c : t.getCompanies().getItems()) {
-			Company pc = p.getCompanies().findFirstByProperty("commander", c.getCommander());
+			Company pc = null;
+			if (p != null) {
+				pc= p.getCompanies().findFirstByProperty("commander", c.getCommander());
+			}
 			if (pc == null) {
-				CompanyReport cr = new CompanyReport();
-				cr.setHexNo(c.getHexNo());
-				cr.setName(c.getCommander());
-				cr.setModification(ObjectModificationType.Gained);
-				cr.appendNote("Members: " + c.getMemberStr());
-				addNation(cr, c.getCommander(), t);
-				for (String m : c.getMembers())
-					addNation(cr, m, t);
+				CompanyReport cr = new CompanyReport(ObjectModificationType.Gained,c);
+				cr.noteMembers(c, t);
 				ret.add(cr);
 			} else {
 				String leftStr = "";
 				String joinedStr = "";
-				CompanyReport cr = new CompanyReport();
-				cr.setHexNo(c.getHexNo());
-				cr.setName(c.getCommander());
-				cr.setModification(ObjectModificationType.Modified);
-				addNation(cr, c.getCommander(), t);
+				CompanyReport cr = new CompanyReport(ObjectModificationType.Modified,c);
+				cr.addNation(c.getCommander(), t);
 				boolean modified = false;
 				for (String cm : c.getMembers()) {
 					if (!pc.getMembers().contains(cm)) {
 						joinedStr += (joinedStr.equals("") ? "" : ",") + cm;
 						modified = true;
-						addNation(cr, cm, t);
+						cr.addNation(cm, t);
 					}
 				}
 				for (String cm : pc.getMembers()) {
 					if (!c.getMembers().contains(cm)) {
 						leftStr += (leftStr.equals("") ? "" : ",") + cm;
 						modified = true;
-						addNation(cr, cm, p);
+						cr.addNation(cm, p);
 					}
 				}
 				if (modified) {
@@ -842,41 +856,49 @@ public class TurnReportCollector {
 				}
 			}
 		}
-		for (Company pc : p.getCompanies().getItems()) {
-			Company c = (Company) t.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", pc.getCommander());
-			if (c == null) {
-				CompanyReport cr = new CompanyReport();
-				cr.setHexNo(pc.getHexNo());
-				cr.setName(pc.getCommander());
-				cr.setModification(ObjectModificationType.Lost);
-				addNation(cr, pc.getCommander(), p);
-				cr.setNotes("Members: " + pc.getMemberStr());
-				for (String m : pc.getMembers())
-					addNation(cr, m, p);
-				ret.add(cr);
+		if (p != null) {
+			for (Company pc : p.getCompanies().getItems()) {
+				Company c = (Company) t.getContainer(TurnElementsEnum.Company).findFirstByProperty("commander", pc.getCommander());
+				if (c == null) {
+					CompanyReport cr = new CompanyReport(ObjectModificationType.Lost, pc);
+					cr.noteMembers(pc, p);
+					ret.add(cr);
+				}
 			}
 		}
 		return ret;
 	}
 
-	protected void addNation(BaseReportObject ro, String characterName, Turn t) {
-		Character c = (Character) t.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", characterName);
-		if (c != null)
-			ro.addNation(c.getNationNo());
-	}
-
 	public ArrayList<BaseReportObject> CollectArtifacts(Turn t, Turn p) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		Container<ArtifactWrapper> taws = ArtifactInfoCollector.instance().computeWrappersForTurn(t.getTurnNo());
-		Container<ArtifactWrapper> paws = ArtifactInfoCollector.instance().computeWrappersForTurn(p.getTurnNo());
+		Container<ArtifactWrapper> paws = null;
+		if (p != null) {
+			paws = ArtifactInfoCollector.instance().computeWrappersForTurn(p.getTurnNo());
+			for (ArtifactWrapper paw : paws.getItems()) {
+				if (paw.getTurnNo() != p.getTurnNo())
+					continue;
+				if (DerivedFromSpellInfoSource.class.isInstance(paw.getInfoSource()))
+					continue;
+				ArtifactWrapper aw = taws.findFirstByProperty("number", paw.getNumber());
+				if (aw != null && aw.getTurnNo() != t.getTurnNo())
+					aw = null;
+				if (paw.getNationNo() == null)
+					continue;
+				if (aw == null) {
+					ArtifactReport ar = new ArtifactReport(ObjectModificationType.Lost,paw);
+					ar.setNotes(paw.getOwner());
+					ar.setNationNo(paw.getNationNo());
+					ret.add(ar);
+				}
+			}
+		}
 		for (ArtifactWrapper aw : taws.getItems()) {
 			if (aw.getTurnNo() != t.getTurnNo())
 				continue;
 			if (DerivedFromSpellInfoSource.class.isInstance(aw.getInfoSource())) {
 				DerivedFromSpellInfoSource s = (DerivedFromSpellInfoSource) aw.getInfoSource();
-				ArtifactReport ar = new ArtifactReport();
-				ar.setName(aw.getName() + " (" + aw.getNumber() + ")");
-				ar.setArtifactNo(aw.getNumber());
+				ArtifactReport ar = new ArtifactReport(ObjectModificationType.Modified,aw);
 				ar.setNationNo(s.getNationNo());
 				String owner = aw.getOwner();
 				AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(owner, t.getTurnNo());
@@ -886,56 +908,28 @@ public class TurnReportCollector {
 				if (owner != null && !owner.equals(""))
 					ar.setNotes("Owner: " + owner);
 				ar.appendNote(aw.getInfoSource().getDescription());
-				ar.setHexNo(aw.getHexNo());
-				ar.setModification(ObjectModificationType.Modified);
 				ret.add(ar);
 				continue;
 			}
-			ArtifactWrapper paw = paws.findFirstByProperty("number", aw.getNumber());
-			if (paw != null && paw.getTurnNo() != p.getTurnNo())
-				paw = null;
-			if (paw == null) {
-				ArtifactReport ar = new ArtifactReport();
-				ar.setName(aw.getName() + " (" + aw.getNumber() + ")");
-				ar.setArtifactNo(aw.getNumber());
-				ar.setNotes(aw.getOwner());
-				ar.setNationNo(aw.getNationNo());
-				ar.setHexNo(aw.getHexNo());
-				ar.setModification(ObjectModificationType.Gained);
-				ret.add(ar);
-			} else {
-				if (paw.getNationNo() != null && !paw.getNationNo().equals(aw.getNationNo())) {
-					ArtifactReport ar = new ArtifactReport();
-					ar.setArtifactNo(aw.getNumber());
-					ar.setName(aw.getName() + " (" + aw.getNumber() + ")");
+			if (paws != null) {
+				ArtifactWrapper paw = paws.findFirstByProperty("number", aw.getNumber());
+				//g'teed that p != null but we keep the compiler quiet
+				if (p != null && paw != null && paw.getTurnNo() != p.getTurnNo())
+					paw = null;
+				if (paw == null) {
+					ArtifactReport ar = new ArtifactReport(ObjectModificationType.Gained, aw);
 					ar.setNotes(aw.getOwner());
 					ar.setNationNo(aw.getNationNo());
-					ar.setHexNo(aw.getHexNo());
-					ar.setModification(ObjectModificationType.Modified);
-					ar.setNotes(charPlusNation(paw.getOwner(), t) + " "+ this.UNICODE_RIGHTWARDS_ARROW +" " + charPlusNation(aw.getOwner(), t));
 					ret.add(ar);
+				} else {
+					if (paw.getNationNo() != null && !paw.getNationNo().equals(aw.getNationNo())) {
+						ArtifactReport ar = new ArtifactReport(ObjectModificationType.Modified, aw);
+						ar.setNationNo(aw.getNationNo());
+						ar.setNotes(charPlusNation(paw.getOwner(), t) + " " + this.UNICODE_RIGHTWARDS_ARROW + " "
+								+ charPlusNation(aw.getOwner(), t));
+						ret.add(ar);
+					}
 				}
-			}
-		}
-		for (ArtifactWrapper paw : paws.getItems()) {
-			if (paw.getTurnNo() != p.getTurnNo())
-				continue;
-			if (DerivedFromSpellInfoSource.class.isInstance(paw.getInfoSource()))
-				continue;
-			ArtifactWrapper aw = taws.findFirstByProperty("number", paw.getNumber());
-			if (aw != null && aw.getTurnNo() != t.getTurnNo())
-				aw = null;
-			if (paw.getNationNo() == null)
-				continue;
-			if (aw == null) {
-				ArtifactReport ar = new ArtifactReport();
-				ar.setName(paw.getName() + " (" + paw.getNumber() + ")");
-				ar.setArtifactNo(paw.getNumber());
-				ar.setNotes(paw.getOwner());
-				ar.setNationNo(paw.getNationNo());
-				ar.setHexNo(paw.getHexNo());
-				ar.setModification(ObjectModificationType.Lost);
-				ret.add(ar);
 			}
 		}
 		return ret;
@@ -949,7 +943,7 @@ public class TurnReportCollector {
 		return a.getOwner();
 	}
 
-	public ArrayList<BaseReportObject> CollectTransports(Turn t, Turn p) {
+	public ArrayList<BaseReportObject> CollectTransports(Turn t) {
 		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 
@@ -1000,9 +994,8 @@ public class TurnReportCollector {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		for (NationMessage nm : t.getNationMessages().getItems()) {
 			if (nm.isStealRumor()) {
-				StealGoldReport r = new StealGoldReport();
+				StealGoldReport r = new StealGoldReport(ObjectModificationType.Lost);
 				r.addNation(nm.getNationNo());
-				r.setModification(ObjectModificationType.Lost);
 				r.setGold(nm.getStealAmount());
 				r.setStolenFromNation(nm.getNationNo());
 				r.setGainedByNation(-1);
@@ -1020,16 +1013,19 @@ public class TurnReportCollector {
 					j--;
 				}
 				String amountStr = orderResults.substring(j, i);
-				StealGoldReport sgr = new StealGoldReport();
-				Character pc = p.getCharacters().findFirstByProperty("name", c.getName());
-				if (pc != null) {
-					sgr.setHexNo(pc.getHexNo());
-					PopulationCenter ppc = (PopulationCenter) p.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
-					if (ppc != null) {
-						sgr.setNotes(amountStr + " gold from " + ppc.getNation().getShortName() + " by " + c.getName());
-						sgr.setStolenFromNation(ppc.getNationNo());
-					} else {
-						sgr.setStolenFromNation(-1);
+				StealGoldReport sgr = new StealGoldReport(ObjectModificationType.Gained);
+				Character pc = null;
+				if (p != null) {
+					pc = p.getCharacters().findFirstByProperty("name", c.getName());
+					if (pc != null) {
+						sgr.setHexNo(pc.getHexNo());
+						PopulationCenter ppc = (PopulationCenter) p.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", pc.getHexNo());
+						if (ppc != null) {
+							sgr.setNotes(amountStr + " gold from " + ppc.getNation().getShortName() + " by " + c.getName());
+							sgr.setStolenFromNation(ppc.getNationNo());
+						} else {
+							sgr.setStolenFromNation(-1);
+						}
 					}
 				}
 				try {
@@ -1039,7 +1035,6 @@ public class TurnReportCollector {
 				}
 				sgr.setNationNo(c.getNationNo());
 				sgr.setGainedByNation(c.getNationNo());
-				sgr.setModification(ObjectModificationType.Gained);
 				ret.add(sgr);
 			}
 		}
@@ -1050,6 +1045,8 @@ public class TurnReportCollector {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		for (PlayerInfo pi : t.getPlayerInfo().getItems()) {
 			NationEconomy e = t.getNationEconomies().findFirstByProperty("nationNo", pi.getNationNo());
+			if (p==null)
+				continue;
 			NationEconomy pe = p.getNationEconomies().findFirstByProperty("nationNo", pi.getNationNo());
 			if (pe == null)
 				continue;
@@ -1365,76 +1362,79 @@ public class TurnReportCollector {
 
 	public ArrayList<BaseReportObject> collectBridges(Turn t, Turn p) {
 		ArrayList<BridgeReport> ret = new ArrayList<BridgeReport>();
-		GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-		ArrayList<Hex> thc = gm.getHexOverrides(t.getTurnNo()).getItems();
-		ArrayList<Hex> phc = gm.getHexOverrides(t.getTurnNo()).getItems();
-		HashSet<Integer> hexes = new HashSet<Integer>();
-		for (Hex h : thc) {
-			hexes.add(h.getHexNo());
-		}
-		for (Hex h : phc) {
-			hexes.add(h.getHexNo());
-		}
-		for (Integer hexNo : hexes) {
-			Hex ch = gm.getHexForTurn(t.getTurnNo(), hexNo);
-			Hex ph = gm.getHexForTurn(p.getTurnNo(), hexNo);
-			if (ph == ch)
-				continue;
-			for (HexSideEnum hse : HexSideEnum.values()) {
-				boolean cb = ch.getHexSideElements(hse).contains(HexSideElementEnum.Bridge);
-				boolean pb = ph.getHexSideElements(hse).contains(HexSideElementEnum.Bridge);
-				if (cb != pb) {
-					int otherHex = hse.getHexNoAtSide(hexNo);
-					boolean found = false;
-					for (BridgeReport br : ret) {
-						if (br.getHexNo() == otherHex) {
-							found = true;
-							break;
+		if (p != null) {
+			GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+			ArrayList<Hex> thc = gm.getHexOverrides(t.getTurnNo()).getItems();
+			//TODO: check is this supposed to be p?
+			ArrayList<Hex> phc = gm.getHexOverrides(t.getTurnNo()).getItems();
+			HashSet<Integer> hexes = new HashSet<Integer>();
+			for (Hex h : thc) {
+				hexes.add(h.getHexNo());
+			}
+			for (Hex h : phc) {
+				hexes.add(h.getHexNo());
+			}
+			for (Integer hexNo : hexes) {
+				Hex ch = gm.getHexForTurn(t.getTurnNo(), hexNo);
+				Hex ph = gm.getHexForTurn(p.getTurnNo(), hexNo);
+				if (ph == ch)
+					continue;
+				for (HexSideEnum hse : HexSideEnum.values()) {
+					boolean cb = ch.getHexSideElements(hse).contains(HexSideElementEnum.Bridge);
+					boolean pb = ph.getHexSideElements(hse).contains(HexSideElementEnum.Bridge);
+					if (cb != pb) {
+						int otherHex = hse.getHexNoAtSide(hexNo);
+						boolean found = false;
+						for (BridgeReport br : ret) {
+							if (br.getHexNo() == otherHex) {
+								found = true;
+								break;
+							}
 						}
+						if (found)
+							continue;
+						BridgeReport br = new BridgeReport();
+						br.setHexNo(ch.getHexNo());
+						if (cb) {
+							br.setModification(ObjectModificationType.Gained);
+							br.setNotes("Bridge built " + hexNo + "-" + otherHex);
+						} else {
+							br.setModification(ObjectModificationType.Lost);
+							br.setNotes("Bridge destroyed " + hexNo + "-" + otherHex);
+						}
+						PopulationCenter pc = t.getPopCenter(hexNo);
+						if (pc != null)
+							br.appendNote(" PC: " + popPlusNation(pc));
+						pc = t.getPopCenter(otherHex);
+						if (pc != null)
+							br.appendNote(popPlusNation(pc));
+						ret.add(br);
 					}
-					if (found)
-						continue;
-					BridgeReport br = new BridgeReport();
-					br.setHexNo(ch.getHexNo());
-					if (cb) {
-						br.setModification(ObjectModificationType.Gained);
-						br.setNotes("Bridge built " + hexNo + "-" + otherHex);
-					} else {
-						br.setModification(ObjectModificationType.Lost);
-						br.setNotes("Bridge destroyed " + hexNo + "-" + otherHex);
-					}
-					PopulationCenter pc = t.getPopCenter(hexNo);
-					if (pc != null)
-						br.appendNote(" PC: " + popPlusNation(pc));
-					pc = t.getPopCenter(otherHex);
-					if (pc != null)
-						br.appendNote(popPlusNation(pc));
-					ret.add(br);
 				}
 			}
-		}
-		for (NationMessage nm : t.getNationMessages().getItems()) {
-			if (nm.isBridgeSabotagedRumor()) {
-				String location = nm.getBridgeSabotagedLocation();
-				int hexNo = -1;
-				try {
-					hexNo = Integer.parseInt(location);
-				} catch (Exception exc) {
+			for (NationMessage nm : t.getNationMessages().getItems()) {
+				if (nm.isBridgeSabotagedRumor()) {
+					String location = nm.getBridgeSabotagedLocation();
+					int hexNo = -1;
+					try {
+						hexNo = Integer.parseInt(location);
+					} catch (Exception exc) {
+					}
+					PopulationCenter pc;
+					if (hexNo != -1) {
+						pc = t.getPopCenter(hexNo);
+					} else {
+						pc = t.getPopCenter(location);
+						hexNo = pc.getHexNo();
+					}
+					BridgeReport br = new BridgeReport();
+					br.setHexNo(hexNo);
+					br.setModification(ObjectModificationType.Lost);
+					br.setNotes("Sabotage rumor");
+					if (pc != null)
+						br.appendNote(" PC: " + pc.getName() + "(" + pc.getNation().getShortName() + ")");
+					ret.add(br);
 				}
-				PopulationCenter pc;
-				if (hexNo != -1) {
-					pc = t.getPopCenter(hexNo);
-				} else {
-					pc = t.getPopCenter(location);
-					hexNo = pc.getHexNo();
-				}
-				BridgeReport br = new BridgeReport();
-				br.setHexNo(hexNo);
-				br.setModification(ObjectModificationType.Lost);
-				br.setNotes("Sabotage rumor");
-				if (pc != null)
-					br.appendNote(" PC: " + pc.getName() + "(" + pc.getNation().getShortName() + ")");
-				ret.add(br);
 			}
 		}
 		ArrayList<BaseReportObject> ret2 = new ArrayList<BaseReportObject>();
@@ -1625,10 +1625,13 @@ public class TurnReportCollector {
 		try {
 			String ret = "";
 			Game g = GameHolder.instance().getGame();
+			if (!GameHolder.hasInitializedGame())
+				return ret;
 			Turn t = g.getTurn();
 			Turn p = g.getTurn(t.getTurnNo() - 1);
-			if (p == null)
-				return "";
+			if (p == null) {
+				Logger.getLogger(this.getClass()).warn("no previous turn found");
+			}
 			ArrayList<BaseReportObject> reports;
 			ret += "<div style='font-family:MS Sans Serif; font-size:11pt'>";
 			try {
@@ -1676,7 +1679,7 @@ public class TurnReportCollector {
 			}
 			ret += "<br/>";
 			try {
-				reports = collectChallenges(t, p);
+				reports = collectChallenges(t);
 				ret += renderCollection("Challenges", reports);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
@@ -1705,7 +1708,7 @@ public class TurnReportCollector {
 			}
 			ret += "<br/>";
 			try {
-				reports = CollectTransports(t, p);
+				reports = CollectTransports(t);
 				ret += renderCollection("Nation Transports", "Gold and product transports and transport rumors", reports);
 			} catch (RuntimeException e) {
 				e.printStackTrace();

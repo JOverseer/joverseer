@@ -184,18 +184,17 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		return pp.getMarketTotal();
 	}
 
-	public int getMarketProfits() {
-		int profits = 0;
+	public int getMarketSales() {
+		long sales=0;
 		Turn t = GameHolder.instance().getGame().getTurn();
 		if (t == null)
 			return 0;
 		for (ProductEnum p : ProductEnum.values()) {
 			if (p == ProductEnum.Gold)
 				continue;
-			int productProfit = getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + (getTotal(p) - getSellUnits(p)) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
-			profits += productProfit;
+			long productSale = ( get100xProductSales(p) + ((getTotal(p) - getSellUnits(p)) * get100xProductSaleCommission(p)) )/100;
+			sales += productSale;
 		}
-
 		String pval = PreferenceRegistry.instance().getPreferenceValue("general.strictMarketLimit");
 		if (pval.equals("yes")) {
 			int marketLimit = 20000;
@@ -205,11 +204,47 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			} catch (NumberFormatException exc) {
 			}
 
-			return marketLimit > profits ? profits : marketLimit;
+			return (int) (marketLimit > sales ? sales : marketLimit);
 		}
-		return profits;
+		return (int)sales;
+	}
+	public int getMarketSpend() {
+		long spend=0;
+		Turn t = GameHolder.instance().getGame().getTurn();
+		if (t == null)
+			return 0;
+		for (ProductEnum p : ProductEnum.values()) {
+			if (p == ProductEnum.Gold)
+				continue;
+			long productSpend = ( get100xProductPurchases(p) + get100xProductBidPurchase(p) )/100;
+			spend += productSpend;
+		}
+		return (int)-spend;
+	}
+	public int getMarketProfits() {
+		Turn t = GameHolder.instance().getGame().getTurn();
+		if (t == null)
+			return 0;
+		return getMarketSales() + getMarketSpend();
 	}
 
+	// note 100x to avoid early rounding.
+	protected long get100xProductSales(ProductEnum p)
+	{
+		return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor();
+	}
+	protected long get100xProductPurchases(ProductEnum p)
+	{
+		return getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor();
+	}
+	protected long get100xProductBidPurchase(ProductEnum p)
+	{
+		return getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor();
+	}
+	protected long get100xProductSaleCommission(ProductEnum p)
+	{
+		return  getSellPrice(p) * getSellBonusFactor() * getSellPct(p)/ 100;
+	}
 	private int getSellBonusFactor() {
 		return getSellBonus() ? 120 : 100;
 	}
@@ -249,6 +284,28 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		this.taxRate = taxRate;
 	}
 
+	private void recordBidPrice(ProductEnum p, Integer amount) {
+		if (amount > this.getBidPrice(p)) {
+			this.setBidPrice(p, amount);
+		}
+	}
+	private void recordBidUnits(ProductEnum p, Integer amount) {
+		this.setBidUnits(p, getBidUnits(p) + amount);
+	}
+	private void recordBuyUnits(ProductEnum p, Integer amount) {
+		this.setBuyUnits(p, getBuyUnits(p) + amount);
+	}
+	private void recordSellUnits(ProductEnum p, Integer amount) {
+		this.setSellUnits(p, getSellUnits(p) + amount);
+	}
+	private void recordSellPct(ProductEnum p, Integer amount) {
+		int residual = 100 - this.getSellPct(p);
+		if (residual < 0) {
+			setSellPct(p,100);
+		} else {
+			setSellPct(p,this.getSellPct(p) + (residual * amount /100));
+		}
+	}
 	public void updateMarketFromOrders() {
 		for (ProductEnum p : ProductEnum.values()) {
 			setSellPct(p, 0);
@@ -277,17 +334,17 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
 				if (no == 310) {
 					try {
-						setBidPrice(p, Integer.parseInt(o.getP2()));
-						setBidUnits(p, p1);
+						recordBidPrice(p, Integer.parseInt(o.getP2()));
+						recordBidUnits(p, p1);
 					} catch (NumberFormatException exc) {
 						// nothing
 					}
 				} else if (no == 315) {
-					setBuyUnits(p, p1);
+					recordBuyUnits(p, p1);
 				} else if (no == 320) {
-					setSellUnits(p, p1);
+					recordSellUnits(p, p1);
 				} else if (no == 325) {
-					setSellPct(p, p1);
+					recordSellPct(p, p1);
 				}
 			}
 

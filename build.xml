@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="joverseerRelease" default="BuildAll" basedir=".">
+    <description>
+        Build file for the Continuous Integration server of joverseer.
+    </description>
+    <property name="release.project.dir">jOverseerRelease</property>
+	<property name="jojar.project.dir">joverseerjar/</property>
+
+		
+    <!-- how to build dependent projects -->
+	<target name="BuildJoverseerJar">
+		<subant buildpath="${jojar.project.dir}" verbose="true">
+		</subant>
+	</target>
+	
+	<target name="test"
+		depends="BuildJoverseerJar">
+		<subant buildpath="${jojar.project.dir}" verbose="true" target="test">
+		</subant>
+	</target>
+	
+	<target name="BuildAll" depends="-Init,-Prep,test"/>
+	
+	<!-- Internal targets -->
+   <target name="-Init">
+       <tstamp/>
+       <echo message="Build time: ${TODAY} ${TSTAMP}"/>
+   </target>
+   <target name="-Prep">
+       <delete dir="${dist}" quiet="true"/>
+       <mkdir dir="${dist}"/>
+   </target>
+       
+</project>

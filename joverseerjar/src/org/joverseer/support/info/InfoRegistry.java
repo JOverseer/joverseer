@@ -2,10 +2,8 @@ package org.joverseer.support.info;
 
 import java.util.ArrayList;
 
-import org.springframework.richclient.application.Application;
-
 /**
- * Registry for infos. Currently implements the Singleton pattern.
+ * Registry for infos. Typically implemented as a Singleton.
  * 
  * @author Marios Skounakis
  *
@@ -29,9 +27,5 @@ public class InfoRegistry {
         }
         return null;
     }
-    
-    public static InfoRegistry instance() {
-        return (InfoRegistry)Application.instance().getApplicationContext().getBean("infoRegistry");
-    }
-    
+   
 }

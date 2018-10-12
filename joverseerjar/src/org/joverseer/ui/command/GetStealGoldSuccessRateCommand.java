@@ -52,7 +52,7 @@ public class GetStealGoldSuccessRateCommand  extends ActionCommand {
 	    				String goldStr = orderResults.substring(k, j-1).trim();
 	    				goldStolen = Integer.parseInt(goldStr);
 	    			}
-	    			NationRelations nr = (NationRelations)t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", c.getNationNo());
+	    			NationRelations nr = t.getNationRelations(c.getNationNo());
 	    			String ret = i + ";" + c.getName() + ";" + co.getAgent() + ";" + co.getAgentTotal() + ";" + pop.getSize().getCode() + ";" + pop.getFortification().getSize() + ";" + pop.getNationNo() + ";" + nr.getRelationsFor(pop.getNationNo()) + ";" + (success ? "1" :"0") + ";" + si + ";" + goldStolen;
 	    			System.out.println(ret);
     			}

@@ -5,6 +5,8 @@
     </description>
     <property name="bin">bin</property>
     <property name="src">src</property>
+	<property name="test.dir">test</property>
+	<property name="bintest.dir">bin-test</property>
     <property name="res.dir">resources</property>
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
@@ -15,19 +17,22 @@
 	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
     
     <!-- required projects -->
-    <property name="updater.dir">../joverseerupdaterjar/dist/lib</property>
+	<property name="updater.project.dir">../joverseerupdaterjar/</property>
+	<property name="updater.dir">${updater.project.dir}dist/lib</property>
     <path id="updater.path">
         <fileset dir="${updater.dir}">
             <include name="*.jar"/>
         </fileset>
     </path>
-    <property name="txt2xml.dir">../txt2xmljar/dist/lib</property>
+	<property name="txt2xml.project.dir">../txt2xmljar/</property>
+    <property name="txt2xml.dir">${txt2xml.project.dir}dist/lib</property>
     <path id="txt2xml.path">
         <fileset dir="${txt2xml.dir}">
             <include name="*.jar"/>
         </fileset>
     </path>
-    <property name="orderchecker.dir">../orderchecker/dist/lib</property>
+	<property name="orderchecker.project.dir">../orderchecker/</property>
+    <property name="orderchecker.dir">${orderchecker.project.dir}dist/lib</property>
     <path id="orderchecker.path">
         <fileset dir="${orderchecker.dir}">
             <include name="*.jar"/>
@@ -41,7 +46,6 @@
     <property name="commons_digester.path">${lib}/commons-digester-1.7.jar</property>
 	<property name="swing.path">${lib}/swingx-0.8.0.jar</property>
 	<property name="commons_collections.path">${shared.lib}/commons-collections-3.1.jar</property>
-	<property name="junit.path">${lib}/junit-3.8.1.jar</property>
 	<path id="pdfbox.path">
 	    <fileset dir="${lib}">
 	        <include name="PDFBox-0.7.3.jar"/>
@@ -64,6 +68,26 @@
 	        <include name="looks-2.0.4.jar"/>
 	    </fileset>
 	</path>
+	<property name="junit.path">${lib}/junit-4.12.jar</property>
+	<!-- needed to run junit4 -->
+	<property name="hamcrest.path">${lib}/hamcrest-core-1.3.jar</property>
+	<path id="assertj.path">
+		<fileset dir="${shared.lib}">
+			<include name="assertj*.jar"/>
+		</fileset>
+	</path>
+	
+	
+    <!-- how to build dependent projects -->
+	<target name="BuildUpdaterJar">
+		<subant buildpath="${updater.project.dir}" verbose="true"/>
+	</target>
+	<target name="Buildtxt2xmlJar">
+		<subant buildpath="${txt2xml.project.dir}" verbose="true"/>
+	</target>
+	<target name="BuildordercheckerJar">
+		<subant buildpath="${orderchecker.project.dir}" verbose="true"/>
+	</target>
 		
     
    <!-- Main targets -->
@@ -74,7 +98,7 @@
        <echo message="Build finished."/>
    </target>
    <target name="Compile"
-       depends="-Init"
+       depends="-Init,BuildUpdaterJar,BuildordercheckerJar,Buildtxt2xmlJar"
        description="Compile all java classes">
        <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
        <javac srcdir="${src}" destdir="${bin}" 
@@ -100,13 +124,57 @@
        </javac>
        
    </target>
-   <target name="Test"
-       depends="-Init,Compile"
+	   <target name="CompileTests"
+	   	 	depends="Jar"
+	       description="Compile all test java classes">
+	       <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
+	       <javac srcdir="${test.dir}" destdir="${bintest.dir}" 
+	           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8">
+	       		<classpath>
+	       			<pathelement path="${java.class.path}"/>
+	       			<path refid="updater.path"/>
+	       			<path refid="txt2xml.path"/>
+	       			<path refid="orderchecker.path"/>
+	       			<path refid="spring.path"/>
+	       			<path refid="jide.path"/>
+	       			<path refid="pdfbox.path"/>
+	       			<path refid="jgoodies.path"/>
+	       			<path refid="assertj.path"/>
+	       			<pathelement location="${jarfile}"/>
+	       			<pathelement location="${commons_httpclient.path}"/>
+	       			<pathelement location="${log4j.path}"/>
+	       			<pathelement location="${commons_logging.path}"/>
+	       			<pathelement location="${commons_beanutils.path}"/>
+	       			<pathelement location="${commons_digester.path}"/>
+	       			<pathelement location="${swing.path}"/>
+	       			<pathelement location="${commons_collections.path}"/>
+	       			<pathelement location="${junit.path}"/>
+				</classpath>
+	       </javac>
+	       
+	   </target>
+   <target name="test"
+       depends="-Init,Compile,CompileTests"
        description="Run JUnit Tests">
-       <java fork="yes" classname="junit.textui.TestRunner"
-           taskname="junit" failonerror="true">
-           
-       </java>
+   		<junit printsummary="yes" haltonfailure="yes">
+   			<classpath> 
+   				<pathelement location="${junit.path}"/>
+       			<pathelement location="${hamcrest.path}"/>
+   				<pathelement location="${bintest.dir}"/>
+       			<pathelement location="${jarfile}"/>
+       			<pathelement location="${log4j.path}"/>
+       			<pathelement location="${commons_logging.path}"/>
+       			<path refid="jide.path"/>
+       			<path refid="spring.path"/>
+       			<path refid="updater.path"/>
+       			<path refid="orderchecker.path"/>
+       			<pathelement location="${commons_beanutils.path}"/>
+       			<pathelement location="${commons_collections.path}"/>
+   			</classpath>
+   			<test name="org.joverseer.LaunchTest">
+   				<formatter type="plain"/>
+   			</test>
+		</junit>
        <echo message="Tested"/>
    </target>
 	<target name="Javadoc"
@@ -160,8 +228,10 @@
    <target name="-Prep">
        <delete dir="${jardir}" quiet="true"/>
        <delete dir="${bin}" quiet="true"/>
+       <delete dir="${bintest.dir}" quiet="true"/>
        <delete dir="${dist}"  quiet="true"/>
        <mkdir dir="${bin}"/>
+       <mkdir dir="${bintest.dir}"/>
        <mkdir dir="${dist}"/>
        <mkdir dir="${jardir}"/>
    </target>

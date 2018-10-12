@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.AbstractListViewFilter;
@@ -40,7 +39,7 @@ public class AllegianceFilter extends AbstractListViewFilter {
     	if (this.allegiance == null) return true;
         IBelongsToNation o = (IBelongsToNation)obj;
         Game g = GameHolder.instance().getGame();
-        NationRelations nr = (NationRelations)g.getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", o.getNationNo());
+        NationRelations nr = g.getTurn().getNationRelations(o.getNationNo());
         boolean ret;
         if (nr == null) {
             ret = false;

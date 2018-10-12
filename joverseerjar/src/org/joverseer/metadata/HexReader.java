@@ -2,14 +2,12 @@
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
-import org.springframework.core.io.Resource;
 
 /**
  *
@@ -31,7 +29,7 @@ public class HexReader implements MetadataReader {
     private HashMap loadHexes(GameMetadata gm) throws IOException, MetadataReaderException {
         HashMap hexes = new HashMap();
         try {
-            BufferedReader reader = gm.getUTF8ResourceByGame(this.terrainFilename);
+        	BufferedReader reader = gm.getUTF8ResourceByGame(this.terrainFilename,true);
             String ln;
             while ((ln = reader.readLine()) != null) {
                 String[] parts = ln.split(",");
@@ -58,9 +56,8 @@ public class HexReader implements MetadataReader {
 
     private void loadTraffic(HashMap hexes, GameMetadata gm) throws IOException, MetadataReaderException {
         try {
-            Resource resource = gm.getResourceByGame(this.trafficFilename);
+        	BufferedReader reader = gm.getUTF8ResourceByGame(this.trafficFilename,false);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             String ln;
             while ((ln = reader.readLine()) != null) {
             	// format is <hex>,0,side,traffic type

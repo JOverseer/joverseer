@@ -19,7 +19,9 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.metadata.orders.OrderMetadata;
+import org.joverseer.support.CommentedBufferedReader;
 import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 
@@ -341,13 +343,24 @@ public class GameMetadata implements Serializable {
 	
 	
 	//from https://stackoverflow.com/questions/1835430/byte-order-mark-screws-up-file-reading-in-java
-	public BufferedReader getUTF8Resource(String filename) throws IOException
+	public BufferedReader getUTF8Resource(String filename,boolean ignoreComments) throws IOException
 	{
-		return getUTF8Resource(getResource(filename));
+		return getUTF8Resource(getResource(filename),ignoreComments);
 	}
-	public static BufferedReader getUTF8Resource(Resource res) throws IOException
+	public static BufferedReader getUTF8Resource(Resource res,boolean ignoreComments) throws IOException
 	{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8"));
+		if (ignoreComments) {
+			return getUTF8Resource(res,new CommentedBufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8")));
+		} else {
+			return getUTF8Resource(res,new BufferedReader(new InputStreamReader(res.getInputStream(),"UTF-8")));
+		}
+	}
+/*	public static BufferedReader getUTF8Resource(Resource res) throws IOException
+	{
+		return getUTF8Resource(res,true);
+	}
+*/	public static BufferedReader getUTF8Resource(Resource res,BufferedReader reader) throws IOException
+	{
 	    reader.mark(1);
         char[] possibleBOM = new char[1];
         reader.read(possibleBOM);
@@ -362,11 +375,8 @@ public class GameMetadata implements Serializable {
 	// files first.
 	// then check classpath 
 	// note that getBasePath is not just a getter.
-	public Resource getResourceByGame(String filename) {
-		return getResource(getGameType().toString() + "." + filename);
-	}
-	public BufferedReader getUTF8ResourceByGame(String filename) throws IOException {
-		return getUTF8Resource(getGameType().toString() + "." + filename);
+	public BufferedReader getUTF8ResourceByGame(String filename, boolean ignoreComments) throws IOException {
+		return getUTF8Resource(getGameType().toString() + "." + filename, ignoreComments);
 	}
 	public Resource getResource(String resourceName) {
 		try {
@@ -388,6 +398,17 @@ public class GameMetadata implements Serializable {
 	static public GameMetadata instance()
 	{
 		return (GameMetadata) Application.instance().getApplicationContext().getBean("gameMetadata");
+	}
+
+	// note only returns non-null if a game has been initialized.
+	static public GameMetadata lazyLoadGameMetadata(GameMetadata gm) {
+		if (gm == null) {
+			Game g = GameHolder.instance().getGame();
+			if (!Game.isInitialized(g))
+				return null;
+			gm = g.getMetadata();
+		}
+		return gm;
 	}
 
 }

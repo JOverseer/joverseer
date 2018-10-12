@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
@@ -59,7 +60,21 @@ public class Info {
         }
         return getValue(j, i);
     }
-    
+    public int getRowCount() {
+    	return this.values.size();
+    }
+    // note that this iterator includes the column headings
+    public Iterator<ArrayList<String>> getRowIterator() {
+    	return this.values.iterator();
+    }
+    // return an iterator without the column headings
+    public Iterator<ArrayList<String>> getRowValuesIterator() {
+    	Iterator<ArrayList<String>> iter = this.getRowIterator();
+    	if (iter.hasNext()) {
+    		iter.next();
+    	}
+    	return iter;
+    }
     public String getValue(int row, int col) {
         return this.values.get(row).get(col);
     }

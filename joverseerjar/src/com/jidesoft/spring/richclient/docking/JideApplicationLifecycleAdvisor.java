@@ -36,6 +36,8 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.WelcomeDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
@@ -268,6 +270,13 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 					// do nothing
 				}
 			}
+		}
+		// if not no, so that default for systems without the setting, is for it to appear
+		if (PreferenceRegistry.instance().getPreferenceValue("general.showWelcome").equals("yes")) {
+			WelcomeDialog landing = new WelcomeDialog();
+			landing.setTitle(Messages.getString("Welcome.Title"));
+			landing.setDescription(Messages.getString("Welcome.Description"));
+			landing.showDialog();
 		}
 	}
 

@@ -8,7 +8,6 @@ import javax.swing.JTextField;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.dialogs.InputDialog;
@@ -34,7 +33,7 @@ public class OrderVisualizationData {
             final Order order = o;
             // movement order
             // check if character has army
-            Army a = (Army)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", o.getCharacter().getName()); //$NON-NLS-1$
+            Army a = GameHolder.instance().getGame().getTurn().getArmy(o.getCharacter().getName());
             if (a == null) {
                 // get info
                 InputDialog dlg = new InputDialog();

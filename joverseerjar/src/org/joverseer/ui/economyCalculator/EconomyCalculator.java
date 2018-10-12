@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,21 +14,21 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.AbstractBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
-import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
-import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
@@ -38,6 +40,7 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
+import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -66,7 +69,12 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	JTable totalsTable;
 	JTable pcTable;
 	JCheckBox sellBonus;
-	JComboBox nationCombo;
+	JCheckBox cheaperShips;
+	JCheckBox cheapestShips;
+	JCheckBox cheapFortifications;
+	JCheckBox freeArmyHire;
+	JCheckBox marketInfluence;
+	NationComboBox nationCombo;
 	JLabel marketLimitWarning;
 	JLabel taxIncrease;
 	BeanTableModel lostPopsTableModel;
@@ -83,7 +91,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				loadNationCombo(false);
+				this.nationCombo.load(false,true);
 				try {
 					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
 					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
@@ -97,7 +105,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				((MarketTableModel) this.marketTable.getModel()).setGame(null);
 				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
-				loadNationCombo(true);
+				refreshSNA(this.nationCombo.load(true, true));
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				refreshAutocalcOrderCost();
 				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -128,8 +136,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * Refreshes the market limit warning message
 	 */
 	private void refreshMarketLimitWarning() {
-		int marketProfits = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getMarketProfits();
-		if (marketProfits >= getMarketLimitWarningThreshhold()) {
+		int marketSales = ((MarketTableModel) this.marketTable.getModel()).getEconomyCalculatorData().getMarketSales();
+		if (marketSales >= getMarketLimitWarningThreshhold()) {
 			this.marketLimitWarning.setText(Messages.getString("EconomyCalculator.MarketLimitWarning")); //$NON-NLS-1$
 			this.marketLimitWarning.setVisible(true);
 		} else {
@@ -175,51 +183,49 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		}
 	}
 
-	private void loadNationCombo(boolean autoFocusOnGameNation) {
-		this.nationCombo.removeAllItems();
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
-			return;
-		if (g.getTurn() == null)
-			return;
-		int selectedIndex = 0;
-		int i = 0;
-		for (Nation n : g.getMetadata().getNations()) {
-			NationEconomy ne = (NationEconomy) g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", n.getNumber()); //$NON-NLS-1$
-			// load only nations for which economy has been imported
-			if (ne == null)
-				continue;
-			this.nationCombo.addItem(n.getName());
-			if (autoFocusOnGameNation && n.getNumber() == g.getMetadata().getNationNo()) {
-				selectedIndex = i;
-			}
-			i++;
-		}
-		if (this.nationCombo.getItemCount() > 0) {
-			this.nationCombo.setSelectedIndex(selectedIndex);
-		}
-
-	}
-
 	/**
 	 * Refreshes the autocalc order cost field
 	 */
 	private void refreshAutocalcOrderCost() {
 		OrderCostCalculator calc = new OrderCostCalculator();
-		int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
-		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), getSelectedNationNo());
+		int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), this.nationCombo.getSelectedNationNo());
+		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), this.nationCombo.getSelectedNationNo());
 
 		this.autocalcOrderCost.setText(String.valueOf(totalCost));
 	}
 
-	private int getSelectedNationNo() {
-		Game g = GameHolder.instance().getGame();
-		if (this.nationCombo.getSelectedItem() == null)
-			return -1;
-		Nation n = g.getMetadata().getNationByName(this.nationCombo.getSelectedItem().toString());
-		return n.getNumber();
-	}
 
+	private void setSellBonusFromSNA(Nation n) {
+		this.sellBonus.setSelected(n.getSnas().contains(SNAEnum.BuySellBonus));
+		((EconomyTotalsTableModel) this.totalsTable.getModel()).getEconomyCalculatorData().setSellBonus(this.sellBonus.isSelected());
+	}
+	private void setCheaperShipsFromSNA(Nation n) {
+		this.cheaperShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith750Timber));
+	}		
+	private void setCheapestShipsFromSNA(Nation n) {
+		this.cheapestShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith500Timber));
+	}		
+	private void setCheapFortificationsFromSNA(Nation n) {
+		this.cheapFortifications.setSelected(n.getSnas().contains(SNAEnum.FortificationsWithHalfTimber));
+	}		
+	private void setFreeArmyHireFromSNA(Nation n) {
+		this.freeArmyHire.setSelected(n.getSnas().contains(SNAEnum.FreeHire));
+	}		
+	private void setMarketInfluenceFromSNA(Nation n) {
+		this.marketInfluence.setSelected(n.getSnas().contains(SNAEnum.Influence));
+	}
+	private void refreshSNA(Nation n) {
+		setSellBonusFromSNA(n);
+		setCheaperShipsFromSNA(n);
+		setCheapestShipsFromSNA(n);
+		setCheapFortificationsFromSNA(n);
+		setFreeArmyHireFromSNA(n);
+		setMarketInfluenceFromSNA(n);
+	}
+	/**
+	 * @wbp.parser.entryPoint
+	 */
+	@SuppressWarnings("serial")
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder lb = new TableLayoutBuilder();
@@ -230,8 +236,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		lb.row();
 		lb.relatedGapRow();
 
-		lb.cell(this.nationCombo = new JComboBox(), "align=left"); //$NON-NLS-1$
-		this.nationCombo.setPreferredSize(new Dimension(200, 24));
+		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
 		this.nationCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -250,16 +255,58 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
 				refreshTaxIncrease();
-				EconomyCalculator.this.sellBonus.setSelected(((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
-			}
+//				EconomyCalculator.this.sellBonus.setSelected(((EconomyTotalsTableModel) EconomyCalculator.this.totalsTable.getModel()).getEconomyCalculatorData().getSellBonus());
+				refreshSNA(n);
+				}
 		});
-		lb.row();
 
-		lb.cell(this.sellBonus = new JCheckBox(), "align=left"); //$NON-NLS-1$
+//		lb.relatedGapRow();
+		this.sellBonus = new JCheckBox();
+		this.cheaperShips = new JCheckBox();
+		this.cheapestShips = new JCheckBox();
+		this.cheapFortifications = new JCheckBox();
+		this.freeArmyHire = new JCheckBox();
+		this.marketInfluence = new JCheckBox();
+		JPanel snaPanel = new JPanel();
+		snaPanel.setBackground(Color.white);
+		snaPanel.add(this.sellBonus, "align=left"); //$NON-NLS-1$
 		this.sellBonus.setText(Messages.getString("EconomyCalculator.SellBonus")); //$NON-NLS-1$
 		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.sellBonus.setBackground(Color.white);
-		this.sellBonus.addActionListener(new ActionListener() {
+		this.sellBonus.setEnabled(false);
+		Game g = GameHolder.instance().getGame();
+		if (EconomyCalculator.this.nationCombo.getSelectedItem() != null) {
+			Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
+			refreshSNA(n);
+		}
+		snaPanel.add(this.cheaperShips, "align=left"); //$NON-NLS-1$
+		this.cheaperShips.setText(Messages.getString("EconomyCalculator.cheaperShips")); //$NON-NLS-1$
+		this.cheaperShips.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.cheaperShips.setBackground(Color.white);
+		this.cheaperShips.setEnabled(false);
+		snaPanel.add(this.cheapestShips, "align=left"); //$NON-NLS-1$
+		this.cheapestShips.setText(Messages.getString("EconomyCalculator.cheapestShips")); //$NON-NLS-1$
+		this.cheapestShips.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.cheapestShips.setBackground(Color.white);
+		this.cheapestShips.setEnabled(false);
+		snaPanel.add(this.cheapFortifications, "align=left"); //$NON-NLS-1$
+		this.cheapFortifications.setText(Messages.getString("EconomyCalculator.cheapFortifications")); //$NON-NLS-1$
+		this.cheapFortifications.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.cheapFortifications.setBackground(Color.white);
+		this.cheapFortifications.setEnabled(false);
+		snaPanel.add(this.freeArmyHire, "align=left"); //$NON-NLS-1$
+		this.freeArmyHire.setText(Messages.getString("EconomyCalculator.freeArmyHire")); //$NON-NLS-1$
+		this.freeArmyHire.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.freeArmyHire.setBackground(Color.white);
+		this.freeArmyHire.setEnabled(false);
+		snaPanel.add(this.marketInfluence, "align=left"); //$NON-NLS-1$
+		this.marketInfluence.setText(Messages.getString("EconomyCalculator.marketInfluence")); //$NON-NLS-1$
+		this.marketInfluence.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.marketInfluence.setBackground(Color.white);
+		this.marketInfluence.setEnabled(false);
+		lb.cell(snaPanel);
+
+/*		this.sellBonus.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// when sell bonus changed
@@ -280,6 +327,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshTaxIncrease();
 			}
 		});
+*/
 		lb.row();
 
 		lb.relatedGapRow();
@@ -370,7 +418,29 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
 
 		mtm.setTotalsModel(ettm);
-		this.totalsTable = new JOverseerTable(ettm);
+		this.totalsTable = new JOverseerTable(ettm) {
+
+			public boolean doHighlight(int row,int column) {
+				if ((row == EconomyTotalsTableModel.iTotalRevenueRow) && ((column ==EconomyTotalsTableModel.iValueCol0)||(column==EconomyTotalsTableModel.iValueCol1)||(column==EconomyTotalsTableModel.iValueCol2))
+						|| ((row ==EconomyTotalsTableModel.iFinalGoldRow) && (column==EconomyTotalsTableModel.iValueCol3) )
+						|| ((row ==EconomyTotalsTableModel.iStartingGoldRow) && (column==EconomyTotalsTableModel.iValueCol0) )
+						) {
+					return true;
+				}
+				return false;
+			}
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (this.doHighlight(row, column)) {
+					if (c instanceof JComponent) {
+						((JComponent) c).setBorder(new TopBottomBorder(Color.black, 1));
+	                }
+				}
+				return c;
+			}
+			
+		};
 		ettm.setTable(this.totalsTable);
 		this.totalsTable.getTableHeader().setVisible(false);
 		for (int i = 0; i < ettm.getColumnCount(); i++) {
@@ -381,7 +451,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.totalsTable.setDefaultRenderer(Integer.class, new TotalsRenderer());
 		this.totalsTable.setBackground(Color.white);
 		scp = new JScrollPane(this.totalsTable);
-		scp.setPreferredSize(new Dimension(600, 90));
+		scp.setPreferredSize(new Dimension(590, 120));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
@@ -544,16 +614,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel lbl = ((JLabel) c);
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-			if (row == 3 && column == 5 || row == 0 && column == 5) { // final
-				// gold
-				// or
-				// orders
-				// cost
+			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol3 
+					|| row == EconomyTotalsTableModel.iFinalGoldRow && column == EconomyTotalsTableModel.iValueCol3) {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 			} else {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.PLAIN, lbl.getFont().getSize()));
 			}
-			if (row == 3 && column == 3 && !value.toString().equals("")) { //$NON-NLS-1$
+			if (row == EconomyTotalsTableModel.iMarketSalesRow && column == EconomyTotalsTableModel.iValueCol2 && !value.toString().equals("")) { //$NON-NLS-1$
 				int amount = Integer.parseInt(value.toString());
 				if (amount >= getMarketLimitWarningThreshhold()) {
 					if (!isSelected) {
@@ -584,4 +651,82 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		return new int[] { 140, 64, 64, 64, 65, 96 };
 	}
 
+	public class TopBottomBorder extends AbstractBorder
+	{
+	    protected int thickness;
+	    protected Color lineColor;
+	    protected int gap;
+
+	    public TopBottomBorder(Color color) {
+	        this(color, 1, 1);
+	    }
+
+	    public TopBottomBorder(Color color, int thickness)  {
+	        this(color, thickness, thickness);
+	    }
+
+	    public TopBottomBorder(Color color, int thickness, int gap)  {
+	        this.lineColor = color;
+	        this.thickness = thickness;
+	        this.gap = gap;
+	    }
+
+	    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        Color oldColor = g.getColor();
+	        int i;
+
+	        g.setColor(this.lineColor);
+	        for(i = 0; i < this.thickness; i++)  {
+		          g.drawLine(x, y-i, x+width, y-i);
+		          g.drawLine(x, y-i+height-1, x+width, y-i+height-1);
+	        }
+	        g.setColor(oldColor);
+	    }
+
+	    /**
+	     * Returns the insets of the border.
+	     * @param c the component for which this border insets value applies
+	     */
+	    @Override
+		public Insets getBorderInsets(Component c)       {
+	        return new Insets(0, 0, 0,this.gap);
+	    }
+
+	    @Override
+		public Insets getBorderInsets(Component c, Insets insets) {
+	        insets.left = 0;
+	        insets.top = 0;
+	        insets.right = this.gap;
+	        insets.bottom = 0;
+	        return insets;
+	    }
+
+	    /**
+	     * Returns the color of the border.
+	     */
+	    public Color getLineColor()     {
+	        return this.lineColor;
+	    }
+
+	    /**
+	     * Returns the thickness of the border.
+	     */
+	    public int getThickness()       {
+	        return this.thickness;
+	    }
+
+	    /**
+	     * Returns whether or not the border is opaque.
+	     */
+	    @Override
+		public boolean isBorderOpaque() { 
+	        return false; 
+	    }
+
+	  public int getGap() {
+	    return this.gap;
+	  }
+
+	}
 }

@@ -1,36 +1,31 @@
 package org.joverseer.support.readers.newXml;
 
+import java.util.ArrayList;
+
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.readers.pdf.OrderResult;
 
 public class RAResultWrapper implements OrderResult {
-	String artiName;
-	String artiNo;
+	ArrayList<ArtifactWrapper> artifacts = new ArrayList<ArtifactWrapper>(7); 
 	
-	
-	public String getArtiName() {
-		return this.artiName;
+	public ArrayList<ArtifactWrapper> getArtifacts() {
+		return this.artifacts;
 	}
-	public void setArtiName(String artiName) {
-		this.artiName = artiName;
-	}
-	public String getArtiNo() {
-		return this.artiNo;
-	}
-	public void setArtiNo(String artiNo) {
-		this.artiNo = artiNo;
+	public void Add(String name,int num) {
+		ArtifactWrapper aw = new ArtifactWrapper();
+		aw.setName(name);
+		aw.setId(num);
+		this.artifacts.add(aw);
 	}
 	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
-		ArtifactInfo ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("name", getArtiName());
-		if (ai != null && ai.getNo() == 0) {
-			try {
-				ai.setNo(Integer.parseInt(getArtiNo()));
-			}
-			catch (Exception e) {
-				
+		ArtifactInfo ai;
+		for(ArtifactWrapper aw:getArtifacts()) {
+			ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("name", aw.getName());
+			if (ai != null && ai.getNo() == 0) {
+				ai.setNo(aw.getId());
 			}
 		}
 	}

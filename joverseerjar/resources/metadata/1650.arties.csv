@@ -5,7 +5,7 @@
 5;Ring of Barahir;Good;Command;35;Bonus vs Dragons/Fell Beasts;Arthedain
 6;Ring of Axardil;None;Command;10;Access to Teleport;N.Gondor
 7;Nazguaga;Evil;Mage;30;Access to Dark Summons;
-8;Lorglin;None;Mage;15;;Noldo
+8;Lorglîn;None;Mage;15;;Noldo
 9;Elenya;None;Stealth;15;;
 10;Dwarven Ring of Power;None;Command;40;;Dwarves
 11;Vilya;None;Mage;50;;Noldo
@@ -24,13 +24,13 @@
 24;Ghostbane;None;Combat;750;;Dunlendings
 25;Staff of Bronze;None;Mage;20;;Ice King
 26;Mallorn Staff;None;Mage;25;;Noldo
-27;Palantir of Osgiliath;None;Scrying;-;;N.Gondor
-28;Palantir of Minas Ithil;None;Scrying;-;;N.Gondor
-29;Palantir of Minas Arnor;None;Scrying;-;;N.Gondor
-30;Palantir of Orthanc;None;Scrying;-;;N.Gondor
-31;Palantir of Annuminas;None;Scrying;-;;Arthedain
-32;Palantir of Elostirion;None;Scrying;-;;Noldo
-33;Palantir of Amon Sul;None;Scrying;-;;Arthedain
+27;Palantír of Osgiliath;None;Scrying;-;;N.Gondor
+28;Palantír of Minas Ithil;None;Scrying;-;;N.Gondor
+29;Palantír of Minas Arnor;None;Scrying;-;;N.Gondor
+30;Palantír of Orthanc;None;Scrying;-;;N.Gondor
+31;Palantír of Annuminas;None;Scrying;-;;Arthedain
+32;Palantír of Elostirion;None;Scrying;-;;Noldo
+33;Palantír of Amon Sul;None;Scrying;-;;Arthedain
 34;Orb of Dark Seeing;Evil;Mage;20;;Dragon Lord
 35;Orb of Seeing;None;Mage;30;;Sinda
 36;Suimbalmynas;None;Mage;20;Access to Conjuring Ways;

@@ -85,7 +85,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	}
 
 	public void setNoAndCode(String noAndDescr) {
-		if (noAndDescr.equals(NA)) {
+		if (noAndDescr.equals(NA) || (noAndDescr.length() ==0)) {
 			setOrderNo(-1);
 			return;
 		}
@@ -93,8 +93,8 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		if (i == -1) {
 			i = 3;
 		}
-		String no = noAndDescr.substring(0, i);
 		try {
+			String no = noAndDescr.substring(0, i);
 			setOrderNo(Integer.parseInt(no));
 		} catch (NumberFormatException exc) {
 			clear();

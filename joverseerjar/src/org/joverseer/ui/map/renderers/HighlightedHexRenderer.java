@@ -40,9 +40,6 @@ public class HighlightedHexRenderer extends DefaultHexRenderer {
 			throw new IllegalArgumentException(obj.toString());
 		}
 
-		if (this.metadata == null) {
-			init();
-		}
 		if (HighlightHexesMapItem.class.isInstance(obj))
 			renderHHMI(obj, g, x, y);
 		if (TrackCharacterMapItem.class.isInstance(obj))

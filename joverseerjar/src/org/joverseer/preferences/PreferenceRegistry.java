@@ -80,6 +80,15 @@ public class PreferenceRegistry {
 		});
 		return ret;
 	}
+	public ArrayList<Preference> getPreferencesOfGroup(String group) {
+		ArrayList<Preference> ret = new ArrayList<Preference>();
+		for (Preference p : this.allPreferences) {
+			if (p.getGroup().equalsIgnoreCase(group)) {
+				ret.add(p);
+			}
+		}
+		return ret;
+	}
 
 	public boolean advancedPreferencesOn() {
 		return JideApplicationLifecycleAdvisor.devOption;

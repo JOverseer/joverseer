@@ -217,16 +217,18 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 	private File[] getFilesRecursive(File folder, FileFilter filter) {
 		ArrayList<File> ret = new ArrayList<File>();
 		File[] files1 = folder.listFiles(filter);
-		if (files1.length > 0) {
-			ret.addAll(Arrays.asList(files1));
-			FileFilter folderFilter = new FileFilter() {
-				@Override
-				public boolean accept(File pathname) {
-					return pathname.isDirectory();
+		if (files1 != null) {
+			if (files1.length > 0) {
+				ret.addAll(Arrays.asList(files1));
+				FileFilter folderFilter = new FileFilter() {
+					@Override
+					public boolean accept(File pathname) {
+						return pathname.isDirectory();
+					}
+				};
+				for (File subfolder : folder.listFiles(folderFilter)) {
+					ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
 				}
-			};
-			for (File subfolder : folder.listFiles(folderFilter)) {
-				ret.addAll(Arrays.asList(getFilesRecursive(subfolder, filter)));
 			}
 		}
 		return ret.toArray(new File[] {});

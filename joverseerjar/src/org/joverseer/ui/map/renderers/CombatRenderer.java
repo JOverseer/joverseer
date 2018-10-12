@@ -6,7 +6,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import org.joverseer.domain.Combat;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**
@@ -14,21 +13,15 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  *  
  * @author Marios Skounakis
  */
-public class CombatRenderer implements Renderer {
-    protected MapMetadata mapMetadata = null;
+public class CombatRenderer extends AbstractBaseRenderer {
 
     @Override
 	public boolean appliesTo(Object obj) {
         return Combat.class.isInstance(obj);
     }
 
-    protected void init() {
-        this.mapMetadata = MapMetadata.instance();
-    }
-
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-        if (this.mapMetadata == null) init();
         GameHolder.instance().getGame();
         int w = this.mapMetadata.getGridCellWidth() / 3;
         int h = this.mapMetadata.getGridCellHeight() / 3;
@@ -46,4 +39,9 @@ public class CombatRenderer implements Renderer {
 
         g.draw(e);
     }
+
+	@Override
+	public void refreshConfig() {
+		// nothing to do.
+	}
 }

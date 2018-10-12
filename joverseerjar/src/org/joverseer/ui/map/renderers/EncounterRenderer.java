@@ -6,7 +6,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.drawing.ColorPicker;
 
 /**
@@ -14,21 +13,16 @@ import org.joverseer.ui.support.drawing.ColorPicker;
  * 
  * @author Marios Skounakis
  */
-public class EncounterRenderer implements Renderer {
-    protected MapMetadata mapMetadata = null;
+public class EncounterRenderer extends AbstractBaseRenderer {
 
     @Override
 	public boolean appliesTo(Object obj) {
         return Encounter.class.isInstance(obj) || Challenge.class.isInstance(obj);
     }
 
-    protected void init() {
-        this.mapMetadata = MapMetadata.instance();
-    }
 
     @Override
 	public void render(Object obj, Graphics2D g, int x, int y) {
-        if (this.mapMetadata == null) init();
         //Game game = GameHolder.instance().getGame();
         int w = this.mapMetadata.getGridCellWidth() / 3;
         int h = this.mapMetadata.getGridCellHeight() / 3;
@@ -46,5 +40,10 @@ public class EncounterRenderer implements Renderer {
 
         g.draw(e);
     }
+
+	@Override
+	public void refreshConfig() {
+		//nothing to do.
+	}
 
 }

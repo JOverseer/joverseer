@@ -34,7 +34,6 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
@@ -108,7 +107,7 @@ public class CombatForm extends AbstractForm {
 					Combat c = (Combat) getFormObject();
 					int hexNo = c.getHexNo();
 					Hex h = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
-					HexInfo hi = (HexInfo) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hexNo); //$NON-NLS-1$
+					HexInfo hi = GameHolder.instance().getGame().getTurn().getHexInfo(hexNo);
 					if (h != null && h.getTerrain() != null) {
 						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
 						vm.setValue(h.getTerrain());

@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
+
 import org.joverseer.joApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
@@ -24,7 +25,6 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
-import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
@@ -70,10 +70,14 @@ public class OrdercheckerProxy {
 			// TODO: check this the doc says it starts at 0
 			ocHex.setTerrain((int)(meHex.getTerrain().getTerrain())); // terrain numbers are the same.
 			elements = meHex.getSideElements(); 
-			
+			int direction;
 			for(java.util.Map.Entry<HexSideEnum,ArrayList<HexSideElementEnum>> entry:elements.entrySet()){
 				for(HexSideElementEnum feature:entry.getValue()) {
-					ocHex.addDirection(entry.getKey().ordinal());
+					direction = entry.getKey().ordinal();
+					if (direction == 0) { // fixup NW
+						direction = 6;
+					}
+					ocHex.addDirection(direction);
 					ocHex.addFeature(feature.getElement());
 				}
 			}
@@ -247,26 +251,13 @@ public class OrdercheckerProxy {
 
 	private static Nation updateNation(Game g,int nationNo1,Turn t) {
 		
-		PlayerInfo pi = (PlayerInfo) t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", nationNo1);
+		PlayerInfo pi = t.getPlayerInfo(nationNo1);
 
 		Nation nation = new Nation();
 		nation.SetNation(nationNo1);
 		nation.setGame(g.getMetadata().getGameNo());
 		nation.setTurn(t.getTurnNo());
-		// TODO complete
-		if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
-			nation.setGameType("1650");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
-			nation.setGameType("2950");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
-			nation.setGameType("BOFA");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
-			nation.setGameType("Fourth Age");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
-			nation.setGameType("Untold War");
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameKS) {
-			nation.setGameType("Kin Strife");
-		}
+		nation.setGameType(g.getMetadata().getGameType().toOrderCheckerName());
 
 		nation.setSecret(Integer.parseInt(pi.getSecret()));
 		nation.setPlayer(pi.getPlayerName());
@@ -333,9 +324,9 @@ public class OrdercheckerProxy {
 			// TODO double check
 			for (Integer artiNo : ch.getArtifacts()) {
 				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
-				if (ai == null)
-					return;
-				mc.addArtifact(ai.getNo(), ai.getName());
+				if (ai != null) {
+					mc.addArtifact(ai.getNo(), ai.getName());
+				}
 			}
 
 			// TODO double check
@@ -401,7 +392,7 @@ public class OrdercheckerProxy {
 	
 	private static void updateNationRelations(Game g,Data data,Turn t,Nation nation) {
 		for (int i = 1; i <= 25; i++) {
-			NationRelations nr = (NationRelations) t.getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", i);
+			NationRelations nr = t.getNationRelations(i);
 			if (nr != null) {
 				data.setNationAlignment(nr.getNationNo()-1, -1, nation);
 				if (nr.getAllegiance() == NationAllegianceEnum.FreePeople) {
@@ -441,6 +432,11 @@ public class OrdercheckerProxy {
 
 		Nation nation = updateNation(g, nationNo1, t);
 
+		// update the artifacts before the characters that may have them.
+		Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
+		ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});
+
+
 		updatePC(t, nation);
 		this.updateCharacters(g,t, nation);
 		updateArmies(t, nation);
@@ -449,9 +445,6 @@ public class OrdercheckerProxy {
 		data.findGame(nation);
 
 		updateNationRelations(g,data, t, nation);
-
-		Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
-		ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});
 
 		Main.main.setNation(nation);
 	}

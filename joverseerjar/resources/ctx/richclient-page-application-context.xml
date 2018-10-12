@@ -55,6 +55,7 @@
 				<value>mapEditorView</value>
 				<!--
 				<value>hexProductionListView</value>
+				<value>landingPageView</value>
 				-->
 			</list>
 		</property>
@@ -1061,7 +1062,31 @@
 			<value>Main Views</value>
 		</property>
 	</bean>
-	
+<!-- 	
+	<bean id="landingPageView" class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+		<property name="initMode">
+			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
+		</property>
+		<property name="initSide">
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+		</property>
+		<property name="initIndex">
+			<value>3</value>
+		</property>
+		<property name="viewClass">
+			<value>org.joverseer.ui.views.LandingPageView</value>
+		</property>
+		<property name="preferredWidth">
+			<value>350</value>
+		</property>
+		<property name="preferredHeight">
+			<value>250</value>
+		</property>
+		<property name="viewGroup">
+			<value>Main Views</value>
+		</property>
+	</bean>
+ -->	
 	<bean id="fullPerspective" class="org.joverseer.ui.jide.FullPerspective">
 		<constructor-arg index="0" value="full"/>
 	</bean>

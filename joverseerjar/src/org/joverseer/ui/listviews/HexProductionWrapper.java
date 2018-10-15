@@ -3,7 +3,6 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;

@@ -23,7 +23,14 @@ public class NationComboBox extends JComboBox {
 		this.setPreferredSize(new Dimension(160, 24));
 		this.gh = gh;
 	}
+	/**
+	 * @param autoFocusOnGameNation
+	 * @param onlyImported
+	 * @return
+	 */
 	public Nation load(boolean autoFocusOnGameNation,boolean onlyImported) {
+        String previousSelection = (String)this.getSelectedItem();
+        // consider spurious empty loads wiping all the items and losing previous selection.
 		this.removeAllItems();
 		Game g = this.gh.getGame();
 		if (!Game.isInitialized(g))
@@ -32,7 +39,7 @@ public class NationComboBox extends JComboBox {
 		if (t == null)
 			return null;
 
-        Nation selectedNation = null;
+        Nation selectedNation=null;
 		for (Nation n : g.getMetadata().getNations()) {
 	        if (n.isActivePlayer()) {
 	        	if (onlyImported) {
@@ -41,9 +48,14 @@ public class NationComboBox extends JComboBox {
 	        			continue;
 	        	}
 				this.addItem(n.getName());
-				if (autoFocusOnGameNation && n.getNumber() == g.getMetadata().getNationNo()) {
+				if (autoFocusOnGameNation && (n.getNumber() == g.getMetadata().getNationNo())) {
 	            	selectedNation = n;
 				}
+				if ((!autoFocusOnGameNation) && previousSelection.equals(n.getName())) {
+					// keep the selection if possible.
+	            	selectedNation = n;
+				}
+				
 	        }
 		}
         if (selectedNation == null) {

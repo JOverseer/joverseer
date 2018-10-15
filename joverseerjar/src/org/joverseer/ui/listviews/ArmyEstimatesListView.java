@@ -50,7 +50,6 @@ import com.jidesoft.grid.JideTable;
 import com.jidesoft.grid.MultilineTableCellRenderer;
 import com.jidesoft.grid.SortTableHeaderRenderer;
 import com.jidesoft.grid.SortableTable;
-import com.jidesoft.grid.SortableTableModel;
 
 /**
  * List view that shows ArmyEstimate objects

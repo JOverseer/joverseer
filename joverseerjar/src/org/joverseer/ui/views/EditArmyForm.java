@@ -25,7 +25,6 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.support.Messages;
-import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.layout.GridBagLayoutBuilder;

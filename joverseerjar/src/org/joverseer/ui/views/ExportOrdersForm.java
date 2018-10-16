@@ -1,6 +1,7 @@
 package org.joverseer.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -57,6 +59,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.SaveGame;
+import org.joverseer.ui.listviews.PlayerInfoTableModel;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
@@ -68,6 +71,8 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
+import java.awt.Component;
+import javax.swing.Box;
 
 /**
  * Export/Submit orders form
@@ -81,6 +86,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	JComboBox nation;
 	JTextArea orders;
+	JLabel lblVersionValue = new JLabel("");
+	JLabel lblFile = new JLabel();
+	JLabel lblFileValue = new JLabel("");
+	JLabel lblSent = new JLabel();
+	JLabel lblSentValue = new JLabel("");
 	OrderFileGenerator visibleOrdersGenerator;
 	boolean ordersOk = false;
 	boolean cancelExport = false;
@@ -145,24 +155,67 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		nationLabel.setLabelFor(this.nation);
 
 		panel.add(topPanel, BorderLayout.NORTH);
-		this.nation.setPreferredSize(this.uiSizes.newDimension(100/24, this.uiSizes.getHeight6()));
+		this.nation.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight6()));
 		this.nation.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Game g1 = GameHolder.instance().getGame();
 				int nationNo = getSelectedNationNo();
-				PlayerInfo pi = g1.getTurn().getPlayerInfo(nationNo);
 				if (ExportOrdersForm.this.oldSelectedNation == null || ExportOrdersForm.this.oldSelectedNation != nationNo) {
 					ExportOrdersForm.this.orders.setText("");
 					ExportOrdersForm.this.ordersOk = false;
 					ExportOrdersForm.this.oldSelectedNation = nationNo;
 				}
 				ExportOrdersForm.this.generateOrders(ExportOrdersForm.this.visibleOrdersGenerator);
+				ExportOrdersForm.this.setPlayerInfoItems();
 			}
 
 		});
 		nationPanel.add(this.nation);
+		
+		this.nation.setSelectedIndex(0);
+		this.nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
+		
+		JPanel pnlPlayerInfo = new JPanel();
+		nationPanel.add(pnlPlayerInfo);
+		pnlPlayerInfo.setLayout(new BoxLayout(pnlPlayerInfo, BoxLayout.X_AXIS));
+		
+		JPanel pnlVersion = new JPanel();
+		pnlPlayerInfo.add(pnlVersion);
+		pnlVersion.setLayout(new BoxLayout(pnlVersion, BoxLayout.Y_AXIS));
+		
+		JLabel lblVersion = new JLabel(Messages.getString("playerInfo.turnVersion")); //$NON-NLS-1$
+		pnlVersion.add(lblVersion);
+		lblVersion.setBackground(Color.WHITE);
+		this.lblVersionValue.setAlignmentX(Component.CENTER_ALIGNMENT);
+		pnlVersion.add(this.lblVersionValue);
+		this.lblVersionValue.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		pnlPlayerInfo.add(horizontalStrut);
+		
+		JPanel pnlSent = new JPanel();
+		pnlPlayerInfo.add(pnlSent);
+		pnlSent.setLayout(new BoxLayout(pnlSent, BoxLayout.Y_AXIS));
+		
+		this.lblSent = new JLabel(Messages.getString("playerInfo.ordersSentOn")); //$NON-NLS-1$
+		pnlSent.add(this.lblSent);
+		this.lblSent.setBackground(Color.WHITE);
+		pnlSent.add(this.lblSentValue);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
+		pnlPlayerInfo.add(horizontalStrut_1);
+		
+		JPanel pnlFile = new JPanel();
+		pnlPlayerInfo.add(pnlFile);
+		pnlFile.setLayout(new BoxLayout(pnlFile, BoxLayout.Y_AXIS));
+		
+		this.lblFile = new JLabel(Messages.getString("playerInfo.lastOrderFile")); //$NON-NLS-1$
+		pnlFile.add(this.lblFile);
+		this.lblFile.setBackground(Color.WHITE);
+		pnlFile.add(this.lblFileValue);
+		
+		setPlayerInfoItems();
 		topPanel.add(nationPanel);
 		
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -191,6 +244,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		JButton ctc = new JButton(Messages.getString("standardActions.CopyToClipboard"));
 		final ClipboardOwner clipboardOwner = this;
+		ctc.setPreferredSize(this.uiSizes.newDimension(100/11, this.uiSizes.getHeight5()));
 		ctc.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -202,10 +256,38 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		buttonPanel.add(ctc);
 
-		this.nation.setSelectedIndex(0);
-		this.nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
-
 		return panel;
+	}
+
+	private void setPlayerInfoItems() {
+		Game g = GameHolder.instance().getGame();
+		if (g!=null) {
+			int nationNo = getSelectedNationNo();
+			PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
+            Date d = pi.getOrdersSentOn();
+            if (d == null) {
+    			this.lblVersionValue.setText(String.valueOf(pi.getTurnVersion()));
+            	this.lblSentValue.setText("");
+            	this.lblFileValue.setText("");
+        		this.lblFileValue.setVisible(false);
+                this.lblSentValue.setVisible(false);
+        		this.lblFile.setVisible(false);
+                this.lblSent.setVisible(false);
+            } else {
+            	this.lblSentValue.setText(new SimpleDateFormat().format(d));
+    			this.lblVersionValue.setText(String.valueOf(pi.getTurnVersion()));
+    			String file = String.valueOf(pi.getLastOrderFile());
+    			final int truncate=40;
+    			if (file.length() > truncate) {
+    				file = "..." + file.substring(file.length() -truncate -1);
+    			}
+    			this.lblFileValue.setText(file);
+        		this.lblFileValue.setVisible(true);
+                this.lblSentValue.setVisible(true);
+        		this.lblFile.setVisible(true);
+                this.lblSent.setVisible(true);
+            }
+		}
 	}
 
 	private void generateOrders(OrderFileGenerator gen) {
@@ -517,5 +599,23 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	@Override
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
+	// just one row at a time...
+	public class SmallPlayerInfoTableModel extends PlayerInfoTableModel {
+		private static final long serialVersionUID = 1L;
 
+		public SmallPlayerInfoTableModel(MessageSource messageSource) {
+			super(messageSource);
+		}
+		@Override
+		protected String[] createColumnPropertyNames() {
+			return new String[] { "turnVersion", "lastOrderFile", "ordersSentOn" };
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		protected Class[] createColumnClasses() {
+			return new Class[] { Integer.class, String.class, Date.class };
+		}
+
+	}
 }

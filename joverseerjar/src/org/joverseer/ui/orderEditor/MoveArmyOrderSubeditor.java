@@ -28,8 +28,8 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     ArrayList<String> dirs = new ArrayList<String>();
     JTextField directionParams;
     
-    public MoveArmyOrderSubeditor(Order o) {
-        super(o);
+    public MoveArmyOrderSubeditor(OrderEditor oe,Order o) {
+        super(oe,o);
         }
 
     @Override
@@ -172,4 +172,10 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         this.directionParams.setText(text);
         getEditor().updateParameters();
     }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -8,7 +8,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -30,8 +29,20 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 public class EditPreferencesForm extends ScalableAbstractForm {
 	public static String FORM_ID = "editPreferencesForm";
-	JPanel panel;
+	// a local copy so we can select the appropriate tab
+	JTabbedPane tabbedPanel;
+	//holds the preferences
 	HashMap<String, JComponent> components = new HashMap<String, JComponent>();
+	private String startingGroup;
+	
+
+	public String getStartingGroup() {
+		return this.startingGroup;
+	}
+
+	public void setStartingGroup(String startingGroup) {
+		this.startingGroup = startingGroup;
+	}
 
 	public EditPreferencesForm(FormModel arg0) {
 		super(arg0, FORM_ID);
@@ -104,9 +115,16 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 			tabPane.addTab(tabName, null, tlb.getPanel(), tabName);
 		}
 
-		// panel = tlb.getPanel();
-		// panel = tabPane;
-		// JScrollPane scp = new JScrollPane(panel);
+		this.tabbedPanel = tabPane;
+		if (this.startingGroup != null) {
+			String tabName = this.startingGroup.replace(".", " - ");
+			if (this.tabbedPanel != null) {
+				int index = this.tabbedPanel.indexOfTab(tabName);
+				if (index > -1) {
+					this.tabbedPanel.setSelectedIndex(index);
+				}
+			}
+		}
 		JScrollPane scp = new JScrollPane(tabPane);
 		scp.setPreferredSize(new Dimension(650, 350));
 		return scp;

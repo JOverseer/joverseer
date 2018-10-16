@@ -27,32 +27,22 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField nationNo;
     String paramName;
     
-    public NationParameterOrderSubeditor(String paramName, Order o) {
-        super(o);
+    public NationParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
+        super(oe,o);
         this.paramName = paramName;
     }
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        String nno = o.getParameter(paramNo);
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
-        tlb.cell(this.parameter = new JComboBox(), "colspec=left:150px");
-        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-        this.parameter.addItem("");
-        this.parameter.setPreferredSize(new Dimension(120, 18));
+        tlb.cell(this.parameter = (JComboBox)getPrimaryComponent(nno), "colspec=left:150px");
         tlb.row();
         tlb.cell(this.nationNo = new JTextField());
         this.nationNo.setVisible(false);
         tlb.row();
         
-        for (Nation n : (ArrayList<Nation>)gm.getNations()) {
-            if (n.isActivePlayer()) {
-                this.parameter.addItem(n.getName());
-            }
-        }
-
-        String nno = o.getParameter(paramNo);
         if (nno != null && !nno.equals("")) {
-            this.parameter.setSelectedIndex(Integer.parseInt(nno));
             this.nationNo.setText(nno);
         }
         this.parameter.addActionListener(new ActionListener() {
@@ -65,4 +55,21 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
         
         components.add(this.nationNo);
     }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+		JComboBox com = new JComboBox();
+		com.addItem("");
+		com.setPreferredSize(new Dimension(120, 18));
+        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+        for (Nation n : (ArrayList<Nation>)gm.getNations()) {
+            if (n.isActivePlayer()) {
+                com.addItem(n.getName());
+            }
+        }
+        if (initValue != null && !initValue.equals("")) {
+            com.setSelectedIndex(Integer.parseInt(initValue));
+        }
+		return com;
+	}
 }

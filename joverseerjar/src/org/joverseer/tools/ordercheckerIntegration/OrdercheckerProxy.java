@@ -59,6 +59,17 @@ public class OrdercheckerProxy {
 	HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order> orderMap = new HashMap<com.middleearthgames.orderchecker.Order, org.joverseer.domain.Order>();
 	HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order> reverseOrderMap = new HashMap<org.joverseer.domain.Order, com.middleearthgames.orderchecker.Order>();
 	int nationNo;
+	Data data;
+
+	public OrdercheckerProxy() {
+		super();
+		Main.mainFrame = new JFrame();
+//		Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
+//		final Main main = new Main(res.getInputStream());
+		this.data = new Data();
+		final Main main = new Main(true,this.data);
+		Main.main = main;
+	}
 
 	private static void copyCurrentMap(GameMetadata metadata,Map map)
 	{
@@ -86,7 +97,6 @@ public class OrdercheckerProxy {
 	}
 	
 	public void runOrderchecker() {
-		Data data = Main.main.getData();
 		Main.main.setRuleSet(new Ruleset());
 		ImportRulesCsv rules = new ImportRulesCsv("ruleset.csv", Main.main.getRuleSet());
 		boolean result = rules.getRules();
@@ -96,7 +106,7 @@ public class OrdercheckerProxy {
 			rules = new ImportRulesCsv("bin/metadata/orderchecker/ruleset.csv", Main.main.getRuleSet());
 			result = rules.getRules();
 			if (!result) {
-				Main.displayErrorMessage("The rules file (" + data.getRulesPath() + ") could not be opened!");
+				this.displayErrorMessage("The rules file (" + this.data.getRulesPath() + ") could not be opened!");
 				return;
 			}
 		}
@@ -104,11 +114,11 @@ public class OrdercheckerProxy {
 		rules.closeFile();
 		if (error != null) {
 			error = error + "\n\nOrder checking cancelled.";
-			Main.displayErrorMessage(error);
+			this.displayErrorMessage(error);
 			return;
 		}
 		if (!Main.main.getRuleSet().isRuleSetComplete()) {
-			Main.displayErrorMessage("The rules file was processed but appears to be missing data!");
+			this.displayErrorMessage("The rules file was processed but appears to be missing data!");
 			return;
 		}
 		Main.main.setMap(new Map());
@@ -140,19 +150,19 @@ public class OrdercheckerProxy {
 		result = terrain.getMapInformation();
 		if (!result) {
 			terrain.closeFile();
-			Main.displayErrorMessage("The terrain file (" + data.getTerrainPath() + ") could not be opened!");
+			this.displayErrorMessage("The terrain file (" + data.getTerrainPath() + ") could not be opened!");
 			return;
 		}
 		error = terrain.parseTerrain();
 		terrain.closeFile();
 		if (error != null) {
 			error = error + "\n\nOrder checking cancelled.";
-			Main.displayErrorMessage(error);
+			this.displayErrorMessage(error);
 			return;
 		}
 */
 		if (!Main.main.getMap().isMapComplete()) {
-			Main.displayErrorMessage("The map file was processed but appears to be missing data!");
+			this.displayErrorMessage("The map file was processed but appears to be missing data!");
 			return;
 		} else {
 			// splitPane.resetToPreferredSizes();
@@ -165,7 +175,21 @@ public class OrdercheckerProxy {
 			return;
 		}
 	}
-
+	// overridable hooks, default is popup dialog.
+	protected void armyRequests(Main main,Vector requests) {
+		new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
+	}
+	protected void infoRequests(Main main,Vector requests) {
+		new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
+	}
+	protected void displayErrorMessage(String error) {
+		Main.displayErrorMessage(error);
+	}
+	/**
+	 * 
+	 * @param main
+	 * @throws Exception
+	 */
 	protected void processOrders(Main main) throws Exception {
 		final ImageSource imgSource = joApplication.getImageSource();
 
@@ -182,14 +206,16 @@ public class OrdercheckerProxy {
 
 		String error = main.getNation().implementPhase(1, main);
 		if (error != null) {
-			Main.displayErrorMessage(error);
+			this.displayErrorMessage(error);
 			return;
 		}
 		boolean done;
 		int safety;
 		Vector requests = main.getNation().getArmyRequests();
 		parseInfoRequests(requests);
-		new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
+		if (requests.size() > 0) {
+			this.armyRequests(main, requests); // hook
+		}
 		main.getNation().processArmyRequests( requests );
 		done = false;
 		safety = 0;
@@ -200,13 +226,13 @@ public class OrdercheckerProxy {
 			safety++;
 			error = main.getNation().implementPhase( 2, main );
 			if (error != null) {
-				Main.displayErrorMessage(error);
+				this.displayErrorMessage(error);
 				return;
 			}
 			requests = main.getNation().getInfoRequests();
 			parseInfoRequests(requests);
 			if (requests.size() > 0) {
-				new ExtraInfoDlg(Main.mainFrame, main.getNation(), main.getData(), requests);
+				this.infoRequests(main, requests); //hook
 			}
 			done = main.getNation().isProcessingDone();
 		} while (true);
@@ -245,7 +271,7 @@ public class OrdercheckerProxy {
 				desc.append(trace[i] + "\n");
 			}
 
-			Main.displayErrorMessage(desc.toString());
+			this.displayErrorMessage(desc.toString());
 		}
 	}
 
@@ -418,13 +444,6 @@ public class OrdercheckerProxy {
 	}
 	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
 		setNationNo(nationNo1);
-		Main.mainFrame = new JFrame();
-//		Resource res = Application.instance().getApplicationContext().getResource("classpath:metadata/orderchecker/orderchecker.dat");
-
-//		final Main main = new Main(res.getInputStream());
-		Data data = new Data();
-		final Main main = new Main(true,data);
-		Main.main = main;
 		
 
 		Game g = GameHolder.instance().getGame();
@@ -442,9 +461,9 @@ public class OrdercheckerProxy {
 		updateArmies(t, nation);
 
 		//ReflectionUtils.invokeMethod(data, "findGame", new Object[] { nation });
-		data.findGame(nation);
+		this.data.findGame(nation);
 
-		updateNationRelations(g,data, t, nation);
+		updateNationRelations(g,this.data, t, nation);
 
 		Main.main.setNation(nation);
 	}

@@ -30,8 +30,8 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
 	JTextField artifactName;
     String paramName;
 
-    public ArtifactNumberParameterOrderSubeditor(String paramName, Order o) {
-        super(o);
+    public ArtifactNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
+        super(oe,o);
         this.paramName = paramName;
     }
     
@@ -39,40 +39,11 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
 	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         try {
-            DecimalFormat f = new DecimalFormat();
-            f.setDecimalSeparatorAlwaysShown(false);
-            f.setGroupingUsed(false);
             JPanel pnl = new JPanel();
             //pnl.setBorder(new EmptyBorder(0, 0, 0, 0));
             pnl.setBackground(Color.white);
             TableLayoutBuilder tlb2 = new TableLayoutBuilder(pnl);
-            tlb2.cell(this.parameter = new JFormattedTextField(f), "colspec=left:35px");
-            this.parameter.setText(o.getParameter(paramNo));
-            this.parameter.setPreferredSize(new Dimension(30, 18));
-            this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
-    			@Override
-				public void drop(DropTargetDropEvent dtde) {
-    	                try {
-    	                	Transferable t = dtde.getTransferable();
-    	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
-    	                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
-    	                	String txt = "";
-    	                	if (t.isDataFlavorSupported(spellInfoDataFlavor)) {
-    	                		txt = String.valueOf(((SpellInfo)t.getTransferData(spellInfoDataFlavor)).getNumber());
-    	                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
-    	                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
-    	                	} else {
-    	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
-    	                	}
-    	                	ArtifactNumberParameterOrderSubeditor.this.parameter.setText(txt);
-    	                    ArtifactNumberParameterOrderSubeditor.this.parameter.requestFocus();
-    	                    updateArtifactNumber();
-    	                }
-    	                catch (Exception exc) {
-    	                    
-    	                }
-    			}
-            }));
+            tlb2.cell(this.parameter = (JFormattedTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:35px");
             attachAutoUpdateDocumentListener(this.parameter);
             components.add(this.parameter);
             
@@ -117,4 +88,39 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     		this.artifactName.setSelectionEnd(0);
     	}
     }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+        DecimalFormat f = new DecimalFormat();
+        f.setDecimalSeparatorAlwaysShown(false);
+        f.setGroupingUsed(false);
+		final JFormattedTextField com = new JFormattedTextField(f);
+        com.setText(initValue);
+        com.setPreferredSize(new Dimension(30, 18));
+        com.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
+			@Override
+			public void drop(DropTargetDropEvent dtde) {
+	                try {
+	                	Transferable t = dtde.getTransferable();
+	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
+	                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
+	                	String txt = "";
+	                	if (t.isDataFlavorSupported(spellInfoDataFlavor)) {
+	                		txt = String.valueOf(((SpellInfo)t.getTransferData(spellInfoDataFlavor)).getNumber());
+	                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
+	                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
+	                	} else {
+	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+	                	}
+	                	com.setText(txt);
+	                	com.requestFocus();
+	                    updateArtifactNumber();
+	                }
+	                catch (Exception exc) {
+	                    
+	                }
+			}
+        }));
+		return com;
+	}
 }

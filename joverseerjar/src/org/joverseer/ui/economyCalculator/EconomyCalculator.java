@@ -90,7 +90,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshTaxIncrease();
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {				
 				this.nationCombo.load(false,true);
 				try {
 					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
@@ -659,7 +659,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 	public class TopBottomBorder extends AbstractBorder
 	{
-	    protected int thickness;
+		private static final long serialVersionUID = 1L;
+		protected int thickness;
 	    protected Color lineColor;
 	    protected int gap;
 

@@ -27,54 +27,55 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  */
 //TODO could add some validation here for number ranges
 public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
-    JFormattedTextField parameter;
+	JFormattedTextField parameter;
     String paramName;
 
-    public NumberParameterOrderSubeditor(String paramName, Order o) {
-        super(o);
+    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
+        super(oe,o);
         this.paramName = paramName;
     }
     
     @Override
 	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
-        try {
-            DecimalFormat f = new DecimalFormat();
-            f.setDecimalSeparatorAlwaysShown(false);
-            f.setGroupingUsed(false);
-            tlb.cell(this.parameter = new JFormattedTextField(f), "colspec=left:220px");
-            this.parameter.setText(o.getParameter(paramNo));
-            this.parameter.setPreferredSize(new Dimension(50, 18));
-            this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
-    			@Override
-				public void drop(DropTargetDropEvent dtde) {
-    	                try {
-    	                	Transferable t = dtde.getTransferable();
-    	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
-    	                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
-    	                	String txt = "";
-    	                	if (t.isDataFlavorSupported(spellInfoDataFlavor)) {
-    	                		txt = String.valueOf(((SpellInfo)t.getTransferData(spellInfoDataFlavor)).getNumber());
-    	                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
-    	                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
-    	                	} else {
-    	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
-    	                	}
-    	                	NumberParameterOrderSubeditor.this.parameter.setText(txt);
-    	                    NumberParameterOrderSubeditor.this.parameter.requestFocus();
-    	                }
-    	                catch (Exception exc) {
-    	                    
-    	                }
-    			}
-            }));
-            attachAutoUpdateDocumentListener(this.parameter);
-            components.add(this.parameter);
-        }
-        catch (Exception exc) {
-            
-        }
+        tlb.cell(this.parameter = (JFormattedTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:220px");
+        attachAutoUpdateDocumentListener(this.parameter);
+        components.add(this.parameter);
         tlb.row();
     }
+
+	@Override
+	public JComponent getPrimaryComponent(final String initValue) {
+        DecimalFormat f = new DecimalFormat();
+        f.setDecimalSeparatorAlwaysShown(false);
+        f.setGroupingUsed(false);
+		final JFormattedTextField com = new JFormattedTextField(f);
+        com.setText(initValue);
+        com.setPreferredSize(new Dimension(50, 18));
+        com.setDropTarget(new DropTarget(com, new DropTargetAdapter() {
+			@Override
+			public void drop(DropTargetDropEvent dtde) {
+	                try {
+	                	Transferable t = dtde.getTransferable();
+	                	SpellInfoDataFlavor spellInfoDataFlavor = new SpellInfoDataFlavor();
+	                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
+	                	String txt = "";
+	                	if (t.isDataFlavorSupported(spellInfoDataFlavor)) {
+	                		txt = String.valueOf(((SpellInfo)t.getTransferData(spellInfoDataFlavor)).getNumber());
+	                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
+	                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
+	                	} else {
+	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+	                	}
+	                	com.setText(txt);
+	                	com.requestFocus();
+	                }
+	                catch (Exception exc) {
+	                	NumberParameterOrderSubeditor.this.logger.error("drop target exception for order "+initValue);
+	                }
+			}
+        }));
+		return com;
+	}
 
 }

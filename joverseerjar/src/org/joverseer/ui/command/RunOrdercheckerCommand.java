@@ -181,7 +181,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			TableLayoutBuilder tlb = new TableLayoutBuilder();
 			Main main = (Main) getFormObject();
 			try {
-				JComponent c = (JComponent) ReflectionUtils.retrieveField(main.getWindow(), "bottomPane");
+				JComponent c = (JComponent) main.getWindow().getBottomPane();
 				c.getParent().remove(c);
 				c.setPreferredSize(new Dimension(750, 600));
 				tlb.cell(c);

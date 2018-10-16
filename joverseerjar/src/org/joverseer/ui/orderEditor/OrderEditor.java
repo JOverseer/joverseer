@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,6 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
@@ -43,6 +44,7 @@ import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
@@ -70,6 +72,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	public static final String FORM_PAGE = "orderEditorForm"; //$NON-NLS-1$
 	static final int PREFERRED_TEXT_HEIGHT = 23; // was 18 but cuts off descenders
+	protected static final Log staticLogger = LogFactory.getLog("org.joverseer.ui.orderEditor.OrderEditor");
 	JComboBox orderCombo;
 	JCheckBox chkDraw;
 	JTextField parameters;
@@ -430,87 +433,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			if (oed != null) {
 				paramsEditable = false;
 				TableLayoutBuilder tlb = new TableLayoutBuilder(this.subeditorPanel);
-				int paramNo = 0;
-				if (oed.getOrderNo() == 850 || oed.getOrderNo() == 860 || oed.getOrderNo() == 830) {
-					AbstractOrderSubeditor sub = new MoveArmyOrderSubeditor(o);
-					sub.addComponents(tlb, this.subeditorComponents, o, 0);
-					sub.setEditor(this);
-				} else if (oed.getOrderNo() == 940) {
-					AbstractOrderSubeditor sub = new CastLoSpellOrderSubeditor(o);
-					sub.setEditor(this);
-					sub.addComponents(tlb, this.subeditorComponents, o, 0);
-				} else {
-					for (int i = 0; i < oed.getParamTypes().size(); i++) {
-						String paramType = oed.getParamTypes().get(i);
-						String paramDescription = oed.getParamDescriptions().get(i);
-						AbstractOrderSubeditor sub = null;
-						if (paramType.equals("hex")) { //$NON-NLS-1$
-							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("cid") || paramType.equals("xid")) { //$NON-NLS-1$ //$NON-NLS-2$
-							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("tac")) { //$NON-NLS-1$
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.87"), Messages.getString("OrderEditor.88"), Messages.getString("OrderEditor.89"), Messages.getString("OrderEditor.90"), Messages.getString("OrderEditor.91"), Messages.getString("OrderEditor.92") }, new String[] { Messages.getString("OrderEditor.93"), Messages.getString("OrderEditor.94"), Messages.getString("OrderEditor.95"), Messages.getString("OrderEditor.96"), Messages.getString("OrderEditor.97"), Messages.getString("OrderEditor.98") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
-						} else if (paramType.equals(Messages.getString("OrderEditor.99"))) { //$NON-NLS-1$ //prd, le..mo => leather..mounts
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.100"), Messages.getString("OrderEditor.101"), Messages.getString("OrderEditor.102"), Messages.getString("OrderEditor.103"), Messages.getString("OrderEditor.104"), Messages.getString("OrderEditor.105"), Messages.getString("OrderEditor.106") }, new String[] { Messages.getString("OrderEditor.107"), Messages.getString("OrderEditor.108"), Messages.getString("OrderEditor.109"), Messages.getString("OrderEditor.110"), Messages.getString("OrderEditor.111"), Messages.getString("OrderEditor.112"), Messages.getString("OrderEditor.113") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$
-						} else if (paramType.equals(Messages.getString("OrderEditor.114"))) { //$NON-NLS-1$ //pro, le..go => leather..gold
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.115"), Messages.getString("OrderEditor.116"), Messages.getString("OrderEditor.117"), Messages.getString("OrderEditor.118"), Messages.getString("OrderEditor.119"), Messages.getString("OrderEditor.120"), Messages.getString("OrderEditor.121"), Messages.getString("OrderEditor.122") }, new String[] { Messages.getString("OrderEditor.123"), Messages.getString("OrderEditor.124"), Messages.getString("OrderEditor.125"), Messages.getString("OrderEditor.126"), Messages.getString("OrderEditor.127"), Messages.getString("OrderEditor.128"), Messages.getString("OrderEditor.129"), Messages.getString("OrderEditor.130") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
-						} else if (paramType.equals(Messages.getString("OrderEditor.131"))) { //$NON-NLS-1$ //%
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.132"))) { //$NON-NLS-1$ //g
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.133"))) { //$NON-NLS-1$ //yn
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.134"), Messages.getString("OrderEditor.135") }, new String[] { Messages.getString("OrderEditor.136"), Messages.getString("OrderEditor.137") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-						} else if (paramType.equals(Messages.getString("OrderEditor.138"))) { //$NON-NLS-1$ //wep
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.139"), Messages.getString("OrderEditor.140"), Messages.getString("OrderEditor.141"), Messages.getString("OrderEditor.142") }, new String[] { Messages.getString("OrderEditor.143"), Messages.getString("OrderEditor.144"), Messages.getString("OrderEditor.145"), Messages.getString("OrderEditor.146") },0); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-						} else if (paramType.equals(Messages.getString("OrderEditor.147"))) { //$NON-NLS-1$ //arm
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.148"), Messages.getString("OrderEditor.149"), Messages.getString("OrderEditor.150"), Messages.getString("OrderEditor.151"), Messages.getString("OrderEditor.152") }, new String[] { Messages.getString("OrderEditor.153"), Messages.getString("OrderEditor.154"), Messages.getString("OrderEditor.155"), Messages.getString("OrderEditor.156"), Messages.getString("OrderEditor.157") },0); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-						} else if (paramType.equals(Messages.getString("OrderEditor.158"))) { //$NON-NLS-1$ //trp
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.159"), Messages.getString("OrderEditor.160"), Messages.getString("OrderEditor.161"), Messages.getString("OrderEditor.162"), Messages.getString("OrderEditor.163"), Messages.getString("OrderEditor.164") }, new String[] { Messages.getString("OrderEditor.165"), Messages.getString("OrderEditor.166"), Messages.getString("OrderEditor.167"), Messages.getString("OrderEditor.168"), Messages.getString("OrderEditor.169"), Messages.getString("OrderEditor.170") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
-						} else if (paramType.equals(Messages.getString("OrderEditor.171"))) { //$NON-NLS-1$ //gen, m/f
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.172"), Messages.getString("OrderEditor.173") }, new String[] { Messages.getString("OrderEditor.174"), Messages.getString("OrderEditor.175") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-						} else if (paramType.equals(Messages.getString("OrderEditor.176"))) { //$NON-NLS-1$ //alg, g,n,e
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.177"), Messages.getString("OrderEditor.178"), Messages.getString("OrderEditor.179") }, new String[] { Messages.getString("OrderEditor.180"), Messages.getString("OrderEditor.181"), Messages.getString("OrderEditor.182") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-						} else if (paramType.equals(Messages.getString("OrderEditor.183"))) { //$NON-NLS-1$ //nam
-							sub = new SingleParameterOrderSubeditor(paramDescription, o, 160);
-						} else if (paramType.equals(Messages.getString("OrderEditor.184"))) { //$NON-NLS-1$
-							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.185"))) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.186"))) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.187"))) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.188"))) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.189"))) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals(Messages.getString("OrderEditor.190"))) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("dcid")) { //$NON-NLS-1$
-							sub = new SingleParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("i")) { //$NON-NLS-1$
-							sub = new NumberParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("dir") || paramType.equals("dirx")) { //$NON-NLS-1$ //$NON-NLS-2$
-							// sub = new
-							// SingleParameterOrderSubeditor(paramDescription,
-							// o);
-							sub = new DropDownParameterOrderSubeditor(paramDescription, o, new String[] { Messages.getString("OrderEditor.195"), Messages.getString("OrderEditor.196"), Messages.getString("OrderEditor.197"), Messages.getString("OrderEditor.198"), Messages.getString("OrderEditor.199"), Messages.getString("OrderEditor.200") }, new String[] { Messages.getString("OrderEditor.201"), Messages.getString("OrderEditor.202"), Messages.getString("OrderEditor.203"), Messages.getString("OrderEditor.204"), Messages.getString("OrderEditor.205"), Messages.getString("OrderEditor.206") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
-						} else if (paramType.equals("nat")) { //$NON-NLS-1$
-							sub = new NationParameterOrderSubeditor(paramDescription, o);
-						} else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-							sub = new SpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
-						} else if (paramType.equals("spz")) { //$NON-NLS-1$
-							sub = new ResearchSpellNumberParameterOrderSubeditor(paramDescription, o, oed.getOrderNo());
-						} else if (paramType.equals("art")) { //$NON-NLS-1$
-							sub = new ArtifactNumberParameterOrderSubeditor(paramDescription, o);
-						}
-						if (sub != null) {
-							sub.addComponents(tlb, this.subeditorComponents, o, paramNo);
-							sub.setEditor(this);
-						}
-						paramNo++;
-					}
-				}
+				orderEditorFactory(oed.getOrderNo(),oed,tlb,this,o);
 				// hack in order to show all of the subeditor fields
 				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
@@ -716,6 +639,178 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		String pval = PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoSave"); //$NON-NLS-1$
 		return !pval.equals("no"); //$NON-NLS-1$
 	}
+	
+	public static AbstractOrderSubeditor orderEditorFactory(int orderNumber,OrderEditorData oed, TableLayoutBuilder tlb, OrderEditor oe,Order o) {
+		AbstractOrderSubeditor sub = null;
+		switch (orderNumber) {
+		case 850:
+		case 860:
+		case 830: 
+			sub = new MoveArmyOrderSubeditor(oe,o);
+			sub.addComponents(tlb, oe.subeditorComponents, o, 0);
+			break;
+		case 940:
+			sub = new CastLoSpellOrderSubeditor(oe,o);
+			sub.addComponents(tlb, oe.subeditorComponents, o, 0);
+			break;
+		default:
+			int paramNo = 0;
+			for (int i = 0; i < oed.getParamTypes().size(); i++) {
+				sub = parameterEditorFactory(oe,oed.getParamTypes().get(i),oed.getParamDescriptions().get(i),o,oed.getOrderNo());
+				if (sub != null) {
+					sub.addComponents(tlb, oe.subeditorComponents, o, paramNo);
+				}
+				paramNo++;
+			}
+		}
+		return sub;
+
+	}
+	public static AbstractOrderSubeditor parameterEditorFactory(OrderEditor oe,String paramType,String paramDescription,Order o,int orderNumber) {
+		if (paramType.equals("hex")) { //$NON-NLS-1$
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals("cid") || paramType.equals("xid")) { //$NON-NLS-1$ //$NON-NLS-2$
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals("tac")) { //$NON-NLS-1$
+			return tacTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.99"))) { //$NON-NLS-1$ //prd, le..mo => leather..mounts
+			return productTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.114"))) { //$NON-NLS-1$ //pro, le..go => leather..gold
+			return product2Types(oe, paramDescription, o); 
+		} else if (paramType.equals(Messages.getString("OrderEditor.131"))) { //$NON-NLS-1$ //%
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.132"))) { //$NON-NLS-1$ //g
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.133"))) { //$NON-NLS-1$ //yn
+			return ynTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.138"))) { //$NON-NLS-1$ //wep
+			return WeaponTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.147"))) { //$NON-NLS-1$ //arm
+			return ArmourTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.158"))) { //$NON-NLS-1$ //trp
+			return trpTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.171"))) { //$NON-NLS-1$ //gen, m/f
+			return genderTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.176"))) { //$NON-NLS-1$ //alg, g,n,e
+			return allegianceTypes(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.183"))) { //$NON-NLS-1$ //nam
+			return new SingleParameterOrderSubeditor(oe,paramDescription, o, 160);
+		} else if (paramType.equals(Messages.getString("OrderEditor.184"))) { //$NON-NLS-1$
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.185"))) { //$NON-NLS-1$
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.186"))) { //$NON-NLS-1$
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.187"))) { //$NON-NLS-1$ //b
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.188"))) { //$NON-NLS-1$
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.189"))) { //$NON-NLS-1$
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals(Messages.getString("OrderEditor.190"))) { //$NON-NLS-1$
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals("dcid")) { //$NON-NLS-1$
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals("i")) { //$NON-NLS-1$
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals("dir") || paramType.equals("dirx")) { //$NON-NLS-1$ //$NON-NLS-2$
+			// sub = new
+			// SingleParameterOrderSubeditor(paramDescription,
+			// o);
+			return directionTypes(oe, paramDescription, o);
+		} else if (paramType.equals("nat")) { //$NON-NLS-1$
+			return new NationParameterOrderSubeditor(oe, paramDescription, o);
+		} else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			return new SpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber);
+		} else if (paramType.equals("spz")) { //$NON-NLS-1$
+			return new ResearchSpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber);
+		} else if (paramType.equals("art")) { //$NON-NLS-1$
+			return new ArtifactNumberParameterOrderSubeditor(oe, paramDescription, o);
+		}
+		OrderEditor.staticLogger.error("unexpected parameter type " + paramType);
+		return null;
+	}
+	static public AbstractOrderSubeditor WeaponTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] weapTypeAbbrevations = new String[] { "OrderEditor.139","OrderEditor.140","OrderEditor.141","OrderEditor.142"}; // wo,br,st,mi
+		final String[] weapTypeDescriptions = new String[] { "OrderEditor.143","OrderEditor.144","OrderEditor.145","OrderEditor.146"}; // Wooden,Bronze,Steel,Mithril
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(weapTypeAbbrevations), 
+				UIUtils.createMessages(weapTypeDescriptions), 
+				0);
+	}
+	static public AbstractOrderSubeditor ArmourTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] armourTypeAbbrevations = new String[] { "OrderEditor.148","OrderEditor.149","OrderEditor.150","OrderEditor.151","OrderEditor.152"};
+		final String[] armourTypeDescriptions = new String[] { "OrderEditor.153","OrderEditor.154","OrderEditor.155","OrderEditor.156","OrderEditor.157"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(armourTypeAbbrevations), 
+				UIUtils.createMessages(armourTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor tacTypes(OrderEditor oe,String paramDescription, Order o) {
+		final String[] tacTypeAbbrevations = new String[] { "OrderEditor.87","OrderEditor.88","OrderEditor.89","OrderEditor.90","OrderEditor.91","OrderEditor.92"};
+		final String[] tacTypeDescriptions = new String[] { "OrderEditor.93","OrderEditor.94","OrderEditor.95","OrderEditor.96","OrderEditor.97","OrderEditor.98"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(tacTypeAbbrevations), 
+				UIUtils.createMessages(tacTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor productTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] productTypeAbbrevations = new String[] { "OrderEditor.100","OrderEditor.101","OrderEditor.102","OrderEditor.103","OrderEditor.104","OrderEditor.105","OrderEditor.106"};
+		final String[] productTypeDescriptions = new String[] { "OrderEditor.107","OrderEditor.108","OrderEditor.109","OrderEditor.110","OrderEditor.111","OrderEditor.112","OrderEditor.113"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(productTypeAbbrevations), 
+				UIUtils.createMessages(productTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor product2Types(OrderEditor oe,String paramDescription,Order o) {
+		final String[] product2TypeAbbrevations = new String[] { "OrderEditor.115","OrderEditor.116","OrderEditor.117","OrderEditor.118","OrderEditor.119","OrderEditor.120","OrderEditor.121","OrderEditor.122"};
+		final String[] product2TypeDescriptions = new String[] { "OrderEditor.123","OrderEditor.124","OrderEditor.125","OrderEditor.126","OrderEditor.127","OrderEditor.128","OrderEditor.129","OrderEditor.130"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(product2TypeAbbrevations), 
+				UIUtils.createMessages(product2TypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor ynTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] ynTypeAbbrevations = new String[] { "OrderEditor.134","OrderEditor.135"};
+		final String[] ynTypeDescriptions = new String[] { "OrderEditor.136","OrderEditor.137"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(ynTypeAbbrevations), 
+				UIUtils.createMessages(ynTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor trpTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] trpTypeAbbrevations = new String[] { "OrderEditor.159","OrderEditor.160","OrderEditor.161","OrderEditor.162","OrderEditor.163","OrderEditor.164"};
+		final String[] trpTypeDescriptions = new String[] { "OrderEditor.165","OrderEditor.166","OrderEditor.167","OrderEditor.168","OrderEditor.169","OrderEditor.170"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(trpTypeAbbrevations), 
+				UIUtils.createMessages(trpTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor genderTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] genderTypeAbbrevations = new String[] { "OrderEditor.172","OrderEditor.173"};
+		final String[] genderTypeDescriptions = new String[] { "OrderEditor.174","OrderEditor.175"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(genderTypeAbbrevations), 
+				UIUtils.createMessages(genderTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor allegianceTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] allegianceTypeAbbrevations = new String[] { "OrderEditor.177","OrderEditor.178","OrderEditor.179"};
+		final String[] allegianceTypeDescriptions = new String[] { "OrderEditor.180","OrderEditor.181","OrderEditor.182"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(allegianceTypeAbbrevations), 
+				UIUtils.createMessages(allegianceTypeDescriptions), 
+			0);
+	}
+	static public AbstractOrderSubeditor directionTypes(OrderEditor oe,String paramDescription,Order o) {
+		final String[] directionTypeAbbrevations = new String[] { "OrderEditor.195","OrderEditor.196","OrderEditor.197","OrderEditor.198","OrderEditor.199","OrderEditor.200"};
+		final String[] directionTypeDescriptions = new String[] { "OrderEditor.201","OrderEditor.202","OrderEditor.203","OrderEditor.204","OrderEditor.205","OrderEditor.206"};
+		return new DropDownParameterOrderSubeditor(oe,paramDescription, o, 
+				UIUtils.createMessages(directionTypeAbbrevations), 
+				UIUtils.createMessages(directionTypeDescriptions), 
+			0);
+	}
+
 	public static OrderEditor instance()
 	{
          return (OrderEditor)Application.instance().getApplicationContext().getBean("orderEditor");

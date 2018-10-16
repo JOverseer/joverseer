@@ -2,6 +2,8 @@ package org.joverseer.ui.orderEditor;
 
 import java.util.ArrayList;
 
+import javax.swing.JComboBox;
+
 import org.joverseer.domain.Order;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
@@ -17,15 +19,15 @@ import org.joverseer.ui.support.Messages;
  */
 public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParameterOrderSubeditor {
 
-    public ResearchSpellNumberParameterOrderSubeditor(String paramName, Order o, int orderNo) {
-        super(paramName, o, orderNo);
+    public ResearchSpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo) {
+        super(oe,paramName, o, orderNo);
     }
 
     @Override
-	protected void loadSpellCombo() {
+	protected void loadSpellCombo(JComboBox com) {
         GameMetadata gm = GameHolder.instance().getGame().getMetadata();
         Character c = getOrder().getCharacter();
-        this.parameter.addItem(""); //$NON-NLS-1$
+        com.addItem(""); //$NON-NLS-1$
         for (SpellInfo si : (ArrayList<SpellInfo>) gm.getSpells().getItems()) {
             boolean found = false;
             for (SpellProficiency sp : c.getSpells()) {
@@ -33,7 +35,7 @@ public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParam
                     found = true;
                 }
             }
-            this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("ResearchSpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            com.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("ResearchSpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
     }
 

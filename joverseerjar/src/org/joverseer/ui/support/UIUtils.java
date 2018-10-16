@@ -39,4 +39,12 @@ public class UIUtils {
 	{
 		return OptPrefix(collector, ", ", postfix);
 	}
+	
+	public static String[] createMessages(String[] keys) {
+		String[] ret = new String[keys.length];
+		for(int i=0;i<keys.length;i++) {
+			ret[i] = Messages.getString(keys[i]);
+		}
+		return ret;
+	}
 }

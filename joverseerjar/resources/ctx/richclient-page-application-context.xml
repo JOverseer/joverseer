@@ -30,7 +30,7 @@
 				<value>characterListView</value>
 				<value>armyListView</value>				
 				<value>populationCenterListView</value>
-				<value>nationEconomyListView</value>
+<!-- 				<value>nationEconomyListView</value> -->
 				<value>armySizeEstimatesListView</value>
 				<value>nationEconomyPotentialsListView</value>
 				<value>pdfFileView</value>
@@ -41,7 +41,7 @@
 				<value>armyEstimatesListView</value>							
 				<value>advancedCharacterListView</value>
 				<value>nationStatisticsListView</value>
-				<value>teamEconomyView</value>
+ 				<value>teamEconomyView</value>
 				<value>notesListView</value>
 				<value>turnReportView</value>
 				<value>gameEncountersReportView</value>
@@ -54,6 +54,7 @@
 				<value>combatCalcView</value>
 				<value>mapEditorView</value>
 				<!--
+				<value>orderCheckerView</value>
 				<value>hexProductionListView</value>
 				<value>landingPageView</value>
 				-->
@@ -999,7 +1000,12 @@
 		<property name="viewClass">
 			<value>org.joverseer.ui.views.MapOptionsView</value>
 		</property>
-		<property name="preferredWidth">
+<!-- 		<property name="viewProperties">
+			<map>
+				<entry key="advancedView"><ref bean="mapOptionsAdvancedView"/></entry>
+			</map>
+		</property>
+ -->		<property name="preferredWidth">
 			<value>350</value>
 		</property>
 		<property name="preferredHeight">
@@ -1062,31 +1068,31 @@
 			<value>Main Views</value>
 		</property>
 	</bean>
-<!-- 	
-	<bean id="landingPageView" class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
+   	 <bean id="orderCheckerView" class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
 		<property name="initMode">
 			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
 		</property>
 		<property name="initSide">
-			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_SOUTH"/>
+			<ref bean="com.jidesoft.docking.DockContext.DOCK_SIDE_WEST"/>
 		</property>
 		<property name="initIndex">
-			<value>3</value>
+			<value>1</value>
 		</property>
 		<property name="viewClass">
-			<value>org.joverseer.ui.views.LandingPageView</value>
+	   	   	<value>org.joverseer.ui.views.OrderCheckerView</value>
 		</property>
 		<property name="preferredWidth">
-			<value>350</value>
+			<value>650</value>
 		</property>
 		<property name="preferredHeight">
-			<value>250</value>
+			<value>600</value>
 		</property>
 		<property name="viewGroup">
 			<value>Main Views</value>
 		</property>
-	</bean>
- -->	
+   	 </bean> 
+
+   	
 	<bean id="fullPerspective" class="org.joverseer.ui.jide.FullPerspective">
 		<constructor-arg index="0" value="full"/>
 	</bean>

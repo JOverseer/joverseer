@@ -5,6 +5,7 @@ import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.ExportOrdersForm;
 import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
@@ -34,8 +35,14 @@ public class ExportOrdersCommand extends ActionCommand {
 
             @Override
 			protected boolean onFinish() {
-                return true;
+            	form.commit();
+                return form.getReadyToClose();
             }
+
+			@Override
+			protected String getFinishCommandId() {
+        		return "ExportOrdersSubmit";
+			}
         };
         dialog.setTitle(Messages.getString("exportOrdersDialog.title"));
         dialog.showDialog();

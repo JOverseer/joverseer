@@ -66,6 +66,7 @@ import org.springframework.binding.form.FormModel;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
+import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -73,6 +74,7 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.JCheckBox;
 
 /**
  * Export/Submit orders form
@@ -86,6 +88,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	JComboBox nation;
 	JTextArea orders;
+	JCheckBox chkDontCloseOnFinish;
 	JLabel lblVersionValue = new JLabel("");
 	JLabel lblFile = new JLabel();
 	JLabel lblFileValue = new JLabel("");
@@ -108,6 +111,13 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.visibleOrdersGenerator = new OrderTextGenerator();
 	}
 
+	@Override
+	protected void init() {
+	}
+
+	public boolean getReadyToClose() {
+		return !this.chkDontCloseOnFinish.isSelected();
+	}
 	private ArrayList<String> getNationItems() {
 		Game g = GameHolder.instance().getGame();
 		ArrayList<String> ret = new ArrayList<String>();
@@ -232,16 +242,6 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		save.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
 		buttonPanel.add(save);
 
-		JButton send = new JButton(Messages.getString("ExportOrdersForm.BtnSend"));
-		send.setPreferredSize(this.uiSizes.newDimension(100/20, this.uiSizes.getHeight5()));
-		send.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveAndSendOrders(true);
-			}
-		});
-		buttonPanel.add(send);
-
 		JButton ctc = new JButton(Messages.getString("standardActions.CopyToClipboard"));
 		final ClipboardOwner clipboardOwner = this;
 		ctc.setPreferredSize(this.uiSizes.newDimension(100/11, this.uiSizes.getHeight5()));
@@ -255,6 +255,10 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		});
 
 		buttonPanel.add(ctc);
+		
+		this.chkDontCloseOnFinish = new JCheckBox(Messages.getString("ExportOrdersForm.chckbxNewCheckBox.text")); //$NON-NLS-1$
+		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
+		buttonPanel.add(this.chkDontCloseOnFinish);
 
 		return panel;
 	}
@@ -350,7 +354,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				f.close();
 				pi.setLastOrderFile(file.getAbsolutePath());
 				if (!send) {
-					increaseVersionNumber(pi);
+					increaseVersionNumber(pi); //strangly slow
 				}
 				if (send) {
 					String prefMethod = PreferenceRegistry.instance().getPreferenceValue("submitOrders.method");
@@ -456,6 +460,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				md.showDialog();
 			}
 		}
+	}
+
+	@Override
+	public void commit() {
+		saveAndSendOrders(true);
 	}
 
 	private int validateOrders() {
@@ -599,23 +608,5 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	@Override
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
-	// just one row at a time...
-	public class SmallPlayerInfoTableModel extends PlayerInfoTableModel {
-		private static final long serialVersionUID = 1L;
 
-		public SmallPlayerInfoTableModel(MessageSource messageSource) {
-			super(messageSource);
-		}
-		@Override
-		protected String[] createColumnPropertyNames() {
-			return new String[] { "turnVersion", "lastOrderFile", "ordersSentOn" };
-		}
-
-		@Override
-		@SuppressWarnings("unchecked")
-		protected Class[] createColumnClasses() {
-			return new Class[] { Integer.class, String.class, Date.class };
-		}
-
-	}
 }

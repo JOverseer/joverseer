@@ -1,15 +1,7 @@
 package org.joverseer.ui.support.dialogs;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
-import java.awt.event.KeyEvent;
-
 import javax.swing.Icon;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.joverseer.ui.command.SaveGame;
 import org.springframework.richclient.command.AbstractCommand;

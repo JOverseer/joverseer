@@ -26,12 +26,14 @@ public abstract class ExitDialog extends ApplicationDialog {
 
     public ExitDialog(String title, String message) {
 		super(title,null);
-		this.saveAndFinishCommand = new SaveGame() {
+		this.saveAndFinishCommand = new SaveGame("ExitDialog.SaveAndExit") {
 			@Override
 			protected void doExecuteCommand() {
 				super.doExecuteCommand();
-				ExitDialog.this.onFinish();
-				ExitDialog.super.onCancel();
+				if (this.isDoExecuteCompletedSave()) {
+					ExitDialog.this.onFinish();
+					ExitDialog.super.onCancel();
+				}
 			}
 		};
 		this.confirmationMessage = message;
@@ -39,25 +41,33 @@ public abstract class ExitDialog extends ApplicationDialog {
 
 	@Override
 	protected Object[] getCommandGroupMembers() {
-		return new AbstractCommand[] { getFinishCommand(), getCancelCommand(), getSaveAndFinishCommand() };
+		return new AbstractCommand[] { getSaveAndFinishCommand(), getFinishCommand(), getCancelCommand() };
 	}
 
+    /**
+     * @wbp.parser.entryPoint
+     */
     @Override
 	protected JComponent createDialogContentPane() {
-    this.messageAreaPane = new DefaultMessageAreaPane();
-    Icon icon = getIconSource().getIcon(CONFIRMATION_DIALOG_ICON);
-    if (icon == null) {
-        icon = UIManager.getIcon("OptionPane.questionIcon");
+    	this.messageAreaPane = new DefaultMessageAreaPane();
+    	Icon icon = getIconSource().getIcon(CONFIRMATION_DIALOG_ICON);
+    	if (icon == null) {
+    		icon = UIManager.getIcon("OptionPane.questionIcon");
+    	}
+    	this.messageAreaPane.setDefaultIcon(icon);
+    	this.messageAreaPane.setMessage(new DefaultMessage(this.confirmationMessage));
+    	return this.messageAreaPane.getControl();
     }
-    this.messageAreaPane.setDefaultIcon(icon);
-    this.messageAreaPane.setMessage(new DefaultMessage(this.confirmationMessage));
-    return this.messageAreaPane.getControl();
-}
 
-@Override
-protected void disposeDialogContentPane() {
-	this.messageAreaPane = null;
-}
+    @Override
+    protected void disposeDialogContentPane() {
+    	this.messageAreaPane = null;
+    }
+
+    @Override
+    protected String getFinishCommandId() {
+    	return "ExitDialog.Exit";
+    }
 
 	protected AbstractCommand getSaveAndFinishCommand() {
 		return this.saveAndFinishCommand;
@@ -66,7 +76,7 @@ protected void disposeDialogContentPane() {
 
 	@Override
 	protected void onAboutToShow() {
-		registerCancelCommandAsDefault();
+		registerDefaultCommand(this.saveAndFinishCommand);
 	}
 
 	@Override

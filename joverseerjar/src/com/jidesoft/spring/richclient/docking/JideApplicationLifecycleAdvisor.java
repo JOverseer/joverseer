@@ -297,7 +297,6 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			this.canCloseWindow = false;
 			// show warning
 			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-//			ConfirmationDialog md = new ConfirmationDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
 				ExitDialog md = new ExitDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
 
 				@Override

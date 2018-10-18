@@ -28,12 +28,25 @@ import org.springframework.richclient.progress.BusyIndicator;
  * @author Marios Skounakis
  */
 public class SaveGame extends ActionCommand {
-    public SaveGame() {
+	private boolean doExecuteCompletedSave;
+    /***
+     * Indicate if the last save actually completed. no errors or cancel.
+     * @return
+     */
+	public boolean isDoExecuteCompletedSave() {
+		return this.doExecuteCompletedSave;
+	}
+	public SaveGame() {
         super("SaveGameCommand"); //$NON-NLS-1$
     }
 
+    // use this version when you want a different name for the command.
+    public SaveGame(String commandId) {
+    	super(commandId);
+    }
     @Override
 	protected void doExecuteCommand() {
+    	this.doExecuteCompletedSave = false;
         if (!GameHolder.hasInitializedGame()) {
             // show error, cannot import when game not initialized
             ErrorDialog md = new ErrorDialog(Messages.getString("errorSavingGame")); //$NON-NLS-1$
@@ -84,6 +97,7 @@ public class SaveGame extends ActionCommand {
 	                MessageDialog dlg = new MessageDialog(Messages.getString("SaveGame.title"), Messages.getString("SaveGame.text") + fileChooser.getSelectedFile().getCanonicalPath()); //$NON-NLS-1$ //$NON-NLS-2$
 	        		dlg.showDialog();
                 }
+                this.doExecuteCompletedSave = true;
             }
             catch (Exception exc) {
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());

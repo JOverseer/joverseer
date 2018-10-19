@@ -39,7 +39,7 @@
    <target name="Compile"
        depends="-Init"
        description="Compile all java classes">
-       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" source="1.6" target="1.6" bootclasspath="${compat.rt.jar}">
+       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" source="1.8" target="1.8">
     		<classpath>
     			<path refid="common.classpath"/>
 	   			<pathelement path="${java.class.path}"/>

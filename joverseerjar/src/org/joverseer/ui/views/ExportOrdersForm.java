@@ -332,7 +332,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
 		String fname = String.format("me%02dv%d.%03d", getSelectedNationNo(), pi.getTurnVersion(), g.getMetadata().getGameNo());
-		JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
 		fileChooser.setSelectedFile(new File(fname));

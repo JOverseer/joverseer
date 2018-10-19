@@ -141,7 +141,7 @@
 	    <launch4j>
 	  		<config headerType="gui" jar="${updater.jar}" outfile="${dist}/jOverseerUpdater.exe" stayAlive="false" manifest="${src}/updatewithUAC.manifest">
 				<singleInstance mutexName="com.middleearthgames.joverseer.updater" />
-				<jre minVersion="1.6.0" />
+				<jre minVersion="1.8.0" />
           	</config>
 		</launch4j>
     </target>

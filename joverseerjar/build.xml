@@ -102,7 +102,7 @@
        description="Compile all java classes">
        <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
        <javac srcdir="${src}" destdir="${bin}" 
-           encoding="utf-8" includeantruntime="false" source="1.6" target="1.6" bootclasspath="${compat.rt.jar}">
+           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8">
        		<classpath>
        			<pathelement path="${java.class.path}"/>
        			<path refid="updater.path"/>

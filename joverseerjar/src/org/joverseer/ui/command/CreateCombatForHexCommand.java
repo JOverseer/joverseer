@@ -17,8 +17,8 @@ import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.command.ActionCommand;
-import org.springframework.richclient.dialog.MessageDialog;
 
 public class CreateCombatForHexCommand extends ActionCommand {
 	Integer hexNo;
@@ -50,14 +50,12 @@ public class CreateCombatForHexCommand extends ActionCommand {
 		ArrayList<Army> ntarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.Neutral });
 
 		if (ntarmies.size() > 0) {
-			MessageDialog dlg = new MessageDialog("Error", Messages.getString("createCombatForHexCommand.error.NetrualArmiesFound"));
-			dlg.showDialog();
+			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.NetrualArmiesFound");
 		}
 
 		PopulationCenter pc = (PopulationCenter) game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", hex);
 		if (pc != null && (pc.getNationNo() == 0 || pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral))) {
-			MessageDialog dlg = new MessageDialog("Error", Messages.getString("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound"));
-			dlg.showDialog();
+			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound");
 		}
 
 		ArrayList<Army> side1;

@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
 import java.util.prefs.Preferences;
 import java.util.regex.Pattern;
 
@@ -42,6 +41,7 @@ import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -56,17 +56,15 @@ import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.joverseer.ui.command.OpenGameDirTree;
 import org.joverseer.ui.command.SaveGame;
-import org.joverseer.ui.listviews.PlayerInfoTableModel;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.support.dialogs.InputDialog;
 import org.springframework.binding.form.FormModel;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.AbstractCommand;
-import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -105,6 +103,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	boolean ordersWithWarnings = false;
 	boolean missingOrders = false;
 	boolean duplicateSkillOrders = false;
+	
+	// bit of a hack to let anonyous class communicate back to this class.
+	private boolean cancel= false;
+	
+	private boolean lastSaveWasNotCancelled= true;
 
 	public ExportOrdersForm(FormModel model) {
 		super(model, "ExportOrdersForm");
@@ -116,7 +119,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	}
 
 	public boolean getReadyToClose() {
-		return !this.chkDontCloseOnFinish.isSelected();
+		return (!this.chkDontCloseOnFinish.isSelected()) && this.lastSaveWasNotCancelled;
 	}
 	private ArrayList<String> getNationItems() {
 		Game g = GameHolder.instance().getGame();
@@ -302,9 +305,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			this.orderCheckResult = validateOrders();
 			this.ordersOk = true;
 		} catch (Exception exc) {
-			this.orders.setText(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.error.UnexpectedError", null, null));
+			this.orders.setText(this.getMessage("ExportOrdersForm.error.UnexpectedError"));
 			this.ordersOk = false;
-//			logger.error(exc);
 		}
 
 	}
@@ -313,18 +315,26 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.nation.setSelectedIndex(this.nation.getSelectedIndex());
 	}
 
-	private void saveAndSendOrders(boolean send) {
+	/**
+	 * 
+	 * @param send
+	 * @return false if cancelled.
+	 */
+	private boolean saveAndSendOrders(boolean send) {
+		final boolean isOK = true;
+		final boolean isNotOK = false;
+		this.cancel = false;
 		if (!this.ordersOk)
-			return;
+			return isOK;
 		if (!checkOrderValidity())
-			return;
+			return isNotOK;
 		Game g = GameHolder.instance().getGame();
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
 		String fname = String.format("me%02dv%d.%03d", getSelectedNationNo(), pi.getTurnVersion(), g.getMetadata().getGameNo());
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		fileChooser.setApproveButtonText(Application.instance().getApplicationContext().getMessage("standardActions.Save", null, null));
+		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
 		fileChooser.setSelectedFile(new File(fname));
 
 		String orderPathPref = PreferenceRegistry.instance().getPreferenceValue("submitOrders.defaultFolder");
@@ -340,131 +350,128 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		if (lastDir != null) {
 			fileChooser.setCurrentDirectory(new File(lastDir));
 		}
-		if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
-			try {
-				File file = fileChooser.getSelectedFile();
-				if ("importDir".equals(orderPathPref)) {
-					GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
-				}
-				FileWriter f = new FileWriter(file);
-				OrderFileGenerator gen = new OrderFileGenerator();
-				String txt = gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo());
-				txt = txt.replace("\n", System.getProperty("line.separator"));
-				f.write(txt);
-				f.close();
-				pi.setLastOrderFile(file.getAbsolutePath());
-				if (!send) {
-					increaseVersionNumber(pi); //strangly slow
-				}
-				if (send) {
-					String prefMethod = PreferenceRegistry.instance().getPreferenceValue("submitOrders.method");
-					if (prefMethod.equals("email")) {
-						// send by email
-						String recipientEmail = PreferenceRegistry.instance().getPreferenceValue("submitOrders.recipientEmail");
-						String cmd = "bin\\mailSender\\MailSender.exe " + recipientEmail + " " + fname + " " + file.getCanonicalPath();
-						this.logger.debug("Starting mail client with command " + cmd);
-						Runtime.getRuntime().exec(cmd);
-						increaseVersionNumber(pi);
+		if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) != JFileChooser.APPROVE_OPTION) {
+			return isNotOK;
+		}
+		try {
+			File file = fileChooser.getSelectedFile();
+			if ("importDir".equals(orderPathPref)) {
+				GamePreference.setValueForPreference("orderDir", file.getParent(), ExportOrdersForm.class);
+			}
+			FileWriter f = new FileWriter(file);
+			OrderFileGenerator gen = new OrderFileGenerator();
+			String txt = gen.generateOrderFile(g, g.getTurn(), getSelectedNationNo());
+			txt = txt.replace("\n", System.getProperty("line.separator"));
+			f.write(txt);
+			f.close();
+			pi.setLastOrderFile(file.getAbsolutePath());
+			if (!send) {
+				increaseVersionNumber(pi); //strangly slow
+				MessageDialog md = new MessageDialog(getMessage("ExportOrdersForm.TurnExportedDialogTitle"),
+							getMessage("ExportOrdersForm.TurnExportedDialogMessage", new Object[] { fileChooser.getSelectedFile() }));
+				md.showDialog();
+				autoSaveGameAccordingToPref();
+			} else {
+				String prefMethod = PreferenceRegistry.instance().getPreferenceValue("submitOrders.method");
+				if (prefMethod.equals("email")) {
+					// send by email
+					String recipientEmail = PreferenceRegistry.instance().getPreferenceValue("submitOrders.recipientEmail");
+					String cmd = "bin\\mailSender\\MailSender.exe " + recipientEmail + " " + fname + " " + file.getCanonicalPath();
+					this.logger.debug("Starting mail client with command " + cmd);
+					Runtime.getRuntime().exec(cmd);
+					increaseVersionNumber(pi);
 
-						String msg = Application.instance().getApplicationContext().getMessage("ExportOrdersForm.OrdersSentByMailSuccessMessage", new Object[] { recipientEmail, fileChooser.getSelectedFile() }, null);
-						MessageDialog md = new MessageDialog(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.TurnSubmittedDialogTitle", null, null), msg);
-						md.showDialog();
-						pi.setOrdersSentOn(new Date());
-						autoSaveGameAccordingToPref();
-					} else {
-						// submit to meturn.com
-						Preferences prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
-						String email = prefs.get("useremail", "");
-						String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
-						InputDialog idlg = new InputDialog();
-						idlg.setTitle(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.SendTurnInputDialogTitle", null, null));
-						idlg.init(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.SendTurnInputDialogMessage", null, null));
-						JTextField emailText = new JTextField();
-						idlg.addComponent(Application.instance().getApplicationContext().getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress", null, null), emailText);
-						idlg.setPreferredSize(new Dimension(400, 80));
-						emailText.setText(email);
-						do {
-							idlg.showDialog();
-							if (!idlg.getResult()) {
-								ErrorDialog md = new ErrorDialog("ExportOrdersForm.SendAbortedMessage");
-								md.showDialog();
-								return;
+					String msg = getMessage("ExportOrdersForm.OrdersSentByMailSuccessMessage", new Object[] { recipientEmail, fileChooser.getSelectedFile() });
+					MessageDialog md = new MessageDialog(getMessage("ExportOrdersForm.TurnSubmittedDialogTitle"), msg);
+					md.showDialog();
+					pi.setOrdersSentOn(new Date());
+					autoSaveGameAccordingToPref();
+					return isOK;
+				} else {
+					// submit to meturn.com
+					Preferences prefs = Preferences.userNodeForPackage(ExportOrdersForm.class);
+					String email = prefs.get("useremail", "");
+					String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
+					InputDialog idlg = new InputDialog("ExportOrdersForm.SendTurnInputDialogTitle");
+					idlg.init(getMessage("ExportOrdersForm.SendTurnInputDialogMessage"));
+					JTextField emailText = new JTextField();
+					idlg.addComponent(getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress"), emailText);
+					idlg.setPreferredSize(new Dimension(400, 80));
+					emailText.setText(email);
+					do {
+						idlg.showDialog();
+						if (!idlg.getResult()) {
+							ErrorDialog.showErrorDialog("ExportOrdersForm.SendAbortedMessage");
+							send = false;
+							return false;
+						}
+						email = emailText.getText();
+					} while (!Pattern.matches(emailRegex, email));
+					prefs.put("useremail", email);
+					String name = pi.getPlayerName();
+					String acct = pi.getAccountNo();
+					String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
+					final PostMethod filePost = new PostMethod(url);
+					Part[] parts = { new StringPart("emailaddr", email), new StringPart("name", name), new StringPart("account", acct), new FilePart(file.getName(), file) };
+					filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
+					// final GetMethod filePost = new
+					// GetMethod("http://www.meturn.com/");
+					HttpClient client = new HttpClient();
+					client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+					int status = client.executeMethod(filePost);
+					if (status == HttpStatus.SC_OK) {
+						final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
+						FormBackedDialogPage page = new FormBackedDialogPage(frm);
+						TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
+							
+							@Override
+							protected void onAboutToShow() {
+								try {
+									((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
+									frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
+									this.setDescription(this.getMessage("ExportOrdersForm.OrdersSentByMETURNSuccessMessage", new Object[] { fileChooser.getSelectedFile() })); 
+								} catch (Exception exc) {
+									ExportOrdersForm.this.cancel = true;
+									this.logger.error(exc);
+								}
 							}
-							email = emailText.getText();
-						} while (!Pattern.matches(emailRegex, email));
-						prefs.put("useremail", email);
 
-						String name = pi.getPlayerName();
-						String acct = pi.getAccountNo();
-
-						String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
-						final PostMethod filePost = new PostMethod(url);
-						Part[] parts = { new StringPart("emailaddr", email), new StringPart("name", name), new StringPart("account", acct), new FilePart(file.getName(), file) };
-						filePost.setRequestEntity(new MultipartRequestEntity(parts, filePost.getParams()));
-						// final GetMethod filePost = new
-						// GetMethod("http://www.meturn.com/");
-						HttpClient client = new HttpClient();
-						client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
-						int status = client.executeMethod(filePost);
-						String msg = "";
-						if (status == HttpStatus.SC_OK) {
-							final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
-							FormBackedDialogPage page = new FormBackedDialogPage(frm);
-
-							TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-								@Override
-								protected void onAboutToShow() {
-									try {
-										((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
-										frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
-									} catch (Exception exc) {
-										this.logger.error(exc);
-									}
-								}
-
-								@Override
-								protected boolean onFinish() {
-									return true;
-								}
-
-								@Override
-								protected Object[] getCommandGroupMembers() {
-									return new AbstractCommand[] { getFinishCommand() };
-								}
-							};
-							MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-							dialog.setTitle(ms.getMessage("submitOrdersDialog.title", new Object[] {}, Locale.getDefault()));
-							dialog.showDialog();
-
+							@Override
+							protected boolean onFinish() {
+								return true;
+							}
+							@Override
+							protected Object[] getCommandGroupMembers() {
+								return new AbstractCommand[] { getFinishCommand() };
+							}
+						};
+						dialog.setTitle(Messages.getString("submitOrdersDialog.title"));
+						dialog.showDialog();
+						if (!this.cancel) {
 							increaseVersionNumber(pi);
 							filePost.releaseConnection();
-
-							msg = Application.instance().getApplicationContext().getMessage("ExportOrdersForm.OrdersSentByMETURNSuccessMessage", new Object[] { fileChooser.getSelectedFile() }, null);
-							MessageDialog md = new MessageDialog(ms.getMessage("ExportOrdersForm.TurnSubmittedDialogTitle", null, null), msg);
-							md.showDialog();
 							pi.setOrdersSentOn(new Date());
 							autoSaveGameAccordingToPref();
-						} else {
-							send = false;
 						}
+					} else {
+						this.cancel=true;
+						send = false;
+						filePost.releaseConnection();
 					}
-				} else {
-					MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-					MessageDialog md = new MessageDialog(ms.getMessage("ExportOrdersForm.TurnExportedDialogTitle", null, null), ms.getMessage("ExportOrdersForm.TurnExportedDialogMessage", new Object[] { fileChooser.getSelectedFile() }, null));
-					md.showDialog();
-					autoSaveGameAccordingToPref();
 				}
-			} catch (Exception exc) {
-				this.logger.error(exc);
-				ErrorDialog md = new ErrorDialog(exc.getMessage());
-				md.showDialog();
 			}
+		} catch (Exception exc) {
+			this.logger.error(exc);
+			ErrorDialog md = new ErrorDialog(exc.getMessage());
+			md.showDialog();
+			this.cancel = true;
 		}
+		return !this.cancel;
 	}
 
 	@Override
 	public void commit() {
-		saveAndSendOrders(true);
+		this.lastSaveWasNotCancelled = saveAndSendOrders(true);
 	}
 
 	private int validateOrders() {
@@ -528,22 +535,18 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	private boolean checkOrderValidity() {
 		this.cancelExport = false;
-		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 		if (this.orderCheckResult != ORDERS_OK) {
 			if (this.missingOrders) {
-				MessageDialog dlg = new MessageDialog(ms.getMessage("standardMessages.Error", null, null), ms.getMessage("ExportOrdersForm.error.CharactersMissingOrders", null, null));
-				dlg.showDialog();
-				return false;
+				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersMissingOrders");
 			}
 			if (this.duplicateSkillOrders) {
-				MessageDialog dlg = new MessageDialog(ms.getMessage("standardMessages.Error", null, null), ms.getMessage("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders", null, null));
-				dlg.showDialog();
-				return false;
+				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders");
 			}
 			if (this.ordersWithErrors) {
 
 				this.cancelExport = false;
-				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersWithErrors", null, null)) {
+				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+						getMessage("ExportOrdersForm.warning.OrdersWithErrors")) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
@@ -560,7 +563,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					return false;
 			} else if (this.ordersWithWarnings) {
 				this.cancelExport = false;
-				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersWithWarnings", null, null)) {
+				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+						getMessage("ExportOrdersForm.warning.OrdersWithWarnings")) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
@@ -578,7 +582,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 			}
 			if (this.uncheckedOrders) {
-				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("standardMessages.Warning", null, null), ms.getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC", null, null)) {
+				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+						getMessage("ExportOrdersForm.warning.OrdersNotCheckedWithOC")) {
 					@Override
 					protected void onCancel() {
 						super.onCancel();
@@ -603,6 +608,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		if (pval.equals("yes")) {
 			new SaveGame().execute();
 		}
+		joApplication.publishEvent(LifecycleEventsEnum.OrderSaveToFileEvent, this);
+		
 	}
 
 	@Override

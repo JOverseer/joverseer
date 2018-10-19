@@ -101,7 +101,7 @@ public class SaveGame extends ActionCommand {
             }
             catch (Exception exc) {
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-                MessageDialog d = new MessageDialog("Error", exc.getMessage());
+                ErrorDialog d = new ErrorDialog(exc.getMessage());
                 d.showDialog();
                 // do nothing
                 // todo fix

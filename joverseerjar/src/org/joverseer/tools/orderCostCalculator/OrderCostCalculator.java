@@ -7,7 +7,6 @@ import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Game;

@@ -1,8 +1,10 @@
+VERSION 1.16.9
+--------------
+	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff. 
 	* Enh: You can save and exit from the 'are you sure you want to exit' dialog.
 	* Enh: The Team Economy view has been updated to highlight tax rate increases, and tweaked to use totals consistent with the economy calculator.
 	* Enh: The Team *Economies* view has been removed as it was confusing and duplicated information on the Team Economy view.
 	* Enh: The various Nation filters (drop downs) will now hide dead nations, and those without economy information.
-	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff. 
 	* Enh: The Economy Calculator has been improved:
 		* The totals have been overhauled and now should make obvious sense.
 		* It remembers the selected nation when you change turn.

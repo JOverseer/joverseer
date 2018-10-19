@@ -11,8 +11,6 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
-import com.middleearthgames.updater.ThreepartVersion;
-
 public class GatherSupportDataCommand extends ActionCommand {
 
 	final String EOL="\r\n";

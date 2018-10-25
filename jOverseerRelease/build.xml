@@ -13,7 +13,7 @@
     <property name="joverseer.jar">${jojar.project.dir}dist/lib/joverseer.jar</property>
 	<property name="updater.jar">../joverseerupdaterjar/dist/lib/update.jar</property>
 	<property name="res.dir">${jojar.project.dir}resources</property>
-	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
+	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
     
     <property name="launch4j.dir" location="../launch4j"/>
     <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->

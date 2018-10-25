@@ -73,8 +73,6 @@
 <!--                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>  -->
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
-                <value>separator</value>
-            	<bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
             	
 			</list>
 		</property>

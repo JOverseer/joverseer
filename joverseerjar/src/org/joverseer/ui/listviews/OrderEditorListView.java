@@ -20,6 +20,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -36,6 +37,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
@@ -659,6 +661,8 @@ public class OrderEditorListView extends ItemListView {
 					}
 				}
 				setItems();
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
+				selectCurrentNationAsFilter();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 			    setItems(); //this seems to cause an event storm.
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {

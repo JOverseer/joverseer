@@ -1,3 +1,14 @@
+VERSION 1.16.10
+---------------
+	* Enh: Default to current nation for map option and appropriate views.
+	* Enh: You don't need the control-key to make mouse-drag move the map,
+	    but you do need the control-key to drag hex numbers off the map.
+	* Enh: Remove the less used icons from the tool bar.
+	* Enh: Return the Restore Orginal Layout to something simple.
+	* Fix: Upgrade/Downgrade relations was getting confused nation numbers.
+	* Fix: 40x and 770 orders specifically, would often show wo no but not insert them into the actual order.
+	* Fix: Some silent exceptions causing odd behaviour for new games before the first results were imported.
+	
 VERSION 1.16.9
 --------------
 	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff. 

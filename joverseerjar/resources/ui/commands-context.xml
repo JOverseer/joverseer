@@ -69,11 +69,11 @@
                 <value>separator</value>
                 <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
                 <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
-                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
-<!--                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>  -->
+<!--                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
+                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
-            	
+            	  -->
 			</list>
 		</property>
 	</bean>

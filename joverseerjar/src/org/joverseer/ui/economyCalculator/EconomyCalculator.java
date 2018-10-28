@@ -91,21 +91,26 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {				
-				this.nationCombo.load(false,true);
-				try {
-					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
-					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
-					refreshMarketLimitWarning();
-					refreshTaxIncrease();
-					refreshAutocalcOrderCost();
-					refreshFinalGoldWarning();
-				} catch (Exception exc) {
-					exc.printStackTrace();
+				Nation n = this.nationCombo.load(false,true);
+				if (n != null) {
+					try {
+						((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+						((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
+						refreshMarketLimitWarning();
+						refreshTaxIncrease();
+						refreshAutocalcOrderCost();
+						refreshFinalGoldWarning();
+					} catch (Exception exc) {
+						exc.printStackTrace();
+					}
 				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				((MarketTableModel) this.marketTable.getModel()).setGame(null);
 				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
-				refreshSNA(this.nationCombo.load(true, true));
+				Nation n = this.nationCombo.load(true, true);
+				if (n!= null) {
+					refreshSNA(n);
+				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				refreshAutocalcOrderCost();
 				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$

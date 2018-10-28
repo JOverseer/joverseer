@@ -163,6 +163,9 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			return 0;
 		Container<ProductPrice> pps = t.getProductPrices();
 		ProductPrice pp = pps.findFirstByProperty("product", p);
+		if (pp==null) {
+			return 0;
+		}
 		return pp.getSellPrice();
 	}
 

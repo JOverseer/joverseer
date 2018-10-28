@@ -51,7 +51,7 @@ public class NationComboBox extends JComboBox {
 				if (autoFocusOnGameNation && (n.getNumber() == g.getMetadata().getNationNo())) {
 	            	selectedNation = n;
 				}
-				if ((!autoFocusOnGameNation) && previousSelection.equals(n.getName())) {
+				if ((!autoFocusOnGameNation) && (previousSelection != null) && ( previousSelection.equals(n.getName()))) {
 					// keep the selection if possible.
 	            	selectedNation = n;
 				}

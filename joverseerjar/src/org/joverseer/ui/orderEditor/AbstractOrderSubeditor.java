@@ -76,8 +76,8 @@ public abstract class AbstractOrderSubeditor {
         }
 
 
-   public void valueChanged() {
+	   public void valueChanged() {
 	   // empty hook by default
    }
-        
+       
 }

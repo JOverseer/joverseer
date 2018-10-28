@@ -257,6 +257,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 					refreshOrder();
 					refreshDescription();
 					refreshSubeditor();
+					updateParameters();
 					refreshDrawCheck();
 					if (getAutoSave()) {
 						saveOrder();
@@ -434,6 +435,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				paramsEditable = false;
 				TableLayoutBuilder tlb = new TableLayoutBuilder(this.subeditorPanel);
 				orderEditorFactory(oed.getOrderNo(),oed,tlb,this,o);
+				
 				// hack in order to show all of the subeditor fields
 				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
 				tlb.row();
@@ -529,6 +531,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		refreshOrder();
 		refreshDescription();
 		refreshSubeditor();
+		updateParameters();
 		this.currentOrderNoAndCode = o.getNoAndCode();
 		Character c = o.getCharacter();
 		if (c == null) {
@@ -659,6 +662,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				sub = parameterEditorFactory(oe,oed.getParamTypes().get(i),oed.getParamDescriptions().get(i),o,oed.getOrderNo());
 				if (sub != null) {
 					sub.addComponents(tlb, oe.subeditorComponents, o, paramNo);
+					sub.valueChanged();
 				}
 				paramNo++;
 			}

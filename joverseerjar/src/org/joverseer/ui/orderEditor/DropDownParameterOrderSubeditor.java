@@ -60,16 +60,8 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
         box.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                String v = DropDownParameterOrderSubeditor.this.combo.getSelectedItem().toString();
-                if (v == null || v.equals("")) {
-                    DropDownParameterOrderSubeditor.this.parameter.setText("");
-                } else {
-                    for (int i=0; i<DropDownParameterOrderSubeditor.this.descriptions.length; i++) {
-                        if (DropDownParameterOrderSubeditor.this.descriptions[i].equals(v)) {
-                            DropDownParameterOrderSubeditor.this.parameter.setText(DropDownParameterOrderSubeditor.this.values[i]);
-                        }
-                    }
-                }
+            	
+                DropDownParameterOrderSubeditor.this.valueChanged();
                 updateEditor();
             }
         });
@@ -86,6 +78,20 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.parameter.setText(val);
         components.add(this.parameter);
         tlb.row();
+    }
+    @Override
+    public void valueChanged() {
+        String v = this.combo.getSelectedItem().toString();
+        if (v == null || v.equals("")) {
+            this.parameter.setText("");
+        } else {
+            for (int i=0; i<this.descriptions.length; i++) {
+                if (this.descriptions[i].equals(v)) {
+                    this.parameter.setText(DropDownParameterOrderSubeditor.this.values[i]);
+                    break;
+                }
+            }
+        }
     }
 
 }

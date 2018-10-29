@@ -24,7 +24,6 @@ public enum PopulationCenterSizeEnum implements Serializable {
 		// File Templates.
 	}
 
-	@SuppressWarnings("boxing")
 	public Integer getCode() {
 		return this.size;
 	}

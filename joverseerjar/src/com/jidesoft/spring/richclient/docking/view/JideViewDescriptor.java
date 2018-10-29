@@ -31,7 +31,6 @@ import com.jidesoft.docking.DockContext;
  * @author Jonny Wray
  * 
  */
-@SuppressWarnings("unchecked")
 public class JideViewDescriptor extends DefaultViewDescriptor implements Comparable {
 
 	private boolean isWorkspace = false;

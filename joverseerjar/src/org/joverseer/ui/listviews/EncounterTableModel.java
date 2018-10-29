@@ -22,7 +22,6 @@ public class EncounterTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, Integer.class, String.class, String.class, String.class };
 	}

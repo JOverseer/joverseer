@@ -16,7 +16,6 @@ public class TurnReportTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, Integer.class, String.class };
 	}

@@ -1,5 +1,6 @@
 package org.joverseer.metadata.domain;
 
+import java.awt.Point;
 import java.io.Serializable;
 
 import org.joverseer.support.movement.MovementDirection;
@@ -70,5 +71,21 @@ public enum HexSideEnum implements Serializable {
     		return Right;
     	}
     	return null;
+    }
+    public static HexSideEnum classifyPoint(Point p, Point hp,int hexHalfWidth,int hexOneThirdHeight) {
+    	final HexSideEnum lookup[] = { TopLeft,Left,BottomLeft, TopRight,Right,BottomRight};
+		boolean leftSide = p.x < hp.x + hexHalfWidth;
+		int ySide = 0;
+		if (p.y < hp.y + hexOneThirdHeight) {
+			ySide = 0;
+		} else if (p.y < hp.y + 2 * hexOneThirdHeight) {
+			ySide = 1;
+		} else {
+			ySide = 2;
+		}
+		if (!leftSide) {
+			ySide += 3;
+		}
+		return lookup[ySide];
     }
 }

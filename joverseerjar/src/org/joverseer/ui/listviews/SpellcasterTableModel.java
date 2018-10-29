@@ -40,7 +40,6 @@ public class SpellcasterTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		Class[] cols = new Class[] { String.class, Integer.class, String.class, Integer.class, Integer.class };
 		List<Class> colList = new ArrayList<Class>();

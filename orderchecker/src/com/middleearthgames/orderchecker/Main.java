@@ -97,17 +97,17 @@ public class Main
     public Main(boolean useMscoonVersion, Data data) {
     	init(useMscoonVersion,data);
     }
-    protected void init(boolean useMscoonVersion, Data data) {
+    protected void init(boolean useMscoonVersion, Data data1) {
         this.nation = null;
         this.map = null;
         this.ruleset = null;
         this.spells = new SpellList();
         this.artifacts = new ArtifactList();
-        this.data = data;
+        this.data = data1;
         if (useMscoonVersion) {
-        	this.window = new OCDialog(new JPanel(), data);
+        	this.window = new OCDialog(new JPanel(), data1);
         } else {
-        	this.window = new OCDialog(mainFrame, data);
+        	this.window = new OCDialog(mainFrame, data1);
         }
     }
     public OCDialog getWindow()

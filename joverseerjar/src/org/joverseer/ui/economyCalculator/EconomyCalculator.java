@@ -390,11 +390,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 					priceHistory1 = ((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).getPriceHistory(selCol, 10);
 				}
 				if (priceHistory1 == null || priceHistory1.equals("")) { //$NON-NLS-1$
-					Game g = GameHolder.instance().getGame();
-					if (!Game.isInitialized(g))
+					Game g1 = GameHolder.instance().getGame();
+					if (!Game.isInitialized(g1))
 						return;
 					String error = Messages.getString("EconomyCalculator.SelectProduct"); //$NON-NLS-1$
-					if (g.getCurrentTurn() == 0) {
+					if (g1.getCurrentTurn() == 0) {
 						error = Messages.getString("EconomyCalculator.NoHistoryForT0"); //$NON-NLS-1$
 					}
 					MessageDialog dlg = new MessageDialog(Messages.getString("EconomyCalculator.PriceHistoryTitle"), error); //$NON-NLS-1$

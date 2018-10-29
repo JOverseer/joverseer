@@ -394,7 +394,7 @@ public class OrderEditorListView extends ItemListView {
 		JTable newTable = new JOverseerTable(table1.getModel()) {
 
 			private static final long serialVersionUID = 1L;
-			Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
+			Color selectionBackground1 = (Color) UIManager.get("Table.selectionBackground");
 			Color normalBackground = (Color) UIManager.get("Table.background");
 
 			@Override
@@ -402,7 +402,7 @@ public class OrderEditorListView extends ItemListView {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (isCellSelected(row, column)) {
 					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
-						c.setBackground(this.selectionBackground);
+						c.setBackground(this.selectionBackground1);
 					}
 				} else {
 					if (!c.getBackground().equals(OrderEditorListView.this.paramErrorColor) && !c.getBackground().equals(OrderEditorListView.this.paramWarningColor) && !c.getBackground().equals(OrderEditorListView.this.paramInfoColor)) {
@@ -633,12 +633,12 @@ public class OrderEditorListView extends ItemListView {
 					this.completeOrderData = OrderEditor.instance().getOrderEditorData();
 				}
 				if (this.completeOrderData != null) {
-					int paramNo = 0;
+					//int paramNo = 0;
 					if (order != null) { // could be null if moving right to left?
 						OrderEditorData oed = this.completeOrderData.findFirstByProperty("orderNo", order.getOrderNo()); //$NON-NLS-1$
 						if (oed != null) {
 							this.lastColumnForSelectedOrder = oed.getParamTypes().size() + OrderEditorTableModel.iParamStart -1;
-							AbstractOrderSubeditor sub = null;
+							AbstractOrderSubeditor sub;
 							switch (order.getOrderNo()) {
 							case 850:
 							case 860:
@@ -752,7 +752,7 @@ public class OrderEditorListView extends ItemListView {
 	 * @author Dave
 	 *
 	 */
-	private class NextOrderParameterAction extends ActionCommand {
+	public class NextOrderParameterAction extends ActionCommand {
 		@Override
 		protected void doExecuteCommand() {
 			int row = OrderEditorListView.this.getSelectedSortedRow();

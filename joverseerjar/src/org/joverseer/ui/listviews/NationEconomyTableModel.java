@@ -20,7 +20,6 @@ public class NationEconomyTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 	}

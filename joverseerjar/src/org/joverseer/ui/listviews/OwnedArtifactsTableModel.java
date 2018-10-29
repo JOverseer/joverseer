@@ -21,7 +21,6 @@ public class OwnedArtifactsTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, String.class, String.class, Integer.class, String.class, String.class };
 	}

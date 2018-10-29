@@ -27,7 +27,6 @@ public class NotesTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, String.class, String.class, String.class, String.class, Boolean.class };
 	}

@@ -46,11 +46,11 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	private static final int iArmyMaintRow =3;
 	public static final int iMarketSalesRow =3;
 	private static final int iMarketSpendRow =2;
-	private static final int iSurplusRow =3;
+	public static final int iSurplusRow =3;
 	private static final int iMarketProfitRow =4;
 	public static final int iTotalRevenueRow =4;
 	private static final int iTotalMaintRow =4;
-	private static final int iTotalLossesRow =4;
+	public static final int iTotalLossesRow =4;
 	public static final int iFinalGoldRow = 5;
 	
 	private static final long serialVersionUID = -7961559423992117184L;

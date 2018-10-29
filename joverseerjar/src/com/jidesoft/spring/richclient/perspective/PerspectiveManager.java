@@ -30,7 +30,6 @@ import java.util.prefs.Preferences;
  */
 public class PerspectiveManager {
 
-	@SuppressWarnings("unchecked")
 	private List perspectives = new ArrayList();
 	private static final Preferences prefs = Preferences.userNodeForPackage(PerspectiveManager.class);
 

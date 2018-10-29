@@ -78,7 +78,7 @@ public class Batch {
         String[] sources = new String[args.length - 1];
         System.arraycopy(args, 1, sources, 0, sources.length);
         
-        URL configUrl = new File(config).toURL();
+        URL configUrl = new File(config).toURI().toURL();
         Processor processor = ProcessorFactory.getInstance().createProcessor(configUrl);
         StreamDriver driver = new StreamDriver(processor);
         driver.useDebugOutputProperties();
@@ -97,7 +97,8 @@ public class Batch {
             throw new IllegalArgumentException("File '" + destName + "' already exists!");
         }
         // Load source, converting bytes to unicode chars
-        FileChannel sourceChannel = new FileInputStream(sourceName).getChannel();
+        FileInputStream fis = new FileInputStream(sourceName);
+        FileChannel sourceChannel = fis.getChannel();
         try {
             MappedByteBuffer sourceByteBuffer = sourceChannel.map(FileChannel.MapMode.READ_ONLY, 0, sourceChannel.size());
             CharsetDecoder decoder = Charset.forName("ISO-8859-15").newDecoder();
@@ -107,6 +108,7 @@ public class Batch {
         } finally {
             // Close source
             sourceChannel.close();
+            fis.close();
         }
     }
 }

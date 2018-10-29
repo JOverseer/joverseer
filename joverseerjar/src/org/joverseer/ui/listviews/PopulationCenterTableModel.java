@@ -34,7 +34,6 @@ public class PopulationCenterTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, String.class, String.class, PopulationCenterSizeEnum.class, FortificationSizeEnum.class, String.class, InfoSource.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 	}

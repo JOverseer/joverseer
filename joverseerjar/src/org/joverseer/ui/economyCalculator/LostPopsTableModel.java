@@ -29,7 +29,6 @@ public class LostPopsTableModel extends BeanTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, String.class, String.class, String.class, Boolean.class };
 	}

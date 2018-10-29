@@ -20,7 +20,6 @@ public abstract class ItemTableModel extends BeanTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
 	public ItemTableModel(Class aClass, MessageSource messageSource) {
 		super(aClass, messageSource);
 		setRowNumbers(false);

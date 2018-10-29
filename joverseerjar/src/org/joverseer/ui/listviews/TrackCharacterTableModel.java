@@ -22,7 +22,6 @@ public class TrackCharacterTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, Integer.class, String.class };
 	}

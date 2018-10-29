@@ -112,7 +112,6 @@ public class Hex implements Serializable {
 	public HashMap<HexSideEnum, ArrayList<HexSideElementEnum>> getSideElements() {
 		return this.hexSideElements;
 	}
-	@SuppressWarnings("unchecked")
 	@Override
 	public Hex clone() {
 		Hex h = new Hex();

@@ -34,7 +34,6 @@ public class ReflectionUtils {
 		throw new Exception("Method " + methodName + " not found for class " + obj.getClass().getName());
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Object invokeStaticMethod(Class clazz, String methodName, Object[] args) throws Exception {
 		Class[] argClasses = new Class[args.length];
 		for (int i = 0; i < args.length; i++) {

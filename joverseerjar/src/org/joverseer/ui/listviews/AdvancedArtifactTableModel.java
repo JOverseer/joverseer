@@ -22,7 +22,6 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
 		return new String[] { "number", "name", "nationNo", "owner", "hexNo", "alignment", "power1", "power2", "turnNo", "infoSource" };
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, String.class, String.class, String.class, Integer.class, String.class, String.class, String.class, Integer.class, InfoSource.class };

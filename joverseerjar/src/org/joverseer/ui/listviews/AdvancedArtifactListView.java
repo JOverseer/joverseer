@@ -193,7 +193,6 @@ public class AdvancedArtifactListView extends BaseItemListView {
 		return comps.toArray(new JComponent[] {});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();

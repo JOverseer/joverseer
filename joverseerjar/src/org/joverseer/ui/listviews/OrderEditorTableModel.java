@@ -2,7 +2,6 @@ package org.joverseer.ui.listviews;
 
 import java.awt.Point;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.joverseer.joApplication;
@@ -20,7 +19,6 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.springframework.context.MessageSource;
-import org.springframework.richclient.image.ImageSource;
 
 /**
  * Order editor table model Supports the display of orders in a table and the
@@ -56,7 +54,6 @@ public class OrderEditorTableModel extends ItemTableModel {
 		return new String[] { "character.nationNo", "character.name", "character.hexNo", "characterStats", "noAndCode", "p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "draw", "results", "cost" /*, "profit" */};
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, Integer.class, String.class, String.class,

@@ -49,6 +49,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 	private boolean useTexture;
 	
 	public DefaultHexRenderer() {
+		this.mapOptions = (HashMap<MapOptionsEnum, Object>) Application.instance().getApplicationContext().getBean("mapOptions");
 	}
 
 	@Override

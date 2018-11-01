@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.springframework.context.MessageSource;
@@ -14,8 +16,8 @@ public class CombatCalcCombatTableModel extends ItemTableModel {
 	public static int iSide1 = 2;
 	public static int iSide2 = 3;
 
-	public CombatCalcCombatTableModel(MessageSource messageSource) {
-		super(Combat.class, messageSource);
+	public CombatCalcCombatTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(Combat.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

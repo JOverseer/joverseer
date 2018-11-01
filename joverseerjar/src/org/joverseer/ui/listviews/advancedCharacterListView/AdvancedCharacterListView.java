@@ -21,11 +21,9 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.DerivedFromTitleInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -94,7 +92,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		public boolean accept(Object obj) {
 			if (this.isArmyCommander == null)
 				return true;
-			Turn turn = GameHolder.instance().getGame().getTurn();
+			Turn turn = AdvancedCharacterListView.this.getTurn();
 			if (turn.getContainer(TurnElementsEnum.Army).findAllByProperty("commanderName", ((AdvancedCharacterWrapper) obj).getName()).size() > 0) {
 				return this.isArmyCommander;
 			} else {
@@ -123,8 +121,6 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		String NL = "\n";
 
-		Game game;
-
 		public CopyToClipboardCommand() {
 			this("copyToClipboardCommand", false);
 		}
@@ -136,7 +132,6 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		@Override
 		protected void doExecuteCommand() {
-			this.game = GameHolder.instance().getGame();
 			String txt = "";
 			for (int j = 0; j < AdvancedCharacterListView.this.tableModel.getDataColumnCount(); j++) {
 				if (j == 2) {
@@ -161,7 +156,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			if (aw == null)
 				return "";
 			String txt = String.valueOf(aw.getNumber());
-			if (aw.getInfoSource().getTurnNo() < this.game.getCurrentTurn()) {
+			if (aw.getInfoSource().getTurnNo() < AdvancedCharacterListView.this.getGame().getCurrentTurn()) {
 				txt += " (t" + aw.getInfoSource().getTurnNo() + ")";
 			}
 			return txt;
@@ -176,7 +171,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		}
 
 		private String getRow(AdvancedCharacterWrapper aw) {
-			Nation n = aw.getNationNo() == null ? null : this.game.getMetadata().getNationByNum(aw.getNationNo());
+			Nation n = aw.getNationNo() == null ? null : AdvancedCharacterListView.this.getGame().getMetadata().getNationByNum(aw.getNationNo());
 			String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
 			String orderResults = aw.getOrderResults();
 			if (orderResults == null)
@@ -271,7 +266,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 			AdvancedCharacterWrapper acw = (AdvancedCharacterWrapper) getSelectedObject();
 			if (acw.getOrderResults() == null)
 				return;
-			Character c = GameHolder.instance().getGame().getTurn().getCharByName(acw.getName());
+			Character c = AdvancedCharacterListView.this.getTurn().getCharByName(acw.getName());
 			if (c != null)
 				DialogsUtility.showCharacterOrderResults(c);
 		}
@@ -322,7 +317,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 				int idx = ((SortableTableModel) AdvancedCharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(arg4);
 				Object obj = AdvancedCharacterListView.this.tableModel.getRow(idx);
 				AdvancedCharacterWrapper ch = (AdvancedCharacterWrapper) obj;
-				PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ch.getNationNo(), Boolean.TRUE });
+				PopulationCenter capital = (PopulationCenter) AdvancedCharacterListView.this.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ch.getNationNo(), Boolean.TRUE });
 				if (capital != null && ch.getHexNo() == capital.getHexNo()) {
 					lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 				}

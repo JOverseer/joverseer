@@ -1,6 +1,8 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.metadata.domain.SpellInfo;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
 /**
@@ -10,8 +12,8 @@ import org.springframework.context.MessageSource;
  */
 @SuppressWarnings("serial")
 public class SpellInfoTableModel extends ItemTableModel {
-	public SpellInfoTableModel(MessageSource messageSource) {
-		super(SpellInfo.class, messageSource);
+	public SpellInfoTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(SpellInfo.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.game.Game;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
@@ -17,8 +18,8 @@ public class RelationsTableModel extends ItemTableModel {
 	 */
 	private static final long serialVersionUID = -1590235238130836506L;
 
-	public RelationsTableModel(MessageSource messageSource) {
-		super(NationRelations.class, messageSource);
+	public RelationsTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(NationRelations.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class RelationsTableModel extends ItemTableModel {
 
 	@Override
 	public String getColumnName(int arg0) {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (g == null || !Game.isInitialized(g) || arg0 < 3)
 			return super.getColumnName(arg0);
 		return g.getMetadata().getNationByNum(arg0 - 2).getShortName();

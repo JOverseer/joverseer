@@ -5,6 +5,8 @@ import org.joverseer.domain.InfoSourceValue;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.DerivedFromInfluenceOtherInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.PopulationCenterLoyaltyEstimator;
@@ -24,8 +26,8 @@ public class PopulationCenterTableModel extends ItemTableModel {
 	static int iFort = 4;
 	static int iHex = 0;
 
-	public PopulationCenterTableModel(MessageSource messageSource) {
-		super(PopulationCenter.class, messageSource);
+	public PopulationCenterTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(PopulationCenter.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

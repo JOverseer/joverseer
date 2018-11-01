@@ -3,8 +3,7 @@ package org.joverseer.ui.listviews;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Artifact;
-import org.joverseer.game.Game;
-import org.joverseer.support.GameHolder;
+import org.joverseer.game.Turn;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.ui.domain.LocateArtifactResult;
 import org.joverseer.ui.listviews.filters.TurnFilter;
@@ -34,14 +33,14 @@ public class LocateArtifactResultListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<LocateArtifactResult> results = new ArrayList<LocateArtifactResult>();
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
+		Turn t = this.getTurn();
+		if (t == null)
 			return;
 
-		for (int ti = 0; ti <= g.getMaxTurn(); ti++) {
-			if (g.getTurn(ti) == null)
+		for (int ti = 0; ti <= this.game.getMaxTurn(); ti++) {
+			if (this.game.getTurn(ti) == null)
 				continue;
-			for (Artifact arti : g.getTurn(ti).getArtifacts()) {
+			for (Artifact arti : this.game.getTurn(ti).getArtifacts()) {
 				if (DerivedFromSpellInfoSource.class.isInstance(arti.getInfoSource())) {
 					for (LocateArtifactResult lar : ((LocateArtifactResultTableModel) this.tableModel).getResults(arti)) {
 						lar.setTurnNo(ti);

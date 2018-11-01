@@ -2,6 +2,8 @@ package org.joverseer.ui.listviews;
 
 import org.joverseer.joApplication;
 import org.joverseer.domain.Note;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.springframework.context.MessageSource;
 
@@ -17,8 +19,8 @@ public class NotesTableModel extends ItemTableModel {
 	public static final int iText = 4;
 	public static final int iTags = 3;
 
-	public NotesTableModel(MessageSource messageSource) {
-		super(Note.class, messageSource);
+	public NotesTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(Note.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

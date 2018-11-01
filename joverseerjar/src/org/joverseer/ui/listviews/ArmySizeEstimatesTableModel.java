@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.springframework.context.MessageSource;
 
@@ -11,8 +13,8 @@ import org.springframework.context.MessageSource;
 public class ArmySizeEstimatesTableModel extends ItemTableModel {
 	private static final long serialVersionUID = 1L;
 
-	public ArmySizeEstimatesTableModel(MessageSource messageSource) {
-		super(ArmySizeEstimate.class, messageSource);
+	public ArmySizeEstimatesTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(ArmySizeEstimate.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

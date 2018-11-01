@@ -6,9 +6,8 @@ import javax.swing.JComponent;
 
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.controls.TableUtils;
 
@@ -58,9 +57,9 @@ public class HexProductionListView extends ItemListView {
 	protected void setItems() {
 		this.averages.clear();
 		ArrayList<HexProductionWrapper> items = new ArrayList<HexProductionWrapper>();
-		if (GameHolder.hasInitializedGame()) {
-			Game game = GameHolder.instance().getGame();
-			for (PopulationCenter pc : game.getTurn().getPopulationCenters()) {
+		Turn t = this.getTurn();
+		if (t != null) {
+			for (PopulationCenter pc : t.getPopulationCenters()) {
 				boolean hasProduction = false;
 				for (ProductEnum p : ProductEnum.values()) {
 					if (pc.getProduction(p) != null && pc.getProduction(p) > 0) {
@@ -68,7 +67,7 @@ public class HexProductionListView extends ItemListView {
 					}
 				}
 				if (hasProduction) {
-					HexProductionWrapper pw = new HexProductionWrapper(pc, game, game.getTurn());
+					HexProductionWrapper pw = new HexProductionWrapper(pc, this.game, t);
 					if (getActiveFilter() != null && getActiveFilter().accept(pw)) {
 						items.add(pw);
 					}

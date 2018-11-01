@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.OwnedArtifact;
 import org.springframework.context.MessageSource;
 
@@ -11,8 +13,8 @@ import org.springframework.context.MessageSource;
 @SuppressWarnings("serial")
 public class OwnedArtifactsTableModel extends ItemTableModel {
 	public static final int iHexNo=4;
-	public OwnedArtifactsTableModel(MessageSource messageSource) {
-		super(OwnedArtifact.class, messageSource);
+	public OwnedArtifactsTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(OwnedArtifact.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

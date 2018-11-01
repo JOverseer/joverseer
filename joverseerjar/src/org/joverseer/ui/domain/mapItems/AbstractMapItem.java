@@ -22,10 +22,7 @@ public abstract class AbstractMapItem implements Serializable {
 	public abstract boolean isEquivalent(AbstractMapItem mi);
 
 	public static void add(AbstractMapItem mapItem) {
-		Game g = GameHolder.instance().getGame();
-		if (g == null || !Game.isInitialized(g))
-			return;
-		Turn t = g.getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return;
 		Container<AbstractMapItem> mapItems = t.getMapItems();
@@ -33,20 +30,14 @@ public abstract class AbstractMapItem implements Serializable {
 	}
 
 	public static void remove(AbstractMapItem mapItem) {
-		Game g = GameHolder.instance().getGame();
-		if (g == null || !Game.isInitialized(g))
-			return;
-		Turn t = g.getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return;
 		Container<AbstractMapItem> mapItems = t.getMapItems();
 		mapItems.removeItem(mapItem);
 	}
 	public static void toggle(AbstractMapItem mapItem) {
-		Game g = GameHolder.instance().getGame();
-		if (g == null || !Game.isInitialized(g))
-			return;
-		Turn t = g.getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return;
 		Container<AbstractMapItem> mapItems = t.getMapItems();
@@ -58,5 +49,12 @@ public abstract class AbstractMapItem implements Serializable {
 			}
 		}
 		mapItems.addItem(mapItem);
+	}
+	protected static Turn getTurn() {
+		Game g = GameHolder.instance().getGame();
+		if (g == null || !Game.isInitialized(g))
+			return null;
+		return g.getTurn();
+		
 	}
 }

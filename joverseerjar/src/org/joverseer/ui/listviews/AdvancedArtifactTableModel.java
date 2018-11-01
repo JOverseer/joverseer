@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.springframework.context.MessageSource;
@@ -13,8 +15,8 @@ public class AdvancedArtifactTableModel extends ItemTableModel {
 
 	private static final long serialVersionUID = 1L;
 	public static final int iHexNo = 4;
-	public AdvancedArtifactTableModel(MessageSource messageSource) {
-		super(ArtifactWrapper.class, messageSource);
+	public AdvancedArtifactTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(ArtifactWrapper.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

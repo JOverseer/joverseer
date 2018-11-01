@@ -9,9 +9,8 @@ import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 
@@ -146,7 +145,6 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (columnIndex == iHeaderCol3) {
             return this.rowHeaders3[rowIndex];
         }
-        if (!Game.isInitialized(getGame())) return "";
         if (getGame().getTurn() == null) return "";
         NationEconomy ne = getNationEconomy();
         if (ne == null) return "";
@@ -368,17 +366,16 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      * Computes the expected lost tax revenue based on the pop centers marked as expected to be lost
      * for the given nation
      */
-    public static int computeLostTaxRevenue(int nationNo) {
-        Game g = GameHolder.instance().getGame();
-        if (!Game.isInitialized(g)) return 0;
-        if (g.getTurn() == null) return 0;
+    public int computeLostTaxRevenue(int nation) {
+        Turn t = this.getTurn();
+        if (t == null) return 0;
         int lostTaxRevenue = 0;
         
-        for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
-            if (pc.getNationNo().equals(nationNo) && pc.getLostThisTurn()) {
+        for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+            if (pc.getNationNo().equals(nation) && pc.getLostThisTurn()) {
                 int sz = pc.lookupSize(new int[] {0,0,1,2,3,4});
-                NationEconomy ne = (NationEconomy)g.getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo);
-                EconomyCalculatorData ecd = (EconomyCalculatorData)g.getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", nationNo);
+                NationEconomy ne = (NationEconomy)t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nation);
+                EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", nation);
                 if (ecd == null || ecd.getTaxRate() == null) {
                     lostTaxRevenue += sz * 2500 * ne.getTaxRate() / 100;
                 } else {
@@ -399,14 +396,13 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      * Computes the new tax base for the given nation based on the pop centers
      * marked as expected to be lost this turn
      */
-    public static int computeNewTaxBase(int nationNo) {
-        Game g = GameHolder.instance().getGame();
-        if (!Game.isInitialized(g)) return 0;
-        if (g.getTurn() == null) return 0;
+    public int computeNewTaxBase(int nation) {
+        Turn t = this.getTurn();
+        if (t == null) return 0;
         int newTaxBase = 0;
         
-        for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
-            if (pc.getNationNo().equals(nationNo) && !pc.getLostThisTurn()) {
+        for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+            if (pc.getNationNo().equals(nation) && !pc.getLostThisTurn()) {
                 int sz = pc.lookupSize(new int[] {0,0,1,2,3,4});
                 newTaxBase += sz;
             }
@@ -424,14 +420,13 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      * Computes the lost gold revenue for the given nation based on the pop centers
      * marked as expected to be lost this turn
      */
-    public static int computeLostGoldRevenue(int nationNo) {
-        Game g = GameHolder.instance().getGame();
-        if (!Game.isInitialized(g)) return 0;
-        if (g.getTurn() == null) return 0;
+    public int computeLostGoldRevenue(int nation) {
+        Turn t = this.getTurn();
+        if (t == null) return 0;
         int lostGoldRevenue = 0;
         
-        for (PopulationCenter pc : (ArrayList<PopulationCenter>)g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
-            if (pc.getNationNo().equals(nationNo) && pc.getLostThisTurn()) {
+        for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
+            if (pc.getNationNo().equals(nation) && pc.getLostThisTurn()) {
                 if (pc.getProduction(ProductEnum.Gold) != null) {
                     lostGoldRevenue += pc.getProduction(ProductEnum.Gold);
                 }

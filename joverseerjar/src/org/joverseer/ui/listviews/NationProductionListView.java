@@ -7,9 +7,8 @@ import javax.swing.JTable;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.ProductContainer;
 import org.joverseer.ui.domain.ProductLineWrapper;
 import org.joverseer.ui.support.Messages;
@@ -55,12 +54,12 @@ public class NationProductionListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<IdentifiedProductLineWrapper> items = new ArrayList<IdentifiedProductLineWrapper>();
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
+		Turn t = this.getTurn();
+		if (t == null)
 			return;
 		ProductContainer totalProdContainer = new ProductContainer();
 		int counter = 1;
-		for (NationEconomy ne : g.getTurn().getNationEconomies()) {
+		for (NationEconomy ne : t.getNationEconomies()) {
 			IdentifiedProductLineWrapper prod = new IdentifiedProductLineWrapper(ProductionTypesEnum.Production,ne.getProduction());
 			prod.setNationNo(ne.getNationNo());
 			prod.setDescr(Messages.getString("NationProductionListView.Production"));
@@ -88,7 +87,7 @@ public class NationProductionListView extends BaseItemListView {
 		}
 		IdentifiedProductLineWrapper totalProduction = new IdentifiedProductLineWrapper(ProductionTypesEnum.TotalProduction,totalProdContainer);
 		totalProduction.setDescr(Messages.getString("NationProductionListView.TotalProduction"));
-		Container<ProductPrice> prices = g.getTurn().getProductPrices();
+		Container<ProductPrice> prices = t.getProductPrices();
 		IdentifiedProductLineWrapper sellPrices = new IdentifiedProductLineWrapper(ProductionTypesEnum.SellPrice);
 		IdentifiedProductLineWrapper buyPrices = new IdentifiedProductLineWrapper(ProductionTypesEnum.BuyPrice);
 

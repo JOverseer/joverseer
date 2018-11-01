@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
 /**
@@ -10,8 +12,8 @@ import org.springframework.context.MessageSource;
 @SuppressWarnings("serial")
 public class StartingCharacterTableModel extends ItemTableModel {
 
-	public StartingCharacterTableModel(MessageSource messageSource) {
-		super(Character.class, messageSource);
+	public StartingCharacterTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(Character.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

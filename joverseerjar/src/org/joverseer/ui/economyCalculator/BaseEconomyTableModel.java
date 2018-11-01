@@ -16,15 +16,19 @@ import org.joverseer.support.GameHolder;
  */
 public abstract class BaseEconomyTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
+	// dependencies
+	protected GameHolder gameHolder=null;
+	/**
+	 * the current game, a cache for GetGame();
+	 */
 	Game game = null;
 	int nationNo = 7;
 
 	protected NationEconomy getNationEconomy() {
-		if (!Game.isInitialized(getGame()))
+		Turn t = this.getTurn();
+		if (t == null) {
 			return null;
-		if (getGame().getTurn() == null)
-			return null;
-		Turn t = this.game.getTurn();
+		}
 		Container<NationEconomy> nes = t.getNationEconomies();
 		NationEconomy ne = nes.findFirstByProperty("nationNo", getNationNo());
 		return ne;
@@ -48,7 +52,7 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 
 	protected Game getGame() {
 		if (this.game == null) {
-			this.game = GameHolder.instance().getGame();
+			this.game = this.getGameHolder().getGame();
 		}
 		return this.game;
 	}
@@ -63,5 +67,20 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 
 	protected void setNationNo(int nationNo) {
 		this.nationNo = nationNo;
+	}
+	protected GameHolder getGameHolder() {
+		if (this.gameHolder == null) {
+			this.gameHolder = GameHolder.instance();
+		}
+		return this.gameHolder;
+	}
+	/**
+	 * 
+	 * @return null if Game is not initialized.
+	 */
+	protected Turn getTurn() {
+		if (!Game.isInitialized(getGame()))
+			return null;
+		return getGame().getTurn();
 	}
 }

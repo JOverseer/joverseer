@@ -191,7 +191,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 			// reserves
 			return ne.getReserve();
 		case iLosses:
-			return -EconomyTotalsTableModel.computeLostGoldRevenue(ne.getNationNo()) - EconomyTotalsTableModel.computeLostTaxRevenue(ne.getNationNo());
+			return -ettm.computeLostGoldRevenue(ne.getNationNo()) - ettm.computeLostTaxRevenue(ne.getNationNo());
 		case iMarketSales:
 			return ecd.getMarketSales();
 		case iMarketSpending:
@@ -209,8 +209,10 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 		case iTaxBase:
 			if (this.nswm == null) return 0;
 			for (NationStatisticsWrapper nsw:(ArrayList<NationStatisticsWrapper>)this.nswm.getRows()) {
-				if (nsw.getNationNo().intValue() == ecd.getNationNo().intValue()) {
-					return nsw.getTaxBase();
+				if (nsw.getNationNo() != null) {
+					if (nsw.getNationNo().intValue() == ecd.getNationNo().intValue()) {
+						return nsw.getTaxBase();
+					}
 				}
 			}
 			return 0;

@@ -116,7 +116,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	protected NationEconomy getNationEconomy() {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return null;
 		NationEconomy ne = t.getNationEconomies().findFirstByProperty("nationNo", getNationNo());
@@ -124,7 +124,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getProduction(ProductEnum p) {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		Container<PopulationCenter> pcs = t.getPopulationCenters();
@@ -139,7 +139,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getStores(ProductEnum p) {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		Container<PopulationCenter> pcs = t.getPopulationCenters();
@@ -158,7 +158,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getSellPrice(ProductEnum p) {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		Container<ProductPrice> pps = t.getProductPrices();
@@ -170,7 +170,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getBuyPrice(ProductEnum p) {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		Container<ProductPrice> pps = t.getProductPrices();
@@ -179,7 +179,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getMarketTotal(ProductEnum p) {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		Container<ProductPrice> pps = t.getProductPrices();
@@ -189,7 +189,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 
 	public int getMarketSales() {
 		long sales=0;
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		for (ProductEnum p : ProductEnum.values()) {
@@ -198,10 +198,10 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			long productSale = ( get100xProductSales(p) + ((getTotal(p) - getSellUnits(p)) * get100xProductSaleCommission(p)) )/100;
 			sales += productSale;
 		}
-		String pval = PreferenceRegistry.instance().getPreferenceValue("general.strictMarketLimit");
+		String pval = getPreferenceValue("general.strictMarketLimit");
 		if (pval.equals("yes")) {
 			int marketLimit = 20000;
-			pval = PreferenceRegistry.instance().getPreferenceValue("general.marketSellLimit");
+			pval = getPreferenceValue("general.marketSellLimit");
 			try {
 				marketLimit = Integer.parseInt(pval);
 			} catch (NumberFormatException exc) {
@@ -213,7 +213,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 	public int getMarketSpend() {
 		long spend=0;
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		for (ProductEnum p : ProductEnum.values()) {
@@ -225,7 +225,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		return (int)-spend;
 	}
 	public int getMarketProfits() {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		return getMarketSales() + getMarketSpend();
@@ -257,7 +257,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 
 	public int getMarketProfits(ProductEnum p) {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return 0;
 		return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
@@ -317,7 +317,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			setBidUnits(p, 0);
 			setBidPrice(p, 0);
 		}
-		for (Character c : GameHolder.instance().getGame().getTurn().getCharacters().findAllByProperty("nationNo", this.nationNo)) {
+		for (Character c : getTurn().getCharacters().findAllByProperty("nationNo", this.nationNo)) {
 			for (int i = 0; i < c.getNumberOfOrders(); i++) {
 				if (c.getOrders()[i].isBlank())
 					continue;
@@ -350,12 +350,11 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 					recordSellPct(p, p1);
 				}
 			}
-
 		}
 	}
 
 	public boolean isInitialized() {
-		Turn t = GameHolder.instance().getGame().getTurn();
+		Turn t = getTurn();
 		if (t == null)
 			return false;
 		Container<ProductPrice> pps = t.getProductPrices();
@@ -364,5 +363,12 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			return false;
 		return true;
 	}
+	private Turn getTurn() {
+		return GameHolder.instance().getGame().getTurn();
+	}
+	private String getPreferenceValue(String value) {
+		return PreferenceRegistry.instance().getPreferenceValue(value);
+	}
+
 
 }

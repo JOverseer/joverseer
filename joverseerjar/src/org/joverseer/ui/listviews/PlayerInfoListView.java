@@ -37,12 +37,12 @@ public class PlayerInfoListView extends ItemListView implements JOverseerEventLi
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                SimpleDateFormat sdf = new SimpleDateFormat(); 
-                Date d = (Date)value;
-                if (d == null) {
-                    value = "";
-                } else {
-                    value = sdf.format(d);
+                SimpleDateFormat sdf = new SimpleDateFormat();
+                if (value == null) {
+                	value = "";
+                } else if (value instanceof Date) {
+                	Date d = (Date)value;
+               		value = sdf.format(d);
                 }
                 return super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             }

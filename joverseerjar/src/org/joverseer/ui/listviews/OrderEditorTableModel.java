@@ -45,8 +45,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 	public static int iNation = 0;
 	public static int iHexNo = 2;
 
-	public OrderEditorTableModel(MessageSource messageSource) {
-		super(Order.class, messageSource);
+	public OrderEditorTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(Order.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 
 	@Override
 	protected Object getValueAtInternal(Object object, int i) {
-		Game game = GameHolder.instance().getGame();
+		Game game = this.gameHolder.getGame();
 		if (i == iNation) {
 			Order order = (Order) object;
 			if (game == null)
@@ -80,7 +80,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 				Integer nationNo = ((IBelongsToNation) order.getCharacter()).getNationNo();
 				if (nationNo == null)
 					return "";
-				String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
+				String pval = this.preferenceRegistry.getPreferenceValue("listviews.showNationAs");
 				if (pval.equals("number"))
 					return nationNo;
 				return gm.getNationByNum(nationNo).getShortName();

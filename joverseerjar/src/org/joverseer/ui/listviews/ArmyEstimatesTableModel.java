@@ -3,6 +3,8 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmyEstimateElement;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
 /**
@@ -21,8 +23,8 @@ public class ArmyEstimatesTableModel extends ItemTableModel {
 	public static int iArmor = 9;
 	public static int iNationNo = 1;
 
-	public ArmyEstimatesTableModel(MessageSource messageSource) {
-		super(ArmyEstimate.class, messageSource);
+	public ArmyEstimatesTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(ArmyEstimate.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

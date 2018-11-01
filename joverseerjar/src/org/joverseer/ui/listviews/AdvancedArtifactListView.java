@@ -16,7 +16,6 @@ import javax.swing.JPopupMenu;
 import org.joverseer.joApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
@@ -75,11 +74,9 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 		String DELIM = "\t";
 		String NL = "\n";
-		Game game;
 
 		@Override
 		protected void doExecuteCommand() {
-			this.game = GameHolder.instance().getGame();
 			String txt = "";
 			for (int j = 0; j < AdvancedArtifactListView.this.tableModel.getDataColumnCount(); j++) {
 				txt += (txt.equals("") ? "" : this.DELIM) + AdvancedArtifactListView.this.tableModel.getDataColumnHeaders()[j];
@@ -100,7 +97,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 		}
 
 		private String getRow(ArtifactWrapper aw) {
-			Nation n = aw.getNationNo() == null ? null : this.game.getMetadata().getNationByNum(aw.getNationNo());
+			Nation n = aw.getNationNo() == null ? null : AdvancedArtifactListView.this.getGame().getMetadata().getNationByNum(aw.getNationNo());
 			String nationName = n == null || n.getNumber() == 0 ? "" : n.getShortName();
 			return aw.getNumber() + this.DELIM + aw.getName() + this.DELIM + aw.getNationNo() + this.DELIM + nationName + this.DELIM + aw.getOwner() + this.DELIM + aw.getHexNo() + this.DELIM + aw.getAlignment() + this.DELIM + aw.getPower1() + this.DELIM + aw.getPower2() + this.DELIM + aw.getTurnNo() + this.DELIM + InfoSourceTableCellRenderer.getInfoSourceDescription(aw.getInfoSource()) + this.NL;
 		}
@@ -224,7 +221,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (!Game.isInitialized(g))
 			return;
 		ArrayList<ArtifactWrapper> aws = ArtifactInfoCollector.instance().getWrappersForTurn(g.getCurrentTurn());

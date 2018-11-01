@@ -1,6 +1,8 @@
 package org.joverseer.ui.listviews.advancedCharacterListView;
 
 import org.joverseer.domain.CharacterDeathReasonEnum;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.tools.infoCollectors.artifacts.ArtifactWrapper;
 import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
@@ -17,8 +19,8 @@ public class AdvancedCharacterTableModel extends ItemTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	public AdvancedCharacterTableModel(MessageSource messageSource) {
-		super(AdvancedCharacterWrapper.class, messageSource);
+	public AdvancedCharacterTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(AdvancedCharacterWrapper.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

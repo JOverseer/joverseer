@@ -28,11 +28,12 @@ import javax.swing.table.TableCellRenderer;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
+import org.joverseer.ui.BaseView;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
@@ -44,7 +45,6 @@ import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
@@ -60,7 +60,7 @@ import com.jidesoft.popup.JidePopup;
  * 
  * @author Marios Skounakis
  */
-public class EconomyCalculator extends AbstractView implements ApplicationListener {
+public class EconomyCalculator extends BaseView implements ApplicationListener {
 
 	int tranCarOrderCost = 0;
 	JLabel autocalcOrderCost;
@@ -192,9 +192,10 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 	 * Refreshes the autocalc order cost field
 	 */
 	private void refreshAutocalcOrderCost() {
+		Turn t = this.getTurn();
 		OrderCostCalculator calc = new OrderCostCalculator();
-		int totalCost = calc.getTotalOrderCostForNation(GameHolder.instance().getGame().getTurn(), this.nationCombo.getSelectedNationNo());
-		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(GameHolder.instance().getGame().getTurn(), this.nationCombo.getSelectedNationNo());
+		int totalCost = calc.getTotalOrderCostForNation(t, this.nationCombo.getSelectedNationNo());
+		this.tranCarOrderCost = calc.getTotalTranCarOrderCostForNation(t, this.nationCombo.getSelectedNationNo());
 
 		this.autocalcOrderCost.setText(String.valueOf(totalCost));
 	}
@@ -242,13 +243,13 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 //		lb.relatedGapRow();
 
 		JPanel nationPanel = new JPanel();
-		nationPanel.add(this.nationCombo = new NationComboBox(GameHolder.instance()));
+		nationPanel.add(this.nationCombo = new NationComboBox(this.getGameHolder()));
 		this.nationCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// when selected nation changed
 				// refresh all tables and warnings
-				Game g = GameHolder.instance().getGame();
+				Game g = EconomyCalculator.this.getGame();
 				if (EconomyCalculator.this.nationCombo.getSelectedItem() == null)
 					return;
 				Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
@@ -280,7 +281,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.sellBonus.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.sellBonus.setBackground(Color.white);
 		this.sellBonus.setEnabled(false);
-		Game g = GameHolder.instance().getGame();
+		Game g = this.getGame();
 		if (EconomyCalculator.this.nationCombo.getSelectedItem() != null) {
 			Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
 			refreshSNA(n);
@@ -390,11 +391,11 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 					priceHistory1 = ((MarketTableModel) EconomyCalculator.this.marketTable.getModel()).getPriceHistory(selCol, 10);
 				}
 				if (priceHistory1 == null || priceHistory1.equals("")) { //$NON-NLS-1$
-					Game g1 = GameHolder.instance().getGame();
-					if (!Game.isInitialized(g1))
+					Turn t = EconomyCalculator.this.getTurn();
+					if (t == null)
 						return;
 					String error = Messages.getString("EconomyCalculator.SelectProduct"); //$NON-NLS-1$
-					if (g1.getCurrentTurn() == 0) {
+					if (t.getTurnNo() == 0) {
 						error = Messages.getString("EconomyCalculator.NoHistoryForT0"); //$NON-NLS-1$
 					}
 					MessageDialog dlg = new MessageDialog(Messages.getString("EconomyCalculator.PriceHistoryTitle"), error); //$NON-NLS-1$
@@ -566,7 +567,7 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 	public void refreshPcs(int nationNo) {
 		ArrayList<PopulationCenter> items = new ArrayList<PopulationCenter>();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.getGame();
 		if (Game.isInitialized(g) && g.getTurn() != null) {
 			for (PopulationCenter pc : g.getTurn().getPopulationCenters().getItems()) {
 				if (pc.getNationNo() == nationNo && pc.getSize() != PopulationCenterSizeEnum.ruins) {

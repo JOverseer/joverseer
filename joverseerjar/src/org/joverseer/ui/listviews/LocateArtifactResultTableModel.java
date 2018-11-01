@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.joverseer.domain.Artifact;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
@@ -22,8 +23,8 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
 	 */
 	private static final long serialVersionUID = -3536612294036865492L;
 
-	public LocateArtifactResultTableModel(MessageSource messageSource) {
-		super(LocateArtifactResult.class, messageSource);
+	public LocateArtifactResultTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(LocateArtifactResult.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
 		lar.setOwner(artifact.getOwner());
 		lar.setSpellName(dfsis.getSpell() + " - " + dfsis.getCasterName());
 
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());
 		if (ai != null) {
 			lar.setArtifactPowers(ai.getPower1() != null ? ai.getPower1() : "");

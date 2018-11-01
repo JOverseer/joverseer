@@ -7,7 +7,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.ChangedPCInfo;
 
 public class ChangedPCListView extends BaseItemListView {
@@ -57,13 +56,12 @@ public class ChangedPCListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<ChangedPCInfo> items = new ArrayList<ChangedPCInfo>();
-		if (GameHolder.hasInitializedGame()) {
-			Game g = GameHolder.instance().getGame();
-			Turn p = g.getTurn(g.getCurrentTurn() - 1);
-			Turn t = g.getTurn();
+		Turn t = this.getTurn();
+		if (t != null) {
+			Turn p = this.game.getTurn(this.game.getCurrentTurn() - 1);
 			if (p != null) {
 				for (PlayerInfo pi : (ArrayList<PlayerInfo>) p.getContainer(TurnElementsEnum.PlayerInfo).getItems()) {
-					if (!nationImported(pi.getNationNo(), t.getTurnNo(), g))
+					if (!nationImported(pi.getNationNo(), t.getTurnNo(), this.game))
 						continue;
 					for (PopulationCenter opc : (ArrayList<PopulationCenter>) p.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", pi.getNationNo())) {
 						PopulationCenter pc = (PopulationCenter) t.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", opc.getHexNo());

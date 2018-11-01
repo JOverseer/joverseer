@@ -9,9 +9,7 @@ import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
@@ -164,9 +162,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if (columnIndex == 0)
 			return this.rowHeaders[rowIndex];
-		if (!Game.isInitialized(getGame()))
-			return "";
-		if (getGame().getTurn() == null)
+		if (this.getTurn() == null)
 			return "";
 		NationEconomy ne = getNationEconomy();
 		if (ne == null)
@@ -230,10 +226,9 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	}
 
 	public String getPriceHistory(ProductEnum product, int numberOfTurns) {
-		if (!GameHolder.hasInitializedGame())
+		if (this.getGame() == null)
 			return null;
-		Game g = GameHolder.instance().getGame();
-		if (g.getCurrentTurn() == 0)
+		if (this.game.getCurrentTurn() == 0)
 			return null;
 		String ret = "<html><b>" + Messages.getString("EconomyCalculator.PriceHistory.title", new String[] {UIUtils.enumToString(product)})
 				+ "</b><br/><table><tr><th>"
@@ -251,8 +246,8 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		int minBuyPrice = 1000;
 		int turnCount = 0;
 		DecimalFormat df = new DecimalFormat("###,###,##0");
-		for (int i = g.getCurrentTurn() - 1; i > 0; i--) {
-			Turn t = g.getTurn(i);
+		for (int i = this.game.getCurrentTurn() - 1; i > 0; i--) {
+			Turn t = this.game.getTurn(i);
 			if (t == null)
 				continue;
 			ProductPrice pp = t.getProductPrice(product);

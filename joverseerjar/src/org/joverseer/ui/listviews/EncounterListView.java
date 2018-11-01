@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,19 +25,15 @@ import javax.swing.table.JTableHeader;
 import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Encounter;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TurnFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.support.Messages;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.SortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
@@ -68,25 +63,8 @@ public class EncounterListView extends BaseItemListView {
 	 */
 	@Override
 	protected JComponent createControlImpl() {
-		// fetch the messageSource instance from the application context
-		MessageSource messageSource = Messages.getMessageSource();
 
-		// create the table model
-		try {
-			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
-		} catch (InstantiationException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		} catch (IllegalAccessException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		} catch (InvocationTargetException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		}
+		this.tableModel = super.createBeanTableModel();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 
@@ -209,10 +187,9 @@ public class EncounterListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<Object> items = new ArrayList<Object>();
-		Game g = GameHolder.instance().getGame();
-		if (g != null) {
-			for (int i = 0; i <= g.getMaxTurn(); i++) {
-				Turn t = g.getTurn(i);
+		if (this.getGame() != null) {
+			for (int i = 0; i <= this.game.getMaxTurn(); i++) {
+				Turn t = this.game.getTurn(i);
 				if (t == null)
 					continue;
 				for (Encounter e : t.getEncounters()) {

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.richclient.application.Application;
 
 import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
@@ -61,9 +62,15 @@ public class PreferenceRegistry {
 			p.clearCache();
 		}
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public static PreferenceRegistry instance() {
-		return (PreferenceRegistry) Application.instance().getApplicationContext().getBean("preferenceRegistry");
+		return PreferenceRegistry.instance(Application.instance().getApplicationContext());
+	}
+	public static PreferenceRegistry instance(ApplicationContext context) {
+		return (PreferenceRegistry) context.getBean("preferenceRegistry");
 	}
 
 	public ArrayList<Preference> getPreferencesSortedByGroup() {

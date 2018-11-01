@@ -33,11 +33,10 @@ import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
@@ -97,12 +96,11 @@ public class OrderEditorListView extends ItemListView {
 
 	@Override
 	protected void setItems() {
-		this.logger.debug("setitems()");
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
+		Turn t = this.getTurn();
+		if (t == null)
 			return;
 		ArrayList<Order> orders = new ArrayList<Order>();
-		for (Character c : g.getTurn().getCharacters()) {
+		for (Character c : t.getCharacters()) {
 			boolean acceptChar = true;
 			for (JComboBox filter : this.filters) {
 				if (filter.getSelectedItem() != null) {
@@ -188,21 +186,18 @@ public class OrderEditorListView extends ItemListView {
 		};
 		filterList.add(f);
 
-
-		if (GameHolder.hasInitializedGame()) {
-			Game g = GameHolder.instance().getGame();
-			GameMetadata gm = g.getMetadata();
+		Turn t = this.getTurn();
+		if (t != null) {
+			GameMetadata gm = this.game.getMetadata();
 			for (int i = 1; i < 26; i++) {
-				PlayerInfo pi = g.getTurn().getPlayerInfo(i);
+				PlayerInfo pi = t.getPlayerInfo(i);
 				if (pi == null)
 					continue;
 				f = new OrderFilter(gm.getNationByNum(i).getName()) {
 
 					@Override
 					public boolean acceptCharacter(Character c) {
-						Game g1 = GameHolder.instance().getGame();
-						GameMetadata gm1 = g1.getMetadata();
-						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm1.getNationByNum(c.getNationNo()).getName().equals(getDescription());
+						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm.getNationByNum(c.getNationNo()).getName().equals(getDescription());
 					}
 				};
 				filterList.add(f);
@@ -318,9 +313,10 @@ public class OrderEditorListView extends ItemListView {
 
 			@Override
 			public boolean acceptCharacter(Character c) {
-				if (!GameHolder.hasInitializedGame())
+				Turn t = OrderEditorListView.this.getTurn();
+				if (t == null)
 					return false;
-				PlayerInfo pi = GameHolder.instance().getGame().getTurn().getPlayerInfo(c.getNationNo());
+				PlayerInfo pi = t.getPlayerInfo(c.getNationNo());
 				return (pi != null) && (!c.isDead()) && (c.getX() > 0) && (!c.hasAllOrders());
 			}
 		};
@@ -332,28 +328,27 @@ public class OrderEditorListView extends ItemListView {
 
 			@Override
 			public boolean acceptCharacter(Character c) {
-				if (!GameHolder.hasInitializedGame())
+				Turn t = OrderEditorListView.this.getTurn();
+				if (t == null)
 					return false;
-				PlayerInfo pi = GameHolder.instance().getGame().getTurn().getPlayerInfo(c.getNationNo());
+				PlayerInfo pi = t.getPlayerInfo(c.getNationNo());
 				return pi != null && c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0;
 			}
 		};
 		filterList.add(f);
 
-		if (GameHolder.hasInitializedGame()) {
-			Game g = GameHolder.instance().getGame();
-			GameMetadata gm = g.getMetadata();
+		Turn t = this.getTurn();
+		if (t != null) {
+			final GameMetadata gm = this.game.getMetadata();
 			for (int i = 1; i < 26; i++) {
-				PlayerInfo pi = (PlayerInfo) g.getTurn().getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", i);
+				PlayerInfo pi = (PlayerInfo) t.getContainer(TurnElementsEnum.PlayerInfo).findFirstByProperty("nationNo", i);
 				if (pi == null)
 					continue;
 				f = new OrderFilter(gm.getNationByNum(i).getName()) {
 
 					@Override
 					public boolean acceptCharacter(Character c) {
-						Game g1 = GameHolder.instance().getGame();
-						GameMetadata gm1 = g1.getMetadata();
-						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm1.getNationByNum(c.getNationNo()).getName().equals(getDescription());
+						return c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead) && c.getX() > 0 && gm.getNationByNum(c.getNationNo()).getName().equals(getDescription());
 					}
 				};
 				filterList.add(f);
@@ -538,7 +533,7 @@ public class OrderEditorListView extends ItemListView {
 					Object obj = OrderEditorListView.this.tableModel.getRow(idx);
 					Order o = (Order) obj;
 					Character c = o.getCharacter();
-					PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { c.getNationNo(), Boolean.TRUE });
+					PopulationCenter capital = (PopulationCenter) OrderEditorListView.this.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { c.getNationNo(), Boolean.TRUE });
 					if (capital != null && c.getHexNo() == capital.getHexNo()) {
 						lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 					}

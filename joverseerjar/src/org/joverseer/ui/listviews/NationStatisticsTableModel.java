@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
 import org.springframework.context.MessageSource;
 
@@ -11,8 +13,8 @@ import org.springframework.context.MessageSource;
 @SuppressWarnings("serial")
 public class NationStatisticsTableModel extends ItemTableModel {
 
-	public NationStatisticsTableModel(MessageSource messageSource) {
-		super(NationStatisticsWrapper.class, messageSource);
+	public NationStatisticsTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(NationStatisticsWrapper.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override

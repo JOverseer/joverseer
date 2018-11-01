@@ -3,7 +3,6 @@ package org.joverseer.ui.listviews;
 import javax.swing.JPopupMenu;
 
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.ui.command.ShowCombatCalculatorCommand;
 import org.springframework.richclient.application.Application;
@@ -66,7 +65,7 @@ public class CombatCalcCombatListView extends ItemListView {
             Combat c = new Combat();
             c.setMaxRounds(20);
             new ShowCombatCalculatorCommand(c).execute();
-            GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(c);
+            CombatCalcCombatListView.this.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(c);
             setItems();
         }
         
@@ -87,7 +86,7 @@ public class CombatCalcCombatListView extends ItemListView {
 		protected void doExecuteCommand() {
             Combat c = CombatCalcCombatListView.this.getSelectedCombat(); 
             if (c != null) {
-            	GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).removeItem(c);
+            	CombatCalcCombatListView.this.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).removeItem(c);
                 setItems();
             }
         }

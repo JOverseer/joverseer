@@ -19,19 +19,40 @@ import org.springframework.richclient.table.BeanTableModel;
 public abstract class ItemTableModel extends BeanTableModel {
 
 	private static final long serialVersionUID = 1L;
+	// dependencies
+	protected GameHolder gameHolder;
+	protected PreferenceRegistry preferenceRegistry;
 
-	public ItemTableModel(Class aClass, MessageSource messageSource) {
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+
+	public PreferenceRegistry getPreferenceRegistry() {
+		return this.preferenceRegistry;
+	}
+
+	public void setPreferenceRegistry(PreferenceRegistry preferenceRegistry) {
+		this.preferenceRegistry = preferenceRegistry;
+	}
+
+	public ItemTableModel(Class aClass, MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
 		super(aClass, messageSource);
 		setRowNumbers(false);
+		this.gameHolder = gameHolder;
+		this.preferenceRegistry = preferenceRegistry;
 	}
 
 	@Override
 	protected Object getValueAtInternal(Object object, int i) {
 		try {
-			String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.showNationAs");
+			String pval = this.preferenceRegistry.getPreferenceValue("listviews.showNationAs");
 			if (pval.equals("number"))
 				return super.getValueAtInternal(object, i);
-			Game game = GameHolder.instance().getGame();
+			Game game = this.gameHolder.getGame();
 			if (game == null)
 				return "";
 			if (IBelongsToNation.class.isInstance(object) && getColumnPropertyNames()[i].equals("nationNo")) {

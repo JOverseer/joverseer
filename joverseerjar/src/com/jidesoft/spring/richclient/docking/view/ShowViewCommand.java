@@ -15,7 +15,6 @@
  */
 package com.jidesoft.spring.richclient.docking.view;
 
-import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.ViewDescriptor;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
 
@@ -29,12 +28,13 @@ import org.springframework.richclient.command.support.ApplicationWindowAwareComm
  *
  */
 public class ShowViewCommand extends ApplicationWindowAwareCommand {
+//	private ApplicationWindow window;
     private ViewDescriptor viewDescriptor;
 
     
-    public ShowViewCommand(ViewDescriptor viewDescriptor, ApplicationWindow window) {
+	public ShowViewCommand(ViewDescriptor viewDescriptor) {
         setViewDescriptor(viewDescriptor);
-        setApplicationWindow(window);
+//        setApplicationWindow(window);
         setEnabled(true);
     }
 

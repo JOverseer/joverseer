@@ -436,7 +436,6 @@
 
 	<bean id="playerInfoListView" 
 		class="org.joverseer.ui.jide.JOverseerJideViewDescriptor">
-		
 		<property name="initMode">
 			<ref bean="com.jidesoft.docking.DockContext.STATE_FRAMEDOCKED"/>
 		</property>

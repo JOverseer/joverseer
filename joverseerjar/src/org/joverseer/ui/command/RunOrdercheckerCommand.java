@@ -14,7 +14,6 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
-import org.joverseer.tools.ordercheckerIntegration.ReflectionUtils;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
@@ -181,7 +180,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			TableLayoutBuilder tlb = new TableLayoutBuilder();
 			Main main = (Main) getFormObject();
 			try {
-				JComponent c = (JComponent) ReflectionUtils.retrieveField(main.getWindow(), "bottomPane");
+				JComponent c = (JComponent) main.getWindow().getBottomPane();
 				c.getParent().remove(c);
 				c.setPreferredSize(new Dimension(750, 600));
 				tlb.cell(c);

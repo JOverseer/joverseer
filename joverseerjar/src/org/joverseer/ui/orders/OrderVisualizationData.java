@@ -36,10 +36,9 @@ public class OrderVisualizationData {
             Army a = GameHolder.instance().getGame().getTurn().getArmy(o.getCharacter().getName());
             if (a == null) {
                 // get info
-                InputDialog dlg = new InputDialog();
+                InputDialog dlg = new InputDialog("OrderVisualizationData.title"); //$NON-NLS-1$
                 JCheckBox fed;
                 JCheckBox cavalry;
-                dlg.setTitle(Messages.getString("OrderVisualizationData.title")); //$NON-NLS-1$
                 dlg.addComponent(Messages.getString("OrderVisualizationData.fed"), fed = new JCheckBox()); //$NON-NLS-1$
                 dlg.addComponent(Messages.getString("OrderVisualizationData.cavalry"), cavalry = new JCheckBox()); //$NON-NLS-1$
                 String txt = Messages.getString("OrderVisualizationData.EnterInforForMove", 
@@ -55,7 +54,7 @@ public class OrderVisualizationData {
                 this.orders.add(o);
             }
         } else if (o.getOrderNo() == 925 || o.getOrderNo() == 910) {
-        	InputDialog dlg = new InputDialog();
+        	InputDialog dlg = new InputDialog("OrderVisualizationData.title"); //$NON-NLS-1$
         	JTextField hexNo = new JTextField();
         	Order oo = Order.getOtherOrder(o);
         	if (oo.getOrderNo() == 810 || oo.getOrderNo() == 820 || oo.getOrderNo() == 870) {
@@ -63,7 +62,6 @@ public class OrderVisualizationData {
         			hexNo.setText(oo.getParameter(0));
         		}
         	}
-        	dlg.setTitle(Messages.getString("OrderVisualizationData.title")); //$NON-NLS-1$
             dlg.addComponent(Messages.getString("OrderVisualizationData.LocationColon"), hexNo); //$NON-NLS-1$
             String txt = Messages.getString("OrderVisualizationData.EnterInfoForRecon", new Object[] {o.getCharacter().getName()}); //$NON-NLS-1$
             dlg.init(txt);

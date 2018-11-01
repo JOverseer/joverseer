@@ -9,13 +9,16 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.JOverseerEventListener;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.support.JOverseerEvent;
 
 /**
  * List view for PlayerInfo objects
  * 
  * @author Marios Skounakis
  */
-public class PlayerInfoListView extends ItemListView {
+public class PlayerInfoListView extends ItemListView implements JOverseerEventListener {
 
     public PlayerInfoListView() {
         super(TurnElementsEnum.PlayerInfo, PlayerInfoTableModel.class);
@@ -23,7 +26,7 @@ public class PlayerInfoListView extends ItemListView {
 
     @Override
 	protected int[] columnWidths() {
-        return new int[]{64, 160, 64, 80, 200, 120};
+        return new int[]{64, 160, 80, 200, 120};
     }
 
     @Override
@@ -47,9 +50,12 @@ public class PlayerInfoListView extends ItemListView {
         });
         return comp;
     }
-    
-    
-    
-    
 
+	@Override
+	public void onApplicationEvent(JOverseerEvent e) {
+		if (e.isLifecycleEvent(LifecycleEventsEnum.OrderSaveToFileEvent))  {
+			this.setItems();
+		}
+	}
+	
 }

@@ -1,5 +1,8 @@
 package org.joverseer.ui.support;
 
+import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.JScrollPane;
 
 public class UIUtils {
@@ -39,4 +42,31 @@ public class UIUtils {
 	{
 		return OptPrefix(collector, ", ", postfix);
 	}
+	
+	public static String[] createMessages(String[] keys) {
+		String[] ret = new String[keys.length];
+		for(int i=0;i<keys.length;i++) {
+			ret[i] = Messages.getString(keys[i]);
+		}
+		return ret;
+	}
+	/**
+	 * Find a UI component on the screen by Name.
+	 * @param name
+	 * @return
+	 */
+	public static Component getComponentByName(Container root, String name) {
+		for (Component c : root.getComponents()) {
+			if (name.equals(c.getName())) {
+				return c;
+			}
+			if (c instanceof Container) {
+				Component result = getComponentByName((Container) c, name);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		return null;
+	} 
 }

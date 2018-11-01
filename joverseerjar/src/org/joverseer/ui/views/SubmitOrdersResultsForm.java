@@ -20,12 +20,14 @@ public class SubmitOrdersResultsForm extends AbstractForm {
     static String FORM_ID = "submitOrdersResultsForm";
 
     JEditorPane htmlResponse;
-
-
-    public SubmitOrdersResultsForm(FormModel arg0) {
+    
+	public SubmitOrdersResultsForm(FormModel arg0) {
         super(arg0, FORM_ID);
     }
 
+    /**
+     * @wbp.parser.entryPoint
+     */
     @Override
 	protected JComponent createFormControl() {
         this.htmlResponse = new JEditorPane();
@@ -33,6 +35,7 @@ public class SubmitOrdersResultsForm extends AbstractForm {
         this.htmlResponse.setEditorKit(new HTMLEditorKit());
 
         this.htmlResponse.setPreferredSize(new Dimension(600, 500));
+
         JScrollPane scp = new JScrollPane(this.htmlResponse);
 
         return scp;

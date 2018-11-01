@@ -38,8 +38,8 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     JPanel currentCompPanel;
     String currentType = null;
     
-    public CastLoSpellOrderSubeditor(Order o) {
-        super(o);
+    public CastLoSpellOrderSubeditor(OrderEditor oe,Order o) {
+        super(oe,o);
         this.paramName = "Spell";
         this.orderNo = 940;
     }
@@ -150,19 +150,19 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 this.currentType = paramType;
             }
             if (paramType.equals("cid")) {
-                sub = new SingleParameterOrderSubeditor("Char", getOrder());
+                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Char", getOrder());
             } else if (paramType.equals("b")) {
-                sub = new SingleParameterOrderSubeditor("Arti No", getOrder());
+                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Arti No", getOrder());
             } else if (paramType.equals("hex")) {
-                sub = new SingleParameterOrderSubeditor("Hex", getOrder());
+                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Hex", getOrder());
             } else if (paramType.equals("nat")) {
-                sub = new NationParameterOrderSubeditor("Nation", getOrder());
+                sub = new NationParameterOrderSubeditor(this.getEditor(),"Nation", getOrder());
             } else if (paramType.equals("pro")) {
-                sub = new DropDownParameterOrderSubeditor("Product", getOrder(), new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold"});
+                sub = new DropDownParameterOrderSubeditor(this.getEditor(),"Product", getOrder(), new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold"});
             } else if (paramType.equals("alg")) {
-                sub = new DropDownParameterOrderSubeditor("Alleg", getOrder(), new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"});
+                sub = new DropDownParameterOrderSubeditor(this.getEditor(),"Alleg", getOrder(), new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"});
             }else if (paramType.equals("art")) {
-                sub = new ArtifactNumberParameterOrderSubeditor("Arti", getOrder());
+                sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder());
             } else {
             	throw new Exception("Config error");
             }
@@ -175,7 +175,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 sub.setEditor(getEditor());
                 if (!multiple) break; // normal loop exit if one parameter
                 counter++;
-              	sub = new ArtifactNumberParameterOrderSubeditor("Arti", getOrder());
+              	sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder());
             } while (counter < 7);
             
             this.currentComp = this.components.get(1);
@@ -188,5 +188,11 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             exc.printStackTrace();
         }
     }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

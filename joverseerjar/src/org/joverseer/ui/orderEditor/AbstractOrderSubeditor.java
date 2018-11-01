@@ -8,6 +8,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joverseer.domain.Order;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -22,12 +24,14 @@ public abstract class AbstractOrderSubeditor {
 	protected static final int PREFERRED_HEIGHT = 23; // was 18 but cuts off descenders
     Order order;
     OrderEditor editor;
-
+    protected final Log logger = LogFactory.getLog(this.getClass());
+    
     public void updateEditor() {
         getEditor().updateParameters();
     }
 
-    public AbstractOrderSubeditor(Order o) {
+    public AbstractOrderSubeditor(OrderEditor oe,Order o) {
+    	this.editor = oe;
     	this.order = o;
     }
 
@@ -60,7 +64,9 @@ public abstract class AbstractOrderSubeditor {
     }
     
     public abstract void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo);
-
+    
+    public abstract JComponent getPrimaryComponent(String initValue);
+    
 	public Order getOrder() {
 		return this.order;
 	}
@@ -70,8 +76,8 @@ public abstract class AbstractOrderSubeditor {
         }
 
 
-   public void valueChanged() {
+	   public void valueChanged() {
 	   // empty hook by default
    }
-        
+       
 }

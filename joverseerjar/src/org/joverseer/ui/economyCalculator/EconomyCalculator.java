@@ -90,22 +90,27 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 				refreshTaxIncrease();
 				refreshAutocalcOrderCost();
 				refreshFinalGoldWarning();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				this.nationCombo.load(false,true);
-				try {
-					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
-					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
-					refreshMarketLimitWarning();
-					refreshTaxIncrease();
-					refreshAutocalcOrderCost();
-					refreshFinalGoldWarning();
-				} catch (Exception exc) {
-					exc.printStackTrace();
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {				
+				Nation n = this.nationCombo.load(false,true);
+				if (n != null) {
+					try {
+						((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+						((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
+						refreshMarketLimitWarning();
+						refreshTaxIncrease();
+						refreshAutocalcOrderCost();
+						refreshFinalGoldWarning();
+					} catch (Exception exc) {
+						exc.printStackTrace();
+					}
 				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				((MarketTableModel) this.marketTable.getModel()).setGame(null);
 				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
-				refreshSNA(this.nationCombo.load(true, true));
+				Nation n = this.nationCombo.load(true, true);
+				if (n!= null) {
+					refreshSNA(n);
+				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				refreshAutocalcOrderCost();
 				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -234,9 +239,10 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 		lb.separator(Messages.getString("EconomyCalculator.Nation")); //$NON-NLS-1$
 		lb.row();
-		lb.relatedGapRow();
+//		lb.relatedGapRow();
 
-		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
+		JPanel nationPanel = new JPanel();
+		nationPanel.add(this.nationCombo = new NationComboBox(GameHolder.instance()));
 		this.nationCombo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -304,7 +310,12 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 		this.marketInfluence.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.marketInfluence.setBackground(Color.white);
 		this.marketInfluence.setEnabled(false);
-		lb.cell(snaPanel);
+		
+		nationPanel.add(snaPanel);
+		nationPanel.getInsets().set(0, 0, 0, 0);
+		nationPanel.setBackground(Color.white);
+		lb.cell(nationPanel,"align=left");
+//		lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
 
 /*		this.sellBonus.addActionListener(new ActionListener() {
 			@Override
@@ -653,7 +664,8 @@ public class EconomyCalculator extends AbstractView implements ApplicationListen
 
 	public class TopBottomBorder extends AbstractBorder
 	{
-	    protected int thickness;
+		private static final long serialVersionUID = 1L;
+		protected int thickness;
 	    protected Color lineColor;
 	    protected int gap;
 

@@ -22,6 +22,9 @@ public class ChangelogForm extends AbstractForm implements HyperlinkListener {
 		super(arg0, PAGE_NAME);
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();

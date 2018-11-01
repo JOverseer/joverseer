@@ -95,24 +95,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 		} else if (i == iResults) {
 			OrderResultContainer container = OrderResultContainer.instance();
 			OrderResultTypeEnum orderResultType = container.getResultTypeForOrder((Order) object);
-			Icon ico = null;
-			if (orderResultType != null) {
-				ImageSource imgSource = joApplication.getImageSource();
-				if (imgSource == null) {
-					ico = null;
-				} else if (orderResultType == OrderResultTypeEnum.Info) {
-					ico = new ImageIcon(imgSource.getImage("orderresult.info.icon"));
-				} else if (orderResultType == OrderResultTypeEnum.Help) {
-					ico = new ImageIcon(imgSource.getImage("orderresult.help.icon"));
-				} else if (orderResultType == OrderResultTypeEnum.Warning) {
-					ico = new ImageIcon(imgSource.getImage("orderresult.warn.icon"));
-				} else if (orderResultType == OrderResultTypeEnum.Error) {
-					ico = new ImageIcon(imgSource.getImage("orderresult.error.icon"));
-				} else if (orderResultType == OrderResultTypeEnum.Okay) {
-					ico = new ImageIcon(imgSource.getImage("orderresult.okay.icon"));
-				}
-			}
-			return ico;
+			return joApplication.getIcon(orderResultType);
+			
 		} else if (i == iCost) {
 			Order order = (Order) object;
 			OrderCostCalculator calc = new OrderCostCalculator();

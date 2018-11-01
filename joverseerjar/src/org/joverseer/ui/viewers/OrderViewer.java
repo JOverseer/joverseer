@@ -45,7 +45,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows orders
- * User by the Character viewer
+ * Used by the Character viewer
  * 
  * @author Marios Skounakis
  */
@@ -97,7 +97,6 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	Icon ico = null;
     	boolean joErrors = false;
     	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
-        ImageSource imgSource = joApplication.getImageSource();
     	if (!o.isBlank()) {
 	    	
 	        OrderResultContainer container = OrderResultContainer.instance();
@@ -118,19 +117,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 	        	joErrors = true;
 	        }
     	}
-    	if (orderResultType == null) {
-            ico = null;
-        } else if (orderResultType == OrderResultTypeEnum.Info) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.info.icon")); //$NON-NLS-1$
-        } else if (orderResultType == OrderResultTypeEnum.Help) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.help.icon")); //$NON-NLS-1$
-        } else if (orderResultType == OrderResultTypeEnum.Warning) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.warn.icon")); //$NON-NLS-1$
-        } else if (orderResultType == OrderResultTypeEnum.Error) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.error.icon")); //$NON-NLS-1$
-        } else if (orderResultType == OrderResultTypeEnum.Okay) {
-            ico = new ImageIcon(imgSource.getImage("orderresult.okay.icon")); //$NON-NLS-1$
-        } 
+    	ico = joApplication.getIcon(orderResultType);
         this.orderResultIcon.setIcon(ico);
         if (ico != null) {
             String txt = ""; //$NON-NLS-1$

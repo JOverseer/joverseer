@@ -13,6 +13,7 @@ import org.joverseer.support.readers.orders.OrderFileReader;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
@@ -80,8 +81,7 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
 
             }
             catch (Exception exc) {
-                MessageDialog d = new MessageDialog("Error", exc.getMessage()); //$NON-NLS-1$
-                d.showDialog();
+                ErrorDialog.showErrorDialog(exc.getMessage());
             }
         }
     }

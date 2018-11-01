@@ -37,6 +37,7 @@ import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.ExitDialog;
 import org.joverseer.ui.support.dialogs.WelcomeDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.MessageSource;
@@ -46,7 +47,6 @@ import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
-import org.springframework.richclient.dialog.ConfirmationDialog;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.exceptionhandling.DefaultRegisterableExceptionHandler;
 import org.springframework.richclient.exceptionhandling.RegisterableExceptionHandler;
@@ -297,7 +297,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			this.canCloseWindow = false;
 			// show warning
 			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-			ConfirmationDialog md = new ConfirmationDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
+				ExitDialog md = new ExitDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
 
 				@Override
 				protected void onConfirm() {

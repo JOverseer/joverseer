@@ -22,8 +22,6 @@ import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
-import org.joverseer.ui.support.controls.ResourceButton;
-import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 

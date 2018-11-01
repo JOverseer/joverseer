@@ -37,8 +37,10 @@
 			<list>
 				<ref bean="gameMenu"/>
 				<ref bean="utilMenu"/>
-				<ref bean="windowMenu"/>
+  				<ref bean="windowMenu"/>
 				<ref bean="advancedMenu"/>
+<!-- 				<ref bean="mapMenu"/> -->
+ 				<ref bean="settingsMenu"/>
                 <ref bean="helpMenu"/>
                 <ref bean="adminMenu"/>
 			</list>
@@ -67,20 +69,15 @@
                 <value>separator</value>
                 <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
                 <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
-                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
-<!--                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>  -->
+<!--                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
+                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
-                <value>separator</value>
-            	<bean class="org.joverseer.ui.command.EditPreferencesCommand"/>
-            	
+            	  -->
 			</list>
 		</property>
 	</bean>
 	
-	
-
-    
 
     <!--
         Bean: fileMenu
@@ -124,7 +121,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
     <bean id="windowMenu" 
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
@@ -135,6 +132,7 @@
 			</list>
 		</property>
 	</bean>
+
 	<bean id="restoreLayoutMenu"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
@@ -232,8 +230,94 @@
 	<bean id="aboutCommand" 
 		class="org.springframework.richclient.command.support.AboutCommand">
 	</bean>
-
-	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+<!-- 
+	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
+        <property name="members">
+            <list>
+            	<bean id="toolsArmiesMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
+-->  <!-- for some reason CommandGroupFactoryBean ignores the id so we pass in what we want it to be-->
+<!--             		<property name="message"><value>toolsArmiesMenu</value></property>
+			        <property name="members">
+            		<list>
+            			<ref bean="armyListView"/>
+            			<ref bean="armySizeEstimatesListView"/>
+            			<ref bean="armyEstimatesListView"/>
+            			<ref bean="combatCalcView"/>
+            		</list>
+			        </property>
+            	</bean>	
+            	<bean id="toolsArtifactsMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
+            		<property name="message"><value>toolsArtifactsMenu</value></property>
+			        <property name="members">
+            		<list>
+            			<ref bean="artifactInfoListView"/>
+            			<ref bean="advancedArtifactListView"/>            			
+            			<ref bean="locateArtifactResultListView"/>
+            			<ref bean="ownedArtifactsListView"/>
+            		</list>
+			        </property>
+            	</bean>	
+            	<bean id="toolsCharactersMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
+            		<property name="message"><value>toolsCharactersMenu</value></property>
+			        <property name="members">
+            		<list>
+            			<ref bean="characterListView"/>
+            			<ref bean="advancedCharacterListView"/>
+            			<ref bean="companyListView"/>
+            			<ref bean="encounterListView"/>
+            			<ref bean="enemyCharacterRumorListView"/>
+            			<ref bean="spellcasterListView"/>
+            			<ref bean="startingCharacterListView"/>
+            			<ref bean="trackCharacterListView"/>
+            		</list>
+			        </property>
+            	</bean>	
+            	<bean id="toolsEconomyMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
+            		<property name="message"><value>toolsEconomyMenu</value></property>
+			        <property name="members">
+            		<list>
+            			<ref bean="nationEconomyPotentialsListView"/>
+            			<ref bean="economyCalculatorView"/>
+            			<ref bean="nationStatisticsListView"/>
+            			<ref bean="nationProductionListView"/>
+            			<ref bean="nationEconomyListView"/>
+            			<ref bean="teamEconomyView"/>
+            		</list>
+			        </property>
+            	</bean>	
+            	<bean id="toolsGeneralMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
+            		<property name="message"><value>toolsGeneralMenu</value></property>
+			        <property name="members">
+            		<list>
+            			<ref bean="nationMessageListView"/>
+            			<ref bean="notesListView"/>
+            			<ref bean="playerInfoListView"/>
+            			<ref bean="nationStatisticsListView"/>
+            			<ref bean="orderListView"/>
+            			<ref bean="relationsListView"/>
+            			<ref bean="spellInfoListView"/>
+            			<ref bean="mapOptionsView"/>
+            			<ref bean="currentHexDataViewer"/>
+            			<ref bean="mapView"/>
+            			<ref bean="orderEditorView"/>
+            			<ref bean="populationCenterListView"/>
+            			<ref bean="pdfFileView"/>
+            			<ref bean="infoView"/>
+            			<ref bean="orderInfoView"/>
+            			<ref bean="turnReportView"/>
+            			<ref bean="gameEncountersReportView"/>
+            			<ref bean="orderResultsView"/>
+            			<ref bean="mapEditorView"/>
+            			<ref bean="hexProductionListView"/>
+            			<ref bean="orderCheckerView"/>            			
+            		</list>
+			        </property>
+            	</bean>	
+           	</list>
+       	</property>
+   	</bean>
+ -->
+ 	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
         <property name="members">
             <list>	
             	<bean class="org.joverseer.ui.command.HighlightDegradeCandidates">
@@ -281,13 +365,59 @@
             		<property name="enabled"><value>false</value></property>
             	</bean>
                 <value>separator</value>
-                <bean class="org.joverseer.ui.command.EditPreferencesCommand">
-            		<property name="enabled"><value>true</value></property>
-            	</bean>
                 <bean class="org.joverseer.ui.command.PalantirStyleMapCommand">
             		<property name="enabled"><value>false</value></property>
             	</bean>
+           	
            	</list>
        	</property>
    	</bean>
-</beans>
+
+	<bean id="settingsMenu" 
+		class="org.springframework.richclient.command.CommandGroupFactoryBean">
+		<property name="members">
+			<list>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Display.Current Hex View</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Display.Information Tabs</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Display.Map</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Economy Calculator</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>General</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Order Editor</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Submit Orders</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Updates</value></property>
+            	</bean>
+            	<bean class="org.joverseer.ui.command.EditPreferencesCommand">
+            		<property name="enabled"><value>true</value></property>
+            		<property name="group"><value>Window Display</value></property>
+            	</bean>
+<!-- 
+                <value>separator</value>
+                <ref bean="restoreLayoutMenu"/>
+ -->
+             </list>
+        </property>
+    </bean>
+ </beans>

@@ -14,6 +14,7 @@ import org.joverseer.domain.Order;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.controls.NationComboBox;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
@@ -23,46 +24,48 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * @author Marios Skounakis
  */
 public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
-    JComboBox parameter;
+	NationComboBox parameter;
     JTextField nationNo;
     String paramName;
     
-    public NationParameterOrderSubeditor(String paramName, Order o) {
-        super(o);
+    public NationParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
+        super(oe,o);
         this.paramName = paramName;
     }
 
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        String nno = o.getParameter(paramNo);
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
-        tlb.cell(this.parameter = new JComboBox(), "colspec=left:150px");
-        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
-        this.parameter.addItem("");
-        this.parameter.setPreferredSize(new Dimension(120, 18));
+        tlb.cell(this.parameter = (NationComboBox)getPrimaryComponent(nno), "colspec=left:150px");
         tlb.row();
         tlb.cell(this.nationNo = new JTextField());
         this.nationNo.setVisible(false);
         tlb.row();
         
-        for (Nation n : (ArrayList<Nation>)gm.getNations()) {
-            if (n.isActivePlayer()) {
-                this.parameter.addItem(n.getName());
-            }
-        }
-
-        String nno = o.getParameter(paramNo);
         if (nno != null && !nno.equals("")) {
-            this.parameter.setSelectedIndex(Integer.parseInt(nno));
             this.nationNo.setText(nno);
         }
         this.parameter.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                NationParameterOrderSubeditor.this.nationNo.setText(NationParameterOrderSubeditor.this.parameter.getSelectedItem() == null || NationParameterOrderSubeditor.this.parameter.getSelectedIndex() == 0 ? "" : String.valueOf(NationParameterOrderSubeditor.this.parameter.getSelectedIndex()));
+            	Nation n = NationParameterOrderSubeditor.this.parameter.getSelectedNation();
+            	if (n == null) {
+            		NationParameterOrderSubeditor.this.nationNo.setText("");
+            	} else {
+            		NationParameterOrderSubeditor.this.nationNo.setText(String.valueOf(n.getNumber()));
+            	}
                 updateEditor();
             }
         }); 
-        
+        this.parameter.load(false, false);
         components.add(this.nationNo);
     }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+		NationComboBox com = new NationComboBox(GameHolder.instance());
+		com.setPreferredSize(new Dimension(120, 18));
+		return com;
+	}
 }

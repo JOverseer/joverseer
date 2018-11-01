@@ -12,7 +12,7 @@ import org.springframework.richclient.table.BeanTableModel;
  * Base class for Item table models.
  * 
  * Basically provides a central control for how nation columns are displayed
- * (number of short name)
+ * (number or short name)
  * 
  * @author Marios Skounakis
  */

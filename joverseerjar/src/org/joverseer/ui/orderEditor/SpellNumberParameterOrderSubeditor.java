@@ -39,16 +39,16 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField spellNo;
     int orderNo;
     
-    public SpellNumberParameterOrderSubeditor(String paramName, Order o, int orderNo) {
-        super(o);
+    public SpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo) {
+        super(oe,o);
         this.paramName = paramName;
         this.orderNo = orderNo;
     }
     
-    protected void loadSpellCombo() {
+    protected void loadSpellCombo(JComboBox com) {
     	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     	Character c = getOrder().getCharacter();
-        this.parameter.addItem(""); //$NON-NLS-1$
+        com.addItem(""); //$NON-NLS-1$
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
             if (si.getOrderNumber() == this.orderNo) {
 	        	 boolean found = false;
@@ -57,7 +57,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
 	                     found = true;
 	                 }
 	             }
-	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	             com.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
         }
     }
@@ -65,43 +65,11 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     @Override
     public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px"); //$NON-NLS-1$
-        tlb.cell(this.parameter = new JComboBox(), "colspec=left:180px"); //$NON-NLS-1$
-        this.parameter.setPreferredSize(new Dimension(180, 18));
-        this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
-			@Override
-			public void drop(DropTargetDropEvent dtde) {
-                try {
-                	Transferable t = dtde.getTransferable();
-                	CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
-                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
-                	String txt = ""; //$NON-NLS-1$
-                	if (t.isDataFlavorSupported(characterDataFlavor)) {
-                		txt = ((Character)t.getTransferData(characterDataFlavor)).getId();
-                		txt = Character.getSpacePaddedIdFromId(txt);
-                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
-                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
-                	} else {
-                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
-                	}
-                	JComboBox cmb = (JComboBox)SpellNumberParameterOrderSubeditor.this.parameter;
-                	for (int i=0; i<cmb.getItemCount(); i++) {
-                		if (cmb.getItemAt(i).toString().startsWith(txt + " ")) { //$NON-NLS-1$
-                			cmb.setSelectedIndex(i);
-                		}
-                	};
-                }
-                catch (Exception exc) {
-                    
-                }
-			}
-        }));
-        
+        tlb.cell(this.parameter = (JComboBox) getPrimaryComponent(""), "colspec=left:180px"); //$NON-NLS-1$
         tlb.row();
         tlb.cell(this.spellNo = new JTextField());
         this.spellNo.setVisible(false);
         tlb.row();
-        
-        loadSpellCombo();
         
         // find and preload current spell (from order)
         if (o.getParameter(paramNo) != null) {
@@ -128,5 +96,40 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
     }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+		final JComboBox com = new JComboBox();
+        loadSpellCombo(com);
+		com.setPreferredSize(new Dimension(180, 18));
+		com.setDropTarget(new DropTarget(com, new DropTargetAdapter() {
+			@Override
+			public void drop(DropTargetDropEvent dtde) {
+                try {
+                	Transferable t = dtde.getTransferable();
+                	CharacterDataFlavor characterDataFlavor = new CharacterDataFlavor();
+                	ArtifactInfoDataFlavor artifactInfoDataFlavor = new ArtifactInfoDataFlavor();
+                	String txt = ""; //$NON-NLS-1$
+                	if (t.isDataFlavorSupported(characterDataFlavor)) {
+                		txt = ((Character)t.getTransferData(characterDataFlavor)).getId();
+                		txt = Character.getSpacePaddedIdFromId(txt);
+                	} else if (t.isDataFlavorSupported(artifactInfoDataFlavor)) {
+                		txt = String.valueOf(((ArtifactInfo)t.getTransferData(artifactInfoDataFlavor)).getNo());
+                	} else {
+                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
+                	}
+                	for (int i=0; i<com.getItemCount(); i++) {
+                		if (com.getItemAt(i).toString().startsWith(txt + " ")) { //$NON-NLS-1$
+                			com.setSelectedIndex(i);
+                		}
+                	};
+                }
+                catch (Exception exc) {
+                    
+                }
+			}
+        }));
+		return com;
+	}
 }
 

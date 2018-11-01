@@ -97,7 +97,11 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 					}
 				}
 				if (viewGroup.equals(cViewGroup)) {
-					viewMap.put(vd.getCaption().replace("&", ""), vd);
+					if (vd.getCaption() == null) {
+						this.logger.fatal("Config error, caption missing for View Descriptor");
+					} else {
+						viewMap.put(vd.getCaption().replace("&", ""), vd);
+					}
 				}
 			}
 			ArrayList<String> captions = new ArrayList<String>();

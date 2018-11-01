@@ -110,12 +110,15 @@ public class TurnReportCollector {
 				continue;
 			CharacterReport cr;
 			AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(c.getName(), t.getTurnNo());
-			if (acw.getTurnNo() != t.getTurnNo())
-				acw = null;
 			if (acw != null) {
-				cr = new CharacterReport(acw);
-			} else {
+				if (acw.getTurnNo() != t.getTurnNo()) {
+					acw = null;
+				}
+			}
+			if (acw == null) {
 				cr = new CharacterReport(c);
+			} else {
+				cr = new CharacterReport(acw);
 			}
 			cr.setHexNo(c.getHexNo());
 			PopulationCenter pop = t.getPopCenter(c.getHexNo());

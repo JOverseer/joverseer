@@ -23,6 +23,7 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
+import org.joverseer.ui.listviews.AbstractListViewFilter;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -342,8 +343,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				this.fireEvents = false;
 				resetGame();
 				this.fireEvents = true;
-			}
-			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
 				this.fireEvents = false;
 				Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
 				if (Game.isInitialized(g)) {
@@ -352,8 +352,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 					}
 				}
 				this.fireEvents = true;
-			}
-			if (e.isLifecycleEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent)) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent)) {
 				this.fireEvents = false;
 
 				this.zoom.setSelectedIndex(2);
@@ -368,15 +367,24 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				this.fireEvents = true;
 				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 
-			}
-			if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomIncreaseEvent)) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomIncreaseEvent)) {
 				if (this.zoom.getSelectedIndex() < this.zoom.getItemCount() - 1) {
 					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() + 1);
 				}
-			}
-			if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomDecreaseEvent)) {
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomDecreaseEvent)) {
 				if (this.zoom.getSelectedIndex() > 0) {
 					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() - 1);
+				}
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
+				Game g = GameHolder.instance().getGame();
+				Nation n = g.getMetadata().getNationByNum(g.getMetadata().getNationNo());
+				String thisNationDescription = n.getName();
+				String a;
+				for (int i=0; i<this.cmbMaps.getItemCount();i++) {
+					a = (String)this.cmbMaps.getItemAt(i);
+					if (a.equals(thisNationDescription)) {
+						this.cmbMaps.setSelectedItem(a);
+					}
 				}
 			}
 		}

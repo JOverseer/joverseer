@@ -2,10 +2,16 @@ package org.joverseer;
 
 import java.util.HashMap;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoRegistry;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
+import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -33,6 +39,27 @@ public class joApplication {
 		return (ApplicationDescriptor)getApplicationContext().getBean("applicationDescriptor");
 	}
 
+	public static Icon getIcon(OrderResultTypeEnum orderResultType) {
+		if (orderResultType == null) {
+			return null;
+		}
+		Icon ico = null;
+		ImageSource imgSource = joApplication.getImageSource();
+		if (imgSource != null) {
+			String iconKey= null;
+			switch (orderResultType) {
+			case Info: iconKey= "orderresult.info.icon"; break;
+			case Help: iconKey= "orderresult.help.icon"; break;
+			case Warning: iconKey= "orderresult.warn.icon"; break;
+			case Error: iconKey= "orderresult.error.icon"; break;
+			case Okay: iconKey= "orderresult.okay.icon"; break;
+			}
+			if (iconKey!=null) {
+				ico = new ImageIcon(imgSource.getImage(iconKey));
+			}
+		}
+		return ico;
+	}
 	static public GameHolder getGameHolder()
 	{
 		return GameHolder.instance();

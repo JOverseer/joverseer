@@ -138,10 +138,9 @@ public class TrackCharacterListView extends BaseItemListView {
 				int lastTurn = -1;
 
 				final JTextField st = new JTextField();
-				InputDialog id = new InputDialog();
-				id.setTitle(Messages.getString("TrackCharacterListView.title")); //$NON-NLS-1$
+				InputDialog id = new InputDialog("TrackCharacterListView.title"); //$NON-NLS-1$
 				id.addComponent(Messages.getString("TrackCharacterListView.startTurnTitle"), st); //$NON-NLS-1$
-				id.init(Messages.getString("TrackCharacterListView.trackingInit")); //$NON-NLS-1$
+				id.init(Messages.getString("TrackCharacterListView.trackingInit"));
 				st.setText("0"); //$NON-NLS-1$
 				id.setPreferredSize(new Dimension(400, 100));
 				id.showDialog();

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.AbstractForm;
@@ -28,6 +29,10 @@ public class InputDialog extends TitledPageApplicationDialog {
     
     public InputDialog() {
         super();
+    }
+    public InputDialog(String titleId) {
+        this();
+        setTitle(Messages.getString(titleId));
     }
     
     public void addComponent(String name, JComponent component) {

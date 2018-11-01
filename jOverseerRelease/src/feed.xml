@@ -6,6 +6,46 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
+    <title>1.16.10</title>
+    <pubDate>Sun, 28 Oct 2018</pubDate>
+    <description>
+VERSION 1.16.10
+---------------
+	* Enh: Default to current nation for map option and appropriate views.
+	* Enh: You don't need the control-key to make mouse-drag move the map,
+	    but you do need the control-key to drag hex numbers off the map.
+	* Enh: Remove the less used icons from the tool bar.
+	* Enh: Return the Restore Orginal Layout to something simple.
+	* Fix: Upgrade/Downgrade relations was getting confused nation numbers.
+	* Fix: 40x and 770 orders specifically, would often show wo no but not insert them into the actual order.
+	* Fix: Some silent exceptions causing odd behaviour for new games before the first results were imported.
+    </description>
+   	</item>
+    <item>
+    <title>1.16.9</title>
+    <pubDate>Fri, 19 Oct 2018</pubDate>
+    <description>
+VERSION 1.16.9
+--------------
+	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff. 
+	* Enh: You can save and exit from the 'are you sure you want to exit' dialog.
+	* Enh: The Team Economy view has been updated to highlight tax rate increases, and tweaked to use totals consistent with the economy calculator.
+	* Enh: The Team *Economies* view has been removed as it was confusing and duplicated information on the Team Economy view.
+	* Enh: The various Nation filters (drop downs) will now hide dead nations, and those without economy information.
+	* Enh: The Economy Calculator has been improved:
+		o The totals have been overhauled and now should make obvious sense.
+		o It remembers the selected nation when you change turn.
+    	o It now works correctly for multiple orders of the same product in a nation.
+    	o It shows the relevant SNAs
+    * Enh: Merge Export Order Text and Export Order commands.
+        o The two separate export orders were confusing.
+        o The command automatically generates a 'nice' text representation of the order, which may be copied to the clipboard.
+        o The Save and Submit buttons will use a different format of the orders that Middle-Earth Games and JOverseer understand.
+        o The filename and time of the last submit is displayed.
+	* Fix: The yellow warnings have been removed when casting spells for more than one artifact.
+</description>
+    </item>
+    <item>
     <title>1.16.8</title>
     <pubDate>Wed, 19 Sep 2018</pubDate>
     <description>

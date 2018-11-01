@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import javax.swing.CellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JCheckBox;
@@ -25,7 +26,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
@@ -44,6 +44,9 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
+import org.joverseer.ui.orderEditor.AbstractOrderSubeditor;
+import org.joverseer.ui.orderEditor.CastLoSpellOrderSubeditor;
+import org.joverseer.ui.orderEditor.MoveArmyOrderSubeditor;
 import org.joverseer.ui.orderEditor.OrderEditor;
 import org.joverseer.ui.orderEditor.OrderEditorData;
 import org.joverseer.ui.orders.OrderVisualizationData;
@@ -81,7 +84,8 @@ public class OrderEditorListView extends ItemListView {
 	Color paramInfoColor = Color.decode("#99FF99");
 	HashMap<Character, Integer> characterIndices = new HashMap<Character, Integer>();
 	Container<OrderEditorData> completeOrderData;
-
+	int lastColumnForSelectedOrder = -1;
+	
 	public OrderEditorListView() {
 		super(TurnElementsEnum.Character, OrderEditorTableModel.class);
 	}
@@ -591,20 +595,6 @@ public class OrderEditorListView extends ItemListView {
 				refreshFilters();
 				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
 				// ComboBox Editor for the order number
-/*
- * 				Game g = GameHolder.instance().getGame();
- 				ListListModel orders = new ListListModel();
-				orders.add(Order.NA);
-				if (Game.isInitialized(g)) {
-					GameMetadata gm = g.getMetadata();
-					Container<OrderMetadata> orderMetadata = gm.getOrders();
-					for (OrderMetadata om : orderMetadata) {
-						orders.add(om.getNumber() + " " + om.getCode());
-					}
-				}
-				SortedListModel slm = new SortedListModel(orders);
-
-*/
 				GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
 
 				Order order=null;
@@ -613,26 +603,19 @@ public class OrderEditorListView extends ItemListView {
 				if (row >= 0) {
 					int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
 					if (idx < OrderEditorListView.this.tableModel.getRowCount()) {
-						try {
-							Object obj = OrderEditorListView.this.tableModel.getRow(idx);
-							order = (Order) obj;
-							if (order != null) {
-								c = order.getCharacter();
-							}
-						} catch (Exception exc) {
-						
+						order = this.getSelectedOrder();
+						if (order != null) {
+							c = order.getCharacter();
 						}
 					}
 				}
-//				Order order = getSelectedOrder();
+				
 				final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(c, gm));
-//				final JComboBox comboBox = new AutocompletionComboBox(new ComboBoxListModelAdapter(slm));
-//				final JComboBox comboBox = new JComboBox();
 				comboBox.setEditable(true);
 				comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
 				final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
 				noAndCodeColumn.setCellEditor(editor);
-
+				comboBox.getEditor().getEditorComponent().addKeyListener(new OrderEditingKeyAdapter(editor));
 				editor.addCellEditorListener(new CellEditorListener() {
 
 					@Override
@@ -646,19 +629,38 @@ public class OrderEditorListView extends ItemListView {
 					}
 
 				});
-				comboBox.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
-
-					@Override
-					public void keyPressed(KeyEvent arg0) {
-						if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
-							editor.cancelCellEditing();
-							arg0.consume();
+				if (this.completeOrderData == null) {
+					this.completeOrderData = OrderEditor.instance().getOrderEditorData();
+				}
+				if (this.completeOrderData != null) {
+					int paramNo = 0;
+					if (order != null) { // could be null if moving right to left?
+						OrderEditorData oed = this.completeOrderData.findFirstByProperty("orderNo", order.getOrderNo()); //$NON-NLS-1$
+						if (oed != null) {
+							this.lastColumnForSelectedOrder = oed.getParamTypes().size() + OrderEditorTableModel.iParamStart -1;
+							AbstractOrderSubeditor sub = null;
+							switch (order.getOrderNo()) {
+							case 850:
+							case 860:
+							case 830: 
+								sub = new MoveArmyOrderSubeditor(null,order);
+							case 940:
+								sub = new CastLoSpellOrderSubeditor(null,order);
+								
+							default:
+/*								paramNo = col-OrderEditorTableModel.iParamStart;
+										if (paramNo < oed.getParamTypes().size()) {
+											sub = OrderEditor.parameterEditorFactory(null,oed.getParamTypes().get(paramNo),oed.getParamDescriptions().get(paramNo),order,oed.getOrderNo());
+										}
+									}
+								}
+*/							}
 						}
 					}
-
-				});
-
+				}
 				setItems();
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
+				selectCurrentNationAsFilter();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 			    setItems(); //this seems to cause an event storm.
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
@@ -985,4 +987,34 @@ public class OrderEditorListView extends ItemListView {
 			return lbl;
 		}
 	}
+	
+	class OrderEditingKeyAdapter extends KeyAdapter {
+		CellEditor editor;
+		public OrderEditingKeyAdapter(CellEditor editor) {
+			this.editor = editor;
+		}
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				this.editor.cancelCellEditing();
+				arg0.consume();
+			} else if (arg0.getKeyCode() == KeyEvent.VK_TAB) {
+				/*							int col = OrderEditorListView.this.table.getSelectedColumn();
+				if (col+1 >= OrderEditorListView.this.table.getColumnCount()) {
+				} else {
+					OrderEditorListView.this.table.changeSelection(row, col+1, false, false);
+				}
+*/						} else if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+				int col = OrderEditorListView.this.table.getSelectedColumn();
+				if (col+1 > OrderEditorListView.this.lastColumnForSelectedOrder) {
+					OrderEditorListView.this.table.changeSelection(OrderEditorListView.this.table.getSelectedRow()+1, OrderEditorTableModel.iNoAndCode, false, false);
+				} else {
+					OrderEditorListView.this.table.changeSelection(OrderEditorListView.this.table.getSelectedRow(), col+1, false, false);
+				}
+			}
+		}
+
+	}
+
 }

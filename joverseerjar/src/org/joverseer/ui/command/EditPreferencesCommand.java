@@ -17,6 +17,17 @@ import org.springframework.richclient.form.FormModelHelper;
 
 public class EditPreferencesCommand  extends ActionCommand {
     
+	private String group = null;
+	
+	public String getGroup() {
+		return this.group;
+	}
+	public void setGroup(String value) {
+		this.group = value;
+		String label = "editPreferencesCommand." + this.group.replace(' ','.');
+		setId(label);
+	}
+	
     public EditPreferencesCommand() {
         super("editPreferencesCommand");
     }
@@ -25,6 +36,7 @@ public class EditPreferencesCommand  extends ActionCommand {
 	protected void doExecuteCommand() {
         FormModel formModel = FormModelHelper.createFormModel(PreferenceRegistry.instance());
         final EditPreferencesForm form = new EditPreferencesForm(formModel);
+        form.setStartingGroup(this.group);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {

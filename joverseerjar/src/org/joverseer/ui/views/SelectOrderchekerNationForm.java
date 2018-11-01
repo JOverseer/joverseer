@@ -2,14 +2,9 @@ package org.joverseer.ui.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.joverseer.domain.PlayerInfo;
-import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.ScalableAbstractForm;

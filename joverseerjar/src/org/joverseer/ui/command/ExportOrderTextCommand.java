@@ -21,8 +21,6 @@ import org.joverseer.game.Game;
 import org.joverseer.orders.export.OrderTextGenerator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
-import org.joverseer.ui.support.controls.ResourceButton;
-import org.joverseer.ui.support.controls.ResourceLabel;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;

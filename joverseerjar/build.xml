@@ -14,7 +14,7 @@
 	<property name="shared.lib">../lib</property>
     <property name="jardir">${dist}/lib</property>
     <property name="jarfile">${jardir}/joverseer.jar</property>
-	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
+	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
     
     <!-- required projects -->
 	<property name="updater.project.dir">../joverseerupdaterjar/</property>
@@ -102,7 +102,7 @@
        description="Compile all java classes">
        <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
        <javac srcdir="${src}" destdir="${bin}" 
-           encoding="utf-8" includeantruntime="false" source="1.6" target="1.6" bootclasspath="${compat.rt.jar}">
+           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
        		<classpath>
        			<pathelement path="${java.class.path}"/>
        			<path refid="updater.path"/>
@@ -129,7 +129,7 @@
 	       description="Compile all test java classes">
 	       <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
 	       <javac srcdir="${test.dir}" destdir="${bintest.dir}" 
-	           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8">
+	           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
 	       		<classpath>
 	       			<pathelement path="${java.class.path}"/>
 	       			<path refid="updater.path"/>

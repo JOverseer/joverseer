@@ -28,6 +28,8 @@ import javax.swing.SwingUtilities;
 import org.joverseer.joApplication;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.game.Game;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
@@ -385,6 +387,14 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 						setItems();
 					}
 				});
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						selectCurrentNationAsFilter();
+					}
+					});
+				return;
 			}
 		}
 	}
@@ -518,5 +528,30 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 			return -1;
 		}
 		return idx;
+	}
+	public void selectCurrentNationAsFilter() {
+		Game g = GameHolder.instance().getGame();
+		if (Game.isInitialized(g)) {
+			if (this.filters.size() > 0) {
+				JComboBox com = this.filters.get(0);
+				Nation n = g.getMetadata().getNationByNum(g.getMetadata().getNationNo());
+				String thisNationDescription = n.getName();
+				AbstractListViewFilter a;
+				for (int i=0; i<com.getItemCount();i++) {
+					a = (AbstractListViewFilter)com.getItemAt(i);
+					if (a.getDescription().equals(thisNationDescription)) {
+						final int selected = i;
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								com.setSelectedIndex(selected);
+							}
+							});
+						return;
+					}
+				}
+			}
+		}
+
 	}
 }

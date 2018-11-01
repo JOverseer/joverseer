@@ -646,6 +646,10 @@ public class OCDialog extends JPanel
 		return this.tree;
 	}
 
+	public JScrollPane getBottomPane() {
+		return this.bottomPane;
+	}
+
 
 
 

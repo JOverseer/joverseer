@@ -34,8 +34,14 @@ public class ExportOrdersCommand extends ActionCommand {
 
             @Override
 			protected boolean onFinish() {
-                return true;
+            	form.commit();
+                return form.getReadyToClose();
             }
+
+			@Override
+			protected String getFinishCommandId() {
+        		return "ExportOrdersSubmit";
+			}
         };
         dialog.setTitle(Messages.getString("exportOrdersDialog.title"));
         dialog.showDialog();

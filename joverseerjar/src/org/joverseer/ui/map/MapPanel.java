@@ -673,9 +673,8 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			this.xDiff = e.getX();
 			this.yDiff = e.getY();
 			if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
-				setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-
 			} else {
+				setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			}
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
 			Point h = getHexFromPoint(e.getPoint());
@@ -890,6 +889,16 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+			if (!GameHolder.hasInitializedGame())
+				return;
+			int dx = Math.abs(e.getX() - this.xDiff);
+			int dy = Math.abs(e.getY() - this.yDiff);
+			if (dx > 5 || dy > 5) {
+				TransferHandler handler = this.getTransferHandler();
+				handler.exportAsDrag(this, e, TransferHandler.COPY);
+				requestFocusInWindow();
+			}
+		} else {
 			this.c = this.getParent();
 			if (this.c instanceof JViewport) {
 				JViewport jv = (JViewport) this.c;
@@ -909,16 +918,6 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 					newY = maxY;
 
 				jv.setViewPosition(new Point(newX, newY));
-			}
-		} else {
-			if (!GameHolder.hasInitializedGame())
-				return;
-			int dx = Math.abs(e.getX() - this.xDiff);
-			int dy = Math.abs(e.getY() - this.yDiff);
-			if (dx > 5 || dy > 5) {
-				TransferHandler handler = this.getTransferHandler();
-				handler.exportAsDrag(this, e, TransferHandler.COPY);
-				requestFocusInWindow();
 			}
 
 		}

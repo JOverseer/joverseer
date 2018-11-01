@@ -19,7 +19,7 @@
 	<property name="junit_path"> C:\Users\Dave\eclipse\mars\plugins\org.junit_4.12.0.v201504281640/junit.jar</property>
 	<property name="junit_deps_path">C:\Users\Dave\eclipse\mars\plugins/org.hamcrest.core_1.3.0.v201303031735.jar</property>
 	<property name="report.dir">${dist}/junitreport</property>
-	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
+	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
 
     <path id="common.classpath">
     	<fileset dir="${shared.lib}" includes="**/*.jar"/>
@@ -39,7 +39,7 @@
    <target name="Compile"
        depends="-Init"
        description="Compile all java classes">
-       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" source="1.6" target="1.6" bootclasspath="${compat.rt.jar}">
+       <javac srcdir="${src}" destdir="${bin}" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
     		<classpath>
     			<path refid="common.classpath"/>
 	   			<pathelement path="${java.class.path}"/>
@@ -50,7 +50,7 @@
 	<target name="BuildTests"
 	       depends="Jar"
 	       description="Compile all test java classes">
-	       <javac srcdir="${srctest}" destdir="${bintest}" includeantruntime="false">
+	       <javac srcdir="${srctest}" destdir="${bintest}" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
 	   		<classpath>
 	   			<path refid="common.classpath"/>
 	   			<pathelement path="${java.class.path}"/>

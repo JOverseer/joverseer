@@ -29,13 +29,13 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     String paramName;
     int width = 60;
 
-    public SingleParameterOrderSubeditor(String paramName, Order o) {
-        super(o);
+    public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o) {
+        super(oe,o);
         this.paramName = paramName;
     }
     
-    public SingleParameterOrderSubeditor(String paramName, Order o, int width) {
-        super(o);
+    public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o, int width) {
+        super(oe,o);
         this.paramName = paramName;
         this.width = width;
     }
@@ -43,12 +43,18 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     @Override
 	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
-        tlb.cell(this.parameter = new JTextField(o.getParameter(paramNo)), "colspec=left:220px");
-        this.parameter.setPreferredSize(new Dimension(this.width, PREFERRED_HEIGHT));
+        tlb.cell(this.parameter = (JTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:220px");
         attachAutoUpdateDocumentListener(this.parameter);
         components.add(this.parameter);
         //GraphicUtils.addOverwriteDropListener(parameter);
-        this.parameter.setDropTarget(new DropTarget(this.parameter, new DropTargetAdapter() {
+        tlb.row();
+    }
+
+	@Override
+	public JComponent getPrimaryComponent(String initValue) {
+		final JTextField lbl = new JTextField(initValue);
+        lbl.setPreferredSize(new Dimension(this.width, PREFERRED_HEIGHT));
+        lbl.setDropTarget(new DropTarget(lbl, new DropTargetAdapter() {
 			@Override
 			public void drop(DropTargetDropEvent dtde) {
 	                try {
@@ -64,16 +70,17 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
 	                	} else {
 	                		txt = (t.getTransferData(DataFlavor.stringFlavor)).toString();
 	                	}
-	                	SingleParameterOrderSubeditor.this.parameter.setText(txt);
-	                    SingleParameterOrderSubeditor.this.parameter.requestFocus();
+	                	lbl.setText(txt);
+	                	lbl.requestFocus();
 	                }
 	                catch (Exception exc) {
 	                    
 	                }
 			}
         }));
-        tlb.row();
-    }
+		
+		return lbl;
+	}
 
         
 }

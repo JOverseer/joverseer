@@ -19,12 +19,14 @@ public class PlayerInfoTableModel extends ItemTableModel {
 
 	@Override
 	protected String[] createColumnPropertyNames() {
-		return new String[] { "nationNo", "playerName", "accountNo", "turnVersion", "lastOrderFile", "ordersSentOn" };
+		return new String[] { "nationNo", "playerName", "turnVersion", "lastOrderFile", "ordersSentOn" };
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
-		return new Class[] { String.class, String.class, String.class, Integer.class, String.class, Date.class };
+		return new Class[] { String.class, String.class, Integer.class, String.class, Date.class };
 	}
+
+
 }

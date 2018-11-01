@@ -28,12 +28,12 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     String[] descriptions;
     int start;
     
-    public DropDownParameterOrderSubeditor(String paramName, Order o, String[] values, String descriptions[],int startAt) {
-    	this(paramName,o,values,descriptions);
+    public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[],int startAt) {
+    	this(oe,paramName,o,values,descriptions);
     	this.start = startAt;
     }
-    public DropDownParameterOrderSubeditor(String paramName, Order o, String[] values, String descriptions[]) {
-        super(o);
+    public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[]) {
+        super(oe,o);
         this.paramName = paramName;
         this.values = values;
         this.descriptions = descriptions;
@@ -41,47 +41,57 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     }
     
     @Override
-	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
-        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
-        tlb.cell(this.combo = new AutoCompletionComboBox(), "colspec=left:205px");
-        this.combo.setPreferredSize(new Dimension(100, 18));
-        this.combo.addItem("");
-        for (String v : this.descriptions) {
-            this.combo.addItem(v);
-        }
-        
-        tlb.row();
-        tlb.cell(this.parameter = new JTextField());
-        this.parameter.setVisible(false);
-        String val = o.getParameter(paramNo);
+	public JComponent getPrimaryComponent(String val) {
         if ((this.start != -1) && (val == null)) {
         	val = this.values[this.start];
         }
-        this.parameter.setText(val);
+    	JComboBox box = new AutoCompletionComboBox();
+        box.addItem("");
+        box.setPreferredSize(new Dimension(100, 18));
+        for (String v : this.descriptions) {
+            box.addItem(v);
+        }
         for (int i=0; i<this.descriptions.length; i++) {
             if (this.values[i].equals(val)) {
-                this.combo.setSelectedItem(this.descriptions[i]);
+                box.setSelectedItem(this.descriptions[i]);
                 break;
             }
         }
-        this.combo.addActionListener(new ActionListener() {
+        box.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-                String v = DropDownParameterOrderSubeditor.this.combo.getSelectedItem().toString();
-                if (v == null || v.equals("")) {
-                    DropDownParameterOrderSubeditor.this.parameter.setText("");
-                } else {
-                    for (int i=0; i<DropDownParameterOrderSubeditor.this.descriptions.length; i++) {
-                        if (DropDownParameterOrderSubeditor.this.descriptions[i].equals(v)) {
-                            DropDownParameterOrderSubeditor.this.parameter.setText(DropDownParameterOrderSubeditor.this.values[i]);
-                        }
-                    }
-                }
+            	
+                DropDownParameterOrderSubeditor.this.valueChanged();
                 updateEditor();
             }
         });
+        return box;
+    }
+    @Override
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+        String val = o.getParameter(paramNo);
+        tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
+        tlb.cell(this.combo = (AutoCompletionComboBox)getPrimaryComponent(val), "colspec=left:205px");
+        tlb.row();
+        tlb.cell(this.parameter = new JTextField());
+        this.parameter.setVisible(false);
+        this.parameter.setText(val);
         components.add(this.parameter);
         tlb.row();
+    }
+    @Override
+    public void valueChanged() {
+        String v = this.combo.getSelectedItem().toString();
+        if (v == null || v.equals("")) {
+            this.parameter.setText("");
+        } else {
+            for (int i=0; i<this.descriptions.length; i++) {
+                if (this.descriptions[i].equals(v)) {
+                    this.parameter.setText(DropDownParameterOrderSubeditor.this.values[i]);
+                    break;
+                }
+            }
+        }
     }
 
 }

@@ -3,15 +3,17 @@
     <description>
         Build file for the release parts of joverseer.
     </description>
+    <property name="updater.dir">../joverseerupdaterjar/dist/lib</property>
+	<property name="jojar.project.dir">../joverseerjar/</property>
     <property name="bin">bin</property>
     <property name="src">src</property>
     <property name="dist">dist</property>
 	<property name="shared.lib">../lib</property>
-	<property name="lib">../joverseerjar/lib</property> <!-- note difference -->
-    <property name="joverseer.jar">../joverseerjar/dist/lib/joverseer.jar</property>
+	<property name="lib">${jojar.project.dir}lib</property> <!-- note difference -->
+    <property name="joverseer.jar">${jojar.project.dir}dist/lib/joverseer.jar</property>
 	<property name="updater.jar">../joverseerupdaterjar/dist/lib/update.jar</property>
-	<property name="res.dir">../joverseerjar/resources</property>
-	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
+	<property name="res.dir">${jojar.project.dir}resources</property>
+	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
     
     <property name="launch4j.dir" location="../launch4j"/>
     <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->
@@ -97,7 +99,12 @@
 		</fileset>
 	</path>
 		
-    
+    <!-- how to build dependent projects -->
+	<target name="BuildJoverseerJar">
+		<subant buildpath="${jojar.project.dir}" verbose="true">
+		</subant>
+	</target>
+	
    <!-- Main targets -->
    <!--  java doc disabled: eclipse bug with large classpath. -->
    <target name="BuildAll"
@@ -106,7 +113,7 @@
        <echo message="Build finished."/>
    </target>
    <target name="JoverseerJar"
-       depends="-Init,versionLabel"
+       depends="-Init,versionLabel,BuildJoverseerJar"
        description="use output from jOverseerJar">
    		<copy file="${joverseer.jar}" todir="${dist}"/>
    		<copy file="${res.dir}/layout/default.layout" todir="${dist}"/>
@@ -134,7 +141,7 @@
 	    <launch4j>
 	  		<config headerType="gui" jar="${updater.jar}" outfile="${dist}/jOverseerUpdater.exe" stayAlive="false" manifest="${src}/updatewithUAC.manifest">
 				<singleInstance mutexName="com.middleearthgames.joverseer.updater" />
-				<jre minVersion="1.6.0" />
+				<jre minVersion="1.8.0" />
           	</config>
 		</launch4j>
     </target>

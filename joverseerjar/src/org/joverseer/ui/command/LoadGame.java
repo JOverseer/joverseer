@@ -49,7 +49,7 @@ public class LoadGame extends ActionCommand {
             // show warning
             ConfirmationDialog md = new ConfirmationDialog(
             		Messages.getString("confirmLoadGameDialog.title"), //$NON-NLS-1$
-            		Messages.getString("confirmLoadGameDialog.message")) //$NON-NLS-1$
+            		Messages.getString("confirmLoadGameDialog.message"))
             {
                 @Override
 				protected void onConfirm() {

@@ -12,6 +12,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.middleearthgames.orderchecker.io.Data;
+
 // Referenced classes of package com.middleearthgames.orderchecker:
 //            Character, Army, PopCenter, Order, 
 //            Main
@@ -96,7 +98,7 @@ public class Nation
     {
         if(phase == 1)
         {
-            if(is2950Game() && main.getData().getGameType() != 1 || is1650Game() && main.getData().getGameType() != 0)
+            if(is2950Game() && main.getData().getGameType() != Data.GAME_2950 || is1650Game() && main.getData().getGameType() != Data.GAME_1650)
             {
                 Main.displayErrorMessage("Game type selection does not match that found in the turn file.\n\nProcessing will continue...");
             }

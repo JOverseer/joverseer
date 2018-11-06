@@ -657,10 +657,12 @@ public class OrderEditorListView extends ItemListView {
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
 				selectCurrentNationAsFilter();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-			    setItems(); //this seems to cause an event storm.
+			    setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshOrders)) {
+				setItems();
+			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderCheckerRunEvent)) {
 				setItems();
 			}
 		}

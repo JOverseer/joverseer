@@ -4,9 +4,11 @@ os:
  - linux
 jdk: oraclejdk9
 
-before_install:
- - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1024x768x32"
 install:
  - if [ $TRAVIS_OS_NAME = osx ]; then brew install ant; fi
 before_script:
  - "export DISPLAY=:99.0"
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then ( sudo Xvfb :99 -ac -screen 0 1024x768x8; echo ok )& fi
+ - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then ( sh -e /etc/init.d/xvfb start )& fi
+ - sleep 3 # give xvfb some time to start
+ 

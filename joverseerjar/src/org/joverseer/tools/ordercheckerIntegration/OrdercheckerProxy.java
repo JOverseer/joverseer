@@ -177,7 +177,7 @@ public class OrdercheckerProxy {
 		}
 		boolean done;
 		int safety;
-		Vector requests = main.getNation().getArmyRequests();
+		Vector requests = main.getNation().getArmyRequests(main);
 		parseInfoRequests(requests);
 		if (requests.size() > 0) {
 			this.armyRequests(main, requests); // hook

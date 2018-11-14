@@ -156,8 +156,8 @@
    <target name="test"
        depends="-Init,Compile,CompileTests"
        description="Run JUnit Tests">
-   		<junit printsummary="yes" haltonfailure="yes">
-   			<classpath> 
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath> 
    				<pathelement location="${junit.path}"/>
        			<pathelement location="${hamcrest.path}"/>
    				<pathelement location="${bintest.dir}"/>

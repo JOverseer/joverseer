@@ -336,9 +336,11 @@
             	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
 					<constructor-arg index="0" ref="mapView"/>
 				</bean>
+<!--
             	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
 					<constructor-arg index="0" ref="mapEditorView"/>
 				</bean>
+-->
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.HighlightDegradeCandidates">
             		<property name="enabled"><value>false</value></property>

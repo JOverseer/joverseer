@@ -12,6 +12,9 @@ import com.middleearthgames.orderchecker.*;
 
 public class ImportRulesCsv extends ImportCsv
 {
+    public static final String VERSIONCHECK = "\"# " + Main.getVersionString() + "\"";
+    public static final String BEGINTAG = "BEGINRULES";
+    public static final String ENDTAG = "ENDRULES";
 
     public ImportRulesCsv(String filename, Ruleset ruleset)
     {
@@ -27,12 +30,11 @@ public class ImportRulesCsv extends ImportCsv
     public String parseRules()
     {
         String line = readLine();
-        String versionCheck = "\"# " + Main.getVersionString() + "\"";
-        if(line == null || !line.equalsIgnoreCase(versionCheck))
+        if(line == null || !line.equalsIgnoreCase(VERSIONCHECK))
             return "Rules file does not appear to be valid!";
-        for(line = readLine(); line != null && !matchesTag(line, "ENDRULES"); line = readLine())
+        for(line = readLine(); line != null && !matchesTag(line, ENDTAG); line = readLine())
         {
-            if(line == null || line.charAt(0) == '#' || matchesTag(line, "BEGINRULES"))
+            if(line == null || line.charAt(0) == '#' || matchesTag(line, BEGINTAG))
                 continue;
             String result = parseLine(line);
             if(result != null)
@@ -41,6 +43,12 @@ public class ImportRulesCsv extends ImportCsv
 
         return null;
     }
+	public String makeRuleString(String rule) {
+		return VERSIONCHECK + "\n" +
+				BEGINTAG + "\n" +
+				rule + "\n" +
+				ENDTAG + "\n";
+	}
 
     private boolean matchesTag(String line, String tag)
     {
@@ -63,7 +71,7 @@ public class ImportRulesCsv extends ImportCsv
             Integer order;
             Rule rule;
             order = new Integer(param);
-            rule = new Rule(order.intValue());
+            rule = new Rule(order.intValue(),this.ruleset);
             param = getToken(line, false);
             if(param != null)
                 if(param.trim().equals("Spell"))

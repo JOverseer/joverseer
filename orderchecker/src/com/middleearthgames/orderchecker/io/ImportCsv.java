@@ -42,7 +42,10 @@ abstract class ImportCsv
     	if (is == null) {
     		return false;
     	}
-  		this.reader = new BufferedReader(new InputStreamReader(is));
+  		return this.openStream(new InputStreamReader(is));
+    }
+    public boolean openStream(Reader in) {
+  		this.reader = new BufferedReader(in);
   		return true;
     }
     // for static information we can default to using the jar file.

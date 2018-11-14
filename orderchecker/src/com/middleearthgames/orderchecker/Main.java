@@ -34,7 +34,7 @@ public class Main
 
     public static final boolean DEBUG = false;
     private static final String dataFile = "orderchecker.dat";
-    public static Main main;
+    public static Main main; // deprecate this - it stops us running multiple tests.
     public static JFrame mainFrame;
     private Nation nation;
     private Map map;
@@ -155,9 +155,14 @@ public class Main
         this.map = map;
     }
 
+    /**
+     * Warning: also sets the dependency main of ruleset to this.
+     * @param ruleset
+     */
     public void setRuleSet(Ruleset ruleset)
     {
         this.ruleset = ruleset;
+        this.ruleset.main = this;
     }
 
     private void saveData()
@@ -242,7 +247,7 @@ public class Main
         }
         boolean done;
         int safety;
-        Vector requests = this.nation.getArmyRequests();
+        Vector requests = this.nation.getArmyRequests(main);
         new ExtraInfoDlg(mainFrame, this.nation, this.data, requests);
         this.nation.processArmyRequests(requests);
         done = false;
@@ -288,5 +293,44 @@ public class Main
             displayErrorMessage(desc.toString());
         }
     }
+    //These are in the here, because Nation doesn't know it's alignment!
+    public int getNationAlignment(int nationNumber)
+    {
+        if(nationNumber >= 1 && nationNumber <= 25)
+        {
+            return getData().getNationAlignment(nationNumber - 1, getNation());
+        } else
+        {
+            return -1;
+        }
+    }
+    public boolean isNeutral(int nationNumber)
+    {
+        return getNationAlignment(nationNumber) == 0;
+    }
+    public boolean isEnemy(int thisNation, int otherNation)
+    {
+        int thisAlignment = getNationAlignment(thisNation);
+        int otherAlignment = getNationAlignment(otherNation);
+        if(thisAlignment == otherAlignment)
+        {
+            return false;
+        }
+        return thisAlignment != 0 && otherAlignment != 0;
+    }
+
+    public boolean isFriend(int thisNation, int otherNation)
+    {
+        int thisAlignment = getNationAlignment(thisNation);
+        int otherAlignment = getNationAlignment(otherNation);
+        if(thisAlignment == otherAlignment)
+        {
+            return true;
+        }
+        return thisAlignment == 0 || otherAlignment == 0 ? false : false;
+    }
+
+
+
 
 }

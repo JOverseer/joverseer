@@ -123,14 +123,14 @@ public class PopCenter
         }
     }
 
-    void initStateInformation()
+    void initStateInformation(Nation theNation,Main main)
     {
         this.troopsAvailable = getMaximumTroops();
         this.possibleDestruction = 9999;
         this.possibleCapture = 9999;
         this.possibleInfluence = 9999;
-        this.enemyArmyPresent = Main.main.getNation().isEnemyArmyPresent(this.nation, this.location);
-        this.capturingNation = Main.main.getNation().capturingNation(this, 0);
+        this.enemyArmyPresent = theNation.isEnemyArmyPresent(this.nation, this.location,main);
+        this.capturingNation = theNation.capturingNation(this, 0,main);
     }
 
     int improvementRequirement()

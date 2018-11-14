@@ -19,6 +19,7 @@ public class Army
     static final int LIGHT_INFANTRY = 3;
     static final int ARCHERS = 4;
     static final int MEN_AT_ARMS = 5;
+    static final int TROOP_TYPES_COUNT = 6;
     private static final String troopTypes[] = {
         "HC", "LC", "HI", "LI", "AR", "MA"
     };
@@ -57,7 +58,7 @@ public class Army
 
     static String getTroopName(int type)
     {
-        if(type >= 0 && type < 6)
+        if(type >= 0 && type < TROOP_TYPES_COUNT)
         {
             return troopNames[type];
         } else
@@ -68,7 +69,7 @@ public class Army
 
     static int findTroopType(String name)
     {
-        for(int i = 0; i < 6 && name != null; i++)
+        for(int i = 0; i < TROOP_TYPES_COUNT && name != null; i++)
         {
             if(troopTypes[i].equalsIgnoreCase(name))
             {
@@ -79,19 +80,19 @@ public class Army
         throw new RuntimeException("findTroopType(): troop (" + name + ") not found");
     }
 
-    void initStateInformation()
+    void initStateInformation(Nation theNation)
     {
         this.troopContent.clear();
         this.troopContent.putDefaultValue(((Object) (getTroopContent())));
-        Character character = Main.main.getNation().findCharacterByFullName(this.commander);
+        Character character = theNation.findCharacterByFullName(this.commander);
         this.armyCommander.putDefaultValue(((Object) (character)));
         this.foodRequired = 0;
         this.hasEnoughFood = false;
     }
 
-    void printStateInformation(int order)
+    void printStateInformation(int order,Nation theNation,Main main)
     {
-        if(this.nation == Main.main.getNation().getNation() || Nation.isEnemy(this.nation, Main.main.getNation().getNation()))
+        if(this.nation == theNation.getNation() || main.isEnemy(this.nation, theNation.getNation()))
         {
             String desc = "ARMY, " + order + ": " + getArmyDescription(((Character) (null)), order);
             desc = desc + ", food = " + this.foodRequired + ", has enough = " + this.hasEnoughFood;
@@ -129,7 +130,7 @@ public class Army
     private void emptyArmy(int order)
     {
         int amounts[] = getTroopContent(order);
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             amounts[i] *= -1;
         }
@@ -164,7 +165,7 @@ public class Army
 
         boolean troopPresent = false;
         int amounts[] = getTroopContent(order);
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             if(amounts[i] > 0)
             {
@@ -236,7 +237,7 @@ public class Army
     boolean isAllCavalry(int order)
     {
         int amounts[] = getTroopContent(order);
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             if(i != 0 && i != 1 && amounts[i] > 0)
             {
@@ -249,9 +250,9 @@ public class Army
 
     private int[] getTroopContent()
     {
-        int amounts[] = new int[6];
+        int amounts[] = new int[TROOP_TYPES_COUNT];
         if (this.extraInfo != null) {
-        for(int type = 0; type < 6; type++)
+        for(int type = 0; type < TROOP_TYPES_COUNT; type++)
         {
             try
             {
@@ -271,7 +272,7 @@ public class Army
 
     int[] getTroopContent(int order)
     {
-        int amounts[] = new int[6];
+        int amounts[] = new int[TROOP_TYPES_COUNT];
         int keys[] = this.troopContent.getKeys();
         Object values[] = this.troopContent.getValues();
         if(keys.length == 0)
@@ -289,7 +290,7 @@ public class Army
                 continue;
             }
             int troops1[] = (int[])(int[])values[i];
-            for(int j = 0; j < 6; j++)
+            for(int j = 0; j < TROOP_TYPES_COUNT; j++)
             {
                 amounts[j] += troops1[j];
             }
@@ -307,7 +308,7 @@ public class Army
             throw new RuntimeException("getFoodRequirement:  no troops");
         }
         int totalFood = 0;
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             int troops1 = amounts[i];
             totalFood += troops1;
@@ -358,8 +359,8 @@ public class Army
 
     void setTroopContent(int amounts[], int order)
     {
-        int change[] = new int[6];
-        for(int i = 0; i < 6; i++)
+        int change[] = new int[TROOP_TYPES_COUNT];
+        for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             change[i] = amounts[i];
         }
@@ -384,7 +385,7 @@ public class Army
 
     void setNewArmy(Character commander, int amounts[], int order)
     {
-        int troops1[] = new int[6];
+        int troops1[] = new int[TROOP_TYPES_COUNT];
         setTroopContent(troops1, 0);
         setArmyCommander(((Character) (null)), 0);
         setArmyCommander(commander, order);
@@ -421,7 +422,7 @@ public class Army
             throw new RuntimeException("getTotalTroops(): no troops found");
         }
         int total = 0;
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < TROOP_TYPES_COUNT; i++)
         {
             total += amounts[i];
         }

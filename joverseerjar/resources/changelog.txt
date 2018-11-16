@@ -1,3 +1,12 @@
+VERSION 1.16.11
+---------------
+	* Enh: updated to CME version 1.05
+	* Enh: final (hopefully) menu moves.
+	* Enh: Orderchecker now spots some cases of using two orders of the same skill. 
+	* Fix: issue #669 where orderchecker complains about PBM games.
+	* Fix: the orderchecker status in the order list view updates sooner.
+	* Fix: default nation map locations for CME.
+	
 VERSION 1.16.10
 ---------------
 	* Enh: Default to current nation for map option and appropriate views.

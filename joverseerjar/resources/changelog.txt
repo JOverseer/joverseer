@@ -1,3 +1,7 @@
+VERSION 1.16.12
+---------------
+	* Enh: updated to CME version 1.06
+
 VERSION 1.16.11
 ---------------
 	* Enh: updated to CME version 1.05

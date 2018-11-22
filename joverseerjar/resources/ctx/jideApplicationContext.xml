@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.16.11"/>
-		<property name="buildId" value="Velvet Dwarf"/>
+		<property name="version" value="1.16.12"/>
+		<property name="buildId" value="Pendantic Orc"/>
 	</bean>
 	
 	<!--

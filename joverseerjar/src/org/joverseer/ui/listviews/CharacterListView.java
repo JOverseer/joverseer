@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
@@ -73,7 +72,7 @@ public class CharacterListView extends ItemListView {
                 int idx = ((SortableTableModel)CharacterListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
                 Object obj = CharacterListView.this.tableModel.getRow(idx);
                 Character ch = (Character)obj;
-                PopulationCenter capital = (PopulationCenter)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ch.getNationNo(), Boolean.TRUE});
+                PopulationCenter capital = (PopulationCenter)CharacterListView.this.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[]{"nationNo", "capital"}, new Object[]{ch.getNationNo(), Boolean.TRUE});
                 if (capital != null && ch.getHexNo() == capital.getHexNo()) {
                     lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
                 }

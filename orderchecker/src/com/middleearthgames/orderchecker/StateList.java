@@ -7,6 +7,10 @@ package com.middleearthgames.orderchecker;
 
 import java.util.Vector;
 
+/**
+ * Effectively a HashSet<int,Object>
+ * with a default object.
+ */
 class StateList extends Vector
 {
     /**
@@ -14,6 +18,9 @@ class StateList extends Vector
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * associate an order number with an object.
+	 */
 	private class StateInfo
     {
 

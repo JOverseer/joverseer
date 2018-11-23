@@ -27,5 +27,6 @@ public enum LifecycleEventsEnum {
     ZoomDecreaseEvent,
     GameLoadedEvent,
     EditOrderStartEvent,
-    OrderSaveToFileEvent
+    OrderSaveToFileEvent,
+    OrderCheckerRunEvent
 }

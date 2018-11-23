@@ -18,10 +18,8 @@ import javax.swing.table.TableColumnModel;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.SpellInfo;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.SpellcasterWrapper;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
@@ -114,10 +112,10 @@ public class SpellcasterListView extends BaseItemListView {
 		spellLists.add(new SpellList("Scrying & Hidden Visions", new Integer[] { 413, 414, 415, 436, 416, 420, 430, 434 }, new String[] { "Scry PC", "Scry Hex", "Scry Area", "Scry Char", "Rev Prod", "Rev Char", "Rev Char True", "Rev PC" }));
 
 		// all spells
-		if (GameHolder.hasInitializedGame()) {
+		if (this.getGame() != null) {
 			SpellList all = new SpellList("All", new Integer[] {}, new String[] {});
 
-			for (SpellInfo si : GameHolder.instance().getGame().getMetadata().getSpells().getItems()) {
+			for (SpellInfo si : this.game.getMetadata().getSpells().getItems()) {
 				all.getSpells().add(si.getNumber());
 				all.getSpellDescrs().add(si.getName());
 				if (si.getList().equals("Spirit Mastery")) {
@@ -230,14 +228,14 @@ public class SpellcasterListView extends BaseItemListView {
 						if (vColIndex - 5 >= 0 && vColIndex - 5 < sl.getSpells().size()) {
 							int spellId = sl.getSpells().get(vColIndex - 5);
 							if (spellId < 1000) {
-								SpellInfo si = GameHolder.instance().getGame().getMetadata().getSpells().findFirstByProperty("number", spellId);
+								SpellInfo si = SpellcasterListView.this.gameHolder.getGame().getMetadata().getSpells().findFirstByProperty("number", spellId);
 								if (si == null) {
 									toolTip = String.valueOf(spellId);
 								} else {
 									toolTip = si.getNumber() + " - " + si.getName() + ": " + si.getDescription();
 								}
 							} else {
-								SpellInfo si = GameHolder.instance().getGame().getMetadata().getSpells().findFirstByProperty("number", spellId - 1000);
+								SpellInfo si = SpellcasterListView.this.gameHolder.getGame().getMetadata().getSpells().findFirstByProperty("number", spellId - 1000);
 								if (si == null) {
 									toolTip = String.valueOf(spellId);
 								} else {
@@ -299,10 +297,7 @@ public class SpellcasterListView extends BaseItemListView {
 		sl = getSpellsFromFilters();
 		ArrayList<Integer> spells = sl.getSpells();
 		ArrayList<SpellcasterWrapper> items = new ArrayList<SpellcasterWrapper>();
-		Game g = GameHolder.instance().getGame();
-		if (g == null || !Game.isInitialized(g))
-			return;
-		Turn t = g.getTurn();
+		Turn t = this.getTurn();
 		if (t == null)
 			return;
 		SpellcasterWrapper sw;

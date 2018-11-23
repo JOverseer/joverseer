@@ -12,8 +12,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.HashMap;
-
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
@@ -25,12 +23,10 @@ import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
-import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.orders.OrderVisualizationData;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.drawing.Arrow;
-import org.springframework.richclient.application.Application;
 
 /**
  * Draws orders on the map Sometimes to draw an order you need some parameters
@@ -40,7 +36,6 @@ import org.springframework.richclient.application.Application;
  * @author Marios Skounakis
  */
 public class OrderRenderer extends DefaultHexRenderer {
-	MapMetadata mapMetadata = null;
 	OrderVisualizationData orderVisualizationData = null;
 
 	private OrderVisualizationData getOrderVisualizationData() {
@@ -51,8 +46,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private boolean drawOrders() {
-		HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-		Object obj = mapOptions1.get(MapOptionsEnum.DrawOrders);
+		Object obj = this.mapOptions.get(MapOptionsEnum.DrawOrders);
 		if (obj == null)
 			return false;
 		if (obj == MapOptionValuesEnum.DrawOrdersOn) {
@@ -591,8 +585,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private boolean drawCharNames() {
-		HashMap mapOptions1 = (HashMap) Application.instance().getApplicationContext().getBean("mapOptions");
-		Object obj = mapOptions1.get(MapOptionsEnum.DrawNamesOnOrders);
+		Object obj = this.mapOptions.get(MapOptionsEnum.DrawNamesOnOrders);
 		if (obj == null)
 			return false;
 		if (obj == MapOptionValuesEnum.DrawNamesOnOrdersOn) {

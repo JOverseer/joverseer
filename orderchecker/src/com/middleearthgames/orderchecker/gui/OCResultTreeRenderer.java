@@ -8,7 +8,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 @SuppressWarnings("serial")
 public class OCResultTreeRenderer extends DefaultTreeCellRenderer {
-    @SuppressWarnings("unused")
 	private ImageIcon redIcon = new ImageIcon("images/red.gif");
     public ImageIcon getRedIcon() {
 		return this.redIcon;
@@ -41,13 +40,9 @@ public class OCResultTreeRenderer extends DefaultTreeCellRenderer {
 		this.charIcon = charIcon;
 	}
 
-	@SuppressWarnings("unused")
 	private ImageIcon yellowIcon = new ImageIcon("images/yellow.gif");
-    @SuppressWarnings("unused")
 	private ImageIcon greenIcon = new ImageIcon("images/green.gif");
-    @SuppressWarnings("unused")
 	private ImageIcon orderIcon = new ImageIcon("images/order.gif");
-    @SuppressWarnings("unused")
 	private ImageIcon charIcon = new ImageIcon("images/character.gif");
 
     private OCDialog parent;

@@ -10,12 +10,10 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.info.InfoUtils;
 import org.joverseer.ui.domain.NationStatisticsWrapper;
@@ -48,8 +46,8 @@ public class NationStatisticsListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
+		Turn t = this.getTurn();
+		if (t == null)
 			return;
 		ArrayList<NationStatisticsWrapper> items = new ArrayList<NationStatisticsWrapper>();
 		NationStatisticsWrapper fp = new NationStatisticsWrapper();
@@ -61,8 +59,7 @@ public class NationStatisticsListView extends BaseItemListView {
 		NationStatisticsWrapper ns = new NationStatisticsWrapper();
 		ns.setAllegiance(NationAllegianceEnum.Neutral);
 
-		Turn t = g.getTurn();
-		int limit = InfoUtils.getCharactersAllowed(g.getMetadata().getGameType(), g.getCurrentTurn());
+		int limit = InfoUtils.getCharactersAllowed(this.game.getMetadata().getGameType(), this.game.getCurrentTurn());
 		for (int i = 0; i < 28; i++) {
 			NationRelations nr = t.getNationRelations(i);
 			if (nr != null && nr.getEliminated())

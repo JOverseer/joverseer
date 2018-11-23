@@ -37,9 +37,9 @@
 			<list>
 				<ref bean="gameMenu"/>
 				<ref bean="utilMenu"/>
-  				<ref bean="windowMenu"/>
+<!--   				<ref bean="windowMenu"/>  -->
 				<ref bean="advancedMenu"/>
-<!-- 				<ref bean="mapMenu"/> -->
+ 				<ref bean="mapMenu"/>
  				<ref bean="settingsMenu"/>
                 <ref bean="helpMenu"/>
                 <ref bean="adminMenu"/>
@@ -205,6 +205,16 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
+            	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
+					<constructor-arg index="0" ref="spellInfoListView"/>
+            	</bean>
+            	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
+					<constructor-arg index="0" ref="infoView"/>
+            	</bean>
+            	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
+					<constructor-arg index="0" ref="orderInfoView"/>
+            	</bean>
+				<value>separator</value>
 				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand"/>
 				<bean class="org.joverseer.ui.command.ShowMapHelpCommand"/>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand"/>
@@ -230,13 +240,13 @@
 	<bean id="aboutCommand" 
 		class="org.springframework.richclient.command.support.AboutCommand">
 	</bean>
-<!-- 
+ 
 	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
         <property name="members">
             <list>
             	<bean id="toolsArmiesMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
--->  <!-- for some reason CommandGroupFactoryBean ignores the id so we pass in what we want it to be-->
-<!--             		<property name="message"><value>toolsArmiesMenu</value></property>
+ <!-- for some reason CommandGroupFactoryBean ignores the id so we pass in what we want it to be-->
+             		<property name="message"><value>toolsArmiesMenu</value></property>
 			        <property name="members">
             		<list>
             			<ref bean="armyListView"/>
@@ -289,37 +299,49 @@
             		<property name="message"><value>toolsGeneralMenu</value></property>
 			        <property name="members">
             		<list>
-            			<ref bean="nationMessageListView"/>
             			<ref bean="notesListView"/>
             			<ref bean="playerInfoListView"/>
-            			<ref bean="nationStatisticsListView"/>
             			<ref bean="orderListView"/>
             			<ref bean="relationsListView"/>
-            			<ref bean="spellInfoListView"/>
-            			<ref bean="mapOptionsView"/>
             			<ref bean="currentHexDataViewer"/>
-            			<ref bean="mapView"/>
             			<ref bean="orderEditorView"/>
             			<ref bean="populationCenterListView"/>
+            			<ref bean="hexProductionListView"/>
+            			<ref bean="orderCheckerView"/>            			
+            		</list>
+			        </property>
+            	</bean>
+            	<bean id="toolsTurnMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
+            		<property name="message"><value>toolsTurnMenu</value></property>
+			        <property name="members">
+            		<list>
+            			<ref bean="nationMessageListView"/>
             			<ref bean="pdfFileView"/>
-            			<ref bean="infoView"/>
-            			<ref bean="orderInfoView"/>
             			<ref bean="turnReportView"/>
             			<ref bean="gameEncountersReportView"/>
             			<ref bean="orderResultsView"/>
-            			<ref bean="mapEditorView"/>
-            			<ref bean="hexProductionListView"/>
-            			<ref bean="orderCheckerView"/>            			
             		</list>
 			        </property>
             	</bean>	
            	</list>
        	</property>
    	</bean>
- -->
- 	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+ 
+ 	 <bean id="mapMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
         <property name="members">
             <list>	
+            	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
+					<constructor-arg index="0" ref="mapOptionsView"/>
+            	</bean>
+            	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
+					<constructor-arg index="0" ref="mapView"/>
+				</bean>
+<!--
+            	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
+					<constructor-arg index="0" ref="mapEditorView"/>
+				</bean>
+-->
+                <value>separator</value>
             	<bean class="org.joverseer.ui.command.HighlightDegradeCandidates">
             		<property name="enabled"><value>false</value></property>
             	</bean>
@@ -413,10 +435,8 @@
             		<property name="enabled"><value>true</value></property>
             		<property name="group"><value>Window Display</value></property>
             	</bean>
-<!-- 
-                <value>separator</value>
+                 <value>separator</value>
                 <ref bean="restoreLayoutMenu"/>
- -->
              </list>
         </property>
     </bean>

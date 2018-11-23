@@ -21,10 +21,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
+import org.joverseer.ui.BaseView;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
@@ -35,7 +35,6 @@ import org.joverseer.ui.support.UIUtils;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
@@ -47,7 +46,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class TeamEconomyView extends AbstractView implements ApplicationListener {
+public class TeamEconomyView extends BaseView implements ApplicationListener {
 	JTable teamEconomyTable;
 	TeamEconomyTableModel teamEconomyTableModel;
 //	JComboBox showProductAsCombo;
@@ -126,30 +125,38 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 		lb.relatedGapRow();
 
 		this.nationProductionListView = new NationProductionListView();
-		JPanel pnl = (JPanel) this.nationProductionListView.getControl();
-		pnl.setPreferredSize(new Dimension(300, 300));
-		lb.cell(pnl);
+		try {
+			this.nationProductionListView.afterPropertiesSet();
+			JPanel pnl = (JPanel) this.nationProductionListView.getControl();
+			pnl.setPreferredSize(new Dimension(300, 300));
+			lb.cell(pnl);
 
-		lb.relatedGapRow();
+			lb.relatedGapRow();
 
-		lb.separator(Messages.getString("TeamEconomyView.TE")); //$NON-NLS-1$
-		lb.relatedGapRow();
+			lb.separator(Messages.getString("TeamEconomyView.TE")); //$NON-NLS-1$
+			lb.relatedGapRow();
 
-		this.nationEconomyListView = new NationEconomyListView();
-		pnl = (JPanel) this.nationEconomyListView.getControl();
-		pnl.setPreferredSize(new Dimension(300, 270));
-		lb.cell(pnl);
+			this.nationEconomyListView = new NationEconomyListView();
+			this.nationEconomyListView.afterPropertiesSet();
+			pnl = (JPanel) this.nationEconomyListView.getControl();
+			pnl.setPreferredSize(new Dimension(300, 270));
+			lb.cell(pnl);
 
-		lb.relatedGapRow();
+			lb.relatedGapRow();
 
-		lb.separator(Messages.getString("TeamEconomyView.Tstats")); //$NON-NLS-1$
-		lb.relatedGapRow();
+			lb.separator(Messages.getString("TeamEconomyView.Tstats")); //$NON-NLS-1$
+			lb.relatedGapRow();
 
-		this.nationStatisticsListView = new NationStatisticsListView();
+			this.nationStatisticsListView = new NationStatisticsListView();
+			this.nationStatisticsListView.afterPropertiesSet();
+			pnl = (JPanel) this.nationStatisticsListView.getControl();
+			pnl.setPreferredSize(new Dimension(300, 270));
+			lb.cell(pnl);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-		pnl = (JPanel) this.nationStatisticsListView.getControl();
-		pnl.setPreferredSize(new Dimension(300, 270));
-		lb.cell(pnl);
 		this.teamEconomyTableModel.nswm = this.nationStatisticsListView.getTableModel();
 		// without this we, never get the initialised tax base.
 		this.teamEconomyTableModel.nswm.addTableModelListener(new TableModelListener() {
@@ -167,28 +174,28 @@ public class TeamEconomyView extends AbstractView implements ApplicationListener
 	}
 
 	private void updateMarketAndOrderCosts() {
-		if (!GameHolder.hasInitializedGame())
-			return;
-		OrderCostCalculator occ = new OrderCostCalculator();
-		Game g = GameHolder.instance().getGame();
-		for (EconomyCalculatorData ecd : g.getTurn().getEconomyCalculatorData().getItems()) {
-			ecd.setOrdersCost(occ.getTotalOrderCostForNation(g.getTurn(), ecd.getNationNo()));
-			ecd.updateMarketFromOrders();
+		Turn t = this.getTurn();
+		if (t != null ) {
+			OrderCostCalculator occ = new OrderCostCalculator();
+			for (EconomyCalculatorData ecd : t.getEconomyCalculatorData().getItems()) {
+				ecd.setOrdersCost(occ.getTotalOrderCostForNation(t, ecd.getNationNo()));
+				ecd.updateMarketFromOrders();
+			}
+			
+			TeamEconomyView.this.teamEconomyTableModel.fireTableDataChanged();
 		}
-
-		TeamEconomyView.this.teamEconomyTableModel.fireTableDataChanged();
 	}
 	public void refreshTableItems() {
 		ArrayList<EconomyCalculatorData> ecds = new ArrayList<EconomyCalculatorData>();
-		GameHolder.instance();
-		if (GameHolder.hasInitializedGame()) {
+		Turn t = this.getTurn();
+		if (t != null) {
 			updateMarketAndOrderCosts();
-			for (NationEconomy ne : GameHolder.instance().getGame().getTurn().getNationEconomies().getItems()) {
-				EconomyCalculatorData ecd = (EconomyCalculatorData) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", ne.getNationNo()); //$NON-NLS-1$
+			for (NationEconomy ne : t.getNationEconomies().getItems()) {
+				EconomyCalculatorData ecd = (EconomyCalculatorData) t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", ne.getNationNo()); //$NON-NLS-1$
 				if (ecd == null) {
 					ecd = new EconomyCalculatorData();
 					ecd.setNationNo(ne.getNationNo());
-					GameHolder.instance().getGame().getTurn().getEconomyCalculatorData().addItem(ecd);
+					t.getEconomyCalculatorData().addItem(ecd);
 				}
 				ecds.add(ecd);
 			}

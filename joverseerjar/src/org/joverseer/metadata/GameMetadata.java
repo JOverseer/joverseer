@@ -166,7 +166,6 @@ public class GameMetadata implements Serializable {
 		out.writeObject(this.hexOverrides);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
 		this.characters = (Container<Character>) in.readObject();
 		this.artifacts = (Container<ArtifactInfo>) in.readObject();

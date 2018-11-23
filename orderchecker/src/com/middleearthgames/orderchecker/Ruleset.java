@@ -20,12 +20,31 @@ public class Ruleset extends Vector
 	private Vector orderNumbers;
     private Vector orderNames;
 
+    protected Main main; // should be injected before
+    
     public Ruleset()
     {
         this.orderNumbers = new Vector();
         this.orderNames = new Vector();
     }
 
+    /**
+     * Used by the Rule constructor to establish the context for the Rule.
+     * @return Main - the context for the rules within this ruleset
+     */
+    public Main getMain() {
+    	return this.main;
+    }
+    /**
+     * Note changing this changes the context of rules within this ruleset.
+     * @param value
+     */
+    public void setMain(Main value) {
+    	this.main = value;
+    	for (int i=0; i < this.size();i++) {
+    		this.setMain(value);
+    	}
+    }
     void printStateInformation()
     {
         for(int i = 0; i < size(); i++)

@@ -29,7 +29,6 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.AsciiUtils;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
@@ -210,7 +209,7 @@ public class TrackCharacterListView extends BaseItemListView {
 	@Override
 	protected void setItems() {
 		ArrayList<TrackCharacterInfo> items = new ArrayList<TrackCharacterInfo>();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		String charName = this.character.getText();
@@ -325,8 +324,7 @@ public class TrackCharacterListView extends BaseItemListView {
 						Point selectedHex = new Point(tci.getX(), tci.getY());
 						joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 					}
-					Game g = GameHolder.instance().getGame();
-					g.setCurrentTurn(tci.getTurnNo());
+					TrackCharacterListView.this.getGame().setCurrentTurn(tci.getTurnNo());
 					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 
 				} catch (Exception exc) {

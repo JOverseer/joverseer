@@ -112,9 +112,12 @@ public class JideApplicationPage extends DefaultApplicationPage {
         for (int i = 0; i < views.length; i++) {
             String id = views[i].getId();
             CommandManager commandManager = this.window.getCommandManager();
-            if (commandManager.containsActionCommand(id)) {
-                ActionCommand command = commandManager.getActionCommand(id);
-                command.setVisible(this.pageViews.contains(views[i].getId()));
+            Object obj = commandManager.getCommand(id); 
+            if (obj != null) {
+            	if (obj instanceof ActionCommand) {
+            		ActionCommand command = (ActionCommand)obj;
+            		command.setVisible(this.pageViews.contains(views[i].getId()));
+            	}
             }
         }
     }

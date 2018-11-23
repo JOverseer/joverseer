@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.NationEconomyPotential;
 import org.springframework.context.MessageSource;
 
@@ -11,8 +13,8 @@ import org.springframework.context.MessageSource;
 @SuppressWarnings("serial")
 public class NationEconomyPotentialTableModel extends ItemTableModel {
 
-	public NationEconomyPotentialTableModel(MessageSource messageSource) {
-		super(NationEconomyPotential.class, messageSource);
+	public NationEconomyPotentialTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(NationEconomyPotential.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -21,7 +23,6 @@ public class NationEconomyPotentialTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class };
 	}

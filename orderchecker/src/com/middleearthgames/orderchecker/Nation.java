@@ -12,6 +12,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.middleearthgames.orderchecker.io.Data;
+
 // Referenced classes of package com.middleearthgames.orderchecker:
 //            Character, Army, PopCenter, Order, 
 //            Main
@@ -19,7 +21,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class Nation
 {
 
-    private int nation;
+	private int nation;
     private int capitalHex;
     private int game;
     private int turn;
@@ -34,6 +36,15 @@ public class Nation
     private Vector nationsParsed;
     private Vector orderList;
     private Vector requestList;
+    
+    private int dataGameType;
+
+    public Vector getOrderList() {
+		return this.orderList;
+	}
+    public Order getOrder(int index) {
+    	return (Order)this.orderList.elementAt(index);
+    }
 
     public Nation()
     {
@@ -54,73 +65,36 @@ public class Nation
         this.requestList = new Vector();
     }
 
-    static boolean isEnemy(int thisNation, int otherNation)
-    {
-        int thisAlignment = getNationAlignment(thisNation);
-        int otherAlignment = getNationAlignment(otherNation);
-        if(thisAlignment == otherAlignment)
-        {
-            return false;
-        }
-        return thisAlignment != 0 && otherAlignment != 0;
-    }
-
-    static boolean isFriend(int thisNation, int otherNation)
-    {
-        int thisAlignment = getNationAlignment(thisNation);
-        int otherAlignment = getNationAlignment(otherNation);
-        if(thisAlignment == otherAlignment)
-        {
-            return true;
-        }
-        return thisAlignment == 0 || otherAlignment == 0 ? false : false;
-    }
-
-    static boolean isNeutral(int nationNumber)
-    {
-        return getNationAlignment(nationNumber) == 0;
-    }
-
-    public static int getNationAlignment(int nationNumber)
-    {
-        if(nationNumber >= 1 && nationNumber <= 25)
-        {
-            return Main.main.getData().getNationAlignment(nationNumber - 1, Main.main.getNation());
-        } else
-        {
-            return -1;
-        }
-    }
-
     public String implementPhase(int phase, Main main)
     {
         if(phase == 1)
         {
-            if(is2950Game() && main.getData().getGameType() != 1 || is1650Game() && main.getData().getGameType() != 0)
+        	this.dataGameType = main.getData().getGameType();
+            if(is2950Game() && this.dataGameType != Data.GAME_2950 || is1650Game() && this.dataGameType != Data.GAME_1650)
             {
                 Main.displayErrorMessage("Game type selection does not match that found in the turn file.\n\nProcessing will continue...");
             }
             Collections.sort(((java.util.List) (this.characters)));
-            for(int i = 0; i < this.characters.size(); i++)
+            for(int i = this.characters.size()-1; i >= 0 ; i--)
             {
                 Character character = (Character)this.characters.get(i);
-                character.initStateInformation();
+                character.initStateInformation(main.getNation());
             }
 
-            for(int i = 0; i < this.armies.size(); i++)
+            for(int i = this.armies.size() - 1 ; i >= 0 ; i--)
             {
                 Army army = (Army)this.armies.get(i);
-                army.initStateInformation();
+                army.initStateInformation(main.getNation());
             }
 
-            for(int i = 0; i < this.popcenters.size(); i++)
+            for(int i = this.popcenters.size() -1 ; i >= 0;i--)
             {
                 PopCenter pc = (PopCenter)this.popcenters.get(i);
-                pc.initStateInformation();
+                pc.initStateInformation(main.getNation(),main);
             }
 
             this.orderList.removeAllElements();
-            for(int i = 0; i < this.characters.size(); i++)
+            for(int i = this.characters.size() - 1 ; i >= 0 ; i--)
             {
                 Character character = (Character)this.characters.get(i);
                 if(character.getNation() == this.nation)
@@ -133,11 +107,11 @@ public class Nation
         for(int i = 0; i < this.orderList.size(); i++)
         {
             Order order = (Order)this.orderList.get(i);
-            if(order.getDone())
+            if(order.getDone() && (phase != 1)) // make sure that we don't skip phase 1 on a repeat.
             {
                 continue;
             }
-            String result = order.implementPhase(phase);
+            String result = order.implementPhase(phase,main.getRuleSet());
             if(result != null)
             {
                 return result;
@@ -199,25 +173,25 @@ public class Nation
 
     }
 
-    void printStateInformation()
+    void printStateInformation(Main main)
     {
         for(int i = 0; i < this.characters.size(); i++)
         {
             Character character = (Character)this.characters.get(i);
-            character.printStateInformation(0);
-            character.printStateInformation(9999);
+            character.printStateInformation(0,this);
+            character.printStateInformation(9999,this);
         }
 
         for(int i = 0; i < this.armies.size(); i++)
         {
             Army army = (Army)this.armies.get(i);
-            army.printStateInformation(0);
-            army.printStateInformation(9999);
+            army.printStateInformation(0,this,main);
+            army.printStateInformation(9999,this,main);
         }
 
     }
 
-    public Vector getArmyRequests()
+    public Vector getArmyRequests(Main main)
     {
         this.requestList.removeAllElements();
         for(int i = 0; i < this.armies.size(); i++)
@@ -228,7 +202,7 @@ public class Nation
                 continue;
             }
             String msg;
-            if(canPopCenterSupportTroops(army.getLocation()))
+            if(canPopCenterSupportTroops(army.getLocation(),main))
             {
                 army.setFoodRequired(1);
                 msg = "FOOD:Will " + army.getCommander() + "'s army have 1 food?";
@@ -406,18 +380,18 @@ public class Nation
         return null;
     }
 
-    boolean isEnemyArmyPresent(int location)
+    boolean isEnemyArmyPresent(int location,Main main)
     {
-        return isEnemyArmyPresent(this.nation, location);
+        return isEnemyArmyPresent(this.nation, location,main);
     }
 
-    boolean isEnemyArmyPresent(int nationNum, int location)
+    boolean isEnemyArmyPresent(int nationNum, int location,Main main)
     {
         int size = this.armies.size();
         for(int i = 0; i < size; i++)
         {
             Army army = (Army)this.armies.get(i);
-            if(army.getLocation() == location && isEnemy(nationNum, army.getNation()))
+            if(army.getLocation() == location && main.isEnemy(nationNum, army.getNation()))
             {
                 return true;
             }
@@ -426,13 +400,13 @@ public class Nation
         return false;
     }
 
-    boolean isNeutralArmyPresent(int location)
+    boolean isNeutralArmyPresent(int location,Main main)
     {
         int size = this.armies.size();
         for(int i = 0; i < size; i++)
         {
             Army army = (Army)this.armies.get(i);
-            if(army.getLocation() == location && isNeutral(army.getNation()))
+            if(army.getLocation() == location && main.isNeutral(army.getNation()))
             {
                 return true;
             }
@@ -441,7 +415,7 @@ public class Nation
         return false;
     }
 
-    private boolean canPopCenterSupportTroops(int location)
+    private boolean canPopCenterSupportTroops(int location,Main main)
     {
         PopCenter pc = findOwnedPopulationCenter(location);
         if(pc == null)
@@ -452,7 +426,7 @@ public class Nation
         for(int i = 0; i < this.armies.size(); i++)
         {
             Army army = (Army)this.armies.get(i);
-            if(army.getLocation() == location && (army.getNation() == this.nation || isFriend(this.nation, army.getNation())))
+            if(army.getLocation() == location && (army.getNation() == this.nation || main.isFriend(this.nation, army.getNation())))
             {
                 totalFood -= army.getFoodRequirement();
             }
@@ -477,13 +451,13 @@ public class Nation
         return troops;
     }
 
-    int capturingNation(PopCenter pc, int value)
+    int capturingNation(PopCenter pc, int value,Main main)
     {
         int troopCount[] = new int[26];
         for(int i = 0; i < this.armies.size(); i++)
         {
             Army army = (Army)this.armies.get(i);
-            if(army.getLocation() == pc.getLocation() && isEnemy(pc.getNation(), army.getNation()))
+            if(army.getLocation() == pc.getLocation() && main.isEnemy(pc.getNation(), army.getNation()))
             {
                 troopCount[army.getNation()] += army.getTotalTroops(value);
             }
@@ -518,9 +492,8 @@ public class Nation
     public int getMaxRank(int rank)
     {
         int maxRank = 30;
-        int gameType1 = Main.main.getData().getGameType();
-        boolean game1650 = gameType1 == 0;
-        boolean game2950 = gameType1 == 1;
+        boolean game1650 = this.dataGameType == Data.GAME_1650;
+        boolean game2950 = this.dataGameType == Data.GAME_2950;
         switch(rank)
         {
         default:
@@ -623,9 +596,8 @@ public class Nation
     public boolean hasSpellPrereq(int spell)
     {
         boolean prerequisite = false;
-        int gameType1 = Main.main.getData().getGameType();
-        boolean game1650 = gameType1 == 0;
-        boolean game2950 = gameType1 == 1;
+        boolean game1650 = this.dataGameType == Data.GAME_1650;
+        boolean game2950 = this.dataGameType == Data.GAME_2950;
         switch(spell)
         {
         default:

@@ -6,6 +6,29 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
+    <title>1.16.12</title>
+    <pubDate>Thu, 22 Nov 2018</pubDate>
+    <description>
+VERSION 1.16.12
+---------------
+	* Enh: updated to CME version 1.06
+</description>
+    </item>
+    <item>
+    <title>1.16.11</title>
+    <pubDate>Fri, 16 Nov 2018</pubDate>
+    <description>
+VERSION 1.16.11
+---------------
+	* Enh: updated to CME version 1.05
+	* Enh: final (hopefully) menu moves.
+	* Enh: Orderchecker now spots some cases of using two orders of the same skill. 
+	* Fix: issue #669 where orderchecker complains about PBM games.
+	* Fix: the orderchecker status in the order list view updates sooner.
+	* Fix: default nation map locations for CME.
+</description>
+    </item>
+    <item>
     <title>1.16.10</title>
     <pubDate>Sun, 28 Oct 2018</pubDate>
     <description>

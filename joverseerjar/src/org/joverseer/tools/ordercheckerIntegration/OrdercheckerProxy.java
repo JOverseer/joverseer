@@ -123,44 +123,10 @@ public class OrdercheckerProxy {
 		}
 		Main.main.setMap(new Map());
 		Game g = GameHolder.instance().getGame();
-/*		String gt;
-		if (g.getMetadata().getGameType() == GameTypeEnum.game1650) {
-			Main.main.getData().setGameType("1650");
-			gt = "1650";
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.game2950) {
-			Main.main.getData().setGameType("2950");
-			gt = "2950";
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameBOFA) {
-			Main.main.getData().setGameType("BOFA");
-			gt = "bofa";
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameFA) {
-			Main.main.getData().setGameType("Fourth Age");
-			gt = "fa";
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
-			Main.main.getData().setGameType("Untold War");
-			gt = "uw";
-		} else if (g.getMetadata().getGameType() == GameTypeEnum.gameKS) {
-			Main.main.getData().setGameType("Kin Strife");
-			gt = "ks";
-		}
-*/
+        Main.main.getData().setGameType(g.getMetadata().getGameType().toOrderCheckerName());
+
 		copyCurrentMap(g.getMetadata(),Main.main.getMap());
-/*		
-		ImportTerrainCsv terrain = new ImportTerrainCsv(data.getTerrainPath() + gt + ".game", Main.main.getMap());
-		result = terrain.getMapInformation();
-		if (!result) {
-			terrain.closeFile();
-			this.displayErrorMessage("The terrain file (" + data.getTerrainPath() + ") could not be opened!");
-			return;
-		}
-		error = terrain.parseTerrain();
-		terrain.closeFile();
-		if (error != null) {
-			error = error + "\n\nOrder checking cancelled.";
-			this.displayErrorMessage(error);
-			return;
-		}
-*/
+
 		if (!Main.main.getMap().isMapComplete()) {
 			this.displayErrorMessage("The map file was processed but appears to be missing data!");
 			return;
@@ -211,7 +177,7 @@ public class OrdercheckerProxy {
 		}
 		boolean done;
 		int safety;
-		Vector requests = main.getNation().getArmyRequests();
+		Vector requests = main.getNation().getArmyRequests(main);
 		parseInfoRequests(requests);
 		if (requests.size() > 0) {
 			this.armyRequests(main, requests); // hook

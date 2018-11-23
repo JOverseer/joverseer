@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 import org.joverseer.domain.Company;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.CompanyWrapper;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.controls.TableUtils;
@@ -29,10 +28,10 @@ public class CompanyListView extends BaseItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
+		Turn t = this.getTurn();
+		if (t == null)
 			return;
-		Container<Company> items = g.getTurn().getCompanies();
+		Container<Company> items = t.getCompanies();
 		ArrayList<CompanyWrapper> filteredItems = new ArrayList<CompanyWrapper>();
 		AbstractListViewFilter filter = getActiveFilter();
 		for (Company o : items.getItems()) {

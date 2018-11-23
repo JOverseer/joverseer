@@ -4,7 +4,9 @@
         Build file for the orderchecker.jar part of joverseer.
     </description>
     <property name="bin">bin</property>
+	<property name="test.dir">test</property>
     <property name="src">src</property>
+	<property name="bintest.dir">bin-test</property>
     <property name="res.dir">resources</property>
     <property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
@@ -12,7 +14,26 @@
 	<property name="shared.lib">../lib</property>
     <property name="jardir">${dist}/lib</property>
     <property name="jarfile">${jardir}/orderchecker.jar</property>
-	<property name="compat.rt.jar">${shared.lib}/compat-1.6-rt.jar</property>
+	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
+	<property name="junit.path">../joverseerjar/lib/junit-4.12.jar</property>
+    <property name="orderchecker.dir">../orderchecker/dist/lib</property>
+    <path id="orderchecker.path">
+        <fileset dir="${orderchecker.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+	<!-- needed to run junit4 -->
+	<property name="hamcrest.path">../joverseerjar/lib/hamcrest-core-1.3.jar</property>
+	<path id="assertj.path">
+		<fileset dir="${shared.lib}">
+			<include name="assertj*.jar"/>
+		</fileset>
+	</path>
+	<path id="assertj.path">
+		<fileset dir="${shared.lib}">
+			<include name="assertj*.jar"/>
+		</fileset>
+	</path>
 
     
    <!-- Main targets -->
@@ -32,13 +53,30 @@
        </javac>
        
    </target>
+	<target name="CompileTests"
+	       depends="-Init,Jar">
+	       <javac srcdir="${test.dir}" destdir="${bintest.dir}" 
+	           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
+	       		<classpath>
+	       			<pathelement location="${junit.path}"/>
+	       		    <path refid="orderchecker.path"/>
+				</classpath>
+	       	</javac>
+	</target>
    <target name="Test"
-       depends="-Init,Compile"
+    depends="-Init,Jar,CompileTests"
        description="Run JUnit Tests">
-       <java fork="yes" classname="junit.textui.TestRunner"
-           taskname="junit" failonerror="true">
-           
-       </java>
+		<junit printsummary="withOutAndErr" haltonfailure="yes" >
+		<classpath> 
+			<pathelement location="${junit.path}"/>
+   			<pathelement location="${hamcrest.path}"/>
+			<pathelement location="${bintest.dir}"/>
+   			<path refid="orderchecker.path"/>
+			</classpath>
+			<test name="orderchecker.ConfidenceTest">
+				<formatter type="plain"/>
+			</test>
+		</junit>
        <echo message="Tested"/>
    </target>
 	<target name="Javadoc"
@@ -62,7 +100,7 @@
             	    <attribute name="Specification-Version" value="2.4a"/>
             	    <attribute name="Specification-Vendor" value="Middle-Earth Games"/>
             	    <attribute name="Implementation-Title" value="orderchecker"/>
-            	    <attribute name="Implementation-Version" value="2.4a ${TODAY}"/>
+            	    <attribute name="Implementation-Version" value="2.4b ${TODAY}"/>
             	    <attribute name="Implementation-Vendor" value="Middle-Earth Games"/>
             	</section>
             </manifest>
@@ -78,10 +116,12 @@
        <echo message="Build time: ${TODAY} ${TSTAMP}"/>
    </target>
    <target name="-Prep">
-       <delete dir="${bin}"/>
+       <delete dir="${bin}" quiet="true"/>
+	   <delete dir="${bintest.dir}" quiet="true"/>
        <delete dir="${dist}"/>
        <delete dir="${jardir}"/>
        <mkdir dir="${bin}"/>
+       <mkdir dir="${bintest.dir}"/>
        <mkdir dir="${dist}"/>
        <mkdir dir="${jardir}"/>
    </target>

@@ -10,8 +10,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.joverseer.domain.HexInfo;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -25,7 +23,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.support.drawing.ColorPicker;
-import org.springframework.richclient.application.Application;
 
 /**
  * Renders visible/invisible hexes
@@ -38,7 +35,6 @@ import org.springframework.richclient.application.Application;
  */
 public class HexInfoRenderer extends DefaultHexRenderer {
     GameHolder gh;
-    HashMap mapOptions;
     int densityFactor = 4;
     Renderer hexNumberRenderer = null;
     BufferedImage img = null;
@@ -49,9 +45,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
     @Override
 	public void refreshConfig() {
         super.refreshConfig();
+        // the map options have already been refreshed.
         this.img = null;
         this.gh = GameHolder.instance();
-        this.mapOptions = (HashMap)Application.instance().getApplicationContext().getBean("mapOptions");
     }
 
 	public int getDensityFactor() {

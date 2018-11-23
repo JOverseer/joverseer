@@ -1,6 +1,8 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
 /**
@@ -11,8 +13,8 @@ import org.springframework.context.MessageSource;
 public class ArtifactInfoTableModel extends ItemTableModel {
 	private static final long serialVersionUID = 1L;
 
-	public ArtifactInfoTableModel(MessageSource messageSource) {
-		super(ArtifactInfo.class, messageSource);
+	public ArtifactInfoTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(ArtifactInfo.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -21,7 +23,6 @@ public class ArtifactInfoTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class };
 	}

@@ -45,6 +45,7 @@ import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.SpellInfo;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
@@ -515,7 +516,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.append(this.artifactsTable = new JTable(), 2, 1);
 		this.artifactsTable.setPreferredSize(this.uiSizes.newDimension(150/20, this.uiSizes.getHeight5()));
-		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource()) {
+		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource(),GameHolder.instance(),PreferenceRegistry.instance()) {
 
 			/**
 			 * 
@@ -581,7 +582,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.append(this.spellsTable = new JTable(), 2, 1);
 		this.spellsTable.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
-		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource()) {
+		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource(),GameHolder.instance(),PreferenceRegistry.instance()) {
 
 			/**
 			 * 

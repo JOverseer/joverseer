@@ -38,7 +38,6 @@ public class StringEnclosedMatchProcessor extends Processor {
     }
 
 
-    @SuppressWarnings("null")
 	@Override
 	protected boolean findMatch() {
         assert (this.chars != null);// : "Null text but asked to findMatch!";

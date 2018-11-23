@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.EnemyCharacterRumorWrapper;
 import org.springframework.context.MessageSource;
 
@@ -10,8 +12,8 @@ import org.springframework.context.MessageSource;
  */
 @SuppressWarnings("serial")
 public class EnemyCharacterRumorTableModel extends ItemTableModel {
-	public EnemyCharacterRumorTableModel(MessageSource messageSource) {
-		super(EnemyCharacterRumorWrapper.class, messageSource);
+	public EnemyCharacterRumorTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(EnemyCharacterRumorWrapper.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -20,7 +22,6 @@ public class EnemyCharacterRumorTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, String.class, String.class, String.class, Boolean.class, String.class, String.class };
 	}

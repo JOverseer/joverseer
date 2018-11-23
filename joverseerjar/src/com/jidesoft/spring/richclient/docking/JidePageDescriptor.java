@@ -36,7 +36,6 @@ import com.jidesoft.spring.richclient.perspective.PerspectiveManager;
 public class JidePageDescriptor extends AbstractPageDescriptor {
 	private static final Logger log = Logger.getLogger(JidePageDescriptor.class);
 
-	@SuppressWarnings("unchecked")
 	private List _viewDescriptors = new ArrayList();
 	private Object initialEditorContents = null;
 

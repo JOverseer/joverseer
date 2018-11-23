@@ -33,17 +33,18 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.ui.BaseView;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.filters.AndFilter;
 import org.joverseer.ui.listviews.renderers.AllegianceColorCellRenderer;
 import org.joverseer.ui.listviews.renderers.DeathReasonEnumRenderer;
 import org.joverseer.ui.listviews.renderers.InfoSourceTableCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.PageComponentContext;
-import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -60,7 +61,26 @@ import org.springframework.richclient.table.TableUtils;
  * 
  * @author Marios Skounakis
  */
-public abstract class BaseItemListView extends AbstractView implements ApplicationListener, MouseListener, MouseMotionListener {
+public abstract class BaseItemListView extends BaseView implements ApplicationListener, MouseListener, MouseMotionListener,InitializingBean {
+
+	PreferenceRegistry preferenceRegistry;
+	
+	public PreferenceRegistry getPreferenceRegistry() {
+		return this.preferenceRegistry;
+	}
+
+	public void setPreferenceRegistry(PreferenceRegistry preferenceRegistry) {
+		this.preferenceRegistry = preferenceRegistry;
+	}
+
+	/**
+	 * There must be a better way to get these dependencies set.
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.gameHolder = GameHolder.instance(this.getApplicationContext());
+		this.preferenceRegistry = PreferenceRegistry.instance(this.getApplicationContext());
+	}
 
 	protected int xDiff;
 	protected int yDiff;
@@ -252,7 +272,27 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 		}
 		return null;
 	}
-
+	/**
+	 * hook into the table model construction if needed.
+	 * If you invoke this then you should normally assign the result to this.tableModel
+	 * @return
+	 */
+	protected BeanTableModel createBeanTableModel() {
+		BeanTableModel model= null;
+		// create the table model
+		try {
+			model = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class, GameHolder.class, PreferenceRegistry.class}).newInstance(new Object[] { this.getMessageSource(),this.gameHolder,this.preferenceRegistry });
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
 	/**
 	 * create the view...
 	 * 
@@ -260,22 +300,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 	 */
 	protected JComponent createControlImpl() {
 
-		// create the table model
-		try {
-			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { this.getMessageSource() });
-		} catch (InstantiationException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		} catch (IllegalAccessException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		} catch (InvocationTargetException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-			// Settings | File Templates.
-		}
+		this.tableModel = this.createBeanTableModel();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		JPanel fp = createFilterPanel();
@@ -530,7 +555,7 @@ public abstract class BaseItemListView extends AbstractView implements Applicati
 		return idx;
 	}
 	public void selectCurrentNationAsFilter() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (Game.isInitialized(g)) {
 			if (this.filters.size() > 0) {
 				JComboBox com = this.filters.get(0);

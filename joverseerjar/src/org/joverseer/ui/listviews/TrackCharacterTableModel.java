@@ -1,5 +1,7 @@
 package org.joverseer.ui.listviews;
 
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.TrackCharacterInfo;
 import org.springframework.context.MessageSource;
 
@@ -12,8 +14,8 @@ import org.springframework.context.MessageSource;
 public class TrackCharacterTableModel extends ItemTableModel {
 
 	public static final int iHexNo=1;
-	public TrackCharacterTableModel(MessageSource messageSource) {
-		super(TrackCharacterInfo.class, messageSource);
+	public TrackCharacterTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(TrackCharacterInfo.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -22,7 +24,6 @@ public class TrackCharacterTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, Integer.class, String.class };
 	}

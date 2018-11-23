@@ -7,7 +7,6 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.TurnReportItem;
 import org.joverseer.ui.support.Messages;
 
@@ -24,7 +23,7 @@ public class TurnReportListView extends ItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 
 		ArrayList<TurnReportItem> items = new ArrayList<TurnReportItem>();
 

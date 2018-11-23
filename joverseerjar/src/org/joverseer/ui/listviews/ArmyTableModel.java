@@ -4,6 +4,8 @@ import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmySizeEnum;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.UIUtils;
 import org.springframework.context.MessageSource;
@@ -24,8 +26,8 @@ public class ArmyTableModel extends ItemTableModel {
 	final static int iEnHi = 6;
 	final static int iCharacters = 8;
 
-	public ArmyTableModel(MessageSource messageSource) {
-		super(Army.class, messageSource);
+	public ArmyTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(Army.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -34,7 +36,6 @@ public class ArmyTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, String.class, String.class, String.class, String.class, String.class, Integer.class, Integer.class, String.class, Integer.class };
 	}

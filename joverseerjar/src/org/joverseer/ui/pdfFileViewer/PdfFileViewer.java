@@ -13,10 +13,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.PdfTurnText;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
+import org.joverseer.ui.BaseView;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -24,7 +24,6 @@ import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.controls.NationComboBox;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
@@ -32,7 +31,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * 
  * @author Marios Skounakis
  */
-public class PdfFileViewer extends AbstractView implements ApplicationListener {
+public class PdfFileViewer extends BaseView implements ApplicationListener {
 
     String searchString = null;
     int lastSearchIdx = 0;
@@ -46,7 +45,7 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
         TableLayoutBuilder lb = new TableLayoutBuilder();
-        lb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
+        lb.cell(this.nationCombo = new NationComboBox(this.getGameHolder()), "align=left"); //$NON-NLS-1$
         this.nationCombo.addActionListener(new ActionListener() {
 
             @Override
@@ -54,9 +53,11 @@ public class PdfFileViewer extends AbstractView implements ApplicationListener {
                 Nation n = PdfFileViewer.this.nationCombo.getSelectedNation();
                 PdfTurnText ptt = null; 
                 if (n != null) {
-                	Game g = GameHolder.instance().getGame();
-                	ptt = (PdfTurnText) g.getTurn().getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
-                        "nationNo", n.getNumber()); //$NON-NLS-1$
+                	Turn t = PdfFileViewer.this.getTurn();
+                	if (t != null) {
+                		ptt = (PdfTurnText) t.getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
+                				"nationNo", n.getNumber()); //$NON-NLS-1$
+                	}                	
                 }
                 if (ptt == null) {
                     PdfFileViewer.this.text.setText("No PDF text for nation found."); //$NON-NLS-1$

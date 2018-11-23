@@ -59,7 +59,6 @@ public class ContainerCache<X> implements Serializable {
 		return this.reverseMap;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		// for backwards compatibility with older versions (before 1.0.7)

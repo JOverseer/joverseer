@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
+import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
@@ -14,6 +16,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultContainer;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
@@ -139,6 +142,14 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 						}
 
 						cont.addAll(resultList);
+						SwingUtilities.invokeLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								joApplication.publishEvent(LifecycleEventsEnum.OrderCheckerRunEvent, cont);
+								
+							}
+						});
 					} catch (Exception exc) {
 						System.out.println(exc.getMessage());
 					}

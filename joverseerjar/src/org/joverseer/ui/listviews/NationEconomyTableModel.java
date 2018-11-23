@@ -1,6 +1,8 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.domain.NationEconomy;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
 /**
@@ -10,8 +12,8 @@ import org.springframework.context.MessageSource;
  */
 @SuppressWarnings("serial")
 public class NationEconomyTableModel extends ItemTableModel {
-	public NationEconomyTableModel(MessageSource messageSource) {
-		super(NationEconomy.class, messageSource);
+	public NationEconomyTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(NationEconomy.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -20,7 +22,6 @@ public class NationEconomyTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class };
 	}

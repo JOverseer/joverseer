@@ -23,7 +23,6 @@ import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
-import org.joverseer.ui.listviews.AbstractListViewFilter;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;

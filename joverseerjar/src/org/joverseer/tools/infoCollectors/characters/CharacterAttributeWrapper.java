@@ -86,7 +86,6 @@ public class CharacterAttributeWrapper implements Comparable<CharacterAttributeW
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public int compareTo(CharacterAttributeWrapper caw) {
 		if (caw == null)
 			return 1;

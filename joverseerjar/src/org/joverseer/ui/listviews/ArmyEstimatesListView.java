@@ -7,7 +7,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,14 +35,12 @@ import org.joverseer.ui.support.controls.JLabelButton;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
 import org.joverseer.ui.support.transferHandlers.GenericExportTransferHandler;
 import org.joverseer.ui.support.transferHandlers.GenericTransferable;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.TableUtils;
 
 import com.jidesoft.grid.JideTable;
@@ -74,24 +71,7 @@ public class ArmyEstimatesListView extends ItemListView {
 	 */
 	@Override
 	protected JComponent createControlImpl() {
-		MessageSource messageSource = Messages.getMessageSource();
-
-		// create the table model
-		try {
-			this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] { MessageSource.class }).newInstance(new Object[] { messageSource });
-		} catch (InstantiationException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-									// Settings | File Templates.
-		} catch (IllegalAccessException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-									// Settings | File Templates.
-		} catch (InvocationTargetException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-									// Settings | File Templates.
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace(); // To change body of catch statement use File |
-									// Settings | File Templates.
-		}
+		this.tableModel = super.createBeanTableModel();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 

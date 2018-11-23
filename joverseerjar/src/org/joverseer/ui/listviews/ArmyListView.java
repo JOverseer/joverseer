@@ -14,7 +14,6 @@ import javax.swing.TransferHandler;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
-import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
@@ -127,7 +126,6 @@ public class ArmyListView extends ItemListView {
 	public class ExportArmyDataAction extends ActionCommand implements ClipboardOwner {
 		String DELIM = ";";
 		String NL = "\n";
-		Game game;
 
 		public ExportArmyDataAction() {
 			super("exportArmyDataAction");

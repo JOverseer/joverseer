@@ -53,7 +53,6 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
-import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.ShowCharacterFastStrideRangeCommand;
@@ -743,51 +742,12 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				int hexHalfWidth = this.metadata.getGridCellWidth() * this.metadata.getHexSize() / 2;
 				int hexOneThirdHeight = this.metadata.getGridCellHeight() * this.metadata.getHexSize() / 3;
 
-				boolean leftSide = p.x < hp.x + hexHalfWidth;
-				int ySide = 0;
-				if (p.y < hp.y + hexOneThirdHeight) {
-					ySide = 0;
-				} else if (p.y < hp.y + 2 * hexOneThirdHeight) {
-					ySide = 1;
-				} else {
-					ySide = 2;
-				}
 				HexSideEnum hexSide = null;
 				HexSideEnum otherHexSide = null;
 				int otherHexNo = 0;
-				if (leftSide) {
-					if (ySide == 0) {
-						hexSide = HexSideEnum.TopLeft;
-						otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.NorthWest);
-						otherHexSide = HexSideEnum.BottomRight;
-					}
-					if (ySide == 1) {
-						hexSide = HexSideEnum.Left;
-						otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.West);
-						otherHexSide = HexSideEnum.Right;
-					}
-					if (ySide == 2) {
-						hexSide = HexSideEnum.BottomLeft;
-						otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.SouthWest);
-						otherHexSide = HexSideEnum.TopRight;
-					}
-				} else {
-					if (ySide == 0) {
-						hexSide = HexSideEnum.TopRight;
-						otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.NorthEast);
-						otherHexSide = HexSideEnum.BottomLeft;
-					}
-					if (ySide == 1) {
-						hexSide = HexSideEnum.Right;
-						otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.East);
-						otherHexSide = HexSideEnum.Left;
-					}
-					if (ySide == 2) {
-						hexSide = HexSideEnum.BottomRight;
-						otherHexNo = MovementUtils.getHexNoAtDir(hexNo, MovementDirection.SouthEast);
-						otherHexSide = HexSideEnum.TopLeft;
-					}
-				}
+				hexSide = HexSideEnum.classifyPoint(p, hp, hexHalfWidth, hexOneThirdHeight);
+				otherHexSide = hexSide.getOppositeSide();
+				otherHexNo = hexSide.getHexNoAtSide(hexNo);
 				Hex otherHex = null;
 				if (otherHexNo > 0) {
 					otherHex = GameHolder.instance().getGame().getMetadata().getHex(otherHexNo);

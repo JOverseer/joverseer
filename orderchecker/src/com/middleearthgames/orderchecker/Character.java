@@ -103,19 +103,19 @@ public class Character
         int rank = -1;
         switch(type)
         {
-        case 0: // '\0'
+        case COMMAND_RANK:
             rank = this.command;
             break;
 
-        case 1: // '\001'
+        case AGENT_RANK:
             rank = this.agent;
             break;
 
-        case 2: // '\002'
+        case EMISSARY_RANK:
             rank = this.emissary;
             break;
 
-        case 3: // '\003'
+        case MAGE_RANK:
             rank = this.mage;
             break;
 
@@ -125,10 +125,10 @@ public class Character
         return rank;
     }
 
-    void initStateInformation()
+    void initStateInformation(Nation theNation)
     {
         this.army.clear();
-        Army startArmy = Main.main.getNation().findCharacterInArmy(this.name);
+        Army startArmy = theNation.findCharacterInArmy(this.name);
         if(startArmy != null)
         {
             this.army.putDefaultValue(((Object) (startArmy)));
@@ -151,9 +151,9 @@ public class Character
         }
     }
 
-    void printStateInformation(int order)
+    void printStateInformation(int order,Nation theNation)
     {
-        if(this.nation != Main.main.getNation().getNation())
+        if(this.nation != theNation.getNation())
         {
             return;
         }
@@ -377,51 +377,81 @@ public class Character
     public void setCommandRank(int rank)
     {
         this.command = rank;
+        if (this.totalCommand < rank) {
+        	this.totalCommand = rank;
+        }
     }
 
     public void setTotalCommandRank(int rank)
     {
         this.totalCommand = rank;
+        if (this.command > rank) {
+        	this.command = rank;
+        }
     }
 
     public void setAgentRank(int rank)
     {
         this.agent = rank;
+        if (this.totalAgent < rank) {
+        	this.totalAgent = rank;
+        }
     }
 
     public void setTotalAgentRank(int rank)
     {
         this.totalAgent = rank;
+        if (this.agent > rank) {
+        	this.agent = rank;
+        }
     }
 
     public void setEmissaryRank(int rank)
     {
         this.emissary = rank;
+        if (this.totalEmissary < rank) {
+        	this.totalEmissary = rank;
+        }
     }
 
     public void setTotalEmissaryRank(int rank)
     {
         this.totalEmissary = rank;
+        if (this.emissary > rank) {
+        	this.emissary = rank;
+        }
     }
 
     public void setMageRank(int rank)
     {
         this.mage = rank;
+        if (this.totalMage < rank) {
+        	this.totalMage = rank;
+        }
     }
 
     public void setTotalMageRank(int rank)
     {
         this.totalMage = rank;
+        if (this.mage > rank) {
+        	this.mage = rank;
+        }
     }
 
     public void setStealth(int rank)
     {
         this.stealth = rank;
+        if (this.totalStealth < rank) {
+        	this.totalStealth = rank;
+        }
     }
 
     public void setTotalStealth(int rank)
     {
         this.totalStealth = rank;
+        if (this.stealth > rank) {
+        	this.stealth = rank;
+        }
     }
 
     public void setChallenge(int rank)
@@ -549,14 +579,14 @@ public class Character
         return this.orders.size();
     }
 
-    int getOrder(int index)
+    Order getOrder(int index)
     {
         if(index >= 0 && index < this.orders.size())
         {
-            return ((Integer)this.orders.get(index)).intValue();
+            return (Order) this.orders.get(index);
         } else
         {
-            return -1;
+            return null;
         }
     }
 

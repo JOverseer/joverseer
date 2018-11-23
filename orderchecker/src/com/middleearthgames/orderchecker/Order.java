@@ -48,7 +48,7 @@ public class Order
         this.rules.printStateInformation();
     }
 
-    String implementPhase(int phase)
+    String implementPhase(int phase,Ruleset mainRuleset)
     {
         if(this.orderNumber == 9999)
         {
@@ -61,7 +61,7 @@ public class Order
         }
         if(phase == 1)
         {
-            this.rules = Main.main.getRuleSet().getRulesForOrder(this.orderNumber, false);
+            this.rules = mainRuleset.getRulesForOrder(this.orderNumber, false);
         }
         if(this.rules.size() == 0)
         {
@@ -80,7 +80,14 @@ public class Order
             this.helpResults.clear();
             this.done = false;
         }
-        String result = this.rules.processRules(this, phase);
+        String result;
+        try {
+        	result = this.rules.processRules(this, phase);
+        } catch (Exception exc) {
+        	this.errorResults.add("Internal error while checking order");
+        	result = null;
+        	this.done = true;
+        }
         if(result == null && this.rules.getDone())
         {
             this.done = true;
@@ -104,7 +111,7 @@ public class Order
         }
     }
 
-    Ruleset getRules()
+    public Ruleset getRules()
     {
         return this.rules;
     }

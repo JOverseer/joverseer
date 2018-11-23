@@ -1,9 +1,9 @@
 Game Format;Turn number;Characters allowed;NPCs available to Recruit
-CME;1-5;10;5
-CME;6-10;15;7
-CME;11-15;20;8
-CME;16-20;25;9
-CME;21+;30;10
+CME;1-5;12;5
+CME;6-10;15;8
+CME;11-15;20;10
+CME;16-20;25;11
+CME;21+;30;12
 KS;1-5;15;1
 KS;6-10;18;2
 KS;11-15;20;3

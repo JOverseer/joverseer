@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -17,19 +15,15 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.listviews.filters.NationFilter;
 import org.joverseer.ui.listviews.filters.TextFilter;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
-import org.joverseer.ui.support.Messages;
-import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.table.BeanTableModel;
 import org.springframework.richclient.table.ShuttleSortableTableModel;
 import org.springframework.richclient.table.TableUtils;
 
@@ -53,21 +47,7 @@ public class NotesListView extends ItemListView {
     //TODO issues with the cell renderers - need multiline or not?
     @Override
 	protected JComponent createControlImpl() {
-        MessageSource messageSource = Messages.getMessageSource();
-
-        // create the table model
-        try {
-            this.tableModel = (BeanTableModel) this.tableModelClass.getConstructor(new Class[] {MessageSource.class})
-                    .newInstance(new Object[] {messageSource});
-        } catch (InstantiationException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
-        }
+        this.tableModel = super.createBeanTableModel();
 
         TableLayoutBuilder tlb = new TableLayoutBuilder();
 
@@ -177,7 +157,7 @@ public class NotesListView extends ItemListView {
                 try {
                     Object obj = NotesListView.this.tableModel.getRow(idx);
                     Note note = (Note) obj;
-                    GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
+                    NotesListView.this.getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
                     joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
 
                 } catch (Exception exc) {

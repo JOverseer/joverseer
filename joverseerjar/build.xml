@@ -88,6 +88,9 @@
 	<target name="BuildordercheckerJar">
 		<subant buildpath="${orderchecker.project.dir}" verbose="true"/>
 	</target>
+	<target name="OrdercheckerTests">
+		<subant buildpath="${orderchecker.project.dir}" verbose="true" target="Test"/>
+	</target>
 		
     
    <!-- Main targets -->
@@ -150,14 +153,15 @@
 	       			<pathelement location="${commons_collections.path}"/>
 	       			<pathelement location="${junit.path}"/>
 				</classpath>
+	       		<exclude name="org/joverseer/AssertObjectStreams.java"/>
 	       </javac>
 	       
 	   </target>
    <target name="test"
-       depends="-Init,Compile,CompileTests"
+       depends="-Init,Compile,CompileTests,OrdercheckerTests"
        description="Run JUnit Tests">
-   		<junit printsummary="yes" haltonfailure="yes">
-   			<classpath> 
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath> 
    				<pathelement location="${junit.path}"/>
        			<pathelement location="${hamcrest.path}"/>
    				<pathelement location="${bintest.dir}"/>

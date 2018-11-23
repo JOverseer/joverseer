@@ -6,12 +6,11 @@ import javax.swing.JComponent;
 
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
-import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.OwnedArtifact;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.controls.TableUtils;
@@ -39,14 +38,14 @@ public class OwnedArtifactsListView extends ItemListView {
 
 	@Override
 	protected void setItems() {
-		Game g = GameHolder.instance().getGame();
-		if (!Game.isInitialized(g))
+		Turn t = this.getTurn();
+		if (t == null)
 			return;
-		Container<Character> items = g.getTurn().getCharacters();
+		Container<Character> items = t.getCharacters();
 		ArrayList<OwnedArtifact> artis = new ArrayList<OwnedArtifact>();
 		for (Character c : items.getItems()) {
 			for (Integer id : c.getArtifacts()) {
-				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", id);
+				ArtifactInfo ai = this.game.getMetadata().getArtifacts().findFirstByProperty("no", id);
 				if (ai == null)
 					continue;
 				// TODO move OwnedArtifact creation outside this class
@@ -61,12 +60,12 @@ public class OwnedArtifactsListView extends ItemListView {
 				artis.add(a);
 			}
 		}
-		for (Artifact ar : g.getTurn().getArtifacts().getItems()) {
+		for (Artifact ar : t.getArtifacts().getItems()) {
 			if (ar.getOwner() != null && !ar.getOwner().equals("")) {
-				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
+				ArtifactInfo ai = this.game.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
 				if (ai == null)
 					continue;
-				Nation n = g.getMetadata().getNationByName(ar.getOwner());
+				Nation n = this.game.getMetadata().getNationByName(ar.getOwner());
 				if (n == null)
 					continue;
 				// TODO move OwnedArtifact creation outside this class

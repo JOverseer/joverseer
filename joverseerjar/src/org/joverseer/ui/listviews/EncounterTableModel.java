@@ -3,6 +3,8 @@ package org.joverseer.ui.listviews;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.IHasTurnNumber;
+import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.springframework.context.MessageSource;
 
 /**
@@ -12,8 +14,8 @@ import org.springframework.context.MessageSource;
  */
 @SuppressWarnings("serial")
 public class EncounterTableModel extends ItemTableModel {
-	public EncounterTableModel(MessageSource messageSource) {
-		super(EncounterWrapper.class, messageSource);
+	public EncounterTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {
+		super(EncounterWrapper.class, messageSource,gameHolder,preferenceRegistry);
 	}
 
 	@Override
@@ -22,7 +24,6 @@ public class EncounterTableModel extends ItemTableModel {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected Class[] createColumnClasses() {
 		return new Class[] { Integer.class, Integer.class, String.class, String.class, String.class };
 	}

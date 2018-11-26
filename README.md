@@ -1,5 +1,3 @@
-##blah to reject 
-
 ## Description ##
 
 JOverseer is a desktop application which aims to assist players of the Middle Earth PBM game (http://www.middleearthgames.com).

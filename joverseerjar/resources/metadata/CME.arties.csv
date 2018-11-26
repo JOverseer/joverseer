@@ -9,7 +9,7 @@
 0;Elenethbiel;None;Mage;15;;Celeborn
 0;Orc-hewer;Good;Combat;1500;;Dain
 0;Red Arrow;Good;Emissary;15;;Denethor
-0;Palantír of Minas Tirith;None;Scry;;;Denethor
+0;Palantír of Minas Tirith;None;Scry Area;;;Denethor
 0;Vilya;None;Mage;50;;Elrond
 0;Mantle of Doriath;Good;;;Hide Pop Centre;Elrond
 0;Gúthwinë;Good;Combat;750;;Eomer
@@ -23,7 +23,6 @@
 0;Hair of Galadriel;Good;Emissary;10;;Gimli
 0;Boots of Iron;None;Command;10;;Gimli
 0;Axe of Orc-huing;None;Combat;2000;;Gimli
-0;Lorglîn;None;Mage;10;;Glorfindel
 0;Night's Passing;Good;Stealth;10;;King of the Dead
 0;Bow of the Woodland Realm;Good;Combat;1000;;Legolas
 0;Boots of Tracelessness;None;Stealth;10;;Legolas
@@ -49,7 +48,7 @@
 0;Blackroot Club;None;Combat;2000;;Great Goblin
 0;Ovir Crown;None;Mage;20;;Hoarmurath
 0;Duv Ho'ath (Morgul Knife);Evil;Agent;10;;Hoarmurath
-0;Helm of the Mûmak-king;None;Command;25;;Ji Indur
+0;Helm of Ice;None;Command;25;;Hoarmurath
 0;Duv Ji'ur (Morgul Knife);Evil;Agent;10;;Ji Indur
 0;Duv Kh'aul (Morgul Knife);Evil;Command;15;;Khamul
 0;Dragon Helm;Evil;Mage;30;;Khamul
@@ -60,12 +59,12 @@
 0;Sea-helm of Ciryatan;Evil;Mage;30;;Murazor
 0;Duv Mu'or (Morgul Knife);Evil;Agent;10;;Murazor
 0;Crown of Angmar;Evil;Emissary;20;;Murazor
-0;Bracers of Sen Jey;None;Command;10;;Ren the Unclean
+0;Bracers of Sen Jey;None;Command;15;;Ren the Unclean
 0;Duv Re'an (Morgul Knife);Evil;Command;10;;Ren the Unclean
 0;Burning Blade;Evil;Combat;1500;;Ren the Unclean
-0;Palantír of Orthanc;None;Scry;;;Saruman 
-0;Many-colored Robes of Aman;Evil;Emissary;10;;Shagrat
-0;Nightstealer;Evil;Combat;1250;;The Great Goblin
+0;Palantír of Orthanc;None;Scry Area;;;Saruman 
+0;Many-colored Robes of Aman;Evil;Emissary;10;;Saruman
+0;Nightstealer;Evil;Combat;1250;;Shagrat
 0;Alunthiensal;Evil;Mage;20;;Throkmaw
 0;Earthroot Spike;None;Combat;1500;;Ugluk
 0;Stormless Bow;None;Combat;1000;;Uvatha
@@ -77,78 +76,79 @@
 0;Orcring;None;Combat;2500;;
 0;Ringil;None;Combat;2000;;
 0;Miramarth;None;Agent;10;;
-0;Rauzgnagli;None;Agent;35;;
+0;Rauzgnagli;None;Combat;1750;;
 0;Ring of Binding;None;Agent;15;;
 0;Talisman of Absorption;None;Mage;20;;
 0;Ulûkai;None;Command;35;;
-0;Glosvagil;None;Combat;1500;;
-0;Angbor;None;Command;10;;
+0;Angbor;None;Command;10;Cast 436 Scry Character;
 0;Belt of Durin;None;Command;20;;
-0;Edge of Westernesse;None;Combat;1000;;
-0;Bone Ring;None;Mage;10;;
+0;Edge of Westernesse;None;Combat;1000;;Beregond
+0;Bone Ring;None;Mage;10;Learn Conjure Hordes;
 0;Bracers of the Mists;None;Stealth;15;;
 0;Caranlhach;None;Combat;1750;;
 0;Cloak of Duvorn;None;Agent;10;;
-0;Cloak of Hiding;None;Stealth;5;;
-0;Cloak of Protection;None;Agent;5;;
+0;Cloak of Hiding;None;Stealth;5;Cast 434 Reveal Population Centre;
+0;Cloak of Protection;None;Agent;5;Cast 248 Fanaticism;
 0;Cloak of the Heavens;None;Agent;10;;
 0;Cloak of Valacirca;None;Stealth;10;;
 0;Collar of Might;None;Mage;30;;
 0;Collohwesta;None;Stealth;15;;
-0;Corantir;None;Mage;10;;
-0;Crown of Celethsa;None;Mage;10;;
+0;Corantir;None;Mage;10;Cast 6 Greater Heal;
+0;Crown of Celethsa;None;Mage;10;Cast 6 Greater Heal;
 0;Daecollo;None;Stealth;10;;
-0;Dragon Helm of Dor-Lómin;None;Command;15;;
-0;Durin's Armor;None;Command;15;;
-0;Earring of Souls;None;Mage;10;;
+0;Dragon Helm of Dor-Lómin;None;Command;15;Cast 420 Reveal Character;
+0;Durin's Armor;None;Command;15;Cast 432 Perceive Secrets;
+0;Earring of Souls;None;Mage;10;Cast 8 Heal True;
 0;Elenya;None;Stealth;10;;
-0;Erivagil;None;Combat;1500;;
-0;Foamcleaver;None;Combat;1500;;
+0;Erivagil;None;Combat;1500;Cast 242 Words of Death;
+0;Foamcleaver;None;Combat;1500;Cast 240 Summon Fire Spirits;
+0;Glosvagil;None;Combat;1500;Cast 240 Summon Fire Spirits;
 0;Gift of Aronwe;None;Emissary;10;;
 0;Gûlthalion;None;Command;30;;
 0;Helm of Isildur;None;Command;20;;
-0;Lance of Reaching;None;Combat;500;;
+0;Lance of Reaching;None;Combat;500;Cast 436 Scry Character;
 0;Mallorn Staff;None;Mage;30;;
-0;Mane of the Mearas;None;Mage;10;;
-0;Maranya;None;Mage;30;;
-0;Mithril Helm;None;Combat;1500;;
-0;Orcrist;None;Combat;750;;
-0;Ossanna;None;Mage;15;;
-0;Palantír of Elostirion;None;Comand;50;;
+0;Mane of the Mearas;None;Mage;10;Learn Conjure Mounts;
+0;Maranya;None;Mage;30;Learn Weakness, Sickness, Curses;
+0;Mithril Helm;None;Combat;1500;Cast 240 Summon Fire Spirits;
+0;Orcrist;None;Combat;750;Cast 424 Perceive Mission;
+0;Ossanna;None;Mage;15;Cast 430 Reveal Character True;
+0;Palantír of Elostirion;None;Scry Area;;;
 0;Pectoral;None;Emissary;30;;
-0;Spider Gloves;None;Agent;5;;
+0;Spider Gloves;None;Agent;5;Cast 244 Summon Storms;
 0;Ring of Curufin;None;Agent;15;;
 0;Ring of Impersonation;None;Agent;20;;
 0;Ring of Stargazing;None;Mage;25;;
 0;Ring of Wind;None;Agent;20;;
-0;Seal of Approbation;None;Emmisary;5;;
+0;Seal of Approbation;None;Emmisary;5;Cast 432 Perceive Secrets;
 0;Silmaruth;None;Combat;2000;;
-0;Staff of Earthmastery;None;Mage;20;;
-0;Staff of the Serpent;None;Mage;10;;
-0;Staff of the Wanderer;None;Mage;15;;
+0;Staff of Earthmastery;None;Mage;20;Learn Conjure Food;
+0;Staff of the Serpent;None;Mage;10;Cast 114 Barrier Walls;
+0;Staff of the Wanderer;None;Mage;15;Learn Teleport;
 0;Taurin;None;Combat;2000;;
-0;Tinculin;None;Mage;40;;
-0;Mithril Shirt;None;Stealth;5;;
+0;Tinculin;None;Mage;40;Learn Weakness, Sickness, Curses;
+0;Mithril Shirt;None;Stealth;5;Cast 508 Conjure Mounts;
 0;Shadow Mace;None;Combat;2000;;
-0;Rod of the Steward;None;Emissary;5;;
-0;Helkaluine;None;Combat;1250;;
+0;Rod of the Steward;None;Emissary;5;Cast 432 Perceive Secrets;
+0;Helkaluine;None;Combat;1250;Cast 242 Words of Death;
 0;Tintelpë;None;Combat;1750;;
-0;Macrilómen;None;Combat;2000;;
-0;Nightfang;None;Combat;750;;
-0;Melody's Memory;Stealth;5;;
-0;Herugrim;None;Combat;1000;;
-0;Night-piercer;None;Combat;500;;
-0;War-dancer;None;Combat;750;;
-0;Air Cleaver;None;Combat;750;;
-0;Snow Hammer;None;Combat;500;;
-0;Hue Changer;None;Combat;500;;
-0;Cloud Bow;None;Combat;750;;
-0;Stinging Tongue;None;Combat;500;;
-0;Thôlogaer Ciryatano;None;Mage;30;;
-0;Ring of Angrenost;None;Combat;500;;
-0;Mithril Ring;None;Mage;10;;
-0;Andorithel;None;Command;10;;
-0;Glamdring;None;Combat;750;;
-0;Small Tooth;None;Combat;750;;
-0;Vasamacil;None;Combat;750;;
-0;Ring of Aran;None;Agent;5;;
+0;Macrilómen;None;Combat;2000;;Glorfindel
+0;Nightfang;None;Combat;750;Cast 432 Perceive Secrets;
+0;Melody's Memory;Stealth;5;Cast 430 Reveal Character True;
+0;Herugrim;None;Combat;1000;Cast 238 Summon Wind Spirits;
+0;Night-piercer;None;Combat;500;Cast 436 Scry Character;
+0;War-dancer;None;Combat;750;Cast 512 Conjure Hordes;
+0;Air Cleaver;None;Combat;750;Cast 420 Reveal Character;
+0;Snow Hammer;None;Combat;500;Cast 430 Reveal Character True;
+0;Hue Changer;None;Combat;500;Cast 508 Conjure Mounts;
+0;Cloud Bow;None;Combat;750;Cast 426 Divine Army True;
+0;Stinging Tongue;None;Combat;500;Cast 432 Perceive Secrets;
+0;Thôlogaer Ciryatano;None;Mage;30;Learn Weakness, Sickness, Curses;
+0;Ring of Angrenost;None;Combat;500;Cast 430 Reveal Character True;
+0;Mithril Ring;None;Mage;10;Cast 114 Barrier Walls;
+0;Andorithel;None;Command;10;Cast 508 Conjure Mounts;
+0;Glamdring;None;Combat;750;Cast 426 Divine Army True;
+0;Small Tooth;None;Combat;750;Cast 424 Perceive Mission;
+0;Vasamacil;None;Combat;750;Cast 314 Teleport;
+0;Ring of Aran;None;Agent;5;Cast 246 Fearful Hearts;
+0;Lorglin;None;Mage;10;Cast 8 Heal True;

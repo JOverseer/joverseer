@@ -29,7 +29,7 @@ public class SubmitSupportData extends AbstractForm{
         this.textArea.setEditable(false);
         this.textArea.setFont(GraphicUtils.getFont("Courier New", Font.PLAIN, 11));
         tlb.cell(this.textArea);
-        JScrollPane scp = new JScrollPane(this.textArea);
+        JScrollPane scp = new JScrollPane(tlb.getPanel());
         scp.setPreferredSize(new Dimension(820, 450));
         scp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);

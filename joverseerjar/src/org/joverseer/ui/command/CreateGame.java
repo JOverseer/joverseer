@@ -42,6 +42,7 @@ public class CreateGame extends ActionCommand {
                 setDescription(Messages.getString(form.getId() + ".description"));
             }
 
+            // must return true, otherwise the dialog is never dismissed.
             @Override
 			protected boolean onFinish() {
                 form.commit();
@@ -56,35 +57,30 @@ public class CreateGame extends ActionCommand {
                 gm.setNewXmlFormat(ng.getNewXmlFormat());
                 try {
                     gm.load();
+                    MapMetadataUtils mmu = new MapMetadataUtils();
+                    MapMetadata mm = MapMetadata.instance();
+                    mmu.setMapSize(mm, gm.getGameType());
+
+                    game.setMetadata(gm);
+                    game.setMaxTurn(0);
+                    GameHolder gh = GameHolder.instance();
+                    gh.setGame(game);
+                    gh.setFile(null);
+
+                    Turn t0 = new Turn();
+                    t0.setTurnNo(0);
+                    TurnInitializer ti = new TurnInitializer();
+                    ti.initializeTurnWith(t0, null);
+                    game.addTurn(t0);
+
+                    joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, game, this);
+                    joApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, game, this);
+
                 } catch (Exception e) {
                     ErrorDialog dlg = new ErrorDialog(e);
                     dlg.showDialog();
                     return true;
                 } 
-
-                MapMetadataUtils mmu = new MapMetadataUtils();
-                MapMetadata mm = MapMetadata.instance();
-                mmu.setMapSize(mm, gm.getGameType());
-                
-                game.setMetadata(gm);
-                game.setMaxTurn(0);
-                GameHolder gh = GameHolder.instance();
-                gh.setGame(game);
-                gh.setFile(null);
-
-                Turn t0 = new Turn();
-                t0.setTurnNo(0);
-                TurnInitializer ti = new TurnInitializer();
-                ti.initializeTurnWith(t0, null);
-                try {
-                    game.addTurn(t0);
-                }
-                catch (Exception exc) {
-                    // do nothing, exception cannot really occur
-                }
-
-                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, game, this);
-                joApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, game, this);
 
                 return true;
             }

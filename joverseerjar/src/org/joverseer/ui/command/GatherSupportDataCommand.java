@@ -46,7 +46,7 @@ public class GatherSupportDataCommand extends ActionCommand {
                 };
             }
         };
-        dialog.setTitle(Messages.getString("changelogDialog.title"));
+        dialog.setTitle(Messages.getString("GatherSupportDataCommand.title"));
         dialog.showDialog();
 
 	}

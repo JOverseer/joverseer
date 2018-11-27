@@ -42,7 +42,7 @@ public class HexReader implements MetadataReader {
                 hex.setRow(y);
                 int t = Integer.parseInt(parts[1]);
                 hex.setTerrain(HexTerrainEnum.fromValue(t));
-                hexes.put(new Integer(no), hex);
+                hexes.put(Integer.valueOf(no), hex);
             }
         }
         catch (IOException exc) {

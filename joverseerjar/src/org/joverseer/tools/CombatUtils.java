@@ -48,7 +48,7 @@ public class CombatUtils {
             } else if (ae.getArmyElementType().equals(ArmyElementType.MenAtArms)) {
                 f = .2;
             }  
-            nhi += new Double(ae.getNumber() * f).intValue();
+            nhi += Double.valueOf(ae.getNumber() * f).intValue();
         }
         return nhi;
     }
@@ -80,7 +80,7 @@ public class CombatUtils {
             double af = (100d + ae.getArmor()) / 100d;
             f = (f * wf * cf) + (2 * f * af);
             f /= 3;
-            nhi += new Double(ae.getNumber() * f).intValue();
+            nhi += Double.valueOf(ae.getNumber() * f).intValue();
         }
         return nhi;
     }
@@ -112,7 +112,7 @@ public class CombatUtils {
             double af = (100d + ae.getArmor()) / 100d;
             f = (f * wf * cf) + (2 * f * af);
             f /= 3;
-            nhi += new Double(ae.getNumber() * f).intValue();
+            nhi += Double.valueOf(ae.getNumber() * f).intValue();
         }
         return nhi;
     }

@@ -121,7 +121,7 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		GameMetadata gm = g.getMetadata();
 		if (gm == null)
 			return null;
-		OrderMetadata om = gm.getOrders().findFirstByProperty("number", new Integer(getOrderNo()));
+		OrderMetadata om = gm.getOrders().findFirstByProperty("number", Integer.valueOf(getOrderNo()));
 		return om;
 	}
 

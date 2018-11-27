@@ -128,12 +128,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	 */
 	public Integer computeFoodConsumption() {
 		if (getElements().size() == 0)
-			return new Integer(0);
+			return Integer.valueOf(0);
 		int ret = 0;
 		for (ArmyElement ae : getElements()) {
 			ret += ae.getNumber() * ae.getArmyElementType().foodConsumption();
 		}
-		return new Integer(ret);
+		return ret;
 	}
 
 	/**
@@ -192,9 +192,9 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 		if (this.enHI == null) {
 			Character c = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", getCommanderName());
 			if (c != null) {
-				this.enHI = new Integer(CombatUtils.getNakedHeavyInfantryEquivalent(this, c));
+				this.enHI = Integer.valueOf(CombatUtils.getNakedHeavyInfantryEquivalent(this, c));
 			} else {
-				this.enHI = new Integer(CombatUtils.getNakedHeavyInfantryEquivalent2(this));
+				this.enHI = Integer.valueOf(CombatUtils.getNakedHeavyInfantryEquivalent2(this));
 			}
 		}
 		return this.enHI;
@@ -249,7 +249,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 		for (ArmyElement ae : getElements()) {
 			cost = ae.getMaintentance();
 		}
-		return new Integer(cost);
+		return Integer.valueOf(cost);
 
 	}
 
@@ -389,7 +389,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 
 	public void setFed(boolean fed) {
-		this.fed = new Boolean(fed);
+		this.fed = fed;
 	}
 
 	public void setFood(Integer food) {

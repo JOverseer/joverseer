@@ -38,7 +38,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 	}
 
 	public void setNationNo(Integer nationNo) {
-		if (new Integer(this.nationNo).equals(nationNo))
+		if (Integer.valueOf(this.nationNo).equals(nationNo))
 			return;
 		removeNation(nationNo);
 		this.nationNo = nationNo;

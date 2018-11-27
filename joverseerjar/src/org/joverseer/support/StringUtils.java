@@ -67,7 +67,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		String[] ret = null;
 		String foundNation = "";
 		for (int j = 0; j < 26; j++) {
-			Nation n = NationMap.getNationFromNo(new Integer(j));
+			Nation n = NationMap.getNationFromNo(Integer.valueOf(j));
 			String nationName = n.getName();
 			String nationNamePlusThe = "the " + n.getName();
 			if (text.contains(nationNamePlusThe)) {
@@ -190,7 +190,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
 	public static String replaceNationNames(String text) {
 		for (int i = 1; i <= 25; i++) {
-			Nation n = NationMap.getNationFromNo(new Integer(i));
+			Nation n = NationMap.getNationFromNo(Integer.valueOf(i));
 			text = text.replace(n.getName(), "Nation_" + i);
 		}
 		return text;
@@ -202,7 +202,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 	}
 
 	public static Nation getFromNationCode(String nation) {
-		return NationMap.getNationFromNo(new Integer(parseNationCode(nation)));
+		return NationMap.getNationFromNo(Integer.valueOf(parseNationCode(nation)));
 	}
 	public static String trimLeading(String s) {
 		int i;

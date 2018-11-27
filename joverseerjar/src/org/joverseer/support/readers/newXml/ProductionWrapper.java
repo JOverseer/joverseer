@@ -29,11 +29,11 @@ public class ProductionWrapper {
 	
 	public void updatePopCenter(PopulationCenter pc) {
 		ProductEnum pe = ProductEnum.getFromCode(getType());
-		pc.setProduction(pe, new Integer(getExpProduction()));
+		pc.setProduction(pe, Integer.valueOf(getExpProduction()));
 		try {
-			pc.setStores(pe, new Integer(Integer.parseInt(getCurrentStores())));
+			pc.setStores(pe, Integer.parseInt(getCurrentStores()));
 		} catch (NumberFormatException e) {
-			pc.setStores(pe, new Integer(0));
+			pc.setStores(pe, Integer.valueOf(0));
 		}
 	}
 }

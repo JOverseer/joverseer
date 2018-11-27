@@ -66,7 +66,7 @@ public class ArmyReader implements MetadataReader {
 				}
 
 				a.setHexNo(parts[0]);
-				a.setNationNo(new Integer(Integer.parseInt(parts[2])));
+				a.setNationNo(Integer.valueOf(Integer.parseInt(parts[2])));
 				a.setCommanderName(parts[3]);
 				a.setCommanderTitle(parts[4]);
 				String[] regiments = parts[8].split(" ");

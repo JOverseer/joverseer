@@ -53,7 +53,7 @@ public class DetailArmyReader implements MetadataReader {
 					army.setCommanderName(commander);
 					army.setCommanderTitle("");
 					army.setNationAllegiance(allegiance);
-					army.setNationNo(new Integer(nationNo));
+					army.setNationNo(Integer.valueOf(nationNo));
 					army.setMorale(morale);
 					army.setSize(size);
 					army.setNavy(navy);

@@ -66,8 +66,8 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 			int cost = (Integer) rangeHexes.get(hexNo);
 			String strCost = String.valueOf(cost);
 			Rectangle2D r = g.getFontMetrics().getStringBounds(strCost, g);
-			int w = new Double(r.getWidth()).intValue();
-			int h = new Double(r.getHeight()).intValue();
+			int w = Double.valueOf(r.getWidth()).intValue();
+			int h = Double.valueOf(r.getHeight()).intValue();
 			int w1 = Math.max(w, h);
 			int h1 = w1;
 			Point p = MapPanel.instance().getHexCenter(hexNo);
@@ -105,8 +105,8 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 
 			String str = String.valueOf(turn);
 			Rectangle2D r = g.getFontMetrics().getStringBounds(str, g);
-			int w = new Double(r.getWidth()).intValue();
-			int h = new Double(r.getHeight()).intValue();
+			int w = Double.valueOf(r.getWidth()).intValue();
+			int h = Double.valueOf(r.getHeight()).intValue();
 			int w1 = Math.max(w, h);
 			int h1 = w1;
 			Point p = MapPanel.instance().getHexCenter(hexNo);

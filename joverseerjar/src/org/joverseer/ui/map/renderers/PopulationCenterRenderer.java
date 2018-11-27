@@ -99,7 +99,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
                                             ((Double)bb.getY()).intValue(),
                                             ((Double)bb.getWidth()).intValue(),
                                             ((Double)bb.getHeight()).intValue());
-            int xt = p.x - new Double(b.getWidth() / 2).intValue();
+            int xt = p.x - Double.valueOf(b.getWidth() / 2).intValue();
             int yt = p.y;
             b.translate(xt, yt);
             RoundRectangle2D rr = new RoundRectangle2D.Double(b.getX(), b.getY(), b.getWidth() + 2, b.getHeight() + 1, 0, 0);
@@ -139,7 +139,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
                                         ((Double)bb.getY()).intValue(),
                                         ((Double)bb.getWidth()).intValue(),
                                         ((Double)bb.getHeight()).intValue());
-        int xt = p.x - new Double(b.getWidth() / 2).intValue();
+        int xt = p.x - Double.valueOf(b.getWidth() / 2).intValue();
         int yt = p.y;
         b.translate(xt, yt);
         RoundRectangle2D rr = new RoundRectangle2D.Double(b.getX(), b.getY(), b.getWidth() + 2, b.getHeight() + 2, 3, 3);

@@ -32,7 +32,7 @@ public class StartingCharacterReader implements MetadataReader {
 				String id = charName.toLowerCase().substring(0, Math.min(5, charName.length()));
 				int hexNo = Integer.parseInt(parts[0]);
 				Character c = new Character();
-				c.setNationNo(new Integer(nationNo));
+				c.setNationNo(Integer.valueOf(nationNo));
 				c.setName(charName);
 				c.setId(id);
 				c.setHexNo(hexNo);

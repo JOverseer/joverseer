@@ -23,14 +23,14 @@ public class LoyaltyPhaseProcessor extends AbstractTurnPhaseProcessor {
 	public void processPhase(Turn t) {
         Game g = OrderUtils.getGame();
         for (int i=1; i<=g.getMetadata().getNationNo(); i++) {
-            NationEconomy ne = (NationEconomy)t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", new Integer(i));
+            NationEconomy ne = (NationEconomy)t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", Integer.valueOf(i));
             int taxRate = ne.getTaxRate();
-            for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", new Integer(i))) {
+            for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).findAllByProperty("nationNo", Integer.valueOf(i))) {
                 int newLoyalty = pc.getLoyalty() + getLoyaltyChange(taxRate);
                 pc.setLoyalty(newLoyalty);
                 if (pc.getLoyalty() < 15 && 
                 		pc.getFortification().equals(FortificationSizeEnum.none) &&
-                		t.getContainer(TurnElementsEnum.Character).findAllByProperties(new String[]{"hexNo", "nationNo"}, new Object[]{new Integer(pc.getHexNo()), pc.getNationNo()}).size() == 0) {
+                		t.getContainer(TurnElementsEnum.Character).findAllByProperties(new String[]{"hexNo", "nationNo"}, new Object[]{Integer.valueOf(pc.getHexNo()), pc.getNationNo()}).size() == 0) {
                 	// chance PC will degrade
                 	if (OrderUtils.getRandomNumber(100) <= 10) {
                 		// PC degrades

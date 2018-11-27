@@ -26,8 +26,8 @@ public class SpellReader implements MetadataReader {
 				SpellInfo si = new SpellInfo();
 				si.setName(parts[0]);
 				si.setDifficulty(parts[1]);
-				si.setOrderNumber(new Integer(Integer.parseInt(parts[2])));
-				si.setNumber(new Integer(Integer.parseInt(parts[3])));
+				si.setOrderNumber(Integer.valueOf(Integer.parseInt(parts[2])));
+				si.setNumber(Integer.valueOf(Integer.parseInt(parts[3])));
 				si.setRequiredInfo(parts[4]);
 				si.setRequirements(parts[5]);
 				si.setDescription(parts[6]);

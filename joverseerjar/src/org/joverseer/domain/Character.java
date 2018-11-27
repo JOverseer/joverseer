@@ -342,7 +342,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 
 	public void setNation(Nation nation) {
 		if (nation == null) {
-			setNationNo(new Integer(0));
+			setNationNo(Integer.valueOf(0));
 		} else {
 			setNationNo(nation.getNumber());
 		}
@@ -386,7 +386,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 
 	@Override
 	public Integer getMaintenance() {
-		return new Integer((getCommand() + getMage() + getAgent() + getEmmisary()) * 20);
+		return Integer.valueOf((getCommand() + getMage() + getAgent() + getEmmisary()) * 20);
 	}
 
 	@Override

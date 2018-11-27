@@ -89,7 +89,7 @@ public class GameMetadata implements Serializable {
 	}
 
 	protected Hex getHexFromMetadata(int hexNo) {
-		Hex h = this.hexes.findFirstByProperties(new String[] { "hexNo" }, new Object[] { new Integer(hexNo) });
+		Hex h = this.hexes.findFirstByProperties(new String[] { "hexNo" }, new Object[] { Integer.valueOf(hexNo) });
 		return h;
 	}
 
@@ -159,9 +159,9 @@ public class GameMetadata implements Serializable {
 		out.writeObject(getNations());
 		out.writeObject(getNationMapRanges());
 		out.writeObject(getGameType());
-		out.writeObject(new Integer(getGameNo()));
-		out.writeObject(new Integer(getNationNo()));
-		out.writeObject(new Boolean(getNewXmlFormat()));
+		out.writeObject(Integer.valueOf(getGameNo()));
+		out.writeObject(Integer.valueOf(getNationNo()));
+		out.writeObject(getNewXmlFormat());
 		out.writeObject(getStartDummyCharacters());
 		out.writeObject(this.hexOverrides);
 	}
@@ -230,7 +230,7 @@ public class GameMetadata implements Serializable {
 
 	public Container<OrderMetadata> getOrders() {
 		if (this.orders != null) {
-			OrderMetadata om = this.orders.findFirstByProperty("number", new Integer(225));
+			OrderMetadata om = this.orders.findFirstByProperty("number", Integer.valueOf(225));
 			if (om.getSkillRequirement().equals("MS")) {
 				GameMetadata gm = GameMetadata.instance();
 				gm.setGameType(getGameType());
@@ -309,15 +309,15 @@ public class GameMetadata implements Serializable {
 	public Container<Hex> getHexOverrides(int turnNo) {
 		if (this.hexOverrides == null)
 			this.hexOverrides = new HashMap<Integer, Container<Hex>>();
-		if (this.hexOverrides.containsKey(new Integer(turnNo))) {
-			return this.hexOverrides.get(new Integer(turnNo));
+		if (this.hexOverrides.containsKey(Integer.valueOf(turnNo))) {
+			return this.hexOverrides.get(Integer.valueOf(turnNo));
 		}
 		return new Container<Hex>();
 	}
 
 	@SuppressWarnings("hiding")
 	public Hex getHexOverride(Container<Hex> hexes, int hexNo) {
-		return hexes.findFirstByProperty("hexNo", new Integer(hexNo));
+		return hexes.findFirstByProperty("hexNo", Integer.valueOf(hexNo));
 	}
 
 	public Hex getHexForTurn(int turnNo, int hexNo) {
@@ -329,9 +329,9 @@ public class GameMetadata implements Serializable {
 
 	public void addHexOverride(int turnNo, Hex hex) {
 		Container<Hex> hc;
-		if (!this.hexOverrides.containsKey(new Integer(turnNo))) {
+		if (!this.hexOverrides.containsKey(Integer.valueOf(turnNo))) {
 			hc = new Container<Hex>(new String[] { "hexNo" });
-			this.hexOverrides.put(new Integer(turnNo), hc);
+			this.hexOverrides.put(Integer.valueOf(turnNo), hc);
 		}
 		hc = getHexOverrides(turnNo);
 		Hex h = getHexOverride(hc, hex.getHexNo());

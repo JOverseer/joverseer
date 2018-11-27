@@ -30,7 +30,7 @@ public class OrderUtils {
     }
     
     public static int getRandomNumber(int max) {
-        return new Double(Math.random() * (max + 1)).intValue();
+        return Double.valueOf(Math.random() * (max + 1)).intValue();
     }
     
     public static int getRandomNumber(int min, int max) {
@@ -38,7 +38,7 @@ public class OrderUtils {
     }
     
     public static int getGaussianRandomNumber(int min, int max) {
-        return new Double(random.nextGaussian() / 2 * (max - min) + (max - min) / 2).intValue();
+        return Double.valueOf(random.nextGaussian() / 2 * (max - min) + (max - min) / 2).intValue();
         //return new Double(random.nextGaussian() * 100).intValue();
     }
 

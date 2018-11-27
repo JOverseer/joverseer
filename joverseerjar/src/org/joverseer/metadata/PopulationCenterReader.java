@@ -87,7 +87,7 @@ public class PopulationCenterReader implements MetadataReader {
 
 				PopulationCenter pc = new PopulationCenter();
 				pc.setName(name);
-				pc.setNationNo(new Integer(nationNo));
+				pc.setNationNo(Integer.valueOf(nationNo));
 				pc.setSize(pcSize);
 				pc.setFortification(fortSize);
 				pc.setHarbor(harborSize);

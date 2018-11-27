@@ -45,11 +45,11 @@ public class MovementUtils {
 		Integer x2 = hexB / 100;
 		Integer y2 = hexB % 100;
 
-		int a1 = x1 - (new Double(Math.ceil(y1.doubleValue() / 2))).intValue();
-		int a2 = x1 + (new Double(Math.floor(y1.doubleValue() / 2))).intValue();
+		int a1 = x1 - (Double.valueOf(Math.ceil(y1.doubleValue() / 2))).intValue();
+		int a2 = x1 + (Double.valueOf(Math.floor(y1.doubleValue() / 2))).intValue();
 
-		int b1 = x2 - (new Double(Math.ceil(y2.doubleValue() / 2))).intValue();
-		int b2 = x2 + (new Double(Math.floor(y2.doubleValue() / 2))).intValue();
+		int b1 = x2 - (Double.valueOf(Math.ceil(y2.doubleValue() / 2))).intValue();
+		int b2 = x2 + (Double.valueOf(Math.floor(y2.doubleValue() / 2))).intValue();
 
 		int a = a1 - b1;
 		int b = a2 - b2;
@@ -298,7 +298,7 @@ public class MovementUtils {
 			cost += 1;
 		}
 		if (!isFed) {
-			cost = cost + (new Double(Math.ceil(new Double(cost) / 3))).intValue();
+			cost = cost + (Double.valueOf(Math.ceil(Double.valueOf(cost) / 3))).intValue();
 		}
 		return cost;
 	}

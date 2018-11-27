@@ -31,8 +31,8 @@ public class HealingTurnPhaseProcessor extends AbstractTurnPhaseProcessor {
             	int health = c.getHealth().intValue();
             	if (health > 0 && health < 100) {
             		int healAmt = Math.min(100 - health, getHealthRecoveryPerTurn());
-            		c.setHealth(new Integer(healAmt + health));
-            		OrderUtils.appendOrderResult(c, String.format("{0} physically healed for {1} health points.", c.getName(), new Integer(healAmt)));
+            		c.setHealth(Integer.valueOf(healAmt + health));
+            		OrderUtils.appendOrderResult(c, String.format("{0} physically healed for {1} health points.", c.getName(), Integer.valueOf(healAmt)));
             	}
             }
         }

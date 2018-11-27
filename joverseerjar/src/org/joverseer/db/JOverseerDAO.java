@@ -216,7 +216,7 @@ public class JOverseerDAO {
 	public void SerializeHex(Connection conn, Game g, Turn turn, int hexNo) {
 		try {
 			Hex hex = g.getMetadata().getHex(hexNo);
-			HexInfo hi = (HexInfo) turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", new Integer(hexNo));
+			HexInfo hi = (HexInfo) turn.getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", Integer.valueOf(hexNo));
 			String sql = "insert into hexes(he_ga_id, he_tu_no, he_no, he_terrain, he_climate) values({gaid}, {tuno}, {hexno}, {terrain}, {climate});";
 			StatementWrapper sw = new StatementWrapper(sql, conn);
 			sw.setInt("{gaid}", g.getMetadata().getGameNo());

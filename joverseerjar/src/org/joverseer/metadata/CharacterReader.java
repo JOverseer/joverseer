@@ -45,7 +45,7 @@ public class CharacterReader implements MetadataReader {
 					numberOfOrders = Integer.parseInt(parts[9]);
 				}
 				Character c = new Character();
-				c.setNationNo(new Integer(nationNo));
+				c.setNationNo(Integer.valueOf(nationNo));
 				c.setName(charName);
 				c.setId(id);
 				c.setCommand(command);

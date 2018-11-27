@@ -31,7 +31,7 @@ public class Nation implements Serializable {
 
     public Nation(int number, String name, String shortName) {
         this.name = name;
-        this.number = new Integer(number);
+        this.number = Integer.valueOf(number);
         this.shortName = shortName;
     }
 

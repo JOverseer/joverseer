@@ -376,13 +376,15 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
 				Game g = GameHolder.instance().getGame();
-				Nation n = g.getMetadata().getNationByNum(g.getMetadata().getNationNo());
-				String thisNationDescription = n.getName();
-				String a;
-				for (int i=0; i<this.cmbMaps.getItemCount();i++) {
-					a = (String)this.cmbMaps.getItemAt(i);
-					if (a.equals(thisNationDescription)) {
-						this.cmbMaps.setSelectedItem(a);
+				if (Game.isInitialized(g)) {
+					Nation n = g.getMetadata().getNationByNum(g.getMetadata().getNationNo());
+					String thisNationDescription = n.getName();
+					String a;
+					for (int i=0; i<this.cmbMaps.getItemCount();i++) {
+						a = (String)this.cmbMaps.getItemAt(i);
+						if (a.equals(thisNationDescription)) {
+							this.cmbMaps.setSelectedItem(a);
+						}
 					}
 				}
 			}

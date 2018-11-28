@@ -2,6 +2,9 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
+import org.jdesktop.swingx.util.OS;
 import org.joverseer.domain.Character;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
@@ -25,10 +28,10 @@ public class CharacterReader implements MetadataReader {
 
 		MetadataSource ms = new MetadataSource();
 
+		String ln=""; // outside so that the exception can report something useful
 		try {
 			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename,true);
 
-			String ln;
 			while ((ln = reader.readLine()) != null) {
 				String[] parts = ln.split(";");
 				int nationNo = Integer.parseInt(parts[0]);
@@ -61,6 +64,10 @@ public class CharacterReader implements MetadataReader {
 		} catch (IOException exc) {
 			throw exc;
 		} catch (Exception exc) {
+			if (ln == null) {
+				ln = "null";
+			}
+			Logger.getRootLogger().error("parse error in for character meta data in file:"+this.characterFilename+System.lineSeparator()+ln);
 			throw new MetadataReaderException("Error reading character metadata.", exc);
 		}
 		return characters;

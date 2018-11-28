@@ -12,13 +12,14 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.JOverseerEventListener;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
+import org.springframework.context.ApplicationEvent;
 
 /**
  * List view for PlayerInfo objects
  * 
  * @author Marios Skounakis
  */
-public class PlayerInfoListView extends ItemListView implements JOverseerEventListener {
+public class PlayerInfoListView extends ItemListView {
 
     public PlayerInfoListView() {
         super(TurnElementsEnum.PlayerInfo, PlayerInfoTableModel.class);
@@ -52,10 +53,14 @@ public class PlayerInfoListView extends ItemListView implements JOverseerEventLi
     }
 
 	@Override
-	public void onApplicationEvent(JOverseerEvent e) {
-		if (e.isLifecycleEvent(LifecycleEventsEnum.OrderSaveToFileEvent))  {
-			this.setItems();
+	public void onApplicationEvent(ApplicationEvent applicationEvent) {
+		if (applicationEvent instanceof JOverseerEvent) {
+			if (((JOverseerEvent)applicationEvent).isLifecycleEvent(LifecycleEventsEnum.OrderSaveToFileEvent))  {
+				this.setItems();
+			}
+		} else {
+			super.onApplicationEvent(applicationEvent);
 		}
 	}
-	
+
 }

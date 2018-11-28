@@ -26,9 +26,4 @@
        <tstamp/>
        <echo message="Build time: ${TODAY} ${TSTAMP}"/>
    </target>
-   <target name="-Prep">
-       <delete dir="${dist}" quiet="true"/>
-       <mkdir dir="${dist}"/>
-   </target>
-       
 </project>

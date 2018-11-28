@@ -79,6 +79,7 @@ public class CreateGame extends ActionCommand {
                 } catch (Exception e) {
                     ErrorDialog dlg = new ErrorDialog(e);
                     dlg.showDialog();
+                	this.logger.warn("CreateGame.exception");
                     return true;
                 } 
 

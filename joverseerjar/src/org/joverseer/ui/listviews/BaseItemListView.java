@@ -418,8 +418,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 					public void run() {
 						selectCurrentNationAsFilter();
 					}
-					});
-				return;
+				});
 			}
 		}
 	}

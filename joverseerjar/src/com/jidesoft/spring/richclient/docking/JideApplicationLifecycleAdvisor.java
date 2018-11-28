@@ -106,7 +106,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		if (event instanceof JOverseerEvent) {
 			
 			JOverseerEvent e = (JOverseerEvent) event;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
+			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 				for (int i = 0; i < menuBar.getMenuCount(); i++) {
 						if (!menuBar.getMenu(i).isEnabled()) {

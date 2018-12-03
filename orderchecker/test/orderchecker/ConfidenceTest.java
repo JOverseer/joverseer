@@ -189,7 +189,7 @@ public class ConfidenceTest {
 
 		Nation nation = createNation(main);
 
-		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
+		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testC","Commander Orange");
 		Order order1= new Order(character,745);
 		character.addOrder(order1);
 		
@@ -198,7 +198,7 @@ public class ConfidenceTest {
 		assertOrderResultsCounts(nation.getOrder(0),3,0,0,0);
 		assertEquals("745 error","Could not determine the location.",order1.getErrorResults().get(0));
 		assertEquals("745 error","Could not determine the location.",order1.getErrorResults().get(1));
-		assertEquals("745 error","Agent Orange has no command rank.",order1.getErrorResults().get(2));
+		assertEquals("745 error","Commander Orange has no command rank.",order1.getErrorResults().get(2));
 
 		character.setCommandRank(1);
 		invokeOrderchecker(main);
@@ -209,24 +209,35 @@ public class ConfidenceTest {
 	}
 	@Test
 	public void emissaryTest() {
-		final Main main = createRuleset("585,Uncover," + RANK_RULE + EMISSARY_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE);
+		final Main main = createRuleset("585,Uncover," + RANK_RULE + EMISSARY_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE + "\n"
+				+ "555,,RANK,0,2,30,1,1,0");
 
 		Nation nation = createNation(main);
 
-		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
+		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Emmy Orange");
 		Order order1= new Order(character,585);
 		character.addOrder(order1);
 		
 		invokeOrderchecker(main);
 		
 		assertOrderResultsCounts(nation.getOrder(0),1,0,0,1);
-		assertEquals("585 error","Agent Orange has no emissary rank.",order1.getErrorResults().get(0));
-		assertEquals("585 warning","Agent Orange should have at least a emissary rank of 1.",order1.getWarnResults().get(0));
+		assertEquals("585 error","Emmy Orange has no emissary rank.",order1.getErrorResults().get(0));
+		assertEquals("585 warning","Emmy Orange should have at least a emissary rank of 1.",order1.getWarnResults().get(0));
 
 		character.setEmissaryRank(1);
 		invokeOrderchecker(main);
 
 		assertOrderResultsCounts(nation.getOrder(0),0,0,0,0);
+		
+		character.getOrders().clear();
+		order1 = new Order(character,555);
+		Order order2 = new Order(character,810);
+		order2.addParameter("2115");
+		character.addOrder(order1);
+		character.addOrder(order2);
+		invokeOrderchecker(main);
+		assertOrderResultsCounts(nation.getOrder(0),0,0,0,1);
+		assertEquals("555 warning","New PC will have low loyalty if emissary rank is less than 30.",order1.getWarnResults().get(0));
 	}
 	@Test
 	public void mageTest() {

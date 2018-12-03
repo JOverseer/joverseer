@@ -2761,7 +2761,7 @@ public class Rule
             		} else {
             			//check the major statistic for the order.
             			//by seeing if there's a rank rule for it and what the restriction is!
-            			Ruleset otherRuleSet = this.main.getRuleSet().getRulesForOrder(this.order, false);
+            			Ruleset otherRuleSet = this.main.getRuleSet().getRulesForOrder(otherOrder, false);
             			if (otherRuleSet != null) {
             				Rule otherRule;
             				for(int j=0;j<otherRuleSet.size();j++) {

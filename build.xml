@@ -19,7 +19,7 @@
 		</subant>
 	</target>
 	
-	<target name="BuildAll" depends="-Init,-Prep,test"/>
+	<target name="BuildAll" depends="-Init,test"/>
 	
 	<!-- Internal targets -->
    <target name="-Init">

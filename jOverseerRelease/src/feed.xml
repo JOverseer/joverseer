@@ -6,6 +6,19 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item>
+    <title>1.16.13</title>
+    <pubDate>Mon, 3 Dec 2018</pubDate>
+    <description>
+VERSION 1.16.13
+---------------
+	* Fix: Orderchecker incorrectly reporting duplicate skill order.
+	* Fix: silent exception stopping New Game dialog closing.
+	* Enh: Gather Support Data Command added to aid debugging in the field.
+	* Enh: Colours for CME updates for accessibility.
+	* QA: updates and Windows installer now built in 'the cloud' by Appveyor for consistency.    
+    </description>
+    </item>
+    <item>
     <title>1.16.12</title>
     <pubDate>Thu, 22 Nov 2018</pubDate>
     <description>

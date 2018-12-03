@@ -1,5 +1,9 @@
+VERSION 1.16.13
+---------------
+	* Fix: Orderchecker incorrectly reporting duplicate skill order.
 	* Fix: silent exception stopping New Game dialog closing.
 	* Enh: Gather Support Data Command added for debugging in the field.
+	
 VERSION 1.16.12
 ---------------
 	* Enh: updated to CME version 1.06

@@ -126,8 +126,12 @@
 		<copy file="${updater.jar}" todir="${dist}"/>
 	</target>
 	<target name="versionLabel">
-		<delete file="*.ver"/>
-	    <delete file="version"/>
+		<delete>
+			<fileset dir=".">
+				<include name="*.ver"/>
+				<include name="version"/>
+			</fileset>
+		</delete>
 	    <xslt in="${res.dir}/ctx/jideApplicationContext.xml" out="${dist}/version" style="${src}/extractver.xsl"/>
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
 	    <echo>${joverseer.version}</echo>

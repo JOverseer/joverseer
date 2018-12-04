@@ -1,0 +1,27 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+skip_tags: true
+shallow_clone: true
+install:
+- cmd: >-
+    cinst ant
+
+    curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.12/launch4j-3.12-win32.zip --output C:\projects\joverseer\launch4j.zip
+
+    7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
+build_script:
+- cmd: >-
+    ant test
+
+    ant -f joverseerRelease\build.xml windowsInstaller
+
+    ant -f joverseerRelease\build.xml updatezip
+artifacts:
+- path: jOverseerRelease\dist\Output\joverseer-setup*.exe
+  name: windowsInstaller
+- path: jOverseerRelease\dist\latestupdate.zip
+  name: latestupdate
+- path: jOverseerRelease\src\feed.xml
+  name: feed

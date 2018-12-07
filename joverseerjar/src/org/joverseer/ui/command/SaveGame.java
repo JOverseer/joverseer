@@ -49,8 +49,7 @@ public class SaveGame extends ActionCommand {
     	this.doExecuteCompletedSave = false;
         if (!GameHolder.hasInitializedGame()) {
             // show error, cannot import when game not initialized
-            ErrorDialog md = new ErrorDialog(Messages.getString("errorSavingGame")); //$NON-NLS-1$
-            md.showDialog();
+            ErrorDialog.showErrorDialog("errorSavingGame"); //$NON-NLS-1$
             return;
         }
         JFileChooser fileChooser = new JFileChooser();
@@ -101,8 +100,7 @@ public class SaveGame extends ActionCommand {
             }
             catch (Exception exc) {
                 BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
-                ErrorDialog d = new ErrorDialog(exc.getMessage());
-                d.showDialog();
+                ErrorDialog.showErrorDialog(exc);
                 // do nothing
                 // todo fix
             }

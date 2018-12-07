@@ -70,8 +70,7 @@ public class ExportMapToFileCommand  extends ActionCommand {
         		dlg.showDialog();
         	}
         	catch (Exception exc) {
-        		ErrorDialog dlg = new ErrorDialog(exc);
-        		dlg.showDialog();
+        		ErrorDialog.showErrorDialog(exc);
         	}
         }
     }

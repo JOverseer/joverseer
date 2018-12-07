@@ -12,9 +12,7 @@ public class ActiveGameChecker {
     public static boolean checkActiveGameExists() {
         if (!GameHolder.hasInitializedGame()) {
             // show error, cannot import when game not initialized
-            ErrorDialog md = new ErrorDialog(
-                    Messages.getString("errorActionNotAvailable"));
-            md.showDialog();
+            ErrorDialog.showErrorDialog("errorActionNotAvailable");
             return false;
         }
         return true;

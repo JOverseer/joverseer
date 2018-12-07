@@ -81,7 +81,7 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
 
             }
             catch (Exception exc) {
-                ErrorDialog.showErrorDialog(exc.getMessage());
+            	ErrorDialog.showErrorDialog(exc);
             }
         }
     }

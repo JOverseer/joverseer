@@ -461,9 +461,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 				}
 			}
 		} catch (Exception exc) {
-			this.logger.error(exc);
-			ErrorDialog md = new ErrorDialog(exc.getMessage());
-			md.showDialog();
+			ErrorDialog.showErrorDialog(exc);
 			this.cancel = true;
 		}
 		return !this.cancel;

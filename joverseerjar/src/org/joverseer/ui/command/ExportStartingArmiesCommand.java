@@ -62,8 +62,7 @@ public class ExportStartingArmiesCommand extends ActionCommand {
 	    	fw.close();
     	}
     	catch (Exception exc) {
-    		ErrorDialog ed = new ErrorDialog(exc);
-    		ed.showDialog();
+    		ErrorDialog.showErrorDialog(exc);
     	}
     }
 }

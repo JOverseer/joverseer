@@ -48,8 +48,8 @@ public class CreateCharacterCommand extends ActionCommand {
 				Game g = GameHolder.instance().getGame();
 				Turn t = g.getTurn();
 				if (t.getContainer(TurnElementsEnum.Character).findFirstByProperty("id", character.getId()) != null) {
-					ErrorDialog errDlg = new ErrorDialog(Messages.getString("addCharacterDialog.error.DuplicateCharacterId", new Object[] { character.getId() }));
-					errDlg.showDialog();
+					ErrorDialog ed = new ErrorDialog(Messages.getString("addCharacterDialog.error.DuplicateCharacterId", new Object[] { character.getId() }));
+					ed.showDialog();
 					return false;
 				}
 				t.getContainer(TurnElementsEnum.Character).addItem(character);

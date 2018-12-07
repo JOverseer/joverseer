@@ -1,5 +1,6 @@
 package org.joverseer.ui.support.dialogs;
 
+import org.apache.log4j.Logger;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.dialog.MessageDialog;
 
@@ -15,7 +16,12 @@ public class ErrorDialog extends MessageDialog {
     }
     
     public ErrorDialog(Exception exc) {
-        this(exc != null ? exc.getMessage() : Messages.getString("errorDialog.unexpectedError"));
+        this( (exc != null) ? ((exc.getMessage() == null) ? Messages.getString("errorDialog.unexpectedError") :exc.getMessage()): Messages.getString("errorDialog.unexpectedError"));
+    	Log(exc);
+    }
+    public ErrorDialog(Exception exc,String msg) {
+    	this(msg);
+    	Log(exc);
     }
     /**
      * Convenience method to display an Error dialog with a translated title and message and return false
@@ -36,6 +42,19 @@ public class ErrorDialog extends MessageDialog {
      */
     public static boolean showErrorDialog(String messageId) {
     	return showErrorDialog(Messages.getString("errorDialog.title"),messageId);
+    }
+    public static boolean showErrorDialog(Exception exc) {
+    	Log(exc);
+    	return showErrorDialog(Messages.getString("errorDialog.title"));
+    }
+    public static boolean showErrorDialog(Exception exc,String messageId) {
+    	Log(exc);
+    	return showErrorDialog(Messages.getString("errorDialog.title"),messageId);
+    }
+    private static void Log(Exception exc) {
+        if (exc != null) {
+        	Logger.getRootLogger().error(exc.toString());
+        }
     }
     
 }

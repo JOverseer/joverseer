@@ -27,8 +27,7 @@ public class DeleteLastTurnCommand extends ActionCommand {
 			return;
 		final Game g = GameHolder.instance().getGame();
 		if (g.getMaxTurn() == 0) {
-			ErrorDialog edlg = new ErrorDialog(Messages.getString("standardErrors.NoTurnsInGame"));
-			edlg.showDialog();
+    		ErrorDialog.showErrorDialog("standardErrors.NoTurnsInGame");
 			return;
 		}
 		ConfirmationDialog dlg = new ConfirmationDialog(Messages.getString("deleteLastTurnCommand.ConfirmationTitle"),

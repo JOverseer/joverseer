@@ -924,8 +924,7 @@ public class CharacterViewer extends ObjectViewer {
 			Container<Army> armies = t.getArmies();
 			Army a = armies.findFirstByProperty("commanderName", c.getName()); //$NON-NLS-1$
 			if (a != null) {
-				ErrorDialog dlg = new ErrorDialog(Messages.getString("CharacterViewer.CantDelete")); //$NON-NLS-1$ //$NON-NLS-2$
-				dlg.showDialog();
+				ErrorDialog.showErrorDialog("CharacterViewer.CantDelete"); //$NON-NLS-1$
 				return;
 			}
 			Container<Character> characters = t.getCharacters();
@@ -951,8 +950,7 @@ public class CharacterViewer extends ObjectViewer {
 				@Override
 				protected boolean onFinish() {
 					if (!form.getFormModel().getValueModel("name").getValue().equals(charName)) { //$NON-NLS-1$
-						ErrorDialog errDlg = new ErrorDialog(Messages.getString("CharacterViewer.CantRename")); //$NON-NLS-1$
-						errDlg.showDialog();
+						ErrorDialog.showErrorDialog("CharacterViewer.CantRename"); //$NON-NLS-1$
 						return false;
 					}
 					form.commit();

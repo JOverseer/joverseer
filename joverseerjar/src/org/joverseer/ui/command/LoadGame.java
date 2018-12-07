@@ -123,16 +123,14 @@ public class LoadGame extends ActionCommand {
                 
             }
             catch (EOFException exc) {
-            	ErrorDialog d = new ErrorDialog(Messages.getString("LoadGame.CorruptFile")); //$NON-NLS-1$ //$NON-NLS-2$
-                d.showDialog();
+            	ErrorDialog.showErrorDialog(exc,"LoadGame.CorruptFile"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             catch (FileNotFoundException exc) {
-            	ErrorDialog d = new ErrorDialog(Messages.getString("LoadGame.CantFind", new String[] { f.getAbsolutePath() })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            	ErrorDialog d = new ErrorDialog(exc,Messages.getString("LoadGame.CantFind", new String[] { f.getAbsolutePath() })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 d.showDialog();
             }
             catch (Exception exc) {
-                ErrorDialog d = new ErrorDialog(exc);
-                d.showDialog();
+                ErrorDialog.showErrorDialog(exc);
                 // do nothing
                 // todo fix
             }

@@ -57,8 +57,8 @@ public class CreateArmyCommand extends ActionCommand {
 				Game g = GameHolder.instance().getGame();
 				Turn t = g.getTurn();
 				if (!army.getCommanderName().toLowerCase().startsWith("unknown") && t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", army.getCommanderName()) != null) {
-					ErrorDialog errDlg = new ErrorDialog(Messages.getString("addArmyDialog.error.DuplicateCommanderName", new Object[] { army.getCommanderName() }));
-					errDlg.showDialog();
+					ErrorDialog ed = new ErrorDialog(Messages.getString("addArmyDialog.error.DuplicateCommanderName", new Object[] { army.getCommanderName() }));
+					ed.showDialog();
 					return false;
 				}
 				t.getContainer(TurnElementsEnum.Army).addItem(army);

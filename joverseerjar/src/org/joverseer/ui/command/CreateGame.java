@@ -77,9 +77,7 @@ public class CreateGame extends ActionCommand {
                     joApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, game, this);
 
                 } catch (Exception e) {
-                    ErrorDialog dlg = new ErrorDialog(e);
-                    dlg.showDialog();
-                	this.logger.warn("CreateGame.exception");
+                    ErrorDialog.showErrorDialog(e);
                     return true;
                 } 
 

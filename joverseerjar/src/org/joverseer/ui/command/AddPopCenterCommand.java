@@ -38,8 +38,7 @@ public class AddPopCenterCommand extends ActionCommand {
 		InfoSource is = new UserInfoSource();
 		Game g = GameHolder.instance().getGame();
 		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo) != null) { //$NON-NLS-1$
-			ErrorDialog md = new ErrorDialog(Messages.getString("AddPopCenterCommand.1")); //$NON-NLS-1$
-			md.showDialog();
+			ErrorDialog.showErrorDialog("AddPopCenterCommand.1"); //$NON-NLS-1$
 			return;
 		}
 		is.setTurnNo(g.getCurrentTurn());

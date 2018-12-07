@@ -142,8 +142,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
                         }
                         catch (Exception exc) {
                             setMessageEnabled(false);
-                            ErrorDialog d = new ErrorDialog(exc);
-                            d.showDialog();
+                            ErrorDialog.showErrorDialog(exc);
                         }
                         return true;
                     }

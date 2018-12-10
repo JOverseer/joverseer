@@ -67,6 +67,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	private RepaintManager repaintManager;
 	boolean canCloseWindow = true;
 	public static boolean devOption = false;
+	static boolean menusEnabled = false;
 
 	public CommandGroup getSpecificCommandGroup(String name) {
 		return getCommandGroup(name);
@@ -107,19 +108,22 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			
 			JOverseerEvent e = (JOverseerEvent) event;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
-				for (int i = 0; i < menuBar.getMenuCount(); i++) {
+				if (!menusEnabled ) {
+					JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+					for (int i = 0; i < menuBar.getMenuCount(); i++) {
 						if (!menuBar.getMenu(i).isEnabled()) {
-						menuBar.getMenu(i).setEnabled(true);
-					}
+							menuBar.getMenu(i).setEnabled(true);
+						}
 						for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
-						JMenuItem menu = menuBar.getMenu(i).getItem(j);
-						if (menu != null) {
-							if (!menu.isEnabled()) {
-								menu.setEnabled(true);
+							JMenuItem menu = menuBar.getMenu(i).getItem(j);
+							if (menu != null) {
+								if (!menu.isEnabled()) {
+									menu.setEnabled(true);
+								}
 							}
 						}
 					}
+					menusEnabled = true;
 				}
 			}
 		}

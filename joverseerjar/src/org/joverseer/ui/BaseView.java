@@ -7,6 +7,7 @@ import org.springframework.richclient.application.support.AbstractView;
 
 /**
  * A way to customize AbstractViews in joverseer.
+ * Note that only writes to the gameHolder and game are synchronised, but reads shouldn't be a problem.
  */
 public abstract class BaseView extends AbstractView {
 
@@ -15,20 +16,27 @@ public abstract class BaseView extends AbstractView {
 
 	public GameHolder getGameHolder() {
 		if (this.gameHolder == null) {
-			this.gameHolder = GameHolder.instance();
+			setGameHolder2(GameHolder.instance());
 		}
 		return this.gameHolder;
 	}
 
+	private synchronized void setGameHolder2(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+	
 	public void setGameHolder(GameHolder gameHolder) {
 		this.gameHolder = gameHolder;
 	}
 
 	protected Game getGame() {
 		if (this.game == null ) {
-			this.game = GameHolder.instance().getGame();
+			setGame2(GameHolder.instance().getGame());
 		}
 		return this.game;
+	}
+	private synchronized void setGame2(Game game) {
+		this.game = game;
 	}
 	/**
 	 * 
@@ -38,5 +46,14 @@ public abstract class BaseView extends AbstractView {
 		if (!Game.isInitialized(getGame()))
 			return null;
 		return this.game.getTurn();
+	}
+	/**
+	 * subclasses MUST call this to reset the gameholder when the game is changed!
+	 */
+	protected synchronized void resetGame() {
+		this.gameHolder = null;
+		this.game = null;
+		this.getGameHolder();
+		this.getGame();
 	}
 }

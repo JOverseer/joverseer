@@ -385,6 +385,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
 				// setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
+				super.resetGame();
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {

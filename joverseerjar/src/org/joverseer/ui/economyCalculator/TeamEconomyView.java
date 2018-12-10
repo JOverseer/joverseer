@@ -221,6 +221,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 					exc.printStackTrace();
 				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
+				super.resetGame();
 				refreshTableItems();
 				this.teamEconomyTableModel.fireTableDataChanged();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {

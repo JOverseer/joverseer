@@ -105,6 +105,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 					}
 				}
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
+				super.resetGame(); 
 				((MarketTableModel) this.marketTable.getModel()).setGame(null);
 				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
 				Nation n = this.nationCombo.load(true, true);

@@ -110,6 +110,7 @@ public class PdfFileViewer extends BaseView implements ApplicationListener {
         if (applicationEvent instanceof JOverseerEvent) {
             JOverseerEvent e = (JOverseerEvent) applicationEvent;
             if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
+            	super.resetGame();
                 this.nationCombo.load(true, true);
                 initSearch();
             } else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {

@@ -132,10 +132,10 @@ public class Container<X> implements Serializable, Iterable<X> {
 	}
 
 	public void removeAll(Collection<X> col) {
-		this.items.removeAll(col);
 		for (ContainerCache<X> cc : this.caches.values()) {
 			cc.removeAll(col);
 		}
+		this.items.removeAll(col);
 	}
 
 	public void removeAllByProperties(String property, Object value) {

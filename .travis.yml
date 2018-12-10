@@ -2,7 +2,7 @@ language: java
 os:
  - osx
  - linux
-jdk: oraclejdk9
+jdk: oraclejdk11
 
 install:
  - if [ $TRAVIS_OS_NAME = osx ]; then brew install ant; fi

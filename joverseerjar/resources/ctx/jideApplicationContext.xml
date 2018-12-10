@@ -37,8 +37,12 @@
 	<!-- 
 		Event multicaster used in Spring
 	 -->
-	<bean id="applicationEventMulticaster" 
+<!-- <bean id="applicationEventMulticaster" 
 		class="org.springframework.context.event.SimpleApplicationEventMulticaster"/>
+ -->
+	<bean id="applicationEventMulticaster" 
+		class="org.joverseer.ui.SmartApplicationEventCaster"/>
+
 		
 	<bean id="rulesSource" class="org.joverseer.validation.JOverseerRulesSource"/>		
 	

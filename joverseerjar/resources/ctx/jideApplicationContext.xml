@@ -13,8 +13,8 @@
 	 
 	<bean id="applicationDescriptor" 
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.16.13"/>
-		<property name="buildId" value="Slimey Elf"/>
+		<property name="version" value="1.16.14"/>
+		<property name="buildId" value="Fawning Fell-Beasts"/>
 	</bean>
 	
 	<!--
@@ -37,9 +37,6 @@
 	<!-- 
 		Event multicaster used in Spring
 	 -->
-<!-- <bean id="applicationEventMulticaster" 
-		class="org.springframework.context.event.SimpleApplicationEventMulticaster"/>
- -->
 	<bean id="applicationEventMulticaster" 
 		class="org.joverseer.ui.SmartApplicationEventCaster"/>
 

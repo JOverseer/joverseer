@@ -5,6 +5,19 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item><title>1.16.14</title>
+    <pubDate>Mon, 10 Dec 2018</pubDate>
+    <description>
+VERSION 1.16.14
+---------------
+	* Fix: Properly reset the game when a different game is loaded.
+	       This fixes a lot of odd behaviour seen recently.
+	* Fix: The Error Dialog was crashing in some error cases, obscuring the actual error.
+	* QA: JOverseer is more robust when part of it crashes.
+	* QA: The windows version is now continuously built and tested by Appveyor.com.
+	      The linux and mac versions are built and tested by TravisCI.org. 
+    </description>
+    </item>
     <item>
     <title>1.16.13</title>
     <pubDate>Mon, 3 Dec 2018</pubDate>

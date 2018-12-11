@@ -121,18 +121,17 @@ public class OrderEditorListView extends ItemListView {
 			return;
 		
 		int row = this.table.getSelectedRow();
+		if (row == -1) {
+			return;
+		}
 		Object o = null;
 		try {
 			o = this.tableModel.getRow(row); // get the object for this row
-		} catch (Exception e) {
-			// do nothing
-		}
-		int column = this.table.getSelectedColumn();
-		this.tableModel.setRows(orders);
+			int column = this.table.getSelectedColumn();
+			this.tableModel.setRows(orders);
 
-		this.characterIndices.clear();
+			this.characterIndices.clear();
 
-		try {
 			if (o != null && o.equals(this.tableModel.getRow(row))) {
 				// if row is still showing same order, keep selection
 				this.table.setRowSelectionInterval(row, row);

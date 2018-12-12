@@ -33,6 +33,7 @@ import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.ClearMapItems;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -45,6 +46,7 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.application.ApplicationWindow;
 import org.springframework.richclient.application.config.DefaultApplicationLifecycleAdvisor;
+import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
 import org.springframework.richclient.dialog.MessageDialog;
@@ -133,37 +135,17 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onPostStartup() {
 		initializeRepaintManager();
+		refreshClearMapItemsVisibility();
+
 		JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
-		if (devOption == false) {
-			for (int i = 0; i < menuBar.getMenuCount(); i++) {
-				//TODO:I18N
-				if (menuBar.getMenu(i).getText().equals("Admin")) {
-					menuBar.getMenu(i).setVisible(false);
-				}
-			}
-		}
+
 		for (int i = 0; i < menuBar.getMenuCount(); i++) {
 			// recent games
 			//TODO: I18N
 			if (menuBar.getMenu(i).getText().equals("Game")) {
 				for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
 					if (menuBar.getMenu(i).getItem(j) != null && menuBar.getMenu(i).getItem(j).getText() != null && menuBar.getMenu(i).getItem(j).getText().equals("Recent Games")) {
-						JMenu menu = (JMenu) menuBar.getMenu(i).getItem(j);
-						RecentGames rg = new RecentGames();
-						ArrayList<RecentGames.RecentGameInfo> rgis = rg.getRecentGameInfo();
-						for (RecentGameInfo rgi : rgis) {
-							final RecentGameInfo frgi = rgi;
-							JMenuItem mu = new JMenuItem();
-							mu.setText("Game " + String.valueOf(rgi.getNumber()));
-							mu.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									LoadGame loadGame = new LoadGame(frgi.getFile());
-									loadGame.execute();
-								}
-							});
-							menu.add(mu);
-						}
+						addRecentGamesMenu((JMenu) menuBar.getMenu(i).getItem(j));
 					}
 				}
 			}
@@ -171,27 +153,11 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			// user guide
 			//TODO:I18N
 			if (menuBar.getMenu(i).getText().equals("Help")) {
-				try {
-					final File f = new File("JOverseerUserGuide.pdf");
-					if (f.exists()) {
-						//TODO:I18N
-						JMenuItem mi = new JMenuItem("User's Guide");
-						mi.addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								try {
-									Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + f.getAbsolutePath());
-								} catch (Exception exc) {
-									// do nothing
-								}
-							}
-						});
-						menuBar.getMenu(i).add(new JSeparator());
-						menuBar.getMenu(i).add(mi);
-					}
-				} catch (Exception exc) {
-					// do nothing
-				}
+				addUserGuide(menuBar.getMenu(i));
+			}
+
+			if (menuBar.getMenu(i).getText().equals("Admin")) {
+				menuBar.getMenu(i).setVisible(devOption);
 			}
 
 		}
@@ -229,7 +195,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 						@Override
 						protected void doExecuteCommand() {
 							PreferenceRegistry.instance().setPreferenceValue("updates.autoCheckForNewVersion", "yes");
-							getDialog().dispose();
+												getDialog().dispose();
 						}
 					}, new ActionCommand("actionNo") {
 						@Override
@@ -340,4 +306,51 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		}
 	}
 
+	private void addUserGuide(JMenu menu) {
+		final File f = new File("JOverseerUserGuide.pdf");
+		JMenuItem mi = null;
+		if (f.exists()) {
+			//TODO:I18N
+			mi = new JMenuItem("User's Guide");
+			mi.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + f.getAbsolutePath());
+					} catch (Exception exc) {
+						// do nothing
+					}
+				}
+			});
+		}
+		if (mi != null) {
+			menu.add(new JSeparator());
+			menu.add(mi);
+		}
+	}
+	private void addRecentGamesMenu(JMenu menu) {
+		RecentGames rg = new RecentGames();
+		ArrayList<RecentGames.RecentGameInfo> rgis = rg.getRecentGameInfo();
+		for (RecentGameInfo rgi : rgis) {
+			final RecentGameInfo frgi = rgi;
+			JMenuItem mu = new JMenuItem();
+			mu.setText("Game " + String.valueOf(rgi.getNumber()));
+			mu.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					LoadGame loadGame = new LoadGame(frgi.getFile());
+					loadGame.execute();
+				}
+			});
+			menu.add(mu);
+		}
+	}
+	
+	public void refreshClearMapItemsVisibility() {
+		CommandGroup toolbar = Application.instance().getLifecycleAdvisor().getToolBarCommandGroup();
+		AbstractCommand ac = toolbar.find("clearMapItemsCommand");
+		if (ac != null) {
+			ac.setVisible(PreferenceRegistry.instance().getPreferenceValue("map.clearMapItemsOnToolBar").equals("yes"));
+		}
+	}
 }

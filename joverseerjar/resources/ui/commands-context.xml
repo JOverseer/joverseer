@@ -71,9 +71,10 @@
                 <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
 <!--                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
                  <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
-                <value>separator</value>
+-->
+<!-- These are hidden unless enabled by a preference -->
+                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ClearMapItems"/>
-            	  -->
 			</list>
 		</property>
 	</bean>

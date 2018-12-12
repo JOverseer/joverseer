@@ -18,7 +18,10 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
 import org.joverseer.ui.ScalableAbstractForm;
 import org.springframework.binding.form.FormModel;
+import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
+
+import com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor;
 
 /**
  * Preferences form
@@ -160,6 +163,8 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 				reg.setPreferenceValue(p.getKey(), tf.getText());
 			}
 		}
+		JideApplicationLifecycleAdvisor advisor = (JideApplicationLifecycleAdvisor) Application.instance().getLifecycleAdvisor();
+		advisor.refreshClearMapItemsVisibility();
 	}
 
 }

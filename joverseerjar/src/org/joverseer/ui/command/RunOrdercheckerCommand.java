@@ -32,10 +32,10 @@ import com.middleearthgames.orderchecker.Main;
 
 /**
  * Runs OrderChecker using the OrderCheckerProxy class.
- * 
+ *
  * It also takes care of updating the orders with the results stored in the
  * OrderCheckerProxy and OrderChecker objects
- * 
+ *
  * @author Marios Skounakis
  */
 public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
@@ -54,20 +54,6 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			if (!ActiveGameChecker.checkActiveGameExists())
 				return;
 
-			// if
-			// (GameHolder.instance().getGame().getMetadata().getGameType().equals(GameTypeEnum.gameUW))
-			// {
-			// MessageSource ms =
-			// (MessageSource)Application.services().getService(MessageSource.class);
-			// MessageDialog md = new MessageDialog(
-			// ms.getMessage("errorDialog.title", new String[]{},
-			// Locale.getDefault()),
-			// ms.getMessage("errorOrdercheckerDoesNotSupportUW", new
-			// String[]{}, Locale.getDefault()));
-			// md.showDialog();
-			// return;
-			// }
-			
 			// show a form so that the user selects the desired nation
 			final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));
 			FormBackedDialogPage pg = new FormBackedDialogPage(frm);
@@ -143,11 +129,11 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 
 						cont.addAll(resultList);
 						SwingUtilities.invokeLater(new Runnable() {
-							
+
 							@Override
 							public void run() {
 								joApplication.publishEvent(LifecycleEventsEnum.OrderCheckerRunEvent, cont);
-								
+
 							}
 						});
 					} catch (Exception exc) {
@@ -178,7 +164,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 	 * Simple form for displaying the OrderChecker windows. Basically embeds the
 	 * information request and relation order checker windows into a dialog and
 	 * shows them in JOverseer.
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	public class OrdercheckerForm extends AbstractForm {

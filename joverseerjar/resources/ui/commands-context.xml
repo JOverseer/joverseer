@@ -62,23 +62,43 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
-                <bean class="org.joverseer.ui.command.CreateGame"/>
-                <bean class="org.joverseer.ui.command.LoadGame"/>
-                <bean class="org.joverseer.ui.command.SaveGame"/>
-                <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir"/>
+                <ref bean="createGameCommand"/>
+                <ref bean="loadGameCommand"/>
+                <ref bean="saveGameCommand"/>
+                <ref bean="openXmlAndPdfDirCommand"/>
                 <value>separator</value>
-                <bean class="org.joverseer.ui.command.ExportOrdersCommand"/>
-                <bean class="org.joverseer.ui.command.RunOrdercheckerCommand"/>
+                <ref bean="exportOrdersCommand"/>
+                <ref bean="runOrdercheckerCommand"/>
 <!--                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
                  <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
 -->
 <!-- These are hidden unless enabled by a preference -->
                  <value>separator</value>
-            	<bean class="org.joverseer.ui.command.ClearMapItems"/>
+                <ref bean="clearMapItemsCommand"/>
 			</list>
 		</property>
 	</bean>
 	
+	<bean id="createGameCommand" class="org.joverseer.ui.command.CreateGame"/> 
+	<bean id="loadGameCommand" class="org.joverseer.ui.command.LoadGame"/> 
+	<bean id="saveGameCommand" class="org.joverseer.ui.command.SaveGame">
+		<property name="enabled"><value>false</value></property>
+	</bean> 
+    <bean id="openXmlAndPdfDirCommand" class="org.joverseer.ui.command.OpenXmlAndPdfDir">
+    	<property name="enabled"><value>false</value></property>
+    </bean>                                                        
+    <bean id="runOrdercheckerCommand" class="org.joverseer.ui.command.RunOrdercheckerCommand">
+    	<property name="enabled"><value>false</value></property>
+    </bean>
+    <bean id="exportOrdersCommand" class="org.joverseer.ui.command.ExportOrdersCommand">
+    	<property name="enabled"><value>false</value></property>
+    </bean>
+   	<bean id="clearMapItemsCommand" class="org.joverseer.ui.command.ClearMapItems">
+    	<property name="enabled"><value>false</value></property>
+    </bean>
+    <bean id="showCombatCalculatorCommand" class="org.joverseer.ui.command.ShowCombatCalculatorCommand">
+    	<property name="enabled"><value>false</value></property>
+    </bean>
 
     <!--
         Bean: fileMenu
@@ -92,24 +112,16 @@
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
-            	<bean class="org.joverseer.ui.command.CreateGame"/>
+            	<ref bean ="createGameCommand"/>
 			    <value>separator</value>
-                <bean class="org.joverseer.ui.command.LoadGame"/>
+                <ref bean="loadGameCommand"/>
                 <ref bean="recentGamesMenu"/>
-                <bean class="org.joverseer.ui.command.SaveGame">
-					<property name="enabled"><value>false</value></property>
-                </bean>
+                <ref bean="saveGameCommand"/>
 			    <value>separator</value>                            
-                <bean class="org.joverseer.ui.command.OpenXmlAndPdfDir">
-                	<property name="enabled"><value>false</value></property>
-                </bean>                                                        
+                <ref bean="openXmlAndPdfDirCommand"/>
 			    <value>separator</value>
-                <bean class="org.joverseer.ui.command.RunOrdercheckerCommand">
-                	<property name="enabled"><value>false</value></property>
-                </bean>
-                <bean class="org.joverseer.ui.command.ExportOrdersCommand">
-                	<property name="enabled"><value>false</value></property>
-                </bean>
+                <ref bean="runOrdercheckerCommand"/>
+                <ref bean="exportOrdersCommand"/>
  				<value>separator</value>
                 <bean class="com.jidesoft.spring.richclient.ExitCommand"/>
 			</list>
@@ -152,8 +164,8 @@
                <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
                <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand"/>
                <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>               
-               <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand"/>               
-               <bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand"/>
+               <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand"/>
+               <ref bean ="showCombatCalculatorCommand"/>               
                <bean class="org.joverseer.ui.command.SaveToDbCommand"/>
                <bean class="org.joverseer.ui.command.ExecuteOrdersCommand"/>
                <bean class="org.joverseer.ui.command.GetDowngradeSuccessRateCommand"/>
@@ -362,9 +374,7 @@
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<value>separator</value>
-            	<bean class="org.joverseer.ui.command.ClearMapItems">
-            		<property name="enabled"><value>false</value></property>
-            	</bean>
+                <ref bean="clearMapItemsCommand"/>
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ToggleDrawAllOrdersCommand">
             		<property name="enabled"><value>false</value></property>
@@ -380,9 +390,7 @@
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<value>separator</value>
-                <bean class="org.joverseer.ui.command.ShowCombatCalculatorCommand">
-            		<property name="enabled"><value>false</value></property>
-            	</bean>
+    	        <ref bean ="showCombatCalculatorCommand"/>               
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ExportMapToFileCommand">
             		<property name="enabled"><value>false</value></property>

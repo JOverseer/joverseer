@@ -56,7 +56,7 @@ public class HexReader implements MetadataReader {
 
     private void loadTraffic(HashMap hexes, GameMetadata gm) throws IOException, MetadataReaderException {
         try {
-        	BufferedReader reader = gm.getUTF8ResourceByGame(this.trafficFilename,false);
+        	BufferedReader reader = gm.getUTF8ResourceByGame(this.trafficFilename,true);
 
             String ln;
             while ((ln = reader.readLine()) != null) {

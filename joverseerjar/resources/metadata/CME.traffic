@@ -1,3 +1,6 @@
+#format is <hex>,0,<side>,<traffic type>
+#where <side> := (1=TR,2=R,3=BR,4=BL,5=L,6=TL)
+# and  <traffic type>:= (1=ford,2=bridge,3=major river,4=minor river,5=road)
 "1906",0,2,5
 "1906",0,6,5
 "2006",0,6,4
@@ -47,7 +50,6 @@
 "2807",0,5,4
 "2907",0,4,4
 "3107",0,3,4
-"3107",0,6,5
 "3207",0,2,5
 "3207",0,4,5
 "3207",0,6,5

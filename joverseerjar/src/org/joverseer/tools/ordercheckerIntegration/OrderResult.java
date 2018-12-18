@@ -3,7 +3,7 @@ package org.joverseer.tools.ordercheckerIntegration;
 import org.joverseer.domain.Order;
 
 /**
- * Class that stores a result from Order Checker for a give order.
+ * Class that stores a result from Order Checker for a given order.
  * 
  * @author Marios Skounakis
  */

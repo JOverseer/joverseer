@@ -3,6 +3,7 @@ package org.joverseer.tools.ordercheckerIntegration;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joverseer.domain.Order;
 import org.joverseer.support.Container;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -45,9 +46,7 @@ public class OrderResultContainer implements ApplicationListener {
 
 	public void removeResultsForOrder(Order o) {
 		ArrayList<OrderResult> ors = getResultsForOrder(o);
-		for (OrderResult r : ors) {
-			this.results.removeItem(r);
-		}
+		this.results.removeAll(ors);
 	}
 
 	@Override
@@ -56,7 +55,13 @@ public class OrderResultContainer implements ApplicationListener {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
 				Order o = (Order) e.getData();
-				removeResultsForOrder(o);
+				try {
+					removeResultsForOrder(o);
+				}
+				catch (java.util.ConcurrentModificationException ex) {
+					//HACK:
+					Logger.getRootLogger().error(ex.getMessage());
+				}
 			}
 		}
 	}

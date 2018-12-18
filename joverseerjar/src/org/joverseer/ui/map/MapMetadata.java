@@ -3,12 +3,13 @@ package org.joverseer.ui.map;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.joverseer.metadata.domain.Hex;
 import org.joverseer.ui.map.renderers.Renderer;
 import org.springframework.richclient.application.Application;
 
 /**
  * Metadata for the map (dimensions, grid sizes, etc)
- * 
+ *
  * @author Marios Skounakis
  */
 public class MapMetadata {
@@ -89,12 +90,9 @@ public class MapMetadata {
 	{
 		return (MapMetadata) Application.instance().getApplicationContext().getBean("mapMetadata");
 	}
-	public boolean withinMapRange(int x, int y) {
-		if (x < getMinMapColumn()) return false;
-		if (x > getMaxMapColumn()) return false;
-		if (y < getMinMapRow()) return false;
-		if (y > getMaxMapRow()) return false;
-		return true;
+	public boolean withinMapRange(Hex hex) {
+		return hex.isColumnWithin(getMinMapColumn(),getMaxMapColumn())
+			&& hex.isRowWithin(getMinMapRow(),getMaxMapRow());
 	}
 
 }

@@ -28,7 +28,7 @@ public class HexNumberRenderer extends AbstractBaseRenderer {
         }
 
         Hex hex = (Hex)obj;
-        if (!this.mapMetadata.withinMapRange(hex.getColumn(), hex.getRow())) return;
+        if (!this.mapMetadata.withinMapRange(hex)) return;
 
         Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
         String hexNo = String.valueOf(hex.getColumn());

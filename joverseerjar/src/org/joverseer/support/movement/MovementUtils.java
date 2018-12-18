@@ -134,7 +134,7 @@ public class MovementUtils {
 		} else {
 			// out of map
 			MapMetadata mm = joApplication.getMapMetadata();
-			if (!mm.withinMapRange(dest.getColumn(),dest.getRow()))
+			if (!mm.withinMapRange(dest))
 				return -1;
 		}
 
@@ -251,7 +251,7 @@ public class MovementUtils {
 		} else {
 			// out of map
 			MapMetadata mm = joApplication.getMapMetadata();
-			if (!mm.withinMapRange(dest.getColumn(),dest.getRow()))
+			if (!mm.withinMapRange(dest))
 				return -1;
 		}
 

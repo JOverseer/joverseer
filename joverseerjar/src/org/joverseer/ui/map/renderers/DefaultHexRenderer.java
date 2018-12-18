@@ -234,7 +234,7 @@ public class DefaultHexRenderer extends ImageRenderer implements ApplicationList
 		}
 
 		Hex hex = (Hex) obj;
-		if (!this.mapMetadata.withinMapRange(hex.getColumn(), hex.getRow()))
+		if (!this.mapMetadata.withinMapRange(hex))
 			return;
 
 		boolean imageDrawn = false;

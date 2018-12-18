@@ -7,12 +7,12 @@ import java.util.HashMap;
 /**
  * Holds information about a hex - location - terrain - rivers - roads/fords -
  * traffic
- * 
+ *
  * All information about the hex sides is stored in a hashmap, key-ed by
  * HexSideEnum items and valued by HexSideElementEnum items.
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 public class Hex implements Serializable {
 	private static final long serialVersionUID = 5588445214380293965L;
@@ -107,7 +107,7 @@ public class Hex implements Serializable {
 		hexNoStr += String.valueOf(this.getRow());
 		return hexNoStr;
 	}
-	
+
 	// only used by orderchecker integration
 	public HashMap<HexSideEnum, ArrayList<HexSideElementEnum>> getSideElements() {
 		return this.hexSideElements;
@@ -123,5 +123,10 @@ public class Hex implements Serializable {
 		return h;
 
 	}
-
+	public boolean isColumnWithin(int lower,int upper) {
+		return ( this.column >= lower ) && ( this.column <= upper);
+	}
+	public boolean isRowWithin(int lower,int upper) {
+		return ( this.row >= lower ) && ( this.row <= upper);
+	}
 }

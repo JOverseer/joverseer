@@ -112,7 +112,7 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         boolean simpleColors = pval.equals("xs");
 
         Hex hex = (Hex)obj;
-        if (!this.mapMetadata.withinMapRange(hex.getColumn(), hex.getRow())) return;
+        if (!this.mapMetadata.withinMapRange(hex)) return;
         Game game = this.gh.getGame();
         
         Object map = this.mapOptions.get(MapOptionsEnum.NationMap);

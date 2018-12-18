@@ -6,6 +6,17 @@
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
     <item><title>1.16.14</title>
+    <pubDate>Tue, 18 Dec 2018</pubDate>
+    <description>
+VERSION 1.16.15
+---------------
+	* Fix: OrderEditorListView not updating correctly when game changes and no order was selected.
+	* Fix: remove road at 3107 for CME
+	* Enh: Put the Clear Map Items button back controlled by preference.
+	* more colour tweaks for CME.
+	</description>
+	</item>
+    <item><title>1.16.14</title>
     <pubDate>Mon, 10 Dec 2018</pubDate>
     <description>
 VERSION 1.16.14
@@ -15,7 +26,7 @@ VERSION 1.16.14
 	* Fix: The Error Dialog was crashing in some error cases, obscuring the actual error.
 	* QA: JOverseer is more robust when part of it crashes.
 	* QA: The windows version is now continuously built and tested by Appveyor.com.
-	      The linux and mac versions are built and tested by TravisCI.org. 
+	      The linux and mac versions are built and tested by TravisCI.org.
     </description>
     </item>
     <item>
@@ -28,7 +39,7 @@ VERSION 1.16.13
 	* Fix: silent exception stopping New Game dialog closing.
 	* Enh: Gather Support Data Command added to aid debugging in the field.
 	* Enh: Colours for CME updates for accessibility.
-	* QA: updates and Windows installer now built in 'the cloud' by Appveyor for consistency.    
+	* QA: updates and Windows installer now built in 'the cloud' by Appveyor for consistency.
     </description>
     </item>
     <item>
@@ -48,7 +59,7 @@ VERSION 1.16.11
 ---------------
 	* Enh: updated to CME version 1.05
 	* Enh: final (hopefully) menu moves.
-	* Enh: Orderchecker now spots some cases of using two orders of the same skill. 
+	* Enh: Orderchecker now spots some cases of using two orders of the same skill.
 	* Fix: issue #669 where orderchecker complains about PBM games.
 	* Fix: the orderchecker status in the order list view updates sooner.
 	* Fix: default nation map locations for CME.
@@ -76,7 +87,7 @@ VERSION 1.16.10
     <description>
 VERSION 1.16.9
 --------------
-	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff. 
+	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff.
 	* Enh: You can save and exit from the 'are you sure you want to exit' dialog.
 	* Enh: The Team Economy view has been updated to highlight tax rate increases, and tweaked to use totals consistent with the economy calculator.
 	* Enh: The Team *Economies* view has been removed as it was confusing and duplicated information on the Team Economy view.
@@ -161,7 +172,7 @@ VERSION 1.16.4
 	* Enh: If you are using an obsolete version of java, you will get a warning at update time.
 	* Fix: Orderchecker is working again for those who found it broken in 1.16.3.
 	* Fix: Orderchecker data files now live in the orderchecker.jar file by default. Bare files in the filesystem will override them.
-	* Fix: Those running older versions of java which broke on joverseer 1.16.3. 
+	* Fix: Those running older versions of java which broke on joverseer 1.16.3.
 	* Fix: The characterset used for the data files is treated as UTF-8 and several names now have the correct accents.
 	* FIx: lots of uses of Hex locations omitted the leading 0.
 	* Fix: Sorting by Popcentre level and fortifications.
@@ -182,7 +193,7 @@ VERSION 1.16.3
 	* Fix: issue #653 order view filter - characters with/without orders - now understands characters with more than 3 orders
 	* Fix: In the Map Option View, If you changed to allegiance colours, then you couldn't get back to nation colours
 	* Fix: default nation names for FA
-	* Fix: orderchecker and 940 412 order  
+	* Fix: orderchecker and 940 412 order
 	</description>
     </item>
 
@@ -196,7 +207,7 @@ VERSION 1.16.2
 	* Fix: 120 Order wasn't being helpful in order editor.
 	* Fix/Enhancement: UTF-8 encoding handled in metadata files. If an external editor put a Byte Order Mark in a metadata file, then JO could miss-read the first line. e.g. the 120 bug.
 	* Enh: Create Army and Character now added to current hex view popup menu.
-	* Fix: KS army missing from 3222. 
+	* Fix: KS army missing from 3222.
 	* Fix: FA roads and rivers updated.
 	* Fix: Merged fix to metadata paths from alexey-mr and extended. It should help non-Windows users.
 	* Fix: Open Software licence is now explicitly BSD.

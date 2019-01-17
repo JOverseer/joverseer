@@ -341,7 +341,9 @@ public class Character
         {
             attributes.append(attribute + ", ");
         }
-        attributes.delete(attributes.length() - 2, attributes.length());
+        if (attributes.length() > 0) {
+        	attributes.delete(attributes.length() - 2, attributes.length());
+        }
         return attributes.toString();
     }
 

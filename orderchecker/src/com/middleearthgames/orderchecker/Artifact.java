@@ -1,17 +1,17 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces fieldsfirst safe 
+// Decompiler options: packimports(3) braces fieldsfirst safe
 // Source File Name:   Artifact.java
 
 package com.middleearthgames.orderchecker;
 
 
-class Artifact
+public class Artifact
 {
 
-    static final int ALIGNMENT_NEUTRAL = 0;
-    static final int ALIGNMENT_EVIL = 1;
-    static final int ALIGNMENT_GOOD = 2;
+    public static final int ALIGNMENT_NEUTRAL = 0;
+    public static final int ALIGNMENT_EVIL = 1;
+    public static final int ALIGNMENT_GOOD = 2;
     static final String alignmentAbbrev[] = {
         "N", "E", "G"
     };
@@ -21,7 +21,7 @@ class Artifact
     private final int alignment;
     private final String properties;
 
-    Artifact(int artifact, String name, int game, int alignment, String properties)
+    public Artifact(int artifact, String name, int game, int alignment, String properties)
     {
         this.artifact = artifact;
         this.name = name;
@@ -71,5 +71,25 @@ class Artifact
     {
         return this.name + " (#" + this.artifact + "," + alignmentString() + "," + this.properties + ")";
     }
-
+	/**
+	 *
+	 * @param word
+	 * @return the code appropriate for the supplied alignment
+	 */
+	public static int encodeAlignment(String word) {
+		switch (word.charAt(0)) {
+		case 'E':
+		case 'e':
+		case 'U':
+		case 'u': // evil or usurpers
+			return ALIGNMENT_EVIL;
+		case 'G':
+		case 'g':
+		case 'L':
+		case 'l': // good or loyalist
+			return ALIGNMENT_GOOD;
+		default:
+			return ALIGNMENT_NEUTRAL;
+		}
+	}
 }

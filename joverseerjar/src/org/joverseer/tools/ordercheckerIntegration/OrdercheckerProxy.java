@@ -29,9 +29,12 @@ import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.springframework.richclient.image.ImageSource;
 
+import com.middleearthgames.orderchecker.Artifact;
+import com.middleearthgames.orderchecker.ArtifactList;
 import com.middleearthgames.orderchecker.Main;
 import com.middleearthgames.orderchecker.Map;
 import com.middleearthgames.orderchecker.Nation;
@@ -45,14 +48,14 @@ import com.middleearthgames.orderchecker.io.ImportRulesCsv;
 
 /**
  * Class the acts as a proxy between JOverseer and Bernie Geiger's Order Checker
- * 
+ *
  * It: - prepares the Order Checker by updating it with the current game's data
  * - runs it (and takes care of showing the appropriate request screens) -
  * provides helper methods for accessing the order results
- * 
+ *
  * It heavily depends on the ReflectionUtils class for accessing private fields
  * and method on the Order Checker code.
- * 
+ *
  * @author Marios Skounakis
  */
 public class OrdercheckerProxy {
@@ -75,12 +78,12 @@ public class OrdercheckerProxy {
 	{
 		com.middleearthgames.orderchecker.Hex ocHex;
 		HashMap<HexSideEnum,ArrayList<HexSideElementEnum>> elements;
-		
+
 		for(org.joverseer.metadata.domain.Hex meHex:metadata.getHexes()){
 			ocHex = new com.middleearthgames.orderchecker.Hex(meHex.getHexNo());
 			// TODO: check this the doc says it starts at 0
 			ocHex.setTerrain((int)(meHex.getTerrain().getTerrain())); // terrain numbers are the same.
-			elements = meHex.getSideElements(); 
+			elements = meHex.getSideElements();
 			int direction;
 			for(java.util.Map.Entry<HexSideEnum,ArrayList<HexSideElementEnum>> entry:elements.entrySet()){
 				for(HexSideElementEnum feature:entry.getValue()) {
@@ -95,7 +98,7 @@ public class OrdercheckerProxy {
 			map.addHex(ocHex);
 		}
 	}
-	
+
 	public void runOrderchecker() {
 		Main.main.setRuleSet(new Ruleset());
 		ImportRulesCsv rules = new ImportRulesCsv("ruleset.csv", Main.main.getRuleSet());
@@ -152,7 +155,7 @@ public class OrdercheckerProxy {
 		Main.displayErrorMessage(error);
 	}
 	/**
-	 * 
+	 *
 	 * @param main
 	 * @throws Exception
 	 */
@@ -220,7 +223,7 @@ public class OrdercheckerProxy {
 			// int result = (Integer)ReflectionUtils.invokeMethod(n,
 			// "getResultType", new Object[]{});
 			// if (result == 1) {
-			//                    
+			//
 			// n.setIcon(new
 			// ImageIcon(imgSource.getImage("orderchecker.green.image")));
 			// }
@@ -242,7 +245,7 @@ public class OrdercheckerProxy {
 	}
 
 	private static Nation updateNation(Game g,int nationNo1,Turn t) {
-		
+
 		PlayerInfo pi = t.getPlayerInfo(nationNo1);
 
 		Nation nation = new Nation();
@@ -251,9 +254,11 @@ public class OrdercheckerProxy {
 		nation.setTurn(t.getTurnNo());
 		nation.setGameType(g.getMetadata().getGameType().toOrderCheckerName());
 
-		nation.setSecret(Integer.parseInt(pi.getSecret()));
-		nation.setPlayer(pi.getPlayerName());
-		nation.setDueDate(pi.getDueDate());
+		if (pi != null) {
+			nation.setSecret(Integer.parseInt(pi.getSecret()));
+			nation.setPlayer(pi.getPlayerName());
+			nation.setDueDate(pi.getDueDate());
+		}
 		for (org.joverseer.metadata.domain.Nation n : g.getMetadata().getNations()) {
 			nation.addNation(n.getName());
 		}
@@ -287,13 +292,13 @@ public class OrdercheckerProxy {
 				nation.setCapital(popCenter.getHexNo());
 			}
 		}
-		
+
 	}
 	private void updateCharacters(Game g,Turn t, Nation nation) {
 		for (Character ch : (ArrayList<Character>) t.getContainer(TurnElementsEnum.Character).getItems()) {
 			if (ch.getDeathReason() != CharacterDeathReasonEnum.NotDead)
 				continue;
-			if (ch.getId() == null) { 
+			if (ch.getId() == null) {
 				System.out.println(ch.getName() + " has no Id");
 				continue;
 			}
@@ -381,7 +386,7 @@ public class OrdercheckerProxy {
 			nation.addArmy(a);
 		}
 	}
-	
+
 	private static void updateNationRelations(Game g,Data data,Turn t,Nation nation) {
 		for (int i = 1; i <= 25; i++) {
 			NationRelations nr = t.getNationRelations(i);
@@ -410,7 +415,7 @@ public class OrdercheckerProxy {
 	}
 	public void updateOrdercheckerGameData(int nationNo1) throws Exception {
 		setNationNo(nationNo1);
-		
+
 
 		Game g = GameHolder.instance().getGame();
 		Turn t = g.getTurn();
@@ -418,8 +423,14 @@ public class OrdercheckerProxy {
 		Nation nation = updateNation(g, nationNo1, t);
 
 		// update the artifacts before the characters that may have them.
-		Object artifactList = ReflectionUtils.retrieveField(Main.main, "artifacts");
-		ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});
+		ArtifactList artifactList = (ArtifactList)(ReflectionUtils.retrieveField(Main.main, "artifacts"));
+		//ReflectionUtils.invokeMethod(artifactList, "configureList", new Object[] {});
+		Vector oal = artifactList.getArtifacts();
+		oal.clear();
+		Container<ArtifactInfo> all = g.getMetadata().getArtifacts();
+		for(ArtifactInfo ai:all) {
+			oal.add(new Artifact(ai.getNo(), ai.getName(), 1, Artifact.encodeAlignment(ai.getAlignment()),ai.getPower1()+","+ai.getPower2() ));
+		}
 
 
 		updatePC(t, nation);

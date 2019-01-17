@@ -49,6 +49,7 @@ import org.springframework.richclient.application.config.DefaultApplicationLifec
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;
+import org.springframework.richclient.command.CommandGroupModelBuilder;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.exceptionhandling.DefaultRegisterableExceptionHandler;
 import org.springframework.richclient.exceptionhandling.RegisterableExceptionHandler;
@@ -61,7 +62,7 @@ import com.middleearthgames.updater.ThreepartVersion;
  * any status bar command group implementation. It also changes the repaint
  * manager to use the technique of Scott Deplap to detect illegal UI updates
  * outside of the EDT
- * 
+ *
  * @author Jonny Wray
  */
 public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycleAdvisor {
@@ -102,15 +103,18 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		return handler;
 	}
 
-	
-	
+
+
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof JOverseerEvent) {
-			
+
 			JOverseerEvent e = (JOverseerEvent) event;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
 				if (!menusEnabled ) {
+					CommandGroupEnabler traverser = new CommandGroupEnabler();
+					traverser.buildModel(Application.instance().getLifecycleAdvisor().getToolBarCommandGroup());
+
 					JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
 					for (int i = 0; i < menuBar.getMenuCount(); i++) {
 						if (!menuBar.getMenu(i).isEnabled()) {
@@ -170,7 +174,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				lg.loadGame();
 			}
 		}
-		
+
 		// some commands are disabled until game loaded...
 	}
 
@@ -229,9 +233,9 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 
 				ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
 				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
-		        
+
    		        try {
-		            if (UpdateChecker.getLatestVersion(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")).isLaterThan(current)) { 
+		            if (UpdateChecker.getLatestVersion(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")).isLaterThan(current)) {
 		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")));
 					}
 					String str = new SimpleDateFormat().format(new Date());
@@ -345,7 +349,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			menu.add(mu);
 		}
 	}
-	
+
 	public void refreshClearMapItemsVisibility() {
 		CommandGroup toolbar = Application.instance().getLifecycleAdvisor().getToolBarCommandGroup();
 		AbstractCommand ac = toolbar.find("clearMapItemsCommand");
@@ -353,4 +357,30 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			ac.setVisible(PreferenceRegistry.instance().getPreferenceValue("map.clearMapItemsOnToolBar").equals("yes"));
 		}
 	}
+
+	public class CommandGroupEnabler extends CommandGroupModelBuilder
+	{
+
+		@Override
+		protected Object buildRootModel(CommandGroup commandGroup) {
+			return null;
+		}
+
+		@Override
+		protected Object buildGroupModel(Object parentModel, CommandGroup commandGroup, int level) {
+			return null;
+		}
+
+		@Override
+		protected Object buildChildModel(Object parentModel, AbstractCommand command, int level) {
+			// check for a separator first.
+			if (command != null) {
+				if (!command.isEnabled()) {
+					command.setEnabled(true);
+				}
+			}
+			return null;
+		}
+	};
+
 }

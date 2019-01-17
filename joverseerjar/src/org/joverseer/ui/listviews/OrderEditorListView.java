@@ -121,24 +121,22 @@ public class OrderEditorListView extends ItemListView {
 			return;
 		
 		int row = this.table.getSelectedRow();
-		if (row == -1) {
-			return;
-		}
 		Object o = null;
-		try {
+		int column = -1;
+		if (row != -1) {
 			o = this.tableModel.getRow(row); // get the object for this row
-			int column = this.table.getSelectedColumn();
-			this.tableModel.setRows(orders);
+			column = this.table.getSelectedColumn();
+		}
+		this.tableModel.setRows(orders);
 
-			this.characterIndices.clear();
+		this.characterIndices.clear();
 
-			if (o != null && o.equals(this.tableModel.getRow(row))) {
+		if (o != null) {
+			if (o.equals(this.tableModel.getRow(row))) {
 				// if row is still showing same order, keep selection
 				this.table.setRowSelectionInterval(row, row);
 				this.table.setColumnSelectionInterval(column, column);
 			}
-		} catch (Exception e) {
-			// do nothing
 		}
 	}
 
@@ -580,12 +578,12 @@ public class OrderEditorListView extends ItemListView {
 		if (applicationEvent instanceof JOverseerEvent) {
 			JOverseerEvent e = (JOverseerEvent) applicationEvent;
 			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				refreshFilters();
+				//refreshFilters();
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
 				setItems();
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				// setFilters();
+				// setFilters(); // baselistview will try and reload filter settings.
 				refreshFilters();
 				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
 				// ComboBox Editor for the order number

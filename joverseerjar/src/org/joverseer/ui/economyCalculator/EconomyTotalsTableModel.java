@@ -145,6 +145,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (columnIndex == iHeaderCol3) {
             return this.rowHeaders3[rowIndex];
         }
+        if (getGame() == null) return "";
         if (getGame().getTurn() == null) return "";
         NationEconomy ne = getNationEconomy();
         if (ne == null) return "";

@@ -39,6 +39,9 @@ public class AllegianceFilter extends AbstractListViewFilter {
     	if (this.allegiance == null) return true;
         IBelongsToNation o = (IBelongsToNation)obj;
         Game g = GameHolder.instance().getGame();
+        if (o.getNationNo() == null) {
+        	return false;
+        }
         NationRelations nr = g.getTurn().getNationRelations(o.getNationNo());
         boolean ret;
         if (nr == null) {

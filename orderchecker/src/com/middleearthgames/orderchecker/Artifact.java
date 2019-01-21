@@ -77,6 +77,9 @@ public class Artifact
 	 * @return the code appropriate for the supplied alignment
 	 */
 	public static int encodeAlignment(String word) {
+		if (word == null) {
+			return ALIGNMENT_NEUTRAL;
+		}
 		switch (word.charAt(0)) {
 		case 'E':
 		case 'e':

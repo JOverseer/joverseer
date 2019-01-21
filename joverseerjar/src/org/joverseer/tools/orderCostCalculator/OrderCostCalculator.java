@@ -22,10 +22,10 @@ import org.joverseer.support.ProductContainer;
 
 /**
  * Utility class that calculates the cost for a give order.
- * 
+ *
  * Currently it computes the gold cost, but work is in process (and unfinished)
  * to also compute product costs
- * 
+ *
  * @author Marios Skounakis
  */
 
@@ -363,8 +363,8 @@ public class OrderCostCalculator {
 	}
 
 	public int relocateCapitalCost(Order o) {
-		this.cont.setProduct(ProductEnum.Gold, 30000);
-		return 30000;
+		this.cont.setProduct(ProductEnum.Gold, 25000);
+		return 25000;
 	}
 
 	public int hireArmyCost(Order o) {

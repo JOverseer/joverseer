@@ -3,9 +3,12 @@ package org.joverseer.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
+
 /**
  * Stores the program's estimate about an army (as derived from sources such as combat narrations)
- * 
+ *
  * @author Marios Skounakis
  *
  */
@@ -17,14 +20,14 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	ArrayList<String> lossesRanges = new ArrayList<String>();
 	ArrayList<Integer> losses = new ArrayList<Integer>();
 	Integer nationNo;
-	
+
 	String moraleDescription;
 	String moraleRange;
 	int morale;
-	
+
 	ArrayList<ArmyEstimateElement> regiments = new ArrayList<ArmyEstimateElement>();
 	int hexNo;
-	
+
 	public String getCommanderName() {
 		return this.commanderName;
 	}
@@ -37,14 +40,14 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	public ArrayList<ArmyEstimateElement> getRegiments() {
 		return this.regiments;
 	}
-	
+
 	public ArmyEstimateElement getRegiment(ArmyElementType t) {
 		for (ArmyEstimateElement aee : getRegiments()) {
 			if (aee.getType().equals(t)) return aee;
 		}
 		return null;
 	}
-	
+
 	public int getHexNo() {
 		return this.hexNo;
 	}
@@ -94,11 +97,11 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	public void setCommanderTitle(String commanderTitle) {
 		this.commanderTitle = commanderTitle;
 	}
-	
+
 	public int getEffectiveLosses(int lossOptimismFactor) {
 		double losses1 = 100;
 		for (int li : getLosses(lossOptimismFactor)) {
-			double l = li; 
+			double l = li;
 			losses1 = losses1 * (100d - (double)l) / 100d;
 		}
 		return (int)losses1;
@@ -111,7 +114,7 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	public void setNationNo(Integer nationNo) {
 		this.nationNo = nationNo;
 	}
-	
+
 	public String getTroopInfo() {
 		String ret = "";
 		for (ArmyEstimateElement aee : getRegiments()) {
@@ -122,8 +125,8 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 		}
 		return ret;
 	}
-	
-	
+
+
 	protected int getRangeAverage(String rangeString, int max, int lossOptimismFactor) {
     	if (rangeString.indexOf("-") > -1) {
 	    	String[] parts = rangeString.split("-");
@@ -138,10 +141,11 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	    			return max;
 	    		}
 	    		return 0;
-	    		
+
 	    	}
 	    	catch (NumberFormatException exc) {
-	    		exc.printStackTrace();
+	    		Logger.getRootLogger().error(rangeString);
+	    		Logger.getRootLogger().error(ErrorDialog.getCustomStackTrace(exc));
 	    	}
 	    	return 0;
     	}
@@ -159,7 +163,8 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
 	    		return 0;
 	    	}
 	    	catch (NumberFormatException exc) {
-	    		exc.printStackTrace();
+	    		Logger.getRootLogger().error(rangeString);
+	    		Logger.getRootLogger().error(ErrorDialog.getCustomStackTrace(exc));
 	    	}
 	    	return 0;
     	}
@@ -167,11 +172,12 @@ public class ArmyEstimate implements Serializable, IHasMapLocation, IBelongsToNa
     		return Integer.parseInt(rangeString);
     	}
     	catch (Exception exc) {
-    		exc.printStackTrace();
+    		Logger.getRootLogger().error(rangeString);
+    		Logger.getRootLogger().error(ErrorDialog.getCustomStackTrace(exc));
     	}
     	return 0;
     }
     protected int getRangeAverage(String rangeString, int lossOptimismFactor) {
     	return getRangeAverage(rangeString, 100, lossOptimismFactor);
-    }	
+    }
 }

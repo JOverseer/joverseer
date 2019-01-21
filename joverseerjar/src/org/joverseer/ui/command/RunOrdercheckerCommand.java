@@ -19,6 +19,7 @@ import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.joverseer.ui.views.SelectOrderchekerNationForm;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.support.ApplicationWindowAwareCommand;
@@ -154,8 +155,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 			dialog.setTitle(Messages.getString("checkOrdersDialog.title"));
 			dialog.showDialog();
 		} catch (Exception exc) {
-			System.out.println(exc.getMessage());
-			exc.printStackTrace();
+			ErrorDialog.showErrorDialog(exc);
 		}
 
 	}

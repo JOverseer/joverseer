@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 
 /**
  *
@@ -42,7 +43,7 @@ public class UpdateInfo extends JFrame{
     	this(info,"New Update Found");
     }
     public UpdateInfo(String info,String title) {
-    	
+
         initComponents(title);
 		this.infoPane.setPreferredSize(new Dimension(800, 600));
 		try {
@@ -82,7 +83,7 @@ public class UpdateInfo extends JFrame{
 			this.infoPane.select(0, 1);
 			this.scp.setPreferredSize(new Dimension(750, 500));
 		} catch (Exception exc) {
-			System.out.println(exc.getMessage());
+			ErrorDialog.showErrorDialog(exc);
 		}
     }
 
@@ -148,7 +149,7 @@ public class UpdateInfo extends JFrame{
         String macScript = System.getProperty("java.io.tmpdir")+"joverseerUpdater.sh";
         String macElevatorScript = System.getProperty("java.io.tmpdir")+"joverseerElevator.sh";
 		String[] runMacOSX = {macElevatorScript,macScript,downloadLocation};
-        
+
         run = runJava;
     	if (System.getProperty("os.name").startsWith("Windows")) {
     		boolean writesok = false;
@@ -178,9 +179,9 @@ public class UpdateInfo extends JFrame{
 	    			fw.close();
 				} catch (IOException e) {
 					log.error("Failed to execute privilege escalation");
-					e.printStackTrace();
+					log.error(ErrorDialog.getCustomStackTrace(e));
 				}
-    			
+
     		}
     	} else if (System.getProperty("os.name").startsWith("Mac OS X")) {
     	    //https://stackoverflow.com/questions/27736300/elevate-your-java-app-as-admin-privilege-on-mac-osx-by-osascript
@@ -197,7 +198,7 @@ public class UpdateInfo extends JFrame{
 						+ System.getProperty("java.io.tmpdir") +"joupdateout.txt 2>&1 &");
 				writer.close();
 				log.debug("close ok");
-				executor.setExecutable(true);				
+				executor.setExecutable(true);
 				log.debug("chmod ok");
 				// use another script for osascript as exec isn't good enough..needs a shell.
 				File elevator = new File(macElevatorScript);
@@ -212,8 +213,7 @@ public class UpdateInfo extends JFrame{
 				log.debug("elevator ok");
 			} catch (Exception e) {
 				log.error("cant create script to elevate privileges");
-				log.error(e.getMessage());
-				e.printStackTrace();
+				log.error(ErrorDialog.getCustomStackTrace(e));
 			}
 
     	}
@@ -230,7 +230,7 @@ public class UpdateInfo extends JFrame{
         	Thread.sleep(2000);
         } catch (Exception ex) {
         	log.error("Failed to run updater.");
-            ex.printStackTrace();
+			log.error(ErrorDialog.getCustomStackTrace(ex));
         }
         log.info("closing down");
         System.exit(0);

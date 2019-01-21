@@ -53,8 +53,23 @@ public class ErrorDialog extends MessageDialog {
     }
     private static void Log(Exception exc) {
         if (exc != null) {
-        	Logger.getRootLogger().error(exc.toString());
+        	Logger.getRootLogger().error(getCustomStackTrace(exc));
         }
     }
+    // from javapractices.com
+    public static String getCustomStackTrace(Throwable throwable) {
+        //add the class name and any message passed to constructor
+        StringBuilder result = new StringBuilder( "Unexpected: " );
+        result.append(throwable.toString());
+        String NL = System.getProperty("line.separator");
+        result.append(NL);
+
+        //add each element of the stack trace
+        for (StackTraceElement element : throwable.getStackTrace()){
+          result.append(element);
+          result.append(NL);
+        }
+        return result.toString();
+      }
     
 }

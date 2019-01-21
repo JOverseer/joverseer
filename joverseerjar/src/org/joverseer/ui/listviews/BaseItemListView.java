@@ -58,13 +58,13 @@ import org.springframework.richclient.table.TableUtils;
  * with the given ItemTableModel descendant - having filters - having a default
  * sort order - having a popup menu for the table rows - having a set of buttons
  * on the right of the table
- * 
+ *
  * @author Marios Skounakis
  */
 public abstract class BaseItemListView extends BaseView implements ApplicationListener, MouseListener, MouseMotionListener,InitializingBean {
 
 	PreferenceRegistry preferenceRegistry;
-	
+
 	public PreferenceRegistry getPreferenceRegistry() {
 		return this.preferenceRegistry;
 	}
@@ -295,7 +295,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 	}
 	/**
 	 * create the view...
-	 * 
+	 *
 	 * @return
 	 */
 	protected JComponent createControlImpl() {
@@ -371,56 +371,63 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						cacheFilterOptions();
-						refreshFilters();
-						tryRestoreFilterOptions();
-						setItems();
-					}
-				});
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
-				// setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				super.resetGame();
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						refreshFilters();
-						setItems();
-					}
-				});
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ListviewTableAutoresizeModeToggle)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
-						if (pval.equals("yes")) {
-							BaseItemListView.this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-						} else {
-							BaseItemListView.this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-						}
-					}
-				});
+			onJOEvent((JOverseerEvent) applicationEvent);
+		}
+	}
 
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ListviewRefreshItems)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setItems();
+	protected void onJOEvent(JOverseerEvent e) {
+		switch (e.getType()) {
+		case SelectedTurnChangedEvent:
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					cacheFilterOptions();
+					refreshFilters();
+					tryRestoreFilterOptions();
+					setItems();
+				}
+			});
+			break;
+		case GameChangedEvent:
+			super.resetGame();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					refreshFilters();
+					setItems();
+				}
+			});
+			break;
+		case ListviewTableAutoresizeModeToggle:
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					String pval = PreferenceRegistry.instance().getPreferenceValue("listviews.autoresizeCols");
+					if (pval.equals("yes")) {
+						BaseItemListView.this.table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					} else {
+						BaseItemListView.this.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 					}
-				});
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						selectCurrentNationAsFilter();
-					}
-				});
-			}
+				}
+			});
+			break;
+		case ListviewRefreshItems:
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					setItems();
+				}
+			});
+			break;
+		case GameLoadedEvent:
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					selectCurrentNationAsFilter();
+				}
+			});
+			break;
+		//case SelectedHexChangedEvent: break;
 		}
 	}
 
@@ -537,7 +544,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 		return null;
 	}
 	/**
-	 * 
+	 *
 	 * @return -1 if not selected
 	 */
 	public int getSelectedSortedRow() {

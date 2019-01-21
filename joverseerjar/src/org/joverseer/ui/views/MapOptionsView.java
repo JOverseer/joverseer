@@ -46,6 +46,9 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 	JCheckBox showClimate;
 	JCheckBox popCenterNames;
 
+	/**
+	 * Used internally to turn off propagating events when we know there are going to be a lot of them.
+	 */
 	boolean fireEvents = true;
 
 	@Override
@@ -373,19 +376,6 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomDecreaseEvent)) {
 				if (this.zoom.getSelectedIndex() > 0) {
 					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() - 1);
-				}
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
-				Game g = GameHolder.instance().getGame();
-				if (Game.isInitialized(g)) {
-					Nation n = g.getMetadata().getNationByNum(g.getMetadata().getNationNo());
-					String thisNationDescription = n.getName();
-					String a;
-					for (int i=0; i<this.cmbMaps.getItemCount();i++) {
-						a = (String)this.cmbMaps.getItemAt(i);
-						if (a.equals(thisNationDescription)) {
-							this.cmbMaps.setSelectedItem(a);
-						}
-					}
 				}
 			}
 		}

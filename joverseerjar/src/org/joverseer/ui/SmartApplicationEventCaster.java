@@ -59,10 +59,12 @@ public class SmartApplicationEventCaster extends AbstractApplicationEventMultica
 			getTaskExecutor().execute(new Runnable() {
 				@Override
 				public void run() {
-					if (joe != null) {
-						SmartApplicationEventCaster.this.log.info(listener.getClass().getSimpleName() + " receiving " + joe.getEventType());
-					} else {
-						SmartApplicationEventCaster.this.log.info(listener.getClass().getSimpleName() + " receiving " + event.getClass().getSimpleName());
+					if (SmartApplicationEventCaster.this.log.isInfoEnabled()) {
+						if (joe != null) {
+							SmartApplicationEventCaster.this.log.info(listener.getClass().getSimpleName() + " receiving " + joe.getEventType());
+						} else {
+							SmartApplicationEventCaster.this.log.info(listener.getClass().getSimpleName() + " receiving " + event.getClass().getSimpleName());
+						}
 					}
 					try {
 						listener.onApplicationEvent(event);

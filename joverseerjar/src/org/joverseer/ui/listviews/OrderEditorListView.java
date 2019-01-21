@@ -69,7 +69,7 @@ import org.springframework.richclient.table.renderer.BooleanTableCellRenderer;
  * List view that shows orders and also allows the editing of these orders It is
  * also integrated with the OrderParameterValidator object to display errors in
  * the orders.
- * 
+ *
  * @author Marios Skounakis
  */
 public class OrderEditorListView extends ItemListView {
@@ -84,7 +84,7 @@ public class OrderEditorListView extends ItemListView {
 	HashMap<Character, Integer> characterIndices = new HashMap<Character, Integer>();
 	Container<OrderEditorData> completeOrderData;
 	int lastColumnForSelectedOrder = -1;
-	
+
 	public OrderEditorListView() {
 		super(TurnElementsEnum.Character, OrderEditorTableModel.class);
 	}
@@ -119,7 +119,7 @@ public class OrderEditorListView extends ItemListView {
 
 		if(this.table == null)
 			return;
-		
+
 		int row = this.table.getSelectedRow();
 		Object o = null;
 		int column = -1;
@@ -574,94 +574,88 @@ public class OrderEditorListView extends ItemListView {
 	}
 
 	@Override
-	public void onApplicationEvent(ApplicationEvent applicationEvent) {
-		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				//refreshFilters();
-				setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
-				setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				// setFilters(); // baselistview will try and reload filter settings.
-				refreshFilters();
-				TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
-				// ComboBox Editor for the order number
-				GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
+	protected void onJOEvent(JOverseerEvent e) {
+		switch(e.getType()) {
+		case GameLoadedEvent:
+			selectCurrentNationAsFilter();
+			break;
+		case SelectedTurnChangedEvent:
+		case SelectedHexChangedEvent:
+		case OrderChangedEvent:
+		case RefreshMapItems:
+		case RefreshOrders:
+		case OrderCheckerRunEvent:
+			//refreshFilters();
+			setItems();
+			break;
+		case GameChangedEvent:
+			super.onJOEvent(e);
+			TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
+			// ComboBox Editor for the order number
+			GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
 
-				Order order=null;
-				Character c = null;
-				int row = OrderEditorListView.this.table.getSelectedRow();
-				if (row >= 0) {
-					int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
-					if (idx < OrderEditorListView.this.tableModel.getRowCount()) {
-						order = this.getSelectedOrder();
-						if (order != null) {
-							c = order.getCharacter();
-						}
+			Order order=null;
+			Character c = null;
+			int row = OrderEditorListView.this.table.getSelectedRow();
+			if (row >= 0) {
+				int idx = ((SortableTableModel) OrderEditorListView.this.table.getModel()).convertSortedIndexToDataIndex(row);
+				if (idx < OrderEditorListView.this.tableModel.getRowCount()) {
+					order = this.getSelectedOrder();
+					if (order != null) {
+						c = order.getCharacter();
 					}
 				}
-				
-				final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(c, gm));
-				comboBox.setEditable(true);
-				comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-				final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
-				noAndCodeColumn.setCellEditor(editor);
-				comboBox.getEditor().getEditorComponent().addKeyListener(new OrderEditingKeyAdapter(editor));
-				editor.addCellEditorListener(new CellEditorListener() {
+			}
 
-					@Override
-					public void editingCanceled(ChangeEvent e1) {
-						OrderEditorListView.this.table.requestFocus();
-					}
+			final JComboBox comboBox = new AutocompletionComboBox(OrderEditor.createOrderCombo(c, gm));
+			comboBox.setEditable(true);
+			comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+			final ComboBoxCellEditor editor = new ComboBoxCellEditor(comboBox);
+			noAndCodeColumn.setCellEditor(editor);
+			comboBox.getEditor().getEditorComponent().addKeyListener(new OrderEditingKeyAdapter(editor));
+			editor.addCellEditorListener(new CellEditorListener() {
 
-					@Override
-					public void editingStopped(ChangeEvent e1) {
-						OrderEditorListView.this.table.requestFocus();
-					}
-
-				});
-				if (this.completeOrderData == null) {
-					this.completeOrderData = OrderEditor.instance().getOrderEditorData();
+				@Override
+				public void editingCanceled(ChangeEvent e1) {
+					OrderEditorListView.this.table.requestFocus();
 				}
-				if (this.completeOrderData != null) {
-					//int paramNo = 0;
-					if (order != null) { // could be null if moving right to left?
-						OrderEditorData oed = this.completeOrderData.findFirstByProperty("orderNo", order.getOrderNo()); //$NON-NLS-1$
-						if (oed != null) {
-							this.lastColumnForSelectedOrder = oed.getParamTypes().size() + OrderEditorTableModel.iParamStart -1;
-							AbstractOrderSubeditor sub;
-							switch (order.getOrderNo()) {
-							case 850:
-							case 860:
-							case 830: 
-								sub = new MoveArmyOrderSubeditor(null,order);
-							case 940:
-								sub = new CastLoSpellOrderSubeditor(null,order);
-								
-							default:
-/*								paramNo = col-OrderEditorTableModel.iParamStart;
-										if (paramNo < oed.getParamTypes().size()) {
-											sub = OrderEditor.parameterEditorFactory(null,oed.getParamTypes().get(paramNo),oed.getParamDescriptions().get(paramNo),order,oed.getOrderNo());
-										}
+
+				@Override
+				public void editingStopped(ChangeEvent e1) {
+					OrderEditorListView.this.table.requestFocus();
+				}
+
+			});
+			if (this.completeOrderData == null) {
+				this.completeOrderData = OrderEditor.instance().getOrderEditorData();
+			}
+			if (this.completeOrderData != null) {
+				//int paramNo = 0;
+				if (order != null) { // could be null if moving right to left?
+					OrderEditorData oed = this.completeOrderData.findFirstByProperty("orderNo", order.getOrderNo()); //$NON-NLS-1$
+					if (oed != null) {
+						this.lastColumnForSelectedOrder = oed.getParamTypes().size() + OrderEditorTableModel.iParamStart -1;
+						AbstractOrderSubeditor sub;
+						switch (order.getOrderNo()) {
+						case 850:
+						case 860:
+						case 830:
+							sub = new MoveArmyOrderSubeditor(null,order);
+						case 940:
+							sub = new CastLoSpellOrderSubeditor(null,order);
+
+						default:
+/*							paramNo = col-OrderEditorTableModel.iParamStart;
+									if (paramNo < oed.getParamTypes().size()) {
+										sub = OrderEditor.parameterEditorFactory(null,oed.getParamTypes().get(paramNo),oed.getParamDescriptions().get(paramNo),order,oed.getOrderNo());
 									}
 								}
-*/							}
-						}
+							}
+*/						}
 					}
 				}
-				setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameLoadedEvent)) {
-				selectCurrentNationAsFilter();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-			    setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
-				setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshOrders)) {
-				setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderCheckerRunEvent)) {
-				setItems();
 			}
+			setItems();
 		}
 	}
 
@@ -676,7 +670,7 @@ public class OrderEditorListView extends ItemListView {
 				});
 		return group.createPopupMenu();
 	}
-	
+
 
 	private Order getSelectedOrder() {
 		Order order;
@@ -689,7 +683,7 @@ public class OrderEditorListView extends ItemListView {
 	}
 	/**
 	 * Edit the selected order
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	private class EditOrderAction extends ActionCommand {
@@ -706,7 +700,7 @@ public class OrderEditorListView extends ItemListView {
 
 	/**
 	 * Delete the selected order
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	private class DeleteOrderAction extends ActionCommand {
@@ -722,10 +716,10 @@ public class OrderEditorListView extends ItemListView {
 		}
 
 	}
-	
+
 	/**
 	 * Move the selected (order/parameter) cell to the next order below
-	 * 
+	 *
 	 * @author Dave
 	 *
 	 */
@@ -764,7 +758,7 @@ public class OrderEditorListView extends ItemListView {
 
 	/**
 	 * Set Draw = true for all orders in the list view
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	private class DrawAllOrdersAction extends ActionCommand {
@@ -784,7 +778,7 @@ public class OrderEditorListView extends ItemListView {
 
 	/**
 	 * Set Draw = false for all orders in the list view
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	private class UnDrawAllOrdersAction extends ActionCommand {
@@ -799,7 +793,7 @@ public class OrderEditorListView extends ItemListView {
 
 	/**
 	 * Generic Order filter
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	private abstract class OrderFilter extends AbstractListViewFilter {
@@ -880,13 +874,13 @@ public class OrderEditorListView extends ItemListView {
 	/**
 	 * Cell renderer for the order parameters - Changes the background to
 	 * erroneous parameters - Shows a tooltip with the error message
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	class OrderParameterCellRenderer extends DefaultTableCellRenderer {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 8431276961016537008L;
 		int paramNo;
@@ -936,13 +930,13 @@ public class OrderEditorListView extends ItemListView {
 	/**
 	 * Renderer for the order number - Changes the background to erroneous
 	 * orders - Shows a tooltip with the error message
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	class OrderNumberCellRenderer extends DefaultTableCellRenderer {
 
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 506383000581556844L;
 		Color selectionBackground = (Color) UIManager.get("Table.selectionBackground");
@@ -981,7 +975,7 @@ public class OrderEditorListView extends ItemListView {
 			return lbl;
 		}
 	}
-	
+
 	class OrderEditingKeyAdapter extends KeyAdapter {
 		CellEditor editor;
 		public OrderEditingKeyAdapter(CellEditor editor) {

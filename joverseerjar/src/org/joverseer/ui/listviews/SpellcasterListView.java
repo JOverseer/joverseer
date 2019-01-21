@@ -37,7 +37,7 @@ import org.springframework.richclient.table.ColumnToSort;
  * respective spells. Proficiency in each spell is shown in the table columns,
  * which dynamically adjust based on the number of spells. For Spirit Mastery
  * spells, the health effect is also shown
- * 
+ *
  * @author Marios Skounakis
  */
 public class SpellcasterListView extends BaseItemListView {
@@ -345,20 +345,19 @@ public class SpellcasterListView extends BaseItemListView {
 	}
 
 	@Override
-	public void onApplicationEvent(ApplicationEvent applicationEvent) {
-		super.onApplicationEvent(applicationEvent);
-		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-				setItems();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						resetFilters();
-					}
-				});
-			}
+	protected void onJOEvent(JOverseerEvent e) {
+		super.onJOEvent(e);
+		switch (e.getType()) {
+		case OrderChangedEvent:
+			setItems();
+			break;
+		case GameChangedEvent:
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					resetFilters();
+				}
+			});
 		}
 	}
 
@@ -366,7 +365,7 @@ public class SpellcasterListView extends BaseItemListView {
 	 * SpellList - acts as a filter Contains an arraylist of integers for the
 	 * spell ids and an arraylist of strings for the spell names (which are
 	 * often abbreviated)
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	private class SpellList {

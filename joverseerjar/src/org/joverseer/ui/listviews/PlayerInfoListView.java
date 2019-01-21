@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * List view for PlayerInfo objects
- * 
+ *
  * @author Marios Skounakis
  */
 public class PlayerInfoListView extends ItemListView {
@@ -47,19 +47,17 @@ public class PlayerInfoListView extends ItemListView {
                 }
                 return super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             }
-            
+
         });
         return comp;
     }
 
 	@Override
-	public void onApplicationEvent(ApplicationEvent applicationEvent) {
-		if (applicationEvent instanceof JOverseerEvent) {
-			if (((JOverseerEvent)applicationEvent).isLifecycleEvent(LifecycleEventsEnum.OrderSaveToFileEvent))  {
-				this.setItems();
-			}
+	protected void onJOEvent(JOverseerEvent e) {
+		if (e.getType() == LifecycleEventsEnum.OrderSaveToFileEvent)  {
+			this.setItems();
 		} else {
-			super.onApplicationEvent(applicationEvent);
+			super.onJOEvent(e);
 		}
 	}
 

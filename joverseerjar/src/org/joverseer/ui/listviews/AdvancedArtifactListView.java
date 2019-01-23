@@ -42,14 +42,14 @@ import org.springframework.richclient.table.SortableTableModel;
 /**
  * The advanced artifact information tab Shows ArtifactWrappers from the
  * ArtifactInfoCollector
- * 
+ *
  * @author Marios Skounakis
  */
 public class AdvancedArtifactListView extends BaseItemListView {
 
 	/**
-	 * Filter based no the artifact power
-	 * 
+	 * Filter based on the artifact power
+	 *
 	 * @author Marios Skounakis
 	 */
 	class ArtifactPowerFilter extends AbstractListViewFilter {
@@ -109,7 +109,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 	/**
 	 * Filter based on the class of the info source
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	class InfoSourceClassFilter extends AbstractListViewFilter {
@@ -136,7 +136,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 	/**
 	 * Filter for owned/not owned artifacts
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	class OwnedArtifactFilter extends AbstractListViewFilter {
@@ -154,9 +154,9 @@ public class AdvancedArtifactListView extends BaseItemListView {
 			if (this.owned == null)
 				return true;
 			if (this.owned) {
-				return aw.getOwner() != null && !aw.getOwner().equals("");
+				return aw.isOwned();
 			} else {
-				return aw.getOwner() == null || aw.getOwner().equals("");
+				return !aw.isOwned();
 			}
 		}
 	}
@@ -167,7 +167,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 32, 96, 48, 132, 48, 48, 120, 120, 48, 120 };
+		return new int[] { 24, 96, 32, 132, 32, 32, 120, 120, 24, 120 };
 	}
 
 	@Override
@@ -194,7 +194,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
 		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
-		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters(true)));
 		filters1.add(new OwnedArtifactFilter("Owned", true));
 		filters1.add(new OwnedArtifactFilter("Not Owned", false));
 		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new InfoSourceClassFilter("All sources", null), new InfoSourceClassFilter("LA/LAT", new Class[] { DerivedFromLocateArtifactInfoSource.class, DerivedFromLocateArtifactTrueInfoSource.class }), new InfoSourceClassFilter("Xml/Pdf", new Class[] { XmlTurnInfoSource.class }), new InfoSourceClassFilter("Starting", new Class[] { MetadataSource.class }), },

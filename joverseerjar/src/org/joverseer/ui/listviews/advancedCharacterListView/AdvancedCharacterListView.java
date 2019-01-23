@@ -380,7 +380,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 	protected AbstractListViewFilter[][] getFilters() {
 		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
 		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
-		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters(true)));
 		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new DeathFilter("All", null), new ActiveFilter("Active Only"), new DeathFilter("Not Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.NotDead, null }), new DeathFilter("Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged }), new HostageFilter("Hostage", true), new ChampionFilter("Champion")
 
 		}, new AbstractListViewFilter[] { new ArmyCommanderFilter("", null), new ArmyCommanderFilter("Army commander", true), new ArmyCommanderFilter("Not army commander", false) }, };

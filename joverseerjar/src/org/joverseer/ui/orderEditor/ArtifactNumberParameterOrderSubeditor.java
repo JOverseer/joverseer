@@ -34,9 +34,9 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
         super(oe,o);
         this.paramName = paramName;
     }
-    
+
     @Override
-	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         try {
             JPanel pnl = new JPanel();
@@ -46,7 +46,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
             tlb2.cell(this.parameter = (JFormattedTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:35px");
             attachAutoUpdateDocumentListener(this.parameter);
             components.add(this.parameter);
-            
+
             this.artifactName = new JTextField();
             this.artifactName.setEditable(false);
             this.artifactName.setPreferredSize(new Dimension(145, 18));
@@ -57,7 +57,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
             tlb.gapCol();
         }
         catch (Exception exc) {
-            
+
         }
         tlb.row();
     }
@@ -67,7 +67,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
 		super.updateEditor();
 		updateArtifactNumber();
 	}
-    
+
     protected void updateArtifactNumber() {
     	String artiNoStr = this.parameter.getText();
     	String artiName = "";
@@ -80,7 +80,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     		}
     	}
     	catch (Exception exc) {
-    		
+
     	}
     	this.artifactName.setText(artiName);
     	if (!artiName.equals("")) {
@@ -117,7 +117,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
 	                    updateArtifactNumber();
 	                }
 	                catch (Exception exc) {
-	                    
+
 	                }
 			}
         }));

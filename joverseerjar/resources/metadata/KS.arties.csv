@@ -113,7 +113,7 @@
 0;Kazil Durin (Dwarven RoP);None;Mage;40;;Durin,
 0;Kazil Dwalin (Dwarven RoP);None;Mage;40;;Dwalin,
 0;Knight-Captain's Ring;Evil;Command;20;;Castamir,
-0;Kuileondo;Evil;Mage;10;;Iriel,
+0;Kuileondo;Evil;Mage;10;Spirit Mastery;Iriel,
 0;Lance of Reaching;None;Combat;500;;,
 0;Leaf-crown of Cimoniemor;None;Mage;10;;,
 0;Lembas;Good;Command;5;;,
@@ -174,7 +174,7 @@
 0;Robes of Aman, Blue;None;Mage;10;;The Blue Wizard
 0;Robes of Aman, Brown;None;Stealth;15;;Radagast
 0;Robes of Aman, Grey;Good;Emissary;20;;Gandalf
-0;Robes of Aman, White;None;Emissary;20;;Saruman 
+0;Robes of Aman, White;None;Emissary;20;;Saruman
 0;Rune Armor;None;Mage;10;;,
 0;Runya;Good;Combat;1000;;Vidurafin,
 0;Sceptre of Annuminas;Good;Command;10;;Araphor,

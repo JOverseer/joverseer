@@ -7,9 +7,9 @@ import org.joverseer.support.Container;
 
 /**
  * Reads starting artifact information
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 public class ArtifactReader implements MetadataReader {
 	String artifactFilename = "arties.csv";
@@ -35,6 +35,9 @@ public class ArtifactReader implements MetadataReader {
 					String bonus = parts.length > 4 ? parts[4] : "";
 					power1 += " " + bonus;
 					String owner = (parts.length > 6 ? parts[6] : "");
+					if (owner.endsWith(",")) {
+						owner = owner.substring(0, owner.length()-1);
+					}
 					String alignment = parts[2];
 					String power2 = (parts.length >= 6 ? parts[5] : "");
 					ArtifactInfo artifact = new ArtifactInfo();

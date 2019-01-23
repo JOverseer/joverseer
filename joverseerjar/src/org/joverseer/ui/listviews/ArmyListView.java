@@ -45,7 +45,7 @@ public class ArmyListView extends ItemListView {
 
 	@Override
 	protected AbstractListViewFilter[][] getFilters() {
-		return new AbstractListViewFilter[][] { NationFilter.createNationFilters(), AllegianceFilter.createAllegianceFilters() };
+		return new AbstractListViewFilter[][] { NationFilter.createNationFilters(), AllegianceFilter.createAllegianceFilters(false) };
 	}
 
 	@Override

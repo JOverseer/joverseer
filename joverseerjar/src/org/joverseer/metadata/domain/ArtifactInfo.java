@@ -1,14 +1,16 @@
 package org.joverseer.metadata.domain;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Background information for artifacts. It holds the number, name, alignment,
  * starting owner and powers for each artifact.
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 
 public class ArtifactInfo implements Serializable {
@@ -56,7 +58,14 @@ public class ArtifactInfo implements Serializable {
 	}
 
 	public void setOwner(String owner) {
-		this.owner = owner;
+		// some data cleaning.
+		if (owner != null) {
+			if (owner.endsWith(",")) {
+				this.owner = owner.substring(0,owner.length()-1);
+			} else {
+				this.owner = owner;
+			}
+		}
 	}
 
 	public ArrayList<String> getPowers() {
@@ -143,5 +152,10 @@ public class ArtifactInfo implements Serializable {
 		if (bonusType.equals("Combat"))
 			return "Cb" + getBonusRank();
 		return bonusType.substring(0, 1) + getBonusRank();
+	}
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		// force the data cleanup.
+		this.setOwner(this.owner);
 	}
 }

@@ -11,22 +11,22 @@ import org.joverseer.ui.listviews.AbstractListViewFilter;
 
 /**
  * Filter for ListView
- * 
+ *
  * Implements Allegiance Filter (filters items based on their allegiance)
  * Items must implement the IBelongsToNation interface
- * 
+ *
  * @author Marios Skounakis
  */
 public class AllegianceFilter extends AbstractListViewFilter {
     NationAllegianceEnum allegiance;
     boolean inverse = false;
-    
+
     public AllegianceFilter(String description, NationAllegianceEnum allegiance) {
         super(description);
         this.allegiance = allegiance;
     }
-    
-    
+
+
 
     public AllegianceFilter(String description, NationAllegianceEnum allegiance, boolean inverse) {
         super(description);
@@ -54,14 +54,18 @@ public class AllegianceFilter extends AbstractListViewFilter {
         }
         return ret;
     }
- 
+
     /**
      * Creates the standard allegiance filters: FP, DS, Neut, Not FP, Not DS, Not Neut
-     * 
+     *
+     * @param skipAll if true then don't add 'All' as an option...used when merging filters.
+     * @return
      */
-    public static AbstractListViewFilter[] createAllegianceFilters() {
+    public static AbstractListViewFilter[] createAllegianceFilters(boolean skipAll) {
         ArrayList<AbstractListViewFilter> ret = new ArrayList<AbstractListViewFilter>();
-        ret.add(new AllegianceFilter("All", null));
+        if (!skipAll) {
+        	ret.add(new AllegianceFilter("All", null));
+        }
         for (NationAllegianceEnum allegiance : NationAllegianceEnum.values()) {
             ret.add(new AllegianceFilter(allegiance.toString(), allegiance));
         }

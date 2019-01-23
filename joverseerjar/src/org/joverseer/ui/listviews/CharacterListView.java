@@ -33,7 +33,7 @@ public class CharacterListView extends ItemListView {
 	protected AbstractListViewFilter[][] getFilters() {
         ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
         filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
-        filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters()));
+        filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters(true)));
         return new AbstractListViewFilter[][]{filters1.toArray(new AbstractListViewFilter[]{})};
     }
 

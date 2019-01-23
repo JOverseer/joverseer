@@ -72,7 +72,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
 				ArtifactWrapper aw = aws.findFirstByProperty("number", a.getNumber());
 				if (aw == null || a.getNumber() == 0) {
 					// try to find by name
-					aw = aws.findFirstByProperty("name", a.getName());
+					aw = aws.findFirstByProperty("unAccentedName", a.getName());
 					if (aw == null) {
 						logger.error("Failed to find artifact wrapper for #" + a.getNumber() + " " + a.getName());
 						// create new

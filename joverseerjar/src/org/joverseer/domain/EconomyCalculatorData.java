@@ -11,12 +11,12 @@ import org.joverseer.support.ProductContainer;
 
 /**
  * Stores the economy calculator data for a given nation for this turn.
- * 
+ *
  * This class is used to store various information such as the market buys and
  * sells for a give nation, the new tax rate, etc.
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 
 public class EconomyCalculatorData implements Serializable, IBelongsToNation {
@@ -135,7 +135,11 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 				sum += pc.getProduction(p).intValue() * getProductionFactor() / 100;
 			}
 		}
-		return getNationEconomy().getProduction(p).intValue() * getProductionFactor() / 100 - sum;
+		NationEconomy ne = getNationEconomy();
+		if (ne == null) {
+			return 0;
+		}
+		return ne.getProduction(p).intValue() * getProductionFactor() / 100 - sum;
 	}
 
 	public int getStores(ProductEnum p) {
@@ -149,6 +153,10 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 			if (pc.getStores(p) != null) {
 				sum += pc.getStores(p).intValue();
 			}
+		}
+		NationEconomy ne = getNationEconomy();
+		if (ne == null) {
+			return 0;
 		}
 		return getNationEconomy().getStores(p).intValue() - sum;
 	}

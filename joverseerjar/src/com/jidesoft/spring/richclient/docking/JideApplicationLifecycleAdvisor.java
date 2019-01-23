@@ -33,7 +33,6 @@ import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.joverseer.ui.LifecycleEventsEnum;
-import org.joverseer.ui.command.ClearMapItems;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -352,7 +351,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 
 	public void refreshClearMapItemsVisibility() {
 		CommandGroup toolbar = Application.instance().getLifecycleAdvisor().getToolBarCommandGroup();
-		AbstractCommand ac = toolbar.find("clearMapItemsCommand");
+		AbstractCommand ac = toolbar.find("clearMapItemsToolbarCommand");
 		if (ac != null) {
 			ac.setVisible(PreferenceRegistry.instance().getPreferenceValue("map.clearMapItemsOnToolBar").equals("yes"));
 		}

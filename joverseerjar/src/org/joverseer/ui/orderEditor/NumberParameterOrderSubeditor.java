@@ -22,21 +22,29 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Subeditor for parameters that take a number as parameter
- * 
+ *
  * @author Marios Skounakis
  */
 //TODO could add some validation here for number ranges
 public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
 	JFormattedTextField parameter;
     String paramName;
+    String possibleInitValue;
 
-    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
+    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o,String initValue) {
         super(oe,o);
         this.paramName = paramName;
+        this.possibleInitValue = initValue;
     }
-    
+    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
+    	this(oe,paramName,o,null);
+    }
+
     @Override
-	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
+    	if ((this.possibleInitValue != null) && (applyInitValue)) {
+    		o.setParameter(paramNo, this.possibleInitValue);
+    	}
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         tlb.cell(this.parameter = (JFormattedTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:220px");
         attachAutoUpdateDocumentListener(this.parameter);

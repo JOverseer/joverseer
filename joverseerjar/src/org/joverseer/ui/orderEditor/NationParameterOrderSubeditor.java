@@ -18,21 +18,21 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 /**
  * Subeditor for order params that take a nation number as a value
  * Provides a combo box that translates between nation names and nation numbers
- * 
+ *
  * @author Marios Skounakis
  */
 public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
 	NationComboBox parameter;
     JTextField nationNo;
     String paramName;
-    
+
     public NationParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
         super(oe,o);
         this.paramName = paramName;
     }
 
     @Override
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
         String nno = o.getParameter(paramNo);
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         tlb.cell(this.parameter = (NationComboBox)getPrimaryComponent(nno), "colspec=left:150px");
@@ -40,7 +40,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
         tlb.cell(this.nationNo = new JTextField());
         this.nationNo.setVisible(false);
         tlb.row();
-        
+
         if (nno != null && !nno.equals("")) {
             this.nationNo.setText(nno);
         }
@@ -55,7 +55,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
             	}
                 updateEditor();
             }
-        }); 
+        });
         this.parameter.load(false, false);
         components.add(this.nationNo);
     }

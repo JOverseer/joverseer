@@ -22,7 +22,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Subeditor for the 940 order
- * 
+ *
  * @author Marios Skounakis
  */
 public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
@@ -37,13 +37,13 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     JComponent currentComp;
     JPanel currentCompPanel;
     String currentType = null;
-    
+
     public CastLoSpellOrderSubeditor(OrderEditor oe,Order o) {
         super(oe,o);
         this.paramName = "Spell";
         this.orderNo = 940;
     }
-    
+
     protected void loadSpellCombo() {
     	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     	Character c = getOrder().getCharacter();
@@ -62,7 +62,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     }
 
     @Override
-    public void addComponents(TableLayoutBuilder tlb1, ArrayList<JComponent> components1, Order o, int paramNo) {
+    public void addComponents(TableLayoutBuilder tlb1, ArrayList<JComponent> components1, Order o, int paramNo,boolean applyInitValue) {
         this.tlb = tlb1;
         this.components = components1;
         tlb1.cell(new JLabel(this.paramName), "colspec=left:70px");
@@ -72,18 +72,18 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
         tlb1.cell(this.spellNo = new JTextField());
         this.spellNo.setVisible(false);
         tlb1.row();
-        
+
         loadSpellCombo();
-        
+
         components1.add(this.spellNo);
-        
+
         tlb1.row();
-        
+
         this.secondParamPanel = new JPanel();
         this.secondParamPanel.setBackground(Color.white);
         tlb1.cell(this.secondParamPanel, "colspan=2");
         tlb1.row();
-        
+
         // find and preload current spell (from order)
         if (o.getParameter(paramNo) != null) {
             String spellId = o.getParameter(paramNo);
@@ -109,7 +109,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
     }
-    
+
     /**
      * Refreshes the component that edits the second parameter of the 940 order
      * according to the selected spell
@@ -168,7 +168,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             }
             TableLayoutBuilder tlb1 = new TableLayoutBuilder();
             do {
-                sub.addComponents(tlb1, this.components, getOrder(), counter);
+                sub.addComponents(tlb1, this.components, getOrder(), counter,false);
                 tlb1.row();
 //                tlb1.cell(new JLabel(" ")); //DAS- I don't understand what this is doing unless to force a thick row?
 //            	tlb1.row();
@@ -177,7 +177,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 counter++;
               	sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder());
             } while (counter < 7);
-            
+
             this.currentComp = this.components.get(1);
             this.currentCompPanel = tlb1.getPanel();
             this.currentCompPanel.setBackground(Color.white);

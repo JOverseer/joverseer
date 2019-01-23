@@ -242,6 +242,9 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
      */
     public int getTaxRevenue() {
         NationEconomy ne = getNationEconomy();
+        if (ne == null) {
+        	return 0;
+        }
         return ne.getTaxBase() * 2500 * getTaxRate() / 100;
     }
     

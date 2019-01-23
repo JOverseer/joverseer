@@ -21,7 +21,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Subeditor for generic single parameter
- * 
+ *
  * @author Marios Skounakis
  */
 public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
@@ -33,15 +33,15 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
         super(oe,o);
         this.paramName = paramName;
     }
-    
+
     public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o, int width) {
         super(oe,o);
         this.paramName = paramName;
         this.width = width;
     }
-    
+
     @Override
-	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         tlb.cell(this.parameter = (JTextField)getPrimaryComponent(o.getParameter(paramNo)), "colspec=left:220px");
         attachAutoUpdateDocumentListener(this.parameter);
@@ -74,13 +74,13 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
 	                	lbl.requestFocus();
 	                }
 	                catch (Exception exc) {
-	                    
+
 	                }
 			}
         }));
-		
+
 		return lbl;
 	}
 
-        
+
 }

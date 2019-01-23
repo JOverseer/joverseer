@@ -17,7 +17,7 @@ import com.jidesoft.swing.AutoCompletionComboBox;
 
 /**
  * Subeditor for parameters that use a drop down list to select the value
- * 
+ *
  * @author Marios Skounakis
  */
 public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
@@ -27,7 +27,7 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     String[] values;
     String[] descriptions;
     int start;
-    
+
     public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[],int startAt) {
     	this(oe,paramName,o,values,descriptions);
     	this.start = startAt;
@@ -39,7 +39,7 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.descriptions = descriptions;
         this.start = -1;
     }
-    
+
     @Override
 	public JComponent getPrimaryComponent(String val) {
         if ((this.start != -1) && (val == null)) {
@@ -60,7 +60,7 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
         box.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent arg0) {
-            	
+
                 DropDownParameterOrderSubeditor.this.valueChanged();
                 updateEditor();
             }
@@ -68,7 +68,7 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
         return box;
     }
     @Override
-	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+	public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
         String val = o.getParameter(paramNo);
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px");
         tlb.cell(this.combo = (AutoCompletionComboBox)getPrimaryComponent(val), "colspec=left:205px");

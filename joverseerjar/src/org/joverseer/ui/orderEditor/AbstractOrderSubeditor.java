@@ -63,7 +63,7 @@ public abstract class AbstractOrderSubeditor {
         });
     }
     
-    public abstract void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo);
+    public abstract void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue);
     
     public abstract JComponent getPrimaryComponent(String initValue);
     

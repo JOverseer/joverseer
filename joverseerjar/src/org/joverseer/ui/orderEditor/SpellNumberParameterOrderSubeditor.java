@@ -29,7 +29,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Subeditor for Spell Number parameters
- * 
+ *
  * @author Marios Skounakis
  */
 
@@ -38,13 +38,13 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox parameter;
     JTextField spellNo;
     int orderNo;
-    
+
     public SpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo) {
         super(oe,o);
         this.paramName = paramName;
         this.orderNo = orderNo;
     }
-    
+
     protected void loadSpellCombo(JComboBox com) {
     	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
     	Character c = getOrder().getCharacter();
@@ -63,14 +63,14 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     }
 
     @Override
-    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo) {
+    public void addComponents(TableLayoutBuilder tlb, ArrayList<JComponent> components, Order o, int paramNo,boolean applyInitValue) {
         tlb.cell(new JLabel(this.paramName), "colspec=left:70px"); //$NON-NLS-1$
         tlb.cell(this.parameter = (JComboBox) getPrimaryComponent(""), "colspec=left:180px"); //$NON-NLS-1$
         tlb.row();
         tlb.cell(this.spellNo = new JTextField());
         this.spellNo.setVisible(false);
         tlb.row();
-        
+
         // find and preload current spell (from order)
         if (o.getParameter(paramNo) != null) {
             String spellId = o.getParameter(paramNo);
@@ -125,7 +125,7 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
                 	};
                 }
                 catch (Exception exc) {
-                    
+
                 }
 			}
         }));

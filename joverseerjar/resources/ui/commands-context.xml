@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
 
-    <!-- 
+    <!--
         Bean: windowCommandManager
         Type: magic
         Usage: required
@@ -12,7 +12,7 @@
             are "shared" among listviews.  This indicates to the manager that they
             will have different target executors in each view.
     -->
-	<bean id="windowCommandManager" 
+	<bean id="windowCommandManager"
 		class="org.springframework.richclient.application.support.ApplicationWindowCommandManager">
 		<property name="sharedCommandIds">
 			<list>
@@ -21,8 +21,8 @@
 			</list>
 		</property>
 	</bean>
-	
-    <!-- 
+
+    <!--
         Bean: menuBar
         Type: magic
         Usage: required
@@ -31,7 +31,7 @@
             The "members" property is used to specify the top level menus in the
             menu bar.
     -->
-	<bean id="menuBar" 
+	<bean id="menuBar"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
@@ -46,8 +46,8 @@
 			</list>
 		</property>
 	</bean>
-	
-    <!-- 
+
+    <!--
         Bean: toolBar
         Type: magic
         Usage: required
@@ -58,7 +58,7 @@
             as well and they will be rendered as a button that creates a drop down
             menu when pressed.
     -->
-	<bean id="toolBar" 
+	<bean id="toolBar"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
@@ -69,31 +69,26 @@
                 <value>separator</value>
                 <ref bean="exportOrdersCommand"/>
                 <ref bean="runOrdercheckerCommand"/>
-<!--                <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand"/>
-                 <bean class="org.joverseer.ui.command.ExportOrderTextCommand"/>
--->
-<!-- These are hidden unless enabled by a preference -->
                  <value>separator</value>
-                <ref bean="clearMapItemsCommand"/>
+				<bean id="clearMapItemsToolbarCommand" class="org.joverseer.ui.command.ClearMapItems">
+    				<property name="enabled"><value>false</value></property>
+    			</bean>
 			</list>
 		</property>
 	</bean>
-	
-	<bean id="createGameCommand" class="org.joverseer.ui.command.CreateGame"/> 
-	<bean id="loadGameCommand" class="org.joverseer.ui.command.LoadGame"/> 
+
+	<bean id="createGameCommand" class="org.joverseer.ui.command.CreateGame"/>
+	<bean id="loadGameCommand" class="org.joverseer.ui.command.LoadGame"/>
 	<bean id="saveGameCommand" class="org.joverseer.ui.command.SaveGame">
 		<property name="enabled"><value>false</value></property>
-	</bean> 
+	</bean>
     <bean id="openXmlAndPdfDirCommand" class="org.joverseer.ui.command.OpenXmlAndPdfDir">
     	<property name="enabled"><value>false</value></property>
-    </bean>                                                        
+    </bean>
     <bean id="runOrdercheckerCommand" class="org.joverseer.ui.command.RunOrdercheckerCommand">
     	<property name="enabled"><value>false</value></property>
     </bean>
     <bean id="exportOrdersCommand" class="org.joverseer.ui.command.ExportOrdersCommand">
-    	<property name="enabled"><value>false</value></property>
-    </bean>
-   	<bean id="clearMapItemsCommand" class="org.joverseer.ui.command.ClearMapItems">
     	<property name="enabled"><value>false</value></property>
     </bean>
     <bean id="showCombatCalculatorCommand" class="org.joverseer.ui.command.ShowCombatCalculatorCommand">
@@ -108,7 +103,7 @@
             to shared (predefined) commands by name, directly including a bean (the
             ExitCommand), and including a sub-menu (newMenu).
     -->
-	<bean id="gameMenu" 
+	<bean id="gameMenu"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
@@ -117,7 +112,7 @@
                 <ref bean="loadGameCommand"/>
                 <ref bean="recentGamesMenu"/>
                 <ref bean="saveGameCommand"/>
-			    <value>separator</value>                            
+			    <value>separator</value>
                 <ref bean="openXmlAndPdfDirCommand"/>
 			    <value>separator</value>
                 <ref bean="runOrdercheckerCommand"/>
@@ -127,7 +122,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="recentGamesMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
@@ -135,7 +130,7 @@
 		</property>
 	</bean>
 
-    <bean id="windowMenu" 
+    <bean id="windowMenu"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
@@ -155,17 +150,17 @@
 	        </list>
 	    </property>
 	</bean>
-	
+
 	<!-- admin menu enabled by command parameter d -->
-	<bean id="adminMenu" 
+	<bean id="adminMenu"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
-			<list>            
+			<list>
                <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
                <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand"/>
-               <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>               
+               <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>
                <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand"/>
-               <ref bean ="showCombatCalculatorCommand"/>               
+               <ref bean ="showCombatCalculatorCommand"/>
                <bean class="org.joverseer.ui.command.SaveToDbCommand"/>
                <bean class="org.joverseer.ui.command.ExecuteOrdersCommand"/>
                <bean class="org.joverseer.ui.command.GetDowngradeSuccessRateCommand"/>
@@ -193,7 +188,7 @@
 				</bean>
                 <bean class="org.joverseer.ui.command.SetOrderEditorAutoNationsCommand">
                    	<property name="enabled"><value>false</value></property>
-                </bean>			                
+                </bean>
                 <value>separator</value>
                 <bean class="org.joverseer.ui.command.ImportOrdersFromAutomagicFileCommand">
                    	<property name="enabled"><value>false</value></property>
@@ -206,15 +201,15 @@
                     <property name="enabled"><value>false</value></property>
                 </bean>
 			</list>
-		</property>            
+		</property>
     </bean>
-    <!-- 
+    <!--
         Bean: helpMenu
         Type: user named
         Usage: optional
         Description: This specifies the content of the "Help" menu.
     -->
-	<bean id="helpMenu" 
+	<bean id="helpMenu"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>
@@ -242,7 +237,7 @@
 		</property>
 	</bean>
 
-    <!-- 
+    <!--
         Bean: aboutCommand
         Type: user named
         Usage: optional
@@ -250,10 +245,10 @@
             a platform class to generate an about box from the configured application
             data in the application context.
     -->
-	<bean id="aboutCommand" 
+	<bean id="aboutCommand"
 		class="org.springframework.richclient.command.support.AboutCommand">
 	</bean>
- 
+
 	 <bean id="utilMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean">
         <property name="members">
             <list>
@@ -268,18 +263,18 @@
             			<ref bean="combatCalcView"/>
             		</list>
 			        </property>
-            	</bean>	
+            	</bean>
             	<bean id="toolsArtifactsMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
             		<property name="message"><value>toolsArtifactsMenu</value></property>
 			        <property name="members">
             		<list>
             			<ref bean="artifactInfoListView"/>
-            			<ref bean="advancedArtifactListView"/>            			
+            			<ref bean="advancedArtifactListView"/>
             			<ref bean="locateArtifactResultListView"/>
             			<ref bean="ownedArtifactsListView"/>
             		</list>
 			        </property>
-            	</bean>	
+            	</bean>
             	<bean id="toolsCharactersMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
             		<property name="message"><value>toolsCharactersMenu</value></property>
 			        <property name="members">
@@ -294,7 +289,7 @@
             			<ref bean="trackCharacterListView"/>
             		</list>
 			        </property>
-            	</bean>	
+            	</bean>
             	<bean id="toolsEconomyMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
             		<property name="message"><value>toolsEconomyMenu</value></property>
 			        <property name="members">
@@ -307,7 +302,7 @@
             			<ref bean="teamEconomyView"/>
             		</list>
 			        </property>
-            	</bean>	
+            	</bean>
             	<bean id="toolsGeneralMenu" class="org.joverseer.ui.command.JOverseerShowViewMenu2">
             		<property name="message"><value>toolsGeneralMenu</value></property>
 			        <property name="members">
@@ -320,7 +315,7 @@
             			<ref bean="orderEditorView"/>
             			<ref bean="populationCenterListView"/>
             			<ref bean="hexProductionListView"/>
-            			<ref bean="orderCheckerView"/>            			
+            			<ref bean="orderCheckerView"/>
             		</list>
 			        </property>
             	</bean>
@@ -335,14 +330,14 @@
             			<ref bean="orderResultsView"/>
             		</list>
 			        </property>
-            	</bean>	
+            	</bean>
            	</list>
        	</property>
    	</bean>
- 
+
  	 <bean id="mapMenu" class="org.springframework.richclient.command.CommandGroupFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
         <property name="members">
-            <list>	
+            <list>
             	<bean class="com.jidesoft.spring.richclient.docking.view.ShowViewCommand">
 					<constructor-arg index="0" ref="mapOptionsView"/>
             	</bean>
@@ -369,12 +364,14 @@
             	</bean>
             	<bean class="org.joverseer.ui.command.HighlightDragonsCommand">
             		<property name="enabled"><value>false</value></property>
-            	</bean>            	
+            	</bean>
             	<bean class="org.joverseer.ui.command.ShowHexInfoTurnReportCommand">
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<value>separator</value>
-                <ref bean="clearMapItemsCommand"/>
+			   	<bean id="clearMapItemsCommand" class="org.joverseer.ui.command.ClearMapItems">
+    				<property name="enabled"><value>false</value></property>
+    			</bean>
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ToggleDrawAllOrdersCommand">
             		<property name="enabled"><value>false</value></property>
@@ -390,21 +387,16 @@
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<value>separator</value>
-    	        <ref bean ="showCombatCalculatorCommand"/>               
+    	        <ref bean ="showCombatCalculatorCommand"/>
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ExportMapToFileCommand">
             		<property name="enabled"><value>false</value></property>
             	</bean>
-                <value>separator</value>
-                <bean class="org.joverseer.ui.command.PalantirStyleMapCommand">
-            		<property name="enabled"><value>false</value></property>
-            	</bean>
-           	
            	</list>
        	</property>
    	</bean>
 
-	<bean id="settingsMenu" 
+	<bean id="settingsMenu"
 		class="org.springframework.richclient.command.CommandGroupFactoryBean">
 		<property name="members">
 			<list>

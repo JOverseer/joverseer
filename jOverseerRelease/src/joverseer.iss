@@ -48,10 +48,10 @@ Source: {#InputBuild}\jOverseerUpdater.exe; DestDir: {app}
 Source: {#InputResourceDirName}\joverseer.bat; DestDir: {app}
 Source: {#InputResourceDirName}\jOverseer.lnk; DestDir: {userdesktop}
 Source: {#InputBuild}\log4j.properties; DestDir: {app}
+Source: {#InputBuild}\scope*.jar; DestDir: {app}
+Source: {#InputBuild}\jdom*.jar; DestDir: {app}
 ;check that these are actually needed here...they used to be copied in 1.0.12
 ;Source: {#OrdercheckerMetadata}\*; DestDir: {app}\bin\metadata\orderchecker
-;Source: {#InputBuild}\scope*.jar; DestDir: {app}
-;Source: {#InputBuild}\jdom*.jar; DestDir: {app}
 
 [Dirs]
 Name: {app}\bin

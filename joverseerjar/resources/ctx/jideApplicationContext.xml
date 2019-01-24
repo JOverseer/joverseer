@@ -14,7 +14,7 @@
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="1.16.15"/>
-		<property name="buildId" value="Garrulous Gwaiher"/>
+		<property name="buildId" value="Garrulous Gwaihir"/>
 	</bean>
 
 	<!--

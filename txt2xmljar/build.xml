@@ -27,8 +27,8 @@
     </path>
 	<path id="compiletime.classpath">
 	</path>
-	
-	
+
+
    <!-- Main targets -->
 	   <!-- skip Javadoc for now -->
    <target name="BuildAll"
@@ -110,7 +110,10 @@
                 <attribute name="Main-Class" value="org.txt2xml.gui.GuiController"/>
                 <attribute name="Class-Path" value=". jdom.jar scope-bin.jar commons-collections-3.1.jar"/>
             </manifest>
-		</jar>			
+		</jar>
+		<copy file="${jdom_path}" todir="${dist}"/>
+		<copy file="${scope_path}" todir="${dist}"/>
+		<copy file="${commons_collection_path}" todir="${dist}"/>
 	</target>
    <!-- Internal targets -->
    <target name="-Init">
@@ -127,5 +130,5 @@
        <mkdir dir="${dist}"/>
        <mkdir dir="${jardir}"/>
    </target>
-       
+
 </project>

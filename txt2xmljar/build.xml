@@ -111,9 +111,9 @@
                 <attribute name="Class-Path" value=". jdom.jar scope-bin.jar commons-collections-3.1.jar"/>
             </manifest>
 		</jar>
-		<copy file="${jdom_path}" todir="${dist}"/>
-		<copy file="${scope_path}" todir="${dist}"/>
-		<copy file="${commons_collection_path}" todir="${dist}"/>
+		<copy file="${jdom_path}" todir="${jardir}"/>
+		<copy file="${scope_path}" todir="${jardir}"/>
+		<copy file="${commons_collection_path}" todir="${jardir}"/>
 	</target>
    <!-- Internal targets -->
    <target name="-Init">

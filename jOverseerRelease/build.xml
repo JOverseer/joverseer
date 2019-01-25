@@ -14,10 +14,10 @@
 	<property name="updater.jar">../joverseerupdaterjar/dist/lib/update.jar</property>
 	<property name="res.dir">${jojar.project.dir}resources</property>
 	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
-    
+
     <property name="launch4j.dir" location="../launch4j"/>
     <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->
-    
+
     <macrodef name="assertLaunch4jAvailable">
     	<attribute name="dir" />
     	<sequential>
@@ -34,12 +34,12 @@
     <taskdef name="launch4j"
         classname="net.sf.launch4j.ant.Launch4jTask"
         classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar"/>
-    
+
     <path id="jOverseerClasspath">
       <fileset dir="${requiredLibs.dir}" includes="**/*.jar"/>
     </path>
-    
-    
+
+
     <!-- required projects -->
     <property name="updater.dir">../joverseerupdaterjar/dist/lib</property>
     <path id="updater.path">
@@ -98,13 +98,13 @@
 			<include name="skinlf-1.2.11.jar"/>
 		</fileset>
 	</path>
-		
+
     <!-- how to build dependent projects -->
 	<target name="BuildJoverseerJar">
 		<subant buildpath="${jojar.project.dir}" verbose="true">
 		</subant>
 	</target>
-	
+
    <!-- Main targets -->
    <!--  java doc disabled: eclipse bug with large classpath. -->
    <target name="BuildAll"
@@ -119,7 +119,7 @@
    		<copy file="${res.dir}/layout/default.layout" todir="${dist}"/>
    		<copy file="${res.dir}/log4j.properties" todir="${dist}"/>
    </target>
-	
+
 	<target name="UpdateJar"
 		depends="-Init,versionLabel"
 		description="use output from joverseerupdaterjar">
@@ -149,7 +149,7 @@
           	</config>
 		</launch4j>
     </target>
-    
+
     <target name="WindowsJoverseerLauncher" depends="versionLabel,JoverseerJar,WindowsIcon">
       <!-- doesn't work - dontwrapjar isnt recognised
 	   <launch4j dontWrapJar="true" headerType="gui" jar="${out.dir}/joverseer.jar" outfile="${out.dir}/jOverseer.exe" stayAlive="false" icon="${jOverseerRes}/images/joverseer.ico">
@@ -202,7 +202,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
 		<filter token="version" value="${joverseer.version}"/>
 		<copy tofile="${dist}\joverseer.iss.out" file="src/joverseer.iss" filtering="true" overwrite="true"/>
-		<exec executable="${iss.dir}/iscc">
+		<exec executable="${iss.dir}/iscc" failonerror="true"	>
 			<arg value="${dist}\joverseer.iss.out"/>
 		</exec>
 	</target>
@@ -277,7 +277,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>
 	</target>
-	
+
 	<target name="ReleaseBeta" depends="betaupdatezip">
 	  <ftp server="ftp.middleearthgames.com"
 	       remotedir="/htdocs/software/joverseer"
@@ -289,7 +289,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	    <fileset dir="${jOverseerBuildRes.dir}" include="betafeed.xml"/>
 	  </ftp>
 	</target>
-	
+
 	<target name="Release" depends="updatezip">
 	  <ftp server="ftp.middleearthgames.com"
 	       remotedir="/htdocs/software/joverseer"
@@ -301,7 +301,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	    <fileset dir="${jOverseerBuildRes.dir}" include="feed.xml"/>
 	  </ftp>
 	</target>
-	
+
 	<target name="GatherDependents">
 		<copy todir="${dist}" flatten="true">
    			<path refid="updater.path"/>
@@ -326,7 +326,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		<copy todir="${dist}" file="${src}/joverseer.bat">
 		</copy>
 	</target>
-	
+
 	<!-- Internal targets -->
    <target name="-Init">
        <tstamp/>
@@ -336,5 +336,5 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
        <delete dir="${dist}" quiet="true"/>
        <mkdir dir="${dist}"/>
    </target>
-       
+
 </project>

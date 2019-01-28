@@ -904,7 +904,7 @@ public class TurnNewXmlReader implements Runnable {
 		for (ArtifactWrapper aw : aws) {
 			// for FA game, update artifact numbers
 			try {
-				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA 
+				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA
 						|| game1.getMetadata().getGameType() == GameTypeEnum.gameKS
 						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCME
 						) {
@@ -925,7 +925,7 @@ public class TurnNewXmlReader implements Runnable {
 						game1.getMetadata().getArtifacts().addItem(ai);
 					}
 				}
-				
+
 
 				// for all arties update powers
 				ArtifactInfo ai = game1.getMetadata().getArtifacts().findFirstByProperty("no", aw.getId());

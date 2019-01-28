@@ -18,7 +18,7 @@ import org.springframework.richclient.table.ColumnToSort;
 
 /**
  * List view for Owned Artifacts
- * 
+ *
  * @author Marios Skounakis
  */
 public class OwnedArtifactsListView extends ItemListView {
@@ -45,7 +45,7 @@ public class OwnedArtifactsListView extends ItemListView {
 		ArrayList<OwnedArtifact> artis = new ArrayList<OwnedArtifact>();
 		for (Character c : items.getItems()) {
 			for (Integer id : c.getArtifacts()) {
-				ArtifactInfo ai = this.game.getMetadata().getArtifacts().findFirstByProperty("no", id);
+				ArtifactInfo ai = this.game.getMetadata().findFirstArtifactByNumber(id);
 				if (ai == null)
 					continue;
 				// TODO move OwnedArtifact creation outside this class
@@ -62,7 +62,7 @@ public class OwnedArtifactsListView extends ItemListView {
 		}
 		for (Artifact ar : t.getArtifacts().getItems()) {
 			if (ar.getOwner() != null && !ar.getOwner().equals("")) {
-				ArtifactInfo ai = this.game.getMetadata().getArtifacts().findFirstByProperty("no", ar.getNumber());
+				ArtifactInfo ai = this.game.getMetadata().findFirstArtifactByNumber(ar.getNumber());
 				if (ai == null)
 					continue;
 				Nation n = this.game.getMetadata().getNationByName(ar.getOwner());

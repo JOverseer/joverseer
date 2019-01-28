@@ -1,6 +1,9 @@
 package org.joverseer.domain;
 
 import java.io.Serializable;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
@@ -27,6 +30,7 @@ public class Artifact implements Serializable, IHasMapLocation {
     int y;
 
     InfoSource infoSource;
+	transient String unAccentedName;
 
     public int getHexNo() {
         return this.hexNo;
@@ -113,5 +117,14 @@ public class Artifact implements Serializable, IHasMapLocation {
     public void setInfoSourceDescr() {
 
     }
+	//use this for finding by name (assuming no two artifacts just differ by accents).
+	public String getUnAccentedName() {
+		if (this.unAccentedName == null) {
+			if (this.name != null) {
+				this.unAccentedName =  Normalizer.normalize(this.name, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+			}
+		}
+		return this.unAccentedName;
+	}
 
 }

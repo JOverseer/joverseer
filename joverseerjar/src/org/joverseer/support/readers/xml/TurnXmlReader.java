@@ -49,13 +49,13 @@ import org.springframework.richclient.progress.ProgressMonitor;
 
 /**
  * Class tha reads xml turn files and updates the game
- * 
+ *
  * The class uses Apache Digester to parse the xml files into objects. Then the
  * objects are parsed and the game is updated.
- * 
+ *
  * The class is set-up to cooperate with a ProgressMonitor so that the progress
  * in parsing the pdf files can be shown in the gui layer.
- * 
+ *
  * @author Marios Skounakis
  */
 public class TurnXmlReader implements Runnable {
@@ -717,7 +717,7 @@ public class TurnXmlReader implements Runnable {
 
 	// public void addArmy(Army newArmy, Turn turn, boolean addCharacter) {
 	// String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
-	//        
+	//
 	// Container chars = turn.getContainer(TurnElementsEnum.Character);
 	// Container armies = turn.getContainer(TurnElementsEnum.Army);
 	// Army oldArmy;
@@ -811,7 +811,7 @@ public class TurnXmlReader implements Runnable {
 	//
 	// if (addCharacter) {
 	// // look for commander
-	//        
+	//
 	// String commanderName = newArmy.getCommanderName();
 	// // do not generate character for unknown armies
 	// if (!commanderName.toUpperCase().startsWith("UNKNOWN ")) {
@@ -834,7 +834,7 @@ public class TurnXmlReader implements Runnable {
 	// }
 	// }
 	// }
-	//    
+	//
 	// }
 
 	private void updateNationInfo() {
@@ -1064,7 +1064,7 @@ public class TurnXmlReader implements Runnable {
 				ArtifactInfo ai = null;
 				for (ArtifactInfo iai : this.game.getMetadata().getArtifacts().getItems()) {
 					String iaiName = AsciiUtils.convertNonAscii(iai.getName());
-					System.out.println(iaiName + " - " + artiNameInAscii + " " + iaiName.equalsIgnoreCase(artiNameInAscii));
+//					System.out.println(iaiName + " - " + artiNameInAscii + " " + iaiName.equalsIgnoreCase(artiNameInAscii));
 					if (iaiName.equalsIgnoreCase(artiNameInAscii)) {
 						ai = iai;
 						if (artiNo != null)

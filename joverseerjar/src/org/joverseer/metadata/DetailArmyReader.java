@@ -2,6 +2,8 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -13,12 +15,12 @@ import org.joverseer.support.infoSources.MetadataSource;
 
 /**
  * Reads starting army information.
- * 
+ *
  * This is the "detailed" reader, ie it reads army details such as training,
  * weapon/armor/training ranks, etc
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 public class DetailArmyReader implements MetadataReader {
 	String armyFilename = "startarmies";
@@ -86,7 +88,8 @@ public class DetailArmyReader implements MetadataReader {
 					army.setInfoSource(new MetadataSource());
 					armies.addItem(army);
 				} catch (Exception exc) {
-					System.out.println(ln);
+					Logger.getRootLogger().error(exc.getMessage());
+					Logger.getRootLogger().error(ln);
 					throw exc;
 				}
 			}

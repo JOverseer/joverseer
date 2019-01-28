@@ -2,6 +2,7 @@ package org.joverseer.tools;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.joverseer.domain.Army;
@@ -26,12 +27,12 @@ import org.joverseer.ui.orderEditor.OrderEditorData;
 /**
  * Utility class that validates order parameters based on the resource file
  * orderEditorData.csv
- * 
+ *
  * It returns an error message for every order parameter or null if the param is
  * correct
- * 
+ *
  * Validation is more syntactical than logical
- * 
+ *
  * @author Marios Skounakis
  */
 public class OrderParameterValidator {

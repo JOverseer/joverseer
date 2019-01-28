@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.Container;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 
 /**
  * Holds information about editing Orders - i.e. information for the order parameters
@@ -20,59 +21,59 @@ public class OrderEditorData {
     ArrayList<String> paramDescriptions = new ArrayList<String>();
     String majorSkill;
     String skill;
-    
+
     public String getMajorSkill() {
         return this.majorSkill;
     }
-    
+
     public void setMajorSkill(String majorSkill) {
         this.majorSkill = majorSkill;
     }
-    
+
     public String getOrderDescr() {
         return this.orderDescr;
     }
-    
+
     public void setOrderDescr(String orderDescr) {
         this.orderDescr = orderDescr;
     }
-    
+
     public int getOrderNo() {
         return this.orderNo;
     }
-    
+
     public void setOrderNo(int orderNo) {
         this.orderNo = orderNo;
     }
-    
+
     public String getOrderType() {
         return this.orderType;
     }
-    
+
     public void setOrderType(String orderType) {
         this.orderType = orderType;
     }
-    
+
     public String getParameterDescription() {
         return this.parameterDescription;
     }
-    
+
     public void setParameterDescription(String parameterDescription) {
         this.parameterDescription = parameterDescription;
     }
-    
+
     public ArrayList<String> getParamTypes() {
         return this.paramTypes;
     }
-    
+
     public void setParamTypes(ArrayList<String> paramTypes) {
         this.paramTypes = paramTypes;
     }
-    
+
     public String getSkill() {
         return this.skill;
     }
-    
+
     public void setSkill(String skill) {
         this.skill = skill;
     }
@@ -80,16 +81,16 @@ public class OrderEditorData {
     public ArrayList<String> getParamDescriptions() {
     	return this.paramDescriptions;
     }
-    
+
     public void setParamDescriptions(ArrayList<String> paramDescriptions) {
     	this.paramDescriptions = paramDescriptions;
     }
-    
+
 	static public Container<OrderEditorData> CreateOrderEditorData(String fileName) {
 		Container<OrderEditorData> container = new Container<OrderEditorData>(new String[] { "orderNo" }); //$NON-NLS-1$
 		try {
 			GameMetadata gm1 = GameMetadata.instance();
-			BufferedReader reader = gm1.getUTF8Resource(fileName,false); 
+			BufferedReader reader = gm1.getUTF8Resource(fileName,false);
 
 			String ln;
 			while ((ln = reader.readLine()) != null) {
@@ -131,14 +132,14 @@ public class OrderEditorData {
 					oed.getParamDescriptions().add(parts[9]);
 					oed.getParamDescriptions().add(parts[10]);
 				} catch (Exception exc) {
-					System.out.println(ln);
+					ErrorDialog.showErrorDialog(exc);
 				}
 			}
 		} catch (Exception exc) {
-			System.out.println(exc.getMessage());
+			ErrorDialog.showErrorDialog(exc);
 			container = null;
 		}
 		return container;
 	}
-    
+
 }

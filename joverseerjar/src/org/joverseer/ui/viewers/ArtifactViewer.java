@@ -25,7 +25,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows artifacts in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class ArtifactViewer extends ObjectViewer {
@@ -35,16 +35,16 @@ public class ArtifactViewer extends ObjectViewer {
     JTextField artifactName;
     JTextField owner;
     JTextField infoSource;
-    
+
     public ArtifactViewer(FormModel formModel) {
         super(formModel, FORM_PAGE);
     }
-    
+
     @Override
 	public boolean appliesTo(Object obj) {
         return Artifact.class.isInstance(obj);
     }
-    
+
     @Override
 	public void setFormObject(Object obj) {
         super.setFormObject(obj);
@@ -70,12 +70,12 @@ public class ArtifactViewer extends ObjectViewer {
             this.infoSource.setVisible(false);
         }
     }
-    
+
     @Override
 	protected JComponent createFormControl() {
         GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
         glb.setDefaultInsets(new Insets(0, 0, 0, 5));
-        
+
         glb.append(this.artifactName = new JTextField());
         this.artifactName.setPreferredSize(this.uiSizes.newDimension(150/16, this.uiSizes.getHeight4()));
         this.artifactName.setFont(GraphicUtils.getFont(this.artifactName.getFont().getName(), Font.BOLD, this.artifactName.getFont().getSize()));
@@ -95,7 +95,7 @@ public class ArtifactViewer extends ObjectViewer {
 						arg0.getClickCount() == 2) {
 					Artifact a = (Artifact)getFormObject();
                     if (a == null) return;
-                    ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", a.getNumber()); //$NON-NLS-1$
+                    ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().findFirstArtifactByNumber(a.getNumber());
                     if (ai == null) return;
                     final String descr = Messages.getString("ArtifactViewer.text",new Object[] {  //$NON-NLS-1$
                     					ai.getNo(), ai.getName(), ai.getAlignment(), ai.getPower1(), ai.getPower2()});
@@ -103,23 +103,23 @@ public class ArtifactViewer extends ObjectViewer {
                     dlg.showDialog();
 				}
 			}
-            
-            
+
+
         });
-        
+
         glb.append(this.owner = new JTextField());
         this.owner.setPreferredSize(this.uiSizes.newDimension(70/12, this.uiSizes.getHeight3()));
         this.owner.setBorder(null);
-        
+
         glb.nextLine();
-        
+
         glb.append(this.infoSource = new JTextField(), 2, 1);
         this.infoSource.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
         this.infoSource.setBorder(null);
-        
+
         JPanel panel = glb.getPanel();
         panel.setBackground(Color.white);
         return panel;
     }
-        
+
 }

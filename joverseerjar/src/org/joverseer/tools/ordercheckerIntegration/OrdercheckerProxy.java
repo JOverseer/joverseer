@@ -320,7 +320,7 @@ public class OrdercheckerProxy {
 			mc.setLocation(ch.getHexNo());
 			// TODO double check
 			for (Integer artiNo : ch.getArtifacts()) {
-				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
+				ArtifactInfo ai = g.getMetadata().findFirstArtifactByNumber(artiNo);
 				if (ai != null) {
 					mc.addArtifact(ai.getNo(), ai.getName());
 				}

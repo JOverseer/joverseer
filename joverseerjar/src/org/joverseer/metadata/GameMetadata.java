@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
@@ -29,7 +32,7 @@ import org.springframework.richclient.application.Application;
  * Holds metadata about the game such as 1. the game type and other game
  * instance stuff 2. information that depends on the game type, such as the
  * hexes, the artifacts, etc
- * 
+ *
  * @author Marios Skounakis
  */
 public class GameMetadata implements Serializable {
@@ -339,8 +342,8 @@ public class GameMetadata implements Serializable {
 			hc.removeItem(h);
 		hc.addItem(hex);
 	}
-	
-	
+
+
 	//from https://stackoverflow.com/questions/1835430/byte-order-mark-screws-up-file-reading-in-java
 	public BufferedReader getUTF8Resource(String filename,boolean ignoreComments) throws IOException
 	{
@@ -372,7 +375,7 @@ public class GameMetadata implements Serializable {
 	}
 	// search order is:
 	// files first.
-	// then check classpath 
+	// then check classpath
 	// note that getBasePath is not just a getter.
 	public BufferedReader getUTF8ResourceByGame(String filename, boolean ignoreComments) throws IOException {
 		return getUTF8Resource(getGameType().toString() + "." + filename, ignoreComments);
@@ -389,7 +392,7 @@ public class GameMetadata implements Serializable {
 				new InputStreamReader(r.getInputStream());
 				return r;
 			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
+				Logger.getLogger(this.getClass().getName()).warning(resourceName);
 				return null;
 			}
 		}
@@ -408,6 +411,15 @@ public class GameMetadata implements Serializable {
 			gm = g.getMetadata();
 		}
 		return gm;
+	}
+	//hide the details of which property we are using.
+	public ArtifactInfo findFirstArtifactByNumber(int number) {
+		return this.getArtifacts().findFirstByProperty("no", number);
+	}
+	public ArtifactInfo findFirstArtifactByName(String name) {
+		String noAccents = Normalizer.normalize(name, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("\u2019", "'");
+
+		return this.getArtifacts().findFirstByProperty("unAccentedName", noAccents);
 	}
 
 }

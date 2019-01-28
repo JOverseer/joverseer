@@ -3,6 +3,7 @@ package org.joverseer.support.readers.pdf;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmyEstimateElement;
@@ -26,7 +27,7 @@ import org.joverseer.support.infoSources.DerivedFromWoundsInfoSource;
  * the character wounds (hashmap keyed by char name, valued by arraylist of
  * string wound descriptions) - the army losses (hashmap keyed by commander
  * name, valued by arraylist of string loss descriptions)
- * 
+ *
  * @author Marios Skounakis
  */
 public class CombatWrapper {
@@ -137,7 +138,7 @@ public class CombatWrapper {
 	}
 
 	public void parse(String narration1) {
-		System.out.println("Parsing battle at " + getHexNo());
+		//System.out.println("Parsing battle at " + getHexNo());
 		// parse char results
 		String txt = narration1.replace("\n", " ").replace("\r", " ");
 		while (txt.indexOf("  ") > -1) {
@@ -155,7 +156,7 @@ public class CombatWrapper {
 				int k = txt.indexOf(" ", i + injured.length());
 				String charName = txt.substring(j + 1, i).trim();
 				String wounds = txt.substring(i + injured.length(), k);
-				System.out.println(charName + " suffered " + wounds + " wounds.");
+				//System.out.println(charName + " suffered " + wounds + " wounds.");
 				wounds = wounds + " wounds";
 				addToList(charName, wounds, this.characterWounds);
 				i = i + injured.length();
@@ -173,7 +174,7 @@ public class CombatWrapper {
 				int k = txt.indexOf(" ", i + losses.length());
 				String commanderName = txt.substring(j + 1, i).trim();
 				String aLosses = txt.substring(i + losses.length(), k);
-				System.out.println(commanderName + "'s had " + aLosses + " losses.");
+				//System.out.println(commanderName + "'s had " + aLosses + " losses.");
 				addToList(commanderName, aLosses, this.armyLosses);
 
 				i = i + losses.length();
@@ -194,7 +195,7 @@ public class CombatWrapper {
 				int k = txt.indexOf(" ", i1 + losses1.length());
 				String commanderName = txt.substring(j + 1, i).trim();
 				String aLosses = txt.substring(i1 + losses1.length(), k);
-				System.out.println(commanderName + "'s had " + aLosses + " losses against the pop center.");
+				//System.out.println(commanderName + "'s had " + aLosses + " losses against the pop center.");
 				addToList(commanderName, aLosses, this.armyLosses);
 
 				i = i1 + losses1.length();
@@ -213,7 +214,7 @@ public class CombatWrapper {
 				// found
 				int j = txt.lastIndexOf(".", i);
 				String commanderName = txt.substring(j + 1, i).trim();
-				System.out.println(commanderName + "'s were destroyed.");
+				//System.out.println(commanderName + "'s were destroyed.");
 				addToList(commanderName, "destroyed", this.armyLosses);
 				i = i + losses.length();
 			}
@@ -228,7 +229,7 @@ public class CombatWrapper {
 				// found
 				int j = txt.lastIndexOf(".", i);
 				String commanderName = txt.substring(j + 1, i).trim();
-				System.out.println(commanderName + "'s found no enemies to fight.");
+				//System.out.println(commanderName + "'s found no enemies to fight.");
 				addToList(commanderName, null, this.armyLosses);
 				i = i + losses.length();
 			}
@@ -254,7 +255,7 @@ public class CombatWrapper {
 							dwis.setWoundsDescription(woundsDescr);
 							c.setHealthEstimate(new InfoSourceValue(woundsDescr, dwis));
 						}
-						System.out.println(charName + " " + healthRange);
+						//System.out.println(charName + " " + healthRange);
 					}
 				}
 			}
@@ -367,11 +368,11 @@ public class CombatWrapper {
 
 						ae.getRegiments().add(aee);
 					} else {
-						System.out.println("Error parsing regiment " + descr);
+						Logger.getRootLogger().error("Error parsing regiment " + descr);
 					}
 				}
 			} catch (Exception exc) {
-				System.out.println("Error in combat " + getHexNo());
+				Logger.getRootLogger().error("Error in combat " + getHexNo());
 				exc.printStackTrace();
 			}
 		}

@@ -77,11 +77,11 @@ public class ArtifactInfoCollector implements ApplicationListener {
 						logger.error("Failed to find artifact wrapper for #" + a.getNumber() + " " + a.getName());
 						// create new
 						aw = new ArtifactWrapper();
-						aw.setNumber(a.getNumber());
 						aw.setName(a.getName());
 						aw.setTurnNo(i);
 						aws.addItem(aw);
 					}
+					aw.setNumber(a.getNumber());
 				}
 
 				aw.setOwner(a.getOwner());

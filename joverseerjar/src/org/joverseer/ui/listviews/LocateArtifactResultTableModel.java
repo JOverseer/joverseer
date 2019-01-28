@@ -14,12 +14,12 @@ import org.springframework.context.MessageSource;
 
 /**
  * Table model for LA/LAT results
- * 
+ *
  * @author Marios Skounakis
  */
 public class LocateArtifactResultTableModel extends ItemTableModel {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3536612294036865492L;
 
@@ -58,7 +58,7 @@ public class LocateArtifactResultTableModel extends ItemTableModel {
 		lar.setSpellName(dfsis.getSpell() + " - " + dfsis.getCasterName());
 
 		Game g = this.gameHolder.getGame();
-		ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artifact.getNumber());
+		ArtifactInfo ai = g.getMetadata().findFirstArtifactByNumber(artifact.getNumber());
 		if (ai != null) {
 			lar.setArtifactPowers(ai.getPower1() != null ? ai.getPower1() : "");
 			lar.setArtifactPowers(lar.getArtifactPowers() + (lar.getArtifactPowers().equals("") && ai.getPower2() != null ? "" : ", ") + (ai.getPower2() != null ? ai.getPower2() : ""));

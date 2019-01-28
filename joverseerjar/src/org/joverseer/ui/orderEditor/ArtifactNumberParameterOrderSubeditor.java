@@ -74,7 +74,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     	try {
     		int artiNo = Integer.parseInt(artiNoStr);
     		Game game = GameHolder.instance().getGame();
-    		ArtifactInfo ai = (ArtifactInfo)game.getMetadata().getArtifacts().findFirstByProperty("no", artiNo);
+    		ArtifactInfo ai = (ArtifactInfo)game.getMetadata().findFirstArtifactByNumber(artiNo);
     		if (ai != null) {
     			artiName = ai.getName();
     		}

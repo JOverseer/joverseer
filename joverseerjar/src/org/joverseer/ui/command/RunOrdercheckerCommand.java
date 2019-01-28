@@ -138,7 +138,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 							}
 						});
 					} catch (Exception exc) {
-						System.out.println(exc.getMessage());
+						ErrorDialog.showErrorDialog(exc);
 					}
 				}
 

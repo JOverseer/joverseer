@@ -24,10 +24,10 @@ public class ArtifactReport extends BaseReportObject {
 	public void setArtifactNo(int artifactNo) {
 		this.artifactNo = artifactNo;
 	}
-	
+
 	@Override
 	public String getExtraInfo() {
-		ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", getArtifactNo());
+		ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().findFirstArtifactByNumber(getArtifactNo());
 		String ret = "";
 		if (ai != null) {
 			if (ai.getPower1() != null && !ai.getPower1().equals("Unknown")) ret += ai.getPower1();

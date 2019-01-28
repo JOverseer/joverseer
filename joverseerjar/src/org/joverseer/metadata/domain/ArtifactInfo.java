@@ -3,6 +3,8 @@ package org.joverseer.metadata.domain;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,8 @@ public class ArtifactInfo implements Serializable {
 	String alignment;
 	String owner;
 	int currentlyHiddenPopCenter = -1;
-
+	transient String unAccentedName;
+	
 	public ArtifactInfo() {
 		this.powers = new ArrayList<String>(2);
 		this.powers.add(EMPTY_POWER);
@@ -157,5 +160,14 @@ public class ArtifactInfo implements Serializable {
 		ois.defaultReadObject();
 		// force the data cleanup.
 		this.setOwner(this.owner);
+	}
+	//use this for finding by name (assuming no two artifacts just differ by accents).
+	public String getUnAccentedName() {
+		if (this.unAccentedName == null) {
+			if (this.name != null) {
+				this.unAccentedName =  Normalizer.normalize(this.name, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+			}
+		}
+		return this.unAccentedName;
 	}
 }

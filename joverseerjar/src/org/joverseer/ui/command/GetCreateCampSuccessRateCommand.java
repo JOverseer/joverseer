@@ -40,8 +40,8 @@ public class GetCreateCampSuccessRateCommand extends ActionCommand {
     				Character co = (Character)prev.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c.getName());
     				if (co == null) continue;
     				PopulationCenter pop = (PopulationCenter)prev.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", co.getHexNo());
-	    			String ret = i + ";" + c.getName() + ";" + co.getEmmisary() + ";" + co.getEmmisaryTotal() + ";" + (success ? "1" :"0") + ";" + (pop != null ? "1" : "0");
-	    			System.out.println(ret);
+	    			//String ret = i + ";" + c.getName() + ";" + co.getEmmisary() + ";" + co.getEmmisaryTotal() + ";" + (success ? "1" :"0") + ";" + (pop != null ? "1" : "0");
+	    			//System.out.println(ret);
     			}
     		}
     	}

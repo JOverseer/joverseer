@@ -31,7 +31,7 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 /**
  * Highlights a set of characters based on criteria specified using the
  * HighlightOptionsForm form
- * 
+ *
  * @author Marios Skounakis
  */
 public class HighlightCharacters extends ActionCommand {
@@ -252,7 +252,7 @@ public class HighlightCharacters extends ActionCommand {
 			}
 
 			for (Integer artino : c.getArtifacts()) {
-				ArtifactInfo ai = g.getMetadata().getArtifacts().findFirstByProperty("no", artino);
+				ArtifactInfo ai = g.getMetadata().findFirstArtifactByNumber(artino);
 				charData += " " + ai.getName();
 			}
 

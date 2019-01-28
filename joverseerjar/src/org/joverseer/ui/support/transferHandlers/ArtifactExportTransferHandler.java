@@ -54,7 +54,7 @@ public class ArtifactExportTransferHandler extends TransferHandler {
                 };
                 try {
                     if (flavor.equals(new ArtifactInfoDataFlavor())) {
-                        return GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", ArtifactExportTransferHandler.this.artifact.getNumber());
+                        return GameHolder.instance().getGame().getMetadata().findFirstArtifactByNumber(ArtifactExportTransferHandler.this.artifact.getNumber());
                     }
                 }
                 catch (Exception exc) {

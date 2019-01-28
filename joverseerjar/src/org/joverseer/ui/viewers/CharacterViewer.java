@@ -98,7 +98,7 @@ import org.springframework.richclient.table.BeanTableModel;
 
 /**
  * Shows characters in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class CharacterViewer extends ObjectViewer {
@@ -222,7 +222,7 @@ public class CharacterViewer extends ObjectViewer {
 					if (this.showArtifacts) {
 						for (ArtifactWrapper aw : acw.getArtifacts()) {
 							// find artifact in metadata
-							ArtifactInfo a = g.getMetadata().getArtifacts().findFirstByProperty("no", aw.getNumber()); //$NON-NLS-1$
+							ArtifactInfo a = g.getMetadata().findFirstArtifactByNumber(aw.getNumber());
 							// copy into new object to change the name and add
 							// the turn - hack but for now it works
 							ArtifactInfo na = new ArtifactInfo();
@@ -436,7 +436,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		// diagnostic border
 		Border  border = null;//BorderFactory.createLineBorder(Color.red);
-		
+
 		glb.append(c = new JTextField(),1,1,4,0);
 		this.characterName = (JTextField) c;
 		this.characterName.addMouseListener(new MouseAdapter() {
@@ -519,7 +519,7 @@ public class CharacterViewer extends ObjectViewer {
 		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource(),GameHolder.instance(),PreferenceRegistry.instance()) {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 849682786089362695L;
 
@@ -569,7 +569,7 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 		glb.append(new JLabel() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1186841898044385427L;
 
@@ -585,7 +585,7 @@ public class CharacterViewer extends ObjectViewer {
 		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource(),GameHolder.instance(),PreferenceRegistry.instance()) {
 
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = -8451414798515425664L;
 
@@ -704,11 +704,11 @@ public class CharacterViewer extends ObjectViewer {
 		// public void changedUpdate(DocumentEvent arg0) {
 		// updateNotes();
 		// }
-		//    
+		//
 		// public void insertUpdate(DocumentEvent arg0) {
 		// updateNotes();
 		// }
-		//    
+		//
 		// public void removeUpdate(DocumentEvent arg0) {
 		// updateNotes();
 		// }

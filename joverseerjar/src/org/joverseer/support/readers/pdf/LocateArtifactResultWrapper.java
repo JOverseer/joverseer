@@ -14,7 +14,7 @@ import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 
 /**
  * Holds information about Locate Artifact order results
- * 
+ *
  * @author Marios Skounakis
  */
 public class LocateArtifactResultWrapper implements OrderResult {
@@ -96,7 +96,7 @@ public class LocateArtifactResultWrapper implements OrderResult {
 		if (artifactName1.equals("artifact")) {
 			// dummy name
 			// see if you can retrieve from ArtifactInfo
-			ArtifactInfo ai = GameHolder.instance().getGame().getMetadata().getArtifacts().findFirstByProperty("no", getArtifactNo());
+			ArtifactInfo ai = GameHolder.instance().getGame().getMetadata().findFirstArtifactByNumber(getArtifactNo());
 			if (ai != null) {
 				artifactName1 = ai.getName();
 			}

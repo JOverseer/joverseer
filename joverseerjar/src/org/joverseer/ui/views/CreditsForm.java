@@ -8,6 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.log4j.Logger;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.binding.form.FormModel;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.form.AbstractForm;
@@ -40,7 +42,7 @@ public class CreditsForm extends AbstractForm implements HyperlinkListener {
             this.editor.setPage(((Resource)getFormObject()).getURL());
         }
         catch (Exception exc) {
-            System.out.println(exc.getMessage());
+        	Logger.getRootLogger().error(exc.getMessage());
         }
         JScrollPane scp = new JScrollPane(this.editor); 
         scp.setPreferredSize(new Dimension(750, 500));
@@ -55,7 +57,7 @@ public class CreditsForm extends AbstractForm implements HyperlinkListener {
             this.editor.setPage(arg0.getURL());
         }
         catch (Exception exc) {
-            System.out.println(exc.getMessage());
+        	Logger.getRootLogger().error(exc.getMessage());
         }
     }
     

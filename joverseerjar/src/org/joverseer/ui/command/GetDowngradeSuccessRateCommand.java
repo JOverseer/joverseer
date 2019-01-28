@@ -33,8 +33,8 @@ public class GetDowngradeSuccessRateCommand extends ActionCommand {
     			orderResults = orderResults.replace("  ", " ");
     			if (orderResults.contains("was ordered to downgrade our relations.")) {
 	    			boolean success = orderResults.contains("were downgraded.");
-	    			String ret = i + ";" + c.getName() + ";" + c.getCommand() + ";" + c.getCommandTotal() + ";" + (success ? "1" :"0");
-	    			System.out.println(ret);
+	    			//String ret = i + ";" + c.getName() + ";" + c.getCommand() + ";" + c.getCommandTotal() + ";" + (success ? "1" :"0");
+	    			//System.out.println(ret);
     			}
     		}
     	}

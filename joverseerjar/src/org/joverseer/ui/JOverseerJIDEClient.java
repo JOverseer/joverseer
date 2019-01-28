@@ -98,7 +98,7 @@ public class JOverseerJIDEClient {
 			new ApplicationLauncher(STARTUP_CONTEXT, new String[] { APPLICATION_CONTEXT, PAGE_CONTEXT, PREFERENCES_CONTEXT });
 
 		} catch (Exception e) {
-			System.out.println(e);
+			_logger.error(e.getMessage());
 			throw e;
 			// System.exit(1);
 		}

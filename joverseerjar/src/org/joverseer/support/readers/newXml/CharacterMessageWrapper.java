@@ -275,7 +275,7 @@ public class CharacterMessageWrapper {
 	}
 
 	/*He was ordered to scout the area.  Jilad of the Dunadan Rangers with about 1400 troops at 1409
-	. See Map below.  
+	. See Map below.
 	*/
 	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource) {
 		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below");
@@ -504,7 +504,7 @@ public class CharacterMessageWrapper {
 	protected OrderResult getPalantirResult(String line, InfoSource infoSource) {
 		return getReconResult(line, infoSource, "He was ordered to use a scrying artifact.", "None", " See report below");
 	}
-	
+
 	protected OrderResult getScryResult(String line, InfoSource infoSource) {
 		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below");
 	}
@@ -603,6 +603,10 @@ public class CharacterMessageWrapper {
 	protected OrderResult getOwnedLATOrderResult(String line) {
 		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact True - ", " #", "is possessed by ", " in the ", " at ", "." };
 		String matches[] = matchPattern(line, ptr);
+		if (matches == null) {
+			// this pattern seems current in 2018
+			matches = matchPattern(line,new String[] {"was ordered to cast a lore spell. Locate Artifact True - ", " #", "may be possessed by ", " in the ", " at ", "."});
+		}
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);

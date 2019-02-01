@@ -50,18 +50,24 @@ public class Challenge extends Encounter {
 				for (int j = sentences.length - 1; j >= 0; j--) {
 					int ci1 = sentences[j].indexOf(char1);
 					int ci2 = sentences[j].indexOf(char2);
-					// the one mentioned first is the loser, the other the victor
-					//
+					// there are inconsistencies as to who is victor or loser:
+					// in general the last mentioned character dies.
+					// unless the text is 'loser fell'
+					
 					// Finally, Amroth fell to a savage barrage of spells by The Blue Wizard
 					// Finally, Lorenet fell to a savage barrage of blows by Throkmaw. Throkmaw was noted to have suffered no wounds in the fight.
-					if (ci1 > -1 && ci2 > -1) {
+					// Suddenly, Treebeard slew Lucki with a swift feint and thrust, but suffered no wounds
+					
+					if ((ci1 > -1) && (ci2 > -1)) {
 						if (ci1 < ci2) {
-							this.victor = char2;
-							this.loser = char1;
-						} else {
-							this.victor = char1;
-							this.loser = char2;
+							if (sentences[j].indexOf(" fell ") > -1) {
+								this.victor = char2;
+								this.loser = char1;
+								return;
+							}
 						}
+						this.victor = char1;
+						this.loser = char2;
 						return;
 					}
 				}

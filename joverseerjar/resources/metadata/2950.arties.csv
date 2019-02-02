@@ -14,7 +14,7 @@
 14;The One Ring;None;Stealth;40;;
 15;Tinculin;None;Mage;40;;
 16;Mothras;None;Combat;500;;
-17;Ring of Angrenost;None;Combat;500;;White Wizard 
+17;Ring of Angrenost;None;Combat;500;;White Wizard
 18;Tablets of Dark Knowledge;Evil;Mage;15;;
 19;Staff of Storms;None;Open Seas;-;;
 20;Staff of the Serpent;None;Mage;10;;Ice King
@@ -27,7 +27,7 @@
 27;Palantír of Osgiliath;None;Scry Area;-;;
 28;Palantír of Minas Ithil;None;Scry Area;-;;Witch-King
 29;Palantír of Minas Anor;None;Scry Area;-;;N.Gondor
-30;Palantír of Orthanc;None;Scry Area;-;;White Wizard 
+30;Palantír of Orthanc;None;Scry Area;-;;White Wizard
 31;Palantír of Annúminas;None;Scry Area;-;;
 32;Palantír of Elostirion;None;Scry Area;-;;Noldo
 33;Palantír of Amon Sûl;None;Scry Area;-;;
@@ -159,7 +159,7 @@
 159;Skull Helm;Evil;Command;20;;Dog Lord
 160;Collar of Command;None;Command;30;;Dog Lord
 161;Erivagil;None;Combat;1500;;
-162;Glosvagil;None;Combat;1500;;White Wizard 
+162;Glosvagil;None;Combat;1500;;White Wizard
 163;Mirror of Galadriel;Good;Mage;40;;Sinda
 164;Tintelpë;Good;Combat;1750;;Sinda
 165;Cuiviegurth;Evil;Combat;750;;
@@ -187,7 +187,7 @@
 187;The Black Book;None;Mage;10;;
 188;E Mere Vardo;Good;Mage;10;;
 189;Blue Ring;Evil;Mage;10;;
-190;Staff of the Wanderer;None;Mage;15;;
+190;Staff of the Wanderer;Good;Mage;15;;
 191;Aercrist;None;Combat;750;;S.Gondor
 192;Maikarama;Good;Combat;750;;
 193;Raukambar;Good;Combat;750;;

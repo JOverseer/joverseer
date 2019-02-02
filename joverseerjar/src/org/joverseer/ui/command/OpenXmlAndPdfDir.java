@@ -5,18 +5,18 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
-import java.util.regex.Pattern;
-
 import javax.swing.JFileChooser;
 
 import org.joverseer.joApplication;
 import org.joverseer.game.Game;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
+import org.joverseer.support.GameFileComparator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
 import org.joverseer.support.TurnPostProcessor;
+import org.joverseer.support.XmlAndPdfFileFilter;
 import org.joverseer.support.readers.newXml.TurnNewXmlReader;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
@@ -37,9 +37,9 @@ import org.springframework.richclient.form.FormModelHelper;
  * Reads xml and pdf turn files from a given directory (and all subdirectories).
  * All files must be for the same turn, and this turn must either be the latest
  * turn of the game or a turn larger than the last turn of the game.
- * 
+ *
  * Xml files are read first, then pdf files
- * 
+ *
  * @author Marios Skounakis
  */
 public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
@@ -53,6 +53,15 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		this.gh = GameHolder.instance();
 	}
 
+	class SortByFilename implements Comparator<File> {
+
+		@Override
+		public int compare(File o1, File o2) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+	}
 	@Override
 	public void run() {
 		try {
@@ -67,9 +76,10 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		int xmlCount = 0;
 		int pdfCount = 0;
 		boolean errorOccurred = false;
+		boolean warningOccurred = false;
 		for (File f : this.files) {
-			if (f.getAbsolutePath().endsWith(".xml")) {
-				try {
+			try {
+				if (f.getAbsolutePath().endsWith(".xml")) {
 					this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
 					xmlCount++;
 					final TurnXmlReader r = new TurnXmlReader(game, "file:///" + f.getCanonicalPath());
@@ -87,37 +97,25 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 							errorOccurred = true;
 						}
 					}
-				} catch (Exception exc) {
-					this.monitor.subTaskStarted(exc.getMessage());
-					// do nothing
-					// todo fix
-				}
-			}
-
-		}
-
-		boolean warningOccurred = false;
-		for (File f : this.files) {
-			if (f.getAbsolutePath().endsWith(".pdf")) {
-				//we still grab pdf info even if new format, so that we can summarise for the pdfviewer.
-				//if (!game.getMetadata().getNewXmlFormat()) {
-					try {
-						this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
-						pdfCount++;
-						final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
-						r.setMonitor(this.monitor);
-						r.run();
-						if (r.getErrorOccurred()) {
-							warningOccurred = true;
-						}
-					} catch (Exception exc) {
-						this.monitor.subTaskStarted(exc.getMessage());
-						// do nothing
-						// todo fix
+				} else if (f.getAbsolutePath().endsWith(".pdf")) {
+					//we still grab pdf info even if new format, so that we can summarise for the pdfviewer.
+					//if (!game.getMetadata().getNewXmlFormat()) {
+					this.monitor.subTaskStarted(String.format("Importing file '%s'.", new Object[] { f.getAbsolutePath() }));
+					pdfCount++;
+					final TurnPdfReader r = new TurnPdfReader(game, f.getCanonicalPath());
+					r.setMonitor(this.monitor);
+					r.run();
+					if (r.getErrorOccurred()) {
+						warningOccurred = true;
 					}
-				//}
+				}
+			} catch (Exception exc) {
+				this.monitor.subTaskStarted(exc.getMessage());
+				// do nothing
+				// todo fix
 			}
 		}
+
 		this.monitor.subTaskStarted("Read " + xmlCount + " xml files and " + pdfCount + " pdf files.");
 
 		TurnPostProcessor turnPostProcessor = new TurnPostProcessor();
@@ -147,25 +145,19 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 
 		// check if allegiances have been set for all neutrals
 		Game g = GameHolder.instance().getGame();
-		boolean neutralNationExists = false;
-		for (Nation n : g.getMetadata().getNations()) {
-			if (n.getAllegiance().equals(NationAllegianceEnum.Neutral) && !n.getEliminated() && !n.getRemoved()) {
-				neutralNationExists = true;
-			}
-		}
 		if (g.containsParameter("StopAskingForAllegianceChanges") && "1".equals(g.getParameter("StopAskingForAllegianceChanges"))) {
-			neutralNationExists = false;
-		}
-		if (neutralNationExists) {
-			ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[] {}, Locale.getDefault())) {
-				@Override
-				protected void onConfirm() {
-					ChangeNationAllegiances cmd = new ChangeNationAllegiances();
-					cmd.doExecuteCommand();
-				}
-			};
-			dlg.setPreferredSize(new Dimension(500, 70));
-			dlg.showDialog();
+		} else {
+			if (g.getMetadata().neutralNationsExist()) {
+				ConfirmationDialog dlg = new ConfirmationDialog(ms.getMessage("changeAllegiancesConfirmationDialog.title", new Object[] {}, Locale.getDefault()), ms.getMessage("changeAllegiancesConfirmationDialog.message", new Object[] {}, Locale.getDefault())) {
+					@Override
+					protected void onConfirm() {
+						ChangeNationAllegiances cmd = new ChangeNationAllegiances();
+						cmd.doExecuteCommand();
+					}
+				};
+				dlg.setPreferredSize(new Dimension(500, 70));
+				dlg.showDialog();
+			}
 		}
 
 		JFileChooser fileChooser = new JFileChooser();
@@ -179,14 +171,14 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			final File file = fileChooser.getSelectedFile();
 			GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
 			final Runnable thisObj = this;
-			class XmlAndPdfFileFilter implements FileFilter {
-				@Override
-				public boolean accept(File file1) {
-					return !file1.isDirectory() && (file1.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file1.getName()));
-				}
-			}
 			// files = file.listFiles(new XmlAndPdfFileFilter());
-			this.files = getFilesRecursive(file, new XmlAndPdfFileFilter());
+			this.files = getFilesRecursive(file, new XmlAndPdfFileFilter(g.getMetadata().getGameNo()));
+			//sort files:
+			ArrayList<File> ret = new ArrayList<File>();
+			ret.addAll(Arrays.asList(this.files));
+			Collections.sort(ret, new GameFileComparator());
+			this.files = ret.toArray(new File[] {});
+
 			FormModel formModel = FormModelHelper.createFormModel(this);
 			this.monitor = new JOverseerClientProgressMonitor(formModel);
 			FormBackedDialogPage page = new FormBackedDialogPage(this.monitor);

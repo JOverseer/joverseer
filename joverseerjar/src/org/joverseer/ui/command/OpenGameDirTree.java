@@ -6,9 +6,6 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 
@@ -16,9 +13,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joverseer.joApplication;
 import org.joverseer.game.Game;
+import org.joverseer.metadata.GameMetadata;
+import org.joverseer.support.GameFileComparator;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;
 import org.joverseer.support.TurnPostProcessor;
+import org.joverseer.support.XmlAndPdfFileFilter;
 import org.joverseer.support.readers.newXml.TurnNewXmlReader;
 import org.joverseer.support.readers.pdf.TurnPdfReader;
 import org.joverseer.support.readers.xml.TurnXmlReader;
@@ -37,13 +37,13 @@ import org.springframework.richclient.form.FormModelHelper;
 /**
  * Reads the xml and pdf files for a whole game from a directory tree Structure
  * must be: - game folder - folder for turn 1 - folder for turn 2 - ...
- * 
+ *
  * The game folder may have any arbitrary name The turn folders must follow a
  * specific pattern, basically a name that can be: - t0 - t00 - t000 - turn0 -
  * turn00 - turn000 - turn 0 - turn 00 - turn 000 and all capitalization
  * variations of the above
- * 
- * 
+ *
+ *
  * @author Marios Skounakis
  */
 public class OpenGameDirTree extends ActionCommand implements Runnable {
@@ -88,6 +88,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 		if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
 			final File file = fileChooser.getSelectedFile();
 			GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
+			GameMetadata gm = GameMetadata.instance();
 
 			final Runnable thisObj = this;
 
@@ -107,7 +108,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 					File tf = new File(tfp);
 					if (tf.exists()) {
 						this.turnFolders.add(tf);
-						this.files = tf.listFiles(new XmlAndPdfFileFilter());
+						this.files = tf.listFiles(new XmlAndPdfFileFilter(gm.getGameNo()));
 						try {
 							log.info("Adding turn folder " + tf.getCanonicalPath() + " with " + this.files.length + " files.");
 						} catch (Exception exc) {
@@ -123,7 +124,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 				File tf = new File(tfp);
 				if (tf.exists()) {
 					this.turnFolders.add(tf);
-					this.files = tf.listFiles(new XmlAndPdfFileFilter());
+					this.files = tf.listFiles(new XmlAndPdfFileFilter(gm.getGameNo()));
 					try {
 						log.info("Adding turn folder " + tf.getCanonicalPath() + " with " + this.files.length + " files.");
 					} catch (Exception exc) {
@@ -168,7 +169,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 		boolean errorOccurred = false;
 		boolean warningOccurred = false;
 		for (File tf : this.turnFolders) {
-			this.files = getFilesRecursive(tf, new XmlAndPdfFileFilter());
+			this.files = getFilesRecursive(tf, new XmlAndPdfFileFilter(game.getMetadata().getGameNo()));
 			for (File f : this.files) {
 				if (f.getAbsolutePath().endsWith(".xml")) {
 					try {
@@ -235,13 +236,6 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 		this.dialog.setDescription("Processing finished.");
 	}
 
-	class XmlAndPdfFileFilter implements FileFilter {
-		@Override
-		public boolean accept(File file) {
-			return !file.isDirectory() && (file.getName().endsWith(".pdf") || Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", file.getName()));
-		}
-	}
-
 	private File[] getFilesRecursive(File folder, FileFilter filter) {
 		ArrayList<File> ret = new ArrayList<File>();
 		File[] files1 = folder.listFiles(filter);
@@ -257,57 +251,6 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 		}
 		Collections.sort(ret, new GameFileComparator());
 		return ret.toArray(new File[] {});
-	}
-
-	class FileComparator implements Comparator<File> {
-
-		@Override
-		public int compare(File arg0, File arg1) {
-			String fn1 = arg0.getName();
-			String fn2 = arg1.getName();
-			int i = fn1.indexOf(".");
-			int j = fn2.indexOf(".");
-			if (i == -1 || j == -1)
-				return 0;
-			fn1 = fn1.substring(i - 4, 4);
-			fn2 = fn2.substring(i - 4, 4);
-			return fn1.compareTo(fn2);
-		}
-
-	}
-	class GameFileComparator implements Comparator<File> {
-		private final Pattern a = Pattern.compile("g(\\d{3})n(\\d{2})t(\\d{3})\\.(xml|pdf)");
-		
-		@Override
-		public int compare(File o1, File o2) {
-			Matcher matcher1,matcher2;
-			int result;
-			String f1,f2;
-			f1 = o1.getName(); 
-			f2 = o2.getName();
-			matcher1 = this.a.matcher(f1);
-			matcher2 = this.a.matcher(f2);
-			result = f1.compareTo(f2);
-			if (matcher1.matches() && matcher2.matches()) {
-				int grp1 = matcher1.groupCount();
-				int grp2 = matcher2.groupCount();
-				String g1 = matcher1.group(1);
-				String g2 = matcher2.group(1);
-				result =  g1.compareTo(g2); // compare game
-				if (result == 0) {
-					if ((grp1 == grp2) &&  (grp1 >2)) {
-						String t1 = matcher1.group(3);
-						String t2 = matcher2.group(3);
-						result =  t1.compareTo(t2); // compare turn
-						if (result == 0) {
-							result =  matcher1.group(2).compareTo(matcher2.group(2)); // compare nation
-						}
-					}
-				}
-			}
-			return result;
-		}
-		
 	}
 
 }

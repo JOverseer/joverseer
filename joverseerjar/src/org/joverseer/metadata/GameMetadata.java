@@ -19,6 +19,7 @@ import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.Nation;
+import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.metadata.domain.NationMapRange;
 import org.joverseer.metadata.domain.SpellInfo;
 import org.joverseer.metadata.orders.OrderMetadata;
@@ -420,6 +421,19 @@ public class GameMetadata implements Serializable {
 		String noAccents = Normalizer.normalize(name, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("\u2019", "'");
 
 		return this.getArtifacts().findFirstByProperty("unAccentedName", noAccents);
+	}
+	public boolean neutralNationsExist( ) {
+		switch (this.gameType) {
+		case gameCME:
+		case gameBOFA:
+			return false;
+		}
+		for (Nation n : getNations()) {
+			if (n.getAllegiance().equals(NationAllegianceEnum.Neutral) && !n.getEliminated() && !n.getRemoved()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

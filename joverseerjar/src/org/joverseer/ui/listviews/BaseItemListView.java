@@ -576,7 +576,10 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								com.setSelectedIndex(selected);
+								// the object might have changed by the time we get run.
+								if (selected < com.getItemCount()) {
+									com.setSelectedIndex(selected);
+								}
 							}
 							});
 						return;

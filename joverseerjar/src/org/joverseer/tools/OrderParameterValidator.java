@@ -2,7 +2,6 @@ package org.joverseer.tools;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.joverseer.domain.Army;
@@ -504,6 +503,8 @@ public class OrderParameterValidator {
 				nations = "1,2,3,4,5,6,11,12,13,14,15,16,21,22";
 			} else if (g.getMetadata().getGameType() == GameTypeEnum.gameUW) {
 				nations = "1,2,3,5,8,10,11,12,13,18,24";
+			} else if (g.getMetadata().getGameType() == GameTypeEnum.gameCME) {
+				nations = "1,2";
 			}
 			if (inList(paramValue, nations)) {
 				return null;

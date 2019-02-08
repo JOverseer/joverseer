@@ -146,7 +146,7 @@
 		<property name="members">
 			<list>
                 <bean class="org.joverseer.ui.command.RestoreDefaultLayoutCommand"/>
-                <bean class="org.joverseer.ui.command.RestoreClassicLayoutCommand"/>
+                <bean class="org.joverseer.ui.command.RestoreSimpleLayoutCommand"/>
 	        </list>
 	    </property>
 	</bean>
@@ -268,10 +268,10 @@
             		<property name="message"><value>toolsArtifactsMenu</value></property>
 			        <property name="members">
             		<list>
-            			<ref bean="artifactInfoListView"/>
+<!--             			<ref bean="artifactInfoListView"/> -->
             			<ref bean="advancedArtifactListView"/>
-            			<ref bean="locateArtifactResultListView"/>
-            			<ref bean="ownedArtifactsListView"/>
+<!--             			<ref bean="locateArtifactResultListView"/>
+            			<ref bean="ownedArtifactsListView"/> -->
             		</list>
 			        </property>
             	</bean>

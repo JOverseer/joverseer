@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
@@ -35,12 +36,12 @@ import com.jidesoft.spring.richclient.docking.JideApplicationWindow;
  * 
  * @author Marios Skounakis
  */
-public class RestoreClassicLayoutCommand extends ApplicationWindowAwareCommand {
-	private static final Log log = LogFactory.getLog(RestoreClassicLayoutCommand.class);
+public class RestoreSimpleLayoutCommand extends ApplicationWindowAwareCommand {
+	private static final Log log = LogFactory.getLog(RestoreSimpleLayoutCommand.class);
 
-	private static final String ID = "restoreClassicLayoutCommand";
-	
-	public RestoreClassicLayoutCommand() {
+	private static final String ID = "restoreSimpleLayoutCommand";
+
+	public RestoreSimpleLayoutCommand() {
 		super(ID);
 	}
 
@@ -53,14 +54,13 @@ public class RestoreClassicLayoutCommand extends ApplicationWindowAwareCommand {
 			@Override
 			protected void onConfirm() {
 				DockingManager manager = ((JideApplicationWindow) getApplicationWindow()).getDockingManager();
-				Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/ClassicDefault.layout");
+				Resource r = Application.instance().getApplicationContext().getResource("classpath:layout/SimpleDefault.layout");
 				try {
 					manager.loadLayoutFrom(r.getInputStream());
 				} catch (Exception exc) {
 					log.error("Failed to load original layout from layout file " + exc.getMessage());
 				}
 			}
-
 		};
 		md.showDialog();
 

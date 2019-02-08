@@ -671,7 +671,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			this.xDiff = e.getX();
 			this.yDiff = e.getY();
-			if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+			if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 			} else {
 				setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			}
@@ -848,7 +848,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+		if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 			if (!GameHolder.hasInitializedGame())
 				return;
 			int dx = Math.abs(e.getX() - this.xDiff);
@@ -970,7 +970,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if ((e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
+		if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 			if (e.getUnitsToScroll() < 0) {
 				joApplication.publishEvent(LifecycleEventsEnum.ZoomIncreaseEvent, this, this);
 			} else if (e.getUnitsToScroll() > 0) {

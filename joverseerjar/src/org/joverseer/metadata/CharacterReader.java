@@ -4,16 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
-import org.jdesktop.swingx.util.OS;
 import org.joverseer.domain.Character;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
 
 /**
  * Reads starting character information
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 public class CharacterReader implements MetadataReader {
 	String characterFilename = "chars.csv";

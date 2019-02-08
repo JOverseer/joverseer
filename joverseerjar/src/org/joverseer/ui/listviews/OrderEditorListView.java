@@ -54,7 +54,6 @@ import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.joverseer.ui.support.controls.JOverseerTable;
 import org.joverseer.ui.support.controls.TableUtils;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.command.CommandGroup;

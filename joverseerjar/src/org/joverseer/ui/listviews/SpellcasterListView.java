@@ -20,14 +20,12 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.SpellInfo;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.SpellcasterWrapper;
 import org.joverseer.ui.listviews.commands.GenericCopyToClipboardCommand;
 import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.controls.TableUtils;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.ColumnToSort;
 

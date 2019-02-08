@@ -38,8 +38,8 @@ public class JOverseerEvent extends LifecycleApplicationEvent {
      * @param type
      * @return
      */
-    public boolean isLifecycleEvent(LifecycleEventsEnum type)
+    public boolean isLifecycleEvent(LifecycleEventsEnum aType)
     {
-    	return getEventType().equals(type.toString());
+    	return getEventType().equals(aType.toString());
     }
 }

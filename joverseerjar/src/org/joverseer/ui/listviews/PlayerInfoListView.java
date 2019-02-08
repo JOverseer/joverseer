@@ -9,10 +9,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.JOverseerEventListener;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
-import org.springframework.context.ApplicationEvent;
 
 /**
  * List view for PlayerInfo objects

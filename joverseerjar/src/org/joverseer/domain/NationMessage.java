@@ -182,4 +182,10 @@ public class NationMessage implements Serializable, IBelongsToNation, IHasMapLoc
     public String getKidnapAttacker() {
     	return getAssassinationAttacker();
     }
+    /**
+     * @return the hex or population centre name which is the target of the rumour.
+     */
+    public String getOtherPop() {
+    	return StringUtils.getUniquePart(getMessage(), " at ", "\\.", false, false);
+    }
 }

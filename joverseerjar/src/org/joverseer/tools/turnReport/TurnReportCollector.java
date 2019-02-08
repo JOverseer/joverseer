@@ -1003,7 +1003,19 @@ public class TurnReportCollector {
 				r.setStolenFromNation(nm.getNationNo());
 				r.setGainedByNation(-1);
 				r.setNotes(r.getGold() + " gold");
-				r.setHexNo(nm.getX() * 100 + nm.getY());
+				if (nm.getX() == -1 ) {
+					String spc = nm.getOtherPop();
+					if (spc.length() > 0) {
+						if (p!=null) {
+							PopulationCenter ppc = (PopulationCenter) p.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", spc);
+							if (ppc != null) {
+								r.setHexNo(ppc.getHexNo());
+							}
+						}
+					}
+				} else {
+					r.setHexNo(nm.getX() * 100 + nm.getY());
+				}
 				ret.add(r);
 			}
 		}

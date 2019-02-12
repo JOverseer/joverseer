@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import org.joverseer.domain.Order;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.SpellInfo;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 import org.joverseer.ui.support.dataFlavors.SpellInfoDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -31,13 +32,13 @@ public class NumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     String paramName;
     String possibleInitValue;
 
-    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o,String initValue) {
-        super(oe,o);
+    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o,String initValue,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
         this.possibleInitValue = initValue;
     }
-    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
-    	this(oe,paramName,o,null);
+    public NumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o,GameHolder gameHolder) {
+    	this(oe,paramName,o,null,gameHolder);
     }
 
     @Override

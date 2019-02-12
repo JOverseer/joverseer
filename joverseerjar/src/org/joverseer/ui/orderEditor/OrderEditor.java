@@ -49,7 +49,6 @@ import org.joverseer.ui.support.controls.AutocompletionComboBox;
 import org.springframework.binding.value.support.ListListModel;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
 import org.springframework.richclient.form.AbstractForm;
 import org.springframework.richclient.form.FormModelHelper;
 import org.springframework.richclient.image.ImageSource;
@@ -73,6 +72,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	public static final String FORM_PAGE = "orderEditorForm"; //$NON-NLS-1$
 	static final int PREFERRED_TEXT_HEIGHT = 23; // was 18 but cuts off descenders
 	protected static final Log staticLogger = LogFactory.getLog("org.joverseer.ui.orderEditor.OrderEditor");
+    public final static String DEFAULT_BEAN_ID = "orderEditor";
 	JComboBox orderCombo;
 	JCheckBox chkDraw;
 	JTextField parameters;
@@ -92,9 +92,12 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	Container<OrderEditorData> orderEditorData = null;
 
 	GameMetadata gm;
+	//injected dependencies
+	GameHolder gameHolder;
 
-	public OrderEditor() {
+	public OrderEditor(GameHolder gameHolder) {
 		super(FormModelHelper.createFormModel(new Order(new Character())), FORM_PAGE);
+		this.gameHolder = gameHolder;
 	}
 
 	public String getParameters() {
@@ -110,7 +113,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	private GameMetadata getGameMetadata() {
 		if (this.gm == null) {
-			Game g = GameHolder.instance().getGame();
+			Game g = this.gameHolder.getGame();
 			if (!Game.isInitialized(g))
 				return null;
 			this.gm = g.getMetadata();
@@ -435,7 +438,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			if (oed != null) {
 				paramsEditable = false;
 				TableLayoutBuilder tlb = new TableLayoutBuilder(this.subeditorPanel);
-				orderEditorFactory(oed.getOrderNo(),oed,tlb,this,o);
+				orderEditorFactory(oed.getOrderNo(),oed,tlb,this,o,this.gameHolder);
 
 				// hack in order to show all of the subeditor fields
 				tlb.cell(new JLabel(" ")); //$NON-NLS-1$
@@ -650,23 +653,23 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		return !pval.equals("no"); //$NON-NLS-1$
 	}
 
-	public static AbstractOrderSubeditor orderEditorFactory(int orderNumber,OrderEditorData oed, TableLayoutBuilder tlb, OrderEditor oe,Order o) {
+	public static AbstractOrderSubeditor orderEditorFactory(int orderNumber,OrderEditorData oed, TableLayoutBuilder tlb, OrderEditor oe,Order o,GameHolder gameHolder) {
 		AbstractOrderSubeditor sub = null;
 		switch (orderNumber) {
 		case 850:
 		case 860:
 		case 830:
-			sub = new MoveArmyOrderSubeditor(oe,o);
+			sub = new MoveArmyOrderSubeditor(oe,o,gameHolder);
 			sub.addComponents(tlb, oe.subeditorComponents, o, 0,false);
 			break;
 		case 940:
-			sub = new CastLoSpellOrderSubeditor(oe,o);
+			sub = new CastLoSpellOrderSubeditor(oe,o,gameHolder);
 			sub.addComponents(tlb, oe.subeditorComponents, o, 0,false);
 			break;
 		default:
 			int paramNo = 0;
 			for (int i = 0; i < oed.getParamTypes().size(); i++) {
-				sub = parameterEditorFactory(oe,oed.getParamTypes().get(i),oed.getParamDescriptions().get(i),o,oed.getOrderNo());
+				sub = parameterEditorFactory(oe,oed.getParamTypes().get(i),oed.getParamDescriptions().get(i),o,oed.getOrderNo(),gameHolder);
 				if (sub != null) {
 					sub.addComponents(tlb, oe.subeditorComponents, o, paramNo,false);
 					sub.valueChanged();
@@ -677,153 +680,148 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		return sub;
 
 	}
-	public static AbstractOrderSubeditor parameterEditorFactory(OrderEditor oe,String paramType,String paramDescription,Order o,int orderNumber) {
+	public static AbstractOrderSubeditor parameterEditorFactory(OrderEditor oe,String paramType,String paramDescription,Order o,int orderNumber,GameHolder gameHolder) {
 		if (paramType.equals("hex")) { //$NON-NLS-1$
-			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("cid") || paramType.equals("xid")) { //$NON-NLS-1$ //$NON-NLS-2$
-			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("tac")) { //$NON-NLS-1$
-			return tacTypes(oe, paramDescription, o);
+			return tacTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("prd")) { //$NON-NLS-1$ // le..mo => leather..mounts
-			return productTypes(oe, paramDescription, o);
+			return productTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("pro")) { //$NON-NLS-1$ // le..go => leather..gold
-			return product2Types(oe, paramDescription, o);
+			return product2Types(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("%")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("g")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("yn")) { //$NON-NLS-1$
-			return ynTypes(oe, paramDescription, o);
+			return ynTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("wep")) { //$NON-NLS-1$
-			return WeaponTypes(oe, paramDescription, o);
+			return WeaponTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("arm")) { //$NON-NLS-1$
-			return ArmourTypes(oe, paramDescription, o);
+			return ArmourTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("trp")) { //$NON-NLS-1$
-			return trpTypes(oe, paramDescription, o);
+			return trpTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("gen")) { //$NON-NLS-1$ // m/f
-			return genderTypes(oe, paramDescription, o);
+			return genderTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("alg")) { //$NON-NLS-1$ // g,n,e
-			return allegianceTypes(oe, paramDescription, o);
+			return allegianceTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("nam")) { //$NON-NLS-1$
-			return new SingleParameterOrderSubeditor(oe,paramDescription, o, 160);
+			return new SingleParameterOrderSubeditor(oe,paramDescription, o, 160,gameHolder);
 		} else if (paramType.equals("rsp")) { //$NON-NLS-1$
-			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("a")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("ae")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("b")) { //$NON-NLS-1$ //number of troops
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("e")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("d")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("de")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("dcid")) { //$NON-NLS-1$
-			return new SingleParameterOrderSubeditor(oe, paramDescription, o);
+			return new SingleParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("i")) { //$NON-NLS-1$
-			return new NumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new NumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("dir") || paramType.equals("dirx")) { //$NON-NLS-1$ //$NON-NLS-2$
 			// sub = new
 			// SingleParameterOrderSubeditor(paramDescription,
 			// o);
-			return directionTypes(oe, paramDescription, o);
+			return directionTypes(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("nat")) { //$NON-NLS-1$
-			return new NationParameterOrderSubeditor(oe, paramDescription, o);
+			return new NationParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			return new SpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber);
+			return new SpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber,gameHolder);
 		} else if (paramType.equals("spz")) { //$NON-NLS-1$
-			return new ResearchSpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber);
+			return new ResearchSpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber,gameHolder);
 		} else if (paramType.equals("art")) { //$NON-NLS-1$
-			return new ArtifactNumberParameterOrderSubeditor(oe, paramDescription, o);
+			return new ArtifactNumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		}
 		OrderEditor.staticLogger.error("unexpected parameter type " + paramType);
 		return null;
 	}
-	static public AbstractOrderSubeditor WeaponTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor WeaponTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] weapTypeAbbrevations = new String[] { "OrderEditor.139","OrderEditor.140","OrderEditor.141","OrderEditor.142"}; // wo,br,st,mi
 		final String[] weapTypeDescriptions = new String[] { "OrderEditor.143","OrderEditor.144","OrderEditor.145","OrderEditor.146"}; // Wooden,Bronze,Steel,Mithril
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(weapTypeAbbrevations),
 				UIUtils.createMessages(weapTypeDescriptions),
-				0);
+				0,gameHolder);
 	}
-	static public AbstractOrderSubeditor ArmourTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor ArmourTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] armourTypeAbbrevations = new String[] { "OrderEditor.148","OrderEditor.149","OrderEditor.150","OrderEditor.151","OrderEditor.152"};
 		final String[] armourTypeDescriptions = new String[] { "OrderEditor.153","OrderEditor.154","OrderEditor.155","OrderEditor.156","OrderEditor.157"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(armourTypeAbbrevations),
 				UIUtils.createMessages(armourTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor tacTypes(OrderEditor oe,String paramDescription, Order o) {
+	static public AbstractOrderSubeditor tacTypes(OrderEditor oe,String paramDescription, Order o,GameHolder gameHolder) {
 		final String[] tacTypeAbbrevations = new String[] { "OrderEditor.87","OrderEditor.88","OrderEditor.89","OrderEditor.90","OrderEditor.91","OrderEditor.92"};
 		final String[] tacTypeDescriptions = new String[] { "OrderEditor.93","OrderEditor.94","OrderEditor.95","OrderEditor.96","OrderEditor.97","OrderEditor.98"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(tacTypeAbbrevations),
 				UIUtils.createMessages(tacTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor productTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor productTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] productTypeAbbrevations = new String[] { "OrderEditor.100","OrderEditor.101","OrderEditor.102","OrderEditor.103","OrderEditor.104","OrderEditor.105","OrderEditor.106"};
 		final String[] productTypeDescriptions = new String[] { "OrderEditor.107","OrderEditor.108","OrderEditor.109","OrderEditor.110","OrderEditor.111","OrderEditor.112","OrderEditor.113"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(productTypeAbbrevations),
 				UIUtils.createMessages(productTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor product2Types(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor product2Types(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] product2TypeAbbrevations = new String[] { "OrderEditor.115","OrderEditor.116","OrderEditor.117","OrderEditor.118","OrderEditor.119","OrderEditor.120","OrderEditor.121","OrderEditor.122"};
 		final String[] product2TypeDescriptions = new String[] { "OrderEditor.123","OrderEditor.124","OrderEditor.125","OrderEditor.126","OrderEditor.127","OrderEditor.128","OrderEditor.129","OrderEditor.130"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(product2TypeAbbrevations),
 				UIUtils.createMessages(product2TypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor ynTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor ynTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] ynTypeAbbrevations = new String[] { "OrderEditor.134","OrderEditor.135"};
 		final String[] ynTypeDescriptions = new String[] { "OrderEditor.136","OrderEditor.137"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(ynTypeAbbrevations),
 				UIUtils.createMessages(ynTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor trpTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor trpTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] trpTypeAbbrevations = new String[] { "OrderEditor.159","OrderEditor.160","OrderEditor.161","OrderEditor.162","OrderEditor.163","OrderEditor.164"};
 		final String[] trpTypeDescriptions = new String[] { "OrderEditor.165","OrderEditor.166","OrderEditor.167","OrderEditor.168","OrderEditor.169","OrderEditor.170"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(trpTypeAbbrevations),
 				UIUtils.createMessages(trpTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor genderTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor genderTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] genderTypeAbbrevations = new String[] { "OrderEditor.172","OrderEditor.173"};
 		final String[] genderTypeDescriptions = new String[] { "OrderEditor.174","OrderEditor.175"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(genderTypeAbbrevations),
 				UIUtils.createMessages(genderTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor allegianceTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor allegianceTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] allegianceTypeAbbrevations = new String[] { "OrderEditor.177","OrderEditor.178","OrderEditor.179"};
 		final String[] allegianceTypeDescriptions = new String[] { "OrderEditor.180","OrderEditor.181","OrderEditor.182"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(allegianceTypeAbbrevations),
 				UIUtils.createMessages(allegianceTypeDescriptions),
-			0);
+			0,gameHolder);
 	}
-	static public AbstractOrderSubeditor directionTypes(OrderEditor oe,String paramDescription,Order o) {
+	static public AbstractOrderSubeditor directionTypes(OrderEditor oe,String paramDescription,Order o,GameHolder gameHolder) {
 		final String[] directionTypeAbbrevations = new String[] { "OrderEditor.195","OrderEditor.196","OrderEditor.197","OrderEditor.198","OrderEditor.199","OrderEditor.200"};
 		final String[] directionTypeDescriptions = new String[] { "OrderEditor.201","OrderEditor.202","OrderEditor.203","OrderEditor.204","OrderEditor.205","OrderEditor.206"};
 		return new DropDownParameterOrderSubeditor(oe,paramDescription, o,
 				UIUtils.createMessages(directionTypeAbbrevations),
 				UIUtils.createMessages(directionTypeDescriptions),
-			0);
-	}
-
-	public static OrderEditor instance()
-	{
-         return (OrderEditor)Application.instance().getApplicationContext().getBean("orderEditor");
+			0,gameHolder);
 	}
 }

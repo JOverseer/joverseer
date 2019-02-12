@@ -147,8 +147,8 @@ public class CharacterViewer extends ObjectViewer {
 	ActionCommand editCharacterCommand = new EditCharacterCommand();
 	ActionCommand sendOrdersByChatCommand = new SendOrdersByChatCommand();
 
-	public CharacterViewer(FormModel formModel) {
-		super(formModel, FORM_PAGE);
+	public CharacterViewer(FormModel formModel,GameHolder gameHolder) {
+		super(formModel, FORM_PAGE,gameHolder);
 	}
 
 	@Override
@@ -189,7 +189,7 @@ public class CharacterViewer extends ObjectViewer {
 	}
 
 	public void reset(Character c) {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 
 		boolean showStartingInfo = false;
 		ArrayList<ArtifactInfo> artis = new ArrayList<ArtifactInfo>();
@@ -238,7 +238,7 @@ public class CharacterViewer extends ObjectViewer {
 					showStartingInfo = true;
 				} else {
 					// retrieve starting info
-					Game game = GameHolder.instance().getGame();
+					Game game = this.gameHolder.getGame();
 					GameMetadata gm = game.getMetadata();
 					Container<?> startChars = gm.getCharacters();
 					if (startChars != null) {
@@ -276,7 +276,7 @@ public class CharacterViewer extends ObjectViewer {
 			Font f = GraphicUtils.getFont(this.statsTextBox.getFont().getName(), (showStartingInfo ? Font.ITALIC : Font.PLAIN), this.statsTextBox.getFont().getSize());
 			this.statsTextBox.setFont(f);
 
-			Game game = GameHolder.instance().getGame();
+			Game game = this.gameHolder.getGame();
 			if (game == null)
 				return;
 			GameMetadata gm = game.getMetadata();
@@ -516,7 +516,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.append(this.artifactsTable = new JTable(), 2, 1);
 		this.artifactsTable.setPreferredSize(this.uiSizes.newDimension(150/20, this.uiSizes.getHeight5()));
-		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource(),GameHolder.instance(),PreferenceRegistry.instance()) {
+		final ArtifactInfoTableModel tableModel = new ArtifactInfoTableModel(this.getMessageSource(),this.gameHolder,PreferenceRegistry.instance()) {
 
 			/**
 			 *
@@ -582,7 +582,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.append(this.spellsTable = new JTable(), 2, 1);
 		this.spellsTable.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
-		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource(),GameHolder.instance(),PreferenceRegistry.instance()) {
+		final ItemTableModel spellModel = new ItemTableModel(SpellProficiency.class, this.getMessageSource(),this.gameHolder,PreferenceRegistry.instance()) {
 
 			/**
 			 *
@@ -623,7 +623,7 @@ public class CharacterViewer extends ObjectViewer {
 					if (sp == null)
 						return;
 
-					Game g = GameHolder.instance().getGame();
+					Game g = CharacterViewer.this.gameHolder.getGame();
 					SpellInfo si = g.getMetadata().getSpells().findFirstByProperty("number", sp.getSpellId()); //$NON-NLS-1$
 
 					String descr = Messages.getString("CharacterViewer.SpellSummary",new Object[] {si.getNumber(), si.getName(), si.getDescription(), si.getDifficulty(), si.getRequiredInfo(), si.getRequirements(), si.getOrderNumber()}); //$NON-NLS-1$
@@ -648,13 +648,13 @@ public class CharacterViewer extends ObjectViewer {
 		glb.nextLine();
 
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+		this.order1 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
 		tlb.cell(this.order1comp = this.order1.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
-		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+		this.order2 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
 		tlb.cell(this.order2comp = this.order2.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
-		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())));
+		this.order3 = new OrderViewer(FormModelHelper.createFormModel(new Order(new Character())),this.gameHolder);
 		tlb.cell(this.order3comp = this.order3.createFormControl(), "rowspec=top:20px"); //$NON-NLS-1$
 		tlb.row();
 		this.orderPanel = new JPanel();
@@ -678,7 +678,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		glb.nextLine();
 
-		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
+		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()),this.gameHolder);
 		tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:285px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
@@ -809,7 +809,7 @@ public class CharacterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			HexArrowMapItem hami = null;
 			Character c = (Character) getFormObject();
-			Game g = GameHolder.instance().getGame();
+			Game g = CharacterViewer.this.gameHolder.getGame();
 			Turn t = g.getTurn(g.getCurrentTurn() - 1);
 			if (t == null)
 				return;
@@ -919,7 +919,7 @@ public class CharacterViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancel)
 				return;
-			Game g = GameHolder.instance().getGame();
+			Game g = CharacterViewer.this.gameHolder.getGame();
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
 			Army a = armies.findFirstByProperty("commanderName", c.getName()); //$NON-NLS-1$
@@ -939,7 +939,7 @@ public class CharacterViewer extends ObjectViewer {
 			final Character c = (Character) getFormObject();
 			final String charName = c.getName();
 			FormModel formModel = FormModelHelper.createFormModel(c);
-			final EditCharacterForm form = new EditCharacterForm(formModel);
+			final EditCharacterForm form = new EditCharacterForm(formModel,CharacterViewer.this.gameHolder);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
 			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -955,7 +955,7 @@ public class CharacterViewer extends ObjectViewer {
 					}
 					form.commit();
 					c.setId(Character.getIdFromName(c.getName()));
-					GameHolder.instance().getGame().getTurn().getCharacters().refreshItem(c);
+					CharacterViewer.this.gameHolder.getGame().getTurn().getCharacters().refreshItem(c);
 					joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this, this);
 					return true;
 				}
@@ -995,7 +995,7 @@ public class CharacterViewer extends ObjectViewer {
 
 		CommandGroup quickOrders = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("quickOrdersCommandGroup", new Object[] { new AddRefuseChallengeCommand(), "separator", new AddReconCommand(), "separator", new AddCreateCampCommand(), new AddInfYourCommand(), new AddInfOtherCommand(), new AddImprovePopCommand(), "separator", new AddPrenticeCommand() }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", this.editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", this.deleteCharacterCommand, "separator", new AddEditNoteCommand(c), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", this.sendOrdersByChatCommand }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", new Object[] { this.showArtifactsCommand, this.showSpellsCommand, this.showOrdersCommand, this.showResultsCommand, "separator", this.editCharacterCommand, "separator", showCharacterRangeOnMapCommand, showCharacterFastStrideRangeCommand, showCharacterLongStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator", this.deleteCharacterCommand, "separator", new AddEditNoteCommand(c,this.gameHolder), "separator", quickOrders, "separator", new ShowPreviousStatsCommand(), new ShowInfoSourcePopupCommand(c.getInfoSource()), "separator", this.sendOrdersByChatCommand }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		return group.createPopupMenu();
 	}
 
@@ -1020,7 +1020,7 @@ public class CharacterViewer extends ObjectViewer {
 
 	public void updateNotes() {
 		Character c = (Character) getFormObject();
-		Note n = GameHolder.instance().getGame().getTurn().getNotes().findFirstByProperty("target", c); //$NON-NLS-1$
+		Note n = this.gameHolder.getGame().getTurn().getNotes().findFirstByProperty("target", c); //$NON-NLS-1$
 		if (n != null) {
 			n.setText(this.notes.getText());
 		}
@@ -1031,7 +1031,7 @@ public class CharacterViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Character c = (Character) getFormObject();
-			Game g = GameHolder.instance().getGame();
+			Game g = CharacterViewer.this.gameHolder.getGame();
 			int ct = g.getCurrentTurn();
 			ArrayList<String> ret = new ArrayList<String>();
 			ret.add(Messages.getString("CharacterViewer.StatHistory",new Object[] {ct, c.getStatString()})); //$NON-NLS-1$ //$NON-NLS-2$

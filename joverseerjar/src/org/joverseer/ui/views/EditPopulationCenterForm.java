@@ -22,16 +22,19 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 
 /**
  * Edit a pop center
- * 
+ *
  * @author Marios Skounakis
  */
 // TODO needs validation
 public class EditPopulationCenterForm extends AbstractForm {
-
 	public static final String FORM_PAGE = "editPopulationCenterForm";
 
-	public EditPopulationCenterForm(FormModel formModel) {
+	// injected dependency
+	protected GameHolder gameHolder;
+
+	public EditPopulationCenterForm(FormModel formModel,GameHolder gameHolder) {
 		super(formModel, FORM_PAGE);
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class EditPopulationCenterForm extends AbstractForm {
 		formBuilder.row();
 
 		ArrayList<Nation> nations = new ArrayList<Nation>();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (Game.isInitialized(g)) {
 			GameMetadata gm = g.getMetadata();
 			nations.addAll(gm.getNations());

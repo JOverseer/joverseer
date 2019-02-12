@@ -14,18 +14,18 @@ import org.joverseer.ui.support.Messages;
 
 /**
  * Subeditor for the Research Spell order
- * 
+ *
  * @author Marios Skounakis
  */
 public class ResearchSpellNumberParameterOrderSubeditor extends SpellNumberParameterOrderSubeditor {
 
-    public ResearchSpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo) {
-        super(oe,paramName, o, orderNo);
+    public ResearchSpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo,GameHolder gameHolder) {
+        super(oe,paramName, o, orderNo,gameHolder);
     }
 
     @Override
 	protected void loadSpellCombo(JComboBox com) {
-        GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+        GameMetadata gm = this.gameHolder.getGame().getMetadata();
         Character c = getOrder().getCharacter();
         com.addItem(""); //$NON-NLS-1$
         for (SpellInfo si : (ArrayList<SpellInfo>) gm.getSpells().getItems()) {

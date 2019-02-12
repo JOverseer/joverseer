@@ -31,7 +31,7 @@ import org.springframework.richclient.table.SortableTableModel;
 
 /**
  * List view for PopulationCenter objects
- * 
+ *
  * @author Marios Skounakis
  */
 public class PopulationCenterListView extends ItemListView {
@@ -49,7 +49,7 @@ public class PopulationCenterListView extends ItemListView {
 	protected JComponent createControlImpl() {
 		JComponent c = super.createControlImpl();
 		this.table.setDefaultRenderer(InfoSource.class, new PopCenterInfoSourceTableCellRenderer(this.tableModel));
-		EnumTableCellRenderer e =new EnumTableCellRenderer(this.tableModel); 
+		EnumTableCellRenderer e =new EnumTableCellRenderer(this.tableModel);
 		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iSize,e);
 		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iFort,e);
 		TableUtils.setTableColumnRenderer(this.table, PopulationCenterTableModel.iHex, new HexNumberCellRenderer(this.tableModel));
@@ -71,7 +71,7 @@ public class PopulationCenterListView extends ItemListView {
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table) }) };
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table,this.gameHolder) }) };
 	}
 
 	@Override

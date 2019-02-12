@@ -15,7 +15,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Form for selecting the nation for which to run OrderChecker for
- * 
+ *
  * @author Marios Skounakis
  */
 public class SelectOrderchekerNationForm extends ScalableAbstractForm {
@@ -24,9 +24,12 @@ public class SelectOrderchekerNationForm extends ScalableAbstractForm {
 
     NationComboBox nationCombo;
     Nation nation;
+    // dependencies
+    GameHolder gh;
 
-    public SelectOrderchekerNationForm(FormModel arg0) {
+    public SelectOrderchekerNationForm(FormModel arg0,GameHolder gh) {
         super(arg0, FORM_PAGE);
+        this.gh = gh;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class SelectOrderchekerNationForm extends ScalableAbstractForm {
         TableLayoutBuilder tlb = new TableLayoutBuilder();
         tlb.cell(new JLabel(Messages.getString("SelectOrderchekerNationForm.2"))); //$NON-NLS-1$
         tlb.relatedGapRow();
-        tlb.cell(this.nationCombo = new NationComboBox(GameHolder.instance()), "align=left"); //$NON-NLS-1$
+        tlb.cell(this.nationCombo = new NationComboBox(this.gh), "align=left"); //$NON-NLS-1$
 //        this.nationCombo.setPreferredSize(this.uiSizes.newDimension(160/16, this.uiSizes.getComboxBoxHeight()));
         this.nationCombo.addActionListener(new ActionListener() {
 

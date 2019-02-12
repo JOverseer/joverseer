@@ -12,20 +12,23 @@ import org.springframework.richclient.dialog.ConfirmationDialog;
 
 /**
  * Delete the last turn of the game
- * 
+ *
  * @author Marios Skounakis
  */
 public class DeleteLastTurnCommand extends ActionCommand {
 
-	public DeleteLastTurnCommand() {
+	//dependencies
+	GameHolder gameHolder;
+	public DeleteLastTurnCommand(GameHolder gameHolder) {
 		super("deleteLastTurnCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
 	protected void doExecuteCommand() {
 		if (!ActiveGameChecker.checkActiveGameExists())
 			return;
-		final Game g = GameHolder.instance().getGame();
+		final Game g = this.gameHolder.getGame();
 		if (g.getMaxTurn() == 0) {
     		ErrorDialog.showErrorDialog("standardErrors.NoTurnsInGame");
 			return;

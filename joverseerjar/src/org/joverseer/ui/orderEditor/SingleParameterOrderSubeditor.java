@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.metadata.domain.ArtifactInfo;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.dataFlavors.ArtifactInfoDataFlavor;
 import org.joverseer.ui.support.dataFlavors.CharacterDataFlavor;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -29,13 +30,13 @@ public class SingleParameterOrderSubeditor extends AbstractOrderSubeditor {
     String paramName;
     int width = 60;
 
-    public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o) {
-        super(oe,o);
+    public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
     }
 
-    public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o, int width) {
-        super(oe,o);
+    public SingleParameterOrderSubeditor(OrderEditor oe, String paramName, Order o, int width,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
         this.width = width;
     }

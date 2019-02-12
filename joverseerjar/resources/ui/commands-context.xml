@@ -77,21 +77,30 @@
 		</property>
 	</bean>
 
-	<bean id="createGameCommand" class="org.joverseer.ui.command.CreateGame"/>
-	<bean id="loadGameCommand" class="org.joverseer.ui.command.LoadGame"/>
+	<bean id="createGameCommand" class="org.joverseer.ui.command.CreateGame">
+	    <constructor-arg index="0" ref="gameHolder"/>
+	</bean>
+	<bean id="loadGameCommand" class="org.joverseer.ui.command.LoadGame">
+	    <constructor-arg index="0" ref="gameHolder"/>
+	</bean>
 	<bean id="saveGameCommand" class="org.joverseer.ui.command.SaveGame">
+	    <constructor-arg index="0" ref="gameHolder"/>
 		<property name="enabled"><value>false</value></property>
 	</bean>
     <bean id="openXmlAndPdfDirCommand" class="org.joverseer.ui.command.OpenXmlAndPdfDir">
+	    <constructor-arg index="0" ref="gameHolder"/>
     	<property name="enabled"><value>false</value></property>
     </bean>
     <bean id="runOrdercheckerCommand" class="org.joverseer.ui.command.RunOrdercheckerCommand">
+    	<constructor-arg index="0" ref="gameHolder"/>
     	<property name="enabled"><value>false</value></property>
     </bean>
     <bean id="exportOrdersCommand" class="org.joverseer.ui.command.ExportOrdersCommand">
+    	<constructor-arg index="0" ref="gameHolder"/>
     	<property name="enabled"><value>false</value></property>
     </bean>
     <bean id="showCombatCalculatorCommand" class="org.joverseer.ui.command.ShowCombatCalculatorCommand">
+		<constructor-arg index="0" ref="gameHolder"/>
     	<property name="enabled"><value>false</value></property>
     </bean>
 
@@ -157,15 +166,30 @@
 		<property name="members">
 			<list>
                <bean class="org.joverseer.ui.command.TestOrderParametersCommand"/>
-               <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand"/>
-               <bean class="org.joverseer.ui.command.ExportOrderResultsCommand"/>
-               <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand"/>
+               <bean class="org.joverseer.ui.command.ExportStartingArmiesCommand">
+               		<constructor-arg index="0" ref="gameHolder"/>
+               </bean>
+               <bean class="org.joverseer.ui.command.ExportOrderResultsCommand">
+               		<constructor-arg index="0" ref="gameHolder"/>
+               	</bean>
+               <bean class="org.joverseer.ui.command.ExportMapMetadataInfoCommand">
+               		<constructor-arg index="0" ref="gameHolder"/>
+               	</bean>
+
                <ref bean ="showCombatCalculatorCommand"/>
-               <bean class="org.joverseer.ui.command.SaveToDbCommand"/>
+               <bean class="org.joverseer.ui.command.SaveToDbCommand">
+               		<constructor-arg index="0" ref="gameHolder"/>
+               </bean>
                <bean class="org.joverseer.ui.command.ExecuteOrdersCommand"/>
-               <bean class="org.joverseer.ui.command.GetDowngradeSuccessRateCommand"/>
-               <bean class="org.joverseer.ui.command.GetStealGoldSuccessRateCommand"/>
-               <bean class="org.joverseer.ui.command.GetCreateCampSuccessRateCommand"/>
+               <bean class="org.joverseer.ui.command.GetDowngradeSuccessRateCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
+               </bean>
+               <bean class="org.joverseer.ui.command.GetStealGoldSuccessRateCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
+			   </bean>
+               <bean class="org.joverseer.ui.command.GetCreateCampSuccessRateCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
+               </bean>
             </list>
 	    </property>
     </bean>
@@ -174,10 +198,12 @@
 		<property name="members">
 			<list>
                 <bean class="org.joverseer.ui.command.OpenGameDirTree">
+				    <constructor-arg index="0" ref="gameHolder"/>
                     <property name="enabled"><value>false</value></property>
                 </bean>
                 <value>separator</value>
 				<bean class="org.joverseer.ui.command.EditGameCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
                 	<property name="enabled"><value>false</value></property>
 				</bean>
                 <bean class="org.joverseer.ui.command.ChangeNationAllegiances">
@@ -187,17 +213,21 @@
                 	<property name="enabled"><value>false</value></property>
 				</bean>
                 <bean class="org.joverseer.ui.command.SetOrderEditorAutoNationsCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
                    	<property name="enabled"><value>false</value></property>
                 </bean>
                 <value>separator</value>
                 <bean class="org.joverseer.ui.command.ImportOrdersFromAutomagicFileCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
                    	<property name="enabled"><value>false</value></property>
                 </bean>
                 <bean class="org.joverseer.ui.command.ImportOrdersFromEmailTextCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
                    	<property name="enabled"><value>false</value></property>
                 </bean>
                 <value>separator</value>
                 <bean class="org.joverseer.ui.command.DeleteLastTurnCommand">
+				    <constructor-arg index="0" ref="gameHolder"/>
                     <property name="enabled"><value>false</value></property>
                 </bean>
 			</list>
@@ -358,6 +388,7 @@
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<bean class="org.joverseer.ui.command.HighlightCharacters">
+					<constructor-arg index="0" ref="gameHolder"/>
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<bean class="org.joverseer.ui.command.HighlightDragonsCommand">
@@ -372,22 +403,27 @@
     			</bean>
             	<value>separator</value>
             	<bean class="org.joverseer.ui.command.ToggleDrawAllOrdersCommand">
+					<constructor-arg index="0" ref="gameHolder"/>
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<value>separator</value>
                 <bean class="org.joverseer.ui.command.CreateCharacterCommand">
+					<constructor-arg index="0" ref="gameHolder"/>
             		<property name="enabled"><value>false</value></property>
             	</bean>
                 <bean class="org.joverseer.ui.command.CreateArmyCommand">
+					<constructor-arg index="0" ref="gameHolder"/>
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<bean class="org.joverseer.ui.command.ImportNotesFromPreviousTurnCommand">
+					<constructor-arg index="0" ref="gameHolder"/>
             		<property name="enabled"><value>false</value></property>
             	</bean>
             	<value>separator</value>
     	        <ref bean ="showCombatCalculatorCommand"/>
                 <value>separator</value>
             	<bean class="org.joverseer.ui.command.ExportMapToFileCommand">
+					<constructor-arg index="0" ref="gameHolder"/>
             		<property name="enabled"><value>false</value></property>
             	</bean>
            	</list>

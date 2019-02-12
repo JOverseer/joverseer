@@ -21,12 +21,16 @@ import org.springframework.richclient.form.FormModelHelper;
 
 /**
  * Create new game using the NewGameForm
- * 
+ *
  * @author Marios Skounakis
  */
 public class CreateGame extends ActionCommand {
-    public CreateGame() {
+	//dependencies
+	GameHolder gameHolder;
+
+    public CreateGame(GameHolder gameHolder) {
         super("createGameCommand");
+        this.gameHolder = gameHolder;
     }
 
     @Override
@@ -63,7 +67,7 @@ public class CreateGame extends ActionCommand {
 
                     game.setMetadata(gm);
                     game.setMaxTurn(0);
-                    GameHolder gh = GameHolder.instance();
+                    GameHolder gh = CreateGame.this.gameHolder;
                     gh.setGame(game);
                     gh.setFile(null);
 
@@ -79,7 +83,7 @@ public class CreateGame extends ActionCommand {
                 } catch (Exception e) {
                     ErrorDialog.showErrorDialog(e);
                     return true;
-                } 
+                }
 
                 return true;
             }

@@ -17,7 +17,6 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.ui.BaseView;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
@@ -28,7 +27,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * View that shows the contents of the pdf turn files
- * 
+ *
  * @author Marios Skounakis
  */
 public class PdfFileViewer extends BaseView implements ApplicationListener {
@@ -51,13 +50,13 @@ public class PdfFileViewer extends BaseView implements ApplicationListener {
             @Override
 			public void actionPerformed(ActionEvent e) {
                 Nation n = PdfFileViewer.this.nationCombo.getSelectedNation();
-                PdfTurnText ptt = null; 
+                PdfTurnText ptt = null;
                 if (n != null) {
                 	Turn t = PdfFileViewer.this.getTurn();
                 	if (t != null) {
                 		ptt = (PdfTurnText) t.getContainer(TurnElementsEnum.PdfText).findFirstByProperty(
                 				"nationNo", n.getNumber()); //$NON-NLS-1$
-                	}                	
+                	}
                 }
                 if (ptt == null) {
                     PdfFileViewer.this.text.setText("No PDF text for nation found."); //$NON-NLS-1$
@@ -108,16 +107,22 @@ public class PdfFileViewer extends BaseView implements ApplicationListener {
     @Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
-            JOverseerEvent e = (JOverseerEvent) applicationEvent;
-            if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-            	super.resetGame();
-                this.nationCombo.load(true, true);
-                initSearch();
-            } else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-                this.nationCombo.load(true, true);
-                initSearch();
-            }
+            this.onJOEvent((JOverseerEvent) applicationEvent);
         }
+    }
+    public void onJOEvent(JOverseerEvent e) {
+    	switch(e.getType()) {
+    	case GameChangedEvent:
+        	super.resetGame();
+            this.nationCombo.load(true, true);
+            initSearch();
+            break;
+    	case SelectedTurnChangedEvent:
+            this.nationCombo.load(true, true);
+            initSearch();
+            break;
+        }
+
     }
 
     private void initSearch() {

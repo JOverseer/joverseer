@@ -29,7 +29,7 @@ import org.springframework.richclient.table.SortableTableModel;
 
 /**
  * List view for Army objects
- * 
+ *
  * @author Marios Skounakis
  */
 public class ArmyListView extends ItemListView {
@@ -68,7 +68,7 @@ public class ArmyListView extends ItemListView {
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table), new ExportArmyDataAction() }) };
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table,this.gameHolder), new ExportArmyDataAction() }) };
 	}
 
 	@Override

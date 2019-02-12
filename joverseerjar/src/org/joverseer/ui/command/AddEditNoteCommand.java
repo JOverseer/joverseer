@@ -19,36 +19,40 @@ import org.springframework.richclient.form.FormModelHelper;
 /**
  * Add or Edit a note
  * Uses the EditNoteForm
- * 
+ *
  * @author Marios Skounakis
  */
 public class AddEditNoteCommand extends ActionCommand {
     Note note;
-    
-    public AddEditNoteCommand(Object target) {
+    //dependencies
+    GameHolder gameHolder;
+
+    public AddEditNoteCommand(Object target,GameHolder gameHolder) {
         this.note = new Note();
         this.note.setId(UniqueIdGenerator.get());
         this.note.setTarget(target);
+        this.gameHolder = gameHolder;
     }
-    
-    public AddEditNoteCommand(Note note) {
+
+    public AddEditNoteCommand(Note note,GameHolder gameHolder) {
         this.note = note;
+        this.gameHolder = gameHolder;
     }
-    
+
     @Override
 	protected void doExecuteCommand() {
         FormModel formModel = FormModelHelper.createFormModel(this.note);
-        final EditNoteForm form = new EditNoteForm(formModel);
+        final EditNoteForm form = new EditNoteForm(formModel,this.gameHolder);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-//            protected void onAboutToShow() { 
+//            protected void onAboutToShow() {
 //            }
 
             @Override
 			protected boolean onFinish() {
                 form.commit();
-                Game g = GameHolder.instance().getGame();
+                Game g = AddEditNoteCommand.this.gameHolder.getGame();
                 Turn t = g.getTurn();
                 if (!t.getContainer(TurnElementsEnum.Notes).contains(AddEditNoteCommand.this.note)) {
                     t.getContainer(TurnElementsEnum.Notes).addItem(AddEditNoteCommand.this.note);

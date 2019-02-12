@@ -14,7 +14,6 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.event.HyperlinkEvent.EventType;
 
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
@@ -23,6 +22,16 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class BaseHtmlReportView extends ScalableAbstractView implements ApplicationListener {
+	// injected dependency
+	GameHolder gameHolder;
+
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+
 	public BaseHtmlReportView() {
 		this.hideButton = false;
 	}
@@ -77,7 +86,7 @@ public class BaseHtmlReportView extends ScalableAbstractView implements Applicat
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if (!GameHolder.hasInitializedGame()) {
+					if (!BaseHtmlReportView.this.gameHolder.isGameInitialized()) {
 						BaseHtmlReportView.this.editor.setText(""); //$NON-NLS-1$
 						BaseHtmlReportView.this.isReportGenerated = false;
 						return;
@@ -114,11 +123,15 @@ public class BaseHtmlReportView extends ScalableAbstractView implements Applicat
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent) || e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				this.isReportGenerated = false; // report gets generated on focus change.
-				this.editor.setText(this.getReportContents());
-			}
+			this.onJOEvent((JOverseerEvent) applicationEvent);
+		}
+	}
+	public void onJOEvent(JOverseerEvent e) {
+		switch (e.getType()) {
+		case SelectedTurnChangedEvent:
+		case GameChangedEvent:
+			this.isReportGenerated = false; // report gets generated on focus change.
+			this.editor.setText(this.getReportContents());
 		}
 	}
 }

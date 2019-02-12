@@ -10,7 +10,6 @@
 		<constructor-arg index="1" ref="lifecycleAdvisor"/>
 	</bean>
 
-
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="1.16.15"/>
@@ -25,13 +24,13 @@
 		required.
 	-->
 	<bean id="lifecycleAdvisor"
-		class="com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor" >
+		class="com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor" autowire="byName">
         <property name="windowCommandManagerBeanName" value="windowCommandManager" />
     	<property name="menubarBeanName" value="menuBar" />
 	    <property name="toolbarBeanName" value="toolBar" />
         <property name="windowCommandBarDefinitions" value="ui/commands-context.xml"/>
 		<property name="startingPageId" value="mainPage" />
-
+		<property name="gameHolder" ref="gameHolder"/>
 	</bean>
 
 	<!--
@@ -39,7 +38,6 @@
 	 -->
 	<bean id="applicationEventMulticaster"
 		class="org.joverseer.ui.SmartApplicationEventCaster"/>
-
 
 	<bean id="rulesSource" class="org.joverseer.validation.JOverseerRulesSource"/>
 
@@ -73,7 +71,6 @@
         <property name="applicationPageFactoryId"><idref bean="applicationPageFactory" /></property>
         <property name="rulesSource" ref="rulesSource"/>
     </bean>
-
 
 	<bean id="applicationObjectConfigurer" depends-on="serviceLocator"
 		class="org.springframework.richclient.application.config.DefaultApplicationObjectConfigurer" />
@@ -110,7 +107,6 @@
 	</bean>
 
 	<bean id="applicationWindowFactory" class="com.jidesoft.spring.richclient.docking.JideApplicationWindowFactory" >
-
 		<property name="profileKey" value="JOverseer" />
 		<property name="saveLayoutOnClose" value="true" />
 		<property name="doubleClickAction" ref="com.jidesoft.docking.DockingManager.DOUBLE_CLICK_TO_MAXIMIZE" />
@@ -283,11 +279,17 @@
 
     <bean id="mapOptions" class="java.util.HashMap"/>
 
-    <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater"/>
+    <bean id="statusBarUpdater" class="org.joverseer.ui.support.StatusBarUpdater">
+    	<constructor-arg index="0" ref="application"/>
+    	<constructor-arg index="1" ref="gameHolder"/>
+    </bean>
 
-    <bean id="orderEditorForm" class="org.joverseer.ui.orders.OrderEditorForm"/>
+<!-- deprecated.    <bean id="orderEditorForm" class="org.joverseer.ui.orders.OrderEditorForm"/>
+ -->
 
-    <bean id="orderEditor" class="org.joverseer.ui.orderEditor.OrderEditor"/>
+    <bean id="orderEditor" class="org.joverseer.ui.orderEditor.OrderEditor">
+      	<constructor-arg index="0" ref="gameHolder"/>
+    </bean>
 
     <!-- Healing Turn Phase Processor -->
     <bean id="HealingProcessor" class="org.joverseer.orders.me.HealingTurnPhaseProcessor">
@@ -336,7 +338,9 @@
 
    	<bean id="mapEditorOptions" class="java.util.HashMap"/>
 
-   	<bean id="colorPicker" class="org.joverseer.ui.support.drawing.ColorPicker"/>
+   	<bean id="colorPicker" class="org.joverseer.ui.support.drawing.ColorPicker">
+   		<constructor-arg index="0" ref="gameHolder"/>
+   	</bean>
 
    	<bean id="orderEditorAutoNations" class="org.joverseer.ui.orderEditor.OrderEditorAutoNations"/>
 

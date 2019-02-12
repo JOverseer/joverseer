@@ -16,14 +16,17 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class EditGameCommand extends ActionCommand {
-    public EditGameCommand() {
+	//dependencies
+	GameHolder gameHolder;
+    public EditGameCommand(GameHolder gameHolder) {
         super("editGameCommand");
+        this.gameHolder = gameHolder;
     }
 
     @Override
 	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
-    	final Game g = GameHolder.instance().getGame();
+    	final Game g = this.gameHolder.getGame();
         final NewGame ng = new NewGame();
         ng.setGameType(g.getMetadata().getGameType());
         ng.setNationNo(g.getMetadata().getNationNo());
@@ -42,17 +45,16 @@ public class EditGameCommand extends ActionCommand {
             @Override
 			protected boolean onFinish() {
                 form.commit();
-                
+
                 GameMetadata gm = g.getMetadata();
                 gm.setGameNo(ng.getNumber());
                 gm.setNationNo(ng.getNationNo());
                 gm.setGameType(ng.getGameType());
                 gm.setAdditionalNations(ng.getAdditionalNations());
                 gm.setNewXmlFormat(ng.getNewXmlFormat());
-                
-                GameHolder gh = GameHolder.instance();
-                gh.setGame(g);
-                
+
+                EditGameCommand.this.gameHolder.setGame(g);
+
                 joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
 
                 return true;

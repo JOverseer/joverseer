@@ -24,7 +24,7 @@ public abstract class BaseView extends AbstractView {
 	private synchronized void setGameHolder2(GameHolder gameHolder) {
 		this.gameHolder = gameHolder;
 	}
-	
+
 	public void setGameHolder(GameHolder gameHolder) {
 		this.gameHolder = gameHolder;
 	}
@@ -39,7 +39,7 @@ public abstract class BaseView extends AbstractView {
 		this.game = game;
 	}
 	/**
-	 * 
+	 *
 	 * @return null if Game is not initialized.
 	 */
 	protected Turn getTurn() {
@@ -51,7 +51,6 @@ public abstract class BaseView extends AbstractView {
 	 * subclasses MUST call this to reset the gameholder when the game is changed!
 	 */
 	protected synchronized void resetGame() {
-		this.gameHolder = null;
 		this.game = null;
 		this.getGameHolder();
 		this.getGame();

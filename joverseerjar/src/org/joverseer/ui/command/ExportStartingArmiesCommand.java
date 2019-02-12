@@ -15,14 +15,17 @@ import org.springframework.richclient.command.ActionCommand;
 
 /**
  * Admin command
- * 
- * Exports all t0 armies of this game to a text file (c:\file.out) 
- * 
+ *
+ * Exports all t0 armies of this game to a text file (c:\file.out)
+ *
  * @author Marios Skounakis
  */
 public class ExportStartingArmiesCommand extends ActionCommand {
-    public ExportStartingArmiesCommand() {
+	//dependencies
+	GameHolder gameHolder;
+    public ExportStartingArmiesCommand(GameHolder gameHolder) {
         super("exportStartingArmiesCommand");
+        this.gameHolder = gameHolder;
     }
 
     @Override
@@ -30,8 +33,8 @@ public class ExportStartingArmiesCommand extends ActionCommand {
     	try {
 	    	String fname = "c:\\file.out";
 	    	FileWriter fw = new FileWriter(fname);
-	    	
-	    	Game g = GameHolder.instance().getGame();
+
+	    	Game g = this.gameHolder.getGame();
 	    	Turn t = g.getTurn(0);
 	    	for (Army a : (ArrayList<Army>)t.getContainer(TurnElementsEnum.Army).getItems()) {
 	    		if (a.computeNumberOfMen() == 0) continue;
@@ -42,9 +45,9 @@ public class ExportStartingArmiesCommand extends ActionCommand {
 	    			a.getNationNo() + "," +
 	    			(a.isNavy() ? "1" : "0") + "," +
 	    			a.getSize().getSize() + "," +
-	    			a.computeNumberOfMen() + "," + 
+	    			a.computeNumberOfMen() + "," +
 	    			a.getMorale() + ",";
-	    		
+
 	    		for (ArmyElementType aet : ArmyElementType.values()) {
 	    			ArmyElement ae = a.getElement(aet);
 	    			if (ae == null) {

@@ -191,7 +191,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 		return "";
 	}
 
-	public static void processHyperlink(String query) {
+	public static void processHyperlink(String query,Turn t) {
 		query = query.substring(query.indexOf("?") + 1);
 		String[] qs = query.split("&");
 		for (String q : qs) {
@@ -204,13 +204,13 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 				}
 			} else if (ps[0].equals("report")) {
 				String charId = ps[1].replace("_", " ");
-				Character c = GameHolder.instance().getGame().getTurn().getCharById(charId);
+				Character c = t.getCharById(charId);
 				if (c != null) {
 					DialogsUtility.showCharacterOrderResults(c);
 				}
 			} else if (ps[0].equals("combat")) {
 				int hexNo = Integer.parseInt(ps[1]);
-				Combat c = (Combat) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", hexNo);
+				Combat c = (Combat) t.getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", hexNo);
 				if (c != null)
 					DialogsUtility.showCombatNarration(c);
 
@@ -218,14 +218,12 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 				String[] params = ps[1].split(",");
 				int hexNo = Integer.parseInt(params[0]);
 				String charId = params[1].replace("_", " ");
-				Turn t = GameHolder.instance().getGame().getTurn();
 
 				Character c = t.getCharById(charId);
 				Encounter encounter = t.getEncounter(hexNo, c.getName());
 				DialogsUtility.showEncounterDescription(encounter);
 			} else if (ps[0].equals("challenge")) {
 				String[] params = ps[1].split(",");
-				Turn t = GameHolder.instance().getGame().getTurn();
 				String charId = params[0].replace("_", " ");
 				Challenge challenge = null;
 				Character c = t.getCharById(charId);

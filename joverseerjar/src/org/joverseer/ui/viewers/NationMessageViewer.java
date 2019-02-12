@@ -20,7 +20,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows nation messages in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class NationMessageViewer extends ObjectViewer {
@@ -29,10 +29,10 @@ public class NationMessageViewer extends ObjectViewer {
     JTextArea rumor;
     JTextField nation;
 
-    public NationMessageViewer(FormModel formModel) {
-        super(formModel, FORM_PAGE);
+    public NationMessageViewer(FormModel formModel,GameHolder gameHolder) {
+        super(formModel, FORM_PAGE,gameHolder);
     }
-    
+
     @Override
 	public boolean appliesTo(Object obj) {
         return NationMessage.class.isInstance(obj);
@@ -67,7 +67,7 @@ public class NationMessageViewer extends ObjectViewer {
     @Override
 	public void setFormObject(Object obj) {
         NationMessage nm = (NationMessage)obj;
-        Game game = GameHolder.instance().getGame();
+        Game game = this.gameHolder.getGame();
         if (game == null) return;
         GameMetadata gm = game.getMetadata();
         String nationName = gm.getNationByNum(nm.getNationNo()).getShortName();

@@ -24,6 +24,7 @@ import javax.swing.event.DocumentListener;
 
 import org.joverseer.joApplication;
 import org.joverseer.domain.Note;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.command.AddEditNoteCommand;
 import org.joverseer.ui.command.DeleteNoteCommand;
 import org.joverseer.ui.support.GraphicUtils;
@@ -38,9 +39,9 @@ import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
- * Shows notes 
+ * Shows notes
  * Used in other viewers whose objects can be targets of notes
- * 
+ *
  * @author Marios Skounakis
  */
 public class NotesViewer extends ObjectViewer implements ActionListener {
@@ -51,8 +52,8 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
     ArrayList<JTextArea> texts = new ArrayList<JTextArea>();
     ArrayList<JLabel> icons = new ArrayList<JLabel>();
 
-    public NotesViewer(FormModel formModel) {
-        super(formModel, FORM_PAGE);
+    public NotesViewer(FormModel formModel,GameHolder gameHolder) {
+        super(formModel, FORM_PAGE,gameHolder);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
             showNote(i);
         }
     }
-    
+
     protected void showNote(int i) {
         ArrayList<Note> notes = (ArrayList<Note>) getFormObject();
         if (i < notes.size()) {
@@ -106,7 +107,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
                     }
                     return null;
                 }
-                
+
             });
             this.icons.add(l);
 
@@ -171,20 +172,20 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
     @Override
 	public void actionPerformed(ActionEvent e) {
     }
-    
+
     protected void updateNotes(JTextArea ta) {
         int idx = this.texts.indexOf(ta);
         if (idx >= 0) {
             Note n = ((ArrayList<Note>)getFormObject()).get(idx);
             n.setText(ta.getText());
-            
+
         }
-        
+
     }
-    
+
     protected JPopupMenu createPopupContextMenu(int idx) {
         Note n = ((ArrayList<Note>) getFormObject()).get(idx);
-        AddEditNoteCommand editNote = new AddEditNoteCommand(n);
+        AddEditNoteCommand editNote = new AddEditNoteCommand(n,this.gameHolder);
         editNote.setLabel(Messages.getString("NotesViewer.EditNote")); //$NON-NLS-1$
         DeleteNoteCommand deleteNote = new DeleteNoteCommand(n);
         CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup(
@@ -193,7 +194,7 @@ public class NotesViewer extends ObjectViewer implements ActionListener {
                             editNote, deleteNote
                             }
                         );
-                
+
         return group.createPopupMenu();
     }
 }

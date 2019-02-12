@@ -76,7 +76,7 @@ import javax.swing.JCheckBox;
 
 /**
  * Export/Submit orders form
- * 
+ *
  * @author Marios Skounakis
  */
 // TODO document better
@@ -103,15 +103,18 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	boolean ordersWithWarnings = false;
 	boolean missingOrders = false;
 	boolean duplicateSkillOrders = false;
-	
+
 	// bit of a hack to let anonyous class communicate back to this class.
 	private boolean cancel= false;
-	
-	private boolean lastSaveWasNotCancelled= true;
 
-	public ExportOrdersForm(FormModel model) {
+	private boolean lastSaveWasNotCancelled= true;
+	// injected dependencies
+	GameHolder gameHolder;
+
+	public ExportOrdersForm(FormModel model,GameHolder gameHolder) {
 		super(model, "ExportOrdersForm");
 		this.visibleOrdersGenerator = new OrderTextGenerator();
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -122,7 +125,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		return (!this.chkDontCloseOnFinish.isSelected()) && this.lastSaveWasNotCancelled;
 	}
 	private ArrayList<String> getNationItems() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		ArrayList<String> ret = new ArrayList<String>();
 		for (PlayerInfo pi : g.getTurn().getPlayerInfo()) {
 			ret.add(g.getMetadata().getNationByNum(pi.getNationNo()).getName());
@@ -132,7 +135,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	private int getSelectedNationNo() {
 		String nationName = this.nation.getSelectedItem().toString();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		return g.getMetadata().getNationByName(nationName).getNumber();
 	}
 
@@ -142,11 +145,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	 */
 	@Override
 	protected JComponent createFormControl() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
-		
+
 		this.orders = new JTextArea();
 		this.orders.setWrapStyleWord(false);
 		this.orders.setLineWrap(false);
@@ -157,7 +160,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		JPanel topPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
-		
+
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // so combos are above each other
 		JPanel nationPanel = new JPanel();
 		nationPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -185,52 +188,52 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 		});
 		nationPanel.add(this.nation);
-		
+
 		this.nation.setSelectedIndex(0);
 		this.nation.setSelectedItem(g.getMetadata().getNationByNum(g.getMetadata().getNationNo()).getName());
-		
+
 		JPanel pnlPlayerInfo = new JPanel();
 		nationPanel.add(pnlPlayerInfo);
 		pnlPlayerInfo.setLayout(new BoxLayout(pnlPlayerInfo, BoxLayout.X_AXIS));
-		
+
 		JPanel pnlVersion = new JPanel();
 		pnlPlayerInfo.add(pnlVersion);
 		pnlVersion.setLayout(new BoxLayout(pnlVersion, BoxLayout.Y_AXIS));
-		
+
 		JLabel lblVersion = new JLabel(Messages.getString("playerInfo.turnVersion")); //$NON-NLS-1$
 		pnlVersion.add(lblVersion);
 		lblVersion.setBackground(Color.WHITE);
 		this.lblVersionValue.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlVersion.add(this.lblVersionValue);
 		this.lblVersionValue.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		pnlPlayerInfo.add(horizontalStrut);
-		
+
 		JPanel pnlSent = new JPanel();
 		pnlPlayerInfo.add(pnlSent);
 		pnlSent.setLayout(new BoxLayout(pnlSent, BoxLayout.Y_AXIS));
-		
+
 		this.lblSent = new JLabel(Messages.getString("playerInfo.ordersSentOn")); //$NON-NLS-1$
 		pnlSent.add(this.lblSent);
 		this.lblSent.setBackground(Color.WHITE);
 		pnlSent.add(this.lblSentValue);
-		
+
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		pnlPlayerInfo.add(horizontalStrut_1);
-		
+
 		JPanel pnlFile = new JPanel();
 		pnlPlayerInfo.add(pnlFile);
 		pnlFile.setLayout(new BoxLayout(pnlFile, BoxLayout.Y_AXIS));
-		
+
 		this.lblFile = new JLabel(Messages.getString("playerInfo.lastOrderFile")); //$NON-NLS-1$
 		pnlFile.add(this.lblFile);
 		this.lblFile.setBackground(Color.WHITE);
 		pnlFile.add(this.lblFileValue);
-		
+
 		setPlayerInfoItems();
 		topPanel.add(nationPanel);
-		
+
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -258,7 +261,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		});
 
 		buttonPanel.add(ctc);
-		
+
 		this.chkDontCloseOnFinish = new JCheckBox(Messages.getString("ExportOrdersForm.chckbxNewCheckBox.text")); //$NON-NLS-1$
 		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
 		buttonPanel.add(this.chkDontCloseOnFinish);
@@ -267,7 +270,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	}
 
 	private void setPlayerInfoItems() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (g!=null) {
 			int nationNo = getSelectedNationNo();
 			PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
@@ -298,7 +301,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	}
 
 	private void generateOrders(OrderFileGenerator gen) {
-		Game g1 = GameHolder.instance().getGame();
+		Game g1 = this.gameHolder.getGame();
 		try {
 			this.orders.setText(gen.generateOrderFile(g1, g1.getTurn(), getSelectedNationNo()));
 			this.orders.setCaretPosition(0);
@@ -316,7 +319,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	}
 
 	/**
-	 * 
+	 *
 	 * @param send
 	 * @return false if cancelled.
 	 */
@@ -328,7 +331,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			return isOK;
 		if (!checkOrderValidity())
 			return isNotOK;
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
 		String fname = String.format("me%02dv%d.%03d", getSelectedNationNo(), pi.getTurnVersion(), g.getMetadata().getGameNo());
@@ -423,13 +426,13 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
 						FormBackedDialogPage page = new FormBackedDialogPage(frm);
 						TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
-							
+
 							@Override
 							protected void onAboutToShow() {
 								try {
 									((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
 									frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
-									this.setDescription(this.getMessage("ExportOrdersForm.OrdersSentByMETURNSuccessMessage", new Object[] { fileChooser.getSelectedFile() })); 
+									this.setDescription(this.getMessage("ExportOrdersForm.OrdersSentByMETURNSuccessMessage", new Object[] { fileChooser.getSelectedFile() }));
 								} catch (Exception exc) {
 									ExportOrdersForm.this.cancel = true;
 									this.logger.error(exc);
@@ -473,7 +476,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	}
 
 	private int validateOrders() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		ArrayList<Character> chars = g.getTurn().getCharacters().findAllByProperty("nationNo", getSelectedNationNo());
 		Collections.sort(chars, new PropertyComparator<Character>("id"));
 		ArrayList<Character> toRemove = new ArrayList<Character>();
@@ -604,10 +607,10 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	private void autoSaveGameAccordingToPref() {
 		String pval = PreferenceRegistry.instance().getPreferenceValue("submitOrders.autoSave");
 		if (pval.equals("yes")) {
-			new SaveGame().execute();
+			new SaveGame(this.gameHolder).execute();
 		}
 		joApplication.publishEvent(LifecycleEventsEnum.OrderSaveToFileEvent, this);
-		
+
 	}
 
 	@Override

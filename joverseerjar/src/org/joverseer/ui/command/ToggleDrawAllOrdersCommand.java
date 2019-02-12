@@ -17,16 +17,19 @@ import org.springframework.richclient.command.ActionCommand;
 
 public class ToggleDrawAllOrdersCommand extends ActionCommand {
     boolean value = false;
-	
-    public ToggleDrawAllOrdersCommand() {
+
+    //dependencies
+    GameHolder gameHolder;
+    public ToggleDrawAllOrdersCommand(GameHolder gameHolder) {
     	super("toggleDrawAllOrdersCommand");
+    	this.gameHolder = gameHolder;
     }
-    
-    
+
+
     @Override
 	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
-    	Game g = GameHolder.instance().getGame();
+    	Game g = this.gameHolder.getGame();
     	Turn t = g.getTurn();
     	ArrayList<Character> chars = (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems();
 		OrderVisualizationData ovd = OrderVisualizationData.instance();

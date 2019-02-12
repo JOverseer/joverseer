@@ -9,7 +9,6 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.support.GameHolder;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -21,7 +20,7 @@ import org.springframework.richclient.application.Application;
 /**
  * ColorPicker
  * Users a properties file that serves as a MessageSource to retrieve colors
- * 
+ *
  * @author Marios Skounakis
  */
 public class ColorPicker implements ApplicationListener {
@@ -30,16 +29,19 @@ public class ColorPicker implements ApplicationListener {
     Hashtable colors = new Hashtable();
 
     private MessageSource colorSource = null;
+    //injected dependency
+    final GameHolder gameHolder;
 
-    public ColorPicker() {
+    public ColorPicker(GameHolder gameHolder) {
+    	this.gameHolder = gameHolder;
     }
-    
+
     private void initHashTables() {
         this.color1 = new Hashtable();
         this.color2 = new Hashtable();
         this.colors = new Hashtable();
     }
-    
+
     public static ColorPicker getInstance() {
         return (ColorPicker)Application.instance().getApplicationContext().getBean("colorPicker");
     }
@@ -47,15 +49,15 @@ public class ColorPicker implements ApplicationListener {
     public Color getColor1(int nationNo) {
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	HashMap mapOptions = joApplication.getMapOptions();                
+	    	HashMap mapOptions = joApplication.getMapOptions();
 	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
-	        	NationRelations nr = GameHolder.instance().getGame().getTurn().getNationRelations(nationNo);
+	        	NationRelations nr = this.gameHolder.getGame().getTurn().getNationRelations(nationNo);
 	        	key = nr.getAllegiance().toString();
 	        }
     	}
         if (!this.color1.containsKey(key)) {
             String colorStr = null;
-            GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
+            GameTypeEnum gameType = this.gameHolder.getGame().getMetadata().getGameType();
             try {
                 colorStr = getColorSource().getMessage("nation." + key + "." + gameType.toString() + ".color", null, Locale.getDefault());
             }
@@ -75,15 +77,15 @@ public class ColorPicker implements ApplicationListener {
     public Color getColor2(int nationNo) {
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	HashMap mapOptions = joApplication.getMapOptions();                
+	    	HashMap mapOptions = joApplication.getMapOptions();
 	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
-	        	NationRelations nr = GameHolder.instance().getGame().getTurn().getNationRelations(nationNo);
+	        	NationRelations nr = this.gameHolder.getGame().getTurn().getNationRelations(nationNo);
 	        	key = nr.getAllegiance().toString();
 	        }
     	}
         if (!this.color2.containsKey(key)) {
             String colorStr = null;
-            GameTypeEnum gameType = GameHolder.instance().getGame().getMetadata().getGameType();
+            GameTypeEnum gameType = this.gameHolder.getGame().getMetadata().getGameType();
             try {
                 colorStr = getColorSource().getMessage("nation." + key + "." + gameType.toString() + ".color2", null, Locale.getDefault());
             }
@@ -111,10 +113,13 @@ public class ColorPicker implements ApplicationListener {
     @Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
-            JOverseerEvent e = (JOverseerEvent)applicationEvent;
-            if (e.isLifecycleEvent(LifecycleEventsEnum.MapMetadataChangedEvent)) {
-                initHashTables();
-            }
+        	this.onJOEvent((JOverseerEvent)applicationEvent);
+        }
+    }
+    public void onJOEvent(JOverseerEvent e) {
+    	switch (e.getType()) {
+    	case MapMetadataChangedEvent:
+            initHashTables();
         }
     }
 
@@ -124,5 +129,5 @@ public class ColorPicker implements ApplicationListener {
         }
         return this.colorSource;
     }
-    
+
 }

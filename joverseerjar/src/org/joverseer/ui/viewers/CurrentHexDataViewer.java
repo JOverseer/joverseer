@@ -41,13 +41,14 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 /**
  * Shows information for the current hex, using the various viewers in this
  * package
- * 
+ *
  * For some object types (e.g. pop center or hex info) only one viewer is
  * created For other object types (e.g. characters), multiple viewers are
  * created
- * 
+ *
  * Viewers are shown/hidden as needed
- * 
+ *
+ * Created by spring from richclient-page-application-context.xml
  * @author Marios Skounakis
  */
 public class CurrentHexDataViewer extends AbstractView implements ApplicationListener {
@@ -71,10 +72,19 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 	ArrayList<JPanel> encounterPanels = new ArrayList<JPanel>();
 	JScrollPane scp;
 
+	//injected dependencies
+	GameHolder gameHolder;
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+
 	@Override
 	protected JComponent createControl() {
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()));
+		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()),this.gameHolder);
 		this.popCenterPanel = new JPanel();
 		this.popCenterPanel.add(this.popCenterViewer.getControl());
 		tlb.separator(Messages.getString("CurrentHexDataViewer.PopulationCenter")); //$NON-NLS-1$
@@ -87,7 +97,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.separator(Messages.getString("CurrentHexDataViewer.Armies")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 20; i++) {
-			ArmyViewer va = new ArmyViewer(FormModelHelper.createFormModel(new Army()));
+			ArmyViewer va = new ArmyViewer(FormModelHelper.createFormModel(new Army()),this.gameHolder);
 			this.armyViewers.add(va);
 			JPanel cp = new JPanel();
 			cp.add(va.getControl());
@@ -101,7 +111,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.separator(Messages.getString("CurrentHexDataViewer.Characters")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 50; i++) {
-			CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()));
+			CharacterViewer vc = new CharacterViewer(FormModelHelper.createFormModel(new Character()),this.gameHolder);
 			this.characterViewers.add(vc);
 			JPanel cp = new JPanel();
 			cp.add(vc.getControl());
@@ -115,7 +125,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.separator(Messages.getString("CurrentHexDataViewer.Artifacts")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 20; i++) {
-			ArtifactViewer av = new ArtifactViewer(FormModelHelper.createFormModel(new Artifact()));
+			ArtifactViewer av = new ArtifactViewer(FormModelHelper.createFormModel(new Artifact()),this.gameHolder);
 			JPanel ap = new JPanel();
 			this.artifactViewers.add(av);
 			this.artifactPanels.add(ap);
@@ -129,7 +139,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.separator(Messages.getString("CurrentHexDataViewer.NationMessages")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 20; i++) {
-			NationMessageViewer nmv = new NationMessageViewer(FormModelHelper.createFormModel(new NationMessage()));
+			NationMessageViewer nmv = new NationMessageViewer(FormModelHelper.createFormModel(new NationMessage()),this.gameHolder);
 			this.nationMessageViewers.add(nmv);
 			JPanel cp = new JPanel();
 			cp.add(nmv.getControl());
@@ -143,7 +153,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.separator(Messages.getString("CurrentHexDataViewer.CombatsChallengesEncounters")); //$NON-NLS-1$
 		tlb.row();
 		for (int i = 0; i < 5; i++) {
-			CombatViewer cv = new CombatViewer(FormModelHelper.createFormModel(new Combat()));
+			CombatViewer cv = new CombatViewer(FormModelHelper.createFormModel(new Combat()),this.gameHolder);
 			this.combatViewers.add(cv);
 			JPanel cp = new JPanel();
 			cp.add(cv.getControl());
@@ -154,7 +164,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.setVisible(false);
 		}
 		for (int i = 0; i < 5; i++) {
-			EncounterViewer cv = new EncounterViewer(FormModelHelper.createFormModel(new Encounter()));
+			EncounterViewer cv = new EncounterViewer(FormModelHelper.createFormModel(new Encounter()),this.gameHolder);
 			this.encounterViewers.add(cv);
 			JPanel cp = new JPanel();
 			cp.add(cv.getControl());
@@ -165,7 +175,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			cp.setVisible(false);
 		}
 
-		this.hexInfoViewer = new HexInfoViewer(FormModelHelper.createFormModel(new Hex()));
+		this.hexInfoViewer = new HexInfoViewer(FormModelHelper.createFormModel(new Hex()),this.gameHolder);
 		this.hexInfoPanel = new JPanel();
 		this.hexInfoPanel.add(this.hexInfoViewer.getControl());
 		tlb.separator(Messages.getString("CurrentHexDataViewer.HexInfo")); //$NON-NLS-1$
@@ -322,12 +332,12 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		if (p.x < 10)
 			hex = "0" + hex; //$NON-NLS-1$
 		((DefaultViewDescriptor) getDescriptor()).setTitle(Messages.getString("CurrentHexDataViewer.Title") + hex); //$NON-NLS-1$
-		Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
+		Game g = this.gameHolder.getGame(); //$NON-NLS-1$
 		if (g == null)
 			return;
 		GameMetadata gm = g.getMetadata();
 
-		int hexno = p.x * 100 + p.y; 
+		int hexno = p.x * 100 + p.y;
 		Hex h = gm.getHex(hexno);
 		if (h != null) {
 			showHexInfo(h);

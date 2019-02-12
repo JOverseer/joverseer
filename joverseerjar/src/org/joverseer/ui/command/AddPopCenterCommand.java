@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.joverseer.ui.command;
 
@@ -26,17 +26,20 @@ import org.springframework.richclient.form.FormModelHelper;
 
 public class AddPopCenterCommand extends ActionCommand {
 	int hexNo;
+	//dependencies
+	GameHolder gameHolder;
 
-	public AddPopCenterCommand(int hexNo) {
+	public AddPopCenterCommand(int hexNo,GameHolder gameHolder) {
 		super();
 		this.hexNo = hexNo;
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
 	protected void doExecuteCommand() {
 		final PopulationCenter pc = new PopulationCenter();
 		InfoSource is = new UserInfoSource();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (g.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo) != null) { //$NON-NLS-1$
 			ErrorDialog.showErrorDialog("AddPopCenterCommand.1"); //$NON-NLS-1$
 			return;
@@ -52,7 +55,7 @@ public class AddPopCenterCommand extends ActionCommand {
 		pc.setLoyalty(0);
 		pc.setName("-"); //$NON-NLS-1$
 		FormModel formModel = FormModelHelper.createFormModel(pc);
-		final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel);
+		final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel,this.gameHolder);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
 		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -64,7 +67,7 @@ public class AddPopCenterCommand extends ActionCommand {
 			@Override
 			protected boolean onFinish() {
 				form.commit();
-				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
+				AddPopCenterCommand.this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
 				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 				return true;
 			}

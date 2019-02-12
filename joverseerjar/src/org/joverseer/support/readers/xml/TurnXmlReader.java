@@ -36,6 +36,7 @@ import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.Container;
+import org.joverseer.support.GameHolder;
 import org.joverseer.support.TurnInitializer;
 import org.joverseer.support.infoSources.DerivedFromArmyInfoSource;
 import org.joverseer.support.infoSources.InfoSource;
@@ -902,7 +903,7 @@ public class TurnXmlReader implements Runnable {
 		Container<NationMessage> nationMessages = this.turn.getNationMessages();
 		nationMessages.removeAllByProperties("nationNo", this.turnInfo.getNationNo());
 
-		NationMessageParser nmp = new NationMessageParser(this.turnInfo.getTurnNo());
+		NationMessageParser nmp = new NationMessageParser(this.turnInfo.getTurnNo(),GameHolder.instance());
 
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
 		Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)");

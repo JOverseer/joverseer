@@ -8,20 +8,24 @@ import org.joverseer.domain.Character;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.command.ActionCommand;
 
 /**
  * Admin command
- * 
+ *
  * Exports all Order Results for all characters and all turns for this game
- * 
+ *
  * Output file is: c:\orders.out.txt
- * 
+ *
  * @author Marios Skounakis
  */
 public class ExportOrderResultsCommand extends ActionCommand {
-    public ExportOrderResultsCommand() {
+	//dependencies
+	GameHolder gameHolder;
+    public ExportOrderResultsCommand(GameHolder gameHolder) {
         super("exportOrderResultsCommand");
+        this.gameHolder = gameHolder;
     }
 
     @Override
@@ -29,8 +33,8 @@ public class ExportOrderResultsCommand extends ActionCommand {
     	try {
     		File f = new File("c:\\orders.out.txt");
     		FileWriter w = new FileWriter(f);
-    		for (int i=0; i<GameHolder.instance().getGame().getMaxTurn(); i++) {
-    			Turn t = GameHolder.instance().getGame().getTurn(i);
+    		for (int i=0; i<this.gameHolder.getGame().getMaxTurn(); i++) {
+    			Turn t = this.gameHolder.getGame().getTurn(i);
     			if (t == null) continue;
     			w.write("\n\n\nTurn " + i + "\n");
     			for (Character c : (ArrayList<Character>)t.getContainer(TurnElementsEnum.Character).getItems()) {
@@ -40,12 +44,12 @@ public class ExportOrderResultsCommand extends ActionCommand {
     					w.write(c.getOrderResults());
     				}
     			}
-    			
+
     		}
     		w.close();
     	}
     	catch (Exception exc) {
-    		exc.printStackTrace();
+    		ErrorDialog.showErrorDialog(exc);
     	}
     }
 

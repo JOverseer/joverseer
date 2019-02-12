@@ -83,7 +83,7 @@ import org.springframework.richclient.progress.BusyIndicator;
 /**
  * The basic control for displaying the map. It derives itself from a JPanel and
  * implements custom painting.
- * 
+ *
  * Painting is done in a layered way in order to avoid having to always redraw
  * everything, which is slow The three layers are: 1. the map, which shows the
  * terrain and other static stuff for the game type 2. the map base items, which
@@ -92,20 +92,20 @@ import org.springframework.richclient.progress.BusyIndicator;
  * army ranges and orders Each layer is stored in a buffered image so that if
  * one of the higher layers is changed, the buffered image is used to redraw the
  * lower layer.
- * 
+ *
  * The control uses renderers to paint the various layers.
- * 
+ *
  * The control also implements mouse listener and mouse motion listener
  * interfaces to provide: - hex selection upon mouse click - scrolling upon
  * ctrl+mouse drag - drag & drop capability for dragging hex number from the map
  * to other controls
- * 
- * 
+ *
+ *
  * @author Marios Skounakis
  */
 public class MapPanel extends JPanel implements MouseInputListener, MouseWheelListener {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -141,13 +141,17 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	boolean saveMap = false;
 
-	public MapPanel() {
+	//dependencies
+	GameHolder gameHolder;
+
+	public MapPanel(GameHolder gameHolder) {
 		addMouseListener(this);
 		addMouseWheelListener(this);
 		addMouseMotionListener(this);
 		this.setTransferHandler(new HexNoTransferHandler("hex")); //$NON-NLS-1$
 		this.setDropTarget(new DropTarget(this, new MapPanelDropTargetAdapter()));
 		_instance = this;
+		this.gameHolder = gameHolder;
 	}
 
 	public static MapPanel instance() {
@@ -218,7 +222,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	 * Creates the basic map (the background layer with the hexes) The hexes are
 	 * retrieved from the Game Metadata and rendered with all the valid
 	 * available renderers found in the Map Metadata
-	 * 
+	 *
 	 */
 	private void createMap() {
 		MapMetadata metadata1;
@@ -258,7 +262,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		// }
 
 		refreshRendersConfig();
-		
+
 		for (Hex h : gm.getHexes()) {
 			setHexLocation(h.getColumn(), h.getRow());
 			for (org.joverseer.ui.map.renderers.Renderer r : metadata1.getRenderers()) {
@@ -553,14 +557,14 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		this.map = null;
 		this.mapBaseItems = null;
 		this.mapItems = null;
-		setGame(GameHolder.instance().getGame());
+		setGame(this.gameHolder.getGame());
 	}
 
 	public void invalidateMapItems() {
 		this.metadata = null;
 		this.mapItems = null;
 	}
-	
+
 	public void refreshRendersConfig() {
 		MapMetadata metadata1;
 		metadata1 = getMetadata();
@@ -569,12 +573,12 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				r.refreshConfig();
 			}
 		}
-		
+
 	}
 
 	/**
 	 * Basic painting todo update/cleanup
-	 * 
+	 *
 	 * @param g
 	 */
 	@Override
@@ -678,7 +682,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		} else if (e.getButton() == MouseEvent.BUTTON3) {
 			Point h = getHexFromPoint(e.getPoint());
 			int hexNo = h.x * 100 + h.y;
-			Game g = GameHolder.instance().getGame();
+			Game g = this.gameHolder.getGame();
 			Hex hex1 = g.getMetadata().getHex(hexNo);
 			ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(new ShowCharacterMovementRangeCommand(hexNo, 12), new ShowCharacterLongStrideRangeCommand(hexNo), new ShowCharacterFastStrideRangeCommand(hexNo), new ShowCharacterPathMasteryRangeCommand(hexNo)));
 
@@ -726,7 +730,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				Point p = e.getPoint();
 				Point h = getHexFromPoint(p);
 				int hexNo = h.x * 100 + h.y;
-				Hex hex1 = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
+				Hex hex1 = this.gameHolder.getGame().getMetadata().getHex(hexNo);
 				hex1.setTerrain((HexTerrainEnum) brush);
 				MapEditorView.instance.log(""); //$NON-NLS-1$
 				MapEditorView.instance.log(hexNo + " terrain " + brush.toString());
@@ -736,7 +740,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				Point p = e.getPoint();
 				Point h = getHexFromPoint(p);
 				int hexNo = h.x * 100 + h.y;
-				Hex hex1 = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
+				Hex hex1 = this.gameHolder.getGame().getMetadata().getHex(hexNo);
 
 				Point hp = getHexLocation(hexNo);
 				int hexHalfWidth = this.metadata.getGridCellWidth() * this.metadata.getHexSize() / 2;
@@ -750,7 +754,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				otherHexNo = hexSide.getHexNoAtSide(hexNo);
 				Hex otherHex = null;
 				if (otherHexNo > 0) {
-					otherHex = GameHolder.instance().getGame().getMetadata().getHex(otherHexNo);
+					otherHex = this.gameHolder.getGame().getMetadata().getHex(otherHexNo);
 				}
 
 				HexSideElementEnum element = (HexSideElementEnum) brush;
@@ -893,7 +897,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	public Game getGame() {
 		if (this.game == null) {
-			this.game = GameHolder.instance().getGame();
+			if (this.gameHolder!=null) {
+				this.game = this.gameHolder.getGame();
+			}
 		}
 		return this.game;
 	}
@@ -940,7 +946,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				Point p = MapPanel.instance().getHexFromPoint(e.getLocation());
 				final int hexNo = p.x * 100 + p.y;
 				if (obj != null) {
-					final Turn turn = GameHolder.instance().getGame().getTurn();
+					final Turn turn = MapPanel.this.gameHolder.getGame().getTurn();
 					final Object target = obj;
 					ConfirmationDialog dlg = new ConfirmationDialog(Messages.getString("MapPanel.MoveConfirmation.title"),
 							Messages.getString("MapPanel.MoveConfirmation.text", new Object[] { hexNo })) {

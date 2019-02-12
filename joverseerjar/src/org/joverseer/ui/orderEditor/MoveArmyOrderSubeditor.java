@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Order;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -28,8 +29,8 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     ArrayList<String> dirs = new ArrayList<String>();
     JTextField directionParams;
 
-    public MoveArmyOrderSubeditor(OrderEditor oe,Order o) {
-        super(oe,o);
+    public MoveArmyOrderSubeditor(OrderEditor oe,Order o,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         }
 
     @Override

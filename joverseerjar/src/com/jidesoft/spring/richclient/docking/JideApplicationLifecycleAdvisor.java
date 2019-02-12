@@ -32,7 +32,6 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.command.LoadGame;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -71,6 +70,16 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	public static boolean devOption = false;
 	static boolean menusEnabled = false;
 
+	//injected dependencies
+	GameHolder gameHolder;
+
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+
 	public CommandGroup getSpecificCommandGroup(String name) {
 		return getCommandGroup(name);
 	}
@@ -89,7 +98,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 					JOptionPane.showMessageDialog(parentFrame, "Not enough memory. This is often caused by running joverseer.jar directly. You should always run joverseer.bat and not joverseer.jar.", "Error", JOptionPane.ERROR_MESSAGE);
 					// clear game so that the program does not ask you if you
 					// want to close the program
-					GameHolder.instance().setGame(null);
+					JideApplicationLifecycleAdvisor.this.gameHolder.setGame(null);
 					// close program
 					Application.instance().close();
 				} else {
@@ -107,32 +116,34 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof JOverseerEvent) {
+			this.onJOEvent((JOverseerEvent) event);
+		}
+		super.onApplicationEvent(event);
+	}
+	public void onJOEvent(JOverseerEvent e) {
+		switch (e.getType()) {
+		case GameChangedEvent:
+			if (!menusEnabled ) {
+				CommandGroupEnabler traverser = new CommandGroupEnabler();
+				traverser.buildModel(Application.instance().getLifecycleAdvisor().getToolBarCommandGroup());
 
-			JOverseerEvent e = (JOverseerEvent) event;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				if (!menusEnabled ) {
-					CommandGroupEnabler traverser = new CommandGroupEnabler();
-					traverser.buildModel(Application.instance().getLifecycleAdvisor().getToolBarCommandGroup());
-
-					JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
-					for (int i = 0; i < menuBar.getMenuCount(); i++) {
-						if (!menuBar.getMenu(i).isEnabled()) {
-							menuBar.getMenu(i).setEnabled(true);
-						}
-						for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
-							JMenuItem menu = menuBar.getMenu(i).getItem(j);
-							if (menu != null) {
-								if (!menu.isEnabled()) {
-									menu.setEnabled(true);
-								}
+				JMenuBar menuBar = Application.instance().getActiveWindow().getControl().getJMenuBar();
+				for (int i = 0; i < menuBar.getMenuCount(); i++) {
+					if (!menuBar.getMenu(i).isEnabled()) {
+						menuBar.getMenu(i).setEnabled(true);
+					}
+					for (int j = 0; j < menuBar.getMenu(i).getItemCount(); j++) {
+						JMenuItem menu = menuBar.getMenu(i).getItem(j);
+						if (menu != null) {
+							if (!menu.isEnabled()) {
+								menu.setEnabled(true);
 							}
 						}
 					}
-					menusEnabled = true;
 				}
+				menusEnabled = true;
 			}
 		}
-		super.onApplicationEvent(event);
 	}
 
 	@Override
@@ -169,7 +180,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			String fname = JOverseerJIDEClient.cmdLineArgs[0];
 			File f = new File(fname);
 			if (f.exists()) {
-				LoadGame lg = new LoadGame(fname);
+				LoadGame lg = new LoadGame(fname,this.gameHolder);
 				lg.loadGame();
 			}
 		}
@@ -341,7 +352,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			mu.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					LoadGame loadGame = new LoadGame(frgi.getFile());
+					LoadGame loadGame = new LoadGame(frgi.getFile(),JideApplicationLifecycleAdvisor.this.gameHolder);
 					loadGame.execute();
 				}
 			});

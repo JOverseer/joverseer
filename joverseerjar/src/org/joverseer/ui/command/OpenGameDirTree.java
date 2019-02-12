@@ -50,14 +50,15 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 	File[] files;
 	ArrayList<File> turnFolders = new ArrayList<File>();
 	JOverseerClientProgressMonitor monitor;
-	GameHolder gh;
 	TitledPageApplicationDialog dialog;
+	//dependencies
+	GameHolder gh;
 
 	static Log log = LogFactory.getLog(OpenGameDirTree.class);
 
-	public OpenGameDirTree() {
+	public OpenGameDirTree(GameHolder gameHolder) {
 		super("openGameDirTreeCommand");
-		this.gh = GameHolder.instance();
+		this.gh = gameHolder;
 	}
 
 	@Override

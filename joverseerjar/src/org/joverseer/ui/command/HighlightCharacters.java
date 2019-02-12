@@ -35,8 +35,11 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
  * @author Marios Skounakis
  */
 public class HighlightCharacters extends ActionCommand {
-	public HighlightCharacters() {
+	//dependencies
+	GameHolder gameHolder;
+	public HighlightCharacters(GameHolder gameHolder) {
 		super("highlightCharactersCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -58,7 +61,7 @@ public class HighlightCharacters extends ActionCommand {
 				form.commit();
 
 				HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
-				Game g = GameHolder.instance().getGame();
+				Game g = HighlightCharacters.this.gameHolder.getGame();
 				Container<Character> chars = g.getTurn().getCharacters();
 				HighlightOptions opts = (HighlightOptions) form.getFormObject();
 				for (Character c : chars.getItems()) {
@@ -238,7 +241,7 @@ public class HighlightCharacters extends ActionCommand {
 				return false;
 			}
 
-			Game g = GameHolder.instance().getGame();
+			Game g = HighlightCharacters.this.gameHolder.getGame();
 			Turn t = g.getTurn();
 			NationRelations nr = t.getNationRelations(c.getNationNo());
 			NationAllegianceEnum allegiance1 = (nr != null ? nr.getAllegiance() : null);

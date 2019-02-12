@@ -11,7 +11,7 @@ import org.joverseer.ui.listviews.commands.PopupMenuCommand;
 
 /**
  * List view for Enemy Character Rumors
- * 
+ *
  * @author Marios Skounakis
  */
 public class EnemyCharacterRumorListView extends BaseItemListView {
@@ -48,7 +48,7 @@ public class EnemyCharacterRumorListView extends BaseItemListView {
 
 	@Override
 	protected JComponent[] getButtons() {
-		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table),
+		return new JComponent[] { new PopupMenuCommand().getButton(new Object[] { new GenericCopyToClipboardCommand(this.table,this.gameHolder),
 		// new ListViewDescriptionPopupCommand("enemyCharacterRumorListView")
 				}) };
 	}

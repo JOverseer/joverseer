@@ -29,7 +29,7 @@ import org.springframework.richclient.table.TableUtils;
 
 /**
  * List view for notes objects
- * 
+ *
  * @author Marios Skounakis
  */
 public class NotesListView extends ItemListView {
@@ -120,7 +120,7 @@ public class NotesListView extends ItemListView {
         tlb.cell(scrollPane);
 
         org.joverseer.ui.support.controls.TableUtils.setTableColumnRenderer(this.table, NotesTableModel.iHexNo, new HexNumberCellRenderer(this.tableModel));
-        
+
         JPanel p = tlb.getPanel();
         p.setBackground(Color.WHITE);
 
@@ -130,9 +130,9 @@ public class NotesListView extends ItemListView {
 //        TextAreaRenderer r = new TextAreaRenderer();
 //        table.setDefaultRenderer(String.class, r);
 //        table.setDefaultRenderer(Integer.class, r);
-//        
+//
         //table.getColumnModel().getColumn(NotesTableModel.iText).setCellEditor(new TextAreaEditor());
-        
+
         return p;
     }
 
@@ -143,7 +143,7 @@ public class NotesListView extends ItemListView {
                 "noteCommandGroup", new Object[] {new EditNoteCommand(), new DeleteNoteCommand()});
         return group.createPopupMenu();
     }
-    
+
     class DeleteNoteCommand extends ActionCommand {
 
         @Override
@@ -165,7 +165,7 @@ public class NotesListView extends ItemListView {
                 }
             }
         }
-        
+
     }
 
     class EditNoteCommand extends ActionCommand {
@@ -181,13 +181,13 @@ public class NotesListView extends ItemListView {
                 try {
                     Object obj = NotesListView.this.tableModel.getRow(idx);
                     Note note = (Note) obj;
-                    new AddEditNoteCommand(note).execute();
+                    new AddEditNoteCommand(note,NotesListView.this.gameHolder).execute();
                 } catch (Exception exc) {
                     exc.printStackTrace();
                 }
             }
         }
-        
+
     }
 
     @Override
@@ -205,8 +205,8 @@ public class NotesListView extends ItemListView {
                         new TextFilter("Order Comments", "tags", "Order")
                 }};
         }
-    
 
-    
-    
+
+
+
 }

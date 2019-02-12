@@ -10,7 +10,6 @@ import org.joverseer.joApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -68,7 +67,7 @@ public class OrderResultsView extends BaseHtmlReportView {
 				}
 			} else if (ps[0].equals("turn")) { //$NON-NLS-1$
 				int turnNo = Integer.parseInt(ps[1]);
-				GameHolder.instance().getGame().setCurrentTurn(turnNo);
+				this.gameHolder.getGame().setCurrentTurn(turnNo);
 				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo);
 			}
 		}
@@ -76,7 +75,7 @@ public class OrderResultsView extends BaseHtmlReportView {
 
 	@Override
 	protected String getReportContents() {
-		if (!GameHolder.hasInitializedGame())
+		if (!this.gameHolder.isGameInitialized())
 			return ""; //$NON-NLS-1$
 		String ret = "<html><body><div style='font-family:Tahoma; font-size:11pt'><table><tr><td width=700>"; //$NON-NLS-1$
 
@@ -105,7 +104,7 @@ public class OrderResultsView extends BaseHtmlReportView {
 			// nothing
 		}
 
-		Game game = GameHolder.instance().getGame();
+		Game game = this.gameHolder.getGame();
 		for (int i = 0; i <= game.getCurrentTurn(); i++) {
 			if (i < turnFromValue || i > turnToValue)
 				continue;

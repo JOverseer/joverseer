@@ -9,12 +9,16 @@ import org.joverseer.metadata.domain.HexSideEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.ActiveGameChecker;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.command.ActionCommand;
 
 public class ExportMapMetadataInfoCommand extends ActionCommand {
 
-	public ExportMapMetadataInfoCommand() {
+	//dependencies
+	GameHolder gameHolder;
+	public ExportMapMetadataInfoCommand(GameHolder gameHolder) {
 		super("exportMapMetadataInfoCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -23,7 +27,7 @@ public class ExportMapMetadataInfoCommand extends ActionCommand {
 			return;
 		try {
 			FileWriter f = new FileWriter("c:\\map.terrain");
-			Game game = GameHolder.instance().getGame();
+			Game game = this.gameHolder.getGame();
 			MapMetadata metadata = MapMetadata.instance();
 			for (int i = metadata.getMinMapColumn(); i <= metadata.getMaxMapColumn(); i++) {
 				for (int j = metadata.getMinMapRow(); j <= metadata.getMaxMapRow(); j++) {
@@ -55,7 +59,7 @@ public class ExportMapMetadataInfoCommand extends ActionCommand {
 			f.close();
 
 		} catch (Exception exc) {
-
+			ErrorDialog.showErrorDialog(exc);
 		}
 
 	}

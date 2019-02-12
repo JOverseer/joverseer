@@ -18,12 +18,12 @@ import org.joverseer.ui.support.Messages;
 /**
  * Table model for the Team Economy main table It basically shows a complete
  * economic picture for all the imported nations in tabular format
- * 
+ *
  * @author Marios Skounakis
  */
 @SuppressWarnings("serial")
 public class TeamEconomyTableModel extends BaseEconomyTableModel {
-	
+
 	public static final int iProdStart = 1;
 	public static final int iProdEnd = 7;
 	public static final int iCaptialChars = 8;
@@ -40,7 +40,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 
 	// used to grab the tax base. needs to injected.
 	NationStatisticsTableModel nswm = null;
-	
+
 	SummaryTypeEnum showProductsAs = SummaryTypeEnum.Total;
 
 	//note: change code in the constructor if you change this.
@@ -53,9 +53,9 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 
 	ArrayList<EconomyCalculatorData> items = new ArrayList<EconomyCalculatorData>();
 
-	public TeamEconomyTableModel()
+	public TeamEconomyTableModel(GameHolder gameHolder)
 	{
-		super();
+		super(gameHolder);
 		this.columnNames = new String[this.columnHeaderTags.length];
 		this.columnNames[0]=Messages.getString("standardFields.Nation");
 		for (int i=iProdStart;i<=iProdEnd;i++) {
@@ -99,7 +99,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	}
 
 	protected NationEconomy getNationEconomy(int nationNo1) {
-		return (NationEconomy) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo1);
+		return (NationEconomy) this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", nationNo1);
 	}
 
 	public SummaryTypeEnum getShowProductsAs() {
@@ -116,9 +116,9 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 				return ecd.getTotal(p);
 			case Gain:
 				return ecd.getTotal(p) * ecd.getSellPrice(p);
-			case Stores: 
+			case Stores:
 				return ecd.getStores(p);
-			case Production: 
+			case Production:
 				return ecd.getProduction(p);
 			default:
 				return ecd.getTotal(p);
@@ -149,12 +149,12 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 		NationEconomy ne = getNationEconomy(ecd.getNationNo());
 		if (ne == null)
 			return null;
-		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
+		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel(this.gameHolder);
 		ettm.setNationNo(ecd.getNationNo());
 		switch (col) {
 		case 0:
 			// nation
-			Nation n = GameHolder.instance().getGame().getMetadata().getNationByNum(ecd.getNationNo());
+			Nation n = this.gameHolder.getGame().getMetadata().getNationByNum(ecd.getNationNo());
 			if (n == null)
 				return ecd.getNationNo();
 			return n.getShortName();
@@ -180,10 +180,10 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 			// mounts
 			return getProduct(ecd, ProductEnum.Mounts);
 		case iCaptialChars:
-			PopulationCenter capital = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ecd.getNationNo(), true });
+			PopulationCenter capital = (PopulationCenter) this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "nationNo", "capital" }, new Object[] { ecd.getNationNo(), true });
 			if (capital == null)
 				return null;
-			return GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperties(new String[] { "hexNo", "deathReason", "nationNo" }, new Object[] { capital.getHexNo(), CharacterDeathReasonEnum.NotDead, ecd.getNationNo() }).size();
+			return this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.Character).findAllByProperties(new String[] { "hexNo", "deathReason", "nationNo" }, new Object[] { capital.getHexNo(), CharacterDeathReasonEnum.NotDead, ecd.getNationNo() }).size();
 		case iSurplus:
 			// surplus
 			return ettm.getSurplus();
@@ -265,7 +265,7 @@ public class TeamEconomyTableModel extends BaseEconomyTableModel {
 	{
 		int count = SummaryTypeEnum.values().length;
 		String[] options = new String[count];
-		
+
 		count = 0;
 		for (SummaryTypeEnum option: SummaryTypeEnum.values()) {
 			options[count++] = option.getRenderString();

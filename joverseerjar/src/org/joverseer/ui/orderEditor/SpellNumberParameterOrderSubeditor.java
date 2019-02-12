@@ -39,14 +39,14 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField spellNo;
     int orderNo;
 
-    public SpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo) {
-        super(oe,o);
+    public SpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
         this.orderNo = orderNo;
     }
 
     protected void loadSpellCombo(JComboBox com) {
-    	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+    	GameMetadata gm = this.gameHolder.getGame().getMetadata();
     	Character c = getOrder().getCharacter();
         com.addItem(""); //$NON-NLS-1$
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {

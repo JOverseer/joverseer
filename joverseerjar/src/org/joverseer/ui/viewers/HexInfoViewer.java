@@ -61,7 +61,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Shows hex info in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class HexInfoViewer extends ObjectViewer {
@@ -91,8 +91,8 @@ public class HexInfoViewer extends ObjectViewer {
 	AddBridgeCommand addBridgeW = new AddBridgeW();
 	AddBridgeCommand addBridgeNW = new AddBridgeNW();
 
-	public HexInfoViewer(FormModel formModel) {
-		super(formModel, FORM_PAGE);
+	public HexInfoViewer(FormModel formModel,GameHolder gameHolder) {
+		super(formModel, FORM_PAGE,gameHolder);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class HexInfoViewer extends ObjectViewer {
 			lb.nextLine();
 		}
 
-		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()));
+		this.notesViewer = new NotesViewer(FormModelHelper.createFormModel(new ArrayList<Note>()),this.gameHolder);
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(this.notesViewer.createFormControl(), "colspec=left:240px"); //$NON-NLS-1$
 		JPanel notesPanel = tlb.getPanel();
@@ -197,7 +197,7 @@ public class HexInfoViewer extends ObjectViewer {
 				this.turnInfo.setText(Messages.getString("HexInfoViewer.Turn") + latestTurnInfo); //$NON-NLS-1$
 			}
 
-			Game g = GameHolder.instance().getGame();
+			Game g = this.gameHolder.getGame();
 			HexInfo hi = g.getTurn().getHexInfo(h.getHexNo());
 			this.climate.setText(hi.getClimate() != null ? hi.getClimate().toString() : ""); //$NON-NLS-1$
 			this.terrain.setText(UIUtils.enumToString(h.getTerrain()));
@@ -239,12 +239,12 @@ public class HexInfoViewer extends ObjectViewer {
 		CommandGroup bridges = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoBridgeGroup", new Object[] { this.addBridgeNE, this.addBridgeE, this.addBridgeSE, this.addBridgeSW, this.addBridgeW, this.addBridgeNW, "separator", this.removeBridgeNE, this.removeBridgeE, this.removeBridgeSE, this.removeBridgeSW, this.removeBridgeW, this.removeBridgeNW }); //$NON-NLS-1$ //$NON-NLS-2$
 		int hexNo1 = hex.getHexNo();
 		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("hexInfoCommandGroup",  //$NON-NLS-1$
-			new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator",//$NON-NLS-1$ 
-			new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator",//$NON-NLS-1$  
-			new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator",//$NON-NLS-1$ 
-			new AddPopCenterCommand(hexNo1), new CreateArmyCommand(), new CreateCharacterCommand(), new AddEditNoteCommand(hexNo1), "separator",  //$NON-NLS-1$ 
-			new CreateCombatForHexCommand(hexNo1), "separator", //$NON-NLS-1$ 
-			bridges 
+			new Object[] { showCharacterRangeOnMapCommand, showCharacterLongStrideRangeCommand, showCharacterFastStrideRangeCommand, showCharacterPathMasteryRangeCommand, "separator",//$NON-NLS-1$
+			new ShowFedInfantryArmyRangeCommand(hexNo1), new ShowUnfedInfantryArmyRangeCommand(hexNo1), new ShowFedCavalryArmyRangeCommand(hexNo1), new ShowUnfedCavalryArmyRangeCommand(hexNo1), "separator",//$NON-NLS-1$
+			new ShowFedNavyCoastalRangeCommand(hexNo1), new ShowUnfedNavyCoastalRangeCommand(hexNo1), new ShowFedNavyOpenSeasRangeCommand(hexNo1), new ShowUnfedNavyOpenSeasRangeCommand(hexNo1), "separator",//$NON-NLS-1$
+			new AddPopCenterCommand(hexNo1,this.gameHolder), new CreateArmyCommand(this.gameHolder), new CreateCharacterCommand(this.gameHolder), new AddEditNoteCommand(hexNo1,this.gameHolder), "separator",  //$NON-NLS-1$
+			new CreateCombatForHexCommand(hexNo1,this.gameHolder), "separator", //$NON-NLS-1$
+			bridges
 		});
 		return group.createPopupMenu();
 	}
@@ -303,7 +303,7 @@ public class HexInfoViewer extends ObjectViewer {
 				}
 			}
 			if (hse != null) {
-				Game g = GameHolder.instance().getGame();
+				Game g = HexInfoViewer.this.gameHolder.getGame();
 				GameMetadata gm = g.getMetadata();
 				Hex nh = hex.clone();
 				nh.getHexSideElements(this.side).remove(hse);
@@ -386,7 +386,7 @@ public class HexInfoViewer extends ObjectViewer {
 				return;
 			Hex nh = hex.clone();
 			nh.addHexSideElement(this.side, HexSideElementEnum.Bridge);
-			Game g = GameHolder.instance().getGame();
+			Game g = HexInfoViewer.this.gameHolder.getGame();
 			GameMetadata gm = g.getMetadata();
 			gm.addHexOverride(g.getCurrentTurn(), nh);
 			Hex neighbor = gm.getHex(this.side.getHexNoAtSide(nh.getHexNo())).clone();

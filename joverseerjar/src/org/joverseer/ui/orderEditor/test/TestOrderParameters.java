@@ -14,12 +14,16 @@ import org.joverseer.ui.orderEditor.OrderEditorData;
 /**
  * Tests whether the OrderEditor can support all parameter types specified
  * in the OrderEditorData specified in the respective metadata file
- *  
+ *
  * @author Marios Skounakis
  */
 public class TestOrderParameters extends TestCase {
+		OrderEditor theOrderEditor;
+	public TestOrderParameters(OrderEditor orderEditor) {
+		this.theOrderEditor = orderEditor;
+	}
     public void testOrderParametersForOrderEditor() {
-        OrderEditor oe = OrderEditor.instance();
+        OrderEditor oe = this.theOrderEditor;
         Character c = new Character();
         c.setCommand(50);
         c.setCommandTotal(50);

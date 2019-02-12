@@ -17,18 +17,21 @@ import org.springframework.richclient.command.ActionCommand;
 
 /**
  * Imports all persistent notes from the previous turn
- * 
+ *
  * @author Marios Skounakis
  */
 public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
-    public ImportNotesFromPreviousTurnCommand() {
+	//dependencies
+	GameHolder gameHolder;
+    public ImportNotesFromPreviousTurnCommand(GameHolder gameHolder) {
         super("importNotesFromPreviousTurnCommand");
+        this.gameHolder = gameHolder;
     }
 
     @Override
 	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
-        final Game g = GameHolder.instance().getGame();
+        final Game g = this.gameHolder.getGame();
         Turn previousTurn = null;
         for (int i=g.getCurrentTurn()-1; i>=0; i--) {
             if (g.getTurn(i) != null) {
@@ -38,7 +41,7 @@ public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
         }
         if (previousTurn == null) return;
         Turn turn = g.getTurn();
-        
+
         for (Note n : (ArrayList<Note>)previousTurn.getContainer(TurnElementsEnum.Notes).findAllByProperty("persistent", true)) {
             boolean copy = false;
             Object target = null;
@@ -52,7 +55,7 @@ public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
                 target = turn.getContainer(TurnElementsEnum.Character).findFirstByProperty("name", c.getName());
                 if (target != null) {
                     copy = true;
-                    
+
                 }
             } else if (PopulationCenter.class.isInstance(n.getTarget())) {
                 PopulationCenter pc = (PopulationCenter)n.getTarget();

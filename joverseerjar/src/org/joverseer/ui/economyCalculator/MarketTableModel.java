@@ -10,18 +10,19 @@ import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.domain.ProductPrice;
 import org.joverseer.game.Turn;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
 
 /**
  * Table model for the market actions of a nation for the Economy Calculator
- * 
+ *
  * @author Marios Skounakis
  */
 public class MarketTableModel extends BaseEconomyTableModel {
 	/**
-	 * 
+	 *
 	 */
 	public static final int iStoresRow=0;
 	public static final int iProductionRow=1;
@@ -53,7 +54,8 @@ public class MarketTableModel extends BaseEconomyTableModel {
 	String[] rowHeaders;
 	String[] columnNames;
 
-	public MarketTableModel() {
+	public MarketTableModel(GameHolder gameHolder) {
+		super(gameHolder);
 		this.rowHeaders = new String[this.rowHeaderTags.length];
 		for (int i=0;i<this.rowHeaderTags.length;i++) {
 			this.rowHeaders[i] = Messages.getString("EconomyCalculator.Market." +this.rowHeaderTags[i]);

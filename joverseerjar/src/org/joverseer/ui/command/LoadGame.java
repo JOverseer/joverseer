@@ -28,41 +28,49 @@ import org.springframework.richclient.progress.BusyIndicator;
 
 /**
  * Loads a game from a saved game file
- * 
+ *
  * @author Marios Skounakis
  */
 public class LoadGame extends ActionCommand {
     String fname = null;
-    
-    public LoadGame() {
+
+	//dependencies
+	GameHolder gameHolder;
+    public LoadGame(GameHolder gameHolder) {
         super("LoadGameCommand"); //$NON-NLS-1$
+        this.gameHolder = gameHolder;
     }
-    
-    public LoadGame(String fname) {
+
+    public LoadGame(String fname,GameHolder gameHolder) {
         super("LoadGameCommand"); //$NON-NLS-1$
         this.fname = fname;
+        this.gameHolder = gameHolder;
     }
 
     @Override
 	protected void doExecuteCommand() {
-        if (GameHolder.hasInitializedGame()) {
-            // show warning
-            ConfirmationDialog md = new ConfirmationDialog(
-            		Messages.getString("confirmLoadGameDialog.title"), //$NON-NLS-1$
-            		Messages.getString("confirmLoadGameDialog.message"))
-            {
-                @Override
-				protected void onConfirm() {
-                    loadGame();
-                }
-            };
-            md.showDialog();
+        if (this.gameHolder!= null) {
+        	if (this.gameHolder.isGameInitialized()) {
+        		// show warning
+        		ConfirmationDialog md = new ConfirmationDialog(
+        				Messages.getString("confirmLoadGameDialog.title"), //$NON-NLS-1$
+        				Messages.getString("confirmLoadGameDialog.message"))
+        		{
+        			@Override
+        			protected void onConfirm() {
+        				loadGame();
+        			}
+        		};
+        		md.showDialog();
+            } else {
+            	loadGame();
+            }
         } else {
             loadGame();
         }
     }
-    
-    
+
+
     public void loadGame() {
         if (this.fname == null) {
             JFileChooser fileChooser = new JFileChooser();
@@ -75,7 +83,7 @@ public class LoadGame extends ActionCommand {
             }
             fileChooser.setFileFilter(new DefaultFileFilter("*.jov", "JOverseer game file")); //$NON-NLS-1$ //$NON-NLS-2$
             if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
-                this.fname = fileChooser.getSelectedFile().getAbsolutePath(); 
+                this.fname = fileChooser.getSelectedFile().getAbsolutePath();
             }
         }
 
@@ -83,7 +91,7 @@ public class LoadGame extends ActionCommand {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
             File f = new File(this.fname);
             try {
-                GameHolder gh = GameHolder.instance();
+                GameHolder gh = this.gameHolder;
                 Game g = Game.loadGame(f);
                 g.getMetadata().setGame(g);
                 gh.setGame(g);
@@ -105,7 +113,7 @@ public class LoadGame extends ActionCommand {
                         scp.getVerticalScrollBar().setValue(vv);
                     }
                     catch (Exception exc) {
-                        
+
                     }
                 }
                 if (g.getParameter("selHexX") != null) { //$NON-NLS-1$
@@ -115,12 +123,12 @@ public class LoadGame extends ActionCommand {
                         joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(hx, hy), g);
                     }
                     catch (Exception exc) {
-                        
+
                     }
                 }
                 RecentGames rgs = new RecentGames();
                 rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath());
-                
+
             }
             catch (EOFException exc) {
             	ErrorDialog.showErrorDialog(exc,"LoadGame.CorruptFile"); //$NON-NLS-1$ //$NON-NLS-2$

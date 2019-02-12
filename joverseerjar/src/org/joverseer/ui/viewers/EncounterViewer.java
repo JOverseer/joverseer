@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import org.joverseer.joApplication;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Encounter;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.commands.DialogsUtility;
 import org.joverseer.ui.support.controls.PopupMenuActionListener;
@@ -26,7 +27,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows encounters in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class EncounterViewer extends ObjectViewer {
@@ -37,8 +38,8 @@ public class EncounterViewer extends ObjectViewer {
 
 	ActionCommand showDescriptionCommand = new ShowDescriptionCommand();
 
-	public EncounterViewer(FormModel formModel) {
-		super(formModel, FORM_PAGE);
+	public EncounterViewer(FormModel formModel,GameHolder gameHolder) {
+		super(formModel, FORM_PAGE,gameHolder);
 	}
 
 	@Override

@@ -44,9 +44,12 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 
 	OrdercheckerProxy proxy = null;
 	int selectedNation = -1;
+	//injected
+	final GameHolder gh;
 
-	public RunOrdercheckerCommand() {
+	public RunOrdercheckerCommand(GameHolder gh) {
 		super(ID);
+		this.gh = gh;
 	}
 
 	@Override
@@ -56,7 +59,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 				return;
 
 			// show a form so that the user selects the desired nation
-			final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0));
+			final SelectOrderchekerNationForm frm = new SelectOrderchekerNationForm(FormModelHelper.createFormModel(0),this.gh);
 			FormBackedDialogPage pg = new FormBackedDialogPage(frm);
 			TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
 				@Override
@@ -83,7 +86,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 
 						RunOrdercheckerCommand.this.proxy.runOrderchecker();
 
-						Game g = GameHolder.instance().getGame();
+						Game g = RunOrdercheckerCommand.this.gh.getGame();
 
 						// update the order result container with the order
 						// results

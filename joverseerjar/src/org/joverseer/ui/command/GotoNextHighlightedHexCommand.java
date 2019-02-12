@@ -16,12 +16,15 @@ import org.springframework.richclient.command.ActionCommand;
 
 /**
  * Selects the next highlighted hex based on the current hex selection
- * 
+ *
  * @author Marios Skounakis
  */
 public class GotoNextHighlightedHexCommand extends ActionCommand {
-	public GotoNextHighlightedHexCommand() {
+	//dependencies
+	GameHolder gameHolder;
+	public GotoNextHighlightedHexCommand(GameHolder gameHolder) {
 		super("gotoNextHighlightedHexCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -29,7 +32,7 @@ public class GotoNextHighlightedHexCommand extends ActionCommand {
 		if (!ActiveGameChecker.checkActiveGameExists())
 			return;
 
-		Container<AbstractMapItem> mapItemsC = GameHolder.instance().getGame().getTurn().getMapItems();
+		Container<AbstractMapItem> mapItemsC = this.gameHolder.getGame().getTurn().getMapItems();
 		ArrayList<Integer> hightlightedHexes = new ArrayList<Integer>();
 		for (AbstractMapItem mi : mapItemsC.items) {
 			if (HighlightHexesMapItem.class.isInstance(mi)) {

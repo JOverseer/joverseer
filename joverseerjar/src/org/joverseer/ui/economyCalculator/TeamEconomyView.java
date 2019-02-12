@@ -25,7 +25,6 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.BaseView;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.NationEconomyListView;
 import org.joverseer.ui.listviews.NationProductionListView;
 import org.joverseer.ui.listviews.NationStatisticsListView;
@@ -39,11 +38,11 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * The team economy view
- * 
+ *
  * It create a new table called team economy and it also uses a number of list
  * views: - the nation economy list view - the nation production list view - the
  * nation statistics list view
- * 
+ *
  * @author Marios Skounakis
  */
 public class TeamEconomyView extends BaseView implements ApplicationListener {
@@ -64,7 +63,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		lb.row();
 		lb.relatedGapRow();
 
-		this.teamEconomyTableModel = new TeamEconomyTableModel();
+		this.teamEconomyTableModel = new TeamEconomyTableModel(this.gameHolder);
 		this.teamEconomyTable = new JOverseerTable(new com.jidesoft.grid.SortableTableModel(this.teamEconomyTableModel));
 		this.teamEconomyTable.getTableHeader().setPreferredSize(new Dimension(400, 16));
 		this.teamEconomyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -75,7 +74,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		this.teamEconomyTable.setDefaultRenderer(String.class, new StringTeamEconomyTableRenderer());
 		this.teamEconomyTable.setBackground(Color.white);
 		// we set up the reference to the NationStatisticsModel once we've created it in the view.
-		
+
 		JScrollPane scp = new JScrollPane(this.teamEconomyTable);
 		scp.setPreferredSize(new Dimension(600, 250));
 		scp.getViewport().setBackground(Color.white);
@@ -95,9 +94,9 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 			}
 		});
 		this.showProductAsCombo.setPreferredSize(new Dimension(230, 20));
-		
+
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
-		
+
 		tlb.cell(new JLabel(Messages.getString("TeamEconomyView.ProductsColon"))); //$NON-NLS-1$
 		tlb.gapCol();
 		tlb.cell(this.showProductAsCombo, "colspec=left:230px"); //$NON-NLS-1$
@@ -181,7 +180,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 				ecd.setOrdersCost(occ.getTotalOrderCostForNation(t, ecd.getNationNo()));
 				ecd.updateMarketFromOrders();
 			}
-			
+
 			TeamEconomyView.this.teamEconomyTableModel.fireTableDataChanged();
 		}
 	}
@@ -210,35 +209,41 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		this.nationEconomyListView.onApplicationEvent(applicationEvent);
 		this.nationStatisticsListView.onApplicationEvent(applicationEvent);
 		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.EconomyCalculatorUpdate)) {
-				this.teamEconomyTableModel.fireTableDataChanged();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				try {
-					refreshTableItems();
-					this.teamEconomyTableModel.fireTableDataChanged();
-				} catch (Exception exc) {
-					exc.printStackTrace();
-				}
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				super.resetGame();
+			this.onJOEvent((JOverseerEvent) applicationEvent);
+		}
+	}
+	public void onJOEvent(JOverseerEvent e) {
+		switch (e.getType()) {
+		case EconomyCalculatorUpdate:
+			this.teamEconomyTableModel.fireTableDataChanged();
+			break;
+		case SelectedTurnChangedEvent:
+			try {
 				refreshTableItems();
 				this.teamEconomyTableModel.fireTableDataChanged();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-				this.teamEconomyTableModel.fireTableDataChanged();
+			} catch (Exception exc) {
+				exc.printStackTrace();
 			}
-
+			break;
+		case GameChangedEvent:
+			super.resetGame();
+			refreshTableItems();
+			this.teamEconomyTableModel.fireTableDataChanged();
+			break;
+		case OrderChangedEvent:
+			this.teamEconomyTableModel.fireTableDataChanged();
+			break;
 		}
 	}
 
 	/**
 	 * Renderer for the team economy main table
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	class IntegerTeamEconomyTableRenderer extends DefaultTableCellRenderer {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -1808381074745472954L;
 
@@ -311,7 +316,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 
 	class StringTeamEconomyTableRenderer extends DefaultTableCellRenderer {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = -2226537511337457982L;
 

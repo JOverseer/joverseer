@@ -11,7 +11,7 @@ import org.springframework.richclient.command.CommandGroup;
 
 /**
  * List view for Combats for the Combat Calc
- * 
+ *
  * @author Marios Skounakis
  */
 public class CombatCalcCombatListView extends ItemListView {
@@ -47,7 +47,7 @@ public class CombatCalcCombatListView extends ItemListView {
 	        return cg.createPopupMenu();
     	}
     }
-    
+
     private Combat getSelectedCombat()
     {
     	Combat c=null;
@@ -64,27 +64,27 @@ public class CombatCalcCombatListView extends ItemListView {
 		protected void doExecuteCommand() {
             Combat c = new Combat();
             c.setMaxRounds(20);
-            new ShowCombatCalculatorCommand(c).execute();
+            new ShowCombatCalculatorCommand(c,CombatCalcCombatListView.this.gameHolder).execute();
             CombatCalcCombatListView.this.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(c);
             setItems();
         }
-        
+
     }
-    
+
     class EditSelectedCombatCommand extends ActionCommand {
         @Override
 		protected void doExecuteCommand() {
-            Combat c = CombatCalcCombatListView.this.getSelectedCombat(); 
+            Combat c = CombatCalcCombatListView.this.getSelectedCombat();
             if (c != null) {
-            	new ShowCombatCalculatorCommand(c).execute();
+            	new ShowCombatCalculatorCommand(c,CombatCalcCombatListView.this.gameHolder).execute();
             }
         }
-    }    
+    }
 
     class DeleteSelectedCombatCommand extends ActionCommand {
         @Override
 		protected void doExecuteCommand() {
-            Combat c = CombatCalcCombatListView.this.getSelectedCombat(); 
+            Combat c = CombatCalcCombatListView.this.getSelectedCombat();
             if (c != null) {
             	CombatCalcCombatListView.this.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).removeItem(c);
                 setItems();

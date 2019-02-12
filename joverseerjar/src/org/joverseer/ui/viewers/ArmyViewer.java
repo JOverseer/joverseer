@@ -60,7 +60,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows armies in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class ArmyViewer extends ObjectViewer {
@@ -86,8 +86,8 @@ public class ArmyViewer extends ObjectViewer {
 	ActionCommand editArmyCommand = new EditArmyCommand();
 	ActionCommand exportCombatArmyCodeCommand = new ExportCombatArmyCodeCommand();
 
-	public ArmyViewer(FormModel formModel) {
-		super(formModel, FORM_PAGE);
+	public ArmyViewer(FormModel formModel,GameHolder gameHolder) {
+		super(formModel, FORM_PAGE,gameHolder);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class ArmyViewer extends ObjectViewer {
 			this.commanderName.setForeground(c);
 		}
 
-		Game game = GameHolder.instance().getGame();
+		Game game = this.gameHolder.getGame();
 		if (game == null)
 			return;
 		game.getMetadata();
@@ -404,7 +404,7 @@ public class ArmyViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancel)
 				return;
-			Game g = GameHolder.instance().getGame();
+			Game g = ArmyViewer.this.gameHolder.getGame();
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
 			armies.removeItem(a);
@@ -474,7 +474,7 @@ public class ArmyViewer extends ObjectViewer {
 			Integer food1 = a.computeFoodConsumption();
 			if (food1 == null)
 				return;
-			MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.RequiredFood.title"), 
+			MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.RequiredFood.title"),
 					Messages.getString("ArmyViewer.RequiredFood.text",new Object[] { food1 })); //$NON-NLS-1$
 			dlg.showDialog();
 		}
@@ -484,7 +484,7 @@ public class ArmyViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Army a = (Army) getFormObject();
-			final EditArmyForm form = new EditArmyForm(FormModelHelper.createFormModel(a));
+			final EditArmyForm form = new EditArmyForm(FormModelHelper.createFormModel(a),ArmyViewer.this.gameHolder);
 			FormBackedDialogPage pg = new FormBackedDialogPage(form);
 			TitledPageApplicationDialog dlg = new TitledPageApplicationDialog(pg) {
 
@@ -498,7 +498,7 @@ public class ArmyViewer extends ObjectViewer {
 				protected boolean onFinish() {
 					form.commit();
 					Army a1 = (Army) getFormObject();
-					Game g = GameHolder.instance().getGame();
+					Game g = ArmyViewer.this.gameHolder.getGame();
 					Turn t = g.getTurn();
 					Container<Army> armies = t.getArmies();
 					armies.removeItem(a1);

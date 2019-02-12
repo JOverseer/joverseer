@@ -132,7 +132,7 @@ public class OrderCostCalculator {
 		case 320:
 			return sellToCaravanCost(o);
 		case 325:
-			return natSellToCaravanCost(o);
+			return natSellToCaravanCost(o,t);
 		case 948:
 			return tranCarOrderCost(o);
 		case 942:
@@ -234,14 +234,14 @@ public class OrderCostCalculator {
 		}
 	}
 
-	public int natSellToCaravanCost(Order o) {
+	public int natSellToCaravanCost(Order o,Turn t) {
 		ProductEnum pe = ProductEnum.getFromCode(o.getParameter(0));
 		if (pe == null)
 			return 0;
 		try {
 			int pct = Integer.parseInt(o.getParameter(1));
-			NationEconomy ne = (NationEconomy) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
-			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
+			NationEconomy ne = (NationEconomy) t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
+			ProductPrice pp = (ProductPrice) t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int amt = (ne.getStores().getProduct(pe) + ne.getProduction().getProduct(pe)) * pct / 100;
 			int gain = -amt * pp.getSellPrice();
 			this.cont.setProduct(ProductEnum.Gold, gain);

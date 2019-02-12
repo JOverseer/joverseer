@@ -52,6 +52,12 @@ import org.joverseer.tools.infoCollectors.characters.CharacterInfoCollector;
 public class TurnReportCollector {
 
 	final String UNICODE_RIGHTWARDS_ARROW = "\u2192";
+	//dependencies
+	GameHolder gameHolder;
+
+	public TurnReportCollector(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
 	public ArrayList<BaseReportObject> CollectNatSells(Turn t) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		ArrayList<Integer> friendlyNations = new ArrayList<Integer>();
@@ -135,7 +141,7 @@ public class TurnReportCollector {
 	}
 
 	public ArrayList<BaseReportObject> CollectDragons(Turn t) {
-		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
+		Nation gameNation = NationMap.getNationFromNo(this.gameHolder.getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>(); // dragons
 		// in
@@ -229,7 +235,7 @@ public class TurnReportCollector {
 							}
 						}
 						if (!found) {
-							ret.add(new CharacterReport(c,ObjectModificationType.Gained,"Learnt " + sp.getName() + " at " + sp.getProficiency()));						
+							ret.add(new CharacterReport(c,ObjectModificationType.Gained,"Learnt " + sp.getName() + " at " + sp.getProficiency()));
 						}
 					}
 				}
@@ -380,7 +386,7 @@ public class TurnReportCollector {
 	}
 
 	public ArrayList<BaseReportObject> collectChallenges(Turn t) {
-		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
+		Nation gameNation = NationMap.getNationFromNo(this.gameHolder.getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		for (Challenge challenge : t.getChallenges().getItems()) {
@@ -604,7 +610,7 @@ public class TurnReportCollector {
 	}
 
 	/**
-	 * 
+	 *
 	 * prereq: ppc != null
 	 * @param pc
 	 * @param ppc
@@ -947,7 +953,7 @@ public class TurnReportCollector {
 	}
 
 	public ArrayList<BaseReportObject> CollectTransports(Turn t) {
-		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
+		Nation gameNation = NationMap.getNationFromNo(this.gameHolder.getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
@@ -1116,9 +1122,9 @@ public class TurnReportCollector {
 
 	public ArrayList<BaseReportObject> collectUpcomingCombats(Turn t) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
-		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
+		Nation gameNation = NationMap.getNationFromNo(this.gameHolder.getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
-		for (Object ho : GameHolder.instance().getGame().getMetadata().getHexes()) {
+		for (Object ho : this.gameHolder.getGame().getMetadata().getHexes()) {
 			Hex h = (Hex) ho;
 			ArrayList<Army> armies = t.getArmies(h.getHexNo());
 			if (armies.size() == 0)
@@ -1265,7 +1271,7 @@ public class TurnReportCollector {
 
 	public ArrayList<BaseReportObject> CollectCombats(Turn t) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
-		Nation gameNation = NationMap.getNationFromNo(GameHolder.instance().getGame().getMetadata().getNationNo());
+		Nation gameNation = NationMap.getNationFromNo(this.gameHolder.getGame().getMetadata().getNationNo());
 		NationAllegianceEnum gameNationAllegiance = gameNation.getAllegiance();
 		for (Combat c : t.getCombats().getItems()) {
 			CombatWrapper cw = new CombatWrapper();
@@ -1378,7 +1384,7 @@ public class TurnReportCollector {
 	public ArrayList<BaseReportObject> collectBridges(Turn t, Turn p) {
 		ArrayList<BridgeReport> ret = new ArrayList<BridgeReport>();
 		if (p != null) {
-			GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+			GameMetadata gm = this.gameHolder.getGame().getMetadata();
 			ArrayList<Hex> thc = gm.getHexOverrides(t.getTurnNo()).getItems();
 			//TODO: check is this supposed to be p?
 			ArrayList<Hex> phc = gm.getHexOverrides(t.getTurnNo()).getItems();
@@ -1639,7 +1645,7 @@ public class TurnReportCollector {
 	public String renderReport() {
 		try {
 			String ret = "";
-			Game g = GameHolder.instance().getGame();
+			Game g = this.gameHolder.getGame();
 			if (!GameHolder.hasInitializedGame())
 				return ret;
 			Turn t = g.getTurn();

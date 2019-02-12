@@ -10,16 +10,18 @@ import org.joverseer.support.GameHolder;
 import org.springframework.richclient.command.ActionCommand;
 
 public class GetDowngradeSuccessRateCommand extends ActionCommand {
-    
-    
-    public GetDowngradeSuccessRateCommand() {
+
+    //dependencies
+	GameHolder gameHolder;
+    public GetDowngradeSuccessRateCommand(GameHolder gameHolder) {
         super("getDowngradeSuccessRateCommand");
+        this.gameHolder = gameHolder;
     }
-    
+
     @Override
 	protected void doExecuteCommand() {
-    	Game game = GameHolder.instance().getGame();
-    	
+    	Game game = this.gameHolder.getGame();
+
     	for (int i=0; i<=game.getMaxTurn(); i++) {
     		Turn t = game.getTurn(i);
     		if (t == null) continue;

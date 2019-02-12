@@ -16,7 +16,6 @@ import javax.swing.SwingUtilities;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.ordercheckerIntegration.OrdercheckerProxy;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractView;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
@@ -33,7 +32,17 @@ public class OrderCheckerView extends ScalableAbstractView implements Applicatio
 	NationComboBox nationCombo;
 	JPanel armyRequests;
 	JPanel infoRequests;
-	
+	// injected dependencies
+	GameHolder gameHolder;
+
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+
 	public OrderCheckerView() {
 		super();
 	}
@@ -41,10 +50,13 @@ public class OrderCheckerView extends ScalableAbstractView implements Applicatio
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) event;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				this.nationCombo.load(true, true);
-			}
+			this.onJOEvent((JOverseerEvent) event);
+		}
+	}
+	public void onJOEvent(JOverseerEvent e) {
+		switch (e.getType()) {
+		case GameChangedEvent:
+			this.nationCombo.load(true, true);
 		}
 	}
 
@@ -84,7 +96,7 @@ public class OrderCheckerView extends ScalableAbstractView implements Applicatio
         JPanel nationPanel = new JPanel();
         nationPanel.setLayout(new BoxLayout(nationPanel, BoxLayout.LINE_AXIS));
         nationPanel.add(new JLabel(Messages.getString("SelectOrderchekerNationForm.2")));
-        nationPanel.add(this.nationCombo = new NationComboBox(GameHolder.instance()));
+        nationPanel.add(this.nationCombo = new NationComboBox(this.gameHolder));
         this.nationCombo.addActionListener(new ActionListener() {
 
             @Override
@@ -110,7 +122,7 @@ public class OrderCheckerView extends ScalableAbstractView implements Applicatio
 				OrderCheckerView.this.armyRequests.removeAll();
 				OrderCheckerView.this.infoRequests.removeAll();
 				OrderCheckerView.this.proxy.runOrderchecker();
-				
+
 			}}
 		);
 		nationPanel.add(run);

@@ -36,8 +36,8 @@ public class ArtifactViewer extends ObjectViewer {
     JTextField owner;
     JTextField infoSource;
 
-    public ArtifactViewer(FormModel formModel) {
-        super(formModel, FORM_PAGE);
+    public ArtifactViewer(FormModel formModel,GameHolder gameHolder) {
+        super(formModel, FORM_PAGE,gameHolder);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ArtifactViewer extends ObjectViewer {
 						arg0.getClickCount() == 2) {
 					Artifact a = (Artifact)getFormObject();
                     if (a == null) return;
-                    ArtifactInfo ai = (ArtifactInfo)GameHolder.instance().getGame().getMetadata().findFirstArtifactByNumber(a.getNumber());
+                    ArtifactInfo ai = (ArtifactInfo)ArtifactViewer.this.gameHolder.getGame().getMetadata().findFirstArtifactByNumber(a.getNumber());
                     if (ai == null) return;
                     final String descr = Messages.getString("ArtifactViewer.text",new Object[] {  //$NON-NLS-1$
                     					ai.getNo(), ai.getName(), ai.getAlignment(), ai.getPower1(), ai.getPower2()});

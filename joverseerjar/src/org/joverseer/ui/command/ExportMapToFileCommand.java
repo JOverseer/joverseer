@@ -22,14 +22,17 @@ import org.springframework.richclient.dialog.MessageDialog;
 
 /**
  * Exports the current map image to a file as a jpeg image
- * 
+ *
  * @author Marios Skounakis
  *
  */
 public class ExportMapToFileCommand  extends ActionCommand {
-    
-    public ExportMapToFileCommand() {
+
+	//dependencies
+	GameHolder gameHolder;
+    public ExportMapToFileCommand(GameHolder gameHolder) {
         super("exportMapToFileCommand"); //$NON-NLS-1$
+        this.gameHolder = gameHolder;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class ExportMapToFileCommand  extends ActionCommand {
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));
         }
-        Game game = GameHolder.instance().getGame();
+        Game game = this.gameHolder.getGame();
         fileChooser.setSelectedFile(new File(Messages.getString("ExportMapToFileCommand.gamefileprefix") + game.getMetadata().getGameNo() + Messages.getString("ExportMapToFileCommand.TurnAbb") + game.getCurrentTurn() + ".jpeg")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         fileChooser.setFileFilter(new FileFilter() {
 			@Override
@@ -57,7 +60,7 @@ public class ExportMapToFileCommand  extends ActionCommand {
 			public String getDescription() {
 				return Messages.getString("ExportMapToFileCommand.7"); //$NON-NLS-1$
 			}
-        	
+
         });
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
         	try {

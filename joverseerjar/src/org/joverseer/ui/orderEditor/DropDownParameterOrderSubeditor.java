@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import org.joverseer.domain.Order;
+import org.joverseer.support.GameHolder;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 import com.jidesoft.swing.AutoCompletionComboBox;
@@ -28,12 +29,12 @@ public class DropDownParameterOrderSubeditor extends AbstractOrderSubeditor {
     String[] descriptions;
     int start;
 
-    public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[],int startAt) {
-    	this(oe,paramName,o,values,descriptions);
+    public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[],int startAt,GameHolder gameHolder) {
+    	this(oe,paramName,o,values,descriptions,gameHolder);
     	this.start = startAt;
     }
-    public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[]) {
-        super(oe,o);
+    public DropDownParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, String[] values, String descriptions[],GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
         this.values = values;
         this.descriptions = descriptions;

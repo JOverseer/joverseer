@@ -22,14 +22,16 @@ import org.springframework.richclient.dialog.MessageDialog;
 
 /**
  * Imports orders from a Joverseer (automagic or meow) order file
- * 
+ *
  * @author Marios Skounakis
  */
 public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
     private boolean confirmed = false;
-    
-    public ImportOrdersFromAutomagicFileCommand() {
+    //dependencies
+    GameHolder gameHolder;
+    public ImportOrdersFromAutomagicFileCommand(GameHolder gameHolder) {
         super("importOrdersFromAutomagicFileCommand"); //$NON-NLS-1$
+        this.gameHolder = gameHolder;
     }
 
     @Override
@@ -49,10 +51,10 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
         }
         if (fileChooser.showOpenDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             File f = fileChooser.getSelectedFile();
-            
+
             prefs.put("importOrdersDir", f.getParentFile().getAbsolutePath()); //$NON-NLS-1$
-            
-            GameHolder gh = GameHolder.instance();
+
+            GameHolder gh = this.gameHolder;
             try {
                 String orderFile = "file:///" + f.getAbsolutePath();
 

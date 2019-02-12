@@ -29,7 +29,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Shows combats in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class CombatViewer extends ObjectViewer {
@@ -40,8 +40,8 @@ public class CombatViewer extends ObjectViewer {
 
 	ActionCommand showDescriptionCommand;
 
-	public CombatViewer(FormModel formModel) {
-		super(formModel, FORM_PAGE);
+	public CombatViewer(FormModel formModel,GameHolder gameHolder) {
+		super(formModel, FORM_PAGE,gameHolder);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class CombatViewer extends ObjectViewer {
 	public void setFormObject(Object obj) {
 		super.setFormObject(obj);
 		Combat c = (Combat) obj;
-		Game game = GameHolder.instance().getGame();
+		Game game = this.gameHolder.getGame();
 
 		String d = ""; //$NON-NLS-1$
 		for (Integer nationNo : c.getNarrations().keySet()) {
@@ -110,7 +110,7 @@ public class CombatViewer extends ObjectViewer {
 		public ShowDescriptionCommand(int nationNo) {
 			super("showDescriptionCommand" + nationNo); //$NON-NLS-1$
 			this.nationNo = nationNo;
-			Game game = GameHolder.instance().getGame();
+			Game game = CombatViewer.this.gameHolder.getGame();
 			Nation n = game.getMetadata().getNationByNum(nationNo);
 			setLabel(Messages.getString("CombatViewer.Narration", new Object[] {n.getName()})); //$NON-NLS-1$
 		}

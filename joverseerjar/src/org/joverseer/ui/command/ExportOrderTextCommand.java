@@ -31,12 +31,15 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 
 /**
  * Opens the ExportOrderTextForm form
- * 
+ *
  * @author Marios Skounakis
  */
 public class ExportOrderTextCommand extends ActionCommand {
-	public ExportOrderTextCommand() {
+	//dependencies
+	GameHolder gameHolder;
+	public ExportOrderTextCommand(GameHolder gameHolder) {
 		super("exportOrderTextCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 		}
 
 		private ArrayList<String> getNationItems() {
-			Game g = GameHolder.instance().getGame();
+			Game g = ExportOrderTextCommand.this.gameHolder.getGame();
 			ArrayList<String> ret = new ArrayList<String>();
 			for (PlayerInfo pi : g.getTurn().getPlayerInfo()) {
 				ret.add(g.getMetadata().getNationByNum(pi.getNationNo()).getName());
@@ -79,13 +82,13 @@ public class ExportOrderTextCommand extends ActionCommand {
 
 		private int getSelectedNationNo() {
 			String nationName = this.nation.getSelectedItem().toString();
-			Game g = GameHolder.instance().getGame();
+			Game g = ExportOrderTextCommand.this.gameHolder.getGame();
 			return g.getMetadata().getNationByName(nationName).getNumber();
 		}
 
 		@Override
 		protected JComponent createFormControl() {
-			Game g = GameHolder.instance().getGame();
+			Game g = ExportOrderTextCommand.this.gameHolder.getGame();
 
 			GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
 			glb.append(new JLabel(Messages.getString("standardFields.Nation")));
@@ -112,7 +115,7 @@ public class ExportOrderTextCommand extends ActionCommand {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					OrderTextGenerator gen = new OrderTextGenerator();
-					Game g1 = GameHolder.instance().getGame();
+					Game g1 = ExportOrderTextCommand.this.gameHolder.getGame();
 					try {
 						ExportOrderTextForm.this.orders.setText(gen.generateOrderFile(g1, g1.getTurn(), getSelectedNationNo()));
 						ExportOrderTextForm.this.orders.setCaretPosition(0);

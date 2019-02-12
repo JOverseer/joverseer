@@ -30,8 +30,8 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
 	JTextField artifactName;
     String paramName;
 
-    public ArtifactNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
-        super(oe,o);
+    public ArtifactNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
     }
 
@@ -73,7 +73,7 @@ public class ArtifactNumberParameterOrderSubeditor extends AbstractOrderSubedito
     	String artiName = "";
     	try {
     		int artiNo = Integer.parseInt(artiNoStr);
-    		Game game = GameHolder.instance().getGame();
+    		Game game = this.gameHolder.getGame();
     		ArtifactInfo ai = (ArtifactInfo)game.getMetadata().findFirstArtifactByNumber(artiNo);
     		if (ai != null) {
     			artiName = ai.getName();

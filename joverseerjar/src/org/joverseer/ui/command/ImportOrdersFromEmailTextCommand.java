@@ -37,14 +37,16 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Imports orders from text using the ParseOrdersForm form
- * 
+ *
  * @author Marios Skounakis
  */
 public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 	ParseOrdersForm form;
-
-	public ImportOrdersFromEmailTextCommand() {
+	//dependencies
+	GameHolder gameHolder;
+	public ImportOrdersFromEmailTextCommand(GameHolder gameHolder) {
 		super("importOrdersFromEmailTextCommand"); //$NON-NLS-1$
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 	}
 
 	private ArrayList<String> parseOrders(String text, String textType) {
-		OrderTextReader orderTextReader = OrderTextReader.Factory(textType, GameHolder.instance().getGame());
+		OrderTextReader orderTextReader = OrderTextReader.Factory(textType, this.gameHolder.getGame());
 		try {
 			orderTextReader.parseOrders(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(text.getBytes()))));
 		} catch (Exception e) {
@@ -103,17 +105,17 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 
 	private void loadOrders(String text, String textType) {
 		// use interface incase we swtched to automagic file reader.
-		OrderTextReaderInterface orderReader = OrderTextReader.Factory2(textType, GameHolder.instance().getGame());
+		OrderTextReaderInterface orderReader = OrderTextReader.Factory2(textType, this.gameHolder.getGame());
 		try {
 			orderReader.readOrders(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(text.getBytes()))));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MessageDialog dialog = new MessageDialog(Messages.getString("importOrdersFromEmailTextCommand.ImportOrders"), 
+		MessageDialog dialog = new MessageDialog(Messages.getString("importOrdersFromEmailTextCommand.ImportOrders"),
 					Messages.getString("importOrdersFromEmailTextCommand.OrdersImported", new Object[] {orderReader.getOrdersRead()})); //$NON-NLS-1$ //$NON-NLS-2$
 		dialog.showDialog();
-		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, GameHolder.instance().getGame(), this);
+		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gameHolder.getGame(), this);
 
 	}
 

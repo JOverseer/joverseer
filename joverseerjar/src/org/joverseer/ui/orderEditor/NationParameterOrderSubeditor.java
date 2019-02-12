@@ -26,8 +26,8 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
     JTextField nationNo;
     String paramName;
 
-    public NationParameterOrderSubeditor(OrderEditor oe,String paramName, Order o) {
-        super(oe,o);
+    public NationParameterOrderSubeditor(OrderEditor oe,String paramName, Order o,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = paramName;
     }
 
@@ -62,7 +62,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
 
 	@Override
 	public JComponent getPrimaryComponent(String initValue) {
-		NationComboBox com = new NationComboBox(GameHolder.instance());
+		NationComboBox com = new NationComboBox(this.gameHolder);
 		com.setPreferredSize(new Dimension(120, 18));
 		return com;
 	}

@@ -11,19 +11,23 @@ import org.joverseer.support.GameHolder;
 
 /**
  * Base table model for the Economy Calculator table models
- * 
+ *
  * @author Marios Skounakis
  */
 public abstract class BaseEconomyTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	// dependencies
-	protected GameHolder gameHolder=null;
+	protected GameHolder gameHolder;
 	/**
 	 * the current game, a cache for GetGame();
 	 */
 	Game game = null;
 	int nationNo = 7;
 
+	protected BaseEconomyTableModel(GameHolder gameHolder) {
+		super();
+		this.gameHolder = gameHolder;
+	}
 	protected NationEconomy getNationEconomy() {
 		Turn t = this.getTurn();
 		if (t == null) {
@@ -52,7 +56,9 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 
 	protected Game getGame() {
 		if (this.game == null) {
-			this.game = this.getGameHolder().getGame();
+			if (this.gameHolder != null) {
+				this.game = this.gameHolder.getGame();
+			}
 		}
 		return this.game;
 	}
@@ -68,14 +74,8 @@ public abstract class BaseEconomyTableModel extends AbstractTableModel {
 	protected void setNationNo(int nationNo) {
 		this.nationNo = nationNo;
 	}
-	protected GameHolder getGameHolder() {
-		if (this.gameHolder == null) {
-			this.gameHolder = GameHolder.instance();
-		}
-		return this.gameHolder;
-	}
 	/**
-	 * 
+	 *
 	 * @return null if Game is not initialized.
 	 */
 	protected Turn getTurn() {

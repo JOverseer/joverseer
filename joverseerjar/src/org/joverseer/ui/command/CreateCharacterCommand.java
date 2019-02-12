@@ -18,9 +18,12 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
 
 public class CreateCharacterCommand extends ActionCommand {
+	//dependencies
+	GameHolder gameHolder;
 
-	public CreateCharacterCommand() {
+	public CreateCharacterCommand(GameHolder gameHolder) {
 		super("createCharacterCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -31,7 +34,7 @@ public class CreateCharacterCommand extends ActionCommand {
 		}
 		;
 		FormModel formModel = FormModelHelper.createFormModel(character);
-		final EditCharacterForm form = new EditCharacterForm(formModel);
+		final EditCharacterForm form = new EditCharacterForm(formModel,this.gameHolder);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
 		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -45,7 +48,7 @@ public class CreateCharacterCommand extends ActionCommand {
 				form.commit();
 				character.setId(Character.getIdFromName(character.getName()));
 
-				Game g = GameHolder.instance().getGame();
+				Game g = CreateCharacterCommand.this.gameHolder.getGame();
 				Turn t = g.getTurn();
 				if (t.getContainer(TurnElementsEnum.Character).findFirstByProperty("id", character.getId()) != null) {
 					ErrorDialog ed = new ErrorDialog(Messages.getString("addCharacterDialog.error.DuplicateCharacterId", new Object[] { character.getId() }));

@@ -17,28 +17,31 @@ import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 
 /**
  * Shows the combat calculator
- * 
+ *
  * @author Marios Skounakis
  */
 public class ShowCombatCalculatorCommand extends ActionCommand {
     Combat combat;
-    
-    public ShowCombatCalculatorCommand() {
+    //dependencies
+    GameHolder gameHolder;
+
+    public ShowCombatCalculatorCommand(GameHolder gameHolder) {
         super("showCombatCalculatorCommand");
         this.combat = null;
-        
+        this.gameHolder = gameHolder;
     }
-    
-    public ShowCombatCalculatorCommand(Combat combat) {
+
+    public ShowCombatCalculatorCommand(Combat combat,GameHolder gameHolder) {
         super("showCombatCalculatorCommand");
         this.combat = combat;
+        this.gameHolder = gameHolder;
     }
-    
+
 
     @Override
 	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
-        final Game g = GameHolder.instance().getGame();
+        final Game g = this.gameHolder.getGame();
         if (this.combat == null) {
             this.combat = new Combat();
             this.combat.setMaxRounds(10);
@@ -59,7 +62,7 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
                 joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
                 return true;
             }
-            
+
             @Override
 			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
@@ -71,5 +74,5 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
         dialog.setModal(false);
         dialog.showDialog();
     }
-    
+
 }

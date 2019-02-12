@@ -23,9 +23,13 @@ import org.springframework.richclient.command.ActionCommand;
 public class CreateCombatForHexCommand extends ActionCommand {
 	Integer hexNo;
 
-	public CreateCombatForHexCommand(Integer hexNo) {
+	//dependencies
+	GameHolder gameHolder;
+
+	public CreateCombatForHexCommand(Integer hexNo,GameHolder gameHolder) {
 		super("createCombatForHexCommand");
 		this.hexNo = hexNo;
+		this.gameHolder = gameHolder;
 	}
 
 	protected int getHexNo() {
@@ -39,7 +43,7 @@ public class CreateCombatForHexCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		int hex = getHexNo();
-		Game game = GameHolder.instance().getGame();
+		Game game = this.gameHolder.getGame();
 
 		Combat combat = new Combat();
 		combat.setMaxRounds(10);
@@ -104,7 +108,7 @@ public class CreateCombatForHexCommand extends ActionCommand {
 		combat.autoSetRelationsToHated();
 		game.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(combat);
 		joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
-		ShowCombatCalculatorCommand cmd = new ShowCombatCalculatorCommand(combat);
+		ShowCombatCalculatorCommand cmd = new ShowCombatCalculatorCommand(combat,this.gameHolder);
 		cmd.execute();
 	}
 }

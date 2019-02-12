@@ -12,14 +12,14 @@ import org.joverseer.support.Container;
 
 /**
  * The basic game structure.
- * 
+ *
  * It contains the game metadata, which is static data that depends on the game
  * type. It also contains a container of turns, for all the info for the game's
  * turns. Finally, it contains a hash map of string/string parameters for
  * arbitrary attributes.
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 public class Game implements Serializable {
 	private static final long serialVersionUID = -5743076237064103323L;
@@ -127,5 +127,10 @@ public class Game implements Serializable {
 	public boolean containsParameter(String key) {
 		return this.parameters.containsKey(key);
 	}
-
+	public static Turn getTurnOrNull(Game g) {
+		if (g==null) {
+			return null;
+		}
+		return g.getTurn();
+	}
 }

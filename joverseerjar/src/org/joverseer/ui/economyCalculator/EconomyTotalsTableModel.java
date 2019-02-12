@@ -11,19 +11,20 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 
 /**
  * Table model for the Economy Totals table for the Economy Calculator
- * 
+ *
  * Provides various methods for calculating fields of the Economy Totals table
- * 
+ *
  * @author Marios Skounakis
  */
 public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     /**
-	 * 
+	 *
 	 */
 	private static final int iHeaderCol0 =0;
 	public static final int iValueCol0=1;
@@ -33,7 +34,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	public static final int iValueCol2=5;
 	private static final int iHeaderCol3=6;
 	public static final int iValueCol3=7;
-	
+
 	public static final int iStartingGoldRow = 0;
 	private static final int iTaxRevenueRow = 1;
 	private static final int iCharMaintRow = 1;
@@ -51,7 +52,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	private static final int iTotalMaintRow =4;
 	public static final int iTotalLossesRow =4;
 	public static final int iFinalGoldRow = 5;
-	
+
 	private static final long serialVersionUID = -7961559423992117184L;
 	String[] columnHeaders = new String[] {"", "", "", "", "", "","",""};
     // "row headers", they go into column 0 of the table
@@ -67,30 +68,30 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     int[] columnWidths = new int[] {100, 60, 95, 60, 85, 60,95,60};
 
     JTable table;
-    public EconomyTotalsTableModel()
+    public EconomyTotalsTableModel(GameHolder gameHolder)
     {
-    	super();
+    	super(gameHolder);
 		this.rowHeaders0 = new String[this.rowTags0.length];
 		this.rowHeaders1 = new String[this.rowTags1.length];
 		this.rowHeaders2 = new String[this.rowTags2.length];
 		this.rowHeaders3 = new String[this.rowTags3.length];
 		for (int i=0;i<this.rowTags0.length;i++) {
-			if (!this.rowTags0[i].isEmpty()) { 
+			if (!this.rowTags0[i].isEmpty()) {
 				this.rowHeaders0[i] = (this.rowTags0[i] == null) ? "" : Messages.getString("EconomyCalculator.Totals." +this.rowTags0[i]);
 			}
 		}
 		for (int i=0;i<this.rowTags1.length;i++) {
-			if (!this.rowTags1[i].isEmpty()) { 
+			if (!this.rowTags1[i].isEmpty()) {
 				this.rowHeaders1[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags1[i]);
 			}
 		}
 		for (int i=0;i<this.rowTags2.length;i++) {
-			if (!this.rowTags2[i].isEmpty()) { 
+			if (!this.rowTags2[i].isEmpty()) {
 				this.rowHeaders2[i] = Messages.getString("EconomyCalculator.Totals." +this.rowTags2[i]);
 			}
 		}
 		for (int i=0;i<this.rowTags3.length;i++) {
-			if (!this.rowTags3[i].isEmpty()) { 
+			if (!this.rowTags3[i].isEmpty()) {
 				this.rowHeaders3[i] = (this.rowTags3[i] == null) ? "" : Messages.getString("EconomyCalculator.Totals." +this.rowTags3[i]);
 			}
 		}
@@ -98,7 +99,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     public void setTable(JTable table) {
     	this.table = table;
     }
-    
+
     @Override
 	public int getColumnCount() {
         return iValueCol3+1;
@@ -108,7 +109,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
 	public int getRowCount() {
         return 6;
     }
-    
+
     @Override
 	public String getColumnName(int column) {
         return this.columnHeaders[column];
@@ -117,7 +118,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     public int getColumnWidth(int column) {
         return this.columnWidths[column];
     }
-    
+
     @Override
 	public Class<?> getColumnClass(int column) {
     	switch (column) {
@@ -209,7 +210,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
         return "";
     }
-    
+
     protected void select(int rowIndex, int columnIndex) {
     	try {
     		this.table.setColumnSelectionInterval(columnIndex, columnIndex);
@@ -219,7 +220,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
     		// do nothing
     	}
     }
-    
+
     public int getTotalRevenue() {
         return getTaxRevenue() + getGoldProduction()  - computeLostGoldRevenue() - computeLostTaxRevenue();
     }
@@ -235,7 +236,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         NationEconomy ne = getNationEconomy();
         return getTaxRevenue() + getMarketProfits() + getGoldProduction() - ne.getTotalMaintenance() - getOrdersCost() + ne.getReserve() - computeLostGoldRevenue() - computeLostTaxRevenue();
     }
-    
+
     /**
      * Computes the tax revenue for the nation
      * @return
@@ -247,7 +248,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
         return ne.getTaxBase() * 2500 * getTaxRate() / 100;
     }
-    
+
     @Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
         return (columnIndex == iValueCol2 && rowIndex == iOrdersCostRow) ||
@@ -285,7 +286,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         return getTaxRevenue() + getGoldProduction() - ne.getTotalMaintenance();
     }
 
-    
+
     public Integer getMarketSales() {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return null;
@@ -301,7 +302,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (ecd == null) return null;
         return ecd.getMarketProfits();
     }
-    
+
     /**
      * Computes the gold production for the nation, unless it has been specifically set
      * by the user
@@ -313,7 +314,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             NationEconomy ne = getNationEconomy();
             // hack to compute gold production if needed
             // gold production = total revenue - calculated tax revenue
-            if (ne.getGoldProduction()==0 && 
+            if (ne.getGoldProduction()==0 &&
                     ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100 != 0) {
                 ne.setGoldProduction(ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100);
             }
@@ -321,35 +322,35 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
         return ecd.getGoldProduction();
     }
-    
+
     public void setGoldProduction(Integer goldProduction) {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return;
         ecd.setGoldProduction(goldProduction);
     }
-    
+
     public Integer getOrdersCost() {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return null;
         return ecd.getOrdersCost();
     }
 
-    
+
     public void setOrdersCost(int ordersCost) {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return;
         ecd.setOrdersCost(ordersCost);
     }
-    
+
     public void setTaxRate(int newTaxRate) {
         EconomyCalculatorData ecd = getEconomyCalculatorData();
         if (ecd == null) return;
         ecd.setTaxRate(newTaxRate);
     }
-    
+
     /**
      * Gets the tax rate from the nation economy, unless it has been specifically set by the user
-     * 
+     *
      * @return
      */
     public int getTaxRate() {
@@ -365,7 +366,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (getNationNo() < 1) return 0;
         return computeLostTaxRevenue(getNationNo());
     }
-    
+
     /**
      * Computes the expected lost tax revenue based on the pop centers marked as expected to be lost
      * for the given nation
@@ -374,7 +375,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         Turn t = this.getTurn();
         if (t == null) return 0;
         int lostTaxRevenue = 0;
-        
+
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
             if (pc.getNationNo().equals(nation) && pc.getLostThisTurn()) {
                 int sz = pc.lookupSize(new int[] {0,0,1,2,3,4});
@@ -383,10 +384,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
                 if (ecd == null || ecd.getTaxRate() == null) {
                     lostTaxRevenue += sz * 2500 * ne.getTaxRate() / 100;
                 } else {
-                    lostTaxRevenue += sz * 2500 * ecd.getTaxRate() / 100; 
+                    lostTaxRevenue += sz * 2500 * ecd.getTaxRate() / 100;
                 }
             }
-            
+
         }
         return lostTaxRevenue;
     }
@@ -395,7 +396,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (getNationNo() < 1) return 0;
         return computeNewTaxBase(getNationNo());
     }
-    
+
     /**
      * Computes the new tax base for the given nation based on the pop centers
      * marked as expected to be lost this turn
@@ -404,13 +405,13 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         Turn t = this.getTurn();
         if (t == null) return 0;
         int newTaxBase = 0;
-        
+
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
             if (pc.getNationNo().equals(nation) && !pc.getLostThisTurn()) {
                 int sz = pc.lookupSize(new int[] {0,0,1,2,3,4});
                 newTaxBase += sz;
             }
-            
+
         }
         return newTaxBase;
     }
@@ -419,7 +420,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (getNationNo() < 1) return 0;
         return computeLostGoldRevenue(getNationNo());
     }
-    
+
     /**
      * Computes the lost gold revenue for the given nation based on the pop centers
      * marked as expected to be lost this turn
@@ -428,7 +429,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         Turn t = this.getTurn();
         if (t == null) return 0;
         int lostGoldRevenue = 0;
-        
+
         for (PopulationCenter pc : (ArrayList<PopulationCenter>)t.getContainer(TurnElementsEnum.PopulationCenter).getItems()) {
             if (pc.getNationNo().equals(nation) && pc.getLostThisTurn()) {
                 if (pc.getProduction(ProductEnum.Gold) != null) {
@@ -438,10 +439,10 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         }
         return lostGoldRevenue;
     }
-    
+
     /**
-     * Computes the tax increase 
-     * Returns 0 if no tax increase will occur 
+     * Computes the tax increase
+     * Returns 0 if no tax increase will occur
      */
     public int getTaxIncrease() {
         NationEconomy ne = getNationEconomy();
@@ -452,21 +453,21 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         double newTaxRate = Math.round((double)-finalGold / (double)2500 / (double)computeNewTaxBase()* 100d);
         return (int)newTaxRate;
     }
-    
+
     /**
      * Computes the amount of gold that must be bought in order to incur the given
-     * tax increase 
+     * tax increase
      */
     public int getBuyAmountForTaxIncrease(int newTaxRate) {
         NationEconomy ne = getNationEconomy();
         if (ne == null) return 0;
         double finalGold = Math.round(
-                        ((double)getTaxRevenue() - (double)computeLostTaxRevenue()) * (double)newTaxRate / (double)getTaxRate() 
+                        ((double)getTaxRevenue() - (double)computeLostTaxRevenue()) * (double)newTaxRate / (double)getTaxRate()
                         + (double)getGoldProduction() - (double)computeLostGoldRevenue() -
                         (double)ne.getTotalMaintenance() + (double)ne.getReserve());
         return (int)finalGold;
     }
-    
+
     public void updateMarketFromOrders() {
     	getEconomyCalculatorData().updateMarketFromOrders();
     }

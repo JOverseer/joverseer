@@ -24,11 +24,13 @@ import org.springframework.richclient.progress.BusyIndicator;
 
 /**
  * Saves the current game to a file
- * 
+ *
  * @author Marios Skounakis
  */
 public class SaveGame extends ActionCommand {
 	private boolean doExecuteCompletedSave;
+	//dependencies
+	GameHolder gameHolder;
     /***
      * Indicate if the last save actually completed. no errors or cancel.
      * @return
@@ -36,8 +38,9 @@ public class SaveGame extends ActionCommand {
 	public boolean isDoExecuteCompletedSave() {
 		return this.doExecuteCompletedSave;
 	}
-	public SaveGame() {
+	public SaveGame(GameHolder gameHolder) {
         super("SaveGameCommand"); //$NON-NLS-1$
+        this.gameHolder = gameHolder;
     }
 
     // use this version when you want a different name for the command.
@@ -47,7 +50,7 @@ public class SaveGame extends ActionCommand {
     @Override
 	protected void doExecuteCommand() {
     	this.doExecuteCompletedSave = false;
-        if (!GameHolder.hasInitializedGame()) {
+        if (!this.gameHolder.isGameInitialized()) {
             // show error, cannot import when game not initialized
             ErrorDialog.showErrorDialog("errorSavingGame"); //$NON-NLS-1$
             return;
@@ -55,14 +58,13 @@ public class SaveGame extends ActionCommand {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         fileChooser.setApproveButtonText("Save"); //$NON-NLS-1$
-        
+
         Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
         String saveDir = prefs.get("saveDir", null); //$NON-NLS-1$
         if (saveDir != null) {
             fileChooser.setCurrentDirectory(new File(saveDir));
         }
-        GameHolder gh = GameHolder.instance();
-        String fname = String.format("game%s.jov", gh.getGame().getMetadata().getGameNo()); //$NON-NLS-1$
+        String fname = String.format("game%s.jov", this.gameHolder.getGame().getMetadata().getGameNo()); //$NON-NLS-1$
         fileChooser.setSelectedFile(new File(fname));
         if (fileChooser.showSaveDialog(Application.instance().getActiveWindow().getControl()) == JFileChooser.APPROVE_OPTION) {
             BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
@@ -70,7 +72,7 @@ public class SaveGame extends ActionCommand {
             File f = fileChooser.getSelectedFile();
             GZIPOutputStream zos;
             try {
-                Game g = gh.getGame();
+                Game g = this.gameHolder.getGame();
 
                 MapPanel mp = MapPanel.instance();
                 JScrollPane scp = (JScrollPane)mp.getParent().getParent();

@@ -28,6 +28,7 @@ import javax.swing.border.Border;
 
 import org.joverseer.joApplication;
 import org.joverseer.domain.Order;
+import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
@@ -46,7 +47,7 @@ import org.springframework.richclient.layout.GridBagLayoutBuilder;
 /**
  * Shows orders
  * Used by the Character viewer
- * 
+ *
  * @author Marios Skounakis
  */
 public class OrderViewer extends ObjectViewer implements ActionListener {
@@ -55,16 +56,16 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     JTextField orderText;
     JLabel orderResultIcon;
     JCheckBox draw;
-    
-    public OrderViewer(FormModel formModel) {
-        super(formModel, FORM_PAGE);
+
+    public OrderViewer(FormModel formModel,GameHolder gameHolder) {
+        super(formModel, FORM_PAGE,gameHolder);
     }
-    
+
     @Override
 	public boolean appliesTo(Object obj) {
         return Order.class.isInstance(obj);
     }
-    
+
     protected OrderResultTypeEnum addValidationResult(Order o, OrderValidationResult res, Integer paramI, OrderResultTypeEnum orderResultType, ArrayList<OrderResult> results) {
     	if (res == null) return orderResultType;
     	String e = ""; //$NON-NLS-1$
@@ -91,14 +92,14 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     	}
     	return orderResultType;
     }
-    
+
     public void setOrderValidationResults(Order o) {
     	OrderResultTypeEnum orderResultType = null;
     	Icon ico = null;
     	boolean joErrors = false;
     	ArrayList<OrderResult> results = new ArrayList<OrderResult>();
     	if (!o.isBlank()) {
-	    	
+
 	        OrderResultContainer container = OrderResultContainer.instance();
 	        orderResultType = container.getResultTypeForOrder(o);
 	        if (orderResultType != null) {
@@ -148,9 +149,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             this.orderText.setCaretPosition(0);
         }
         this.orderText.setTransferHandler(new OrderExportTransferHandler(o));
-        
+
         setOrderValidationResults(o);
-        
+
         OrderVisualizationData ovd = OrderVisualizationData.instance();
         this.draw.setSelected(ovd.contains(o));
         if (GraphicUtils.canRenderOrder(o)) {
@@ -159,7 +160,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         	this.draw.setEnabled(false);
         	this.draw.setSelected(false);
         }
-        
+
     }
 
     @Override
@@ -181,7 +182,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 handler.exportAsDrag(OrderViewer.this.orderText, e, TransferHandler.COPY);
             }
         });
-        
+
         this.orderText.setDropTarget(new DropTarget(this.orderText, new DropTargetAdapter() {
             @Override
 			public void drop(DropTargetDropEvent dtde) {
@@ -195,21 +196,21 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                         org.joverseer.domain.Character c = o.getCharacter();
                         o.setCharacter(no.getCharacter());
                         no.setCharacter(c);
-                        
+
                         // set order no to character c
                         for (int i=0; i<c.getNumberOfOrders(); i++) {
                         	if (c.getOrders()[i] == o) {
                         		c.getOrders()[i] = no;
                         	}
                         }
-                        
+
                         // set order o to character o.getCharacter
                         for (int i=0; i<o.getCharacter().getNumberOfOrders(); i++) {
                         	if (o.getCharacter().getOrders()[i] == no) {
                         		o.getCharacter().getOrders()[i] = o;
                         	}
                         }
-                        
+
                         joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 
                         joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, no, this);
@@ -224,7 +225,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         this.orderResultIcon.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
         this.orderResultIcon.setBorder(border);
         glb.append(this.orderResultIcon);
-        
+
         ImageSource imgSource = joApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
         final JButton btn = new JButton(ico);
@@ -236,7 +237,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
             }
         });
-        
+
         btn.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
         btn.setBorder(border);
         glb.append(btn);
@@ -270,7 +271,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         //p.setPreferredSize(new Dimension(166, 16));
         p.setBackground(Color.white);
         p.setBorder(border);
-        
+
         p.setFocusTraversalPolicyProvider(true);
         p.setFocusTraversalPolicy(new FocusTraversalPolicy() {
             @Override
@@ -293,7 +294,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 return OrderViewer.this.draw;
             }
 
-            
+
             @Override
 			public Component getDefaultComponent(Container aContainer) {
                 return btn;
@@ -308,7 +309,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 			public Component getLastComponent(Container aContainer) {
                 return (OrderViewer.this.draw.isEnabled() ? OrderViewer.this.draw : btn);
             }
-            
+
         });
         return p;
     }

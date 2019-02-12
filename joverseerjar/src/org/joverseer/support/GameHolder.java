@@ -2,12 +2,15 @@ package org.joverseer.support;
 
 import org.joverseer.joApplication;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.springframework.context.ApplicationContext;
 
 /**
  * Simple wrapper for the Game object.
- * 
+ *
  * @author Marios Skounakis
+ *  there's only ever one gameHolder, so spring can create it and inject it for everyone who wants it.
+ *  but the properties can change during the application's lifetime, so every instance that has it injected needs to be notified of a game change.
  */
 public class GameHolder {
     Game game;
@@ -20,8 +23,8 @@ public class GameHolder {
     public void setGame(Game game) {
         this.game = game;
     }
-    
-    
+
+
 
     public String getFile() {
 		return this.file;
@@ -31,9 +34,12 @@ public class GameHolder {
 		this.file = file;
 	}
 
+	public boolean isGameInitialized() {
+        return Game.isInitialized(this.getGame());
+	}
+
 	public static boolean hasInitializedGame() {
-        GameHolder gh = instance();
-        return Game.isInitialized(gh.getGame());
+        return instance().isGameInitialized();
     }
 	/**
 	 * should be deprecated. Use instance(ApplicationContext context).
@@ -50,5 +56,14 @@ public class GameHolder {
      */
     public static GameHolder instance(ApplicationContext context) {
     	return (GameHolder) context.getBean("gameHolder");
+    }
+    public static Turn getTurnOrNull(GameHolder gh) {
+    	if (gh == null) {
+    		return null;
+    	}
+    	if (gh.game == null) {
+    		return null;
+    	}
+    	return Game.getTurnOrNull(gh.game);
     }
 }

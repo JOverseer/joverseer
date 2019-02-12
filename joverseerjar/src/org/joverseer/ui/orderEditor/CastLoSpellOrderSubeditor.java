@@ -38,14 +38,14 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
     JPanel currentCompPanel;
     String currentType = null;
 
-    public CastLoSpellOrderSubeditor(OrderEditor oe,Order o) {
-        super(oe,o);
+    public CastLoSpellOrderSubeditor(OrderEditor oe,Order o,GameHolder gameHolder) {
+        super(oe,o,gameHolder);
         this.paramName = "Spell";
         this.orderNo = 940;
     }
 
     protected void loadSpellCombo() {
-    	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+    	GameMetadata gm = this.gameHolder.getGame().getMetadata();
     	Character c = getOrder().getCharacter();
         this.parameter.addItem("");
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
@@ -150,19 +150,19 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 this.currentType = paramType;
             }
             if (paramType.equals("cid")) {
-                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Char", getOrder());
+                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Char", getOrder(),this.gameHolder);
             } else if (paramType.equals("b")) {
-                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Arti No", getOrder());
+                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Arti No", getOrder(),this.gameHolder);
             } else if (paramType.equals("hex")) {
-                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Hex", getOrder());
+                sub = new SingleParameterOrderSubeditor(this.getEditor(), "Hex", getOrder(),this.gameHolder);
             } else if (paramType.equals("nat")) {
-                sub = new NationParameterOrderSubeditor(this.getEditor(),"Nation", getOrder());
+                sub = new NationParameterOrderSubeditor(this.getEditor(),"Nation", getOrder(),this.gameHolder);
             } else if (paramType.equals("pro")) {
-                sub = new DropDownParameterOrderSubeditor(this.getEditor(),"Product", getOrder(), new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold"});
+                sub = new DropDownParameterOrderSubeditor(this.getEditor(),"Product", getOrder(), new String[]{"le", "br", "st", "mi", "fo", "ti", "mo", "go"}, new String[]{"Leather", "Bronze", "Steel", "Mithril", "Food", "Timber", "Mounts", "Gold"},this.gameHolder);
             } else if (paramType.equals("alg")) {
-                sub = new DropDownParameterOrderSubeditor(this.getEditor(),"Alleg", getOrder(), new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"});
+                sub = new DropDownParameterOrderSubeditor(this.getEditor(),"Alleg", getOrder(), new String[]{"g", "e", "n"}, new String[]{"Good", "Evil", "Neutral"},this.gameHolder);
             }else if (paramType.equals("art")) {
-                sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder());
+                sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder(),this.gameHolder);
             } else {
             	throw new Exception("Config error");
             }
@@ -175,7 +175,7 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
                 sub.setEditor(getEditor());
                 if (!multiple) break; // normal loop exit if one parameter
                 counter++;
-              	sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder());
+              	sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder(),this.gameHolder);
             } while (counter < 7);
 
             this.currentComp = this.components.get(1);

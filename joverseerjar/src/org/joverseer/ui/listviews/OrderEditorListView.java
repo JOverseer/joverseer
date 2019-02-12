@@ -592,7 +592,9 @@ public class OrderEditorListView extends ItemListView {
 			TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
 			// ComboBox Editor for the order number
 			GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
-
+			if (gm == null) {
+				return;
+			}
 			Order order=null;
 			Character c = null;
 			int row = OrderEditorListView.this.table.getSelectedRow();
@@ -626,7 +628,7 @@ public class OrderEditorListView extends ItemListView {
 
 			});
 			if (this.completeOrderData == null) {
-				this.completeOrderData = OrderEditor.instance().getOrderEditorData();
+				this.completeOrderData = ((OrderEditor)this.getApplicationContext().getBean(OrderEditor.DEFAULT_BEAN_ID)).getOrderEditorData();
 			}
 			if (this.completeOrderData != null) {
 				//int paramNo = 0;
@@ -639,9 +641,9 @@ public class OrderEditorListView extends ItemListView {
 						case 850:
 						case 860:
 						case 830:
-							sub = new MoveArmyOrderSubeditor(null,order);
+							sub = new MoveArmyOrderSubeditor(null,order,this.gameHolder);
 						case 940:
-							sub = new CastLoSpellOrderSubeditor(null,order);
+							sub = new CastLoSpellOrderSubeditor(null,order,this.gameHolder);
 
 						default:
 /*							paramNo = col-OrderEditorTableModel.iParamStart;

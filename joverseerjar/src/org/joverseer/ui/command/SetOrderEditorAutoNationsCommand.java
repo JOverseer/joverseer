@@ -29,13 +29,16 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
  * Commands that opens the OrderEditorAutoNationsForm and allows the user to set the
  * Order Editor Auto Nations (nations for which the character viewer automatically shows
  * the orders so they can be edited more easily - save one click to open the orders)
- * 
+ *
  * @author Marios Skounakis
  */
 public class SetOrderEditorAutoNationsCommand extends ActionCommand {
-    
-    public SetOrderEditorAutoNationsCommand() {
+
+	//dependencies
+	GameHolder gameHolder;
+    public SetOrderEditorAutoNationsCommand(GameHolder gameHolder) {
         super("setOrderEditorAutoNationsCommand");
+        this.gameHolder = gameHolder;
     }
 
     @Override
@@ -53,11 +56,11 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
         dlg.setTitle(Messages.getString("orderEditorAutoNationsDialog.title"));
         dlg.showDialog();
     }
-    
+
     class OrderEditorAutoNationsForm extends AbstractForm {
         HashMap<Integer, JCheckBox> checkBoxes = new HashMap<Integer, JCheckBox>();
-        
-        
+
+
         public OrderEditorAutoNationsForm(FormModel arg0) {
             super(arg0, "orderEditorAutoNationsForm");
         }
@@ -65,7 +68,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
         @Override
 		protected JComponent createFormControl() {
             TableLayoutBuilder tlb = new TableLayoutBuilder();
-            final Game g = GameHolder.instance().getGame();
+            final Game g = SetOrderEditorAutoNationsCommand.this.gameHolder.getGame();
             for (int i=1; i<=25; i++) {
                 Nation n = g.getMetadata().getNationByNum(i);
                 if (n != null) {
@@ -78,7 +81,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
                     tlb.relatedGapRow();
                 }
             }
-            
+
             JButton btn = new JButton("Select All");
             btn.addActionListener(new ActionListener() {
                 @Override
@@ -90,7 +93,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             });
             tlb.cell(btn);
             tlb.relatedGapRow();
-            
+
             btn = new JButton("Select Imported");
             btn.addActionListener(new ActionListener() {
                 @Override
@@ -103,7 +106,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             });
             tlb.cell(btn);
             tlb.relatedGapRow();
-            
+
             btn = new JButton("Deselect All");
             btn.addActionListener(new ActionListener() {
                 @Override
@@ -115,7 +118,7 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             });
             tlb.cell(btn);
             tlb.relatedGapRow();
-            
+
             return tlb.getPanel();
         }
 
@@ -131,5 +134,5 @@ public class SetOrderEditorAutoNationsCommand extends ActionCommand {
             }
         }
     }
-    
+
 }

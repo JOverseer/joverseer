@@ -34,7 +34,6 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.BaseView;
-import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -53,11 +52,11 @@ import com.jidesoft.popup.JidePopup;
 
 /**
  * The economy calculator view
- * 
+ *
  * The basic functionality is: - a combo box allows the user to select a nation
  * - the view displays all economy information for this nation - economy
  * information can be edited accordingly by the user
- * 
+ *
  * @author Marios Skounakis
  */
 public class EconomyCalculator extends BaseView implements ApplicationListener {
@@ -82,50 +81,54 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.EconomyCalculatorUpdate)) {
-				((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
-				((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
-				refreshMarketLimitWarning();
-				refreshTaxIncrease();
-				refreshAutocalcOrderCost();
-				refreshFinalGoldWarning();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {				
-				Nation n = this.nationCombo.load(false,true);
-				if (n != null) {
-					try {
-						((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
-						((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
-						refreshMarketLimitWarning();
-						refreshTaxIncrease();
-						refreshAutocalcOrderCost();
-						refreshFinalGoldWarning();
-					} catch (Exception exc) {
-						exc.printStackTrace();
-					}
-				}
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				super.resetGame(); 
-				((MarketTableModel) this.marketTable.getModel()).setGame(null);
-				((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
-				Nation n = this.nationCombo.load(true, true);
-				if (n!= null) {
-					refreshSNA(n);
-				}
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-				refreshAutocalcOrderCost();
-				if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
-					((EconomyTotalsTableModel) this.totalsTable.getModel()).updateMarketFromOrders();
-					refreshMarketLimitWarning();
-					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
-					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
-				}
-				refreshFinalGoldWarning();
-			}
-
+			this.onJOEvent((JOverseerEvent) applicationEvent);
 		}
 	}
-
+	public void onJOEvent(JOverseerEvent e) {
+		switch(e.getType()) {
+		case EconomyCalculatorUpdate:
+			((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+			((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
+			refreshMarketLimitWarning();
+			refreshTaxIncrease();
+			refreshAutocalcOrderCost();
+			refreshFinalGoldWarning();
+			break;
+		case SelectedTurnChangedEvent:
+			if (this.nationCombo.load(false,true) != null) {
+				try {
+					((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+					((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
+					refreshMarketLimitWarning();
+					refreshTaxIncrease();
+					refreshAutocalcOrderCost();
+					refreshFinalGoldWarning();
+				} catch (Exception exc) {
+					exc.printStackTrace();
+				}
+			}
+			break;
+		case GameChangedEvent:
+			super.resetGame();
+			((MarketTableModel) this.marketTable.getModel()).setGame(null);
+			((EconomyTotalsTableModel) this.totalsTable.getModel()).setGame(null);
+			Nation n = this.nationCombo.load(true, true);
+			if (n!= null) {
+				refreshSNA(n);
+			}
+			break;
+		case OrderChangedEvent:
+			refreshAutocalcOrderCost();
+			if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.autoUpdateEconCalcMarketFromOrders"))) { //$NON-NLS-1$ //$NON-NLS-2$
+				((EconomyTotalsTableModel) this.totalsTable.getModel()).updateMarketFromOrders();
+				refreshMarketLimitWarning();
+				((AbstractTableModel) this.marketTable.getModel()).fireTableDataChanged();
+				((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
+			}
+			refreshFinalGoldWarning();
+			break;
+		}
+	}
 	/**
 	 * If sell amount is above this amount give a "market limit warning"
 	 */
@@ -184,7 +187,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 			this.taxIncrease.setVisible(false);
 		} else {
 			this.taxIncrease.setVisible(true);
-			int finalTaxAmt = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getTaxRate() + taxIncreaseAmt; 
+			int finalTaxAmt = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getTaxRate() + taxIncreaseAmt;
 			this.taxIncrease.setText(Messages.getString("EconomyCalculator.taxesUp", new Object[] { taxIncreaseAmt, finalTaxAmt})); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
@@ -208,16 +211,16 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 	}
 	private void setCheaperShipsFromSNA(Nation n) {
 		this.cheaperShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith750Timber));
-	}		
+	}
 	private void setCheapestShipsFromSNA(Nation n) {
 		this.cheapestShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith500Timber));
-	}		
+	}
 	private void setCheapFortificationsFromSNA(Nation n) {
 		this.cheapFortifications.setSelected(n.getSnas().contains(SNAEnum.FortificationsWithHalfTimber));
-	}		
+	}
 	private void setFreeArmyHireFromSNA(Nation n) {
 		this.freeArmyHire.setSelected(n.getSnas().contains(SNAEnum.FreeHire));
-	}		
+	}
 	private void setMarketInfluenceFromSNA(Nation n) {
 		this.marketInfluence.setSelected(n.getSnas().contains(SNAEnum.Influence));
 	}
@@ -312,7 +315,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		this.marketInfluence.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.marketInfluence.setBackground(Color.white);
 		this.marketInfluence.setEnabled(false);
-		
+
 		nationPanel.add(snaPanel);
 		nationPanel.getInsets().set(0, 0, 0, 0);
 		nationPanel.setBackground(Color.white);
@@ -349,7 +352,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		lb.row();
 		lb.relatedGapRow();
 
-		MarketTableModel mtm = new MarketTableModel();
+		MarketTableModel mtm = new MarketTableModel(this.gameHolder);
 		this.marketTable = new JOverseerTable(mtm);
 		mtm.setTable(this.marketTable);
 
@@ -428,7 +431,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		lb.row();
 		lb.relatedGapRow();
 
-		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel();
+		EconomyTotalsTableModel ettm = new EconomyTotalsTableModel(this.gameHolder);
 
 		mtm.setTotalsModel(ettm);
 		this.totalsTable = new JOverseerTable(ettm) {
@@ -452,7 +455,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 				}
 				return c;
 			}
-			
+
 		};
 		ettm.setTable(this.totalsTable);
 		this.totalsTable.getTableHeader().setVisible(false);
@@ -582,12 +585,12 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 
 	/**
 	 * Renderer for the Market Table
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	public class MarketRenderer extends DefaultTableCellRenderer {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 9079326762672678398L;
 		// TODO export colors to color.properties
@@ -611,12 +614,12 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 
 	/**
 	 * Renderer for the totals table
-	 * 
+	 *
 	 * @author Marios Skounakis
 	 */
 	public class TotalsRenderer extends DefaultTableCellRenderer {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 4072426945699643672L;
 
@@ -627,7 +630,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			JLabel lbl = ((JLabel) c);
 			lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol3 
+			if (row == EconomyTotalsTableModel.iOrdersCostRow && column == EconomyTotalsTableModel.iValueCol3
 					|| row == EconomyTotalsTableModel.iFinalGoldRow && column == EconomyTotalsTableModel.iValueCol3) {
 				lbl.setFont(GraphicUtils.getFont(lbl.getFont().getName(), Font.BOLD, lbl.getFont().getSize()));
 			} else {
@@ -734,8 +737,8 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 	     * Returns whether or not the border is opaque.
 	     */
 	    @Override
-		public boolean isBorderOpaque() { 
-	        return false; 
+		public boolean isBorderOpaque() {
+	        return false;
 	    }
 
 	  public int getGap() {

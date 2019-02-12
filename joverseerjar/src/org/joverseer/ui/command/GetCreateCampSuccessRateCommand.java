@@ -11,16 +11,19 @@ import org.joverseer.support.GameHolder;
 import org.springframework.richclient.command.ActionCommand;
 
 public class GetCreateCampSuccessRateCommand extends ActionCommand {
-    
-    
-    public GetCreateCampSuccessRateCommand() {
+
+    //dependencies
+	GameHolder gameHolder;
+
+    public GetCreateCampSuccessRateCommand(GameHolder gameHolder) {
         super("getCreateCampSuccessRateCommand");
+        this.gameHolder = gameHolder;
     }
-    
+
     @Override
 	protected void doExecuteCommand() {
-    	Game game = GameHolder.instance().getGame();
-    	
+    	Game game = this.gameHolder.getGame();
+
     	for (int i=0; i<=game.getMaxTurn(); i++) {
     		Turn t = game.getTurn(i);
     		if (t == null) continue;

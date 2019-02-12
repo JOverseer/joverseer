@@ -34,7 +34,7 @@ import org.springframework.richclient.table.TableUtils;
 
 /**
  * Forms that shows/edits an army
- * 
+ *
  * @author Marios Skounakis
  */
 
@@ -72,9 +72,12 @@ public class EditArmyForm extends ScalableAbstractForm {
 	BeanTableModel elementTableModel;
 
 	ArrayList<ArmyElement> elementList;
+	//dependencies
+	final GameHolder gameHolder;
 
-	public EditArmyForm(FormModel arg0) {
+	public EditArmyForm(FormModel arg0,GameHolder gameHolder) {
 		super(arg0, FORM_ID);
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -100,7 +103,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 		}
 		;
 		try {
-			Nation n = GameHolder.instance().getGame().getMetadata().getNationByName(this.nation.getSelectedItem().toString());
+			Nation n = this.gameHolder.getGame().getMetadata().getNationByName(this.nation.getSelectedItem().toString());
 			a.setNationNo(n.getNumber());
 			a.setNationAllegiance(n.getAllegiance());
 		} catch (Exception exc) {
@@ -166,7 +169,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 
 		this.elements = new JTable(this.elementTableModel = new ArmyElementTableModel(Messages.getMessageSource()) {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = -2748366891274748131L;
 
@@ -189,7 +192,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 		});
 		this.elements.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 5593420847626205199L;
 
@@ -211,7 +214,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 	}
 
 	private ArrayList<String> getNationNames() {
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		ArrayList<NationRelations> nrs = g.getTurn().getContainer(TurnElementsEnum.NationRelation).getItems();
 		ArrayList<String> ret = new ArrayList<String>();
 		ret.add(g.getMetadata().getNationByNum(0).getName());
@@ -230,9 +233,9 @@ public class EditArmyForm extends ScalableAbstractForm {
 
 		this.commander.setText(a.getCommanderName());
 
-		this.nation.setSelectedItem(GameHolder.instance().getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
+		this.nation.setSelectedItem(this.gameHolder.getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
 
-		Character c = (Character) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", a.getCommanderName());
+		Character c = (Character) this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", a.getCommanderName());
 		if (c != null) {
 			this.commandRank.setText(String.valueOf(c.getCommandTotal()));
 		}

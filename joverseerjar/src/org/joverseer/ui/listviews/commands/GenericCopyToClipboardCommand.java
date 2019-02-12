@@ -19,21 +19,24 @@ public class GenericCopyToClipboardCommand extends ActionCommand implements Clip
     String NL = "\n";
     Game game;
 
-    
-    public GenericCopyToClipboardCommand(JTable table) {
+    //dependencies
+    GameHolder gameHolder;
+
+    public GenericCopyToClipboardCommand(JTable table,GameHolder gameHolder) {
 		super("genericCopyToClipboardCommand");
 		this.table = table;
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
 	protected void doExecuteCommand() {
-        this.game = GameHolder.instance().getGame();
+        this.game = this.gameHolder.getGame();
         String txt = "";
         TableModel tableModel = this.table.getModel();
         for (int j=0; j<tableModel.getColumnCount(); j++) {
         	txt += (txt.equals("") ? "" : this.DELIM) + tableModel.getColumnName(j);
         }
-        
+
         for (int i = 0; i < tableModel.getRowCount(); i++) {
         	String row = "";
         	for (int j=0; j<tableModel.getColumnCount(); j++) {
@@ -50,7 +53,7 @@ public class GenericCopyToClipboardCommand extends ActionCommand implements Clip
 
 	@Override
 	public void lostOwnership(Clipboard arg0, Transferable arg1) {
-		
-		
+
+
 	}
 }

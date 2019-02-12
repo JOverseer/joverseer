@@ -45,12 +45,13 @@ import org.springframework.richclient.form.FormModelHelper;
 public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 	File[] files;
 	JOverseerClientProgressMonitor monitor;
-	GameHolder gh;
 	TitledPageApplicationDialog dialog;
+	//dependencies
+	GameHolder gh;
 
-	public OpenXmlAndPdfDir() {
+	public OpenXmlAndPdfDir(GameHolder gameHolder) {
 		super("openXmlAndPdfDirCommand");
-		this.gh = GameHolder.instance();
+		this.gh = gameHolder;
 	}
 
 	class SortByFilename implements Comparator<File> {
@@ -144,7 +145,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 		MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
 
 		// check if allegiances have been set for all neutrals
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gh.getGame();
 		if (g.containsParameter("StopAskingForAllegianceChanges") && "1".equals(g.getParameter("StopAskingForAllegianceChanges"))) {
 		} else {
 			if (g.getMetadata().neutralNationsExist()) {

@@ -64,11 +64,10 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * Shows pcs in the Current Hex View
- * 
+ *
  * @author Marios Skounakis
  */
 public class PopulationCenterViewer extends ObjectViewer {
-
 	public static final String FORM_PAGE = "PopulationCenterViewer"; //$NON-NLS-1$
 
 	boolean showColor = true;
@@ -88,8 +87,8 @@ public class PopulationCenterViewer extends ObjectViewer {
 	ActionCommand toggleLostThisTurnCommand = new ToggleLostThisTurnCommand();
 	ActionCommand deletePopulationCenterCommand = new DeletePopulationCenterCommand();
 
-	public PopulationCenterViewer(FormModel formModel) {
-		super(formModel, FORM_PAGE);
+	public PopulationCenterViewer(FormModel formModel,GameHolder gameHolder) {
+		super(formModel, FORM_PAGE,gameHolder);
 	}
 
 	@Override
@@ -102,7 +101,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		super.setFormObject(object);
 
 		PopulationCenter pc = (PopulationCenter) object;
-		Game game = GameHolder.instance().getGame();
+		Game game = this.gameHolder.getGame();
 		if (game == null)
 			return;
 
@@ -236,11 +235,11 @@ public class PopulationCenterViewer extends ObjectViewer {
 		// turnInfo.setText("Info from turn " +
 		// Math.max(((PopCenterXmlInfoSource)pc.getInfoSource()).getPreviousTurnNo(),
 		// 0));
-		//                
+		//
 		// }
 
 		if (getShowColor()) {
-			Game g = GameHolder.instance().getGame();
+			Game g = this.gameHolder.getGame();
 			Turn t = g.getTurn();
 
 			NationRelations nr = t.getNationRelations(nationNo);
@@ -399,7 +398,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			this.cancelAction = true;
 			PopulationCenter pc = (PopulationCenter) getFormObject();
-			ConfirmationDialog cdlg = new ConfirmationDialog(Messages.getString("standardMessages.Warning"), 
+			ConfirmationDialog cdlg = new ConfirmationDialog(Messages.getString("standardMessages.Warning"),
 					Messages.getString("PopulationCenterViewer.AreYouSure", new Object[] { pc.getName() })) { //$NON-NLS-1$
 				@Override
 				protected void onCancel() {
@@ -415,7 +414,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			cdlg.showDialog();
 			if (this.cancelAction)
 				return;
-			Game g = GameHolder.instance().getGame();
+			Game g = PopulationCenterViewer.this.gameHolder.getGame();
 			Turn t = g.getTurn();
 			Container<PopulationCenter> pcs = t.getPopulationCenters();
 			pcs.removeItem(pc);
@@ -444,7 +443,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			combat.setSide2Pc(combatPc);
 			int strength = combat.computePopCenterStrength(combatPc);
 
-			Game game = GameHolder.instance().getGame();
+			Game game = PopulationCenterViewer.this.gameHolder.getGame();
 			Hex hex = game.getMetadata().getHex(pc.getHexNo());
 			HexInfo hi = game.getTurn().getHexInfo(pc.getHexNo());
 
@@ -492,7 +491,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			final PopulationCenter pc = (PopulationCenter) getFormObject();
 			FormModel formModel = FormModelHelper.createFormModel(pc);
-			final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel);
+			final EditPopulationCenterForm form = new EditPopulationCenterForm(formModel,PopulationCenterViewer.this.gameHolder);
 			FormBackedDialogPage page = new FormBackedDialogPage(form);
 
 			TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -504,7 +503,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				@Override
 				protected boolean onFinish() {
 					form.commit();
-					GameHolder.instance().getGame().getTurn().getPopulationCenters().refreshItem(pc);
+					PopulationCenterViewer.this.gameHolder.getGame().getTurn().getPopulationCenters().refreshItem(pc);
 					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 					return true;
 				}

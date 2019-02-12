@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -28,6 +28,17 @@ public class MapView extends AbstractView implements ApplicationListener {
 	PopulationCenterViewer pcViewer;
 	JScrollPane scp;
 
+	//injected dependencies
+	GameHolder gameHolder;
+
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
+
 	/**
 	 * Create the actual UI control for this view. It will be placed into the
 	 * window according to the layout of the page holding this view.
@@ -36,7 +47,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 	protected JComponent createControl() {
 		// In this view, we're just going to use standard Swing to place a
 		// few controls.
-		this.scp = new JScrollPane(this.mapPanel = new MapPanel());
+		this.scp = new JScrollPane(this.mapPanel = new MapPanel(this.gameHolder));
 		this.mapPanel.setFocusable(true);
 		this.mapPanel.addKeyListener(new KeyListener() {
 
@@ -89,46 +100,49 @@ public class MapView extends AbstractView implements ApplicationListener {
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				this.mapPanel.invalidateAll();
+			this.onJOEvent((JOverseerEvent) applicationEvent);
+		}
+	}
+	public void onJOEvent(JOverseerEvent e) {
+		switch(e.getType()) {
+		case GameChangedEvent:
+		case SelectedTurnChangedEvent:
+		case RefreshTurnMapItems:
+			this.mapPanel.invalidateAll();
+			this.mapPanel.updateUI();
+			break;
+		case SelectedHexChangedEvent:
+			if (e.getSender() != this.mapPanel) {
+				Point p = (Point) e.getObject();
+				this.mapPanel.setSelectedHex(p);
+				Rectangle shr = this.mapPanel.getSelectedHexRectangle();
 				this.mapPanel.updateUI();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedHexChangedEvent)) {
-				if (e.getSender() != this.mapPanel) {
-					Point p = (Point) e.getObject();
-					this.mapPanel.setSelectedHex(p);
-					Rectangle shr = this.mapPanel.getSelectedHexRectangle();
-					this.mapPanel.updateUI();
-					// expand shr
-					Rectangle vr = this.mapPanel.getVisibleRect();
+				// expand shr
+				Rectangle vr = this.mapPanel.getVisibleRect();
 
-					vr.x = shr.x - (vr.width - shr.width) / 2;
-					vr.y = shr.y - (vr.height - shr.height) / 2;
-					this.mapPanel.scrollRectToVisible(vr);
-				}
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				this.mapPanel.invalidateAll();
-				this.mapPanel.updateUI();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshTurnMapItems)) {
-				this.mapPanel.invalidateAll();
-				this.mapPanel.updateUI();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.RefreshMapItems)) {
-				// refreshAutoArmyRangeMapItems(null);
-				this.mapPanel.invalidateMapItems();
-				this.mapPanel.updateUI();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.OrderChangedEvent)) {
-				this.mapPanel.invalidateMapItems();
-				this.mapPanel.updateUI();
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.MapMetadataChangedEvent)) {
-				MapMetadata mm = MapMetadata.instance();
-				this.mapPanel.setPreferredSize(new Dimension(mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
-				this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
-				this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
-				this.mapPanel.invalidateAndReset();
-				this.mapPanel.updateUI();
-				this.scp.updateUI();
+				vr.x = shr.x - (vr.width - shr.width) / 2;
+				vr.y = shr.y - (vr.height - shr.height) / 2;
+				this.mapPanel.scrollRectToVisible(vr);
 			}
-
+			break;
+		case RefreshMapItems:
+			// refreshAutoArmyRangeMapItems(null);
+			this.mapPanel.invalidateMapItems();
+			this.mapPanel.updateUI();
+			break;
+		case OrderChangedEvent:
+			this.mapPanel.invalidateMapItems();
+			this.mapPanel.updateUI();
+			break;
+		case MapMetadataChangedEvent:
+			MapMetadata mm = MapMetadata.instance();
+			this.mapPanel.setPreferredSize(new Dimension(mm.getGridCellWidth() * mm.getHexSize() * (mm.getMaxMapColumn() + 1), mm.getGridCellHeight() * mm.getHexSize() * mm.getMaxMapRow()));
+			this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
+			this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
+			this.mapPanel.invalidateAndReset();
+			this.mapPanel.updateUI();
+			this.scp.updateUI();
+			break;
 		}
 	}
 

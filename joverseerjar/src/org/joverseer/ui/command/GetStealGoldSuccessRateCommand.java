@@ -12,15 +12,17 @@ import org.joverseer.support.GameHolder;
 import org.springframework.richclient.command.ActionCommand;
 
 public class GetStealGoldSuccessRateCommand  extends ActionCommand {
-    
-    
-    public GetStealGoldSuccessRateCommand() {
+
+    //dependencies
+	GameHolder gameHolder;
+    public GetStealGoldSuccessRateCommand(GameHolder gameHolder) {
         super("getStealGoldSuccessRateCommand");
+        this.gameHolder = gameHolder;
     }
-    
+
     @Override
 	protected void doExecuteCommand() {
-    	Game game = GameHolder.instance().getGame();
+    	Game game = this.gameHolder.getGame();
 
     	System.out.println("turn;name;agent;agent total;pop size; pop fort; pop nation;relations;success;skill increase;gold");
     	for (int i=0; i<=game.getMaxTurn(); i++) {
@@ -34,7 +36,7 @@ public class GetStealGoldSuccessRateCommand  extends ActionCommand {
     			orderResults = orderResults.replace("  ", " ");
     			orderResults = orderResults.replace("  ", " ");
     			orderResults = orderResults.replace("  ", " ");
-    			
+
     			if (orderResults.contains("was ordered to steal the Gold.")) {
     				Turn prev = game.getTurn(i-1);
     				if (prev == null) continue;

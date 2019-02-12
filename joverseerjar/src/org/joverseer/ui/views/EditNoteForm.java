@@ -26,15 +26,18 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 
 /**
  * Edit a note
- * 
+ *
  * @author Marios Skounakis
  */
 // TODO needs validation
 public class EditNoteForm extends AbstractForm {
 	public static final String FORM_PAGE = "editNoteForm";
+	//dependencies
+	GameHolder gameHolder;
 
-	public EditNoteForm(FormModel formModel) {
+	public EditNoteForm(FormModel formModel,GameHolder gameHolder) {
 		super(formModel, FORM_PAGE);
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -51,7 +54,7 @@ public class EditNoteForm extends AbstractForm {
 		formBuilder.row();
 
 		ArrayList<Nation> nations = new ArrayList<Nation>();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (Game.isInitialized(g)) {
 			GameMetadata gm = g.getMetadata();
 			nations.addAll(gm.getNations());

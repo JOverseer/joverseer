@@ -19,15 +19,18 @@ import org.springframework.richclient.form.builder.TableFormBuilder;
 
 /**
  * Edit a character
- * 
+ *
  * @author Marios Skounakis
  */
 // TODO needs validation
 public class EditCharacterForm extends AbstractForm {
 	public static final String FORM_PAGE = "editCharacterForm";
+	//dependencies
+	GameHolder gameHolder;
 
-	public EditCharacterForm(FormModel formModel) {
+	public EditCharacterForm(FormModel formModel,GameHolder gameHolder) {
 		super(formModel, FORM_PAGE);
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class EditCharacterForm extends AbstractForm {
 		formBuilder.row();
 
 		ArrayList<Nation> nations = new ArrayList<Nation>();
-		Game g = GameHolder.instance().getGame();
+		Game g = this.gameHolder.getGame();
 		if (Game.isInitialized(g)) {
 			GameMetadata gm = g.getMetadata();
 			nations.addAll(gm.getNations());

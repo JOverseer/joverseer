@@ -20,8 +20,12 @@ import org.springframework.richclient.form.FormModelHelper;
 
 public class CreateArmyCommand extends ActionCommand {
 
-	public CreateArmyCommand() {
+	//dependencies
+	GameHolder gameHolder;
+
+	public CreateArmyCommand(GameHolder gameHolder) {
 		super("createArmyCommand");
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -39,7 +43,7 @@ public class CreateArmyCommand extends ActionCommand {
 		army.setSize(ArmySizeEnum.unknown);
 
 		FormModel formModel = FormModelHelper.createFormModel(army);
-		final EditArmyForm form = new EditArmyForm(formModel);
+		final EditArmyForm form = new EditArmyForm(formModel,this.gameHolder);
 		FormBackedDialogPage page = new FormBackedDialogPage(form);
 
 		TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -54,7 +58,7 @@ public class CreateArmyCommand extends ActionCommand {
 			protected boolean onFinish() {
 				form.commit();
 
-				Game g = GameHolder.instance().getGame();
+				Game g = CreateArmyCommand.this.gameHolder.getGame();
 				Turn t = g.getTurn();
 				if (!army.getCommanderName().toLowerCase().startsWith("unknown") && t.getContainer(TurnElementsEnum.Army).findFirstByProperty("commanderName", army.getCommanderName()) != null) {
 					ErrorDialog ed = new ErrorDialog(Messages.getString("addArmyDialog.error.DuplicateCommanderName", new Object[] { army.getCommanderName() }));

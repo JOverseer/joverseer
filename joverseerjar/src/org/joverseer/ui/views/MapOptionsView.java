@@ -33,7 +33,7 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 /**
  * View for changing the map options
- * 
+ *
  * @author Marios Skounakis
  */
 public class MapOptionsView extends ScalableAbstractView implements ApplicationListener {
@@ -45,11 +45,20 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 	JCheckBox drawNamesOnOrders;
 	JCheckBox showClimate;
 	JCheckBox popCenterNames;
-
 	/**
 	 * Used internally to turn off propagating events when we know there are going to be a lot of them.
 	 */
 	boolean fireEvents = true;
+	// injected dependencies
+	GameHolder gameHolder;
+
+	public GameHolder getGameHolder() {
+		return this.gameHolder;
+	}
+
+	public void setGameHolder(GameHolder gameHolder) {
+		this.gameHolder = gameHolder;
+	}
 
 	@Override
 	protected JComponent createControl() {
@@ -70,7 +79,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 					return;
 				int turnNo = (Integer) obj;
 
-				Game g = GameHolder.instance().getGame();
+				Game g = MapOptionsView.this.gameHolder.getGame();
 				if (g.getCurrentTurn() == turnNo)
 					return;
 				g.setCurrentTurn(turnNo);
@@ -98,7 +107,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (obj == null)
 					return;
 				HashMap mapOptions1 = joApplication.getMapOptions();
-				Game g = GameHolder.instance().getGame();
+				Game g = MapOptionsView.this.gameHolder.getGame();
 				String str = obj.toString();
 				if (str.equals("Current")) { //$NON-NLS-1$
 					mapOptions1.put(MapOptionsEnum.NationMap, null);
@@ -147,7 +156,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				} else {
 					mapOptions1.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOff);
 				}
-				Game g = GameHolder.instance().getGame();
+				Game g = MapOptionsView.this.gameHolder.getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
@@ -174,7 +183,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				} else {
 					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOff);
 				}
-				Game g = GameHolder.instance().getGame();
+				Game g = MapOptionsView.this.gameHolder.getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
@@ -202,7 +211,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				} else {
 					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOff);
 				}
-				Game g = GameHolder.instance().getGame();
+				Game g = MapOptionsView.this.gameHolder.getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
@@ -231,7 +240,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				} else {
 					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOff);
 				}
-				Game g = GameHolder.instance().getGame();
+				Game g = MapOptionsView.this.gameHolder.getGame();
 				if (!Game.isInitialized(g))
 					return;
 				int turnNo = g.getCurrentTurn();
@@ -306,7 +315,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 		this.fireEvents = false;
 		this.cmbTurns.removeAllItems();
 		this.cmbMaps.removeAllItems();
-		Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
+		Game g = this.gameHolder.getGame(); //$NON-NLS-1$
 		if (g != null) {
 			ActionListener[] als = this.cmbTurns.getActionListeners();
 			for (ActionListener al : als) {
@@ -340,44 +349,51 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
-			JOverseerEvent e = (JOverseerEvent) applicationEvent;
-			if (e.isLifecycleEvent(LifecycleEventsEnum.GameChangedEvent)) {
-				this.fireEvents = false;
-				resetGame();
-				this.fireEvents = true;
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SelectedTurnChangedEvent)) {
-				this.fireEvents = false;
-				Game g = GameHolder.instance().getGame(); //$NON-NLS-1$
-				if (Game.isInitialized(g)) {
-					if (!this.cmbTurns.getSelectedItem().equals(g.getCurrentTurn())) {
-						this.cmbTurns.setSelectedItem(g.getCurrentTurn());
-					}
-				}
-				this.fireEvents = true;
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.SetPalantirMapStyleEvent)) {
-				this.fireEvents = false;
-
-				this.zoom.setSelectedIndex(2);
-				this.nationColors.setSelectedIndex(0);
-				this.showClimate.setSelected(false);
-				PreferenceRegistry.instance().setPreferenceValue("map.terrainGraphics", "simple"); //$NON-NLS-1$ //$NON-NLS-2$
-				PreferenceRegistry.instance().setPreferenceValue("map.fogOfWarStyle", "xs"); //$NON-NLS-1$ //$NON-NLS-2$
-				PreferenceRegistry.instance().setPreferenceValue("map.charsAndArmies", "simplified"); //$NON-NLS-1$ //$NON-NLS-2$
-				PreferenceRegistry.instance().setPreferenceValue("map.deadCharacters", "no"); //$NON-NLS-1$ //$NON-NLS-2$
-				PreferenceRegistry.instance().setPreferenceValue("map.showArmyType", "no"); //$NON-NLS-1$ //$NON-NLS-2$
-
-				this.fireEvents = true;
-				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
-
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomIncreaseEvent)) {
-				if (this.zoom.getSelectedIndex() < this.zoom.getItemCount() - 1) {
-					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() + 1);
-				}
-			} else if (e.isLifecycleEvent(LifecycleEventsEnum.ZoomDecreaseEvent)) {
-				if (this.zoom.getSelectedIndex() > 0) {
-					this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() - 1);
+			this.onJOEvent((JOverseerEvent) applicationEvent);
+		}
+	}
+	public void onJOEvent(JOverseerEvent e) {
+		switch (e.getType()) {
+		case GameChangedEvent:
+			this.fireEvents = false;
+			resetGame();
+			this.fireEvents = true;
+			break;
+		case SelectedTurnChangedEvent:
+			this.fireEvents = false;
+			Game g = this.gameHolder.getGame(); //$NON-NLS-1$
+			if (Game.isInitialized(g)) {
+				if (!this.cmbTurns.getSelectedItem().equals(g.getCurrentTurn())) {
+					this.cmbTurns.setSelectedItem(g.getCurrentTurn());
 				}
 			}
+			this.fireEvents = true;
+			break;
+		case SetPalantirMapStyleEvent:
+			this.fireEvents = false;
+
+			this.zoom.setSelectedIndex(2);
+			this.nationColors.setSelectedIndex(0);
+			this.showClimate.setSelected(false);
+			PreferenceRegistry.instance().setPreferenceValue("map.terrainGraphics", "simple"); //$NON-NLS-1$ //$NON-NLS-2$
+			PreferenceRegistry.instance().setPreferenceValue("map.fogOfWarStyle", "xs"); //$NON-NLS-1$ //$NON-NLS-2$
+			PreferenceRegistry.instance().setPreferenceValue("map.charsAndArmies", "simplified"); //$NON-NLS-1$ //$NON-NLS-2$
+			PreferenceRegistry.instance().setPreferenceValue("map.deadCharacters", "no"); //$NON-NLS-1$ //$NON-NLS-2$
+			PreferenceRegistry.instance().setPreferenceValue("map.showArmyType", "no"); //$NON-NLS-1$ //$NON-NLS-2$
+
+			this.fireEvents = true;
+			joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
+			break;
+		case ZoomIncreaseEvent:
+			if (this.zoom.getSelectedIndex() < this.zoom.getItemCount() - 1) {
+				this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() + 1);
+			}
+			break;
+		case ZoomDecreaseEvent:
+			if (this.zoom.getSelectedIndex() > 0) {
+				this.zoom.setSelectedIndex(this.zoom.getSelectedIndex() - 1);
+			}
+			break;
 		}
 	}
 

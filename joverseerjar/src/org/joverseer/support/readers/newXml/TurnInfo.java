@@ -21,6 +21,7 @@ public class TurnInfo {
 	Container challenges;
 	Container doubleAgents;
 	Container ordersGiven;
+	Container oldPopCentres;
 
 	int turnNo = -1;
 	int nationNo = -1;
@@ -116,6 +117,12 @@ public class TurnInfo {
 
 	public void setPopCentres(Container popCentres) {
 		this.popCentres = popCentres;
+	}
+	public Container getOldPopCentres() {
+		return this.oldPopCentres;
+	}
+	public void setOldPopCentres(Container oldPopCentres) {
+		this.oldPopCentres = oldPopCentres;
 	}
 
 	public Container getHostages() {

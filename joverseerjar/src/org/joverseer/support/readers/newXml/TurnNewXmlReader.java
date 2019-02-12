@@ -38,6 +38,7 @@ import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.joverseer.support.readers.pdf.CombatWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
+import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.springframework.richclient.progress.ProgressMonitor;
 
 public class TurnNewXmlReader implements Runnable {
@@ -90,6 +91,20 @@ public class TurnNewXmlReader implements Runnable {
 			// set nested properties
 			this.digester.addRule("METurn/More/TurnInfo", snpr = new SetNestedPropertiesRule(new String[] { "Season", "NationAlignment" }, new String[] { "season", "alignment" }));
 			snpr.setAllowUnknownChildElements(true);
+
+			// parse PCs from old format.
+			// create container for pcs
+			this.digester.addObjectCreate("METurn/PopCentres", "org.joverseer.support.Container");
+			// add container to turn info
+			this.digester.addSetNext("METurn/PopCentres", "setOldPopCentres");
+			// create pc
+			this.digester.addObjectCreate("METurn/PopCentres/PopCentre", "org.joverseer.support.readers.xml.PopCenterWrapper");
+			// set hex
+			this.digester.addSetProperties("METurn/PopCentres/PopCentre", "HexID", "hexID");
+			// set nested properties
+			this.digester.addRule("METurn/PopCentres/PopCentre", snpr = new SetNestedPropertiesRule(new String[] { "Name", "Nation", "NationAllegience", "Size", "FortificationLevel", "Size", "Dock", "Capital", "Hidden", "Loyalty", "InformationSource", "Hidden" }, new String[] { "name", "nation", "nationAllegience", "size", "fortificationLevel", "size", "dock", "capital", "hidden", "loyalty", "informationSource", "hidden" }));
+			// add to container
+			this.digester.addSetNext("METurn/PopCentres/PopCentre", "addItem", "org.joverseer.support.readers.xml.PopCenterWrapper");
 
 			// create container for Hostages
 			this.digester.addObjectCreate("METurn/Hostages", "org.joverseer.support.Container");
@@ -840,6 +855,12 @@ public class TurnNewXmlReader implements Runnable {
 	}
 
 	private void updatePopCenters(Game game1) throws Exception {
+		Container oldpcws = this.turnInfo.getOldPopCentres();
+		if (oldpcws == null) {
+			throw new Exception("Error: no PCs found");
+		}
+		//TODO: fix this for spotting changed capital.
+		TurnXmlReader.updateOldPCs(this.turn, this.turnInfo.getTurnNo(),this.turnInfo.getNationNo(), -1,oldpcws.getItems(),this.infoSource, this.currentNationPops, this.game.getMetadata());
 		Container pcws = this.turnInfo.getPopCentres();
 		if (pcws == null) {
 			throw new Exception("Error: no PCs found... should you have set old XML format?");

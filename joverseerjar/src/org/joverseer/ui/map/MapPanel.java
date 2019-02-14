@@ -33,7 +33,7 @@ import javax.swing.TransferHandler;
 import javax.swing.event.MouseInputListener;
 
 import org.apache.log4j.Logger;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
@@ -100,6 +100,7 @@ import org.springframework.richclient.progress.BusyIndicator;
  * ctrl+mouse drag - drag & drop capability for dragging hex number from the map
  * to other controls
  *
+ * TODO: make a real map panel interface for all the bits of code grabbing the currently selected hex.
  *
  * @author Marios Skounakis
  */
@@ -629,7 +630,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		if (this.selectedHex == null || selectedHex.x != this.selectedHex.x || selectedHex.y != this.selectedHex.y) {
 			this.selectedHex = selectedHex;
 			// fireMyEvent(new SelectedHexChangedEvent(this));
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 		}
 	}
 
@@ -962,7 +963,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 								((Artifact) target).setHexNo(hexNo);
 								turn.getArtifacts().refreshItem((Artifact) target);
 							}
-							joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+							JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 						}
 					};
 					dlg.showDialog();
@@ -978,9 +979,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
 			if (e.getUnitsToScroll() < 0) {
-				joApplication.publishEvent(LifecycleEventsEnum.ZoomIncreaseEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.ZoomIncreaseEvent, this, this);
 			} else if (e.getUnitsToScroll() > 0) {
-				joApplication.publishEvent(LifecycleEventsEnum.ZoomDecreaseEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.ZoomDecreaseEvent, this, this);
 			}
 		} else {
 			// get the JScrollPane for this container

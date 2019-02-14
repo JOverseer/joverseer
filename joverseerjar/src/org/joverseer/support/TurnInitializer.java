@@ -3,7 +3,7 @@ package org.joverseer.support;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.HexInfo;
@@ -34,7 +34,7 @@ public class TurnInitializer {
         Container newRelations = newTurn.getContainer(TurnElementsEnum.NationRelation);
 
         newTurn.getContainer(TurnElementsEnum.PlayerInfo);
-        GameMetadata gm = joApplication.getMetadata();
+        GameMetadata gm = JOApplication.getMetadata();
         
         newTurn.getContainer(TurnElementsEnum.Notes);
         Container newChars = new Container(new String[]{"id", "name", "hexNo", "nationNo"});

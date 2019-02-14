@@ -23,7 +23,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.TurnElementsEnum;
@@ -59,42 +59,44 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class ChatView extends AbstractView implements ApplicationListener {
     //JTextArea text;
-    
+
     Thread chatThread;
-    
+
     JTextPane text;
     JTextField message;
     StyledDocument doc;
-    
+
     ServerSocket serverSocket;
     Socket clientSocket;
-    
+
     boolean connected = false;
     //MsnMessenger messenger;
     static Logger log = Logger.getLogger(ChatView.class);
-    
+    //dependencies
+    GameHolder gameHolder;
+
     protected void setMessageEnabled(boolean v) {
         this.message.setEnabled(v);
     }
-    
+
 //    protected void initMessenger(MsnMessenger messenger) {
 //		messenger.getOwner().setInitStatus(MsnUserStatus.ONLINE);
 //		messenger.addListener(new PrettyMsnListener(this));
 //	}
-    
+
     @Override
 	protected JComponent createControl() {
     	//final ChatView cv = this;
-        
+
         TableLayoutBuilder tlb = new TableLayoutBuilder();
-        
+
 
 //        text = new JTextArea();
 //        text.setWrapStyleWord(true);
 //        text.setLineWrap(true);
         this.text = new JTextPane();
         this.doc = this.text.getStyledDocument();
-        
+
         Style def = StyleContext.getDefaultStyleContext().
         getStyle(StyleContext.DEFAULT_STYLE);
         Style regular = this.doc.addStyle("regular", def);
@@ -107,12 +109,12 @@ public class ChatView extends AbstractView implements ApplicationListener {
         tlb.cell(scp, "align=left rowSpec=fill:default:grow colspec=left:410px");
         tlb.gapCol();
 
-        
+
         TableLayoutBuilder lb = new TableLayoutBuilder();
         JButton startChat = new JButton("C");
         lb.cell(startChat);
         startChat.addActionListener(new ActionListener() {
-            
+
             @Override
 			public void actionPerformed(ActionEvent e) {
                 if (ChatView.this.connected) {
@@ -121,9 +123,9 @@ public class ChatView extends AbstractView implements ApplicationListener {
                     return;
                 }
                 final ChatConnection conn = new ChatConnection();
-                
+
                 final ConnectToChatServerForm frm = new ConnectToChatServerForm(FormModelHelper.createFormModel(conn));
-                
+
                 FormBackedDialogPage page = new FormBackedDialogPage(frm);
 
                 TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -171,13 +173,13 @@ public class ChatView extends AbstractView implements ApplicationListener {
             	disconnect();
             }
         });
-        
-        
-        
+
+
+
         tlb.cell(lb.getPanel(),"align=left");
         tlb.relatedGapRow();
         tlb.relatedGapRow();
-        
+
         this.message = new JTextField();
         this.message.setPreferredSize(new Dimension(400, 20));
         this.message.addActionListener(new ActionListener() {
@@ -203,18 +205,18 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //            }
 //        });
         tlb.relatedGapRow();
-        
-        
-        
+
+
+
         return tlb.getPanel();
     }
-    
+
     public JButton getAcceptButtonForOrderWrapper(OrderWrapper orderWrapper) {
         final OrderWrapper ow = orderWrapper;
         final JButton button = new JButton();
-        final Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
+        final Character c = (Character)this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
         if (c == null) return null;
-        ImageSource imgSource = joApplication.getImageSource();
+        ImageSource imgSource = JOApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("acceptOrder.icon"));
         button.setIcon(ico);
         button.setPreferredSize(new Dimension(16, 10));
@@ -227,19 +229,19 @@ public class ChatView extends AbstractView implements ApplicationListener {
                 Order o = c.getOrders()[ow.getOrderIdx()];
                 o.setOrderNo(ow.getOrderNo());
                 o.setParameters(ow.getParameters());
-                joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
             }
         });
-        
+
         return button;
     }
-    
+
     public JButton getSelectCharButtonForOrderWrapper(OrderWrapper orderWrapper) {
         final OrderWrapper ow = orderWrapper;
         final JButton button = new JButton();
-        final Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
+        final Character c = (Character)this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
         if (c == null) return null;
-        ImageSource imgSource = joApplication.getImageSource();
+        ImageSource imgSource = JOApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("selectHexCommand.icon"));
         button.setIcon(ico);
         button.setPreferredSize(new Dimension(16, 16));
@@ -249,17 +251,17 @@ public class ChatView extends AbstractView implements ApplicationListener {
         button.addActionListener(new ActionListener() {
             @Override
 			public void actionPerformed(ActionEvent e) {
-                joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(c.getX(), c.getY()), this);
+                JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(c.getX(), c.getY()), this);
             }
         });
-        
+
         return button;
     }
-    
+
     public void orderWrapperReceived(OrderWrapper orderWrapper, String username) {
         String msgStr;
         final OrderWrapper ow = orderWrapper;
-        final Character c = (Character)GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
+        final Character c = (Character)this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", ow.getCharId());
         if (c != null) {
             if (c.getHexNo() != ow.getHexNo()) {
                 msgStr = username + ": Order for '" + ow.getCharId() + "' but character was found at a different location.";
@@ -268,7 +270,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
             }
             msgStr = username + "> Order for '" + ow.getCharId() + "' " + ow.getOrderNo() + " " + ow.getParameters().replace(Order.DELIM, " ") + ".";
             addMsg(msgStr);
-            
+
             JButton btn = getAcceptButtonForOrderWrapper(ow);
             Style s= this.doc.addStyle("button", this.doc.getStyle("regular"));
             StyleConstants.setComponent(s, btn);
@@ -294,7 +296,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
         }
     }
 
-    
+
     public void showObject(Object obj) {
         String msgStr = "";
         if (OrderWrapper.class.isInstance(obj)) {
@@ -314,7 +316,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
                 @Override
 				public void actionPerformed(ActionEvent e) {
                     for (OrderWrapper ow : mow.getOrderWrappers()) {
-                        JButton b = getAcceptButtonForOrderWrapper(ow);  
+                        JButton b = getAcceptButtonForOrderWrapper(ow);
                         if (b == null) continue;
                         b.doClick();
                     }
@@ -359,7 +361,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
             exc.printStackTrace();
         }
     }
-    
+
     public void sendOrder(Order o) {
         //client.sendMessage(new OrderWrapper(o));
 //        OrderWrapper ow = new OrderWrapper(o);
@@ -370,18 +372,18 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //        str += "##" + ow.orderIdx;
 //        str += "##" + ow.orderNo;
 //        str += "##" + ow.parameters;
-//        
+//
 //        reply.setContent(str);
 //        messenger.getActiveSwitchboards()[0].sendMessage(reply);
 //        addMsg("you: " + str);
         this.message.setText("");
     }
-    
+
     public void sendOrders(ArrayList<Order> os) {
         MultiOrderWrapper mow = new MultiOrderWrapper();
         for (Order o : os) {
             mow.getOrderWrappers().add(new OrderWrapper(o));
-        }      
+        }
 //        String str = "o: ";
 //        OrderWrapper ow = mow.getOrderWrappers().get(0);
 //        MsnInstantMessage reply = new MsnInstantMessage();
@@ -390,12 +392,12 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //        str += "##" + ow.orderIdx;
 //        str += "##" + ow.orderNo;
 //        str += "##" + ow.parameters;
-//        
+//
 //        reply.setContent(str);
 //        messenger.getActiveSwitchboards()[0].sendMessage(reply);
 //        addMsg("you: " + str);
     }
-    
+
     @Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof JOverseerEvent) {
@@ -406,23 +408,23 @@ public class ChatView extends AbstractView implements ApplicationListener {
                 } else if (ArrayList.class.isInstance(e.getObject())) {
                     sendOrders((ArrayList<Order>)e.getObject());
                 }
-                
-            } 
+
+            }
         }
     }
-    
+
     protected void disconnect() {
     	this.connected = false;
         setMessageEnabled(false);
         messageReceived("Disconnected from server.");
     }
 
-    
+
 //    private static class PrettyMsnListener extends MsnAdapter {
-//    	
+//
 //    	ChatView chatView;
-//    	
-//    	
+//
+//
 //        public PrettyMsnListener(ChatView chatView) {
 //			super();
 //			this.chatView = chatView;
@@ -444,7 +446,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //        public void instantMessageReceived(MsnSwitchboard switchboard,
 //                                           MsnInstantMessage message,
 //                                           MsnContact friend) {
-//        	
+//
 //        	String str = message.getContent();
 //        	chatView.addMsg(friend.getFriendlyName() +": " + str);
 //        	if (str.startsWith("o: ")) {
@@ -463,7 +465,7 @@ public class ChatView extends AbstractView implements ApplicationListener {
 //        			chatView.addMsg("Failed to parse order. Error: "+ exc.getMessage());
 //        		}
 //        	}
-//      
+//
 //        }
 //
 //        public void systemMessageReceived(MsnMessenger messenger,

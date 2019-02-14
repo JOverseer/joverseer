@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -361,7 +361,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
 		comps.addAll(Arrays.asList(super.getButtons()));
 		JLabelButton popupMenu = new JLabelButton();
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon"));
 		popupMenu.setIcon(ico);
 		popupMenu.addActionListener(new PopupMenuActionListener() {

@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.RepaintManager;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
@@ -241,7 +241,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			Date dateMinusOneWeek = c.getTime();
 			if (dt == null || dateMinusOneWeek.after(dt)) {
 
-				ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
+				ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
 				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
 
    		        try {

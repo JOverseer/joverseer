@@ -17,7 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.metadata.domain.HexSideElementEnum;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -49,7 +49,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 		active.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapEditorOptions = joApplication.getMapEditorOptions();
+				HashMap mapEditorOptions = JOApplication.getMapEditorOptions();
 				mapEditorOptions.put(MapEditorOptionsEnum.active, active.isSelected());
 			}
 		});
@@ -76,7 +76,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					HashMap mapEditorOptions = joApplication.getMapEditorOptions();
+					HashMap mapEditorOptions = JOApplication.getMapEditorOptions();
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, te);
 				}
 			});
@@ -96,7 +96,7 @@ public class MapEditorView extends AbstractView implements ApplicationListener {
 			rb.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e1) {
-					HashMap mapEditorOptions = joApplication.getMapEditorOptions();
+					HashMap mapEditorOptions = JOApplication.getMapEditorOptions();
 					mapEditorOptions.put(MapEditorOptionsEnum.brush, se);
 				}
 			});

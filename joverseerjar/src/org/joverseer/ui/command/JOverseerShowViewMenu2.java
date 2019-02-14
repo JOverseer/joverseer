@@ -3,7 +3,7 @@ package org.joverseer.ui.command;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
 import org.springframework.richclient.application.ApplicationServices;
 import org.springframework.richclient.application.ApplicationWindow;
@@ -60,7 +60,7 @@ public class JOverseerShowViewMenu2 extends CommandGroup implements ApplicationW
 
 	private void populate() {
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		//set the Id to something distinct.
 		this.setId(this.message);
 		for (ViewDescriptor vd : this.members) {

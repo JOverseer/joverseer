@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -57,9 +57,9 @@ public class AddEditNoteCommand extends ActionCommand {
                 if (!t.getContainer(TurnElementsEnum.Notes).contains(AddEditNoteCommand.this.note)) {
                     t.getContainer(TurnElementsEnum.Notes).addItem(AddEditNoteCommand.this.note);
                 }
-                joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
-                joApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, AddEditNoteCommand.this.note, this);
-                joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, AddEditNoteCommand.this.note, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, AddEditNoteCommand.this.note, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, AddEditNoteCommand.this.note, this);
 
                 return true;
             }

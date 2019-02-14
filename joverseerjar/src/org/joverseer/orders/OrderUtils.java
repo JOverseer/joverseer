@@ -11,32 +11,32 @@ import org.joverseer.support.GameHolder;
 
 public class OrderUtils {
     static Random random = new Random();
-    
-    public static Game getGame() {
+
+    private static Game getGame() {
         Game g = GameHolder.instance().getGame();
         return g;
     }
-    
-    public static Turn getTurn() {
+
+    private static Turn getTurn() {
         return getGame().getTurn();
     }
-    
+
     public static Character getCharacterFromId(String id) {
         return (Character)getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("id", id);
     }
-    
+
     public static void appendOrderResult(Character c, String result) {
         c.setOrderResults((c.getOrderResults().equals("") ? "" : c.getOrderResults() + " ") + result);
     }
-    
+
     public static int getRandomNumber(int max) {
         return Double.valueOf(Math.random() * (max + 1)).intValue();
     }
-    
+
     public static int getRandomNumber(int min, int max) {
         return getRandomNumber(max - min) + min;
     }
-    
+
     public static int getGaussianRandomNumber(int min, int max) {
         return Double.valueOf(random.nextGaussian() / 2 * (max - min) + (max - min) / 2).intValue();
         //return new Double(random.nextGaussian() * 100).intValue();
@@ -52,7 +52,7 @@ public class OrderUtils {
 //        }
 //        System.out.println(new Double(sum) / total);
 //    }
-    
+
     public static void main(String[] args) {
         int sum = 0;
         int total = 1000000;
@@ -63,7 +63,7 @@ public class OrderUtils {
         }
         System.out.println(((double)sum) / total);
     }
-    
-    
+
+
 
 }

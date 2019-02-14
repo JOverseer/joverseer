@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.support.Container;
@@ -29,7 +29,7 @@ public class HighlightDegradeCandidates extends ActionCommand {
 			return;
 
 		HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
-		Game game = joApplication.getGame();
+		Game game = JOApplication.getGame();
 		Container<PopulationCenter> pcs = game.getTurn().getPopulationCenters();
 		for (PopulationCenter pc : pcs.getItems()) {
 			if (pc.getLoyalty() > 0 && pc.getLoyalty() < getLoyaltyThreshold()) {
@@ -37,7 +37,7 @@ public class HighlightDegradeCandidates extends ActionCommand {
 			}
 		}
 		AbstractMapItem.add(hhmi);
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hhmi, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hhmi, this);
 	}
 
 	public int getLoyaltyThreshold() {

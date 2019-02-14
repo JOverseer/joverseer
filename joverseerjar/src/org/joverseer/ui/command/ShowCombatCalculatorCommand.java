@@ -1,13 +1,12 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.combatCalculator.CombatForm;
-import org.joverseer.ui.combatCalculator.CombatFormHolder;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.command.AbstractCommand;
@@ -47,7 +46,7 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
             this.combat.setMaxRounds(10);
             g.getTurn().getContainer(TurnElementsEnum.CombatCalcCombats).addItem(this.combat);
         }
-        final CombatForm form = CombatFormHolder.instance().getCombatForm();
+        final CombatForm form = JOApplication.getCombatFormHolder().getCombatForm();
         FormBackedDialogPage page = new FormBackedDialogPage(form);
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
@@ -59,7 +58,7 @@ public class ShowCombatCalculatorCommand extends ActionCommand {
             @Override
 			protected boolean onFinish() {
                 form.commit();
-                joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
                 return true;
             }
 

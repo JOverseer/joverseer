@@ -7,7 +7,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFileChooser;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderFileReader;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -79,7 +79,7 @@ public class ImportOrdersFromAutomagicFileCommand extends ActionCommand {
                 MessageDialog dlg = new MessageDialog(Messages.getString("importOrdersFromAutomagicFileCommand.importOrders"),
                 		Messages.getString("importOrdersFromAutomagicFileCommand.OrdersImported", new Object[] {orderFileReader.getOrdersRead() }));
                 dlg.showDialog();
-                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, gh.getGame(), this);
+                JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, gh.getGame(), this);
 
             }
             catch (Exception exc) {

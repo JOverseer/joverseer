@@ -16,7 +16,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 import org.apache.log4j.LogManager;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -106,7 +106,7 @@ public class ArmyViewer extends ObjectViewer {
 		this.nation.setPreferredSize(this.uiSizes.newDimension(30/12, this.uiSizes.getHeight3()));
 
 		// button to show range of army on map
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
@@ -313,7 +313,7 @@ public class ArmyViewer extends ObjectViewer {
 			ArmyRangeMapItem armi = new ArmyRangeMapItem(army, this.ignoreEnemyPops);
 			AbstractMapItem.add(armi);
 
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -328,8 +328,8 @@ public class ArmyViewer extends ObjectViewer {
 			Army a = (org.joverseer.domain.Army) getFormObject();
 			Boolean fed = a.computeFed();
 			a.setFed(fed == null || fed != true ? true : false);
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -377,8 +377,8 @@ public class ArmyViewer extends ObjectViewer {
 			Army a = (org.joverseer.domain.Army) getFormObject();
 			Boolean cav1 = a.computeCavalry();
 			a.setCavalry(cav1 == null || cav1 != true ? true : false);
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -408,7 +408,7 @@ public class ArmyViewer extends ObjectViewer {
 			Turn t = g.getTurn();
 			Container<Army> armies = t.getArmies();
 			armies.removeItem(a);
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -503,7 +503,7 @@ public class ArmyViewer extends ObjectViewer {
 					Container<Army> armies = t.getArmies();
 					armies.removeItem(a1);
 					armies.addItem(a1);
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 					return true;
 				}
 			};

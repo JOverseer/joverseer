@@ -3,7 +3,7 @@
  */
 package org.joverseer.ui.command.range;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
@@ -27,6 +27,6 @@ public class ShowArmyRangeCommand extends ActionCommand {
 		ArmyRangeMapItem armi = new ArmyRangeMapItem(this.hexNo, this.cav, this.fed);
 		AbstractMapItem.toggle(armi);
 
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 	}
 }

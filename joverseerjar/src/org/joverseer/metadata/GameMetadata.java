@@ -404,14 +404,13 @@ public class GameMetadata implements Serializable {
 	}
 
 	// note only returns non-null if a game has been initialized.
-	static public GameMetadata lazyLoadGameMetadata(GameMetadata gm) {
-		if (gm == null) {
-			Game g = GameHolder.instance().getGame();
-			if (!Game.isInitialized(g))
-				return null;
-			gm = g.getMetadata();
+	static public GameMetadata lazyLoadGameMetadata(GameHolder gh) {
+		if (gh != null) {
+			if (gh.isGameInitialized()) {
+				return gh.getGame().getMetadata();
+			}
 		}
-		return gm;
+		return null;
 	}
 	//hide the details of which property we are using.
 	public ArtifactInfo findFirstArtifactByNumber(int number) {

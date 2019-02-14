@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
@@ -305,7 +305,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		c.setPreferredSize(this.uiSizes.newDimension(120/12, this.uiSizes.getHeight3()));
 		c.setBorder(null);
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
@@ -418,7 +418,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			Turn t = g.getTurn();
 			Container<PopulationCenter> pcs = t.getPopulationCenters();
 			pcs.removeItem(pc);
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -481,7 +481,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			PopulationCenter pc = (PopulationCenter) getFormObject();
 			pc.setLostThisTurn(!pc.getLostThisTurn());
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -504,7 +504,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 				protected boolean onFinish() {
 					form.commit();
 					PopulationCenterViewer.this.gameHolder.getGame().getTurn().getPopulationCenters().refreshItem(pc);
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 					return true;
 				}
 			};

@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.CharacterRangeMapItem;
@@ -26,6 +26,6 @@ public class ShowCharacterMovementRangeCommand extends ActionCommand {
 	protected void doExecuteCommand() {
         CharacterRangeMapItem crmi = new CharacterRangeMapItem(this.hexNo, this.range);
         AbstractMapItem.toggle(crmi);
-        joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+        JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
     }
 }

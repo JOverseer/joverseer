@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Order;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.OrderParameterValidator;
@@ -118,7 +118,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
 	        	joErrors = true;
 	        }
     	}
-    	ico = joApplication.getIcon(orderResultType);
+    	ico = JOApplication.getIcon(orderResultType);
         this.orderResultIcon.setIcon(ico);
         if (ico != null) {
             String txt = ""; //$NON-NLS-1$
@@ -211,9 +211,9 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                         	}
                         }
 
-                        joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
+                        JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 
-                        joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, no, this);
+                        JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, no, this);
                     }
                 }
                 catch (Exception exc) {
@@ -226,7 +226,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
         this.orderResultIcon.setBorder(border);
         glb.append(this.orderResultIcon);
 
-        ImageSource imgSource = joApplication.getImageSource();
+        ImageSource imgSource = JOApplication.getImageSource();
         Icon ico = new ImageIcon(imgSource.getImage("edit.image")); //$NON-NLS-1$
         final JButton btn = new JButton(ico);
         btn.setToolTipText(Messages.getString("OrderViewer.EditOrder")); //$NON-NLS-1$
@@ -234,7 +234,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
             @Override
 			public void actionPerformed(ActionEvent e) {
                 Order order = (Order)getFormObject();
-                joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
             }
         });
 
@@ -255,7 +255,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
                 } else {
                     ovd.removeOrder((Order)getFormObject());
                 }
-                joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
+                JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
             }
         });
         this.draw.setPreferredSize(this.uiSizes.newDimension(1, this.uiSizes.getHeight4()));
@@ -317,7 +317,7 @@ public class OrderViewer extends ObjectViewer implements ActionListener {
     @Override
 	public void actionPerformed(ActionEvent e) {
           Order order = (Order)getFormObject();
-          joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
+          JOApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
         //final OrderEditorForm form = (OrderEditorForm)Application.instance().getApplicationContext().getBean("orderEditorForm");
 //        final OrderEditor form = new OrderEditor();
 //        FormBackedDialogPage page = new FormBackedDialogPage(form);

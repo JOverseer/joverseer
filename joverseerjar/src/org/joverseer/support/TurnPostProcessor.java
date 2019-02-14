@@ -2,7 +2,7 @@ package org.joverseer.support;
 
 import java.util.ArrayList;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
@@ -69,7 +69,7 @@ public class TurnPostProcessor {
 		turn.getNotes().removeAll(toRemove);
 
 		// copy persistent notes from previous turn
-		final Game g = joApplication.getGame();
+		final Game g = JOApplication.getGame();
 		Turn previousTurn = null;
 		for (int i = g.getCurrentTurn() - 1; i >= 0; i--) {
 			if (g.getTurn(i) != null) {
@@ -150,6 +150,6 @@ public class TurnPostProcessor {
 			}
 		}
 
-		joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
 	}
 }

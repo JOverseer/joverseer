@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
@@ -63,7 +63,7 @@ public class GotoNextHighlightedHexCommand extends ActionCommand {
 			}
 		}
 		Point selectedHex = new Point(hexToHighlight / 100, hexToHighlight / 100);
-		joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 
 	}
 

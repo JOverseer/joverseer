@@ -9,7 +9,7 @@ import javax.swing.table.TableModel;
 
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -79,7 +79,7 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 	 	JComponent comp = GuiActionRunner.execute(() -> oelv.createControlImpl());
 	 	assertNotNull(oelv.table);
 	 	OrderEditorTableModel oetm =  (OrderEditorTableModel)((ShuttleSortableTableModel)oelv.table.getModel()).getFilteredModel();
-	 	GameHolder gh = joApplication.getGameHolder();
+	 	GameHolder gh = JOApplication.getGameHolder();
 	 	Game game = new Game();
 	 	Turn turn = new Turn();
 	 	turn.setTurnNo(0);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
@@ -132,16 +132,10 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 						}
 
 						cont.addAll(resultList);
-						SwingUtilities.invokeLater(new Runnable() {
-
-							@Override
-							public void run() {
-								joApplication.publishEvent(LifecycleEventsEnum.OrderCheckerRunEvent, cont);
-
-							}
-						});
+						//do this synchronously.
+						JOApplication.publishEvent(LifecycleEventsEnum.OrderCheckerRunEvent, cont);
 					} catch (Exception exc) {
-						ErrorDialog.showErrorDialog(exc);
+//						ErrorDialog.showErrorDialog(exc);
 					}
 				}
 

@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
@@ -55,7 +55,7 @@ public class EditGameCommand extends ActionCommand {
 
                 EditGameCommand.this.gameHolder.setGame(g);
 
-                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
+                JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
 
                 return true;
             }

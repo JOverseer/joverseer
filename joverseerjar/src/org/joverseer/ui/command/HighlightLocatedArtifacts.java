@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Artifact;
 import org.joverseer.game.Game;
 import org.joverseer.support.Container;
@@ -26,13 +26,13 @@ public class HighlightLocatedArtifacts extends ActionCommand {
 			return;
 
 		HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
-		Game game = joApplication.getGame();
+		Game game = JOApplication.getGame();
 		Container<Artifact> artifacts = game.getTurn().getArtifacts();
 		for (Artifact arti : artifacts.getItems()) {
 			hhmi.addHex(arti.getHexNo());
 		}
 		AbstractMapItem.add(hhmi);
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hhmi, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hhmi, this);
 	}
 
 }

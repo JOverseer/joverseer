@@ -30,11 +30,14 @@ public class Container<X> implements Serializable, Iterable<X> {
 	private static final long serialVersionUID = -3898746240033481558L;
 	public ArrayList<X> items = new ArrayList<X>();
 	public HashMap<String, ContainerCache<X>> caches = new HashMap<String, ContainerCache<X>>();
+	private boolean locked;
 
 	public Container() {
+		locked = false;
 	}
 
 	public Container(String[] cacheProperties) {
+		this();
 		for (String cacheProperty : cacheProperties) {
 			addCache(cacheProperty);
 		}

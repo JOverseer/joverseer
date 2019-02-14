@@ -2,7 +2,7 @@ package org.joverseer.ui.command;
 
 import java.util.ArrayList;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.Character;
@@ -82,7 +82,7 @@ public class ImportNotesFromPreviousTurnCommand extends ActionCommand {
                 }
             }
         }
-        joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
+        JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
 
     }
 }

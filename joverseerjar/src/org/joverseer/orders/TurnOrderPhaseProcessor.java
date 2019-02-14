@@ -6,18 +6,19 @@ import java.util.Arrays;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.GameHolder;
 
 public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
 
     BaseOrderScheduler orderScheduler;
     Integer[] phaseOrderNumbers;
-    
-    public TurnOrderPhaseProcessor(String name) {
-        super(name);
+
+    public TurnOrderPhaseProcessor(String name,GameHolder gameHolder) {
+        super(name,gameHolder);
     }
 
-    public TurnOrderPhaseProcessor(String name, String orderNumbers) {
-        super(name);
+    public TurnOrderPhaseProcessor(String name, String orderNumbers,GameHolder gameHolder) {
+        super(name,gameHolder);
         String[] ons = orderNumbers.split(",");
         ArrayList<Integer> onList = new ArrayList<Integer>();
         for (String on : ons) {
@@ -29,7 +30,7 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
     public Integer[] getPhaseOrderNumbers() {
         return this.phaseOrderNumbers;
     }
-    
+
     public void setPhaseOrderNumbers(Integer[] orderNumbers) {
         this.phaseOrderNumbers = orderNumbers;
     }
@@ -47,7 +48,7 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
         }
         return orders;
     }
-    
+
     @Override
 	public void processPhase(Turn t) {
         getOrderScheduler().scheduleOrders(getOrdersForPhase(t));
@@ -61,15 +62,15 @@ public class TurnOrderPhaseProcessor extends AbstractTurnPhaseProcessor {
         }
     }
 
-    
+
     public BaseOrderScheduler getOrderScheduler() {
         return this.orderScheduler;
     }
 
-    
+
     public void setOrderScheduler(BaseOrderScheduler orderScheduler) {
         this.orderScheduler = orderScheduler;
     }
-    
-    
+
+
 }

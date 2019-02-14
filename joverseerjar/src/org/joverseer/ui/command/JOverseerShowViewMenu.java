@@ -7,7 +7,7 @@ import java.util.HashMap;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.ApplicationServices;
@@ -71,7 +71,7 @@ public class JOverseerShowViewMenu extends CommandGroup implements ApplicationWi
 		ArrayList<String> viewGroups = new ArrayList<String>();
 		String label;
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		for (ViewDescriptor vd : views) {
 			String group = "";
 			if (JOverseerJideViewDescriptor.class.isInstance(vd)) {

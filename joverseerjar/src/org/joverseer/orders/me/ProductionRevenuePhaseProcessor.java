@@ -9,17 +9,17 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.orders.AbstractTurnPhaseProcessor;
-import org.joverseer.orders.OrderUtils;
+import org.joverseer.support.GameHolder;
 
 
 public class ProductionRevenuePhaseProcessor extends AbstractTurnPhaseProcessor {
-    public ProductionRevenuePhaseProcessor(String name) {
-        super(name);
+    public ProductionRevenuePhaseProcessor(String name,GameHolder gameHolder) {
+        super(name,gameHolder);
     }
 
     @Override
 	public void processPhase(Turn t) {
-        Game g = OrderUtils.getGame();
+        Game g = this.gameHolder.getGame();
         for (int i=1; i<=g.getMetadata().getNationNo(); i++) {
             NationEconomy ne = (NationEconomy)t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", i);
             int nationGoldProduction = 0;

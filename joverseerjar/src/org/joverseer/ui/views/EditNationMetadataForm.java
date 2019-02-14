@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.SNAEnum;
@@ -232,8 +232,8 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				}
 			}
 		}
-		Game g = joApplication.getGame();
-        joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
+		Game g = JOApplication.getGame();
+        JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
 	}
 
 	@Override

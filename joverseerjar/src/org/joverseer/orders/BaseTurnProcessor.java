@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.GameHolder;
@@ -24,7 +24,7 @@ public class BaseTurnProcessor {
         processTurn(newTurn);
         try {
             g.addTurn(newTurn);
-            joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
+            JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, this);
 
         }
         catch (Exception exc) {}

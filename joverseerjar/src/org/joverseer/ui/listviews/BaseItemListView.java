@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.game.Game;
@@ -156,7 +156,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 						return;
 					IHasMapLocation selectedItem = (IHasMapLocation) obj;
 					Point selectedHex = new Point(selectedItem.getX(), selectedItem.getY());
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 				} catch (Exception exc) {
 					// do nothing
 				}
@@ -203,7 +203,7 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 	 */
 	protected JComponent[] getButtons() {
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = joApplication.getImageSource();
+			ImageSource imgSource = JOApplication.getImageSource();
 			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon"));
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);

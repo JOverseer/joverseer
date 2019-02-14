@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.support.Container;
@@ -26,12 +26,12 @@ public class HighlightCombats extends ActionCommand {
 			return;
 
 		HighlightHexesMapItem hhmi = new HighlightHexesMapItem();
-		Game game = joApplication.getGame();
+		Game game = JOApplication.getGame();
 		Container<Combat> combats = game.getTurn().getCombats();
 		for (Combat c : combats.getItems()) {
 			hhmi.addHex(c.getHexNo());
 		}
 		AbstractMapItem.add(hhmi);
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hhmi, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hhmi, this);
 	}
 }

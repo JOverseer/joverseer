@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.PopulationCenter;
@@ -261,19 +261,19 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
         if (columnIndex == iValueCol2 && rowIndex == iOrdersCostRow) {
             setOrdersCost((Integer)aValue);
             fireTableDataChanged();
-            joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+            JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
         if (columnIndex == iValueCol0 && rowIndex == iGoldProductionRow) {
             setGoldProduction((Integer)aValue);
             fireTableDataChanged();
-            joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+            JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
         if (columnIndex == iValueCol3 && rowIndex == iTaxRateRow) {
             setTaxRate((Integer)aValue);
             fireTableDataChanged();
-            joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+            JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
             select(rowIndex, columnIndex);
         }
     }

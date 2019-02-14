@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.support.Container;
@@ -21,7 +21,7 @@ public class ClearMapItems extends ActionCommand {
 
 	@Override
 	protected void doExecuteCommand() {
-		Game g = joApplication.getGame();
+		Game g = JOApplication.getGame();
 		if (g == null || !Game.isInitialized(g))
 			return;
 		Turn t = g.getTurn();
@@ -29,7 +29,7 @@ public class ClearMapItems extends ActionCommand {
 			return;
 		Container<AbstractMapItem> mapItems = t.getMapItems();
 		mapItems.removeAll(mapItems.getItems());
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 
 	}
 }

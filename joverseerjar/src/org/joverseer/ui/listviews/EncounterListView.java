@@ -22,7 +22,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.JTableHeader;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Encounter;
 import org.joverseer.game.Turn;
@@ -148,7 +148,7 @@ public class EncounterListView extends BaseItemListView {
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
-			ImageSource imgSource =joApplication.getImageSource();
+			ImageSource imgSource =JOApplication.getImageSource();
 			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon")); //$NON-NLS-1$
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);

@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameFileComparator;
@@ -232,7 +232,7 @@ public class OpenGameDirTree extends ActionCommand implements Runnable {
 			globalMsg = "Import was successful.";
 		}
 		this.monitor.setGlobalMessage(globalMsg);
-		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gh.getGame(), this);
+		JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gh.getGame(), this);
 		this.monitor.done();
 		this.dialog.setDescription("Processing finished.");
 	}

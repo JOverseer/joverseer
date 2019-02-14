@@ -2,7 +2,7 @@ package org.joverseer.tools.armySizeEstimator;
 
 import java.util.ArrayList;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.game.Game;
@@ -28,7 +28,7 @@ public class ArmySizeEstimator {
 				ret.add(new ArmySizeEstimate(ArmySizeEstimate.NAVY_TYPE, size));
 			}
 		}
-		Game g = joApplication.getGame();
+		Game g = JOApplication.getGame();
 		if (g == null || !Game.isInitialized(g))
 			return ret;
 		Turn t = g.getTurn();

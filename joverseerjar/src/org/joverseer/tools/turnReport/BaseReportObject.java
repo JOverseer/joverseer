@@ -3,16 +3,16 @@ package org.joverseer.tools.turnReport;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.IHasMapLocation;
+import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.commands.DialogsUtility;
@@ -191,7 +191,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 		return "";
 	}
 
-	public static void processHyperlink(String query,Turn t) {
+	public static void processHyperlink(String query,Turn t,Game game) {
 		query = query.substring(query.indexOf("?") + 1);
 		String[] qs = query.split("&");
 		for (String q : qs) {
@@ -200,7 +200,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 				int hexNo = Integer.parseInt(ps[1]);
 				if (hexNo != 0) {
 					Point p = new Point(hexNo / 100, hexNo % 100);
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, p);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, p);
 				}
 			} else if (ps[0].equals("report")) {
 				String charId = ps[1].replace("_", " ");
@@ -212,7 +212,7 @@ public class BaseReportObject implements IHasMapLocation, Comparable<Object> {
 				int hexNo = Integer.parseInt(ps[1]);
 				Combat c = (Combat) t.getContainer(TurnElementsEnum.Combat).findFirstByProperty("hexNo", hexNo);
 				if (c != null)
-					DialogsUtility.showCombatNarration(c);
+					DialogsUtility.showCombatNarration(c,0,game);
 
 			} else if (ps[0].equals("enc")) {
 				String[] params = ps[1].split(",");

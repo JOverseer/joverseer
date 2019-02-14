@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -63,12 +63,12 @@ public class OrderResultsView extends BaseHtmlReportView {
 				int hexNo = Integer.parseInt(ps[1]);
 				if (hexNo != 0) {
 					Point p = new Point(hexNo / 100, hexNo % 100);
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, p);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, p);
 				}
 			} else if (ps[0].equals("turn")) { //$NON-NLS-1$
 				int turnNo = Integer.parseInt(ps[1]);
 				this.gameHolder.getGame().setCurrentTurn(turnNo);
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo);
 			}
 		}
 	}

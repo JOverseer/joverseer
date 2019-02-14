@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.prefs.Preferences;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.JOverseerJIDEClient;
 import org.springframework.richclient.application.ApplicationDescriptor;
@@ -20,7 +20,7 @@ public class CheckForUpdatesCommand extends ActionCommand{
 
 	@Override
 	protected void doExecuteCommand() {
-		ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
+		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
 		ThreepartVersion latest,current = new ThreepartVersion(descriptor.getVersion());
 		String title;
         

@@ -41,7 +41,7 @@ import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
@@ -609,7 +609,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		if (pval.equals("yes")) {
 			new SaveGame(this.gameHolder).execute();
 		}
-		joApplication.publishEvent(LifecycleEventsEnum.OrderSaveToFileEvent, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.OrderSaveToFileEvent, this);
 
 	}
 

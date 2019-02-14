@@ -9,7 +9,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTree;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.Character;
@@ -160,7 +160,7 @@ public class OrdercheckerProxy {
 	 * @throws Exception
 	 */
 	protected void processOrders(Main main) throws Exception {
-		final ImageSource imgSource = joApplication.getImageSource();
+		final ImageSource imgSource = JOApplication.getImageSource();
 
 		main.getWindow().getRoot();
 		JTree tree = main.getWindow().getTree();

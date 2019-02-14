@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.springframework.richclient.application.ApplicationDescriptor;
 
 public class VersionChecker {
@@ -19,7 +19,7 @@ public class VersionChecker {
 		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
         int status = httpClient.executeMethod(get);
 
-        ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
+        ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
         
         int currentVersion = parseVersionString(descriptor.getVersion());
         

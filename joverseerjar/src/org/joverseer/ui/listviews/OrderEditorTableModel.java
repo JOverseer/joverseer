@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.Order;
@@ -92,7 +92,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 		} else if (i == iResults) {
 			OrderResultContainer container = OrderResultContainer.instance();
 			OrderResultTypeEnum orderResultType = container.getResultTypeForOrder((Order) object);
-			return joApplication.getIcon(orderResultType);
+			return JOApplication.getIcon(orderResultType);
 			
 		} else if (i == iCost) {
 			Order order = (Order) object;
@@ -143,7 +143,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 			} else {
 				ovd.addOrder((Order) obj);
 			}
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 
 			return;
 		} else if (col == iNoAndCode) {
@@ -158,8 +158,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 					o.setParameters("");
 				}
 			}
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
-			joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		} else if (col >= iParamStart && col <= iParamEnd) {
 			Order o = (Order) obj;
@@ -182,8 +182,8 @@ public class OrderEditorTableModel extends ItemTableModel {
 				}
 			}
 			o.setParameters(paramTxt2);
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
-			joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, o);
 			return;
 		}
 		super.setValueAtInternal(v, obj, col);
@@ -194,7 +194,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 		// super.fireTableCellUpdated(row, column);
 		Point selectedHex = MapPanel.instance().getSelectedHex();
 		if (selectedHex != null) {
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, selectedHex, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, selectedHex, this);
 		}
 	}
 }

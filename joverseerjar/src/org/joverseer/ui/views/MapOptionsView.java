@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationMapRange;
@@ -62,7 +62,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 	@Override
 	protected JComponent createControl() {
-		HashMap mapOptions = joApplication.getMapOptions();
+		HashMap mapOptions = JOApplication.getMapOptions();
 		mapOptions.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
 		TableLayoutBuilder lb = new TableLayoutBuilder();
 		JLabel label;
@@ -86,9 +86,9 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 				if (MapPanel.instance().getSelectedHex() != null) {
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
 				}
 			}
 		});
@@ -106,7 +106,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				Object obj = MapOptionsView.this.cmbMaps.getSelectedItem();
 				if (obj == null)
 					return;
-				HashMap mapOptions1 = joApplication.getMapOptions();
+				HashMap mapOptions1 = JOApplication.getMapOptions();
 				Game g = MapOptionsView.this.gameHolder.getGame();
 				String str = obj.toString();
 				if (str.equals("Current")) { //$NON-NLS-1$
@@ -133,7 +133,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 			}
 
 		});
@@ -150,7 +150,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				HashMap mapOptions1 = joApplication.getMapOptions();
+				HashMap mapOptions1 = JOApplication.getMapOptions();
 				if (MapOptionsView.this.drawOrders.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.DrawOrders, MapOptionValuesEnum.DrawOrdersOn);
 				} else {
@@ -162,7 +162,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				int turnNo = g.getCurrentTurn();
 				if (!MapOptionsView.this.fireEvents)
 					return;
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
 
 			}
 
@@ -177,7 +177,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = joApplication.getMapOptions();
+				HashMap mapOptions1 = JOApplication.getMapOptions();
 				if (MapOptionsView.this.drawNamesOnOrders.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOn);
 				} else {
@@ -190,7 +190,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
 
 			}
 
@@ -205,7 +205,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = joApplication.getMapOptions();
+				HashMap mapOptions1 = JOApplication.getMapOptions();
 				if (MapOptionsView.this.popCenterNames.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
 				} else {
@@ -218,7 +218,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 
 			}
 
@@ -234,7 +234,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = joApplication.getMapOptions();
+				HashMap mapOptions1 = JOApplication.getMapOptions();
 				if (MapOptionsView.this.showClimate.getModel().isSelected()) {
 					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
 				} else {
@@ -247,7 +247,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
 
 			}
 
@@ -272,7 +272,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 			}
 		});
 		this.zoom.setSelectedIndex(4);
@@ -287,7 +287,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String opt = (String) MapOptionsView.this.nationColors.getSelectedItem();
-				HashMap mapOptions1 = joApplication.getMapOptions();
+				HashMap mapOptions1 = JOApplication.getMapOptions();
 				if (opt == null)
 					return;
 				if (opt.equals(Messages.getString("MapOptionsView.ColourForNation"))) { //$NON-NLS-1$
@@ -299,7 +299,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				if (!MapOptionsView.this.fireEvents)
 					return;
 
-				joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 			}
 		});
 
@@ -382,7 +382,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			PreferenceRegistry.instance().setPreferenceValue("map.showArmyType", "no"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			this.fireEvents = true;
-			joApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 			break;
 		case ZoomIncreaseEvent:
 			if (this.zoom.getSelectedIndex() < this.zoom.getItemCount() - 1) {

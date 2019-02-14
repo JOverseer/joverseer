@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ClimateEnum;
@@ -73,8 +73,12 @@ public class CombatForm extends AbstractForm {
 	PopCenterTableModel popCenterTableModel;
 	JTextField rounds;
 
-	public CombatForm(FormModel arg0) {
+	//dependencies
+	GameHolder gameHolder;
+
+	public CombatForm(FormModel arg0,GameHolder gameHolder) {
 		super(arg0, FORM_ID);
+		this.gameHolder = gameHolder;
 	}
 
 	@Override
@@ -106,8 +110,8 @@ public class CombatForm extends AbstractForm {
 					commit();
 					Combat c = (Combat) getFormObject();
 					int hexNo = c.getHexNo();
-					Hex h = GameHolder.instance().getGame().getMetadata().getHex(hexNo);
-					HexInfo hi = GameHolder.instance().getGame().getTurn().getHexInfo(hexNo);
+					Hex h = CombatForm.this.gameHolder.getGame().getMetadata().getHex(hexNo);
+					HexInfo hi = CombatForm.this.gameHolder.getGame().getTurn().getHexInfo(hexNo);
 					if (h != null && h.getTerrain() != null) {
 						ValueModel vm = getFormModel().getValueModel("terrain"); //$NON-NLS-1$
 						vm.setValue(h.getTerrain());
@@ -205,7 +209,7 @@ public class CombatForm extends AbstractForm {
 		scp.setDropTarget(new DropTarget(scp, new AddArmyDropTargetAdapter(0)));
 		tlb.cell(scp);
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		Icon ico;
 		JButton btn;
 		lb = new TableLayoutBuilder();
@@ -635,7 +639,7 @@ public class CombatForm extends AbstractForm {
 				return;
 			if (this.side == 0) {
 				final int idx1 = idx;
-				ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemoveArmy.title"), "") { //$NON-NLS-1$ 
+				ConfirmationDialog md = new ConfirmationDialog(Messages.getString("CombatForm.RemoveArmy.title"), "") { //$NON-NLS-1$
 
 					@Override
 					protected void onConfirm() {

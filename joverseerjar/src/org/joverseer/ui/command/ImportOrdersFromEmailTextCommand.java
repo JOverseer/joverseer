@@ -19,7 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.readers.orders.OrderTextReader;
 import org.joverseer.support.readers.orders.OrderTextReaderInterface;
@@ -115,7 +115,7 @@ public class ImportOrdersFromEmailTextCommand extends ActionCommand {
 		MessageDialog dialog = new MessageDialog(Messages.getString("importOrdersFromEmailTextCommand.ImportOrders"),
 					Messages.getString("importOrdersFromEmailTextCommand.OrdersImported", new Object[] {orderReader.getOrdersRead()})); //$NON-NLS-1$ //$NON-NLS-2$
 		dialog.showDialog();
-		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gameHolder.getGame(), this);
+		JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gameHolder.getGame(), this);
 
 	}
 

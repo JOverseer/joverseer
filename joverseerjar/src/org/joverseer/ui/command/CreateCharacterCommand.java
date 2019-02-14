@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -57,7 +57,7 @@ public class CreateCharacterCommand extends ActionCommand {
 				}
 				t.getContainer(TurnElementsEnum.Character).addItem(character);
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 				return true;
 			}
 		};

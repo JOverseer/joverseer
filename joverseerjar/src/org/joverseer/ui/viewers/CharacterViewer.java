@@ -29,7 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Company;
@@ -460,7 +460,7 @@ public class CharacterViewer extends ObjectViewer {
 		// a bit of a hack...extend to stop the menu icon jumping about
 		c.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 
 		final JButton btnMainMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
@@ -672,7 +672,7 @@ public class CharacterViewer extends ObjectViewer {
 			public void actionPerformed(ActionEvent e) {
 				Character c1 = (Character) getFormObject();
 				c1.setOrders(new Order[] { c1.getOrders()[1], c1.getOrders()[0] });
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, MapPanel.instance().getSelectedHex(), this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, MapPanel.instance().getSelectedHex(), this);
 			}
 		});
 
@@ -817,12 +817,12 @@ public class CharacterViewer extends ObjectViewer {
 			if (pc != null) {
 				hami = new HexArrowMapItem(pc.getHexNo(), c.getHexNo(), Color.black);
 				AbstractMapItem.add(hami);
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 			}
 			DialogsUtility.showCharacterOrderResults(c);
 			if (hami != null) {
 				AbstractMapItem.remove(hami);
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 			}
 		}
 	}
@@ -888,7 +888,7 @@ public class CharacterViewer extends ObjectViewer {
 					c.getOrders()[i].setParameters(this.params);
 					setFormObject(getFormObject());
 					CharacterViewer.this.showOrders = true;
-					joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, c.getOrders()[i], this);
+					JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, c.getOrders()[i], this);
 					return;
 				}
 			}
@@ -929,7 +929,7 @@ public class CharacterViewer extends ObjectViewer {
 			}
 			Container<Character> characters = t.getCharacters();
 			characters.removeItem(c);
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}
 
@@ -956,7 +956,7 @@ public class CharacterViewer extends ObjectViewer {
 					form.commit();
 					c.setId(Character.getIdFromName(c.getName()));
 					CharacterViewer.this.gameHolder.getGame().getTurn().getCharacters().refreshItem(c);
-					joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this, this);
+					JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this, this);
 					return true;
 				}
 			};
@@ -1012,8 +1012,8 @@ public class CharacterViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Character c = (Character) getFormObject();
-			joApplication.publishEvent(LifecycleEventsEnum.SendOrdersByChat, c.getOrders()[0], this);
-			joApplication.publishEvent(LifecycleEventsEnum.SendOrdersByChat, c.getOrders()[1], this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SendOrdersByChat, c.getOrders()[0], this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SendOrdersByChat, c.getOrders()[1], this);
 		}
 
 	}

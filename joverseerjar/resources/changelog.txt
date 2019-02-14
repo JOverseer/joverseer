@@ -1,3 +1,25 @@
+VERSION 1.16.16
+---------------
+	* Enh: The 5 artifact views have been consolidated to the one artifact view.
+		   You can get the same effect as the previous views, by selecting different filters.
+		   This includes some better intelligence for spotting LAT reports, and matching artifacts
+		   with accents.
+	* Enh: Import results will only match files for the current game.
+	* Fix: new XML parsing wasn't paying close enough attention to Pop changes.
+	* Fix: Brad really missed the Map Editor View, so it's back.
+	* Fix: orders in CME that specified a nation now work ok.
+	* Fix: Certain types of Challenges on the Turn Report View confused who was winning and losing.
+	* Fix: there was a jar file missing from the installer causing problems for fresh installs and pdf parsing.
+	* Fix: Odd screen updates when JO opened with the Economy Page.
+	* Fix: Orderlistview not displaying if a row wasn't selected.
+	* Fix: Reconcile ordercheker's list of artifacts with the current game.
+	* Fix: Game data/rules corrections:
+			The cost of relocate capital is corrected to 25000.
+			Alignment of artifact 190 for 2950.
+	* QA: A lot of the recent odd behaviour was due to not tracking some unexpected problems.
+		  Now you're more likely to see an Error Dialog pop up, which also logs the problem to the file
+		  mentioned at the bottom of the Help->Gather Support Data screen.
+
 VERSION 1.16.15
 ---------------
 	* Fix: OrderEditorListView not updating correctly when game changes and no order was selected.

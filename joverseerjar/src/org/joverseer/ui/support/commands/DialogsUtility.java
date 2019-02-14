@@ -6,7 +6,6 @@ import org.joverseer.domain.Combat;
 import org.joverseer.domain.Encounter;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.NarrationForm;
 import org.joverseer.ui.views.OrderResultsForm;
@@ -32,7 +31,7 @@ public class DialogsUtility {
 				super.onAboutToShow();
 				f.setFormObject(c);
 			}
-			
+
 			@Override
 			protected Object[] getCommandGroupMembers() {
 	                    return new AbstractCommand[] {
@@ -44,12 +43,8 @@ public class DialogsUtility {
         dlg.setTitle(Messages.getString("orderResultsDialog.title"));
     	dlg.showDialog();
 	}
-	
-	public static void showCombatNarration(Combat combat) {
-		showCombatNarration(combat, 0);
-	}
-	
-	public static void showCombatNarration(Combat combat, int nationNo) {
+
+	public static void showCombatNarration(Combat combat, int nationNo,Game game) {
 		if (nationNo == 0) nationNo = combat.getFirstNarrationNation();
 		final String narration = combat.getNarrationForNation(nationNo);
 		if (narration == null) return;
@@ -75,13 +70,12 @@ public class DialogsUtility {
             }
 
         };
-        Game game = GameHolder.instance().getGame();
         Nation n = game.getMetadata().getNationByNum(nationNo);
-        
+
         dialog.setTitle(Messages.getString("combatNarrationDialog.title", new Object[]{String.valueOf(combat.getHexNo()), n.getName()}));
         dialog.showDialog();
 	}
-	
+
 	public static void showEncounterDescription(Encounter encounter) {
 		String description = encounter.getDescription();
 		if (encounter.getCanInvestigate()) {
@@ -101,7 +95,7 @@ public class DialogsUtility {
 			protected boolean onFinish() {
                 return true;
             }
-            
+
             @Override
 			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
@@ -112,7 +106,7 @@ public class DialogsUtility {
         dialog.setTitle(Messages.getString("encounterDialog.title", new Object[]{encounter.getCharacter(), String.valueOf(encounter.getHexNo())}));
         dialog.showDialog();
 	}
-	
+
 	public static void showChallengeDescription(Challenge challenge) {
 		showEncounterDescription(challenge);
 	}

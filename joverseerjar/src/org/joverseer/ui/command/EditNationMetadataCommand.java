@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
@@ -24,7 +24,7 @@ public class EditNationMetadataCommand extends ActionCommand {
     @Override
 	protected void doExecuteCommand() {
     	if (!ActiveGameChecker.checkActiveGameExists()) return;
-        final Game g = joApplication.getGame();
+        final Game g = JOApplication.getGame();
         FormModel formModel = FormModelHelper.createFormModel(g.getMetadata());
         final EditNationMetadataForm form = new EditNationMetadataForm(formModel);
         FormBackedDialogPage page = new FormBackedDialogPage(form);

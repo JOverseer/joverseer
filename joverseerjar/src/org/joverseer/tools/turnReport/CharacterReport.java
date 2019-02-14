@@ -3,38 +3,38 @@ package org.joverseer.tools.turnReport;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.IBelongsToNation;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
-import org.joverseer.support.GameHolder;
 import org.joverseer.tools.infoCollectors.characters.AdvancedCharacterWrapper;
 
 public class CharacterReport extends BaseReportObject implements IBelongsToNation {
 	Character character;
 	AdvancedCharacterWrapper characterWrapper;
 
-	public CharacterReport() {
+	//dependencies
+	Turn turn;
+	public CharacterReport(Turn turn) {
 		super();
+		this.turn = turn;
 	}
 
-	public CharacterReport(Character c) {
-		super();
+	public CharacterReport(Character c,Turn turn) {
+		this(turn);
 		setName(c.getName());
 		setNationNo(c.getNationNo());
 		setHexNo(c.getHexNo());
 		setCharacter(c);
 	}
-	public CharacterReport(Character c,ObjectModificationType modification) {
-		this(c);
+	public CharacterReport(Character c,ObjectModificationType modification,Turn turn) {
+		this(c,turn);
 		this.setModification(modification);
 	}
-	public CharacterReport(Character c,ObjectModificationType modification,String notes) {
-		this(c);
-		this.setModification(modification);
+	public CharacterReport(Character c,ObjectModificationType modification,String notes,Turn turn) {
+		this(c,modification,turn);
 		this.setNotes(notes);
 	}
 
-	public CharacterReport(AdvancedCharacterWrapper c) {
-		super();
+	public CharacterReport(AdvancedCharacterWrapper c,Turn turn) {
+		this(turn);
 		setName(c.getName());
 		setNationNo(c.getNationNo());
 		setHexNo(c.getHexNo());
@@ -74,9 +74,7 @@ public class CharacterReport extends BaseReportObject implements IBelongsToNatio
 	@Override
 	public String getLinks() {
 		String ret = super.getLinks() + (getCharacter() != null && getCharacter().getOrderResults() != null ? " <a href='http://event?report=" + getCharacter().getId().replace(" ", "_") + "'>Report</a>" : "");
-		Game g = GameHolder.instance().getGame();
-		Turn t = g.getTurn();
-		for (Encounter enc : t.getEncounters(getName())) {
+		for (Encounter enc : this.turn.getEncounters(getName())) {
 			ret += " <a href='http://event?enc=" + enc.getHexNo() + "," + Character.getIdFromName(enc.getCharacter()).replace(" ", "_") + "'>Enc</a>";
 		}
 

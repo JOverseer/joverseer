@@ -6,20 +6,21 @@ import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.orders.AbstractTurnPhaseProcessor;
 import org.joverseer.orders.OrderUtils;
+import org.joverseer.support.GameHolder;
 import org.joverseer.domain.Character;
 
 public class HealingTurnPhaseProcessor extends AbstractTurnPhaseProcessor {
-    
-    public HealingTurnPhaseProcessor(String name) {
-        super(name);
+
+    public HealingTurnPhaseProcessor(String name,GameHolder gameHolder) {
+        super(name,gameHolder);
     }
 
     int healthRecoveryPerTurn = 14;
-    
+
     public int getHealthRecoveryPerTurn() {
         return this.healthRecoveryPerTurn;
     }
-    
+
     public void setHealthRecoveryPerTurn(int healthRecoveryPerTurn) {
         this.healthRecoveryPerTurn = healthRecoveryPerTurn;
     }
@@ -37,5 +38,5 @@ public class HealingTurnPhaseProcessor extends AbstractTurnPhaseProcessor {
             }
         }
     }
-    
+
 }

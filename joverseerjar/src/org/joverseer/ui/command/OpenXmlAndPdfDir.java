@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.Locale;
 import javax.swing.JFileChooser;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameFileComparator;
 import org.joverseer.support.GameHolder;
@@ -131,7 +131,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			globalMsg = "Import was successful.";
 		}
 		this.monitor.setGlobalMessage(globalMsg);
-		joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gh.getGame(), this);
+		JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, this.gh.getGame(), this);
 
 		this.monitor.done();
 		this.dialog.setDescription("Processing finished.");

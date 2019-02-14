@@ -30,7 +30,7 @@ public class ErrorDialog extends MessageDialog {
      * @return always false;
      */
     public static boolean showErrorDialog(String titleId,String messageId) {
-    	MessageDialog dlg = new MessageDialog(Messages.getString(titleId),Messages.getString(messageId));
+     	MessageDialog dlg = new MessageDialog(Messages.getString(titleId),Messages.getString(messageId));
     	dlg.showDialog();
     	return false;
     }

@@ -1,6 +1,6 @@
 package org.joverseer.ui.economyCalculator;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
@@ -49,7 +49,7 @@ public class LostPopsTableModel extends BeanTableModel {
 	@Override
 	protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
 		super.setValueAtInternal(arg0, arg1, arg2);
-		joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 
 	}
 

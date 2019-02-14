@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.HexInfoTurnReportMapItem;
@@ -23,6 +23,6 @@ public class ShowHexInfoTurnReportCommand extends ActionCommand {
 
         HexInfoTurnReportMapItem hitrmi = new HexInfoTurnReportMapItem();
         AbstractMapItem.add(hitrmi);
-        joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hitrmi, this);
+        JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, hitrmi, this);
     }
 }

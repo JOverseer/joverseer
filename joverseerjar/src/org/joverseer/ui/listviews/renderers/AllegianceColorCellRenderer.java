@@ -7,7 +7,7 @@ import java.util.Locale;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.game.Game;
@@ -58,7 +58,7 @@ public class AllegianceColorCellRenderer extends DefaultTableCellRenderer {
             if (nr != null && nationNo > 0) {
             	allegiance = nr.getAllegiance();
             }
-            MessageSource colorSource = joApplication.getColorSource();
+            MessageSource colorSource = JOApplication.getColorSource();
             String colorKey = allegiance != null ? "Listview." + allegiance.toString() + ".color" : "ListView.unknownAllegiance.color";
             Color bg = Color.decode(colorSource.getMessage(colorKey, new Object[] {}, Locale.getDefault()));
             c.setBackground(bg);

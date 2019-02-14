@@ -2,7 +2,7 @@ package org.joverseer.ui.command;
 
 import java.util.ArrayList;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -46,6 +46,6 @@ public class ToggleDrawAllOrdersCommand extends ActionCommand {
 	    	}
 	    	this.value = true;
 		}
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
     }
 }

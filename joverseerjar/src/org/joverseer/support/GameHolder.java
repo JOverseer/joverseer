@@ -1,6 +1,6 @@
 package org.joverseer.support;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.springframework.context.ApplicationContext;
@@ -47,7 +47,7 @@ public class GameHolder {
 	 * @return
 	 */
     public static GameHolder instance() {
-        return GameHolder.instance(joApplication.getApplicationContext());
+        return GameHolder.instance(JOApplication.getApplicationContext());
     }
     /**
      * encapsulate how to get the gameHolder from the ApplicationContext.

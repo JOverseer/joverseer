@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;
 import org.joverseer.domain.Order;
@@ -591,7 +591,7 @@ public class OrderEditorListView extends ItemListView {
 			super.onJOEvent(e);
 			TableColumn noAndCodeColumn = this.table.getColumnModel().getColumn(OrderEditorTableModel.iNoAndCode);
 			// ComboBox Editor for the order number
-			GameMetadata gm = GameMetadata.lazyLoadGameMetadata(null);
+			GameMetadata gm = GameMetadata.lazyLoadGameMetadata(this.gameHolder);
 			if (gm == null) {
 				return;
 			}
@@ -693,8 +693,8 @@ public class OrderEditorListView extends ItemListView {
 		protected void doExecuteCommand() {
 			Order order = getSelectedOrder();
 			if (order != null) {
-				joApplication.publishEvent(LifecycleEventsEnum.EditOrderStartEvent, order, this);
-				joApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.EditOrderStartEvent, order, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.EditOrderEvent, order, this);
 			}
 		}
 	}
@@ -712,7 +712,7 @@ public class OrderEditorListView extends ItemListView {
 			if (order != null) {
 				order.clear();
 				((BeanTableModel) OrderEditorListView.this.table.getModel()).fireTableDataChanged();
-				joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, order, this);
 			}
 		}
 
@@ -773,7 +773,7 @@ public class OrderEditorListView extends ItemListView {
 					ovd.addOrder(order);
 				}
 			}
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 		}
 	}
 
@@ -788,7 +788,7 @@ public class OrderEditorListView extends ItemListView {
 		protected void doExecuteCommand() {
 			OrderVisualizationData ovd = OrderVisualizationData.instance();
 			ovd.clear();
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 		}
 	}
 

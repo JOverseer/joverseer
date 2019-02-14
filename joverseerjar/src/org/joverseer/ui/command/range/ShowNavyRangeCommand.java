@@ -3,7 +3,7 @@
  */
 package org.joverseer.ui.command.range;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.NavyRangeMapItem;
@@ -27,6 +27,6 @@ public class ShowNavyRangeCommand extends ActionCommand {
 		NavyRangeMapItem armi = new NavyRangeMapItem(this.hexNo, this.fed, this.openSeas);
 		AbstractMapItem.add(armi);
 
-		joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
+		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 	}
 }

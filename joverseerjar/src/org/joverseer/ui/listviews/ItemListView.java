@@ -10,11 +10,11 @@ import org.joverseer.support.Container;
 
 /**
  * Base class for Item List Views.
- * 
+ *
  * It specializes BaseItemListView for the cases that the items to be shown are
  * either TurnElementEnum items that are held within the turn or items that can
  * be accessed using a property of the game metadata
- * 
+ *
  * @author Marios Skounakis
  */
 public abstract class ItemListView extends BaseItemListView {

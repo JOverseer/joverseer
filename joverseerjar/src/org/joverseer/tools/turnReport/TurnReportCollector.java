@@ -122,9 +122,9 @@ public class TurnReportCollector {
 				}
 			}
 			if (acw == null) {
-				cr = new CharacterReport(c);
+				cr = new CharacterReport(c,t);
 			} else {
-				cr = new CharacterReport(acw);
+				cr = new CharacterReport(acw,t);
 			}
 			cr.setHexNo(c.getHexNo());
 			PopulationCenter pop = t.getPopCenter(c.getHexNo());
@@ -150,7 +150,7 @@ public class TurnReportCollector {
 		for (Army a : t.getArmies()) {
 			for (String cn : a.getCharacters()) {
 				if (InfoUtils.isDragon(cn)) {
-					CharacterReport cr = new CharacterReport();
+					CharacterReport cr = new CharacterReport(t);
 					cr.setName(cn);
 					cr.setHexNo(Integer.parseInt(a.getHexNo()));
 					cr.setNationNo(a.getNationNo());
@@ -185,7 +185,7 @@ public class TurnReportCollector {
 			if (army != null)
 				continue;
 			PopulationCenter pc = t.getPopCenter(c.getHexNo());
-			CharacterReport cr = new CharacterReport(c);
+			CharacterReport cr = new CharacterReport(c,t);
 			if (existsEnemyArmy) {
 				cr.setModification(ObjectModificationType.Lost);
 				cr.setNotes("Enemy armies: " + enemyArmies);
@@ -235,7 +235,7 @@ public class TurnReportCollector {
 							}
 						}
 						if (!found) {
-							ret.add(new CharacterReport(c,ObjectModificationType.Gained,"Learnt " + sp.getName() + " at " + sp.getProficiency()));
+							ret.add(new CharacterReport(c,ObjectModificationType.Gained,"Learnt " + sp.getName() + " at " + sp.getProficiency(),t));
 						}
 					}
 				}
@@ -263,7 +263,7 @@ public class TurnReportCollector {
 				}
 				if (orderResults.contains("was ordered to assassinate a character.")) {
 					boolean failure = orderResults.contains("was not able to assassinate the character") || orderResults.contains("was not able to complete " + lprefixGen + " mission because the character was too well guarded");
-					CharacterReport cr = new CharacterReport(c);
+					CharacterReport cr = new CharacterReport(c,t);
 					if (pc != null) {
 						cr.setHexNo(pc.getHexNo());
 					}
@@ -280,7 +280,7 @@ public class TurnReportCollector {
 				if (orderResults.contains("was ordered to kidnap a character.")) {
 					boolean failure = orderResults.contains("was not able to kidnap the character") || orderResults.contains("was not able to complete " + lprefixGen + " mission because the character was too well guarded");
 					String kidnappedChar = StringUtils.getUniquePart(orderResults, "was ordered to kidnap a character.", " was kidnaped.", false, false);
-					CharacterReport cr = new CharacterReport(c);
+					CharacterReport cr = new CharacterReport(c,t);
 					if (pc != null) {
 						cr.setHexNo(pc.getHexNo());
 					}
@@ -295,7 +295,7 @@ public class TurnReportCollector {
 				}
 				if (orderResults.contains("was ordered to sabotage the fortifications.")) {
 					boolean failure = orderResults.contains("was not able to sabotage the fortifications") || orderResults.contains("was not able to complete " + lprefixGen + " mission because the character was too well guarded");
-					CharacterReport cr = new CharacterReport(c);
+					CharacterReport cr = new CharacterReport(c,t);
 					if (pc != null) {
 						cr.setHexNo(pc.getHexNo());
 					}
@@ -320,7 +320,7 @@ public class TurnReportCollector {
 				}
 				if (orderResults.contains("was ordered to sabotage the harbor/port")) {
 					boolean failure = orderResults.contains("was not able to sabotage the Harbor") || orderResults.contains("was not able to sabotage the Port");
-					CharacterReport cr = new CharacterReport(c);
+					CharacterReport cr = new CharacterReport(c,t);
 					if (pc != null) {
 						cr.setHexNo(pc.getHexNo());
 					}
@@ -346,7 +346,7 @@ public class TurnReportCollector {
 				}
 				if (orderResults.contains("was ordered to sabotage a bridge")) {
 					boolean failure = orderResults.contains("was not able to sabotage the bridge");
-					CharacterReport cr = new CharacterReport(c);
+					CharacterReport cr = new CharacterReport(c,t);
 					if (pc != null) {
 						cr.setHexNo(pc.getHexNo());
 					}
@@ -363,7 +363,7 @@ public class TurnReportCollector {
 				if (orderResults.contains("was ordered to guard the location")) {
 					ArrayList<String> captured = StringUtils.getParts(orderResults, " captured ", " and thwarted \\w+ theft mission\\.", false, false);
 					if (captured.size() > 0) {
-						CharacterReport cr = new CharacterReport(c);
+						CharacterReport cr = new CharacterReport(c,t);
 						if (pc != null) {
 							cr.setHexNo(pc.getHexNo());
 						}
@@ -434,7 +434,7 @@ public class TurnReportCollector {
 					pc = p.getCharacters().findFirstByProperty("name", c.getName());
 				}
 				if (!c.getDeathReason().equals(CharacterDeathReasonEnum.NotDead)) {
-					CharacterReport cr = new CharacterReport(c,ObjectModificationType.Lost);
+					CharacterReport cr = new CharacterReport(c,ObjectModificationType.Lost,t);
 					if (c.getDeathReason().equals(CharacterDeathReasonEnum.Dead)) {
 						if (c.getCleanOrderResults().contains("was killed during combat")) {
 							cr.setNotes("Killed in combat");
@@ -475,7 +475,7 @@ public class TurnReportCollector {
 				} else {
 					if (pc == null) {
 						// new
-						CharacterReport cr = new CharacterReport(c,ObjectModificationType.Gained);
+						CharacterReport cr = new CharacterReport(c,ObjectModificationType.Gained,t);
 						ret.add(cr);
 					} else {
 						// check for hostage
@@ -483,7 +483,7 @@ public class TurnReportCollector {
 						if (c.getHexNo() == 0 && pc.getHexNo() != 0) {
 							// hostage or missing
 							if (cleanOrderResults.contains("could not escape from being held hostage")) {
-								CharacterReport cr = new CharacterReport(c,ObjectModificationType.Lost,"Hostage");
+								CharacterReport cr = new CharacterReport(c,ObjectModificationType.Lost,"Hostage",t);
 								cr.setHexNo(pc.getHexNo());
 								if (cleanOrderResults.contains(c.getName() + " was captured during combat by")) {
 									cr.appendNote("Captured in combat");
@@ -501,10 +501,10 @@ public class TurnReportCollector {
 								ret.add(cr);
 							}
 						} else if (c.getHexNo() != 0 && pc.getHexNo() == 0) {
-							CharacterReport cr = new CharacterReport(c,ObjectModificationType.Gained,"Escaped from hostage");
+							CharacterReport cr = new CharacterReport(c,ObjectModificationType.Gained,"Escaped from hostage",t);
 							ret.add(cr);
 						} else if (c.getHealth() != null && c.getHealth() < 100 && c.getHealth() > 0 && pc.getHealth() > c.getHealth()) {
-							CharacterReport cr = new CharacterReport(c,ObjectModificationType.Modified,"Injured (" + c.getHealth() + ")");
+							CharacterReport cr = new CharacterReport(c,ObjectModificationType.Modified,"Injured (" + c.getHealth() + ")",t);
 							if (cleanOrderResults.contains("suffered a loss of health due to a mysterious")) {
 								cr.appendNote(" Cursed");
 							}
@@ -895,7 +895,7 @@ public class TurnReportCollector {
 				if (paw.getNationNo() == null)
 					continue;
 				if (aw == null) {
-					ArtifactReport ar = new ArtifactReport(ObjectModificationType.Lost,paw);
+					ArtifactReport ar = new ArtifactReport(ObjectModificationType.Lost,paw,this.gameHolder);
 					ar.setNotes(paw.getOwner());
 					ar.setNationNo(paw.getNationNo());
 					ret.add(ar);
@@ -907,7 +907,7 @@ public class TurnReportCollector {
 				continue;
 			if (DerivedFromSpellInfoSource.class.isInstance(aw.getInfoSource())) {
 				DerivedFromSpellInfoSource s = (DerivedFromSpellInfoSource) aw.getInfoSource();
-				ArtifactReport ar = new ArtifactReport(ObjectModificationType.Modified,aw);
+				ArtifactReport ar = new ArtifactReport(ObjectModificationType.Modified,aw,this.gameHolder);
 				ar.setNationNo(s.getNationNo());
 				String owner = aw.getOwner();
 				AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(owner, t.getTurnNo());
@@ -926,13 +926,13 @@ public class TurnReportCollector {
 				if (p != null && paw != null && paw.getTurnNo() != p.getTurnNo())
 					paw = null;
 				if (paw == null) {
-					ArtifactReport ar = new ArtifactReport(ObjectModificationType.Gained, aw);
+					ArtifactReport ar = new ArtifactReport(ObjectModificationType.Gained, aw,this.gameHolder);
 					ar.setNotes(aw.getOwner());
 					ar.setNationNo(aw.getNationNo());
 					ret.add(ar);
 				} else {
 					if (paw.getNationNo() != null && !paw.getNationNo().equals(aw.getNationNo())) {
-						ArtifactReport ar = new ArtifactReport(ObjectModificationType.Modified, aw);
+						ArtifactReport ar = new ArtifactReport(ObjectModificationType.Modified, aw,this.gameHolder);
 						ar.setNationNo(aw.getNationNo());
 						ar.setNotes(charPlusNation(paw.getOwner(), t) + " " + this.UNICODE_RIGHTWARDS_ARROW + " "
 								+ charPlusNation(aw.getOwner(), t));
@@ -1642,11 +1642,10 @@ public class TurnReportCollector {
 		return popFort;
 	}
 
-	public String renderReport() {
+	public String renderReport(Game g) {
+		String ret = "";
 		try {
-			String ret = "";
-			Game g = this.gameHolder.getGame();
-			if (!GameHolder.hasInitializedGame())
+			if (!Game.isInitialized(g))
 				return ret;
 			Turn t = g.getTurn();
 			Turn p = g.getTurn(t.getTurnNo() - 1);
@@ -1781,7 +1780,7 @@ public class TurnReportCollector {
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			Logger.getLogger(TurnReportCollector.class).error(exc.getLocalizedMessage());
-			return "";
 		}
+		return ret;
 	}
 }

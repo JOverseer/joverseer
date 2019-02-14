@@ -3,7 +3,7 @@ package org.joverseer.ui.command;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.SpellProficiency;
@@ -71,7 +71,7 @@ public class HighlightCharacters extends ActionCommand {
 				}
 				AbstractMapItem.add(hhmi);
 
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this, this);
 				return true;
 			}
 		};

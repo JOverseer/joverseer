@@ -5,7 +5,7 @@ import javax.swing.JTextArea;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.ui.support.Messages;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.command.AbstractCommand;
@@ -22,7 +22,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 
 	@Override
 	protected void doExecuteCommand() {
-		ApplicationDescriptor descriptor = joApplication.getApplicationDescriptor();
+		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
 //		ThreepartVersion latest = new ThreepartVersion(descriptor.getVersion());
 		String report = "Version:" +descriptor.getVersion() + this.EOL
 				+ SystemProperties();

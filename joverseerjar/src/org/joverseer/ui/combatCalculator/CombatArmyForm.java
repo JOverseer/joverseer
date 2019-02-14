@@ -6,7 +6,7 @@ import java.util.Arrays;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
@@ -44,7 +44,7 @@ public class CombatArmyForm extends AbstractForm {
 		tlb.relatedGapRow();
 
 		ArrayList<Nation> nations = new ArrayList<Nation>();
-		Game g = joApplication.getGame();
+		Game g = JOApplication.getGame();
 		if (Game.isInitialized(g)) {
 			GameMetadata gm = g.getMetadata();
 			nations.addAll(gm.getNations());

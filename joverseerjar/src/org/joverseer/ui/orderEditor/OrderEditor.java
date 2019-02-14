@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
@@ -168,7 +168,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 		JButton btn = new JButton();
 		btn.setPreferredSize(new Dimension(18, 18));
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("SaveGameCommand.icon")); //$NON-NLS-1$
 		btn.setIcon(ico);
 		glb.append(btn);
@@ -191,7 +191,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				joApplication.publishEvent(LifecycleEventsEnum.SelectCharEvent, ((Order) getFormObject()).getCharacter(), this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectCharEvent, ((Order) getFormObject()).getCharacter(), this);
 
 			}
 		});
@@ -284,7 +284,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 				} else {
 					ovd.removeOrder((Order) getFormObject());
 				}
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
 
 			}
 		});
@@ -319,7 +319,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 					} else {
 						ovd.setAdditionalInfo(o, "displacement", d); //$NON-NLS-1$
 					}
-					joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
+					JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
 				}
 			}
 		});
@@ -485,7 +485,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		o.setParameters(this.parametersInternal.getText());
 		// validateOrder();
 		// throw an order changed event
-		joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
 		// joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent,selectedHex, this);
@@ -502,7 +502,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		o.setParameters(this.parametersInternal.getText());
 		this.currentOrderNoAndCode = ""; //$NON-NLS-1$
 		// throw an order changed event
-		joApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);
 		// Point selectedHex = new Point(o.getCharacter().getX(),
 		// o.getCharacter().getY());
 		// joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent,selectedHex, this);
@@ -547,7 +547,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		OrderVisualizationData ovd = OrderVisualizationData.instance();
 		if (PreferenceRegistry.instance().getPreferenceValue("orderEditor.autoDraw").equals("yes") && PreferenceRegistry.instance().getPreferenceValue(Messages.getString("OrderEditor.233")).equals("yes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			ovd.setOrderEditorOrder(o);
-			joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
+			JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, getFormObject(), this);
 		} else {
 			ovd.setOrderEditorOrder(null);
 		}

@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import org.apache.commons.beanutils.BeanComparator;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PlayerInfo;
@@ -79,7 +79,7 @@ public class OrderFileGenerator {
     }
     
     protected String getFileFooter() {
-    	ApplicationDescriptor appDesc = joApplication.getApplicationDescriptor();
+    	ApplicationDescriptor appDesc = JOApplication.getApplicationDescriptor();
         return "\n" +
                 "ENDMEAUTOINPUT" + "\n" +
                 "JO" + appDesc.getVersion();

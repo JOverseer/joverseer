@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.JTable;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.ProductEnum;
@@ -81,25 +81,25 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		if (rowIndex == iSellCount) {
 			ecd.setSellUnits(product, (Integer) aValue);
 			fireTableDataChanged();
-			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == iSellPercent) {
 			ecd.setSellPct(product, (Integer) aValue);
 			fireTableDataChanged();
-			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == iBuyCount) {
 			ecd.setBuyUnits(product, (Integer) aValue);
 			fireTableDataChanged();
-			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == iBidPrice) {
 			ecd.setBidPrice(product, (Integer) aValue);
 			fireTableDataChanged();
-			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 		if (rowIndex == iBidCount) {
@@ -115,7 +115,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 			}
 			ecd.setBidUnits(product, (Integer) aValue);
 			fireTableDataChanged();
-			joApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.EconomyCalculatorUpdate, this, this);
 			select(rowIndex, columnIndex);
 		}
 	}

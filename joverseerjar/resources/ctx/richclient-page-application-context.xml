@@ -325,6 +325,11 @@
 		<property name="viewGroup">
 			<value>Collaboration</value>
 		</property>
+		<property name="viewProperties">
+			<map>
+				<entry key="gameHolder"><ref bean="gameHolder"/></entry>
+			</map>
+		</property>
 	</bean>
 	-->
 

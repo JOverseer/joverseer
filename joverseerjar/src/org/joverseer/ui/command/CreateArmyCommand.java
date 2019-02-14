@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.game.Game;
@@ -67,7 +67,7 @@ public class CreateArmyCommand extends ActionCommand {
 				}
 				t.getContainer(TurnElementsEnum.Army).addItem(army);
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 				return true;
 			}
 		};

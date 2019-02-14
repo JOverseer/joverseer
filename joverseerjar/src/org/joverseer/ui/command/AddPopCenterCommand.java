@@ -3,7 +3,7 @@
  */
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.InformationSourceEnum;
@@ -68,7 +68,7 @@ public class AddPopCenterCommand extends ActionCommand {
 			protected boolean onFinish() {
 				form.commit();
 				AddPopCenterCommand.this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).addItem(pc);
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 				return true;
 			}
 		};

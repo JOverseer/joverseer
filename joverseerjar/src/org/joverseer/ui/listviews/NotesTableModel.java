@@ -1,6 +1,6 @@
 package org.joverseer.ui.listviews;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
@@ -40,7 +40,7 @@ public class NotesTableModel extends ItemTableModel {
 	@Override
 	protected void setValueAtInternal(Object arg0, Object arg1, int arg2) {
 		super.setValueAtInternal(arg0, arg1, arg2);
-		joApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, this, this);
+		JOApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, this, this);
 
 	}
 

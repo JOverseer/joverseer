@@ -11,6 +11,7 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoRegistry;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.combatCalculator.CombatFormHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationContext;
@@ -19,13 +20,14 @@ import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.image.ImageSource;
 
-public class joApplication {
+public class JOApplication {
 
 	// this is a class to make it clear that all the Application.instance().getApplicationContext(). are one and the same
 	// and reduce the amount of casting going on.
 	// also limits the impact of the decision to create singletons, to this class, instead of getInstance() functions on
 	// all other classes, and removes the knowledge of a singleton class from classes that don't really need to know.
-	public joApplication()
+	// it also hides the details of the application context from classes that don't need to know.
+	public JOApplication()
 	{
 	}
 	static public ApplicationContext getApplicationContext()
@@ -42,7 +44,7 @@ public class joApplication {
 			return null;
 		}
 		Icon ico = null;
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		if (imgSource != null) {
 			String iconKey= null;
 			switch (orderResultType) {
@@ -95,8 +97,13 @@ public class joApplication {
     public static InfoRegistry getInfoRegistry()
     {
         return (InfoRegistry) getApplicationContext().getBean("infoRegistry"); //$NON-NLS-1$
-    }	
-    
+    }
+
+    public static CombatFormHolder getCombatFormHolder() {
+        return (CombatFormHolder) getApplicationContext().getBean("combatCalculatorHolder");
+    }
+
+
     static public void publishEvent(LifecycleEventsEnum type,Object object,Object sender)
 	{
 		getApplicationContext().publishEvent(new JOverseerEvent(type, object,sender));

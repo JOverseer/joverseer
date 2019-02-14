@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.RecentGames;
@@ -101,8 +101,8 @@ public class LoadGame extends ActionCommand {
                 MapMetadata mm = MapMetadata.instance();
                 mmu.setMapSize(mm, g.getMetadata().getGameType());
 
-                joApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
-                joApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, g, g);
+                JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, g, g);
+                JOApplication.publishEvent(LifecycleEventsEnum.GameLoadedEvent, g, g);
                 if (g.getParameter("horizontalMapScroll") != null) { //$NON-NLS-1$
                     MapPanel mp = MapPanel.instance();
                     JScrollPane scp = (JScrollPane)mp.getParent().getParent();
@@ -120,7 +120,7 @@ public class LoadGame extends ActionCommand {
                     try {
                         int hx = Integer.parseInt(g.getParameter("selHexX")); //$NON-NLS-1$
                         int hy = Integer.parseInt(g.getParameter("selHexY")); //$NON-NLS-1$
-                        joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(hx, hy), g);
+                        JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, new Point(hx, hy), g);
                     }
                     catch (Exception exc) {
 

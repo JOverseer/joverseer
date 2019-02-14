@@ -18,7 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.Artifact;
 import org.joverseer.domain.Character;
@@ -159,7 +159,7 @@ public class TrackCharacterListView extends BaseItemListView {
 					}
 				}
 				AbstractMapItem.add(tcmi);
-				joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, tcmi, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, tcmi, this);
 			}
 		});
 
@@ -322,10 +322,10 @@ public class TrackCharacterListView extends BaseItemListView {
 					TrackCharacterInfo tci = (TrackCharacterInfo) obj;
 					if (tci.getHexNo() > 0) {
 						Point selectedHex = new Point(tci.getX(), tci.getY());
-						joApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
+						JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
 					}
 					TrackCharacterListView.this.getGame().setCurrentTurn(tci.getTurnNo());
-					joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 
 				} catch (Exception exc) {
 					// do nothing

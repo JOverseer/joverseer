@@ -1,6 +1,6 @@
 package org.joverseer.support.readers.xml;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -196,7 +196,7 @@ public class ArmyWrapper {
 			throw new RuntimeException("Uknown information source " + getInformationSource());
 		}
 
-		GameMetadata gm = joApplication.getMetadata();
+		GameMetadata gm = JOApplication.getMetadata();
 
 		switch (getNationAllegience()) {
 		case 0:

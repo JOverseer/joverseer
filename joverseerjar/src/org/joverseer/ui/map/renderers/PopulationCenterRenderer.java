@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HarborSizeEnum;
 import org.joverseer.domain.PopulationCenter;
@@ -118,7 +118,7 @@ public class PopulationCenterRenderer extends ImageRenderer {
         }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
 
-        HashMap mapOptions = joApplication.getMapOptions();
+        HashMap mapOptions = JOApplication.getMapOptions();
         Object map = mapOptions.get(MapOptionsEnum.PopCenterNames);
         if (map!= null && map.equals(MapOptionValuesEnum.PopCenterNamesOn)) {
 	        String pcName = popCenter.getName();

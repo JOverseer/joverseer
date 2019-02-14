@@ -16,7 +16,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.Note;
 import org.joverseer.game.Game;
@@ -115,7 +115,7 @@ public class HexInfoViewer extends ObjectViewer {
 		this.climate.setPreferredSize(this.uiSizes.newDimension(50/12, this.uiSizes.getHeight3()));
 		this.climate.setBorder(null);
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setIcon(ico);
@@ -312,7 +312,7 @@ public class HexInfoViewer extends ObjectViewer {
 				neighbor.getHexSideElements(this.side.getOppositeSide()).remove(HexSideElementEnum.Bridge);
 				gm.addHexOverride(g.getCurrentTurn(), neighbor);
 
-				joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 
 			}
 		}
@@ -393,7 +393,7 @@ public class HexInfoViewer extends ObjectViewer {
 			neighbor.addHexSideElement(this.side.getOppositeSide(), HexSideElementEnum.Bridge);
 			gm.addHexOverride(g.getCurrentTurn(), neighbor);
 
-			joApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
+			JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, this, this);
 		}
 	}
 

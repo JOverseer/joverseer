@@ -11,7 +11,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -158,7 +158,7 @@ public class NotesListView extends ItemListView {
                     Object obj = NotesListView.this.tableModel.getRow(idx);
                     Note note = (Note) obj;
                     NotesListView.this.getTurn().getContainer(TurnElementsEnum.Notes).removeItem(note);
-                    joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
+                    JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
 
                 } catch (Exception exc) {
 

@@ -17,7 +17,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.Info;
@@ -117,7 +117,7 @@ public class InfoView extends AbstractView {
 		
 		//TODO: filtering by game type doesn't work as the view is cached by jide/spring
 		if (GameHolder.hasInitializedGame()) {
-			GameMetadata gm = joApplication.getMetadata();
+			GameMetadata gm = JOApplication.getMetadata();
 			selected = gm.getGameType().toMEString();
 		}
 		lb.cell(createTableFromInfo("charactersAllowed",500, 480,selected), "align=left");
@@ -194,7 +194,7 @@ public class InfoView extends AbstractView {
 	// otherwise the same as createTableFromResource.
 	// if only is not "" then only include those elements of column 0 
 	protected JComponent createTableFromInfo(String key, int w, int h,String only) {
-		Info info = joApplication.getInfoRegistry().getInfo(key);
+		Info info = JOApplication.getInfoRegistry().getInfo(key);
 		try {
 
 			InfoTableModel model = new InfoTableModel();

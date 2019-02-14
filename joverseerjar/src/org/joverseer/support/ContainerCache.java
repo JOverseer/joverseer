@@ -84,7 +84,7 @@ public class ContainerCache<X> implements Serializable {
 		}
 	}
 
-	public void removeAll(Collection<X> col) {
+	public synchronized void removeAll(Collection<X> col) {
 		for (X obj : col) {
 			removeItem(obj);
 		}

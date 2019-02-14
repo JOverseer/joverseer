@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Combat;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
@@ -58,7 +58,7 @@ public class CombatViewer extends ObjectViewer {
 		this.description.setPreferredSize(this.uiSizes.newDimension(200/12, this.uiSizes.getHeight3()));
 		this.description.setBorder(null);
 
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		JButton btnMenu = new JButton();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
@@ -118,7 +118,7 @@ public class CombatViewer extends ObjectViewer {
 		@Override
 		protected void doExecuteCommand() {
 			Combat c = (org.joverseer.domain.Combat) getFormObject();
-			DialogsUtility.showCombatNarration(c, this.nationNo);
+			DialogsUtility.showCombatNarration(c, this.nationNo,CombatViewer.this.gameHolder.getGame());
 		}
 
 	}

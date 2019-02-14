@@ -126,6 +126,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 				((AbstractTableModel) this.totalsTable.getModel()).fireTableDataChanged();
 			}
 			refreshFinalGoldWarning();
+			refreshTaxIncrease();
 			break;
 		}
 	}

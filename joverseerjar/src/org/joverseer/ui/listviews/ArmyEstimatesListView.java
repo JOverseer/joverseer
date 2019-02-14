@@ -22,7 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 import javax.swing.table.JTableHeader;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.preferences.PreferenceRegistry;
@@ -143,7 +143,7 @@ public class ArmyEstimatesListView extends ItemListView {
 		tlb.cell(scrollPane);
 
 		if (getDefaultSort() != null) {
-			ImageSource imgSource = joApplication.getImageSource();
+			ImageSource imgSource = JOApplication.getImageSource();
 			Icon ico = new ImageIcon(imgSource.getImage("restoreSorting.icon")); //$NON-NLS-1$
 			JLabel restoreSorting = new JLabel();
 			restoreSorting.setIcon(ico);
@@ -242,7 +242,7 @@ public class ArmyEstimatesListView extends ItemListView {
 		ArrayList<JComponent> comps = new ArrayList<JComponent>();
 		comps.addAll(Arrays.asList(super.getButtons()));
 		JLabelButton popupMenu = new JLabelButton();
-		ImageSource imgSource = joApplication.getImageSource();
+		ImageSource imgSource = JOApplication.getImageSource();
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		popupMenu.setIcon(ico);
 		popupMenu.addActionListener(new PopupMenuActionListener() {

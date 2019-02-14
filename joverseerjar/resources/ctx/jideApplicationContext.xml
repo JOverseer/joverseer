@@ -13,7 +13,7 @@
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
 		<property name="version" value="1.16.15"/>
-		<property name="buildId" value="Gerontic Gwaihir"/>
+		<property name="buildId" value="Glorious Gwaihir"/>
 	</bean>
 
 	<!--
@@ -294,12 +294,14 @@
     <!-- Healing Turn Phase Processor -->
     <bean id="HealingProcessor" class="org.joverseer.orders.me.HealingTurnPhaseProcessor">
 	    <constructor-arg index="0" value="Healing"/>
+      	<constructor-arg index="1" ref="gameHolder"/>
     </bean>
 
     <!-- Healing Spells Turn Phase Processor -->
     <bean id="HealingSpellsProcessor" class="org.joverseer.orders.TurnOrderPhaseProcessor">
 	    <constructor-arg index="0" value="Healing Spells"/>
 	    <constructor-arg index="1" value="120"/>
+      	<constructor-arg index="2" ref="gameHolder"/>
 	    <property name="orderScheduler">
 	    	<bean class="org.joverseer.orders.BaseOrderScheduler"/>
 	    </property>
@@ -307,6 +309,7 @@
 
     <bean id="ProductionRevenueProcessor" class="org.joverseer.orders.me.ProductionRevenuePhaseProcessor">
 	    <constructor-arg index="0" value="Production-Revenue"/>
+      	<constructor-arg index="1" ref="gameHolder"/>
     </bean>
 
     <!--
@@ -348,7 +351,9 @@
 
 	<bean id="artifactInfoCollector" class="org.joverseer.tools.infoCollectors.artifacts.ArtifactInfoCollector"/>
 
-	<bean id="combatCalculatorHolder" class="org.joverseer.ui.combatCalculator.CombatFormHolder"/>
+	<bean id="combatCalculatorHolder" class="org.joverseer.ui.combatCalculator.CombatFormHolder">
+   		<constructor-arg index="0" ref="gameHolder"/>
+	</bean>
 
    	<bean id="infoRegistry" class="org.joverseer.support.info.InfoRegistry">
    		<property name="infos">

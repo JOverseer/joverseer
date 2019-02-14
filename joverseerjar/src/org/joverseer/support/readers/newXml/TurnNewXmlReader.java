@@ -855,13 +855,13 @@ public class TurnNewXmlReader implements Runnable {
 	}
 
 	private void updatePopCenters(Game game1) throws Exception {
-		Container oldpcws = this.turnInfo.getOldPopCentres();
+/*		Container oldpcws = this.turnInfo.getOldPopCentres();
 		if (oldpcws == null) {
 			throw new Exception("Error: no PCs found");
 		}
 		//TODO: fix this for spotting changed capital.
 		TurnXmlReader.updateOldPCs(this.turn, this.turnInfo.getTurnNo(),this.turnInfo.getNationNo(), -1,oldpcws.getItems(),this.infoSource, this.currentNationPops, this.game.getMetadata());
-		Container pcws = this.turnInfo.getPopCentres();
+*/		Container pcws = this.turnInfo.getPopCentres();
 		if (pcws == null) {
 			throw new Exception("Error: no PCs found... should you have set old XML format?");
 		}

@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.listviews.filters.AllegianceFilter;
 import org.joverseer.ui.listviews.filters.NationFilter;
@@ -91,7 +91,7 @@ public class RelationsListView extends ItemListView {
 		public Component getTableCellRendererComponent(JTable table1, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table1, value, isSelected, hasFocus, row, column);
             if (column < 3) return c;
-            MessageSource colorSource = joApplication.getColorSource();
+            MessageSource colorSource = JOApplication.getColorSource();
             String relation = value.toString();
             Color bgColor = Color.WHITE;
             if (relation.equals("F")) {

@@ -1,6 +1,6 @@
 package org.joverseer.ui.command;
 
-import org.joverseer.joApplication;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Note;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
@@ -25,11 +25,11 @@ public class DeleteNoteCommand extends ActionCommand {
     @Override
 	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
-        final Game g = joApplication.getGame();
+        final Game g = JOApplication.getGame();
         g.getTurn().getContainer(TurnElementsEnum.Notes).removeItem(this.note);
-        joApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
-        joApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, this.note, this);
-        joApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this.note, this);
+        JOApplication.publishEvent(LifecycleEventsEnum.ListviewRefreshItems, this, this);
+        JOApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, this.note, this);
+        JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, this.note, this);
 
     }
 

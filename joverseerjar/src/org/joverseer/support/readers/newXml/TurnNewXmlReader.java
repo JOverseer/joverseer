@@ -38,7 +38,6 @@ import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.joverseer.support.readers.pdf.CombatWrapper;
 import org.joverseer.support.readers.pdf.OrderResult;
-import org.joverseer.support.readers.xml.TurnXmlReader;
 import org.springframework.richclient.progress.ProgressMonitor;
 
 public class TurnNewXmlReader implements Runnable {

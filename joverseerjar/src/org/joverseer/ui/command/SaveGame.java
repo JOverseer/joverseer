@@ -44,8 +44,9 @@ public class SaveGame extends ActionCommand {
     }
 
     // use this version when you want a different name for the command.
-    public SaveGame(String commandId) {
+    public SaveGame(String commandId,GameHolder gameHolder) {
     	super(commandId);
+        this.gameHolder = gameHolder;
     }
     @Override
 	protected void doExecuteCommand() {

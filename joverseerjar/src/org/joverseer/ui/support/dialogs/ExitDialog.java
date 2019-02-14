@@ -3,6 +3,8 @@ package org.joverseer.ui.support.dialogs;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
+
+import org.joverseer.support.GameHolder;
 import org.joverseer.ui.command.SaveGame;
 import org.springframework.richclient.command.AbstractCommand;
 import org.springframework.richclient.command.ActionCommand;
@@ -11,7 +13,7 @@ import org.springframework.richclient.dialog.ApplicationDialog;
 import org.springframework.richclient.dialog.DefaultMessageAreaPane;
 
 /**
- * 
+ *
  * An Exit dialog.
  * @author Dave
  *
@@ -26,7 +28,7 @@ public abstract class ExitDialog extends ApplicationDialog {
 
     public ExitDialog(String title, String message) {
 		super(title,null);
-		this.saveAndFinishCommand = new SaveGame("ExitDialog.SaveAndExit") {
+		this.saveAndFinishCommand = new SaveGame("ExitDialog.SaveAndExit",GameHolder.instance()) {
 			@Override
 			protected void doExecuteCommand() {
 				super.doExecuteCommand();

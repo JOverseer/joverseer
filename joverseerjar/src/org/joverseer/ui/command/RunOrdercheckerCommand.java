@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.CharacterDeathReasonEnum;

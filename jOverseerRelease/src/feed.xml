@@ -5,7 +5,32 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
-    <item><title>1.16.14</title>
+    <item><title>1.16.16</title>
+    <pubDate>Thu, 14 Feb 2019</pubDate>
+    <description>
+VERSION 1.16.16
+---------------
+	* Enh: The 5 artifact views have been consolidated to the one artifact view.
+		   You can get the same effect as the previous views, by selecting different filters.
+		   This includes some better intelligence for spotting LAT reports, and matching artifacts
+		   with accents.
+	* Enh: Import results will only match files for the current game.
+	* Fix: Brad really missed the Map Editor View, so it's back.
+	* Fix: orders in CME that specified a nation now work ok.
+	* Fix: Certain types of Challenges on the Turn Report View confused who was winning and losing.
+	* Fix: there was a jar file missing from the installer causing problems for fresh installs and pdf parsing.
+	* Fix: Odd screen updates when JO opened with the Economy Page.
+	* Fix: Order List View not displaying if a row wasn't selected.
+	* Fix: Reconcile ordercheker's list of artifacts with the current game.
+	* Fix: Game data/rules corrections:
+			The cost of relocate capital is corrected to 25000.
+			Alignment of artifact 190 for 2950.
+	* QA: A lot of the recent odd behaviour was due to not tracking some unexpected problems.
+		  Now you're more likely to see an Error Dialog pop up, which also logs the problem to the file
+		  mentioned at the bottom of the Help->Gather Support Data screen.
+	</description>
+	</item>
+    <item><title>1.16.15</title>
     <pubDate>Tue, 18 Dec 2018</pubDate>
     <description>
 VERSION 1.16.15

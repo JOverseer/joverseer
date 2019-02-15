@@ -576,7 +576,7 @@ public class OrderEditorListView extends ItemListView {
 	protected void onJOEvent(JOverseerEvent e) {
 		switch(e.getType()) {
 		case GameLoadedEvent:
-			selectCurrentNationAsFilter();
+			super.onJOEvent(e);
 			break;
 		case SelectedTurnChangedEvent:
 		case SelectedHexChangedEvent:

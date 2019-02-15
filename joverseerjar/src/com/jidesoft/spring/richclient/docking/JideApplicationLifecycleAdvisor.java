@@ -362,7 +362,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 
 	public void refreshClearMapItemsVisibility() {
 		CommandGroup toolbar = Application.instance().getLifecycleAdvisor().getToolBarCommandGroup();
-		AbstractCommand ac = toolbar.find("clearMapItemsToolbarCommand");
+		AbstractCommand ac = toolbar.find("clearMapItemsCommand");
 		if (ac != null) {
 			ac.setVisible(PreferenceRegistry.instance().getPreferenceValue("map.clearMapItemsOnToolBar").equals("yes"));
 		}

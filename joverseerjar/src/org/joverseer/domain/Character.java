@@ -11,9 +11,9 @@ import org.joverseer.support.infoSources.InfoSource;
 
 /**
  * Stores information about a character reported in the turn results.
- * 
+ *
  * @author Marios Skounakis
- * 
+ *
  */
 public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanceCost, IEngineObject, Serializable {
 
@@ -335,6 +335,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	public void setArtifactInUse(int artifactInUse) {
 		this.artifactInUse = artifactInUse;
 	}
+	public boolean hasArtifacts() {
+		return this.artifacts.size() > 0;
+	}
 
 	public Nation getNation() {
 		return NationMap.getNationFromNo(getNationNo());
@@ -508,7 +511,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		}
 		return false;
 	}
-	
+
 	public void addHostage(@SuppressWarnings("hiding") String name) {
 		if (!getHostages().contains(name))
 			getHostages().add(name);

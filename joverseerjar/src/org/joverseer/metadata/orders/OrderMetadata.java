@@ -17,7 +17,7 @@ import org.joverseer.support.GameHolder;
  * - the requirements for executing the order
  * - the parameters required to fill in for this order
  * - the skill requirements for this order
- * 
+ *
  * @author Marios Skounakis
  *
  */
@@ -79,16 +79,16 @@ public class OrderMetadata implements Serializable {
         this.requirement = requirement;
     }
 
-    
+
     public String getSkillRequirement() {
         return this.skillRequirement;
     }
 
-    
+
     public void setSkillRequirement(String skillRequirement) {
         this.skillRequirement = skillRequirement;
     }
-    
+
     public boolean charHasRequiredSkill(Character c) {
         if (getSkillRequirement().equals("M") ||
                 getSkillRequirement().equals("Move")) {
@@ -106,16 +106,22 @@ public class OrderMetadata implements Serializable {
                 getSkillRequirement().equals("ES")) {
             return c.getEmmisary() > 0;
         }
-        if (getSkillRequirement().equals("MM") ||
-                getSkillRequirement().equals("MS")) {
-            return c.getMage() > 0;
+    	if (getSkillRequirement().equals("MS")) {
+    		return c.getMage() > 0;
+    	}
+        if (getSkillRequirement().equals("MM")) {
+        	//allow character to attempt to cast any spell if he has an artifact.
+        	if (c.hasArtifacts()) {
+        		return true;
+        	}
+        	return c.getMage() > 0;
         }
         if (getSkillRequirement().equals("ECS")) {
         	return c.getEmmisary() > 0 && c.getCommand() > 0;
         }
         return false;
     }
-    
+
     public boolean orderAllowedDueToScoutingSNA(Character c) {
     	if (this.number == 925 || this.number == 905 || this.number == 910 || this.number == 915 || this.number == 920 || this.number == 930) {
     		Nation n = c.getNation();
@@ -126,7 +132,7 @@ public class OrderMetadata implements Serializable {
     	}
     	return false;
     }
-    
+
     public boolean orderAllowedDueToUncoverSecretsSNA(Character c) {
     	if (this.number == 585) {
     		Nation n = c.getNation();

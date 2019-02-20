@@ -52,6 +52,8 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 		assertNotNull(as.getService(ComponentFactory.class));
 		asl.setApplicationServices(as);
 		assertNotNull(ApplicationServicesLocator.services());
+		String[] names = ctx.getBeanDefinitionNames();
+
 	}
 
 
@@ -75,7 +77,7 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 	}
 	@Test
 	public void singleOrder() throws Exception {
-		OrderEditorListView oelv = GuiActionRunner.execute(() -> new OrderEditorListView());
+		OrderEditorListView oelv = (OrderEditorListView)Application.instance().getApplicationContext().getBean("orderListView");
 	 	JComponent comp = GuiActionRunner.execute(() -> oelv.createControlImpl());
 	 	assertNotNull(oelv.table);
 	 	OrderEditorTableModel oetm =  (OrderEditorTableModel)((ShuttleSortableTableModel)oelv.table.getModel()).getFilteredModel();
@@ -101,7 +103,6 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 //	 	order.setNationNo(1);
 	 	GuiActionRunner.execute(() -> oetm.addRow(order));
 	 	assertEquals("String",oetm.getValueAt(0, 0).getClass().getSimpleName());
-	 	assertNotNull(c.getName());
 	 	assertEquals("String",oetm.getValueAt(0, 1).getClass().getSimpleName());
 	 	assertEquals("Integer",oetm.getValueAt(0, 2).getClass().getSimpleName());
 	 	assertEquals("String",oetm.getValueAt(0, 4).getClass().getSimpleName());
@@ -120,9 +121,10 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 	 	assertEquals("String",oetm.getValueAt(0, 17).getClass().getSimpleName());
 	 	assertEquals("String",oetm.getValueAt(0, 18).getClass().getSimpleName());
 	 	assertEquals("String",oetm.getValueAt(0, 19).getClass().getSimpleName());
-//	 	assertEquals("String",oetm.getValueAt(0, 20).getClass().getSimpleName()); // needs orderVisualizationData
-//	 	assertEquals("String",oetm.getValueAt(0, 21).getClass().getSimpleName()); // needs orderResultContainer
-//	 	assertEquals("String",oetm.getValueAt(0, 22).getClass().getSimpleName()); // needs orderCostCalculator
+	 	assertEquals("Boolean",oetm.getValueAt(0, 20).getClass().getSimpleName()); // needs orderVisualizationData
+	 	Object x = oetm.getValueAt(0, 21); // needs orderResultContainer
+	 	assertNull(x);
+	 	assertEquals("String",oetm.getValueAt(0, 22).getClass().getSimpleName());
 	 	assertEquals("String",oetm.getValueAt(0, 23).getClass().getSimpleName());
 	 	assertEquals("Woo", oetm.getValueAt(0, 0));
 	 	assertEquals("frodo", oetm.getValueAt(0, 1));
@@ -144,11 +146,12 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 	 	assertEquals("", oetm.getValueAt(0, 17));
 	 	assertEquals("", oetm.getValueAt(0, 18));
 	 	assertEquals("", oetm.getValueAt(0, 19));
-//	 	assertEquals("", oetm.getValueAt(0, 20));
-//	 	assertEquals("", oetm.getValueAt(0, 21));
-//	 	assertEquals("", oetm.getValueAt(0, 22));
+	 	assertEquals(false, oetm.getValueAt(0, 20));
+	 	x = oetm.getValueAt(0, 21); 
+	 	assertNull(x);
+	 	assertEquals("", oetm.getValueAt(0, 22));
 	 	assertEquals("", oetm.getValueAt(0, 23));
-	 	
+
 	 	JFrame frame = GuiActionRunner.execute(() -> new JFrame());
 	    frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -170,11 +173,11 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 	 	asframe.cleanUp();
 */	}
 
-	
+
 	@Override
 	protected void onSetUp() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

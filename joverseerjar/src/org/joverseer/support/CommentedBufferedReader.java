@@ -8,12 +8,10 @@ public class CommentedBufferedReader extends BufferedReader {
 
 	public CommentedBufferedReader(Reader in) {
 		super(in);
-		// TODO Auto-generated constructor stub
 	}
 
 	public CommentedBufferedReader(Reader in, int sz) {
 		super(in, sz);
-		// TODO Auto-generated constructor stub
 	}
 
 	// skip blank lines and comments.

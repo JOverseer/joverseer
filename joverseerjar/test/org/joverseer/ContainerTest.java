@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.joverseer.domain.Order;
 import org.joverseer.support.Container;
-import org.joverseer.support.ContainerCache;
 import org.joverseer.tools.ordercheckerIntegration.OrderResult;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.junit.After;
@@ -113,6 +112,7 @@ public class ContainerTest {
 	}
 	@Test
 	public void testCaching() {
+		//the message and order cache are not used in this test.
 		Container<OrderResult> cont = new Container<OrderResult>(new String[] {"message","order","order.character.name"});
 		assertEquals(3, cont.caches.entrySet().size());
 		assertEquals(0, cont.size());

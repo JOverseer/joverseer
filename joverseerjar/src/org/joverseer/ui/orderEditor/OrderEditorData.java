@@ -131,6 +131,13 @@ public class OrderEditorData {
 					oed.getParamDescriptions().add(parts[8]);
 					oed.getParamDescriptions().add(parts[9]);
 					oed.getParamDescriptions().add(parts[10]);
+					// now trim the array sizes to save time later
+					for(int i=5;
+							(i>=0) && (oed.getParamDescriptions().get(i).length() == 0) && (oed.getParamTypes().get(i).length() == 0);
+							i--) {
+						oed.getParamDescriptions().remove(i);
+						oed.getParamTypes().remove(i);
+					}
 				} catch (Exception exc) {
 					ErrorDialog.showErrorDialog(exc);
 				}

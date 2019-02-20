@@ -41,8 +41,10 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
         this.nationNo.setVisible(false);
         tlb.row();
 
+        int init = -1;
         if (nno != null && !nno.equals("")) {
             this.nationNo.setText(nno);
+            init = Integer.valueOf(nno);
         }
         this.parameter.addActionListener(new ActionListener() {
             @Override
@@ -56,7 +58,7 @@ public class NationParameterOrderSubeditor extends AbstractOrderSubeditor {
                 updateEditor();
             }
         });
-        this.parameter.load(false, false);
+        this.parameter.load(false, false,init);
         components.add(this.nationNo);
     }
 

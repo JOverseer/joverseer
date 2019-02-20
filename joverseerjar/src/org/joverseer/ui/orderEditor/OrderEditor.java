@@ -681,7 +681,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 	}
 	public static AbstractOrderSubeditor parameterEditorFactory(OrderEditor oe,String paramType,String paramDescription,Order o,int orderNumber,GameHolder gameHolder) {
-		if (paramType.equals("hex")) { //$NON-NLS-1$
+		if (paramType.equals("")) {
+			return null;
+		} else if (paramType.equals("hex")) { //$NON-NLS-1$
 			return new SingleParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("cid") || paramType.equals("xid")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return new SingleParameterOrderSubeditor(oe, paramDescription, o,gameHolder);

@@ -29,6 +29,9 @@ public class NationComboBox extends JComboBox {
 	 * @return
 	 */
 	public Nation load(boolean autoFocusOnGameNation,boolean onlyImported) {
+		return this.load(autoFocusOnGameNation, onlyImported, -1);
+	}
+	public Nation load(boolean autoFocusOnGameNation,boolean onlyImported,int initNationNo) {
         String previousSelection = (String)this.getSelectedItem();
         // consider spurious empty loads wiping all the items and losing previous selection.
 		this.removeAllItems();
@@ -40,6 +43,10 @@ public class NationComboBox extends JComboBox {
 			return null;
 
         Nation selectedNation=null;
+        
+        if (initNationNo > 0) {
+        	previousSelection = g.getMetadata().getNationByNum(initNationNo).getName();
+        }
 		for (Nation n : g.getMetadata().getNations()) {
 	        if (n.isActivePlayer()) {
 	        	if (onlyImported) {

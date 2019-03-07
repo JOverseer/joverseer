@@ -56,11 +56,11 @@ public class ConfidenceTest {
         InputStream is = new ByteArrayInputStream(s.getBytes(Charset.forName("UTF-8")));
         return new InputStreamReader(is);
 	}
-	
+
 	private void invokeOrderchecker(Main main) {
 		String error = main.getNation().implementPhase(1, main);
 		assertNull(error);
-		
+
 		boolean done;
 		int safety;
 		Vector requests = main.getNation().getArmyRequests(main);
@@ -82,7 +82,7 @@ public class ConfidenceTest {
 			done = main.getNation().isProcessingDone();
 		} while (true);
 		assertNotEquals("order checking stuck in loop",20, safety);
-		
+
 	}
 	/**
 	 * Dont end the string with \r\n
@@ -135,16 +135,16 @@ public class ConfidenceTest {
 			    "605,,"+RANK_RULE+AGENT_RANK_MIN+",0,1"+ANYWHERE);
 
 		Main.main = main;
-		
+
 		Nation nation = createNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testc","no name");
-		
+
 		Order order1= new Order(character,605);
 		Order order2= new Order(character,605);
 		character.addOrder(order1);
 		character.addOrder(order2);
-		
+
 		invokeOrderchecker(main);
 
 		assertOrderResultsCounts(nation.getOrder(0),3,0,0,1);
@@ -165,25 +165,25 @@ public class ConfidenceTest {
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
 		Order order1= new Order(character,605);
 		character.addOrder(order1);
-		
+
 		invokeOrderchecker(main);
-		
+
 		assertOrderResultsCounts(order1,2,0,0,1);
 		assertEquals("605 error","Could not determine the location.",order1.getErrorResults().get(0));
 		assertEquals("605 error","Agent Orange has no agent rank.",order1.getErrorResults().get(1));
 		assertEquals("605 warning","Agent Orange should have at least a agent rank of 1.",order1.getWarnResults().get(0));
-		
+
 		character.setAgentRank(1);
 		invokeOrderchecker(main);
-		
+
 		assertOrderResultsCounts(nation.getOrder(0),1,0,0,0);
 		assertEquals("605 error","Could not determine the location.",order1.getErrorResults().get(0));
 	}
 	@Test
 	public void commandTest() {
-		final Main main = createRuleset("745,CreCmpy,COMMANDERNOT,0,0,0,5\r\n" + 
-				"745,,LAND,0,,,\r\n" + 
-				"745,,SETCOMMAND,0,1,1," 
+		final Main main = createRuleset("745,CreCmpy,COMMANDERNOT,0,0,0,5\r\n" +
+				"745,,LAND,0,,,\r\n" +
+				"745,,SETCOMMAND,0,1,1,"
 //				+ "745,," + RANK_RULE + COMMAND_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE) // RANK is implied by SETCOMMAND
 				);
 
@@ -192,9 +192,9 @@ public class ConfidenceTest {
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testC","Commander Orange");
 		Order order1= new Order(character,745);
 		character.addOrder(order1);
-		
+
 		invokeOrderchecker(main);
-		
+
 		assertOrderResultsCounts(nation.getOrder(0),3,0,0,0);
 		assertEquals("745 error","Could not determine the location.",order1.getErrorResults().get(0));
 		assertEquals("745 error","Could not determine the location.",order1.getErrorResults().get(1));
@@ -217,9 +217,9 @@ public class ConfidenceTest {
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Emmy Orange");
 		Order order1= new Order(character,585);
 		character.addOrder(order1);
-		
+
 		invokeOrderchecker(main);
-		
+
 		assertOrderResultsCounts(nation.getOrder(0),1,0,0,1);
 		assertEquals("585 error","Emmy Orange has no emissary rank.",order1.getErrorResults().get(0));
 		assertEquals("585 warning","Emmy Orange should have at least a emissary rank of 1.",order1.getWarnResults().get(0));
@@ -228,7 +228,7 @@ public class ConfidenceTest {
 		invokeOrderchecker(main);
 
 		assertOrderResultsCounts(nation.getOrder(0),0,0,0,0);
-		
+
 		character.getOrders().clear();
 		order1 = new Order(character,555);
 		Order order2 = new Order(character,810);
@@ -241,7 +241,7 @@ public class ConfidenceTest {
 	}
 	@Test
 	public void mageTest() {
-		final Main main = createRuleset("710,PrenMgy,PC,0,0,,\r\n" + 
+		final Main main = createRuleset("710,PrenMgy,PC,0,0,,\r\n" +
 				"710,," + RANK_RULE + MAGE_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE);
 
 		Nation nation = createNation(main);
@@ -249,9 +249,9 @@ public class ConfidenceTest {
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
 		Order order1= new Order(character,710);
 		character.addOrder(order1);
-		
+
 		invokeOrderchecker(main);
-		
+
 		assertOrderResultsCounts(nation.getOrder(0),2,0,0,1);
 		assertEquals("710 error","Could not determine the location.",order1.getErrorResults().get(0));
 		assertEquals("710 error","Agent Orange has no mage rank.",order1.getErrorResults().get(1));
@@ -263,6 +263,40 @@ public class ConfidenceTest {
 		assertOrderResultsCounts(nation.getOrder(0),1,0,0,0);
 		assertEquals("710 error","Could not determine the location.",order1.getErrorResults().get(0));
 	}
-	
+	@Test
+	public void TwoCommandOrderTest() {
+		final Main main = createRuleset(
+				"185,DnStNat,NATION,1,1,,,,,,,"+"\r\n" +
+				"185,,RANK,0,0,1,1,1,1"+"\r\n"+
+				"725,NamChar,NEWCHAR,3,4,,"+"\r\n"+
+				"725,,RANK,0,0,1,1,1,1"+"\r\n"
+				);
+
+		Nation nation = createNation(main);
+
+		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testC","Commander Orange");
+		Order order1= new Order(character,185);
+		order1.addParameter("1");
+		character.addOrder(order1);
+		Order order2= new Order(character,725);
+		order2.addParameter("");
+		order2.addParameter("m");
+		order2.addParameter("30");
+		order2.addParameter("0");
+		order2.addParameter("0");
+		order2.addParameter("0");
+		character.addOrder(order2);
+		character.setCommandRank(30);
+
+		invokeOrderchecker(main);
+
+		assertOrderResultsCounts(nation.getOrder(0),1,1,0,0);
+		assertEquals("185 error","Duplicate order skill",order1.getErrorResults().get(0));
+		assertEquals("185 error"," (Free People)",order1.getHelpResults().get(0));
+		assertOrderResultsCounts(nation.getOrder(1),1,1,0,0);
+		assertEquals("725 error","Duplicate order skill",order2.getErrorResults().get(0));
+		assertEquals("725 error","Creating new character: 30 Command.",order2.getHelpResults().get(0));
+
+	}
 
 }

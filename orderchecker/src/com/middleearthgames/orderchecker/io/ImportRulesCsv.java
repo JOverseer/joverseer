@@ -1,6 +1,6 @@
 // Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+// Decompiler options: packimports(3)
 // Source File Name:   ImportRulesCsv.java
 
 package com.middleearthgames.orderchecker.io;
@@ -34,7 +34,7 @@ public class ImportRulesCsv extends ImportCsv
             return "Rules file does not appear to be valid!";
         for(line = readLine(); line != null && !matchesTag(line, ENDTAG); line = readLine())
         {
-            if(line == null || line.charAt(0) == '#' || matchesTag(line, BEGINTAG))
+            if(line == null || line.length() == 0 || line.charAt(0) == '#' || matchesTag(line, BEGINTAG))
                 continue;
             String result = parseLine(line);
             if(result != null)
@@ -107,7 +107,7 @@ public class ImportRulesCsv extends ImportCsv
                 Integer newParam = new Integer(param);
                 rule.addParameter(newParam);
             }
-    
+
             return null;
         }
         catch (Exception ex) {

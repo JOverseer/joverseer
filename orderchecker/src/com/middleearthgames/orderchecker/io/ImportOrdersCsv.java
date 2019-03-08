@@ -79,7 +79,7 @@ public class ImportOrdersCsv extends ImportCsv
             param = getToken(line, false);
             if(param == null || param.length() == 0)
             {
-                Order order = new Order(character, 9999);
+                Order order = new Order(character, Order.NO_ORDER);
                 character.addOrder(order);
                 return null;
             }

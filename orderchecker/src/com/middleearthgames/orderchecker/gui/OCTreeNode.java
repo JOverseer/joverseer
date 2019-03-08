@@ -81,7 +81,7 @@ public class OCTreeNode extends DefaultMutableTreeNode
 
             case ORDER_NODE: // '\0'
                 Order order = (Order)getUserObject();
-                if(order.getOrder() == 9999)
+                if(order.getOrder() == Order.NO_ORDER)
                     currentText = "";
                 String orderName = Main.main.getRuleSet().findOrderName(order.getOrder());
                 if(orderName != null)

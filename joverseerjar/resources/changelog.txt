@@ -1,3 +1,8 @@
+VERSION 1.16.17
+---------------
+	* Enh: Orderchecker should now be checking for duplicate skills.
+	* Enh: Orderchecker now spots missing orders.
+
 VERSION 1.16.16
 ---------------
 	* Enh: The 5 artifact views have been consolidated to the one artifact view.

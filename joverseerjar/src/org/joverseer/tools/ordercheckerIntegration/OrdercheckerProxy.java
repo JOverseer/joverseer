@@ -362,7 +362,15 @@ public class OrdercheckerProxy {
 				this.reverseOrderMap.put(o, mo);
 				mc.addOrder(mo);
 			}
-		}
+			if (mc.getNation() == nation.getNation()) {
+				if (mc.getOrders().size() < ch.getNumberOfOrders()) {
+					if (!ch.getHostage()) { 
+						mc.addOrder(new Order(mc,Order.NO_ORDER));
+					}
+				}
+			}
+			
+		} // for character
 	}
 	private static void updateArmies(Turn t,Nation nation) {
 		for (Army army : (ArrayList<Army>) t.getContainer(TurnElementsEnum.Army).getItems()) {

@@ -50,7 +50,7 @@ public class Order
 
     String implementPhase(int phase,Ruleset mainRuleset)
     {
-        if(this.orderNumber == 9999)
+        if(this.orderNumber == Order.NO_ORDER)
         {
             if(phase == 1)
             {

@@ -19,6 +19,7 @@ public class Challenge extends Encounter {
 	String loser;
 	String victorWounds;
 
+	
 	protected void parse() {
 		this.parsed = true;
 		String d = getCleanDescription();
@@ -70,6 +71,14 @@ public class Challenge extends Encounter {
 						this.loser = char2;
 						return;
 					}
+				}
+				// if we get here then try:
+				//Ringlin relinquished his spirit and gasped his last.
+				ls = sentences[sentences.length - 2].trim();
+				this.loser = StringUtils.getUniquePart(ls, "Finally, ", " relinquished", false, false);
+				if (this.loser != null) {
+					this.victor = (this.loser.equalsIgnoreCase(char1)) ? char2 : char1;
+					return;
 				}
 			}
 		}

@@ -2,6 +2,9 @@ VERSION 1.16.17
 ---------------
 	* Enh: Orderchecker should now be checking for duplicate skills.
 	* Enh: Orderchecker now spots missing orders.
+	* Fix: Don't restrict the spells a character can cast if they hold and artifact.
+	* Fix: Order results weren't available if the character Id had trailing spaces.
+	* Fix: Mage vs Mage challenges were confused over who won.
 
 VERSION 1.16.16
 ---------------

@@ -21,6 +21,9 @@ public class SubmitSupportData extends AbstractForm{
         super(arg0, FORM_ID);
 	}
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	protected JComponent createFormControl() {
         TableLayoutBuilder tlb = new TableLayoutBuilder();

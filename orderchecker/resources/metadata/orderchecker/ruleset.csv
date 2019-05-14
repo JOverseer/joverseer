@@ -5,16 +5,17 @@
 # The rule set is defined with each component of the rule residing in a different cell.
 # The file can then be saved out to CSV format (comma separated variables) and imported into the Order Checker.
 #
+# Ruleset additions:
+#  two extra, optional parameters at the end of the rule.
+#  EXCLUSIVE value 1 = it's a skill type, the rule engine will complain if the character has another order with a similar RANK requirement.
+#  CAPITAL value 1 = the order must be performed at the nation capital
+
 # List of information NOT available via XML turn input:
 # Warships / Transports in army/shore
 # Commodities available in a population center.
 # Company commander status.
 # Siege status for a PC.
 #
-# Checks NOT performed since Automagic/MEOW does them - but these are gone and Joverseer needs to pick up that job
-# Capital check
-# 2 Orders from same skill
-# Comm/Em/Agent/Mage skill requirement for an order.,,
 #,,
 # Rule Format,,
 # The first column is always the order that the rule applies to.,,
@@ -369,8 +370,8 @@ BEGINRULES,,,,,,,,,,,
 565,ReduPop,PC,0,0,,
 565,,PCSIZE,0,10,,
 565,,RANK,0,2,1,0,1,0
-580,SprdRum,RANK,0,2,1,0,1,0
-585,Uncover,RANK,0,2,1,0,1,0
+580,SprdRum,RANK,0,2,1,0,0,0
+585,Uncover,RANK,0,2,1,0,0,0
 600,CntrEsp,NONE,,,
 600,,RANK,0,1,1,0,1,0
 605,GrdLoc,PC,0,1,

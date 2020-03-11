@@ -1,5 +1,5 @@
 Size;Can Feed;Force to Threaten;Defense;Cost to Build;% of Production;Revenue (at 100%)
-Camp;100;0;200;2000 or 4000;100;0
+Camp;0;0;200;2000 or 4000;100;0
 Village;200;200;500;4000;80;2500
 Town;1000;1000;1000;6000;60;5000
 MajorTown;2500;2500;2500;8000;40;7500

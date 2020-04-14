@@ -22,7 +22,7 @@
 "2809",0,2,1,27,0,0,"Sarn Goriwing",40,False,False,,True
 "2908",0,3,2,26,0,0,"Halls of Thranduil",55,False,False,,False
 "2912",0,3,0,26,0,0,"Buhr Rhosc",55,False,False,,True
-"2924",0,4,4,26,0,2,"Minas Tirith",75,False,False,,False
+"2924",0,4,4,26,0,1,"Minas Tirith",75,False,False,,False
 "3024",0,2,3,26,0,0,"Osgiliath",40,False,False,,False
 "3107",0,4,4,26,0,0,"Erebor",75,False,False,,False
 "3109",0,3,1,26,0,0,"Esgaroth",55,False,False,,False

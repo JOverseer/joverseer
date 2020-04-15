@@ -4,6 +4,11 @@ os:
  - linux
 jdk: oraclejdk11
 
+addons:
+  apt:
+    packages:
+      - ant
+      - ant-optional
 install:
  - if [ $TRAVIS_OS_NAME = osx ]; then brew install ant; fi
 before_script:

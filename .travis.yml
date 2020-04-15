@@ -11,6 +11,6 @@ addons:
       - ant-optional
 services:
     - xvfb
-install:
- - xvfb-run ant test
+before_script:
+ - xvfb-run --server-args="-screen 0 1024x768x8"
  

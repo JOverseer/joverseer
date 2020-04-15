@@ -13,9 +13,11 @@ import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
+import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Encounter;
+import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
@@ -547,8 +549,16 @@ public class TurnNewXmlReader implements Runnable {
 				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
+			try {
+				updateClimates(game);
+			} catch (Exception exc) {
+				logger.error(exc);
+				this.errorOccured = true;
+				getMonitor().subTaskStarted("Error: " + exc.getMessage());
+			}
+			
 			if (getMonitor() != null) {
-				getMonitor().worked(75);
+				getMonitor().worked(70);
 				getMonitor().subTaskStarted("Updating double agents...");
 			}
 			try {
@@ -609,6 +619,44 @@ public class TurnNewXmlReader implements Runnable {
 
 		}
 	}
+    private ClimateEnum translateClimate(String climate) {
+        if (climate == null) return null;
+        if (climate.equals("Polar")) return ClimateEnum.Polar;
+        if (climate.equals("Severe")) return ClimateEnum.Severe;
+        if (climate.equals("Cold")) return ClimateEnum.Cold;
+        if (climate.equals("Cool")) return ClimateEnum.Cool;
+        if (climate.equals("Mild")) return ClimateEnum.Mild;
+        if (climate.equals("Warm")) return ClimateEnum.Warm;
+        if (climate.equals("Hot")) return ClimateEnum.Hot;
+        return null;
+    }
+    private void updateClimates(Game game1) throws Exception {
+
+        Container pcws = this.turnInfo.getPopCentres();
+        if (pcws ==null) return;
+        Container<HexInfo> his = this.turn.getHexInfos();
+        for (PopCenterWrapper pcw : (ArrayList<PopCenterWrapper>)pcws.getItems()) {
+            HexInfo hi = his.findFirstByProperty("hexNo", pcw.getHexNo());
+            ClimateEnum climate = translateClimate(pcw.getClimate());
+            if (climate != null) {
+                hi.setClimate(climate);
+            }
+        }
+        
+        Container aws = this.turnInfo.getArmies();
+		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
+        for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
+			Character c = (Character) cs.findFirstByProperty("name", aw.getCommander());
+			if (c != null) {
+				HexInfo hi = his.findFirstByProperty("hexNo", c.getHexNo());
+				ClimateEnum climate = translateClimate(aw.getClimate());
+				if (climate != null) {
+					hi.setClimate(climate);
+				}
+			}	
+        }
+        
+    }
 
 	private void updateChallenges(Game game1) throws Exception {
 		Container challenges = this.turnInfo.getChallenges();

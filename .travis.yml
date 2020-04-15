@@ -2,6 +2,7 @@ language: java
 os:
  - osx
  - linux
+dist: trusty
 jdk: oraclejdk11
 
 addons:

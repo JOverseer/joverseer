@@ -10,7 +10,7 @@ As GoogleCode has shut down, the source code is now hosted here at http://www.gi
 At the moment downloads for the runnable program will be found at http://www.middleearthgames.com/gamingsoftware/.
 For user convenience, there are installers for MacOS and Windows although they are not certified or available on the relevant 'Store'.
 
-**The latest version is 1.16.16, released on February 14, 2018.**
+**The latest version is 1.16.17, released on April 17, 2020.**
 
 **Updating**
 Version 1.0.12 and later includes some better updating technology.
@@ -74,4 +74,4 @@ To ask questions, offer suggestions, or report bugs please use the [JOverseer Ya
 
 
 
-_Last update: 21 February 2018, Dave Spring_
+_Last update: 17 April 2020, Dave Spring_

@@ -2,7 +2,12 @@ VERSION 1.16.17
 ---------------
 	* Enh: Orderchecker should now be checking for duplicate skills.
 	* Enh: Orderchecker now spots missing orders.
-	* Fix: Don't restrict the spells a character can cast if they hold and artifact.
+	* Fix: various incorrect CME data.
+	* Fix: Ticking the 'show climate' option on the Map Options View works again.
+           You will only see changes if the selected turn was imported with this fixed version.
+	* Fix: Camps really can't feed troops.
+	* Fix: 585 is not a skill.
+	* Fix: Don't restrict the spells a character can cast if they hold an artifact.
 	* Fix: Order results weren't available if the character Id had trailing spaces.
 	* Fix: Mage vs Mage challenges were confused over who won.
 

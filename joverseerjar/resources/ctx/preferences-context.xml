@@ -986,7 +986,7 @@
 						<value>text</value>
 					</property>
 				    <property name="defaultValue">
-				        <value>http://www.middleearthgames.com/software/joverseer/feed.xml</value>
+				        <value>https://www.middleearthgames.com/software/joverseer/feed.xml</value>
 				    </property>
 				</bean>
 				
@@ -1004,7 +1004,7 @@
 						<value>text</value>
 					</property>
 				    <property name="defaultValue">
-				        <value>http://www.middleearthgames.com/software/joverseer/url.html</value>
+				        <value>https://www.middleearthgames.com/software/joverseer/url.html</value>
 				    </property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">

@@ -90,7 +90,7 @@ public class TurnNewXmlReader implements Runnable {
 			// set season changing
 			this.digester.addSetProperties("METurn/More/TurnInfo/Season", "changing", "seasonChanging");
 			// set nested properties
-			this.digester.addRule("METurn/More/TurnInfo", snpr = new SetNestedPropertiesRule(new String[] { "Season", "NationAlignment" }, new String[] { "season", "alignment" }));
+			this.digester.addRule("METurn/More/TurnInfo", snpr = new SetNestedPropertiesRule(new String[] { "Season", "NationAlignment", "NPCsRecruited" }, new String[] { "season", "alignment", "NPCsRecruited"}));
 			snpr.setAllowUnknownChildElements(true);
 
 			// parse PCs from old format.
@@ -556,7 +556,7 @@ public class TurnNewXmlReader implements Runnable {
 				this.errorOccured = true;
 				getMonitor().subTaskStarted("Error: " + exc.getMessage());
 			}
-			
+
 			if (getMonitor() != null) {
 				getMonitor().worked(70);
 				getMonitor().subTaskStarted("Updating double agents...");
@@ -642,7 +642,7 @@ public class TurnNewXmlReader implements Runnable {
                 hi.setClimate(climate);
             }
         }
-        
+
         Container aws = this.turnInfo.getArmies();
 		Container cs = this.turn.getContainer(TurnElementsEnum.Character);
         for (ArmyWrapper aw : (ArrayList<ArmyWrapper>)aws.getItems()) {
@@ -653,9 +653,9 @@ public class TurnNewXmlReader implements Runnable {
 				if (climate != null) {
 					hi.setClimate(climate);
 				}
-			}	
+			}
         }
-        
+
     }
 
 	private void updateChallenges(Game game1) throws Exception {
@@ -1045,6 +1045,8 @@ public class TurnNewXmlReader implements Runnable {
 		for (SNAWrapper snw : (ArrayList<SNAWrapper>) snaws.getItems()) {
 			snas.add(SNAEnum.getSnaFromNumber(snw.getCode().intValue()));
 		}
-		game.getMetadata().getNationByNum(this.nationNo).setSnas(snas);
+		Nation n = game.getMetadata().getNationByNum(this.nationNo);
+		n.setSnas(snas);
+		n.setNPCsRecruited(this.turnInfo.NPCsRecruited);
 	}
 }

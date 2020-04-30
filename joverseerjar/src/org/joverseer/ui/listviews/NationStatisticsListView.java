@@ -22,7 +22,7 @@ import org.joverseer.ui.listviews.filters.NationFilter;
 
 /**
  * List view for nation statistics
- * 
+ *
  * @author Marios Skounakis
  */
 public class NationStatisticsListView extends BaseItemListView {
@@ -33,7 +33,7 @@ public class NationStatisticsListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 32, 48, 52, 72, 72, 52, 42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52 };
+		return new int[] { 32, 48, 52, 72, 72, 52, 40,40,42, 42, 42, 42, 42, 42, 42, 52, 52, 52, 52, 52, 52 };
 	}
 
 	@Override
@@ -95,6 +95,7 @@ public class NationStatisticsListView extends BaseItemListView {
 					}
 				}
 			}
+
 
 			nsw.setPopCenters(0);
 			nsw.setCities(0);

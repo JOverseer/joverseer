@@ -30,6 +30,14 @@ public class TurnInfo {
 	String nationName;
 	boolean seasonChanging;
 	int alignment;
+	int NPCsRecruited;
+
+	public int getNPCsRecruited() {
+		return this.NPCsRecruited;
+	}
+	public void setNPCsRecruited(int NPCsRecruited) {
+		this.NPCsRecruited = NPCsRecruited;
+	}
 
 	public int getAlignment() {
 		return this.alignment;

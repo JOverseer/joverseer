@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * - an arraylist of the nation SNAs
  * - a flag whether the nation has been eliminated
  * - a flag whether the nation has been removed from the game (e.g. for grudge games)
- * 
+ *
  * @author Marios Skounakis
  *
  */
@@ -28,6 +28,7 @@ public class Nation implements Serializable {
     ArrayList<SNAEnum> snas= new ArrayList<SNAEnum>();
     boolean removed = false;
     boolean eliminated = false;
+    int NPCsRecruited = 0;
 
     public Nation(int number, String name, String shortName) {
         this.name = name;
@@ -67,40 +68,46 @@ public class Nation implements Serializable {
         this.allegiance = allegiance;
     }
 
-    
+
     public ArrayList<SNAEnum> getSnas() {
         return this.snas;
     }
 
-    
+
     public void setSnas(ArrayList<SNAEnum> snas) {
         this.snas = snas;
     }
-    
+
     public boolean hasSna(SNAEnum sna) {
         return getSnas().contains(sna);
     }
 
-    
+
     public boolean getRemoved() {
         return this.removed;
     }
 
-    
+
     public void setRemoved(boolean removed) {
         this.removed = removed;
     }
 
-    
+
     public boolean getEliminated() {
         return this.eliminated;
     }
 
-    
+
     public void setEliminated(boolean eliminated) {
         this.eliminated = eliminated;
     }
-    
+    public int getNPCsRecruited() {
+    	return this.NPCsRecruited;
+    }
+    public void setNPCsRecruited(int NPCsRecruited) {
+    	this.NPCsRecruited = NPCsRecruited;
+    }
+
 	@Override
 	public String toString() {
 		return this.getName();

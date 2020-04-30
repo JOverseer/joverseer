@@ -36,7 +36,9 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 	int transports;
 	Integer armyEHI = null;
 	int troopCount;
-
+	int NPCsRecruited;
+	int NPCRecruitLimit;
+	
 	public NationAllegianceEnum getAllegiance() {
 		return this.allegiance;
 	}
@@ -213,6 +215,19 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.warships = warships;
 	}
 
+	public int getNPCsRecruited() {
+		return this.NPCsRecruited;
+	}
+	public void setNPCsRecruited(int NPCsRecruited) {
+		this.NPCsRecruited = NPCsRecruited;
+	}
+	public int getNPCRecruitLimit() {
+		return this.NPCRecruitLimit;
+	}
+	public void setNPCRecruitLimit(int NPCRecruitLimit) {
+		this.NPCRecruitLimit = NPCRecruitLimit;
+	}
+
 	public void add(NationStatisticsWrapper nsw) {
 		this.armies += nsw.getArmies();
 		this.cities += nsw.getCities();
@@ -229,6 +244,8 @@ public class NationStatisticsWrapper implements IBelongsToNation {
 		this.warships += nsw.getWarships();
 		this.troopCount += nsw.getTroopCount();
 		this.popCenters += nsw.getPopCenters();
+		this.NPCsRecruited += nsw.getNPCsRecruited();
+		this.NPCRecruitLimit += nsw.getNPCRecruitLimit();
 
 	}
 	public void incCamps() {

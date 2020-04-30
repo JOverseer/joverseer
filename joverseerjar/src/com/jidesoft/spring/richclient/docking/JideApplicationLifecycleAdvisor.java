@@ -245,8 +245,14 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
 
    		        try {
-		            if (UpdateChecker.getLatestVersion(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")).isLaterThan(current)) {
-		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")));
+   		        	// hack to switch to https
+   		        	String oldValue = PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed");
+   		        	String prefValue = UpdateChecker.enforceHttps(oldValue, "middleearthgames.com");
+   		        	if (oldValue.length() != prefValue.length()) {
+   	   		        		PreferenceRegistry.instance().setPreferenceValue("updates.RSSFeed", prefValue);
+   		        	}
+		            if (UpdateChecker.getLatestVersion(prefValue).isLaterThan(current)) {
+		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(prefValue));
 					}
 					String str = new SimpleDateFormat().format(new Date());
 					prefs.put("lastVersionCheckDate", str);

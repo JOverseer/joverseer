@@ -23,9 +23,15 @@ public class CheckForUpdatesCommand extends ActionCommand{
 		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
 		ThreepartVersion latest,current = new ThreepartVersion(descriptor.getVersion());
 		String title;
-        
+
 	    try {
-            latest = UpdateChecker.getLatestVersion(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed"));
+	    	// hack to switch to https
+	    	String oldValue = PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed");
+	        String prefValue = UpdateChecker.enforceHttps(oldValue, "middleearthgames.com");
+	        if (oldValue.length() != prefValue.length()) {
+	        	PreferenceRegistry.instance().setPreferenceValue("updates.RSSFeed", prefValue);
+	        }
+            latest = UpdateChecker.getLatestVersion(prefValue);
             if (latest.isLaterThan(current)) {
             	title = "Later version available";
             } else if (latest.equals(current)) {
@@ -33,14 +39,14 @@ public class CheckForUpdatesCommand extends ActionCommand{
             } else {
             	title ="You have a later version. Update to install earlier official version.";
             }
-	       	new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed")),title);
+	       	new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(prefValue),title);
 			String str = new SimpleDateFormat().format(new Date());
 			Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
 			prefs.put("lastVersionCheckDate", str);
 		} catch (Exception exc) {
 			// do nothing
 		}
-		
+
 	}
 
 }

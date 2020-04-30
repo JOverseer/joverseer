@@ -32,16 +32,16 @@ import javax.swing.JTextArea;
 /**
  *
  * @author Dave Spring productized from the original by Thomas Otero (H3R3T1C)
- * 
+ *
  * package just this class into 'update.jar' which should live in a subdirectory 'update'
  * under the main application.
  * Don't forget to package 'update/update.jar' into the download zip bundle.
- * 
+ *
  * com.middleearthgames.update.UpdateChecker is used to check an RSS feed to determine the latest
  * version and display the changelog
  * When the new version is to be downloaded and run, UpdateChecker will invoke 'update/update.jar'
  * and close joverseer.
- * 
+ *
  * This class is thus called in a separate process to download the zip bundle from the indicated URL,
  * unzipped and run.
  */
@@ -51,7 +51,7 @@ public class Main_Gui extends JFrame{
 //	private String latestUpdateZip = "latestupdate.zip";
 	private String targetjar = "joverseer.jar";
 	private String downloadPath;
-	
+
     private Thread worker;
     private final String root = "update/";
 
@@ -82,13 +82,13 @@ public class Main_Gui extends JFrame{
         sp = new JScrollPane();
         sp.setViewportView(outText);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        
+
         if (System.getProperty("os.name").startsWith("Mac OS X")) {
         	launch = new JButton("Close and Launch App");
-        } else { 
+        } else {
         	launch = new JButton("Launch App");
         }
-        
+
         launch.setEnabled(false);
         launch.addActionListener(new ActionListener(){
 
@@ -311,8 +311,8 @@ public class Main_Gui extends JFrame{
     	}
     }
     public static void main(String args[]) {
-    	String downloadPath = "http://www.middleearthgames.com/software/joverseer/url.html";
-    	
+    	String downloadPath = "https://www.middleearthgames.com/software/joverseer/url.html";
+
     	class UpdateRunnable implements Runnable {
     		private final String downloadPath;
     		public UpdateRunnable(final String downloadPath) {
@@ -323,7 +323,7 @@ public class Main_Gui extends JFrame{
 			public void run() {
                 new Main_Gui(this.downloadPath).setVisible(true);
             }
-    		
+
     	}
     	UpdateRunnable runner;
     	if (args.length >0) {

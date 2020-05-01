@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -108,7 +110,12 @@ public class UpdateInfo extends JFrame{
 
             @Override
 			public void actionPerformed(ActionEvent e) {
-                update();
+                try {
+					update();
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
 
@@ -139,9 +146,13 @@ public class UpdateInfo extends JFrame{
     //which we do via windows scripting host (vbscript) to avoid windows
     //specific bindings/JNI. (just Process.exec("jOverseerUpdater.exe") won't do it.
     // clear?
-    private void update()
+    private void update() throws MalformedURLException
     {
-    	final String downloadLocation = PreferenceRegistry.instance().getPreferenceValue("updates.DownloadPointer");
+    	final String oldDownloadLocation = PreferenceRegistry.instance().getPreferenceValue("updates.DownloadPointer");
+    	final String downloadLocation = UpdateChecker.enforceHttps(oldDownloadLocation,"middleearthgames.com");
+    	if (oldDownloadLocation.length() != downloadLocation.length()) {
+    		PreferenceRegistry.instance().setPreferenceValue("updates.DownloadPointer", downloadLocation);
+    	}
     	String[] run;
     	String[] runJava = {"java","-jar","update/update.jar",downloadLocation};
     	String windowsScript = System.getProperty("java.io.tmpdir")+"\\runJoverseerUpdater.vbs";

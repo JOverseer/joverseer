@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -132,7 +133,7 @@ public class UpdateInfo extends JFrame{
         this.pan1.add(this.pan2, BorderLayout.SOUTH);
         this.pan1.add(this.scp, BorderLayout.CENTER);
         this.add(this.pan1);
-        pack();
+        pack(); 
         setVisible(true);
         this.setSize(300, 200);
     }
@@ -149,7 +150,7 @@ public class UpdateInfo extends JFrame{
     private void update() throws MalformedURLException
     {
     	final String oldDownloadLocation = PreferenceRegistry.instance().getPreferenceValue("updates.DownloadPointer");
-    	final String downloadLocation = UpdateChecker.enforceHttps(oldDownloadLocation,"middleearthgames.com");
+    	final String downloadLocation = UpdateInfo.enforceHttps(oldDownloadLocation,"middleearthgames.com");
     	if (oldDownloadLocation.length() != downloadLocation.length()) {
     		PreferenceRegistry.instance().setPreferenceValue("updates.DownloadPointer", downloadLocation);
     	}
@@ -246,4 +247,15 @@ public class UpdateInfo extends JFrame{
         log.info("closing down");
         System.exit(0);
     }
+    // a utility function to switch an 'address' matching 'match' to https
+    // caller should typically compare lengths to see if the change was performed.
+    public static String enforceHttps(String address,String match) throws MalformedURLException {
+        URL url = new URL(address);
+
+    	if (url.getProtocol().equals("http") && address.contains(match)) {
+    		return new URL("https",url.getHost(),url.getFile()).toString();
+    	}
+    	return address;
+    }
+
 }

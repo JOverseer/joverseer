@@ -1,7 +1,6 @@
 package com.middleearthgames.updater;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 /**
  *
@@ -50,15 +49,5 @@ public class UpdateChecker {
     public static String firstTag(String whole,String tag)
     {
     	return whole.substring(whole.indexOf("<"+tag+">")+tag.length()+2,whole.indexOf("</" + tag +">"));
-    }
-    // a utility function to switch an 'address' matching 'match' to https
-    // caller should typically compare lengths to see if the change was performed.
-    public static String enforceHttps(String address,String match) throws MalformedURLException {
-        URL url = new URL(address);
-
-    	if (url.getProtocol().equals("http") && address.contains(match)) {
-    		return new URL("https",url.getHost(),url.getFile()).toString();
-    	}
-    	return address;
     }
 }

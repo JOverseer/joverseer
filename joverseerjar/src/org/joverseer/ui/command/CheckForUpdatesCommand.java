@@ -12,6 +12,7 @@ import org.springframework.richclient.command.ActionCommand;
 
 import com.middleearthgames.updater.ThreepartVersion;
 import com.middleearthgames.updater.UpdateChecker;
+import com.middleearthgames.updater.UpdateInfo;
 
 public class CheckForUpdatesCommand extends ActionCommand{
 	public CheckForUpdatesCommand() {
@@ -27,7 +28,7 @@ public class CheckForUpdatesCommand extends ActionCommand{
 	    try {
 	    	// hack to switch to https
 	    	String oldValue = PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed");
-	        String prefValue = UpdateChecker.enforceHttps(oldValue, "middleearthgames.com");
+	        String prefValue = UpdateInfo.enforceHttps(oldValue, "middleearthgames.com");
 	        if (oldValue.length() != prefValue.length()) {
 	        	PreferenceRegistry.instance().setPreferenceValue("updates.RSSFeed", prefValue);
 	        }

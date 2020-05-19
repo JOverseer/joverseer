@@ -147,7 +147,7 @@ public class OrderMetadata implements Serializable {
     	if (this.number == 942 || this.number == 960 || this.number == 965) {
     		Game g = GameHolder.instance().getGame();
     		return g.getMetadata().getGameType().equals(GameTypeEnum.gameFA) ||
-    			g.getMetadata().getGameType().equals(GameTypeEnum.gameKS);
+    				g.getMetadata().getGameType().equals(GameTypeEnum.gameKS) || g.getMetadata().getGameType().equals(GameTypeEnum.gameCME);
     	}
     	return true;
     }

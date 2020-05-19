@@ -9,6 +9,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -38,26 +39,38 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     JComboBox parameter;
     JTextField spellNo;
     int orderNo;
+    ArrayList<SpellInfo> sorted;
+    boolean orderOnly;
 
-    public SpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo,GameHolder gameHolder) {
+    public SpellNumberParameterOrderSubeditor(OrderEditor oe,String paramName, Order o, int orderNo,GameHolder gameHolder,boolean orderOnly) {
         super(oe,o,gameHolder);
         this.paramName = paramName;
         this.orderNo = orderNo;
+        this.orderOnly = orderOnly;
     }
 
+    protected void internalAdd(JComboBox com,Character c,SpellInfo si) {
+		boolean found = false;
+		for (SpellProficiency sp : c.getSpells()) {
+			if (sp.getSpellId() == si.getNumber()) {
+				found = true;
+			}
+		}
+		com.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
     protected void loadSpellCombo(JComboBox com) {
     	GameMetadata gm = this.gameHolder.getGame().getMetadata();
     	Character c = getOrder().getCharacter();
         com.addItem(""); //$NON-NLS-1$
-    	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
-            if (si.getOrderNumber() == this.orderNo) {
-	        	 boolean found = false;
-	             for (SpellProficiency sp : c.getSpells()) {
-	                 if (sp.getSpellId() == si.getNumber()) {
-	                     found = true;
-	                 }
-	             }
-	             com.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        this.sorted = (ArrayList<SpellInfo>)gm.getSpells().getItems();
+        this.sorted.sort(SpellInfo.spellNumberComparator);
+    	for (SpellInfo si : this.sorted) {
+    		if (!this.orderOnly) {
+    			internalAdd(com,c, si);
+    		} else {
+    			if (si.getOrderNumber() == this.orderNo) {
+        			internalAdd(com,c, si);
+    			}
             }
         }
     }

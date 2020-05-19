@@ -1,6 +1,7 @@
 package org.joverseer.metadata.domain;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 
 /**
@@ -98,4 +99,11 @@ public class SpellInfo implements Serializable {
         if (getDifficulty().equals("H")) return SpellDifficultyEnum.Hard;
         return null;
     }
+	public static Comparator<SpellInfo> spellNumberComparator = new Comparator<SpellInfo>() {         
+	    @Override         
+	    public int compare(SpellInfo si1, SpellInfo si2) {             
+	    	return (si2.getNumber() > si1.getNumber() ? -1 :                     
+	    		(si2.getNumber() == si1.getNumber() ? 0 : 1));           
+		}     
+	};
 }

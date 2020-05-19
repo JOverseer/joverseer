@@ -737,9 +737,9 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 		} else if (paramType.equals("nat")) { //$NON-NLS-1$
 			return new NationParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		} else if (paramType.equals("spx") || paramType.equals("spc") || paramType.equals("sph") || paramType.equals("spm") || paramType.equals("spl")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			return new SpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber,gameHolder);
+			return new SpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber,gameHolder,true);
 		} else if (paramType.equals("spz")) { //$NON-NLS-1$
-			return new ResearchSpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber,gameHolder);
+			return new SpellNumberParameterOrderSubeditor(oe, paramDescription, o, orderNumber,gameHolder,false);
 		} else if (paramType.equals("art")) { //$NON-NLS-1$
 			return new ArtifactNumberParameterOrderSubeditor(oe, paramDescription, o,gameHolder);
 		}

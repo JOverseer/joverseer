@@ -14,6 +14,7 @@ import org.joverseer.ui.JOverseerJIDEClient;
  * @author Marios Skounakis
  */
 public class RecentGames {
+	final private int RECENT_GAME_LIMIT=10;
     public ArrayList<RecentGameInfo> getRecentGameInfo(String str) {
         ArrayList<RecentGameInfo> res = new ArrayList<RecentGameInfo>();
         if (str != null) {
@@ -63,7 +64,7 @@ public class RecentGames {
             rgis.remove(toRemove);
         }
         rgis.add(0, rgi);
-        while (rgis.size() > 5) {
+        while (rgis.size() > RECENT_GAME_LIMIT) {
             rgis.remove(rgis.size() - 1);
         }
         rgiStr = getRecentGameInfoString(rgis);

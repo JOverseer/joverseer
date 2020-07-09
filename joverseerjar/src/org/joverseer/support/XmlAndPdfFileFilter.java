@@ -11,13 +11,13 @@ import java.util.regex.Pattern;
 public class XmlAndPdfFileFilter implements FileFilter {
 	String gameNoAsString;
 	public XmlAndPdfFileFilter(int gameNo) {
-		this.gameNoAsString = String.format("g%03d", gameNo);
+		this.gameNoAsString = String.format("g%d", gameNo);
 	}
 	@Override
 	public boolean accept(File file) {
 		String name = file.getName();
 		return (!file.isDirectory()) && name.contains(this.gameNoAsString) &&
 				((name.endsWith(".pdf") ||
-				(Pattern.matches("g\\d{3}n\\d{2}t\\d{3}.xml", name) )));
+				(Pattern.matches("g\\d{2,}n\\d{2,}t\\d{2,}.xml", name) )));
 	}
 }

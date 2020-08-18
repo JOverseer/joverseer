@@ -16,8 +16,6 @@ public class XmlAndPdfFileFilter implements FileFilter {
 	@Override
 	public boolean accept(File file) {
 		String name = file.getName();
-		return (!file.isDirectory()) && name.contains(this.gameNoAsString) &&
-				((name.endsWith(".pdf") ||
-				(Pattern.matches("g\\d{2,}n\\d{2,}t\\d{2,}.xml", name) )));
+		return (!file.isDirectory()) && Pattern.matches("g0*\\d{1,}n\\d{2,}t\\d{2,}.(xml|pdf)", name);
 	}
 }

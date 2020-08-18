@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GameFileComparator implements Comparator<File> {
-	private final Pattern a = Pattern.compile("g(\\d{3})n(\\d{2})t(\\d{3})\\.(xml|pdf)");
+	private final Pattern a = Pattern.compile("g(\\d{2,})n(\\d{2})t(\\d{3})\\.(xml|pdf)");
 
 	@Override
 	public int compare(File o1, File o2) {

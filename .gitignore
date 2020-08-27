@@ -7,3 +7,10 @@ joverseerupdaterjar/update.jar
 joverseerupdaterjar/txt2xml.jar
 *.class
 *.db
+joverseerjar/TEST-org.joverseer.LaunchTest.txt
+orderchecker/TEST-orderchecker.ConfidenceTest.txt
+orderchecker/TEST-ConfidenceTest.txt
+joverseerjar/resources/images/map/Thumbs.db
+joverseerjar/resources/images/btns/Thumbs.db
+joverseerjar/resources/images/map/Thumbs.db
+joverseerjar/resources/images/map/Thumbs.db

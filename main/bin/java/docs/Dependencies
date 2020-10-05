@@ -1,0 +1,13 @@
+Dependencies for JOverseer
+--------------------------
+- junit any version
+- log4j
+- apache commons beanutils
+- apache commons collections
+- apache commons digester
+- spring rich client dependencies
+- txt2xml
+	- scope-bin.jar
+	- jdom.jar
+- pdfbox
+	- FontBox.jar

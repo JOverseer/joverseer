@@ -743,6 +743,8 @@ public class TurnXmlReader implements Runnable {
 		} else {
 			updateHexOverridesFromBridgeSabotageRumors();
 		}
+		if (this.game.getMetadata().getGameType().equals(GameTypeEnum.gameFA) & this.getTurnInfo().getTurnNo() == 0)
+			updateReportsSuggestNationMessages();
 	}
 
 	protected void updateHexOverridesFromBridgeSabotageRumors() {
@@ -774,6 +776,25 @@ public class TurnXmlReader implements Runnable {
 		}
 	}
 
+	protected void updateReportsSuggestNationMessages() {
+		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
+		String prefix = "Reports suggest the presence of holdings/forces of the ";
+		String suffix = " at 0101." ;
+		for (String msg : nationMsgs) {
+			if (msg.startsWith(prefix)) {
+				String nationname = msg.substring(prefix.length(),msg.length()-suffix.length()) ;
+				String hexno_string = msg.substring(msg.length()-5, msg.length() - 1);
+				int hexno = Integer.parseInt(hexno_string);
+				PopulationCenter pc = (PopulationCenter) this.game.getTurn().getPopCenter(hexno);
+				if (pc != null) {
+					Nation n = GameHolder.instance().getGame().getMetadata().getNationByName(nationname);
+					if (n != null)
+						pc.setNationNo(n.getNumber());
+				}
+			}
+		}
+	}
+	
 	private void updateKSArtifactIDsFromNationMessages() {
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
 		String prefix = "The artefact going by the name of ";

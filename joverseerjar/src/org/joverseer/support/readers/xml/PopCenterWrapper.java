@@ -30,6 +30,9 @@ public class PopCenterWrapper {
 	}
 
 	public void setCapital(int capital) {
+		if (this.hexID == 3012) {
+			int checkCapital = capital;
+		}
 		this.capital = capital;
 	}
 

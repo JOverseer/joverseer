@@ -123,17 +123,11 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     }
 
     public boolean getCapital() {
-    	 if (this.getHexNo() == 3012) {
-         	Boolean b = this.capital;
-         }
-     	 return this.capital;
+        return this.capital;
     }
 
     public void setCapital(boolean capital) {
-        if (this.getHexNo() == 3012) {
-        	Boolean b = this.capital;
-        }
-    	this.capital = capital;
+        this.capital = capital;
     }
 
     public boolean getHidden() {

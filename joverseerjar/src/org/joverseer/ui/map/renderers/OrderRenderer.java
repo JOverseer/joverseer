@@ -245,9 +245,6 @@ public class OrderRenderer extends DefaultHexRenderer {
 				int nextHexNo = MovementUtils.getHexNoAtDir(currentHexNo, md);
 				if (nextHexNo == currentHexNo) {
 					cost += 1;
-					if (evasive) {
-						cost += 1;
-					}
 					continue;
 				}
 				p1 = MapPanel.instance().getHexCenter(currentHexNo);

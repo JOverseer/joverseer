@@ -1,8 +1,6 @@
 package org.joverseer.metadata.domain;
 
 import org.joverseer.metadata.SNAEnum;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

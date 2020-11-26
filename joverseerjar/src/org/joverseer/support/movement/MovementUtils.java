@@ -159,7 +159,7 @@ public class MovementUtils {
 		}
 
 		if (md == MovementDirection.Home) {
-			// for home, return immediatelly
+			// for home, return immediately
 			return 1;
 		}
 
@@ -225,7 +225,7 @@ public class MovementUtils {
 		MovementDirection md = MovementDirection.getDirectionFromString(direction);
 
 		if (md == MovementDirection.Home) {
-			// for home, return immediatelly
+			// for home, return immediately
 			return 1;
 		}
 

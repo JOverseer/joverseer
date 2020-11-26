@@ -3,6 +3,8 @@
 	<name>joverseerjar</name>
 	<comment></comment>
 	<projects>
+		<project>joverseerupdaterjar</project>
+		<project>orderchecker</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

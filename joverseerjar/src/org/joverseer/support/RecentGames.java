@@ -64,7 +64,7 @@ public class RecentGames {
             rgis.remove(toRemove);
         }
         rgis.add(0, rgi);
-        while (rgis.size() > RECENT_GAME_LIMIT) {
+        while (rgis.size() > this.RECENT_GAME_LIMIT) {
             rgis.remove(rgis.size() - 1);
         }
         rgiStr = getRecentGameInfoString(rgis);

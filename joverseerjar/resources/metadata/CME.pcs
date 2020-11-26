@@ -31,8 +31,10 @@
 "3123",0,1,0,27,0,0,"Torech Ungol",30,False,False,,False
 "3124",0,3,3,27,0,0,"Minas Morgul",55,False,False,,False
 "3213",0,3,1,26,0,0,"Gimil-dûm",55,False,False,,False
+"3217",0,1,0,2,0,0,"Lugbagronk",30,False,False,,False
 "3220",0,1,1,2,0,0,"Carchost",30,False,False,,False
 "3222",0,1,0,27,0,0,"Durthang",30,False,False,,False
 "3224",0,3,2,27,0,0,"Cirith Ungol",55,False,False,,False
 "3322",0,1,0,2,0,0,"Lugburzum",30,False,False,,False
+"3421",0,1,0,2,0,0,"Lugund",30,False,False,,False
 "3423",0,4,4,2,0,0,"Barad-dûr",75,True,False,,False

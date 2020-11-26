@@ -52,7 +52,7 @@ public class OrderEditorListViewTest extends AssertJSwingJUnitTestCase {
 		assertNotNull(as.getService(ComponentFactory.class));
 		asl.setApplicationServices(as);
 		assertNotNull(ApplicationServicesLocator.services());
-		String[] names = ctx.getBeanDefinitionNames();
+//		String[] names = ctx.getBeanDefinitionNames();
 
 	}
 

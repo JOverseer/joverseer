@@ -187,7 +187,7 @@ public class ProcessorFactory {
     protected Processor readProcessorSequenceFrom(Element parentElement) throws ConfigException {
         Processor resultProcessor = null;
         Processor currentProcessor = null;
-        for (Iterator i = parentElement.getChildren(PROCESSOR_ELEMENT).iterator(); i.hasNext();) {
+        for (Iterator<?> i = parentElement.getChildren(PROCESSOR_ELEMENT).iterator(); i.hasNext();) {
             Element processorElement = (Element) i.next();
             Processor nextProcessor = readProcessor(processorElement);
             if (currentProcessor == null) {
@@ -240,7 +240,7 @@ public class ProcessorFactory {
 
         // Populate Processor properties except sub-processor
         BeanMap beanMap = new BeanMap(processor);
-        for (Iterator i = processorElement.getChildren().iterator(); i.hasNext();) {
+        for (Iterator<?> i = processorElement.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             if (!PROCESSOR_ELEMENT.equals(element.getName())) {
                 beanMap.put(element.getName(), element.getTextTrim());

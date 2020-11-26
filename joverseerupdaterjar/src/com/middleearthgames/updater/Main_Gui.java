@@ -219,7 +219,7 @@ public class Main_Gui extends JFrame{
          BufferedInputStream is = null;
          ZipEntry entry;
          ZipFile zipfile = new ZipFile(file);
-         Enumeration e = zipfile.entries();
+         Enumeration<? extends ZipEntry> e = zipfile.entries();
          (new File(root)).mkdir();
          while(e.hasMoreElements()) {
             entry = (ZipEntry) e.nextElement();

@@ -9,8 +9,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Comparator;
-
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;

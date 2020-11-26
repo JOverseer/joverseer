@@ -37,12 +37,12 @@ public class FileFormatTest {
 	public void test() throws Exception {
 	    Game g = Game.loadGame(new File(f));
 		GZIPInputStream in = new GZIPInputStream(new FileInputStream(f));
-		byte[] original = readInputStream(in);
-		byte[] latest;
+//		byte[] original = readInputStream(in);
+//		byte[] latest;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(baos);
         out.writeObject(g);
-        latest = baos.toByteArray();
+//        latest = baos.toByteArray();
 
 //        AssertObjectStreams aos = new AssertObjectStreams(new ByteArrayInputStream(original), new ByteArrayInputStream(latest));
 //        aos.assertStream();

@@ -1,11 +1,10 @@
 package org.joverseer.ui.listviews;
 
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.ui.listviews.NationEconomyTableModel;
 
 /**
  * List view for NationEconomy objects
- * 
+ *
  * @author Marios Skounakis
  */
 public class NationEconomyListView extends ItemListView {

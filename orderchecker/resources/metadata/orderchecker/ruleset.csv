@@ -82,7 +82,7 @@ BEGINRULES,,,,,,,,,,,
 116,Spell,NONE,,,,,,,,,
 120,CstHlSp,SPELL,1,,,,,,,,
 120,,CHARACTER,2,0,1,,,,,,
-175,ChAlleg,RANK,0,0,1
+175,ChAlleg,NONE,,,,,,,,,
 175,,RANK,0,0,1,1,1,1
 180,UpStNat,NATION,0,1,,,,,,,
 180,,RANK,0,0,1,1,1,1

@@ -2739,16 +2739,10 @@ public class Rule
                 }
             }
             if (onlyOne) {
-            	int size = this.parentChar.getOrderCount();
-            	int firstMatch = -1;
-            	for(int i=0;i<size;i++) {
-            		if (this.parentChar.getOrder(i).getOrder() == this.order) {
-            			firstMatch = i;
-            			break;
-            		}
-            	}
+            	int firstMatch = this.parentChar.indexOfOrderMatching(this.order);
             	// now we know the index of our current order.
             	// we can check for duplicate :)
+            	int size = this.parentChar.getOrderCount();
             	int otherOrder;
             	for(int i=0;i<size;i++) {
             		if (i==firstMatch)
@@ -2769,8 +2763,11 @@ public class Rule
             					if (otherRule.getName().equalsIgnoreCase("RANK")) {
             						int otherRank = otherRule.convertParameter(1);
             						if (otherRank == rank) {
-            							this.parentOrder.addError("Duplicate order skill");
-            							break;
+            							if (otherRule.convertParameter(4) != 0) {
+            								// same skill and marked as exclusive
+            								this.parentOrder.addError("Duplicate order skill");
+            								break;
+            							}
             						}
             					}
             				}

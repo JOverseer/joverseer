@@ -314,6 +314,7 @@ public class EconomyTotalsTableModel extends BaseEconomyTableModel {
             NationEconomy ne = getNationEconomy();
             // hack to compute gold production if needed
             // gold production = total revenue - calculated tax revenue
+            // as of december 2020 the game engine reports a tax base excluding seiged pop centres.
             if (ne.getGoldProduction()==0 &&
                     ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100 != 0) {
                 ne.setGoldProduction(ne.getRevenue() - ne.getTaxBase() * 2500 * ne.getTaxRate() / 100);

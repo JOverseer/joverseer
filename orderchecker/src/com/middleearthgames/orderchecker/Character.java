@@ -216,6 +216,17 @@ public class Character
         }
 
     }
+    
+    int indexOfOrderMatching(int order)
+    {
+    	int size = this.getOrderCount();
+    	for(int i=0;i<size;i++) {
+    		if (this.getOrder(i).getOrder() == order) {
+    			return i;
+    		}
+    	}
+    	return -1;
+    }
 
     void addTreeNodes(JTree tree, DefaultMutableTreeNode parent)
     {

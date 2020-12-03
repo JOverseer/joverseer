@@ -610,6 +610,11 @@ public class CharacterMessageWrapper {
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);
+			// cope with "blah #200, a sword, "
+			int pos = matches[1].indexOf(",");
+			if (pos >0) {
+				matches[1] = matches[1].substring(0,pos);
+			}
 			or.setArtifactNo(Integer.parseInt(matches[1]));
 			or.setOwner(matches[2]);
 			or.setHexNo(Integer.parseInt(matches[4]));

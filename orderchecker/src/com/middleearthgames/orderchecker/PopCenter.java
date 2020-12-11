@@ -21,27 +21,27 @@ public class PopCenter
     private static int food[] = {
         -1, 0, 200, 1000, 2500, 5000
     };
-    static final int SIZE_NONE = 0;
-    static final int SIZE_CAMP = 1;
-    static final int SIZE_VILLAGE = 2;
-    static final int SIZE_TOWN = 3;
-    static final int SIZE_MAJOR_TOWN = 4;
-    static final int SIZE_CITY = 5;
+    public static final int SIZE_NONE = 0;
+    public static final int SIZE_CAMP = 1;
+    public static final int SIZE_VILLAGE = 2;
+    public static final int SIZE_TOWN = 3;
+    public static final int SIZE_MAJOR_TOWN = 4;
+    public static final int SIZE_CITY = 5;
     private static final String sizeName[] = {
         "", "Camp", "Village", "Town", "Major Town", "City"
     };
-    static final int FORT_NONE = 0;
-    static final int FORT_TOWER = 1;
-    static final int FORT_FORT = 2;
-    static final int FORT_CASTLE = 3;
-    static final int FORT_KEEP = 4;
-    static final int FORT_CITADEL = 5;
+    public static final int FORT_NONE = 0;
+    public static final int FORT_TOWER = 1;
+    public static final int FORT_FORT = 2;
+    public static final int FORT_CASTLE = 3;
+    public static final int FORT_KEEP = 4;
+    public static final int FORT_CITADEL = 5;
     private static final String fortName[] = {
         "", "Tower", "Fort", "Castle", "Keep", "Citadel"
     };
-    static final int DOCK_NONE = 0;
-    static final int DOCK_HARBOR = 1;
-    static final int DOCK_PORT = 2;
+    public static final int DOCK_NONE = 0;
+    public static final int DOCK_HARBOR = 1;
+    public static final int DOCK_PORT = 2;
     private int location;
     private String name;
     private int nation;

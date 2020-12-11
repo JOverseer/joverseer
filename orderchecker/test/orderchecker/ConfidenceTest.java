@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -102,7 +103,7 @@ public class ConfidenceTest {
 		assertNull(error);
 		return main;
 	}
-	private Nation createNation(Main main) {
+	private Nation createMainOrderNation(Main main) {
 		Nation nation = new Nation();
 		main.setNation(nation);
 		main.getData().setGameType("1650");
@@ -122,8 +123,21 @@ public class ConfidenceTest {
 		nation.addCharacter(character);
 		return character;
 	}
+	private com.middleearthgames.orderchecker.PopCenter createPopCenter(Nation nation,int location) {
+		com.middleearthgames.orderchecker.PopCenter popCenter = new com.middleearthgames.orderchecker.PopCenter(location);
+		popCenter.setNation(nation.getNation());
+		return popCenter;
+		
+	}
 	private void assertOrderResultsCounts(Order order,int error,int help,int info,int warning) {
+		String message;
 		assertTrue("No rules applied",order.getRules().size() > 0);
+		if (error != order.getErrorResults().size() ) {
+			message = "Error results count ";
+			if (error == 0) {
+				fail(message + order.getErrorResults().get(0));
+			}
+		}
 		assertEquals("Error results count",error,order.getErrorResults().size());
 		assertEquals("Help results count",help,order.getHelpResults().size());
 		assertEquals("Info results count",info,order.getInfoResults().size());
@@ -136,7 +150,7 @@ public class ConfidenceTest {
 
 		Main.main = main;
 
-		Nation nation = createNation(main);
+		Nation nation = createMainOrderNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testc","no name");
 
@@ -160,7 +174,7 @@ public class ConfidenceTest {
 		final Main main = createRuleset("605,GrdLoc,PC,0,1,\n" +
 			    "605,,"+RANK_RULE+AGENT_RANK_MIN+",0"+EXCLUSIVE+ANYWHERE);
 
-		Nation nation = createNation(main);
+		Nation nation = createMainOrderNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
 		Order order1= new Order(character,605);
@@ -187,7 +201,7 @@ public class ConfidenceTest {
 //				+ "745,," + RANK_RULE + COMMAND_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE) // RANK is implied by SETCOMMAND
 				);
 
-		Nation nation = createNation(main);
+		Nation nation = createMainOrderNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testC","Commander Orange");
 		Order order1= new Order(character,745);
@@ -212,7 +226,7 @@ public class ConfidenceTest {
 		final Main main = createRuleset("585,Uncover," + RANK_RULE + EMISSARY_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE + "\n"
 				+ "555,,RANK,0,2,30,1,1,0");
 
-		Nation nation = createNation(main);
+		Nation nation = createMainOrderNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Emmy Orange");
 		Order order1= new Order(character,585);
@@ -244,7 +258,7 @@ public class ConfidenceTest {
 		final Main main = createRuleset("710,PrenMgy,PC,0,0,,\r\n" +
 				"710,," + RANK_RULE + MAGE_RANK_MIN + ",0" + EXCLUSIVE + ANYWHERE);
 
-		Nation nation = createNation(main);
+		Nation nation = createMainOrderNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
 		Order order1= new Order(character,710);
@@ -272,7 +286,7 @@ public class ConfidenceTest {
 				"725,,RANK,0,0,1,1,1,1"+"\r\n"
 				);
 
-		Nation nation = createNation(main);
+		Nation nation = createMainOrderNation(main);
 
 		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testC","Commander Orange");
 		Order order1= new Order(character,185);
@@ -297,6 +311,64 @@ public class ConfidenceTest {
 		assertEquals("725 error","Duplicate order skill",order2.getErrorResults().get(0));
 		assertEquals("725 error","Creating new character: 30 Command.",order2.getHelpResults().get(0));
 
+	}
+	@Test
+	public void GoldToHiddenPCTest() {
+		final Main main = createRuleset(
+				"948,TranCar,SIEGENOT,0,1,,,"+"\r\n" +
+				"948,,SIEGENOT,1,0,,,"+"\r\n" +
+				"948,,SIEGENOT,2,0,,,"+"\r\n" +
+				"948,,PC,0,0,,,"+"\r\n" +
+				"948,,PC,1,0,,,"+"\r\n" +
+				"948,,PC,2,11,3,,"+"\r\n" +
+				"948,,PRODUCTINFO,0,2,3,4,0"+"\r\n"
+				);
+		Nation nation = createMainOrderNation(main);
+		nation.SetNation(1);
+		com.middleearthgames.orderchecker.PopCenter popcenter = createPopCenter(nation, 1234);
+		popcenter.setCapital(1);
+		popcenter.setName("Bree");
+		popcenter.setNewPC(); // stop the default string generation.
+		popcenter.setFortification(com.middleearthgames.orderchecker.PopCenter.FORT_CASTLE);
+		assertEquals("setup failure","1234",popcenter.toString());
+		com.middleearthgames.orderchecker.PopCenter targetPopcenter = createPopCenter(nation, 1111);
+		targetPopcenter.setNewPC(); // stop the default string generation.
+		nation.setCapital(popcenter.getLocation());
+		nation.addPopulationCenter(popcenter);
+		nation.addPopulationCenter(targetPopcenter);
+		assertEquals("setup failure","1111",targetPopcenter.toString());
+		com.middleearthgames.orderchecker.Character character = createCharacter(nation,"testA","Agent Orange");
+		Order order= new Order(character,948);
+		order.addParameter("1234");
+		order.addParameter("1111");
+		order.addParameter("go");
+		order.addParameter("15000");
+		character.addOrder(order);
+		character.setLocation(popcenter.getLocation());
+		character.setNation(nation.getNation());
+
+		invokeOrderchecker(main);
+		assertOrderResultsCounts(nation.getOrder(0),0,1,0,0);
+		assertEquals("948 error same nation","Transporting 15000 Gold to 1111.",order.getHelpResults().get(0));
+		
+		// move the target to another nation
+		Nation nation2 = new Nation();
+		nation2.SetNation(2);
+		assertNotEquals("948 nation",nation.getNation(),nation2.getNation());
+		targetPopcenter.setNation(nation2.getNation());
+
+		invokeOrderchecker(main);
+		assertOrderResultsCounts(nation.getOrder(0),0,1,0,0);
+		assertEquals("948 error other nation","Transporting 15000 Gold to 1111.",order.getHelpResults().get(0));
+		
+		// now hidden
+		targetPopcenter.setHidden(1);
+		
+		invokeOrderchecker(main);
+		assertOrderResultsCounts(nation.getOrder(0),0,1,0,0);
+		assertEquals("948 error hidden","Transporting 15000 Gold to 1111.",order.getHelpResults().get(0));
+		
+		
 	}
 
 }

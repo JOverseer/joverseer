@@ -2201,13 +2201,25 @@ public class Rule
 
     private String processPC()
     {
-        String result = parameterCount(2, "PC");
+        int state;
+    	String result = parameterCount(2, "PC");
         if(result != null)
         {
-            return result;
+        	// we usually only expect 2 parameters, but if parameter 1 is 11 we can have another.
+        	String previous = result;
+        	result = parameterCount(3, "PC");
+        	if (result != null) {
+        		return previous;
+        	}
+        	state = convertParameter(1);
+            if (11 != state) {
+            	return result;
+            }
+        } else {
+            state = convertParameter(1);
         }
         int locParam = convertParameter(0);
-        int state = convertParameter(1);
+        int commodityIndex = convertParameter(2);
         if(this.phase != 1 && this.phase == 2)
         {
             if(waitForProcessState(STATE_PC))
@@ -2404,6 +2416,18 @@ public class Rule
                 }
                 break;
 
+            case 11:
+            	if (pc.getHidden() && (!owned)) {
+            		if (commodityIndex == -1) {
+            			break; // no commodity constraints for this rule
+            		}
+            		// can only send gold to hidden of other nation.
+            		String commodity = this.parentOrder.getParameterString(commodityIndex);
+            		if (!commodity.equals("go")) {
+                		this.parentOrder.addError("You can only send gold to " + pc + " - it is hidden and not owned by you. ");
+            		}
+            	}
+            	break;
             case 5: // '\005'
             case 6: // '\006'
             default:

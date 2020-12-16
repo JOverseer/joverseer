@@ -11,7 +11,7 @@ addons:
       - ant
       - ant-optional
 install:
-; note that packages is the name of a .pkg maker!
+# note that packages is the name of a .pkg maker!
  - if [ $TRAVIS_OS_NAME = osx ]; then brew install ant packages; fi
 before_script:
  - "export DISPLAY=:99.0"

@@ -5,6 +5,25 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item><title>1.16.18</title>
+    <pubDate>Wed, 16 Dec 2020</pubDate>
+	<description>
+VERSION 1.16.18
+---------------
+    * Fix: Ordercheck order 948 now lets you transfer gold to a hidden PC
+    * Fix: Orderchecker no longer gives a warning about casting Greater Heal.
+    * Fix: Orderchecker will not choke on 175 orders.
+    * Fix: From December 2020 the XML format changed. The tax base no longer includes sieged popcentres which fixes some discrepencies in reporting the economy.
+    * Fix: The movement cost of a home move when moving evasively is now 1.
+    * Fix: Fourth Age games now notice reported popcentres on turn 0. Thanks Jeremy!
+    * Enh: Game numbers greater than 999 are now supported.
+    * Fix: The list of spells in the order editor are now sorted by number.
+    * Enh: The recent games list now shows up to 10 recent games. 
+    * Fix: CME can now do the 942 order.
+    * Enh: The Nation Statistics view now pulls in the number of NPCs recruited from the turn files.
+	* Fix: The update web address is now https:	the new version will try and correct http: if it finds them in preferences.
+    </description>	
+    </item>
     <item><title>1.16.17</title>
     <pubDate>Fri, 17 Apr 2020</pubDate>
     <description>

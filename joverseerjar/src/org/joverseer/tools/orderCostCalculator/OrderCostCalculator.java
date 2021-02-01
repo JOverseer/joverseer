@@ -209,7 +209,7 @@ public class OrderCostCalculator {
 		try {
 			int no = Integer.parseInt(o.getParameter(1));
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
-			int cost = no * pp.getBuyPrice();
+			int cost = no * pp.getBuyPrice() * getBuyBonusFactor();
 			this.cont.setProduct(ProductEnum.Gold, cost);
 			this.cont.setProduct(pe, -no);
 			return cost;
@@ -225,7 +225,7 @@ public class OrderCostCalculator {
 		try {
 			int no = Integer.parseInt(o.getParameter(1));
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
-			int gain = -no * pp.getSellPrice();
+			int gain = -no * pp.getSellPrice() * getSellBonusFactor();
 			this.cont.setProduct(ProductEnum.Gold, gain);
 			this.cont.setProduct(pe, no);
 			return gain;
@@ -243,7 +243,7 @@ public class OrderCostCalculator {
 			NationEconomy ne = (NationEconomy) t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int amt = (ne.getStores().getProduct(pe) + ne.getProduction().getProduct(pe)) * pct / 100;
-			int gain = -amt * pp.getSellPrice();
+			int gain = -amt * pp.getSellPrice()* getSellBonusFactor();
 			this.cont.setProduct(ProductEnum.Gold, gain);
 			this.cont.setProduct(pe, amt);
 			return gain;

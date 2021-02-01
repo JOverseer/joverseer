@@ -250,7 +250,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	}
 	protected long get100xProductBidPurchase(ProductEnum p)
 	{
-		return getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor();
+		return getBidUnits(p) * getBidPrice(p);
 	}
 	protected long get100xProductSaleCommission(ProductEnum p)
 	{
@@ -268,7 +268,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		Turn t = getTurn();
 		if (t == null)
 			return 0;
-		return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 - getBidUnits(p) * getBidPrice(p) * getBuyBonusFactor() / 100;
+		return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 - getBidUnits(p) * getBidPrice(p) / 100;
 	}
 
 	public boolean getSellBonus() {

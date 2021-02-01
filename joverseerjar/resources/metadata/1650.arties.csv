@@ -1,4 +1,4 @@
-1;Ring of Wind;None;Agent;40;;
+﻿1;Ring of Wind;None;Agent;40;;
 2;Ring of Stargazing;None;Mage;30;;Dog Lord
 3;Ring of Iron Magic;Evil;Mage;30;;Dark Lts.
 4;Ring of Impersonation;None;Agent;25;;S.Gondor
@@ -80,7 +80,7 @@
 80;Snow Hammer;None;Combat;500;;Ice King
 81;Sil-Maegil;Good;Combat;750;Bonus fighting evil creatures;
 82;Romoquenaro;None;Combat;750;;Witch-King
-83;Orcrist;Good;Combat;2250;;
+83;Orcrist;Good;Combat;750;;
 84;Ongrum;Evil;Combat;500;;Fire King
 85;Navorn;None;Combat;500;;N.Gondor
 86;Nallagurth;Evil;Combat;750;Access to Spirit Mastery;Witch-King

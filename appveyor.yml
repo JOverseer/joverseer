@@ -8,7 +8,7 @@ install:
 - cmd: >-
     cinst ant
 
-    curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.12/launch4j-3.12-win32.zip --output C:\projects\joverseer\launch4j.zip
+    curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.13/launch4j-3.13-win32.zip --output C:\projects\joverseer\launch4j.zip
 
     7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
 build_script:

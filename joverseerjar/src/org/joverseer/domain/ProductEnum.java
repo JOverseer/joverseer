@@ -9,7 +9,7 @@ import org.joverseer.ui.support.UIUtils;
  * @author Marios Skounakis
  */
 public enum ProductEnum {
-	Leather("le"), Bronze("br"), Steel("st"), Mithril("mi"), Food("fo"), Mounts("mo"), Timber("ti"), Gold("go");
+	Leather("le"), Bronze("br"), Steel("st"), Mithril("mi"), Food("fo"), Timber("ti"), Mounts("mo"), Gold("go");
 
 	String code;
 

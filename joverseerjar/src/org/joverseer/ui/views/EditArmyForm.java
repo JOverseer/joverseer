@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -62,6 +63,7 @@ public class EditArmyForm extends ScalableAbstractForm {
 	}
 
 	public static String FORM_ID = "editArmyForm";
+//	JCheckBox isAnchored;
 	JTextField commander;
 	JTextField commandRank;
 	JTextField morale;
@@ -121,6 +123,11 @@ public class EditArmyForm extends ScalableAbstractForm {
 	protected JComponent createFormControl() {
 		GridBagLayoutBuilder lb = new GridBagLayoutBuilder();
 
+/*		lb.append(new JLabel(Messages.getString("editArmyForm.Anchored")));
+		lb.append(this.isAnchored = new JCheckBox());
+
+		lb.nextLine();
+*/		
 		lb.append(new JLabel(Messages.getString("editArmyForm.Commander")));
 		lb.append(this.commander = new JTextField());
 		this.commander.setPreferredSize(this.uiSizes.newDimension(120/20, this.uiSizes.getHeight5()));
@@ -232,7 +239,6 @@ public class EditArmyForm extends ScalableAbstractForm {
 		Army a = (Army) arg0;
 
 		this.commander.setText(a.getCommanderName());
-
 		this.nation.setSelectedItem(this.gameHolder.getGame().getMetadata().getNationByNum(a.getNationNo()).getName());
 
 		Character c = (Character) this.gameHolder.getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", a.getCommanderName());

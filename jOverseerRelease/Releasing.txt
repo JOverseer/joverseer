@@ -7,7 +7,7 @@ XPath:
  //beans/bean[@id='applicationDescriptor']/property[@name='buildId']
    @value='2014-x-x'
 
-2. update the version in the changelog.txt
+2. update the version in the joverseerjar/resources/changelog.txt
 
 3. compile
   from eclipse by clicking on each component's build.xml in dependency order;

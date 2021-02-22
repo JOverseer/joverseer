@@ -256,11 +256,11 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	{
 		return  getSellPrice(p) * getSellBonusFactor() * getSellPct(p)/ 100;
 	}
-	private int getSellBonusFactor() {
+	public int getSellBonusFactor() {
 		return getSellBonus() ? 120 : 100;
 	}
 
-	private int getBuyBonusFactor() {
+	public int getBuyBonusFactor() {
 		return getSellBonus() ? 80 : 100;
 	}
 

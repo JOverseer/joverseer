@@ -795,8 +795,8 @@ public class TurnNewXmlReader implements Runnable {
 				a.setNationAllegiance(allegiance);
 				a.setInformationSource(InformationSourceEnum.exhaustive);
 				a.setInfoSource(new PdfTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo()));
-				a.setElement(ArmyElementType.Transports, asw.getTransports());
 				a.setElement(ArmyElementType.Warships, asw.getWarships());
+				a.setElement(ArmyElementType.Transports, asw.getTransports());
 				armies.addItem(a);
 			}
 		}

@@ -3,6 +3,7 @@ package org.joverseer.tools.orderCostCalculator;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Character;
+import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.domain.Order;
@@ -128,9 +129,9 @@ public class OrderCostCalculator {
 		case 310:
 			return bidFromCaravanCost(o);
 		case 315:
-			return purchaseFromCaravanCost(o);
+			return purchaseFromCaravanCost(o,t);
 		case 320:
-			return sellToCaravanCost(o);
+			return sellToCaravanCost(o,t);
 		case 325:
 			return natSellToCaravanCost(o,t);
 		case 948:
@@ -202,14 +203,15 @@ public class OrderCostCalculator {
 		}
 	}
 
-	public int purchaseFromCaravanCost(Order o) {
+	public int purchaseFromCaravanCost(Order o,Turn t) {
 		ProductEnum pe = ProductEnum.getFromCode(o.getParameter(0));
 		if (pe == null)
 			return 0;
 		try {
 			int no = Integer.parseInt(o.getParameter(1));
+            EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
-			int cost = no * pp.getBuyPrice() * getBuyBonusFactor();
+			int cost = no * pp.getBuyPrice() * ecd.getBuyBonusFactor();
 			this.cont.setProduct(ProductEnum.Gold, cost);
 			this.cont.setProduct(pe, -no);
 			return cost;
@@ -218,14 +220,15 @@ public class OrderCostCalculator {
 		}
 	}
 
-	public int sellToCaravanCost(Order o) {
+	public int sellToCaravanCost(Order o,Turn t) {
 		ProductEnum pe = ProductEnum.getFromCode(o.getParameter(0));
 		if (pe == null)
 			return 0;
 		try {
 			int no = Integer.parseInt(o.getParameter(1));
+            EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
-			int gain = -no * pp.getSellPrice() * getSellBonusFactor();
+			int gain = -no * pp.getSellPrice() * ecd.getSellBonusFactor();
 			this.cont.setProduct(ProductEnum.Gold, gain);
 			this.cont.setProduct(pe, no);
 			return gain;
@@ -241,9 +244,10 @@ public class OrderCostCalculator {
 		try {
 			int pct = Integer.parseInt(o.getParameter(1));
 			NationEconomy ne = (NationEconomy) t.getContainer(TurnElementsEnum.NationEconomy).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
+            EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int amt = (ne.getStores().getProduct(pe) + ne.getProduction().getProduct(pe)) * pct / 100;
-			int gain = -amt * pp.getSellPrice()* getSellBonusFactor();
+			int gain = -amt * pp.getSellPrice()* ecd.getSellBonusFactor();
 			this.cont.setProduct(ProductEnum.Gold, gain);
 			this.cont.setProduct(pe, amt);
 			return gain;

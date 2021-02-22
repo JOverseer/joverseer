@@ -46,6 +46,7 @@ Source: {#InputBuild}\joverseer.ico; DestDir: {app}
 Source: {#InputBuild}\jOverseer.exe; DestDir: {app}
 Source: {#InputBuild}\jOverseerUpdater.exe; DestDir: {app}
 Source: {#InputResourceDirName}\joverseer.bat; DestDir: {app}
+Source: {#InputResourceDirName}\joverseer-no3D.bat; DestDir: {app}
 Source: {#InputResourceDirName}\jOverseer.lnk; DestDir: {userdesktop}
 Source: {#InputBuild}\log4j.properties; DestDir: {app}
 Source: {#InputBuild}\scope*.jar; DestDir: {app}

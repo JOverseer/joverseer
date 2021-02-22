@@ -325,6 +325,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		</copy>
 		<copy todir="${dist}" file="${src}/joverseer.bat">
 		</copy>
+		<copy todir="${dist}" file="${src}/joverseer-no3D.bat"></copy>
 	</target>
 
 	<!-- Internal targets -->

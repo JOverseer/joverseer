@@ -1,3 +1,11 @@
+VERSION 1.16.19
+---------------
+    * Fix: Add batch file joverseer-no3D.bat to start JO without 3D acceleration for problematic NVidia graphics drivers on Windows.
+           If you see overlapping JO frames etc, then use the file to replace the usual shortcut to start JO.
+    * Fix: The order cost calculator now takes account of the buy/sell bonuses.
+    * Fix: Timber and Mounts should now always be appearing in that order.
+    * Fix: Warships and Transports should now always be appearing in that order.
+    
 VERSION 1.16.18
 ---------------
         * Fix: Ordercheck order 948 now lets you transfer gold to a hidden PC

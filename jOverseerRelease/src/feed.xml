@@ -5,6 +5,18 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item><title>1.16.19/title>
+    <pubDate>Mon, 22 Feb 2021</pubDate>
+	<description>
+VERSION 1.16.19
+---------------
+    * Fix: Add batch file joverseer-no3D.bat to start JO without 3D acceleration for problematic NVidia graphics drivers on Windows.
+           If you see overlapping JO frames etc, then use the file to replace the usual shortcut to start JO.
+    * Fix: The order cost calculator now takes account of the buy/sell bonuses.
+    * Fix: Timber and Mounts should now always be appearing in that order.
+    * Fix: Warships and Transports should now always be appearing in that order.
+    </description>	
+    </item>
     <item><title>1.16.18</title>
     <pubDate>Wed, 16 Dec 2020</pubDate>
 	<description>

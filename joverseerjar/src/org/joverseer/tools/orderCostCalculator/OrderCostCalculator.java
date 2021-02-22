@@ -211,7 +211,7 @@ public class OrderCostCalculator {
 			int no = Integer.parseInt(o.getParameter(1));
             EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
-			int cost = no * pp.getBuyPrice() * ecd.getBuyBonusFactor();
+			int cost = no * pp.getBuyPrice() * ecd.getBuyBonusFactor() /100;
 			this.cont.setProduct(ProductEnum.Gold, cost);
 			this.cont.setProduct(pe, -no);
 			return cost;
@@ -228,7 +228,7 @@ public class OrderCostCalculator {
 			int no = Integer.parseInt(o.getParameter(1));
             EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
-			int gain = -no * pp.getSellPrice() * ecd.getSellBonusFactor();
+			int gain = -no * pp.getSellPrice() * ecd.getSellBonusFactor() /100;
 			this.cont.setProduct(ProductEnum.Gold, gain);
 			this.cont.setProduct(pe, no);
 			return gain;
@@ -247,7 +247,7 @@ public class OrderCostCalculator {
             EconomyCalculatorData ecd = (EconomyCalculatorData)t.getContainer(TurnElementsEnum.EconomyCalucatorData).findFirstByProperty("nationNo", o.getCharacter().getNationNo());
 			ProductPrice pp = (ProductPrice) t.getContainer(TurnElementsEnum.ProductPrice).findFirstByProperty("product", pe);
 			int amt = (ne.getStores().getProduct(pe) + ne.getProduction().getProduct(pe)) * pct / 100;
-			int gain = -amt * pp.getSellPrice()* ecd.getSellBonusFactor();
+			int gain = -amt * pp.getSellPrice()* ecd.getSellBonusFactor() /100;
 			this.cont.setProduct(ProductEnum.Gold, gain);
 			this.cont.setProduct(pe, amt);
 			return gain;

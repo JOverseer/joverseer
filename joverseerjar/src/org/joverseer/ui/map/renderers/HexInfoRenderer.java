@@ -95,7 +95,11 @@ public class HexInfoRenderer extends DefaultHexRenderer {
             if (!n.getAllegiance().equals(allegiance)) continue;
             if (nmr.getRectangle().contains(hex.getColumn(), hex.getRow())) {
                 if (nmr.getRectangle().getX() + nmr.getRectangle().getWidth() == hex.getColumn() + 1) {
-                	continue;
+                	if (hex.getRow() % 2 == 1) {
+                		return true;
+                	} else {
+                		continue;
+                	}
                 }
                 return true;
             }

@@ -5,6 +5,14 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item><title>1.16.20</title>
+    <pubDate>1 Mar 2021</pubDate>
+	<description>
+VERSION 1.16.20
+---------------
+	* Fix: AVG anti-virus was tagging joverseer.exe as a false positive.
+	</description>
+	</item>
     <item><title>1.16.19</title>
     <pubDate>Mon, 22 Feb 2021</pubDate>
 	<description>

@@ -19,7 +19,7 @@
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <maxHeapSize>512</maxHeapSize>
-    <opt>-Djava.net.preferIPv4Stack=true</opt>
+    <opt>-Djava.net.preferIPv4Stack=true -Dsun.java2d.ddoffscreen=false -Dsun.java2d.d3d=false -Dsun.java2d.noddraw=true</opt>
   </jre>
   <versionInfo>
     <fileVersion>1.0.0.0</fileVersion>

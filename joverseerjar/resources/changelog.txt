@@ -1,3 +1,7 @@
+VERSION 1.16.20
+---------------
+	* Fix: AVG anti-virus was tagging joverseer.exe as a false positive.
+	
 VERSION 1.16.19
 ---------------
     * Fix: Add batch file joverseer-no3D.bat to start JO without 3D acceleration for problematic NVidia graphics drivers on Windows.

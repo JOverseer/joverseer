@@ -227,7 +227,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		for (ProductEnum p : ProductEnum.values()) {
 			if (p == ProductEnum.Gold)
 				continue;
-			long productSpend = ( get100xProductPurchases(p) + get100xProductBidPurchase(p) )/100;
+			long productSpend = ( get100xProductPurchases(p) + get100xProductBidPurchase(p) );
 			spend += productSpend;
 		}
 		return (int)-spend;

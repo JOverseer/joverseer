@@ -8,9 +8,18 @@
     <item><title>1.16.20</title>
     <pubDate>1 Mar 2021</pubDate>
 	<description>
+    <item><title>1.16.20</title>
+    <pubDate>1 Mar 2021</pubDate>
+	<description>
 VERSION 1.16.20
 ---------------
-	* Fix: AVG anti-virus was tagging joverseer.exe as a false positive.
+    * Fix: The buy/sell bonus fix broke the market spend.
+    * Fix: The nation borders for fog-of-war.
+	</description>
+	</item>
+VERSION 1.16.20
+---------------
+	* Fix: anti-virus was tagging joverseer.exe as a false positive.
 	</description>
 	</item>
     <item><title>1.16.19</title>

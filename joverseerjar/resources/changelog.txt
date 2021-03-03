@@ -1,3 +1,8 @@
+VERSION 1.16.21
+---------------
+    * Fix: The buy/sell bonus fix broke the market spend.
+    * Fix: The nation borders for fog-of-war.
+
 VERSION 1.16.20
 ---------------
 	* Fix: AVG anti-virus was tagging joverseer.exe as a false positive.

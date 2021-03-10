@@ -328,7 +328,7 @@ public class CharacterMessageWrapper {
 			String text = line;
 			ArrayList<String> parts = StringUtils.getParts(text, start, "#\\d{1,3}", false, false);
 			for(String part:parts) {
-				String artiNo = StringUtils.getUniquePart(text, part + "\\s+#", " is a", false, false);
+				String artiNo = StringUtils.getUniquePart(text, "\\Q"+part + "\\E\\s?#", " is a", false, false);
 				try {
 					rrw.Add(part, Integer.parseInt(artiNo));
 				} catch (NumberFormatException e) {

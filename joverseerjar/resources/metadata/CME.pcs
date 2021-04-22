@@ -1,7 +1,7 @@
 ﻿#hex,,size,fort,nation,,habour,name,loyalty,capital,,,hidden
 "1908",0,1,1,27,0,0,"Trollhome",30,False,False,,False
 "1909",0,3,0,1,0,0,"Hobbiton",55,False,False,,True
-"1918",0,3,2,27,0,0,"Lug-gûl",55,False,False,,False
+"1918",0,4,2,27,0,0,"Lug-gûl",75,False,False,,False
 "2008",0,1,1,1,0,0,"Coldfell",30,False,False,,False
 "2009",0,1,0,26,0,0,"House of Tom Bombadil",30,False,False,,False
 "2010",0,1,0,1,0,0,"Bruinen's Roar",30,False,False,,False
@@ -12,7 +12,7 @@
 "2121",0,3,4,26,0,0,"Helm's Deep",55,False,False,,False
 "2209",0,4,1,1,0,0,"Imladris",75,True,False,,True
 "2212",0,4,4,27,0,0,"Moria",75,False,False,,False
-"2218",0,1,0,26,0,0,"Wellinghall",30,False,False,,False
+"2218",0,1,0,26,0,0,"Wellinghall",30,False,False,,True
 "2321",0,3,2,26,0,0,"Edoras",55,False,False,,False
 "2409",0,4,1,27,0,0,"Goblin-gate",75,False,False,,False
 "2413",0,3,1,26,0,0,"Cerin Amroth",55,False,False,,True
@@ -20,10 +20,10 @@
 "2610",0,1,0,26,0,0,"Rhosgobel",30,False,False,,False
 "2715",0,3,2,27,0,0,"Dol Guldur",55,False,False,,False
 "2809",0,2,1,27,0,0,"Sarn Goriwing",40,False,False,,True
-"2908",0,3,2,26,0,0,"Halls of Thranduil",55,False,False,,False
+"2908",0,4,2,26,0,0,"Halls of Thranduil",75,False,False,,False
 "2912",0,3,2,26,0,0,"Buhr Rhosc",55,False,False,,False
 "2924",0,4,4,26,0,1,"Minas Tirith",75,False,False,,False
-"3024",0,2,2,26,0,0,"Osgiliath",40,False,False,,False
+"3024",0,3,2,26,0,0,"Osgiliath",55,False,False,,False
 "3107",0,4,4,26,0,0,"Erebor",75,False,False,,False
 "3109",0,3,1,26,0,0,"Esgaroth",55,False,False,,False
 "3120",0,3,2,27,0,0,"Gates of Morannon",55,False,False,,False

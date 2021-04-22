@@ -21,7 +21,7 @@
 0;Staff of the Drúedain;Good;Combat;2250;None;Ghan-buri-Ghan
 0;Drums of the Drúedain;None;Command;None20;None;Ghan-buri-Ghan
 0;Hair of Galadriel;Good;Emissary;10;None;Gimli
-0;Boots of Iron;None;Command;10;None;Gimli
+0;Dwarven Ring of Power;None;Mage;50;None;Gimli
 0;Axe of Orc-huing;None;Combat;2000;None;Gimli
 0;Night's Passing;Good;Stealth;10;None;King of the Dead
 0;Bow of the Woodland Realm;Good;Combat;1000;None;Legolas
@@ -48,7 +48,7 @@
 0;Blackroot Club;None;Combat;2000;None;Great Goblin
 0;Ovir Crown;None;Mage;20;None;Hoarmurath
 0;Duv Ho'ath (Morgul Knife);Evil;Agent;10;None;Hoarmurath
-0;Helm of Ice;None;Command;25;None;Hoarmurath
+0;Helm of Ice;None;Command;35;None;Hoarmurath
 0;Duv Ji'ur (Morgul Knife);Evil;Agent;10;None;Ji Indur
 0;Duv Kh'aul (Morgul Knife);Evil;Command;15;None;Khamul
 0;Dragon Helm;Evil;Mage;30;None;Khamul
@@ -109,7 +109,7 @@
 0;Lance of Reaching;None;Combat;500;Cast 436 Scry Character;
 0;Mallorn Staff;None;Mage;30;None;
 0;Mane of the Mearas;None;Mage;10;Learn Conjure Mounts;
-0;Maranya;None;Mage;30;Learn Weakness, Sickness, Curses;
+0;Maranya;None;Mage;30;Learn Weakness, Sickness;
 0;Mithril Helm;None;Combat;1500;Cast 240 Summon Fire Spirits;
 0;Orcrist;None;Combat;750;Cast 424 Perceive Mission;
 0;Ossanna;None;Mage;15;Cast 430 Reveal Character True;
@@ -126,7 +126,7 @@
 0;Staff of the Serpent;None;Mage;10;Cast 114 Barrier Walls;
 0;Staff of the Wanderer;None;Mage;15;Learn Teleport;
 0;Taurin;None;Combat;2000;None;
-0;Tinculin;None;Mage;40;Learn Weakness, Sickness, Curses;
+0;Tinculin;None;Mage;40;Learn Weakness, Sickness;
 0;Mithril Shirt;None;Stealth;5;Cast 508 Conjure Mounts;
 0;Shadow Mace;None;Combat;2000;None;
 0;Rod of the Steward;None;Emissary;5;Cast 432 Perceive Secrets;
@@ -143,7 +143,7 @@
 0;Hue Changer;None;Combat;500;Cast 508 Conjure Mounts;
 0;Cloud Bow;None;Combat;750;Cast 426 Divine Army True;
 0;Stinging Tongue;None;Combat;500;Cast 432 Perceive Secrets;
-0;Thôlogaer Ciryatano;None;Mage;30;Learn Weakness, Sickness, Curses;
+0;Thôlogaer Ciryatano;None;Mage;30;Learn Weakness, Sickness;
 0;Ring of Angrenost;None;Combat;500;Cast 430 Reveal Character True;
 0;Mithril Ring;None;Mage;10;Cast 114 Barrier Walls;
 0;Andorithel;None;Command;10;Cast 508 Conjure Mounts;

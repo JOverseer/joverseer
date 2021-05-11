@@ -1,3 +1,21 @@
+Releasing jOverseer
+===================
+
+JOverseer has multiple artifacts as a result of the release process.
+There are 3 platforms:
+Windows
+MacOS
+Linux
+
+There is a different program that installs jOverseer for each platform.
+
+In addition, there is an latestupdate.zip which contains just the most recent changed parts, that an existing running jOverseer can download to update itself.
+The latestupdate.zip is theoretically platform independent, but in practice the MacOS version has a slightly different version of jidecommon.jar.
+
+Appveyor.com automatically builds the Windows and Linux versions when the github master branch is updated.
+Travis.com used to do the same for MacOS - but no longer.
+A local version of MacOS is required to build and release jOverseer for MacOS.
+
 1. Bump the version in
 main/resources/ctx/jideApplicationContext.xml
 XPath:
@@ -9,7 +27,13 @@ XPath:
 
 2. update the version in the joverseerjar/resources/changelog.txt
 
-3. compile
+3. edit and update jOverseerRelease/src/feed.xml
+
+4. commit to github on the master branch.
+
+5a. Appveyor.com should wake up and build 
+
+5b. compile (manual process if local) 
   from eclipse by clicking on each component's build.xml in dependency order;
   txt2xmljar
   orderchecker
@@ -19,11 +43,11 @@ XPath:
   and pick the appropriate target in
   joverseerRelease (build.xml)
   
-4. or run buildjars.bat
+5c. or run buildjars.bat
 
-5. ftp latestupdate.zip to middleearthgames.com
+6a. copy from
+6b. ftp latestupdate.zip to middleearthgames.com
 
-6. edit and update feed.xml
 
 (delete the registry entry if testing)
 

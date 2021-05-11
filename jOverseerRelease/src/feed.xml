@@ -5,18 +5,27 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
-    <item><title>1.16.20</title>
+    <item><title>1.16.22</title>
+    <pubDate>11 May 2021</pubDate>
+	<description>
+VERSION 1.16.22
+---------------
+	* Fix: CME rivers on the eastern edge.
+	* Enh: Reflect recent game changes in the CME characters and artifacts.
+	</description>
+	</item>
+    <item><title>1.16.21</title>
     <pubDate>1 Mar 2021</pubDate>
 	<description>
-    <item><title>1.16.20</title>
-    <pubDate>1 Mar 2021</pubDate>
-	<description>
-VERSION 1.16.20
+VERSION 1.16.21
 ---------------
     * Fix: The buy/sell bonus fix broke the market spend.
     * Fix: The nation borders for fog-of-war.
 	</description>
 	</item>
+    <item><title>1.16.20</title>
+    <pubDate>1 Mar 2021</pubDate>
+	<description>
 VERSION 1.16.20
 ---------------
 	* Fix: anti-virus was tagging joverseer.exe as a false positive.

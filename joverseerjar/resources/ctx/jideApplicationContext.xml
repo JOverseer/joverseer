@@ -12,8 +12,8 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.16.21"/>
-		<property name="buildId" value="Maggot's Mushrooms"/>
+		<property name="version" value="1.16.22"/>
+		<property name="buildId" value="Nervous Nazgul"/>
 	</bean>
 
 	<!--

@@ -29,6 +29,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
+// uses mouse button3 in mapPanel.java to redraw the active hex.
+// event is mapEditorOptions.active is true.
+// parameter is in mapEditorOptions.brush
 public class MapEditorView extends AbstractView implements ApplicationListener {
 
 	JTextArea log;

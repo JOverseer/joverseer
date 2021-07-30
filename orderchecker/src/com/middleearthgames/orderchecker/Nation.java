@@ -114,7 +114,7 @@ public class Nation
             String result = order.implementPhase(phase,main.getRuleSet());
             if(result != null)
             {
-                return result;
+                return order.getParent().getName() + " order "+ Integer.toString(order.getOrder())+" "+result;
             }
         }
 

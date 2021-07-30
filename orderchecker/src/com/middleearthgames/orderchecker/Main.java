@@ -19,6 +19,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import com.middleearthgames.orderchecker.gui.ExtraInfoDlg;
@@ -232,9 +233,10 @@ public class Main
 
     public static void displayErrorMessage(String message)
     {
-        JOptionPane msg = new JOptionPane(((Object) (message)), 0, -1);
-        JDialog msgDlg = msg.createDialog(((java.awt.Component) (mainFrame)), "Error!");
-        msgDlg.setVisible(true);
+    	JTextArea errorText = new JTextArea(5, 20);
+    	errorText.setText(message);
+    	errorText.setEnabled(true);
+        JOptionPane.showMessageDialog(mainFrame, message, "Error!", JOptionPane.ERROR_MESSAGE);
     }
 
     public void processOrders()

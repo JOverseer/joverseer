@@ -894,7 +894,11 @@ public class Rule
             int artifactNum = this.parentOrder.getParameterNumber(artifactParam);
             if(artifactNum == -1)
             {
-                return "Couldn't get artifact (" + artifactParam + ") for ARTYNAME!";
+            	String artifactParamAsString = this.parentOrder.getParameterString(artifactParam);
+            	if (artifactParamAsString == null) {
+            		artifactParamAsString ="";
+            	}
+                return "Expecting artifact number instead of '"+artifactParamAsString+"' for parameter " + artifactParam + " for rule ARTYNAME!";
             }
             String artifact = this.parentChar.getArtifactName(artifactNum);
             if(artifact != null)

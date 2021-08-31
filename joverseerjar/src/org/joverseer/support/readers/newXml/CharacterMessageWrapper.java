@@ -162,6 +162,9 @@ public class CharacterMessageWrapper {
 		ArrayList<OrderResult> ret = new ArrayList<OrderResult>();
 		for (String line : this.lines) {
 			line = line.replace("\n", " ").replace("\n", " ");
+			if (line.isEmpty()) {
+				continue; // slight optimisation
+			}
 			OrderResult or = null;
 			or = getAssassinationOrderResult(line);
 			if (or == null)
@@ -642,7 +645,13 @@ public class CharacterMessageWrapper {
 		if (matches != null) {
 			LocateArtifactTrueResultWrapper or = new LocateArtifactTrueResultWrapper();
 			or.setArtifactName(matches[0]);
-			or.setArtifactNo(Integer.parseInt(matches[1]));
+			// cope with "artifact #nn, a Ring"
+			int pos = matches[1].indexOf(',');
+			if (pos > -1) {
+				or.setArtifactNo(Integer.parseInt(matches[1].substring(0, pos)));
+			} else {
+				or.setArtifactNo(Integer.parseInt(matches[1]));
+			}
 			or.setHexNo(Integer.parseInt(matches[3]));
 			return or;
 		}

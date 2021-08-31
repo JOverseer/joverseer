@@ -23,7 +23,8 @@ public class CharacterMessageWrapperTest {
 		OrderResult or = null;
 		or = cmw.getOwnedLATOrderResult("He was ordered to cast a lore spell. Locate Artifact True - artifact #200, a Sword,  is possessed by Cadell of Einion in the Shore/Plains at 1614.");
 		assertNotNull(or);
-
+		or = cmw.getLATOrderResult("He was ordered to cast a lore spell. Locate Artifact True - artifact #29, a Ring, is located in the Open Plains at 3029. ");
+		assertNotNull(or);
 	}
 
 }

@@ -254,7 +254,9 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 		});
 		lb.row();
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ZoomLevelColon"))); //$NON-NLS-1$
-		ZoomOption[] zoomOptions = new ZoomOption[] { new ZoomOption("s1", 6, 6), new ZoomOption("s2", 7, 7), new ZoomOption("s3", 9, 9), new ZoomOption("s4", 11, 11), new ZoomOption("1", 13, 13), new ZoomOption("2", 15, 15), new ZoomOption("3", 17, 17), new ZoomOption("4", 19, 19), }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		ZoomOption[] zoomOptions = new ZoomOption[] { new ZoomOption("s1", 6, 6), new ZoomOption("s2", 7, 7), new ZoomOption("s3", 9, 9), new ZoomOption("s4", 11, 11), new ZoomOption("1", 13, 13), new ZoomOption("2", 15, 15), new ZoomOption("3", 17, 17), new ZoomOption("4", 19, 19),//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				new ZoomOption("5", 21, 21),new ZoomOption("6", 23, 23),
+				}; 
 		lb.cell(this.zoom = new JComboBox(zoomOptions), "align=left"); //$NON-NLS-1$
 		lb.relatedGapRow();
 		this.zoom.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));

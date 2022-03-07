@@ -249,7 +249,7 @@ public class InfoUtils {
 			if (info.getValue(j, 0).equalsIgnoreCase(gt.toString())) {
 				range = info.getValue(j, 1);
 				if (range.contains("+")) {
-					return Integer.MAX_VALUE;
+					return Integer.valueOf(info.getValue(j, 2));
 				}
 				separator = range.indexOf("-");
 				if (separator==0) {

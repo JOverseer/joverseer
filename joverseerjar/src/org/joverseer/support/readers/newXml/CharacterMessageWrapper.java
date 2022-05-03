@@ -2,6 +2,7 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -15,6 +16,7 @@ import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.StringUtils;
@@ -525,13 +527,14 @@ public class CharacterMessageWrapper {
 				line = line.substring(i + orderMessage.length()).trim();
 				i = line.toLowerCase().indexOf(seeBelowMessage.toLowerCase());
 				line = line.substring(0, i);
+				line = line.replace("  ", " "); // replace 2 spaces with 1
 
 				ReconResultWrapper rrw = new ReconResultWrapper();
 
 				ArrayList<String> parts = StringUtils.getParts(line, "(^)|(at \\d{4})", "at \\d{4}", false, true);
 				for (String part : parts) {
-					for (int j = 0; j < 26; j++) {
-						Nation n = NationMap.getNationFromNo(j);
+					GameMetadata gm = JOApplication.getMetadata();
+					for (Nation n : gm.getNations()) {
 						String nn = StringUtils.getUniquePart(part, " " + n.getName(), " with about", true, false);
 						if (nn != null && nn.equals(n.getName())) {
 							part = part.replace(" of the " + n.getName(), "#nation#").replace(" of " + n.getName(), "#nation#");

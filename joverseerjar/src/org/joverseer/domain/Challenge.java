@@ -59,9 +59,21 @@ public class Challenge extends Encounter {
 					// Finally, Lorenet fell to a savage barrage of blows by Throkmaw. Throkmaw was noted to have suffered no wounds in the fight.
 					// Suddenly, Treebeard slew Lucki with a swift feint and thrust, but suffered no wounds
 					
-					if ((ci1 > -1) && (ci2 > -1)) {
-						if (ci1 < ci2) {
-							if (sentences[j].indexOf(" fell ") > -1) {
+					if ((ci1 > -1) && (ci2 > -1)) { // both mentioned
+						int fell = sentences[j].indexOf(" fell ");
+						if (fell > -1) {
+							if (ci1 < fell) {
+								this.victor = char2;
+								this.loser = char1;
+							} else {
+								this.victor = char1;
+								this.loser = char2;
+							}
+							return;
+						}
+						fell = sentences[j].indexOf(" felled ");
+						if (fell > -1) {
+							if (ci1 > fell) {
 								this.victor = char2;
 								this.loser = char1;
 								return;

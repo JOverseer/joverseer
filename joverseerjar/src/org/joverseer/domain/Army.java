@@ -32,6 +32,8 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	 * Returns true if this army represents Anchored Ships
 	 */
 	public static boolean isAnchoredShips(Army a) {
+		if (a == null) return false; // shouldn't be, but seen in the wild.
+		if (a.commanderName == null) return false; // shouldn't be, but seen in the wild.
 		return a.getCommanderName().equals("[Anchored Ships]");
 	}
 

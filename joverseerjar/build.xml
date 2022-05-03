@@ -175,6 +175,10 @@
        			<pathelement location="${commons_beanutils.path}"/>
        			<pathelement location="${commons_collections.path}"/>
    			</classpath>
+			<test name="org.joverseer.domain.ChallengeTest"/>
+			<test name="org.joverseer.domain.EconomyCalculatorDataTest"/>
+			<test name="org.joverseer.support.GameFileComparatorTest"/>
+ 			<test name="org.joverseer.ContainerTest"/>
    			<test name="org.joverseer.LaunchTest">
    				<formatter type="plain"/>
    			</test>

@@ -5,6 +5,18 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item><title>1.16.23</title>
+    <pubDate>30 May 2022</pubDate>
+	<description>
+VERSION 1.16.23
+---------------
+	* Fix: Scry Area result wasn't parsed properly if the nation name was at the start of a line.
+	* Fix: LAT order result parsing couldn't cope when the artifact was unnamed.
+	* Fix: max chars allowed in nation statistics.
+	* QA: Some rule violations in orderchecker, result in a dialog box which was particularly cryptic. For those cases, the character and order number have been added.
+	* Enh:zoom 5 and 6 added for those of us with really big screens :)
+	</description>
+	</item>
     <item><title>1.16.22</title>
     <pubDate>11 May 2021</pubDate>
 	<description>

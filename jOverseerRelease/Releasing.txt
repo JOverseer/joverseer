@@ -25,11 +25,20 @@ XPath:
  //beans/bean[@id='applicationDescriptor']/property[@name='buildId']
    @value='2014-x-x'
 
+1b. Bump the version in
+jOverseerRelease/src/jOverseerLauncher.xml
+XPath:
+//launch4jConfig/versionInfo/productVersion='1.x.x.0'
+//launch4jConfig/versionInfo/txtProductVersion='1.x.x.0'
+
 2. update the version in the joverseerjar/resources/changelog.txt
 
 3. edit and update jOverseerRelease/src/feed.xml
 
 4. commit to github on the master branch.
+4b. update references to the latest version on github wiki:
+https://github.com/JOverseer/joverseer/wiki
+https://github.com/JOverseer/joverseer/wiki/Installation-Instructions
 
 5a. Appveyor.com should wake up and build 
 
@@ -87,6 +96,9 @@ Checklist of types of users
 5. updating MacOS users
 6. updating Linux users
 7. Beta channel users
+8. users with java version < v8 not supported
+9. users with java version 8..14
+10. users with java version 15+
 
 Beta
 ----

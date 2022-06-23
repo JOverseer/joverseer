@@ -31,6 +31,8 @@
 	<key>JVMOptions</key>
 	<array>
 	<string>-Xmx512m</string>
+	<string>--add-exports</string>
+	<string>java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED</string>
 	</array>
 	
 </dict>

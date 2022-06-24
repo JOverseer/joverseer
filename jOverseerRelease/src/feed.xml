@@ -5,6 +5,14 @@
     <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
     <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
     <language>en</language>
+    <item><title>1.16.24</title>
+    <pubDate>24 June 2022</pubDate>
+	<description>
+VERSION 1.16.24
+---------------
+	* Fix: recent versions of java (>14) deprecated some required services, stopping jOverseer from starting, so a workaround was added.
+	</description>
+	</item>
     <item><title>1.16.23</title>
     <pubDate>30 May 2022</pubDate>
 	<description>

@@ -1,3 +1,7 @@
+VERSION 1.16.24
+---------------
+	* Fix: recent versions of java (>14) deprecated some required services, stopping jOverseer from starting, so a workaround was added.
+	
 VERSION 1.16.23
 ---------------
 	* Fix: Scry Area result wasn't parsed properly if the nation name was at the start of a line.

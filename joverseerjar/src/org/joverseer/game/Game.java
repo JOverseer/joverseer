@@ -29,7 +29,7 @@ public class Game implements Serializable {
 	Container<Turn> turns = new Container<Turn>();
 
 	int maxTurn = -1;
-
+    // current turn is -1
 	int currentTurn = -1;
 
 	HashMap<String, String> parameters = new HashMap<String, String>();

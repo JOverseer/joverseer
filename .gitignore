@@ -15,3 +15,4 @@ joverseerjar/resources/images/btns/Thumbs.db
 joverseerjar/resources/images/map/Thumbs.db
 joverseerjar/resources/images/map/Thumbs.db
 *.bak
+/classes/

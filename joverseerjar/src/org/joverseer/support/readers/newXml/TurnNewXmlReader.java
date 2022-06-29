@@ -7,6 +7,7 @@ import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
+import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElementType;
 import org.joverseer.domain.ArmyEstimate;
@@ -26,6 +27,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.GameTypeEnum;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
@@ -762,7 +764,9 @@ public class TurnNewXmlReader implements Runnable {
 			if (c != null) {
 				InfoSource ifs = new DerivedFromOrderResultsInfoSource(this.turn.getTurnNo(), this.turnInfo.nationNo, c.getName());
 				cmw.updateCharacter(c, game1);
-				for (OrderResult or : cmw.getOrderResults(ifs)) {
+				GameMetadata gm = JOApplication.getMetadata();
+
+				for (OrderResult or : cmw.getOrderResults(ifs,gm)) {
 					or.updateGame(game1, this.turn, this.turnInfo.nationNo, c.getName());
 				}
 			}

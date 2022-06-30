@@ -36,6 +36,10 @@ import org.joverseer.tools.armySizeEstimator.ArmySizeEstimate;
 import org.joverseer.tools.armySizeEstimator.ArmySizeEstimator;
 import org.joverseer.tools.combatCalc.CombatArmy;
 import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.command.range.ShowFedNavyCoastalRangeCommand;
+import org.joverseer.ui.command.range.ShowFedNavyOpenSeasRangeCommand;
+import org.joverseer.ui.command.range.ShowUnfedNavyCoastalRangeCommand;
+import org.joverseer.ui.command.range.ShowUnfedNavyOpenSeasRangeCommand;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.domain.mapItems.ArmyRangeMapItem;
 import org.joverseer.ui.map.MapPanel;
@@ -278,10 +282,29 @@ public class ArmyViewer extends ObjectViewer {
 	}
 
 	private JPopupMenu createArmyPopupContextMenu() {
-		ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, this.deleteArmyCommand, "separator", this.showArmyMovementRangeAction, this.showArmyMovementIgnorePopsRangeAction, "separator", new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource()))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		
+		Army myA = (Army) getFormObject();
+		int hexNo = Integer.valueOf(myA.getHexNo());
+		
+		// Taliesin's line will replace the one above if it works
+		ArrayList<Object> commands;
+		if (myA.isNavy()) {
+			commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, 
+			this.deleteArmyCommand, "separator", this.showArmyMovementRangeAction, this.showArmyMovementIgnorePopsRangeAction, "separator", 
+			new ShowFedNavyCoastalRangeCommand(hexNo), new ShowUnfedNavyCoastalRangeCommand(hexNo), new ShowFedNavyOpenSeasRangeCommand(hexNo), new ShowUnfedNavyOpenSeasRangeCommand(hexNo), "separator", 
+			new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", 
+			new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource()))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		} else {
+			commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, 
+					this.deleteArmyCommand, "separator", this.showArmyMovementRangeAction, this.showArmyMovementIgnorePopsRangeAction, "separator",  
+					new ShowCanCaptureAction(), new ShowRequiredTransportsCommand(), new ShowRequiredFoodCommand(), "separator", 
+					new ShowInfoSourcePopupCommand(((Army) getFormObject()).getInfoSource()))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		
 		if ("yes".equals(PreferenceRegistry.instance().getPreferenceValue("general.developerOptions"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			commands.add("separator"); //$NON-NLS-1$
 			commands.add(this.exportCombatArmyCodeCommand);
+			
 		}
 		CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("armyCommandGroup", commands.toArray()); //$NON-NLS-1$
 		return group.createPopupMenu();

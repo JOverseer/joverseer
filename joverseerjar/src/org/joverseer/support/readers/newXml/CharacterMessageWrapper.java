@@ -2,7 +2,6 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 
-import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
@@ -160,7 +159,7 @@ public class CharacterMessageWrapper {
 		return false;
 	}
 
-	public ArrayList<OrderResult> getOrderResults(InfoSource infoSource) {
+	public ArrayList<OrderResult> getOrderResults(InfoSource infoSource,GameMetadata gm) {
 		ArrayList<OrderResult> ret = new ArrayList<OrderResult>();
 		for (String line : this.lines) {
 			line = line.replace("\n", " ").replace("\n", " ");
@@ -186,11 +185,11 @@ public class CharacterMessageWrapper {
 			if (or == null)
 				or = getRCOrderResult(line);
 			if (or == null)
-				or = getReconResult(line, infoSource);
+				or = getReconResult(line, infoSource,gm);
 			if (or == null)
-				or = getScryResult(line, infoSource);
+				or = getScryResult(line, infoSource,gm);
 			if (or == null)
-				or = getPalantirResult(line, infoSource);
+				or = getPalantirResult(line, infoSource,gm);
 			if (or == null)
 				or = getRAResult(line, infoSource);
 			if (or == null)
@@ -202,7 +201,7 @@ public class CharacterMessageWrapper {
 			if (or == null)
 				or = getScoArmyResult(line, infoSource);
 			if (or == null)
-				or = getScoutAreaResult(line, infoSource);
+				or = getScoutAreaResult(line, infoSource,gm);
 			if (or != null)
 				ret.add(or);
 		}
@@ -282,8 +281,8 @@ public class CharacterMessageWrapper {
 	/*He was ordered to scout the area.  Jilad of the Dunadan Rangers with about 1400 troops at 1409
 	. See Map below.
 	*/
-	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource) {
-		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below");
+	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource,GameMetadata gm) {
+		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below",gm);
 	}
 	protected OrderResult getScoutHexResult(String line, InfoSource infoSource) {
 		try {
@@ -506,19 +505,19 @@ public class CharacterMessageWrapper {
 		}
 	}
 
-	protected OrderResult getPalantirResult(String line, InfoSource infoSource) {
-		return getReconResult(line, infoSource, "He was ordered to use a scrying artifact.", "None", " See report below");
+	protected OrderResult getPalantirResult(String line, InfoSource infoSource,GameMetadata gm) {
+		return getReconResult(line, infoSource, "He was ordered to use a scrying artifact.", "None", " See report below",gm);
 	}
 
-	protected OrderResult getScryResult(String line, InfoSource infoSource) {
-		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below");
+	protected OrderResult getScryResult(String line, InfoSource infoSource,GameMetadata gm) {
+		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below",gm);
 	}
 
-	protected OrderResult getReconResult(String line, InfoSource infoSource) {
-		return getReconResult(line, infoSource, "was ordered to recon the area. ", "No armies were found", " See Map below");
+	protected OrderResult getReconResult(String line, InfoSource infoSource,GameMetadata gm) {
+		return getReconResult(line, infoSource, "was ordered to recon the area. ", "No armies were found", " See Map below",gm);
 	}
 
-	protected OrderResult getReconResult(String line, InfoSource infoSource, String orderMessage, String noneMessage, String seeBelowMessage) {
+	protected OrderResult getReconResult(String line, InfoSource infoSource, String orderMessage, String noneMessage, String seeBelowMessage,GameMetadata gm) {
 		try {
 			if (line.contains(orderMessage)) {
 				if (line.contains(noneMessage))
@@ -533,7 +532,6 @@ public class CharacterMessageWrapper {
 
 				ArrayList<String> parts = StringUtils.getParts(line, "(^)|(at \\d{4})", "at \\d{4}", false, true);
 				for (String part : parts) {
-					GameMetadata gm = JOApplication.getMetadata();
 					for (Nation n : gm.getNations()) {
 						String nn = StringUtils.getUniquePart(part, " " + n.getName(), " with about", true, false);
 						if (nn != null && nn.equals(n.getName())) {

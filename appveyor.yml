@@ -13,7 +13,7 @@ for:
 -
   matrix:
     only:
-      - macOS
+      - image: macOS
       
   install:
     - brew update
@@ -50,6 +50,6 @@ for:
 -
   matrix:
     only:
-      - Ubuntu2004
+      - image: Ubuntu2004
 
 

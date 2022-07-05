@@ -1285,6 +1285,7 @@ public class TurnReportCollector {
 					}
 					try {
 						cw.parseAll(r);
+						//this is really used as a set.
 						ArrayList<Integer> nations = new ArrayList<Integer>();
 						ArrayList<Integer> winners = new ArrayList<Integer>();
 						String commanders = "";

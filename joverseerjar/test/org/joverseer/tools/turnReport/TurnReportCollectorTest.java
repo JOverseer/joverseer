@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
+import org.joverseer.support.GameHolder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,8 +53,19 @@ public class TurnReportCollectorTest {
 
 	@Test
 	public final void testCollectChallenges() {
-		ArrayList<BaseReportObject> reports;
-		TurnReportCollector coll = new TurnReportCollector(null);
+		GameHolder gh=null;
+		Turn t=null;
+		TurnReportCollector coll = new TurnReportCollector(gh);
+		boolean thrown=false;
+		try {
+			ArrayList<BaseReportObject> reports = coll.CollectCombats(t);
+		} catch (Exception e) {
+			thrown =true;
+		}
+		gh = new GameHolder();
+		Game g = new Game();
+
+		assertTrue("expecting exception from null parameter.",thrown);
 		fail("Not yet implemented"); // TODO
 	}
 

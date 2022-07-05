@@ -9,7 +9,8 @@ import org.joverseer.metadata.domain.Nation;
 /**
  * Utility class that maps nation numbers to metadata nations
  * 
- * TODO probably it should be removed or moved elsewhere
+ * TODO probably it should be removed or moved elsewhere - an interface on gm but expressed as a dependency for clients.
+ * eg NationMapper INationMap and get it auto-wired from gm
  * 
  * @author Marios Skounakis
  */

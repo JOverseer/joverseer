@@ -1,27 +1,59 @@
 version: 1.0.{build}
+image:
+  - macOS
+  - Visual Studio 2019
+  - Ubuntu2004
 branches:
   only:
   - master
 skip_tags: true
 shallow_clone: true
-install:
-- cmd: >-
-    cinst ant
 
-    curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.13/launch4j-3.13-win32.zip --output C:\projects\joverseer\launch4j.zip
+for:
+-
+  matrix:
+    only:
+      - macOS
+      
+  install:
+    - brew update
+    - brew install ant packages
+  build_script:
+    - ant test
+    - ant -f joverseerRelease\build.xml MacOSInstaller
 
-    7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
-build_script:
-- cmd: >-
-    ant test
+  artifacts:
+    - path: jOverseerRelease/dist/build\joverseer-*.pkg
+      name: MacOSInstaller
+-
+matrix:
+    only:
+      - image: Visual Studio 2019
 
-    ant -f joverseerRelease\build.xml windowsInstaller
+  install:
+    - cmd: >-
+      cinst ant
+      curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.13/launch4j-3.13-win32.zip --output C:\projects\joverseer\launch4j.zip
+      7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
+  build_script:
+  - cmd: >-
+      ant test
 
-    ant -f joverseerRelease\build.xml updatezip
-artifacts:
-- path: jOverseerRelease\dist\Output\joverseer-setup*.exe
-  name: windowsInstaller
-- path: jOverseerRelease\dist\latestupdate.zip
-  name: latestupdate
-- path: jOverseerRelease\src\feed.xml
-  name: feed
+      ant -f joverseerRelease\build.xml windowsInstaller
+
+      ant -f joverseerRelease\build.xml updatezip
+
+  artifacts:
+    - path: jOverseerRelease\dist\Output\joverseer-setup*.exe
+      name: windowsInstaller
+    - path: jOverseerRelease\dist\latestupdate.zip
+      name: latestupdate
+    - path: jOverseerRelease\src\feed.xml
+      name: feed
+
+-
+  matrix:
+    only:
+      - Ubuntu2004
+
+

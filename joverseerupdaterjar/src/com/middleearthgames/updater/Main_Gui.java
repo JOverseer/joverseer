@@ -83,7 +83,7 @@ public class Main_Gui extends JFrame{
         sp.setViewportView(outText);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        if (System.getProperty("os.name").startsWith("Mac OS X")) {
+        if (canCloseAndLaunch()) {
         	launch = new JButton("Close and Launch App");
         } else {
         	launch = new JButton("Launch App");
@@ -139,11 +139,12 @@ public class Main_Gui extends JFrame{
     }
     private void launch()
     {
-		// if Mac then don't launch from inside update.jar, as we running as root and the preferences are different.
-    	if (!(System.getProperty("os.name").startsWith("Mac OS X"))) {
+		// if Mac then don't launch from inside update.jar, as we are running as root and the preferences are different.
+    	if (!(canCloseAndLaunch())) {
 			String[] run = { "java", "-Xmx512M", "-jar", targetjar };
+			String[] runJava9Plus = {"java", "-Xmx512M", "--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED","-jar", targetjar };
 			try {
-				Runtime.getRuntime().exec(run);
+				Runtime.getRuntime().exec( supportsModules() ? runJava9Plus : run);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -334,10 +335,16 @@ public class Main_Gui extends JFrame{
     }
     public static double JAVA_VERSION = getVersion ();
 
-    static double getVersion () {
+    public static double getVersion () {
         String version = System.getProperty("java.version");
         int pos = version.indexOf('.');
         pos = version.indexOf('.', pos+1);
         return Double.parseDouble (version.substring (0, pos));
+    }
+    public static boolean canCloseAndLaunch() {
+    	return System.getProperty("os.name").startsWith("Mac");
+    }
+    public static boolean supportsModules() {
+    	return getVersion() >= 9.0;
     }
 }

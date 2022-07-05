@@ -8,18 +8,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jide"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/log4j"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spring framework"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Swing"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons digester"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons httpclient"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/joverseerupdaterjar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/orderchecker"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/txt2xmljar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons logging"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons beanutils"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PDF Box"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4">
 		<attributes>
 			<attribute name="test" value="true"/>

@@ -40,15 +40,24 @@ public class BatchTest {
 		byte[] encoded = Files.readAllBytes(Paths.get(OUTPUT_FILE));
 		assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?><txt2xml>"+EOL+
 					"<line>"+EOL+
-					"<field>1</field>"+EOL+
+					"<number>"+EOL+
+					"<type>1</type>"+EOL+
+					"</number>"+EOL+
+					"<number>"+EOL+
+					"<type>56</type>"+EOL+
+					"</number>"+EOL+
+					"<number>"+EOL+
+					"<type>8</type>"+EOL+
+					"</number>"+EOL+
+					"<field>8</field>"+EOL+
 					"<field>2</field>"+EOL+
 					"<field>3</field>"+EOL+
-					"<field>4&#13;</field>"+EOL+
+					"<field>4</field>"+EOL+
 					"</line>"+EOL+
 					"<line>"+EOL+
 					"<field>a</field>"+EOL+
 					"<field>b</field>"+EOL+
-					"<field>c&#13;</field>"+EOL+
+					"<field>c</field>"+EOL+
 					"</line>"+EOL+
 					"<line>"+EOL+
 					"<field>x</field>"+EOL+

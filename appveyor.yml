@@ -5,7 +5,7 @@ image:
   - Ubuntu2004
 branches:
   only:
-  - master
+    - master
 skip_tags: true
 shallow_clone: true
 
@@ -31,17 +31,13 @@ for:
       - image: Visual Studio 2019
 
   install:
-    - cmd: >-
-      cinst ant
-      curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.13/launch4j-3.13-win32.zip --output C:\projects\joverseer\launch4j.zip
-      7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
+    - cinst ant
+    - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.13/launch4j-3.13-win32.zip --output C:\projects\joverseer\launch4j.zip
+    - 7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
   build_script:
-  - cmd: >-
-      ant test
-
-      ant -f joverseerRelease\build.xml windowsInstaller
-
-      ant -f joverseerRelease\build.xml updatezip
+    - ant test
+    - ant -f joverseerRelease\build.xml windowsInstaller
+    - ant -f joverseerRelease\build.xml updatezip
 
   artifacts:
     - path: jOverseerRelease\dist\Output\joverseer-setup*.exe

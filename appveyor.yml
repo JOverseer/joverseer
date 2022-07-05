@@ -1,7 +1,8 @@
 version: 1.0.{build}
 image:
   - macOS
-  - Visual Studio 2019
+# 2017 is the latest with Inno Setup also installed.
+  - Visual Studio 2017
   - Ubuntu2004
 branches:
   only:
@@ -21,7 +22,7 @@ for:
     - brew install ant packages
   build_script:
     - ant test
-    - ant -f joverseerRelease\build.xml MacOSInstaller
+    - ant -f joverseerRelease/build.xml MacOSInstaller
 
   artifacts:
     - path: jOverseerRelease/dist/build\joverseer-*.pkg
@@ -29,7 +30,7 @@ for:
 -
   matrix:
     only:
-      - image: Visual Studio 2019
+      - image: Visual Studio 2017
 
   install:
     - cinst ant
@@ -52,5 +53,10 @@ for:
   matrix:
     only:
       - image: Ubuntu2004
+
+  install:
+    - apt install ant
+  build_script:
+    - ant test
 
 

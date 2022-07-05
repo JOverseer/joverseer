@@ -16,7 +16,8 @@ for:
       - image: macOS
       
   install:
-    - brew update
+# update skipped - see github re shallow clone
+#   - brew update
     - brew install ant packages
   build_script:
     - ant test

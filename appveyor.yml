@@ -19,7 +19,7 @@ for:
   install:
 # update skipped - see github re shallow clone
 #   - brew update
-    - brew install ant packages
+    - brew install ant packages ant-contrib
   build_script:
     - ant test
     - ant -f joverseerRelease/build.xml MacOSInstaller
@@ -55,7 +55,7 @@ for:
       - image: Ubuntu2004
 
   install:
-    - apt install ant
+    - sudo apt install ant ant-contrib
   build_script:
     - ant test
 

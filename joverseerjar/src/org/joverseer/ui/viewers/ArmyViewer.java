@@ -286,7 +286,6 @@ public class ArmyViewer extends ObjectViewer {
 		Army myA = (Army) getFormObject();
 		int hexNo = Integer.valueOf(myA.getHexNo());
 		
-		// Taliesin's line will replace the one above if it works
 		ArrayList<Object> commands;
 		if (myA.isNavy()) {
 			commands = new ArrayList<Object>(Arrays.asList(this.toggleFedAction, this.toggleCavAction, this.editArmyCommand, 

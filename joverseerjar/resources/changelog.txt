@@ -1,3 +1,8 @@
+VERSION 1.16.25
+---------------
+    * Fix: add fog of war for Fourth Age games
+    * Fix: add Navy movement ranges
+
 VERSION 1.16.24
 ---------------
 	* Fix: recent versions of java (>14) deprecated some required services, stopping jOverseer from starting, so a workaround was added.

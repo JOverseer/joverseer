@@ -93,16 +93,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         for (NationMapRange nmr : nmrs) {
             Nation n = game.getMetadata().getNationByNum(nmr.getNationNo());
             if (!n.getAllegiance().equals(allegiance)) continue;
-            if (nmr.getRectangle().contains(hex.getColumn(), hex.getRow())) {
-                if (nmr.getRectangle().getX() + nmr.getRectangle().getWidth() == hex.getColumn() + 1) {
-                	if (hex.getRow() % 2 == 1) {
-                		return true;
-                	} else {
-                		continue;
-                	}
-                }
-                return true;
-            }
+            if (nmr.containsHex(hex)) {
+        		return true;
+        	}
         }
         return false;
     }
@@ -145,16 +138,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         } else {
             int nationNo = Integer.parseInt((String)map);
             NationMapRange nmr = (NationMapRange)game.getMetadata().getNationMapRanges().findFirstByProperty("nationNo", nationNo);
-            visible = false;
-            if (nmr.getRectangle().contains(hex.getColumn(), hex.getRow())) {
-                if (nmr.getRectangle().getX() + nmr.getRectangle().getWidth() == hex.getColumn() + 1) {
-                    visible = hex.getRow() % 2 == 1;
-                } else {
-                    visible = true;
-                }
-            }
-
+        	visible = nmr.containsHex(hex);
         }
+        
         boolean repaintNumber = false;
         if (showClimate) {
             HexInfo hexInfo = (HexInfo)game.getTurn().getContainer(TurnElementsEnum.HexInfo).findFirstByProperty("hexNo", hex.getHexNo());

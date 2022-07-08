@@ -1,6 +1,5 @@
 VERSION 1.16.25
 ---------------
-    * Fix: add fog of war for Fourth Age games
     * Fix: add Navy movement ranges
 
 VERSION 1.16.24

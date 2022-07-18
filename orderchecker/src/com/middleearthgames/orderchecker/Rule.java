@@ -563,6 +563,8 @@ public class Rule
                 {
                     totalMovement--;
                     continue;
+                } else if (dirString.equalsIgnoreCase("-")) {
+                	break;
                 }
                 points = this.main.getMap().calcArmyMovement(currentHex, direction, cavalry);
                 if(points == -1)
@@ -632,6 +634,9 @@ public class Rule
                 {
                     army.setNewLocation(currentHex, this.parentOrder.getOrder());
                 }
+            }
+            if (!evasiveString.equalsIgnoreCase("no") && !evasiveString.equalsIgnoreCase("ev")) {
+            	this.parentOrder.addError("No movement style selected");
             }
         }
         return null;

@@ -56,9 +56,10 @@ public class Map
         {
             return -1;
         }
-        if(startHex.hasFeature(3, direction) && !startHex.hasFeature(2, direction))
-        {
-            return -1;
+        if(startHex.hasFeature(3, direction)){
+		    if(!(startHex.hasFeature(2, direction) || startHex.hasFeature(1, direction))) {
+		        return -1;
+		    }
         }
         if(startHex.getTerrain() == 6 && endHex.getTerrain() == 6 && !road)
         {

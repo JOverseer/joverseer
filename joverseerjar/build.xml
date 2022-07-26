@@ -1,247 +1,248 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="joverseerjar" default="BuildAll" basedir=".">
-    <description>
-        Build file for the joverseer.jar part of joverseer.
-    </description>
-    <property name="bin">bin</property>
-    <property name="src">src</property>
+	<description>
+		Build file for the joverseer.jar part of joverseer.
+	</description>
+	<property name="bin">bin</property>
+	<property name="src">src</property>
 	<property name="test.dir">test</property>
 	<property name="bintest.dir">bin-test</property>
-    <property name="res.dir">resources</property>
-    <property name="dist">dist</property>
+	<property name="res.dir">resources</property>
+	<property name="dist">dist</property>
 	<property name="doc">${dist}/doc</property>
 	<property name="lib">lib</property>
 	<property name="shared.lib">../lib</property>
-    <property name="jardir">${dist}/lib</property>
-    <property name="jarfile">${jardir}/joverseer.jar</property>
+	<property name="jardir">${dist}/lib</property>
+	<property name="jarfile">${jardir}/joverseer.jar</property>
 	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
-    
-    <!-- required projects -->
+
+	<!-- required projects -->
 	<property name="updater.project.dir">../joverseerupdaterjar/</property>
 	<property name="updater.dir">${updater.project.dir}dist/lib</property>
-    <path id="updater.path">
-        <fileset dir="${updater.dir}">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
+	<path id="updater.path">
+		<fileset dir="${updater.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 	<property name="txt2xml.project.dir">../txt2xmljar/</property>
-    <property name="txt2xml.dir">${txt2xml.project.dir}dist/lib</property>
-    <path id="txt2xml.path">
-        <fileset dir="${txt2xml.dir}">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
+	<property name="txt2xml.dir">${txt2xml.project.dir}dist/lib</property>
+	<path id="txt2xml.path">
+		<fileset dir="${txt2xml.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 	<property name="orderchecker.project.dir">../orderchecker/</property>
-    <property name="orderchecker.dir">${orderchecker.project.dir}dist/lib</property>
-    <path id="orderchecker.path">
-        <fileset dir="${orderchecker.dir}">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
-    <!--  compile time libraries -->
-    <property name="commons_httpclient.path">${lib}/commons-httpclient-3.0.1.jar</property>
+	<property name="orderchecker.dir">${orderchecker.project.dir}dist/lib</property>
+	<path id="orderchecker.path">
+		<fileset dir="${orderchecker.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<!-- compile time libraries -->
+	<property name="commons_httpclient.path">${lib}/commons-httpclient-3.0.1.jar</property>
 	<property name="log4j.path">${lib}/log4j-1.2.12.jar</property>
-    <property name="commons_logging.path">${lib}/commons-logging-1.1.jar</property>
+	<property name="commons_logging.path">${lib}/commons-logging-1.1.jar</property>
 	<property name="commons_beanutils.path">${lib}/commons-beanutils-1.7.0.jar</property>
-    <property name="commons_digester.path">${lib}/commons-digester-1.7.jar</property>
+	<property name="commons_digester.path">${lib}/commons-digester-1.7.jar</property>
 	<property name="swing.path">${lib}/swingx-0.8.0.jar</property>
 	<property name="commons_collections.path">${shared.lib}/commons-collections-3.1.jar</property>
 	<path id="pdfbox.path">
-	    <fileset dir="${lib}">
-	        <include name="PDFBox-0.7.3.jar"/>
-	    	<include name="FontBox-0.1.0-dev.jar"/>
-	    </fileset>
+		<fileset dir="${lib}">
+			<include name="PDFBox-0.7.3.jar" />
+			<include name="FontBox-0.1.0-dev.jar" />
+		</fileset>
 	</path>
-    <path id ="jide.path">
-        <fileset dir="${lib}">
-            <include name="jide*.jar"/>
-        </fileset>
-    </path>
+	<path id="jide.path">
+		<fileset dir="${lib}">
+			<include name="jide*.jar" />
+		</fileset>
+	</path>
 	<path id="spring.path">
-	    <fileset dir="${lib}">
-	        <include name="spring*.jar"/>
-	    </fileset>
+		<fileset dir="${lib}">
+			<include name="spring*.jar" />
+		</fileset>
 	</path>
 	<path id="jgoodies.path">
-	    <fileset dir="${lib}">
-	        <include name="forms-1.0.7.jar"/>
-	        <include name="looks-2.0.4.jar"/>
-	    </fileset>
+		<fileset dir="${lib}">
+			<include name="forms-1.0.7.jar" />
+			<include name="looks-2.0.4.jar" />
+		</fileset>
 	</path>
 	<property name="junit.path">${lib}/junit-4.12.jar</property>
 	<!-- needed to run junit4 -->
 	<property name="hamcrest.path">${lib}/hamcrest-core-1.3.jar</property>
 	<path id="assertj.path">
 		<fileset dir="${shared.lib}">
-			<include name="assertj*.jar"/>
+			<include name="assertj*.jar" />
 		</fileset>
 	</path>
-	
-	
-    <!-- how to build dependent projects -->
+
+
+	<!-- how to build dependent projects -->
 	<target name="BuildUpdaterJar">
-		<subant buildpath="${updater.project.dir}" verbose="true"/>
+		<subant buildpath="${updater.project.dir}" verbose="true" />
 	</target>
 	<target name="Buildtxt2xmlJar">
-		<subant buildpath="${txt2xml.project.dir}" verbose="true"/>
+		<subant buildpath="${txt2xml.project.dir}" verbose="true" />
 	</target>
 	<target name="BuildordercheckerJar">
-		<subant buildpath="${orderchecker.project.dir}" verbose="true"/>
+		<subant buildpath="${orderchecker.project.dir}" verbose="true" />
 	</target>
 	<target name="OrdercheckerTests">
-		<subant buildpath="${orderchecker.project.dir}" verbose="true" target="Test"/>
+		<subant buildpath="${orderchecker.project.dir}" verbose="true"
+			target="Test" />
 	</target>
-		
-    
-   <!-- Main targets -->
-   <!--  java doc disabled: eclipse bug with large classpath. -->
-   <target name="BuildAll"
-       depends="-Init, -Prep, Compile, Jar"
-       description="Complete rebuild">
-       <echo message="Build finished."/>
-   </target>
-   <target name="Compile"
-       depends="-Init,BuildUpdaterJar,BuildordercheckerJar,Buildtxt2xmlJar"
-       description="Compile all java classes">
-       <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
-       <javac srcdir="${src}" destdir="${bin}" 
-           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
-       		<classpath>
-       			<pathelement path="${java.class.path}"/>
-       			<path refid="updater.path"/>
-       			<path refid="txt2xml.path"/>
-       			<path refid="orderchecker.path"/>
-       			<path refid="spring.path"/>
-       			<path refid="jide.path"/>
-       			<path refid="pdfbox.path"/>
-       			<path refid="jgoodies.path"/>
-       			<pathelement location="${commons_httpclient.path}"/>
-       			<pathelement location="${log4j.path}"/>
-       			<pathelement location="${commons_logging.path}"/>
-       			<pathelement location="${commons_beanutils.path}"/>
-       			<pathelement location="${commons_digester.path}"/>
-       			<pathelement location="${swing.path}"/>
-       			<pathelement location="${commons_collections.path}"/>
-       			<pathelement location="${junit.path}"/>
+
+
+	<!-- Main targets -->
+	<!-- java doc disabled: eclipse bug with large classpath. -->
+	<target name="BuildAll" depends="-Init, -Prep, Compile, Jar"
+		description="Complete rebuild">
+		<echo message="Build finished." />
+	</target>
+	<target name="Compile"
+		depends="-Init,BuildUpdaterJar,BuildordercheckerJar,Buildtxt2xmlJar"
+		description="Compile all java classes">
+		<!-- encoding needed for org.joverseer.support.AsciiUtils -->
+		<javac srcdir="${src}" destdir="${bin}" encoding="utf-8"
+			includeantruntime="false" source="1.8" target="1.8"
+			bootclasspath="${compat.rt.jar}">
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<path refid="updater.path" />
+				<path refid="txt2xml.path" />
+				<path refid="orderchecker.path" />
+				<path refid="spring.path" />
+				<path refid="jide.path" />
+				<path refid="pdfbox.path" />
+				<path refid="jgoodies.path" />
+				<pathelement location="${commons_httpclient.path}" />
+				<pathelement location="${log4j.path}" />
+				<pathelement location="${commons_logging.path}" />
+				<pathelement location="${commons_beanutils.path}" />
+				<pathelement location="${commons_digester.path}" />
+				<pathelement location="${swing.path}" />
+				<pathelement location="${commons_collections.path}" />
+				<pathelement location="${junit.path}" />
 			</classpath>
-       </javac>
-       
-   </target>
-	   <target name="CompileTests"
-	   	 	depends="Jar"
-	       description="Compile all test java classes">
-	       <!-- encoding needed for org.joverseer.support.AsciiUtils  -->
-	       <javac srcdir="${test.dir}" destdir="${bintest.dir}" 
-	           encoding="utf-8" includeantruntime="false" source="1.8" target="1.8" bootclasspath="${compat.rt.jar}">
-	       		<classpath>
-	       			<pathelement path="${java.class.path}"/>
-	       			<path refid="updater.path"/>
-	       			<path refid="txt2xml.path"/>
-	       			<path refid="orderchecker.path"/>
-	       			<path refid="spring.path"/>
-	       			<path refid="jide.path"/>
-	       			<path refid="pdfbox.path"/>
-	       			<path refid="jgoodies.path"/>
-	       			<path refid="assertj.path"/>
-	       			<pathelement location="${jarfile}"/>
-	       			<pathelement location="${commons_httpclient.path}"/>
-	       			<pathelement location="${log4j.path}"/>
-	       			<pathelement location="${commons_logging.path}"/>
-	       			<pathelement location="${commons_beanutils.path}"/>
-	       			<pathelement location="${commons_digester.path}"/>
-	       			<pathelement location="${swing.path}"/>
-	       			<pathelement location="${commons_collections.path}"/>
-	       			<pathelement location="${junit.path}"/>
-				</classpath>
-	       		<exclude name="org/joverseer/AssertObjectStreams.java"/>
-	       </javac>
-	       
-	   </target>
-   <target name="test"
-       depends="-Init,Compile,CompileTests,OrdercheckerTests"
-       description="Run JUnit Tests">
+		</javac>
+
+	</target>
+	<target name="CompileTests" depends="Jar"
+		description="Compile all test java classes">
+		<!-- encoding needed for org.joverseer.support.AsciiUtils -->
+		<javac srcdir="${test.dir}" destdir="${bintest.dir}"
+			encoding="utf-8" includeantruntime="false" source="1.8" target="1.8"
+			bootclasspath="${compat.rt.jar}">
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<path refid="updater.path" />
+				<path refid="txt2xml.path" />
+				<path refid="orderchecker.path" />
+				<path refid="spring.path" />
+				<path refid="jide.path" />
+				<path refid="pdfbox.path" />
+				<path refid="jgoodies.path" />
+				<path refid="assertj.path" />
+				<pathelement location="${jarfile}" />
+				<pathelement location="${commons_httpclient.path}" />
+				<pathelement location="${log4j.path}" />
+				<pathelement location="${commons_logging.path}" />
+				<pathelement location="${commons_beanutils.path}" />
+				<pathelement location="${commons_digester.path}" />
+				<pathelement location="${swing.path}" />
+				<pathelement location="${commons_collections.path}" />
+				<pathelement location="${junit.path}" />
+			</classpath>
+			<exclude name="org/joverseer/AssertObjectStreams.java" />
+		</javac>
+
+	</target>
+	<target name="test"
+		depends="-Init,Compile,CompileTests,OrdercheckerTests"
+		description="Run JUnit Tests">
 		<junit printsummary="yes" haltonfailure="yes">
-			<classpath> 
-   				<pathelement location="${junit.path}"/>
-       			<pathelement location="${hamcrest.path}"/>
-   				<pathelement location="${bintest.dir}"/>
-       			<pathelement location="${jarfile}"/>
-       			<pathelement location="${log4j.path}"/>
-       			<pathelement location="${commons_logging.path}"/>
-       			<path refid="jide.path"/>
-       			<path refid="spring.path"/>
-       			<path refid="updater.path"/>
-       			<path refid="orderchecker.path"/>
-       			<pathelement location="${commons_beanutils.path}"/>
-       			<pathelement location="${commons_collections.path}"/>
-   			</classpath>
-			<test name="org.joverseer.domain.ChallengeTest"/>
-			<test name="org.joverseer.domain.EconomyCalculatorDataTest"/>
-			<test name="org.joverseer.support.GameFileComparatorTest"/>
- 			<test name="org.joverseer.ContainerTest"/>
-   			<test name="org.joverseer.LaunchTest">
-   				<formatter type="plain"/>
-   			</test>
+			<classpath>
+				<pathelement location="${junit.path}" />
+				<pathelement location="${hamcrest.path}" />
+				<pathelement location="${bintest.dir}" />
+				<pathelement location="${jarfile}" />
+				<pathelement location="${log4j.path}" />
+				<pathelement location="${commons_logging.path}" />
+				<path refid="jide.path" />
+				<path refid="spring.path" />
+				<path refid="updater.path" />
+				<path refid="orderchecker.path" />
+				<pathelement location="${commons_beanutils.path}" />
+				<pathelement location="${commons_collections.path}" />
+			</classpath>
+			<test name="org.joverseer.domain.ChallengeTest" />
+			<test name="org.joverseer.domain.EconomyCalculatorDataTest" />
+			<test name="org.joverseer.support.GameFileComparatorTest" />
+			<test name="org.joverseer.ContainerTest" />
+			<test name="org.joverseer.LaunchTest">
+				<formatter type="plain" />
+			</test>
 		</junit>
-       <echo message="Tested"/>
-   </target>
-	<target name="Javadoc"
-		depends="-Init"
+		<echo message="Tested" />
+	</target>
+	<target name="Javadoc" depends="-Init"
 		description="Create Javadoc">
-		<javadoc destdir="${doc}" author="true" version="true" use="true" package="true">
-		<fileset dir="${src}">
-			<include name="**/*.java"/>
-		</fileset>
+		<javadoc destdir="${doc}" author="true" version="true"
+			use="true" package="true">
+			<fileset dir="${src}">
+				<include name="**/*.java" />
+			</fileset>
 		</javadoc>
 	</target>
-	<target name="Jar"
-		depends="-Init,Compile">
-		<jar destfile="${jarfile}"
-			basedir="${bin}"
-            excludes="**/JOverseerUserGuide.ppt,images/map/map.png,**/Thumbs.db,feed.xml,joverseerpackageant.xml,feed.xml,jOverseerLauncher.xml,Releasing.txt">
-            <manifest>
-                <attribute name="Main-Class" value="org.joverseer.ui.JOverseerJIDEClient"/>
-                <attribute name="Class-Path" value=". update.jar txt2xml.jar orderchecker.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar"/>
-            	<section name="joverseer">
-            	    <attribute name="Specification-Title" value="JOverseer"/>
-            	    <attribute name="Specification-Version" value="${version}"/>
-            	    <attribute name="Specification-Vendor" value="Middle-Earth Games"/>
-            	    <attribute name="Implementation-Title" value="JOverseer"/>
-            	    <attribute name="Implementation-Version" value="${version} ${TODAY}"/>
-            	    <attribute name="Implementation-Vendor" value="Middle-Earth Games"/>
-            	</section>
-            </manifest>
-	    	<fileset dir="${res.dir}"
-		    	includes="ctx/**"
-		     	excludes="ctx/*.out.xml"/>
-	    	<fileset dir="." includes="*.ver"/>
-	    	<fileset dir="${res.dir}"
-		   		includes="images/**"
-		     	excludes="images/map/map.png,**/Thumbs.db"/>
-	    	<fileset dir="${res.dir}"
-		    	includes="metadata/**"
-		    	excludes="**/*.bak"/>
-	    	<fileset dir="${res.dir}"
-		    	includes="ui/**, tips.properties,log4j.properties,changelog.txt"/>
-	    	<fileset dir="${res.dir}"
-				includes="layout/**"/>
-			
+	<target name="Jar" depends="-Init,Compile">
+		<jar destfile="${jarfile}" basedir="${bin}"
+			excludes="**/JOverseerUserGuide.ppt,images/map/map.png,**/Thumbs.db,feed.xml,joverseerpackageant.xml,feed.xml,jOverseerLauncher.xml,Releasing.txt">
+			<manifest>
+				<attribute name="Main-Class"
+					value="org.joverseer.ui.JOverseerJIDEClient" />
+				<attribute name="Class-Path"
+					value=". update.jar txt2xml.jar orderchecker.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar" />
+				<section name="joverseer">
+					<attribute name="Specification-Title" value="JOverseer" />
+					<attribute name="Specification-Version"
+						value="${version}" />
+					<attribute name="Specification-Vendor"
+						value="Middle-Earth Games" />
+					<attribute name="Implementation-Title" value="JOverseer" />
+					<attribute name="Implementation-Version"
+						value="${version} ${TODAY}" />
+					<attribute name="Implementation-Vendor"
+						value="Middle-Earth Games" />
+				</section>
+			</manifest>
+			<fileset dir="${res.dir}" includes="ctx/**"
+				excludes="ctx/*.out.xml" />
+			<fileset dir="." includes="*.ver" />
+			<fileset dir="${res.dir}" includes="images/**"
+				excludes="images/map/map.png,**/Thumbs.db" />
+			<fileset dir="${res.dir}" includes="metadata/**"
+				excludes="**/*.bak" />
+			<fileset dir="${res.dir}"
+				includes="ui/**, tips.properties,log4j.properties,changelog.txt" />
+			<fileset dir="${res.dir}" includes="layout/**" />
+
 		</jar>
 	</target>
 	<!-- Internal targets -->
-   <target name="-Init">
-       <tstamp/>
-       <echo message="Build time: ${TODAY} ${TSTAMP}"/>
-   </target>
-   <target name="-Prep">
-       <delete dir="${jardir}" quiet="true"/>
-       <delete dir="${bin}" quiet="true"/>
-       <delete dir="${bintest.dir}" quiet="true"/>
-       <delete dir="${dist}"  quiet="true"/>
-       <mkdir dir="${bin}"/>
-       <mkdir dir="${bintest.dir}"/>
-       <mkdir dir="${dist}"/>
-       <mkdir dir="${jardir}"/>
-   </target>
-       
+	<target name="-Init">
+		<tstamp />
+		<echo message="Build time: ${TODAY} ${TSTAMP}" />
+	</target>
+	<target name="-Prep">
+		<delete dir="${jardir}" quiet="true" />
+		<delete dir="${bin}" quiet="true" />
+		<delete dir="${bintest.dir}" quiet="true" />
+		<delete dir="${dist}" quiet="true" />
+		<mkdir dir="${bin}" />
+		<mkdir dir="${bintest.dir}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${jardir}" />
+	</target>
+
 </project>

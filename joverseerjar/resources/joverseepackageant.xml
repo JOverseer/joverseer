@@ -1,134 +1,156 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_joverseer_jar" name="Create Runnable Jar for Project JOverseerDevelopment with libraries">
-    <!--ANT 1.7 is required                                        -->
-    <property name="jOverseerWorkspace" location="../build/out"/>
-    <property name="out.dir" location="${jOverseerWorkspace}"/>
-    <property name="jOverseerClass.dir" location="../build/classes"/>
-    <property name="jOverseerSrc.dir" location="../joverseer/main"/>
-    <property name="requiredLibs.dir" location="../joverseer/main/lib"/>
-    <property name="jOverseerRes.dir" location="../joverseer/main/resources"/>
-    <property name="jOverseerBuildRes.dir" location="../joverseer/main/resources"/>
-    <property name="launch4j.dir" location="../launch4j"/>
-    <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->
-    
-    <taskdef name="launch4j"
-        classname="net.sf.launch4j.ant.Launch4jTask"
-        classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar"/>
-    
-    <path id="jOverseerClasspath">
-      <fileset dir="${requiredLibs.dir}" includes="**/*.jar"/>
-    </path>
+<project default="create_joverseer_jar"
+	name="Create Runnable Jar for Project JOverseerDevelopment with libraries">
+	<!--ANT 1.7 is required -->
+	<property name="jOverseerWorkspace" location="../build/out" />
+	<property name="out.dir" location="${jOverseerWorkspace}" />
+	<property name="jOverseerClass.dir"
+		location="../build/classes" />
+	<property name="jOverseerSrc.dir" location="../joverseer/main" />
+	<property name="requiredLibs.dir"
+		location="../joverseer/main/lib" />
+	<property name="jOverseerRes.dir"
+		location="../joverseer/main/resources" />
+	<property name="jOverseerBuildRes.dir"
+		location="../joverseer/main/resources" />
+	<property name="launch4j.dir" location="../launch4j" />
+	<!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->
 
-    <target name="version_label">
-      <delete file="*.ver"/>
-      <xslt in="${jOverseerRes.dir}/ctx/jideApplicationContext.xml" out="version" style="extractver.xsl"/>
-      <loadfile property="joverseer.version" srcFile="version"/>
-      <echo>${joverseer.version}</echo>
-      <touch file="${joverseer.version}.ver"/>
-    </target>
-    <target name="compile">
-      <mkdir dir="${jOverseerClass.dir}"/>
-      <javac includeantruntime="false" srcdir="${jOverseerSrc.dir}" destdir="${jOverseerClass.dir}" classpathref="jOverseerClasspath" target="1.6"/>
-    </target>
+	<taskdef name="launch4j"
+		classname="net.sf.launch4j.ant.Launch4jTask"
+		classpath="${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
 
-    <target name="create_joverseer_jar" depends="compile,version_label">
-        <jar destfile="${jOverseerWorkspace}/joverseer.jar"
-            basedir="${jOverseerClass.dir}"
-            excludes="**/JOverseerUserGuide.ppt,images/map/map.png,**/Thumbs.db,feed.xml,joverseerpackageant.xml,feed.xml,jOverseerLauncher.xml,Releasing.txt">
-            <manifest>
-                <attribute name="Main-Class" value="org.joverseer.ui.JOverseerJIDEClient"/>
-                <attribute name="Class-Path" value=". spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar"/>
-            </manifest>
-	    <fileset dir="."
-		     includes="*.ver"/>
-	    <!-- add images for joverseer -->
-	    <fileset dir="${jOverseerRes.dir}"
-		     includes="images/**"
-		     excludes="images/map/map.png,**/Thumbs.db"/>
-	    <!-- add jide/spring context/configuration -->
-	    <fileset dir="${jOverseerRes.dir}"
-		     includes="ctx/**"
-		     excludes="ctx/*.out.xml"/>
-	    <!-- add megames game metadata -->
-	    <fileset dir="${jOverseerRes.dir}"
-		     includes="metadata/**"
-		     excludes="**/*.bak"/>
-	    <!-- add UI read-only configuration and I18N messages -->
-	    <fileset dir="${jOverseerRes.dir}"
-		     includes="ui/**, tips.properties,log4j.properties"/>
-	    <fileset dir="."
-		     includes="*.ver"/>
-        </jar>
-    </target>
-    <target name="create_jnlp">
-        <jar destfile="${jOverseerWorkspace}/joverseer-jnlp.jar">
-            <manifest>
-                <attribute name="Main-Class" value="org.joverseer.ui.JOverseerJIDEClient"/>
-                <attribute name="Class-Path" value="joverseer.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar"/>
-            </manifest>
-            <fileset dir="RequiredLibs/" excludes="joverseer.jar"/>
-            <fileset file="joverseer.jar"/>
-        </jar>
-    </target>
-        <target name="create_updaterjar">
-        <jar destfile="${jOverseerWorkspace}/update.jar"
-            basedir="${jOverseerClass.dir}"
-            includes="**/Main_Gui*">
-            <manifest>
-                <attribute name="Main-Class" value="com.middleearthgames.updater.Main_Gui"/>
-                <attribute name="Class-Path" value="."/>
-            </manifest>
-        </jar>
-    </target>
-    <target name="create_joverseerupdate_exe" depends="create_updaterjar">
-	<launch4j>
-	  <config headerType="gui" jar="${out.dir}/update.jar" outfile="${out.dir}/jOverseerUpdater.exe" stayAlive="false" manifest="${jOverseerRes.dir}/updatewithUAC.manifest">
-		<singleInstance mutexName="com.middleearthgames.joverseer.updater" />
-		<jre minVersion="1.6.0" />
-          </config>
-	</launch4j>
-    </target>
-    <target name="create_joverseerlauncher_exe" depends="version_label,create_joverseer_jar">
-      <!-- doesn't work - dontwrapjar isnt recognised
-	   <launch4j dontWrapJar="true" headerType="gui" jar="${out.dir}/joverseer.jar" outfile="${out.dir}/jOverseer.exe" stayAlive="false" icon="${jOverseerRes}/images/joverseer.ico">
-	<jre minVersion="1.6.0" maxHeapSize="512"/>
-	<versionInfo fileVersion="1.0.0.0" txtFileVersion="1.0.0.0" fileDescription="jOverseer launcher" copyright="Middle-Earth Games Ltd" productVersion="${joverseer.version}" txtProductVersion="${joverseer.version}" productName="jOverseer"
-companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOverseer.exe"/>
-</launch4j>
-      -->
-      <launch4j configFile="${jOverseerRes.dir}/jOverseerLauncher.xml" outfile="${out.dir}/jOverseer.exe"/>
-      
-    </target>
-        <target name="create_updatezip" depends="create_joverseer_jar,create_updaterjar,create_joverseerupdate_exe,create_joverseerlauncher_exe">
-        <zip destfile="${jOverseerWorkspace}/latestupdate.zip">
-            <fileset file="${jOverseerWorkspace}/joverseer.jar"/>
-            <fileset file="${jOverseerWorkspace}/jOverseerUpdater.exe"/>
-            <fileset file="${jOverseerWorkspace}/jOverseer.exe"/>
-            <fileset file="${jOverseerWorkspace}/update.jar"/>	<!--  needed at top too -->
-            <zipfileset dir="${jOverseerWorkspace}" includes="update.jar" prefix="update"/>
-            <zipfileset dir="${jOverseerRes.dir}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/>
-        </zip>
+	<path id="jOverseerClasspath">
+		<fileset dir="${requiredLibs.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="version_label">
+		<delete file="*.ver" />
+		<xslt in="${jOverseerRes.dir}/ctx/jideApplicationContext.xml"
+			out="version" style="extractver.xsl" />
+		<loadfile property="joverseer.version" srcFile="version" />
+		<echo>${joverseer.version}</echo>
+		<touch file="${joverseer.version}.ver" />
 	</target>
-	<target name="create_betaupdatezip" depends="create_joverseer_jar,create_updaterjar,create_joverseerupdate_exe,create_joverseerlauncher_exe">
-        <zip destfile="${jOverseerWorkspace}/latestbetaupdate.zip">
-            <fileset file="${jOverseerWorkspace}/joverseer.jar"/>
-            <fileset file="${jOverseerWorkspace}/jOverseerUpdater.exe"/>
-            <fileset file="${jOverseerWorkspace}/jOverseer.exe"/>
-            <fileset file="${jOverseerWorkspace}/update.jar"/>	<!--  needed at top too -->
-            <zipfileset dir="${jOverseerWorkspace}" includes="update.jar" prefix="update"/>
-            <zipfileset dir="${jOverseerRes.dir}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/>
-        </zip>
+	<target name="compile">
+		<mkdir dir="${jOverseerClass.dir}" />
+		<javac includeantruntime="false" srcdir="${jOverseerSrc.dir}"
+			destdir="${jOverseerClass.dir}" classpathref="jOverseerClasspath"
+			target="1.6" />
+	</target>
+
+	<target name="create_joverseer_jar"
+		depends="compile,version_label">
+		<jar destfile="${jOverseerWorkspace}/joverseer.jar"
+			basedir="${jOverseerClass.dir}"
+			excludes="**/JOverseerUserGuide.ppt,images/map/map.png,**/Thumbs.db,feed.xml,joverseerpackageant.xml,feed.xml,jOverseerLauncher.xml,Releasing.txt">
+			<manifest>
+				<attribute name="Main-Class"
+					value="org.joverseer.ui.JOverseerJIDEClient" />
+				<attribute name="Class-Path"
+					value=". spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar" />
+			</manifest>
+			<fileset dir="." includes="*.ver" />
+			<!-- add images for joverseer -->
+			<fileset dir="${jOverseerRes.dir}" includes="images/**"
+				excludes="images/map/map.png,**/Thumbs.db" />
+			<!-- add jide/spring context/configuration -->
+			<fileset dir="${jOverseerRes.dir}" includes="ctx/**"
+				excludes="ctx/*.out.xml" />
+			<!-- add megames game metadata -->
+			<fileset dir="${jOverseerRes.dir}" includes="metadata/**"
+				excludes="**/*.bak" />
+			<!-- add UI read-only configuration and I18N messages -->
+			<fileset dir="${jOverseerRes.dir}"
+				includes="ui/**, tips.properties,log4j.properties" />
+			<fileset dir="." includes="*.ver" />
+		</jar>
+	</target>
+	<target name="create_jnlp">
+		<jar destfile="${jOverseerWorkspace}/joverseer-jnlp.jar">
+			<manifest>
+				<attribute name="Main-Class"
+					value="org.joverseer.ui.JOverseerJIDEClient" />
+				<attribute name="Class-Path"
+					value="joverseer.jar spring-beans.jar spring-binding-1.0.5.jar spring-context.jar spring-context-support.jar spring-core.jar spring-richclient-full-1.0.0.jar swingx-0.8.0.jar jide-action.jar jide-beaninfo.jar jide-common-patched.jar jide-components.jar jide-dialogs.jar jide-dock.jar jide-grids.jar FontBox-0.1.0-dev.jar PDFBox-0.7.3.jar commons-httpclient-3.0.1.jar looks-2.0.4.jar forms-1.0.7.jar log4j-1.2.12.jar commons-logging-1.1.jar commons-beanutils-1.7.0.jar commons-collections-3.1.jar junit-3.8.1.jar commons-digester-1.7.jar jdom.jar scope-bin.jar commons-codec-1.3.jar skinlf-1.2.11.jar" />
+			</manifest>
+			<fileset dir="RequiredLibs/" excludes="joverseer.jar" />
+			<fileset file="joverseer.jar" />
+		</jar>
+	</target>
+	<target name="create_updaterjar">
+		<jar destfile="${jOverseerWorkspace}/update.jar"
+			basedir="${jOverseerClass.dir}" includes="**/Main_Gui*">
+			<manifest>
+				<attribute name="Main-Class"
+					value="com.middleearthgames.updater.Main_Gui" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+		</jar>
+	</target>
+	<target name="create_joverseerupdate_exe"
+		depends="create_updaterjar">
+		<launch4j>
+			<config headerType="gui" jar="${out.dir}/update.jar"
+				outfile="${out.dir}/jOverseerUpdater.exe" stayAlive="false"
+				manifest="${jOverseerRes.dir}/updatewithUAC.manifest">
+				<singleInstance
+					mutexName="com.middleearthgames.joverseer.updater" />
+				<jre minVersion="1.6.0" />
+			</config>
+		</launch4j>
+	</target>
+	<target name="create_joverseerlauncher_exe"
+		depends="version_label,create_joverseer_jar">
+		<!-- doesn't work - dontwrapjar isnt recognised <launch4j dontWrapJar="true" 
+			headerType="gui" jar="${out.dir}/joverseer.jar" outfile="${out.dir}/jOverseer.exe" 
+			stayAlive="false" icon="${jOverseerRes}/images/joverseer.ico"> <jre minVersion="1.6.0" 
+			maxHeapSize="512"/> <versionInfo fileVersion="1.0.0.0" txtFileVersion="1.0.0.0" 
+			fileDescription="jOverseer launcher" copyright="Middle-Earth Games Ltd" productVersion="${joverseer.version}" 
+			txtProductVersion="${joverseer.version}" productName="jOverseer" companyName="Middle 
+			Earth Games" internalName="jOverseer" originalFilename="jOverseer.exe"/> 
+			</launch4j> -->
+		<launch4j
+			configFile="${jOverseerRes.dir}/jOverseerLauncher.xml"
+			outfile="${out.dir}/jOverseer.exe" />
+
+	</target>
+	<target name="create_updatezip"
+		depends="create_joverseer_jar,create_updaterjar,create_joverseerupdate_exe,create_joverseerlauncher_exe">
+		<zip destfile="${jOverseerWorkspace}/latestupdate.zip">
+			<fileset file="${jOverseerWorkspace}/joverseer.jar" />
+			<fileset file="${jOverseerWorkspace}/jOverseerUpdater.exe" />
+			<fileset file="${jOverseerWorkspace}/jOverseer.exe" />
+			<fileset file="${jOverseerWorkspace}/update.jar" />	<!-- needed at top too -->
+			<zipfileset dir="${jOverseerWorkspace}"
+				includes="update.jar" prefix="update" />
+			<zipfileset
+				dir="${jOverseerRes.dir}/metadata/orderchecker" includes="ks.game"
+				prefix="bin/metadata/orderchecker" />
+		</zip>
+	</target>
+	<target name="create_betaupdatezip"
+		depends="create_joverseer_jar,create_updaterjar,create_joverseerupdate_exe,create_joverseerlauncher_exe">
+		<zip destfile="${jOverseerWorkspace}/latestbetaupdate.zip">
+			<fileset file="${jOverseerWorkspace}/joverseer.jar" />
+			<fileset file="${jOverseerWorkspace}/jOverseerUpdater.exe" />
+			<fileset file="${jOverseerWorkspace}/jOverseer.exe" />
+			<fileset file="${jOverseerWorkspace}/update.jar" />	<!-- needed at top too -->
+			<zipfileset dir="${jOverseerWorkspace}"
+				includes="update.jar" prefix="update" />
+			<zipfileset
+				dir="${jOverseerRes.dir}/metadata/orderchecker" includes="ks.game"
+				prefix="bin/metadata/orderchecker" />
+		</zip>
 	</target>
 	<target name="release_beta" depends="create_betaupdatezip">
-	  <ftp server="ftp.middleearthgames.com"
-	       remotedir="/htdocs/software/joverseer"
-	       binary="no"
-	       useid="${ftp.userid}"
-	       password="${ftp.password}"
-	       >
-	    <fileset dir="out" include="latestbetaupdate.zip"/>
-	    <fileset dir="${jOverseerBuildRes.dir}" include="betafeed.xml"/>
-	  </ftp>
+		<ftp server="ftp.middleearthgames.com"
+			remotedir="/htdocs/software/joverseer" binary="no"
+			useid="${ftp.userid}" password="${ftp.password}">
+			<fileset dir="out" include="latestbetaupdate.zip" />
+			<fileset dir="${jOverseerBuildRes.dir}"
+				include="betafeed.xml" />
+		</ftp>
 	</target>
-    
+
 </project>

@@ -2,7 +2,7 @@
 2;Ring of Stargazing;None;Mage;30;;Dog Lord
 3;Ring of Iron Magic;Evil;Mage;30;;Dark Lts.
 4;Ring of Impersonation;None;Agent;25;;S.Gondor
-5;Ring of Barahir;Good;Command;35;Bonus vs Dragons/Fell Beasts;Arthedain
+5;Ring of Barahir;Good;Command;35;;Arthedain
 6;Ring of Axardil;None;Command;10;Access to Teleport;N.Gondor
 7;Nazguaga;Evil;Mage;30;Access to Dark Summons;
 8;Lorglîn;None;Mage;15;;Noldo
@@ -13,10 +13,10 @@
 13;Narya;None;Mage;50;;Gandalf
 14;The One Ring;None;Game Victory;;;
 15;Tinculin;None;Mage;40;Access to Spirit Mastery;
-16;Mothras;None;Combat;500;;
-17;Horn of Fear;None;Combat;500;Access to Conjure Mounts;Dwarves
-18;Tablets of Dark Knowledge;Evil;Mage;15;Access to random lost list;
-19;Staff of Storms;None;Open Seas;-;Access to Dark Summons;
+16;Mothras;None;Combat;500;Access to Conjuring Ways;
+17;Horn of Fear;None;Combat;500;;Dwarves
+18;Tablets of Dark Knowledge;Evil;Mage;15;Access to Dark Summons;
+19;Staff of Storms;None;Open Seas;-;;
 20;Staff of the Serpent;None;Mage;10;;Ice King
 21;Staff of Earthmastery;None;Mage;20;Access to Conjuring Ways;
 22;Rauzgnagli;Evil;Combat;1750;;
@@ -53,7 +53,7 @@
 53;Listening Helm;None;Agent;10;;Long Rider
 54;Helm of Sen Jey;None;Command;10;;Fire King
 55;Helm of Shadow;None;Stealth;10;;Sinda
-56;Helm of the Mumak-King;None;Command;25;Aid recruiting/fighting Mumak;Cloud Lord
+56;Helm of the Mumak-King;None;Command;25;;Cloud Lord
 57;Helm of Isildur;None;Command;20;;N.Gondor
 58;Helm of the Dark;Evil;Command;15;;Dark Lts.
 59;Gaerennon;None;Command;20;;Noldo
@@ -74,11 +74,11 @@
 74;War-dancer;None;Combat;750;;Dog Lord
 75;Vasamacil;Evil;Combat;750;;Witch-King
 76;Usriev;None;Combat;750;;Easterlings
-77;Ungolrist;Good;Combat;750;Bonus to fighting spiders;
+77;Ungolrist;Good;Combat;750;;
 78;Sword of Soul Reducing;Evil;Combat;500;;Quiet Avenger
 79;Stormless Bow;None;Combat;500;;Long Rider
 80;Snow Hammer;None;Combat;500;;Ice King
-81;Sil-Maegil;Good;Combat;750;Bonus fighting evil creatures;
+81;Sil-Maegil;Good;Combat;750;;
 82;Romoquenaro;None;Combat;750;;Witch-King
 83;Orcrist;Good;Combat;750;;
 84;Ongrum;Evil;Combat;500;;Fire King
@@ -124,19 +124,19 @@
 124;Herufea;None;Command;10;;Rhudaur
 125;Aeglin;Good;Combat;750;;
 126;Anarmacil;Good;Combat;750;;
-127;Aranruth;Good;Combat;1750;Bonus fighting evil creatures;
+127;Aranruth;Good;Combat;1750;;
 128;Aratocam;None;Combat;1000;;
 129;Bow of Thunder and Bone;None;Combat;500;;
 130;Brodic Spear;None;Combat;500;;
 131;Caranlhach;None;Combat;1750;;
 132;Daeron's Rapier;None;Combat;1000;;
-133;Dagger of Green Wisdom;None;Combat;500;Access to Conjuring Ways;
-134;Dagnirdraug;Good;Combat;750;Bonus vs Wolves;
+133;Dagger of Green Wisdom;None;Combat;500;;
+134;Dagnirdraug;Good;Combat;750;;
 135;Elenruth;None;Combat;750;Access to Spirit Mastery;
 136;Foam-cleaver;None;Combat;1500;;
 137;Bloodrunner;None;Combat;750;;Dunlendings
 138;Air-cleaver;None;Combat;500;;Dog Lord
-139;Gersebroc;Good;Combat;750;Bonus vs Dragons/Fell Beasts;
+139;Gersebroc;Good;Combat;750;;
 140;Hammer of Returning;None;Combat;750;;Dwarves
 141;Hue Changer;None;Combat;500;;Ice King
 142;Kirrauko;Good;Combat;1250;;
@@ -147,9 +147,9 @@
 147;Ringil;Good;Combat;2000;;
 148;Sickle of the Haevens;None;Combat;1000;;Dog Lord
 149;Sting;Good;Combat;500;;
-150;Stinging Tongue;Evil;Combat;500;Long Stride;Dragon Lord
+150;Stinging Tongue;Evil;Combat;500;;Dragon Lord
 151;Troll-cleaver;Good;Combat;2000;;
-152;Turantir;Good;Combat;500;Access to Teleport;
+152;Turantir;Good;Combat;500;;
 153;Water-skimmer;None;Combat;750;;Dragon Lord
 154;Ring of Bleeding;Evil;Mage;30;;Dragon Lord
 155;Taurin;None;Combat;2000;;Dragon Lord
@@ -181,9 +181,9 @@
 181;Herugrim;Good;Combat;1000;;Eothraim
 182;Morgurth;None;Combat;1000;;
 183;Silmaruth;None;Combat;2000;;
-184;Stone Mace of Setmaenen;Good;Combat;500;Bonus vs. Undead;
+184;Stone Mace of Setmaenen;Good;Combat;500;;
 185;Headband of Slaeg;None;Mage;10;Access to Conjuring Ways;
-186;Sceptre of Hent;Good;Combat;750;Bonus vs. Wolves;
+186;Sceptre of Hent;Good;Combat;750;;
 187;The Black Book;None;Mage;10;Access to Teleport;
 188;E Mere Vardo;Good;Mage;10;Access to Spirit Mastery;
 189;Blue Ring;Evil;Mage;10;Access to Spirit Mastery;

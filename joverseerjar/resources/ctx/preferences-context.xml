@@ -2,7 +2,8 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 <beans>
-	<bean id="yesPrefValue" class="org.joverseer.preferences.PreferenceValue">
+	<bean id="yesPrefValue"
+		class="org.joverseer.preferences.PreferenceValue">
 		<property name="key">
 			<value>yes</value>
 		</property>
@@ -10,7 +11,8 @@
 			<value>Yes</value>
 		</property>
 	</bean>
-	<bean id="noPrefValue" class="org.joverseer.preferences.PreferenceValue">
+	<bean id="noPrefValue"
+		class="org.joverseer.preferences.PreferenceValue">
 		<property name="key">
 			<value>no</value>
 		</property>
@@ -18,7 +20,8 @@
 			<value>No</value>
 		</property>
 	</bean>
-		<bean id="onPrefValue" class="org.joverseer.preferences.PreferenceValue">
+	<bean id="onPrefValue"
+		class="org.joverseer.preferences.PreferenceValue">
 		<property name="key">
 			<value>on</value>
 		</property>
@@ -26,7 +29,8 @@
 			<value>On</value>
 		</property>
 	</bean>
-	<bean id="offPrefValue" class="org.joverseer.preferences.PreferenceValue">
+	<bean id="offPrefValue"
+		class="org.joverseer.preferences.PreferenceValue">
 		<property name="key">
 			<value>off</value>
 		</property>
@@ -34,9 +38,10 @@
 			<value>Off</value>
 		</property>
 	</bean>
-	
-							
-	<bean id="preferenceRegistry" class="org.joverseer.preferences.PreferenceRegistry">
+
+
+	<bean id="preferenceRegistry"
+		class="org.joverseer.preferences.PreferenceRegistry">
 		<property name="prefix">
 			<value>display</value>
 		</property>
@@ -46,7 +51,7 @@
 					<property name="key">
 						<value>listviews.bgColor</value>
 					</property>
-					<property name="lifecycleEvent">	
+					<property name="lifecycleEvent">
 						<value>ListviewRefreshItems</value>
 					</property>
 					<property name="description">
@@ -75,7 +80,7 @@
 								<property name="description">
 									<value>Allegiance</value>
 								</property>
-							</bean>															
+							</bean>
 						</list>
 					</property>
 				</bean>
@@ -86,21 +91,23 @@
 					<property name="description">
 						<value>Auto Resize Columns</value>
 					</property>
-					<property name="lifecycleEvent">	
+					<property name="lifecycleEvent">
 						<value>ListviewTableAutoresizeModeToggle</value>
 					</property>
 					<property name="group">
 						<value>Display.Information Tabs</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
@@ -111,7 +118,7 @@
 					<property name="description">
 						<value>Show Nation As</value>
 					</property>
-					<property name="lifecycleEvent">	
+					<property name="lifecycleEvent">
 						<value>ListviewRefreshItems</value>
 					</property>
 					<property name="group">
@@ -137,11 +144,11 @@
 								<property name="description">
 									<value>Number</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>listviews.trackCharacterNames</value>
@@ -149,7 +156,7 @@
 					<property name="description">
 						<value>Track Character Names</value>
 					</property>
-					<property name="lifecycleEvent">	
+					<property name="lifecycleEvent">
 						<value>ListviewRefreshItems</value>
 					</property>
 					<property name="group">
@@ -175,11 +182,11 @@
 								<property name="description">
 									<value>ascii</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>listviews.nationFilterOrder</value>
@@ -187,7 +194,7 @@
 					<property name="description">
 						<value>Nation Filter Order</value>
 					</property>
-					<property name="lifecycleEvent">	
+					<property name="lifecycleEvent">
 						<value>GameChangedEvent</value>
 					</property>
 					<property name="group">
@@ -213,11 +220,11 @@
 								<property name="description">
 									<value>My Allegiance, Nation Number</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>currentHexView.showNHIEquivalents</value>
@@ -228,18 +235,20 @@
 					<property name="group">
 						<value>Display.Current Hex View</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>currentHexView.showArmyEstimate</value>
@@ -250,18 +259,20 @@
 					<property name="group">
 						<value>Display.Current Hex View</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>currentHexView.showNumberOfFedTurnsForArmies</value>
@@ -272,18 +283,20 @@
 					<property name="group">
 						<value>Display.Current Hex View</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>currentHexView.autoUpdateEconCalcMarketFromOrders</value>
@@ -294,19 +307,21 @@
 					<property name="group">
 						<value>Economy Calculator</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
-				
+
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>currentHexView.sortCharacters</value>
@@ -337,11 +352,11 @@
 								<property name="description">
 									<value>Allegiance, Nation, Name</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.hiddenPops</value>
@@ -372,7 +387,7 @@
 								<property name="description">
 									<value>Show only when applicable</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
@@ -407,7 +422,7 @@
 								<property name="description">
 									<value>H marker</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
@@ -442,11 +457,11 @@
 								<property name="description">
 									<value>Simple</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.fogOfWarStyle</value>
@@ -477,11 +492,11 @@
 								<property name="description">
 									<value>X's (palantir)</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.charsAndArmies</value>
@@ -512,11 +527,11 @@
 								<property name="description">
 									<value>Extended</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.deadCharacters</value>
@@ -527,8 +542,10 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
-					<property name="type"><value>check</value></property>
-					<property name="lifecycleEvent">	
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="lifecycleEvent">
 						<value>RefreshTurnMapItems</value>
 					</property>
 					<property name="defaultValue">
@@ -536,12 +553,12 @@
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.tooltips</value>
@@ -552,18 +569,20 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.showArmyType</value>
@@ -574,8 +593,10 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
-					<property name="type"><value>check</value></property>
-					<property name="lifecycleEvent">	
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="lifecycleEvent">
 						<value>RefreshTurnMapItems</value>
 					</property>
 					<property name="defaultValue">
@@ -583,12 +604,12 @@
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>map.anchoredShips</value>
@@ -599,14 +620,16 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>													
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
@@ -621,18 +644,20 @@
 					<property name="group">
 						<value>Display.Map</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>													
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>general.tipOfTheDay</value>
@@ -643,15 +668,17 @@
 					<property name="group">
 						<value>General</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
@@ -666,15 +693,17 @@
 					<property name="group">
 						<value>General</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
@@ -696,7 +725,7 @@
 						<value>20000</value>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>general.strictMarketLimit</value>
@@ -707,19 +736,21 @@
 					<property name="group">
 						<value>Economy Calculator</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>general.informationAfterSaveGame</value>
@@ -730,19 +761,21 @@
 					<property name="group">
 						<value>General</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>general.developerOptions</value>
@@ -753,19 +786,21 @@
 					<property name="group">
 						<value>General</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>orderEditor.autoSave</value>
@@ -776,19 +811,21 @@
 					<property name="group">
 						<value>Order Editor</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>orderEditor.autoDraw</value>
@@ -799,21 +836,23 @@
 					<property name="group">
 						<value>Order Editor</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>no</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
-				
-				
+
+
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>submitOrders.method</value>
@@ -844,11 +883,11 @@
 								<property name="description">
 									<value>e-mail</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>submitOrders.defaultFolder</value>
@@ -879,17 +918,17 @@
 								<property name="description">
 									<value>Global Order Directory</value>
 								</property>
-							</bean>							
+							</bean>
 						</list>
 					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>submitOrders.recipientEmail</value>
 					</property>
 					<property name="description">
-						<value>Autosubmit  Recipient Address</value>
+						<value>Autosubmit Recipient Address</value>
 					</property>
 					<property name="group">
 						<value>Submit Orders</value>
@@ -906,7 +945,7 @@
 						<value>submitOrders.url</value>
 					</property>
 					<property name="description">
-						<value>Autosubmit  URL</value>
+						<value>Autosubmit URL</value>
 					</property>
 					<property name="group">
 						<value>Submit Orders</value>
@@ -928,21 +967,23 @@
 					<property name="group">
 						<value>Submit Orders</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value>yes</value>
 					</property>
-					
+
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>	
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 						</list>
 					</property>
 				</bean>
-				
-			
-				
+
+
+
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
 						<value>updates.autoCheckForNewVersion</value>
@@ -953,14 +994,16 @@
 					<property name="group">
 						<value>Updates</value>
 					</property>
-					<property name="type"><value>check</value></property>
+					<property name="type">
+						<value>check</value>
+					</property>
 					<property name="defaultValue">
 						<value></value>
 					</property>
 					<property name="domain">
 						<list>
-							<ref bean="yesPrefValue"/>
-							<ref bean="noPrefValue"/>							
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
 							<bean class="org.joverseer.preferences.PreferenceValue">
 								<property name="key">
 									<value></value>
@@ -968,114 +1011,114 @@
 								<property name="description">
 									<value>-</value>
 								</property>
-							</bean>								
+							</bean>
 						</list>
 					</property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">
-				    <property name="key">
-				        <value>updates.RSSFeed</value>
-				    </property>
-				    <property name="description">
-				        <value>Location of the RSS feed for updates</value>
-				    </property>
-				    <property name="group">
-				        <value>Updates</value>
-				    </property>
+					<property name="key">
+						<value>updates.RSSFeed</value>
+					</property>
+					<property name="description">
+						<value>Location of the RSS feed for updates</value>
+					</property>
+					<property name="group">
+						<value>Updates</value>
+					</property>
 					<property name="type">
 						<value>text</value>
 					</property>
-				    <property name="defaultValue">
-				        <value>https://www.middleearthgames.com/software/joverseer/feed.xml</value>
-				    </property>
+					<property name="defaultValue">
+						<value>https://www.middleearthgames.com/software/joverseer/feed.xml</value>
+					</property>
 				</bean>
-				
+
 				<bean class="org.joverseer.preferences.Preference">
-				    <property name="key">
-				        <value>updates.DownloadPointer</value>
-				    </property>
-				    <property name="description">
-				        <value>Download pointer for updates</value>
-				    </property>
-				    <property name="group">
-				        <value>Updates</value>
-				    </property>
+					<property name="key">
+						<value>updates.DownloadPointer</value>
+					</property>
+					<property name="description">
+						<value>Download pointer for updates</value>
+					</property>
+					<property name="group">
+						<value>Updates</value>
+					</property>
 					<property name="type">
 						<value>text</value>
 					</property>
-				    <property name="defaultValue">
-				        <value>https://www.middleearthgames.com/software/joverseer/url.html</value>
-				    </property>
-				</bean>
-				<bean class="org.joverseer.preferences.Preference">
-				    <property name="key">
-				        <value>UIscaling.smalltext</value>
-				    </property>
-				    <property name="description">
-				        <value>size for smallest text</value>
-				    </property>
-				    <property name="group">
-				        <value>Window Display</value>
-				    </property>
-					<property name="type">
-						<value>text</value>
+					<property name="defaultValue">
+						<value>https://www.middleearthgames.com/software/joverseer/url.html</value>
 					</property>
-				    <property name="defaultValue">
-				        <value>12</value>
-				    </property>
-				</bean>
-								<bean class="org.joverseer.preferences.Preference">
-				    <property name="key">
-				        <value>UIscaling.normaltext</value>
-				    </property>
-				    <property name="description">
-				        <value>size for normal text</value>
-				    </property>
-				    <property name="group">
-				        <value>Window Display</value>
-				    </property>
-					<property name="type">
-						<value>text</value>
-					</property>
-				    <property name="defaultValue">
-				        <value>16</value>
-				    </property>
-				</bean>
-								<bean class="org.joverseer.preferences.Preference">
-				    <property name="key">
-				        <value>UIscaling.largertext</value>
-				    </property>
-				    <property name="description">
-				        <value>size for larger text</value>
-				    </property>
-				    <property name="group">
-				        <value>Window Display</value>
-				    </property>
-					<property name="type">
-						<value>text</value>
-					</property>
-				    <property name="defaultValue">
-				        <value>20</value>
-				    </property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">
-				    <property name="key">
-				        <value>UIscaling.largesttext</value>
-				    </property>
-				    <property name="description">
-				        <value>size for largest text</value>
-				    </property>
-				    <property name="group">
-				        <value>Window Display</value>
-				    </property>
+					<property name="key">
+						<value>UIscaling.smalltext</value>
+					</property>
+					<property name="description">
+						<value>size for smallest text</value>
+					</property>
+					<property name="group">
+						<value>Window Display</value>
+					</property>
 					<property name="type">
 						<value>text</value>
 					</property>
-				    <property name="defaultValue">
-				        <value>24</value>
-				    </property>
+					<property name="defaultValue">
+						<value>12</value>
+					</property>
 				</bean>
-												</list>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>UIscaling.normaltext</value>
+					</property>
+					<property name="description">
+						<value>size for normal text</value>
+					</property>
+					<property name="group">
+						<value>Window Display</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>16</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>UIscaling.largertext</value>
+					</property>
+					<property name="description">
+						<value>size for larger text</value>
+					</property>
+					<property name="group">
+						<value>Window Display</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>20</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>UIscaling.largesttext</value>
+					</property>
+					<property name="description">
+						<value>size for largest text</value>
+					</property>
+					<property name="group">
+						<value>Window Display</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value>24</value>
+					</property>
+				</bean>
+			</list>
 		</property>
 	</bean>
 </beans>

@@ -11,32 +11,37 @@
 			</list>
 		</property>
 	</bean>
-  <bean id="gameHolder"	class="org.joverseer.support.GameHolder">
-  </bean>
-  <bean id="preferenceRegistry" class="org.joverseer.preferences.PreferenceRegistry">
-  </bean>
+	<bean id="gameHolder" class="org.joverseer.support.GameHolder">
+	</bean>
+	<bean id="preferenceRegistry"
+		class="org.joverseer.preferences.PreferenceRegistry">
+	</bean>
 	<bean id="imageResourcesFactory"
 		class="org.springframework.context.support.ResourceMapFactoryBean">
 		<property name="locations">
 			<list>
-				<value>classpath:org/springframework/richclient/image/images.properties</value>
+				<value>classpath:org/springframework/richclient/image/images.properties
+				</value>
 				<value>classpath:ui/images.properties</value>
 			</list>
 		</property>
 	</bean>
-  <bean id="imageSource"
+	<bean id="imageSource"
 		class="org.springframework.richclient.image.DefaultImageSource">
-        <constructor-arg index="0" ref="imageResourcesFactory"/>
-        <property name="brokenImageIndicator" value="/org/springframework/richclient/images/alert/error_obj.gif"/>
-  </bean>
-<bean id="orderListView"
+		<constructor-arg index="0" ref="imageResourcesFactory" />
+		<property name="brokenImageIndicator"
+			value="/org/springframework/richclient/images/alert/error_obj.gif" />
+	</bean>
+	<bean id="orderListView"
 		class="org.joverseer.ui.listviews.OrderEditorListView">
 		<property name="gameHolder">
-		<ref bean="gameHolder"/>
+			<ref bean="gameHolder" />
 		</property>
 	</bean>
-	<bean id="orderVisualizationData" class="org.joverseer.ui.orders.OrderVisualizationData">
-    </bean>
-    <bean id="orderResultContainer" class="org.joverseer.tools.ordercheckerIntegration.OrderResultContainer"/>
+	<bean id="orderVisualizationData"
+		class="org.joverseer.ui.orders.OrderVisualizationData">
+	</bean>
+	<bean id="orderResultContainer"
+		class="org.joverseer.tools.ordercheckerIntegration.OrderResultContainer" />
 
 </beans>

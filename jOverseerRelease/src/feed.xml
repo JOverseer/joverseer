@@ -1,369 +1,472 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
-  <channel>
-    <title>Overseer releases</title>
-    <link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
-    <description>The latest version of jOverseer, the Middle-Earth game helper program.</description>
-    <language>en</language>
-    <item><title>1.16.24</title>
-    <pubDate>24 June 2022</pubDate>
-	<description>
-VERSION 1.16.24
----------------
-	* Fix: recent versions of java (>14) deprecated some required services, stopping jOverseer from starting, so a workaround was added.
-	</description>
-	</item>
-    <item><title>1.16.23</title>
-    <pubDate>30 May 2022</pubDate>
-	<description>
-VERSION 1.16.23
----------------
-	* Fix: Scry Area result wasn't parsed properly if the nation name was at the start of a line.
-	* Fix: LAT order result parsing couldn't cope when the artifact was unnamed.
-	* Fix: max chars allowed in nation statistics.
-	* QA: Some rule violations in orderchecker, result in a dialog box which was particularly cryptic. For those cases, the character and order number have been added.
-	* Enh:zoom 5 and 6 added for those of us with really big screens :)
-	</description>
-	</item>
-    <item><title>1.16.22</title>
-    <pubDate>11 May 2021</pubDate>
-	<description>
-VERSION 1.16.22
----------------
-	* Fix: CME rivers on the eastern edge.
-	* Enh: Reflect recent game changes in the CME characters and artifacts.
-	</description>
-	</item>
-    <item><title>1.16.21</title>
-    <pubDate>1 Mar 2021</pubDate>
-	<description>
-VERSION 1.16.21
----------------
-    * Fix: The buy/sell bonus fix broke the market spend.
-    * Fix: The nation borders for fog-of-war.
-	</description>
-	</item>
-    <item><title>1.16.20</title>
-    <pubDate>1 Mar 2021</pubDate>
-	<description>
-VERSION 1.16.20
----------------
-	* Fix: anti-virus was tagging joverseer.exe as a false positive.
-	</description>
-	</item>
-    <item><title>1.16.19</title>
-    <pubDate>Mon, 22 Feb 2021</pubDate>
-	<description>
-VERSION 1.16.19
----------------
-    * Fix: Add batch file joverseer-no3D.bat to start JO without 3D acceleration for problematic NVidia graphics drivers on Windows.
-           If you see overlapping JO frames etc, then use the file to replace the usual shortcut to start JO.
-    * Fix: The order cost calculator now takes account of the buy/sell bonuses.
-    * Fix: Timber and Mounts should now always be appearing in that order.
-    * Fix: Warships and Transports should now always be appearing in that order.
-    </description>	
-    </item>
-    <item><title>1.16.18</title>
-    <pubDate>Wed, 16 Dec 2020</pubDate>
-	<description>
-VERSION 1.16.18
----------------
-    * Fix: Ordercheck order 948 now lets you transfer gold to a hidden PC
-    * Fix: Orderchecker no longer gives a warning about casting Greater Heal.
-    * Fix: Orderchecker will not choke on 175 orders.
-    * Fix: From December 2020 the XML format changed. The tax base no longer includes sieged popcentres which fixes some discrepencies in reporting the economy.
-    * Fix: The movement cost of a home move when moving evasively is now 1.
-    * Fix: Fourth Age games now notice reported popcentres on turn 0. Thanks Jeremy!
-    * Enh: Game numbers greater than 999 are now supported.
-    * Fix: The list of spells in the order editor are now sorted by number.
-    * Enh: The recent games list now shows up to 10 recent games. 
-    * Fix: CME can now do the 942 order.
-    * Enh: The Nation Statistics view now pulls in the number of NPCs recruited from the turn files.
-	* Fix: The update web address is now https:	the new version will try and correct http: if it finds them in preferences.
-    </description>	
-    </item>
-    <item><title>1.16.17</title>
-    <pubDate>Fri, 17 Apr 2020</pubDate>
-    <description>
-VERSION 1.16.17
----------------
-	* Enh: Orderchecker should now be checking for duplicate skills.
-	* Enh: Orderchecker now spots missing orders.
-	* Fix: various incorrect CME data.
-	* Fix: Ticking the 'show climate' option on the Map Options View works again.
-           You will only see changes if the selected turn was imported with this fixed version.
-	* Fix: Camps really can't feed troops.
-	* Fix: 585 is not a skill.
-	* Fix: Don't restrict the spells a character can cast if they hold an artifact.
-	* Fix: Order results weren't available if the character Id had trailing spaces.
-	* Fix: Mage vs Mage challenges were confused over who won.
-	</description>
-    </item>
-    <item><title>1.16.16</title>
-    <pubDate>Thu, 14 Feb 2019</pubDate>
-    <description>
-VERSION 1.16.16
----------------
-	* Enh: The 5 artifact views have been consolidated to the one artifact view.
-		   You can get the same effect as the previous views, by selecting different filters.
-		   This includes some better intelligence for spotting LAT reports, and matching artifacts
-		   with accents.
-	* Enh: Import results will only match files for the current game.
-	* Fix: Brad really missed the Map Editor View, so it's back.
-	* Fix: orders in CME that specified a nation now work ok.
-	* Fix: Certain types of Challenges on the Turn Report View confused who was winning and losing.
-	* Fix: there was a jar file missing from the installer causing problems for fresh installs and pdf parsing.
-	* Fix: Odd screen updates when JO opened with the Economy Page.
-	* Fix: Order List View not displaying if a row wasn't selected.
-	* Fix: Reconcile ordercheker's list of artifacts with the current game.
-	* Fix: Game data/rules corrections:
-			The cost of relocate capital is corrected to 25000.
-			Alignment of artifact 190 for 2950.
-	* QA: A lot of the recent odd behaviour was due to not tracking some unexpected problems.
-		  Now you're more likely to see an Error Dialog pop up, which also logs the problem to the file
-		  mentioned at the bottom of the Help->Gather Support Data screen.
-	</description>
-	</item>
-    <item><title>1.16.15</title>
-    <pubDate>Tue, 18 Dec 2018</pubDate>
-    <description>
-VERSION 1.16.15
----------------
-	* Fix: OrderEditorListView not updating correctly when game changes and no order was selected.
-	* Fix: remove road at 3107 for CME
-	* Enh: Put the Clear Map Items button back controlled by preference.
-	* more colour tweaks for CME.
-	</description>
-	</item>
-    <item><title>1.16.14</title>
-    <pubDate>Mon, 10 Dec 2018</pubDate>
-    <description>
-VERSION 1.16.14
----------------
-	* Fix: Properly reset the game when a different game is loaded.
-	       This fixes a lot of odd behaviour seen recently.
-	* Fix: The Error Dialog was crashing in some error cases, obscuring the actual error.
-	* QA: JOverseer is more robust when part of it crashes.
-	* QA: The windows version is now continuously built and tested by Appveyor.com.
-	      The linux and mac versions are built and tested by TravisCI.org.
-    </description>
-    </item>
-    <item>
-    <title>1.16.13</title>
-    <pubDate>Mon, 3 Dec 2018</pubDate>
-    <description>
-VERSION 1.16.13
----------------
-	* Fix: Orderchecker incorrectly reporting duplicate skill order.
-	* Fix: silent exception stopping New Game dialog closing.
-	* Enh: Gather Support Data Command added to aid debugging in the field.
-	* Enh: Colours for CME updates for accessibility.
-	* QA: updates and Windows installer now built in 'the cloud' by Appveyor for consistency.
-    </description>
-    </item>
-    <item>
-    <title>1.16.12</title>
-    <pubDate>Thu, 22 Nov 2018</pubDate>
-    <description>
-VERSION 1.16.12
----------------
-	* Enh: updated to CME version 1.06
-</description>
-    </item>
-    <item>
-    <title>1.16.11</title>
-    <pubDate>Fri, 16 Nov 2018</pubDate>
-    <description>
-VERSION 1.16.11
----------------
-	* Enh: updated to CME version 1.05
-	* Enh: final (hopefully) menu moves.
-	* Enh: Orderchecker now spots some cases of using two orders of the same skill.
-	* Fix: issue #669 where orderchecker complains about PBM games.
-	* Fix: the orderchecker status in the order list view updates sooner.
-	* Fix: default nation map locations for CME.
-</description>
-    </item>
-    <item>
-    <title>1.16.10</title>
-    <pubDate>Sun, 28 Oct 2018</pubDate>
-    <description>
-VERSION 1.16.10
----------------
-	* Enh: Default to current nation for map option and appropriate views.
-	* Enh: You don't need the control-key to make mouse-drag move the map,
-	    but you do need the control-key to drag hex numbers off the map.
-	* Enh: Remove the less used icons from the tool bar.
-	* Enh: Return the Restore Orginal Layout to something simple.
-	* Fix: Upgrade/Downgrade relations was getting confused nation numbers.
-	* Fix: 40x and 770 orders specifically, would often show wo no but not insert them into the actual order.
-	* Fix: Some silent exceptions causing odd behaviour for new games before the first results were imported.
-    </description>
-   	</item>
-    <item>
-    <title>1.16.9</title>
-    <pubDate>Fri, 19 Oct 2018</pubDate>
-    <description>
-VERSION 1.16.9
---------------
-	* Enh: The menus have been simplified. The Game menu is much simpler, and a new Advanced menu hides the less used stuff.
-	* Enh: You can save and exit from the 'are you sure you want to exit' dialog.
-	* Enh: The Team Economy view has been updated to highlight tax rate increases, and tweaked to use totals consistent with the economy calculator.
-	* Enh: The Team *Economies* view has been removed as it was confusing and duplicated information on the Team Economy view.
-	* Enh: The various Nation filters (drop downs) will now hide dead nations, and those without economy information.
-	* Enh: The Economy Calculator has been improved:
-		o The totals have been overhauled and now should make obvious sense.
-		o It remembers the selected nation when you change turn.
-    	o It now works correctly for multiple orders of the same product in a nation.
-    	o It shows the relevant SNAs
-    * Enh: Merge Export Order Text and Export Order commands.
-        o The two separate export orders were confusing.
-        o The command automatically generates a 'nice' text representation of the order, which may be copied to the clipboard.
-        o The Save and Submit buttons will use a different format of the orders that Middle-Earth Games and JOverseer understand.
-        o The filename and time of the last submit is displayed.
-	* Fix: The yellow warnings have been removed when casting spells for more than one artifact.
-</description>
-    </item>
-    <item>
-    <title>1.16.8</title>
-    <pubDate>Wed, 19 Sep 2018</pubDate>
-    <description>
-VERSION 1.16.8
---------------
-	* Fix: People really wanted the order drop-down list back on the OrderEditorListView (despite it having problems not showing the character-restricted set of orders).
-	* Fix: Some oddities with neutral armies not being show properly.
-</description>
-    </item>
-    <item>
-    <title>1.16.7</title>
-      <pubDate>Mon, 10 Sep 2018</pubDate>
-      <description>
-VERSION 1.16.7
---------------
-	* Fix: 1.16.6 broke order validation causing problems entering some orders.
-	* Fix: CME rumors of NPC thieving caused a silent crash and data corruption on importing turn.
-	</description>
-	</item>
-    <item>
-    <title>1.16.6</title>
-      <pubDate>Fri, 7 Sep 2018</pubDate>
-      <description>
-VERSION 1.16.6
---------------
-    * Enh: Import Game Dir Tree, now imports in turn order instead of nation order (based on the filename).
-    * Enh: Import Game Dir Tree, now defaults to the selected directory if it doesn't find any files in turn sub directories.
-	* Enh: Import Text File now recognises that you've pasted the contents of an email file and selects the Automagic parser.
-    * Enh: Add colours for the NPC nations 26 and 27.
-    * Enh: Show population centres owned by NPC nations (CME).
-	* Enh: The maximum number of characters allowed per nation is added to the Nation Stats View, and the Info View.
-	* Fix: CME artifact numbers removed as they are randomised at game start.
-	* Fix: Spot lore spell Locate Artifact results again.
-	* Fix: Restore the filter order list view by meaningful stats (>29) rather than just >0.
-	* Fix: The starting artifact names should display accents again.
-	* Fix: If a character in JO had an artifact that wasn't recognised (separate bug), only the characters before that one were order checked.
-	* Fix: The Order List View now again spots when the Order Editor changes an order.
-    * Fix: Character ids with trailing spaces don't get mangled by the import process.
-    * Fix: CME start data updated.
-    * Fix: Add the abbreviations for CME nations.
-    * Fix: Enable orderchecker for CME.
-    * Fix: When the owner of a population centre wasn't recognised, it wasn't shown on the map.
-    * Fix: Unable to show order results report when the character id was less than five characters long.
-	* Fix: Orderchecker had the wrong data for NW hex features, which caused lots of confusion over movement costs.
-	</description>
-    </item>
-	    <item>
-    	<title>1.16.5</title>
-      	<pubDate>Fri, 29 Jun 2018</pubDate>
-      	<description>
-VERSION 1.16.5
---------------
-	* Fix: The order editor was ignoring *all* character skills in the order dropdown in new games.
-	* Fix: Fourth Age game terrain was wrong for hex 0302.
-		</description>
+	<channel>
+		<title>Overseer releases</title>
+		<link>http://www.middleearthgames.com/software/joverseer/feed.xml</link>
+		<description>The latest version of jOverseer, the Middle-Earth game
+			helper program.</description>
+		<language>en</language>
+		<item>
+			<title>1.16.24</title>
+			<pubDate>24 June 2022</pubDate>
+			<description>
+				VERSION 1.16.24
+				---------------
+				* Fix: recent versions of java (>14) deprecated some required
+				services, stopping jOverseer from starting, so a workaround was
+				added.
+			</description>
 		</item>
-	    <item>
-    	<title>1.16.4</title>
-      	<pubDate>Tue, 5 Jun 2018</pubDate>
-      	<description>
-VERSION 1.16.4
---------------
-	* Enh: Support for the new Champions of Middle Earth module, although order checking is currently missing.
-	* Enh: If you are using an obsolete version of java, you will get a warning at update time.
-	* Fix: Orderchecker is working again for those who found it broken in 1.16.3.
-	* Fix: Orderchecker data files now live in the orderchecker.jar file by default. Bare files in the filesystem will override them.
-	* Fix: Those running older versions of java which broke on joverseer 1.16.3.
-	* Fix: The characterset used for the data files is treated as UTF-8 and several names now have the correct accents.
-	* FIx: lots of uses of Hex locations omitted the leading 0.
-	* Fix: Sorting by Popcentre level and fortifications.
-</description>
-</item>
-	    <item>
-    	<title>1.16.3</title>
-      	<pubDate>Wed, 18 Apr 2018</pubDate>
-      	<description>
-VERSION 1.16.3
---------------
-	* Enh: Menu Help now has item Check For Update which forces the check to happen on request, rather than once every two weeks.
-	* Enh: additional command to restore layout to a simpler, automagic style layout.
-	* Fix: issue #627 now checks for SNA 22 when building the list of possible orders in the order editor
-	* Fix: Popcentres should have their accents back.
-	* Fix: Some odd accents in artifacts and spells.
-	* Fix: pdf imports no longer report benign null errors.
-	* Fix: issue #653 order view filter - characters with/without orders - now understands characters with more than 3 orders
-	* Fix: In the Map Option View, If you changed to allegiance colours, then you couldn't get back to nation colours
-	* Fix: default nation names for FA
-	* Fix: orderchecker and 940 412 order
-	</description>
-    </item>
+		<item>
+			<title>1.16.23</title>
+			<pubDate>30 May 2022</pubDate>
+			<description>
+				VERSION 1.16.23
+				---------------
+				* Fix: Scry Area result wasn't parsed properly if the nation name was
+				at the start of a line.
+				* Fix: LAT order result parsing couldn't cope when the artifact was
+				unnamed.
+				* Fix: max chars allowed in nation statistics.
+				* QA: Some rule violations in orderchecker, result in a dialog box
+				which was particularly cryptic. For those cases, the character and
+				order number have been added.
+				* Enh:zoom 5 and 6 added for those of us with really big screens :)
+			</description>
+		</item>
+		<item>
+			<title>1.16.22</title>
+			<pubDate>11 May 2021</pubDate>
+			<description>
+				VERSION 1.16.22
+				---------------
+				* Fix: CME rivers on the eastern edge.
+				* Enh: Reflect recent game changes in the CME characters and
+				artifacts.
+			</description>
+		</item>
+		<item>
+			<title>1.16.21</title>
+			<pubDate>1 Mar 2021</pubDate>
+			<description>
+				VERSION 1.16.21
+				---------------
+				* Fix: The buy/sell bonus fix broke the market spend.
+				* Fix: The nation borders for fog-of-war.
+			</description>
+		</item>
+		<item>
+			<title>1.16.20</title>
+			<pubDate>1 Mar 2021</pubDate>
+			<description>
+				VERSION 1.16.20
+				---------------
+				* Fix: anti-virus was tagging joverseer.exe as a false positive.
+			</description>
+		</item>
+		<item>
+			<title>1.16.19</title>
+			<pubDate>Mon, 22 Feb 2021</pubDate>
+			<description>
+				VERSION 1.16.19
+				---------------
+				* Fix: Add batch file joverseer-no3D.bat to start JO without 3D
+				acceleration for problematic NVidia graphics drivers on Windows.
+				If you see overlapping JO frames etc, then use the file to replace the
+				usual shortcut to start JO.
+				* Fix: The order cost calculator now takes account of the buy/sell
+				bonuses.
+				* Fix: Timber and Mounts should now always be appearing in that
+				order.
+				* Fix: Warships and Transports should now always be appearing in that
+				order.
+			</description>
+		</item>
+		<item>
+			<title>1.16.18</title>
+			<pubDate>Wed, 16 Dec 2020</pubDate>
+			<description>
+				VERSION 1.16.18
+				---------------
+				* Fix: Ordercheck order 948 now lets you transfer gold to a hidden PC
+				* Fix: Orderchecker no longer gives a warning about casting Greater
+				Heal.
+				* Fix: Orderchecker will not choke on 175 orders.
+				* Fix: From December 2020 the XML format changed. The tax base no
+				longer includes sieged popcentres which fixes some discrepencies in
+				reporting the economy.
+				* Fix: The movement cost of a home move when moving evasively is now
+				1.
+				* Fix: Fourth Age games now notice reported popcentres on turn 0.
+				Thanks Jeremy!
+				* Enh: Game numbers greater than 999 are now supported.
+				* Fix: The list of spells in the order editor are now sorted by
+				number.
+				* Enh: The recent games list now shows up to 10 recent games.
+				* Fix: CME can now do the 942 order.
+				* Enh: The Nation Statistics view now pulls in the number of NPCs
+				recruited from the turn files.
+				* Fix: The update web address is now https: the new version will try
+				and correct http: if it finds them in preferences.
+			</description>
+		</item>
+		<item>
+			<title>1.16.17</title>
+			<pubDate>Fri, 17 Apr 2020</pubDate>
+			<description>
+				VERSION 1.16.17
+				---------------
+				* Enh: Orderchecker should now be checking for duplicate skills.
+				* Enh: Orderchecker now spots missing orders.
+				* Fix: various incorrect CME data.
+				* Fix: Ticking the 'show climate' option on the Map Options View
+				works again.
+				You will only see changes if the selected turn was imported with this
+				fixed version.
+				* Fix: Camps really can't feed troops.
+				* Fix: 585 is not a skill.
+				* Fix: Don't restrict the spells a character can cast if they hold an
+				artifact.
+				* Fix: Order results weren't available if the character Id had
+				trailing spaces.
+				* Fix: Mage vs Mage challenges were confused over who won.
+			</description>
+		</item>
+		<item>
+			<title>1.16.16</title>
+			<pubDate>Thu, 14 Feb 2019</pubDate>
+			<description>
+				VERSION 1.16.16
+				---------------
+				* Enh: The 5 artifact views have been consolidated to the one
+				artifact view.
+				You can get the same effect as the previous views, by selecting
+				different filters.
+				This includes some better intelligence for spotting LAT reports, and
+				matching artifacts
+				with accents.
+				* Enh: Import results will only match files for the current game.
+				* Fix: Brad really missed the Map Editor View, so it's back.
+				* Fix: orders in CME that specified a nation now work ok.
+				* Fix: Certain types of Challenges on the Turn Report View confused
+				who was winning and losing.
+				* Fix: there was a jar file missing from the installer causing
+				problems for fresh installs and pdf parsing.
+				* Fix: Odd screen updates when JO opened with the Economy Page.
+				* Fix: Order List View not displaying if a row wasn't selected.
+				* Fix: Reconcile ordercheker's list of artifacts with the current
+				game.
+				* Fix: Game data/rules corrections:
+				The cost of relocate capital is corrected to 25000.
+				Alignment of artifact 190 for 2950.
+				* QA: A lot of the recent odd behaviour was due to not tracking some
+				unexpected problems.
+				Now you're more likely to see an Error Dialog pop up, which also logs
+				the problem to the file
+				mentioned at the bottom of the Help->Gather Support Data screen.
+			</description>
+		</item>
+		<item>
+			<title>1.16.15</title>
+			<pubDate>Tue, 18 Dec 2018</pubDate>
+			<description>
+				VERSION 1.16.15
+				---------------
+				* Fix: OrderEditorListView not updating correctly when game changes
+				and no order was selected.
+				* Fix: remove road at 3107 for CME
+				* Enh: Put the Clear Map Items button back controlled by preference.
+				* more colour tweaks for CME.
+			</description>
+		</item>
+		<item>
+			<title>1.16.14</title>
+			<pubDate>Mon, 10 Dec 2018</pubDate>
+			<description>
+				VERSION 1.16.14
+				---------------
+				* Fix: Properly reset the game when a different game is loaded.
+				This fixes a lot of odd behaviour seen recently.
+				* Fix: The Error Dialog was crashing in some error cases, obscuring
+				the actual error.
+				* QA: JOverseer is more robust when part of it crashes.
+				* QA: The windows version is now continuously built and tested by
+				Appveyor.com.
+				The linux and mac versions are built and tested by TravisCI.org.
+			</description>
+		</item>
+		<item>
+			<title>1.16.13</title>
+			<pubDate>Mon, 3 Dec 2018</pubDate>
+			<description>
+				VERSION 1.16.13
+				---------------
+				* Fix: Orderchecker incorrectly reporting duplicate skill order.
+				* Fix: silent exception stopping New Game dialog closing.
+				* Enh: Gather Support Data Command added to aid debugging in the
+				field.
+				* Enh: Colours for CME updates for accessibility.
+				* QA: updates and Windows installer now built in 'the cloud' by
+				Appveyor for consistency.
+			</description>
+		</item>
+		<item>
+			<title>1.16.12</title>
+			<pubDate>Thu, 22 Nov 2018</pubDate>
+			<description>
+				VERSION 1.16.12
+				---------------
+				* Enh: updated to CME version 1.06
+			</description>
+		</item>
+		<item>
+			<title>1.16.11</title>
+			<pubDate>Fri, 16 Nov 2018</pubDate>
+			<description>
+				VERSION 1.16.11
+				---------------
+				* Enh: updated to CME version 1.05
+				* Enh: final (hopefully) menu moves.
+				* Enh: Orderchecker now spots some cases of using two orders of the
+				same skill.
+				* Fix: issue #669 where orderchecker complains about PBM games.
+				* Fix: the orderchecker status in the order list view updates sooner.
+				* Fix: default nation map locations for CME.
+			</description>
+		</item>
+		<item>
+			<title>1.16.10</title>
+			<pubDate>Sun, 28 Oct 2018</pubDate>
+			<description>
+				VERSION 1.16.10
+				---------------
+				* Enh: Default to current nation for map option and appropriate
+				views.
+				* Enh: You don't need the control-key to make mouse-drag move the
+				map,
+				but you do need the control-key to drag hex numbers off the map.
+				* Enh: Remove the less used icons from the tool bar.
+				* Enh: Return the Restore Orginal Layout to something simple.
+				* Fix: Upgrade/Downgrade relations was getting confused nation
+				numbers.
+				* Fix: 40x and 770 orders specifically, would often show wo no but
+				not insert them into the actual order.
+				* Fix: Some silent exceptions causing odd behaviour for new games
+				before the first results were imported.
+			</description>
+		</item>
+		<item>
+			<title>1.16.9</title>
+			<pubDate>Fri, 19 Oct 2018</pubDate>
+			<description>
+				VERSION 1.16.9
+				--------------
+				* Enh: The menus have been simplified. The Game menu is much simpler,
+				and a new Advanced menu hides the less used stuff.
+				* Enh: You can save and exit from the 'are you sure you want to exit'
+				dialog.
+				* Enh: The Team Economy view has been updated to highlight tax rate
+				increases, and tweaked to use totals consistent with the economy
+				calculator.
+				* Enh: The Team *Economies* view has been removed as it was confusing
+				and duplicated information on the Team Economy view.
+				* Enh: The various Nation filters (drop downs) will now hide dead
+				nations, and those without economy information.
+				* Enh: The Economy Calculator has been improved:
+				o The totals have been overhauled and now should make obvious sense.
+				o It remembers the selected nation when you change turn.
+				o It now works correctly for multiple orders of the same product in a
+				nation.
+				o It shows the relevant SNAs
+				* Enh: Merge Export Order Text and Export Order commands.
+				o The two separate export orders were confusing.
+				o The command automatically generates a 'nice' text representation of
+				the order, which may be copied to the clipboard.
+				o The Save and Submit buttons will use a different format of the
+				orders that Middle-Earth Games and JOverseer understand.
+				o The filename and time of the last submit is displayed.
+				* Fix: The yellow warnings have been removed when casting spells for
+				more than one artifact.
+			</description>
+		</item>
+		<item>
+			<title>1.16.8</title>
+			<pubDate>Wed, 19 Sep 2018</pubDate>
+			<description>
+				VERSION 1.16.8
+				--------------
+				* Fix: People really wanted the order drop-down list back on the
+				OrderEditorListView (despite it having problems not showing the
+				character-restricted set of orders).
+				* Fix: Some oddities with neutral armies not being show properly.
+			</description>
+		</item>
+		<item>
+			<title>1.16.7</title>
+			<pubDate>Mon, 10 Sep 2018</pubDate>
+			<description>
+				VERSION 1.16.7
+				--------------
+				* Fix: 1.16.6 broke order validation causing problems entering some
+				orders.
+				* Fix: CME rumors of NPC thieving caused a silent crash and data
+				corruption on importing turn.
+			</description>
+		</item>
+		<item>
+			<title>1.16.6</title>
+			<pubDate>Fri, 7 Sep 2018</pubDate>
+			<description>
+				VERSION 1.16.6
+				--------------
+				* Enh: Import Game Dir Tree, now imports in turn order instead of
+				nation order (based on the filename).
+				* Enh: Import Game Dir Tree, now defaults to the selected directory
+				if it doesn't find any files in turn sub directories.
+				* Enh: Import Text File now recognises that you've pasted the
+				contents of an email file and selects the Automagic parser.
+				* Enh: Add colours for the NPC nations 26 and 27.
+				* Enh: Show population centres owned by NPC nations (CME).
+				* Enh: The maximum number of characters allowed per nation is added
+				to the Nation Stats View, and the Info View.
+				* Fix: CME artifact numbers removed as they are randomised at game
+				start.
+				* Fix: Spot lore spell Locate Artifact results again.
+				* Fix: Restore the filter order list view by meaningful stats (>29)
+				rather than just >0.
+				* Fix: The starting artifact names should display accents again.
+				* Fix: If a character in JO had an artifact that wasn't recognised
+				(separate bug), only the characters before that one were order
+				checked.
+				* Fix: The Order List View now again spots when the Order Editor
+				changes an order.
+				* Fix: Character ids with trailing spaces don't get mangled by the
+				import process.
+				* Fix: CME start data updated.
+				* Fix: Add the abbreviations for CME nations.
+				* Fix: Enable orderchecker for CME.
+				* Fix: When the owner of a population centre wasn't recognised, it
+				wasn't shown on the map.
+				* Fix: Unable to show order results report when the character id was
+				less than five characters long.
+				* Fix: Orderchecker had the wrong data for NW hex features, which
+				caused lots of confusion over movement costs.
+			</description>
+		</item>
+		<item>
+			<title>1.16.5</title>
+			<pubDate>Fri, 29 Jun 2018</pubDate>
+			<description>
+				VERSION 1.16.5
+				--------------
+				* Fix: The order editor was ignoring *all* character skills in the
+				order dropdown in new games.
+				* Fix: Fourth Age game terrain was wrong for hex 0302.
+			</description>
+		</item>
+		<item>
+			<title>1.16.4</title>
+			<pubDate>Tue, 5 Jun 2018</pubDate>
+			<description>
+				VERSION 1.16.4
+				--------------
+				* Enh: Support for the new Champions of Middle Earth module, although
+				order checking is currently missing.
+				* Enh: If you are using an obsolete version of java, you will get a
+				warning at update time.
+				* Fix: Orderchecker is working again for those who found it broken in
+				1.16.3.
+				* Fix: Orderchecker data files now live in the orderchecker.jar file
+				by default. Bare files in the filesystem will override them.
+				* Fix: Those running older versions of java which broke on joverseer
+				1.16.3.
+				* Fix: The characterset used for the data files is treated as UTF-8
+				and several names now have the correct accents.
+				* FIx: lots of uses of Hex locations omitted the leading 0.
+				* Fix: Sorting by Popcentre level and fortifications.
+			</description>
+		</item>
+		<item>
+			<title>1.16.3</title>
+			<pubDate>Wed, 18 Apr 2018</pubDate>
+			<description>
+				VERSION 1.16.3
+				--------------
+				* Enh: Menu Help now has item Check For Update which forces the check
+				to happen on request, rather than once every two weeks.
+				* Enh: additional command to restore layout to a simpler, automagic
+				style layout.
+				* Fix: issue #627 now checks for SNA 22 when building the list of
+				possible orders in the order editor
+				* Fix: Popcentres should have their accents back.
+				* Fix: Some odd accents in artifacts and spells.
+				* Fix: pdf imports no longer report benign null errors.
+				* Fix: issue #653 order view filter - characters with/without orders
+				- now understands characters with more than 3 orders
+				* Fix: In the Map Option View, If you changed to allegiance colours,
+				then you couldn't get back to nation colours
+				* Fix: default nation names for FA
+				* Fix: orderchecker and 940 412 order
+			</description>
+		</item>
 
-    <item>
-    	<title>1.16.2</title>
-      	<pubDate>Tue, 1 Aug 2017</pubDate>
-      	<description>
-VERSION 1.16.2
---------------
-	* Enh: Cast Lore Spell 412 now supports up to 6 parameters.
-	* Fix: 120 Order wasn't being helpful in order editor.
-	* Fix/Enhancement: UTF-8 encoding handled in metadata files. If an external editor put a Byte Order Mark in a metadata file, then JO could miss-read the first line. e.g. the 120 bug.
-	* Enh: Create Army and Character now added to current hex view popup menu.
-	* Fix: KS army missing from 3222.
-	* Fix: FA roads and rivers updated.
-	* Fix: Merged fix to metadata paths from alexey-mr and extended. It should help non-Windows users.
-	* Fix: Open Software licence is now explicitly BSD.
-      	</description>
-    </item>
-    <item>
-    	<title>1.16.1</title>
-      	<pubDate>Wed, 7 Jun 2017</pubDate>
-      	<description>
-VERSION 1.16.1
---------------
-	* Fix: you can now create new 1000 games.
-	</description>
-    </item>
-    <item>
-		<title>1.16.0</title>
-      	<pubDate>Wed, 7 Jun 2017</pubDate>
-      	<description>
-VERSION 1.16.0
---------------
-	* Clarified some the column names in the Economy Team View.
-    * New filters in Order List View.
-	* The same as the 1.15.5 beta version.
-	* Fix for automatic updating on macs
-	* Fix: 935 recon result is now recognised.
-	* Fix: 910 scouting result is now recognised.
-    * Fix for macs.
-    * Fixed crash in 2950 new game.
-	* starting information for 2950 games has been significantly corrected.
-	* 990 order (one ring) shouldn't be flagged yellow in orderchecker
-	* Fixed: java8 selects IPv6 for networking which breaks email sending.
-	* automatic recognition of new XML format so no need for user to pick.
-	* right arrow symbol now correctly displayed.
-	* Fix 622: Kinstrife roads selected at game setup no longer vanish.
-	* Fix 632: Player characters with less than 5 characters in their name, had odd things happening, eg no past orders etc. Rebuilding the .jov file is needed to actually see a difference.
-	* Artifact effect descriptions are now consistent for saner sorting.
-      	</description>
-    </item>
-    </channel>
+		<item>
+			<title>1.16.2</title>
+			<pubDate>Tue, 1 Aug 2017</pubDate>
+			<description>
+				VERSION 1.16.2
+				--------------
+				* Enh: Cast Lore Spell 412 now supports up to 6 parameters.
+				* Fix: 120 Order wasn't being helpful in order editor.
+				* Fix/Enhancement: UTF-8 encoding handled in metadata files. If an
+				external editor put a Byte Order Mark in a metadata file, then JO
+				could miss-read the first line. e.g. the 120 bug.
+				* Enh: Create Army and Character now added to current hex view popup
+				menu.
+				* Fix: KS army missing from 3222.
+				* Fix: FA roads and rivers updated.
+				* Fix: Merged fix to metadata paths from alexey-mr and extended. It
+				should help non-Windows users.
+				* Fix: Open Software licence is now explicitly BSD.
+			</description>
+		</item>
+		<item>
+			<title>1.16.1</title>
+			<pubDate>Wed, 7 Jun 2017</pubDate>
+			<description>
+				VERSION 1.16.1
+				--------------
+				* Fix: you can now create new 1000 games.
+			</description>
+		</item>
+		<item>
+			<title>1.16.0</title>
+			<pubDate>Wed, 7 Jun 2017</pubDate>
+			<description>
+				VERSION 1.16.0
+				--------------
+				* Clarified some the column names in the Economy Team View.
+				* New filters in Order List View.
+				* The same as the 1.15.5 beta version.
+				* Fix for automatic updating on macs
+				* Fix: 935 recon result is now recognised.
+				* Fix: 910 scouting result is now recognised.
+				* Fix for macs.
+				* Fixed crash in 2950 new game.
+				* starting information for 2950 games has been significantly
+				corrected.
+				* 990 order (one ring) shouldn't be flagged yellow in orderchecker
+				* Fixed: java8 selects IPv6 for networking which breaks email
+				sending.
+				* automatic recognition of new XML format so no need for user to
+				pick.
+				* right arrow symbol now correctly displayed.
+				* Fix 622: Kinstrife roads selected at game setup no longer vanish.
+				* Fix 632: Player characters with less than 5 characters in their
+				name, had odd things happening, eg no past orders etc. Rebuilding
+				the .jov file is needed to actually see a difference.
+				* Artifact effect descriptions are now consistent for saner sorting.
+			</description>
+		</item>
+	</channel>
 </rss>

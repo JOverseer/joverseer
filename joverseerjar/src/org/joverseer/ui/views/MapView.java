@@ -2,14 +2,22 @@ package org.joverseer.ui.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
@@ -27,6 +35,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 	MapPanel mapPanel;
 	PopulationCenterViewer pcViewer;
 	JScrollPane scp;
+	JLabel introLabel;
 
 	//injected dependencies
 	GameHolder gameHolder;
@@ -81,13 +90,24 @@ public class MapView extends AbstractView implements ApplicationListener {
 			}
 
 		});
-		this.mapPanel.setPreferredSize(new Dimension(3500, 2500));
+		this.mapPanel.setPreferredSize(new Dimension(1000, 2500));
 		this.mapPanel.setBackground(Color.white);
 		this.scp.setPreferredSize(new Dimension(800, 500));
 		MapMetadata mm = MapMetadata.instance();
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 		this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
-
+		// Add introduction image to explain to new players what to do
+		BufferedImage myImg;
+		try {
+			myImg = ImageIO.read(new File("resources/images/JOverseerIntro.png"));
+			this.introLabel = new JLabel(new ImageIcon(myImg));
+			
+			this.mapPanel.add(this.introLabel);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel(Messages.getString("MapView.NewGame"))); //$NON-NLS-1$
 		return this.scp;
@@ -127,6 +147,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 			break;
 		case RefreshMapItems:
 			// refreshAutoArmyRangeMapItems(null);
+			this.mapPanel.remove(this.introLabel);
 			this.mapPanel.invalidateMapItems();
 			this.mapPanel.updateUI();
 			break;

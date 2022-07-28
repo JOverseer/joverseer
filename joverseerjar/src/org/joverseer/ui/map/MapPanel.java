@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -21,6 +22,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -585,6 +587,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
 		if (isOpaque()) {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());

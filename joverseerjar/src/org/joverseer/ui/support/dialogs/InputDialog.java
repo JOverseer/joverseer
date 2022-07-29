@@ -52,7 +52,7 @@ public class InputDialog extends TitledPageApplicationDialog {
     public void init(String description) {
         InputDialogForm frm = new InputDialogForm(this);
         setDialogPage(new FormBackedDialogPage(frm));
-        setPreferredSize(new Dimension(400, 300));
+        setPreferredSize(new Dimension(450, 300));
         this.descr = description;
     }
 

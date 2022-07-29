@@ -64,6 +64,7 @@ public class OrderVisualizationData {
         	}
             dlg.addComponent(Messages.getString("OrderVisualizationData.LocationColon"), hexNo); //$NON-NLS-1$
             String txt = Messages.getString("OrderVisualizationData.EnterInfoForRecon", new Object[] {o.getCharacter().getName()}); //$NON-NLS-1$
+            txt = o.getCharacter().getName() + "'" + txt;
             dlg.init(txt);
             dlg.showDialog();
             if (dlg.getResult()) {

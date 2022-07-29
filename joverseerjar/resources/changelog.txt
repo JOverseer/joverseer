@@ -4,7 +4,8 @@ VERSION 1.16.25
     * Fix: Orderchecker now correctly calculates movement for 850/860 orders and informs user when no movement style specified
     * Fix: Corrected artifact second powers for 1650 and 2950 games
     * Add: Added instructions for new users of JOverseer to empty map
-    * Fix: 840 Orders no longer cause freeze when auto-saved
+    * Fix: 840 Orders no longer cause freeze when auto-saved7
+    * Fix: Character name now displayed in 925 Recon pop-up
 
 VERSION 1.16.24
 ---------------

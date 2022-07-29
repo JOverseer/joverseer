@@ -128,6 +128,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 		case GameChangedEvent:
 		case SelectedTurnChangedEvent:
 		case RefreshTurnMapItems:
+			this.mapPanel.remove(this.introLabel);
 			this.mapPanel.invalidateAll();
 			this.mapPanel.updateUI();
 			break;
@@ -147,7 +148,7 @@ public class MapView extends AbstractView implements ApplicationListener {
 			break;
 		case RefreshMapItems:
 			// refreshAutoArmyRangeMapItems(null);
-			this.mapPanel.remove(this.introLabel);
+			
 			this.mapPanel.invalidateMapItems();
 			this.mapPanel.updateUI();
 			break;

@@ -128,7 +128,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private void renderStandAndDefendOrder(Order order, Graphics2D g) {
-		if (order.getParameter(0) == null || order.getParameter(0).equals("")) {
+		if (order.getParameter(0) == null || order.getParameter(0).equals("")||order.getParameter(0).equals("-")) {
 			return;
 		}
 		try {

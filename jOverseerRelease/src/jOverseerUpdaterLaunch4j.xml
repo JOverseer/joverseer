@@ -3,17 +3,17 @@
   <headerType>gui</headerType>
   <jar>out/update.jar</jar>
   <outfile>out/jOverseerUpdater.exe</outfile>
-  <errTitle></errTitle>
+  <errTitle>jOverseer updater</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
   <priority>normal</priority>
-  <downloadUrl>https://www.java.com/en/download/</downloadUrl>
+  <downloadUrl>https://adoptium.net/en-GB/temurin/releases?version=11</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <manifest>updatewithUAC.manifest</manifest>
   <icon></icon>
   <jre>
-    <path></path>
+    <path>jre</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <minVersion>1.8.0</minVersion>
     <maxVersion></maxVersion>

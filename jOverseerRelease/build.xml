@@ -2,6 +2,7 @@
 <project name="joverseerRelease" default="BuildAll" basedir=".">
     <description>
         Build file for the release parts of joverseer.
+    	Tested with Launch4j v3.14
     </description>
     <property name="updater.dir">../joverseerupdaterjar/dist/lib</property>
 	<property name="jojar.project.dir">../joverseerjar/</property>
@@ -14,6 +15,10 @@
 	<property name="updater.jar">../joverseerupdaterjar/dist/lib/update.jar</property>
 	<property name="res.dir">${jojar.project.dir}resources</property>
 	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
+	<!-- <property name="jdk9">C:\Program Files\Java\jdk-9.0.4</property> -->
+	<property name="jdk9">c:\Program Files\Eclipse Adoptium\jdk-11.0.16.8-hotspot\</property>
+	<property name="jpackager9">javapackager.exe</property>
+	<property name="custom-runtime">custom-runtime</property>
 
     <property name="launch4j.dir" location="../launch4j"/>
     <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->
@@ -197,7 +202,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 			<zipfileset dir="${dist}" includes="default.layout" prefix="layout"/>
 		</zip>
 	</target>
-	<target name="windowsInstaller" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+	<target name="windowsInstaller" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon,customJRE">
 		<property name="iss.dir">C:\Program Files (x86)\Inno Setup 5</property>
 		<copy tofile="${dist}\jide-common.jar" file="${dist}\jide-common-windows.jar" overwrite="true"/>
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
@@ -207,8 +212,60 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 			<arg value="${dist}\joverseer.iss.out"/>
 		</exec>
 	</target>
+	<!-- note java 8 doesn't support -native option, so we use java 9+ -->
+	<target name="jpackager" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+		<exec executable="jpackage" failonerror="true">
+			<arg value="-deploy"/>
+			<arg value="-native msi"/>
+		</exec>
+	</target>
+	<!-- list the dependents -->
+	<target name="jdeps" depends="GatherDependents">
+		<exec executable="jdeps">
+			<arg value="--list-deps"/>
+			<arg value="--ignore-missing-deps"/>
+			<arg value="-cp"/>
+			<arg value="${dist}/*.jar"/>
+			<arg value="${dist}/joverseer.jar"/>
+		</exec>	
+	</target>
+	<!-- experimental: build a cut-down JRE -->
+	<target name="customJRE" depends="GatherDependents">
+		<delete dir="${custom-runtime}"/>
+		<exec executable="${jdk9}/bin/jlink" failonerror="true">
+			<arg value="--no-header-files"/>
+			<arg value="--no-man-pages"/>
+			<arg value="--compress=2"/>
+			<arg value="--strip-debug"/>
+			<arg value="--add-modules"/>
+			<arg value="java.base,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.naming,java.prefs,java.rmi,java.sql,java.xml,jdk.httpserver"/>
+			<arg value="--output"/>
+			<arg value="${custom-runtime}"/>
+			
+		</exec>
+	</target>
+	<target name="MacOSInstallerJavaPackager" depends="GatherDependents">
+		<echo message="${java.vesion}"/>
+		<echo message="${jpackager9}"/>
+		<exec executable="${jdk9}/bin/${jpackager9}" failonerror="true">
+			<arg value="-deploy"/>
+			<arg value="-native"/>
+			<arg value="pkg"/>
+			<arg value="-outdir"/>
+			<arg value="${dist}/build"/>
+			<arg value="-srcdir"/>
+			<arg value="${dist}"/>
+		</exec>
+	</target>
 	<!-- needs to run on a Mac -->
-	<target name="MacOSInstaller" depends="GatherDependents,JoverseerJar">
+	<target name="MacOSInstallerPackages" depends="MacOSCommonFiles">
+		<exec executable="/usr/local/bin/packagesbuild">
+			<arg value="-v"/>
+			<arg value="${dist}/jOverseer.pkgproj"/>
+		</exec>
+		<copy tofile="${dist}/build/joverseer-${joverseer.version}.pkg" file="${dist}/build/joverseer.pkg" overwrite="true"/>
+	</target>
+	<target name="MacOSCommonFiles" depends="GatherDependents,JoverseerJar">
 	<!-- universalJavaApplicationStub
 		jOverseer.icns
 		default.layout
@@ -260,11 +317,6 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		<copy todir="${dist}/update/update">
 		  <fileset file="${dist}/update.jar"/>
 		</copy>
-		<exec executable="/usr/local/bin/packagesbuild">
-			<arg value="-v"/>
-			<arg value="${dist}/jOverseer.pkgproj"/>
-		</exec>
-		<copy tofile="${dist}/build/joverseer-${joverseer.version}.pkg" file="${dist}/build/joverseer.pkg" overwrite="true"/>
 	</target>
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">

@@ -57,7 +57,7 @@ for:
       - image: Ubuntu2004
 
   install:
-    - sudo apt install ant ant-contrib
+    - sudo apt -y install ant ant-contrib
   build_script:
     - ant test
 

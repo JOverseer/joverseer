@@ -31,13 +31,13 @@ public class Hex
         "Ford", "Bridge", "Deep River", "Shallow River", "Road"
     };
     static final int DIRECTION_NONE = 0;
-    private static final int DIRECTION_NE = 1;
-    private static final int DIRECTION_E = 2;
-    private static final int DIRECTION_SE = 3;
-    private static final int DIRECTION_SW = 4;
-    private static final int DIRECTION_W = 5;
-    private static final int DIRECTION_NW = 6;
-    private static final int DIRECTION_HOLD = 7;
+    static final int DIRECTION_NE = 1;
+    static final int DIRECTION_E = 2;
+    static final int DIRECTION_SE = 3;
+    static final int DIRECTION_SW = 4;
+    static final int DIRECTION_W = 5;
+    static final int DIRECTION_NW = 6;
+    static final int DIRECTION_HOLD = 7;
     private int location;
     private int terrain;
     private Vector directions;

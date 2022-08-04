@@ -28,6 +28,16 @@ public class Map
     };
     private Vector hexes;
 
+    // this should really be injected, but we'll use the initialization-on demand holder pattern
+    // to allow package scope overrides without API breakage.
+    Main main;
+    private static class MainHolder {
+    	static final Main main = Main.main;
+    }
+    private static Main getDefaultMain() {
+    	return MainHolder.main;
+    }
+    
     public Map()
     {
         this.hexes = new Vector();
@@ -90,7 +100,9 @@ public class Map
             return -1;
         }
         int terrain = endHex.getTerrain();
-        PopCenter pc = Main.main.getNation().findPopulationCenter(endLoc);
+        if (this.main == null)
+        	this.main = getDefaultMain();
+        PopCenter pc = this.main.getNation().findPopulationCenter(endLoc);
         boolean validDockHex = false;
         if(terrain == 2 || pc != null && pc.getDock() != 0)
         {

@@ -3,34 +3,32 @@
   <headerType>gui</headerType>
   <jar>joverseer.jar</jar>
   <outfile>dist/jOverseer.exe</outfile>
-  <errTitle></errTitle>
+  <errTitle>jOverseer installer</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
   <priority>normal</priority>
-  <downloadUrl>http://java.com/download</downloadUrl>
+  <downloadUrl>https://adoptium.net/en-GB/temurin/releases?version=11</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <manifest></manifest>
   <icon>../dist/joverseer.ico</icon>
   <jre>
-    <path></path>
+    <path>jre</path>
     <bundledJre64Bit>false</bundledJre64Bit>
-    <minVersion>1.8.0</minVersion>
-    <maxVersion>14.0.1</maxVersion>
+    <minVersion>1.8.1</minVersion>
+    <maxVersion>17.0.1</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <maxHeapSize>512</maxHeapSize>
     <opt>-Djava.net.preferIPv4Stack=true</opt>
-    <opt>-Dsun.java2d.ddoffscreen=false</opt>
-    <opt>-Dsun.java2d.d3d=false</opt>
-    <opt>-Dsun.java2d.noddraw=true</opt>
+    <opt>--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED</opt>
   </jre>
   <versionInfo>
     <fileVersion>1.0.0.0</fileVersion>
     <txtFileVersion>1.0.0.0</txtFileVersion>
     <fileDescription>jOverseer launcher</fileDescription>
     <copyright>Middle-Earth Games Ltd</copyright>
-    <productVersion>1.16.24.0</productVersion>
-    <txtProductVersion>1.16.24.0</txtProductVersion>
+    <productVersion>1.16.25.0</productVersion>
+    <txtProductVersion>1.16.25.0</txtProductVersion>
     <productName>jOverseer</productName>
     <companyName>Middle Earth Games</companyName>
     <internalName>jOverseer</internalName>

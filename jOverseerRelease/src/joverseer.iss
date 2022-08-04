@@ -7,9 +7,10 @@ AppPublisher=Middle-Earth Games
 AppPublisherURL=http://www.middleearthgames.com
 DefaultDirName={pf}\JOverseer\
 DefaultGroupName=JOverseer
-OutputBaseFilename=joverseer-setup-@version@
+OutputBaseFilename=joverseer-setup-java-@version@
 #define InputResourceDirName "..\src"
 #define InputBuild "..\dist"
+#define InputCustomRuntime "..\custom-runtime"
 ; TODO: fix this so it doesn't need to know structure of joverseerjar
 #define OrdercheckerMetadata "..\..\joverseerjar\resources\metadata\orderchecker"
 
@@ -51,6 +52,7 @@ Source: {#InputResourceDirName}\jOverseer.lnk; DestDir: {userdesktop}
 Source: {#InputBuild}\log4j.properties; DestDir: {app}
 Source: {#InputBuild}\scope*.jar; DestDir: {app}
 Source: {#InputBuild}\jdom*.jar; DestDir: {app}
+Source: {#InputCustomRuntime}\*; DestDir: {app}\jre; Flags: ignoreversion recursesubdirs
 ;check that these are actually needed here...they used to be copied in 1.0.12
 ;Source: {#OrdercheckerMetadata}\*; DestDir: {app}\bin\metadata\orderchecker
 
@@ -60,12 +62,14 @@ Name: {app}\bin\mailSender
 Name: {app}\bin\metadata
 Name: {app}\bin\metadata\orderchecker
 Name: {app}\layout
+Name: {app}\jre
 ;check that these are actually needed here...they used to be copied in 1.0.12
 Name: {app}\update
 
 [UninstallDelete]
 Type: files; Name: "{app}\update\update\update.jar"
 Type: files; Name: "{app}\update\update.jar"
+Type: dirifempty; Name: {app}\jre
 Type: dirifempty; Name: "{app}\update\update"
 Type: dirifempty; Name: "{app}\update"
 Type: dirifempty; Name: "{app}"

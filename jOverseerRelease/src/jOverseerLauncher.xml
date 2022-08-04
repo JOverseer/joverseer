@@ -15,7 +15,7 @@
   <jre>
     <path>jre</path>
     <bundledJre64Bit>false</bundledJre64Bit>
-    <minVersion>1.8.1</minVersion>
+    <minVersion>11.0.1</minVersion>
     <maxVersion>17.0.1</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <maxHeapSize>512</maxHeapSize>

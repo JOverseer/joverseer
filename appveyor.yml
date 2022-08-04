@@ -28,7 +28,7 @@ for:
 
   artifacts:
     - path: jOverseerRelease/dist/build\joverseer-*.pkg
-      name: MacOSInstaller
+      name: MacOSInstallerPackages
 -
   matrix:
     only:

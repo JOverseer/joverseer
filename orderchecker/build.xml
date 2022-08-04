@@ -73,7 +73,10 @@
 			<pathelement location="${bintest.dir}"/>
    			<path refid="orderchecker.path"/>
 			</classpath>
-			<test name="orderchecker.ConfidenceTest">
+			<test name="com.middleearthgames.orderchecker.ConfidenceTest">
+				<formatter type="plain"/>
+			</test>
+			<test name="com.middleearthgames.orderchecker.MapTest">
 				<formatter type="plain"/>
 			</test>
 		</junit>

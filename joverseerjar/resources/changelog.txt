@@ -1,6 +1,7 @@
 VERSION 1.16.25
 ---------------
     * Fix: add Navy movement ranges
+    * Add: Fog of War for Fourth Ages games
     * Fix: Orderchecker now correctly calculates movement for 850/860 orders and informs user when no movement style specified
     * Fix: Corrected artifact second powers for 1650 and 2950 games
     * Add: Added instructions for new users of JOverseer to empty map

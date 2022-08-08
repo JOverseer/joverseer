@@ -1,19 +1,24 @@
 package org.joverseer.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
@@ -22,6 +27,7 @@ import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractForm;
+import org.joverseer.ui.support.drawing.ColorPicker;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
@@ -47,7 +53,7 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 	ArrayList<JidePopup> popups = new ArrayList<JidePopup>();
 
 	HashMap<JidePopup, HashMap<SNAEnum, JCheckBox>> snaCheckBoxes = new HashMap<JidePopup, HashMap<SNAEnum, JCheckBox>>();
-	ArrayList<JTextField> colorLabels = new ArrayList<JTextField>();
+	//ArrayList<JTextField> colorLabels = new ArrayList<JTextField>();
 
 	public EditNationMetadataForm(FormModel arg0) {
 		super(arg0, FORM_ID);
@@ -89,8 +95,11 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 		tlb.cell(new JLabel(Messages.getString("editNationMetadataForm.SNAs")));
 		tlb.gapCol();
 		tlb.cell();
-		// tlb.gapCol();
-		// tlb.cell(new ResourceLabel("Color"));
+		/*
+		tlb.gapCol();
+		tlb.cell(new JLabel("Color"));
+		*/
+		
 		tlb.relatedGapRow();
 		tlb.row();
 		for (int i = 0; i < 25; i++) {
@@ -184,24 +193,30 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 			});
 			tlb.gapCol();
 
-			// final JTextField color = new JTextField("Col");
-			// // color.setBorder(new LineBorder(Color.black));
-			// color.setPreferredSize(new Dimension(34, 16));
-			// color.setHorizontalAlignment(JLabel.CENTER);
-			// colorLabels.add(color);
-			// color.addMouseListener(new MouseAdapter() {
-			//
-			// @Override
-			// public void mouseClicked(MouseEvent arg0) {
-			// super.mouseClicked(arg0);
-			// JColorChooser.showDialog(color, "Choose Color",
-			// color.getBackground());
-			// }
-			//
-			// });
-			// tlb.cell(color);
-
+			/*
+			final JTextField color = new JTextField("Click here");
+			// color.setBorder(new LineBorder(Color.black));
+			color.setPreferredSize(new Dimension(34, 20));
+			color.setHorizontalAlignment(SwingConstants.CENTER);
+			this.colorLabels.add(color);
+			color.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			super.mouseClicked(arg0);
+			Color newColor = JColorChooser.showDialog(color, "Choose Color",
+					color.getBackground());
+			if (newColor!=null) {
+				color.setBackground(newColor);
+				ColorPicker.getInstance().getColor1().put(i, newColor);
+			}
+			}
+			
+			});
+			tlb.cell(color);
+			*/
 			tlb.row();
+			
 		}
 		// trick to make sure line 25 is showing
 		tlb.relatedGapRow();
@@ -251,9 +266,11 @@ public class EditNationMetadataForm extends ScalableAbstractForm {
 				}
 				this.removed.get(i - 1).setSelected(n.getRemoved());
 				updateSNATextFieldFromCheckBoxes(i - 1);
-				// JTextField color = colorLabels.get(i - 1);
-				// color.setBackground(ColorPicker.getInstance().getColor1(i));
-				// color.setForeground(ColorPicker.getInstance().getColor2(i));
+				/*
+				JTextField color = colorLabels.get(i - 1);
+				color.setBackground(ColorPicker.getInstance().getColor1(i));
+				color.setForeground(ColorPicker.getInstance().getColor2(i));
+				*/
 			} else {
 				this.labels.get(i - 1).setEnabled(false);
 				this.nationNames.get(i - 1).setEnabled(false);

@@ -271,6 +271,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				MapMetadata metadata = MapMetadata.instance();
 				metadata.setGridCellHeight(opt.getHeight());
 				metadata.setGridCellWidth(opt.getWidth());
+				
 				if (!MapOptionsView.this.fireEvents)
 					return;
 

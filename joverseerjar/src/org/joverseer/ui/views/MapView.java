@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -19,15 +21,19 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import org.joverseer.JOApplication;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
+import org.joverseer.ui.map.renderers.ImageRenderer;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.viewers.PopulationCenterViewer;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.application.support.AbstractView;
+import org.springframework.richclient.image.DefaultImageSource;
+import org.springframework.richclient.image.ImageSource;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 
 public class MapView extends AbstractView implements ApplicationListener {
@@ -96,17 +102,15 @@ public class MapView extends AbstractView implements ApplicationListener {
 		MapMetadata mm = MapMetadata.instance();
 		this.scp.getVerticalScrollBar().setUnitIncrement(mm.getGridCellHeight() * mm.getHexSize() * 2);
 		this.scp.getHorizontalScrollBar().setUnitIncrement(mm.getGridCellWidth() * mm.getHexSize() * 2);
+		
 		// Add introduction image to explain to new players what to do
-		BufferedImage myImg;
-		try {
-			myImg = ImageIO.read(new File("resources/images/JOverseerIntro.png"));
-			this.introLabel = new JLabel(new ImageIcon(myImg));
-			
+		ImageSource is = JOApplication.getImageSource();
+		Image mapIntro = is.getImage("map.intro");
+		if (mapIntro != null) {
+			this.introLabel = new JLabel(new ImageIcon(mapIntro));
 			this.mapPanel.add(this.introLabel);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		
 		
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		tlb.cell(new JLabel(Messages.getString("MapView.NewGame"))); //$NON-NLS-1$

@@ -29,8 +29,42 @@ public class HexNumberRenderer extends AbstractBaseRenderer {
 
         Hex hex = (Hex)obj;
         if (!this.mapMetadata.withinMapRange(hex)) return;
-
-        Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
+        //set font size based on cell width:
+        switch (this.mapMetadata.getGridCellWidth()) {
+        case 6:
+        	this.fontSize = 4;
+        	break;
+        case 7:
+        	this.fontSize = 5;
+        	break;
+        case 9:
+        	this.fontSize = 6;
+        	break;
+        case 11:
+        	this.fontSize = 7;
+        	break;
+        case 13:
+        	this.fontSize = 8;
+        	break;
+        case 15:
+        	this.fontSize = 9;
+        	break;
+        case 17:
+        	this.fontSize = 10;
+        	break;
+        case 19:
+        	this.fontSize = 11;
+        	break;
+        case 21:
+        	this.fontSize = 12;
+        	break;
+        case 23:
+        	this.fontSize = 13;
+        	break;
+        }
+        //Font f = new Font(this.fontName, this.fontStyle, this.mapMetadata.getGridCellWidth() < 10 ? 7 : this.fontSize);
+        
+        Font f = new Font(this.fontName, this.fontStyle, this.fontSize);
         String hexNo = String.valueOf(hex.getColumn());
         if (hex.getColumn() < 10) {
             hexNo = "0" + hexNo;

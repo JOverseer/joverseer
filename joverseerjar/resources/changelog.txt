@@ -1,3 +1,9 @@
+VERSION 1.18.0
+--------------
+	To update to this version you MUST download the full installer for your operating system.	
+	https://www.middleearthgames.com/gamingsoftware/
+	*Enh: This version includes a minimal version of java 11. No extra version of java is required.
+	
 VERSION 1.16.25
 ---------------
     * Fix: add Navy movement ranges

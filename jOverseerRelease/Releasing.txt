@@ -160,6 +160,24 @@ ftp joverseer
 
 Note: make sure line endings on the mac files are unix style. Problems can stop the launcher to run with a 'no such file or directory' in the console log.
 
+Settings and version dependencies
+=================================
+Sometime around java 9 the default implementation of JAXP (the XML api) changed.
+That required a change of jdom.jar from version 1.08b to 1.1.3.
+
+macOS requires
+ -Dswing.systemlaf=javax.swing.plaf.metal.MetalLookAndFeel
+ -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel
+ to stop the default of WindowsLookAndFeel, which is absent in macOS versions of Java.
+ 
+ -Djava.net.preferIPv4Stack=true
+ is required otherwise networking tries to use IPv6 and networking stuff doesn't work.
+ 
+ Java 9+ requires module tweaking as jOverseer is not modular.
+ --add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED
+ Otherwise you get illegal access control errors about internal interfaces.
+ 
+
 Autoupdate notes
 ================
 
@@ -213,6 +231,8 @@ jOverseerUpdate.exe
 
 jOverseerUpdater.exe is a packaged version of java -jar update ....
 for windows and tagged to request admin privileges.
+
+
 
 update.Main_Gui.java is a simple java AWT application.
 moves it to the appropriate place

@@ -19,7 +19,7 @@
 	<property name="jdk11.macos.dir">/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home</property>
 	<property name="jdk11.appveyor.win.dir">C:\Program Files\Java\jdk11\</property>
 	<property name="jpackager9">javapackager.exe</property>
-	<property name="custom-runtime">jre</property>
+	<property name="custom-runtime">custom-runtime</property>
 
     <property name="launch4j.dir" location="../launch4j"/>
     <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->

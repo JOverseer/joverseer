@@ -24,7 +24,7 @@
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.games</string>
-	<key>LSEnvironment<key>
+	<key>LSEnvironment</key>
 	<dict>
 	  <key>JAVA_HOME</key>
 	  <string>Contents/jre</string>
@@ -33,7 +33,7 @@
 	<string>Copyright Game Systems International Limited</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>There was an error while launching the jOverseer. Please click OK to display a dialog with more information.</string>
-	<key>NSDownloadsFolderUsageDescription</key
+	<key>NSDownloadsFolderUsageDescription</key>
 	<string>jOverseer requires access to your downloads folder for importing turn files.</string>
 	<key>NSDocumentsFolderDescription</key>
 	<string>jOverseer typically requires access to your Documents folder for storing data in a .jov file.</string>

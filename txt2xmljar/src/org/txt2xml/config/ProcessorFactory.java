@@ -134,9 +134,9 @@ public class ProcessorFactory {
                 throw new ConfigException("Configuration's root element '" + rootElement.getName() + "' should be '" + ROOT_ELEMENT + "'");
             }
             return readProcessorSequenceFrom(rootElement);
-        } catch (JDOMException e) {
+        } catch (JDOMException |IOException e) {
             throw new ConfigException("Can't parse configuration: " + configReader, e);
-        }
+		}
     }
 
     /**

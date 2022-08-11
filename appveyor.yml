@@ -24,11 +24,11 @@ for:
     - tar -xzf C:\projects\joverseer\launch4j-3.14-macosx-x86.tgz
   build_script:
     - ant test
-    - ant -f joverseerRelease/build.xml MacOSInstaller
+    - ant -f joverseerRelease/build.xml MacOSInstallerPackages
 
   artifacts:
     - path: jOverseerRelease/dist/build\joverseer-*.pkg
-      name: MacOSInstallerPackages
+      name: MacOSInstaller
 -
   matrix:
     only:

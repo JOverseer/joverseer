@@ -19,7 +19,7 @@
 	<property name="jdk11.macos.dir">/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home</property>
 	<property name="jdk11.appveyor.win.dir">C:\Program Files\Java\jdk11\</property>
 	<property name="jpackager9">javapackager.exe</property>
-	<property name="custom-runtime">custom-runtime</property>
+	<property name="custom-runtime">jre</property>
 
     <property name="launch4j.dir" location="../launch4j"/>
     <!-- /beans/bean[@id='applicationDescriptor']/property[@name='version'].@value -->
@@ -30,11 +30,11 @@
 	<condition property="is.macos">
 		<os family="mac"/>
 	</condition>
-	<!-- note test for mac must be before as mac is unix-like -->
+	<!-- note test for mac must be before as mac is unix-like
 	<condition property="is.linux">
 		<os family="unix"/>
 	</condition>
-
+-->
 	<macrodef name="assertLaunch4jAvailable">
     	<attribute name="dir" />
     	<sequential>
@@ -270,7 +270,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		</exec>
 	</target>
 	<!-- needs to run on a Mac -->
-	<target name="MacOSInstallerPackages" depends="MacOSCommonFiles">
+	<target name="MacOSInstallerPackages" depends="MacOSCommonFiles,customJRE">
 		<exec executable="/usr/local/bin/packagesbuild">
 			<arg value="-v"/>
 			<arg value="${dist}/jOverseer.pkgproj"/>
@@ -394,6 +394,10 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	</target>
 
 	<target name="resolveJDK" depends="resolveJDK-windows,resolveJDK-mac,resolveJDK-linux">
+	 <echo>${is.windows}</echo>
+	 <echo>${is.macos}</echo>
+	 <echo>${is.unix}</echo>
+ 	<echo>${jdk.dir}</echo>
 	</target>
 	
 	<target name="resolveJDK-windows" if="is.windows">
@@ -406,10 +410,10 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		</condition>
 	</target>
 
-	<target name="resolveJDK-mac" if="is.mac">
+	<target name="resolveJDK-mac" if="is.macos">
 		<echo>Building on Mac</echo>
-		<exec executable="/usr/libexec/java_home">
-			<arg>-Fv 11.0</arg>
+		<exec executable="/usr/libexec/java_home" outputproperty="jdk.dir">
+			<arg line ="-Fv 11.0"/>
 		</exec>
 	</target>
 

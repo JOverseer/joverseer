@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.swing.UIManager;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.FileAppender;
@@ -29,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.springframework.richclient.application.ApplicationLauncher;
 
+import com.jidesoft.plaf.LookAndFeelFactory;
 /**
  * The main class for the JOverseer gui client
  */
@@ -89,11 +92,11 @@ public class JOverseerJIDEClient {
 				}
 			}
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
-			//LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
 			
-			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+		        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 
-			// LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+			//LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
 
 			new ApplicationLauncher(STARTUP_CONTEXT, new String[] { APPLICATION_CONTEXT, PAGE_CONTEXT, PREFERENCES_CONTEXT });
 

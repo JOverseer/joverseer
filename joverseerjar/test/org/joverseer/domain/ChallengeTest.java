@@ -19,6 +19,27 @@ public class ChallengeTest {
 	@Test
 	public final void testParse() {
 		Challenge challenge = new Challenge();
+		
+		challenge.setDescription("Challenge from Ajia-Nan-Buhn at 1410 "
+				+ "In the Hills &amp; Rough of 1410 a ritual duel began. A large circle was drawn in the parade grounds outside of the camp. "
+				+ "As the residents of Tymerand gathered around, Ajia-Nan-Buhn, a healthy warrior stepped forth and called challenge. In answer, Targon, a healthy emissary stepped forth. Those watching calculated the odds at 2 to 1 in favour of the challenger. In a long and protracted battle lasting over 8 minutes, the combatants cut and slashed at each other, each apparently unable to fatally wound the other. "
+				+ "In a sudden flurry of feints, disengages, and thrusts, Ajia-Nan-Buhn sensed an opening and drove his weapon into Targon's body, instantly killing him. "
+				+ "Ajia-Nan-Buhn was noted to have suffered grievous wounds in the fight.");
+		challenge.setHexNo(0);
+		challenge.parse();
+		assertEquals("Targon", challenge.loser);
+		assertEquals("Ajia-Nan-Buhn", challenge.victor);
+		
+		
+		challenge.setDescription("In the Open Plains of 2119 a ritual duel began. A large circle was drawn on the paving stones near the market. "
+				+ "As Cykur's army stood by, Cykur, a healthy warrior stepped forth and called challenge. In answer, Anarion, a healthy agent stepped forth. Those watching calculated the odds at 2 to 1 in favour of the challenger. The fight began with Anarion taking the initiative. Anarion stepped forward with flashing daggers while Cykur ducked, parried and counterthrust. " 
+		        + "Suddenly, Anarion slipped within his opponent's guard and dealt Cykur a fatal wound. " 
+		        + "Anarion was noted to have suffered minor wounds in the fight.");
+		challenge.setHexNo(0);
+		challenge.parse();
+		assertEquals("Cykur", challenge.loser);
+		assertEquals("Anarion", challenge.victor);
+		
 		challenge.setDescription(". "
 				+ ". "
 				+ "As the residents of Betelgeuse gathered around, Barbossa, a healthy agent stepped forth and called challenge. "
@@ -54,7 +75,7 @@ public class ChallengeTest {
 				+ "Ringlin relinquished his spirit and gasped his last.");
 		challenge.parse();
 		assertEquals("Ringlin", challenge.loser);
-		// clearly wrong.
+		// clearly wrong. but kept for regression testing
 		assertEquals("Ringlin", challenge.victor);
 		
 

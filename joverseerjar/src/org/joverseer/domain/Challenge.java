@@ -46,6 +46,19 @@ public class Challenge extends Encounter {
 				if (this.victorWounds == null) {
 					this.victorWounds = StringUtils.getUniquePart(ls, "but suffered ", "wounds", false, false);
 				}
+				if (this.victorWounds != null) {
+					int ci1 = ls.indexOf(char1);
+					int ci2 = ls.indexOf(char2);
+					if (ci1 >= 0) {
+						this.victor = char1;
+						this.loser  = char2;
+						return;
+					} else if (ci2 >= 0) {
+						this.victor = char2;
+						this.loser  = char1;						
+						return;
+					} 
+				}
 				// start from the end and find a sentence that mentions both
 				// chars
 				for (int j = sentences.length - 1; j >= 0; j--) {

@@ -521,5 +521,14 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		this.orders[b] = this.orders[b];
 		this.orders[a] = temp;
 	}
+	//fixup bug where a character order gets duplicated.
+	public void checkForDuplicateOrderBug()
+	{
+		// note that we are comparing references here.
+		if (this.orders[0] == this.getOrders()[1]) {
+			// we replace [1] so that the swap orders ui command will fix things whether the duplication is in [0] or [2] 
+			this.orders[1] = new Order(this);
+		}
+	}
 
 }

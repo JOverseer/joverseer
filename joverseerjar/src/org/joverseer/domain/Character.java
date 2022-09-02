@@ -516,5 +516,10 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		if (!getHostages().contains(name))
 			getHostages().add(name);
 	}
+	public void swapOrders(final int a,final int b) {
+		final Order temp = this.orders[a];
+		this.orders[b] = this.orders[b];
+		this.orders[a] = temp;
+	}
 
 }

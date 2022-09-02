@@ -671,7 +671,8 @@ public class CharacterViewer extends ObjectViewer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Character c1 = (Character) getFormObject();
-				c1.setOrders(new Order[] { c1.getOrders()[1], c1.getOrders()[0] });
+				c1.swapOrders(0, 1);
+				
 				JOApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, MapPanel.instance().getSelectedHex(), this);
 			}
 		});

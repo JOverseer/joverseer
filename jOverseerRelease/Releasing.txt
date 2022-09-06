@@ -14,7 +14,7 @@ The latestupdate.zip is theoretically platform independent, but in practice the 
 
 Appveyor.com automatically builds the Windows and Linux versions when the github master branch is updated.
 Travis.com used to do the same for MacOS - but no longer.
-A local version of MacOS is required to build and release jOverseer for MacOS.
+Appveyor is now producing the macOS .pkg file
 
 1. Bump the version in
 main/resources/ctx/jideApplicationContext.xml

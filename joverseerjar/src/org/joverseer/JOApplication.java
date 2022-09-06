@@ -12,12 +12,16 @@ import org.joverseer.support.info.InfoRegistry;
 import org.joverseer.tools.ordercheckerIntegration.OrderResultTypeEnum;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.combatCalculator.CombatFormHolder;
+import org.joverseer.ui.jide.JOverseerJideViewDescriptor;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.ApplicationDescriptor;
+import org.springframework.richclient.application.ApplicationServicesLocator;
+import org.springframework.richclient.application.ViewDescriptor;
+import org.springframework.richclient.application.ViewDescriptorRegistry;
 import org.springframework.richclient.image.ImageSource;
 
 public class JOApplication {
@@ -112,5 +116,25 @@ public class JOApplication {
 	{
 		getApplicationContext().publishEvent(new JOverseerEvent(type, object,null));
 	}
-
+	/*
+	 * Find a specific page by view name.
+	 * Use sparingly and consider using publishEvent instead.
+	 * consider impact of threads and circular dependencies.
+	 * Created to allow togglePC to be lost from CurrentHexView to efficiently
+	 * trigger EconomyCalculator.
+	 */
+	static public JOverseerJideViewDescriptor findViewInstance(String desiredViewId) {
+		ViewDescriptorRegistry viewDescriptorRegistry = (ViewDescriptorRegistry) ApplicationServicesLocator.services().getService(ViewDescriptorRegistry.class);
+		ViewDescriptor[] views = viewDescriptorRegistry.getViewDescriptors();
+		for (int i = 0; i < views.length; i++) {
+			ViewDescriptor candidateView = views[i];
+			if(candidateView instanceof JOverseerJideViewDescriptor){
+				JOverseerJideViewDescriptor view = (JOverseerJideViewDescriptor)candidateView;
+				if (view.getId().equalsIgnoreCase(desiredViewId)) {
+					return view;
+				}
+			}
+		}
+		return null;
+    }
 }

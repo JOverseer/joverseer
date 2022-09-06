@@ -1,8 +1,13 @@
+VERSION 1.18.1
+--------------
+	* Fix: one version of a Challenger report in the Turn Report View.
+	* Fix: Allow 'swap orders' to fix the bugged case when two orders appear as the same order twice.
+	 
 VERSION 1.18.0
 --------------
 	To update to this version you MUST download the full installer for your operating system.	
 	https://www.middleearthgames.com/gamingsoftware/
-	*Enh: This version includes a minimal version of java 11. No extra version of java is required.
+	* Enh: This version includes a minimal version of java 11. No extra version of java is required.
 	
 VERSION 1.16.25
 ---------------

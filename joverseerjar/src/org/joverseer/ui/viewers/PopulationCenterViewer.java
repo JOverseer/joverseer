@@ -481,6 +481,8 @@ public class PopulationCenterViewer extends ObjectViewer {
 		protected void doExecuteCommand() {
 			PopulationCenter pc = (PopulationCenter) getFormObject();
 			pc.setLostThisTurn(!pc.getLostThisTurn());
+			//TODO: just send a message to the EconomyCalculator
+			//JOverseerJideViewDescriptor view = JOApplication.findViewInstance("economyCalculatorView");
 			JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, MapPanel.instance().getSelectedHex(), this);
 		}
 	}

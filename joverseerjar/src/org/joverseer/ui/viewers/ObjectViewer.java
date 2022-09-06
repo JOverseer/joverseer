@@ -7,7 +7,7 @@ import org.springframework.richclient.form.AbstractForm;
 
 /**
  * Base class for all viewers
- * Not really used
+ * Not really used except for gameholder!
  *
  * @author Marios Skounakis
  */

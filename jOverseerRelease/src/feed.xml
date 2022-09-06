@@ -7,6 +7,16 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.1</title>
+			<pubDate>6 Sep 2022</pubDate>
+			<description>
+				VERSION 1.18.1
+				--------------
+				* Fix: one version of a Challenger report in the Turn Report View.
+				* Fix: Allow 'swap orders' to fix the bugged case when two orders appear as the same order twice.				
+			</description>
+		</item>
+		<item>
 			<title>1.18.0</title>
 			<pubDate>11 Aug 2022</pubDate>
 			<description>
@@ -15,7 +25,7 @@
 				To update to this version you MUST download the full installer for your operating system.	
 				https://www.middleearthgames.com/gamingsoftware/
 				
-				*Enh: This version includes a minimal version of java 11. No extra version of java is required.
+				* Enh: This version includes a minimal version of java 11. No extra version of java is required.
 			</description>
 		</item>
 		<item>

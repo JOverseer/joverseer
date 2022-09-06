@@ -61,6 +61,11 @@ import com.jidesoft.popup.JidePopup;
  */
 public class EconomyCalculator extends BaseView implements ApplicationListener {
 
+	public EconomyCalculator() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	int tranCarOrderCost = 0;
 	JLabel autocalcOrderCost;
 	JLabel finalGoldWarning;
@@ -574,7 +579,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		ArrayList<PopulationCenter> items = new ArrayList<PopulationCenter>();
 		Game g = this.getGame();
 		if (Game.isInitialized(g) && g.getTurn() != null) {
-			for (PopulationCenter pc : g.getTurn().getPopulationCenters().getItems()) {
+				for (PopulationCenter pc : g.getTurn().getPopulationCenters().getItems()) {
 				if (pc.getNationNo() == nationNo && pc.getSize() != PopulationCenterSizeEnum.ruins) {
 					items.add(pc);
 				}
@@ -582,6 +587,16 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		}
 		this.lostPopsTableModel.setRows(items);
 		this.lostPopsTableModel.fireTableDataChanged();
+	}
+	public void refreshPcs() {
+		if (EconomyCalculator.this.nationCombo.getSelectedItem() == null)
+			return;
+		Game g = this.getGame();
+		if (Game.isInitialized(g) && g.getTurn() != null) {
+			Nation n = g.getMetadata().getNationByName(EconomyCalculator.this.nationCombo.getSelectedItem().toString());
+			this.refreshPcs(n.getNumber());
+		}
+		
 	}
 
 	/**

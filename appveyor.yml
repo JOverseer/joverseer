@@ -19,6 +19,7 @@ for:
   install:
 # update skipped - see github re shallow clone
 #   - brew update
+    - brew install openjdk
     - brew install --ignore-dependencies ant packages ant-contrib
     - curl -L https://sourceforge.net/projects/launch4j/files/launch4j-3/3.14/launch4j-3.14-macosx-x86.tgz --output C:\projects\joverseer\launch4j-3.14-macosx-x86.tgz
     - tar -xzf C:\projects\joverseer\launch4j-3.14-macosx-x86.tgz

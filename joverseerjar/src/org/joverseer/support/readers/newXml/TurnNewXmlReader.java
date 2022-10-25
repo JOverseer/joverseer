@@ -982,6 +982,7 @@ public class TurnNewXmlReader implements Runnable {
 				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA
 						|| game1.getMetadata().getGameType() == GameTypeEnum.gameKS
 						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCME
+						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCMF
 						) {
 					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
 					boolean found = false;

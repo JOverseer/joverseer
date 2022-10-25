@@ -379,9 +379,16 @@ public class GameMetadata implements Serializable {
 	// then check classpath
 	// note that getBasePath is not just a getter.
 	public BufferedReader getUTF8ResourceByGame(String filename, boolean ignoreComments) throws IOException {
-		return getUTF8Resource(getGameType().toString() + "." + filename, ignoreComments);
+		try {
+			return getUTF8Resource(getGameType().toString() + "." + filename, ignoreComments);
+		} catch (IOException e) {
+			if (this.gameType != GameTypeEnum.gameCMF) {
+				throw e;
+			}
+			return getUTF8Resource(GameTypeEnum.gameCME.toString() + "." + filename, ignoreComments);
+		}
 	}
-	public Resource getResource(String resourceName) {
+	public Resource getResource(String resourceName) throws IOException {
 		try {
 			Resource r = Application.instance().getApplicationContext().getResource("file:///" + getBasePath() + "/" + resourceName);
 			new InputStreamReader(r.getInputStream());
@@ -394,7 +401,7 @@ public class GameMetadata implements Serializable {
 				return r;
 			} catch (Exception ex) {
 				Logger.getLogger(this.getClass().getName()).warning(resourceName);
-				return null;
+				throw new IOException(resourceName + " not found.");
 			}
 		}
 	}

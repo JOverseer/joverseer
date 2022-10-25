@@ -505,6 +505,8 @@ public class OrderParameterValidator {
 				nations = "1,2,3,5,8,10,11,12,13,18,24";
 			} else if (g.getMetadata().getGameType() == GameTypeEnum.gameCME) {
 				nations = "1,2";
+			} else if (g.getMetadata().getGameType() == GameTypeEnum.gameCMF) {
+				nations = "1,2,11,12";
 			}
 			if (inList(paramValue, nations)) {
 				return null;

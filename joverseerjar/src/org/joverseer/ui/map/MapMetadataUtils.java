@@ -26,7 +26,7 @@ public class MapMetadataUtils {
 
             JOApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 
-        } else if (gameType == GameTypeEnum.gameCME) {
+        } else if ((gameType == GameTypeEnum.gameCME) || (gameType == GameTypeEnum.gameCMF)) {
             metadata.setMinMapColumn(19);
             metadata.setMinMapRow(6);
             metadata.setMaxMapColumn(34);

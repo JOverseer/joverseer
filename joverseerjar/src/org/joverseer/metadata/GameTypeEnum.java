@@ -14,7 +14,8 @@ public enum GameTypeEnum {
     gameFA("1000"),
     gameUW("UW"),
     gameKS("KS"),
-	gameCME("CME");
+    gameCME("CME"),
+    gameCMF("CMF");
 
     private final String myName;
 
@@ -53,6 +54,9 @@ public enum GameTypeEnum {
 		} 
 		if (this.equals(GameTypeEnum.gameCME)) {
 			return "CME";
+		}
+		if (this.equals(GameTypeEnum.gameCMF)) {
+			return "CMF";
 		}
 		return "unknown";
     }

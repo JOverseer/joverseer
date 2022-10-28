@@ -40,9 +40,15 @@ XPath:
 https://github.com/JOverseer/joverseer/wiki
 https://github.com/JOverseer/joverseer/wiki/Installation-Instructions
 
-5a. Appveyor.com should wake up and build 
+5. *Alternatives 5a|5b|5c *
+5a. Appveyor.com should wake up and build. So the result of a build is currently available for 1 month at
+https://ci.appveyor.com/project/GnarlyDave/joverseer
+select the mac/visual studio and the artifacts tab to download installers to test.
 
-5b. compile (manual process if local) 
+https://ci.appveyor.com/project/GnarlyDave/joverseer
+select the mac/visual studio and the artifacts tab to download installers to test.
+
+5b. eclipse compile (manual process if local) 
   from eclipse by clicking on each component's build.xml in dependency order;
   txt2xmljar
   orderchecker
@@ -52,10 +58,39 @@ https://github.com/JOverseer/joverseer/wiki/Installation-Instructions
   and pick the appropriate target in
   joverseerRelease (build.xml)
   
-5c. or run buildjars.bat
+5c. or on Dave's machine run build.bat
 
-6a. copy from
-6b. ftp latestupdate.zip to middleearthgames.com
+5d. manual java build steps
+build the windows installer
+ from jOverseerRelease\build.xml
+using the target windowsInstaller
+
+build the macOS installer
+ from jOverseerRelease\build.xml
+using the target MacOSInstaller
+(requires a MacOS computer)
+
+7. Pre-release testing
+7.1 consider selecting an update to java to embed in installer.
+7.2 other tests.
+
+8. Release
+8.1 upload joverseer-setupxxxxx.exe to website
+8.2 upload the *.pkg file to website
+8.3 upload zip file for linux users?
+8.4 upload the latestupdate.zip to website
+8.5 upload the updated feed.xml
+8.6 update the middleearthgames.com/gamingsoftware website
+8.7 update the github wiki pages.
+
+Testing
+-------
+using 
+ant test
+runs some basic confidence tests.
+
+Appveyor will run these before building the installer.
+The test results are not currently integrated into Appveyor reporting.
 
 
 (delete the registry entry if testing)
@@ -64,23 +99,12 @@ https://github.com/JOverseer/joverseer/wiki/Installation-Instructions
 
 start joverseer.
 
-build the windows installer
- from jOverseerRelease\build.xml
-using the target windowsInstaller
-upload joverseer-setupxxxxx.exe to website
-
-build the macOS installer
- from jOverseerRelease\build.xml
-using the target MacOSInstaller
-(requires a MacOS computer)
-upload the *.pkg file to website
-
-upload zip file for linux users?
-
-update the website and wiki pages.
-
 Remember that the updaters will not trigger until the feed.xml has a higher version number, so do that last.
 No longer true as of 1.16.3 you can manually force a check for update and force the update to happen.
+
+Try running joverseer and check Help->Check for update. You should get popup window.
+If you get 'SSL Handshaking Exception' or nothing... check that the custom java runtime has the appropriate
+cipher enabled for https://www.middleearth.com. Check the java_home/conf/security/java.security
 
 Checklist of types of users
 ---------------------------

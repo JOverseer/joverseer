@@ -17,9 +17,15 @@ public class UpdateChecker {
     {
     	String interested;
     	data = getData(RSSfeed);
+    	if (isRedirected()) {
+    		throw new Exception("Got permanent redirect. Please correct RSS feed URL in preferences.");
+    	}
     	interested = firstTag(data, "item");
         return new ThreepartVersion(firstTag(interested, "title"));
 
+    }
+    public static boolean isRedirected() {
+    	return data.contains("301 Moved Permanently");
     }
     public static String getWhatsNew(String RSSfeed) throws Exception
     {
@@ -48,6 +54,11 @@ public class UpdateChecker {
     }
     public static String firstTag(String whole,String tag)
     {
-    	return whole.substring(whole.indexOf("<"+tag+">")+tag.length()+2,whole.indexOf("</" + tag +">"));
+    	int startTagPos = whole.indexOf("<"+tag+">");
+    	int endTagPos = whole.indexOf("</" + tag +">");
+    	if ((startTagPos < 0)||(endTagPos <0)) {
+    		return "";
+    	}
+    	return whole.substring(startTagPos+tag.length()+2,endTagPos);
     }
 }

@@ -15,7 +15,7 @@
 	<property name="updater.jar">../joverseerupdaterjar/dist/lib/update.jar</property>
 	<property name="res.dir">${jojar.project.dir}resources</property>
 	<property name="compat.rt.jar">${shared.lib}/compat-1.8-rt.jar</property>
-	<property name="jdk11.dave.dir">c:\Program Files\Eclipse Adoptium\jdk-11.0.16.8-hotspot\</property>
+	<property name="jdk11.dave.dir">c:\Program Files\Eclipse Adoptium\jdk-11.0.16.101-hotspot\</property>
 	<property name="jdk11.macos.dir">/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home</property>
 	<property name="jdk11.appveyor.win.dir">C:\Program Files\Java\jdk11\</property>
 	<property name="jpackager9">javapackager.exe</property>
@@ -250,7 +250,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 			<arg value="--compress=2"/>
 			<arg value="--strip-debug"/>
 			<arg value="--add-modules"/>
-			<arg value="java.base,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.naming,java.prefs,java.rmi,java.sql,java.xml,jdk.httpserver"/>
+			<arg value="java.base,java.datatransfer,java.desktop,java.instrument,java.logging,java.management,java.naming,java.prefs,java.rmi,java.sql,java.xml,jdk.httpserver,jdk.crypto.ec"/>
 			<arg value="--output"/>
 			<arg value="${custom-runtime}"/>
 			

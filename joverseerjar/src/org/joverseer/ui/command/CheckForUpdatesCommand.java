@@ -44,8 +44,15 @@ public class CheckForUpdatesCommand extends ActionCommand{
 			String str = new SimpleDateFormat().format(new Date());
 			Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
 			prefs.put("lastVersionCheckDate", str);
+	    } catch (javax.net.ssl.SSLHandshakeException e) {
+			e.printStackTrace();
+			System.out.print("try restarting with -Djavax.net.debug=all and check the logs");
+			//javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
+	    	
 		} catch (Exception exc) {
 			// do nothing
+			System.out.print("exception in updater");
+			exc.printStackTrace();
 		}
 
 	}

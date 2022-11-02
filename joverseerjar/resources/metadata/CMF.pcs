@@ -9,7 +9,7 @@
 "2013",0,1,0,1,0,0,"Sirranon Ford",30,False,False,,False
 "2106",0,1,1,1,0,0,"Mithrin Dale",30,False,False,,False
 "2114",0,2,0,12,0,0,"West-look",40,False,False,,False
-"2119",0,2,0,12,0,0,"East-look",40,False,False,,False
+"2116",0,2,0,12,0,0,"East-look",40,False,False,,False
 "2118",0,1,0,12,0,0,"Lag-sharak",30,False,False,,False
 "2119",0,4,4,27,0,0,"Isengard",75,False,False,,False
 "2121",0,3,4,26,0,0,"Helm's Deep",55,False,False,,False
@@ -27,9 +27,9 @@
 "2912",0,3,2,26,0,0,"Buhr Rhosc",55,False,False,,False
 "2924",0,4,4,26,0,1,"Minas Tirith",75,False,False,,False
 "3024",0,3,2,26,0,0,"Osgiliath",55,False,False,,False
-"3107",0,4,4,26,0,0,"Erebor",75,False,False,,False
+"3107",0,4,4,2,0,0,"Erebor",75,False,False,,False
 "3108",0,1,0,2,0,0,"Dale",30,False,False,,False
-"3109",0,3,1,26,0,0,"Esgaroth",55,False,False,,False
+"3109",0,3,1,2,0,0,"Esgaroth",55,False,False,,False
 "3120",0,3,2,27,0,0,"Gates of Morannon",55,False,False,,False
 "3121",0,1,1,2,0,0,"Narchost",30,False,False,,False
 "3123",0,1,0,27,0,0,"Torech Ungol",30,False,False,,False

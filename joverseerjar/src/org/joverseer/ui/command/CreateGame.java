@@ -77,8 +77,7 @@ public class CreateGame extends ActionCommand {
 
             			Turn t0 = new Turn();
             			t0.setTurnNo(0);
-            			TurnInitializer ti = new TurnInitializer();
-            			ti.initializeTurnWith(t0, null);
+            			TurnInitializer.initializeTurnWith(t0, null, gm);
             			game.addTurn(t0);
 
             			JOApplication.publishEvent(LifecycleEventsEnum.GameChangedEvent, game, this);

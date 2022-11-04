@@ -274,9 +274,8 @@ public class TurnXmlReader implements Runnable {
 			} else {
 				this.turn = new Turn();
 				this.turn.setTurnNo(this.turnInfo.getTurnNo());
-				TurnInitializer ti = new TurnInitializer();
 				Turn lastTurn = game1.getTurn();
-				ti.initializeTurnWith(this.turn, lastTurn);
+				TurnInitializer.initializeTurnWith(this.turn, lastTurn, this.game.getMetadata());
 				game1.addTurn(this.turn);
 			}
 			this.currentNationPops = new ArrayList<PopulationCenter>();

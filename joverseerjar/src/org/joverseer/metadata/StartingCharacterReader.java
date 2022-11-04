@@ -4,11 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import org.joverseer.domain.Character;
 import org.joverseer.support.Container;
+import org.joverseer.support.StringUtils;
 import org.joverseer.support.infoSources.MetadataSource;
 
 public class StartingCharacterReader implements MetadataReader {
 	String characterFilename = "startchars";
-
+	
 	@Override
 	public void load(GameMetadata gm) throws IOException, MetadataReaderException {
 		gm.setStartDummyCharacters(loadCharacters(gm));
@@ -29,12 +30,22 @@ public class StartingCharacterReader implements MetadataReader {
 					continue;
 				int nationNo = Integer.parseInt(parts[3]);
 				String charName = parts[1];
-				String id = charName.toLowerCase().substring(0, Math.min(5, charName.length()));
+				String id = StringUtils.toCharacterId(charName);
 				int hexNo = Integer.parseInt(parts[0]);
-				Character c = new Character();
-				c.setNationNo(Integer.valueOf(nationNo));
-				c.setName(charName);
-				c.setId(id);
+				Character c;
+				Character existing;
+				existing = gm.getCharacters().findFirstByProperty("name", charName);
+				if (existing == null) {
+					existing = gm.getCharacters().findFirstByProperty("id", id);
+				}
+				if (existing != null) {
+					c = existing.clone();
+				} else {
+					c = new Character();
+					c.setNationNo(Integer.valueOf(nationNo));
+					c.setName(charName);
+					c.setId(id);
+				}
 				c.setHexNo(hexNo);
 				c.setInfoSource(ms);
 				c.setStartInfoDummy(true);

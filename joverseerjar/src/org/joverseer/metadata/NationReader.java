@@ -84,8 +84,8 @@ public class NationReader implements MetadataReader {
 		{ "Unplayed VI", "UN6", new Object[] {} },
 		{ "Unplayed VII", "UN7", new Object[] {} },
 		{ "Unplayed VIII", "UN8", new Object[] {} },
-		{ "Unplayed X", "UN9", new Object[] {} },
-		{ "Unplayed IX", "UN10", new Object[] {} },
+		{ "Unplayed IX", "UN9", new Object[] {} },
+		{ "Unplayed X", "UN10", new Object[] {} },
 		{ "Unplayed XI", "UN11", new Object[] {} },
 		{ "Unplayed XII", "UN12", new Object[] {} },
 		{ "Unplayed XIII", "UN13", new Object[] {} },
@@ -113,8 +113,8 @@ public class NationReader implements MetadataReader {
 		{ "Unplayed VI", "UN6", new Object[] {} },
 		{ "Unplayed VII", "UN7", new Object[] {} },
 		{ "Unplayed VIII", "UN8", new Object[] {} },
-		{ "Unplayed X", "UN9", new Object[] {} },
-		{ "Unplayed IX", "UN10", new Object[] {} },
+		{ "Unplayed IX", "UN9", new Object[] {} },
+		{ "Unplayed X", "UN10", new Object[] {} },
 		{ "Unplayed XI", "UN11", new Object[] {} },
 		{ "Unplayed XII", "UN12", new Object[] {} },
 		{ "Unplayed XIII", "UN13", new Object[] {} },
@@ -135,18 +135,18 @@ public class NationReader implements MetadataReader {
 	};
 	Object[][] nations_CMF = new Object[][] {
 		{ "Unknown", "Un", new Object[] {} },
-		{ "Free People", "FP", new Object[] {  } },
-		{ "Free People", "FP", new Object[] {  } },
+		{ "Rivendell", "Riv", new Object[] {  } },
+		{ "Erebor", "Ere", new Object[] {  } },
 		{ "Unplayed III", "UN3", new Object[] {  } },
 		{ "Unplayed IV", "UN4", new Object[] {  } },
 		{ "Unplayed V", "UN5", new Object[] {} },
 		{ "Unplayed VI", "UN6", new Object[] {} },
 		{ "Unplayed VII", "UN7", new Object[] {} },
 		{ "Unplayed VIII", "UN8", new Object[] {} },
-		{ "Unplayed X", "UN9", new Object[] {} },
-		{ "Unplayed IX", "UN10", new Object[] {} },
-		{ "Dark Servants", "DS", new Object[] {  } },
-		{ "Dark Servants", "DS", new Object[] {  } },
+		{ "Unplayed IX", "UN9", new Object[] {} },
+		{ "Unplayed X", "UN10", new Object[] {} },
+		{ "Mordor", "Mor", new Object[] {  } },
+		{ "Isengard","Ise", new Object[] {  } },
 		{ "Unplayed XIII", "UN13", new Object[] {} },
 		{ "Unplayed XIV", "UN14", new Object[] {} },
 		{ "Unplayed XV", "UN15", new Object[] {} },
@@ -415,8 +415,8 @@ public class NationReader implements MetadataReader {
 			}
 		} else if (gm.getGameType() == GameTypeEnum.gameCMF) {
 			for (int i = 0; i < 28; i++) {
-				String shortName = (String) this.nations_CME[i][1];
-				String name = (String) this.nations_CME[i][0];
+				String shortName = (String) this.nations_CMF[i][1];
+				String name = (String) this.nations_CMF[i][0];
 				Nation n = new Nation(i, name, shortName);
 				number = n.getNumber().intValue();
 				if ((i==1) || (i==2)) {
@@ -426,7 +426,7 @@ public class NationReader implements MetadataReader {
 				} else {
 				  n.setAllegiance(NationAllegianceEnum.Neutral);
 				}
-				addSNAs(n, (Object[]) this.nations_CME[i][2]);
+				addSNAs(n, (Object[]) this.nations_CMF[i][2]);
 				nations.add(n);
 				boolean removed = false;
 				if (((number > 2) && (number < 11)) || (number > 12))

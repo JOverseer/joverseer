@@ -1,6 +1,7 @@
 package org.joverseer.support;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -213,4 +214,139 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		}
 		return "";
 	}
+	/**
+	 * return a character id hash based on the accented (or not) character name.
+	 * basically strips off accents and converts to lowercase independently of current locale.
+	 * @param s
+	 * @return
+	 */
+	public static String toCharacterId(String s) {
+		/*
+		 * from Character.class scriptStarts and wikipedia https://en.wikipedia.org/wiki/List_of_Unicode_characters
+		 * 00-40 = common
+		 * 41-5A = latin1 uppercase no accents
+		 * 5B-60 = common punctuation including grave accent
+		 * 61-7A = latin1 lowercase no accents
+		 * 7B-A9 = common incl &nbsp
+		 * AA-AA = latin1 &ordf
+		 * AB-B9 = common
+		 * BA-BA = latin1 &ordm
+		 * BB-BF = common punctuation incl &&cedil and acute accent
+		 * C0-D6 = latin1 uppercase accents
+		 * D7-D7 = common &times
+		 * D8-F6 = latin1 uppercase accented
+		 * F7-F7 = common &divide
+		 * F8-FF = latin1 lowercase accented 
+		 */
+		int candidateIndex = 0;
+		int outputIndex = 0;
+		char output[] = new char[5];
+		int candidateCodepoint;
+		int lastInputStringIndex = s.length()-1;
+		while (outputIndex < 5) {
+			if (candidateIndex > lastInputStringIndex) {
+				//we've run out so pad with spaces to 5 characters.
+				candidateCodepoint = 0x0020; 
+			} else {
+				candidateCodepoint = Character.codePointAt(s,candidateIndex);
+			}
+			// most likely first
+			if (Character.UnicodeBlock.of(candidateCodepoint).equals(Character.UnicodeBlock.BASIC_LATIN)) {
+				// no accents, just to lower needed
+				output[outputIndex++] = Character.toLowerCase((char)candidateCodepoint);
+				continue;
+			}
+			if (Character.UnicodeBlock.of(candidateCodepoint).equals(Character.UnicodeBlock.LATIN_1_SUPPLEMENT)) {
+				//accents
+				boolean isRecognised = true;
+				switch (candidateCodepoint) {
+				case 0x00C0: // &Agrave;
+				case 0x00C1:
+				case 0x00C2:
+				case 0x00C3:
+				case 0x00C4:
+				case 0x00C5:
+				case 0x00E0: // &agrave;
+				case 0x00E1:
+				case 0x00E2:
+				case 0x00E3:
+				case 0x00E4:
+				case 0x00E5:
+							output[outputIndex++] = 'a';
+							break;
+				case 0x00C7: // &CCedil;
+				case 0x00E7: // &ccedil;
+					output[outputIndex++] = 'c';
+					break;
+				case 0x00C8: // &EGrave;
+				case 0x00C9:
+				case 0x00CA:
+				case 0x00CB:
+				case 0x00E8: // &egrave;
+				case 0x00E9:
+				case 0x00EA:
+				case 0x00EB:
+						output[outputIndex++] = 'e';
+						break;
+				case 0x00CC: // &IGrave;
+				case 0x00CD:
+				case 0x00CE:
+				case 0x00CF:
+				case 0x00EC: // &igrave;
+				case 0x00ED:
+				case 0x00EE:
+				case 0x00EF:
+						output[outputIndex++] = 'i';
+						break;
+				case 0x00D0: // &ETH;
+					output[outputIndex++] = 'd';
+					break;
+				case 0x00D1: // &Ntilde;
+				case 0x00F1:
+					output[outputIndex++] = 'n';
+					break;
+				case 0x00D2: // &Ograve;
+				case 0x00D3:
+				case 0x00D4:
+				case 0x00D5:
+				case 0x00D6:
+				case 0x00D8:
+				case 0x00F0:
+				case 0x00F2:
+				case 0x00F3:
+				case 0x00F4:
+				case 0x00F5:
+				case 0x00F6:
+				case 0x00F8:
+						output[outputIndex++] = 'o';
+						break;
+				case 0x00D9: // &Ugrave;
+				case 0x00DA:
+				case 0x00DB:
+				case 0x00DC:
+				case 0x00F9: // &ugrave;
+				case 0x00FA:
+				case 0x00FB:
+				case 0x00FC:
+						output[outputIndex++] = 'u';
+						break;
+				case 0x00DD: // &Yacute;
+					output[outputIndex++] = 'y';
+					break;
+				default:
+					isRecognised = false;
+					break;
+				}
+				if (isRecognised) {
+					continue;
+				}
+			}
+		
+			// here - we don't recognise it - skip
+			candidateIndex++;
+		}
+		
+		return String.valueOf(output); 
+	}
+	
 }

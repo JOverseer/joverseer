@@ -2,11 +2,13 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Character;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
+import org.springframework.util.StringUtils;
 
 /**
  * Reads starting character information
@@ -27,7 +29,7 @@ public class CharacterReader implements MetadataReader {
 
 		MetadataSource ms = new MetadataSource();
 
-		String ln=""; // outside so that the exception can report something useful
+		String ln=""; // outside the try/catch so that the exception can report something useful
 		try {
 			BufferedReader reader = gm.getUTF8ResourceByGame(this.characterFilename,true);
 
@@ -35,7 +37,7 @@ public class CharacterReader implements MetadataReader {
 				String[] parts = ln.split(";");
 				int nationNo = Integer.parseInt(parts[0]);
 				String charName = parts[1];
-				String id = charName.toLowerCase().substring(0, Math.min(5, charName.length()));
+				String id = org.joverseer.support.StringUtils.toCharacterId(charName);
 				int command = Integer.parseInt(parts[2]);
 				int agent = Integer.parseInt(parts[3]);
 				int emmisary = Integer.parseInt(parts[4]);

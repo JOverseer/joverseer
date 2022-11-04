@@ -118,7 +118,8 @@ public class CharacterInfoCollector implements ApplicationListener {
 			if (t == null)
 				continue;
 			for (Character c : t.getAllCharacters()) {
-				if (c.isStartInfoDummy())
+				if (c.isStartInfoDummy() && (turnNo != 0))
+					// normally exclude starting character info, as it's hearsay except for T0
 					continue;
 				ArrayList<AdvancedCharacterWrapper> matches = ret.findAllByProperty("id", c.getId());
 

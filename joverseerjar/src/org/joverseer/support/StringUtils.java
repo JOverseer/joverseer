@@ -254,6 +254,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 			if (Character.UnicodeBlock.of(candidateCodepoint).equals(Character.UnicodeBlock.BASIC_LATIN)) {
 				// no accents, just to lower needed
 				output[outputIndex++] = Character.toLowerCase((char)candidateCodepoint);
+				candidateIndex++;
 				continue;
 			}
 			if (Character.UnicodeBlock.of(candidateCodepoint).equals(Character.UnicodeBlock.LATIN_1_SUPPLEMENT)) {

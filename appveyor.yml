@@ -17,10 +17,12 @@ for:
       - image: macos-bigsur
       
   install:
-# update skipped - see github re shallow clone
-#   - brew update
-    - brew install openjdk 
-    - brew install launch4j ant packages ant-contrib
+    - echo $SHELL
+    - /usr/libexec/java_home -V
+    - java --version
+    - export JAVA_HOME=`/usr/libexec/java_home -V11.*`
+    - java --version
+    - ant -version
 
   build_script:
     - ant test

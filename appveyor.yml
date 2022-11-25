@@ -20,10 +20,12 @@ for:
     - echo $SHELL
     - /usr/libexec/java_home -V
     - java --version
-    - export JAVA_HOME=`/usr/libexec/java_home -v11.+`
+    - export JAVA_HOME=`/usr/libexec/java_home -v11.*`
     - java --version
+    - brew install ant ant-contrib
+    - brew install launch4j
     - ant -version
-
+    
   build_script:
     - ant test
     - ant -f joverseerRelease/build.xml MacOSInstallerPackages

@@ -14,13 +14,13 @@ for:
 -
   matrix:
     only:
-      - image: macos-bigsur
+      - image: macos-catalina
       
   install:
     - echo $SHELL
     - /usr/libexec/java_home -V
     - java --version
-    - export JAVA_HOME=`/usr/libexec/java_home -V11.*`
+    - export JAVA_HOME=`/usr/libexec/java_home -v11.+`
     - java --version
     - ant -version
 

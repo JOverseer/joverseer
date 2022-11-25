@@ -22,6 +22,10 @@ for:
     - java --version
     - export JAVA_HOME=`/usr/libexec/java_home -v13.*`
     - java --version
+#fix the problem ones
+    - brew uninstall xorgproto subversion
+    - brew prune
+# back to what we want
     - brew install ant ant-contrib
     - brew install launch4j
     - ant -version

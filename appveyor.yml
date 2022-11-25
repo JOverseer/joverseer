@@ -22,10 +22,11 @@ for:
     - java --version
     - export JAVA_HOME=`/usr/libexec/java_home -v13.*`
     - java --version
+    - brew deps --tree ant
+    - brew deps --tree ant-contrib
 #fix the problem ones
     - ls /usr/local/Cellar
     - brew unlink subversion
-    - brew link --overwrite --dry-run xorgproto
 # back to what we want
     - brew install ant
     - ant -version

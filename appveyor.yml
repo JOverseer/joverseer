@@ -14,7 +14,7 @@ for:
 -
   matrix:
     only:
-      - image: macOS
+      - image: macos-bigsur
       
   install:
 # update skipped - see github re shallow clone

@@ -1,6 +1,6 @@
 version: 1.0.{build}
 image:
-  - macos-bigsur
+  - macos-catalina
 # 2017 is the latest with Inno Setup also installed.
   - Visual Studio 2017
   - Ubuntu2004

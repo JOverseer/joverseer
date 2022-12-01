@@ -159,12 +159,13 @@
 	</target>
 	<target name="WindowsUpdaterLauncher" depends="UpdateJar,WindowsIcon">
     	<assertLaunch4jAvailable dir="${launch4j.dir}"/>
-	    <launch4j>
+<!--	    <launch4j>
 	  		<config headerType="gui" jar="${updater.jar}" outfile="${dist}/jOverseerUpdater.exe" stayAlive="false" manifest="${src}/updatewithUAC.manifest">
 				<singleInstance mutexName="com.middleearthgames.joverseer.updater" />
 				<jre minVersion="1.8.0" />
           	</config>
-		</launch4j>
+		</launch4j> -->
+        <launch4j configFile="${src}/jOverseerUpdaterLaunch4j.xml" outfile="${dist}/jOverseerUpdater.exe"/>
     </target>
 
     <target name="WindowsJoverseerLauncher" depends="versionLabel,JoverseerJar,WindowsIcon">
@@ -176,7 +177,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 </launch4j>
       -->
       <assertLaunch4jAvailable dir="${launch4j.dir}"/>
-      <launch4j configFile="${src}/jOverseerLauncher.xml" outfile="${dist}/jOverseer.exe"/>
+        <launch4j configFile="${src}/jOverseerLauncher.xml" outfile="${dist}/jOverseer.exe"/>
     </target>
 
 	<!-- don't include jide-common.jar in update, since we now have platform specific versions -->

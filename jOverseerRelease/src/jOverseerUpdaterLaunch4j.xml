@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>out/update.jar</jar>
-  <outfile>out/jOverseerUpdater.exe</outfile>
+  <jar>../dist/update.jar</jar>
+  <outfile>../dist/jOverseerUpdater.exe</outfile>
   <errTitle>jOverseer updater</errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>

@@ -28,8 +28,9 @@ for:
     - tar xf ant.tgz
     - mv apache-ant-1.10.12 ant
     - curl -L https://sourceforge.net/projects/ant-contrib/files/ant-contrib-1.0b2-bin.tar.gz --output ant-contrib.tgz
-    - cd ant/lib && tar xjf ../../ant-contrib-1.0b2.bin.tgz lib/ant-contrib.jar && cd ../..
+    - cd ant/lib && tar xjf ../../ant-contrib.tgz lib/ant-contrib.jar && cd ../..
     - pwd
+# /Users/appveyor/projects/joverseer    
     - ls -F ant/lib
     - export ANT_HOME=ant
     - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-macosx-x86.tgz --output launch4j.tgz

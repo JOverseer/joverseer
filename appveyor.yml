@@ -28,7 +28,7 @@ for:
     - tar xf ant.tgz
     - mv apache-ant-1.10.12 ant
     - curl -L https://sourceforge.net/projects/ant-contrib/files/ant-contrib-1.0b2-bin.tar.gz --output ant-contrib.tgz
-    - cd ant/lib && tar xjf ../../ant-contrib.tgz lib/ant-contrib.jar && cd ../..
+    - cd ant/lib && tar xjf ../../ant-contrib.tgz ant-contrib/lib/ant-contrib.jar && cd ../..
     - pwd
 # /Users/appveyor/projects/joverseer    
     - ls -F ant/lib
@@ -50,7 +50,7 @@ for:
 
   install:
     - cinst ant
-    - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.13/launch4j-3.13-win32.zip --output C:\projects\joverseer\launch4j.zip
+    - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-win32.zip --output C:\projects\joverseer\launch4j.zip
     - 7z x -oC:\projects\joverseer C:\projects\joverseer\launch4j.zip
   build_script:
     - ant test

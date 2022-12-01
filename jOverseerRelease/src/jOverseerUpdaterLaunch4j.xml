@@ -16,7 +16,7 @@
     <path>jre</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <minVersion>1.8.0</minVersion>
-    <maxVersion></maxVersion>
+    <maxVersion>18.0.1</maxVersion>
     <jdkPreference>preferJre</jdkPreference>
   </jre>
 </launch4jConfig>

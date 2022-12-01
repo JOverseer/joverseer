@@ -1,3 +1,13 @@
+VERSION 1.18.3
+--------------
+	* QA: Copyright and licence/license updates.
+	* Fix: The minimal java version broke the update mechanism.
+	* Enh: Four player CME (CMF) support.
+	
+VERSION 1.18.2
+--------------
+	* no official release.
+	
 VERSION 1.18.1
 --------------
 	* Fix: one version of a Challenger report in the Turn Report View.

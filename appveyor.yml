@@ -22,17 +22,18 @@ for:
     - java --version
     - export JAVA_HOME=`/usr/libexec/java_home -v13.*`
     - java --version
-    - brew deps --tree ant
-    - brew deps --tree ant-contrib
-#fix the problem ones
-    - ls /usr/local/Cellar
-    - brew unlink subversion
-# back to what we want
-    - brew install ant
-    - ant -version
-    - brew link --overwrite --dry-run xorgproto
-    - brew install ant-contrib
-    - brew install launch4j
+    - pwd
+    - ls -F
+    - curl -L https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.12-bin.tar.gz --output ant.tgz
+    - tar xf ant.tgz
+    - mv apache-ant-1.10.12 ant
+    - curl -L https://sourceforge.net/projects/ant-contrib/files/ant-contrib-1.0b2-bin.tar.gz --output ant-contrib.tgz
+    - cd ant/lib && tar xjf ../../ant-contrib-1.0b2.bin.tgz lib/ant-contrib.jar && cd ../..
+    - pwd
+    - ls -F ant/lib
+    - export ANT_HOME=ant
+    - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-macosx-x86.tgz --output launch4j.tgz
+    - tar xvf launch4j.tgz
     
   build_script:
     - ant test

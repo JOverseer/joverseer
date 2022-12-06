@@ -36,7 +36,11 @@ for:
     - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-macosx-x86.tgz --output launch4j.tgz
     - tar xvf launch4j.tgz
     - export PATH=${ANT_HOME}/bin:${PATH}
-    
+    - curl -L http://s.sudre.free.fr/Software/files/Packages.dmg --output Packages.dmg
+    - ls -lF
+    - hdiutil attach -verbose Packages.dmg
+    - ls -lF /Volumes/
+   
   build_script:
     - ant test
     - ant -f joverseerRelease/build.xml MacOSInstallerPackages

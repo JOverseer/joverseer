@@ -34,14 +34,14 @@ for:
     - ls -F ant/lib
     - export ANT_HOME=/Users/appveyor/projects/joverseer/ant
     - curl -L https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.50/launch4j-3.50-macosx-x86.tgz --output launch4j.tgz
-    - tar xvf launch4j.tgz
+    - tar xf launch4j.tgz
     - export PATH=${ANT_HOME}/bin:${PATH}
     - curl -L http://s.sudre.free.fr/Software/files/Packages.dmg --output Packages.dmg
     - ls -lF
     - hdiutil attach  Packages.dmg
     - ls -lF /Volumes/
     - ls -lF /Volumes/P*
-    - installer -package '/Volumes/Packages 1.2.10/P*.pkg -target /
+    - installer -package '/Volumes/Packages 1.2.10/Packages.pkg' -target /
     - hdiutil detach /Volumes/Packages*
    
   build_script:

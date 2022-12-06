@@ -41,7 +41,7 @@ for:
     - hdiutil attach  Packages.dmg
     - ls -lF /Volumes/
     - ls -lF /Volumes/P*
-    - installer -package '/Volumes/Packages 1.2.10/Install Packages.pkg' -target /
+    - sudo installer -package '/Volumes/Packages 1.2.10/Install Packages.pkg' -target /
     - hdiutil detach /Volumes/Packages*
    
   build_script:

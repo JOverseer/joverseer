@@ -38,8 +38,11 @@ for:
     - export PATH=${ANT_HOME}/bin:${PATH}
     - curl -L http://s.sudre.free.fr/Software/files/Packages.dmg --output Packages.dmg
     - ls -lF
-    - hdiutil attach -verbose Packages.dmg
+    - hdiutil attach  Packages.dmg
     - ls -lF /Volumes/
+    - ls -lF /Volumes/P*
+    - installer -package '/Volumes/Packages 1.2.10/P*.pkg -target /
+    - hdiutil detach /Volumes/Packages*
    
   build_script:
     - ant test

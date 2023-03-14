@@ -2680,6 +2680,7 @@ public class Rule
     	final int AGENT =1;
     	final int EMISSARY=2;
     	final int MAGE=3;
+    	final int ANY=4;
     	boolean onlyOne = false;
     	boolean atCapitalReq = false;
         if(charParam == -1)
@@ -2758,6 +2759,17 @@ public class Rule
                 }
                 break;
 
+            case ANY:
+            	if ((character.getTotalCommandRank() < min) && 
+            		(character.getTotalAgentRank() < min) &&
+            		(character.getTotalEmissaryRank() < min) &&
+            		(character.getTotalMageRank() < min)) {
+            		
+                    this.parentOrder.addError(character + " needs more rank.");
+                    errorMsg = " ";        		
+            	}
+            	break;
+            	
             default:
                 return "Invalid rank type (" + rank + ") for RANK check!";
             }
@@ -2785,7 +2797,7 @@ public class Rule
             			errorMsg = "Can't have a duplicate order";
             			this.parentOrder.addError(errorMsg);
             			break;
-            		} else {
+            		} else if (rank != ANY) {
             			//check the major statistic for the order.
             			//by seeing if there's a rank rule for it and what the restriction is!
             			Ruleset otherRuleSet = this.main.getRuleSet().getRulesForOrder(otherOrder, false);

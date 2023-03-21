@@ -31,6 +31,7 @@ import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.game.Game;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.Container;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.ui.BaseView;
@@ -491,6 +492,14 @@ public abstract class BaseItemListView extends BaseView implements ApplicationLi
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+	}
+
+	protected  void applyFilter(ArrayList<Object> filteredItems,Container<?> items) {
+		AbstractListViewFilter filter = getActiveFilter();
+		for (Object o : items.getItems()) {
+			if (filter == null || filter.accept(o))
+				filteredItems.add(o);
+		}
 	}
 
 	protected void cacheFilterOptions() {

@@ -141,7 +141,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 	boolean isDragging;
 
 	java.awt.Container c;
-
+	Color  backgroundColour = Color.WHITE;
 	boolean saveMap = false;
 
 	//dependencies
@@ -251,7 +251,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 		this.map = this.mapBack;
 
 		Graphics2D g = this.map.createGraphics();
-		g.setColor(Color.WHITE);
+		g.setColor(this.backgroundColour);
 		g.fillRect(0, 0, this.map.getWidth(), this.map.getHeight());
 
 		// try {
@@ -296,7 +296,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 
 	public Dimension getMapDimension() {
 		int width = (int) ((this.metadata.getMaxMapColumn() + 2d - this.metadata.getMinMapColumn() - .5) * this.metadata.getHexSize() * this.metadata.getGridCellWidth());
-		int height = (int) ((this.metadata.getMaxMapRow() * .75d + .25) * this.metadata.getHexSize() * this.metadata.getGridCellHeight());
+		int height = (int) (((this.metadata.getMaxMapRow() + 1 -this.metadata.getMinMapRow()) * .75d + .25) * this.metadata.getHexSize() * this.metadata.getGridCellHeight());
 		return new Dimension(width, height);
 	}
 
@@ -687,6 +687,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 			Point h = getHexFromPoint(e.getPoint());
 			int hexNo = h.x * 100 + h.y;
 			Game g = this.gameHolder.getGame();
+			if (g == null) {  // eg before game loaded.
+				return;
+			}
 			Hex hex1 = g.getMetadata().getHex(hexNo);
 			ArrayList<Object> commands = new ArrayList<Object>(Arrays.asList(new ShowCharacterMovementRangeCommand(hexNo, 12), new ShowCharacterLongStrideRangeCommand(hexNo), new ShowCharacterFastStrideRangeCommand(hexNo), new ShowCharacterPathMasteryRangeCommand(hexNo)));
 

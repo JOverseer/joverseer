@@ -48,7 +48,7 @@
 	<bean name="resizeStatusBarItem"
 		class="com.jidesoft.status.ResizeStatusBarItem" />
 
-	<bean id="lookAndFeelConfigurer"
+   	<bean id="lookAndFeelConfigurer"
 		class="org.springframework.richclient.application.config.JGoodiesLooksConfigurer">
 		<property name="popupDropShadowEnabled" value="true" />
 		<property name="theme">
@@ -56,6 +56,7 @@
 		</property>
 	</bean>
 
+ 
 	<bean id="serviceLocator"
 		class="org.springframework.richclient.application.ApplicationServicesLocator">
 		<property name="applicationServices"
@@ -181,10 +182,10 @@
 	<bean id="hexNumberRenderer"
 		class="org.joverseer.ui.map.renderers.HexNumberRenderer">
 		<property name="fontName">
-			<value>MS Sans Serif</value>
+			<value>Microsoft Sans Serif</value>
 		</property>
 		<property name="fontSize">
-			<value>9</value>
+			<value>8</value>
 		</property>
 		<property name="fontStyle">
 			<value>1</value>
@@ -249,7 +250,7 @@
 		<property name="renderers">
 			<list>
 				<ref bean="defaultHexRenderer" />
-				<ref bean="hexNumberRenderer"></ref>
+ 				<ref bean="hexNumberRenderer"></ref>
 				<bean
 					class="org.joverseer.ui.map.renderers.PopulationCenterRenderer">
 					<property name="imgSource" ref="imageSource"></property>

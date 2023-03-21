@@ -42,6 +42,11 @@ public class PreferenceRegistry {
 		this.prefix = prefix;
 	}
 
+	/**
+	 * get the preferences
+	 * @param preferenceKey
+	 * @return the preference or "" if not defined.
+	 */
 	public String getPreferenceValue(String preferenceKey) {
 		if (this.preferenceMap.containsKey(preferenceKey)) {
 			return this.preferenceMap.get(preferenceKey).getValue(getPrefix());

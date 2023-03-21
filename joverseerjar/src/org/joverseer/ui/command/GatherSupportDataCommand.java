@@ -23,7 +23,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
-//		ThreepartVersion latest = new ThreepartVersion(descriptor.getVersion());
+
 		String report = "Version:" +descriptor.getVersion() + this.EOL
 				+ SystemProperties();
 		this.textArea = new JTextArea();
@@ -77,6 +77,12 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"os.arch");
 		reportProperty(sb,"os.name");
 		reportProperty(sb,"os.version");
+		reportProperty(sb,"sun.java2d.uiScale");
+		reportProperty(sb,"sun.java2d.dpiaware");
+		reportProperty(sb,"sun.java2d.ddoffscreen");
+		reportProperty(sb,"sun.java2d.d3d");
+		reportProperty(sb,"sun.java2d.noddraw");
+
 		return sb.toString();
 	}
 

@@ -278,7 +278,15 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 				JOApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
 			}
 		});
-		this.zoom.setSelectedIndex(4);
+		String temp = PreferenceRegistry.instance().getPreferenceValue("map.defaultZoom");
+		int defaultZoomIndex;
+		try {
+			defaultZoomIndex = Integer.parseInt(temp);
+	
+		}catch (NumberFormatException e) {
+			defaultZoomIndex= 6; // zoom level 3
+		}
+		this.zoom.setSelectedIndex(defaultZoomIndex);
 		lb.row();
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.NationColoursColon"))); //$NON-NLS-1$
 		lb.cell(this.nationColors = new JComboBox(new String[] { Messages.getString("MapOptionsView.ColourForNation"), Messages.getString("MapOptionsView.ColourForAllegiance") }), "align=left"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -12,11 +12,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.joverseer.preferences.Preference;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.preferences.PreferenceValue;
 import org.joverseer.ui.ScalableAbstractForm;
+import org.joverseer.ui.support.PLaFHelper;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -37,7 +40,9 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 	//holds the preferences
 	HashMap<String, JComponent> components = new HashMap<String, JComponent>();
 	private String startingGroup;
-	
+	private PLaFHelper plaf;
+	// note ready for primetime.
+	private boolean enablePlaf=false;
 
 	public String getStartingGroup() {
 		return this.startingGroup;
@@ -57,7 +62,9 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 		tabPane.setTabPlacement(SwingConstants.LEFT);
 		TableLayoutBuilder tlb = null;
 		String group = "";
-
+		if (enablePlaf) {
+			plaf = new PLaFHelper();
+		}
 		PreferenceRegistry reg = (PreferenceRegistry) getFormObject();
 		// sort prefs by group
 		ArrayList<Preference> prefs = reg.getPreferencesSortedByGroup();
@@ -98,6 +105,14 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					check.setSelected(reg.getPreferenceValue(p.getKey()).equals("yes"));
 					this.components.put(p.getKey(), check);
 					tlb.cell(check);
+				} else if (p.getType().equals(Preference.TYPE_LAF)) {
+					if (enablePlaf) {
+						JComboBox combo = new JComboBox();
+						this.plaf.fill(combo);
+						combo.setSelectedItem(this.plaf.nameFromClass(reg.getPreferenceValue(p.getKey())));
+						this.components.put(p.getKey(), combo);
+						tlb.cell(combo, "colspec=left:200px");
+					}
 				}
 				else {
 					JTextField tf = new JTextField();
@@ -158,7 +173,23 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 				} else {
 					reg.setPreferenceValue(p.getKey(), "no");
 				}
-			} else {
+			} else if (p.getType().equals(Preference.TYPE_LAF)) {
+				if (enablePlaf) {
+					JComboBox combo = (JComboBox) c;
+					if (combo.getSelectedItem() != null) {
+						String sel=combo.getSelectedItem().toString();
+						try {
+							UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
+							plaf.updateAll();
+							// only update the preference if it worked.
+							reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
+						} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+								| UnsupportedLookAndFeelException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+		    } else {
 				JTextField tf = (JTextField) c;
 				reg.setPreferenceValue(p.getKey(), tf.getText());
 			}
@@ -166,5 +197,4 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 		JideApplicationLifecycleAdvisor advisor = (JideApplicationLifecycleAdvisor) Application.instance().getLifecycleAdvisor();
 		advisor.refreshClearMapItemsVisibility();
 	}
-
 }

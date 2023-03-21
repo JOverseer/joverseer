@@ -648,7 +648,7 @@
 						<value>check</value>
 					</property>
 					<property name="defaultValue">
-						<value>no</value>
+						<value>yes</value>
 					</property>
 					<property name="domain">
 						<list>
@@ -850,7 +850,6 @@
 						</list>
 					</property>
 				</bean>
-
 
 
 				<bean class="org.joverseer.preferences.Preference">
@@ -1111,12 +1110,115 @@
 					<property name="group">
 						<value>Window Display</value>
 					</property>
-					<property name="type">
-						<value>text</value>
-					</property>
+					<property name="type"><value>text</value></property>
 					<property name="defaultValue">
 						<value>24</value>
 					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.defaultZoom</value>
+					</property>
+					<property name="description">
+						<value>default zoom setting</value>
+					</property>
+					<property name="group">
+						<value>Window Display</value>
+					</property>
+					<property name="defaultValue">
+						<value>s2</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>0</value>
+								</property>
+								<property name="description">
+									<value>s1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>1</value>
+								</property>
+								<property name="description">
+									<value>s2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>2</value>
+								</property>
+								<property name="description">
+									<value>s3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>3</value>
+								</property>
+								<property name="description">
+									<value>s4</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>4</value>
+								</property>
+								<property name="description">
+									<value>1</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>5</value>
+								</property>
+								<property name="description">
+									<value>2</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>6</value>
+								</property>
+								<property name="description">
+									<value>3</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>7</value>
+								</property>
+								<property name="description">
+									<value>4</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>8</value>
+								</property>
+								<property name="description">
+									<value>5</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>9</value>
+								</property>
+								<property name="description">
+									<value>6</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key"><value>UI.LookAndFeel</value></property>
+					<property name="description"><value>Interface look and feel</value></property>
+					<property name="group"><value>Window Display</value></property>
+					<property name="type"><value>LookAndFeel</value></property>
+					<property name="defaultValue"><value>javax.swing.plaf.metal.MetalLookAndFeel</value></property>
 				</bean>
 			</list>
 		</property>

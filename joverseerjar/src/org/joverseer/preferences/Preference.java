@@ -28,6 +28,7 @@ public class Preference {
 	public static String TYPE_DROPDOWN = "dropDown";
 	public static String TYPE_TEXT = "text";
 	public static String TYPE_CHECKBOX = "check";
+	public static String TYPE_LAF = "LookAndFeel";
 
     String key;
     String type = TYPE_DROPDOWN;

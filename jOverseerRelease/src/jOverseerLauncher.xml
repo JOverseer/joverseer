@@ -21,6 +21,7 @@
     <jdkPreference>preferJre</jdkPreference>
     <maxHeapSize>512</maxHeapSize>
     <opt>-Djava.net.preferIPv4Stack=true</opt>
+    <opt>-Dsun.java2d.dpiaware=false</opt>
     <opt>--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED</opt>
   </jre>
   <versionInfo>

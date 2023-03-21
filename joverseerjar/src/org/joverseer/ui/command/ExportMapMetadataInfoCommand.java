@@ -32,10 +32,7 @@ public class ExportMapMetadataInfoCommand extends ActionCommand {
 			for (int i = metadata.getMinMapColumn(); i <= metadata.getMaxMapColumn(); i++) {
 				for (int j = metadata.getMinMapRow(); j <= metadata.getMaxMapRow(); j++) {
 					Hex hex = game.getMetadata().getHex(i * 100 + j);
-					String hexNo = String.valueOf(hex.getHexNo());
-					if (hexNo.length() == 3) {
-						hexNo = "0" + hexNo;
-					}
+					String hexNo = hex.getHexNoStr();
 					f.write("\"" + hexNo + "\"," + hex.getTerrain().getTerrain() + "\n");
 				}
 			}
@@ -46,10 +43,7 @@ public class ExportMapMetadataInfoCommand extends ActionCommand {
 					Hex hex = game.getMetadata().getHex(i * 100 + j);
 					for (HexSideEnum hse : HexSideEnum.values()) {
 						for (HexSideElementEnum e : hex.getHexSideElements(hse)) {
-							String hexNo = String.valueOf(hex.getHexNo());
-							if (hexNo.length() == 3) {
-								hexNo = "0" + hexNo;
-							}
+							String hexNo = hex.getHexNoStr();
 							f.write("\"" + hexNo + "\",0," + hse.getSide() + "," + e.getElement() + "\n");
 						}
 					}

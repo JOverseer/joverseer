@@ -31,6 +31,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.springframework.richclient.application.ApplicationLauncher;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.jidesoft.plaf.LookAndFeelFactory;
 /**
  * The main class for the JOverseer gui client
@@ -93,10 +95,16 @@ public class JOverseerJIDEClient {
 			}
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
 			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
+			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
 			
-		        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 
-			//LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
+/*			try {
+				UIManager.setLookAndFeel( new FlatLightLaf() );
+			} catch( Exception ex ) {
+			    System.err.println( "Failed to initialize LaF" );
+			}			
+*///	        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+
 
 			new ApplicationLauncher(STARTUP_CONTEXT, new String[] { APPLICATION_CONTEXT, PAGE_CONTEXT, PREFERENCES_CONTEXT });
 

@@ -485,11 +485,12 @@ public class TurnXmlReader implements Runnable {
 					// composition is reported, size is unknown
 					// and the army is reported again with size <> unknown but a
 					// larger InformationSource (i.e. less info)
-					//if (game.getMetadata().getGameType().equals(GameTypeEnum.gameKS)) {
+					// JDS - Now apply to all games
+
 						if (!a2.getSize().equals(ArmySizeEnum.unknown) && a1.getSize().equals(ArmySizeEnum.unknown)) {
 							a1.setSize(a2.getSize());
 						}
-					//}
+
 					updateWithInfo(a1, a2);
 				} else if (a2.getCommanderName().equals(UNKNOWN_MAP_ICON)) {
 					if (a1.getNationNo() > 0 && a2.getNationNo().equals(a1.getNationNo())) {

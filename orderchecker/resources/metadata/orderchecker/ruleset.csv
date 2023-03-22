@@ -54,7 +54,7 @@
 # PCSIZE,"Location, Type","Location = 0 or param #.  Type = 1 = C, 2 = V, 3 = T, 4 = MT, 5 =CY, 8 = T/MT/CY, 9 = MT/CY, 10 = not C.  Checks the size of the city at the given location."
 # PCSTATE,"Location, State","Location = 0 or param #.  State = 0 possibly destroyed, 1 = possibly captured, 2 = possibly influenced away.  Sets PC state information."
 # PRODUCTINFO,"Type, Loc, Prod, Amt, Units","Type 0 = transport, 1 = sell, 2 = buy.  Location = 0 (not used) or param #.  Product = param #.  Amount = param #.  Units = 0 for #, 1 = %.  Gives additional product transfer information."
-# RANK,"Char, Rank, Min, Type","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage.  Min = minimum rank required. Type 0 = normal, 1 = new PC.  Checks that the specified character has a rank greater than the minimum."
+# RANK,"Char, Rank, Min, Type, Exclusive, AtCapital","Char = 0 or param #.  Rank 0 = command, 1 = agent, 2 = emissary, 3 = mage, 4 = any.  Min = minimum rank required. Type 0 = normal, 1 = new PC. Exclusive 1=only one order allowed. AtCapital 1=must be at capital. Checks that the specified character has a rank greater than the minimum."
 # SETCOMMAND,"Char, Type, Status","Char = 0 or param #.  Type  0 = army CO, 1 = company CO.  Status = 0 to lose it, 1 to gain it.  Indicates a change in command status."
 # SHIPS,"Location, War, Tran, With","Location = 0 or param #.  War = param # for warships.  Tran = param # for transports.  With = 0 in hex, 1 with army/navy.  Checks that the required ships are present."
 # SIEGENOT,"Location, Type","Location = 0 or parm #.  Type 0 = normal, 1 = capital.  Checks to see if the PC at the location is not under siege.  "
@@ -477,10 +477,12 @@ BEGINRULES,,,,,,,,,,,
 810,,LAND,0,,,
 810,,LAND,1,,,
 810,,CHARMOVE,1,12,0,
+810,,RANK,0,4,0,0,1,0
 820,MovCmpy,COMMANDER,0,0,0,4
 820,,LAND,0,,,
 820,,LAND,1,,,
 820,,CHARMOVE,1,12,0,
+810,,RANK,0,4,0,0,1,0
 825,CstMvSp,COMMANDERNOT,0,0,0,5
 825,,SPELL,1,,,
 825,,LAND,0,,,

@@ -1,12 +1,12 @@
 <txt2xml>
 	<processor type="StringEnclosedMatch">
 		<element>Turn</element>
-		<startString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd</startString>
+		<startString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd|Middle-earth Games</startString>
 		<endString>TURNSHEET|$</endString>
 
 		<processor type="StringEnclosedMatch">
 			<element>General</element>
-			<startString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd</startString>
+			<startString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd|Middle-earth Games</startString>
 			<endString>CENTERS|Centers</endString>
 
 			<processor type="RegexMatch">
@@ -505,7 +505,7 @@
 			<!-- get the region for the character order results -->
 			<element>Orders</element>
 			<startString>ORDERS GIVEN</startString>
-			<endString>MEPBM GAMES|MEPBM Games|ME Games Ltd</endString>
+			<endString>MEPBM GAMES|MEPBM Games|ME Games Ltd|M.E. Games Ltd|Middle-earth Games</endString>
 			<processor type="CharOrders">
 				<element>Character</element>
 				<!-- <regex>(\p{L}+(?:[\s-]\p{L}+)*\s+was located in [.\p{L}\d\-\.\s/?#&amp;&#13;:()]+\.)</regex> -->

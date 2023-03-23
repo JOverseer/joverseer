@@ -418,7 +418,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	<target name="resolveJDK-mac" if="is.macos">
 		<echo>Building on Mac</echo>
 		<exec executable="/usr/libexec/java_home" outputproperty="jdk.dir">
-			<arg line ="-Fv 13.0"/>
+			<arg line ="-v16.*"/>
 		</exec>
 	</target>
 

@@ -18,6 +18,7 @@ public class Hex implements Serializable {
 	private static final long serialVersionUID = 5588445214380293965L;
 	int column;
 	int row;
+	
 
 	HexTerrainEnum terrain;
 
@@ -27,6 +28,11 @@ public class Hex implements Serializable {
 		for (HexSideEnum side : HexSideEnum.values()) {
 			this.hexSideElements.put(side, new ArrayList<HexSideElementEnum>());
 		}
+	}
+	public Hex(int column,int row) {
+		this();
+		this.column = column;
+		this.row = row;
 	}
 
 	public int getColumn() {
@@ -95,6 +101,7 @@ public class Hex implements Serializable {
 		return ret;
 	}
 
+	//TODO: consider caching this (and excluding from serialisation format).
 	public String getHexNoStr()
 	{
 		String hexNoStr = String.valueOf(this.getColumn());

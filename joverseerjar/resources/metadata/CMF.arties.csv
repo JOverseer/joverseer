@@ -7,13 +7,13 @@
 0;Shield of Gondor;Good;Combat;2000;None;Boromir
 0;Horn of Gondor;Good;Command;20;None;Boromir
 0;Elenethbiel;None;Mage;15;None;Celeborn
-0;Orc-hewer;Good;Combat;1500;None;Dain
+0;Orc-hewer;Good;Combat;1500;None;Dáin
 0;Red Arrow;Good;Emissary;15;None;Denethor
 0;Palantír of Minas Tirith;None;Scry Area;;None;Denethor
 0;Vilya;None;Mage;50;None;Elrond
 0;Mantle of Doriath;Good;;;Hide Pop Centre;Elrond
-0;Gúthwinë;Good;Combat;750;None;Eomer
-0;Shield of Rohan;Good;Command;15;None;Eowyn
+0;Gúthwinë;Good;Combat;750;None;Éomer
+0;Shield of Rohan;Good;Command;15;None;Éowyn
 0;Wood-shadow;None;Stealth;15;None;Faramir
 0;Deepwood Bracelet;None;Mage;15;None;Faramir
 0;Nenya;None;Mage;50;None;Galadriel
@@ -28,7 +28,7 @@
 0;Boots of Tracelessness;None;Stealth;10;None;Legolas
 0;Staff of Radagast;Good;Mage;10;None;Radagast
 0;Blade of Westernesse;None;Combat;1000;None;Samwise
-0;Banner of the Horselords;Good;Command;10;None;Theoden
+0;Banner of the Horselords;Good;Command;10;None;Théoden
 0;Helm of Shadow;None;Stealth;10;None;Thranduil
 0;Yellow Boots;Good;Mage;10;None;Tom Bombadil
 0;Blue Jacket;Good;Emissary;15;None;Tom Bombadil
@@ -36,10 +36,10 @@
 0;Black Scale;Evil;Command;30;None;Sauron
 0;Narsil's Bane;Evil;Mage;20;None;Sauron
 0;Palantír of Minas Morgul;None;Scry Area;;None;Sauron
-0;Memory's Strings;Evil;Emissary;10;None;Adunaphel
-0;Duv Ad'el (Morgul Knife);Evil;Emissary;10;None;Adunaphel
-0;Eyes of the Well;Evil;Scry Area;;None;Akhorahil
-0;Duv Ak'il (Morgul Knife);Evil;Mage;25;None;Akhorahil
+0;Memory's Strings;Evil;Emissary;10;None;Adûnaphel
+0;Duv Ad'el (Morgul Knife);Evil;Emissary;10;None;Adûnaphel
+0;Eyes of the Well;Evil;Scry Area;;None;Akhôrahil
+0;Duv Ak'il (Morgul Knife);Evil;Mage;25;None;Akhôrahil
 0;Blood Spike;None;Combat;1000;None;Bert Huggins
 0;Wôlor Priest Ring;None;Mage;25;None;Dendra Dwar
 0;Duv Dw'ar (Morgul Knife);Evil;Agent;10;None;Dendra Dwar
@@ -49,9 +49,9 @@
 0;Ovir Crown;None;Mage;20;None;Hoarmurath
 0;Duv Ho'ath (Morgul Knife);Evil;Agent;10;None;Hoarmurath
 0;Helm of Ice;None;Command;35;None;Hoarmurath
-0;Duv Ji'ur (Morgul Knife);Evil;Agent;10;None;Ji Indur
-0;Duv Kh'aul (Morgul Knife);Evil;Command;15;None;Khamul
-0;Dragon Helm;Evil;Mage;30;None;Khamul
+0;Duv Ji'ur (Morgul Knife);Evil;Agent;10;None;Ji Indûr
+0;Duv Kh'aul (Morgul Knife);Evil;Command;15;None;Khamûl
+0;Dragon Helm;Evil;Mage;30;None;Khamûl
 0;Spiderweb Cloak;None;Stealth;10;None;Lhachglin
 0;Voice of the Dark Tower;Evil;Emissary;10;None;Mouth of Sauron
 0;Ring of Iron Magic;Evil;Mage;30;None;Mouth of Sauron
@@ -66,10 +66,10 @@
 0;Many-colored Robes of Aman;Evil;Emissary;10;None;Saruman
 0;Nightstealer;Evil;Combat;1250;None;Shagrat
 0;Alunthiensal;Evil;Mage;20;None;Throkmaw
-0;Earthroot Spike;None;Combat;1500;None;Ugluk
-0;Stormless Bow;None;Combat;1000;None;Uvatha
-0;Listening Helm;None;Agent;10;None;Uvatha
-0;Duv Uv'ha (Morgul Knife);Evil;Agent;10;None;Uvatha
+0;Earthroot Spike;None;Combat;1500;None;Uglûk
+0;Stormless Bow;None;Combat;1000;None;Ûvatha
+0;Listening Helm;None;Agent;10;None;Ûvatha
+0;Duv Uv'ha (Morgul Knife);Evil;Agent;10;None;Ûvatha
 0;Stone Club;None;Combat;2000;None;William Huggins
 0;Aranrûth;None;Combat;1750;None;
 0;Flute of Daeron;None;Emissary;10;None;

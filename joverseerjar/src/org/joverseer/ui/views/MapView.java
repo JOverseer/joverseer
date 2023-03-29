@@ -39,7 +39,6 @@ import org.springframework.richclient.layout.TableLayoutBuilder;
 public class MapView extends AbstractView implements ApplicationListener {
 
 	MapPanel mapPanel;
-	PopulationCenterViewer pcViewer;
 	JScrollPane scp;
 	JLabel introLabel;
 

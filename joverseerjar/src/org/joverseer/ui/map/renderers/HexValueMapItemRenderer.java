@@ -141,7 +141,7 @@ public class HexValueMapItemRenderer extends DefaultHexRenderer {
 		GameMetadata gm = GameHolder.instance().getGame().getMetadata();
 		ArrayList<Hex> hexes = (ArrayList<Hex>) gm.getHexes();
 		for (Hex h : hexes) {
-			int hn = h.getColumn() * 100 + h.getRow();
+			int hn = h.getHexNo();
 			if (MovementUtils.distance(hexNo, hn) == range) {
 				// draw each hex in range with special color
 				Point p = MapPanel.instance().getHexLocation(hn);

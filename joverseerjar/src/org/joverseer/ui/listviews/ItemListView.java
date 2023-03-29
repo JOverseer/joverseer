@@ -40,12 +40,7 @@ public abstract class ItemListView extends BaseItemListView {
 				return;
 			Container<?> items = g.getTurn().getContainer(this.turnElementType);
 			ArrayList<Object> filteredItems = new ArrayList<Object>();
-			AbstractListViewFilter filter = getActiveFilter();
-			for (Object o : items.getItems()) {
-				if (filter == null || filter.accept(o))
-					filteredItems.add(o);
-			}
-			;
+			this.applyFilter(filteredItems, items);
 			this.tableModel.setRows(filteredItems);
 		} else {
 			Game g = this.gameHolder.getGame();
@@ -55,12 +50,7 @@ public abstract class ItemListView extends BaseItemListView {
 			try {
 				Container<?> items = (Container<?>) PropertyUtils.getProperty(gm, this.metadataProperty);
 				ArrayList<Object> filteredItems = new ArrayList<Object>();
-				AbstractListViewFilter filter = getActiveFilter();
-				for (Object o : items.getItems()) {
-					if (filter == null || filter.accept(o))
-						filteredItems.add(o);
-				}
-				;
+				this.applyFilter(filteredItems, items);
 				this.tableModel.setRows(filteredItems);
 			} catch (Exception exc) {
 				// todo fix
@@ -69,5 +59,4 @@ public abstract class ItemListView extends BaseItemListView {
 		}
 		// tableModel.fireTableDataChanged();
 	}
-
 }

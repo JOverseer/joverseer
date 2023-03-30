@@ -59,7 +59,7 @@ public class ArmyTableModel extends ItemTableModel {
 			if (army.getElements().size() > 0) {
 				String txt = "";
 				for (ArmyElement element : army.getElements()) {
-					txt += UIUtils.OptSpace(txt,element.getLocalizedDescription());
+					txt = UIUtils.OptSpace(txt,element.getLocalizedDescription());
 				}
 				return txt;
 			} else if (army.getTroopCount() > 0) {

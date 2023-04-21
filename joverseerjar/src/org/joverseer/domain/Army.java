@@ -249,7 +249,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	public Integer getMaintenance() {
 		int cost = 0;
 		for (ArmyElement ae : getElements()) {
-			cost = ae.getMaintentance();
+			cost += ae.getMaintentance();
 		}
 		return Integer.valueOf(cost);
 

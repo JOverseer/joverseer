@@ -1,20 +1,26 @@
 package org.joverseer.tools.combatCalc;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElement;
 import org.joverseer.domain.ArmyElementType;
+import org.joverseer.domain.ArmyEstimate;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
+import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Hex;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.InfoUtils;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
 
 /**
  * Represents a land combat for the combat calculator.
@@ -621,6 +627,65 @@ public class Combat implements Serializable, IHasMapLocation {
     	if (hex != null) {
     		setTerrain(hex.getTerrain());
     	}
+    }
+    
+    public void setArmiesAndPCFromHex() {
+		String strHex = String.valueOf(this.hexNo);
+		//ArrayList<Army> allarmies = game.getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo" }, new Object[] { strHex });
+		ArrayList<Army> fparmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.FreePeople });
+		ArrayList<Army> dsarmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.DarkServants });
+		ArrayList<Army> ntarmies = GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { strHex, NationAllegianceEnum.Neutral });
+
+		if (ntarmies.size() > 0) {
+			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.NetrualArmiesFound");
+		}
+
+		PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", strHex);
+		if (pc != null && (pc.getNationNo() == 0 || pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral))) {
+			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound");
+		}
+
+		ArrayList<Army> aside1;
+		ArrayList<Army> aside2;
+
+		if (pc != null && pc.getNation().getAllegiance().equals(NationAllegianceEnum.FreePeople)) {
+			aside2 = fparmies;
+			aside1 = dsarmies;
+		} else {
+			aside1 = fparmies;
+			aside2 = dsarmies;
+		}
+		
+		for (int i=0; i<MAX_ALL; i++) {
+	        this.side1[i] = null;
+	        this.side2[i] = null;
+		}
+
+		for (int i = 0; i < 2; i++) {
+			ArrayList<Army> sideArmies = i == 0 ? aside1 : aside2;
+			for (Army a : sideArmies) {
+				CombatArmy ca;
+				if (a.computeNumberOfMen() > 0) {
+					ca = new CombatArmy(a);
+				} else {
+					ArmyEstimate ae = (ArmyEstimate) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", a.getCommanderName());
+					if (ae != null) {
+						ca = new CombatArmy(ae);
+
+					} else {
+						ca = new CombatArmy(a);
+
+					}
+				}
+				this.addToSide(i, ca);
+				ca.setBestTactic();
+			}
+		}
+
+		if (pc != null) {
+			CombatPopCenter cpc = new CombatPopCenter(pc);
+			this.setSide2Pc(cpc);
+		} 	
     }
     
     public void autoSetRelationsToHated() {

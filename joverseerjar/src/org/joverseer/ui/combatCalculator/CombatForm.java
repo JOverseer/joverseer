@@ -120,6 +120,10 @@ public class CombatForm extends AbstractForm {
 						ValueModel vm = getFormModel().getValueModel("climate"); //$NON-NLS-1$
 						vm.setValue(hi.getClimate());
 					}
+					
+					c.setArmiesAndPCFromHex();
+					refreshArmies();
+					
 				} catch (Exception exc) {
 					exc.printStackTrace();
 				}

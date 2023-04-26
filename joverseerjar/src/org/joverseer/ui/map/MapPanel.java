@@ -69,6 +69,7 @@ import org.joverseer.ui.command.range.ShowUnfedCavalryArmyRangeCommand;
 import org.joverseer.ui.command.range.ShowUnfedInfantryArmyRangeCommand;
 import org.joverseer.ui.command.range.ShowUnfedNavyCoastalRangeCommand;
 import org.joverseer.ui.command.range.ShowUnfedNavyOpenSeasRangeCommand;
+import org.joverseer.ui.command.CreateCombatForHexCommand;
 import org.joverseer.ui.domain.mapEditor.MapEditorOptionsEnum;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 import org.joverseer.ui.map.renderers.Renderer;
@@ -708,6 +709,9 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				commands.add(new ShowFedNavyOpenSeasRangeCommand(hexNo));
 				commands.add(new ShowUnfedNavyOpenSeasRangeCommand(hexNo));
 			}
+			
+			commands.add("separator");
+			commands.add(new CreateCombatForHexCommand(hexNo, this.gameHolder));
 
 			CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("MapPanelContextMenu", commands.toArray()); //$NON-NLS-1$
 			JPopupMenu popup = group.createPopupMenu();

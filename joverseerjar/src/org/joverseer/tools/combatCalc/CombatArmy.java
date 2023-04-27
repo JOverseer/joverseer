@@ -207,16 +207,29 @@ public class CombatArmy implements Serializable {
 
     public CombatArmy(Army a) {
         Game g = GameHolder.instance().getGame();
+        boolean knownTroops = false;
+        
         for (ArmyElementType aet : ArmyElementType.values()) {
             ArmyElement ae = a.getElement(aet);
             if (ae == null) {
                 ae = new ArmyElement(aet, 0);
+            } else {
+            	knownTroops = true;
             }
             ArmyElement nae = new ArmyElement(ae.getArmyElementType(), ae.getNumber());
             nae.setWeapons(ae.getWeapons());
             nae.setTraining(ae.getTraining());
             nae.setArmor(ae.getArmor());
             getElements().add(nae);
+        }
+        
+        if (knownTroops == false && a.getTroopCount()>0) {
+        	//Assume troops are HI
+            ArmyElement nae = this.getHI();
+            nae.setNumber(a.getTroopCount());
+            nae.setWeapons(10);
+            nae.setTraining(25);
+            nae.setArmor(0);      	
         }
         
         Character c = (Character) g.getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name",

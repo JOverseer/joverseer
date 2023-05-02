@@ -42,6 +42,11 @@ public class CombatPopCenter implements Serializable {
         this.size = pc.getSize();
         this.fort = pc.getFortification();
         this.loyalty = pc.getLoyalty();
+        
+        if (this.loyalty == 0) {
+        	this.loyalty = pc.getSize().ordinal() * 15;
+        }
+        
         this.nationNo = pc.getNationNo();
     }
     

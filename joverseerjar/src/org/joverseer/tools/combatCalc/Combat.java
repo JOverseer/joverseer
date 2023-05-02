@@ -640,7 +640,7 @@ public class Combat implements Serializable, IHasMapLocation {
 			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.NetrualArmiesFound");
 		}
 
-		PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", strHex);
+		PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", this.hexNo);
 		if (pc != null && (pc.getNationNo() == 0 || pc.getNation().getAllegiance().equals(NationAllegianceEnum.Neutral))) {
 			ErrorDialog.showErrorDialog("createCombatForHexCommand.error.PopWithUnknownOrNeutralNationFound");
 		}
@@ -666,13 +666,16 @@ public class Combat implements Serializable, IHasMapLocation {
 			for (Army a : sideArmies) {
 				CombatArmy ca;
 				if (a.computeNumberOfMen() > 0) {
+					System.out.println("Adding Known Army "+a.getCommanderName());
 					ca = new CombatArmy(a);
 				} else {
 					ArmyEstimate ae = (ArmyEstimate) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", a.getCommanderName());
 					if (ae != null) {
+						System.out.println("Adding Army Estimate "+ae.getCommanderName());
 						ca = new CombatArmy(ae);
 
 					} else {
+						System.out.println("Adding Zero Army "+a.getCommanderName() + " troops "+a.getTroopCount());
 						ca = new CombatArmy(a);
 
 					}

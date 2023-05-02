@@ -441,5 +441,11 @@ public class GameMetadata implements Serializable {
 		}
 		return false;
 	}
+	public void resetArtifactNumbers()
+	{
+		for (ArtifactInfo ai : this.getArtifacts().getItems()) {
+			ai.setNo(0);
+		}
+	}
 
 }

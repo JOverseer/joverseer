@@ -22,6 +22,14 @@ public class TurnInfo {
 	Container doubleAgents;
 	Container ordersGiven;
 	Container oldPopCentres;
+	Container gameInfo;
+
+	public Container getGameInfo() {
+		return this.gameInfo;
+	}
+	public void setGameInfo(Container gameInfo) {
+		this.gameInfo = gameInfo;
+	}
 
 	int turnNo = -1;
 	int nationNo = -1;

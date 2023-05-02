@@ -21,7 +21,6 @@ import org.joverseer.domain.Encounter;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
-import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
@@ -95,6 +94,13 @@ public class TurnNewXmlReader implements Runnable {
 			this.digester.addRule("METurn/More/TurnInfo", snpr = new SetNestedPropertiesRule(new String[] { "Season", "NationAlignment", "NPCsRecruited" }, new String[] { "season", "alignment", "NPCsRecruited"}));
 			snpr.setAllowUnknownChildElements(true);
 
+			this.digester.addObjectCreate("METurn/More/TurnInfo/GameInfo", "org.joverseer.support.Container");
+			this.digester.addSetNext("METurn/More/TurnInfo/GameInfo", "setGameInfo");
+			this.digester.addObjectCreate("METurn/More/TurnInfo/GameInfo/Option", "org.joverseer.support.readers.newXml.GameInfoOptionWrapper");
+			this.digester.addSetProperties("METurn/More/TurnInfo/GameInfo/Option", "name", "name");
+			this.digester.addSetProperties("METurn/More/TurnInfo/GameInfo/Option", "value", "value");
+			this.digester.addSetNext("METurn/More/TurnInfo/GameInfo/Option", "addItem", "org.joverseer.support.readers.newXml.GameInfoOptionWrapper");
+			
 			// parse PCs from old format.
 			// create container for pcs
 			this.digester.addObjectCreate("METurn/PopCentres", "org.joverseer.support.Container");
@@ -834,20 +840,7 @@ public class TurnNewXmlReader implements Runnable {
 			if (n == null) {
 				problematicNations += (problematicNations.equals("") ? "" : ", ") + nrw.getNationNo();
 			} else {
-				int natNo = n.getNumber();
-				NationRelationsEnum relation = NationRelationsEnum.Tolerated;
-				if (nrw.getRelation().equals("Friendly")) {
-					relation = NationRelationsEnum.Friendly;
-				} else if (nrw.getRelation().equals("Tolerated")) {
-					relation = NationRelationsEnum.Tolerated;
-				} else if (nrw.getRelation().equals("Neutral")) {
-					relation = NationRelationsEnum.Neutral;
-				} else if (nrw.getRelation().equals("Disliked")) {
-					relation = NationRelationsEnum.Disliked;
-				} else if (nrw.getRelation().equals("Hated")) {
-					relation = NationRelationsEnum.Hated;
-				}
-				nr.setRelationsFor(natNo, relation);
+				nr.setRelationsFor(n.getNumber(), NationRelationWrapper.fromString(nrw.getRelation()));
 			}
 		}
 		if (!problematicNations.equals("")) {
@@ -976,14 +969,35 @@ public class TurnNewXmlReader implements Runnable {
 		ArrayList<ArtifactWrapper> aws = new ArrayList<ArtifactWrapper>();
 		aws.addAll(aws0.getItems());
 		aws.addAll(aws1.getItems());
+		// for FA game, update artifact numbers
+		// where the starting artifact Ids are just guesses, as the game randomises.
+		boolean doUpdateId = game1.getMetadata().getGameType() == GameTypeEnum.gameFA
+				|| game1.getMetadata().getGameType() == GameTypeEnum.gameKS
+				|| game1.getMetadata().getGameType() == GameTypeEnum.gameCME
+				|| game1.getMetadata().getGameType() == GameTypeEnum.gameCMF;
+
+		if (this.turnInfo.gameInfo !=null) {
+			//there are some game customizations going on.
+			if (this.turnInfo.gameInfo.size() > 0) {
+				GameInfoOptionWrapper option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "ShuffleArtefacts");
+				if (option.value.equals("1")) {
+					if (null == this.game.getParameter("ShuffledArtefacts")) {
+						// this is the first time we have seen this
+						if (!doUpdateId) {
+							// and it's an unusual game type.
+							// so all the assumptions about the artifact numbers are wrong.
+							game1.getMetadata().resetArtifactNumbers();
+						}
+					}
+					// mark the game as using randomised artifacts, so we don't splat the numbers again.
+					this.game.setParameter("ShuffledArtefacts", "1");
+					doUpdateId = true;
+				}
+			}
+		}
 		for (ArtifactWrapper aw : aws) {
-			// for FA game, update artifact numbers
-			try {
-				if (game1.getMetadata().getGameType() == GameTypeEnum.gameFA
-						|| game1.getMetadata().getGameType() == GameTypeEnum.gameKS
-						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCME
-						|| game1.getMetadata().getGameType() == GameTypeEnum.gameCMF
-						) {
+			try { // so that we just skip for any bad artifact.
+				if (doUpdateId) {
 					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
 					boolean found = false;
 					for (ArtifactInfo ai : game1.getMetadata().getArtifacts().getItems()) {

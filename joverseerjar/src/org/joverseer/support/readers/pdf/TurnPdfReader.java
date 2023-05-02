@@ -29,7 +29,6 @@ import org.joverseer.domain.Encounter;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
-import org.joverseer.domain.NationRelationsEnum;
 import org.joverseer.domain.PdfTurnText;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
@@ -955,20 +954,7 @@ public class TurnPdfReader implements Runnable {
         	if (n == null) {
         		problematicNations += (problematicNations.equals("") ? "" : ", ") + nrw.getNation();
         	} else {
-	            int natNo = n.getNumber();
-	            NationRelationsEnum relation = NationRelationsEnum.Tolerated;
-	            if (nrw.getRelation().equals("Friendly")) {
-	                relation = NationRelationsEnum.Friendly;
-	            } else if (nrw.getRelation().equals("Tolerated")) {
-	                relation = NationRelationsEnum.Tolerated;
-	            } else if (nrw.getRelation().equals("Neutral")) {
-	                relation = NationRelationsEnum.Neutral;
-	            } else if (nrw.getRelation().equals("Disliked")) {
-	                relation = NationRelationsEnum.Disliked;
-	            } else if (nrw.getRelation().equals("Hated")) {
-	                relation = NationRelationsEnum.Hated;
-	            }  
-	            nr.setRelationsFor(natNo, relation);
+	            nr.setRelationsFor(n.getNumber(), NationRelationWrapper.fromString(nrw.getRelation()));
         	}
         }
         if (!problematicNations.equals("")) {

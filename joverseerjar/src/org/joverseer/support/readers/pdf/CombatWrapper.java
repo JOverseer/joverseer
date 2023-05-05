@@ -480,13 +480,13 @@ public class CombatWrapper {
 			}
 			String army_start = "At the head of a ";
 			String pop_start = "The Camp|The Village|The Town|The Major Town|The City";
-			String report_start = "(Report from )|(Against the forces)|(After the battle)";
+			String report_start = "(Report from )|(Against the forces)|(After the battle)|(After the attack)";
 			String army_end = army_start + "|" + pop_start + "|" + report_start;
 			String army_rode = " army rode ";
 			String of_the_nation_of = " of the nation of ";
 			String behind_him = "Behind him the forming ranks were filled with:";
 			String battle_joined = "After the battle had joined";
-			String after_the_battle = "After the battle\\.";
+			String after_the_battle = "(After the battle\\.)|(After the attack)";
 			ArrayList<String> armyTexts = StringUtils.getParts(narration1, army_start, army_end, true, false);
 
 			for (String armyText : armyTexts) {
@@ -501,7 +501,7 @@ public class CombatWrapper {
 				popCenter = StringUtils.getUniquePart(narration1, pop_start, "After the battle\\.\\.\\.\\. ", true, false);
 			}
 
-			String outcomePart = StringUtils.getUniquePart(narration1, after_the_battle, null, false, false);
+			String outcomePart = StringUtils.getUniquePart(narration1, after_the_battle, null, true, false);
 			if (outcomePart != null) {
 				outcomePart = StringUtils.removeAllNewline(outcomePart);
 				outcomePart = StringUtils.removeExtraspaces(outcomePart);

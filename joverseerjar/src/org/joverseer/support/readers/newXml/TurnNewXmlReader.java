@@ -865,12 +865,29 @@ public class TurnNewXmlReader implements Runnable {
 			CombatWrapper cw = new CombatWrapper();
 			cw.setHexNo(bw.getHexNo());
 			cw.parseAll(bw.getText());
+			
+			System.out.println("Combat at "+cw.getHexNo());
+			
 			for (ArmyEstimate ae : cw.getArmyEstimates()) {
 				ArmyEstimate eae = (ArmyEstimate) game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
 				if (eae != null) {
 					game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
 				}
 				game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+			}
+			
+			if (cw.getPopCenterOutcome()=="captured") {
+				System.out.println("PC captured..");
+				
+				Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
+				PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", cw.getHexNo());
+				
+				System.out.println("PC at "+pc.getHexNo()+" "+pc.getName());
+				
+				Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
+				
+				System.out.println("Now owned by "+cw.getPopOutcomeNation()+" "+newOwner.getNumber());
+				pc.setNation(newOwner);
 			}
 
 		}

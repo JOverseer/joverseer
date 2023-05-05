@@ -866,8 +866,6 @@ public class TurnNewXmlReader implements Runnable {
 			cw.setHexNo(bw.getHexNo());
 			cw.parseAll(bw.getText());
 			
-			System.out.println("Combat at "+cw.getHexNo());
-			
 			for (ArmyEstimate ae : cw.getArmyEstimates()) {
 				ArmyEstimate eae = (ArmyEstimate) game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
 				if (eae != null) {
@@ -877,16 +875,10 @@ public class TurnNewXmlReader implements Runnable {
 			}
 			
 			if (cw.getPopCenterOutcome()=="captured") {
-				System.out.println("PC captured..");
-				
 				Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
 				PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", cw.getHexNo());
-				
-				System.out.println("PC at "+pc.getHexNo()+" "+pc.getName());
-				
+
 				Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
-				
-				System.out.println("Now owned by "+cw.getPopOutcomeNation()+" "+newOwner.getNumber());
 				pc.setNation(newOwner);
 			}
 

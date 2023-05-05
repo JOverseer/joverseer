@@ -42,6 +42,9 @@ public class CombatWrapper {
 	String popFort;
 	String popNation;
 	String popOutcomeNation;
+	String popOutcomeSize;
+	String popOutcomeFort;
+	
 	boolean naval = false;
 
 	public boolean isNaval() {
@@ -82,7 +85,24 @@ public class CombatWrapper {
 
 	public void setPopCenterOutcome(String popCenterOutcome) {
 		this.popCenterOutcome = popCenterOutcome;
+	}	
+	
+	public void setPopCenterOutcomeSize(String popCenterOutcomeSize) {
+		this.popOutcomeSize = popCenterOutcomeSize;
 	}
+	
+	public String getPopCenterOutcomeSize() {
+		return this.popOutcomeSize;
+	}
+
+	
+	public void setPopCenterOutcomeFort(String popCenterOutcomeFort) {
+		this.popOutcomeFort = popCenterOutcomeFort;
+	}
+	
+	public String getPopCenterOutcomeFort() {
+		return this.popOutcomeFort;
+	}	
 
 	public String getPopName() {
 		return this.popName;
@@ -567,6 +587,7 @@ public class CombatWrapper {
 						String destroyed = "has been reduced to a Ruins";
 						if (popOutcome.contains(destroyed)) {
 							setPopCenterOutcome("destroyed");
+							setPopCenterOutcomeSize("ruins");
 						} else {
 							String newNation = StringUtils.getUniquePart(popOutcome, "now flies the flag of ", "\\.", false, false);
 							if (newNation != null) {
@@ -580,6 +601,21 @@ public class CombatWrapper {
 								}
 							} else {
 								setPopCenterOutcome("not affected");
+							}
+							
+							String newSize = StringUtils.getUniquePart(popOutcome, this.popSize + " has been reduced to a ", "\\.", false, false);
+							if (newSize != null) {
+								setPopCenterOutcomeSize(newSize);
+							}
+							
+							if (this.popFort!=null && popOutcome.contains(this.popFort+" has not been affected")) {
+								setPopCenterOutcomeFort(this.popFort);
+							}
+							else if(this.popFort!=null) {
+								String newFort = StringUtils.getUniquePart(popOutcome, this.popFort + " has been reduced to a ", "\\.", false, false);
+								if (newFort != null) {
+									setPopCenterOutcomeFort(newFort);
+								}								
 							}
 						}
 						for (CombatArmy ca : this.armies.getItems()) {

@@ -239,17 +239,14 @@ public class InfoUtils {
 		return Integer.parseInt(info.getValue(ri, ci));
 	}
 
-	public static int getCharactersAllowed(GameTypeEnum gt,int turn) {
-		Info info = JOApplication.getInfoRegistry().getInfo("charactersAllowed");
-		if (info == null)
-			return Integer.MAX_VALUE;
+	public static int findMatchingRow(Info info,GameTypeEnum gt,int turn) {
 		String range;
 		int upper,lower,separator;
 		for (int j = 1; j < info.getRowCount(); j++) {
 			if (info.getValue(j, 0).equalsIgnoreCase(gt.toString())) {
 				range = info.getValue(j, 1);
 				if (range.contains("+")) {
-					return Integer.valueOf(info.getValue(j, 2));
+					return j;
 				}
 				separator = range.indexOf("-");
 				if (separator==0) {
@@ -266,9 +263,29 @@ public class InfoUtils {
 					lower =0;
 				}
 				if ((turn >= lower) && (turn <=upper)) {
-					return Integer.valueOf(info.getValue(j, 2));
+					return j;
 				}
 			}
+		}
+		return -1;
+	}
+	public static int getCharactersAllowed(GameTypeEnum gt,int turn) {
+		Info info = JOApplication.getInfoRegistry().getInfo("charactersAllowed");
+		if (info == null)
+			return Integer.MAX_VALUE;
+		int j = findMatchingRow(info, gt, turn);
+		if (j > -1) {
+			return Integer.valueOf(info.getValue(j, 2));			
+		}
+		return Integer.MAX_VALUE;
+	}
+	public static int getNPCRecruitsAllowed(GameTypeEnum gt,int turn) {
+		Info info = JOApplication.getInfoRegistry().getInfo("charactersAllowed");
+		if (info == null)
+			return Integer.MAX_VALUE;
+		int j = findMatchingRow(info, gt, turn);
+		if (j > -1) {
+			return Integer.valueOf(info.getValue(j, 3));			
 		}
 		return Integer.MAX_VALUE;
 	}

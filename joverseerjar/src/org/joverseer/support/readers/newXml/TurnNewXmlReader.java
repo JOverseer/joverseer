@@ -446,6 +446,7 @@ public class TurnNewXmlReader implements Runnable {
 			this.infoSource = new XmlExtraTurnInfoSource(game.getMaxTurn(), this.nationNo);
 
 			this.turn = game.getTurn(game.getMaxTurn());
+			// update turn from turnInfo here.
 
 			if (getMonitor() != null) {
 				getMonitor().worked(0);

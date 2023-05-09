@@ -60,6 +60,7 @@ public class NationStatisticsListView extends BaseItemListView {
 		ns.setAllegiance(NationAllegianceEnum.Neutral);
 
 		int limit = InfoUtils.getCharactersAllowed(this.game.getMetadata().getGameType(), this.game.getCurrentTurn());
+		int npcRecruitLimit = InfoUtils.getNPCRecruitsAllowed(this.game.getMetadata().getGameType(), this.game.getCurrentTurn()); 
 		for (int i = 0; i < 28; i++) {
 			NationRelations nr = t.getNationRelations(i);
 			if (nr != null && nr.getEliminated())
@@ -78,6 +79,7 @@ public class NationStatisticsListView extends BaseItemListView {
 			nsw.setNationNo(i);
 			nsw.setCharacters(0);
 			nsw.setCharactersLimit(limit);
+			nsw.setNPCRecruitLimit(npcRecruitLimit);
 			nsw.setCharactersInCapital(0);
 			nsw.setCommanders(0);
 			for (Character c : t.getCharacters().findAllByProperty("nationNo", nsw.getNationNo())) {

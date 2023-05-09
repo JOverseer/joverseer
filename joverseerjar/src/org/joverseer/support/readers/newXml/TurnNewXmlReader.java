@@ -18,11 +18,13 @@ import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
 import org.joverseer.domain.Encounter;
+import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Order;
 import org.joverseer.domain.PopulationCenter;
+import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
@@ -866,12 +868,34 @@ public class TurnNewXmlReader implements Runnable {
 			CombatWrapper cw = new CombatWrapper();
 			cw.setHexNo(bw.getHexNo());
 			cw.parseAll(bw.getText());
+			
 			for (ArmyEstimate ae : cw.getArmyEstimates()) {
 				ArmyEstimate eae = (ArmyEstimate) game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
 				if (eae != null) {
 					game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
 				}
 				game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
+			}
+			
+			if (cw.getPopCenterOutcome()=="captured") {
+				try {
+					Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
+					PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", cw.getHexNo());
+	
+					Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
+					pc.setNation(newOwner);
+					
+					//Update size and fortifications
+					if (cw.getPopCenterOutcomeSize() != null) {
+						pc.setSize(PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()));
+					}
+					
+					if (cw.getPopCenterOutcomeFort() != null) {
+						pc.setFortification(FortificationSizeEnum.getFromText(cw.getPopCenterOutcomeFort()));
+					}
+				} catch (Exception exc) {
+					logger.error(exc);
+				}
 			}
 
 		}

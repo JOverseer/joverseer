@@ -1046,6 +1046,12 @@ public class TurnXmlReader implements Runnable {
 						if (gm.getNewXmlFormat()) {
 							if (oldPc.getInfoSource().getTurnNo() == turnNo && oldPc.getInformationSource().getValue() > newPc.getInformationSource().getValue())
 								update = false;
+							
+								if (newPc.getTurnSeenOnMap() == turnNo) {
+									// newPC is a map icon seen this turn so docks will be accurate
+									logger.debug("add docks from map icon");
+									oldPc.setHarbor(newPc.getHarbor());
+								}
 						}
 						if (update) {
 							logger.debug("replace/update");
@@ -1067,6 +1073,7 @@ public class TurnXmlReader implements Runnable {
 									newPc.setHarbor(oldPc.getHarbor());
 								}
 							}
+							
 							int prevTurnNo = oldPc.getInfoSource().getTurnNo();
 							if (PopCenterXmlInfoSource.class.isInstance(oldPc.getInfoSource())) {
 								prevTurnNo = ((PopCenterXmlInfoSource) oldPc.getInfoSource()).getPreviousTurnNo();

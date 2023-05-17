@@ -34,6 +34,8 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     InformationSourceEnum informationSource;
 
     InfoSource infoSource;
+    
+    int turnSeenOnMap;
 
     ProductContainer production = new ProductContainer();
     ProductContainer stores = new ProductContainer();
@@ -160,6 +162,14 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 
     public void setInfoSource(InfoSource infoSource) {
         this.infoSource = infoSource;
+    }
+    
+    public int getTurnSeenOnMap() {
+    	return this.turnSeenOnMap;
+    }
+    
+    public void setTurnSeenOnMap(int turnNo) {
+    	this.turnSeenOnMap = turnNo;
     }
 
     public int getHexNo() {

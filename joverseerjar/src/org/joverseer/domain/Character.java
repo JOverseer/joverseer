@@ -518,16 +518,20 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	}
 	public void swapOrders(final int a,final int b) {
 		final Order temp = this.orders[a];
-		this.orders[b] = this.orders[b];
-		this.orders[a] = temp;
+		this.orders[a] = this.orders[b];
+		this.orders[b] = temp;
 	}
 	//fixup bug where a character order gets duplicated.
 	public void checkForDuplicateOrderBug()
 	{
 		// note that we are comparing references here.
 		if (this.orders[0] == this.getOrders()[1]) {
-			// we replace [1] so that the swap orders ui command will fix things whether the duplication is in [0] or [2] 
 			this.orders[1] = new Order(this);
+		}
+		if (this.numberOfOrders>2) {
+			if ((this.orders[0] == this.getOrders()[2]) || (this.orders[1]==this.getOrders()[2])) {
+				this.orders[2] = new Order(this);
+			}
 		}
 	}
 

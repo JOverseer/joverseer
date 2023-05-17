@@ -29,6 +29,35 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
     ArrayList<String> dirs = new ArrayList<String>();
     JTextField directionParams;
 
+    class BaseMovementActionListener implements ActionListener {
+    	protected String message;
+    	public BaseMovementActionListener(String aMessage) {
+			this.message = aMessage;
+		}
+    	
+    	@Override
+		public void actionPerformed(ActionEvent arg0) {
+            updateEditor();
+        }
+    }
+    class AddMovementActionListener extends BaseMovementActionListener {
+    	public AddMovementActionListener(String aMessageKey) {
+			super(aMessageKey);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+    		MoveArmyOrderSubeditor.this.dirs.add(this.message);
+            updateEditor();
+        }
+    }
+    class AddMovementButton extends JButton {
+    	AddMovementButton(String aMessage) {
+    		super(aMessage);
+    		this.addActionListener(new AddMovementActionListener(aMessage));
+    	}
+    }
+    
     public MoveArmyOrderSubeditor(OrderEditor oe,Order o,GameHolder gameHolder) {
         super(oe,o,gameHolder);
         }
@@ -75,55 +104,16 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
 
         stlb.cell(new JLabel());
 
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.ne")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
+        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.ne"))); //$NON-NLS-1$
+        stlb.row();
+
+        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.w"))); //$NON-NLS-1$
+        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.home"))); //$NON-NLS-1$
+        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.e"))); //$NON-NLS-1$
 
         stlb.row();
 
-
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.w"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.w")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
-
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.home"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.home")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
-
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.e"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.e")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
-
-        stlb.row();
-
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.sw")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
+        stlb.cell(btn = new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.sw"))); //$NON-NLS-1$
 
         //stlb.cell();
         stlb.cell(btn = new JButton("<--")); //$NON-NLS-1$
@@ -138,14 +128,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             }
         });
 
-        stlb.cell(btn = new JButton(Messages.getString("MoveArmyOrderSubeditor.direction.se"))); //$NON-NLS-1$
-        btn.addActionListener(new ActionListener() {
-            @Override
-			public void actionPerformed(ActionEvent arg0) {
-                MoveArmyOrderSubeditor.this.dirs.add(Messages.getString("MoveArmyOrderSubeditor.direction.se")); //$NON-NLS-1$
-                updateEditor();
-            }
-        });
+        stlb.cell(new AddMovementButton(Messages.getString("MoveArmyOrderSubeditor.direction.se"))); //$NON-NLS-1$
 
 //        stlb.row();
 
@@ -155,6 +138,7 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         pnl.setBackground(Color.white);
         tlb.cell(pnl);
 
+        // note that the order of these add matters...it is the order that the abstractOrtderEditor generates the parameters as text
         components.add(this.directionParams);
         components.add(this.movementStyle);
     }
@@ -171,7 +155,11 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
             text += (text.equals("") ? "" : Order.DELIM) + dir; //$NON-NLS-1$ //$NON-NLS-2$
         }
         this.directionParams.setText(text);
+        // hack to stop spurious - appearing
+        boolean oldHidden = getEditor().isHideUnspecifiedParameters();
+        getEditor().setHideUnspecifiedParameters(true);
         getEditor().updateParameters();
+        getEditor().setHideUnspecifiedParameters(oldHidden);
     }
 
 	@Override

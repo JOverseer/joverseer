@@ -16,6 +16,7 @@
 "2209",0,4,2,1,0,0,"Imladris",75,True,False,,True
 "2212",0,4,4,27,0,0,"Moria",75,False,False,,False
 "2218",0,1,0,26,0,0,"Wellinghall",30,False,False,,True
+"2219",0,1,0,12,0,0,"Wormcast",30,False,False,,False
 "2321",0,3,2,26,0,0,"Edoras",55,False,False,,False
 "2409",0,4,1,27,0,0,"Goblin-gate",75,False,False,,False
 "2413",0,3,1,26,0,0,"Cerin Amroth",55,False,False,,True
@@ -40,4 +41,6 @@
 "3222",0,1,0,27,0,0,"Durthang",30,False,False,,False
 "3224",0,3,2,27,0,0,"Cirith Ungol",55,False,False,,False
 "3322",0,1,0,11,0,0,"Lugburzum",30,False,False,,False
+"3411",0,1,0,2,0,0,"Eastguard",30,False,False,,False
 "3423",0,4,4,11,0,0,"Barad-dûr",75,True,False,,False
+"3425",0,1,0,11,0,0,"Lag Gorgoroth",30,False,False,,False

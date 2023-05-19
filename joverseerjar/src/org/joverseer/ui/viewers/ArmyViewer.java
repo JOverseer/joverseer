@@ -244,6 +244,7 @@ public class ArmyViewer extends ObjectViewer {
 				Integer consumption = army.computeFoodConsumption();
 				if (food1 != null && consumption != null && consumption > 0) {
 					int turns = (food1 - 1) / consumption;
+					if (turns==0) turns=1;
 					foodStr += " (" + turns + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 					foodTooltip = "<html>" + Messages.getString("ArmyViewer.ArmyFoodForNTurns", new Object[] {turns}) + foodTooltip + "</html>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				}
@@ -496,8 +497,14 @@ public class ArmyViewer extends ObjectViewer {
 			Integer food1 = a.computeFoodConsumption();
 			if (food1 == null)
 				return;
+			
+			String message = Messages.getString("ArmyViewer.RequiredFood.text",new Object[] { food1 }); //$NON-NLS-1$
+			if (a.getFoodFromPop() > 0) {
+				message += " The population center is providing " + a.getFoodFromPop() + " food this turn.";
+			}
+			
 			MessageDialog dlg = new MessageDialog(Messages.getString("ArmyViewer.RequiredFood.title"),
-					Messages.getString("ArmyViewer.RequiredFood.text",new Object[] { food1 })); //$NON-NLS-1$
+				message);	
 			dlg.showDialog();
 		}
 	}

@@ -61,6 +61,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 
 	ArrayList<String> characters = new ArrayList<String>();
 	Integer food = null; // null when food not set
+	Integer foodFromPop = null;
 	Boolean fed = null; // null when fed not set
 
 	Boolean cavalry = null; // null when cavalry not set
@@ -118,8 +119,32 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 			return isFed();
 		}
 		Integer foodConsumption = computeFoodConsumption();
+		Integer pcFood = 0;
 		if (foodConsumption != null && getFood() != null) {
-			return getFood() >= computeFoodConsumption();
+			//Is the army at own or friendly PC
+			PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "x", "y" }, new Object[] { this.x, this.y });
+			if (pc!=null) {
+				NationRelations r = (NationRelations) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pc.getNationNo());
+				if (pc.getNationNo() == this.getNationNo() || r.getRelationsFor(this.getNationNo()) == NationRelationsEnum.Friendly) {
+					pcFood = pc.getFoodCapacity();
+				}
+				
+				if (pcFood > 0) {
+					//Check to see if food needs to be shared with other armies
+					int totalFoodNeeded = 0;
+					for (Army a : (ArrayList<Army>) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Army).findAllByProperties(new String[] { "x", "y" }, new Object[] { this.x, this.y })) {
+						if (a.getNationNo()==pc.getNationNo() || r.getRelationsFor(a.getNationNo()) == NationRelationsEnum.Friendly) {
+							totalFoodNeeded += a.computeFoodConsumption();
+						}
+					}
+					
+					pcFood = Math.round(pcFood * foodConsumption / totalFoodNeeded);
+					this.setFoodFromPop(pcFood);
+				}
+			}
+			
+			//fed if there is enough food available AND food is not zero
+			return ((this.food + pcFood) > foodConsumption && this.food>0);
 		}
 		return null;
 	}
@@ -207,6 +232,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	 */
 	public Integer getFood() {
 		return this.food;
+	}
+	
+	public Integer getFoodFromPop() {
+		return this.foodFromPop;
 	}
 
 	public String getHexNo() {
@@ -396,6 +425,10 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 
 	public void setFood(Integer food) {
 		this.food = food;
+	}
+	
+	public void setFoodFromPop(Integer foodFromPop) {
+		this.foodFromPop = foodFromPop;
 	}
 
 	public void setHexNo(String hexNo) {

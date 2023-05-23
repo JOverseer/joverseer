@@ -519,6 +519,10 @@ public class TurnXmlReader implements Runnable {
 		if (a1.getTroopCount() == 0 && a2.getTroopCount() > 0) {
 			a1.setTroopCount(a2.getTroopCount());
 		}
+		// Stop recon removing navy flag 
+		if (a2.isNavy()) {
+			a1.setNavy(true);
+		}
 	}
 
 	public static void addArmy(Army newArmy, Game game, Turn turn, boolean addCharacter) {

@@ -65,6 +65,11 @@ public class OrderResultContainer implements ApplicationListener {
 			}
 		}
 	}
+	
+	public void clear() {
+		this.results.clear();
+	}
+	
 	public static OrderResultContainer instance()
 	{
 		return (OrderResultContainer) Application.instance().getApplicationContext().getBean("orderResultContainer");

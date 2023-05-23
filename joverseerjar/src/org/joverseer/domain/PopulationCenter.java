@@ -264,6 +264,10 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 	}
 
 	public int getFoodCapacity() {
+		if (this.foodCapacity==0) {
+			int foodCapacity1 = this.lookupSize(new int[]{0, 100, 200, 1000, 2500, 5000}); 
+			setFoodCapacity(foodCapacity1);
+		}
 		return this.foodCapacity;
 	}
 

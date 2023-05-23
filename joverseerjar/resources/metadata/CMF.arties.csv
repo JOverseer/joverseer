@@ -24,7 +24,7 @@
 0;Dwarven Ring of Power;Neutral;Mage;50;Cast 102 Barriers;Gimli
 0;Axe of Orc-hewing;Neutral;Combat;2000;Cast 202 Call Fire;Gimli
 0;Lorglîn;Neutral;Mage;10;Cast 8 Heal True;
-0;Night’s Passing;Good;Stealth;10;Cast  208 Words of Pain;King of the Dead
+0;Night’s Passing;Good;Stealth;10;Cast 208 Words of Pain;King of the Dead
 0;Bow of the Woodland Realm;Good;Combat;1000;Cast 4 Major Heal;Legolas
 0;Boots of Tracelessness;Neutral;Stealth;10;Cast 302 Long Stride;Legolas
 0;Staff of Radagast;Good;Mage;10;Cast 430 Reveal Char. True;Radagast
@@ -33,7 +33,7 @@
 0;Helm of Shadow;Neutral;Stealth;10;Cast 220 Words of Agony;Thranduil
 0;Yellow Boots;Good;Mage;10;Cast 6 Greater Heal;Tom Bombadil
 0;Blue Jacket;Good;Emissary;15;Cast 214 Call Winds;Tom Bombadil
-0;Entdraught;Good;Emissary;10;Call 304 Fast Stride;Treebeard
+0;Entdraught;Good;Emissary;10;Cast 304 Fast Stride;Treebeard
 0;Black Scale;Evil;Command;30;Cast 202 Call Fire;Sauron
 0;Narsil’s Bane;Evil;Mage;20;Cast 204 Wild Flames;Sauron
 0;Palantír of Minas Morgul;Neutral;Scry Area;;Cast 206 Wall of Fire;Sauron
@@ -48,7 +48,7 @@
 0;Skull Flail;Neutral;Combat;1000;Cast 236 Fire Storms;Gothmog
 0;Blackroot Club;Neutral;Combat;2000;Cast 102 Barriers;Great Goblin
 0;Ovir Crown;Neutral;Mage;20;Cast 415 Scry Area;Hoarmurath
-0;Duv Ho’ath (Morgul Knife);Evil;Agent;10;Cast 502 Weaknes;Hoarmurath
+0;Duv Ho’ath (Morgul Knife);Evil;Agent;10;Cast 502 Weakness;Hoarmurath
 0;Helm of Ice;Neutral;Command;35;Cast 102 Barriers;Hoarmurath
 0;Duv Ji’ur (Morgul Knife);Evil;Agent;10;Cast 208 Words of Pain;Ji Indur
 0;Duv Kh’aul (Morgul Knife);Evil;Command;15;Cast 419 Divine Nat. Forces;Khamul

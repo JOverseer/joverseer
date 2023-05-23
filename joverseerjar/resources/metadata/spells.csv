@@ -38,8 +38,8 @@ Weakness;E;330;502;Character ID;Same Hex;Lose 1/3 net mage rank in health;Spirit
 Sickness;A;330;504;Character ID;Same Hex;Lose 1/2 net mage rank in health;Spirit Mastery
 Curses;H;330;506;Character ID;Adjacent Hex;Lose 1/2 net mage rank in health;Spirit Mastery
 Conjure Mounts;E;330;508;# Mounts;Same Nat PC;Conjures 5 mounts / net mage rank;Conjuring Ways
-Conjure Food;A;330;510;# Food;PC or Army;25 Food / net mage rank (Same Nat PC);Conjuring Ways
-Conjure Hordes;A;330;512;# Troops;With Army;5 Troops / net mage rank (Evil Only);Conjuring Ways
+Conjure Food;E;330;510;# Food;PC or Army;25 Food / net mage rank (Same Nat PC);Conjuring Ways
+Conjure Hordes;E;330;512;# Troops;With Army;5 Troops / net mage rank (Evil Only);Conjuring Ways
 Long Stride;E;825;302;Destination;w/in 14 hexes;Moves Character 14 hexes.;Movement Mastery
 Fast Stride;A;825;304;Destination;w/in 16 hexes;Moves Character 16 hexes.;Movement Mastery
 Path Mastery;H;825;306;Destination;w/in 19 hexes;Moves Character 19 hexes.;Movement Mastery

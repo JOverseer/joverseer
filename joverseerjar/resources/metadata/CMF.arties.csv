@@ -1,154 +1,154 @@
-﻿0;The One Ring;None;Stealth;20;None;Frodo
-0;Narya;None;Mage;50;None;Gandalf
-0;Ring of Barahir;Good;Command;35;None;Aragorn
-0;Elessar;Good;Mage;30;None;Aragorn
-0;Anduril;Good;Combat;2250;None;Aragorn
-0;Crown of Arwen;Good;Mage;25;None;Arwen
-0;Shield of Gondor;Good;Combat;2000;None;Boromir
-0;Horn of Gondor;Good;Command;20;None;Boromir
-0;Elenethbiel;None;Mage;15;None;Celeborn
-0;Orc-hewer;Good;Combat;1500;None;Dáin
-0;Red Arrow;Good;Emissary;15;None;Denethor
-0;Palantír of Minas Tirith;None;Scry Area;;None;Denethor
-0;Vilya;None;Mage;50;None;Elrond
-0;Mantle of Doriath;Good;;;Hide Pop Centre;Elrond
-0;Gúthwinë;Good;Combat;750;None;Éomer
-0;Shield of Rohan;Good;Command;15;None;Éowyn
-0;Wood-shadow;None;Stealth;15;None;Faramir
-0;Deepwood Bracelet;None;Mage;15;None;Faramir
-0;Nenya;None;Mage;50;None;Galadriel
-0;Light of Eärendil;Good;Mage;20;None;Galadriel
-0;Staff of the Drúedain;Good;Combat;2250;None;Ghan-buri-Ghan
-0;Drums of the Drúedain;None;Command;None20;None;Ghan-buri-Ghan
-0;Hair of Galadriel;Good;Emissary;10;None;Gimli
-0;Dwarven Ring of Power;None;Mage;50;None;Gimli
-0;Axe of Orc-huing;None;Combat;2000;None;Gimli
-0;Night's Passing;Good;Stealth;10;None;King of the Dead
-0;Bow of the Woodland Realm;Good;Combat;1000;None;Legolas
-0;Boots of Tracelessness;None;Stealth;10;None;Legolas
-0;Staff of Radagast;Good;Mage;10;None;Radagast
-0;Blade of Westernesse;None;Combat;1000;None;Samwise
-0;Banner of the Horselords;Good;Command;10;None;Théoden
-0;Helm of Shadow;None;Stealth;10;None;Thranduil
-0;Yellow Boots;Good;Mage;10;None;Tom Bombadil
-0;Blue Jacket;Good;Emissary;15;None;Tom Bombadil
-0;Entdraught;Good;Emissary;10;None;Treebeard
-0;Black Scale;Evil;Command;30;None;Sauron
-0;Narsil's Bane;Evil;Mage;20;None;Sauron
-0;Palantír of Minas Morgul;None;Scry Area;;None;Sauron
-0;Memory's Strings;Evil;Emissary;10;None;Adûnaphel
-0;Duv Ad'el (Morgul Knife);Evil;Emissary;10;None;Adûnaphel
-0;Eyes of the Well;Evil;Scry Area;;None;Akhôrahil
-0;Duv Ak'il (Morgul Knife);Evil;Mage;25;None;Akhôrahil
-0;Blood Spike;None;Combat;1000;None;Bert Huggins
-0;Wôlor Priest Ring;None;Mage;25;None;Dendra Dwar
-0;Duv Dw'ar (Morgul Knife);Evil;Agent;10;None;Dendra Dwar
-0;Flaming Whip;Evil;Combat;1500;None;Durin's Bane
-0;Skull Flail;None;Combat;1000;None;Gothmog
-0;Blackroot Club;None;Combat;2000;None;Great Goblin
-0;Ovir Crown;None;Mage;20;None;Hoarmurath
-0;Duv Ho'ath (Morgul Knife);Evil;Agent;10;None;Hoarmurath
-0;Helm of Ice;None;Command;35;None;Hoarmurath
-0;Duv Ji'ur (Morgul Knife);Evil;Agent;10;None;Ji Indûr
-0;Duv Kh'aul (Morgul Knife);Evil;Command;15;None;Khamûl
-0;Dragon Helm;Evil;Mage;30;None;Khamûl
-0;Spiderweb Cloak;None;Stealth;10;None;Lhachglin
-0;Voice of the Dark Tower;Evil;Emissary;10;None;Mouth of Sauron
-0;Ring of Iron Magic;Evil;Mage;30;None;Mouth of Sauron
-0;Cloak of the Abyss;None;Stealth;20;None;Mouth of Sauron
-0;Sea-helm of Ciryatan;Evil;Mage;30;None;Murazor
-0;Duv Mu'or (Morgul Knife);Evil;Agent;10;None;Murazor
-0;Crown of Angmar;Evil;Emissary;20;None;Murazor
-0;Bracers of Sen Jey;None;Command;15;None;Ren the Unclean
-0;Duv Re'an (Morgul Knife);Evil;Command;10;None;Ren the Unclean
-0;Burning Blade;Evil;Combat;1500;None;Ren the Unclean
-0;Palantír of Orthanc;None;Scry Area;;None;Saruman 
-0;Many-colored Robes of Aman;Evil;Emissary;10;None;Saruman
-0;Nightstealer;Evil;Combat;1250;None;Shagrat
-0;Alunthiensal;Evil;Mage;20;None;Throkmaw
-0;Earthroot Spike;None;Combat;1500;None;Uglûk
-0;Stormless Bow;None;Combat;1000;None;Ûvatha
-0;Listening Helm;None;Agent;10;None;Ûvatha
-0;Duv Uv'ha (Morgul Knife);Evil;Agent;10;None;Ûvatha
-0;Stone Club;None;Combat;2000;None;William Huggins
-0;Aranrûth;None;Combat;1750;None;
-0;Flute of Daeron;None;Emissary;10;None;
-0;Orcring;None;Combat;2500;None;
-0;Ringil;None;Combat;2000;None;
-0;Miramarth;None;Agent;10;None;
-0;Rauzgnagli;None;Combat;1750;None;
-0;Ring of Binding;None;Agent;15;None;
-0;Talisman of Absorption;None;Mage;20;None;
-0;Ulûkai;None;Command;35;None;
-0;Angbor;None;Command;10;Cast 436 Scry Character;
-0;Belt of Durin;None;Command;20;None;
-0;Edge of Westernesse;None;Combat;1000;None;Beregond
-0;Bone Ring;None;Mage;10;Learn Conjure Hordes;
-0;Bracers of the Mists;None;Stealth;15;None;
-0;Caranlhach;None;Combat;1750;None;
-0;Cloak of Duvorn;None;Agent;10;None;
-0;Cloak of Hiding;None;Stealth;5;Cast 434 Reveal Population Centre;
-0;Cloak of Protection;None;Agent;5;Cast 248 Fanaticism;
-0;Cloak of the Heavens;None;Agent;10;None;
-0;Cloak of Valacirca;None;Stealth;10;None;
-0;Collar of Might;None;Mage;30;None;
-0;Collohwesta;None;Stealth;15;None;
-0;Corantir;None;Mage;10;Cast 6 Greater Heal;
-0;Crown of Celethsa;None;Mage;10;Cast 6 Greater Heal;
-0;Daecollo;None;Stealth;10;None;
-0;Dragon Helm of Dor-Lómin;None;Command;15;Cast 420 Reveal Character;
-0;Durin's Armor;None;Command;15;Cast 432 Perceive Secrets;
-0;Earring of Souls;None;Mage;10;Cast 8 Heal True;
-0;Elenya;None;Stealth;10;None;
-0;Erivagil;None;Combat;1500;Cast 242 Words of Death;
-0;Foamcleaver;None;Combat;1500;Cast 240 Summon Fire Spirits;
-0;Glosvagil;None;Combat;1500;Cast 240 Summon Fire Spirits;
-0;Gift of Aronwe;None;Emissary;10;None;
-0;Gûlthalion;None;Command;30;None;
-0;Helm of Isildur;None;Command;20;None;
-0;Lance of Reaching;None;Combat;500;Cast 436 Scry Character;
-0;Mallorn Staff;None;Mage;30;None;
-0;Mane of the Mearas;None;Mage;10;Learn Conjure Mounts;
-0;Maranya;None;Mage;30;Learn Weakness, Sickness;
-0;Mithril Helm;None;Combat;1500;Cast 240 Summon Fire Spirits;
-0;Orcrist;None;Combat;750;Cast 424 Perceive Mission;
-0;Ossanna;None;Mage;15;Cast 430 Reveal Character True;
-0;The Arkenstone;None;Scry Area;;None;
-0;Pectoral;None;Emissary;30;None;
-0;Spider Gloves;None;Agent;5;Cast 244 Summon Storms;
-0;Ring of Curufin;None;Agent;15;None;
-0;Ring of Impersonation;None;Agent;20;None;
-0;Ring of Stargazing;None;Mage;25;None;
-0;Ring of Wind;None;Agent;20;None;
-0;Seal of Approbation;None;Emmisary;5;Cast 432 Perceive Secrets;
-0;Silmaruth;None;Combat;2000;None;
-0;Staff of Earthmastery;None;Mage;20;Learn Conjure Food;
-0;Staff of the Serpent;None;Mage;10;Cast 114 Barrier Walls;
-0;Staff of the Wanderer;None;Mage;15;Learn Teleport;
-0;Taurin;None;Combat;2000;None;
-0;Tinculin;None;Mage;40;Learn Weakness, Sickness;
-0;Mithril Shirt;None;Stealth;5;Cast 508 Conjure Mounts;
-0;Shadow Mace;None;Combat;2000;None;
-0;Rod of the Steward;None;Emissary;5;Cast 432 Perceive Secrets;
-0;Helkaluine;None;Combat;1250;Cast 242 Words of Death;
-0;Tintelpë;None;Combat;1750;None;
-0;Macrilómen;None;Combat;2000;None;Glorfindel
-0;Nightfang;None;Combat;750;Cast 432 Perceive Secrets;
-0;Melody's Memory;None;Stealth;5;Cast 430 Reveal Character True;
-0;Herugrim;None;Combat;1000;Cast 238 Summon Wind Spirits;
-0;Night-piercer;None;Combat;500;Cast 436 Scry Character;
-0;War-dancer;None;Combat;750;Cast 512 Conjure Hordes;
-0;Air Cleaver;None;Combat;750;Cast 420 Reveal Character;
-0;Snow Hammer;None;Combat;500;Cast 430 Reveal Character True;
-0;Hue Changer;None;Combat;500;Cast 508 Conjure Mounts;
-0;Cloud Bow;None;Combat;750;Cast 426 Divine Army True;
-0;Stinging Tongue;None;Combat;500;Cast 432 Perceive Secrets;
-0;Thôlogaer Ciryatano;None;Mage;30;Learn Weakness, Sickness;
-0;Ring of Angrenost;None;Combat;500;Cast 430 Reveal Character True;
-0;Mithril Ring;None;Mage;10;Cast 114 Barrier Walls;
-0;Andorithel;None;Command;10;Cast 508 Conjure Mounts;
-0;Glamdring;None;Combat;750;Cast 426 Divine Army True;
-0;Small Tooth;None;Combat;750;Cast 424 Perceive Mission;
-0;Vasamacil;None;Combat;750;Cast 314 Teleport;
-0;Ring of Aran;None;Agent;5;Cast 246 Fearful Hearts;
-0;Lorglin;None;Mage;10;Cast 8 Heal True;
+0;The One Ring;Neutral;Stealth;20;Cast 2 Minor Heal;Frodo
+0;Narya;Neutral;Mage;50;Cast 104 Resistances;Gandalf
+0;Ring of Barahir;Good;Command;35;Cast 210 Words of Calm;Aragorn
+0;Elessar;Good;Mage;30;Cast 414 Scry Hex;Aragorn
+0;Anduril;Good;Combat;2250;Cast 204 Wild Flames;Aragorn
+0;Crown of Arwen;Good;Mage;25;Cast 406 Divine Army;Arwen
+0;Shield of Gondor;Good;Combat;2000;Cast 214 Call Winds;Boromir
+0;Horn of Gondor;Good;Command;20;Cast 102 Barriers;Boromir
+0;Elenethbiel;Neutral;Mage;15;Cast 218 Wall of Wind;Celeborn
+0;Orc-hewer;Good;Combat;1500;Cast 202 Call Fire;Dain
+0;Red Arrow;Good;Emissary;15;Cast 310 Major Return;Denethor
+0;Palantír of Minas Tirith;Neutral;Scry Area;;Cast 415 Reveal Production;Denethor
+0;Vilya;Neutral;Mage;50;Cast 2 Minor Heal;Elrond
+0;Mantle of Doriath;Good;Hide Pop Centre;;Cast 308 Capital Return;Elrond
+0;Gúthwinë;Good;Combat;750;Cast 106 Deflections;Eomer
+0;Shield of Rohan;Good;Command;15;Cast 108 Blessings;Eowyn
+0;Wood-shadow;Neutral;Stealth;15;Cast 210 Words of Calm;Faramir
+0;Deepwood Bracelet;Neutral;Mage;15;Cast 430 Reveal Char. True;Faramir
+0;Nenya;Neutral;Mage;50;Cast 214 Call Winds;Galadriel
+0;Light of Eärendil;Good;Mage;20;Cast 108 Blessings;Galadriel
+0;Staff of the Drúedain;Good;Combat;2250;Cast 102 Barriers;Ghan-buri-Ghan
+0;Drums of the Drúedain;Neutral;Command;20;Cast 216 Wild Winds;Ghan-buri-Ghan
+0;Hair of Galadriel;Good;Emissary;10;Cast 430 Reveal Char. True;Gimli
+0;Dwarven Ring of Power;Neutral;Mage;50;Cast 102 Barriers;Gimli
+0;Axe of Orc-hewing;Neutral;Combat;2000;Cast 202 Call Fire;Gimli
+0;Lorglîn;Neutral;Mage;10;Cast 8 Heal True;
+0;Night’s Passing;Good;Stealth;10;Cast 208 Words of Pain;King of the Dead
+0;Bow of the Woodland Realm;Good;Combat;1000;Cast 4 Major Heal;Legolas
+0;Boots of Tracelessness;Neutral;Stealth;10;Cast 302 Long Stride;Legolas
+0;Staff of Radagast;Good;Mage;10;Cast 430 Reveal Char. True;Radagast
+0;Blade of Westernesse;Neutral;Combat;1000;Cast 108 Blessings;Samwise
+0;Banner of the Horselords;Good;Command;10;Cast 112 Shields;Theoden
+0;Helm of Shadow;Neutral;Stealth;10;Cast 220 Words of Agony;Thranduil
+0;Yellow Boots;Good;Mage;10;Cast 6 Greater Heal;Tom Bombadil
+0;Blue Jacket;Good;Emissary;15;Cast 214 Call Winds;Tom Bombadil
+0;Entdraught;Good;Emissary;10;Cast 304 Fast Stride;Treebeard
+0;Black Scale;Evil;Command;30;Cast 202 Call Fire;Sauron
+0;Narsil’s Bane;Evil;Mage;20;Cast 204 Wild Flames;Sauron
+0;Palantír of Minas Morgul;Neutral;Scry Area;;Cast 206 Wall of Fire;Sauron
+0;Memory’s Strings;Evil;Emissary;10;Cast 302 Long Stride;Adunaphel
+0;Duv Ad’el (Morgul Knife);Evil;Emissary;10;Cast 242 Words of Death;Adunaphel
+0;Eyes of the Well;Evil;Scry Area;;Cast 412 Research Artifact;Akhorahil
+0;Duv Ak’il (Morgul Knife);Evil;Mage;25;Cast 214 Call Winds;Akhorahil
+0;Blood Spike;Neutral;Combat;1000;Cast 106 Deflections;Bert Huggins
+0;Wôlor Priest Ring;Neutral;Mage;25;Cast 218 Wall of Wind;Dendra Dwar
+0;Duv Dw’ar (Morgul Knife);Evil;Agent;10;Cast 308 Capital Return;Dendra Dwar
+0;Flaming Whip;Evil;Combat;1500;Cast 202 Call Fire;Durin's Bane
+0;Skull Flail;Neutral;Combat;1000;Cast 236 Fire Storms;Gothmog
+0;Blackroot Club;Neutral;Combat;2000;Cast 102 Barriers;Great Goblin
+0;Ovir Crown;Neutral;Mage;20;Cast 415 Scry Area;Hoarmurath
+0;Duv Ho’ath (Morgul Knife);Evil;Agent;10;Cast 502 Weakness;Hoarmurath
+0;Helm of Ice;Neutral;Command;35;Cast 102 Barriers;Hoarmurath
+0;Duv Ji’ur (Morgul Knife);Evil;Agent;10;Cast 208 Words of Pain;Ji Indur
+0;Duv Kh’aul (Morgul Knife);Evil;Command;15;Cast 419 Divine Nat. Forces;Khamul
+0;Dragon Helm;Evil;Mage;30;Cast 302 Long Stride;Khamul
+0;Spiderweb Cloak;Neutral;Stealth;10;Cast 216 Wild Winds;Lhachglin
+0;Voice of the Dark Tower;Evil;Emissary;10;Cast 406 Divine Army;Mouth of Sauron
+0;Ring of Iron Magic;Evil;Mage;30;Cast 208 Words of Pain;Mouth of Sauron
+0;Cloak of the Abyss;Neutral;Stealth;20;Cast 104 Resistances;Mouth of Sauron
+0;Sea-helm of Ciryatan;Evil;Mage;30;Cast 214 Call Winds;Murazor
+0;Duv Mu’or (Morgul Knife);Evil;Agent;10;Cast 302 Long Stride;Murazor
+0;Crown of Angmar;Evil;Emissary;20;Cast 106 Deflections;Murazor
+0;Bracers of Sen Jey;Neutral;Command;15;Cast 108 Blessings;Ren the Unclean
+0;Duv Re’an (Morgul Knife);Evil;Command;10;Cast 248 Fanaticism;Ren the Unclean
+0;Burning Blade;Evil;Combat;1500;Cast 204 Wild Flames;Ren the Unclean
+0;Palantír of Orthanc;Neutral;Scry Area;;Cast 208 Words of Pain;Saruman
+0;Many-colored Robes of Aman;Evil;Emissary;10;Cast 220 Words of Agony;Saruman 
+0;Nightstealer;Evil;Combat;1250;Cast 220 Words of Agony;Shagrat
+0;Alunthiensal;Evil;Mage;20;Cast 6 Greater Heal;Throkmaw
+0;Earthroot Spike;Neutral;Combat;1500;Cast 106 Deflections;Ugluk
+0;Stormless Bow;Neutral;Combat;1000;Cast 226 Chill Bolts;Uvatha
+0;Listening Helm;Neutral;Agent;10;Cast 308 Capital Return;Uvatha
+0;Duv Uv’ha (Morgul Knife);Evil;Agent;10;Cast 202 Call Fire;Uvatha
+0;Stone Club;Neutral;Combat;2000;Cast 102 Barriers;William Huggins
+0;Aranrûth;Neutral;Combat;1750;Cast 232 Fire Bolts;
+0;Flute of Daeron;Neutral;Emmisary;10;Cast 304 Cast Stride;
+0;Orcring;Neutral;Combat;2250;Cast 104 Resistances;
+0;Ringil;Neutral;Combat;2000;Cast 214 Call Winds;
+0;Miramarth;Neutral;Agent;10;Cast 206 Wall of Fire;
+0;Rauzgnagli;Neutral;Combat;1750;Cast 220 Words of Agony;
+0;Ring of Binding;Neutral;Agent;10;Cast 413 Scry Population Centre;
+0;Talisman of Absorption;Neutral;Mage;20;Cast 428 Locate Artifact True;
+0;Ulûkai;Neutral;Comand;35;Cast 102 Barriers;
+0;Glosvagil;Neutral;Combat;1500;Cast 240 Summon Fire Spirits;
+0;Angbor;Neutral;Comand;10;Cast 436 Scry Character;
+0;Belt of Durin;Neutral;Comand;20;Cast 224 Words of Command;
+0;Edge of Westernesse;Neutral;Combat;1000;Cast 106 Deflections;Beregond
+0;Bone Ring;Neutral;Mage;10;Learn Conjure Hordes;
+0;Bracers of the Mists;Neutral;Stealth;10;Cast 412 Research Artifact;
+0;Caranlhach;Neutral;Combat;1750;Cast 226 Chill Bolts;
+0;Cloak of Duvorn;Neutral;Agent;10;Cast 302 Long Stride;
+0;Cloak of Hiding;Neutral;Stealth;5;Cast 434 Reveal Population Centre;
+0;Cloak of Protection;Neutral;Agent;5;Cast 248 Fanaticism;
+0;Cloak of the Heavens;Neutral;Agent;10;Cast 308 Capital Return;
+0;Cloak of Valacirca;Neutral;Stealth;5;Cast 424 Perceive Mission;
+0;Collar of Might;Neutral;Mage;30;Cast 108 Blessings;
+0;Collohwesta;Neutral;Stealth;10;Cast 406 Divine Army;
+0;Corantir;Neutral;Mage;10;Cast 6 Greater Heal;
+0;Crown of Celethsa;Neutral;Mage;10;Cast 6 Greater Heal;
+0;Daecollo;Neutral;Stealth;5;Cast 419 Divine Nation Forces;
+0;Dragon Helm of Dor-Lómin;Neutral;Comand;15;Cast 420 Reveal Character;
+0;Durin's Armor;Neutral;Comand;15;Cast 432 Perceive Secrets;
+0;Earring of Souls;Neutral;Mage;10;Cast 8 Heal True;
+0;Elenya;Neutral;Stealth;5;Cast 428 Locate Artifact True;
+0;Erivagil;Neutral;Combat;1500;Cast 242 Words of Death;
+0;Foamcleaver;Neutral;Combat;1500;Cast 240 Summon Fire Spirits;
+0;Gift of Aronwe;Neutral;Emmisary;10;Cast 310 Major Return;
+0;Gûlthalion;Neutral;Comand;30;Cast 210 Words of Calm;
+0;Helm of Isildur;Neutral;Comand;20;Cast 222 Words of Stun;
+0;Lance of Reaching;Neutral;Combat;500;Cast 436 Scry Character;
+0;Mallorn Staff;Neutral;Mage;30;Cast 2 Minor Heal;
+0;Mane of the Mearas;Neutral;Mage;10;Learn Conjure Mounts;
+0;Maranya;Neutral;Mage;30;Learn Weakness, Sickness;
+0;Mithril Helm;Neutral;Combat;1500;Cast 240 Summon Fire Spirits;
+0;Orcrist;Neutral;Combat;750;Cast 424 Perceive Mission;
+0;Ossanna;Neutral;Mage;15;Cast 430 Reveal Character True;
+0;The Arkenstone;Neutral;Scry Area;30;Cast 406 Divine Army;Dain
+0;Pectoral;Neutral;Emmisary;30;Cast 302 Long Stride;
+0;Spider Gloves;Neutral;Agent;5;Cast 244 Summon Storms;
+0;Ring of Curufin;Neutral;Agent;10;Cast 102 Barriers;
+0;Ring of Impersonation;Neutral;Agent;15;Cast 208 Words of Pain;
+0;Ring of Stargazing;Neutral;Mage;25;Cast 412 Research Artifact;
+0;Ring of Wind;Neutral;Agent;15;Cast 212 Words of Paralysis;
+0;Seal of Approbation;Neutral;Emmisary;5;Cast 432 Perceive Secrets;
+0;Silmaruth;Neutral;Combat;2000;Cast 208 Words of Pain;
+0;Staff of Earthmastery;Neutral;Mage;20;Learn Conjure Food;
+0;Staff of the Serpent;Neutral;Mage;10;Cast 114 Barrier Walls;
+0;Staff of the Wanderer;Neutral;Mage;15;Learn Teleport;
+0;Taurin;Neutral;Combat;2000;Cast 202 Call Fire;
+0;Tinculin;Neutral;Mage;40;Learn Weakness, Sickness;
+0;Mithril Shirt;Neutral;Stealth;5;Cast 508 Conjure Mounts;
+0;Shadow Mace;Neutral;Combat;2000;Cast 102 Barriers;
+0;Rod of the Steward;Neutral;Emmisary;5;Cast 432 Perceive Secrets;
+0;Helkaluine;Neutral;Combat;1250;Cast 242 Words of Death;
+0;Tintelpë;Neutral;Combat;1750;Cast 228 Frost Balls;
+0;Macrilómen;Neutral;Combat;2000;Cast 104 Resistances;Glorfindel
+0;Nightfang;Neutral;Combat;750;Cast 432 Perceive Secrets;
+0;Melody’s Memory;Neutral;Stealth;5;Cast 430 Reveal Character True;
+0;Herugrim;Neutral;Combat;1000;Cast 238 Summon Wind Spirits;
+0;Night-piercer;Neutral;Combat;500;Cast 436 Scry Character;
+0;War-dancer;Neutral;Combat;750;Cast 512 Conjure Hordes;
+0;Air Cleaver;Neutral;Combat;750;Cast 420 Reveal Character;
+0;Snow Hammer;Neutral;Combat;500;Cast 430 Reveal Character True;
+0;Hue Changer;Neutral;Combat;500;Cast 508 Conjure Mounts;
+0;Cloud Bow;Neutral;Combat;750;Cast 426 Divine Army True;
+0;Stinging Tongue;Neutral;Combat;500;Cast 432 Perceive Secrets;
+0;Thôlogaer Ciryatano;Neutral;Mage;30;Learn Weakness, Sickness;
+0;Ring of Angrenost;Neutral;Combat;500;Cast 430 Reveal Character True;
+0;Mithril Ring;Neutral;Mage;10;Cast 114 Barrier Walls;
+0;Andorithel;Neutral;Comand;10;Cast 508 Conjure Mounts;
+0;Glamdring;Neutral;Combat;750;Cast 426 Divine Army True;
+0;Small Tooth;Neutral;Combat;750;Cast 424 Perceive Mission;
+0;Vasamacil;Neutral;Combat;750;Cast 314 Teleport;
+0;Ring of Aran;Neutral;Agent;5;Cast 246 Fearful Hearts;

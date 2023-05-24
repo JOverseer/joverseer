@@ -442,6 +442,15 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 				Point p = MapPanel.instance().getSelectedHex();
 				refresh(p);
 			}
+			if (e.isLifecycleEvent(LifecycleEventsEnum.OrderCheckerRunEvent)) {
+				for (int i = 0; i < this.characterPanels.size(); i++) {
+					if (!this.characterPanels.get(i).isVisible())
+						continue;
+					Character c = (Character) this.characterViewers.get(i).getFormObject();
+						this.characterViewers.get(i).refreshOrders(c);
+				}
+								
+			}
 		}
 	}
 

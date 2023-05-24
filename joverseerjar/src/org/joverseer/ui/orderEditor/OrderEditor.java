@@ -492,6 +492,13 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			return;
 		o.setNoAndCode(this.orderCombo.getSelectedItem().toString());
 		o.setParameters(this.parametersInternal.getText());
+		
+		//remove order checker data for this order if present
+		OrderResultContainer container = OrderResultContainer.instance();
+		if (container.getResultTypeForOrder(o)!=null) {
+			container.removeResultsForOrder(o);
+		}
+		
 		// validateOrder();
 		// throw an order changed event
 		JOApplication.publishEvent(LifecycleEventsEnum.OrderChangedEvent, o, this);

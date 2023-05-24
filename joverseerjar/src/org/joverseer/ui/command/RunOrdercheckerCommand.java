@@ -91,6 +91,7 @@ public class RunOrdercheckerCommand extends ApplicationWindowAwareCommand {
 						// the order results are retrieved from the order
 						// checker proxy
 						OrderResultContainer cont = OrderResultContainer.instance();
+						cont.clear();
 
 						ArrayList<OrderResult> resultList = new ArrayList<OrderResult>();
 						ArrayList<Character> chars = g.getTurn().getCharacters().findAllByProperty("nationNo", Main.main.getNation().getNation());

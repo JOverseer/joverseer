@@ -3,7 +3,6 @@ image:
   - macos-bigsur
 # 2017 is the latest with Inno Setup also installed.
   - Visual Studio 2017
-  - Ubuntu2004
 branches:
   only:
     - master

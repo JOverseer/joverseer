@@ -877,21 +877,23 @@ public class TurnNewXmlReader implements Runnable {
 				game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).addItem(ae);
 			}
 			
-			if (cw.getPopCenterOutcome()=="captured") {
+			if (cw.getPopCenterOutcome()=="captured" || cw.getPopCenterOutcome()=="destroyed") {
 				try {
 					Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
 					PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", cw.getHexNo());
-	
-					Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
-					pc.setNation(newOwner);
 					
-					//Update size and fortifications
-					if (cw.getPopCenterOutcomeSize() != null) {
-						pc.setSize(PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()));
-					}
-					
-					if (cw.getPopCenterOutcomeFort() != null) {
-						pc.setFortification(FortificationSizeEnum.getFromText(cw.getPopCenterOutcomeFort()));
+					if (pc!=null) {
+						Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
+						pc.setNation(newOwner);
+						
+						//Update size and fortifications
+						if (cw.getPopCenterOutcomeSize() != null) {
+							pc.setSize(PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()));
+						}
+						
+						if (cw.getPopCenterOutcomeFort() != null) {
+							pc.setFortification(FortificationSizeEnum.getFromText(cw.getPopCenterOutcomeFort()));
+						}
 					}
 				} catch (Exception exc) {
 					logger.error(exc);

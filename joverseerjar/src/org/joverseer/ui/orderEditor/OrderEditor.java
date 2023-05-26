@@ -84,7 +84,16 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 	JPanel myPanel;
 	int bkOrderNo = -1;
 	String bkParams = ""; //$NON-NLS-1$
+    protected boolean hideUnspecifiedParameters = false;
 
+
+	public boolean isHideUnspecifiedParameters() {
+		return hideUnspecifiedParameters;
+	}
+
+	public void setHideUnspecifiedParameters(boolean hideUnspecifiedParameters) {
+		this.hideUnspecifiedParameters = hideUnspecifiedParameters;
+	}
 	String currentOrderNoAndCode = ""; //$NON-NLS-1$
 
 	ArrayList<JComponent> subeditorComponents = new ArrayList<JComponent>();
@@ -598,7 +607,11 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 					val = ((JComboBox) c).getSelectedItem().toString();
 				}
 			}
+			
 			if (val.equals("")) { //$NON-NLS-1$
+				if (this.hideUnspecifiedParameters) {
+					continue;
+				}
 				val = "-"; //$NON-NLS-1$
 			}
 			v += (v.equals("") ? "" : Order.DELIM) + val; //$NON-NLS-1$ //$NON-NLS-2$

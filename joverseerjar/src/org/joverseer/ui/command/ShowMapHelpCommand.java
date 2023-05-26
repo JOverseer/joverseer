@@ -6,6 +6,15 @@ import java.net.URI;
 import org.springframework.richclient.command.ActionCommand;
 
 public class ShowMapHelpCommand extends ActionCommand {
+	String link;
+	public String getLink() {
+		return this.link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
 	public ShowMapHelpCommand() {
 		super("ShowMapHelpCommand");
 	}
@@ -13,7 +22,7 @@ public class ShowMapHelpCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		try {
-			Desktop.getDesktop().browse(new URI("https://github.com/JOverseer/joverseer/wiki/MapInfo"));
+			Desktop.getDesktop().browse(new URI(link));
 		} catch (Exception e) {
 		}
 		;

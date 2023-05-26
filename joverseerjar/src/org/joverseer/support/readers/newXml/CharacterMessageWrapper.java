@@ -569,10 +569,15 @@ public class CharacterMessageWrapper {
 	protected OrderResult getRCTOrderResult(String line) {
 		String ptr[] = new String[] { "was ordered to cast a lore spell. Reveal Character True - ", " is located at ", "." };
 		String matches[] = matchPattern(line, ptr);
+		int hexIndex = 1;
+		if (matches == null) {
+			matches = matchPattern(line,new String[] {"was ordered to cast a lore spell. Reveal Character True - ", " is located in the ", " at ", "."});
+			hexIndex = 2;
+		}
 		if (matches != null) {
 			RevealCharacterTrueResultWrapper rw = new RevealCharacterTrueResultWrapper();
 			rw.setCharacterName(matches[0]);
-			rw.setHexNo(Integer.parseInt(matches[1]));
+			rw.setHexNo(Integer.parseInt(matches[hexIndex]));
 			return rw;
 		}
 		return null;

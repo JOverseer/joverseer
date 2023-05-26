@@ -1,5 +1,8 @@
 package org.joverseer.ui.command;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
@@ -28,6 +31,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 				+ SystemProperties();
 		this.textArea = new JTextArea();
 		this.textArea.append(report);
+		this.textArea.append(this.ScreenInfo());
 		Logger l = Logger.getRootLogger();
 		Appender a = l.getAppender("joverseerfileappender");
 		
@@ -76,6 +80,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"java.version");
 		reportProperty(sb,"os.arch");
 		reportProperty(sb,"os.name");
+		sb.append("Note: some versions of java incorrectly report Windows 11 as 10."+this.EOL);
 		reportProperty(sb,"os.version");
 		reportProperty(sb,"sun.java2d.uiScale");
 		reportProperty(sb,"sun.java2d.dpiaware");
@@ -84,6 +89,13 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"sun.java2d.noddraw");
 
 		return sb.toString();
+	}
+	public String ScreenInfo()
+	{
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		return String.format("reported size = %.0f by %.0f\r\n",width,height);
 	}
 
 }

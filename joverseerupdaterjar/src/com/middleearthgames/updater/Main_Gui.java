@@ -290,11 +290,17 @@ public class Main_Gui extends JFrame{
         }
         return buffer.substring(buffer.indexOf("<"+tag+">")+5,buffer.indexOf("</"+tag+">"));
     }
+    private void makeLastLineVisible()
+    {
+        outText.setCaretPosition(outText.getDocument().getLength());
+    	JScrollBar vertical = this.sp.getVerticalScrollBar();
+    	vertical.setValue(vertical.getMaximum());
+    }
+    
     private void logInfo(String message)
     {
         this.outText.setText(this.outText.getText()+message);
-    	JScrollBar vertical = this.sp.getVerticalScrollBar();
-    	vertical.setValue(vertical.getMaximum());
+        makeLastLineVisible();
     }
     private void logDebug(String message)
     {

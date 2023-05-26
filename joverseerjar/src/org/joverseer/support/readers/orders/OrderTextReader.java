@@ -237,7 +237,7 @@ public class OrderTextReader implements OrderTextReaderInterface {
 			// clear old notes
 			for (Note nd : (ArrayList<Note>) getGame().getTurn().getContainer(
 					TurnElementsEnum.Notes).findAllByProperty("target", c)) {
-				if (nd.getTags().indexOf("Order") > -1) {
+				if (nd.getTags()!=null && nd.getTags().indexOf("Order") > -1) {
 					getGame().getTurn().getContainer(TurnElementsEnum.Notes)
 							.removeItem(nd);
 				}

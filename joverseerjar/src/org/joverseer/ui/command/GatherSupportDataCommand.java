@@ -76,6 +76,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"java.version");
 		reportProperty(sb,"os.arch");
 		reportProperty(sb,"os.name");
+		sb.append("Note: some versions of java incorrectly report Windows 11 as 10."+this.EOL);
 		reportProperty(sb,"os.version");
 		reportProperty(sb,"sun.java2d.uiScale");
 		reportProperty(sb,"sun.java2d.dpiaware");

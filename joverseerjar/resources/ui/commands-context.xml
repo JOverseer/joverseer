@@ -287,7 +287,14 @@
 				</bean>
 				<value>separator</value>
 				<bean class="org.joverseer.ui.command.ShowTipOfTheDayCommand" />
-				<bean class="org.joverseer.ui.command.ShowMapHelpCommand" />
+				<bean class="org.joverseer.ui.command.ShowMapHelpCommand" >
+					<property name="link">
+					<value>https://github.com/JOverseer/joverseer/wiki/MapInfo</value></property>
+				</bean>
+				<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
+					<property name="link">
+					<value>https://www.middleearthgames.com</value></property>
+				</bean>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand" />
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand" />
 				<value>separator</value>

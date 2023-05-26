@@ -32,6 +32,7 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 	ProductContainer bidUnits = new ProductContainer();
 
 	boolean sellBonus;
+	int sellBonusAmount = 20;
 	int ordersCost;
 	int productionFactor = 100;
 	Integer taxRate = null;
@@ -257,11 +258,11 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		return  getSellPrice(p) * getSellBonusFactor() * getSellPct(p)/ 100;
 	}
 	public int getSellBonusFactor() {
-		return getSellBonus() ? 120 : 100;
+		return getSellBonus() ? getSellBonusAmount() + 100 : 100;
 	}
 
 	public int getBuyBonusFactor() {
-		return getSellBonus() ? 80 : 100;
+		return getSellBonus() ? 100 - getSellBonusAmount() : 100;
 	}
 
 	public int getMarketProfits(ProductEnum p) {
@@ -269,6 +270,14 @@ public class EconomyCalculatorData implements Serializable, IBelongsToNation {
 		if (t == null)
 			return 0;
 		return getSellUnits(p) * getSellPrice(p) * getSellBonusFactor() / 100 + getTotal(p) * getSellPct(p) / 100 * getSellPrice(p) * getSellBonusFactor() / 100 - getBuyUnits(p) * getBuyPrice(p) * getBuyBonusFactor() / 100 - getBidUnits(p) * getBidPrice(p) /*/ 100*/;
+	}
+	
+	public void setSellBonusAmount(int sellBonusAmount) {
+		this.sellBonusAmount = sellBonusAmount;
+	}
+	
+	public int getSellBonusAmount() {
+		return this.sellBonusAmount;
 	}
 
 	public boolean getSellBonus() {

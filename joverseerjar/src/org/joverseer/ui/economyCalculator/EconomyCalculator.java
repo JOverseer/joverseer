@@ -25,6 +25,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
@@ -212,8 +213,22 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 
 
 	private void setSellBonusFromSNA(Nation n) {
-		this.sellBonus.setSelected(n.getSnas().contains(SNAEnum.BuySellBonus));
-		((EconomyTotalsTableModel) this.totalsTable.getModel()).getEconomyCalculatorData().setSellBonus(this.sellBonus.isSelected());
+		EconomyCalculatorData ecd = ((EconomyTotalsTableModel) this.totalsTable.getModel()).getEconomyCalculatorData();
+		
+		if (n.getSnas().contains(SNAEnum.BuySellBonus)) {
+			this.sellBonus.setSelected(true);
+			ecd.setSellBonus(true);
+			ecd.setSellBonusAmount(20);
+		}
+		else if(n.getSnas().contains(SNAEnum.BuySellBonus10)) {
+			this.sellBonus.setSelected(true);
+			ecd.setSellBonus(true);
+			ecd.setSellBonusAmount(10);			
+		}
+		else {
+			this.sellBonus.setSelected(false);
+			ecd.setSellBonus(false);			
+		}
 	}
 	private void setCheaperShipsFromSNA(Nation n) {
 		this.cheaperShips.setSelected(n.getSnas().contains(SNAEnum.ShipsWith750Timber));

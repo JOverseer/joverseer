@@ -44,12 +44,17 @@ public enum SNAEnum {
     KindapAssassAtPlus20(31, "Kindap/Assass. at Plus 20"),
     OpenSeasMvmnt(32, "Open Seas Movement"),
     WarshipsAtStr4(33, "Warships at Str 4"),
-    WarshipsAtStr5(34, "Bonus to survive monster attack"),
+    WarshipsAtStr5(34, "Warships at Str 5"),
     ChallangeBonus(35,"Challange rank bonus"),
     RecruitFriendlyMA(36,"May recruit MA at friendly pop centres"),
     Influence(37,"Influence caravan prices"),
     MayBuildRoad(38,"Access to Build Road"),
     FriendsRecruitMA(39,"Friendly nations may recruit MA at your pop centres"),
+    DoubleOwnAgents(41,"Reaffirm Double Agents"),
+    ExtraChampion(43,"Start with extra Champion"),
+    DistributedChars(44,"Distributed Chars on Setup"),
+    KindapAssassAtPlus10(45, "Kindap/Assass. at Plus 10"),
+    BuySellBonus10(46,"10% Market Bonus"),
     WarshipsAtStr2(50, "Warships at Str 2");
     
 	int number;

@@ -8,27 +8,32 @@
 		<language>en</language>
 		<item>
 			<title>1.18.4</title>
-			<pubDate>9 May 2023</pubDate>
+			<pubDate>26 May 2023</pubDate>
 			<description>
 				VERSION 1.18.4
 				--------------
-				* Enh: Combat imports armies and PC. Added to hex pop-up menu.
-					+ Thanks Jon!
-				* Enh: Combat calc, add PC, estimate armies from recons.
-				* Enh: Apply army size processing fix to all games, not just KS
-				* Enh: default map zoom factor is saved as a preference.
-				* Enh: Support randomized artifacts in 1650 games
-					+ JO will re-write the known artifact ids to 0 when the first XML is imported.    
-				* Fix: Orderchecker now notices two 810 orders.
-				* Fix: Broken pdf parsing due to license name changes.
-				* Fix: Marked JO as not dpiAware, and added some rendering hints to try and improve map hex readability.
-				* Fix: Army maintenance calculation display in Army View.
-				* Fix: Army composition display in Army View.
-				* Fix: Captured/Lost PCs now recorded under new owner from battle report.
-				* Fix: PC Size and Fort are now correct when reported in after a battle - even if off map. 
-				* Fix: Missing minor river at 2023 and 2123 for CME and CMF.
-				* Fix: Heading alignment in currentHexView.
-				* QA: accents missing on CME artifacts.
+	* Enh: Armies now appear to feed themselves from PCs in some cases.
+	* Enh: Combat imports armies and PC. Added to hex pop-up menu.
+		+ Thanks Jon!
+	* Enh: Combat calc, add PC, estimate armies from recons.
+	* Enh: Apply army size processing fix to all games, not just KS
+	* Enh: default map zoom factor is saved as a preference.
+	* Enh: Support randomized artifacts in 1650 games
+		+ JO will re-write the known artifact ids to 0 when the first XML is imported.
+	* Fix: Order-checking status should stay more in sync with the rest of JO.
+	* Fix: Reveal Character True results now get recognised again in character reports.    
+	* Fix: Orderchecker now notices two 810 orders.
+	* Fix: Broken pdf parsing due to license name changes.
+	* Fix: Marked JO as not dpiAware, and added some rendering hints to try and improve map hex readability.
+	 (there are still problems with certain combinations)
+	* Fix: Army maintenance calculation display in Army View.
+	* Fix: Army composition display in Army View.
+	* Fix: Captured/Lost PCs now recorded under new owner from battle report.
+	* Fix: PC Size and Fort are now correct when reported in after a battle - even if off map. 
+	* Fix: Missing minor river at 2023 and 2123 for CME and CMF.
+	* Fix: Heading alignment in currentHexView.
+	* QA: accents missing on CME artifacts.
+	* QA: More corrections for CMF terrain and traffic maps.
 			</description>
 		</item>
 		

@@ -1,5 +1,8 @@
 package org.joverseer.ui.command;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
@@ -28,6 +31,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 				+ SystemProperties();
 		this.textArea = new JTextArea();
 		this.textArea.append(report);
+		this.textArea.append(this.ScreenInfo());
 		Logger l = Logger.getRootLogger();
 		Appender a = l.getAppender("joverseerfileappender");
 		
@@ -85,6 +89,13 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"sun.java2d.noddraw");
 
 		return sb.toString();
+	}
+	public String ScreenInfo()
+	{
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		return String.format("reported size = %.0f by %.0f\r\n",width,height);
 	}
 
 }

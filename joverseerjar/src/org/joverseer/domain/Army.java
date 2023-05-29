@@ -123,7 +123,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 		if (foodConsumption != null && getFood() != null) {
 			//Is the army at own or friendly PC
 			PopulationCenter pc = (PopulationCenter) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperties(new String[] { "x", "y" }, new Object[] { this.x, this.y });
-			if (pc!=null) {
+			if (pc!=null && pc.getNationNo()>0) {
 				NationRelations r = (NationRelations) GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.NationRelation).findFirstByProperty("nationNo", pc.getNationNo());
 				if (pc.getNationNo() == this.getNationNo() || r.getRelationsFor(this.getNationNo()) == NationRelationsEnum.Friendly) {
 					pcFood = pc.getFoodCapacity();

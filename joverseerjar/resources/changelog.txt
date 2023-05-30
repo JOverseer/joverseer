@@ -1,3 +1,8 @@
+VERSION 1.18.5
+--------------
+	* Enh: Support for new SNA buy/sell at 10%
+	* Fix: When feeding Armies, Ruins of 'no' nation broke the Current Hex View.
+
 VERSION 1.18.4
 --------------
 	* Enh: Armies now appear to feed themselves from PCs in some cases.

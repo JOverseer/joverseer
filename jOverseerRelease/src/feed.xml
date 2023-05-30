@@ -7,6 +7,16 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.5</title>
+			<pubDate>30 May 2023</pubDate>
+			<description>
+				VERSION 1.18.5
+				--------------
+	* Enh: Support for new SNA buy/sell at 10%
+	* Fix: When feeding Armies, Ruins of 'no' nation broke the Current Hex View.
+			</description>
+		</item>
+		<item>
 			<title>1.18.4</title>
 			<pubDate>26 May 2023</pubDate>
 			<description>
@@ -36,7 +46,6 @@
 	* QA: More corrections for CMF terrain and traffic maps.
 			</description>
 		</item>
-		
 		<item>
 			<title>1.18.3</title>
 			<pubDate>1 Dec 2022</pubDate>

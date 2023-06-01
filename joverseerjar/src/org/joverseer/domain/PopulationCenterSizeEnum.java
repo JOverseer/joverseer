@@ -37,8 +37,9 @@ public enum PopulationCenterSizeEnum implements Serializable {
 	}
 
 	public static PopulationCenterSizeEnum getFromLabel(String label) {
+		String lower = label.toLowerCase();
 		for (PopulationCenterSizeEnum v : values()) {
-			if (v.getLabel().equals(label))
+			if (v.getLabel().toLowerCase().equals(lower))
 				return v;
 		}
 		return null;

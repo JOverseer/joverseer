@@ -455,7 +455,6 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	public static void postProcessArmiesForHex(Game game, String hexNo, Turn turn, NationAllegianceEnum allegiance) {
-		String UNKNOWN_MAP_ICON = "Unknown (Map Icon)";
 		Container<Army> armies = turn.getArmies();
 		final Turn t = turn;
 		ArrayList<Army> armiesInHex = armies.findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { hexNo, allegiance });
@@ -492,7 +491,7 @@ public class TurnXmlReader implements Runnable {
 						}
 
 					updateWithInfo(a1, a2);
-				} else if (a2.getCommanderName().equals(UNKNOWN_MAP_ICON)) {
+				} else if (a2.isDefaultName()) {
 					if (a1.getNationNo() > 0 && a2.getNationNo().equals(a1.getNationNo())) {
 						// duplicate nation
 						toRemoveB = true;
@@ -946,31 +945,23 @@ public class TurnXmlReader implements Runnable {
 			PopulationCenter newPc;
 			try {
 				newPc = pcw.getPopulationCenter();
-				if (newPc.getNationNo() == tiNationNo) {
-					if (newPc.getHexNo() == nationCapitalHex) {
-						newPc.setCapital(true);
-					} else {
-						newPc.setCapital(false);
-					}
-				}
+				newPc.checkForCapital(tiNationNo, nationCapitalHex);
 				logger.debug("Handling Pop Centre at " + newPc.getHexNo() + " with information source " + newPc.getInformationSource().toString());
 				newPc.setInfoSource(pcInfoSource);
 				if (newPc.getNationNo() == tiNationNo) {
 					currentNationPops.add(newPc);
 				}
-				if (newPc.getName() == null || newPc.getName().equals("")) {
-					newPc.setName("Unknown (Map Icon)");
-				}
+				newPc.defaultName();
 				logger.debug("NEW POP " + tiNationNo);
 				logger.debug("new:" + newPc.getHexNo() + " " + newPc.getName() + " " + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + (pcInfoSource).getPreviousTurnNo());
 				
-				if (newPc.getName().equals("Unknown (Map Icon)")) {
+				if (newPc.isDefaultName()) {
 					newPc.setTurnSeenOnMap(turnNo);
 				}
 
 				PopulationCenter oldPc = pcs.findFirstByProperties(new String[] { "x", "y" }, new Object[] { newPc.getX(), newPc.getY() });
 				// for KS, try to find starting pc with same name
-				if (gm.getGameType().equals(GameTypeEnum.gameKS) && !newPc.getName().equals("Unknown (Map Icon)")) {
+				if (gm.getGameType().equals(GameTypeEnum.gameKS) && (!newPc.isDefaultName())) {
 					PopulationCenter startingPc = pcs.findFirstByProperty("name", newPc.getName());
 					if (startingPc != null) {
 						if (MetadataSource.class.isInstance(startingPc.getInfoSource()) && startingPc.getHexNo() != newPc.getHexNo()) {
@@ -1087,7 +1078,7 @@ public class TurnXmlReader implements Runnable {
 						}
 					}
 
-					if (newPc.getName().equals("Unknown (Map Icon)")) {
+					if (newPc.isDefaultName()) {
 						newPc.setName(oldPc.getName());
 					}
 					if (oldPc != null && oldPc.getInfoSource().getTurnNo() == turnNo && ((XmlTurnInfoSource) oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo() && oldPc.getCapital()) {

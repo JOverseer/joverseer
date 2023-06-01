@@ -35,6 +35,9 @@ import com.jidesoft.tipoftheday.TipOfTheDayDialog;
  * @author Marios Skounakis
  */
 public class GraphicUtils {
+	public final static String UNKNOWN_ARMY_MAP_ICON = "Unknown (Map Icon)";
+	public final static String UNKNOWN_PC_MAP_ICON = "Unknown (Map Icon)";
+
 
 	/**
 	 * Returns a font with the given params
@@ -51,7 +54,7 @@ public class GraphicUtils {
 	}
 
 	/**
-	 * Returns a dask stroke with the given width and dash size
+	 * Returns a dash stroke with the given width and dash size
 	 */
 	public static Stroke getDashStroke(int width, int dashSize) {
 		return new BasicStroke(width, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 10, new float[] { dashSize, dashSize }, 2);
@@ -68,7 +71,7 @@ public class GraphicUtils {
 	 * Changes strings - "Unknown (Map Icon)" - "" to "Unknown"
 	 */
 	public static String parseName(String name) {
-		if (name.equals("Unknown (Map Icon)"))
+		if (name.equals(UNKNOWN_ARMY_MAP_ICON))
 			return "Unknown";
 		if (name.equals(""))
 			return "Unknown";

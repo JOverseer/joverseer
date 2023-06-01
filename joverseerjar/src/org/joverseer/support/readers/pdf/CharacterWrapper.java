@@ -388,9 +388,8 @@ public class CharacterWrapper {
 				Nation n = game.getMetadata().getNationByName(nation);
 				if (n != null) {
 					a = new Army();
-					a.setCommanderName("Unknown (Map Icon)");
+					a.defaultName();
 					addCharacter = false;
-					a.setCommanderTitle("");
 					a.setInfoSource(infoSource);
 					a.setInformationSource(InformationSourceEnum.someMore);
 					a.setHexNo(String.valueOf(ch.getHexNo()));

@@ -2,12 +2,7 @@ package com.middleearthgames.orderchecker;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
-import com.middleearthgames.orderchecker.Hex;
-import com.middleearthgames.orderchecker.Map;
 
 public class MapTest {
 

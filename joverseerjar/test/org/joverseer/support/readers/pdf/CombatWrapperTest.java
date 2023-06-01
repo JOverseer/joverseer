@@ -39,5 +39,28 @@ public class CombatWrapperTest {
 		// note this is the starting size.
 		assertEquals("unrecognised PC size","Major Town",cw.getPopSize());
 	}
+	@Test
+	public final void testNoForcesToFight()
+	{
+		CombatWrapper cw = new CombatWrapper();
+		cw.parseAll("Battle at 3123\r\n"
+				+ "\r\n"
+				+ "In the Cool climate of the Mountains of 3123, armies prepared for battle in the early morning hours under a omen-filled sky.\r\n"
+				+ "\r\n"
+				+ "At the head of a demoralized army rode Hero Éowyn of the nation of the Rivendell.  The mount on which she rode stood cautiously at the rear of the battle lines.  Behind her the forming ranks were filled with:\r\n"
+				+ "  400 Heavy Infantry with wooden weapons, none armor, a mob\r\n"
+				+ "\r\n"
+				+ "The Camp of Torech Ungol flying the flag of the Mordor is situated in the Mountains here.\r\n"
+				+ "Éowyn's forces found no enemy armies to fight.\r\n"
+				+ "The battle for Torech Ungol  was over even before it began. The attackers were so numerous and strong that the defending militia had little chance to save themselves. The battle was over in just a few hours!!\r\n"
+				+ "After the attack on the population center. …\r\n"
+				+ "Éowyn's army survived the attack on the Camp, but suffered minor losses.  Éowyn appeared to have survived.\r\n"
+				+ "The Camp has been reduced to a Ruins.\r\n"
+				+ "The Ruins of Torech Ungol now flies no flag.\r\n");
+		assertEquals("failed to spot PC capture","destroyed",cw.getPopCenterOutcome());
+		assertEquals("failed to extract nation name of winner",null,cw.getPopOutcomeNation());
+		assertEquals("hex no should not be.",0,cw.hexNo);
+		assertEquals("unrecognised fortification",null,cw.getPopFort());
+	}
 
 }

@@ -304,8 +304,7 @@ public class CharacterMessageWrapper {
 						a.setInformationSource(InformationSourceEnum.some);
 						a.setInfoSource(infoSource);
 						if (commanderName.equals("")) {
-							a.setCommanderName("Unknown (Map Icon)");
-							a.setCommanderTitle("");
+							a.defaultName();
 						} else {
 							a.setCommanderName(commanderName);
 							a.setCommanderTitle("");

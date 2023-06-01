@@ -311,4 +311,17 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
     public int lookupSize(int[] lookup) {
     	return PopulationCenterSizeEnum.lookupSize(this.size, lookup);
     }
+    public void defaultName() {
+		if (this.name == null || this.name.equals("")) {
+			this.setName(org.joverseer.ui.support.GraphicUtils.UNKNOWN_ARMY_MAP_ICON);
+		}
+    }
+    public boolean isDefaultName() {
+    	return this.name.equals(org.joverseer.ui.support.GraphicUtils.UNKNOWN_ARMY_MAP_ICON);
+    }
+    public void checkForCapital(int tiNationNo,int nationCapitalHex) {
+		if (this.getNationNo() == tiNationNo) {
+			this.setCapital(this.getHexNo() == nationCapitalHex);
+		}
+    }
 }

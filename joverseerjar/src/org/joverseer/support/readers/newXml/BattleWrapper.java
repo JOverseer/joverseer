@@ -2,6 +2,11 @@ package org.joverseer.support.readers.newXml;
 
 import java.util.ArrayList;
 
+/***
+ * 
+ * Converts BattleLines to text. and extracts hex no.
+ *
+ */
 public class BattleWrapper {
 	String text;
 	ArrayList<String> lines = new ArrayList<String>();

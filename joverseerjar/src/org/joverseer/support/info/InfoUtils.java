@@ -84,7 +84,10 @@ public class InfoUtils {
 	}
 
 	public static ArmyElementType getElementTypeFromDescription(String description) {
-		Info info = JOApplication.getInfoRegistry().getInfo("troopTypeDescriptions");
+		Info info = null;
+		if (JOApplication.isApplicationLoaded()) {
+			info = JOApplication.getInfoRegistry().getInfo("troopTypeDescriptions");
+		}
 		if (info == null)
 			return null;
 		description = AsciiUtils.convertNonAscii(description);
@@ -138,7 +141,10 @@ public class InfoUtils {
 	}
 
 	public static String getArmyLossesRange(String description) {
-		Info info = JOApplication.getInfoRegistry().getInfo("armyLossesDescriptions");
+		Info info = null;
+		if (JOApplication.isApplicationLoaded()) {
+			info = JOApplication.getInfoRegistry().getInfo("armyLossesDescriptions");
+		}
 		if (info == null)
 			return null;
 		for (int j = 1; j < info.getRowHeaders().size(); j++) {
@@ -153,7 +159,10 @@ public class InfoUtils {
 	public static String getArmyMoraleRange(String description) {
 		if (description == null)
 			return null;
-		Info info = JOApplication.getInfoRegistry().getInfo("armyMoraleDescriptions");
+		Info info = null;
+		if (JOApplication.isApplicationLoaded()) {
+			info = JOApplication.getInfoRegistry().getInfo("armyMoraleDescriptions");
+		}
 		if (info == null)
 			return null;
 		for (int j = 1; j < info.getRowHeaders().size(); j++) {

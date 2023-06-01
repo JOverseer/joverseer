@@ -247,7 +247,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 			return -1;
 		}
 		int infoAmount = 0;
-		if (!getCommanderName().equals("Unknown (Map Icon)")) {
+		if (!isDefaultName()) {
 			infoAmount++;
 		}
 		if (getNationNo().intValue() > 0) {
@@ -478,4 +478,12 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	public void setY(int y) {
 		this.y = y;
 	}
+    public void defaultName() {
+		this.setCommanderName(org.joverseer.ui.support.GraphicUtils.UNKNOWN_ARMY_MAP_ICON);
+		this.setCommanderTitle("");
+
+    }
+    public boolean isDefaultName() {
+    	return this.commanderName.equals(org.joverseer.ui.support.GraphicUtils.UNKNOWN_ARMY_MAP_ICON);
+    }
 }

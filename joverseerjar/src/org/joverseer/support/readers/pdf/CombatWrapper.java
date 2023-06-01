@@ -281,7 +281,7 @@ public class CombatWrapper {
 			}
 		}
 
-		for (ArmyEstimate ae : getArmyEstimates()) {
+		for (ArmyEstimate ae : getArmyEstimates(game)) {
 			ArmyEstimate eae = (ArmyEstimate) game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
 			if (eae != null) {
 				game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
@@ -291,9 +291,14 @@ public class CombatWrapper {
 
 	}
 
-	public ArrayList<ArmyEstimate> getArmyEstimates() {
+	/**
+	 * 
+	 * @param game
+	 * @return
+	 * depends on gamemetadata.
+	 */
+	public ArrayList<ArmyEstimate> getArmyEstimates(Game game) {
 		ArrayList<ArmyEstimate> ret = new ArrayList<ArmyEstimate>();
-		Game game = GameHolder.instance().getGame();
 		for (CombatArmy ca : this.armies.getItems()) {
 			try {
 				String commander = ca.getCommanderName().trim();
@@ -307,9 +312,16 @@ public class CombatWrapper {
 					}
 				}
 				ArmyEstimate ae = new ArmyEstimate();
-				Nation n = game.getMetadata().getNationByName(ca.getNation());
+				Nation n = null;
+				// null during testing, so don't bitch about it.
+				if (game.getMetadata() != null) {
+					n = game.getMetadata().getNationByName(ca.getNation());
+				}
 				if (n == null) {
-					Character c = game.getMetadata().getCharacters().findFirstByProperty("name", commanderName);
+					Character c = null;
+					if (game.getMetadata() != null) {
+						c = game.getMetadata().getCharacters().findFirstByProperty("name", commanderName);
+					}
 					if (c != null) {
 						ae.setNationNo(c.getNationNo());
 					} else {

@@ -7,6 +7,7 @@ import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
+import org.assertj.core.util.VisibleForTesting;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElementType;
@@ -851,7 +852,8 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	private void updateBattles(Game game1) {
+	@VisibleForTesting
+	void updateBattles(Game game1) {
 		Container bws = this.turnInfo.getBattles();
 		Container combats = this.turn.getContainer(TurnElementsEnum.Combat);
 		for (BattleWrapper bw : (ArrayList<BattleWrapper>) bws.getItems()) {
@@ -869,7 +871,7 @@ public class TurnNewXmlReader implements Runnable {
 			cw.setHexNo(bw.getHexNo());
 			cw.parseAll(bw.getText());
 			
-			for (ArmyEstimate ae : cw.getArmyEstimates()) {
+			for (ArmyEstimate ae : cw.getArmyEstimates(game1)) {
 				ArmyEstimate eae = (ArmyEstimate) game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", ae.getCommanderName());
 				if (eae != null) {
 					game1.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).removeItem(eae);
@@ -883,12 +885,19 @@ public class TurnNewXmlReader implements Runnable {
 					PopulationCenter pc = (PopulationCenter) pcs.findFirstByProperty("hexNo", cw.getHexNo());
 					
 					if (pc!=null) {
-						Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
-						pc.setNation(newOwner);
+						if (cw.getPopOutcomeNation() != null) {
+							Nation newOwner = game1.getMetadata().getNationByName(cw.getPopOutcomeNation());
+							pc.setNation(newOwner);
+						} else {
+							//it's probably a ruin.
+						}
 						
 						//Update size and fortifications
 						if (cw.getPopCenterOutcomeSize() != null) {
 							pc.setSize(PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()));
+							if (pc.getSize() == PopulationCenterSizeEnum.ruins) {
+								pc.setNationNo(0);
+							}
 						}
 						
 						if (cw.getPopCenterOutcomeFort() != null) {

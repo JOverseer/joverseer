@@ -123,7 +123,7 @@ public class JOApplication {
 	 * Created to allow togglePC to be lost from CurrentHexView to efficiently
 	 * trigger EconomyCalculator.
 	 */
-	static public JOverseerJideViewDescriptor findViewInstance(String desiredViewId) {
+	public static JOverseerJideViewDescriptor findViewInstance(String desiredViewId) {
 		ViewDescriptorRegistry viewDescriptorRegistry = (ViewDescriptorRegistry) ApplicationServicesLocator.services().getService(ViewDescriptorRegistry.class);
 		ViewDescriptor[] views = viewDescriptorRegistry.getViewDescriptors();
 		for (int i = 0; i < views.length; i++) {
@@ -137,4 +137,7 @@ public class JOApplication {
 		}
 		return null;
     }
+	public static boolean isApplicationLoaded() {
+		return Application.isLoaded();
+	}
 }

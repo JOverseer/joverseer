@@ -7,7 +7,6 @@ import org.apache.commons.digester.RegexRules;
 import org.apache.commons.digester.SetNestedPropertiesRule;
 import org.apache.commons.digester.SimpleRegexMatcher;
 import org.apache.log4j.Logger;
-import org.assertj.core.util.VisibleForTesting;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.Army;
 import org.joverseer.domain.ArmyElementType;
@@ -852,7 +851,7 @@ public class TurnNewXmlReader implements Runnable {
 		}
 	}
 
-	@VisibleForTesting
+	//@org.assertj.core.util.VisibleForTesting
 	void updateBattles(Game game1) {
 		Container bws = this.turnInfo.getBattles();
 		Container combats = this.turn.getContainer(TurnElementsEnum.Combat);

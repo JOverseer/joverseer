@@ -5,6 +5,8 @@ import java.io.Serializable;
 /**
  * Enumeration for the information source read from the xml turn files
  * 
+ * DAS: note this is NOT the same value in the XML for information source.
+ * 
  * @author Marios Skounakis
  *
  */

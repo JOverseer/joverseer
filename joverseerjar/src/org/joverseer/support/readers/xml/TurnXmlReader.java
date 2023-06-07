@@ -970,6 +970,7 @@ public class TurnXmlReader implements Runnable {
 						}
 					}
 				}
+				//TODO: refactor this ... split into something like switch(whatToDoWith(oldPc,newPc)) { .... }
 				if (oldPc == null) {
 					// no pc found - add newPc
 					logger.debug("No Pop Centre found in turn, add.");
@@ -978,7 +979,8 @@ public class TurnXmlReader implements Runnable {
 					logger.debug("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " " + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo());
 					logger.debug("Pop Centre found in turn.");
 					// distinguish cases
-					if (oldPc != null && oldPc.getInfoSource().getTurnNo() == turnNo && XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) && ((XmlTurnInfoSource) oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo()) {
+					if ((oldPc.getInfoSource().getTurnNo() == turnNo && XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) && ((XmlTurnInfoSource) oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo())
+							&& (oldPc.getInformationSource().getValue() > newPc.getInformationSource().getValue())) {
 						logger.debug("old pop too good - do not replace");
 					} else if (XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) && newPc.getNationNo() == ((XmlTurnInfoSource) newPc.getInfoSource()).getNationNo()) {
 						logger.debug("pop center of same nation - replace");

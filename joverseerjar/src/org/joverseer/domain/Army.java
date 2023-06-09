@@ -235,7 +235,7 @@ public class Army implements IBelongsToNation, IHasMapLocation, IMaintenanceCost
 	}
 	
 	public Integer getFoodFromPop() {
-		return this.foodFromPop;
+		return this.foodFromPop == null ? 0 : this.foodFromPop;
 	}
 
 	public String getHexNo() {

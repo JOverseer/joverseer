@@ -70,6 +70,8 @@ import org.springframework.richclient.dialog.FormBackedDialogPage;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.dialog.TitledPageApplicationDialog;
 import org.springframework.richclient.form.FormModelHelper;
+import org.springframework.richclient.progress.BusyIndicator;
+
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -381,10 +383,12 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					String recipientEmail = PreferenceRegistry.instance().getPreferenceValue("submitOrders.recipientEmail");
 					String cmd = "bin\\mailSender\\MailSender.exe " + recipientEmail + " " + fname + " " + file.getCanonicalPath();
 					this.logger.debug("Starting mail client with command " + cmd);
+					BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
 					Runtime.getRuntime().exec(cmd);
 					increaseVersionNumber(pi);
 
 					String msg = getMessage("ExportOrdersForm.OrdersSentByMailSuccessMessage", new Object[] { recipientEmail, fileChooser.getSelectedFile() });
+					BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
 					MessageDialog md = new MessageDialog(getMessage("ExportOrdersForm.TurnSubmittedDialogTitle"), msg);
 					md.showDialog();
 					pi.setOrdersSentOn(new Date());
@@ -421,6 +425,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					// GetMethod("http://www.meturn.com/");
 					HttpClient client = new HttpClient();
 					client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
+					BusyIndicator.showAt(Application.instance().getActiveWindow().getControl());
 					int status = client.executeMethod(filePost);
 					if (status == HttpStatus.SC_OK) {
 						final SubmitOrdersResultsForm frm = new SubmitOrdersResultsForm(FormModelHelper.createFormModel(new Object()));
@@ -433,6 +438,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 									((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
 									frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
 									this.setDescription(this.getMessage("ExportOrdersForm.OrdersSentByMETURNSuccessMessage", new Object[] { fileChooser.getSelectedFile() }));
+									BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
 								} catch (Exception exc) {
 									ExportOrdersForm.this.cancel = true;
 									this.logger.error(exc);
@@ -449,6 +455,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 							}
 						};
 						dialog.setTitle(Messages.getString("submitOrdersDialog.title"));
+						BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
 						dialog.showDialog();
 						if (!this.cancel) {
 							increaseVersionNumber(pi);
@@ -466,6 +473,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		} catch (Exception exc) {
 			ErrorDialog.showErrorDialog(exc);
 			this.cancel = true;
+		} finally {
+			BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
 		}
 		return !this.cancel;
 	}

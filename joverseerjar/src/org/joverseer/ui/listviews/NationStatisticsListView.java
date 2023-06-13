@@ -79,6 +79,8 @@ public class NationStatisticsListView extends BaseItemListView {
 			nsw.setNationNo(i);
 			nsw.setCharacters(0);
 			nsw.setCharactersLimit(limit);
+// TODO: earlier turns don't seem to get shown as different.
+			nsw.setNPCsRecruited(n.getNPCsRecruited());
 			nsw.setNPCRecruitLimit(npcRecruitLimit);
 			nsw.setCharactersInCapital(0);
 			nsw.setCommanders(0);

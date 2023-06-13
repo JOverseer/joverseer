@@ -1,3 +1,11 @@
+VERSION 1.18.6
+--------------
+	* Fix: NPCs recruited now showing on nation statistics
+	* Fix: certain case of army not being fed from PC
+	* Fix: a case where PC details not being updating based on army presence.
+	* Fix: Ruins not appearing after battle.
+	* Fix: Updated character limits for CMF
+
 VERSION 1.18.5
 --------------
 	* Enh: Support for new SNA buy/sell at 10%

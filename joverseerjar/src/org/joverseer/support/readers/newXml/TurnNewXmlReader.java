@@ -963,6 +963,7 @@ public class TurnNewXmlReader implements Runnable {
 		if (nation == null) {
 			throw new Exception("Failed to find nation with number " + this.nationNo);
 		}
+		nation.setNPCsRecruited(this.turnInfo.getNPCsRecruited());
 		Container<NationRelations> nrs = this.turn.getNationRelations();
 		NationRelations nr = nrs.findFirstByProperty("nationNo", this.nationNo);
 

@@ -1,5 +1,6 @@
 package org.joverseer.support.readers.newXml;
 
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -449,6 +450,20 @@ public class TurnNewXmlReader implements Runnable {
 
 			this.turn = game.getTurn(game.getMaxTurn());
 			// update turn from turnInfo here.
+			
+			if (this.turnInfo.gameInfo !=null) {
+				if (getMonitor() != null) {
+					getMonitor().worked(0);
+					getMonitor().subTaskStarted("Updating game setup...");
+				}
+				try {
+					updateGameSetup(game);
+				} catch (Exception exc) {
+					logger.error(exc);
+					this.errorOccured = true;
+					getMonitor().subTaskStarted("Error: " + exc.getMessage());
+				}
+			}
 
 			if (getMonitor() != null) {
 				getMonitor().worked(0);
@@ -630,6 +645,132 @@ public class TurnNewXmlReader implements Runnable {
 
 		}
 	}
+	
+	private void updateGameSetup(Game game1) throws Exception {
+		for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.items) {
+			System.out.println(option.name);
+			System.out.println(option.value);
+		}
+		boolean error = false;
+		String errorMessage = "";
+		
+		Container armies = this.turn.getContainer(TurnElementsEnum.Army);
+		for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.findAllByProperty("name", "NoArmiesNation")) {
+			//These nations need all armies removing from the game				
+			try {
+				armies.removeAllByProperties("nationNo", Integer.parseInt(option.value));
+			} catch(Exception exc) {
+				error = true;
+				errorMessage += "Error removing armies for nation " + option.value + "\n";				
+			}	
+		}			
+
+		Container pcs = this.turn.getContainer(TurnElementsEnum.PopulationCenter);
+		ArrayList<PopulationCenter> removepcs = new ArrayList<PopulationCenter>();		
+
+		for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.findAllByProperty("name", "NoPCsNation")) {
+			//These nations need all PCs removing from the game				
+			try {
+				//Build List of PCs to remove - removeAllByProperties throws an error so do it in two stages
+				for (PopulationCenter pc : (ArrayList<PopulationCenter>) pcs.findAllByProperty("nationNo", Integer.parseInt(option.value))) {
+					removepcs.add(pc);
+				}
+				
+				//Remove PCs from this turn
+				for (PopulationCenter r : removepcs) {
+					pcs.removeItem(r);
+				}
+			
+			} catch(Exception exc) {
+				error = true;
+				errorMessage += "Error removing PCs for nation " + option.value + "\n";	
+			}
+		}			
+
+		
+		Container cs = game1.getMetadata().getCharacters();
+		for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.findAllByProperty("name", "NoStartingCharactersNation")) {
+			//These nations need all starting characters removing from the game
+			
+			try {				
+				cs.removeAllByProperties("nationNo", Integer.parseInt(option.value));
+			} catch (Exception exc) {
+				error = true;
+				errorMessage += "Error removing characters for nation " + option.value + "\n";					
+			}
+		}
+		
+		GameInfoOptionWrapper option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "EvilNations");
+		if (option != null && option.value != null) {
+			GameMetadata gm = game1.getMetadata();
+			NationRelations nr;
+			String[] evilNations = option.value.split(",");
+			for(String en : evilNations) {
+				try {
+					int eni = Integer.parseInt(en.trim());				
+					Nation n = gm.getNations().get(eni);
+					nr = game1.getTurn().getNationRelations(eni);
+					n.setAllegiance(NationAllegianceEnum.DarkServants);
+					if (nr.getAllegiance() != n.getAllegiance()) {
+						nr.setAllegiance(n.getAllegiance());
+					}
+				} catch (Exception exc) {
+					error = true;
+					errorMessage += "Error setting allegiance for nation " + en + "\n";	
+				}
+			}
+		}
+		
+		option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "GoodNations");
+		if (option != null && option.value != null) {
+			GameMetadata gm = game1.getMetadata();
+			NationRelations nr;
+			String[] goodNations = option.value.split(",");
+			for(String en : goodNations) {
+				try {
+					int eni = Integer.parseInt(en.trim());				
+					Nation n = gm.getNations().get(eni);
+					nr = game1.getTurn().getNationRelations(eni);
+					n.setAllegiance(NationAllegianceEnum.FreePeople);
+					if (nr.getAllegiance() != n.getAllegiance()) {
+						nr.setAllegiance(n.getAllegiance());
+					}
+				} catch (Exception exc) {
+					error = true;
+					errorMessage += "Error setting allegiance for nation " + en + "\n";	
+				}	
+			}
+		}
+		
+		option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "NeutralNations");
+		if (option != null && option.value != null) {
+			GameMetadata gm = game1.getMetadata();
+			NationRelations nr;
+			String[] neutralNations = option.value.split(",");
+			for(String en : neutralNations) {
+				try {
+					int eni = Integer.parseInt(en.trim());				
+					Nation n = gm.getNations().get(eni);
+					nr = game1.getTurn().getNationRelations(eni);
+					n.setAllegiance(NationAllegianceEnum.Neutral);
+					if (nr.getAllegiance() != n.getAllegiance()) {
+						nr.setAllegiance(n.getAllegiance());
+					}
+				} catch (Exception exc) {
+					error = true;
+					errorMessage += "Error setting allegiance for nation " + en + "\n";	
+				}
+			}
+		}		
+						
+
+		if (error) {
+			throw new Exception(errorMessage);
+		}
+		
+		
+	}
+	
     private ClimateEnum translateClimate(String climate) {
         if (climate == null) return null;
         if (climate.equals("Polar")) return ClimateEnum.Polar;

@@ -188,6 +188,9 @@ public class PopCenterWrapper {
 			pc.setInformationSource(InformationSourceEnum.exhaustive);
 			break;
 		case 1:
+			//DAS: Strictly this is a bug.
+			// It should not be the same as 0. Docks are not always involved.
+			// This causes lots of complexity in when trying to update docks/ports/harbours correctly.
 			pc.setInformationSource(InformationSourceEnum.exhaustive);
 			break;
 		case 2:

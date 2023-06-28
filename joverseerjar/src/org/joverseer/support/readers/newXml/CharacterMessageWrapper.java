@@ -331,12 +331,24 @@ public class CharacterMessageWrapper {
 			String text = line;
 			ArrayList<String> parts = StringUtils.getParts(text, start, "#\\d{1,3}", false, false);
 			for(String part:parts) {
-				String artiNo = StringUtils.getUniquePart(text, "\\Q"+part + "\\E\\s?#", " is a", false, false);
+				String artiNo;
 				try {
-					rrw.Add(part, Integer.parseInt(artiNo));
+					ArrayList<String> ret = StringUtils.getParts(text, "\\Q"+part + "\\E\\s?#", " is a", false, false);
+					if (ret.size() == 0)
+						continue;
+					if (ret.size() > 1) {
+						// this isn't exhaustive : but will match A A X X X
+						if (!ret.get(0).equals(ret.get(1)))
+							throw new RuntimeException("Not Unique Part");
+						// duplicated parts are ok.
+					}
+					// normal path
+					artiNo = ret.get(0);
 				} catch (NumberFormatException e) {
 					// don't add if not recognised.
+					continue;
 				}
+				rrw.Add(part, Integer.parseInt(artiNo));
 			}
 			return rrw;
 		}

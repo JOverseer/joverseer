@@ -27,6 +27,12 @@ public class CharacterMessageWrapperTest {
 		InfoSource is = new InfoSource();
 		is.setTurnNo(1);
 		GameMetadata gm = new GameMetadata();
+		
+		// artifact appearing twice
+		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
+		
 		or = cmw.getScryResult("He was ordered to cast a lore spell. Scry Area - Foreign armies identified:" + System.lineSeparator() + 
 			" Vinitharya of the  Greensward with about 100 troops at 2913" + System.lineSeparator() + 
 			". See report below. ",

@@ -6,6 +6,7 @@ import java.text.Normalizer.Form;
 import org.joverseer.domain.IBelongsToNation;
 import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.IHasTurnNumber;
+import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.support.infoSources.InfoSource;
 
 /**
@@ -30,6 +31,20 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     String alignment;
 	transient String unAccentedName;
 
+	public ArtifactWrapper() {
+	}
+	/**
+	 * Convenience constructor
+	 * @param ai
+	 */
+	public ArtifactWrapper(ArtifactInfo ai) {
+		this.setNumber(ai.getNo());
+		this.setName(ai.getName());
+		this.setOwner(ai.getOwner());
+		this.setPower1(ai.getPower1());
+		this.setPower2(ai.getPower2());
+		this.setAlignment(ai.getAlignment());
+	}
 	//use this for finding by name (assuming no two artifacts just differ by accents).
 	public String getUnAccentedName() {
 		if (this.unAccentedName == null) {

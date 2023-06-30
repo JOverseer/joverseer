@@ -807,17 +807,9 @@ public class TurnXmlReader implements Runnable {
 				int j = msg.indexOf(middle);
 				if (j > -1) {
 					String artiName = msg.substring(i, j);
-					String artiNo = msg.substring(j + middle.length(), msg.length() - 1);
-					String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
-					for (ArtifactInfo ai : this.game.getMetadata().getArtifacts().getItems()) {
-						if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
-							try {
-								ai.setNo(Integer.parseInt(artiNo));
-							} catch (Exception exc) {
-								logger.error("Failed to parse artifact number " + artiNo + " from rumor " + msg);
-							}
-							break;
-						}
+					String artiNoStr = msg.substring(j + middle.length(), msg.length() - 1);
+					if (!updateArtifactNumber(artiName, artiNoStr)) {
+						logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg);
 					}
 				}
 			}
@@ -834,22 +826,36 @@ public class TurnXmlReader implements Runnable {
 				if (j == -1)
 					continue;
 				String artiNoStr = msg.substring(j + 1);
-				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
-				for (ArtifactInfo ai : this.game.getMetadata().getArtifacts().getItems()) {
-					if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
-						try {
-							ai.setNo(Integer.parseInt(artiNoStr));
-						} catch (Exception exc) {
-							logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg);
-						}
-						break;
-					}
+				if (!updateArtifactNumber(artiName, artiNoStr)) {
+					logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg);
 				}
-
 			}
 		}
 	}
-
+	//TODO: migrate to somewhere else, should probably use with
+	// TurnNewXmlReader.updateArtifacts()
+	// TurnPdfReader.updateArtifacts()
+	// ArtifactInfoCollector.computeWrappersForTurn()
+	// RAResultWrapper.updateGame();
+	// which use slightly different methods
+	// and consider using GameMetadata.findFirstArtifactByName()
+	private boolean updateArtifactNumber(String artiName,String artiNoStr) {
+		try {
+			// try converting the number first, as if it fails no more work to do.
+			int number = Integer.parseInt(artiNoStr);
+			String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
+			for (ArtifactInfo ai : this.game.getMetadata().getArtifacts().getItems()) {
+				if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+					ai.setNo(number);
+					break;
+				}
+			}
+			return true;
+		} catch (Exception exc) {
+			return false;
+		}
+	}
+	
 	private void updateKSArtifactIDsAndLocationsFromNationMessages() {
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
 		String prefix = "The ";

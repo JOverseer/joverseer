@@ -303,7 +303,7 @@ public class CharacterViewer extends ObjectViewer {
 				ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
 				if (artifacts != null) {
 					for (Integer no : artifacts) {
-						ArtifactInfo arti = gm.getArtifacts().findFirstByProperty("no", no); //$NON-NLS-1$
+						ArtifactInfo arti = gm.findFirstArtifactByNumber(no);
 						if (arti == null) {
 							arti = new ArtifactInfo();
 							arti.setNo(no);

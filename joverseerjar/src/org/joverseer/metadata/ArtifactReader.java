@@ -42,8 +42,8 @@ public class ArtifactReader implements MetadataReader {
 					String power2 = (parts.length >= 6 ? parts[5] : "");
 					ArtifactInfo artifact = new ArtifactInfo();
 					artifact.setNo(no);
-					artifact.setName(name);
-					artifact.setOwner(owner);
+					artifact.setName(name.trim());
+					artifact.setOwner(owner.trim());
 					artifact.setAlignment(alignment);
 					artifact.setPower(0, power1);
 					if (!power2.equals("")) {

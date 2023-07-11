@@ -282,7 +282,7 @@ public class CharacterMessageWrapper {
 	. See Map below.
 	*/
 	protected OrderResult getScoutAreaResult(String line,InfoSource infoSource,GameMetadata gm) {
-		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below",gm);
+		return getReconResult(line, infoSource, "was ordered to scout the area. ", "No armies were found", " See Map below",gm.getNations());
 	}
 	protected OrderResult getScoutHexResult(String line, InfoSource infoSource) {
 		try {
@@ -331,12 +331,24 @@ public class CharacterMessageWrapper {
 			String text = line;
 			ArrayList<String> parts = StringUtils.getParts(text, start, "#\\d{1,3}", false, false);
 			for(String part:parts) {
-				String artiNo = StringUtils.getUniquePart(text, "\\Q"+part + "\\E\\s?#", " is a", false, false);
+				String artiNo;
 				try {
-					rrw.Add(part, Integer.parseInt(artiNo));
+					ArrayList<String> ret = StringUtils.getParts(text, "\\Q"+part + "\\E\\s?#", " is a", false, false);
+					if (ret.size() == 0)
+						continue;
+					if (ret.size() > 1) {
+						// this isn't exhaustive : but will match A A X X X
+						if (!ret.get(0).equals(ret.get(1)))
+							throw new RuntimeException("Not Unique Part");
+						// duplicated parts are ok.
+					}
+					// normal path
+					artiNo = ret.get(0);
 				} catch (NumberFormatException e) {
 					// don't add if not recognised.
+					continue;
 				}
+				rrw.Add(part, Integer.parseInt(artiNo));
 			}
 			return rrw;
 		}
@@ -505,18 +517,22 @@ public class CharacterMessageWrapper {
 	}
 
 	protected OrderResult getPalantirResult(String line, InfoSource infoSource,GameMetadata gm) {
-		return getReconResult(line, infoSource, "He was ordered to use a scrying artifact.", "None", " See report below",gm);
+		if (line.contains("He was ordered to use a scrying artifact.")) {
+			if (!line.contains("None"))
+				return getReconResult(line, infoSource, "Foreign armies identified:", "None", " See report below",gm.getNations());
+		}
+		return null;
 	}
 
 	protected OrderResult getScryResult(String line, InfoSource infoSource,GameMetadata gm) {
-		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below",gm);
+		return getReconResult(line, infoSource, "Scry Area - Foreign armies identified:", "None", " See report below",gm.getNations());
 	}
 
 	protected OrderResult getReconResult(String line, InfoSource infoSource,GameMetadata gm) {
-		return getReconResult(line, infoSource, "was ordered to recon the area. ", "No armies were found", " See Map below",gm);
+		return getReconResult(line, infoSource, "was ordered to recon the area. ", "No armies were found", " See Map below",gm.getNations());
 	}
 
-	protected OrderResult getReconResult(String line, InfoSource infoSource, String orderMessage, String noneMessage, String seeBelowMessage,GameMetadata gm) {
+	protected OrderResult getReconResult(String line, InfoSource infoSource, String orderMessage, String noneMessage, String seeBelowMessage,ArrayList<Nation> nationList) {
 		try {
 			if (line.contains(orderMessage)) {
 				if (line.contains(noneMessage))
@@ -531,7 +547,7 @@ public class CharacterMessageWrapper {
 
 				ArrayList<String> parts = StringUtils.getParts(line, "(^)|(at \\d{4})", "at \\d{4}", false, true);
 				for (String part : parts) {
-					for (Nation n : gm.getNations()) {
+					for (Nation n : nationList) {
 						String nn = StringUtils.getUniquePart(part, " " + n.getName(), " with about", true, false);
 						if (nn != null && nn.equals(n.getName())) {
 							part = part.replace(" of the " + n.getName(), "#nation#").replace(" of " + n.getName(), "#nation#");

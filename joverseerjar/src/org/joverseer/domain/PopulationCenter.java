@@ -324,4 +324,14 @@ public class PopulationCenter implements IBelongsToNation, IHasMapLocation, IMai
 			this.setCapital(this.getHexNo() == nationCapitalHex);
 		}
     }
+    // used to make an educated guess that the data is from an incomplete PC report.
+    public boolean isUnlikelyToBeComplete() {
+    	return (this.getLoyalty() == 0) && (this.getNationNo() == 0);
+    }
+    public void copyProduction(PopulationCenter from) {
+		for (ProductEnum p : ProductEnum.values()) {
+			this.setProduction(p, from.getProduction(p));
+			this.setStores(p, from.getStores(p));
+		}
+    }
 }

@@ -51,14 +51,8 @@ public class ArtifactInfoCollector implements ApplicationListener {
 		MetadataSource ms = new MetadataSource();
 		Container<ArtifactWrapper> aws = new Container<ArtifactWrapper>(new String[] { "number" });
 		for (ArtifactInfo ai : (ArrayList<ArtifactInfo>) g.getMetadata().getArtifacts().getItems()) {
-			ArtifactWrapper aw = new ArtifactWrapper();
-			aw.setNumber(ai.getNo());
-			aw.setName(ai.getName());
-			aw.setOwner(ai.getOwner());
-			aw.setPower1(ai.getPower1());
-			aw.setPower2(ai.getPower2());
+			ArtifactWrapper aw = new ArtifactWrapper(ai);
 			aw.setInfoSource(ms);
-			aw.setAlignment(ai.getAlignment());
 			aw.setTurnNo(0);
 			aws.addItem(aw);
 		}

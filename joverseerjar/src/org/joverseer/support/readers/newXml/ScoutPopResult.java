@@ -7,7 +7,6 @@ import org.joverseer.domain.ArmySizeEnum;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.PopulationCenter;
-import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.metadata.domain.Nation;
@@ -37,10 +36,7 @@ public class ScoutPopResult implements OrderResult {
 				oldPop.setCapital(this.pc.getCapital());
 				oldPop.setNationNo(this.pc.getNationNo());
 			}
-			for (ProductEnum p : ProductEnum.values()) {
-				oldPop.setProduction(p, this.pc.getProduction(p));
-				oldPop.setStores(p, this.pc.getStores(p));
-			}
+			oldPop.copyProduction(this.pc);
 			turn.getPopulationCenters().refreshItem(oldPop);
 
 		} else {

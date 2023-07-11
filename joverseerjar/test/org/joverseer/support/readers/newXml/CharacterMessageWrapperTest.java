@@ -3,6 +3,7 @@ package org.joverseer.support.readers.newXml;
 import static org.junit.Assert.*;
 
 import org.joverseer.metadata.GameMetadata;
+import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.junit.After;
@@ -26,6 +27,12 @@ public class CharacterMessageWrapperTest {
 		InfoSource is = new InfoSource();
 		is.setTurnNo(1);
 		GameMetadata gm = new GameMetadata();
+		
+		// artifact appearing twice
+		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
+		
 		or = cmw.getScryResult("He was ordered to cast a lore spell. Scry Area - Foreign armies identified:" + System.lineSeparator() + 
 			" Vinitharya of the  Greensward with about 100 troops at 2913" + System.lineSeparator() + 
 			". See report below. ",
@@ -70,6 +77,17 @@ public class CharacterMessageWrapperTest {
 		assertEquals("org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper", or.getClass().getName());
 		assertEquals(2324,((org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper)or).getHexNo());
 		assertEquals("Frodo",((org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper)or).getCharacterName());
+		
+		gm.getNations().add(new Nation(1,"Rivendell","Riv"));
+		or = cmw.getPalantirResult("He was ordered to use a scrying artifact. The Arkenstone #17 was used. Foreign armies identified:  Éowyn of the Rivendell with about 100 troops at 3423 . See report below.",is,gm);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.ReconResultWrapper", or.getClass().getName());
+		assertEquals(1,((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.size());
+		assertEquals(1,((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getNationNo().intValue());
+		assertEquals("3423",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getHexNo());
+		assertEquals("Éowyn",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
+
+
 	}
 
 }

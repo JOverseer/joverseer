@@ -1195,7 +1195,7 @@ public class TurnNewXmlReader implements Runnable {
 
 
 				// for all arties update powers
-				ArtifactInfo ai = game1.getMetadata().getArtifacts().findFirstByProperty("no", aw.getId());
+				ArtifactInfo ai = game1.getMetadata().findFirstArtifactByNumber(aw.getId());
 				if (ai != null && aw.getPower() != null && !aw.getPower().equals("")) {
 					// parse power
 					// TODO handle open seas, scry etc

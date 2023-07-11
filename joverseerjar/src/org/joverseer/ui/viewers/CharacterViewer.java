@@ -222,11 +222,16 @@ public class CharacterViewer extends ObjectViewer {
 					if (this.showArtifacts) {
 						for (ArtifactWrapper aw : acw.getArtifacts()) {
 							// find artifact in metadata
-							ArtifactInfo a = g.getMetadata().findFirstArtifactByNumber(aw.getNumber());
+							ArtifactInfo a;
+							ArtifactInfo na = new ArtifactInfo();
+							if (aw.getNumber() != 0) {
+								a = g.getMetadata().findFirstArtifactByNumber(aw.getNumber());
+							} else {
+								a = g.getMetadata().findFirstArtifactByName(aw.getName());
+							}
 							// copy into new object to change the name and add
 							// the turn - hack but for now it works
-							ArtifactInfo na = new ArtifactInfo();
-							na.setNo(a.getNo());
+							na.setNo(aw.getNumber());
 							na.setAlignment(a.getAlignment());
 							na.setOwner(acw.getName());
 							na.setPowers(a.getPowers());
@@ -298,7 +303,7 @@ public class CharacterViewer extends ObjectViewer {
 				ArrayList<Integer> artifacts = (!showStartingInfo ? c.getArtifacts() : startingChar != null ? startingChar.getArtifacts() : null);
 				if (artifacts != null) {
 					for (Integer no : artifacts) {
-						ArtifactInfo arti = gm.getArtifacts().findFirstByProperty("no", no); //$NON-NLS-1$
+						ArtifactInfo arti = gm.findFirstArtifactByNumber(no);
 						if (arti == null) {
 							arti = new ArtifactInfo();
 							arti.setNo(no);

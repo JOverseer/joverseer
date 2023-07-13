@@ -41,7 +41,7 @@ public enum SNAEnum {
     AccessToFntcsm(28, "Access to Fanaticism"),
     AccessToSmnStrms(29, "Access to Summon Storms"),
     AccessToTeleport(30, "Access to Teleport"),
-    KindapAssassAtPlus20(31, "Kindap/Assass. at Plus 20"),
+    KidnapAssassAtPlus20(31, "Kidnap/Assass. at Plus 20"),
     OpenSeasMvmnt(32, "Open Seas Movement"),
     WarshipsAtStr4(33, "Warships at Str 4"),
     WarshipsAtStr5(34, "Warships at Str 5"),
@@ -53,7 +53,7 @@ public enum SNAEnum {
     DoubleOwnAgents(41,"Reaffirm Double Agents"),
     ExtraChampion(43,"Start with extra Champion"),
     DistributedChars(44,"Distributed Chars on Setup"),
-    KindapAssassAtPlus10(45, "Kindap/Assass. at Plus 10"),
+    KidnapAssassAtPlus10(45, "Kidnap/Assass. at Plus 10"),
     BuySellBonus10(46,"10% Market Bonus"),
     WarshipsAtStr2(50, "Warships at Str 2");
     

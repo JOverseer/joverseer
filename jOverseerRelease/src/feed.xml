@@ -7,6 +7,37 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.7</title>
+			<pubDate>18 July 2023</pubDate>
+			<description>
+				VERSION 1.18.7
+				--------------
+				* Enh: support Bring-Your-Own Java
+				* Fix: Some artifacts were not reconciled by name.
+				* Fix: Quick order Recon 930 actually added a 925 order.
+				* Fix: duplicated artifact in RA broke import
+				* Fix: Fix a couple of cases where docks would not appear on reports
+				* Fix: Scrying with an artifact 
+					+ caused JO to interpret the Recon result as if the artifact was the name of the army commander.
+				* Fix: {0} appearing in messages.
+				* Fix: Wrong artifact shown in character view.
+				* Fix: Army fed calculations on NPC PopC broke current hex view. 
+			</description>
+		</item>
+		<item>
+			<title>1.18.6</title>
+			<pubDate>13 June 2023</pubDate>
+			<description>
+				VERSION 1.18.6
+				--------------
+				fix: NPCs recruited now showing on nation statistics
+				fix: certain case of army not being fed from PC
+				fix: a case where PC details not being updating based on army presence.
+				fix: Ruins not appearing after battle.
+				fix: Updated character limits for CMF
+			</description>
+		</item>
+		<item>
 			<title>1.18.5</title>
 			<pubDate>30 May 2023</pubDate>
 			<description>

@@ -195,10 +195,10 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 <!--              <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/> -->
         </zip>
 	</target>
-	<target name="windowsCompleteZip" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
+	<target name="windowsCompleteNoJavaZip" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
 		<copy tofile="${dist}\jide-common.jar" file="${dist}\jide-common-windows.jar" overwrite="true"/>
 		<loadfile property="joverseer.version" srcFile="${dist}/version"/>
-		<zip destfile="${dist}/joverseer-${joverseer.version}.zip">
+		<zip destfile="${dist}/joverseer-nojava-${joverseer.version}.zip">
             <fileset file="${dist}/joverseer.jar"/>
             <fileset file="${dist}/jOverseerUpdater.exe"/>
             <fileset file="${dist}/jOverseer.exe"/>
@@ -206,15 +206,21 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
             <fileset file="${dist}/txt2xml.jar"/>
         	<fileset file="${dist}/jide-common.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
-            <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
-			<fileset file="${src}/joverseer.bat"/>
-            <fileset file="${src}/jOverseerUpdater.bat"/>
+			<zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
+			<fileset file="${src}/joverseer*.bat"/>
 			<fileset file="${dist}/log4j.properties"/>
 			<fileset dir="${dist}" includes="swing*.jar,spring*.jar,skin*.jar,PDF*.jar,lo*.jar,junit*.jar,fo*.jar,commons*.jar"/>
-			<fileset dir="${dist}" includes="jide-action.jar, jide-beaninfo.jar,jide-components,jide-dialogs.jar,jide-dock.jar,jide-grids.jar"/>
+			<fileset dir="${dist}" includes="jdom.jar,FontBox*.jar,scope-bin.jar"/>
+			<fileset dir="${dist}" includes="jide-action.jar, jide-beaninfo.jar,jide-components.jar,jide-dialogs.jar,jide-dock.jar,jide-grids.jar"/>
             <fileset file="${dist}/joverseer.ico"/>
 			<zipfileset dir="${dist}/../MailSender" includes="MailSender.exe" prefix="bin"/>
 			<zipfileset dir="${dist}" includes="default.layout" prefix="layout"/>
+		</zip>
+	</target>
+	<target name="windowsCompleteWithJavaZip" depends="GatherDependents,windowsCompleteNoJavaZip,customJRE">
+		<copy tofile="${dist}/joverseer-withjava-${joverseer.version}.zip" file="${dist}/joverseer-nojava-${joverseer.version}.zip" overwrite="true"/>
+		<zip destfile="${dist}/joverseer-nojava-${joverseer.version}.zip">
+			<zipfileset dir="${dist}/jre" prefix="jre"/>
 		</zip>
 	</target>
 	<target name="windowsInstaller" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon,customJRE">

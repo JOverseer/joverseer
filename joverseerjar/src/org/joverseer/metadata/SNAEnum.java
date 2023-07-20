@@ -1,5 +1,8 @@
 package org.joverseer.metadata;
 
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 /**
  * Enumeration for SNAs. 
@@ -42,6 +45,8 @@ public enum SNAEnum {
     AccessToSmnStrms(29, "Access to Summon Storms"),
     AccessToTeleport(30, "Access to Teleport"),
     KidnapAssassAtPlus20(31, "Kidnap/Assass. at Plus 20"),
+    /* this version is deprecated, but still exists in old .jov files */
+    KindapAssassAtPlus20(31, "Kidnap/Assass. at Plus 20"),
     OpenSeasMvmnt(32, "Open Seas Movement"),
     WarshipsAtStr4(33, "Warships at Str 4"),
     WarshipsAtStr5(34, "Warships at Str 5"),
@@ -54,6 +59,8 @@ public enum SNAEnum {
     ExtraChampion(43,"Start with extra Champion"),
     DistributedChars(44,"Distributed Chars on Setup"),
     KidnapAssassAtPlus10(45, "Kidnap/Assass. at Plus 10"),
+    /* this version is deprecated, but still exists in old .jov files */
+    KindapAssassAtPlus10(45, "Kidnap/Assass. at Plus 10"),
     BuySellBonus10(46,"10% Market Bonus"),
     WarshipsAtStr2(50, "Warships at Str 2");
     
@@ -86,5 +93,7 @@ public enum SNAEnum {
     		if (e.getNumber() == number) return e;
     	}
     	return null;
+
     }
+    
 }

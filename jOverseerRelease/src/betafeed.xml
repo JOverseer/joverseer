@@ -6,7 +6,15 @@
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
-		
+		<item>
+			<title>1.18.8</title>
+			<pubDate>20 July 2023</pubDate>
+			<description>
+			VERSION 1.18.8
+			--------------
+			* Fix: correcting the typo of the Kidnap SNAs 31,45 broke old games where they were used.
+			</description>
+		</item>
 		<item>
 			<title>1.18.7</title>
 			<pubDate>18 July 2023</pubDate>

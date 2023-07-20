@@ -416,7 +416,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					} while (!Pattern.matches(emailRegex, email));
 					prefs.put("useremail", email);
 					String name = pi.getPlayerName();
+					if (name == null)
+						name = "null";
 					String acct = pi.getAccountNo();
+					if (acct == null)
+						acct = "null";
 					String url = "http://www.meturn.com/cgi-bin/HUpload.exe";
 					final PostMethod filePost = new PostMethod(url);
 					Part[] parts = { new StringPart("emailaddr", email), new StringPart("name", name), new StringPart("account", acct), new FilePart(file.getName(), file) };

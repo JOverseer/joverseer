@@ -45,7 +45,7 @@ public class ErrorDialog extends MessageDialog {
     }
     public static boolean showErrorDialog(Exception exc) {
     	Log(exc);
-    	return showErrorDialog(Messages.getString("errorDialog.title"));
+    	return showErrorDialog(Messages.getString("errorDialog.title"),"errorDialog.unexpectedError");
     }
     public static boolean showErrorDialog(Exception exc,String messageId) {
     	Log(exc);

@@ -818,8 +818,12 @@ public class CharacterViewer extends ObjectViewer {
 			Character c = (Character) getFormObject();
 			Game g = CharacterViewer.this.gameHolder.getGame();
 			Turn t = g.getTurn(g.getCurrentTurn() - 1);
-			if (t == null)
-				return;
+			if (t == null) {
+				// fall back to the current turn ... if this works then we're covering for a bug somewhere else.
+				t = g.getTurn(g.getCurrentTurn());
+				if (t == null)
+					return;
+			}
 			Character pc = t.getCharByName(c.getName());
 			if (pc != null) {
 				hami = new HexArrowMapItem(pc.getHexNo(), c.getHexNo(), Color.black);

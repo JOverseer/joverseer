@@ -26,4 +26,7 @@ public enum InformationSourceEnum implements Serializable {
     public int getValue() {
         return this.value;
     }
+    public boolean isMoreDetailedThan(InformationSourceEnum other) {
+    	return this.value > other.value;
+    }
 }

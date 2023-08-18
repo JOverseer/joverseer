@@ -1035,9 +1035,16 @@ public class TurnNewXmlReader implements Runnable {
 						
 						//Update size and fortifications
 						if (cw.getPopCenterOutcomeSize() != null) {
-							pc.setSize(PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()));
-							if (pc.getSize() == PopulationCenterSizeEnum.ruins) {
-								pc.setNationNo(0);
+							PopulationCenterSizeEnum newSize = PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()); 
+							if (newSize == PopulationCenterSizeEnum.ruins) {
+								// it's possible it got camped on this turn. and combats come before camping and nation reports.
+								if (!pc.getInformationSource().isMoreDetailedThan(InformationSourceEnum.some)) {
+									pc.setSize(newSize);
+									pc.setNationNo(0);
+									pc.setInformationSource(InformationSourceEnum.some);
+								}
+							} else {
+								pc.setSize(newSize);
 							}
 						}
 						

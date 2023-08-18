@@ -36,7 +36,9 @@ public class ScoutPopResult implements OrderResult {
 				oldPop.setCapital(this.pc.getCapital());
 				oldPop.setNationNo(this.pc.getNationNo());
 			}
-			oldPop.copyProduction(this.pc);
+			if (this.pc.getInformationSource().isMoreDetailedThan(oldPop.getInformationSource())) {
+				oldPop.copyProduction(this.pc);
+			}
 			turn.getPopulationCenters().refreshItem(oldPop);
 
 		} else {

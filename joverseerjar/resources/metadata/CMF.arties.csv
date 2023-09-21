@@ -73,17 +73,17 @@
 0;Duv Uv’ha (Morgul Knife);Evil;Agent;10;Cast 202 Call Fire;Uvatha
 0;Stone Club;Neutral;Combat;2000;Cast 102 Barriers;William Huggins
 0;Aranrûth;Neutral;Combat;1750;Cast 232 Fire Bolts;
-0;Flute of Daeron;Neutral;Emmisary;10;Cast 304 Cast Stride;
+0;Flute of Daeron;Neutral;Emissary;10;Cast 304 Cast Stride;
 0;Orcring;Neutral;Combat;2250;Cast 104 Resistances;
 0;Ringil;Neutral;Combat;2000;Cast 214 Call Winds;
 0;Miramarth;Neutral;Agent;10;Cast 206 Wall of Fire;
 0;Rauzgnagli;Neutral;Combat;1750;Cast 220 Words of Agony;
 0;Ring of Binding;Neutral;Agent;10;Cast 413 Scry Population Centre;
 0;Talisman of Absorption;Neutral;Mage;20;Cast 428 Locate Artifact True;
-0;Ulûkai;Neutral;Comand;35;Cast 102 Barriers;
+0;Ulûkai;Neutral;Command;35;Cast 102 Barriers;
 0;Glosvagil;Neutral;Combat;1500;Cast 240 Summon Fire Spirits;
-0;Angbor;Neutral;Comand;10;Cast 436 Scry Character;
-0;Belt of Durin;Neutral;Comand;20;Cast 224 Words of Command;
+0;Angbor;Neutral;Command;10;Cast 436 Scry Character;
+0;Belt of Durin;Neutral;Command;20;Cast 224 Words of Command;
 0;Edge of Westernesse;Neutral;Combat;1000;Cast 106 Deflections;Beregond
 0;Bone Ring;Neutral;Mage;10;Learn Conjure Hordes;
 0;Bracers of the Mists;Neutral;Stealth;10;Cast 412 Research Artifact;
@@ -98,15 +98,15 @@
 0;Corantir;Neutral;Mage;10;Cast 6 Greater Heal;
 0;Crown of Celethsa;Neutral;Mage;10;Cast 6 Greater Heal;
 0;Daecollo;Neutral;Stealth;5;Cast 419 Divine Nation Forces;
-0;Dragon Helm of Dor-Lómin;Neutral;Comand;15;Cast 420 Reveal Character;
-0;Durin's Armor;Neutral;Comand;15;Cast 432 Perceive Secrets;
+0;Dragon Helm of Dor-Lómin;Neutral;Command;15;Cast 420 Reveal Character;
+0;Durin's Armor;Neutral;Command;15;Cast 432 Perceive Secrets;
 0;Earring of Souls;Neutral;Mage;10;Cast 8 Heal True;
 0;Elenya;Neutral;Stealth;5;Cast 428 Locate Artifact True;
 0;Erivagil;Neutral;Combat;1500;Cast 242 Words of Death;
 0;Foamcleaver;Neutral;Combat;1500;Cast 240 Summon Fire Spirits;
-0;Gift of Aronwe;Neutral;Emmisary;10;Cast 310 Major Return;
-0;Gûlthalion;Neutral;Comand;30;Cast 210 Words of Calm;
-0;Helm of Isildur;Neutral;Comand;20;Cast 222 Words of Stun;
+0;Gift of Aronwe;Neutral;Emissary;10;Cast 310 Major Return;
+0;Gûlthalion;Neutral;Command;30;Cast 210 Words of Calm;
+0;Helm of Isildur;Neutral;Command;20;Cast 222 Words of Stun;
 0;Lance of Reaching;Neutral;Combat;500;Cast 436 Scry Character;
 0;Mallorn Staff;Neutral;Mage;30;Cast 2 Minor Heal;
 0;Mane of the Mearas;Neutral;Mage;10;Learn Conjure Mounts;
@@ -115,13 +115,13 @@
 0;Orcrist;Neutral;Combat;750;Cast 424 Perceive Mission;
 0;Ossanna;Neutral;Mage;15;Cast 430 Reveal Character True;
 0;The Arkenstone;Neutral;Scry Area;;Cast 406 Divine Army;Dain
-0;Pectoral;Neutral;Emmisary;30;Cast 302 Long Stride;
+0;Pectoral;Neutral;Emissary;30;Cast 302 Long Stride;
 0;Spider Gloves;Neutral;Agent;5;Cast 244 Summon Storms;
 0;Ring of Curufin;Neutral;Agent;10;Cast 102 Barriers;
 0;Ring of Impersonation;Neutral;Agent;15;Cast 208 Words of Pain;
 0;Ring of Stargazing;Neutral;Mage;25;Cast 412 Research Artifact;
 0;Ring of Wind;Neutral;Agent;15;Cast 212 Words of Paralysis;
-0;Seal of Approbation;Neutral;Emmisary;5;Cast 432 Perceive Secrets;
+0;Seal of Approbation;Neutral;Emissary;5;Cast 432 Perceive Secrets;
 0;Silmaruth;Neutral;Combat;2000;Cast 208 Words of Pain;
 0;Staff of Earthmastery;Neutral;Mage;20;Learn Conjure Food;
 0;Staff of the Serpent;Neutral;Mage;10;Cast 114 Barrier Walls;
@@ -130,7 +130,7 @@
 0;Tinculin;Neutral;Mage;40;Learn Weakness, Sickness;
 0;Mithril Shirt;Neutral;Stealth;5;Cast 508 Conjure Mounts;
 0;Shadow Mace;Neutral;Combat;2000;Cast 102 Barriers;
-0;Rod of the Steward;Neutral;Emmisary;5;Cast 432 Perceive Secrets;
+0;Rod of the Steward;Neutral;Emissary;5;Cast 432 Perceive Secrets;
 0;Helkaluine;Neutral;Combat;1250;Cast 242 Words of Death;
 0;Tintelpë;Neutral;Combat;1750;Cast 228 Frost Balls;
 0;Macrilómen;Neutral;Combat;2000;Cast 104 Resistances;Glorfindel
@@ -147,7 +147,7 @@
 0;Thôlogaer Ciryatano;Neutral;Mage;30;Learn Weakness, Sickness;
 0;Ring of Angrenost;Neutral;Combat;500;Cast 430 Reveal Character True;
 0;Mithril Ring;Neutral;Mage;10;Cast 114 Barrier Walls;
-0;Andorithel;Neutral;Comand;10;Cast 508 Conjure Mounts;
+0;Andorithel;Neutral;Command;10;Cast 508 Conjure Mounts;
 0;Glamdring;Neutral;Combat;750;Cast 426 Divine Army True;
 0;Small Tooth;Neutral;Combat;750;Cast 424 Perceive Mission;
 0;Vasamacil;Neutral;Combat;750;Cast 314 Teleport;

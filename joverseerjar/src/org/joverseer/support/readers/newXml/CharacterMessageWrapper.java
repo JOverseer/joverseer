@@ -613,6 +613,10 @@ public class CharacterMessageWrapper {
 	protected OrderResult getOwnedLAOrderResult(String line) {
 		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact - ", " #", "is possessed by ", " at or near ", "." };
 		String matches[] = matchPattern(line, ptr);
+		if (matches == null) {
+			// this pattern seems current in 2018
+			matches = matchPattern(line,new String[] {"was ordered to cast a lore spell. Locate Artifact - ", " #", "may be possessed by", " at or near ", "."});
+		}
 		if (matches != null) {
 			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
 			or.setArtifactName(matches[0]);

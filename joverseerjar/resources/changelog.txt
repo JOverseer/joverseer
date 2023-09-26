@@ -1,3 +1,7 @@
+VERSION 1.18.9RC1
+-----------------
+	* Fix: Casting Locate Artifact on a owned artifact wasn't being noticed.
+	 
 VERSION 1.18.8
 --------------
 	* Fix: correcting the typo of the Kidnap SNAs 31,45 broke old games where they were used.

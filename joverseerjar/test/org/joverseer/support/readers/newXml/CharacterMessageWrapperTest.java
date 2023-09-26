@@ -28,6 +28,14 @@ public class CharacterMessageWrapperTest {
 		is.setTurnNo(1);
 		GameMetadata gm = new GameMetadata();
 		
+		or = cmw.getOwnedLAOrderResult("She was ordered to cast a lore spell. Locate Artifact - Dwarven Ring of Power #10may be possessed by\r\nThrelin at or near 3218.");
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.pdf.LocateArtifactResultWrapper", or.getClass().getName());
+		assertEquals("Dwarven Ring of Power",((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactName());
+		assertEquals(10,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactNo());
+		assertEquals("Threlin",((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getOwner());
+		assertEquals(3218,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getHexNo());
+		
 		// artifact appearing twice
 		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
 		assertNotNull(or);
@@ -86,7 +94,6 @@ public class CharacterMessageWrapperTest {
 		assertEquals(1,((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getNationNo().intValue());
 		assertEquals("3423",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getHexNo());
 		assertEquals("Éowyn",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
-
 
 	}
 

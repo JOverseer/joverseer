@@ -517,7 +517,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected OrderResult getPalantirResult(String line, InfoSource infoSource,GameMetadata gm) {
-		if (line.contains("He was ordered to use a scrying artifact.")) {
+		if (line.contains("e was ordered to use a scrying artifact.")) {
 			if (!line.contains("None"))
 				return getReconResult(line, infoSource, "Foreign armies identified:", "None", " See report below",gm.getNations());
 		}

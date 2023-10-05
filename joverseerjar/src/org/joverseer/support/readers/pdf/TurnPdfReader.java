@@ -739,54 +739,60 @@ public class TurnPdfReader implements Runnable {
     }
     
     private void updateNationMetadata(Game game1) throws Exception {
-        for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)this.turnInfo.getNationRelations().getItems()) {
-            if (nrw.getNationNo() > 0) {
-                Nation n = game1.getMetadata().getNationByNum(nrw.getNationNo());
-                if (n != null) {
-                    n.setName(nrw.getNation().trim());
-                    String[] shortNames = createNationShortNames(n.getName().trim());
-                    for (String s : shortNames) {
-                        boolean duplicate = false;
-                        for (Nation nn : (ArrayList<Nation>)game1.getMetadata().getNations()) {
-                            if (nn == n) continue;
-                            if (nn.getShortName().equals(s)) {
-                                duplicate = true;
-                            }
-                        }
-                        if (!duplicate) {
-                            n.setShortName(s);
-                            break;
-                        }
-                    }
-                }
-            }
+        if (this.turnInfo.getNationRelations() != null) {
+        	for (NationRelationWrapper nrw : (ArrayList<NationRelationWrapper>)this.turnInfo.getNationRelations().getItems()) {
+        		if (nrw.getNationNo() > 0) {
+        			Nation n = game1.getMetadata().getNationByNum(nrw.getNationNo());
+        			if (n != null) {
+        				n.setName(nrw.getNation().trim());
+        				String[] shortNames = createNationShortNames(n.getName().trim());
+        				for (String s : shortNames) {
+        					boolean duplicate = false;
+        					for (Nation nn : (ArrayList<Nation>)game1.getMetadata().getNations()) {
+        						if (nn == n) continue;
+        						if (nn.getShortName().equals(s)) {
+        							duplicate = true;
+        						}
+        					}
+        					if (!duplicate) {
+        						n.setShortName(s);
+        						break;
+        					}
+        				}
+        			}
+        		}
+        	}
         }
         // do current nation
         Nation n = game1.getMetadata().getNationByNum(this.turnInfo.getNationNo());
         if (n != null) {
-            n.setName(this.turnInfo.getNationName().trim());
-            String[] shortNames = createNationShortNames(this.turnInfo.getNationName().trim());
-            for (String s : shortNames) {
-                boolean duplicate = false;
-                for (Nation nn : (ArrayList<Nation>)game1.getMetadata().getNations()) {
-                    if (nn == n) continue;
-                    if (nn.getShortName().equals(s)) {
-                        duplicate = true;
-                    }
-                }
-                if (!duplicate) {
-                    n.setShortName(s);
-                    break;
-                }
-            }
+        	if (this.turnInfo.getNationName() != null) {
+        		n.setName(this.turnInfo.getNationName().trim());
+        		String[] shortNames = createNationShortNames(this.turnInfo.getNationName().trim());
+        		for (String s : shortNames) {
+        			boolean duplicate = false;
+        			for (Nation nn : (ArrayList<Nation>)game1.getMetadata().getNations()) {
+        				if (nn == n) continue;
+        				if (nn.getShortName().equals(s)) {
+        					duplicate = true;
+        				}
+        			}
+        			if (!duplicate) {
+        				n.setShortName(s);
+        				break;
+        			}
+        		}
+        	}
         }
-        
+
         //update SNAs
         if (n != null) {
-        	for (SNAWrapper nw : (ArrayList<SNAWrapper>)this.turnInfo.getSnas().getItems()) {
-        		SNAEnum sna = SNAEnum.getSnaFromNumber(nw.getNumber());
-        		if (sna != null) {
-        			n.getSnas().add(sna);
+        	if (this.turnInfo.getSnas() != null) {
+        		for (SNAWrapper nw : (ArrayList<SNAWrapper>)this.turnInfo.getSnas().getItems()) {
+        			SNAEnum sna = SNAEnum.getSnaFromNumber(nw.getNumber());
+        			if (sna != null) {
+        				n.getSnas().add(sna);
+        			}
         		}
         	}
         }

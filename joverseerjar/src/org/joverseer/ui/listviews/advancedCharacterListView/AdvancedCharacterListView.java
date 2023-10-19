@@ -264,7 +264,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 		@Override
 		public boolean accept(Object obj) {
-			return (((AdvancedCharacterWrapper) obj).getInfoSource() != null && ((AdvancedCharacterWrapper) obj).getInfoSource().toString().contains("Double agent")) || (((AdvancedCharacterWrapper) obj).getOrderResults() != null && ((AdvancedCharacterWrapper) obj).getOrderResults().startsWith("Double agent"));
+			return ((AdvancedCharacterWrapper) obj).isDoubleAgent() == true;
 		}
 
 	}	
@@ -310,7 +310,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48 };
+		return new int[] { 96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48, 32 };
 	}
 
 	@SuppressWarnings("serial")

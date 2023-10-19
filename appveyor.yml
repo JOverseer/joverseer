@@ -23,9 +23,9 @@ for:
     - java --version
     - pwd
     - ls -F
-    - curl -L https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.12-bin.tar.gz --output ant.tgz
+    - curl -L https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.14-bin.tar.gz --output ant.tgz
     - tar xf ant.tgz
-    - mv apache-ant-1.10.12 ant
+    - mv apache-ant-1.10.14 ant
     - curl -L https://sourceforge.net/projects/ant-contrib/files/ant-contrib-1.0b2-bin.tar.gz --output ant-contrib.tgz
     - cd ant/lib && tar xjf ../../ant-contrib.tgz ant-contrib/lib/ant-contrib.jar && cd ../..
     - pwd

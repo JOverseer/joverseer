@@ -12,8 +12,8 @@
 
 	<bean id="applicationDescriptor"
 		class="org.springframework.richclient.application.support.DefaultApplicationDescriptor" >
-		<property name="version" value="1.18.8"/>
-		<property name="buildId" value="Himbar"/>
+		<property name="version" value="1.18.9"/>
+		<property name="buildId" value="Isengard"/>
 	</bean>
 
 	<!-- JIDE specific replacement of the ApplicationLifecycleAdvisor. Specifies 

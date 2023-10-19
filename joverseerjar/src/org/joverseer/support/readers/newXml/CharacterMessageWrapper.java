@@ -517,7 +517,7 @@ public class CharacterMessageWrapper {
 	}
 
 	protected OrderResult getPalantirResult(String line, InfoSource infoSource,GameMetadata gm) {
-		if (line.contains("He was ordered to use a scrying artifact.")) {
+		if (line.contains("e was ordered to use a scrying artifact.")) {
 			if (!line.contains("None"))
 				return getReconResult(line, infoSource, "Foreign armies identified:", "None", " See report below",gm.getNations());
 		}
@@ -613,6 +613,10 @@ public class CharacterMessageWrapper {
 	protected OrderResult getOwnedLAOrderResult(String line) {
 		String ptr[] = new String[] { "was ordered to cast a lore spell. Locate Artifact - ", " #", "is possessed by ", " at or near ", "." };
 		String matches[] = matchPattern(line, ptr);
+		if (matches == null) {
+			// this pattern seems current in 2018
+			matches = matchPattern(line,new String[] {"was ordered to cast a lore spell. Locate Artifact - ", " #", "may be possessed by", " at or near ", "."});
+		}
 		if (matches != null) {
 			LocateArtifactResultWrapper or = new LocateArtifactResultWrapper();
 			or.setArtifactName(matches[0]);

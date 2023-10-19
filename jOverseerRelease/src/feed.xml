@@ -7,6 +7,19 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.9</title>
+			<pubDate>5 Oct 2023</pubDate>
+			<description>
+			VERSION 1.18.9
+			--------------
+			* Fix: Casting Locate Artifact on an owned artifact wasn't being noticed.
+			* Fix: Female spell-casters had palantir results ignored.
+			* Fix: combat overwriting camped ruins
+			* Fix: Scout Pop Center now checks that its information is better than the existing information about the popcenter.
+			* Fix: 1650 characters Herumor and Jirfelien stats updated.
+			</description>
+		</item>
+		<item>
 			<title>1.18.8</title>
 			<pubDate>20 July 2023</pubDate>
 			<description>

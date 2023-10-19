@@ -28,6 +28,14 @@ public class CharacterMessageWrapperTest {
 		is.setTurnNo(1);
 		GameMetadata gm = new GameMetadata();
 		
+		or = cmw.getOwnedLAOrderResult("She was ordered to cast a lore spell. Locate Artifact - Dwarven Ring of Power #10may be possessed by\r\nThrelin at or near 3218.");
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.pdf.LocateArtifactResultWrapper", or.getClass().getName());
+		assertEquals("Dwarven Ring of Power",((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactName());
+		assertEquals(10,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactNo());
+		assertEquals("Threlin",((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getOwner());
+		assertEquals(3218,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getHexNo());
+		
 		// artifact appearing twice
 		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
 		assertNotNull(or);
@@ -87,7 +95,12 @@ public class CharacterMessageWrapperTest {
 		assertEquals("3423",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getHexNo());
 		assertEquals("Éowyn",((org.joverseer.support.readers.newXml.ReconResultWrapper)or).armies.get(0).getCommanderName());
 
+		or = cmw.getPalantirResult("She was ordered to use a scrying artifact. Palantír of Minas Ithil #190 was used. Foreign armies identified: Boris of the Siv T'rar with about 100 troops at 1921 Lionel of the Siv T'rar with about 300 troops at 1722 Estrella of the Siv T'rar with about 3500 troops at 1821 . See report below.",is,gm);
+		assertNotNull(or);
 
+		or = cmw.getPalantirResult("She was ordered to use a scrying artifact. Palantír of Minas Ithil #190 was used. Foreign armies identified: Elfhelm of the Green Riders with about 700 troops at 3612 Kaigan of the Khazalid with about 2100 troops at 3612 Negarth of the Green Riders with about 2500 troops at 3612 Xmaclian of the Zerinians with about 1100 troops at 3612 Velcoktic of the Zerinians with about 1000 troops at 3713 Yamerca of the Zerinians with about 2400 troops at 3713 . Major Towns and Cities revealed: 3612 4425. See report below.",is,gm);
+		assertNotNull(or);
+		
 	}
 
 }

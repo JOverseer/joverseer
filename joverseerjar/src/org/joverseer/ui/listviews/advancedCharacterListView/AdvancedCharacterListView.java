@@ -255,6 +255,19 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		}
 
 	}
+	
+	class DoubleAgentFilter extends AbstractListViewFilter {
+
+		public DoubleAgentFilter(String descr) {
+			super(descr);
+		}
+
+		@Override
+		public boolean accept(Object obj) {
+			return ((AdvancedCharacterWrapper) obj).isDoubleAgent() == true;
+		}
+
+	}	
 
 	class ShowResultsCommand extends ActionCommand {
 
@@ -297,7 +310,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48 };
+		return new int[] { 96, 48, 48, 48, 48, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 120, 48, 96, 48, 32, 48, 32 };
 	}
 
 	@SuppressWarnings("serial")
@@ -381,9 +394,7 @@ public class AdvancedCharacterListView extends BaseItemListView {
 		ArrayList<AbstractListViewFilter> filters1 = new ArrayList<AbstractListViewFilter>();
 		filters1.addAll(Arrays.asList(NationFilter.createNationFilters()));
 		filters1.addAll(Arrays.asList(AllegianceFilter.createAllegianceFilters(true)));
-		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new DeathFilter("All", null), new ActiveFilter("Active Only"), new DeathFilter("Not Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.NotDead, null }), new DeathFilter("Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged }), new HostageFilter("Hostage", true), new ChampionFilter("Champion")
-
-		}, new AbstractListViewFilter[] { new ArmyCommanderFilter("", null), new ArmyCommanderFilter("Army commander", true), new ArmyCommanderFilter("Not army commander", false) }, };
+		return new AbstractListViewFilter[][] { filters1.toArray(new AbstractListViewFilter[] {}), TurnFilter.createTurnFiltersCurrentTurnAndAllTurns(), new AbstractListViewFilter[] { new DeathFilter("All", null), new ActiveFilter("Active Only"), new DeathFilter("Not Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.NotDead, null }), new DeathFilter("Dead", new CharacterDeathReasonEnum[] { CharacterDeathReasonEnum.Assassinated, CharacterDeathReasonEnum.Executed, CharacterDeathReasonEnum.Dead, CharacterDeathReasonEnum.Cursed, CharacterDeathReasonEnum.Missing, CharacterDeathReasonEnum.Challenged }), new HostageFilter("Hostage", true), new ChampionFilter("Champion"), new DoubleAgentFilter("Double Agent")}, new AbstractListViewFilter[] { new ArmyCommanderFilter("", null), new ArmyCommanderFilter("Army commander", true), new ArmyCommanderFilter("Not army commander", false) }, };
 	}
 
 	@Override

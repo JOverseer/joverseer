@@ -43,6 +43,9 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	String id;
 	boolean hostage = false;
 	String hostageHolderName = null;
+	
+	boolean doubleAgent = false;
+	Integer doubleAgentForNationNo;
 
 	boolean isStartChar = false;
 
@@ -331,6 +334,19 @@ public class AdvancedCharacterWrapper implements IHasMapLocation, IBelongsToNati
 	public void setHostage(boolean hostage, String holder) {
 		this.hostage = hostage;
 		this.hostageHolderName = holder;
+	}
+	
+	public boolean isDoubleAgent() {
+		return this.doubleAgent;
+	}
+	
+	public Integer getDoubleAgentForNationNo() {
+		return this.doubleAgentForNationNo;
+	}
+	
+	public void setDoubleAgent(boolean doubleAgent, Integer doubleAgentForNationNo) {
+		this.doubleAgent = doubleAgent;
+		this.doubleAgentForNationNo = doubleAgentForNationNo;
 	}
 
 	public boolean isChampion() {

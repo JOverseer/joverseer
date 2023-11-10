@@ -157,6 +157,10 @@ public class CharacterInfoCollector implements ApplicationListener {
 					if (c.getDeathReason() != CharacterDeathReasonEnum.NotDead) {
 						cw.setDeathReason(c.getDeathReason());
 					}
+					if (c.getDoubleAgent() != null && c.getDoubleAgentForNationNo() > 0) {
+						cw.setDoubleAgent(true, c.getDoubleAgentForNationNo());
+					}
+					
 					ret.addItem(cw);
 				} else {
 					guessStatsFromTitle(cw, c, t.getTurnNo());

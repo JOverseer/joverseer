@@ -28,6 +28,24 @@ public class CharacterMessageWrapperTest {
 		is.setTurnNo(1);
 		GameMetadata gm = new GameMetadata();
 		
+		// artifact appearing twice
+		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
+		org.joverseer.support.readers.newXml.RAResultWrapper ra = (org.joverseer.support.readers.newXml.RAResultWrapper)or;
+		assertEquals(2, ra.artifacts.size());
+		ArtifactWrapper aw = ra.artifacts.get(0);
+		assertEquals("Calris Light Cleaver",aw.name );
+		assertEquals(164,aw.id );
+		assertNull(aw.alignment);
+		assertEquals(1000,aw.combat);
+		assertEquals("Divine Nation Forces",aw.latent);
+		aw = ra.artifacts.get(1);
+		assertEquals("Castamir’s Bane",aw.name );
+		assertEquals(165,aw.id );
+		assertEquals(750,aw.combat);
+		assertEquals("Heal True",aw.latent);
+
 		or = cmw.getOwnedLAOrderResult("She was ordered to cast a lore spell. Locate Artifact - Dwarven Ring of Power #10may be possessed by\r\nThrelin at or near 3218.");
 		assertNotNull(or);
 		assertEquals("org.joverseer.support.readers.pdf.LocateArtifactResultWrapper", or.getClass().getName());
@@ -35,12 +53,7 @@ public class CharacterMessageWrapperTest {
 		assertEquals(10,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactNo());
 		assertEquals("Threlin",((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getOwner());
 		assertEquals(3218,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getHexNo());
-		
-		// artifact appearing twice
-		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
-		assertNotNull(or);
-		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
-		
+			
 		or = cmw.getScryResult("He was ordered to cast a lore spell. Scry Area - Foreign armies identified:" + System.lineSeparator() + 
 			" Vinitharya of the  Greensward with about 100 troops at 2913" + System.lineSeparator() + 
 			". See report below. ",

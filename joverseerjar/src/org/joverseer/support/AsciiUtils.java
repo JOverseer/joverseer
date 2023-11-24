@@ -5,6 +5,9 @@ package org.joverseer.support;
  * 
  * Contains static methods and cannot be instantiated
  * 
+ * This should be deprecated as it can't cope with combining versions.
+ * Java now has better unicode support. See StringUtils.java (Dave)
+ * 
  * @author Marios Skounakis
  */
 public class AsciiUtils {

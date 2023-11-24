@@ -95,6 +95,9 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		return ret;
 	}
 
+	public static String getUniquePartBetween(String text, String start, String end) {
+		return getUniquePart(text, start, end, false, false);
+	}
 	public static String getUniquePart(String text, String start, String end, boolean includeStart, boolean includeEnd) {
 		ArrayList<String> ret = getParts(text, start, end, includeStart, includeEnd);
 		if (ret.size() == 0)
@@ -104,6 +107,7 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		return ret.get(0);
 	}
 
+	///TODO: this will go into an infinite loop with some degenerate values eg start="";
 	public static ArrayList<String> getParts(String text, String start, String end, boolean includeStart, boolean includeEnd) {
 		ArrayList<String> ret = new ArrayList<String>();
 		int i = 0;
@@ -172,6 +176,17 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		return text;
 	}
 
+	public static String getFirstWordAfter(final String text,final String start)
+	{
+		int pos=text.indexOf(start);
+		if (pos >-1) {
+			String rest= text.substring(pos+start.length());
+			return StringUtils.getFirstWord(rest);
+		}
+		return "";
+		
+	}
+	
 	public static String stripFirstWordCond(String text, String firstWord) {
 		int i = text.indexOf(" ");
 		if (i > -1) {
@@ -214,6 +229,18 @@ public class StringUtils extends org.springframework.util.StringUtils {
 		}
 		return "";
 	}
+	/**
+	 * Convert a name with characters other than unaccented ASCII to a form suitable for comparison.
+	 * Note that unicode has more than one way of describing a character with an accent, eg combining or non-combining.
+	 * This function is responsible for the application-wide policy for how all the different representations of quotes etc.
+	 * Including folding Non-Breaking Spaces to space 0x20.
+	 * @param name
+	 * @return
+	 */
+    public static String normalizeNamesForComparison(String name) {
+    	return java.text.Normalizer.normalize(name, java.text.Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").replaceAll("\u2019", "'").replaceAll("\u00A0", " ");
+    }
+
 	/**
 	 * return a character id hash based on the accented (or not) character name.
 	 * basically strips off accents and converts to lowercase independently of current locale.

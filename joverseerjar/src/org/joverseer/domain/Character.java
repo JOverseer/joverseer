@@ -43,6 +43,9 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	int y;
 
 	Boolean isHostage = null;
+	
+	Boolean isDoubleAgent = null;
+	Integer doubleAgentForNationNo;
 
 	ArrayList<Integer> artifacts = new ArrayList<Integer>();
 	ArrayList<SpellProficiency> spells = new ArrayList<SpellProficiency>();
@@ -327,7 +330,19 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 	public void setHostage(Boolean isHostage) {
 		this.isHostage = isHostage;
 	}
+	
+	public Boolean getDoubleAgent() {
+		return this.isDoubleAgent;
+	}
+	
+	public Integer getDoubleAgentForNationNo() {
+		return this.doubleAgentForNationNo;
+	}
 
+	public void setDoubleAgent(Boolean isDoubleAgent, Integer nationNo) {
+		this.isDoubleAgent = isDoubleAgent;
+		this.doubleAgentForNationNo = nationNo;		
+	}
 	public int getArtifactInUse() {
 		return this.artifactInUse;
 	}

@@ -323,20 +323,42 @@ public class CharacterMessageWrapper {
 			return null;
 		}
 	}
-	// extract xxxx combat xxxxxx by nnnn pts 
+
+	// increase combat damage by nnnn pts
+	// increase (Agent|Mage|Command|Emissary|Stealth) Rank by nnnn
+	// Possession of the artifact can allow casting of the spell xxxxx
+	// This artifact will aid in the research of spells
+	// does "Scout Area" on any hex
+	// hides one Population Center at any time
+	// allows open seas movement like coastal movement.
+
 	static protected void extractPowers(String report,ArtifactWrapper aw) {
 		int pos; 
 		String[] powers = report.split("\\.");
 		if (powers[0].length() > 0) {
+			int rank = 0;
 			pos = powers[0].indexOf(" combat ");
 			if (pos >-1) {
 				String rest = StringUtils.getFirstWordAfter(powers[0], " by ");
 				if (rest.length() > 0 ) {
 					try {
-						aw.combat = Integer.parseInt(rest);
+						aw.combat = Integer.parseInt(rest)/50;
 					} catch (Exception e) {
 						//ignore it.
 					}
+				}
+			} else {
+				pos = powers[0].indexOf(" Rank by ");
+				if (pos > -1) {
+					String rest = StringUtils.getFirstWordAfter(powers[0], " by ");
+					if (rest.length() > 0 ) {
+						try {
+							rank = Integer.parseInt(rest);
+						} catch (Exception e) {
+							//ignore it.
+						}
+					}
+					aw.setRank(powers[0], rank);
 				}
 			}
 		}
@@ -346,6 +368,8 @@ public class CharacterMessageWrapper {
 				pos = powers[1].indexOf(seek);
 				if (pos >-1) {
 					aw.latent = powers[1].substring(pos+seek.length()); 
+				} else {
+					aw.latent = powers[1];
 				}
 			}
 		}

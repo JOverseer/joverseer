@@ -110,8 +110,6 @@ public class ArtifactInfo implements Serializable {
 			return "Agent";
 		if (getPower1().startsWith("Emmisary"))
 			return "Emissary";
-		if (getPower1().startsWith("Emissary"))
-			return "Emissary";
 		if (getPower1().startsWith("Stealth"))
 			return "Stealth";
 		if (getPower1().startsWith("Combat"))

@@ -1,6 +1,5 @@
 package org.joverseer.support.readers.newXml;
 
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -35,7 +34,6 @@ import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.StringUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.DerivedFromOrderResultsInfoSource;

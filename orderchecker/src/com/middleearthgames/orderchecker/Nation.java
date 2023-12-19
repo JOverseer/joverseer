@@ -775,7 +775,7 @@ public class Nation
 
     public void addNationParsed(int nationNumber)
     {
-        this.nationsParsed.add(((Object) (new Integer(nationNumber))));
+        this.nationsParsed.add(((Object) (Integer.valueOf(nationNumber))));
     }
 
     public int getNation()

@@ -15,7 +15,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.Container;
-import org.joverseer.support.GameHolder;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.StringUtils;
 import org.joverseer.support.info.InfoUtils;

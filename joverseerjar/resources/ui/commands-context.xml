@@ -413,6 +413,7 @@
 							<ref bean="turnReportView" />
 							<ref bean="gameEncountersReportView" />
 							<ref bean="orderResultsView" />
+							<ref bean="diploMessage" />
 						</list>
 					</property>
 				</bean>

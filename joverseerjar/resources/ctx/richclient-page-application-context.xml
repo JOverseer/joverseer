@@ -45,6 +45,7 @@
 				<value>turnReportView</value>
 				<value>gameEncountersReportView</value>
 				<value>orderResultsView</value>
+				<value>diploMessage</value>
 				<!-- <value>pcChangesListView</value> <value>chatWindowView</value> -->
 				<value>playerInfoListView</value>
 				<value>combatCalcView</value>

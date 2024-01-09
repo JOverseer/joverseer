@@ -50,13 +50,8 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
         this.parameter.addItem("");
     	for (SpellInfo si : (ArrayList<SpellInfo>)gm.getSpells().getItems()) {
             if (si.getOrderNumber() == this.orderNo) {
-	        	 boolean found = false;
-	             for (SpellProficiency sp : c.getSpells()) {
-	                 if (sp.getSpellId() == si.getNumber()) {
-	                     found = true;
-	                 }
-	             }
-	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + (found ? " (known)" : ""));
+            	SpellProficiency sp = c.findSpellMatching(si.getNumber());
+	             this.parameter.addItem(si.getNumber() + " - " + si.getName() + ((sp != null) ? " (known)" : ""));
             }
         }
     }
@@ -166,17 +161,23 @@ public class CastLoSpellOrderSubeditor extends AbstractOrderSubeditor {
             } else {
             	throw new Exception("Config error");
             }
+
             TableLayoutBuilder tlb1 = new TableLayoutBuilder();
-            do {
-                sub.addComponents(tlb1, this.components, getOrder(), counter,false);
-                tlb1.row();
+            sub.addComponents(tlb1, this.components, getOrder(), counter,false);
+            tlb1.row();
+            sub.setEditor(getEditor());
+            
+            if (multiple) {
+                do {
+                	counter++;
+                	sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder(),this.gameHolder);
+                	sub.addComponents(tlb1, this.components, getOrder(), counter,false);
+                	tlb1.row();
 //                tlb1.cell(new JLabel(" ")); //DAS- I don't understand what this is doing unless to force a thick row?
 //            	tlb1.row();
-                sub.setEditor(getEditor());
-                if (!multiple) break; // normal loop exit if one parameter
-                counter++;
-              	sub = new ArtifactNumberParameterOrderSubeditor(this.getEditor(),"Arti", getOrder(),this.gameHolder);
-            } while (counter < 7);
+                	sub.setEditor(getEditor());
+                } while (counter < 7);
+            }
 
             this.currentComp = this.components.get(1);
             this.currentCompPanel = tlb1.getPanel();

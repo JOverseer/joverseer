@@ -501,12 +501,12 @@ public class Character
 
     void setNewLocation(int location, int order)
     {
-        this.finalLocation.put(order, ((Object) (new Integer(location))));
+        this.finalLocation.put(order, ((Object) (Integer.valueOf(location))));
     }
 
     void setCompanyCO(boolean state, int order)
     {
-        this.companyLeader.put(order, ((Object) (new Boolean(state))));
+        this.companyLeader.put(order, ((Object) (Boolean.valueOf(state))));
     }
 
     void setNewArtifacts(int artifactList[], int order)

@@ -1,6 +1,5 @@
 package org.joverseer.support.readers.newXml;
 
-import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -35,7 +34,7 @@ import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.ArtifactInfo;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.metadata.domain.NationAllegianceEnum;
-import org.joverseer.support.AsciiUtils;
+import org.joverseer.support.StringUtils;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.DerivedFromOrderResultsInfoSource;
 import org.joverseer.support.infoSources.DoubleAgentInfoSource;
@@ -1185,10 +1184,10 @@ public class TurnNewXmlReader implements Runnable {
 		for (ArtifactWrapper aw : aws) {
 			try { // so that we just skip for any bad artifact.
 				if (doUpdateId) {
-					String artiNameInAscii = AsciiUtils.convertNonAscii(aw.getName().trim());
+					String artiNameInAscii = StringUtils.normalizeNamesForComparison(aw.getName().trim());
 					boolean found = false;
 					for (ArtifactInfo ai : game1.getMetadata().getArtifacts().getItems()) {
-						if (AsciiUtils.convertNonAscii(ai.getName()).equalsIgnoreCase(artiNameInAscii)) {
+						if (ai.getUnAccentedName().equalsIgnoreCase(artiNameInAscii)) {
 							found = true;
 							ai.setNo(aw.getId());
 							break;

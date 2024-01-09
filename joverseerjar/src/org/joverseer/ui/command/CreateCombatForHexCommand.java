@@ -1,23 +1,13 @@
 package org.joverseer.ui.command;
 
 import java.awt.Point;
-import java.util.ArrayList;
-
 import org.joverseer.JOApplication;
-import org.joverseer.domain.Army;
-import org.joverseer.domain.ArmyEstimate;
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.NationAllegianceEnum;
 import org.joverseer.support.GameHolder;
 import org.joverseer.tools.combatCalc.Combat;
-import org.joverseer.tools.combatCalc.CombatArmy;
-import org.joverseer.tools.combatCalc.CombatPopCenter;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.map.MapPanel;
-import org.joverseer.ui.support.Messages;
-import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.richclient.command.ActionCommand;
 
 public class CreateCombatForHexCommand extends ActionCommand {

@@ -96,5 +96,18 @@ public class ArtifactWrapper {
 		}
 		return "";
 	}
-	
+	public void setRank(String power,int rank)
+	{
+		if (power.indexOf("Agent")>-1) {
+			this.agent = rank;
+		} else if (power.indexOf("Mage")>-1) {
+			this.mage = rank;
+		} else if (power.indexOf("Emissary")>-1) {
+			this.emissary = rank;
+		} else if (power.indexOf("Stealth")>-1) {
+			this.emissary = rank;
+		} else if (power.indexOf("Combat")>-1) {
+			this.combat = rank / 50;
+		}
+	}
 }

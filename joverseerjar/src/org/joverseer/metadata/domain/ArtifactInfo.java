@@ -3,8 +3,6 @@ package org.joverseer.metadata.domain;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 
 /**
@@ -112,8 +110,6 @@ public class ArtifactInfo implements Serializable {
 			return "Agent";
 		if (getPower1().startsWith("Emmisary"))
 			return "Emissary";
-		if (getPower1().startsWith("Emissary"))
-			return "Emissary";
 		if (getPower1().startsWith("Stealth"))
 			return "Stealth";
 		if (getPower1().startsWith("Combat"))
@@ -165,7 +161,7 @@ public class ArtifactInfo implements Serializable {
 	public String getUnAccentedName() {
 		if (this.unAccentedName == null) {
 			if (this.name != null) {
-				this.unAccentedName =  Normalizer.normalize(this.name, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+				this.unAccentedName =  org.joverseer.support.StringUtils.normalizeNamesForComparison(this.name);
 			}
 		}
 		return this.unAccentedName;

@@ -103,8 +103,6 @@ public class InfoView extends AbstractView {
 
 		lb.separator(Messages.getString("InfoView.ClimateProductionModifiers"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("climateProduction", 600, 140,null), "align=left");
-		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.Dragons"));
 		lb.relatedGapRow();
@@ -121,6 +119,8 @@ public class InfoView extends AbstractView {
 			selected = gm.getGameType().toMEString();
 		}
 		lb.cell(createTableFromInfo("charactersAllowed",500, 480,selected), "align=left");
+		lb.relatedGapRow();
+		lb.cell(createTableFromInfo("climateProduction", 600, 140,null), "align=left");
 		lb.relatedGapRow();
 
 

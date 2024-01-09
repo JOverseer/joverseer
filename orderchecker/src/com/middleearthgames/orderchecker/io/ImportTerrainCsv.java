@@ -91,7 +91,7 @@ public class ImportTerrainCsv extends ImportCsv
             Integer direction;
             try
             {
-                direction = new Integer(param);
+                direction = Integer.valueOf(param);
             }
             catch(Exception ex)
             {
@@ -103,7 +103,7 @@ public class ImportTerrainCsv extends ImportCsv
                 return "Missing feature at location " + location + "!\n" + "The terrain file appears to be invalid!";
             try
             {
-                Integer feature = new Integer(param);
+                Integer feature = Integer.valueOf(param);
                 hex.addFeature(feature);
             }
             catch(Exception ex)

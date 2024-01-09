@@ -2,13 +2,10 @@ package org.joverseer.metadata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Locale;
-
 import org.apache.log4j.Logger;
 import org.joverseer.domain.Character;
 import org.joverseer.support.Container;
 import org.joverseer.support.infoSources.MetadataSource;
-import org.springframework.util.StringUtils;
 
 /**
  * Reads starting character information

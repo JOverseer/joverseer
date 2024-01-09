@@ -308,10 +308,9 @@ public class SpellcasterListView extends BaseItemListView {
 			sw.setNationNo(c.getNationNo());
 			sw.setMageRank(c.getMage());
 			for (int i = 0; i < spells.size(); i++) {
-				for (SpellProficiency sp : c.getSpells()) {
-					if (sp.getSpellId() == spells.get(i)) {
-						sw.setProficiency(spells.get(i), sp.getProficiency());
-					}
+				SpellProficiency sp = c.findSpellMatching(spells.get(i));
+				if (sp != null) {
+					sw.setProficiency(spells.get(i), sp.getProficiency());
 				}
 			}
 			if (sw.getProficiencies().size() > 0) {

@@ -892,6 +892,9 @@ public class TurnNewXmlReader implements Runnable {
 			if (c.getOrderResults() == null || c.getOrderResults().equals("")) {
 				c.setOrderResults(daw.getReport());
 			}
+			
+			c.setDoubleAgent(true, this.turnInfo.getNationNo());
+			
 		}
 
 	}

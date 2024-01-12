@@ -101,29 +101,41 @@ public class Combat implements Serializable, IHasMapLocation {
     
     public static int computeNativeArmyStrength(CombatArmy army, HexTerrainEnum terrain, ClimateEnum climate, Double lossesOverride, boolean againstPopCenter) {
         int strength = 0;
-        boolean warMachinesPresent = false;
+        
+        //add up army modifiers
+        int armyModifiers = army.getCommandRank() + army.getMorale() + CombatModifiers.getModifierFor(
+                army.getNationNo(), terrain, climate) * 2;
+        
+        int troopModifiers = 0;
+        
         for (ArmyElement armyElement : army.getElements()) {
-            Integer warMachineStrength = InfoUtils.getTroopStrength(armyElement.getArmyElementType(), "Attack");
+        	int tacticMod = 100;
+        	int terrainMod = 100;
+        	
+            Integer troopStrength = InfoUtils.getTroopStrength(armyElement.getArmyElementType(), "Attack");
+            
             if (armyElement.getArmyElementType() == ArmyElementType.WarMachimes && againstPopCenter) {
-            	warMachineStrength = 200;
-            	warMachinesPresent = true;
+            	troopStrength = 200;
             }
-            if (warMachineStrength == null)
+            
+            if (troopStrength == null || troopStrength == 0)
                 continue;
             
-            int tacticMod = !warMachinesPresent ? InfoUtils.getTroopTacticModifier(armyElement.getArmyElementType(), army.getTactic()) : 100;
-            int terrainMod = !warMachinesPresent ? InfoUtils.getTroopTerrainModifier(armyElement.getArmyElementType(), terrain) : 100;
-            double mod = (double) (armyElement.getTraining() + armyElement.getWeapons() + tacticMod + terrainMod) / 400d;
+            if (armyElement.getArmyElementType() != ArmyElementType.WarMachimes) {
+                tacticMod = !againstPopCenter ? InfoUtils.getTroopTacticModifier(armyElement.getArmyElementType(), army.getTactic()) : 100;
+                terrainMod = InfoUtils.getTroopTerrainModifier(armyElement.getArmyElementType(), terrain);
+            }
             
-            strength += warMachineStrength * armyElement.getNumber() * mod;
+            troopModifiers = armyElement.getTraining() + armyElement.getWeapons() + tacticMod + terrainMod;
+            double mod = (double) (armyModifiers + troopModifiers) / 800d;
+            
+            strength += troopStrength * armyElement.getNumber() * mod;
         }
-        //System.out.println("Str before mods: " + strength);
-        strength = strength
-                * (army.getCommandRank() + army.getMorale() + CombatModifiers.getModifierFor(
-                        army.getNationNo(), terrain, climate) * 2) / 400;
+
         if (lossesOverride == null) {
             lossesOverride = army.getLosses();
         }
+        
         strength = (int)(strength * (double)(100 - lossesOverride) / 100d);
         return strength;
     }

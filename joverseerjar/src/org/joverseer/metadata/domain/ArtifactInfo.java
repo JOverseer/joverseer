@@ -81,14 +81,22 @@ public class ArtifactInfo implements Serializable {
 		if (this.powers.size() == 0) {
 			return "";
 		}
-		return this.powers.get(0).toString();
+		final String power1 = this.powers.get(1); 
+		if (power1 == null) {	
+			return "";
+		}
+		return power1.toString();
 	}
 
 	public String getPower2() {
 		if (this.powers.size() < 2) {
 			return "";
 		}
-		return this.powers.get(1).toString();
+		final String power2 = this.powers.get(1); 
+		if (power2 == null) {	
+			return "";
+		}
+		return power2.toString();
 	}
 
 	public void setPower(int index, String updatedPower) {

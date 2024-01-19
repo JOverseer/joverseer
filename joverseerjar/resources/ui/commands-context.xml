@@ -293,7 +293,7 @@
 				</bean>
 				<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
 					<property name="link">
-					<value>https://www.middleearthgames.com</value></property>
+					<value>https://www.gamesystems.com</value></property>
 				</bean>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand" />
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand" />

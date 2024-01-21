@@ -30,4 +30,5 @@ public enum TurnElementsEnum implements Serializable {
     ArmyEstimate,
     CombatCalcCombats,
     ChallengeFights,
+    Diplo,
 }

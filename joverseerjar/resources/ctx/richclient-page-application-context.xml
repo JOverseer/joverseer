@@ -1006,7 +1006,7 @@
 			<value>1</value>
 		</property>
 		<property name="viewClass">
-			<value> org.joverseer.ui.views.DiploMessage</value>	
+			<value> org.joverseer.ui.views.DiploMessageForm</value>	
 		</property>
 		<property name="preferredWidth">
 			<value>650</value>

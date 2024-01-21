@@ -22,6 +22,11 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     String lastOrderFile = null;
     Date ordersSentOn = null;
     
+    //Diplo related info
+    Date diploSentOn = null;
+    String lastDiploFile = null;
+    int diploVersion = 1;
+    
     public String getAccountNo() {
         return this.accountNo;
     }
@@ -93,6 +98,40 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     public void setOrdersSentOn(Date ordersSentOn) {
         this.ordersSentOn = ordersSentOn;
     }
+
+    /*
+     * Following methods are getters and setters for diplo info
+     */
+	public Date getDiploSentOn() {
+		return this.diploSentOn;
+	}
+
+	public void setDiploSentOn(Date diploSentOn) {
+		this.diploSentOn = diploSentOn;
+	}
+
+	public String getLastDiploFile() {
+		return this.lastDiploFile;
+	}
+
+	public void setLastDiploFile(String lastDiploFile) {
+		this.lastDiploFile = lastDiploFile;
+	}
+
+	public int getDiploVersion() {
+		if (this.diploVersion == 0) {
+			this.diploVersion = 1;
+			return 1;
+		}
+		return this.diploVersion;
+	}
+
+	public void setDiploVersion(int diploVersion) {
+		if (this.diploVersion == 0) {
+			this.diploVersion = 1 + diploVersion;
+		}
+		this.diploVersion = diploVersion;
+	}
     
     
     

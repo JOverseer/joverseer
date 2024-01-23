@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
 	<channel>
-		<title>Overseer Beta (development) releases</title>
-		<link>https://www.middleearthgames.com/software/joverseer/betafeed.xml</link>
+		<title>Overseer releases</title>
+		<link>https://www.gamesystems.com/software/joverseer/feed.xml</link>
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>
+		<item>
+			<title>1.18.9</title>
+			<pubDate>5 Oct 2023</pubDate>
+			<description>
+			VERSION 1.18.9
+			--------------
+			* Fix: Casting Locate Artifact on an owned artifact wasn't being noticed.
+			* Fix: Female spell-casters had palantir results ignored.
+			* Fix: combat overwriting camped ruins
+			* Fix: Scout Pop Center now checks that its information is better than the existing information about the popcenter.
+			* Fix: 1650 characters Herumor and Jirfelien stats updated.
+			</description>
+		</item>
 		<item>
 			<title>1.18.8</title>
 			<pubDate>20 July 2023</pubDate>
@@ -17,14 +30,14 @@
 		</item>
 		<item>
 			<title>1.18.7</title>
-			<pubDate>18 July 2023</pubDate>
+			<pubDate>20 July 2023</pubDate>
 			<description>
 				VERSION 1.18.7
 				--------------
 				* Enh: support Bring-Your-Own Java
 				* Fix: Some artifacts were not reconciled by name.
 				* Fix: Quick order Recon 930 actually added a 925 order.
-				* Fix: duplicated artifact in RA broke import
+				* Fix: Duplicated artifact in RA broke import
 				* Fix: Fix a couple of cases where docks would not appear on reports
 				* Fix: Scrying with an artifact 
 					+ caused JO to interpret the Recon result as if the artifact was the name of the army commander.
@@ -114,7 +127,7 @@
 				VERSION 1.18.0
 				--------------
 				To update to this version you MUST download the full installer for your operating system.	
-				https://www.middleearthgames.com/gamingsoftware/
+				https://www.gamesystems.com/gamingsoftware/
 				
 				* Enh: This version includes a minimal version of java 11. No extra version of java is required.
 			</description>
@@ -260,5 +273,6 @@
 				* Fix: Mage vs Mage challenges were confused over who won.
 			</description>
 		</item>
+
 	</channel>
 </rss>

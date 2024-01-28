@@ -393,7 +393,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 */
 	private void updateLiveLabel(int len) {
 		String colour;
-		this.btReload.setEnabled(true);
+		
 		if (len < (Diplo.charPerNation * this.nationsCount) + 1) {
 			this.btSave.setEnabled(true);
 			colour = "black";
@@ -412,6 +412,11 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 			else {
 				temp[i] = "";
 			}
+		}
+		
+		if (this.inputDiplo.getMessage() != null) {
+			this.btReload.setEnabled(true);
+			this.btReload.setText("Reload Saved Message");
 		}
 		txt = String.format("<html>Selected Nations:<font size=2><br/>%s</br></font><html>", String.join("</br><br/>", temp));
 		this.lbCurrentNations.setText(txt);
@@ -517,11 +522,11 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
         if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
         	//this.lbCurrentDiplo.setText("No saved Diplomatic Message in game currently.");
         	this.btReload.setText("No Saved Message");
+        	this.btReload.setEnabled(false);
         }
         else {
         	//this.lbCurrentDiplo.setText("<html>Current saved diplomatic message: <br/>" + this.inputDiplo.getMessage() + "<html>");
         	this.btReload.setText("Reload Saved Message");
-        	this.btReload.setEnabled(true);
         }
     }
     
@@ -540,6 +545,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	Turn t = this.gameHolder.getGame().getTurn();
     	this.inputDiplo.setMessage(this.diplomaticMess.getText());
     	this.btReload.setEnabled(false);
+    	this.btReload.setText("Reload Saved Message");
 
         if (!t.getContainer(TurnElementsEnum.Diplo).contains(this.inputDiplo)) {
         	t.getContainer(TurnElementsEnum.Diplo).clear();

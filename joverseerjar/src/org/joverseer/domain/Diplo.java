@@ -19,7 +19,7 @@ public class Diplo implements IBelongsToNation, Serializable, IHasTurnNumber {
 	private Integer nationNo;
 	private int numberOfNations;
 	private String[] nations = null;
-	public static final int charPerNation = 135;
+	public static int charPerNation = 135;
 	
 	
 	

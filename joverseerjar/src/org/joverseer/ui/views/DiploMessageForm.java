@@ -72,9 +72,11 @@ import javax.swing.Box;
 public class DiploMessageForm extends BaseView implements ApplicationListener{
 	JPanel panel;
 	JLabel lbLiveCount;
+	JLabel lbCurrentNations;
 	JLabel lbCurrentDiplo;
 	JButton btSave;
 	JButton btNationSave;
+	JButton btReload;
 	JTextArea diplomaticMess;
 	Diplo inputDiplo = null;
 	NationJList nationList;
@@ -90,6 +92,149 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 */
 	@Override
 	protected JComponent createControl() {
+		boolean old = false;
+		if (old) return oldLayout();
+		
+		this.panel = new JPanel();
+		this.panel.setLayout(new BorderLayout());
+		this.panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		this.panel.setBackground(Color.green);
+		
+		JPanel diploPanel = new JPanel();
+		diploPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		this.panel.add(diploPanel, BorderLayout.PAGE_START);		
+
+		JPanel nationPanel = new JPanel();
+		diploPanel.add(nationPanel);
+		nationPanel.setLayout(new BoxLayout(nationPanel, BoxLayout.Y_AXIS));
+		nationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		JPanel nationPanelInstr = new JPanel();
+		nationPanelInstr.setLayout(new FlowLayout(FlowLayout.LEFT));
+		nationPanel.add(nationPanelInstr);
+		JLabel nationInstr = new JLabel("<html>Select which nations you control here<br/><font size=2>To select multiple nations, hold 'ctrl' ('cmd' on mac) and click</font><html>", SwingConstants.LEFT);
+		nationPanelInstr.add(nationInstr);
+		
+		JPanel listPanel = new JPanel();
+		listPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		nationPanel.add(listPanel);
+		
+		
+		
+		this.nationList = new NationJList(this.gameHolder);
+		
+		this.nationList.setPreferredSize(new Dimension(100,150));
+		this.nationList.setVisibleRowCount(6);
+		this.listScroll = new JScrollPane(this.nationList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		listPanel.add(this.listScroll);	
+		
+		JPanel nationPanelButton = new JPanel();
+		nationPanelButton.setLayout(new BoxLayout(nationPanelButton, BoxLayout.Y_AXIS));
+		nationPanelButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		nationPanelButton.setForeground(Color.green);
+//		nationPanelButton.setBackground(Color.green);
+		//nationPanelButton.setLayout(new BoxLayout(nationPanelButton, BoxLayout.Y_AXIS));
+		listPanel.add(nationPanelButton);
+		
+		this.btNationSave = new JButton("Save Selection");
+		this.btNationSave.setEnabled(false);
+		this.btNationSave.addActionListener(new ActionListener() {
+			
+          @Override
+			public void actionPerformed(ActionEvent e) {
+        	  saveNationSelection();
+          }
+		});
+		nationPanelButton.add(this.btNationSave);
+		
+		this.lbCurrentNations = new JLabel("");
+		//this.lbCurrentNations.setAlignmentX(Component.LEFT_ALIGNMENT);
+		nationPanelButton.add(this.lbCurrentNations);
+		
+		JPanel dipMessPanel = new JPanel();
+		dipMessPanel.setLayout(new BoxLayout(dipMessPanel, BoxLayout.Y_AXIS));
+		dipMessPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		diploPanel.add(dipMessPanel);
+		
+		
+//		JPanel infoPanel = new JPanel();
+//		infoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+//		dipMessPanel.add(infoPanel);
+//		JLabel infoLabel = new JLabel("<html><font size = 1>Note: You don't have to include your own nation names!</font><html>");
+//		infoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		infoPanel.add(infoLabel);		
+		Component box = Box.createRigidArea(new Dimension(1, 15));
+		dipMessPanel.add(box);
+		
+		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 8, 40);
+		//this.diplomaticMess.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.diplomaticMess.setWrapStyleWord(true);
+		this.diplomaticMess.setLineWrap(true);
+		this.diplomaticMess.getDocument().addDocumentListener(new MyDocumentListener());
+		this.diplomaticMess.setEditable(false);
+		
+		JScrollPane txtAreaScroll = new JScrollPane(this.diplomaticMess);
+		dipMessPanel.add(txtAreaScroll);
+		
+
+		
+		
+//		Component box = Box.createRigidArea(new Dimension(20, 1));
+//		diploPanel.add(box);
+		
+		JPanel buttonPanel = new JPanel();
+		diploPanel.add(buttonPanel);
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		this.lbLiveCount = new JLabel("");
+		this.lbLiveCount.setAlignmentX(Component.LEFT_ALIGNMENT);
+		buttonPanel.add(this.lbLiveCount);
+		
+		this.btSave = new JButton("Save Message");
+		this.btSave.setHorizontalAlignment(SwingConstants.LEFT);
+		this.btSave.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.btSave.setEnabled(false);
+		this.btSave.addActionListener(new ActionListener() {
+			
+	          @Override
+				public void actionPerformed(ActionEvent e) {
+	        	  saveMessage();
+	          }
+			});
+		buttonPanel.add(this.btSave);
+		
+		this.btReload = new JButton("Reload Saved Message");
+		this.btReload.setHorizontalAlignment(SwingConstants.LEFT);
+		this.btReload.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.btReload.setEnabled(false);
+		this.btReload.addActionListener(new ActionListener() {
+			
+	          @Override
+				public void actionPerformed(ActionEvent e) {
+	        	  if(inputDiplo.getMessage() == null) {
+	      			ErrorDialog.showErrorDialog("No saved message");
+	    			return;
+	        	  }
+	        	  diplomaticMess.setText(inputDiplo.getMessage());
+	        	  btReload.setEnabled(false);
+	          }
+			});
+		buttonPanel.add(this.btReload);
+		
+//		this.lbCurrentDiplo = new JLabel("");
+//		this.lbCurrentDiplo.setHorizontalAlignment(SwingConstants.LEFT);
+//		this.lbCurrentDiplo.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		buttonPanel.add(this.lbCurrentDiplo);
+		
+		this.panel.setPreferredSize(new Dimension(1200, 1200));
+		
+		return this.panel;
+	}
+	
+	private JComponent oldLayout() {
 		this.panel = new JPanel();
 		this.panel.setLayout(new BorderLayout());
 		this.panel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -99,8 +244,8 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		this.panel.add(diploPanel, BorderLayout.PAGE_START);		
 
-		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 10, 50);
-		this.diplomaticMess.setAlignmentX(Component.LEFT_ALIGNMENT);
+		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 8, 50);
+		//this.diplomaticMess.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.diplomaticMess.setWrapStyleWord(true);
 		this.diplomaticMess.setLineWrap(true);
 		this.diplomaticMess.getDocument().addDocumentListener(new MyDocumentListener());
@@ -248,6 +393,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 */
 	private void updateLiveLabel(int len) {
 		String colour;
+		this.btReload.setEnabled(true);
 		if (len < (Diplo.charPerNation * this.nationsCount) + 1) {
 			this.btSave.setEnabled(true);
 			colour = "black";
@@ -256,8 +402,20 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 			this.btSave.setEnabled(false);
 			colour = "red";
 		}	
-		String txt = String.format("<html>Characters: <font color='%s'>%d</font>/%d<br/>Nations you are submitting a diplo for: %s<br/>Note: You don't have to include your own nation names!<html>", colour, len, (Diplo.charPerNation * this.nationsCount), String.join(", ", this.inputDiplo.getNations()));
+		String txt = String.format("<html>Character count: <font color='%s'>%d</font>/%d<br/>Note: You don't have to include your own nation names!<html>", colour, len, (Diplo.charPerNation * this.nationsCount));
 		this.lbLiveCount.setText(txt);
+		String[] temp = new String[6];
+		for (int i = 0; i < temp.length; i++) {
+			if (i < this.inputDiplo.getNumberOfNations()) {
+				temp[i] = this.inputDiplo.getNations()[i];
+			}
+			else {
+				temp[i] = "";
+			}
+		}
+		txt = String.format("<html>Selected Nations:<font size=2><br/>%s</br></font><html>", String.join("</br><br/>", temp));
+		this.lbCurrentNations.setText(txt);
+		
 	}
 	
 	/**
@@ -357,10 +515,13 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	}
     	
         if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
-        	this.lbCurrentDiplo.setText("No saved Diplomatic Message in game currently.");
+        	//this.lbCurrentDiplo.setText("No saved Diplomatic Message in game currently.");
+        	this.btReload.setText("No Saved Message");
         }
         else {
-        	this.lbCurrentDiplo.setText("<html>Current saved diplomatic message: <br/>" + this.inputDiplo.getMessage() + "<html>");
+        	//this.lbCurrentDiplo.setText("<html>Current saved diplomatic message: <br/>" + this.inputDiplo.getMessage() + "<html>");
+        	this.btReload.setText("Reload Saved Message");
+        	this.btReload.setEnabled(true);
         }
     }
     
@@ -378,12 +539,13 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     private void saveMessage() {
     	Turn t = this.gameHolder.getGame().getTurn();
     	this.inputDiplo.setMessage(this.diplomaticMess.getText());
+    	this.btReload.setEnabled(false);
 
         if (!t.getContainer(TurnElementsEnum.Diplo).contains(this.inputDiplo)) {
         	t.getContainer(TurnElementsEnum.Diplo).clear();
         	t.getContainer(TurnElementsEnum.Diplo).addItem(this.inputDiplo);
         }
-        this.lbCurrentDiplo.setText("<html>Current saved diplomatic message: <br/>" + t.getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo()).getMessage() + "<html>");
+        //this.lbCurrentDiplo.setText("<html>Current saved diplomatic message: <br/>" + t.getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo()).getMessage() + "<html>");
     	
     }
 

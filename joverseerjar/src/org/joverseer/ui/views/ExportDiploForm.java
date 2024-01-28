@@ -307,6 +307,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 				filePost.releaseConnection();
 				pi.setDiploSentOn(new Date());
 				this.sent = true;
+				pi.setDiploSent(true);
 				//autoSaveGameAccordingToPref();
 			}
 		} else {

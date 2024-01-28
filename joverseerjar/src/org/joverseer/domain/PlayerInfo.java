@@ -26,8 +26,11 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     Date diploSentOn = null;
     String lastDiploFile = null;
     int diploVersion = 1;
-    
-    public String getAccountNo() {
+    boolean diploDue = false;
+    boolean diploSent = false;
+
+
+	public String getAccountNo() {
         return this.accountNo;
     }
     
@@ -133,7 +136,20 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 		this.diploVersion = diploVersion;
 	}
     
-    
-    
+    public boolean isDiploDue() {
+		return this.diploDue;
+	}
+
+	public void setDiploDue(boolean diploDue) {
+		this.diploDue = diploDue;
+	}
+	
+	public boolean isDiploSent() {
+		return this.diploSent;
+	}
+
+	public void setDiploSent(boolean diploSent) {
+		this.diploSent = diploSent;
+	}
     
 }

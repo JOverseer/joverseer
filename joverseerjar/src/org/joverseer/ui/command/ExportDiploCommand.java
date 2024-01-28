@@ -31,8 +31,14 @@ public class ExportDiploCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
         if (!ActiveGameChecker.checkActiveGameExists()) return;
+        //If no saved diplo for turn then game tells them so
         if(this.gameHolder.getGame().getTurn().getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo()) == null) {
         	ErrorDialog.showErrorDialog("No diplomatic message saved. \nTo save one, go to Tools -> Turn -> Diplomatic Message");
+        	return;
+        }
+        //If diplo isn't due this turn doesn't allow a submission
+        if(this.gameHolder.getGame().getTurn().getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue() == false) {
+        	ErrorDialog.showErrorDialog("No Diplo due this turn");
         	return;
         }
         FormModel formModel = FormModelHelper.createFormModel(new Diplo());

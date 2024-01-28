@@ -1,9 +1,5 @@
 package org.joverseer.metadata;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-
 /**
  * Enumeration for SNAs. 
  * 

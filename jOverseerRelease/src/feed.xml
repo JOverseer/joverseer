@@ -2,8 +2,8 @@
 <rss version="2.0">
 	<channel>
 		<title>Overseer releases</title>
-		<link>https://www.middleearthgames.com/software/joverseer/feed.xml</link>
-		<description>The latest version of jOverseer, the Middle-Earth game
+		<link>https://www.gamesystems.com/software/joverseer/feed.xml</link>
+		<description>The latest version of jOverseer, the Middle-Earth PBM game
 			helper program.</description>
 		<language>en</language>
 		<item>
@@ -127,7 +127,7 @@
 				VERSION 1.18.0
 				--------------
 				To update to this version you MUST download the full installer for your operating system.	
-				https://www.middleearthgames.com/gamingsoftware/
+				https://www.gamesystems.com/gamingsoftware/
 				
 				* Enh: This version includes a minimal version of java 11. No extra version of java is required.
 			</description>

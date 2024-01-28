@@ -324,31 +324,93 @@ public class CharacterMessageWrapper {
 		}
 	}
 
+	// increase combat damage by nnnn pts
+	// increase (Agent|Mage|Command|Emissary|Stealth) Rank by nnnn
+	// Possession of the artifact can allow casting of the spell xxxxx
+	// This artifact will aid in the research of spells
+	// does "Scout Area" on any hex
+	// hides one Population Center at any time
+	// allows open seas movement like coastal movement.
+
+	static protected void extractPowers(String report,ArtifactWrapper aw) {
+		int pos; 
+		String[] powers = report.split("\\.");
+		if (powers[0].length() > 0) {
+			int rank = 0;
+			pos = powers[0].indexOf(" combat ");
+			if (pos >-1) {
+				String rest = StringUtils.getFirstWordAfter(powers[0], " by ");
+				if (rest.length() > 0 ) {
+					try {
+						aw.combat = Integer.parseInt(rest)/50;
+					} catch (Exception e) {
+						//ignore it.
+					}
+				}
+			} else {
+				pos = powers[0].indexOf(" Rank by ");
+				if (pos > -1) {
+					String rest = StringUtils.getFirstWordAfter(powers[0], " by ");
+					if (rest.length() > 0 ) {
+						try {
+							rank = Integer.parseInt(rest);
+						} catch (Exception e) {
+							//ignore it.
+						}
+					}
+					aw.setRank(powers[0], rank);
+				}
+			}
+		}
+		if (powers.length > 1) {
+			if (powers[1].length() >0) {
+				final String seek = "Possession of the artifact can allow casting of the spell ";
+				pos = powers[1].indexOf(seek);
+				if (pos >-1) {
+					aw.latent = powers[1].substring(pos+seek.length()); 
+				} else {
+					aw.latent = powers[1];
+				}
+			}
+		}
+	}
 	protected OrderResult getRAResult(String line, InfoSource infoSource) {
 		if (line.contains(" was ordered to cast a lore spell.")) {
 			RAResultWrapper rrw = new RAResultWrapper();
 			final String start= "Research Artifact - ";
 			String text = line;
-			ArrayList<String> parts = StringUtils.getParts(text, start, "#\\d{1,3}", false, false);
-			for(String part:parts) {
-				String artiNo;
+			String[] singleResult = text.split(start);
+			// note we skip the first index.
+			for(int index=1;index < singleResult.length;index++) {
+				int i;
+				String[] parts = singleResult[index].split(" - ");
+				if (parts.length < 1)
+					continue;
+				String[] names = parts[0].split("#");
+				if (names.length < 2)
+					continue;
+				String name = names[0].trim();
+				String[] words = names[1].split(" ");
+				String artiNo = words[0].trim();
+				
+				int art;
 				try {
-					ArrayList<String> ret = StringUtils.getParts(text, "\\Q"+part + "\\E\\s?#", " is a", false, false);
-					if (ret.size() == 0)
-						continue;
-					if (ret.size() > 1) {
-						// this isn't exhaustive : but will match A A X X X
-						if (!ret.get(0).equals(ret.get(1)))
-							throw new RuntimeException("Not Unique Part");
-						// duplicated parts are ok.
-					}
-					// normal path
-					artiNo = ret.get(0);
+					art = Integer.parseInt(artiNo);
 				} catch (NumberFormatException e) {
 					// don't add if not recognised.
 					continue;
 				}
-				rrw.Add(part, Integer.parseInt(artiNo));
+				ArtifactWrapper aw = rrw.getArtifactMatching(art);
+				if (aw != null)
+					continue; // already present - ignore.
+				rrw.Add(name, art);
+				aw = rrw.getArtifactMatching(art);
+				if (parts.length > 1) {
+					String allegiance = parts[1].trim(); // still includes tag
+					if (parts.length> 2) {
+						extractPowers(parts[2].trim(),aw);
+					}
+				}
 			}
 			return rrw;
 		}

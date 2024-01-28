@@ -2,7 +2,7 @@
 <rss version="2.0">
 	<channel>
 		<title>Overseer Test (development) releases</title>
-		<link>http://www.middleearthgames.com/software/joverseer/testfeed.xml</link>
+		<link>http://www.gamesystems.com/software/joverseer/testfeed.xml</link>
 		<description>The latest version of jOverseer, the Middle-Earth game
 			helper program.</description>
 		<language>en</language>

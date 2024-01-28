@@ -8,6 +8,7 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.ui.support.Messages;
 
 /**
  * Stores information about a character reported in the turn results.
@@ -435,7 +436,7 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		c.setStartInfoDummy(isStartInfoDummy());
 		c.setArtifacts((ArrayList<Integer>) getArtifacts().clone());
 		for (SpellProficiency sp : getSpells()) {
-			c.getSpells().add(new SpellProficiency(sp.getSpellId(), sp.getProficiency(), sp.getName()));
+			c.getSpells().add(new SpellProficiency(sp));
 		}
 		return c;
 	}
@@ -527,6 +528,15 @@ public class Character implements IBelongsToNation, IHasMapLocation, IMaintenanc
 		return false;
 	}
 
+	public SpellProficiency findSpellMatching(int spellNo) {
+		for (SpellProficiency sp : this.getSpells()) {
+			if (sp.getSpellId() == spellNo) {
+				return sp;
+			}
+		}
+		return null;
+	}
+	
 	public void addHostage(@SuppressWarnings("hiding") String name) {
 		if (!getHostages().contains(name))
 			getHostages().add(name);

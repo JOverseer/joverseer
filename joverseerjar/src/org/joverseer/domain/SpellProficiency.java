@@ -24,6 +24,11 @@ public class SpellProficiency implements Serializable {
         this.name = name;
     }
 
+    public SpellProficiency(final SpellProficiency existing) {
+        this.spellId = existing.spellId;
+        this.proficiency = existing.proficiency;
+        this.name = existing.name;
+    }
     public int getProficiency() {
         return this.proficiency;
     }

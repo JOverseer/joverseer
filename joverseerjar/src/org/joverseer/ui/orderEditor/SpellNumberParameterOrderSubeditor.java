@@ -48,13 +48,8 @@ public class SpellNumberParameterOrderSubeditor extends AbstractOrderSubeditor {
     }
 
     protected void internalAdd(JComboBox com,Character c,SpellInfo si) {
-		boolean found = false;
-		for (SpellProficiency sp : c.getSpells()) {
-			if (sp.getSpellId() == si.getNumber()) {
-				found = true;
-			}
-		}
-		com.addItem(si.getNumber() + " - " + si.getName() + (found ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		SpellProficiency sp = c.findSpellMatching(si.getNumber());
+		com.addItem(si.getNumber() + " - " + si.getName() + ((sp != null) ? Messages.getString("SpellNumberParameterOrderSubeditor.2") : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
     protected void loadSpellCombo(JComboBox com) {
     	GameMetadata gm = this.gameHolder.getGame().getMetadata();

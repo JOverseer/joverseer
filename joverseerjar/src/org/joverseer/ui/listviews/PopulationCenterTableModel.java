@@ -24,6 +24,7 @@ public class PopulationCenterTableModel extends ItemTableModel {
 	static int iLoyalty = 5;
 	static int iSize = 3;
 	static int iFort = 4;
+	static int iName = 1;
 	static int iHex = 0;
 
 	public PopulationCenterTableModel(MessageSource messageSource,GameHolder gameHolder,PreferenceRegistry preferenceRegistry) {

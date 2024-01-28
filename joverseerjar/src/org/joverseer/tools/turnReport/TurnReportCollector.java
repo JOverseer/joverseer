@@ -227,14 +227,7 @@ public class TurnReportCollector {
 					if (pc == null)
 						continue;
 					for (SpellProficiency sp : c.getSpells()) {
-						boolean found = false;
-						for (SpellProficiency sp1 : pc.getSpells()) {
-							if (sp.getSpellId() == sp1.getSpellId()) {
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
+						if (pc.findSpellMatching(sp.getSpellId()) == null) {
 							ret.add(new CharacterReport(c,ObjectModificationType.Gained,"Learnt " + sp.getName() + " at " + sp.getProficiency(),t));
 						}
 					}

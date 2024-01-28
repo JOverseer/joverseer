@@ -13,10 +13,7 @@ public class CharacterHasSpellCheck extends AbstractCheck  {
 	public boolean check(Order o) {
         Integer spellId = Integer.parseInt(o.getParameter(getParamNo()));
         Character c = (Character)OrderUtils.getCharacterFromId(o.getParameter(getCharParamNo()));
-        for (SpellProficiency sp : c.getSpells()) {
-            if (sp.getSpellId() == spellId) return true;
-        }
-        return false;
+        return (c.findSpellMatching(spellId) != null);
     }
 
     @Override

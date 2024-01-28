@@ -21,6 +21,14 @@ public class RAResultWrapper implements OrderResult {
 		aw.setId(num);
 		this.artifacts.add(aw);
 	}
+	public ArtifactWrapper getArtifactMatching(int num) {
+		for(ArtifactWrapper aw: this.artifacts ) {
+			if (aw.id == num) {
+				return aw;
+			}
+		}
+		return null;
+	}
 	@Override
 	public void updateGame(Game game, Turn turn, int nationNo, String character) {
 		ArtifactInfo ai;
@@ -29,6 +37,10 @@ public class RAResultWrapper implements OrderResult {
 			ai = gm.findFirstArtifactByName(aw.getName());
 			if (ai != null && ai.getNo() == 0) {
 				ai.setNo(aw.getId());
+				String power2 = ai.getPower2();
+				if (power2.isEmpty() || power2.contains("Unknown")) {
+					ai.setPower(1, aw.latent);
+				}
 			} else {
 				if (ai == null) {
 					// referencing an artifact that we don't know about.

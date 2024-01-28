@@ -3017,7 +3017,7 @@ public class Rule
                 {
                     this.parentOrder.addWarning(spell1 + " is part of a lost list.");
                 }
-                this.parentChar.addSpell(new Integer(spell1.getSpellNumber()), spell1.getName());
+                this.parentChar.addSpell(Integer.valueOf(spell1.getSpellNumber()), spell1.getName());
             }
         }
         return null;

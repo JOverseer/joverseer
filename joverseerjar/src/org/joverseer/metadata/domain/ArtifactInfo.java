@@ -3,8 +3,6 @@ package org.joverseer.metadata.domain;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.util.ArrayList;
 
 /**
@@ -83,14 +81,22 @@ public class ArtifactInfo implements Serializable {
 		if (this.powers.size() == 0) {
 			return "";
 		}
-		return this.powers.get(0).toString();
+		final String power1 = this.powers.get(1); 
+		if (power1 == null) {	
+			return "";
+		}
+		return power1.toString();
 	}
 
 	public String getPower2() {
 		if (this.powers.size() < 2) {
 			return "";
 		}
-		return this.powers.get(1).toString();
+		final String power2 = this.powers.get(1); 
+		if (power2 == null) {	
+			return "";
+		}
+		return power2.toString();
 	}
 
 	public void setPower(int index, String updatedPower) {
@@ -111,8 +117,6 @@ public class ArtifactInfo implements Serializable {
 		if (getPower1().startsWith("Agent"))
 			return "Agent";
 		if (getPower1().startsWith("Emmisary"))
-			return "Emissary";
-		if (getPower1().startsWith("Emissary"))
 			return "Emissary";
 		if (getPower1().startsWith("Stealth"))
 			return "Stealth";
@@ -165,7 +169,7 @@ public class ArtifactInfo implements Serializable {
 	public String getUnAccentedName() {
 		if (this.unAccentedName == null) {
 			if (this.name != null) {
-				this.unAccentedName =  Normalizer.normalize(this.name, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+				this.unAccentedName =  org.joverseer.support.StringUtils.normalizeNamesForComparison(this.name);
 			}
 		}
 		return this.unAccentedName;

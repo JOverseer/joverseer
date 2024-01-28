@@ -554,11 +554,11 @@ public class ImportTurnXml
         try {
             Integer number;
             int spaceIndex = name.indexOf(' ');
-            number = new Integer(name.substring(1, spaceIndex));
+            number = Integer.valueOf(name.substring(1, spaceIndex));
             return number;
         }
         catch (Exception ex) {
-            return new Integer(-1);
+            return Integer.valueOf(-1);
         }
     }
 

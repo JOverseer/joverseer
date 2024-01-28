@@ -70,7 +70,7 @@ public class ImportRulesCsv extends ImportCsv
         try {
             Integer order;
             Rule rule;
-            order = new Integer(param);
+            order = Integer.valueOf(param);
             rule = new Rule(order.intValue(),this.ruleset);
             param = getToken(line, false);
             if(param != null)
@@ -104,7 +104,7 @@ public class ImportRulesCsv extends ImportCsv
         try {
             for(String param = getToken(line, false); param != null && param.length() > 0; param = getToken(line, false))
             {
-                Integer newParam = new Integer(param);
+                Integer newParam = Integer.valueOf(param);
                 rule.addParameter(newParam);
             }
 

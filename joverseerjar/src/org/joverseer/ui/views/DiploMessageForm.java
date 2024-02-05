@@ -74,6 +74,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	JLabel lbLiveCount;
 	JLabel lbCurrentNations;
 	JLabel lbCurrentDiplo;
+	JLabel lbDiploReminder;
 	JButton btSave;
 	JButton btNationSave;
 	JButton btReload;
@@ -92,13 +93,9 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 */
 	@Override
 	protected JComponent createControl() {
-		boolean old = false;
-		if (old) return oldLayout();
-		
 		this.panel = new JPanel();
 		this.panel.setLayout(new BorderLayout());
 		this.panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		this.panel.setBackground(Color.green);
 		
 		JPanel diploPanel = new JPanel();
 		diploPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -133,9 +130,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		JPanel nationPanelButton = new JPanel();
 		nationPanelButton.setLayout(new BoxLayout(nationPanelButton, BoxLayout.Y_AXIS));
 		nationPanelButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		nationPanelButton.setForeground(Color.green);
-//		nationPanelButton.setBackground(Color.green);
-		//nationPanelButton.setLayout(new BoxLayout(nationPanelButton, BoxLayout.Y_AXIS));
+
 		listPanel.add(nationPanelButton);
 		
 		this.btNationSave = new JButton("Save Selection");
@@ -150,7 +145,6 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		nationPanelButton.add(this.btNationSave);
 		
 		this.lbCurrentNations = new JLabel("");
-		//this.lbCurrentNations.setAlignmentX(Component.LEFT_ALIGNMENT);
 		nationPanelButton.add(this.lbCurrentNations);
 		
 		JPanel dipMessPanel = new JPanel();
@@ -158,18 +152,10 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		dipMessPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		diploPanel.add(dipMessPanel);
 		
-		
-//		JPanel infoPanel = new JPanel();
-//		infoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//		dipMessPanel.add(infoPanel);
-//		JLabel infoLabel = new JLabel("<html><font size = 1>Note: You don't have to include your own nation names!</font><html>");
-//		infoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		infoPanel.add(infoLabel);		
 		Component box = Box.createRigidArea(new Dimension(1, 15));
 		dipMessPanel.add(box);
 		
 		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 8, 40);
-		//this.diplomaticMess.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.diplomaticMess.setWrapStyleWord(true);
 		this.diplomaticMess.setLineWrap(true);
 		this.diplomaticMess.getDocument().addDocumentListener(new MyDocumentListener());
@@ -177,12 +163,6 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		JScrollPane txtAreaScroll = new JScrollPane(this.diplomaticMess);
 		dipMessPanel.add(txtAreaScroll);
-		
-
-		
-		
-//		Component box = Box.createRigidArea(new Dimension(20, 1));
-//		diploPanel.add(box);
 		
 		JPanel buttonPanel = new JPanel();
 		diploPanel.add(buttonPanel);
@@ -192,6 +172,10 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		this.lbLiveCount = new JLabel("");
 		this.lbLiveCount.setAlignmentX(Component.LEFT_ALIGNMENT);
 		buttonPanel.add(this.lbLiveCount);
+		
+		this.lbDiploReminder = new JLabel("");
+		this.lbDiploReminder.setAlignmentX(Component.LEFT_ALIGNMENT);
+		buttonPanel.add(this.lbDiploReminder);		
 		
 		this.btSave = new JButton("Save Message");
 		this.btSave.setHorizontalAlignment(SwingConstants.LEFT);
@@ -223,114 +207,14 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	          }
 			});
 		buttonPanel.add(this.btReload);
-		
-//		this.lbCurrentDiplo = new JLabel("");
-//		this.lbCurrentDiplo.setHorizontalAlignment(SwingConstants.LEFT);
-//		this.lbCurrentDiplo.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		buttonPanel.add(this.lbCurrentDiplo);
-		
-		this.panel.setPreferredSize(new Dimension(1200, 1200));
-		
-		return this.panel;
-	}
-	
-	private JComponent oldLayout() {
-		this.panel = new JPanel();
-		this.panel.setLayout(new BorderLayout());
-		this.panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		JPanel diploPanel = new JPanel();
-		diploPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		this.panel.add(diploPanel, BorderLayout.PAGE_START);		
 
-		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 8, 50);
-		//this.diplomaticMess.setAlignmentX(Component.LEFT_ALIGNMENT);
-		this.diplomaticMess.setWrapStyleWord(true);
-		this.diplomaticMess.setLineWrap(true);
-		this.diplomaticMess.getDocument().addDocumentListener(new MyDocumentListener());
-		this.diplomaticMess.setEditable(false);
-		
-		JScrollPane txtAreaScroll = new JScrollPane(this.diplomaticMess);
-		diploPanel.add(txtAreaScroll);
-		
-		Component box = Box.createRigidArea(new Dimension(20, 1));
-		diploPanel.add(box);
-		
-		JPanel nationPanel = new JPanel();
-		diploPanel.add(nationPanel);
-		nationPanel.setLayout(new BoxLayout(nationPanel, BoxLayout.Y_AXIS));
-		nationPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		JPanel nationPanelInstr = new JPanel();
-		nationPanelInstr.setLayout(new FlowLayout(FlowLayout.LEFT));
-		nationPanel.add(nationPanelInstr);
-		JLabel nationInstr = new JLabel("<html>Select which nations you control here<br/>To select multiple nations, hold 'ctrl' ('cmd' on mac) and click<html>", SwingConstants.LEFT);
-		nationPanelInstr.add(nationInstr);
-		
-		JPanel listPanel = new JPanel();
-		listPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		nationPanel.add(listPanel);
-		
-		
-		
-		this.nationList = new NationJList(this.gameHolder);
-		
-		this.nationList.setPreferredSize(new Dimension(100,150));
-		this.nationList.setVisibleRowCount(6);
-		this.listScroll = new JScrollPane(this.nationList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		listPanel.add(this.listScroll);	
-		
-		JPanel nationPanelButton = new JPanel();
-		nationPanelButton.setLayout(new FlowLayout(FlowLayout.LEFT));
-		nationPanel.add(nationPanelButton);
-		
-		this.btNationSave = new JButton("Save Selection");
-		this.btNationSave.setEnabled(false);
-		this.btNationSave.addActionListener(new ActionListener() {
-			
-          @Override
-			public void actionPerformed(ActionEvent e) {
-        	  saveNationSelection();
-          }
-		});
-		nationPanelButton.add(this.btNationSave);
-		
-		JPanel buttonPanel = new JPanel();
-		this.panel.add(buttonPanel, BorderLayout.CENTER);
-		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-		buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		
-		this.lbLiveCount = new JLabel("");
-		this.lbLiveCount.setAlignmentX(Component.LEFT_ALIGNMENT);
-		buttonPanel.add(this.lbLiveCount);
-		
-		this.btSave = new JButton("Save Message");
-		this.btSave.setHorizontalAlignment(SwingConstants.LEFT);
-		this.btSave.setAlignmentX(Component.LEFT_ALIGNMENT);
-		this.btSave.setEnabled(false);
-		this.btSave.addActionListener(new ActionListener() {
-			
-	          @Override
-				public void actionPerformed(ActionEvent e) {
-	        	  saveMessage();
-	          }
-			});
-		buttonPanel.add(this.btSave);
-		
-		this.lbCurrentDiplo = new JLabel("");
-		this.lbCurrentDiplo.setHorizontalAlignment(SwingConstants.LEFT);
-		this.lbCurrentDiplo.setAlignmentX(Component.LEFT_ALIGNMENT);
-		buttonPanel.add(this.lbCurrentDiplo);
-		
 		this.panel.setPreferredSize(new Dimension(1200, 1200));
 		
 		return this.panel;
 	}
 	
 	/**
-	 * Document listener which does live character count, updating Jlabel + Jbutton accordingly
+	 * Document listener which detects changes in JTextArea to update the rest of the panel accordingly.
 	 */
 	class MyDocumentListener implements DocumentListener {
 
@@ -387,23 +271,31 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	}
 	
 	/**
-	 * Keeps live character count updated, updating the UI as needed.
+	 * Keeps live character count updated, selected nations label, and other parts of the UI up to date as needed.
 	 * 
 	 * @param len: Current character count 
 	 */
 	private void updateLiveLabel(int len) {
-		String colour;
+		String colour = "black";
+		String charCount = len + "/" + Integer.toString(Diplo.charPerNation * this.nationsCount);
 		
-		if (len < (Diplo.charPerNation * this.nationsCount) + 1) {
+		//This if statement changes label red or black depending on if user is over char limit, as well as uncapping the limit if indicated in xml file by '-1'
+		if (Diplo.charPerNation == -1) {
+			charCount = "Unlimited";
 			this.btSave.setEnabled(true);
-			colour = "black";
+		}
+		else if (len < (Diplo.charPerNation * this.nationsCount) + 1) {
+			this.btSave.setEnabled(true);
 		}
 		else {
 			this.btSave.setEnabled(false);
 			colour = "red";
 		}	
-		String txt = String.format("<html>Character count: <font color='%s'>%d</font>/%d<br/>Note: You don't have to include your own nation names!<html>", colour, len, (Diplo.charPerNation * this.nationsCount));
+		
+		String txt = String.format("<html>Character count: <font color='%s'>%s</font><br/>Note: You don't have to include your own nation names!<html>", colour, charCount);
 		this.lbLiveCount.setText(txt);
+		
+		//Creates list of selected nations whilst keeping white spacing the same
 		String[] temp = new String[6];
 		for (int i = 0; i < temp.length; i++) {
 			if (i < this.inputDiplo.getNumberOfNations()) {
@@ -435,7 +327,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		this.nationsCount = nations.length;
 		this.nationsSelection = nations;
 		this.inputDiplo.setNations(nations);
-		//updateLiveLabel(this.diplomaticMess.getText().length());	
+	
 		updateLiveLabel(countDiploLength(this.diplomaticMess.getText()));		//Called to adjust the maximum character count as needed
 	}
 	
@@ -455,7 +347,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
             this.btNationSave.setEnabled(true);
             this.diplomaticMess.setEditable(true);
             if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText("");
+            	this.diplomaticMess.setText("Type your diplomatic message here.");
             }
             else {
             	this.diplomaticMess.setText(this.inputDiplo.getMessage());
@@ -465,15 +357,12 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
             this.btSave.setEnabled(true);
             break;
     	case SelectedTurnChangedEvent:    
-        	//super.resetGame();
-    		System.out.println("Turn change");
-    		
             refreshList();
             this.loadDiplo();
             this.btNationSave.setEnabled(true);
             this.diplomaticMess.setEditable(true);
             if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText("");
+            	this.diplomaticMess.setText("Type your diplomatic message here.");
             }
             else {
             	this.diplomaticMess.setText(this.inputDiplo.getMessage());
@@ -493,8 +382,8 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
      */
     private void loadDiplo() {
     	Turn t = this.gameHolder.getGame().getTurn();
-    	
-    	if (t.getContainer(TurnElementsEnum.Diplo).size() != 0) {	//If diplo exists in save file, then get it
+
+    	if (t.getNationDiplo(this.getGame().getMetadata().getNationNo()) != null) {	//If diplo exists in save file, then get it
     		this.inputDiplo = t.getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo());
     		this.diplomaticMess.setText(this.inputDiplo.getMessage());
     	}
@@ -520,13 +409,20 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	}
     	
         if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
-        	//this.lbCurrentDiplo.setText("No saved Diplomatic Message in game currently.");
         	this.btReload.setText("No Saved Message");
         	this.btReload.setEnabled(false);
         }
         else {
-        	//this.lbCurrentDiplo.setText("<html>Current saved diplomatic message: <br/>" + this.inputDiplo.getMessage() + "<html>");
         	this.btReload.setText("Reload Saved Message");
+        }
+        
+        //Set label reminding users a diplo isn't due on a turn
+        if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
+        	this.lbDiploReminder.setText("Reminder: A diplo is not due this turn.");
+      	}
+        
+        else {
+        	this.lbDiploReminder.setText("");
         }
     }
     

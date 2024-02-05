@@ -37,10 +37,10 @@ public class ExportDiploCommand extends ActionCommand {
         	return;
         }
         //If diplo isn't due this turn doesn't allow a submission
-        if(this.gameHolder.getGame().getTurn().getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue() == false) {
-        	ErrorDialog.showErrorDialog("No Diplo due this turn");
-        	return;
-        }
+//        if(this.gameHolder.getGame().getTurn().getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue(this.gameHolder.getGame().getCurrentTurn()) == false) {
+//        	ErrorDialog.showErrorDialog("No Diplo due this turn");
+//        	return;
+//        }
         FormModel formModel = FormModelHelper.createFormModel(new Diplo());
         
         final ExportDiploForm form = new ExportDiploForm(formModel,this.gameHolder);

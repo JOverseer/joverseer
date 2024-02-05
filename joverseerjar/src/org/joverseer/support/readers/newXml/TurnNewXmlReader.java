@@ -744,9 +744,9 @@ public class TurnNewXmlReader implements Runnable {
 		if (option != null && option.value != null) {
 			PlayerInfo pi = this.game.getTurn().getPlayerInfo(this.game.getMetadata().getNationNo());
 			String[] turnsDue = option.value.split(",");
-			for(String turn : turnsDue) {
+			for (int i = 0; i < turnsDue.length; i++) {
 				try {
-					int t = Integer.parseInt(turn);
+					int t = Integer.parseInt(turnsDue[i]);
 					if (t == this.game.getCurrentTurn()) {
 						pi.setDiploDue(true);
 						break;
@@ -754,7 +754,7 @@ public class TurnNewXmlReader implements Runnable {
 					
 				} catch (Exception exc) {
 					error = true;
-					errorMessage += "Error setting whether a diplo is due on this turn\n";
+					errorMessage += "Error setting the diplo due for turn:" + turnsDue[i] + "\n";
 				}
 			}
 		}
@@ -802,9 +802,6 @@ public class TurnNewXmlReader implements Runnable {
 			}
 		}		
 		
-		
-						
-
 		if (error) {
 			throw new Exception(errorMessage);
 		}

@@ -209,7 +209,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	}
 	
 	private File saveDiploFile(Game g, int nationNo, PlayerInfo pi) {
-		String fname = String.format("me%02dv%ddiploturn%02d.%03dd", nationNo, pi.getDiploVersion(), g.getCurrentTurn(), g.getMetadata().getGameNo());
+		String fname = String.format("me%02dv%ddiplo-turn%02d.%03dd", nationNo, pi.getDiploVersion(), g.getCurrentTurn(), g.getMetadata().getGameNo());
 		final JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));

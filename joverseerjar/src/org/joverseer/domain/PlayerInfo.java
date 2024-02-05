@@ -151,5 +151,5 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 	public void setDiploSent(boolean diploSent) {
 		this.diploSent = diploSent;
 	}
-    
+	
 }

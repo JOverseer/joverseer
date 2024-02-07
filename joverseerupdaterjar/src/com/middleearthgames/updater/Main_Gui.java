@@ -52,6 +52,7 @@ public class Main_Gui extends JFrame{
 //	private String latestUpdateZip = "latestupdate.zip";
 	private String targetjar = "joverseer.jar";
 	private String downloadPath;
+	private String user;
 
     private Thread worker;
     private final String root = "update/";
@@ -62,8 +63,10 @@ public class Main_Gui extends JFrame{
     private JScrollPane sp;
     private JPanel pan1;
     private JPanel pan2;
+    
 
-     public Main_Gui(String downloadPath) {
+     public Main_Gui(String downloadPath,String user) {
+    	this.user = user;
         initComponents();
         outText.setText("Contacting Download Server...");
         this.downloadPath = downloadPath;
@@ -320,17 +323,17 @@ public class Main_Gui extends JFrame{
     }
     public static void main(String args[]) {
     	String downloadPath = DEFAULT_DOWNLOAD_PATH;
-    	String user; // the user where the preferences are stored.
+    	String user=""; // the user where the preferences are stored.
 
     	class UpdateRunnable implements Runnable {
     		private final String downloadPath;
-    		public UpdateRunnable(final String downloadPath) {
+    		public UpdateRunnable(final String downloadPath,final String user) {
     			super();
     			this.downloadPath = downloadPath;
     		}
             @Override
 			public void run() {
-                new Main_Gui(this.downloadPath).setVisible(true);
+                new Main_Gui(this.downloadPath,user).setVisible(true);
             }
 
     	}
@@ -341,7 +344,7 @@ public class Main_Gui extends JFrame{
     			user = args[1];
     		}
         }
-    	runner = new UpdateRunnable(downloadPath);
+    	runner = new UpdateRunnable(downloadPath,user);
         java.awt.EventQueue.invokeLater(runner);
     }
     public static double JAVA_VERSION = getVersion ();

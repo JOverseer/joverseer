@@ -200,14 +200,18 @@ public class UpdateInfo extends JFrame{
     		log.debug("Mac OS X detected");
 			run = runMacOSX;
 			File executor = new File(macScript);
+			String user = System.getProperty("user.name");
     	    PrintWriter writer;
 			try {
 				writer = new PrintWriter(executor, "UTF-8");
 				log.debug("create ok");
 				writer.println("#!/bin/bash");
 				writer.println();
-				writer.println("java -jar /Applications/jOverseer.app/Contents/Java/update/update.jar '" + downloadLocation +"' > "
-						+ System.getProperty("java.io.tmpdir") +"joupdateout.txt 2>&1 &");
+				writer.println("java -jar /Applications/jOverseer.app/Contents/Java/update/update.jar '" + downloadLocation +"' '"+ user +"' > "
+						+ System.getProperty("java.io.tmpdir") +"joupdateout.txt 2>&1");
+				// don't launch from inside update.jar, as we are running as root and the preferences are different.
+				writer.println("su "+ user);
+				writer.println("open -a jOverseer");
 				writer.close();
 				log.debug("close ok");
 				executor.setExecutable(true);
@@ -218,8 +222,6 @@ public class UpdateInfo extends JFrame{
 				writer.println("#!/bin/bash");
 				writer.println();
 				writer.println("osascript -e 'do shell script \"" + macScript + "\" with administrator privileges'");
-				// don't launch from inside update.jar, as we running as root and the preferences are different.
-				writer.println("open -a jOverseer");
 				writer.close();
 				elevator.setExecutable(true);
 				log.debug("elevator ok");

@@ -3,6 +3,12 @@ package org.joverseer.ui.info;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +29,9 @@ import org.joverseer.support.GameHolder;
 import org.joverseer.support.info.Info;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.support.UIUtils;
+import org.joverseer.ui.support.controls.JLabelButton;
+import org.joverseer.ui.support.dialogs.ErrorDialog;
+import org.joverseer.ui.views.ExportOrdersForm;
 import org.springframework.core.io.Resource;
 import org.springframework.richclient.application.Application;
 import org.springframework.richclient.application.support.AbstractView;
@@ -106,7 +115,21 @@ public class InfoView extends AbstractView {
 
 		lb.separator(Messages.getString("InfoView.Dragons"));
 		lb.relatedGapRow();
-		lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left");
+		//lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left");
+		lb.cell(new JLabel("Click on the link below to copy it to your clipboard:"), "align=left");
+		lb.relatedGapRow();
+		JLabelButton hyperlinkDragon = new JLabelButton("<html><font color='blue'>https://wiki.mepbm.com/dragons</font><html>");
+		hyperlinkDragon.addActionListener(new ActionListener() {
+			
+	          @Override
+				public void actionPerformed(ActionEvent e) {
+					StringSelection stringSelection = new StringSelection("https://wiki.mepbm.com/dragons");
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(stringSelection, null);
+	          }
+			});
+
+		lb.cell(hyperlinkDragon, "align=left");
 		lb.relatedGapRow();
 
 		lb.separator(Messages.getString("InfoView.CharactersAllowed"));

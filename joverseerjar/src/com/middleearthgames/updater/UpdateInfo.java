@@ -150,7 +150,7 @@ public class UpdateInfo extends JFrame{
     private void update() throws MalformedURLException
     {
     	final String oldDownloadLocation = PreferenceRegistry.instance().getPreferenceValue("updates.DownloadPointer");
-    	final String downloadLocation = UpdateInfo.enforceHttps(oldDownloadLocation,"middleearthgames.com");
+    	final String downloadLocation = UpdateInfo.enforceHttps(oldDownloadLocation,"gamesystems.com");
     	if (oldDownloadLocation.length() != downloadLocation.length()) {
     		PreferenceRegistry.instance().setPreferenceValue("updates.DownloadPointer", downloadLocation);
     	}

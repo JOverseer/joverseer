@@ -104,7 +104,7 @@ No longer true as of 1.16.3 you can manually force a check for update and force 
 
 Try running joverseer and check Help->Check for update. You should get popup window.
 If you get 'SSL Handshaking Exception' or nothing... check that the custom java runtime has the appropriate
-cipher enabled for https://www.middleearth.com. Check the java_home/conf/security/java.security
+cipher enabled for https://www.gamesystems.com. Check the java_home/conf/security/java.security
 
 Checklist of types of users
 ---------------------------

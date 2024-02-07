@@ -62,8 +62,8 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 		tabPane.setTabPlacement(SwingConstants.LEFT);
 		TableLayoutBuilder tlb = null;
 		String group = "";
-		if (enablePlaf) {
-			plaf = new PLaFHelper();
+		if (this.enablePlaf) {
+			this.plaf = new PLaFHelper();
 		}
 		PreferenceRegistry reg = (PreferenceRegistry) getFormObject();
 		// sort prefs by group
@@ -106,7 +106,7 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					this.components.put(p.getKey(), check);
 					tlb.cell(check);
 				} else if (p.getType().equals(Preference.TYPE_LAF)) {
-					if (enablePlaf) {
+					if (this.enablePlaf) {
 						JComboBox combo = new JComboBox();
 						this.plaf.fill(combo);
 						combo.setSelectedItem(this.plaf.nameFromClass(reg.getPreferenceValue(p.getKey())));
@@ -174,13 +174,13 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 					reg.setPreferenceValue(p.getKey(), "no");
 				}
 			} else if (p.getType().equals(Preference.TYPE_LAF)) {
-				if (enablePlaf) {
+				if (this.enablePlaf) {
 					JComboBox combo = (JComboBox) c;
 					if (combo.getSelectedItem() != null) {
 						String sel=combo.getSelectedItem().toString();
 						try {
 							UIManager.setLookAndFeel(this.plaf.fullClassFromName(sel));
-							plaf.updateAll();
+							this.plaf.updateAll();
 							// only update the preference if it worked.
 							reg.setPreferenceValue(p.getKey(), this.plaf.fullClassFromName(sel));
 						} catch (ClassNotFoundException | InstantiationException | IllegalAccessException

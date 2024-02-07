@@ -70,6 +70,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 		sb.append(System.getProperty(prop));
 		sb.append(this.EOL);
 	}
+//TODO: maybe use https://github.com/oshi/oshi for diagnostics.
 	public String SystemProperties()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -80,6 +81,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 		reportProperty(sb,"java.version");
 		reportProperty(sb,"os.arch");
 		reportProperty(sb,"os.name");
+		
 		sb.append("Note: some versions of java incorrectly report Windows 11 as 10."+this.EOL);
 		reportProperty(sb,"os.version");
 		reportProperty(sb,"sun.java2d.uiScale");
@@ -90,6 +92,7 @@ public class GatherSupportDataCommand extends ActionCommand {
 
 		return sb.toString();
 	}
+        
 	public String ScreenInfo()
 	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

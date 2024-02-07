@@ -47,7 +47,8 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class Main_Gui extends JFrame{
-
+	static private final String DEFAULT_DOWNLOAD_PATH = "https://www.gamesystems.com/software/joverseer/url.html";
+	
 //	private String latestUpdateZip = "latestupdate.zip";
 	private String targetjar = "joverseer.jar";
 	private String downloadPath;
@@ -308,8 +309,8 @@ public class Main_Gui extends JFrame{
     }
     private void afterDownload()
     {
-    	// do nothing for now but ideally load and run a routine from the downloaded version of update.jar.
     	checkRequiredJavaVersion();
+    	// TODO mark that a version has been downloaded but first post-update run by the target user, has not been performed. 
     }
     private void checkRequiredJavaVersion()
     {
@@ -318,7 +319,8 @@ public class Main_Gui extends JFrame{
     	}
     }
     public static void main(String args[]) {
-    	String downloadPath = "https://www.middleearthgames.com/software/joverseer/url.html";
+    	String downloadPath = DEFAULT_DOWNLOAD_PATH;
+    	String user; // the user where the preferences are stored.
 
     	class UpdateRunnable implements Runnable {
     		private final String downloadPath;
@@ -335,7 +337,10 @@ public class Main_Gui extends JFrame{
     	UpdateRunnable runner;
     	if (args.length >0) {
     		downloadPath = args[0];
-            }
+    		if (args.length > 1) {
+    			user = args[1];
+    		}
+        }
     	runner = new UpdateRunnable(downloadPath);
         java.awt.EventQueue.invokeLater(runner);
     }
@@ -353,4 +358,6 @@ public class Main_Gui extends JFrame{
     public static boolean supportsModules() {
     	return getVersion() >= 9.0;
     }
+     
 }
+

@@ -27,6 +27,7 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
+import org.joverseer.support.JOVersionCompatibility;
 import org.springframework.richclient.application.ApplicationLauncher;
 
 import com.jidesoft.plaf.LookAndFeelFactory;
@@ -79,16 +80,37 @@ public class JOverseerJIDEClient {
 //		    
 			
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // until sorting bug fixed.
-			cmdLineArgs = args;
-			_logger.info("JOverseer Client starting up");
-			if (args.length >0) {
-				if (args[0].equals("-L")) {
-					Locale.setDefault(new Locale(args[1]));
+			
+			cmdLineArgs = args; // save as global
+			// now do the command line switches needed before we do much more.
+			
+			_logger.info("JOverseer Client starting up" + args);
+			for (int i=0;i<args.length;i++) {
+				if (args[i].equals("-L")) {
+					if (i++ <args.length) {
+						// change locale before we start rendering windows.
+						Locale.setDefault(new Locale(args[i])); 
+					}
+					continue;
 				}
-				if (args[0].equals("-U")) {
+				if (args[i].equals("-U")) {
+					// force a version check if set to automatic.
 					System.clearProperty("org.joverseer.ui.lastVersionCheckDate");
+					continue;
 				}
+				if (args[i].equals("-1")) {
+					continue;
+				}
+				if (args[i].equals("d")) {
+					//developer mode
+					continue;
+				}
+				// may also be a filename, but onPostStartup() deals with that. 
 			}
+			// see also com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor.onPreInitialize()
+			// see also com.jidesoft.spring.richclient.docking.JideApplicationLifecycleAdvisor.onPostStartup()
+			
+			
 			com.jidesoft.utils.Lm.verifyLicense("Marios Skounakis", "JOverseer", "L1R4Nx7vEp0nMbsoaHdH7nkRrx5F.dO");
 			LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
 			LookAndFeelFactory.installJideExtension(LookAndFeelFactory.XERTO_STYLE);
@@ -126,6 +148,7 @@ public class JOverseerJIDEClient {
 		}
 		return name;
 	}
+	
 	public static void launchTestFramework() {
 		if (!testApplicationIsLaunched) {
 			try {

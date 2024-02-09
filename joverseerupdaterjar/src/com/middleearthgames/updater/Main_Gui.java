@@ -65,7 +65,7 @@ public class Main_Gui extends JFrame{
     private JPanel pan2;
     
 
-     public Main_Gui(String downloadPath,String user) {
+     public Main_Gui(String downloadPath,final String user) {
     	this.user = user;
         initComponents();
         outText.setText("Contacting Download Server...");
@@ -327,9 +327,11 @@ public class Main_Gui extends JFrame{
 
     	class UpdateRunnable implements Runnable {
     		private final String downloadPath;
+    		private final String user;
     		public UpdateRunnable(final String downloadPath,final String user) {
     			super();
     			this.downloadPath = downloadPath;
+    			this.user = user;
     		}
             @Override
 			public void run() {

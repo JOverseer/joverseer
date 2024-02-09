@@ -3,7 +3,6 @@
  */
 package org.joverseer.ui.views;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

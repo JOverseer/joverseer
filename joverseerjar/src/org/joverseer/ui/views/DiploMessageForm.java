@@ -49,8 +49,6 @@ import org.joverseer.ui.economyCalculator.MarketTableModel;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;

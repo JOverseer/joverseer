@@ -90,6 +90,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	JComboBox nation;
 	JTextArea orders;
 	JCheckBox chkDontCloseOnFinish;
+	JCheckBox chkShadowOrder;
 	JLabel lblVersionValue = new JLabel("");
 	JLabel lblFile = new JLabel();
 	JLabel lblFileValue = new JLabel("");
@@ -268,7 +269,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.chkDontCloseOnFinish = new JCheckBox(Messages.getString("ExportOrdersForm.chckbxNewCheckBox.text")); //$NON-NLS-1$
 		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
 		buttonPanel.add(this.chkDontCloseOnFinish);
-
+		
+		this.chkShadowOrder = new JCheckBox(Messages.getString("ExportOrdersForm.chkShadowOrder.text"));
+		this.chkShadowOrder.setToolTipText(Messages.getString("ExportOrdersForm.chkShadowOrder.toolTipText"));
+		buttonPanel.add(this.chkShadowOrder);
+		
 		return panel;
 	}
 
@@ -337,7 +342,12 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		Game g = this.gameHolder.getGame();
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
-		String fname = String.format("me%02dv%d.%03d", getSelectedNationNo(), pi.getTurnVersion(), g.getMetadata().getGameNo());
+		
+		//Adds 'shad' onto filename if checkbox ticked
+		String shadowOrd = "";
+		if (this.chkShadowOrder.isSelected()) shadowOrd = "SHADOW";
+		
+		String fname = String.format("me%02dv%d%s.%03d", getSelectedNationNo(), pi.getTurnVersion(), shadowOrd, g.getMetadata().getGameNo());
 		final JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
@@ -560,6 +570,25 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			}
 			if (this.duplicateSkillOrders) {
 				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders");
+			}
+			if (this.chkShadowOrder.isSelected()) {
+				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+						getMessage("ExportOrdersForm.warning.ShadowOrder")) {
+					@Override
+					protected void onCancel() {
+						super.onCancel();
+						ExportOrdersForm.this.cancelExport = true;
+					}
+
+					@Override
+					protected void onConfirm() {
+					}
+
+				};
+				dlg.setPreferredSize(new Dimension(500,60));
+				dlg.showDialog();
+				if (this.cancelExport)
+					return false;
 			}
 			if (this.ordersWithErrors) {
 

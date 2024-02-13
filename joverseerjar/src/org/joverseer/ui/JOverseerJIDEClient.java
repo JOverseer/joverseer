@@ -101,6 +101,14 @@ public class JOverseerJIDEClient {
 				if (args[i].equals("-1")) {
 					continue;
 				}
+				if (args[i].equals("--debug")) {
+					rootLogger.setLevel(Level.DEBUG);
+					continue;
+				}
+				if (args[i].equals("--info")) {
+					rootLogger.setLevel(Level.INFO);
+					continue;
+				}
 				if (args[i].equals("d")) {
 					//developer mode
 					continue;

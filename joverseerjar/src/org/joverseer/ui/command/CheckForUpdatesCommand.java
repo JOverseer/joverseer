@@ -23,6 +23,7 @@ public class CheckForUpdatesCommand extends ActionCommand{
 		ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
 		String current = descriptor.getVersion();
 		String title,latest;
+		this.logger.info("execute CheckForUpdatesCommand");
 
 	    try {
 	    	// hack to switch to https
@@ -44,11 +45,13 @@ public class CheckForUpdatesCommand extends ActionCommand{
 			Preferences prefs = Preferences.userNodeForPackage(JOverseerJIDEClient.class);
 			prefs.put("lastVersionCheckDate", str);
 	    } catch (javax.net.ssl.SSLHandshakeException e) {
+			this.logger.warn("SSLHandshakeException in updater");
 			e.printStackTrace();
 			System.out.print("try restarting with -Djavax.net.debug=all and check the logs");
 			//javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
 	    	
 		} catch (Exception exc) {
+			this.logger.warn("exception in updater");
 			// do nothing
 			System.out.print("exception in updater");
 			exc.printStackTrace();

@@ -218,6 +218,24 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 	@Override
 	public void onWindowOpened(ApplicationWindow arg0) {
 		super.onWindowOpened(arg0);
+		
+		if (System.getProperty("java.version").startsWith("1.8.")) {
+			final MessageDialog dlg = new MessageDialog("Java Version Check", "Obsolete java detected.\nYou will experience problems.\nDownload the full setup from https://www.gamesystems.com/gamingsoftware ") {
+				@Override
+				protected Object[] getCommandGroupMembers() {
+					return new Object[] { new ActionCommand("actionYes") {
+						@Override
+						protected void doExecuteCommand() {
+								getDialog().dispose();
+						}
+					}
+					};
+				}
+			};
+			dlg.showDialog();
+			
+		}
+		
 		if (PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes")) {
 			GraphicUtils.showTipOfTheDay();
 		}

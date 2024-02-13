@@ -148,11 +148,16 @@ public class Main_Gui extends JFrame{
 			String[] run = { "java", "-Xmx512M", "-jar", targetjar };
 			String[] runJava9Plus = {"java", "-Xmx512M", "--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED","-jar", targetjar };
 			try {
-				Runtime.getRuntime().exec( supportsModules() ? runJava9Plus : run);
+				String actual[] = supportsModules() ? runJava9Plus : run;
+            	logDebug("\n " + actual[0] + " " + actual[1] + " " + actual[2] + " " + actual[3]);
+				Runtime.getRuntime().exec( actual);
 			} catch (Exception ex) {
+				logDebug("\nException "+ex.getClass().getName());
 				ex.printStackTrace();
 			}
     	}
+    	logDebug("\nNormal after attempted launch exit");
+    	System.out.print(this.outText.toString());
         System.exit(0);
     }
     private void cleanup(File file)

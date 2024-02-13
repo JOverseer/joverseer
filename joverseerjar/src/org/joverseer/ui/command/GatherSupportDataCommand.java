@@ -1,7 +1,10 @@
 package org.joverseer.ui.command;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.net.URI;
 
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
@@ -17,6 +20,7 @@ import org.springframework.richclient.dialog.ApplicationDialog;
 
 public class GatherSupportDataCommand extends ActionCommand {
 
+	protected static final String OPEN_LOG_COMMAND_ID = "openLogCommand";
 	final String EOL="\r\n";
 	JTextArea textArea;
 	public GatherSupportDataCommand() {
@@ -37,11 +41,30 @@ public class GatherSupportDataCommand extends ActionCommand {
 		
 		if (a != null) {
 			if (a instanceof org.apache.log4j.FileAppender) {
-				this.textArea.append(((org.apache.log4j.FileAppender)a).getFile());
+				org.apache.log4j.FileAppender fileAppender = (org.apache.log4j.FileAppender)a;
+				this.textArea.append(fileAppender.getFile());
 			}
 		}
         ApplicationDialog dialog = new ApplicationDialog() {
-
+        	ActionCommand openLogCommand = new ActionCommand(OPEN_LOG_COMMAND_ID) {
+    			@Override
+				public void doExecuteCommand() {
+    				try {
+    					Logger l = Logger.getRootLogger();
+    					Appender a = l.getAppender("joverseerfileappender");
+    					
+    					if (a != null) {
+    						if (a instanceof org.apache.log4j.FileAppender) {
+    							org.apache.log4j.FileAppender fileAppender = (org.apache.log4j.FileAppender)a;
+    	    					Desktop.getDesktop().open(new File(fileAppender.getFile()));
+    						}
+    					}
+    				} catch (Exception e) {
+    					
+    				}
+    			}
+        	};
+        	
             @Override
 			protected boolean onFinish() {
                 return true;
@@ -50,13 +73,16 @@ public class GatherSupportDataCommand extends ActionCommand {
             @Override
 			protected Object[] getCommandGroupMembers() {
                 return new AbstractCommand[] {
-                        getFinishCommand()
+                		getOpenLogCommand(),getFinishCommand()
                 };
             }
 
 			@Override
 			protected JComponent createDialogContentPane() {
 				return GatherSupportDataCommand.this.textArea;
+			}
+			ActionCommand getOpenLogCommand() {
+				return this.openLogCommand;
 			}
         };
         dialog.setTitle(Messages.getString("GatherSupportDataCommand.title"));

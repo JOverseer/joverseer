@@ -7,6 +7,7 @@ public class FourpartVersion extends ThreepartVersion implements IFourpartVersio
 
 	public FourpartVersion(String version) {
 		super(version);
+		preRelease = "";
 	}
 
 	@Override

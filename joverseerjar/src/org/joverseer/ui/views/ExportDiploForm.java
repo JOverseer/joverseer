@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLDocument;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -211,6 +212,8 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	private File saveDiploFile(Game g, int nationNo, PlayerInfo pi) {
 		String fname = String.format("me%02dv%ddiplo-turn%02d.%03dd", nationNo, pi.getDiploVersion(), g.getCurrentTurn(), g.getMetadata().getGameNo());
 		final JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Game " + Integer.toString(g.getMetadata().getGameNo()) + "d", Integer.toString(g.getMetadata().getGameNo()) + "d"));
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
 		fileChooser.setSelectedFile(new File(fname));

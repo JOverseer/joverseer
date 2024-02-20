@@ -45,6 +45,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 	JCheckBox drawNamesOnOrders;
 	JCheckBox showClimate;
 	JCheckBox popCenterNames;
+	JCheckBox nationNames;
 	/**
 	 * Used internally to turn off propagating events when we know there are going to be a lot of them.
 	 */
@@ -224,6 +225,34 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 		});
 		lb.row();
+		
+		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ShowNationNamesColon"))); //$NON-NLS-1$
+		// label.setPreferredSize(new Dimension(100, 16));
+		lb.cell(this.nationNames = new JCheckBox(), "align=left"); //$NON-NLS-1$
+		lb.relatedGapRow();
+		this.nationNames.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				HashMap mapOptions1 = JOApplication.getMapOptions();
+				if (MapOptionsView.this.nationNames.getModel().isSelected()) {
+					mapOptions1.put(MapOptionsEnum.NationNames, MapOptionValuesEnum.NationNamesOn);
+				} else {
+					mapOptions1.put(MapOptionsEnum.NationNames, MapOptionValuesEnum.NationNamesOff);
+				}
+				Game g = MapOptionsView.this.gameHolder.getGame();
+				if (!Game.isInitialized(g))
+					return;
+				int turnNo = g.getCurrentTurn();
+				if (!MapOptionsView.this.fireEvents)
+					return;
+
+				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
+
+			}
+
+		});
+		lb.row();
 
 		// lb.append(new JLabel("  "));
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ShowCLimateColon"))); //$NON-NLS-1$
@@ -316,7 +345,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 		resetGame();
 		JPanel panel = lb.getPanel();
-		panel.setPreferredSize(new Dimension(130, 200));
+		panel.setPreferredSize(new Dimension(130, 250));
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		return new JScrollPane(panel);

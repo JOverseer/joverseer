@@ -2,6 +2,7 @@ package org.joverseer.ui.info;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -10,6 +11,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -116,16 +119,29 @@ public class InfoView extends AbstractView {
 		lb.separator(Messages.getString("InfoView.Dragons"));
 		lb.relatedGapRow();
 		//lb.cell(createTableFromInfo("dragons",850, 1100,null), "align=left");
-		lb.cell(new JLabel("Click on the link below to copy it to your clipboard:"), "align=left");
+		lb.cell(new JLabel("Click on the link below to open it in your browser:"), "align=left");
 		lb.relatedGapRow();
 		JLabelButton hyperlinkDragon = new JLabelButton("<html><font color='blue'>https://wiki.mepbm.com/dragons</font><html>");
 		hyperlinkDragon.addActionListener(new ActionListener() {
 			
 	          @Override
 				public void actionPerformed(ActionEvent e) {
-					StringSelection stringSelection = new StringSelection("https://wiki.mepbm.com/dragons");
-					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-					clipboard.setContents(stringSelection, null);
+	              try {
+	            	  //Upon click link will try and open in default browser
+	                  if (Desktop.isDesktopSupported()) {
+	                      Desktop desktop = Desktop.getDesktop();
+	                      if (desktop.isSupported(Desktop.Action.BROWSE)) {
+	                          desktop.browse(URI.create("https://wiki.mepbm.com/dragons"));
+	                      }
+	                  }
+	              } catch (IOException | InternalError e1) {
+	            	  	e1.printStackTrace();
+	            	  	//Commented out code is for copying clicked link to clipboard
+//						StringSelection stringSelection = new StringSelection("https://wiki.mepbm.com/dragons");
+//						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+//						clipboard.setContents(stringSelection, null);
+	              }
+
 	          }
 			});
 

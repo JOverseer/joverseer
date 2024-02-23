@@ -11,6 +11,7 @@ import org.joverseer.domain.Challenge;
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.Diplo;
 import org.joverseer.domain.EconomyCalculatorData;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.HexInfo;
@@ -276,5 +277,20 @@ public class Turn implements Serializable {
 
 	public Container<EconomyCalculatorData> getEconomyCalculatorData() {
 		return getContainerGeneric(TurnElementsEnum.EconomyCalucatorData);
+	}
+	
+	/*
+	 * 
+	 */
+	public Container<Diplo> getDiplos() {
+		return getContainer(TurnElementsEnum.Diplo);
+	}
+	
+	public ArrayList<Diplo> getNationDiplos(int nationNo) {
+		return getDiplos().findAllByProperty("nationNo", nationNo);
+	}
+	
+	public Diplo getNationDiplo(int nationNo) {
+		return getDiplos().findFirstByProperty("nationNo", nationNo);
 	}
 }

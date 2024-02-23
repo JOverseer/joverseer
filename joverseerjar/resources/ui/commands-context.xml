@@ -55,6 +55,7 @@
 				<value>separator</value>
 				<ref bean="exportOrdersCommand" />
 				<ref bean="runOrdercheckerCommand" />
+				<ref bean="exportDiploCommand" />
 				<value>separator</value>
 				<bean id="clearMapItemsToolbarCommand"
 					class="org.joverseer.ui.command.ClearMapItems">
@@ -109,6 +110,13 @@
 			<value>false</value>
 		</property>
 	</bean>
+	<bean id="exportDiploCommand"
+		class="org.joverseer.ui.command.ExportDiploCommand">
+		<constructor-arg index="0" ref="gameHolder" />
+		<property name="enabled">
+			<value>false</value>
+		</property>		
+	</bean>
 
 	<!-- Bean: fileMenu Type: user named Usage: optional Description: This specifies 
 		the content of the file menu. Note the references to shared (predefined) 
@@ -128,6 +136,7 @@
 				<value>separator</value>
 				<ref bean="runOrdercheckerCommand" />
 				<ref bean="exportOrdersCommand" />
+				<ref bean="exportDiploCommand" />
 				<value>separator</value>
 				<bean class="com.jidesoft.spring.richclient.ExitCommand" />
 			</list>
@@ -293,7 +302,7 @@
 				</bean>
 				<bean class="org.joverseer.ui.command.ShowMEWebsiteCommand" >
 					<property name="link">
-					<value>https://www.middleearthgames.com</value></property>
+					<value>https://www.gamesystems.com</value></property>
 				</bean>
 				<bean class="org.joverseer.ui.command.ShowCreditsCommand" />
 				<bean class="org.joverseer.ui.command.ShowChangelogCommand" />
@@ -413,6 +422,7 @@
 							<ref bean="turnReportView" />
 							<ref bean="gameEncountersReportView" />
 							<ref bean="orderResultsView" />
+							<ref bean="diploMessage" />
 						</list>
 					</property>
 				</bean>

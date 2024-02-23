@@ -172,8 +172,8 @@
       <!-- doesn't work - dontwrapjar isnt recognised
 	   <launch4j dontWrapJar="true" headerType="gui" jar="${out.dir}/joverseer.jar" outfile="${out.dir}/jOverseer.exe" stayAlive="false" icon="${jOverseerRes}/images/joverseer.ico">
 	<jre minVersion="1.6.0" maxHeapSize="512"/>
-	<versionInfo fileVersion="1.0.0.0" txtFileVersion="1.0.0.0" fileDescription="jOverseer launcher" copyright="Middle-Earth Games Ltd" productVersion="${joverseer.version}" txtProductVersion="${joverseer.version}" productName="jOverseer"
-companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOverseer.exe"/>
+	<versionInfo fileVersion="1.0.0.0" txtFileVersion="1.0.0.0" fileDescription="jOverseer launcher" copyright="Game Systems International" productVersion="${joverseer.version}" txtProductVersion="${joverseer.version}" productName="jOverseer"
+companyName="Game Systems International" internalName="jOverseer" originalFilename="jOverseer.exe"/>
 </launch4j>
       -->
       <assertLaunch4jAvailable dir="${launch4j.dir}"/>
@@ -339,6 +339,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 		  <fileset file="${dist}/update.jar"/>
 		</copy>
 	</target>
+	<!-- don't include jide-common.jar in update, since we now have platform specific versions -->
 	<target name="betaupdatezip" depends="WindowsJoverseerLauncher,WindowsUpdaterLauncher">
         <zip destfile="${dist}/latestbetaupdate.zip">
             <fileset file="${dist}/joverseer.jar"/>
@@ -346,14 +347,13 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>
             <fileset file="${dist}/txt2xml.jar"/>
-        	<fileset file="${dist}/jide-common.jar"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>
 	</target>
 
 	<target name="ReleaseBeta" depends="betaupdatezip">
-	  <ftp server="ftp.middleearthgames.com"
+	  <ftp server="www.gamesystems.com"
 	       remotedir="/htdocs/software/joverseer"
 	       binary="yes"
 	       useid="${ftp.userid}"
@@ -365,7 +365,7 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	</target>
 
 	<target name="Release" depends="updatezip">
-	  <ftp server="ftp.middleearthgames.com"
+	  <ftp server="www.gamesystems.com"
 	       remotedir="/htdocs/software/joverseer"
 	       binary="yes"
 	       useid="${ftp.userid}"
@@ -375,7 +375,12 @@ companyName="Middle Earth Games" internalName="jOverseer" originalFilename="jOve
 	    <fileset dir="${jOverseerBuildRes.dir}" include="feed.xml"/>
 	  </ftp>
 	</target>
-
+	<!-- create feed.xml from the changelog -->
+	<target name="RSSfeed.xml">
+	<loadfile property="joverseer.version" srcFile="${dist}/version"/>
+    <xslt in="${res.dir}/ctx/jideApplicationContext.xml" out="${dist}/version" style="${src}/makeFeed.xsl"/>
+	</target>
+	
 	<target name="GatherDependents">
 		<copy todir="${dist}" flatten="true">
    			<path refid="updater.path"/>

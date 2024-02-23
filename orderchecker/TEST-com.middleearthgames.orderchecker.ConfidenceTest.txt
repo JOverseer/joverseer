@@ -1,0 +1,11 @@
+Testsuite: com.middleearthgames.orderchecker.ConfidenceTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.434 sec
+
+Testcase: agentTest took 0.379 sec
+Testcase: commandTest took 0.009 sec
+Testcase: simpleTest took 0.004 sec
+Testcase: emissaryTest took 0.003 sec
+Testcase: mageTest took 0.004 sec
+Testcase: readRulesTest took 0.01 sec
+Testcase: GoldToHiddenPCTest took 0.006 sec
+Testcase: TwoCommandOrderTest took 0.005 sec

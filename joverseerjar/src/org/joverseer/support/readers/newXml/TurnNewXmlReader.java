@@ -1,5 +1,8 @@
 package org.joverseer.support.readers.newXml;
 
+
+import java.security.cert.PKIXRevocationChecker.Option;
+
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -17,12 +20,14 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.Combat;
 import org.joverseer.domain.Company;
+import org.joverseer.domain.Diplo;
 import org.joverseer.domain.Encounter;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.HexInfo;
 import org.joverseer.domain.InformationSourceEnum;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Order;
+import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
@@ -738,6 +743,39 @@ public class TurnNewXmlReader implements Runnable {
 			}
 		}
 		
+		//Set diplo character limit
+		option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "DiploLimit");
+		if(option != null && option.value != null) {
+			try {
+				int charLimit = Integer.parseInt(option.value);
+				Diplo.charPerNation = charLimit;
+			} catch (Exception exc) {
+				error = true;
+				errorMessage += "Error setting diplo character limit: " + option.value + "\n";
+			}
+		}
+		
+		//Check to see if diplo is due this turn, setting a flag in PlayerInfo to indicate ths
+		option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "DiploDue");
+		if (option != null && option.value != null) {
+			PlayerInfo pi = this.game.getTurn().getPlayerInfo(this.game.getMetadata().getNationNo());
+			String[] turnsDue = option.value.split(",");
+			for (int i = 0; i < turnsDue.length; i++) {
+				try {
+					int t = Integer.parseInt(turnsDue[i]);
+					if (t == this.game.getCurrentTurn()) {
+						pi.setDiploDue(true);
+						break;
+					}
+					
+				} catch (Exception exc) {
+					error = true;
+					errorMessage += "Error setting the diplo due for turn:" + turnsDue[i] + "\n";
+				}
+			}
+		}
+		
+		
 		option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "GoodNations");
 		if (option != null && option.value != null) {
 			GameMetadata gm = game1.getMetadata();
@@ -779,8 +817,7 @@ public class TurnNewXmlReader implements Runnable {
 				}
 			}
 		}		
-						
-
+		
 		if (error) {
 			throw new Exception(errorMessage);
 		}

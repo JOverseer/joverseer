@@ -1028,7 +1028,7 @@
 						<value>text</value>
 					</property>
 					<property name="defaultValue">
-						<value>https://www.middleearthgames.com/software/joverseer/feed.xml</value>
+						<value>https://www.gamesystems.com/software/joverseer/feed.xml</value>
 					</property>
 				</bean>
 
@@ -1046,7 +1046,24 @@
 						<value>text</value>
 					</property>
 					<property name="defaultValue">
-						<value>https://www.middleearthgames.com/software/joverseer/url.html</value>
+						<value>https://www.gamesystems.com/software/joverseer/url.html</value>
+					</property>
+				</bean>
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>updates.LastVersionRunAfterUpdate</value>
+					</property>
+					<property name="description">
+						<value>Force compatibility fixes.</value>
+					</property>
+					<property name="group">
+						<value>Updates</value>
+					</property>
+					<property name="type">
+						<value>text</value>
+					</property>
+					<property name="defaultValue">
+						<value></value>
 					</property>
 				</bean>
 				<bean class="org.joverseer.preferences.Preference">

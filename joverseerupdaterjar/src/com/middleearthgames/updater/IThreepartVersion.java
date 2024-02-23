@@ -14,6 +14,7 @@ public interface IThreepartVersion {
 
 	public void setMinor(int minor);
 
+	// semantic versioning names this Patch.
 	public int getBuild();
 
 	public void setBuild(int build);

@@ -27,6 +27,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -485,6 +486,10 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 
 	@Override
 	public void commit() {
+		//These 2 lines remind players to submit diplo
+		PlayerInfo pi = this.gameHolder.getGame().getTurn().getPlayerInfo(getSelectedNationNo());
+		if (pi.isDiploDue() && !pi.isDiploSent()) JOptionPane.showMessageDialog(null, "Remember, a Diplo is due this turn, and you have yet to send one.");
+		
 		this.lastSaveWasNotCancelled = saveAndSendOrders(true);
 	}
 

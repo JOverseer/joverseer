@@ -1,9 +1,7 @@
 package com.middleearthgames.updater;
 
-
-
 public class ThreepartVersion implements IThreepartVersion,
-		Comparable<IThreepartVersion> {
+	Comparable<IThreepartVersion> {
 	private int major;
 	private int minor;
 	private int build;
@@ -58,6 +56,12 @@ public class ThreepartVersion implements IThreepartVersion,
 		return this;
 	}
 
+	// extention point.
+	// called with the remains after nn.nn.nnxxxxxxxxx
+	// has extracted nn.nn.nn
+	public void unparsed(String theRest)
+	{		
+	}
 	public void parse(String version) {
 		String[] parts = version.split("\\.");
 		if (parts.length > 0) {
@@ -67,9 +71,30 @@ public class ThreepartVersion implements IThreepartVersion,
 			this.minor = Integer.parseInt(parts[1]);
 		}
 		if (parts.length > 2) {
-			this.build = Integer.parseInt(parts[2]);
+			int numeric = leftmostDigitCount(parts[2]);
+			if (numeric == parts[2].length()) {
+				this.build = Integer.parseInt(parts[2].substring(0,numeric));
+			} else {
+				this.build = Integer.parseInt(parts[2].substring(0,numeric));
+				String theRest = parts[2].substring(numeric);
+				if (parts.length > 3) {
+					theRest = theRest + parts[3];
+				}
+				this.unparsed(theRest);
+			}
 		}
 	}
+	private int leftmostDigitCount(String candidate)
+	{
+		int count = 0;
+		for (;count < candidate.length();count++) {
+			if (!Character.isDigit(candidate.charAt(count))) {
+				return count;
+			}
+		}
+		return count;
+	}
+	
 	@Override
 	public int compareTo(IThreepartVersion paramT) {
 		if (this.major < paramT.getMajor())

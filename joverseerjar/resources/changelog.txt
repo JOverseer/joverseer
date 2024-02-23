@@ -2,6 +2,10 @@ VERSION 1.18.10
 ---------------
 	* Enh: Add power2 for discovered artifacts
 	* Enh: Support for overriding default allegiances and removing nations after importing.
+	* QA: gamesystems.com updates
+	* QA: enhancing update process.
+	* Enh: Updates to combat calc for new rules.
+	* Fix: oddities with some artifact names fixed. (crown of Celethsa, Morgul Knives)
 	
 VERSION 1.18.9
 -----------------
@@ -83,7 +87,7 @@ VERSION 1.18.1
 VERSION 1.18.0
 --------------
 	To update to this version you MUST download the full installer for your operating system.	
-	https://www.middleearthgames.com/gamingsoftware/
+	https://www.gamesystems.com/gamingsoftware/
 	* Enh: This version includes a minimal version of java 11. No extra version of java is required.
 	
 VERSION 1.16.25
@@ -418,7 +422,7 @@ VERSION 1.0.10
     		+ There was a bug causing data corruption of Pop Centre.
     		+ Especially after a PC has been reduced to ruins.
     		+ There may be more than one cause.
-    		+ Please email a copy of the .jov file and a note of which hex shows the problem to middlearth.com.
+    		+ Please email a copy of the .jov file and a note of which hex shows the problem to gamesystems.com.
     	o The Export Order Form no longer lets you mess around with the preformatted order.
     	o The movement calculator was getting confused when moving evasively.
 

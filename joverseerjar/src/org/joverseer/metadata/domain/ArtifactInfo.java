@@ -81,7 +81,7 @@ public class ArtifactInfo implements Serializable {
 		if (this.powers.size() == 0) {
 			return "";
 		}
-		final String power1 = this.powers.get(1); 
+		final String power1 = this.powers.get(0); 
 		if (power1 == null) {	
 			return "";
 		}

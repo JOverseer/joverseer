@@ -22,7 +22,7 @@ public class ShowMapHelpCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		try {
-			Desktop.getDesktop().browse(new URI(link));
+			Desktop.getDesktop().browse(new URI(this.link));
 		} catch (Exception e) {
 		}
 		;

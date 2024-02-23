@@ -73,7 +73,7 @@ public class PLaFHelper {
 	}
 	public String fullClassFromName(String name)
 	{
-		return plaf.get(name);
+		return this.plaf.get(name);
 	}
 	public String nameFromClass(String clazz) {
 		for(Entry<String,String> entry:this.plaf.entrySet()) {

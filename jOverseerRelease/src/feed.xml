@@ -7,6 +7,20 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.10</title>
+			<pubDate>14 Feb 2024</pubDate>
+			<description>
+			VERSION 1.18.10
+			---------------
+			* Enh: Add power2 for discovered artifacts
+			* Enh: Support for overriding default allegiances and removing nations after importing.
+			* QA: gamesystems.com updates
+			* QA: enhancing update process.
+			* Enh: Updates to combat calc for new rules.
+			* Fix: oddities with some artifact names fixed. (crown of Celethsa, Morgul Knives)
+			</description>
+		</item>		
+		<item>
 			<title>1.18.9</title>
 			<pubDate>5 Oct 2023</pubDate>
 			<description>

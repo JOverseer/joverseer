@@ -8,7 +8,6 @@ import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.AsciiUtils;
 import org.joverseer.support.NationMap;
 import org.joverseer.support.infoSources.InfoSource;
-import org.joverseer.ui.support.Messages;
 
 /**
  * Stores information about a character reported in the turn results.

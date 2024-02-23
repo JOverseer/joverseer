@@ -23,6 +23,7 @@ public class TurnInfo {
 	Container ordersGiven;
 	Container oldPopCentres;
 	Container gameInfo;
+	Container modifiers;
 
 	public Container getGameInfo() {
 		return this.gameInfo;
@@ -252,5 +253,12 @@ public class TurnInfo {
 	public void setOrdersGiven(Container ordersGiven) {
 		this.ordersGiven = ordersGiven;
 	}
+	
+	public Container getModifiers() {
+		return this.modifiers;
+	}
+	public void setModifiers(Container modifiers) {
+		this.modifiers = modifiers;	
+	}	
 
 }

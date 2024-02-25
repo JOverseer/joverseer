@@ -415,6 +415,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
 					InputDialog idlg = new InputDialog("ExportOrdersForm.SendTurnInputDialogTitle");
 					idlg.init(getMessage("ExportOrdersForm.SendTurnInputDialogMessage"));
+					idlg.setTitlePaneTitle(getMessage("ExportOrdersForm.SendTurnInputDialogPaneTitle"));
 					JTextField emailText = new JTextField();
 					idlg.addComponent(getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress"), emailText);
 					idlg.setPreferredSize(new Dimension(400, 80));

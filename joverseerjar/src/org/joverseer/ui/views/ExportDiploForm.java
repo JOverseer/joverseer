@@ -78,7 +78,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	GameHolder gameHolder;
 
 	public ExportDiploForm(FormModel arg0, GameHolder gameHolder) {
-		super(arg0, "exportDiploForm");
+		super(arg0, "ExportDiploForm");
 		this.gameHolder = gameHolder;
 	}
 
@@ -185,10 +185,9 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		Preferences prefs = Preferences.userNodeForPackage(ExportDiploForm.class);
 		String email = prefs.get("useremail", "");
 		String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
-		InputDialog idlg = new InputDialog("ExportOrdersForm.SendTurnInputDialogTitle");
+		InputDialog idlg = new InputDialog("ExportDiploForm.SendTurnInputDialogTitle");
 		idlg.init(getMessage("ExportOrdersForm.SendTurnInputDialogMessage"));
-		idlg.setTitlePaneTitle("Type email address");
-		idlg.setTitle("Send Diplo");
+		idlg.setTitlePaneTitle(getMessage("ExportOrdersForm.SendTurnInputDialogPaneTitle"));
 		JTextField emailText = new JTextField();
 		idlg.addComponent(getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress"), emailText);
 		idlg.setPreferredSize(new Dimension(400, 80));
@@ -197,7 +196,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		do {
 			idlg.showDialog();
 			if (!idlg.getResult()) {
-				ErrorDialog.showErrorDialog("exportDiploForm.SendAbortedMessage");
+				ErrorDialog.showErrorDialog("ExportDiploForm.SendAbortedMessage");
 				this.sent = false;
 				return null;
 			}
@@ -282,7 +281,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 					try {
 						((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
 						frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
-						this.setDescription(this.getMessage("exportDiploForm.DiploSentByMETURNSuccessMessage", new Object[] { file }));
+						this.setDescription(this.getMessage("ExportDiploForm.DiploSentByMETURNSuccessMessage", new Object[] { file }));
 						this.setTitlePaneTitle(Messages.getString("submitDiploResultsForm.title"));
 						BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
 					} catch (Exception exc) {

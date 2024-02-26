@@ -68,6 +68,9 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		this.orderNo = orderNo;
 	}
 
+	/***
+	 * @return the parameters as one string delimited by DELIM
+	 */
 	public String getParameters() {
 		return this.parameters;
 	}
@@ -177,6 +180,11 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		this.notes = "";
 	}
 
+	/**
+	 * Utility function to replace DELIM with spaces. 
+	 * @param params
+	 * @return
+	 */
 	public static String getParametersAsString(String params) {
 		return params.replace(DELIM, " ");
 	}
@@ -205,14 +213,6 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 			ps[idx] = param;
 			setParameters(paramStringFromArray(ps));
 		}
-	}
-
-	public static String paramStringFromArray(String[] ps) {
-		String p = "";
-		for (String pm : ps) {
-			p += (p.equals("") ? "" : Order.DELIM) + pm;
-		}
-		return p;
 	}
 
 	
@@ -359,6 +359,31 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		setParameter(14, v);
 	}
 
+	public void checkForDefaultGenderAndName() {
+		String params=getParameters();
+		if (params.isBlank()) {
+			// default to male
+			setParameters("m");
+			params=getParameters();
+		}
+		// is the name defaulted?
+		if (params.length()==1) {
+			switch (params.charAt(0)) {
+			case 'm':
+			case 'M':
+				setParameters(Order.DELIM + "m");
+				break;
+			case 'f':
+			case 'F':
+				setParameters(Order.DELIM + "f");
+				break;
+			default:
+				// it's a single character name with a defaulted gender
+				setParameters(params.charAt(0) + Order.DELIM + "m");
+				break;		
+			}
+		}		
+	}
 	public static Order getOtherOrder(Order o) {
 		return getOtherOrder(o.getCharacter(), o);
 	}
@@ -367,6 +392,14 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		if (c.getOrders()[0] == o)
 			return c.getOrders()[1];
 		return c.getOrders()[0];
+	}
+
+	public static String paramStringFromArray(String[] ps) {
+		String p = "";
+		for (String pm : ps) {
+			p += (p.equals("") ? "" : Order.DELIM) + pm;
+		}
+		return p;
 	}
 
 }

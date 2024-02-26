@@ -14,6 +14,7 @@ import org.joverseer.support.StringUtils;
 /**
  * Reads orders from an order file.
  * 
+ * uses Character container in game, and game number
  * @author Marios Skounakis
  */
 public class OrderFileReader implements OrderTextReaderInterface {

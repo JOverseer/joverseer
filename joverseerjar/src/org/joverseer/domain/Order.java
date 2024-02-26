@@ -359,9 +359,26 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		setParameter(14, v);
 	}
 
+	/***
+	 * parameters.isBlank() didn't compile on Appveyor :(
+	 * TODO check compile version on Appveyor... or is this my hacked runtime that's the problem.
+	 * @return
+	 */
+	public boolean isParametersBlank() {
+		if (parameters == null)
+			return true;
+		if (parameters.length() == 0)
+			return true;
+		if (parameters.trim().length() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void checkForDefaultGenderAndName() {
 		String params=getParameters();
-		if (params.isBlank()) {
+		// parameters.isBlank() didn't compile on Appveyor :(
+		if (isParametersBlank()) {
 			// default to male
 			setParameters("m");
 			params=getParameters();

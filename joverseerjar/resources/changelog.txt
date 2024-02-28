@@ -1,5 +1,6 @@
-VERSION 1.18.11-rc1
+VERSION 1.18.11-rc2
 ---------------
+	* Fix: if a submission to meturn fails, then tell the player.
 	* Enh: Send Diplomatic messages with orders. See the File menu.
 	* Enh: Send Diplomatic messages to multiple nations.
 	* Enh: Past diplomatic messages are stored with the turn, and accessible in their own View.

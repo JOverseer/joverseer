@@ -472,6 +472,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						this.cancel=true;
 						send = false;
 						filePost.releaseConnection();
+						this.logger.error(String.format("Status: %d",status ));
+						ErrorDialog.showErrorDialog("Unexoected Error",String.format("Status: %d",status ));
 					}
 				}
 			}

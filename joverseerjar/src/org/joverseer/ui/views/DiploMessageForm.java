@@ -133,7 +133,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 
 		listPanel.add(nationPanelButton);
 		
-		this.btNationSave = new JButton("Save Selection");
+		this.btNationSave = new JButton(Messages.getString("DiploMessageForm.SaveSelectionButton"));
 		this.btNationSave.setEnabled(false);
 		this.btNationSave.addActionListener(new ActionListener() {
 			
@@ -155,7 +155,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		Component box = Box.createRigidArea(new Dimension(1, 15));
 		dipMessPanel.add(box);
 		
-		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 8, 40);
+		this.diplomaticMess = new JTextArea(Messages.getString("DiploMessageForm.DefaultTextArea"), 8, 40);
 		this.diplomaticMess.setWrapStyleWord(true);
 		this.diplomaticMess.setLineWrap(true);
 		this.diplomaticMess.getDocument().addDocumentListener(new MyDocumentListener());
@@ -177,7 +177,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		this.lbDiploReminder.setAlignmentX(Component.LEFT_ALIGNMENT);
 		buttonPanel.add(this.lbDiploReminder);		
 		
-		this.btSave = new JButton("Save Message");
+		this.btSave = new JButton(Messages.getString("DiploMessageForm.SaveMessageButton"));
 		this.btSave.setHorizontalAlignment(SwingConstants.LEFT);
 		this.btSave.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.btSave.setEnabled(false);
@@ -190,7 +190,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 			});
 		buttonPanel.add(this.btSave);
 		
-		this.btReload = new JButton("Reload Saved Message");
+		this.btReload = new JButton(Messages.getString("DiploMessageForm.ReloadButton"));
 		this.btReload.setHorizontalAlignment(SwingConstants.LEFT);
 		this.btReload.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.btReload.setEnabled(false);
@@ -308,7 +308,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		if (this.inputDiplo.getMessage() != null) {
 			this.btReload.setEnabled(true);
-			this.btReload.setText("Reload Saved Message");
+			this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
 		}
 		txt = String.format("<html>Selected Nations:<font size=2><br/>%s</br></font><html>", String.join("</br><br/>", temp));
 		this.lbCurrentNations.setText(txt);
@@ -347,7 +347,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
             this.btNationSave.setEnabled(true);
             this.diplomaticMess.setEditable(true);
             if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText("Type your diplomatic message here.");
+            	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
             }
             else {
             	this.diplomaticMess.setText(this.inputDiplo.getMessage());
@@ -362,7 +362,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
             this.btNationSave.setEnabled(true);
             this.diplomaticMess.setEditable(true);
             if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText("Type your diplomatic message here.");
+            	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
             }
             else {
             	this.diplomaticMess.setText(this.inputDiplo.getMessage());
@@ -409,16 +409,16 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	}
     	
         if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
-        	this.btReload.setText("No Saved Message");
+        	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButtonNone"));
         	this.btReload.setEnabled(false);
         }
         else {
-        	this.btReload.setText("Reload Saved Message");
+        	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
         }
         
         //Set label reminding users a diplo isn't due on a turn
         if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
-        	this.lbDiploReminder.setText("Reminder: A diplo is not due this turn.");
+        	this.lbDiploReminder.setText(Messages.getString("DiploMessageForm.DiploReminderLabel"));
       	}
         
         else {
@@ -441,7 +441,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	Turn t = this.gameHolder.getGame().getTurn();
     	this.inputDiplo.setMessage(this.diplomaticMess.getText());
     	this.btReload.setEnabled(false);
-    	this.btReload.setText("Reload Saved Message");
+    	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
 
         if (!t.getContainer(TurnElementsEnum.Diplo).contains(this.inputDiplo)) {
         	t.getContainer(TurnElementsEnum.Diplo).clear();

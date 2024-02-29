@@ -351,7 +351,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	}
 	
 	public boolean getReadyToClose() {
-		// TODO Auto-generated method stub
 		return this.sent;
 	}
 

@@ -329,6 +329,14 @@ public class OrderTextReader implements OrderTextReaderInterface {
 						}
 						if (o.getOrderNo() == 725 || o.getOrderNo() == 728 || o.getOrderNo() == 731 || o.getOrderNo() == 734 || o.getOrderNo() == 737) {
 							// name order
+							
+							//Fix bug where pasting orders in with no name parameter causes name to be set as 'm' or 'f' and no gender parameter
+							if(o.getLastParamIndex() == 0) {
+								if(o.getParameters().equals("m") || o.getParameters().equals("f")) {
+									o.setParameters("-" + Order.DELIM + o.getParameters());
+								}
+							}							
+							
 							// check if first the name is composed of multiple words
 							int paramNo = o.getOrderNo() == 725 ? 6 : 2;
 							while (o.getLastParamIndex() >= paramNo) {

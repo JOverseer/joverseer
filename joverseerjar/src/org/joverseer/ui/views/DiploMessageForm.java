@@ -343,35 +343,13 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	case GameChangedEvent:
         	super.resetGame();
             refreshList();
-            this.loadDiplo();
-            this.btNationSave.setEnabled(true);
-            this.diplomaticMess.setEditable(true);
-            if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
-            }
-            else {
-            	this.diplomaticMess.setText(this.inputDiplo.getMessage());
+            this.loadDiplo(true);
 
-            }
-            this.updateLiveLabel(this.diplomaticMess.getText().length());
-            this.btSave.setEnabled(true);
             break;
     	case SelectedTurnChangedEvent:    
             refreshList();
-            this.loadDiplo();
-            this.btNationSave.setEnabled(true);
-            this.diplomaticMess.setEditable(true);
-            if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
-            }
-            else {
-            	this.diplomaticMess.setText(this.inputDiplo.getMessage());
-
-            }
-            this.updateLiveLabel(this.diplomaticMess.getText().length());
-            this.btSave.setEnabled(true);
-            
-            
+            this.loadDiplo(false);
+              
             break;
     	}
     }
@@ -380,7 +358,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
      * Handles the loading and creation of diplos between turns and when loading games, 
      * making sure all the necessary data is instantiated
      */
-    private void loadDiplo() {
+    private void loadDiplo(boolean gameChange) {
     	Turn t = this.gameHolder.getGame().getTurn();
 
     	if (t.getNationDiplo(this.getGame().getMetadata().getNationNo()) != null) {	//If diplo exists in save file, then get it
@@ -392,22 +370,6 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     		this.inputDiplo.setNationNo(this.gameHolder.getGame().getMetadata().getNationNo());
     	}
     	
-    	if(this.nationsSelection == null) {		//Makes sure that either the previous selection of nations is re-applied or get default set nation
-    		if (this.inputDiplo.getNations() == null) {
-        		this.nationsSelection = (new String[] {this.gameHolder.getGame().getMetadata().getNationByNum(this.gameHolder.getGame().getMetadata().getNationNo()).getName()});
-        		this.inputDiplo.setNations(this.nationsSelection);
-    		}
-    		else {
-    			this.nationsSelection = this.inputDiplo.getNations();
-    			this.nationsCount = this.nationsSelection.length;
-    		}
-
-    	}
-    	else {
-    		this.inputDiplo.setNations(this.nationsSelection);
-    		this.nationsCount = this.nationsSelection.length;
-    	}
-    	
         if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
         	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButtonNone"));
         	this.btReload.setEnabled(false);
@@ -416,21 +378,52 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
         	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
         }
         
+    	if(this.nationsSelection == null || gameChange) {		//Makes sure that either the previous selection of nations is re-applied or get default set nation
+    		if (this.inputDiplo.getNations() == null) {
+        		this.nationsSelection = (new String[] {this.gameHolder.getGame().getMetadata().getNationByNum(this.gameHolder.getGame().getMetadata().getNationNo()).getName()});
+        		this.inputDiplo.setNations(this.nationsSelection);
+    		}
+    		else {
+    			this.nationsSelection = this.inputDiplo.getNations();
+    		}
+
+    	}
+    	else {
+    		this.inputDiplo.setNations(this.nationsSelection);
+    	}
+    	this.nationsCount = this.nationsSelection.length;
+        
         //Set label reminding users a diplo isn't due on a turn
-        if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
-        	this.lbDiploReminder.setText(Messages.getString("DiploMessageForm.DiploReminderLabel"));
-      	}
+        if (t.getPlayerInfo().size() != 0) {
+        	if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
+        		this.lbDiploReminder.setText(Messages.getString("DiploMessageForm.DiploReminderLabel"));
+      		}
+        	else this.lbDiploReminder.setText("");
+        }
         
         else {
         	this.lbDiploReminder.setText("");
         }
+        
+        this.btNationSave.setEnabled(true);
+        this.diplomaticMess.setEditable(true);
+        if (this.inputDiplo.getMessage() == null) {		//Load message into text area
+        	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
+        }
+        else {
+        	this.diplomaticMess.setText(this.inputDiplo.getMessage());
+
+        }
+        
+        this.updateLiveLabel(this.diplomaticMess.getText().length());	//Call to refresh alot of the other components in UI
+        this.btSave.setEnabled(true);
     }
     
     /**
      * Refreshes nation lists content. 
      */
     private void refreshList() {
-    	this.nationList.load(true, true);
+    	this.nationList.load(true, false);
     	this.listScroll.repaint();
     }
 

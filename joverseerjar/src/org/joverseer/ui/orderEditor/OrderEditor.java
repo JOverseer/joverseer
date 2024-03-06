@@ -88,7 +88,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 
 
 	public boolean isHideUnspecifiedParameters() {
-		return hideUnspecifiedParameters;
+		return this.hideUnspecifiedParameters;
 	}
 
 	public void setHideUnspecifiedParameters(boolean hideUnspecifiedParameters) {

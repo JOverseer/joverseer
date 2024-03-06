@@ -9,7 +9,9 @@ import org.joverseer.domain.Character;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
+import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
+import org.joverseer.support.Container;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 
@@ -20,9 +22,9 @@ import org.joverseer.tools.OrderValidationResult;
  * @author Marios Skounakis
  */
 public class OrderTextReader implements OrderTextReaderInterface {
-	public static int STANDARD_ORDER_TEXT = 1;
-	public static int ORDERCHECKER_ORDER_TEXT = 2;
-	public static int AUTOMAGIC_ORDER_TEXT = 3;
+	public static final int STANDARD_ORDER_TEXT = 1;
+	public static final int ORDERCHECKER_ORDER_TEXT = 2;
+	public static final int AUTOMAGIC_ORDER_TEXT = 3;
 	
 	public int textType = 2; // note not final
 
@@ -45,90 +47,63 @@ public class OrderTextReader implements OrderTextReaderInterface {
 	}
 	public static OrderTextReader Factory(String text,Game game) {
 		if (text.equals("Standard")) { //$NON-NLS-1$
-			return new OrderTextReader(game,OrderTextReader.STANDARD_ORDER_TEXT);
+			return new OrderTextReader(game);
 		} else if (text.equals("Order Checker")) { //$NON-NLS-1$
-			return new OrderTextReader(game,OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+			return new OrderCheckerOrderTextReader(game);
 		} else {
-			return new OrderTextReader(game,OrderTextReader.AUTOMAGIC_ORDER_TEXT);
+			return new AutoMagicOrderTextReader(game);
 		}
 	}
 	public static OrderTextReaderInterface Factory2(String text,Game game) {
 		if (text.equals("Standard")) { //$NON-NLS-1$
-			return new OrderTextReader(game,OrderTextReader.STANDARD_ORDER_TEXT);
+			return new OrderTextReader(game);
 		} else if (text.equals("Order Checker")) { //$NON-NLS-1$
-			return new OrderTextReader(game,OrderTextReader.ORDERCHECKER_ORDER_TEXT);
+			return new OrderCheckerOrderTextReader(game);
 		} else {
 			return new OrderFileReader(game);
 		}
 	}
 		
 	protected boolean isCharacterLine(String line) {
-		if (getTextType() == STANDARD_ORDER_TEXT) {
-			String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s' ]{3,5}\\) @ \\d{4}.*";
-			Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE
-					| Pattern.UNICODE_CASE);
-			return chP.matcher(line).matches();
-		} else if (getTextType() == ORDERCHECKER_ORDER_TEXT) {
-			String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s',\\//\\d ]*\\) @ .*";
-			Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE
-					| Pattern.UNICODE_CASE);
-			return chP.matcher(line).matches();
-		} else {
-			return false;
-		}
-		
+		String charPattern = "^[\\p{L}\\d\\?]+([\\-\\s'][\\p{L}\\d\\?]+)*\\s+\\([\\w\\-\\s' ]{3,5}\\) @ \\d{4}.*";
+		Pattern chP = Pattern.compile(charPattern, Pattern.CASE_INSENSITIVE
+				| Pattern.UNICODE_CASE);
+		return chP.matcher(line).matches();
 	}
 
 	protected boolean isOrderLine(String line) {
-		if (getTextType() == STANDARD_ORDER_TEXT) {
-			String orderPattern = "^\\d{3}\\s{1,2}\\w{5,7}.*";
-			return Pattern.matches(orderPattern, line);
-		} else if (getTextType() == ORDERCHECKER_ORDER_TEXT) {
-			String orderPattern = "^\\d{3}\\s{1,2}\\(\\w{5,7}\\).*";
-			return Pattern.matches(orderPattern, line);
-		}
-		return false;
+		String orderPattern = "^\\d{3}\\s{1,2}\\w{5,7}.*";
+		return Pattern.matches(orderPattern, line);
 	}
 
 	protected String getCharacterNameFromLine(String line) {
-		if (getTextType() == STANDARD_ORDER_TEXT) {
-			int j1 = line.indexOf("(");
-			int j2 = line.indexOf(")");
-			int j3 = line.indexOf("@ ");
-			if (j1 > -1 && j2 > -1 && j3 > -1) {
-				return line.substring(j1 + 1, j2);
-			}
-		} else if (getTextType() == ORDERCHECKER_ORDER_TEXT) {
-			int j1 = line.indexOf("(");
-			int j2 = line.indexOf(",");
-			if (j1 > -1 && j2 > -1) {
-				return line.substring(j1 + 1, j2);
-			}
+		int j1 = line.indexOf("(");
+		int j2 = line.indexOf(")");
+		int j3 = line.indexOf("@ ");
+		if (j1 > -1 && j2 > -1 && j3 > -1) {
+			return line.substring(j1 + 1, j2);
 		}
 		return null;
 	}
 
 	protected String getCharacterLocationFromLine(String line) {
-		if (getTextType() == STANDARD_ORDER_TEXT) {
-			int j1 = line.indexOf("(");
-			int j2 = line.indexOf(")");
-			int j3 = line.indexOf("@ ");
-			if (j1 > -1 && j2 > -1 && j3 > -1) {
-				return line.substring(j3 + 2, j3 + 6);
-			}
-		} else if (getTextType() == ORDERCHECKER_ORDER_TEXT) {
-			String locationPattern = ".*(\\d{4}).*";
-			Pattern chP = Pattern.compile(locationPattern, Pattern.CASE_INSENSITIVE
-					| Pattern.UNICODE_CASE);
-			Matcher m =chP.matcher(line); 
-			if (m.find()) {
-				return m.group(1);
-			}
+		int j1 = line.indexOf("(");
+		int j2 = line.indexOf(")");
+		int j3 = line.indexOf("@ ");
+		if (j1 > -1 && j2 > -1 && j3 > -1) {
+			return line.substring(j3 + 2, j3 + 6);
 		}
 		return null;
 	}
-
+	/***
+	 * Parse the text as orders
+	 * Clears the lineResults array.
+	 * May change TextType if AutoMagic format detected.
+	 * @param reader
+	 * @throws Exception
+	 */
 	public void parseOrders(BufferedReader reader) throws Exception {
+		this.lineResults.clear();
 		internalReadOrders(reader, 0);
 	}
 	@Override
@@ -137,9 +112,6 @@ public class OrderTextReader implements OrderTextReaderInterface {
 	}
 	public void internalReadOrders(BufferedReader reader,int pass) throws Exception {
 		try {
-			if (pass == 0) {
-				this.lineResults.clear();
-			}
 			String line;
 			String charId = null;
 			String location = null;
@@ -160,6 +132,7 @@ public class OrderTextReader implements OrderTextReaderInterface {
 
 				if (isCharacterLine(line)) {
 					if (charId != null) {
+						// start of next character, so flush out the previous character's orders
 						addOrders(charId, location, charLine, orderText1,
 								orderLines, notes, pass);
 						orderText1 = new String[] { null, null, null };
@@ -197,6 +170,7 @@ public class OrderTextReader implements OrderTextReaderInterface {
 				lineCounter++;
 			}
 			if (charId != null) {
+				// flush last character
 				addOrders(charId, location, charLine, orderText1, orderLines,
 						notes, pass);
 			}
@@ -212,10 +186,16 @@ public class OrderTextReader implements OrderTextReaderInterface {
 
 	private void addOrders(String charId, String location, int charLine,
 			String[] orderText1, int[] orderLines, String notes, int pass) {
-		Character c = (Character) getGame().getTurn().getContainer(
+		Turn t = getGame().getTurn();
+		if (t == null) {
+			this.lineResults.add("No turn found");
+			return;
+		}
+		
+		Character c = (Character) t.getContainer(
 				TurnElementsEnum.Character).findFirstByProperty("id", charId);
 		if (c == null) {
-			c = (Character) getGame().getTurn().getContainer(
+			c = (Character) t.getContainer(
 					TurnElementsEnum.Character).findFirstByProperty("id",
 					charId.trim());
 		}
@@ -304,6 +284,10 @@ public class OrderTextReader implements OrderTextReaderInterface {
 					OrderParameterValidator opv = new OrderParameterValidator();
 					int j = 0;
 					Order o = orders1[i];
+					if (o.getOrderNo() == 728 || o.getOrderNo() == 731 || o.getOrderNo() == 734 || o.getOrderNo() == 737) {
+						o.checkForDefaultGenderAndName();
+					}
+
 					while (j <= o.getLastParamIndex()) {
 						int length = o.getParameter(j).length(); 
 						// special handling for char id parameters that get messed up due to spaces (trailing or in the middle)
@@ -329,14 +313,6 @@ public class OrderTextReader implements OrderTextReaderInterface {
 						}
 						if (o.getOrderNo() == 725 || o.getOrderNo() == 728 || o.getOrderNo() == 731 || o.getOrderNo() == 734 || o.getOrderNo() == 737) {
 							// name order
-							
-							//Fix bug where pasting orders in with no name parameter causes name to be set as 'm' or 'f' and no gender parameter
-							if(o.getLastParamIndex() == 0) {
-								if(o.getParameters().equals("m") || o.getParameters().equals("f")) {
-									o.setParameters("-" + Order.DELIM + o.getParameters());
-								}
-							}							
-							
 							// check if first the name is composed of multiple words
 							int paramNo = o.getOrderNo() == 725 ? 6 : 2;
 							while (o.getLastParamIndex() >= paramNo) {

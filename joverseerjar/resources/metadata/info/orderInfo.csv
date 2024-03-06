@@ -30,7 +30,7 @@ Post Camp;552;PosCmp;Name of Camp (5-20 letters);Average ;Army Commander
 Name New Character;725;NamChar;Name (5-17 letters) / Gender / Comm / Agent / Emiss / Mage skill points.;Automatic ;At Capital
 Name New Commander*;728;NamComm;Name (5-17 letters) / Gender;Automatic ;At Capital
 Create Company;745;CreCmpy;None;Automatic ;
-Disband Company;750;DsbCmpy;None;Automatic ;Company Commndr
+Disband Company;750;DsbCmpy;None;Automatic ;Company Commandr
 Hire Army*;770;HrArmy;# of Troops / Troop Type / Weapons / Armor / Food;Automatic ;
 Transfer Command of Army*;780;TrComm;New Commander Character ID / Join Army (y/n);Automatic ;Army Commander
 Relocate Capital;950;ReloCap;New Capital Hex Location;Easy ;At Capital

@@ -47,10 +47,12 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class Main_Gui extends JFrame{
-
+	static private final String DEFAULT_DOWNLOAD_PATH = "https://www.gamesystems.com/software/joverseer/url.html";
+	
 //	private String latestUpdateZip = "latestupdate.zip";
 	private String targetjar = "joverseer.jar";
 	private String downloadPath;
+	private String user;
 
     private Thread worker;
     private final String root = "update/";
@@ -61,8 +63,10 @@ public class Main_Gui extends JFrame{
     private JScrollPane sp;
     private JPanel pan1;
     private JPanel pan2;
+    
 
-     public Main_Gui(String downloadPath) {
+     public Main_Gui(String downloadPath,final String user) {
+    	this.user = user;
         initComponents();
         outText.setText("Contacting Download Server...");
         this.downloadPath = downloadPath;
@@ -144,11 +148,16 @@ public class Main_Gui extends JFrame{
 			String[] run = { "java", "-Xmx512M", "-jar", targetjar };
 			String[] runJava9Plus = {"java", "-Xmx512M", "--add-exports java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED","-jar", targetjar };
 			try {
-				Runtime.getRuntime().exec( supportsModules() ? runJava9Plus : run);
+				String actual[] = supportsModules() ? runJava9Plus : run;
+            	logDebug("\n " + actual[0] + " " + actual[1] + " " + actual[2] + " " + actual[3]);
+				Runtime.getRuntime().exec( actual);
 			} catch (Exception ex) {
+				logDebug("\nException "+ex.getClass().getName());
 				ex.printStackTrace();
 			}
     	}
+    	logDebug("\nNormal after attempted launch exit");
+    	System.out.print(this.outText.toString());
         System.exit(0);
     }
     private void cleanup(File file)
@@ -308,8 +317,8 @@ public class Main_Gui extends JFrame{
     }
     private void afterDownload()
     {
-    	// do nothing for now but ideally load and run a routine from the downloaded version of update.jar.
     	checkRequiredJavaVersion();
+    	// TODO mark that a version has been downloaded but first post-update run by the target user, has not been performed. 
     }
     private void checkRequiredJavaVersion()
     {
@@ -318,25 +327,31 @@ public class Main_Gui extends JFrame{
     	}
     }
     public static void main(String args[]) {
-    	String downloadPath = "https://www.middleearthgames.com/software/joverseer/url.html";
+    	String downloadPath = DEFAULT_DOWNLOAD_PATH;
+    	String user=""; // the user where the preferences are stored.
 
     	class UpdateRunnable implements Runnable {
     		private final String downloadPath;
-    		public UpdateRunnable(final String downloadPath) {
+    		private final String user;
+    		public UpdateRunnable(final String downloadPath,final String user) {
     			super();
     			this.downloadPath = downloadPath;
+    			this.user = user;
     		}
             @Override
 			public void run() {
-                new Main_Gui(this.downloadPath).setVisible(true);
+                new Main_Gui(this.downloadPath,user).setVisible(true);
             }
 
     	}
     	UpdateRunnable runner;
     	if (args.length >0) {
     		downloadPath = args[0];
-            }
-    	runner = new UpdateRunnable(downloadPath);
+    		if (args.length > 1) {
+    			user = args[1];
+    		}
+        }
+    	runner = new UpdateRunnable(downloadPath,user);
         java.awt.EventQueue.invokeLater(runner);
     }
     public static double JAVA_VERSION = getVersion ();
@@ -353,4 +368,6 @@ public class Main_Gui extends JFrame{
     public static boolean supportsModules() {
     	return getVersion() >= 9.0;
     }
+     
 }
+

@@ -13,7 +13,21 @@ import java.net.URL;
 public class UpdateChecker {
 //    private final static String RSSfeed = "https://www.middleearthgames.com/software/joverseer/feed.xml";
     private static String data;
+    //[deprecated]
+    // Mixes getting the version, with interpretation of the version number.
+    // and doesn't allow semantic versioning.
     public static ThreepartVersion getLatestVersion(String RSSfeed) throws Exception
+    {
+        return new ThreepartVersion(getFullLatestVersion(RSSfeed));
+
+    }
+    public static int compareTo(String earlier,String current)
+    {
+    	FourpartVersion earlierVersion = new FourpartVersion(earlier);
+    	FourpartVersion currentVersion = new FourpartVersion(current);
+    	return earlierVersion.compareTo2(currentVersion);    	
+    }
+    public static String getFullLatestVersion(String RSSfeed) throws Exception
     {
     	String interested;
     	data = getData(RSSfeed);
@@ -21,8 +35,7 @@ public class UpdateChecker {
     		throw new Exception("Got permanent redirect. Please correct RSS feed URL in preferences.");
     	}
     	interested = firstTag(data, "item");
-        return new ThreepartVersion(firstTag(interested, "title"));
-
+    	return firstTag(interested, "title");
     }
     public static boolean isRedirected() {
     	return data.contains("301 Moved Permanently");

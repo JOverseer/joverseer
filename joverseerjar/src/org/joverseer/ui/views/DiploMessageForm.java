@@ -28,8 +28,6 @@ import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.ui.BaseView;
 import javax.swing.BoxLayout;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;

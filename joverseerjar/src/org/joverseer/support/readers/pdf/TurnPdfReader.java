@@ -127,6 +127,7 @@ public class TurnPdfReader implements Runnable {
             FileWriter out = new FileWriter(this.pdfTextFile.getCanonicalPath());
             out.write(ret);
             out.close();
+            logger.info(this.pdfTextFile.getCanonicalPath());
         }
         catch (Throwable exc) {
                 logger.error(exc);
@@ -489,6 +490,7 @@ public class TurnPdfReader implements Runnable {
             snpr.setAllowUnknownChildElements(true);
 
             this.turnInfo = (TurnInfo)digester.parse("file:///" + this.xmlFile.getCanonicalPath());
+            logger.info(this.xmlFile.getCanonicalPath());
 //            Pattern p = Pattern.compile(".*g\\d{3}n(\\d{2})t(\\d{3}).*");
 //            Matcher m = p.matcher(xmlFile.getCanonicalPath());
 //            m.matches();
@@ -574,7 +576,7 @@ public class TurnPdfReader implements Runnable {
             if (pi == null) {
             	if (getMonitor() != null) {
                     getMonitor().worked(100);
-                    getMonitor().subTaskStarted("Skipping file because XML has not been imported...");
+                    getMonitor().subTaskStarted("Skipping file because failed to parse pdf text...");
                 }	
             	return;
             }

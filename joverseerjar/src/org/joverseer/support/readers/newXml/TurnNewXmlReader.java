@@ -1,8 +1,6 @@
 package org.joverseer.support.readers.newXml;
 
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-
 import java.security.cert.PKIXRevocationChecker.Option;
 
 import java.util.ArrayList;

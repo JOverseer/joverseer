@@ -29,6 +29,7 @@ import javax.swing.RepaintManager;
 import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
+import org.joverseer.support.JOVersionCompatibility;
 import org.joverseer.support.RecentGames;
 import org.joverseer.support.RecentGames.RecentGameInfo;
 import org.joverseer.ui.JOverseerJIDEClient;
@@ -53,8 +54,6 @@ import org.springframework.richclient.exceptionhandling.DefaultRegisterableExcep
 import org.springframework.richclient.exceptionhandling.RegisterableExceptionHandler;
 
 import com.middleearthgames.updater.UpdateChecker;
-import com.middleearthgames.updater.UpdateInfo;
-import com.middleearthgames.updater.ThreepartVersion;
 
 /**
  * Extends the default application lifecycle advisor to allow the injection of
@@ -177,21 +176,66 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 
 		}
 
-		if (JOverseerJIDEClient.cmdLineArgs != null && JOverseerJIDEClient.cmdLineArgs.length == 1 && JOverseerJIDEClient.cmdLineArgs[0].endsWith(".jov")) {
-			String fname = JOverseerJIDEClient.cmdLineArgs[0];
-			File f = new File(fname);
-			if (f.exists()) {
-				LoadGame lg = new LoadGame(fname,this.gameHolder);
-				lg.loadGame();
+		
+		// this is the in concert with org.joverseer.ui.JOverseerJIDEClient.main()
+		// and onPreInitialize()
+		String[] args = JOverseerJIDEClient.cmdLineArgs;
+		boolean doInitOnFirstRunOfNewJO = false;
+		for (int i=0;i<args.length;i++) {
+			if (args[i].equals("-L")) {
+				if (i++ <args.length) {
+					//skip
+				}
+				continue;
+			}
+			if (args[i].equals("-U")) {
+				continue;
+			}
+			if (args[i].equals("-1")) {
+				doInitOnFirstRunOfNewJO = true;
+				continue;
+			}
+			if (args[i].endsWith(".jov")) {
+				String fname = args[i];
+				File f = new File(fname);
+				if (f.exists()) {
+					LoadGame lg = new LoadGame(fname,this.gameHolder);
+					lg.loadGame();
+				}
 			}
 		}
-
+		JOVersionCompatibility fixer = new JOVersionCompatibility(this.getApplication());
+		if (!doInitOnFirstRunOfNewJO) {
+			doInitOnFirstRunOfNewJO = fixer.firstTimeThisVersionRun();
+		}
+		if (doInitOnFirstRunOfNewJO) {			
+			fixer.checkAndUpdateURLs();
+			fixer.markAsFirstTimeThisVersonRun();
+		}
 		// some commands are disabled until game loaded...
 	}
 
 	@Override
 	public void onWindowOpened(ApplicationWindow arg0) {
 		super.onWindowOpened(arg0);
+		
+		if (System.getProperty("java.version").startsWith("1.8.")) {
+			final MessageDialog dlg = new MessageDialog("Java Version Check", "Obsolete java detected.\nYou will experience problems.\nDownload the full setup from https://www.gamesystems.com/gamingsoftware ") {
+				@Override
+				protected Object[] getCommandGroupMembers() {
+					return new Object[] { new ActionCommand("actionYes") {
+						@Override
+						protected void doExecuteCommand() {
+								getDialog().dispose();
+						}
+					}
+					};
+				}
+			};
+			dlg.showDialog();
+			
+		}
+		
 		if (PreferenceRegistry.instance().getPreferenceValue("general.tipOfTheDay").equals("yes")) {
 			GraphicUtils.showTipOfTheDay();
 		}
@@ -243,16 +287,13 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			if (dt == null || dateMinusOneWeek.after(dt)) {
 
 				ApplicationDescriptor descriptor = JOApplication.getApplicationDescriptor();
-				ThreepartVersion current = new ThreepartVersion(descriptor.getVersion());
+				String current = descriptor.getVersion();
 
    		        try {
-   		        	// hack to switch to https
-   		        	String oldValue = PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed");
-   		        	String prefValue = UpdateInfo.enforceHttps(oldValue, "middleearthgames.com");
-   		        	if (oldValue.length() != prefValue.length()) {
-   	   		        		PreferenceRegistry.instance().setPreferenceValue("updates.RSSFeed", prefValue);
-   		        	}
-		            if (UpdateChecker.getLatestVersion(prefValue).isLaterThan(current)) {
+   		        	// hack to switch to https moved to -1 commandline option.
+   		        	String prefValue = PreferenceRegistry.instance().getPreferenceValue("updates.RSSFeed");
+   		        	String latest = UpdateChecker.getFullLatestVersion(prefValue); 
+		            if (UpdateChecker.compareTo(latest, current) > 0) {
 		                new com.middleearthgames.updater.UpdateInfo(UpdateChecker.getWhatsNew(prefValue));
 					}
 					String str = new SimpleDateFormat().format(new Date());
@@ -288,7 +329,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 			this.canCloseWindow = false;
 			// show warning
 			MessageSource ms = (MessageSource) Application.services().getService(MessageSource.class);
-				ExitDialog md = new ExitDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
+			ExitDialog md = new ExitDialog(ms.getMessage("confirmCloseAppDialog.title", new String[] {}, Locale.getDefault()), ms.getMessage("confirmCloseAppDialog.message", new String[] {}, Locale.getDefault())) {
 
 				@Override
 				protected void onConfirm() {

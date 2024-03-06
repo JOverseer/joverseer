@@ -7,8 +7,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -25,7 +28,9 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import org.joverseer.JOApplication;
 import org.joverseer.domain.EconomyCalculatorData;
+import org.joverseer.domain.IHasMapLocation;
 import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.game.Game;
@@ -33,8 +38,10 @@ import org.joverseer.game.Turn;
 import org.joverseer.metadata.SNAEnum;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.preferences.PreferenceRegistry;
+import org.joverseer.support.GameHolder;
 import org.joverseer.tools.orderCostCalculator.OrderCostCalculator;
 import org.joverseer.ui.BaseView;
+import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.listviews.renderers.HexNumberCellRenderer;
 import org.joverseer.ui.support.GraphicUtils;
 import org.joverseer.ui.support.JOverseerEvent;
@@ -45,9 +52,12 @@ import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.TableUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.richclient.application.PageComponentContext;
+import org.springframework.richclient.command.support.AbstractActionCommandExecutor;
 import org.springframework.richclient.dialog.MessageDialog;
 import org.springframework.richclient.layout.TableLayoutBuilder;
 import org.springframework.richclient.table.BeanTableModel;
+import org.springframework.richclient.table.SortableTableModel;
 
 import com.jidesoft.popup.JidePopup;
 
@@ -60,7 +70,7 @@ import com.jidesoft.popup.JidePopup;
  *
  * @author Marios Skounakis
  */
-public class EconomyCalculator extends BaseView implements ApplicationListener {
+public class EconomyCalculator extends BaseView implements ApplicationListener, MouseListener {
 
 	public EconomyCalculator() {
 		super();
@@ -84,6 +94,8 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 	JLabel taxIncrease;
 	BeanTableModel lostPopsTableModel;
 
+	protected SelectHexCommandExecutor selectHexCommandExecutor = new SelectHexCommandExecutor();
+	
 	@Override
 	public void onApplicationEvent(ApplicationEvent applicationEvent) {
 		if (applicationEvent instanceof JOverseerEvent) {
@@ -253,6 +265,53 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		setFreeArmyHireFromSNA(n);
 		setMarketInfluenceFromSNA(n);
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 2 && e.getButton() == 1) {
+			this.selectHexCommandExecutor.execute();
+		}
+	}
+	
+	@Override
+	protected void registerLocalCommandExecutors(PageComponentContext pageComponentContext) {
+		pageComponentContext.register("selectHexCommand", this.selectHexCommandExecutor);
+		this.selectHexCommandExecutor.setEnabled(GameHolder.hasInitializedGame());
+	}
+
+	/**
+	 * What happens when you double click on a row that implements the
+	 * IHasMapLocation interface ... the respective hex is selected
+	 */
+	private class SelectHexCommandExecutor extends AbstractActionCommandExecutor {
+
+		// TODO move to a separate class?
+		@Override
+		public void execute() {
+			int row = EconomyCalculator.this.pcTable.getSelectedRow();
+			if (row >= 0) {
+				int idx = 0;
+				if (SortableTableModel.class.isInstance(EconomyCalculator.this.pcTable.getModel())) {
+					idx = ((SortableTableModel) EconomyCalculator.this.pcTable.getModel()).convertSortedIndexToDataIndex(row);
+				} else if (com.jidesoft.grid.SortableTableModel.class.isInstance(EconomyCalculator.this.pcTable.getModel())) {
+					idx = ((com.jidesoft.grid.SortableTableModel) EconomyCalculator.this.pcTable.getModel()).getActualRowAt(row);
+				}
+				if (idx >= EconomyCalculator.this.lostPopsTableModel.getRowCount())
+					return;
+				try {
+					Object obj = EconomyCalculator.this.lostPopsTableModel.getRow(idx);
+					if (!IHasMapLocation.class.isInstance(obj))
+						return;
+					IHasMapLocation selectedItem = (IHasMapLocation) obj;
+					Point selectedHex = new Point(selectedItem.getX(), selectedItem.getY());
+					JOApplication.publishEvent(LifecycleEventsEnum.SelectedHexChangedEvent, selectedHex, this);
+				} catch (Exception exc) {
+					// do nothing
+				}
+			}
+		}
+	}
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -569,6 +628,7 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 		this.lostPopsTableModel = new LostPopsTableModel();
 		// pcTable = new JTable(lostPopsTableModel);
 		this.pcTable = org.springframework.richclient.table.TableUtils.createStandardSortableTable(this.lostPopsTableModel);
+		this.pcTable.addMouseListener(this);
 		this.pcTable.setBackground(Color.white);
 		this.pcTable.setDefaultRenderer(Boolean.class, this.totalsTable.getDefaultRenderer(Boolean.class));
 		this.pcTable.setDefaultEditor(Boolean.class, this.totalsTable.getDefaultEditor(Boolean.class));
@@ -776,5 +836,26 @@ public class EconomyCalculator extends BaseView implements ApplicationListener {
 	    return this.gap;
 	  }
 
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

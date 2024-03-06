@@ -45,7 +45,7 @@ public class ExportDiploCommand extends ActionCommand {
         
         final ExportDiploForm form = new ExportDiploForm(formModel,this.gameHolder);
         FormBackedDialogPage page = new FormBackedDialogPage(form);
-        page.setTitle(Messages.getString("exportDiploForm.title", new Object[] {String.join(", ", this.gameHolder.getGame().getTurn().getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo()).getNations())}));
+        page.setTitle(Messages.getString("ExportDiploForm.title", new Object[] {String.join(", ", this.gameHolder.getGame().getTurn().getNationDiplo(this.gameHolder.getGame().getMetadata().getNationNo()).getNations())}));
 
         TitledPageApplicationDialog dialog = new TitledPageApplicationDialog(page) {
             @Override

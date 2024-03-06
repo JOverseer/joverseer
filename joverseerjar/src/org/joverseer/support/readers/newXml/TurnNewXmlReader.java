@@ -745,12 +745,13 @@ public class TurnNewXmlReader implements Runnable {
 			for (int i = 0; i < turnsDue.length; i++) {
 				try {
 					int t = Integer.parseInt(turnsDue[i]);
-					if (t == this.game.getCurrentTurn()) {
+					if (t == this.game.getCurrentTurn() && pi != (null)) {
 						pi.setDiploDue(true);
 						break;
 					}
 					
 				} catch (Exception exc) {
+					System.out.println(exc.getMessage());
 					error = true;
 					errorMessage += "Error setting the diplo due for turn:" + turnsDue[i] + "\n";
 				}

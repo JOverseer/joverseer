@@ -25,7 +25,7 @@ public class ShowNavyRangeCommand extends ActionCommand {
 	@Override
 	protected void doExecuteCommand() {
 		NavyRangeMapItem armi = new NavyRangeMapItem(this.hexNo, this.fed, this.openSeas);
-		AbstractMapItem.add(armi);
+		AbstractMapItem.toggle(armi);
 
 		JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, MapPanel.instance().getSelectedHex(), this);
 	}

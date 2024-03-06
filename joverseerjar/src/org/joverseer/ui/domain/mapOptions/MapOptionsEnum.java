@@ -15,5 +15,6 @@ public enum MapOptionsEnum {
     DrawNamesOnOrders,  // whether to draw char names when drawing orders
     ShowClimate,        // show the climate or not
     NationColors,		// use color per nation or color per allegiance
-    PopCenterNames      // draw pop center names
+    PopCenterNames,      // draw pop center names
+    NationNames			// draw nation names
 }

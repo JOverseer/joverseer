@@ -6,61 +6,35 @@ package org.joverseer.ui.views;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
-import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.NationJList;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.progress.BusyIndicator;
 import org.joverseer.domain.Diplo;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.BaseView;
-import org.joverseer.ui.command.AddEditNoteCommand;
-import org.joverseer.ui.economyCalculator.EconomyCalculator;
-import org.joverseer.ui.economyCalculator.EconomyTotalsTableModel;
-import org.joverseer.ui.economyCalculator.MarketTableModel;
-import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagLayout;
-import javax.swing.SpringLayout;
-import java.awt.List;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
-import javax.swing.JSeparator;
 import javax.swing.JScrollPane;
 import javax.swing.Box;
 
@@ -121,7 +95,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		this.nationList = new NationJList(this.gameHolder);
 		
-		this.nationList.setPreferredSize(new Dimension(100,150));
+		this.nationList.setPreferredSize(new Dimension(100,108));
 		this.nationList.setVisibleRowCount(6);
 		this.listScroll = new JScrollPane(this.nationList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -296,7 +270,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		this.lbLiveCount.setText(txt);
 		
 		//Creates list of selected nations whilst keeping white spacing the same
-		String[] temp = new String[6];
+		String[] temp = new String[5];
 		for (int i = 0; i < temp.length; i++) {
 			if (i < this.inputDiplo.getNumberOfNations()) {
 				temp[i] = this.inputDiplo.getNations()[i];
@@ -424,6 +398,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
      */
     private void refreshList() {
     	this.nationList.load(true, false);
+    	this.nationList.setPreferredSize(new Dimension(100,18 * this.game.getMetadata().getNations().size()));
     	this.listScroll.repaint();
     }
 

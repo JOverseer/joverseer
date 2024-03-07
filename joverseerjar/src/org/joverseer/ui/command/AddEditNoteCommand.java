@@ -10,6 +10,7 @@ import org.joverseer.tools.UniqueIdGenerator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.EditNoteForm;
+import org.joverseer.ui.command.DeleteNoteCommand;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;
@@ -61,6 +62,12 @@ public class AddEditNoteCommand extends ActionCommand {
                 JOApplication.publishEvent(LifecycleEventsEnum.NoteUpdated, AddEditNoteCommand.this.note, this);
                 JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, AddEditNoteCommand.this.note, this);
 
+                //If notes is blank delete it
+                if(AddEditNoteCommand.this.note.getText().isEmpty()) {
+                	DeleteNoteCommand deleteNote = new DeleteNoteCommand(AddEditNoteCommand.this.note);
+                	deleteNote.doExecuteCommand();
+                }
+                
                 return true;
             }
         };

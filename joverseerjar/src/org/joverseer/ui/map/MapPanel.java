@@ -700,7 +700,7 @@ public class MapPanel extends JPanel implements MouseInputListener, MouseWheelLi
 				commands.add(new ShowFedCavalryArmyRangeCommand(hexNo));
 				commands.add(new ShowUnfedCavalryArmyRangeCommand(hexNo));
 			}
-			if (MovementUtils.calculateNavyRangeHexes(hexNo, false, true).size() > 0) {
+			if (MovementUtils.calculateNavyRangeHexes(hexNo, false, true).size() > 0 || terrain.isOpenSea()) {
 				commands.add("separator"); //$NON-NLS-1$
 				commands.add(new ShowFedNavyCoastalRangeCommand(hexNo));
 				commands.add(new ShowUnfedNavyCoastalRangeCommand(hexNo));

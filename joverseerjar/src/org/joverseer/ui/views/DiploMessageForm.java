@@ -6,59 +6,33 @@ package org.joverseer.ui.views;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
-import org.joverseer.ui.support.controls.NationComboBox;
 import org.joverseer.ui.support.controls.NationJList;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.richclient.application.Application;
-import org.springframework.richclient.application.support.AbstractView;
-import org.springframework.richclient.layout.TableLayoutBuilder;
-import org.springframework.richclient.progress.BusyIndicator;
 import org.joverseer.domain.Diplo;
-import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.metadata.domain.Nation;
-import org.joverseer.support.GameHolder;
 import org.joverseer.ui.BaseView;
-import org.joverseer.ui.command.AddEditNoteCommand;
-import org.joverseer.ui.economyCalculator.EconomyCalculator;
-import org.joverseer.ui.economyCalculator.EconomyTotalsTableModel;
-import org.joverseer.ui.economyCalculator.MarketTableModel;
-import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagLayout;
-import javax.swing.SpringLayout;
-import java.awt.List;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
-import javax.swing.JSeparator;
 import javax.swing.JScrollPane;
 import javax.swing.Box;
 
@@ -119,7 +93,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		this.nationList = new NationJList(this.gameHolder);
 		
-		this.nationList.setPreferredSize(new Dimension(100,150));
+		this.nationList.setPreferredSize(new Dimension(100,108));
 		this.nationList.setVisibleRowCount(6);
 		this.listScroll = new JScrollPane(this.nationList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -131,7 +105,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 
 		listPanel.add(nationPanelButton);
 		
-		this.btNationSave = new JButton("Save Selection");
+		this.btNationSave = new JButton(Messages.getString("DiploMessageForm.SaveSelectionButton"));
 		this.btNationSave.setEnabled(false);
 		this.btNationSave.addActionListener(new ActionListener() {
 			
@@ -153,7 +127,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		Component box = Box.createRigidArea(new Dimension(1, 15));
 		dipMessPanel.add(box);
 		
-		this.diplomaticMess = new JTextArea("Load a game to begin writing a diplomatic message.", 8, 40);
+		this.diplomaticMess = new JTextArea(Messages.getString("DiploMessageForm.DefaultTextArea"), 8, 40);
 		this.diplomaticMess.setWrapStyleWord(true);
 		this.diplomaticMess.setLineWrap(true);
 		this.diplomaticMess.getDocument().addDocumentListener(new MyDocumentListener());
@@ -175,7 +149,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		this.lbDiploReminder.setAlignmentX(Component.LEFT_ALIGNMENT);
 		buttonPanel.add(this.lbDiploReminder);		
 		
-		this.btSave = new JButton("Save Message");
+		this.btSave = new JButton(Messages.getString("DiploMessageForm.SaveMessageButton"));
 		this.btSave.setHorizontalAlignment(SwingConstants.LEFT);
 		this.btSave.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.btSave.setEnabled(false);
@@ -188,7 +162,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 			});
 		buttonPanel.add(this.btSave);
 		
-		this.btReload = new JButton("Reload Saved Message");
+		this.btReload = new JButton(Messages.getString("DiploMessageForm.ReloadButton"));
 		this.btReload.setHorizontalAlignment(SwingConstants.LEFT);
 		this.btReload.setAlignmentX(Component.LEFT_ALIGNMENT);
 		this.btReload.setEnabled(false);
@@ -294,7 +268,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		this.lbLiveCount.setText(txt);
 		
 		//Creates list of selected nations whilst keeping white spacing the same
-		String[] temp = new String[6];
+		String[] temp = new String[5];
 		for (int i = 0; i < temp.length; i++) {
 			if (i < this.inputDiplo.getNumberOfNations()) {
 				temp[i] = this.inputDiplo.getNations()[i];
@@ -306,7 +280,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		if (this.inputDiplo.getMessage() != null) {
 			this.btReload.setEnabled(true);
-			this.btReload.setText("Reload Saved Message");
+			this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
 		}
 		txt = String.format("<html>Selected Nations:<font size=2><br/>%s</br></font><html>", String.join("</br><br/>", temp));
 		this.lbCurrentNations.setText(txt);
@@ -341,35 +315,13 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	case GameChangedEvent:
         	super.resetGame();
             refreshList();
-            this.loadDiplo();
-            this.btNationSave.setEnabled(true);
-            this.diplomaticMess.setEditable(true);
-            if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText("Type your diplomatic message here.");
-            }
-            else {
-            	this.diplomaticMess.setText(this.inputDiplo.getMessage());
+            this.loadDiplo(true);
 
-            }
-            this.updateLiveLabel(this.diplomaticMess.getText().length());
-            this.btSave.setEnabled(true);
             break;
     	case SelectedTurnChangedEvent:    
             refreshList();
-            this.loadDiplo();
-            this.btNationSave.setEnabled(true);
-            this.diplomaticMess.setEditable(true);
-            if (this.inputDiplo.getMessage() == null) {
-            	this.diplomaticMess.setText("Type your diplomatic message here.");
-            }
-            else {
-            	this.diplomaticMess.setText(this.inputDiplo.getMessage());
-
-            }
-            this.updateLiveLabel(this.diplomaticMess.getText().length());
-            this.btSave.setEnabled(true);
-            
-            
+            this.loadDiplo(false);
+              
             break;
     	}
     }
@@ -378,7 +330,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
      * Handles the loading and creation of diplos between turns and when loading games, 
      * making sure all the necessary data is instantiated
      */
-    private void loadDiplo() {
+    private void loadDiplo(boolean gameChange) {
     	Turn t = this.gameHolder.getGame().getTurn();
 
     	if (t.getNationDiplo(this.getGame().getMetadata().getNationNo()) != null) {	//If diplo exists in save file, then get it
@@ -390,45 +342,61 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     		this.inputDiplo.setNationNo(this.gameHolder.getGame().getMetadata().getNationNo());
     	}
     	
-    	if(this.nationsSelection == null) {		//Makes sure that either the previous selection of nations is re-applied or get default set nation
+        if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
+        	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButtonNone"));
+        	this.btReload.setEnabled(false);
+        }
+        else {
+        	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
+        }
+        
+    	if(this.nationsSelection == null || gameChange) {		//Makes sure that either the previous selection of nations is re-applied or get default set nation
     		if (this.inputDiplo.getNations() == null) {
         		this.nationsSelection = (new String[] {this.gameHolder.getGame().getMetadata().getNationByNum(this.gameHolder.getGame().getMetadata().getNationNo()).getName()});
         		this.inputDiplo.setNations(this.nationsSelection);
     		}
     		else {
     			this.nationsSelection = this.inputDiplo.getNations();
-    			this.nationsCount = this.nationsSelection.length;
     		}
 
     	}
     	else {
     		this.inputDiplo.setNations(this.nationsSelection);
-    		this.nationsCount = this.nationsSelection.length;
     	}
-    	
-        if (this.inputDiplo.getMessage() == null) {		//Update UI based on if message is saved or not
-        	this.btReload.setText("No Saved Message");
-        	this.btReload.setEnabled(false);
-        }
-        else {
-        	this.btReload.setText("Reload Saved Message");
-        }
+    	this.nationsCount = this.nationsSelection.length;
         
         //Set label reminding users a diplo isn't due on a turn
-        if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
-        	this.lbDiploReminder.setText("Reminder: A diplo is not due this turn.");
-      	}
+        if (t.getPlayerInfo().size() != 0) {
+        	if (!t.getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo()).isDiploDue()) {
+        		this.lbDiploReminder.setText(Messages.getString("DiploMessageForm.DiploReminderLabel"));
+      		}
+        	else this.lbDiploReminder.setText("");
+        }
         
         else {
         	this.lbDiploReminder.setText("");
         }
+        
+        this.btNationSave.setEnabled(true);
+        this.diplomaticMess.setEditable(true);
+        if (this.inputDiplo.getMessage() == null) {		//Load message into text area
+        	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
+        }
+        else {
+        	this.diplomaticMess.setText(this.inputDiplo.getMessage());
+
+        }
+        
+        this.updateLiveLabel(this.diplomaticMess.getText().length());	//Call to refresh alot of the other components in UI
+        this.btSave.setEnabled(true);
     }
     
     /**
      * Refreshes nation lists content. 
      */
     private void refreshList() {
-    	this.nationList.load(true, true);
+    	this.nationList.load(true, false);
+    	this.nationList.setPreferredSize(new Dimension(100,18 * this.game.getMetadata().getNations().size()));
     	this.listScroll.repaint();
     }
 
@@ -439,7 +407,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	Turn t = this.gameHolder.getGame().getTurn();
     	this.inputDiplo.setMessage(this.diplomaticMess.getText());
     	this.btReload.setEnabled(false);
-    	this.btReload.setText("Reload Saved Message");
+    	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
 
         if (!t.getContainer(TurnElementsEnum.Diplo).contains(this.inputDiplo)) {
         	t.getContainer(TurnElementsEnum.Diplo).clear();

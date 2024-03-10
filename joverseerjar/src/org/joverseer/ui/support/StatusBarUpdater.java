@@ -48,6 +48,7 @@ public class StatusBarUpdater implements ApplicationListener {
                 msg = String.format(Messages.getString("StatusBarUpdater.5"), msg, game.getTurn().getSeason(), game.getTurn().getTurnDate()); //$NON-NLS-1$
             }
             if (this.gh.getFile() != null) msg += " - " + this.gh.getFile();  //$NON-NLS-1$
+            if (game.getMaxTurn() != game.getCurrentTurn()) msg += " - " + Messages.getString("StatusBarUpdater.NotCurrentTurn");
         }
         this.theOneApplication.getActiveWindow().getControl().setTitle("JOverseer - " + msg); //$NON-NLS-1$
     }

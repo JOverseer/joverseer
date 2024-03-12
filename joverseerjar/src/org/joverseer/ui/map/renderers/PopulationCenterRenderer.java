@@ -127,6 +127,15 @@ public class PopulationCenterRenderer extends ImageRenderer {
 	    		drawString(g, pcName, p, p);
 	        }
         }
+        
+        map = mapOptions.get(MapOptionsEnum.NationNames);
+        if(map != null && map.equals(MapOptionValuesEnum.NationNamesOn)) {
+        	if(popCenter.getCapital()) {
+        		String nationName = popCenter.getNation().getName();
+        		Point p = new Point(hexCenter.x, hexCenter.y - 4);
+        		drawString(g, nationName, p, p);
+        	}
+        }
     }
     
     private void drawString(Graphics2D g, String str, Point p1, Point p2) {

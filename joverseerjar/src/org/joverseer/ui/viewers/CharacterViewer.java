@@ -411,7 +411,7 @@ public class CharacterViewer extends ObjectViewer {
 		this.order1.setFormObject(c.getOrders()[0]);
 		this.order2.setFormObject(c.getOrders()[1]);
 		this.order3.setFormObject(c.getOrders()[2]);
-		if (this.showOrders) {
+		if (this.showOrders && !c.isDead()) {
 			this.orderPanel.setVisible(true);
 			if (c.getNumberOfOrders() == 3) {
 				this.order3comp.setVisible(true);

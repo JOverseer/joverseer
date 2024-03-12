@@ -63,6 +63,7 @@ for:
     - ant test
     - ant -f joverseerRelease\build.xml windowsInstaller
     - ant -f joverseerRelease\build.xml updatezip
+    - ant -f joverseerRelease\build.xml betaupdatezip
 
   artifacts:
     - path: jOverseerRelease\dist\Output\joverseer-setup*.exe
@@ -71,6 +72,10 @@ for:
       name: latestupdate
     - path: jOverseerRelease\src\feed.xml
       name: feed
+    - path: jOverseerRelease\dist\latestbetaupdate.zip
+      name: latestbetaupdate
+    - path: jOverseerRelease\src\betafeed.xml
+      name: betafeed
 
 -
   matrix:

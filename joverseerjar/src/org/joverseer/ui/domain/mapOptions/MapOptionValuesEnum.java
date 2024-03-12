@@ -22,5 +22,7 @@ public enum MapOptionValuesEnum {
     NationColorsNation,
     NationColorsAllegiance,
     PopCenterNamesOn,
-    PopCenterNamesOff
+    PopCenterNamesOff,
+    NationNamesOn,
+    NationNamesOff
 }

@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.HTMLDocument;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -76,7 +77,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	GameHolder gameHolder;
 
 	public ExportDiploForm(FormModel arg0, GameHolder gameHolder) {
-		super(arg0, "exportDiploForm");
+		super(arg0, "ExportDiploForm");
 		this.gameHolder = gameHolder;
 	}
 
@@ -183,10 +184,9 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		Preferences prefs = Preferences.userNodeForPackage(ExportDiploForm.class);
 		String email = prefs.get("useremail", "");
 		String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
-		InputDialog idlg = new InputDialog("ExportOrdersForm.SendTurnInputDialogTitle");
+		InputDialog idlg = new InputDialog("ExportDiploForm.SendTurnInputDialogTitle");
 		idlg.init(getMessage("ExportOrdersForm.SendTurnInputDialogMessage"));
-		idlg.setTitlePaneTitle("Type email address");
-		idlg.setTitle("Send Diplo");
+		idlg.setTitlePaneTitle(getMessage("ExportOrdersForm.SendTurnInputDialogPaneTitle"));
 		JTextField emailText = new JTextField();
 		idlg.addComponent(getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress"), emailText);
 		idlg.setPreferredSize(new Dimension(400, 80));
@@ -195,7 +195,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 		do {
 			idlg.showDialog();
 			if (!idlg.getResult()) {
-				ErrorDialog.showErrorDialog("exportDiploForm.SendAbortedMessage");
+				ErrorDialog.showErrorDialog("ExportDiploForm.SendAbortedMessage");
 				this.sent = false;
 				return null;
 			}
@@ -210,6 +210,8 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	private File saveDiploFile(Game g, int nationNo, PlayerInfo pi) {
 		String fname = String.format("me%02dv%ddiplo-turn%02d.%03dd", nationNo, pi.getDiploVersion(), g.getCurrentTurn(), g.getMetadata().getGameNo());
 		final JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Game " + Integer.toString(g.getMetadata().getGameNo()) + "d", Integer.toString(g.getMetadata().getGameNo()) + "d"));
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
 		fileChooser.setSelectedFile(new File(fname));
@@ -278,7 +280,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 					try {
 						((HTMLDocument) frm.getJEditorPane().getDocument()).setBase(new URL("http://www.meturn.com/"));
 						frm.getJEditorPane().getEditorKit().read(filePost.getResponseBodyAsStream(), frm.getJEditorPane().getDocument(), 0);
-						this.setDescription(this.getMessage("exportDiploForm.DiploSentByMETURNSuccessMessage", new Object[] { file }));
+						this.setDescription(this.getMessage("ExportDiploForm.DiploSentByMETURNSuccessMessage", new Object[] { file }));
 						this.setTitlePaneTitle(Messages.getString("submitDiploResultsForm.title"));
 						BusyIndicator.clearAt(Application.instance().getActiveWindow().getControl());
 					} catch (Exception exc) {
@@ -348,7 +350,6 @@ public class ExportDiploForm extends ScalableAbstractForm {
 	}
 	
 	public boolean getReadyToClose() {
-		// TODO Auto-generated method stub
 		return this.sent;
 	}
 

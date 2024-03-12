@@ -7,6 +7,23 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.11</title>
+			<pubDate>29 Feb 2024</pubDate>
+			<description>
+		VERSION 1.18.11
+		---------------
+		* Enh: This version includes support for Diplomatic Messages.
+	      This is *Work in Progress* .
+		* Enh: Send Diplomatic messages with orders. See the File menu.
+		* Enh: Send Diplomatic messages to multiple nations.
+		* Enh: Past diplomatic messages are stored with the turn, and accessible in their own View.
+		* Enh: Tell player if a Diplo is due this turn (from XML information).
+		* QA: Support turn PDF changes to GSI rebranding.
+		* Fix: (incomplete) Some order text imports breaking with default names and genders.
+		* Fix: if a submission to meturn fails, then tell the player.
+			</description>
+		</item>		
+		<item>
 			<title>1.18.10</title>
 			<pubDate>14 Feb 2024</pubDate>
 			<description>

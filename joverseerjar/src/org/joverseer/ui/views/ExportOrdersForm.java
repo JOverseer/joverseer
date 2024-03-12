@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -90,6 +91,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 	JComboBox nation;
 	JTextArea orders;
 	JCheckBox chkDontCloseOnFinish;
+	JCheckBox chkShadowOrder;
 	JLabel lblVersionValue = new JLabel("");
 	JLabel lblFile = new JLabel();
 	JLabel lblFileValue = new JLabel("");
@@ -268,7 +270,11 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		this.chkDontCloseOnFinish = new JCheckBox(Messages.getString("ExportOrdersForm.chckbxNewCheckBox.text")); //$NON-NLS-1$
 		this.chkDontCloseOnFinish.setToolTipText(Messages.getString("ExportOrdersForm.chkSendAnother.toolTipText")); //$NON-NLS-1$
 		buttonPanel.add(this.chkDontCloseOnFinish);
-
+		
+		this.chkShadowOrder = new JCheckBox(Messages.getString("ExportOrdersForm.chkShadowOrder.text"));
+		this.chkShadowOrder.setToolTipText(Messages.getString("ExportOrdersForm.chkShadowOrder.toolTipText"));
+		buttonPanel.add(this.chkShadowOrder);
+		
 		return panel;
 	}
 
@@ -337,8 +343,15 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 		Game g = this.gameHolder.getGame();
 		int nationNo = getSelectedNationNo();
 		PlayerInfo pi = g.getTurn().getPlayerInfo(nationNo);
-		String fname = String.format("me%02dv%d.%03d", getSelectedNationNo(), pi.getTurnVersion(), g.getMetadata().getGameNo());
+		
+		//Adds 'shad' onto filename if checkbox ticked
+		String shadowOrd = "";
+		if (this.chkShadowOrder.isSelected()) shadowOrd = "SHADOW";
+		
+		String fname = String.format("me%02dv%d%s.%03d", getSelectedNationNo(), pi.getTurnVersion(), shadowOrd, g.getMetadata().getGameNo());
 		final JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Game " + Integer.toString(g.getMetadata().getGameNo()), Integer.toString(g.getMetadata().getGameNo())));
+		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		fileChooser.setApproveButtonText(getMessage("standardActions.Save"));
 		fileChooser.setSelectedFile(new File(fname));
@@ -402,6 +415,7 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 					String emailRegex = "^(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alnum}@(\\p{Alnum}+(\\.|\\_|\\-)?)*\\p{Alpha}$";
 					InputDialog idlg = new InputDialog("ExportOrdersForm.SendTurnInputDialogTitle");
 					idlg.init(getMessage("ExportOrdersForm.SendTurnInputDialogMessage"));
+					idlg.setTitlePaneTitle(getMessage("ExportOrdersForm.SendTurnInputDialogPaneTitle"));
 					JTextField emailText = new JTextField();
 					idlg.addComponent(getMessage("ExportOrdersForm.SendTurnInputDialog.EmailAddress"), emailText);
 					idlg.setPreferredSize(new Dimension(400, 80));
@@ -472,6 +486,8 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 						this.cancel=true;
 						send = false;
 						filePost.releaseConnection();
+						this.logger.error(String.format("Status: %d",status ));
+						ErrorDialog.showErrorDialog("Unexoected Error",String.format("Status: %d",status ));
 					}
 				}
 			}
@@ -560,6 +576,25 @@ public class ExportOrdersForm extends ScalableAbstractForm implements ClipboardO
 			}
 			if (this.duplicateSkillOrders) {
 				return ErrorDialog.showErrorDialog("ExportOrdersForm.error.CharactersIssuingDuplicateSkillOrders");
+			}
+			if (this.chkShadowOrder.isSelected()) {
+				ConfirmationDialog dlg = new ConfirmationDialog(getMessage("standardMessages.Warning"),
+						getMessage("ExportOrdersForm.warning.ShadowOrder")) {
+					@Override
+					protected void onCancel() {
+						super.onCancel();
+						ExportOrdersForm.this.cancelExport = true;
+					}
+
+					@Override
+					protected void onConfirm() {
+					}
+
+				};
+				dlg.setPreferredSize(new Dimension(500,60));
+				dlg.showDialog();
+				if (this.cancelExport)
+					return false;
 			}
 			if (this.ordersWithErrors) {
 

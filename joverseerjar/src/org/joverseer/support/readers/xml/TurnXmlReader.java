@@ -1068,6 +1068,10 @@ public class TurnXmlReader implements Runnable {
 								if (newPc.getHarbor().getSize() == 0) {
 									newPc.setHarbor(oldPc.getHarbor());
 								}
+								
+								//ATTENTION
+								//Fixes issue of first sighting of enemy popcenter removing flags, however unsure if this creates issues when capitals do change in the game.
+								newPc.setCapital(oldPc.getCapital());
 							}
 							
 							int prevTurnNo = oldPc.getInfoSource().getTurnNo();

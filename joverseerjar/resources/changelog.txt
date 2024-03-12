@@ -1,3 +1,30 @@
+VERSION 1.18.12-rc1
+---------------
+	* Enh: Lots of small tweaks to diplomatic message support.
+	* Enh: New Map Option to visibly mark the Capitals of Nations on the Map.
+	* Enh: On the Economy Calculator, marking a pop. center as lost will select that hex on the map.
+	* Enh: Change Dragons section of InfoView to link to the more up-to-date wiki. Offer to open in default browser.
+	* Enh: In the Current Hex View, don't show orders for dead characters.
+	* Enh: Export Orders now lets you submit 'shadow' orders.
+	* QA: Restrict file types when exporting orders and diplos, to avoid user error accidentally trashing files.
+	* QA: Check For Update is more in-your-face when mentioning that no update is needed.
+	* Fix: Empty Notes are removed. The red exclamation mark is gone.
+	* Fix: Showing navy range now toggles on/off properly on the map.
+	* Fix: Showing navy range now works on open seas.
+	* Fix: Some cases where importing orders, broke intelligence of nation's capital location.
+
+VERSION 1.18.11
+---------------
+	* Enh: This version includes support for Diplomatic Messages.
+	This is *Work in Progress* .
+	* Enh: Send Diplomatic messages with orders. See the File menu.
+	* Enh: Send Diplomatic messages to multiple nations.
+	* Enh: Past diplomatic messages are stored with the turn, and accessible in their own View.
+	* Enh: Tell player if a Diplo is due this turn (from XML information).
+	* QA: Support turn PDF changes to GSI rebranding.
+	* Fix: (incomplete) Some order text imports breaking with default names and genders.
+	* Fix: if a submission to meturn fails, then tell the player.
+	
 VERSION 1.18.10
 ---------------
 	* Enh: Add power2 for discovered artifacts

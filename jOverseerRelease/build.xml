@@ -192,7 +192,6 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
             <fileset file="${dist}/jOverseerUpdater.bat"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
-<!--              <zipfileset dir="${src}/metadata/orderchecker" includes="ks.game" prefix="bin/metadata/orderchecker"/> -->
         </zip>
 	</target>
 	<target name="windowsCompleteNoJavaZip" depends="GatherDependents,WindowsJoverseerLauncher,WindowsUpdaterLauncher,WindowsIcon">
@@ -347,6 +346,8 @@ companyName="Game Systems International" internalName="jOverseer" originalFilena
             <fileset file="${dist}/jOverseer.exe"/>
             <fileset file="${dist}/orderchecker.jar"/>
             <fileset file="${dist}/txt2xml.jar"/>
+            <fileset file="${dist}/joverseer-no3D.bat"/>
+            <fileset file="${dist}/jOverseerUpdater.bat"/>
             <fileset file="${dist}/update.jar"/>	<!--  needed at top too -->
             <zipfileset dir="${dist}" includes="update.jar" prefix="update"/>
         </zip>

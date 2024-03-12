@@ -382,7 +382,6 @@ public class CharacterMessageWrapper {
 			String[] singleResult = text.split(start);
 			// note we skip the first index.
 			for(int index=1;index < singleResult.length;index++) {
-				int i;
 				String[] parts = singleResult[index].split(" - ");
 				if (parts.length < 1)
 					continue;

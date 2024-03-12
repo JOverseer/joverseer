@@ -1077,11 +1077,18 @@ public class TurnNewXmlReader implements Runnable {
 						if (cw.getPopCenterOutcomeSize() != null) {
 							PopulationCenterSizeEnum newSize = PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()); 
 							if (newSize == PopulationCenterSizeEnum.ruins) {
-								// it's possible it got camped on this turn. and combats come before camping and nation reports.
-								if (!pc.getInformationSource().isMoreDetailedThan(InformationSourceEnum.some)) {
+								if (pc.getInfoSource().getTurnNo() != this.turn.getTurnNo()) {
+									// old information is from a previous turn
 									pc.setSize(newSize);
 									pc.setNationNo(0);
 									pc.setInformationSource(InformationSourceEnum.some);
+								} else {
+									// it's possible it got camped on this turn. and combats come before camping and nation reports.
+									if (!pc.getInformationSource().isMoreDetailedThan(InformationSourceEnum.some)) {
+										pc.setSize(newSize);
+										pc.setNationNo(0);
+										pc.setInformationSource(InformationSourceEnum.some);
+									}
 								}
 							} else {
 								pc.setSize(newSize);

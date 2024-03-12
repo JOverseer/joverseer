@@ -365,11 +365,11 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	 * @return
 	 */
 	public boolean isParametersBlank() {
-		if (parameters == null)
+		if (this.parameters == null)
 			return true;
-		if (parameters.length() == 0)
+		if (this.parameters.length() == 0)
 			return true;
-		if (parameters.trim().length() == 0) {
+		if (this.parameters.trim().length() == 0) {
 			return true;
 		}
 		return false;

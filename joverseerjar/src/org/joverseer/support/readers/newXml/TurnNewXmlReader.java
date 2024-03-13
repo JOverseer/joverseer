@@ -107,6 +107,16 @@ public class TurnNewXmlReader implements Runnable {
 			this.digester.addSetProperties("METurn/More/TurnInfo/GameInfo/Option", "name", "name");
 			this.digester.addSetProperties("METurn/More/TurnInfo/GameInfo/Option", "value", "value");
 			this.digester.addSetNext("METurn/More/TurnInfo/GameInfo/Option", "addItem", "org.joverseer.support.readers.newXml.GameInfoOptionWrapper");
+
+			this.digester.addObjectCreate("METurn/More/TurnInfo/Modifiers", "org.joverseer.support.Container");
+			this.digester.addSetNext("METurn/More/TurnInfo/Modifiers", "setModifiers");
+			this.digester.addObjectCreate("METurn/More/TurnInfo/Modifiers/Modifier", "org.joverseer.support.readers.newXml.TurnInfoModifierWrapper");
+			this.digester.addSetProperties("METurn/More/TurnInfo/Modifiers/Modifier", "climate", "climate");
+			this.digester.addSetProperties("METurn/More/TurnInfo/Modifiers/Modifier", "terrain", "terrain");
+			this.digester.addCallMethod("METurn/More/TurnInfo/Modifiers/Modifier", "setModifier", 1);
+			this.digester.addCallParam("METurn/More/TurnInfo/Modifiers/Modifier", 0);			
+			this.digester.addSetNext("METurn/More/TurnInfo/Modifiers/Modifier", "addItem", "org.joverseer.support.readers.newXml.TurnInfoModifierWrapper");
+
 			
 			// parse PCs from old format.
 			// create container for pcs
@@ -655,6 +665,14 @@ public class TurnNewXmlReader implements Runnable {
 			System.out.println(option.name);
 			System.out.println(option.value);
 		}
+		
+		System.out.println("Modifiers for " + this.turnInfo.nationNo);
+		for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.items) {
+			System.out.println(modifier.climate);
+			System.out.println(modifier.terrain);
+			System.out.println(modifier.modifier);
+		}		
+		
 		boolean error = false;
 		String errorMessage = "";
 		

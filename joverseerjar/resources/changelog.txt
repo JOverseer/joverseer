@@ -12,7 +12,8 @@ VERSION 1.18.12-rc2
 	* Fix: Showing navy range now toggles on/off properly on the map.
 	* Fix: Showing navy range now works on open seas.
 	* Fix: Some cases where importing orders, broke intelligence of nation's capital location.
-	* Fix: Battle reports of destroyed PCs are no longer ignored. 
+	* Fix: Battle reports of destroyed PCs are no longer ignored.
+	* Fix: The population attack statistics for expected losses and remainder was swapped.
 
 VERSION 1.18.11
 ---------------

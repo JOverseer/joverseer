@@ -1,0 +1,555 @@
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 1
+M.E. Games Ltd
+presents
+Middle-earth Play By Mail
+Kin-strife, circa 1450
+Game  639
+Line of Eldacar 
+Due Date: OCTOBER 13 2016
+Victory Points: 867
+ 
+ 
+ 
+Top 3  Loyalist Nations
+Kingdom of Arnor [1575]
+Quendi [1200]
+Rhovanion [1200]
+Game: 639
+Player: 1
+Turn: 3
+Security Code: 1570
+ 
+Timothy Huiatt 110434
+Special Nation Abilities
+#1 Scout/recon at double
+#9 New emissaries up to 40
+#20 New armies at 40 morale
+ 
+ 
+ 
+ 
+http://www.middleearthgames.com
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 2
+Line of Eldacar
+(Loyalist Nation)
+Season: Fall
+Relations with other Nations
+Rebels of Ered Lithui Tolerated Rhovanion Tolerated Horselords Tolerated
+Kingdom of Arnor Tolerated Quendi Tolerated Line of Castamir Disliked
+Line of Morlaen Disliked Line of Elendin Disliked Southron Kingdoms Disliked
+Hithlum Disliked Witch-realm of Angmar Disliked Line of Tirkhor Neutral
+Khazad Neutral
+Population Centers
+Buhr Lomia (Capital) Location : @ 2711 in Mixed Forest, Climate is  Mild
+Size: Major Town Fortifications: Tower Loyalty: 74 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 0 0 0 0 747 196 0 0
+Current stores: 0 0 0 0 776 850 1538 -
+A small army bearing the banner of the Line of Eldacar under Veteran Noname is here.
+Buhr Widu Location : @ 3012 in Open Plains, Climate is  Cool
+Size: Major Town Fortifications: Fort Loyalty: 71 Docks: None Hidden?: Yes Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 147 0 0 0 128 0 10 0
+Current stores: 0 0 0 0 145 0 21 -
+Coron Ereg Location : @ 2220 in Open Plains, Climate is  Mild
+Size: Camp Fortifications: None Loyalty: 29 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 297 0 0 0 693 0 9 0
+Current stores: 0 0 0 0 721 0 19 -
+Dale Location : @ 3108 in Open Plains, Climate is  Cool
+Size: Town Fortifications: Tower Loyalty: 53 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 115 0 0 0 773 0 43 0
+Current stores: 0 0 0 0 810 0 92 -
+Gurth-coron Location : @ 3219 in Open Plains, Climate is  Mild
+Size: Camp Fortifications: None Loyalty: 29 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 270 0 0 0 1152 0 81 0
+Current stores: 0 0 0 0 10197 0 171 -
+Mermiton Location : @ 3613 in Hills & Rough, Climate is  Cool
+Size: Camp Fortifications: None Loyalty: 30 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 0 230 0 0 0 304 0 1100
+Current stores: 0 0 0 0 0 0 0 -
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 3
+Romenost Location : @ 3116 in Open Plains, Climate is  Mild
+Size: Town Fortifications: Tower Loyalty: 53 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 70 0 0 0 967 0 11 0
+Current stores: 0 0 0 0 1011 0 23 -
+Thiach Location : @ 2612 in Open Plains, Climate is  Mild
+Size: Camp Fortifications: None Loyalty: 20 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 126 0 0 0 297 0 18 0
+Current stores: 0 0 0 0 0 0 0 -
+Thorontir Location : @ 3316 in Open Plains, Climate is  Mild
+Size: Town Fortifications: Tower Loyalty: 53 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 76 0 0 0 675 0 54 0
+Current stores: 0 0 0 0 709 0 114 -
+Warfinger Location : @ 3616 in Open Plains, Climate is  Mild
+Size: Town Fortifications: Tower Loyalty: 52 Docks: None Hidden?: No Sieged?: No
+Surplus Product Leather Bronze Steel Mithril Food Timber Mounts Gold
+Expected production: 238 0 0 0 848 0 49 0
+Current stores: 0 0 0 0 888 0 103 -
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 4
+Armies and Navies
+Army  Commander: Veteran Harith Location : @ 3120 in Mountains, Climate is  Hot
+Morale: 59      Warships: 0      Transports: 0 (5)      Travel Mode: normal
+      Troops Training Weapon Armor # Troops      Troop Type
+       Loyalist Mounted Skirmishers 52 30 10 651      Light Cavalry
+       Loyalist Knights 15 10 0 94      Heavy Infantry
+   Baggage Train Leather Bronze Steel Mithril
+   Weapons - 0 0 0
+   Armor 0 0 0 0
+   Food 0 The army is out of food
+   War Machines 0
+The City/Keep of Gates of Morannon flying the flag of Line of Elendin is here.
+A large army bearing the banner of the Rebels of Ered Lithui under Regent Finod is here.
+A small army bearing the banner of the Line of Elendin under Commander Ciryang is here.
+An army bearing the banner of the Rebels of Ered Lithui under Captain Emard is here.
+Army  Commander: Veteran Noname Location : @ 2711 in Mixed Forest, Climate is  Mild
+Morale: 40      Warships: 0      Transports: 0 (2)      Travel Mode: normal
+      Troops Training Weapon Armor # Troops      Troop Type
+       Loyalist Knights 10 10 0 400      Heavy Infantry
+   Baggage Train Leather Bronze Steel Mithril
+   Weapons - 0 0 0
+   Armor 0 0 0 0
+   Food 10 The food for this army is getting low
+   War Machines 0
+The Major Town/Tower of Buhr Lomia flying the flag of Line of Eldacar is here.
+Characters travelling with Noname :  Lidmir, Vinyaran
+Company Commanders
+None
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 5
+Market Prices
+Product Leather Bronze Steel Mithril Food Timber Mounts
+Available 13999 10387 0 584 106406 8163 0
+Buy Price 9 13 41 184 3 17 73
+Sell Price 4 6 20 91 1 8 36
+Miscellaneous
+Maintenance Costs expected next turn are Totals for Nation
+Armies: 3929 Product Stores Production
+Population Centers: 3500 Leather 0 1339
+Characters 14740 Bronze 0 230
+Total: 22169 Steel 0 0
+Mithril 0 0
+Tax rate: 39% Food 15257 6280
+Expected revenue: 14750 (-7419) Timber 850 500
+Gold reserve: 94995 Mounts 2081 275
+Ships have been left anchored at the following locations:
+You have the following double agents:
+None
+You have the following hostages:
+None
+You possess the following artifacts:
+Name of artifact Item # Latent Alignment Known Powers
+Greenwood Boots Boots 67 Yes Good Increases Stealth by 20
+Castamir’s Bane Axe 70 No Good Increases Damage by 750
+Vidugavia’s Needle Lance 81 No Good Increases Damage by 1250
+Tinculin Harp 232 Yes Neutral Increases Mage Rank by 40
+Nenya Ring 259 Yes Good Increases Mage Rank by 50
+You have no hidden artifacts
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 6
+Messages
+Nation Messages
+There are rumors of an armed conflict involving the Rebels of Ered Lithui at 3120.
+There are rumors of an armed conflict involving Rhovanion at 2520.
+There are rumors of an encounter involving Edrahil at 1723.
+156 Gold was stolen at Coron Ereg.
+50000 Gold was transported from the Khazad to Buhr Lomia.
+There are rumors of an encounter involving Iriel at 4022.
+Encounter Messages
+Encounter for Eldacar at 3414.
+Making his way along a narrow pass, the poor weather lending need for caution, Eldacar noticed a thin rope, silver in the dim
+light, tied to a rock, and dropping down into what looked to be a ravine. Low cloud and heavy mist made seeing more than a
+few feet down, but, testing the knot, he reckoned it should hold his weight, should he  wish to risk a descent.
+FLEE, leaving the rope and dangerous situation behind.
+CLIMB down the rope.
+UNTIE the rope.
+CUT the rope.
+How will Eldacar react ? (Choose any reaction shown in all CAPS or provide info requested in parenthesis. If no reaction is
+given, he will be assumed to have chosen "FLEE". )
+Encounter for Magor at 1422.
+Magor entered a long dusty passage which seemed to go deeper into the earth.
+The farther he traveled, the more he got the feeling that something was watching him.
+Finally, Spirit forms began to take shape around him. Wights, too, began to appear and to move menacingly toward him.
+The battle was short but fierce. He fought with SUCH grim determination that their etheral bodies fled in confusion!
+In a dark corner of an even darker alcove a magical Harp named "Tinculin" lay quietly glowing. Magor took it with him.
+Combat Messages
+Battle at 3120
+In the Hot climate of the Mountains of 3120, armies prepared for battle about midnight under an overcast sky.
+At the head of a demoralized army rode Commander Ciryang of the nation of the Line of Elendin. The mount on which he
+rode stood cautiously at the rear of the battle lines. Behind him the forming ranks were filled with:
+Troops Weapon Armor Formation
+500 Mounted Knights of the Old Guard wooden steel a mob
+At the head of a calm army rode Captain Emard of the nation of the Rebels of Ered Lithui. In his hands was borne the glowing
+Long Sword called Bright Shining. The mount on which he rode moved calmly to the front of the battle lines. Behind him the
+forming ranks were filled with:
+Troops Weapon Armor Formation
+1400 Mounted Rebel Scouts bronze/steel bronze ragged ranks
+At the head of a highly energetic army rode Regent Finod of the nation of the Rebels of Ered Lithui. In his hands was borne
+the glowing Dagger called Silent Wing. The mount on which he rode cantered anxiously along the side of the battle lines.
+Behind him the forming ranks were filled with:
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 7
+Troops Weapon Armor Formation
+900 Mounted Rebel Scouts bronze leather ragged ranks
+1320 Rebel Axemen wooden/bronze bronze/steel ragged ranks
+747 Rebel Pikemen bronze/steel bronze ragged ranks
+747 Rebel Archers arrows bronze ragged ranks
+747 Rebel Reserves bronze/steel bronze ragged ranks
+At the head of a calm army rode Veteran Harith of the nation of the Line of Eldacar. The mount on which he rode moved
+calmly to the front of the battle lines. Behind him the forming ranks were filled with:
+Troops Weapon Armor Formation
+2100 Loyalist Mounted Skirmishers bronze leather ragged ranks
+300 Loyalist Knights wooden none a mob
+At the head of a highly energetic army rode Veteran Heldiriel of the nation of the Line of Elendin. In his hands was borne the
+glowing Sword called Guardsblade. The mount on which he rode cantered anxiously along the side of the battle lines. Behind
+him the forming ranks were filled with:
+Troops Weapon Armor Formation
+1326 Scouts of the Realm bronze/steel bronze ragged ranks
+580 Knights of Gondor wooden/bronze leather/bronze ragged ranks
+497 Axemen of Gondor bronze/steel bronze ragged ranks
+The City of Gates of Morannon flying the flag of the Line of Elendin is situated in the Mountains here. It is fortified by a
+Keep.
+Report from Harith … My commanders moved among the troops before battle, readying them, bolstering their resolve, and
+issuing last minute orders. These troops didn't need much encouragement and waved and joked with their Commanders,
+offering bets on who would find the best plunder. Finally the order was given in loud commands. "Charge!! Charge!!"Harith
+reports that against the forces of Ciryang, they met our charge with their standard formation. Harith reports that against the
+forces of Heldiriel, they met our charge with their standard formation.
+After the battle had joined in earnest, heroes made their presence known all over the battlefield.
+Emard fought side by side with the troops and diverted many a blade during the pitched battle with his glowing Long Sword.
+Heldiriel rode among the troops with his glowing Sword, exhorting them to do their best and daring the enemy to meet him.
+Report from Harith ….. Our cavalry were severely hampered by the mountainous terrain and the steep cliffs. While our foot
+soldiers were forced to fight the terrain as well as the enemy in these boulder filled ravines and high trails. The troops fought
+very well, but more training would have raised them to great heights. They fought with great spirit. Although the enemy fought
+hard, we finally succeeded in overwhelming them after a long battle.
+Commanders on the scene ordered their troops to salvage what they could from the remains of the enemy forces..
+Captain Emard:
+2014 Food
+Veteran Harith:
+679 Food
+After the battle. …Ciryang's forces were destroyed/routed in the battle. Ciryang appeared to have survived but suffers from
+serious wounds. Emard's forces were victorious in the battle, but suffered severe losses. Emard appeared to have survived.
+Finod's forces found no enemy armies to fight. Harith's forces were victorious in the battle, but suffered severe losses. Harith
+appeared to have survived. Heldiriel's forces were destroyed/routed in the battle. Heldiriel appeared to have survived but
+suffers from serious wounds.
+Battle at 2720
+In the Mild climate of the Hills & Rough of 2720, armies prepared for battle in the early hours of the evening under a omen-
+filled sky.
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 8
+At the head of a rebellious army rode Commander Daeron of the nation of the Line of Castamir. The mount on which he rode
+moved with trepidation to the center of the battle lines. Behind him the forming ranks were filled with:
+Troops Weapon Armor Formation
+1500 Knights of the Watch wooden/bronze leather/bronze ragged ranks
+100 City Guardsmen bronze bronze ragged ranks
+The Town of Buhr Mantros flying the flag of the Line of Eldacar is situated in the Hills & Rough here. It is fortified by a
+Tower, and it is under siege or attack.
+Daeron's forces found no enemy armies to fight.
+The battle for Buhr Mantros was over even before it began. The attackers were so numerous and strong that the defending
+militia had little chance to save themselves. The battle was over in just a few hours!!
+After the attack on the population center. …
+Daeron's army survived the attack on the Town, but suffered some losses. Daeron appeared to have survived.
+The Town has been reduced to a Village. The Tower has not been affected.
+The Village has been under siege/attack this turn.
+The Village now flies the flag of the Line of Castamir.
+Special Messages
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 9
+Orders Given
+Character Order # Order Code Additional Information…
+Aerinel 710 PrenMgy
+Aerinel 940 CstLoSp 412  54  ^  ^  ^  ^  ^ 
+Carnedil 215 RfsPers
+Carnedil 360 TrArt finod  237  ^  ^  ^  ^  ^ 
+Eldacar 555 CreCmp -- 
+Eldacar 710 PrenMgy
+Eldacar 810 MovChar 3414 
+Harith 215 RfsPers
+Harith 230 AttEnmy ch 
+Howru 734 NamEmis --  M  ^ 
+Howru 810 MovChar 2610 
+Lidmir 185 DnStNat 13 
+Lidmir 785 JnArmy nonam 
+Magor 290 InvEnc
+Magor 940 CstLoSp 436  ista   ^  ^  ^  ^  ^ 
+Mikka 325 NatSell le  100 
+Mikka 605 GrdLoc
+Munara 520 InfYour
+Munara 810 MovChar 3418 
+Noname 605 GrdLoc
+Noname 770 HrArmy 400  hi  wo  no  10 
+Ohoho 300 ChTaxRt 39 
+Ohoho 605 GrdLoc
+Scouter 555 CreCmp -- 
+Scouter 810 MovChar 2611 
+Vinyaran 710 PrenMgy
+Vinyaran 785 JnArmy nonam 
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 10
+Characters
+Aerinel Ranks: Command  0 Agent  10 Emissary  0 Mage  48
+Health  100 Stealth  0 Challenge  49
+Artifacts: 
+Spells (+0): #106 Deflections (64)  #108 Blessings (60)  #204 Wild Flames (76)
+  #222 Words of Stun (58)  #412 Research Artifact (83) 
+Aerinel was located in the Open Plains at 3616.
+She was ordered to prentice magery. The prentice magery was successful and her Mage rank has been
+improved.
+She was ordered to cast a lore spell. Research Artifact - Bow of Thunder and Bone #54 is a Bow -
+allegiance: Evil - increases combat damage by 1000 pts. Possession of the artifact can allow casting of
+the spell Summon Storms.
+She is currently in the Open Plains at 3616. The Town / Tower of Warfinger flying the flag of the
+Line of Eldacar is here.
+Carnedil Ranks: Command  0 Agent  10 Emissary  0 Mage  33
+Health  100 Stealth  0 Challenge  49
+Artifacts:  #70 Castamir’s Bane*  
+Spells (+0): #2 Minor Heal (58)  #310 Major Return (61)  #415 Scry Area (53) 
+Carnedil was located in the Mountains at 3120.
+He was ordered to refuse all personal challenges.
+He was ordered to transfer some artifacts to a character. Valacar’s Mail #237 was transferred.
+He is currently in the Mountains at 3120. The City / Keep of Gates of Morannon flying the flag of
+the Line of Elendin is here.
+Eldacar Ranks: Command  40 Agent  0 Emissary  63 Mage  32
+Health  100 Stealth  0 (20) Challenge  80 Champion 
+Artifacts:  #67 Greenwood Boots   #81 Vidugavia’s Needle*  
+Spells (+0): #104 Resistance (91)  #304 Fast Stride (63)  #310 Major Return (50) 
+Eldacar was located in the Hills & Rough at 3613.
+He was ordered to create a camp. The population center name provided was already in use. A camp
+named Mermiton was created.
+He was ordered to prentice magery. The prentice magery was successful and his Mage rank has been
+improved.
+He was ordered to move. He accepted the movement orders.
+He had a special encounter.
+He is currently in the Hills & Rough at 3414.
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 11
+Harith Ranks: Command  12 Agent  10 Emissary  0 Mage  30
+Health  100 Stealth  0 Challenge  34
+Artifacts: 
+Spells (+0): #210 Words of Calm (71)  #304 Fast Stride (85)  #310 Major Return (74) 
+Harith was located in the Mountains at 3120.
+He was ordered to refuse all personal challenges.
+He was ordered to have his army attack all of his enemies.
+See Combat Messages.
+Lack of Food may have affected army movement. Lack of Food restricted the army morale.
+He commands an army in the Mountains at 3120. The City / Keep of Gates of Morannon flying
+the flag of the Line of Elendin is here.
+Howru Ranks: Command  0 Agent  0 Emissary  40 Mage  0
+Health  100 Stealth  0 Challenge  35+
+Artifacts: 
+Spells (+0):
+Howru was located in the Mixed Forest at 2711.
+He was ordered to name a new emissary. The character name provided was already in use. A new
+emissary named Marhwini was available.
+He was ordered to move. He accepted the movement orders.
+He is currently in the Mixed Forest at 2610.
+Lidmir Ranks: Command  30 Agent  0 Emissary  0 Mage  30
+Health  100 Stealth  0 Challenge  52+
+Artifacts: 
+Spells (+0): #218 Wall of Wind (65)  #304 Fast Stride (50)  #502 Weakness (99) 
+Lidmir was located in the Mixed Forest at 2711.
+He was ordered to downgrade our relations. He was not able to downgrade our relations because the
+populace did not support it. Continued efforts may succeed.
+He was ordered to join an army. He joined the army commanded by Noname.
+He is traveling with Noname in the Mixed Forest at 2711. The Major Town / Tower of Buhr
+Lomia flying the flag of the Line of Eldacar is here.
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 12
+Magor Ranks: Command  0 Agent  10 Emissary  0 Mage  60 (150)
+Health  93 Stealth  0 Challenge  151
+Artifacts:  #232 Tinculin   #259 Nenya  
+Spells (+90): #8 Heal True (58)  #314 Teleport (80)  #414 Scry Hex (82)  #415 Scry Area (86)
+  #420 Reveal Character (92)  #436 Scry Character (68) 
+Magor was located in the Mountains at 1422.
+Magor was ordered to investigate encounters/strange rumors.
+He was ordered to cast a lore spell. Scry Character - There is no (or no longer a) character with id "ista
+".
+He is currently in the Mountains at 1422.
+Marhwini Ranks: Command  0 Agent  0 Emissary  49 Mage  0
+Health  100 Stealth  0 Challenge  24
+Artifacts: 
+Spells (+0):
+Marhwini has a special ability. He has a bonus to his Emissary rank.
+He is currently in the Mixed Forest at 2711. The Major Town / Tower of Buhr Lomia flying the
+flag of the Line of Eldacar is here.
+Mikka Ranks: Command  10 Agent  23 Emissary  0 Mage  0
+Health  100 Stealth  0 Challenge  19
+Artifacts: 
+Spells (+0):
+Mikka was located in the Mixed Forest at 2711.
+She was ordered to have the nation sell to the caravans. 4901 Leather were sold for 34307 Gold.
+She was ordered to guard the location. Buhr Lomia was guarded.
+She is currently in the Mixed Forest at 2711. The Major Town / Tower of Buhr Lomia flying the
+flag of the Line of Eldacar is here.
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 13
+Munara Ranks: Command  0 Agent  0 Emissary  44 Mage  0
+Health  100 Stealth  0 Challenge  22
+Artifacts: 
+Spells (+0):
+Munara was located in the Mixed Forest at 2711.
+He was ordered to influence the population center loyalty. The loyalty was influenced/improved at
+Buhr Lomia.
+He was ordered to move. He accepted the movement orders.
+He is currently in the Open Plains at 3418.
+Noname Ranks: Command  10 Agent  24 Emissary  0 Mage  0
+Health  100 Stealth  0 Challenge  35+
+Artifacts: 
+Spells (+0):
+Noname was located in the Mixed Forest at 2711.
+She was ordered to guard the location. Buhr Lomia was guarded.
+She was ordered to hire an army. An army of 400 Heavy Infantry with 10 Food was hired.
+She commands an army in the Mixed Forest at 2711. The Major Town / Tower of Buhr Lomia
+flying the flag of the Line of Eldacar is here.
+Ohoho Ranks: Command  10 Agent  22 Emissary  0 Mage  0
+Health  100 Stealth  0 Challenge  33+
+Artifacts: 
+Spells (+0):
+Ohoho was located in the Mixed Forest at 2711.
+He was ordered to change the tax rate. The tax rate was changed to 39. Loyalty has been affected.
+He was ordered to guard the location. Buhr Lomia was guarded.
+He is currently in the Mixed Forest at 2711. The Major Town / Tower of Buhr Lomia flying the
+flag of the Line of Eldacar is here.
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 14
+Scouter Ranks: Command  0 Agent  0 Emissary  44 Mage  0
+Health  100 Stealth  23 Challenge  22
+Artifacts: 
+Spells (+0):
+Scouter was located in the Open Plains at 2612.
+He was ordered to create a camp. The population center name provided was already in use. A camp
+named Thiach was created.
+He was ordered to move. He accepted the movement orders.
+He is currently in the Open Plains at 2611.
+Vinyaran Ranks: Command  10 Agent  0 Emissary  0 Mage  33
+Health  100 Stealth  0 Challenge  35
+Artifacts: 
+Spells (+0): #108 Blessings (50)  #502 Weakness (62)  #504 Sickness (50) 
+Vinyaran was located in the Mixed Forest at 2711.
+He was ordered to prentice magery. The prentice magery was successful and his Mage rank has been
+improved.
+He was ordered to join an army. He joined the army commanded by Noname.
+He is traveling with Noname in the Mixed Forest at 2711. The Major Town / Tower of Buhr
+Lomia flying the flag of the Line of Eldacar is here.
+Game 639 Line of Eldacar (1)     Turn: 3
+ Page 15
+2409
+2410
+241
+2412
+2413
+2414
+2415
+2416
+2417
+2418
+2419
+2420
+2421
+2509
+2510
+251
+2512
+2513
+2514
+2515
+2516
+2517
+2518
+2519
+2520
+2521
+2609
+2610
+261
+2612
+2613
+2614
+2615
+2616
+2617
+2618
+2619
+2620
+2621
+2709
+2710
+271
+2712
+2713
+2714
+2715
+2716
+2717
+2718
+2719
+2720
+2721
+2809
+2810
+281
+2812
+2813
+2814
+2815
+2816
+2817
+2818
+2819
+2820
+2821
+2909
+2910
+291
+2912
+2913
+2914
+2915
+2916
+2917
+2918
+2919
+2920
+2921
+309
+3010
+301
+3012
+3013
+3014
+3015
+3016
+3017
+3018
+3019
+3020
+3021
+3109
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+3120
+3121
+3209
+321
+3213
+3215
+3217
+3219
+321

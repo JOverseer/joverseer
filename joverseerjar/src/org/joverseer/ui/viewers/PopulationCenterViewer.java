@@ -458,7 +458,7 @@ public class PopulationCenterViewer extends ObjectViewer {
 			if (ca == null)
 				return;
 			int captureEHI = ca.getHI().getNumber();
-			int lostEHI = (int) Math.round(captureEHI * (100d - ca.getLosses()) / 100);
+			int lostEHI = (int) Math.round(captureEHI * ca.getLosses() / 100);
 
 			String msg = Messages.getString("PopulationCenterViewer.CombatStats", new Object[] {
 					pc.getName(),strength,captureEHI,lostEHI}); //$NON-NLS-1$

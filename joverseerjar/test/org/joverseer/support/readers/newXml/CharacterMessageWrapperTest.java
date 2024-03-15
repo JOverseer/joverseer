@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.Nation;
 import org.joverseer.support.infoSources.InfoSource;
+import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.readers.pdf.OrderResult;
 import org.junit.After;
 import org.junit.Before;
@@ -28,22 +29,36 @@ public class CharacterMessageWrapperTest {
 		is.setTurnNo(1);
 		GameMetadata gm = new GameMetadata();
 		
-		// artifact appearing twice
-		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
+		// bug:
+		// order asked for 3 artifacts, but only 2 worked.
+		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Curaran #51 is a Bow - allegiance: None - increases combat damage by 500 pts. Possession of the artifact can allow casting of the spell Major Heal.  Research Artifact -  Fire Mace #52 is a Mace - allegiance: None - increases combat damage by 750 pts. He was not able to cast the spell. Continued efforts may succeed.",is);
 		assertNotNull(or);
 		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
 		org.joverseer.support.readers.newXml.RAResultWrapper ra = (org.joverseer.support.readers.newXml.RAResultWrapper)or;
 		assertEquals(2, ra.artifacts.size());
-		ArtifactWrapper aw = ra.artifacts.get(0);
+		ArtifactWrapper aw = ra.artifacts.get(1);
+		assertEquals("Fire Mace",aw.name );
+		assertEquals(52,aw.id );
+		assertNull(aw.alignment);
+		assertEquals(15,aw.combat);
+		assertEquals("Unknown",aw.latent);
+		
+		// artifact appearing twice
+		or = cmw.getRAResult("He was ordered to cast a lore spell.  Research Artifact -  Calris Light Cleaver #164 is a Sword - allegiance: None - increases combat damage by 1000 pts. Possession of the artifact can allow casting of the spell Divine Nation Forces.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.  Research Artifact -  Castamir’s Bane #165 is an Axe - allegiance: None - increases combat damage by 750 pts. Possession of the artifact can allow casting of the spell Heal True.", is);
+		assertNotNull(or);
+		assertEquals("org.joverseer.support.readers.newXml.RAResultWrapper", or.getClass().getName());
+		ra = (org.joverseer.support.readers.newXml.RAResultWrapper)or;
+		assertEquals(2, ra.artifacts.size());
+		aw = ra.artifacts.get(0);
 		assertEquals("Calris Light Cleaver",aw.name );
 		assertEquals(164,aw.id );
 		assertNull(aw.alignment);
-		assertEquals(1000,aw.combat);
+		assertEquals(20,aw.combat);
 		assertEquals("Divine Nation Forces",aw.latent);
 		aw = ra.artifacts.get(1);
 		assertEquals("Castamir’s Bane",aw.name );
 		assertEquals(165,aw.id );
-		assertEquals(750,aw.combat);
+		assertEquals(15,aw.combat);
 		assertEquals("Heal True",aw.latent);
 
 		or = cmw.getOwnedLAOrderResult("She was ordered to cast a lore spell. Locate Artifact - Dwarven Ring of Power #10may be possessed by\r\nThrelin at or near 3218.");
@@ -92,7 +107,7 @@ public class CharacterMessageWrapperTest {
 		assertEquals(99,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactNo());
 		assertEquals("Boots of Tracelessness",((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getArtifactName());
 		assertEquals(1234,((org.joverseer.support.readers.pdf.LocateArtifactResultWrapper)or).getHexNo());
-		
+				
 		or = cmw.getRCTOrderResult("He was ordered to cast a lore spell. Reveal Character True - Frodo is located in the Shore/Plains at 2324.");
 		assertNotNull(or);
 		assertEquals("org.joverseer.support.readers.pdf.RevealCharacterTrueResultWrapper", or.getClass().getName());

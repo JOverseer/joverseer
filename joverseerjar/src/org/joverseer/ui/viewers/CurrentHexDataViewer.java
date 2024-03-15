@@ -71,6 +71,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 	ArrayList<EncounterViewer> encounterViewers = new ArrayList<EncounterViewer>();
 	ArrayList<JPanel> encounterPanels = new ArrayList<JPanel>();
 	JScrollPane scp;
+	Color background;
 
 	//injected dependencies
 	GameHolder gameHolder;
@@ -83,6 +84,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 
 	@Override
 	protected JComponent createControl() {
+		this.background = Color.white;
 		TableLayoutBuilder tlb = new TableLayoutBuilder();
 		this.popCenterViewer = new PopulationCenterViewer(FormModelHelper.createFormModel(new PopulationCenter()),this.gameHolder);
 		this.popCenterPanel = new JPanel();
@@ -92,7 +94,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.cell(this.popCenterPanel, "align=left"); //$NON-NLS-1$
 		tlb.row();
 		this.popCenterPanel.setVisible(false);
-		this.popCenterPanel.setBackground(Color.white);
+		this.popCenterPanel.setBackground(this.background);
 
 		tlb.separator(Messages.getString("CurrentHexDataViewer.Armies")); //$NON-NLS-1$
 		tlb.row();
@@ -115,7 +117,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.characterViewers.add(vc);
 			JPanel cp = new JPanel();
 			cp.add(vc.getControl());
-			cp.setBackground(Color.white);
+			cp.setBackground(this.background);
 			this.characterPanels.add(cp);
 			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
@@ -130,7 +132,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.artifactViewers.add(av);
 			this.artifactPanels.add(ap);
 			ap.add(av.getControl());
-			ap.setBackground(Color.white);
+			ap.setBackground(this.background);
 			tlb.cell(ap, "align=left"); //$NON-NLS-1$
 			tlb.row();
 			ap.setVisible(false);
@@ -143,7 +145,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.nationMessageViewers.add(nmv);
 			JPanel cp = new JPanel();
 			cp.add(nmv.getControl());
-			cp.setBackground(Color.white);
+			cp.setBackground(this.background);
 			this.nationMessagePanels.add(cp);
 			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
@@ -157,7 +159,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.combatViewers.add(cv);
 			JPanel cp = new JPanel();
 			cp.add(cv.getControl());
-			cp.setBackground(Color.white);
+			cp.setBackground(this.background);
 			this.combatPanels.add(cp);
 			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
@@ -168,7 +170,7 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 			this.encounterViewers.add(cv);
 			JPanel cp = new JPanel();
 			cp.add(cv.getControl());
-			cp.setBackground(Color.white);
+			cp.setBackground(this.background);
 			this.encounterPanels.add(cp);
 			tlb.cell(cp, "align=left"); //$NON-NLS-1$
 			tlb.row();
@@ -183,10 +185,10 @@ public class CurrentHexDataViewer extends AbstractView implements ApplicationLis
 		tlb.cell(this.hexInfoPanel, "align=left"); //$NON-NLS-1$
 		tlb.row();
 		this.hexInfoPanel.setVisible(false);
-		this.hexInfoPanel.setBackground(Color.white);
+		this.hexInfoPanel.setBackground(this.background);
 
 		this.panel = tlb.getPanel();
-		this.panel.setBackground(Color.white);
+		this.panel.setBackground(this.background);
 		this.panel.setPreferredSize(new Dimension(240, 3000));
 		this.scp = new JScrollPane(this.panel);
 		this.scp.setPreferredSize(new Dimension(240, 1500));

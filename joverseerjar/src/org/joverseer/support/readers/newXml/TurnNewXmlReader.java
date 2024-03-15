@@ -651,9 +651,11 @@ public class TurnNewXmlReader implements Runnable {
 	}
 	
 	private void updateGameSetup(Game game1) throws Exception {
-		for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.items) {
-			System.out.println(option.name);
-			System.out.println(option.value);
+		if (logger.isDebugEnabled()) {
+			for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.items) {
+				logger.debug("gameInfo "+ option.name + "="+ option.value);
+			}
+			
 		}
 		boolean error = false;
 		String errorMessage = "";

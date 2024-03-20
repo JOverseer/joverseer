@@ -765,7 +765,7 @@ public class TurnNewXmlReader implements Runnable {
 			for (int i = 0; i < turnsDue.length; i++) {
 				try {
 					int t = Integer.parseInt(turnsDue[i]);
-					if (t == this.game.getCurrentTurn() && pi != (null)) {
+					if (t == this.game.getCurrentTurn() - 1 && pi != (null)) {
 						pi.setDiploDue(true);
 						break;
 					}

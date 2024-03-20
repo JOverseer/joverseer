@@ -6,6 +6,8 @@ package org.joverseer.ui.views;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -13,11 +15,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.controls.DualJListSelector;
+import org.joverseer.ui.support.controls.NationDualListSelector;
 import org.joverseer.ui.support.controls.NationJList;
 import org.joverseer.ui.support.dialogs.ErrorDialog;
 import org.springframework.context.ApplicationEvent;
@@ -55,6 +61,9 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	NationJList nationList;
 	JScrollPane listScroll;
 	
+	DualJListSelector testList;
+	NationDualListSelector nationDList;
+	
 	int nationsCount = 1;
 	String[] nationsSelection = null;
 
@@ -82,42 +91,24 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		JPanel nationPanelInstr = new JPanel();
 		nationPanelInstr.setLayout(new FlowLayout(FlowLayout.LEFT));
 		nationPanel.add(nationPanelInstr);
-		JLabel nationInstr = new JLabel("<html>Select which nations you control here<br/><font size=2>To select multiple nations, hold 'ctrl' ('cmd' on mac) and click</font><html>", SwingConstants.LEFT);
+		JLabel nationInstr = new JLabel("<html>Select which nations you control here<br/><font size=2>Double click on a nation to move it between lists.</font><html>", SwingConstants.LEFT);
 		nationPanelInstr.add(nationInstr);
 		
 		JPanel listPanel = new JPanel();
 		listPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		nationPanel.add(listPanel);
-		
-		
-		
-		this.nationList = new NationJList(this.gameHolder);
-		
-		this.nationList.setPreferredSize(new Dimension(100,108));
-		this.nationList.setVisibleRowCount(6);
-		this.listScroll = new JScrollPane(this.nationList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		listPanel.add(this.listScroll);	
+		this.nationDList = new NationDualListSelector(this.gameHolder);
+		this.nationDList.setListSize(6, 90);
+		setupListListeners();
+
+		listPanel.add(this.nationDList);
 		
 		JPanel nationPanelButton = new JPanel();
 		nationPanelButton.setLayout(new BoxLayout(nationPanelButton, BoxLayout.Y_AXIS));
 		nationPanelButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		listPanel.add(nationPanelButton);
-		
-		this.btNationSave = new JButton(Messages.getString("DiploMessageForm.SaveSelectionButton"));
-		this.btNationSave.setEnabled(false);
-		this.btNationSave.addActionListener(new ActionListener() {
-			
-          @Override
-			public void actionPerformed(ActionEvent e) {
-        	  saveNationSelection();
-          }
-		});
-		nationPanelButton.add(this.btNationSave);
-		
-		this.lbCurrentNations = new JLabel("");
-		nationPanelButton.add(this.lbCurrentNations);
 		
 		JPanel dipMessPanel = new JPanel();
 		dipMessPanel.setLayout(new BoxLayout(dipMessPanel, BoxLayout.Y_AXIS));
@@ -232,6 +223,35 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	}
 	
 	/**
+	 * Attaches listeners to both the lists, so if any changes are made to either the saved nations gets updated.
+	 */
+	private void setupListListeners() {
+        this.nationDList.getSelectedList().addListSelectionListener(new ListSelectionListener() {
+        	boolean busy = false;
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+            	if(!this.busy) {
+            		this.busy = true;
+            		saveNationSelection();
+            		this.busy = false;
+            	}
+            }
+        });	
+        
+        this.nationDList.getDeSelectedList().addListSelectionListener(new ListSelectionListener() {
+        	boolean busy = false;
+            @Override
+            public void valueChanged(ListSelectionEvent arg0) {
+            	if(!this.busy) {
+            		this.busy = true;
+            		saveNationSelection();
+            		this.busy = false;
+            	}
+            }
+        });	
+    }
+	
+	/**
 	 * Gets the character count of the diplo message without including hte new line characters
 	 * @param txt: The diplomatic message
 	 * @return: returns the lenght of the filtered message
@@ -243,7 +263,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	}
 	
 	/**
-	 * Keeps live character count updated, selected nations label, and other parts of the UI up to date as needed.
+	 * Keeps live character count updated, and other parts of the UI up to date as needed.
 	 * 
 	 * @param len: Current character count 
 	 */
@@ -266,24 +286,11 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		
 		String txt = String.format("<html>Character count: <font color='%s'>%s</font><br/>Note: You don't have to include your own nation names!<html>", colour, charCount);
 		this.lbLiveCount.setText(txt);
-		
-		//Creates list of selected nations whilst keeping white spacing the same
-		String[] temp = new String[5];
-		for (int i = 0; i < temp.length; i++) {
-			if (i < this.inputDiplo.getNumberOfNations()) {
-				temp[i] = this.inputDiplo.getNations()[i];
-			}
-			else {
-				temp[i] = "";
-			}
-		}
-		
+				
 		if (this.inputDiplo.getMessage() != null) {
 			this.btReload.setEnabled(true);
 			this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));
 		}
-		txt = String.format("<html>Selected Nations:<font size=2><br/>%s</br></font><html>", String.join("</br><br/>", temp));
-		this.lbCurrentNations.setText(txt);
 		
 	}
 	
@@ -291,11 +298,8 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 	 * Updates which nations the diplo is for, updating saved info and UI as needed.
 	 */
 	private void saveNationSelection() {
-		String[] nations = this.nationList.getSelectedNations();
-		if (nations == null) {
-			ErrorDialog.showErrorDialog("No nation selected");
-			return;
-		}
+		String[] nations = this.nationDList.getSelectedNations();
+
 		this.nationsCount = nations.length;
 		this.nationsSelection = nations;
 		this.inputDiplo.setNations(nations);
@@ -314,13 +318,11 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     	switch(e.getType()) {
     	case GameChangedEvent:
         	super.resetGame();
-            refreshList();
             this.loadDiplo(true);
 
             break;
     	case SelectedTurnChangedEvent:    
-            refreshList();
-            this.loadDiplo(false);
+    		this.loadDiplo(false);
               
             break;
     	}
@@ -354,14 +356,17 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     		if (this.inputDiplo.getNations() == null) {
         		this.nationsSelection = (new String[] {this.gameHolder.getGame().getMetadata().getNationByNum(this.gameHolder.getGame().getMetadata().getNationNo()).getName()});
         		this.inputDiplo.setNations(this.nationsSelection);
+        		this.refreshList(true, null);
     		}
     		else {
     			this.nationsSelection = this.inputDiplo.getNations();
+    			this.refreshList(false, this.getNationNos());
     		}
 
     	}
     	else {
     		this.inputDiplo.setNations(this.nationsSelection);
+    		this.refreshList(false, this.getNationNos());
     	}
     	this.nationsCount = this.nationsSelection.length;
         
@@ -377,7 +382,7 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
         	this.lbDiploReminder.setText("");
         }
         
-        this.btNationSave.setEnabled(true);
+        //this.btNationSave.setEnabled(true);
         this.diplomaticMess.setEditable(true);
         if (this.inputDiplo.getMessage() == null) {		//Load message into text area
         	this.diplomaticMess.setText(Messages.getString("DiploMessageForm.DefaultTextAreaNewGame"));
@@ -394,10 +399,22 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
     /**
      * Refreshes nation lists content. 
      */
-    private void refreshList() {
-    	this.nationList.load(true, false);
-    	this.nationList.setPreferredSize(new Dimension(100,18 * this.game.getMetadata().getNations().size()));
-    	this.listScroll.repaint();
+    private void refreshList(boolean autoFocus, int[] inputNationNos) {
+    	this.nationDList.load(autoFocus, false, inputNationNos);
+    	this.nationDList.refreshLists();
+    }
+    
+    /**
+     * 
+     * @return int[] of the saved nation numbers
+     */
+    private int[] getNationNos() {
+    	int[] nos = new int[this.nationsSelection.length];
+    	for (int i = 0; i < nos.length; i++) {
+    		nos[i] = this.gameHolder.getGame().getMetadata().getNationByName(this.nationsSelection[i]).getNumber();
+    	}
+    	
+    	return nos;
     }
 
     /**
@@ -405,6 +422,8 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
      */
     private void saveMessage() {
     	Turn t = this.gameHolder.getGame().getTurn();
+    	saveNationSelection();
+    	
     	this.inputDiplo.setMessage(this.diplomaticMess.getText());
     	this.btReload.setEnabled(false);
     	this.btReload.setText(Messages.getString("DiploMessageForm.ReloadButton"));

@@ -3,7 +3,6 @@ package org.joverseer.ui.command;
 import java.util.ArrayList;
 
 import org.joverseer.domain.Character;
-import org.joverseer.domain.PopulationCenter;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;

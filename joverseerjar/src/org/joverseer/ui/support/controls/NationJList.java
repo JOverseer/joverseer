@@ -1,6 +1,5 @@
 package org.joverseer.ui.support.controls;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 

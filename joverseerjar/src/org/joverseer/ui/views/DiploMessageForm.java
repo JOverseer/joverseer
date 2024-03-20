@@ -6,8 +6,6 @@ package org.joverseer.ui.views;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -38,7 +36,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.Box;
 

@@ -2,7 +2,6 @@ package org.joverseer.tools.combatCalc;
 
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.NationRelationsEnum;
-import org.joverseer.game.Game;
 import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.HexTerrainEnum;
 import org.joverseer.support.GameHolder;

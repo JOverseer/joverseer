@@ -4,8 +4,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
-import java.net.URI;
-
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 
@@ -50,12 +48,12 @@ public class GatherSupportDataCommand extends ActionCommand {
     			@Override
 				public void doExecuteCommand() {
     				try {
-    					Logger l = Logger.getRootLogger();
-    					Appender a = l.getAppender("joverseerfileappender");
+    					Logger l1 = Logger.getRootLogger();
+    					Appender a1 = l1.getAppender("joverseerfileappender");
     					
-    					if (a != null) {
-    						if (a instanceof org.apache.log4j.FileAppender) {
-    							org.apache.log4j.FileAppender fileAppender = (org.apache.log4j.FileAppender)a;
+    					if (a1 != null) {
+    						if (a1 instanceof org.apache.log4j.FileAppender) {
+    							org.apache.log4j.FileAppender fileAppender = (org.apache.log4j.FileAppender)a1;
     	    					Desktop.getDesktop().open(new File(fileAppender.getFile()));
     						}
     					}

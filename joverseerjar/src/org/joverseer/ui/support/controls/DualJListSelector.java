@@ -1,8 +1,6 @@
 package org.joverseer.ui.support.controls;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 

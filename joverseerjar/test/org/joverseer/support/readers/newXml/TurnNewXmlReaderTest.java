@@ -8,6 +8,7 @@ import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
 import org.joverseer.support.Container;
+import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ public class TurnNewXmlReaderTest {
 		final int nationNo = 1;
 		Game game = new Game();
 		Turn turn = new Turn();
+		InfoSource baseInfoSource = new InfoSource(); // turn 0 
 		try {
 			game.addTurn(turn);
 		} catch (Exception e) {
@@ -28,6 +30,7 @@ public class TurnNewXmlReaderTest {
 		}
 		TurnNewXmlReader xml = new TurnNewXmlReader(game, null, nationNo);
 		xml.turnInfo = new TurnInfo();
+		xml.turnInfo.setTurnNo(1);
 		xml.turnInfo.battles = new Container<BattleWrapper>();
 		// don't think this how the battles appear in real life.
 		BattleWrapper bw = new BattleWrapper();
@@ -50,17 +53,23 @@ public class TurnNewXmlReaderTest {
 				+ "The Ruins of Torech Ungol now flies no flag.\r\n");
 		bw.addLine(bl);
 		xml.turnInfo.battles.addItem(bw);
+		xml.infoSource = new XmlExtraTurnInfoSource(1, nationNo);
+
+		turn = new Turn();
+		turn.setTurnNo(1);
+		xml.turn = turn;
 		
-		xml.infoSource = new XmlExtraTurnInfoSource(game.getMaxTurn(), nationNo);
-		xml.turn = game.getTurn(game.getMaxTurn());
-		
+		// set prior info
 		Container<PopulationCenter> pcs = turn.getContainer(TurnElementsEnum.PopulationCenter);
 		PopulationCenter pc = new PopulationCenter();
 		pc.setHexNo(3123);
 		pc.setNationNo(4);
 		pc.setName("Torech Ungol");
 		pc.setSize(PopulationCenterSizeEnum.camp);
+		pc.setInfoSource(baseInfoSource);
 		pcs.addItem(pc);
+		
+		
 		xml.updateBattles(game);
 		assertEquals("was expecting ruins",PopulationCenterSizeEnum.ruins, pc.getSize());
 		assertEquals("was expecting unknown",0, pc.getNationNo().intValue());

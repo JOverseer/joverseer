@@ -2,7 +2,10 @@ package org.joverseer.tools.combatCalc;
 
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.NationRelationsEnum;
+import org.joverseer.game.Game;
+import org.joverseer.metadata.GameMetadata;
 import org.joverseer.metadata.domain.HexTerrainEnum;
+import org.joverseer.support.GameHolder;
 
 /**
  * Holds various lookup info with combat modifiers.
@@ -13,7 +16,10 @@ import org.joverseer.metadata.domain.HexTerrainEnum;
  *
  */
 public class CombatModifiers {
-    static int terr_clim_mod[][] = new int[][] {
+	
+
+	
+    static int terr_clim_mod_1650[][] = new int[][] {
             /*           NONE */
             {100, 100, 100, 100, 100, 100, 100,
             100, 100, 100, 100, 100, 100, 100,
@@ -222,8 +228,22 @@ public class CombatModifiers {
             100, 105, 97, 92, 97, 90, 90, 
             97, 102, 95, 90, 95, 87, 87, 
             97, 102, 95, 90, 95, 87, 87}};
-    
+            
     public static int getModifierFor(int nationNo, HexTerrainEnum terrain, ClimateEnum climate) {
+    	
+       	GameMetadata gm = GameHolder.instance().getGame().getMetadata();
+    			
+    	switch(gm.getGameType()) {
+    	  case game1650:
+    	  case game2950:
+    	    return getModifierFor1650(nationNo, terrain, climate);
+    	    
+    	  default:
+    	    return 100;
+    	}   	
+    }
+    
+    public static int getModifierFor1650(int nationNo, HexTerrainEnum terrain, ClimateEnum climate) {
         int ci = 0;
         if (climate == ClimateEnum.Polar) {
             ci = 0;
@@ -257,7 +277,7 @@ public class CombatModifiers {
             ti = 6;
         } 
         int j = ci * 7 + ti;
-        return terr_clim_mod[nationNo][j];
+        return terr_clim_mod_1650[nationNo][j];
     }
     
     public static int getRelationModifier(NationRelationsEnum relations) {

@@ -44,8 +44,10 @@ import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.PopCenterXmlInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
+import org.joverseer.support.infoSources.XmlExtraTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
 import org.joverseer.tools.nationMessages.NationMessageParser;
+import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.progress.ProgressMonitor;
 
 /**
@@ -107,133 +109,133 @@ public class TurnXmlReader implements Runnable {
 			this.digester.setValidating(false);
 			this.digester.setRules(new RegexRules(new SimpleRegexMatcher()));
 			// parse turn info
-			this.digester.addObjectCreate("METurn", TurnInfo.class);
+			this.digester.addObjectCreate("METurn", TurnInfo.class); //$NON-NLS-1$
 			//More><TurnInfo><XXMLVersion>
-			this.digester.addCallMethod("METurn/More/TurnInfo/XXMLVersion","setXxmlversion",0);
+			this.digester.addCallMethod("METurn/More/TurnInfo/XXMLVersion","setXxmlversion",0); //$NON-NLS-1$ //$NON-NLS-2$
 			// parse turn info attributes
 			SetNestedPropertiesRule snpr = new SetNestedPropertiesRule();
-			snpr = new SetNestedPropertiesRule(new String[] { "GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account", "NationCapitalHex" }, new String[] { "gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo", "nationCapitalHex" });
+			snpr = new SetNestedPropertiesRule(new String[] { "GameNo", "TurnNo", "NationNo", "GameType", "Secret", "DueDate", "Player", "Account", "NationCapitalHex" }, new String[] { "gameNo", "turnNo", "nationNo", "gameType", "securityCode", "dueDate", "playerName", "accountNo", "nationCapitalHex" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$
 			snpr.setAllowUnknownChildElements(true);
-			this.digester.addRule("METurn/TurnInfo", snpr);
+			this.digester.addRule("METurn/TurnInfo", snpr); //$NON-NLS-1$
 
 			// parse PCs
 			// create container for pcs
-			this.digester.addObjectCreate("METurn/PopCentres", "org.joverseer.support.Container");
+			this.digester.addObjectCreate("METurn/PopCentres", "org.joverseer.support.Container"); //$NON-NLS-1$ //$NON-NLS-2$
 			// add container to turn info
-			this.digester.addSetNext("METurn/PopCentres", "setPopCentres");
+			this.digester.addSetNext("METurn/PopCentres", "setPopCentres"); //$NON-NLS-1$ //$NON-NLS-2$
 			// create pc
-			this.digester.addObjectCreate("METurn/PopCentres/PopCentre", "org.joverseer.support.readers.xml.PopCenterWrapper");
+			this.digester.addObjectCreate("METurn/PopCentres/PopCentre", "org.joverseer.support.readers.xml.PopCenterWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
 			// set hex
-			this.digester.addSetProperties("METurn/PopCentres/PopCentre", "HexID", "hexID");
+			this.digester.addSetProperties("METurn/PopCentres/PopCentre", "HexID", "hexID"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// set nested properties
-			this.digester.addRule("METurn/PopCentres/PopCentre", snpr = new SetNestedPropertiesRule(new String[] { "Name", "Nation", "NationAllegience", "Size", "FortificationLevel", "Size", "Dock", "Capital", "Hidden", "Loyalty", "InformationSource", "Hidden" }, new String[] { "name", "nation", "nationAllegience", "size", "fortificationLevel", "size", "dock", "capital", "hidden", "loyalty", "informationSource", "hidden" }));
+			this.digester.addRule("METurn/PopCentres/PopCentre", snpr = new SetNestedPropertiesRule(new String[] { "Name", "Nation", "NationAllegience", "Size", "FortificationLevel", "Size", "Dock", "Capital", "Hidden", "Loyalty", "InformationSource", "Hidden" }, new String[] { "name", "nation", "nationAllegience", "size", "fortificationLevel", "size", "dock", "capital", "hidden", "loyalty", "informationSource", "hidden" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$ //$NON-NLS-19$ //$NON-NLS-20$ //$NON-NLS-21$ //$NON-NLS-22$ //$NON-NLS-23$ //$NON-NLS-24$ //$NON-NLS-25$
 			// add to container
-			this.digester.addSetNext("METurn/PopCentres/PopCentre", "addItem", "org.joverseer.support.readers.xml.PopCenterWrapper");
+			this.digester.addSetNext("METurn/PopCentres/PopCentre", "addItem", "org.joverseer.support.readers.xml.PopCenterWrapper"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			// parse characters
 			// create characters container
-			this.digester.addObjectCreate("METurn/Characters", Container.class);
+			this.digester.addObjectCreate("METurn/Characters", Container.class); //$NON-NLS-1$
 			// add contianer to turn info
-			this.digester.addSetNext("METurn/Characters", "setCharacters");
+			this.digester.addSetNext("METurn/Characters", "setCharacters"); //$NON-NLS-1$ //$NON-NLS-2$
 			// create character object
-			this.digester.addObjectCreate("METurn/Characters/Character", "org.joverseer.support.readers.xml.CharacterWrapper");
+			this.digester.addObjectCreate("METurn/Characters/Character", "org.joverseer.support.readers.xml.CharacterWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
 			// set id
-			this.digester.addSetProperties("METurn/Characters/Character", "ID", "id");
+			this.digester.addSetProperties("METurn/Characters/Character", "ID", "id"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// set nested properties
-			this.digester.addRule("METurn/Characters/Character", snpr = new SetNestedPropertiesRule(new String[] { "Name", "Nation", "Location", "Command", "TotalCommand", "Agent", "TotalAgent", "Mage", "TotalMage", "Emmisary", "TotalEmmisary", "Stealth", "TotalStealth", "Challenge", "Health", "Title", "InformationSource", "OrdersAllowed" }, new String[] { "name", "nation", "location", "command", "totalCommand", "agent", "totalAgent", "mage", "totalMage", "emmisary", "totalEmmisary", "stealth", "totalStealth", "challenge", "health", "title", "informationSource", "ordersAllowed" }));
+			this.digester.addRule("METurn/Characters/Character", snpr = new SetNestedPropertiesRule(new String[] { "Name", "Nation", "Location", "Command", "TotalCommand", "Agent", "TotalAgent", "Mage", "TotalMage", "Emmisary", "TotalEmmisary", "Stealth", "TotalStealth", "Challenge", "Health", "Title", "InformationSource", "OrdersAllowed" }, new String[] { "name", "nation", "location", "command", "totalCommand", "agent", "totalAgent", "mage", "totalMage", "emmisary", "totalEmmisary", "stealth", "totalStealth", "challenge", "health", "title", "informationSource", "ordersAllowed" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$ //$NON-NLS-19$ //$NON-NLS-20$ //$NON-NLS-21$ //$NON-NLS-22$ //$NON-NLS-23$ //$NON-NLS-24$ //$NON-NLS-25$ //$NON-NLS-26$ //$NON-NLS-27$ //$NON-NLS-28$ //$NON-NLS-29$ //$NON-NLS-30$ //$NON-NLS-31$ //$NON-NLS-32$ //$NON-NLS-33$ //$NON-NLS-34$ //$NON-NLS-35$ //$NON-NLS-36$ //$NON-NLS-37$
 			snpr.setAllowUnknownChildElements(true);
 			// add character to container
-			this.digester.addSetNext("METurn/Characters/Character", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper");
+			this.digester.addSetNext("METurn/Characters/Character", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// parse character artifacts
 			// create artifact arraylist
-			this.digester.addObjectCreate("METurn/Characters/Character/Artifacts", ArrayList.class);
+			this.digester.addObjectCreate("METurn/Characters/Character/Artifacts", ArrayList.class); //$NON-NLS-1$
 			// add arraylist to character
-			this.digester.addSetNext("METurn/Characters/Character/Artifacts", "setArtifacts");
+			this.digester.addSetNext("METurn/Characters/Character/Artifacts", "setArtifacts"); //$NON-NLS-1$ //$NON-NLS-2$
 			// prepare call to arraylist.add
-			this.digester.addCallMethod("METurn/Characters/Character/Artifacts/Artifact", "add", 1);
-			this.digester.addCallParam("METurn/Characters/Character/Artifacts/Artifact", 0);
+			this.digester.addCallMethod("METurn/Characters/Character/Artifacts/Artifact", "add", 1); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addCallParam("METurn/Characters/Character/Artifacts/Artifact", 0); //$NON-NLS-1$
 			// parse character spells
 			// create spell arraylist
-			this.digester.addObjectCreate("METurn/Characters/Character/Spells", ArrayList.class);
+			this.digester.addObjectCreate("METurn/Characters/Character/Spells", ArrayList.class); //$NON-NLS-1$
 			// add arraylist to character
-			this.digester.addSetNext("METurn/Characters/Character/Spells", "setSpells");
+			this.digester.addSetNext("METurn/Characters/Character/Spells", "setSpells"); //$NON-NLS-1$ //$NON-NLS-2$
 			// prepare call to arraylist.add
-			this.digester.addCallMethod("METurn/Characters/Character/Spells/Spell", "add", 1);
-			this.digester.addCallParam("METurn/Characters/Character/Spells/Spell", 0);
+			this.digester.addCallMethod("METurn/Characters/Character/Spells/Spell", "add", 1); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addCallParam("METurn/Characters/Character/Spells/Spell", 0); //$NON-NLS-1$
 
 			// parse armies
 			// create armies container
-			this.digester.addObjectCreate("METurn/Armies", Container.class);
+			this.digester.addObjectCreate("METurn/Armies", Container.class); //$NON-NLS-1$
 			// add contianer to turn info
-			this.digester.addSetNext("METurn/Armies", "setArmies");
+			this.digester.addSetNext("METurn/Armies", "setArmies"); //$NON-NLS-1$ //$NON-NLS-2$
 			// create army object
-			this.digester.addObjectCreate("METurn/Armies/Army", "org.joverseer.support.readers.xml.ArmyWrapper");
+			this.digester.addObjectCreate("METurn/Armies/Army", "org.joverseer.support.readers.xml.ArmyWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
 			// set hexId
-			this.digester.addSetProperties("METurn/Armies/Army", "HexID", "hexID");
+			this.digester.addSetProperties("METurn/Armies/Army", "HexID", "hexID"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// set nested properties
-			this.digester.addRule("METurn/Armies/Army", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "NationAllegience", "Size", "TroopCount", "Commander", "CommanderTitle", "ExtraInfo", "Navy", "InformationSource", "CharsTravellingWith" }, new String[] { "nation", "nationAllegience", "size", "troopCount", "commander", "commanderTitle", "extraInfo", "navy", "informationSource", "charsTravellingWith" }));
+			this.digester.addRule("METurn/Armies/Army", snpr = new SetNestedPropertiesRule(new String[] { "Nation", "NationAllegience", "Size", "TroopCount", "Commander", "CommanderTitle", "ExtraInfo", "Navy", "InformationSource", "CharsTravellingWith" }, new String[] { "nation", "nationAllegience", "size", "troopCount", "commander", "commanderTitle", "extraInfo", "navy", "informationSource", "charsTravellingWith" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$ //$NON-NLS-19$ //$NON-NLS-20$ //$NON-NLS-21$
 			snpr.setAllowUnknownChildElements(true);
 			// add army to container
-			this.digester.addSetNext("METurn/Armies/Army", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper");
+			this.digester.addSetNext("METurn/Armies/Army", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			// parse nations
 			// create nations container
-			this.digester.addObjectCreate("METurn/Nations", Container.class);
+			this.digester.addObjectCreate("METurn/Nations", Container.class); //$NON-NLS-1$
 			// add contianer to turn info
-			this.digester.addSetNext("METurn/Nations", "setNations");
+			this.digester.addSetNext("METurn/Nations", "setNations"); //$NON-NLS-1$ //$NON-NLS-2$
 			// create nation object
-			this.digester.addObjectCreate("METurn/Nations/Nation", "org.joverseer.support.readers.xml.NationWrapper");
+			this.digester.addObjectCreate("METurn/Nations/Nation", "org.joverseer.support.readers.xml.NationWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
 			// set hexId
-			this.digester.addSetProperties("METurn/Nations/Nation", "ID", "id");
+			this.digester.addSetProperties("METurn/Nations/Nation", "ID", "id"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// set text
-			this.digester.addCallMethod("METurn/Nations/Nation", "setName", 1);
-			this.digester.addCallParam("METurn/Nations/Nation", 0);
+			this.digester.addCallMethod("METurn/Nations/Nation", "setName", 1); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addCallParam("METurn/Nations/Nation", 0); //$NON-NLS-1$
 
 			// add nation to container
-			this.digester.addSetNext("METurn/Nations/Nation", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper");
+			this.digester.addSetNext("METurn/Nations/Nation", "addItem", "org.joverseer.support.readers.xml.CharacterWrapper"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 			// parse rumors
 			// create nationinfo object
-			this.digester.addObjectCreate("METurn/NationInfo", NationInfoWrapper.class);
+			this.digester.addObjectCreate("METurn/NationInfo", NationInfoWrapper.class); //$NON-NLS-1$
 			// read EmptyPopHexes
-			this.digester.addCallMethod("METurn/NationInfo/EmptyPopHexes", "setEmptyPopHexes", 1);
-			this.digester.addCallParam("METurn/NationInfo/EmptyPopHexes", 0, "HexIDList");
+			this.digester.addCallMethod("METurn/NationInfo/EmptyPopHexes", "setEmptyPopHexes", 1); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addCallParam("METurn/NationInfo/EmptyPopHexes", 0, "HexIDList"); //$NON-NLS-1$ //$NON-NLS-2$
 			// read PopHexes
-			this.digester.addCallMethod("METurn/NationInfo/PopHexes", "setPopHexes", 1);
-			this.digester.addCallParam("METurn/NationInfo/PopHexes", 0, "HexIDList");
+			this.digester.addCallMethod("METurn/NationInfo/PopHexes", "setPopHexes", 1); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addCallParam("METurn/NationInfo/PopHexes", 0, "HexIDList"); //$NON-NLS-1$ //$NON-NLS-2$
 			// add contianer to turn info
-			this.digester.addSetNext("METurn/NationInfo", "setNationInfoWrapper");
+			this.digester.addSetNext("METurn/NationInfo", "setNationInfoWrapper"); //$NON-NLS-1$ //$NON-NLS-2$
 			// create rumors arraylist
-			this.digester.addObjectCreate("METurn/NationInfo/NationMessages", ArrayList.class);
+			this.digester.addObjectCreate("METurn/NationInfo/NationMessages", ArrayList.class); //$NON-NLS-1$
 			// add arraylist to nation info
-			this.digester.addSetNext("METurn/NationInfo/NationMessages", "setRumors");
+			this.digester.addSetNext("METurn/NationInfo/NationMessages", "setRumors"); //$NON-NLS-1$ //$NON-NLS-2$
 			// prepare call to arraylist.add
-			this.digester.addCallMethod("METurn/NationInfo/NationMessages/NationMessage", "add", 1);
-			this.digester.addCallParam("METurn/NationInfo/NationMessages/NationMessage", 0);
+			this.digester.addCallMethod("METurn/NationInfo/NationMessages/NationMessage", "add", 1); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addCallParam("METurn/NationInfo/NationMessages/NationMessage", 0); //$NON-NLS-1$
 
 			// parse economy
 			// create economy object
-			this.digester.addObjectCreate("METurn/Economy", EconomyWrapper.class);
+			this.digester.addObjectCreate("METurn/Economy", EconomyWrapper.class); //$NON-NLS-1$
 			// add economy
-			this.digester.addSetNext("METurn/Economy", "setEconomy");
+			this.digester.addSetNext("METurn/Economy", "setEconomy"); //$NON-NLS-1$ //$NON-NLS-2$
 			// set properties
-			this.digester.addRule("METurn/Economy/Nation", snpr = new SetNestedPropertiesRule(new String[] { "ArmyMaint", "PopMaint", "CharMaint", "TotalMaint", "TaxRate", "Revenue", "Surplus", "Reserve", "TaxBase" }, new String[] { "armyMaint", "popMaint", "charMaint", "totalMaint", "taxRate", "revenue", "surplus", "reserve", "taxBase" }));
+			this.digester.addRule("METurn/Economy/Nation", snpr = new SetNestedPropertiesRule(new String[] { "ArmyMaint", "PopMaint", "CharMaint", "TotalMaint", "TaxRate", "Revenue", "Surplus", "Reserve", "TaxBase" }, new String[] { "armyMaint", "popMaint", "charMaint", "totalMaint", "taxRate", "revenue", "surplus", "reserve", "taxBase" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$ //$NON-NLS-17$ //$NON-NLS-18$ //$NON-NLS-19$
 			snpr.setAllowUnknownChildElements(true);
 			// create product object
-			this.digester.addObjectCreate("METurn/Economy/Market/Product", ProductWrapper.class);
-			this.digester.addSetNext("METurn/Economy/Market/Product", "addProduct");
-			this.digester.addSetProperties("METurn/Economy/Market/Product", "type", "type");
+			this.digester.addObjectCreate("METurn/Economy/Market/Product", ProductWrapper.class); //$NON-NLS-1$
+			this.digester.addSetNext("METurn/Economy/Market/Product", "addProduct"); //$NON-NLS-1$ //$NON-NLS-2$
+			this.digester.addSetProperties("METurn/Economy/Market/Product", "type", "type"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			// set nested properties
-			this.digester.addRule("METurn/Economy/Market/Product", snpr = new SetNestedPropertiesRule(new String[] { "BuyPrice", "SellPrice", "MarketAvail", "NationStores", "NationProduction" }, new String[] { "buyPrice", "sellPrice", "marketAvail", "nationStores", "nationProduction" }));
+			this.digester.addRule("METurn/Economy/Market/Product", snpr = new SetNestedPropertiesRule(new String[] { "BuyPrice", "SellPrice", "MarketAvail", "NationStores", "NationProduction" }, new String[] { "buyPrice", "sellPrice", "marketAvail", "nationStores", "nationProduction" })); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
 			snpr.setAllowUnknownChildElements(true);
 			if (getMonitor() != null) {
-				getMonitor().subTaskStarted(String.format("Parsing file %s...", new Object[] { fileName }));
+				getMonitor().subTaskStarted(String.format("Parsing file %s...", new Object[] { fileName })); //$NON-NLS-1$
 				getMonitor().worked(5);
 			}
 			this.turnInfo = (TurnInfo) this.digester.parse(fileName);
 		} catch (Exception exc) {
 			// todo fix
-			throw new Exception("Error parsing Xml Turn file.", exc);
+			throw new Exception("Error parsing Xml Turn file.", exc); //$NON-NLS-1$
 		}
 	}
 
@@ -242,7 +244,7 @@ public class TurnXmlReader implements Runnable {
 		try {
 			readFile(this.filename);
 		} catch (Exception exc) {
-			this.monitor.subTaskStarted("Error : failed to read xml file (" + exc.getMessage() + ")");
+			this.monitor.subTaskStarted(Messages.getString("subTask.ReadError") + exc.getMessage() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			this.errorOccured = true;
 		}
 		try {
@@ -257,13 +259,13 @@ public class TurnXmlReader implements Runnable {
 	public void updateGame(Game game1) throws Exception {
 		if (this.turnInfo.getTurnNo() < game1.getMaxTurn()) {
 			// todo fix
-			throw new Exception("Cannot import past turns.");
+			throw new Exception(Messages.getString("subTask.NoPastTurnImport")); //$NON-NLS-1$
 		}
 		if (this.turnInfo.getXxmlversion() != null) {
 			this.game.getMetadata().setNewXmlFormat(true);
 			if (getMonitor() != null) {
 				getMonitor().worked(10);
-				getMonitor().subTaskStarted("New version of XML found...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.newXML")); //$NON-NLS-1$
 			}
 		}
 		try {
@@ -296,32 +298,32 @@ public class TurnXmlReader implements Runnable {
 			this.infoSource = new XmlTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());
 			if (getMonitor() != null) {
 				getMonitor().worked(20);
-				getMonitor().subTaskStarted("Updating Nations...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.UpdatingNations")); //$NON-NLS-1$
 			}
 			updateNations(game1);
 			if (getMonitor() != null) {
 				getMonitor().worked(50);
-				getMonitor().subTaskStarted("Updating PCs...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.UpdatingPCs")); //$NON-NLS-1$
 			}
 			updatePCs();
 			if (getMonitor() != null) {
 				getMonitor().worked(60);
-				getMonitor().subTaskStarted("Updating Chars...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.UpdatingChars")); //$NON-NLS-1$
 			}
 			updateChars();
 			if (getMonitor() != null) {
 				getMonitor().worked(70);
-				getMonitor().subTaskStarted("Updating Armies...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.UpdatingArmies")); //$NON-NLS-1$
 			}
 			updateArmies();
 			if (getMonitor() != null) {
 				getMonitor().worked(80);
-				getMonitor().subTaskStarted("Updating Nation Info...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.UpdatingNationInfo")); //$NON-NLS-1$
 			}
 			updateNationInfo();
 			if (getMonitor() != null) {
 				getMonitor().worked(90);
-				getMonitor().subTaskStarted("Updating Nation Messages...");
+				getMonitor().subTaskStarted(Messages.getString("subTask.NationMessages")); //$NON-NLS-1$
 			}
 			updateNationMessages();
 			if (getMonitor() != null) {
@@ -331,10 +333,10 @@ public class TurnXmlReader implements Runnable {
 			exc.printStackTrace();
 			if (getMonitor() != null) {
 				getMonitor().worked(100);
-				getMonitor().subTaskStarted("Error : '" + exc.getMessage() + "'.");
+				getMonitor().subTaskStarted(Messages.getString("subTask.Error") + exc.getMessage() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 				this.errorOccured = true;
 			}
-			throw new Exception("Error updating game from Xml file.", exc);
+			throw new Exception(Messages.getString("subTask.UpdateError"), exc); //$NON-NLS-1$
 		}
 	}
 
@@ -342,14 +344,34 @@ public class TurnXmlReader implements Runnable {
 		updateOldPCs(this.turn, this.turnInfo.getTurnNo(),this.turnInfo.getNationNo(), this.turnInfo.getNationCapitalHex(),this.turnInfo.getPopCentres().getItems(),this.infoSource, this.currentNationPops, this.game.getMetadata());
 	}
 
+	private boolean willCharacterBeOverwrittenT0(Character c) {
+		if (c.getInfoSource() == null) {
+			return false;
+		}
+		if (MetadataSource.class.isInstance(c.getInfoSource())) {
+			// it's starting information
+			return true;
+		}
+		// it might be previous information imported.
+		if (XmlExtraTurnInfoSource.class.isInstance(c.getInfoSource())) {
+			return true;
+		}
+		if (PdfTurnInfoSource.class.isInstance(c.getInfoSource())) {
+			return true;
+		}
+		if (XmlTurnInfoSource.class.isInstance(c.getInfoSource())) {
+			return true;
+		}
+		return false;
+	}
 	private void updateChars() throws Exception {
 		Container<Character> chars = this.turn.getCharacters();
 		if (this.turn.getTurnNo() == 0) {
 			// remove all character's import from metadata for given nation
-			ArrayList<Character> metadataChars = chars.findAllByProperty("nationNo", this.turnInfo.getNationNo());
+			ArrayList<Character> metadataChars = chars.findAllByProperty("nationNo", this.turnInfo.getNationNo()); //$NON-NLS-1$
 			ArrayList<Character> toRemove = new ArrayList<Character>();
 			for (Character c : metadataChars) {
-				if (MetadataSource.class.isInstance(c.getInfoSource())) {
+				if (willCharacterBeOverwrittenT0(c)) {
 					toRemove.add(c);
 				}
 			}
@@ -360,19 +382,19 @@ public class TurnXmlReader implements Runnable {
 			Character oldCharacter;
 			try {
 				newCharacter = cw.getCharacter();
-				oldCharacter = chars.findFirstByProperties(new String[] { "id" }, new Object[] { newCharacter.getId() });
+				oldCharacter = chars.findFirstByProperties(new String[] { "id" }, new Object[] { newCharacter.getId() }); //$NON-NLS-1$
 				newCharacter.setInfoSource(this.infoSource);
-				logger.debug(String.format("Handling Character {3} at {0},{1} with information source {2}", String.valueOf(newCharacter.getX()), String.valueOf(newCharacter.getY()), newCharacter.getInformationSource().toString(), newCharacter.getId()));
+				logger.debug(String.format("Handling Character {3} at {0},{1} with information source {2}", String.valueOf(newCharacter.getX()), String.valueOf(newCharacter.getY()), newCharacter.getInformationSource().toString(), newCharacter.getId())); //$NON-NLS-1$
 				if (oldCharacter == null) {
 					// no char found - add
-					logger.debug("No Character found in turn, add.");
+					logger.debug("No Character found in turn, add."); //$NON-NLS-1$
 					chars.addItem(newCharacter);
 				} else {
 					// char found
-					logger.debug("Character found in turn.");
+					logger.debug("Character found in turn."); //$NON-NLS-1$
 					try {
 						if (DerivedFromArmyInfoSource.class.isInstance(oldCharacter.getInfoSource()) || PdfTurnInfoSource.class.isInstance(oldCharacter.getInfoSource()) || DerivedFromSpellInfoSource.class.isInstance(oldCharacter.getInfoSource()) || (newCharacter.getInformationSource().getValue() > oldCharacter.getInformationSource().getValue())) {
-							logger.debug("Replace.");
+							logger.debug("Replace."); //$NON-NLS-1$
 							chars.removeItem(oldCharacter);
 							chars.addItem(newCharacter);
 						}
@@ -388,10 +410,10 @@ public class TurnXmlReader implements Runnable {
 					// same hex as the character
 					// the PC will be reported in the turn
 					// Hidden pops are excluded from this check
-					PopulationCenter pc = (PopulationCenter) this.turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", newCharacter.getHexNo());
+					PopulationCenter pc = (PopulationCenter) this.turn.getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("hexNo", newCharacter.getHexNo()); //$NON-NLS-1$
 					if (pc != null) {
 						if (pc.getInfoSource().getTurnNo() < this.turn.getTurnNo() && !pc.getHidden()) {
-							logger.debug("Removing Pop Center " + pc.getName() + " at hex " + pc.getHexNo() + " because it was not reported in current turn and a character is present in the hex.");
+							logger.debug("Removing Pop Center " + pc.getName() + " at hex " + pc.getHexNo() + " because it was not reported in current turn and a character is present in the hex."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							this.turn.getPopulationCenters().removeItem(pc);
 						}
 
@@ -432,9 +454,9 @@ public class TurnXmlReader implements Runnable {
 			postProcessArmiesForHex(game, newArmy.getHexNo(), turn, allegiance);
 		}
 		// do not generate character for unknown armies
-		if (!newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) {
+		if (!newArmy.getCommanderName().toUpperCase().startsWith("UNKNOWN ")) { //$NON-NLS-1$
 			String commanderId = Character.getIdFromName(newArmy.getCommanderName());
-			Character ch = chars.findFirstByProperty("id", commanderId);
+			Character ch = chars.findFirstByProperty("id", commanderId); //$NON-NLS-1$
 			if (ch == null) {
 				// no found, add
 				Character cmd = new Character();
@@ -456,7 +478,7 @@ public class TurnXmlReader implements Runnable {
 	public static void postProcessArmiesForHex(Game game, String hexNo, Turn turn, NationAllegianceEnum allegiance) {
 		Container<Army> armies = turn.getArmies();
 		final Turn t = turn;
-		ArrayList<Army> armiesInHex = armies.findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { hexNo, allegiance });
+		ArrayList<Army> armiesInHex = armies.findAllByProperties(new String[] { "hexNo", "nationAllegiance" }, new Object[] { hexNo, allegiance }); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Collections.sort(armiesInHex, new Comparator<Army>() {
 
@@ -511,7 +533,7 @@ public class TurnXmlReader implements Runnable {
 	}
 
 	protected static void updateWithInfo(Army a1, Army a2) {
-		if (a1.getCommanderTitle() == null || a1.getCommanderTitle().equals("")) {
+		if (a1.getCommanderTitle() == null || a1.getCommanderTitle().equals("")) { //$NON-NLS-1$
 			a1.setCommanderTitle(a2.getCommanderTitle());
 		}
 		if (a1.getTroopCount() == 0 && a2.getTroopCount() > 0) {
@@ -653,7 +675,7 @@ public class TurnXmlReader implements Runnable {
 	private void updateNationInfo() {
 		Container<PopulationCenter> pcs = this.turn.getPopulationCenters();
 		Container<NationEconomy> nationEconomies = this.turn.getNationEconomies();
-		NationEconomy oldNe = nationEconomies.findFirstByProperty("nationNo", this.turnInfo.getNationNo());
+		NationEconomy oldNe = nationEconomies.findFirstByProperty("nationNo", this.turnInfo.getNationNo()); //$NON-NLS-1$
 		if (oldNe != null) {
 			nationEconomies.removeItem(oldNe);
 		}
@@ -667,7 +689,7 @@ public class TurnXmlReader implements Runnable {
 
 		ArrayList<HexInfo> newHexInfos = this.turnInfo.getNationInfoWrapper().getHexInfos(this.turnInfo.getNationNo());
 		for (HexInfo hi : newHexInfos) {
-			HexInfo oldHi = hexInfos.findFirstByProperty("hexNo", hi.getHexNo());
+			HexInfo oldHi = hexInfos.findFirstByProperty("hexNo", hi.getHexNo()); //$NON-NLS-1$
 			if (oldHi == null) {
 				hexInfos.addItem(hi);
 			} else {
@@ -677,7 +699,7 @@ public class TurnXmlReader implements Runnable {
 
 		// handle current nation pops
 		for (PopulationCenter pc : this.currentNationPops) {
-			HexInfo hi = hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+			HexInfo hi = hexInfos.findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
 			HexInfo nhi = new HexInfo();
 			nhi.setVisible(true);
 			nhi.setHasPopulationCenter(true);
@@ -693,15 +715,15 @@ public class TurnXmlReader implements Runnable {
 		// remove PCs if HexInfo shows empty hex
 		ArrayList<PopulationCenter> toRemove = new ArrayList<PopulationCenter>();
 
-		String hiddenPopsPreferenceVal = PreferenceRegistry.instance().getPreferenceValue("map.hiddenPops");
-		boolean keepHiddenPops = hiddenPopsPreferenceVal == null || hiddenPopsPreferenceVal.equals("alwaysShow");
+		String hiddenPopsPreferenceVal = PreferenceRegistry.instance().getPreferenceValue("map.hiddenPops"); //$NON-NLS-1$
+		boolean keepHiddenPops = hiddenPopsPreferenceVal == null || hiddenPopsPreferenceVal.equals("alwaysShow"); //$NON-NLS-1$
 
 		for (PopulationCenter pc : pcs.getItems()) {
 			if (pc.getInfoSource().getTurnNo() == this.turnInfo.getTurnNo() && pc.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue() && !MetadataSource.class.isInstance(pc.getInfoSource()))
 				continue;
 			if (pc.getSize() == PopulationCenterSizeEnum.ruins)
 				continue;
-			HexInfo hi = hexInfos.findFirstByProperty("hexNo", pc.getHexNo());
+			HexInfo hi = hexInfos.findFirstByProperty("hexNo", pc.getHexNo()); //$NON-NLS-1$
 			if (hi.getVisible() && !hi.getHasPopulationCenter()) {
 				if (keepHiddenPops && pc.getHidden())
 					continue;
@@ -713,12 +735,12 @@ public class TurnXmlReader implements Runnable {
 
 	private void updateNationMessages() {
 		Container<NationMessage> nationMessages = this.turn.getNationMessages();
-		nationMessages.removeAllByProperties("nationNo", this.turnInfo.getNationNo());
+		nationMessages.removeAllByProperties("nationNo", this.turnInfo.getNationNo()); //$NON-NLS-1$
 
 		NationMessageParser nmp = new NationMessageParser(this.turnInfo.getTurnNo(),GameHolder.instance());
 
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
-		Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)");
+		Pattern hexLoc = Pattern.compile("at (\\d\\d\\d\\d)"); //$NON-NLS-1$
 		for (String msg : nationMsgs) {
 			NationMessage nm = new NationMessage();
 			nm.setMessage(msg);
@@ -751,11 +773,11 @@ public class TurnXmlReader implements Runnable {
 
 	protected void updateHexOverridesFromBridgeSabotageRumors() {
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
-		String prefix = "A bridge was sabotaged at ";
+		String prefix = "A bridge was sabotaged at "; //$NON-NLS-1$
 		for (String msg : nationMsgs) {
 			if (msg.startsWith(prefix)) {
 				String pcName = msg.substring(prefix.length(), msg.length() - 1);
-				PopulationCenter pc = (PopulationCenter) this.game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", pcName);
+				PopulationCenter pc = (PopulationCenter) this.game.getTurn().getContainer(TurnElementsEnum.PopulationCenter).findFirstByProperty("name", pcName); //$NON-NLS-1$
 				if (pc != null) {
 					int hexNo = pc.getHexNo();
 					Hex h = this.game.getMetadata().getHexForTurn(this.game.getCurrentTurn(), hexNo);
@@ -780,8 +802,8 @@ public class TurnXmlReader implements Runnable {
 
 	protected void updateReportsSuggestNationMessages() {
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
-		String prefix = "Reports suggest the presence of holdings/forces of the ";
-		String suffix = " at 0101." ;
+		String prefix = "Reports suggest the presence of holdings/forces of the "; //$NON-NLS-1$
+		String suffix = " at 0101." ; //$NON-NLS-1$
 		for (String msg : nationMsgs) {
 			if (msg.startsWith(prefix)) {
 				String nationname = msg.substring(prefix.length(),msg.length()-suffix.length()) ;
@@ -799,8 +821,8 @@ public class TurnXmlReader implements Runnable {
 	
 	private void updateKSArtifactIDsFromNationMessages() {
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
-		String prefix = "The artefact going by the name of ";
-		String middle = " has been identified as item #";
+		String prefix = "The artefact going by the name of "; //$NON-NLS-1$
+		String middle = " has been identified as item #"; //$NON-NLS-1$
 		for (String msg : nationMsgs) {
 			if (msg.startsWith(prefix)) {
 				int i = prefix.length();
@@ -809,15 +831,15 @@ public class TurnXmlReader implements Runnable {
 					String artiName = msg.substring(i, j);
 					String artiNoStr = msg.substring(j + middle.length(), msg.length() - 1);
 					if (!updateArtifactNumber(artiName, artiNoStr)) {
-						logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg);
+						logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
 		}
-		middle = " is artifact ";
+		middle = " is artifact "; //$NON-NLS-1$
 		for (String msg : nationMsgs) {
 			if (msg.contains(middle)) {
-				if (msg.startsWith("The ")) {
+				if (msg.startsWith("The ")) { //$NON-NLS-1$
 					msg = msg.substring(4);
 				}
 				int i = msg.indexOf(middle);
@@ -827,7 +849,7 @@ public class TurnXmlReader implements Runnable {
 					continue;
 				String artiNoStr = msg.substring(j + 1);
 				if (!updateArtifactNumber(artiName, artiNoStr)) {
-					logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg);
+					logger.error("Failed to parse artifact number " + artiNoStr + " from rumor " + msg); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 		}
@@ -858,33 +880,33 @@ public class TurnXmlReader implements Runnable {
 	
 	private void updateKSArtifactIDsAndLocationsFromNationMessages() {
 		ArrayList<String> nationMsgs = this.turnInfo.getNationInfoWrapper().getRumors();
-		String prefix = "The ";
-		String middle = " discovered to be ";
+		String prefix = "The "; //$NON-NLS-1$
+		String middle = Messages.getString("subTask.272"); //$NON-NLS-1$
 		Container<Artifact> artis = this.turn.getArtifacts();
 		for (String msg : nationMsgs) {
 			if (msg.contains(middle)) {
-				if (msg.startsWith("The ")) {
-					prefix = "The ";
+				if (msg.startsWith("The ")) { //$NON-NLS-1$
+					prefix = "The "; //$NON-NLS-1$
 				} else {
-					prefix = "";
+					prefix = ""; //$NON-NLS-1$
 				}
 				int i = prefix.length();
 				Integer artiNo = null;
 				String artiName;
-				int k = msg.indexOf(",");
+				int k = msg.indexOf(","); //$NON-NLS-1$
 				if (k > -1) {
 					artiName = msg.substring(i, k);
 				} else {
-					k = msg.indexOf(" was discovered");
+					k = msg.indexOf(" was discovered"); //$NON-NLS-1$
 					if (k == -1) {
-						k = msg.indexOf(" were discovered");
+						k = msg.indexOf(" were discovered"); //$NON-NLS-1$
 					}
 					if (k == -1)
 						return;
 					artiName = msg.substring(i, k);
 				}
 				artiName = artiName.trim();
-				int l = msg.indexOf(",", k + 1);
+				int l = msg.indexOf(",", k + 1); //$NON-NLS-1$
 				if (l > -1) {
 					String artiNoStr = msg.substring(k + 3, l);
 					// special handling to allow for the rumor sentence having
@@ -896,7 +918,7 @@ public class TurnXmlReader implements Runnable {
 						artiNo = -1;
 					}
 				}
-				int endsWithPeriod = msg.endsWith(".") ? 1 : 0;
+				int endsWithPeriod = msg.endsWith(".") ? 1 : 0; //$NON-NLS-1$
 				String artiHex = msg.substring(msg.length() - 4 - endsWithPeriod, msg.length() - endsWithPeriod);
 
 				String artiNameInAscii = AsciiUtils.convertNonAscii(artiName.trim());
@@ -913,7 +935,7 @@ public class TurnXmlReader implements Runnable {
 					}
 				}
 				if (ai != null) {
-					Artifact a = artis.findFirstByProperty("name", ai.getName());
+					Artifact a = artis.findFirstByProperty("name", ai.getName()); //$NON-NLS-1$
 					if (a == null) {
 						a = new Artifact();
 						a.setNumber(0);
@@ -953,23 +975,23 @@ public class TurnXmlReader implements Runnable {
 			try {
 				newPc = pcw.getPopulationCenter();
 				newPc.checkForCapital(tiNationNo, nationCapitalHex);
-				logger.debug("Handling Pop Centre at " + newPc.getHexNo() + " with information source " + newPc.getInformationSource().toString());
+				logger.debug("Handling Pop Centre at " + newPc.getHexNo() + " with information source " + newPc.getInformationSource().toString()); //$NON-NLS-1$ //$NON-NLS-2$
 				newPc.setInfoSource(pcInfoSource);
 				if (newPc.getNationNo() == tiNationNo) {
 					currentNationPops.add(newPc);
 				}
 				newPc.defaultName();
-				logger.debug("NEW POP " + tiNationNo);
-				logger.debug("new:" + newPc.getHexNo() + " " + newPc.getName() + " " + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + (pcInfoSource).getPreviousTurnNo());
+				logger.debug("NEW POP " + tiNationNo); //$NON-NLS-1$
+				logger.debug("new:" + newPc.getHexNo() + " " + newPc.getName() + " " + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + (pcInfoSource).getPreviousTurnNo()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				
 				if (newPc.isDefaultName()) {
 					newPc.setTurnSeenOnMap(turnNo);
 				}
 
-				PopulationCenter oldPc = pcs.findFirstByProperties(new String[] { "x", "y" }, new Object[] { newPc.getX(), newPc.getY() });
+				PopulationCenter oldPc = pcs.findFirstByProperties(new String[] { "x", "y" }, new Object[] { newPc.getX(), newPc.getY() }); //$NON-NLS-1$ //$NON-NLS-2$
 				// for KS, try to find starting pc with same name
 				if (gm.getGameType().equals(GameTypeEnum.gameKS) && (!newPc.isDefaultName())) {
-					PopulationCenter startingPc = pcs.findFirstByProperty("name", newPc.getName());
+					PopulationCenter startingPc = pcs.findFirstByProperty("name", newPc.getName()); //$NON-NLS-1$
 					if (startingPc != null) {
 						if (MetadataSource.class.isInstance(startingPc.getInfoSource()) && startingPc.getHexNo() != newPc.getHexNo()) {
 							// remove starting pc
@@ -980,21 +1002,21 @@ public class TurnXmlReader implements Runnable {
 				//TODO: refactor this ... split into something like switch(whatToDoWith(oldPc,newPc)) { .... }
 				if (oldPc == null) {
 					// no pc found - add newPc
-					logger.debug("No Pop Centre found in turn, add.");
+					logger.debug("No Pop Centre found in turn, add."); //$NON-NLS-1$
 					pcs.addItem(newPc);
 				} else {
-					logger.debug("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " " + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo());
-					logger.debug("Pop Centre found in turn.");
+					logger.debug("old:" + oldPc.getHexNo() + " " + oldPc.getName() + " " + oldPc.getNationNo() + " " + oldPc.getInfoSource().getTurnNo()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					logger.debug("Pop Centre found in turn."); //$NON-NLS-1$
 					// distinguish cases
 					if ((oldPc.getInfoSource().getTurnNo() == turnNo && XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) && ((XmlTurnInfoSource) oldPc.getInfoSource()).getNationNo() == oldPc.getNationNo())
 							&& (oldPc.getInformationSource().getValue() > newPc.getInformationSource().getValue())) {
-						logger.debug("old pop too good - do not replace");
+						logger.debug("old pop too good - do not replace"); //$NON-NLS-1$
 					} else if (XmlTurnInfoSource.class.isInstance(oldPc.getInfoSource()) && newPc.getNationNo() == ((XmlTurnInfoSource) newPc.getInfoSource()).getNationNo()) {
-						logger.debug("pop center of same nation - replace");
+						logger.debug("pop center of same nation - replace"); //$NON-NLS-1$
 						pcs.removeItem(oldPc);
 						pcs.addItem(newPc);
 					} else if (newPc.getNationNo() > 0) {
-						logger.debug("simply replace");
+						logger.debug("simply replace"); //$NON-NLS-1$
 						pcs.removeItem(oldPc);
 						// if information source is lacking, update harbor from old pop
 						if ((newPc.getInformationSource().getValue() < InformationSourceEnum.detailed.getValue())
@@ -1043,12 +1065,12 @@ public class TurnXmlReader implements Runnable {
 							
 								if (newPc.getTurnSeenOnMap() == turnNo) {
 									// newPC is a map icon seen this turn so docks will be accurate
-									logger.debug("add docks from map icon");
+									logger.debug("add docks from map icon"); //$NON-NLS-1$
 									oldPc.setHarbor(newPc.getHarbor());
 								}
 						}
 						if (update) {
-							logger.debug("replace/update");
+							logger.debug("replace/update"); //$NON-NLS-1$
 							pcs.removeItem(oldPc);
 							if (newPc.getSize() != PopulationCenterSizeEnum.ruins ) {
 								newPc.setNationNo(oldPc.getNationNo());
@@ -1079,7 +1101,7 @@ public class TurnXmlReader implements Runnable {
 								prevTurnNo = ((PopCenterXmlInfoSource) oldPc.getInfoSource()).getPreviousTurnNo();
 							}
 							((PopCenterXmlInfoSource) newPc.getInfoSource()).setPreviousTurn(prevTurnNo);
-							logger.debug("updated new:" + newPc.getHexNo() + " " + newPc.getName() + " " + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + (pcInfoSource).getPreviousTurnNo());
+							logger.debug("updated new:" + newPc.getHexNo() + " " + newPc.getName() + " " + newPc.getNationNo() + " " + pcInfoSource.getTurnNo() + " " + (pcInfoSource).getPreviousTurnNo()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 						}
 					}
 
@@ -1102,7 +1124,7 @@ public class TurnXmlReader implements Runnable {
 		}
 		// handle pops that are "reported" as belonging to the current nation
 		// but the current nation did not have them in the xml
-		ArrayList<PopulationCenter> potentiallyLostPops = turn.getPopulationCenters().findAllByProperty("nationNo", tiNationNo);
+		ArrayList<PopulationCenter> potentiallyLostPops = turn.getPopulationCenters().findAllByProperty("nationNo", tiNationNo); //$NON-NLS-1$
 		for (PopulationCenter pop : potentiallyLostPops) {
 			if (pop.getInfoSource().getTurnNo() == turnNo && pop.getInformationSource().getValue() >= InformationSourceEnum.detailed.getValue())
 				continue;

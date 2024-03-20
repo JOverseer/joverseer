@@ -152,7 +152,7 @@ public class OrderEditorTableModel extends ItemTableModel {
 
 			o.setNoAndCode(v.toString());
 			if (oldNo != o.getOrderNo()) {
-				if ((oldNo == 860 || oldNo == 850) && (o.getOrderNo() == 860 || o.getOrderNo() == 850)) {
+				if ((oldNo == 860 || oldNo == 850) && o.isArmyMovementOrderCapableOfEvasion()) {
 					// keep same parameters
 				} else {
 					o.setParameters("");

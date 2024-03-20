@@ -2,7 +2,6 @@ package org.joverseer.support.readers.orders;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.joverseer.domain.Character;
@@ -11,7 +10,6 @@ import org.joverseer.domain.Order;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
 import org.joverseer.game.TurnElementsEnum;
-import org.joverseer.support.Container;
 import org.joverseer.tools.OrderParameterValidator;
 import org.joverseer.tools.OrderValidationResult;
 
@@ -268,7 +266,7 @@ public class OrderTextReader implements OrderTextReaderInterface {
 					orders1[i].setOrderNo(orderNo);
 					orders1[i].setParameters(parameters);
 					// check mov army orders and swap params if applicable
-					if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
+					if (orders1[i].isArmyMovementOrderCapableOfEvasion()) {
 						// String paramTemp =
 						// orders[i].getParameter(orders[i].getLastParamIndex());
 						String paramZero = orders1[i].getParameter(0);

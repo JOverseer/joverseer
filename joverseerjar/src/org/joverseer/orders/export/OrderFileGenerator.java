@@ -91,7 +91,7 @@ public class OrderFileGenerator {
         ret += o.getOrderNo();
         for (int i=0; i<15; i++) {
             String p = o.getParameter(i);
-            if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
+            if (o.isArmyMovementOrderCapableOfEvasion()) {
                 // special handling for move army orders
                 if (i == 0) {
                     p = o.getParameter(o.getLastParamIndex());

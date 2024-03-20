@@ -310,7 +310,7 @@ public class OrderEditor extends AbstractForm implements ApplicationListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Order o = (Order) getFormObject();
-				if (o.getOrderNo() == 830 || o.getOrderNo() == 850 || o.getOrderNo() == 860) {
+				if (o.isArmyMovementOrderCapableOfEvasion()) {
 					OrderVisualizationData ovd = OrderVisualizationData.instance();
 					if (!ovd.contains(o) && ovd.getOrderEditorOrder() != o) {
 						ovd.addOrder((Order) getFormObject());

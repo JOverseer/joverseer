@@ -401,6 +401,10 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 			}
 		}		
 	}
+	public boolean isArmyMovementOrderCapableOfEvasion() {
+		return (this.orderNo == 830) || (this.orderNo == 850) || (this.orderNo == 860);
+	}
+
 	public static Order getOtherOrder(Order o) {
 		return getOtherOrder(o.getCharacter(), o);
 	}
@@ -418,5 +422,5 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		}
 		return p;
 	}
-
+	
 }

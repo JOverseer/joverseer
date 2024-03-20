@@ -173,7 +173,7 @@ public class OpenXmlAndPdfDir extends ActionCommand implements Runnable {
 			GamePreference.setValueForPreference("importDir", file.getAbsolutePath(), OpenGameDirTree.class);
 			final Runnable thisObj = this;
 			// files = file.listFiles(new XmlAndPdfFileFilter());
-			this.files = getFilesRecursive(file, new XmlAndPdfFileFilter(g.getMetadata().getGameNo(), g.getMaxTurn()));
+			this.files = getFilesRecursive(file, new XmlAndPdfFileFilter(g.getMetadata().getGameNo()));
 			//sort files:
 			ArrayList<File> ret = new ArrayList<File>();
 			ret.addAll(Arrays.asList(this.files));

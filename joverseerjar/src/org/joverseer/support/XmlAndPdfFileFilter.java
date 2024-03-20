@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * Filter files matching the specified game
  * @author Dave
  * Edited. Extended functionality whilst allowing it still to be used the same way as before.
- * Now, if the second constructor is used, it will properly filter out files from a different game number and only read in files for results of the next turn
+ * Now filters the files by game name, only importing those from the same game. Commented out code is the beginning of a turn number filter as well, but too many weird edge cases.
  * @author samue
  *
  */
@@ -27,8 +27,12 @@ public class XmlAndPdfFileFilter implements FileFilter {
 	public boolean accept(File file) {
 		String name = file.getName();
 		if (!file.isDirectory() && Pattern.matches("g0*\\d{1,}n\\d{2,}t\\d{2,}.(xml|pdf)", name)) {
-			if(this.turnNoAsString == "-1") return true;	//With this if it retains the same functionality as the class did before
-			if(name.contains(this.turnNoAsString) && name.contains(this.gameNoAsString)) return true;
+			if(name.substring(name.indexOf("g")+1, name.indexOf("n")).equals(this.gameNoAsString)) return true;	//Filters by game name
+//			if(this.turnNoAsString == "-1") return true;	//With this if it retains the same functionality as the class did before
+//			if(name.substring(name.indexOf("g")+1, name.indexOf("n")).equals(this.gameNoAsString)) {
+//				if(this.turnNoAsString == "000") this.turnNoAsString = "001"; //Allows importing of files on turn 0 for turn 0
+//				if(name.substring(name.indexOf("t")+1, name.indexOf(".")).equals(this.turnNoAsString)) return true;
+//			}
 
 		}
 		return false;

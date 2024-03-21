@@ -247,7 +247,7 @@ public class ExportDiploForm extends ScalableAbstractForm {
 				nationsNoList[i] = Integer.toString(g.getMetadata().getNationByName(nationsList[i]).getNumber());
 			}
 			
-			String txt = "Begindiplo;\n" + fname + ";\n\nFrom nations: " + String.join(", ", nationsNoList) + "\n\n" + diploTxt + "\n\n" + "Enddiplo";
+			String txt = "Begindiplo;\n" + fname + ";\n" + pi.getSecret()  + ";\n\nFrom nations: " + String.join(", ", nationsNoList) + "\n\n" + diploTxt + "\n\n" + "Enddiplo";
 			txt = txt.replace("\n", System.getProperty("line.separator"));
 			f.write(txt);
 			f.close();

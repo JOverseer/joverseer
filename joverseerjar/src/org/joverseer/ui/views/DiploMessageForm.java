@@ -35,11 +35,14 @@ import org.joverseer.ui.BaseView;
 import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 
 /**
@@ -94,12 +97,28 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 		JLabel nationInstr = new JLabel("<html>Select which nations you control here<br/><font size=2>Double click on a nation to move it between lists.</font><html>", SwingConstants.LEFT);
 		nationPanelInstr.add(nationInstr);
 		
+		JPanel listLabelPanel = new JPanel();
+		listLabelPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		nationPanel.add(listLabelPanel);
+		
+		Component horizontalStrut_2_1 = Box.createHorizontalStrut(5);
+		listLabelPanel.add(horizontalStrut_2_1);
+		
+		JLabel lbSel = new JLabel("<html><font size=2><em>Selected:</em></font><html>");
+		listLabelPanel.add(lbSel);
+		
+		Component horizontalStrut_2_2 = Box.createHorizontalStrut(75);
+		listLabelPanel.add(horizontalStrut_2_2);
+		
+		JLabel lbUSel = new JLabel("<html><font size=2><em>Unselected:</em></font><html>");
+		listLabelPanel.add(lbUSel);
+		
 		JPanel listPanel = new JPanel();
-		listPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		listPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		nationPanel.add(listPanel);
 
 		this.nationDList = new NationDualListSelector(this.gameHolder);
-		this.nationDList.setListSize(6, 90);
+		this.nationDList.setListSize(5, 90);
 		setupListListeners();
 
 		listPanel.add(this.nationDList);

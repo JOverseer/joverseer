@@ -1,8 +1,6 @@
 package org.joverseer.support.readers.xml;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 
 import org.joverseer.domain.HarborSizeEnum;

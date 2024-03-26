@@ -2,7 +2,6 @@ package org.joverseer.tools.combatCalc;
 
 import static org.junit.Assert.*;
 
-import org.joverseer.JOApplication;
 import org.joverseer.domain.ClimateEnum;
 import org.joverseer.domain.FortificationSizeEnum;
 import org.joverseer.domain.PopulationCenterSizeEnum;

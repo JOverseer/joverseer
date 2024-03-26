@@ -1,10 +1,6 @@
 package org.joverseer.ui.support.controls;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.joverseer.domain.NationEconomy;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;

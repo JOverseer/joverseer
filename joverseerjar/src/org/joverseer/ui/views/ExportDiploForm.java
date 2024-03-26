@@ -41,7 +41,6 @@ import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.joverseer.domain.PlayerInfo;
 import org.joverseer.game.Game;
-import org.joverseer.orders.export.OrderFileGenerator;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.GamePreference;

@@ -1,13 +1,18 @@
-VERSION 1.18.12-rc2
+VERSION 1.18.12-rc3
 ---------------
+	* Enh: When importing a turn, ONLY filenames of the current game are listed.
 	* Enh: Lots of small tweaks to diplomatic message support.
 	* Enh: New Map Option to visibly mark the Capitals of Nations on the Map.
 	* Enh: On the Economy Calculator, marking a pop. center as lost will select that hex on the map.
 	* Enh: Change Dragons section of InfoView to link to the more up-to-date wiki. Offer to open in default browser.
 	* Enh: In the Current Hex View, don't show orders for dead characters.
 	* Enh: Export Orders now lets you submit 'shadow' orders.
+	* Enh: A clearer method of selecting nations on the Diplo Form.
+	* Enh: A marker appears on the title bar to warn you when looking at old turns.	 
 	* QA: Restrict file types when exporting orders and diplos, to avoid user error accidentally trashing files.
 	* QA: Check For Update is more in-your-face when mentioning that no update is needed.
+	* Fix: Repeated imports of turn 0 were failing to update starting character stats.
+	* Fix: Failing a RA cast no longer creates a spurious artifact.
 	* Fix: Empty Notes are removed. The red exclamation mark is gone.
 	* Fix: Showing navy range now toggles on/off properly on the map.
 	* Fix: Showing navy range now works on open seas.

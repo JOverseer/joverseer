@@ -52,7 +52,12 @@ public class MoveArmyOrderSubeditor extends AbstractOrderSubeditor {
         }
     }
     class AddMovementButton extends JButton {
-    	AddMovementButton(String aMessage) {
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		AddMovementButton(String aMessage) {
     		super(aMessage);
     		this.addActionListener(new AddMovementActionListener(aMessage));
     	}

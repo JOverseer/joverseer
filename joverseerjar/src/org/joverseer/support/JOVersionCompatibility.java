@@ -2,7 +2,6 @@ package org.joverseer.support;
 
 import java.net.MalformedURLException;
 
-import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.springframework.richclient.application.Application;
 

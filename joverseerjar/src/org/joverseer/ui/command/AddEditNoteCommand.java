@@ -10,7 +10,6 @@ import org.joverseer.tools.UniqueIdGenerator;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.EditNoteForm;
-import org.joverseer.ui.command.DeleteNoteCommand;
 import org.springframework.binding.form.FormModel;
 import org.springframework.richclient.command.ActionCommand;
 import org.springframework.richclient.dialog.FormBackedDialogPage;

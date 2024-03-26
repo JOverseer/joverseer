@@ -2,7 +2,6 @@ package org.joverseer.support;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
  * Filter files matching the specified game

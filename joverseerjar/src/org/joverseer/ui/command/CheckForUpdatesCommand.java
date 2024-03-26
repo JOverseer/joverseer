@@ -8,7 +8,6 @@ import java.util.prefs.Preferences;
 import org.joverseer.JOApplication;
 import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.ui.JOverseerJIDEClient;
-import org.joverseer.ui.views.ExportOrdersForm;
 import org.joverseer.ui.views.Messages;
 import org.springframework.richclient.application.ApplicationDescriptor;
 import org.springframework.richclient.command.ActionCommand;

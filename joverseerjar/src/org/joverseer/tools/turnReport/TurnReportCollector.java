@@ -1549,7 +1549,17 @@ public class TurnReportCollector {
 				charsLost++;
 			}
 		}
-		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "New chars: " + charsGained + "<br/>" + "Lost chars: " + charsLost + "</b></div>";
+		return "<div style='font-family:Tahoma; font-size:11pt'><b>" + "New chars: " + charsGained + "<br/>" + "Lost chars: " + charsLost + renderCharLimitSummary() + "</b></div>";
+	}
+	
+	public String renderCharLimitSummary() {
+		int limitThisTurn = InfoUtils.getCharactersAllowed(this.gameHolder.getGame().getMetadata().getGameType(), this.gameHolder.getGame().getCurrentTurn());
+		int limitNextTurn = InfoUtils.getCharactersAllowed(this.gameHolder.getGame().getMetadata().getGameType(), this.gameHolder.getGame().getCurrentTurn() + 1);
+		
+		if (limitThisTurn != limitNextTurn) {
+			return "<br/>Reminder: Character limit is going up to " + limitNextTurn + ", meaning more characters available with the orders for next turn!";
+		}
+		return "";
 	}
 
 	public String renderPopsSummary(ArrayList<BaseReportObject> pops) {

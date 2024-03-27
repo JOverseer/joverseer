@@ -46,6 +46,7 @@ public class NationDualListSelector extends DualJListSelector {
 		int index = 0;
 		
         ArrayList<String> nationNames = new ArrayList<String>();
+        ArrayList<String> nationNamesComp = new ArrayList<String>();
 
 		for (Nation n : g.getMetadata().getNations()) {
 	        if (n.isActivePlayer()) {
@@ -59,11 +60,13 @@ public class NationDualListSelector extends DualJListSelector {
 	            	selectedNation[index++] = n.getName();
 				}
 				else nationNames.add(n.getName());
+				nationNamesComp.add(n.getName());
 	        }
 		}
 		String nationNamesComplete[] = nationNames.toArray(new String[nationNames.size()]);
 
 		this.setSelectorItems(nationNamesComplete, selectedNation);
+		this.setListOrder(nationNamesComp);
 		
 	}
 	

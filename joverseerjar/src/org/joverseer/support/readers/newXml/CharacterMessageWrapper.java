@@ -323,7 +323,25 @@ public class CharacterMessageWrapper {
 			return null;
 		}
 	}
-
+	static protected String extract2ndPower(String powers2) {
+		int pos; 
+		if (powers2.length() >0) {
+			final String seek = "Possession of the artifact can allow casting of the spell ";
+			pos = powers2.indexOf(seek);
+			if (pos >-1) {
+				return powers2.substring(pos+seek.length()); 
+			} else {
+				final String fail = "He was not able to cast the spell";
+				pos = powers2.indexOf(fail);
+				if (pos < 0) {
+					return powers2;
+				}
+			}
+		}
+		//TODO: I18M
+		return "Unknown";		
+	}
+	
 	// increase combat damage by nnnn pts
 	// increase (Agent|Mage|Command|Emissary|Stealth) Rank by nnnn
 	// Possession of the artifact can allow casting of the spell xxxxx
@@ -336,7 +354,6 @@ public class CharacterMessageWrapper {
 		int pos; 
 		String[] powers = report.split("\\.");
 		if (powers[0].length() > 0) {
-			int rank = 0;
 			pos = powers[0].indexOf(" combat ");
 			if (pos >-1) {
 				String rest = StringUtils.getFirstWordAfter(powers[0], " by ");
@@ -350,6 +367,7 @@ public class CharacterMessageWrapper {
 			} else {
 				pos = powers[0].indexOf(" Rank by ");
 				if (pos > -1) {
+					int rank = 0;
 					String rest = StringUtils.getFirstWordAfter(powers[0], " by ");
 					if (rest.length() > 0 ) {
 						try {
@@ -363,15 +381,7 @@ public class CharacterMessageWrapper {
 			}
 		}
 		if (powers.length > 1) {
-			if (powers[1].length() >0) {
-				final String seek = "Possession of the artifact can allow casting of the spell ";
-				pos = powers[1].indexOf(seek);
-				if (pos >-1) {
-					aw.latent = powers[1].substring(pos+seek.length()); 
-				} else {
-					aw.latent = powers[1];
-				}
-			}
+			aw.latent = extract2ndPower(powers[1]);
 		}
 	}
 	protected OrderResult getRAResult(String line, InfoSource infoSource) {
@@ -382,7 +392,6 @@ public class CharacterMessageWrapper {
 			String[] singleResult = text.split(start);
 			// note we skip the first index.
 			for(int index=1;index < singleResult.length;index++) {
-				int i;
 				String[] parts = singleResult[index].split(" - ");
 				if (parts.length < 1)
 					continue;

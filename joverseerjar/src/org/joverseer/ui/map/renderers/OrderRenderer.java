@@ -83,7 +83,7 @@ public class OrderRenderer extends DefaultHexRenderer {
 				renderMovementSpellOrder(order, g);
 			}
 			return true;
-		} else if (order.getOrderNo() == 850 || order.getOrderNo() == 860 || order.getOrderNo() == 830) {
+		} else if (order.isArmyMovementOrderCapableOfEvasion()) {
 			if (doRender) {
 				renderArmyMovementOrder(order, g);
 			}

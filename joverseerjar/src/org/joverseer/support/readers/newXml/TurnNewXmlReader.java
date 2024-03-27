@@ -1,8 +1,6 @@
 package org.joverseer.support.readers.newXml;
 
 
-import java.security.cert.PKIXRevocationChecker.Option;
-
 import java.util.ArrayList;
 
 import org.apache.commons.digester.Digester;
@@ -107,6 +105,16 @@ public class TurnNewXmlReader implements Runnable {
 			this.digester.addSetProperties("METurn/More/TurnInfo/GameInfo/Option", "name", "name");
 			this.digester.addSetProperties("METurn/More/TurnInfo/GameInfo/Option", "value", "value");
 			this.digester.addSetNext("METurn/More/TurnInfo/GameInfo/Option", "addItem", "org.joverseer.support.readers.newXml.GameInfoOptionWrapper");
+
+			this.digester.addObjectCreate("METurn/More/TurnInfo/Modifiers", "org.joverseer.support.Container");
+			this.digester.addSetNext("METurn/More/TurnInfo/Modifiers", "setModifiers");
+			this.digester.addObjectCreate("METurn/More/TurnInfo/Modifiers/Modifier", "org.joverseer.support.readers.newXml.TurnInfoModifierWrapper");
+			this.digester.addSetProperties("METurn/More/TurnInfo/Modifiers/Modifier", "climate", "climate");
+			this.digester.addSetProperties("METurn/More/TurnInfo/Modifiers/Modifier", "terrain", "terrain");
+			this.digester.addCallMethod("METurn/More/TurnInfo/Modifiers/Modifier", "setModifier", 1);
+			this.digester.addCallParam("METurn/More/TurnInfo/Modifiers/Modifier", 0);			
+			this.digester.addSetNext("METurn/More/TurnInfo/Modifiers/Modifier", "addItem", "org.joverseer.support.readers.newXml.TurnInfoModifierWrapper");
+
 			
 			// parse PCs from old format.
 			// create container for pcs
@@ -651,10 +659,20 @@ public class TurnNewXmlReader implements Runnable {
 	}
 	
 	private void updateGameSetup(Game game1) throws Exception {
-		for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.items) {
-			System.out.println(option.name);
-			System.out.println(option.value);
+		if (logger.isDebugEnabled()) {
+			for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.items) {
+				logger.debug("gameInfo "+ option.name + "="+ option.value);
+			}
+			
 		}
+		
+		System.out.println("Modifiers for " + this.turnInfo.nationNo);
+		for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.items) {
+			System.out.println(modifier.climate);
+			System.out.println(modifier.terrain);
+			System.out.println(modifier.modifier);
+		}		
+		
 		boolean error = false;
 		String errorMessage = "";
 		
@@ -745,7 +763,7 @@ public class TurnNewXmlReader implements Runnable {
 			for (int i = 0; i < turnsDue.length; i++) {
 				try {
 					int t = Integer.parseInt(turnsDue[i]);
-					if (t == this.game.getCurrentTurn() && pi != (null)) {
+					if (t == this.game.getCurrentTurn() - 1 && pi != (null)) {
 						pi.setDiploDue(true);
 						break;
 					}
@@ -1077,11 +1095,18 @@ public class TurnNewXmlReader implements Runnable {
 						if (cw.getPopCenterOutcomeSize() != null) {
 							PopulationCenterSizeEnum newSize = PopulationCenterSizeEnum.getFromLabel(cw.getPopCenterOutcomeSize()); 
 							if (newSize == PopulationCenterSizeEnum.ruins) {
-								// it's possible it got camped on this turn. and combats come before camping and nation reports.
-								if (!pc.getInformationSource().isMoreDetailedThan(InformationSourceEnum.some)) {
+								if (pc.getInfoSource().getTurnNo() != this.turn.getTurnNo()) {
+									// old information is from a previous turn
 									pc.setSize(newSize);
 									pc.setNationNo(0);
 									pc.setInformationSource(InformationSourceEnum.some);
+								} else {
+									// it's possible it got camped on this turn. and combats come before camping and nation reports.
+									if (!pc.getInformationSource().isMoreDetailedThan(InformationSourceEnum.some)) {
+										pc.setSize(newSize);
+										pc.setNationNo(0);
+										pc.setInformationSource(InformationSourceEnum.some);
+									}
 								}
 							} else {
 								pc.setSize(newSize);

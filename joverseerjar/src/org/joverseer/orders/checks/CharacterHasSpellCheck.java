@@ -2,7 +2,6 @@ package org.joverseer.orders.checks;
 
 import org.joverseer.domain.Character;
 import org.joverseer.domain.Order;
-import org.joverseer.domain.SpellProficiency;
 import org.joverseer.orders.OrderUtils;
 
 

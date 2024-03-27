@@ -110,13 +110,17 @@ public class OrderFileReader implements OrderTextReaderInterface {
                         Order[] orders = c.getOrders();
                         orders[orderI].setOrderNo(orderNo);
                         orders[orderI].setParameters(parameters);
-                        if (orderNo == 830 || orderNo == 850 || orderNo == 860) {
+                        if (orders[orderI].isArmyMovementOrderCapableOfEvasion()) {
                             //String paramTemp = orders[i].getParameter(orders[i].getLastParamIndex());
                             String paramZero = new String(orders[orderI].getParameter(0)).trim();
                             if (paramZero.equals("no") || paramZero.equals("ev")) {
                             	String params = orders[orderI].getParameters();
-                            	params = params.substring(3) + "#" + paramZero;
-                                orders[orderI].setParameters(params);
+                            	if (params.length() >2) {
+                            		// has other parameters
+                            		params = params.substring(3) + Order.DELIM + paramZero;
+                            		orders[orderI].setParameters(params);
+                            		
+                            	}
                             }
                         }
                         this.ordersRead++;

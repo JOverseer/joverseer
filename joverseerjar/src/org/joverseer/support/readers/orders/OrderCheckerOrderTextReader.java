@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.joverseer.game.Game;
-import org.joverseer.support.readers.orders.OrderTextReader;
 
 public class OrderCheckerOrderTextReader extends OrderTextReader {
 

@@ -268,7 +268,7 @@ public class OrderParameterValidator {
 		}
 
 		// moveArmy order and high number param
-		if (o.getOrderNo() == 850 || o.getOrderNo() == 860 || o.getOrderNo() == 830) {
+		if (o.isArmyMovementOrderCapableOfEvasion()) {
 			int iLastParam = o.getLastParamIndex();
 			if (iParam == 0) {
 				if (inList(paramValue, "e,ne,nw,se,sw,w,h")) {

@@ -365,11 +365,11 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 	 * @return
 	 */
 	public boolean isParametersBlank() {
-		if (parameters == null)
+		if (this.parameters == null)
 			return true;
-		if (parameters.length() == 0)
+		if (this.parameters.length() == 0)
 			return true;
-		if (parameters.trim().length() == 0) {
+		if (this.parameters.trim().length() == 0) {
 			return true;
 		}
 		return false;
@@ -401,6 +401,10 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 			}
 		}		
 	}
+	public boolean isArmyMovementOrderCapableOfEvasion() {
+		return (this.orderNo == 830) || (this.orderNo == 850) || (this.orderNo == 860);
+	}
+
 	public static Order getOtherOrder(Order o) {
 		return getOtherOrder(o.getCharacter(), o);
 	}
@@ -418,5 +422,5 @@ public class Order implements IBelongsToNation, IHasMapLocation, Serializable {
 		}
 		return p;
 	}
-
+	
 }

@@ -293,6 +293,12 @@ public class TurnXmlReader implements Runnable {
 			pi.setDueDate(this.turnInfo.getDueDate());
 			pi.setSecret(this.turnInfo.getSecurityCode());
 			pi.setAccountNo(this.turnInfo.getAccountNo());
+			
+			//Probably should be better implemented... Transfers the users set "controlled nations" between turns
+			try {
+				pi.setControlledNations(game1.getTurn(game1.getMaxTurn()-1).getPlayerInfo(this.turnInfo.getNationNo()).getControlledNations());
+			} catch (Exception e) {}
+			
 			this.turn.getPlayerInfo().addItem(pi);
 
 			this.infoSource = new XmlTurnInfoSource(this.turnInfo.getTurnNo(), this.turnInfo.getNationNo());

@@ -28,6 +28,9 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
     int diploVersion = 1;
     boolean diploDue = false;
     boolean diploSent = false;
+    
+    //Additional Info - other controlled nations by player
+    int[] controlledNations = null;
 
 
 	public String getAccountNo() {
@@ -152,4 +155,11 @@ public class PlayerInfo implements IBelongsToNation, Serializable {
 		this.diploSent = diploSent;
 	}
 	
+	public void setControlledNations(int[] ns) {
+		this.controlledNations = ns;
+	}
+	
+	public int[] getControlledNations() {
+		return this.controlledNations;
+	}
 }

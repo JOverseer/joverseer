@@ -3,6 +3,8 @@ package org.joverseer.ui.command;
 import org.joverseer.JOApplication;
 import org.joverseer.game.Game;
 import org.joverseer.support.GameHolder;
+import org.joverseer.ui.LifecycleEventsEnum;
+import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.ActiveGameChecker;
 import org.joverseer.ui.support.Messages;
 import org.joverseer.ui.views.EditPlayedNationsForm;
@@ -51,6 +53,7 @@ public class SelectPlayedNations extends ActionCommand {
 			@Override
 			protected boolean onFinish() {
 				form.commit();
+				JOApplication.publishEvent(LifecycleEventsEnum.RefreshHexItems, MapPanel.instance().getSelectedHex(), this);
 				return true;
 			}
 		};

@@ -233,6 +233,12 @@
 						<value>false</value>
 					</property>
 				</bean>
+				<bean class="org.joverseer.ui.command.SelectPlayedNations">
+					<constructor-arg index="0" ref="gameHolder" />
+					<property name="enabled">
+						<value>false</value>
+					</property>
+				</bean>
 				<bean class="org.joverseer.ui.command.ChangeNationAllegiances">
 					<property name="enabled">
 						<value>false</value>

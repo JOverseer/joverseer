@@ -36,6 +36,7 @@ import org.joverseer.domain.Company;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.domain.Note;
 import org.joverseer.domain.Order;
+import org.joverseer.domain.PlayerInfo;
 import org.joverseer.domain.SpellProficiency;
 import org.joverseer.game.Game;
 import org.joverseer.game.Turn;
@@ -124,6 +125,7 @@ public class CharacterViewer extends ObjectViewer {
 	JLabelButton swapOrdersIconCmd;
 
 	JButton btnMenu;
+	JButton btnCharDetails;
 
 	JComponent order1comp;
 	JComponent order2comp;
@@ -403,6 +405,29 @@ public class CharacterViewer extends ObjectViewer {
 			ArrayList<Note> notes1 = g.getTurn().getNotes().findAllByProperty("target", c); //$NON-NLS-1$
 			this.notesViewer.setFormObject(notes1);
 			this.characterName.setCaretPosition(0);
+			
+			//Disables/enables show/hide orders button depending on whether the player controls tehm or not (set in Advanced menu)
+			//If they haven't set any preferences, defaults to enabling show order button
+			PlayerInfo pI = this.gameHolder.getGame().getTurn().getPlayerInfo(this.gameHolder.getGame().getMetadata().getNationNo());
+			boolean charIsControlled = true;
+			if(pI != null) {
+				if(pI.getControlledNations() != null) {
+					charIsControlled = false;
+					for(int i : pI.getControlledNations()) {
+						if (i == c.getNationNo()) {
+							charIsControlled = true;
+						}
+					}
+				}
+			}
+			if (!charIsControlled) {
+				this.btnCharDetails.setEnabled(false);
+				this.btnCharDetails.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
+			}
+			else {
+				this.btnCharDetails.setEnabled(true);
+				this.btnCharDetails.setToolTipText(null);
+			}
 		}
 
 	}
@@ -481,13 +506,13 @@ public class CharacterViewer extends ObjectViewer {
 			}
 		});
 
-		final JButton btnCharDetails = new JButton();
+		this.btnCharDetails = new JButton();
 		ico = new ImageIcon(imgSource.getImage("showCharDetails.icon")); //$NON-NLS-1$
-		btnCharDetails.setIcon(ico);
-		btnCharDetails.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
-		btnCharDetails.setBorder(border);
-		glb.append(btnCharDetails);
-		btnCharDetails.addActionListener(new ActionListener() {
+		this.btnCharDetails.setIcon(ico);
+		this.btnCharDetails.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
+		this.btnCharDetails.setBorder(border);
+		glb.append(this.btnCharDetails);
+		this.btnCharDetails.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

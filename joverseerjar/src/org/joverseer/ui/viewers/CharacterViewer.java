@@ -420,8 +420,14 @@ public class CharacterViewer extends ObjectViewer {
 					}
 				}
 			}
-			if (!charIsControlled) this.btnCharDetails.setEnabled(false);
-			else this.btnCharDetails.setEnabled(true);
+			if (!charIsControlled) {
+				this.btnCharDetails.setEnabled(false);
+				this.btnCharDetails.setToolTipText(Messages.getString("CharacterViewer.showOrders.ToolTip"));
+			}
+			else {
+				this.btnCharDetails.setEnabled(true);
+				this.btnCharDetails.setToolTipText(null);
+			}
 		}
 
 	}

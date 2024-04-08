@@ -99,11 +99,10 @@ public class TurnReportCollector {
 	public ArrayList<BaseReportObject> CollectDoubleAgents(Turn t, Turn p) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
 		for (Character c : t.getAllCharacters()) {
-			
-			
 			boolean currentlyDouble = false;
 			boolean prevDouble = false;
 
+			//Checks whether character is currently a double agent and/or if they were one last turn
 			try {
 				if (c.getDoubleAgent()) currentlyDouble = true;
 			} catch (NullPointerException e) {}
@@ -133,6 +132,7 @@ public class TurnReportCollector {
 				cr = new CharacterReport(acw,t);
 			}
 			
+			//Color codes them depending on if they are a new double agent, no longer one, or remained one.
 			if(prevDouble && currentlyDouble) {
 				cr.setNotes("Double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
 				cr.setModification(ObjectModificationType.Modified);				

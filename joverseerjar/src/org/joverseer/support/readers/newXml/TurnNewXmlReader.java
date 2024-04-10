@@ -659,7 +659,7 @@ public class TurnNewXmlReader implements Runnable {
 	}
 	
 	private void updateGameSetup(Game game1) throws Exception {
-		if (logger.isDebugEnabled()) {
+			if (logger.isDebugEnabled()) {
 			for (GameInfoOptionWrapper option : (ArrayList<GameInfoOptionWrapper>) this.turnInfo.gameInfo.items) {
 				logger.debug("gameInfo "+ option.name + "="+ option.value);
 			}
@@ -667,11 +667,13 @@ public class TurnNewXmlReader implements Runnable {
 		}
 		
 		System.out.println("Modifiers for " + this.turnInfo.nationNo);
-		for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.items) {
-			System.out.println(modifier.climate);
-			System.out.println(modifier.terrain);
-			System.out.println(modifier.modifier);
-		}		
+		if (this.turnInfo.modifiers != null) {
+			for (TurnInfoModifierWrapper modifier : (ArrayList<TurnInfoModifierWrapper>) this.turnInfo.modifiers.items) {
+				System.out.println(modifier.climate);
+				System.out.println(modifier.terrain);
+				System.out.println(modifier.modifier);
+			}
+		}
 		
 		boolean error = false;
 		String errorMessage = "";

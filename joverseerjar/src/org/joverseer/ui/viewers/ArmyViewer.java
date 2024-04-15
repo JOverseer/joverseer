@@ -1,11 +1,13 @@
 package org.joverseer.ui.viewers;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -75,12 +77,17 @@ public class ArmyViewer extends ObjectViewer {
 
 	JTextField commanderName;
 	JTextField nation;
-	JTextField armySize;
-	JTextField armyType;
 	JTextField extraInfo;
+	JTextField extraInfo2;
 	JTextField food;
-	JTextField cav;
 	JTextField travellingWith;
+	
+	boolean firstInfoField = true;
+	
+	String armySizeStr;
+	String armyTypeStr;
+	String cavStr;
+	JTextField armyInfoText;
 
 	ActionCommand showArmyMovementRangeAction = new ShowArmyMovementRangeAction();
 	ActionCommand showArmyMovementIgnorePopsRangeAction = new ShowArmyMovementRangeIgnorePopsAction();
@@ -101,13 +108,15 @@ public class ArmyViewer extends ObjectViewer {
 
 	@Override
 	protected JComponent createFormControl() {
-		Box box = Box.createHorizontalBox();
+		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
+		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
 
-		box.add(this.commanderName = new JTextField());
-		this.commanderName.setPreferredSize(this.uiSizes.newDimension(160/12, this.uiSizes.getHeight3()));
-		box.add(Box.createHorizontalStrut(5));
-		box.add(this.nation = new JTextField());
-		this.nation.setPreferredSize(this.uiSizes.newDimension(30/12, this.uiSizes.getHeight3()));
+		glb.append(this.commanderName = new JTextField(), 1, 1, 4, 0);
+		this.commanderName.setFont(new Font(this.commanderName.getFont().getName(), Font.BOLD, this.commanderName.getFont().getSize()));
+
+		this.commanderName.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 24)/12, this.uiSizes.getHeight3()));
+		glb.append(this.nation = new JTextField());
+		this.nation.setPreferredSize(this.uiSizes.newDimension((this.nation.getFontMetrics(this.nation.getFont()).charWidth('M') * 6)/12, this.uiSizes.getHeight3()));
 
 		// button to show range of army on map
 		ImageSource imgSource = JOApplication.getImageSource();
@@ -115,8 +124,7 @@ public class ArmyViewer extends ObjectViewer {
 		Icon ico = new ImageIcon(imgSource.getImage("menu.icon")); //$NON-NLS-1$
 		btnMenu.setPreferredSize(this.uiSizes.newIconDimension(this.uiSizes.getHeight4()));
 		btnMenu.setIcon(ico);
-		box.add(Box.createHorizontalGlue());
-		box.add(btnMenu);
+		glb.append(btnMenu);
 		btnMenu.addActionListener(new PopupMenuActionListener() {
 
 			@Override
@@ -124,42 +132,41 @@ public class ArmyViewer extends ObjectViewer {
 				return createArmyPopupContextMenu();
 			}
 		});
-		box.add(Box.createHorizontalStrut(5));
-
-		GridBagLayoutBuilder glb = new GridBagLayoutBuilder();
-		glb.setDefaultInsets(new Insets(0, 0, 0, 5));
-		glb.append(this.armySize = new JTextField(), 1, 1);
-		this.armySize.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
-		glb.append(this.armyType = new JTextField());
-		this.armyType.setPreferredSize(this.uiSizes.newDimension(50/12, this.uiSizes.getHeight3()));
-		glb.nextLine();
-		glb.append(this.extraInfo = new JTextField(), 2, 1);
-		this.extraInfo.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
-		glb.nextLine();
-		glb.append(this.food = new JTextField());
-		this.food.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
-		glb.append(this.cav = new JTextField());
-		this.cav.setPreferredSize(this.uiSizes.newDimension(40/12, this.uiSizes.getHeight3()));
+		
 		glb.nextLine();
 		glb.append(this.travellingWith = new JTextField(), 2, 1);
 		this.travellingWith.setPreferredSize(this.uiSizes.newDimension(150/12, this.uiSizes.getHeight3()));
-
+		Font f = GraphicUtils.getFont(this.travellingWith.getFont().getName(), Font.ITALIC, 11);
+		this.travellingWith.setFont(f);
+		
+		glb.nextLine();
+		glb.append(this.armyInfoText = new JTextField(), 2, 1);
+		this.armyInfoText.setFont(new Font(this.armyInfoText.getFont().getName(), Font.BOLD, this.armyInfoText.getFont().getSize()));
+		this.armyInfoText.setPreferredSize(this.uiSizes.newDimension(120/12, this.uiSizes.getHeight3()));
+		
+		glb.nextLine();
+		glb.nextLine();
+		glb.append(this.extraInfo = new JTextField(), 2, 1);
+		this.extraInfo.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 20)/12, this.uiSizes.getHeight3() +2));
+		glb.nextLine();
+		glb.append(this.extraInfo2 = new JTextField(), 2, 1);
+		this.extraInfo2.setPreferredSize(this.uiSizes.newDimension((this.commanderName.getFontMetrics(this.commanderName.getFont()).charWidth('M') * 20)/12, this.uiSizes.getHeight3() +2));
+		glb.nextLine();
+		
+		glb.append(this.food = new JTextField());
+		this.food.setPreferredSize(this.uiSizes.newDimension(100/12, this.uiSizes.getHeight3()));
+		this.armyInfoText.setBorder(null);
 		this.commanderName.setBorder(null);
-		this.commanderName.setFont(new Font(this.commanderName.getFont().getName(), Font.BOLD, this.commanderName.getFont().getSize()));
-		this.nation.setBorder(null);
-		this.armySize.setBorder(null);
-		this.armyType.setBorder(null);
-		this.extraInfo.setBorder(null);
 		this.food.setBorder(null);
-		this.cav.setBorder(null);
+		this.nation.setBorder(null);
+		this.extraInfo.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+		this.extraInfo2.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		this.travellingWith.setBorder(null);
 
 		JPanel panel = glb.getPanel();
+		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		panel.setBackground(Color.white);
-		Box vBox = Box.createVerticalBox();
-		vBox.add(box);
-		vBox.add(panel);
-		return vBox;
+		return panel;
 	}
 
 	@Override
@@ -183,48 +190,47 @@ public class ArmyViewer extends ObjectViewer {
 		this.nation.setCaretPosition(0);
 		this.nation.setToolTipText(armyNation.getName());
 
-		this.armySize.setText(Messages.getString("ArmyViewer.SizeColon") + army.getSize().toString()); //$NON-NLS-1$
-		this.armySize.setCaretPosition(0);
-		this.armyType.setText(army.isNavy() ? Messages.getString("ArmyViewer.Navy") : Messages.getString("ArmyViewer.Army")); //$NON-NLS-1$ //$NON-NLS-2$
+		this.armySizeStr = army.getSize().toString();
+		this.armyTypeStr = army.isNavy() ? Messages.getString("ArmyViewer.Navy") : Messages.getString("ArmyViewer.Army");
+		this.resetExtraInfo();
 		if (army.getElements().size() > 0) {
-			this.extraInfo.setText(""); //$NON-NLS-1$
-			this.extraInfo.setVisible(true);
 			for (ArmyElement element : army.getElements()) {
-				this.extraInfo.setText(UIUtils.OptSpace(this.extraInfo.getText(), element.getLocalizedDescription()));
+				this.appendItemExtraInfo(element.getLocalizedDescription() + " ");
 			}
 			String pval = PreferenceRegistry.instance().getPreferenceValue("currentHexView.showNHIEquivalents"); //$NON-NLS-1$
 			if (pval != null && pval.equals("yes")) { //$NON-NLS-1$
 //				GameHolder.instance().getGame().getTurn().getContainer(TurnElementsEnum.Character).findFirstByProperty("name", army.getCommanderName()); //$NON-NLS-1$
 				int nhi = army.getENHI();
 				if (nhi > 0) {
-					this.extraInfo.setText(this.extraInfo.getText() + Messages.getString("ArmyViewer.enHI",new Object[] { nhi})); //$NON-NLS-1$
+					this.appendItemExtraInfo(Messages.getString("ArmyViewer.enHI",new Object[] { nhi}));
 				}
 			}
 		} else if (army.getTroopCount() > 0) {
-			this.extraInfo.setVisible(true);
-			this.extraInfo.setText(Messages.getString("ArmyViewer.aboutNMen",new Object[] {army.getTroopCount()})); //$NON-NLS-1$ //$NON-NLS-2$
+			this.appendItemExtraInfo(Messages.getString("ArmyViewer.aboutNMen",new Object[] {army.getTroopCount()}));
 		} else if (army.getSize() != ArmySizeEnum.unknown && !army.isNavy()) {
 			ArmySizeEstimate ae = (new ArmySizeEstimator()).getSizeEstimateForArmySize(army.getSize(), ArmySizeEstimate.ARMY_TYPE);
 			if (ae == null || ae.getMin() == null) {
 				this.extraInfo.setVisible(false);
+				this.extraInfo2.setVisible(false);
 			} else {
-				this.extraInfo.setVisible(true);
-				this.extraInfo.setText(Messages.getString("ArmyViewer.estMinToMaxMen", new Object[] {ae.getMin(), ae.getMax()})); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				this.appendItemExtraInfo(Messages.getString("ArmyViewer.estMinToMaxMen", new Object[] {ae.getMin(), ae.getMax()}));
 			}
 		} else {
 			this.extraInfo.setVisible(false);
+			this.extraInfo2.setVisible(false);
 		}
 		if (army.getElements().size() == 0 && "yes".equals(PreferenceRegistry.instance().getPreferenceValue("currentHexView.showArmyEstimate"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			ArmyEstimate estimate = (ArmyEstimate) game.getTurn().getContainer(TurnElementsEnum.ArmyEstimate).findFirstByProperty("commanderName", army.getCommanderName()); //$NON-NLS-1$
 			if (estimate != null) {
 				String troopInfo = estimate.getTroopInfo();
 				if (!troopInfo.equals("")) { //$NON-NLS-1$
-					this.extraInfo.setText(this.extraInfo.getText() + " [~" + troopInfo + "]"); //$NON-NLS-1$ //$NON-NLS-2$
-					this.extraInfo.setVisible(true);
+					this.appendItemExtraInfo(" [~" + troopInfo + "]");
 				}
 			}
 		}
 		this.extraInfo.setCaretPosition(0);
+		this.extraInfo2.setCaretPosition(0);
+				
 		String foodStr = ""; //$NON-NLS-1$
 		String foodTooltip = ""; //$NON-NLS-1$
 		if (army.getFood() != null) {
@@ -254,22 +260,22 @@ public class ArmyViewer extends ObjectViewer {
 		this.food.setToolTipText(foodTooltip);
 		// armyMorale.setText("M: 0");
 
-		String cavString = ""; //$NON-NLS-1$
+		this.cavStr = ""; //$NON-NLS-1$
 		String cavTooltip = ""; //$NON-NLS-1$
 		Boolean isCav = army.computeCavalry();
 		if (isCav == null) {
-			cavString = ""; //$NON-NLS-1$
+			this.cavStr = ""; //$NON-NLS-1$
 			cavTooltip = ""; //$NON-NLS-1$
 		} else if (isCav) {
-			cavString = Messages.getString("ArmyViewer.AbbCavalry"); //$NON-NLS-1$
+			this.cavStr = Messages.getString("ArmyViewer.AbbCavalry"); //$NON-NLS-1$
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsCavalry"); //$NON-NLS-1$
 		} else {
-			cavString = Messages.getString("ArmyViewer.AbbInfantry"); //$NON-NLS-1$
+			this.cavStr = Messages.getString("ArmyViewer.AbbInfantry"); //$NON-NLS-1$
 			cavTooltip = Messages.getString("ArmyViewer.TreatAsInfantry"); //$NON-NLS-1$
 		}
-		this.cav.setText(cavString);
-		this.cav.setToolTipText(cavTooltip);
 
+		this.armyInfoText.setText(this.armyTypeStr + this.cavStr + " of " + this.armySizeStr + " size.");
+		
 		if (army.getCharacters().size() > 0) {
 			this.travellingWith.setVisible(true);
 			String txt = ""; //$NON-NLS-1$
@@ -280,6 +286,25 @@ public class ArmyViewer extends ObjectViewer {
 		} else {
 			this.travellingWith.setVisible(false);
 		}
+	}
+	
+	private void appendItemExtraInfo(String str) {
+		if (this.firstInfoField == true) {
+			this.extraInfo.setVisible(true);
+			this.extraInfo.setText(this.extraInfo.getText() + str);
+		}
+		if (this.firstInfoField == false) {
+			this.extraInfo2.setVisible(true);
+			this.extraInfo2.setText(this.extraInfo2.getText() + str);
+		}
+		this.firstInfoField = !this.firstInfoField;
+	}
+	
+	private void resetExtraInfo() {
+		this.firstInfoField = true;
+		this.extraInfo2.setVisible(false);
+		this.extraInfo.setText("");	//$NON-NLS-1$
+		this.extraInfo2.setText("");	//$NON-NLS-1$
 	}
 
 	private JPopupMenu createArmyPopupContextMenu() {

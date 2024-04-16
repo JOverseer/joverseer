@@ -8,6 +8,7 @@ import java.util.Locale;
 import org.joverseer.JOApplication;
 import org.joverseer.domain.NationRelations;
 import org.joverseer.metadata.GameTypeEnum;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
@@ -49,8 +50,8 @@ public class ColorPicker implements ApplicationListener {
     public Color getColor1(int nationNo) {
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	HashMap mapOptions = JOApplication.getMapOptions();
-	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
+    		String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
+	    	if (pval.equals("allegiance")) {
 	        	NationRelations nr = this.gameHolder.getGame().getTurn().getNationRelations(nationNo);
 	        	key = nr.getAllegiance().toString();
 	        }
@@ -77,8 +78,8 @@ public class ColorPicker implements ApplicationListener {
     public Color getColor2(int nationNo) {
     	String key = String.valueOf(nationNo);
     	if (nationNo != 0) { // if known nation, get its allegiance, else keep key=0 to return color for unknown
-	    	HashMap mapOptions = JOApplication.getMapOptions();
-	        if (mapOptions.containsKey(MapOptionsEnum.NationColors) && mapOptions.get(MapOptionsEnum.NationColors).equals(MapOptionValuesEnum.NationColorsAllegiance)) {
+	    	String pval = PreferenceRegistry.instance().getPreferenceValue("map.nationColors");
+	        if (pval.equals("allegiance")) {
 	        	NationRelations nr = this.gameHolder.getGame().getTurn().getNationRelations(nationNo);
 	        	key = nr.getAllegiance().toString();
 	        }

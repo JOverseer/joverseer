@@ -18,6 +18,7 @@ import org.joverseer.domain.PopulationCenter;
 import org.joverseer.domain.PopulationCenterSizeEnum;
 import org.joverseer.domain.ProductEnum;
 import org.joverseer.game.Game;
+import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.support.movement.MovementDirection;
 import org.joverseer.support.movement.MovementUtils;
@@ -582,13 +583,9 @@ public class OrderRenderer extends DefaultHexRenderer {
 	}
 
 	private boolean drawCharNames() {
-		Object obj = this.mapOptions.get(MapOptionsEnum.DrawNamesOnOrders);
-		if (obj == null)
-			return false;
-		if (obj == MapOptionValuesEnum.DrawNamesOnOrdersOn) {
-			return true;
-		}
-		return false;
+		String pval = PreferenceRegistry.instance().getPreferenceValue("map.drawNamesOnOrders");
+		if (pval.equals("no")) return false;
+		return true;
 	}
 
 }

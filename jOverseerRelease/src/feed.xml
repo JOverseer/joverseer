@@ -7,6 +7,15 @@
 			helper program.</description>
 		<language>en</language>
 		<item>
+			<title>1.18.13</title>
+			<pubDate>11 Apr 2024</pubDate>
+			<description>
+	VERSION 1.18.13
+	---------------
+	* Fix: failure importing turn XML for certain game scenarios.
+			</description>
+		</item>	
+		<item>
 			<title>1.18.12</title>
 			<pubDate>8 Apr 2024</pubDate>
 			<description>
@@ -31,7 +40,6 @@
 	* Fix: Some cases where importing orders, broke intelligence of nation's capital location.
 	* Fix: Battle reports of destroyed PCs are no longer ignored.
 	* Fix: The population attack statistics for expected losses and remainder was swapped.
-
 			</description>
 		</item>	
 		<item>

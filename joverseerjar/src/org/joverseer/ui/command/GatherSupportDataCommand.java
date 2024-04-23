@@ -94,10 +94,43 @@ public class GatherSupportDataCommand extends ActionCommand {
 		sb.append(System.getProperty(prop));
 		sb.append(this.EOL);
 	}
+	private void reportEnvironmentVariable(StringBuilder sb,String name)
+	{
+		sb.append(name);
+		sb.append(":");
+		wordWrap(sb,System.getenv(name),80);
+		sb.append(this.EOL);
+	}
+	private void wordWrap(StringBuilder sb,String value,int limit)
+	{
+		int start,stop,remaining;
+		start = 0;
+		if (value == null) {
+			sb.append("not defined");
+			return;
+		}
+	
+		remaining = value.length();
+		while (remaining > 0) {
+			stop = start + remaining;
+			if (remaining > limit) {
+				stop = start + limit -1; // -1 because we count from 0
+			}
+			sb.append(value.substring(start, stop));
+			sb.append(this.EOL);
+			start = stop; //no +1 as we start from 0
+			// note the last time through, remaining goes -ve.
+			remaining -= limit; 
+		}
+	}
 //TODO: maybe use https://github.com/oshi/oshi for diagnostics.
 	public String SystemProperties()
 	{
 		StringBuilder sb = new StringBuilder();
+		sb.append("Environment variables"+this.EOL);
+		reportEnvironmentVariable(sb, "PATH");
+		reportEnvironmentVariable(sb, "JREHOMEDIR");
+		reportEnvironmentVariable(sb, "JAVA_HOME");
 		sb.append("system properties"+this.EOL);
 		reportProperty(sb,"java.home");
 		reportProperty(sb,"java.vendor");

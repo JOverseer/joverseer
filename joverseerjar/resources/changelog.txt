@@ -1,9 +1,13 @@
-VERSION 1.18.12-rc3
+VERSION 1.18.13
+---------------
+	* Fix: failure importing turn XML for certain game scenarios.
+	
+VERSION 1.18.12
 ---------------
 	* Enh: When importing a turn, ONLY filenames of the current game are listed.
 	* Enh: Lots of small tweaks to diplomatic message support.
 	* Enh: New Map Option to visibly mark the Capitals of Nations on the Map.
-	* Enh: On the Economy Calculator, marking a pop. center as lost will select that hex on the map.
+	* Enh: On the Economy Calculator, marking a pop. center as lost will se4lect that hex on the map.
 	* Enh: Change Dragons section of InfoView to link to the more up-to-date wiki. Offer to open in default browser.
 	* Enh: In the Current Hex View, don't show orders for dead characters.
 	* Enh: Export Orders now lets you submit 'shadow' orders.

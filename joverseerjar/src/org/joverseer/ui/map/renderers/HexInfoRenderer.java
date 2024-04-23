@@ -112,8 +112,9 @@ public class HexInfoRenderer extends DefaultHexRenderer {
         if (!this.mapMetadata.withinMapRange(hex)) return;
         Game game = this.gh.getGame();
         
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.showClimate");
         Object map = this.mapOptions.get(MapOptionsEnum.NationMap);
-        boolean showClimate = (this.mapOptions.get(MapOptionsEnum.ShowClimate) == null ? false : this.mapOptions.get(MapOptionsEnum.ShowClimate).equals(MapOptionValuesEnum.ShowClimateOn));
+        boolean showClimate = (pval2.equals("no") ? false : true);
         boolean visible = false;
         if (map == null) {
             HexInfo hexInfo = game.getTurn().getHexInfo(hex.getHexNo());

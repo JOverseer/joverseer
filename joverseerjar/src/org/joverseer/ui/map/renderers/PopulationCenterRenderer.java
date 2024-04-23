@@ -118,9 +118,8 @@ public class PopulationCenterRenderer extends ImageRenderer {
         }
         MapTooltipHolder.instance().addTooltipObject(new Rectangle(px, py, img.getWidth(), img.getHeight()), popCenter);
 
-        HashMap mapOptions = JOApplication.getMapOptions();
-        Object map = mapOptions.get(MapOptionsEnum.PopCenterNames);
-        if (map!= null && map.equals(MapOptionValuesEnum.PopCenterNamesOn)) {
+        String pval2 = PreferenceRegistry.instance().getPreferenceValue("map.showPCNames");
+        if(pval2.equals("yes")) {
 	        String pcName = popCenter.getName();
 	        if (!pcName.toUpperCase().startsWith("UNKNOWN")) {
 	        	Point p = new Point(hexCenter.x, hexCenter.y +4);
@@ -128,8 +127,8 @@ public class PopulationCenterRenderer extends ImageRenderer {
 	        }
         }
         
-        map = mapOptions.get(MapOptionsEnum.NationNames);
-        if(map != null && map.equals(MapOptionValuesEnum.NationNamesOn)) {
+        pval2 = PreferenceRegistry.instance().getPreferenceValue("map.showNationNames");
+        if(pval2.equals("yes")) {
         	if(popCenter.getCapital()) {
         		String nationName = popCenter.getNation().getName();
         		Point p = new Point(hexCenter.x, hexCenter.y - 4);

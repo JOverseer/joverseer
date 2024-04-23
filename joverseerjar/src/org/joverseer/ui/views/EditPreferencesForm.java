@@ -144,7 +144,7 @@ public class EditPreferencesForm extends ScalableAbstractForm {
 			}
 		}
 		JScrollPane scp = new JScrollPane(tabPane);
-		scp.setPreferredSize(new Dimension(650, 350));
+		scp.setPreferredSize(new Dimension(650, 450));
 		return scp;
 	}
 

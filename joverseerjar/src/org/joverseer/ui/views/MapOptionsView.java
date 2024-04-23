@@ -1,8 +1,11 @@
 package org.joverseer.ui.views;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 
 import javax.swing.JCheckBox;
@@ -21,12 +24,14 @@ import org.joverseer.preferences.PreferenceRegistry;
 import org.joverseer.support.GameHolder;
 import org.joverseer.ui.LifecycleEventsEnum;
 import org.joverseer.ui.ScalableAbstractView;
+import org.joverseer.ui.command.EditPreferencesCommand;
 import org.joverseer.ui.domain.mapOptions.MapOptionValuesEnum;
 import org.joverseer.ui.domain.mapOptions.MapOptionsEnum;
 import org.joverseer.ui.map.MapMetadata;
 import org.joverseer.ui.map.MapPanel;
 import org.joverseer.ui.support.JOverseerEvent;
 import org.joverseer.ui.support.Messages;
+import org.joverseer.ui.support.controls.JLabelButton;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.richclient.layout.TableLayoutBuilder;
@@ -40,12 +45,8 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 	JComboBox cmbTurns;
 	JComboBox cmbMaps;
 	JComboBox zoom;
-	JComboBox nationColors;
 	JCheckBox drawOrders;
-	JCheckBox drawNamesOnOrders;
-	JCheckBox showClimate;
-	JCheckBox popCenterNames;
-	JCheckBox nationNames;
+	JLabelButton moreMapOptions;
 	/**
 	 * Used internally to turn off propagating events when we know there are going to be a lot of them.
 	 */
@@ -169,119 +170,7 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 
 		});
 		lb.row();
-
-		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.DrawNamesOnOrders"))); //$NON-NLS-1$
-		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(this.drawNamesOnOrders = new JCheckBox(), "align=left"); //$NON-NLS-1$
-		lb.relatedGapRow();
-		this.drawNamesOnOrders.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = JOApplication.getMapOptions();
-				if (MapOptionsView.this.drawNamesOnOrders.getModel().isSelected()) {
-					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOn);
-				} else {
-					mapOptions1.put(MapOptionsEnum.DrawNamesOnOrders, MapOptionValuesEnum.DrawNamesOnOrdersOff);
-				}
-				Game g = MapOptionsView.this.gameHolder.getGame();
-				if (!Game.isInitialized(g))
-					return;
-				int turnNo = g.getCurrentTurn();
-				if (!MapOptionsView.this.fireEvents)
-					return;
-
-				JOApplication.publishEvent(LifecycleEventsEnum.RefreshMapItems, turnNo, this);
-
-			}
-
-		});
-		lb.row();
-
-		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ShowPCNamesColon"))); //$NON-NLS-1$
-		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(this.popCenterNames = new JCheckBox(), "align=left"); //$NON-NLS-1$
-		lb.relatedGapRow();
-		this.popCenterNames.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = JOApplication.getMapOptions();
-				if (MapOptionsView.this.popCenterNames.getModel().isSelected()) {
-					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOn);
-				} else {
-					mapOptions1.put(MapOptionsEnum.PopCenterNames, MapOptionValuesEnum.PopCenterNamesOff);
-				}
-				Game g = MapOptionsView.this.gameHolder.getGame();
-				if (!Game.isInitialized(g))
-					return;
-				int turnNo = g.getCurrentTurn();
-				if (!MapOptionsView.this.fireEvents)
-					return;
-
-				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
-
-			}
-
-		});
-		lb.row();
 		
-		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ShowNationNamesColon"))); //$NON-NLS-1$
-		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(this.nationNames = new JCheckBox(), "align=left"); //$NON-NLS-1$
-		lb.relatedGapRow();
-		this.nationNames.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = JOApplication.getMapOptions();
-				if (MapOptionsView.this.nationNames.getModel().isSelected()) {
-					mapOptions1.put(MapOptionsEnum.NationNames, MapOptionValuesEnum.NationNamesOn);
-				} else {
-					mapOptions1.put(MapOptionsEnum.NationNames, MapOptionValuesEnum.NationNamesOff);
-				}
-				Game g = MapOptionsView.this.gameHolder.getGame();
-				if (!Game.isInitialized(g))
-					return;
-				int turnNo = g.getCurrentTurn();
-				if (!MapOptionsView.this.fireEvents)
-					return;
-
-				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
-
-			}
-
-		});
-		lb.row();
-
-		// lb.append(new JLabel("  "));
-		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ShowCLimateColon"))); //$NON-NLS-1$
-		// label.setPreferredSize(new Dimension(100, 16));
-		lb.cell(this.showClimate = new JCheckBox(), "align=left"); //$NON-NLS-1$
-		lb.relatedGapRow();
-		this.showClimate.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				HashMap mapOptions1 = JOApplication.getMapOptions();
-				if (MapOptionsView.this.showClimate.getModel().isSelected()) {
-					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOn);
-				} else {
-					mapOptions1.put(MapOptionsEnum.ShowClimate, MapOptionValuesEnum.ShowClimateOff);
-				}
-				Game g = MapOptionsView.this.gameHolder.getGame();
-				if (!Game.isInitialized(g))
-					return;
-				int turnNo = g.getCurrentTurn();
-				if (!MapOptionsView.this.fireEvents)
-					return;
-
-				JOApplication.publishEvent(LifecycleEventsEnum.SelectedTurnChangedEvent, turnNo, this);
-
-			}
-
-		});
-		lb.row();
 		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.ZoomLevelColon"))); //$NON-NLS-1$
 		ZoomOption[] zoomOptions = new ZoomOption[] { new ZoomOption("s1", 6, 6), new ZoomOption("s2", 7, 7), new ZoomOption("s3", 9, 9), new ZoomOption("s4", 11, 11), new ZoomOption("1", 13, 13), new ZoomOption("2", 15, 15), new ZoomOption("3", 17, 17), new ZoomOption("4", 19, 19),//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 				new ZoomOption("5", 21, 21),new ZoomOption("6", 23, 23),
@@ -317,35 +206,21 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 		}
 		this.zoom.setSelectedIndex(defaultZoomIndex);
 		lb.row();
-		lb.cell(label = new JLabel(Messages.getString("MapOptionsView.NationColoursColon"))); //$NON-NLS-1$
-		lb.cell(this.nationColors = new JComboBox(new String[] { Messages.getString("MapOptionsView.ColourForNation"), Messages.getString("MapOptionsView.ColourForAllegiance") }), "align=left"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		this.nationColors.setSelectedIndex(0);
-		lb.relatedGapRow();
-		this.nationColors.setPreferredSize(this.uiSizes.newDimension(100/16, this.uiSizes.getHeight4()));
-		this.nationColors.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String opt = (String) MapOptionsView.this.nationColors.getSelectedItem();
-				HashMap mapOptions1 = JOApplication.getMapOptions();
-				if (opt == null)
-					return;
-				if (opt.equals(Messages.getString("MapOptionsView.ColourForNation"))) { //$NON-NLS-1$
-					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsNation);
-				} else if (opt.equals(Messages.getString("MapOptionsView.ColourForAllegiance"))) { //$NON-NLS-1$
-					mapOptions1.put(MapOptionsEnum.NationColors, MapOptionValuesEnum.NationColorsAllegiance);
-				}
-				;
-				if (!MapOptionsView.this.fireEvents)
-					return;
-
-				JOApplication.publishEvent(LifecycleEventsEnum.MapMetadataChangedEvent, this, this);
-			}
-		});
+		lb.cell(this.moreMapOptions = new JLabelButton("<html><font color='blue'><u>More Map Options...</u></u><html>"));
+		this.moreMapOptions.addActionListener(new ActionListener() {
+			
+	          @Override
+				public void actionPerformed(ActionEvent e) {
+	        	  EditPreferencesCommand editPreferenceCmd = new EditPreferencesCommand();
+	        	  editPreferenceCmd.setGroup("Display.Map");
+	        	  editPreferenceCmd.execute();
+	          }
+			});
 
 		resetGame();
 		JPanel panel = lb.getPanel();
-		panel.setPreferredSize(new Dimension(130, 250));
+		panel.setPreferredSize(new Dimension(130, 100));
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		return new JScrollPane(panel);
@@ -413,8 +288,8 @@ public class MapOptionsView extends ScalableAbstractView implements ApplicationL
 			this.fireEvents = false;
 
 			this.zoom.setSelectedIndex(2);
-			this.nationColors.setSelectedIndex(0);
-			this.showClimate.setSelected(false);
+			PreferenceRegistry.instance().setPreferenceValue("map.nationColors", "nation"); //$NON-NLS-1$ //$NON-NLS-2$
+			PreferenceRegistry.instance().setPreferenceValue("map.showClimate", "no"); //$NON-NLS-1$ //$NON-NLS-2$
 			PreferenceRegistry.instance().setPreferenceValue("map.terrainGraphics", "simple"); //$NON-NLS-1$ //$NON-NLS-2$
 			PreferenceRegistry.instance().setPreferenceValue("map.fogOfWarStyle", "xs"); //$NON-NLS-1$ //$NON-NLS-2$
 			PreferenceRegistry.instance().setPreferenceValue("map.charsAndArmies", "simplified"); //$NON-NLS-1$ //$NON-NLS-2$

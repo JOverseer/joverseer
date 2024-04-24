@@ -248,7 +248,7 @@ public class MarketTableModel extends BaseEconomyTableModel {
 		int minBuyPrice = 1000;
 		int turnCount = 0;
 		DecimalFormat df = new DecimalFormat("###,###,##0");
-		for (int i = this.game.getCurrentTurn() - 1; i > 0; i--) {
+		for (int i = this.game.getCurrentTurn() - 1; i >= 0; i--) {
 			Turn t = this.game.getTurn(i);
 			if (t == null)
 				continue;

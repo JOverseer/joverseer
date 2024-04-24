@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -188,9 +189,10 @@ public class DiploMessageForm extends BaseView implements ApplicationListener{
 			});
 		buttonPanel.add(this.btReload);
 
-		this.panel.setPreferredSize(new Dimension(1200, 1200));
-		
-		return this.panel;
+		JScrollPane sp = new JScrollPane(this.panel);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		return sp;
 	}
 	
 	/**

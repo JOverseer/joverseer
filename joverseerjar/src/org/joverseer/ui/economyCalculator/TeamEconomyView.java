@@ -76,7 +76,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 		// we set up the reference to the NationStatisticsModel once we've created it in the view.
 
 		JScrollPane scp = new JScrollPane(this.teamEconomyTable);
-		scp.setPreferredSize(new Dimension(600, 250));
+		scp.setPreferredSize(new Dimension(600, 229));
 		scp.getViewport().setBackground(Color.white);
 		scp.getViewport().setOpaque(true);
 		lb.cell(scp);
@@ -138,7 +138,7 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 			this.nationEconomyListView = new NationEconomyListView();
 			this.nationEconomyListView.afterPropertiesSet();
 			pnl = (JPanel) this.nationEconomyListView.getControl();
-			pnl.setPreferredSize(new Dimension(300, 270));
+			pnl.setPreferredSize(new Dimension(300, 220));
 			lb.cell(pnl);
 
 			lb.relatedGapRow();
@@ -167,7 +167,12 @@ public class TeamEconomyView extends BaseView implements ApplicationListener {
 
 		lb.relatedGapRow();
 
-		scp = new JScrollPane(lb.getPanel());
+		JPanel p = lb.getPanel();
+		p.setBackground(Color.white);
+		scp = new JScrollPane(p);
+		scp.getViewport().setBackground(Color.white);
+		scp.getViewport().setOpaque(true);
+		
 		UIUtils.fixScrollPaneMouseScroll(scp);
 		return scp;
 	}

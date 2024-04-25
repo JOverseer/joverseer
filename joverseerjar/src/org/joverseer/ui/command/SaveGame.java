@@ -89,7 +89,8 @@ public class SaveGame extends ActionCommand {
                 prefs.put("saveDir", f.getParent()); //$NON-NLS-1$
 
                 RecentGames rgs = new RecentGames();
-                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath());
+                String dueDate = g.getTurn(g.getMaxTurn()).getPlayerInfo(g.getMetadata().getNationNo()).getDueDate();
+                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate);
 
                 zos.finish();
                 out.close();

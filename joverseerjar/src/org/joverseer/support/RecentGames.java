@@ -12,6 +12,11 @@ import org.joverseer.ui.JOverseerJIDEClient;
  * game1No!game1File#game2No!game2File#...
  * 
  * @author Marios Skounakis
+ * 
+ * Edited by @author Sam Terrett
+ * Now includes when the games turns is due. 
+ * New format is
+ * game1No!game1File?game1Date#game2No!....
  */
 public class RecentGames {
 	final private int RECENT_GAME_LIMIT=10;
@@ -21,10 +26,21 @@ public class RecentGames {
             String[] games = str.split("#");
             for (String game : games) {
                 int i = game.indexOf("!");
+                int j = game.indexOf("?");
                 if (i==-1) continue;
+                if (j==-1) j = game.length();
                 RecentGameInfo rgi = new RecentGameInfo();
                 rgi.setNumber(Integer.parseInt(game.substring(0, i)));
-                rgi.setFile(game.substring(i+1).replace("!-!", "#"));
+                rgi.setFile(game.substring(i+1, j).replace("!-!", "#"));
+                
+                if(j != game.length()) {
+                	rgi.setDate(game.substring(j+1));
+                }
+                else {
+                	rgi.setDate("unknown");
+                }
+                
+                
                 res.add(rgi);
             }
         }
@@ -42,17 +58,18 @@ public class RecentGames {
             if (!res.equals("")) {
                 res += "#";
             }
-            res += rgi.getNumber() + "!" + rgi.getFile().replace("#", "!-!");
+            res += rgi.getNumber() + "!" + rgi.getFile().replace("#", "!-!") + "?" + rgi.getDate();
         }
         return res;
     }
     
-    public void updateRecentGameInfoPreferenceWithGame(int number, String file) {
+    public void updateRecentGameInfoPreferenceWithGame(int number, String file, String date) {
         String rgiStr = Preferences.userNodeForPackage(JOverseerJIDEClient.class).get("recentGames", null);
         ArrayList<RecentGameInfo> rgis = getRecentGameInfo(rgiStr);
         RecentGameInfo rgi = new RecentGameInfo();
         rgi.setNumber(number);
         rgi.setFile(file);
+        rgi.setDate(date);
 
         RecentGameInfo toRemove = null;
         for (RecentGameInfo orgi : rgis) {
@@ -73,6 +90,7 @@ public class RecentGames {
     
     public class RecentGameInfo {
         int number;
+        String dueDate;
         String file;
         
         public int getNumber() {
@@ -88,11 +106,18 @@ public class RecentGames {
             return this.file;
         }
 
-        
         public void setFile(String file) {
             this.file = file;
         }
         
         
+        public void setDate(String date) {
+            this.dueDate = date;
+        }
+        
+        public String getDate() {
+            return this.dueDate;
+        }
+                
     }
 }

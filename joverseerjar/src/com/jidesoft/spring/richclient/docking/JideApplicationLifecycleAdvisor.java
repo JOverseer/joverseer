@@ -396,7 +396,7 @@ public class JideApplicationLifecycleAdvisor extends DefaultApplicationLifecycle
 		for (RecentGameInfo rgi : rgis) {
 			final RecentGameInfo frgi = rgi;
 			JMenuItem mu = new JMenuItem();
-			mu.setText("Game " + String.valueOf(rgi.getNumber()));
+			mu.setText("Game " + String.valueOf(rgi.getNumber()) + " (Due: " + rgi.getDate() + ")");
 			mu.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

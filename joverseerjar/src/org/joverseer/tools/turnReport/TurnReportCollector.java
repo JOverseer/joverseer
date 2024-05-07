@@ -95,6 +95,70 @@ public class TurnReportCollector {
 		}
 		return ret1;
 	}
+	
+	public ArrayList<BaseReportObject> CollectDoubleAgents(Turn t, Turn p) {
+		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
+		for (Character c : t.getAllCharacters()) {
+			boolean currentlyDouble = false;
+			boolean prevDouble = false;
+
+			//Checks whether character is currently a double agent and/or if they were one last turn
+			try {
+				if (c.getDoubleAgent()) currentlyDouble = true;
+			} catch (NullPointerException e) {}
+
+			Character pc = null;
+			if (p != null) {
+				pc = p.getCharacters().findFirstByProperty("name", c.getName());
+					try {
+						if (pc.getDoubleAgent()) {
+							prevDouble = true;
+						}
+						
+					} catch (NullPointerException e) {}					
+			}
+			if(!currentlyDouble && !prevDouble) continue;
+
+			CharacterReport cr;
+			AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(c.getName(), t.getTurnNo());
+			if (acw != null) {
+				if (acw.getTurnNo() != t.getTurnNo()) {
+					acw = null;
+				}
+			}
+			if (acw == null) {
+				cr = new CharacterReport(c,t);
+			} else {
+				cr = new CharacterReport(acw,t);
+			}
+			
+			//Color codes them depending on if they are a new double agent, no longer one, or remained one.
+			if(prevDouble && currentlyDouble) {
+				cr.setNotes("Double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
+				cr.setModification(ObjectModificationType.Modified);				
+			}
+			else if(!prevDouble && currentlyDouble) {
+				cr.setNotes("New double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
+				cr.setModification(ObjectModificationType.Gained);
+			}
+			else {
+				cr.setNotes("No longer double agent for N" + acw.getDoubleAgentForNationNo() + ", " + this.gameHolder.getGame().getMetadata().getNationByNum(acw.getDoubleAgentForNationNo()).getName());
+				cr.setModification(ObjectModificationType.Lost);
+			};
+			cr.setHexNo(c.getHexNo());
+//			PopulationCenter pop = t.getPopCenter(c.getHexNo());
+//			if (pop != null) {
+//				cr.setNotes("PC: " + popPlusNation(pop));
+//			}
+//			if (c.getInfoSource() != null && !XmlTurnInfoSource.class.isInstance(c.getInfoSource())) {
+//				cr.appendNote(c.getInfoSource().getDescription());
+//				System.out.println(c.getInfoSource().getDescription());
+//			}
+			
+			ret.add(cr);
+		}
+		return ret;
+	}
 
 	public ArrayList<BaseReportObject> CollectNonFriendlyChars(Turn t) {
 		ArrayList<BaseReportObject> ret = new ArrayList<BaseReportObject>();
@@ -114,6 +178,9 @@ public class TurnReportCollector {
 				continue;
 			if (InfoUtils.isDragon(c.getName()))
 				continue;
+			try {
+				if (c.getDoubleAgent() == true) continue;
+			} catch (NullPointerException e) {}
 			CharacterReport cr;
 			AdvancedCharacterWrapper acw = CharacterInfoCollector.instance().getCharacterForTurn(c.getName(), t.getTurnNo());
 			if (acw != null) {
@@ -1748,6 +1815,13 @@ public class TurnReportCollector {
 			try {
 				reports = collectBridges(t, p);
 				ret += renderCollection("Bridges", "Bridges built or destroyed", reports);
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+			ret += "<br/>";
+			try {
+				reports = CollectDoubleAgents(t, p);
+				ret += renderCollection("Double Agents", "All reported double agents", reports);
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 			}

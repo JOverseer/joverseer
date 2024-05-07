@@ -531,6 +531,44 @@
 						</list>
 					</property>
 				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.nationColors</value>
+					</property>
+					<property name="description">
+						<value>Nation Colors</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="lifecycleEvent">
+						<value>MapMetadataChangedEvent</value>
+					</property>
+					<property name="defaultValue">
+						<value>nation</value>
+					</property>
+					<property name="domain">
+						<list>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>nation</value>
+								</property>
+								<property name="description">
+									<value>Color/Nation</value>
+								</property>
+							</bean>
+							<bean class="org.joverseer.preferences.PreferenceValue">
+								<property name="key">
+									<value>allegiance</value>
+								</property>
+								<property name="description">
+									<value>Color/Allegiance</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
 
 				<bean class="org.joverseer.preferences.Preference">
 					<property name="key">
@@ -550,6 +588,114 @@
 					</property>
 					<property name="defaultValue">
 						<value>yes</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.drawNamesOnOrders</value>
+					</property>
+					<property name="description">
+						<value>Draw Names on Orders</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="lifecycleEvent">
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.showClimate</value>
+					</property>
+					<property name="description">
+						<value>Show Climate</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="lifecycleEvent">
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.showPCNames</value>
+					</property>
+					<property name="description">
+						<value>Show PC Names</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="lifecycleEvent">
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
+					</property>
+					<property name="domain">
+						<list>
+							<ref bean="yesPrefValue" />
+							<ref bean="noPrefValue" />
+						</list>
+					</property>
+				</bean>
+				
+				<bean class="org.joverseer.preferences.Preference">
+					<property name="key">
+						<value>map.showNationNames</value>
+					</property>
+					<property name="description">
+						<value>Show Nation Names</value>
+					</property>
+					<property name="group">
+						<value>Display.Map</value>
+					</property>
+					<property name="type">
+						<value>check</value>
+					</property>
+					<property name="lifecycleEvent">
+						<value>RefreshTurnMapItems</value>
+					</property>
+					<property name="defaultValue">
+						<value>no</value>
 					</property>
 					<property name="domain">
 						<list>

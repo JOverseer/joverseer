@@ -56,7 +56,7 @@ public class NationDualListSelector extends DualJListSelector {
 	        			continue;
 	        	}
 				
-				if ((autoFocusOnGameNation && (n.getNumber() == g.getMetadata().getNationNo())) || (nationNums != null && arrayContainsInt(nationNums, n.getNumber().intValue()))) {
+				if ((autoFocusOnGameNation && (n.getNumber() == g.getMetadata().getNationNo())) ^ (nationNums != null && arrayContainsInt(nationNums, n.getNumber().intValue()))) {
 	            	selectedNation[index++] = n.getName();
 				}
 				else nationNames.add(n.getName());

@@ -43,20 +43,7 @@ public class DualJListSelector extends JPanel implements MouseListener{
 		super();
 		this.allowEmptySelection = emptySelOpt;
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		
-//		JPanel top = new JPanel();
-//		top.setLayout(new FlowLayout(FlowLayout.LEFT));
-//		this.add(top);
-//		
-//		JPanel bot = new JPanel();
-//		bot.setLayout(new FlowLayout(FlowLayout.LEFT));	
-//		this.add(bot);
-		
-//		JLabel sel = new JLabel("<html><font<font size=2>Selected:</font><html>");
-//		top.add(sel);
-//		
+
 		this.selLM = new DefaultListModel();
 		this.n_selLM = new DefaultListModel();
 		

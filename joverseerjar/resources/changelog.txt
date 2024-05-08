@@ -1,3 +1,9 @@
+VERSION 1.18.14-rc1
+-------------------
+	* Fix: Added secondary artifact powers for new KS games.
+	* Fix: Added scrolling to Diplo panel.
+	* Enh: Moved some of the map options to map preferences.
+	* Enh: Reformatted Army part of Current Hex View.
 VERSION 1.18.13
 ---------------
 	* Fix: failure importing turn XML for certain game scenarios.

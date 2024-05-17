@@ -69,6 +69,21 @@ public class AdvancedArtifactListView extends BaseItemListView {
 			return (aw.getPower1().indexOf(this.powerStr) > -1 || aw.getPower2().indexOf(this.powerStr) > -1);
 		}
 	}
+	
+	class ActivateEditMode extends ActionCommand {
+
+		@Override
+		protected void doExecuteCommand() {
+			// TODO Auto-generated method stub
+//			System.out.println(AdvancedArtifactListView.this.tableModel);
+//			System.out.println(AdvancedArtifactListView.this.table);
+//			System.out.println(AdvancedArtifactListView.this.table.getModel());
+//			System.out.println(AdvancedArtifactListView.this.tableModelClass);
+			AdvancedArtifactTableModel tableModelArt = (AdvancedArtifactTableModel) AdvancedArtifactListView.this.tableModel;
+			tableModelArt.setEditable(!tableModelArt.getEditable());
+		}
+		
+	}
 
 	class CopyToClipboardCommand extends ActionCommand implements ClipboardOwner {
 
@@ -167,7 +182,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 	@Override
 	protected int[] columnWidths() {
-		return new int[] { 24, 96, 32, 132, 32, 32, 120, 120, 24, 120 };
+		return new int[] { 24, 96, 32, 132, 32, 32, 120, 120, 24, 180 };
 	}
 
 	@Override
@@ -182,7 +197,7 @@ public class AdvancedArtifactListView extends BaseItemListView {
 
 			@Override
 			public JPopupMenu getPopupMenu() {
-				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("advancedArtifactListViewCommandGroup", new Object[] { new CopyToClipboardCommand(), });
+				CommandGroup group = Application.instance().getActiveWindow().getCommandManager().createCommandGroup("advancedArtifactListViewCommandGroup", new Object[] { new CopyToClipboardCommand(), new ActivateEditMode(), });
 				return group.createPopupMenu();
 			}
 		});

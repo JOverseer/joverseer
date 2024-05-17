@@ -724,7 +724,25 @@ public class TurnNewXmlReader implements Runnable {
 			}
 		}
 		
-		GameInfoOptionWrapper option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "EvilNations");
+		GameInfoOptionWrapper option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "NoPCsNation");
+		if (option != null && option.value != null) {
+			GameMetadata gm = game1.getMetadata();
+			NationRelations nr;
+			String[] notInNations = option.value.split(",");
+			for(String nn : notInNations) {
+				try {
+					int nni = Integer.parseInt(nn.trim());				
+					Nation n = gm.getNations().get(nni);
+					nr = game1.getTurn().getNationRelations(nni);
+					n.setEliminated(true);
+				} catch (Exception exc) {
+					error = true;
+					errorMessage += "Error setting eliminated (not in game) for nation " + nn + "\n";	
+				}
+			}
+		}
+		
+		option = (GameInfoOptionWrapper)this.turnInfo.gameInfo.findFirstByProperty("name", "EvilNations");
 		if (option != null && option.value != null) {
 			GameMetadata gm = game1.getMetadata();
 			NationRelations nr;

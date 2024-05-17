@@ -127,7 +127,8 @@ public class LoadGame extends ActionCommand {
                     }
                 }
                 RecentGames rgs = new RecentGames();
-                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath());
+                String dueDate = g.getTurn(g.getMaxTurn()).getPlayerInfo(g.getMetadata().getNationNo()).getDueDate();
+                rgs.updateRecentGameInfoPreferenceWithGame(g.getMetadata().getGameNo(), f.getAbsolutePath(), dueDate);
 
             }
             catch (EOFException exc) {

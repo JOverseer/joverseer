@@ -26,6 +26,7 @@ import org.joverseer.domain.ProductPrice;
 import org.joverseer.domain.SeasonEnum;
 import org.joverseer.support.Cloner;
 import org.joverseer.support.Container;
+import org.joverseer.tools.infoCollectors.artifacts.ArtifactUserInfo;
 import org.joverseer.ui.domain.mapItems.AbstractMapItem;
 
 /**
@@ -135,6 +136,10 @@ public class Turn implements Serializable {
 
 	public Container<Artifact> getArtifacts() {
 		return getContainerGeneric(TurnElementsEnum.Artifact);
+	}
+	
+	public Container<ArtifactUserInfo> getArtifactsUser() {
+		return getContainerGeneric(TurnElementsEnum.ArtifactUser);
 	}
 
 	public Container<Challenge> getChallenges() {

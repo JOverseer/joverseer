@@ -30,6 +30,8 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     InfoSource infoSource;
     String alignment;
 	transient String unAccentedName;
+	
+	boolean noZero;
 
 	public ArtifactWrapper() {
 	}
@@ -161,5 +163,13 @@ public class ArtifactWrapper implements IHasMapLocation, IBelongsToNation, IHasT
     public boolean isOwned() {
 		return (this.owner != null) && (this.owner.length() != 0);
     }
+    
+	public boolean wasNoZero() {
+		return this.noZero;
+	}
+	
+	public void setNoZero(boolean b) {
+		this.noZero = b;
+	}
 
 }

@@ -16,6 +16,7 @@ import org.joverseer.support.infoSources.InfoSource;
 import org.joverseer.support.infoSources.MetadataSource;
 import org.joverseer.support.infoSources.PdfTurnInfoSource;
 import org.joverseer.support.infoSources.RumorInfoSource;
+import org.joverseer.support.infoSources.UserInfoBasedOnOtherInfoSource;
 import org.joverseer.support.infoSources.UserInfoSource;
 import org.joverseer.support.infoSources.XmlTurnInfoSource;
 import org.joverseer.support.infoSources.spells.DerivedFromSpellInfoSource;
@@ -78,10 +79,14 @@ public class InfoSourceTableCellRenderer extends AllegianceColorCellRenderer {
             } else if (RumorActionInfoSource.class.isInstance(value)) {
             	RumorActionInfoSource aais = (RumorActionInfoSource)value;
             	strValue = aais.getReports();
-            } else if (UserInfoSource.class.isInstance(value)) {
+            } else if (UserInfoBasedOnOtherInfoSource.class.isInstance(value)) {
+            	UserInfoBasedOnOtherInfoSource uiboois = (UserInfoBasedOnOtherInfoSource)value;
+            	if(uiboois.getOtherInfoSource().getTurnNo() == -1) strValue = Messages.getString("InfoSourceTableCellRenderer.UserBasedOnOther", new Object[] { uiboois.getOtherInfoSource().toString()});
+            	else strValue = Messages.getString("InfoSourceTableCellRenderer.UserBasedOnOther", new Object[] { uiboois.getOtherInfoSource().getDescription()});
+            }else if (UserInfoSource.class.isInstance(value)) {
             	UserInfoSource uis = (UserInfoSource)value;
             	strValue = Messages.getString("InfoSourceTableCellRenderer.UserT", new Object[] { uis.getTurnNo()});; //$NON-NLS-1$
-            }
+            } 
         }
         return strValue;
     }

@@ -75,6 +75,7 @@ public class ArtifactInfoCollector implements ApplicationListener {
 						aw.setTurnNo(i);
 						aws.addItem(aw);
 					}
+					
 					aw.setNumber(a.getNumber());
 				}
 
@@ -97,13 +98,17 @@ public class ArtifactInfoCollector implements ApplicationListener {
 				if (n != null) {
 					aw.setNationNo(n.getNumber());
 				}
+				
+				
 			}
 
 			for (Character c : t.getCharacters()) {
 				for (Integer aid : c.getArtifacts()) {
 					ArtifactWrapper aw = aws.findFirstByProperty("number", aid);
+					
 					if (aw == null)
 						continue;
+
 					aw.setOwner(c.getName());
 					aw.setHexNo(c.getHexNo());
 					aw.setInfoSource(c.getInfoSource());
@@ -111,11 +116,48 @@ public class ArtifactInfoCollector implements ApplicationListener {
 					aw.setTurnNo(t.getTurnNo());
 				}
 			}
+			for (ArtifactUserInfo aui : t.getArtifactsUser()) {
+				this.checkAndSetUserInfo(aui, aws);
+			}
 		}
 		return aws;
 
 	}
 
+	private void checkAndSetUserInfo(ArtifactUserInfo aui, Container<ArtifactWrapper> aws) {
+		ArtifactWrapper aw;
+		if(!aui.wasNoZero()) {
+			aw = (aws.findFirstByProperty("number", aui.getNumber()));
+			
+		}
+		else {
+			aw = (aws.findFirstByProperty("name", aui.getName()));
+		}
+		
+		if (aw != null) {
+			
+			if(aw.getNumber() == 0) {
+				aw.setNumber(aui.getNumber());
+				if(aui.wasNoZero()) aw.setNoZero(true);
+			}
+			
+			
+			if(aui.getName() != null) aw.setName(aui.getName());
+			if(aui.getNationNo() != null) aw.setNationNo(aui.getNationNo());
+			if(aui.getOwner() != null) aw.setOwner(aui.getOwner());
+			if(aui.getHexNo() != 0) aw.setHexNo(aui.getHexNo());
+			if(aui.getAlignment() != null) aw.setAlignment(aui.getAlignment());
+			if(aui.getPower1() != null)aw.setPower1(aui.getPower1());
+			if(aui.getPower2() != null)aw.setPower2(aui.getPower2());
+			aw.setTurnNo(aui.getTurnNo());
+			aw.setInfoSource(aui.getInfoSource());
+		}	
+	}
+	
+	public void refreshWrappers() {
+		this.turnInfo.clear();
+	}
+	
 	public ArtifactWrapper getArtifactForTurn(int number, int turnNo) {
 		if (!GameHolder.hasInitializedGame()) {
 			return null;
@@ -143,12 +185,14 @@ public class ArtifactInfoCollector implements ApplicationListener {
 			Container<ArtifactWrapper> ret = new Container<ArtifactWrapper>(new String[] { "name", "turnNo", "number" });
 			return ret.getItems();
 		}
+		
 		Game game = GameHolder.instance().getGame();
-		if (turnNo == -1)
-			turnNo = game.getCurrentTurn();
+		if (turnNo == -1) turnNo = game.getCurrentTurn();
+		
 		if (!this.turnInfo.containsKey(turnNo)) {
 			this.turnInfo.put(turnNo, computeWrappersForTurn(turnNo));
 		}
+		
 		return this.turnInfo.get(turnNo).getItems();
 	}
 
